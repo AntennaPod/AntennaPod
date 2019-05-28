@@ -310,7 +310,7 @@
   <string name="enable_sonic">Sonic を有効にする</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">エピソードはキューにありません</string>
-  <string name="no_items_label">長押しまたはダウンロードしてキューにエピソードを追加できます。</string>
+  <string name="no_items_label">エピソードをダウンロードして追加するか、エピソードを長押しして \"キューに追加\" を選択してください。</string>
   <string name="no_feeds_label">まだポッドキャストを何も購読していません。</string>
   <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
   <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
@@ -702,6 +702,8 @@
   <string name="proxy_host_empty_error">ホストは空にできません</string>
   <string name="proxy_host_invalid_error">ホストが有効なIPアドレスやドメインではありません</string>
   <string name="proxy_port_invalid_error">ポートが正しくありません</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">カラムの数</string>
   <!--Database import/export-->
   <string name="import_export">データベースのインポート/エクスポート</string>
   <string name="import_export_warning">この実験的な機能を使用すると、サブスクリプションと再生したエピソードを別のデバイスに転送できます。\n\nエクスポートされたデータベースは、同じバージョンのAntennaPodを使用する場合にのみインポートできます。 それ以外の場合、この機能は予期しない動作につながります。\n\nインポートした後、エピソードはダウンロードされたものとして表示されることがあります。 エピソードの再生ボタンを押すだけで、AntennaPodがこれを検出します。</string>

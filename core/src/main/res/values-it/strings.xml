@@ -124,7 +124,7 @@
   <string name="feed_info_label">Info podcast</string>
   <string name="feed_settings_label">Impostazioni podcast</string>
   <string name="rename_feed_label">Rinomina podcast</string>
-  <string name="remove_feed_label">Cancella podcast</string>
+  <string name="remove_feed_label">Rimuovi podcast</string>
   <string name="share_label">Condividi...</string>
   <string name="share_link_label">Condividi URL Episodio</string>
   <string name="share_link_with_position_label">Condividi URL dell\'episodio con la posizione</string>
@@ -319,7 +319,6 @@
   <string name="enable_sonic">Abilita Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Nessun episodio in coda</string>
-  <string name="no_items_label">Puoi aggiungere episodi alla coda tenendo premuto o scaricandoli.</string>
   <string name="no_feeds_label">Non sei ancora abbonato a nessun podcast. </string>
   <string name="no_chapters_label">Questo episodio non ha capitoli.</string>
   <string name="no_shownotes_label">Questo episodio non ha note.</string>
@@ -714,6 +713,7 @@
   <string name="proxy_host_empty_error">L\'host non può essere vuoto</string>
   <string name="proxy_host_invalid_error">L\'host non è un IP o un dominio valido</string>
   <string name="proxy_port_invalid_error">Porta non valida</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Importa/Esporta database</string>
   <string name="import_export_warning">Questa funzione sperimentale può essere usata per trasferire le sottoscrizioni e gli episoti completati ad un altro dispositivo.\n\nIl database potrà essere importato solo se si usa la stessa versione di AntennaPod, altrimenti potrebbero generarsi comportamenti anomali.\n\nDopo l\'importazione, gli episodi potrebbero essere mostrati come scaricati anche se non lo sono. Basta premere Play per farli riconoscere ad AntennaPod.</string>

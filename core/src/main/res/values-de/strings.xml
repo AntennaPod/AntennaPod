@@ -137,8 +137,8 @@
   <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
   <string name="hide_episodes_title">Episoden verbergen</string>
   <string name="batch_edit">Stapelbearbeitung</string>
-  <string name="select_all_above">Alles oben auswählen</string>
-  <string name="select_all_below">Alles unten auswählen</string>
+  <string name="select_all_above">Alles oberhalb auswählen</string>
+  <string name="select_all_below">Alles unterhalb auswählen</string>
   <string name="hide_unplayed_episodes_label">Ungespielt</string>
   <string name="hide_paused_episodes_label">Pausiert</string>
   <string name="hide_played_episodes_label">Gespielt</string>
@@ -319,7 +319,7 @@
   <string name="enable_sonic">Sonic aktivieren</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Leere Abspielliste</string>
-  <string name="no_items_label">Du kannst Episoden zur Abspielliste hinzufügen, indem du sie herunterlädst oder lange antippst.</string>
+  <string name="no_items_label">Du kannst Episoden hinzufügen, indem du sie herunterlädst oder sie lange antippst und \"Zur Abspielliste hinzufügen\" auswählst.</string>
   <string name="no_feeds_label">Du hast noch keine Feeds abonniert.</string>
   <string name="no_chapters_label">Diese Episode hat keine Kapitel.</string>
   <string name="no_shownotes_label">Episode hat keine Shownotizen.</string>
@@ -457,7 +457,7 @@
   <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
   <string name="pref_expandNotify_title">Hohe Benachrichtigungspriorität</string>
-  <string name="pref_expandNotify_sum">Das öffnet normalerweise die Benachrichtigungen um Wiedergabe Buttons zu zeigen</string>
+  <string name="pref_expandNotify_sum">Dies erweitert normalerweise die Benachrichtigung und zeigt so die Wiedergabe-Buttons an.</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
   <string name="pref_compact_notification_buttons_title">Lockscreen-Wiedergabetasten festlegen</string>
@@ -497,15 +497,15 @@
   <string name="stop_playback">Wiedergabe anhalten</string>
   <string name="continue_playback">Audiowiedergabe fortsetzen</string>
   <string name="behavior">Verhalten</string>
-  <string name="pref_back_button_behavior_title">Zurück Button Verhalten</string>
-  <string name="pref_back_button_behavior_sum">Verändere das Verhalten vom Zurück Button</string>
+  <string name="pref_back_button_behavior_title">Verhalten des Zurück-Buttons</string>
+  <string name="pref_back_button_behavior_sum">Verändere das Verhalten vom Zurück-Button</string>
   <string name="back_button_default">Standard</string>
-  <string name="back_button_open_drawer">Öffne Navigationsschublade</string>
-  <string name="back_button_double_tap">Doppel Tap zum verlassen</string>
+  <string name="back_button_open_drawer">Öffne Seitenleiste</string>
+  <string name="back_button_double_tap">Doppelt tippen zum Verlassen</string>
   <string name="back_button_show_prompt">Bestätigen zum Verlassen</string>
   <string name="close_prompt">Bist du sicher, dass du AntennaPod schließen möchtest?</string>
-  <string name="double_tap_toast">Tap Zurück Button noch einmal zum Verlassen</string>
-  <string name="back_button_go_to_page">Gehe zu Seite</string>
+  <string name="double_tap_toast">Zurück-Button erneut tippen zum Verlassen</string>
+  <string name="back_button_go_to_page">Gehe zu Seite…</string>
   <string name="back_button_go_to_page_title">Seite auswählen</string>
   <string name="pref_delete_removes_from_queue_title">Löschen entfernt aus Abspielliste</string>
   <string name="pref_delete_removes_from_queue_sum">Entferne Episoden automatisch aus der Abspielliste, wenn sie gelöscht werden.</string>
@@ -714,6 +714,8 @@
   <string name="proxy_host_empty_error">Host darf nicht leer sein</string>
   <string name="proxy_host_invalid_error">Host ist keine gültige IP oder Domain</string>
   <string name="proxy_port_invalid_error">Port ungültig</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Spaltenanzahl</string>
   <!--Database import/export-->
   <string name="import_export">Datenbankimport/-export</string>
   <string name="import_export_warning">Diese experimentelle Funktion kann dazu benutzt werden, deine Abonnements und abgespielten Episoden auf ein anderes Gerät zu übertragen.\n\nExportierte Datenbanken können nur mit der gleichen AntennaPod-Version wieder importiert werden, andernfalls kann dies zu unerwartetem Verhalten führen.\n\nNach dem Importieren können Episoden als heruntergeladen angezeigt werden, obwohl sie dies nicht sind. Einfach den Abspielknopf der Episoden drücken, damit AntennaPod das erkennt.</string>

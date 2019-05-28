@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -106,7 +107,7 @@ public class ItunesSearchFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
@@ -146,7 +147,9 @@ public class ItunesSearchFragment extends Fragment {
                                     emitter.onError(new IOException(prefix + response));
                                 }
                             } catch (IOException | JSONException e) {
-                                emitter.onError(e);
+                                if (!disposable.isDisposed()) {
+                                    emitter.onError(e);
+                                }
                             }
                         })
                         .subscribeOn(Schedulers.io())
@@ -249,7 +252,9 @@ public class ItunesSearchFragment extends Fragment {
                         List<Podcast> podcasts = parseFeed(feedString);
                         emitter.onSuccess(podcasts);
                     } catch (IOException | JSONException e) {
-                        emitter.onError(e);
+                        if (!disposable.isDisposed()) {
+                            emitter.onError(e);
+                        }
                     }
                 })
                 .subscribeOn(Schedulers.io())

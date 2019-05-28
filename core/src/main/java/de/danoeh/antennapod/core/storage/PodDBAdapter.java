@@ -39,7 +39,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 // TODO Remove media column from feeditem table
 

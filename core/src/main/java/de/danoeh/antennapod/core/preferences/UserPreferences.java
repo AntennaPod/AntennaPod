@@ -73,6 +73,7 @@ public class UserPreferences {
     private static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
     public static final String PREF_VIDEO_BEHAVIOR = "prefVideoBehavior";
+    private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
@@ -875,5 +876,9 @@ public class UserPreferences {
         prefs.edit()
                 .putString(PREF_BACK_BUTTON_GO_TO_PAGE, tag)
                 .apply();
+    }
+
+    public static boolean timeRespectsSpeed() {
+        return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
     }
 }

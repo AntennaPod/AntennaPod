@@ -337,7 +337,7 @@
   <string name="enable_sonic">הפעלת Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">אין פרקים בתור</string>
-  <string name="no_items_label">ניתן להוסיף פרקים לתור בלחיצה ארוכה או על ידי הורדתם.</string>
+  <string name="no_items_label">ניתן להוסיף פרק על ידי הורדתו או ללחוץ על פרק לחיצה ארוכה ולבחור ב־„הוספה לתור”.</string>
   <string name="no_feeds_label">לא נרשמת לאף פודקאסט עדיין.</string>
   <string name="no_chapters_label">לפרק זה אין פרקים.</string>
   <string name="no_shownotes_label">לפרק זה אין הערות פרק.</string>
@@ -738,6 +738,8 @@
   <string name="proxy_host_empty_error">המארח לא יכול להישאר ריק</string>
   <string name="proxy_host_invalid_error">כתובת המארח אינה כתובת IP או שם מתחם תקניים</string>
   <string name="proxy_port_invalid_error">הפתחה אינה תקנית</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">מספר העמודות</string>
   <!--Database import/export-->
   <string name="import_export">ייבוא/ייצוא מסד נתונים</string>
   <string name="import_export_warning">תכונה ניסיונית זו יכולה לשמש לטובת העברת המינויים והפרקים שניגנת להתקן אחר.\n\nניתן לייבא מסדי נתונים שיוצאו רק לאותה הגרסה של אנטנה־פּוֹד. אחרת, תכונה זו עשויה לגרור התנהגות בלתי צפויה.\n\nלאחר הייבוא, יתכן שחלק מהפרקים יופיעו כאילו כבר הורדת אותם למרות שבפועל לא עשית זאת. עליך פשוט ללחוץ על כפתור הנגינה של הפרקים כדי שאנטנה־פּוֹד יוכל לזהות זאת.</string>

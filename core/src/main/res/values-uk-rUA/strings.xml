@@ -181,7 +181,19 @@
   <string name="marked_as_seen_label">Позначено як переглянутий</string>
   <string name="mark_read_label">Позначити як відтворений</string>
   <string name="marked_as_read_label">Позначено як відтворений</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d епізод помічено як відтворений</item>
+    <item quantity="few">%d епізоди помічено як відтворені</item>
+    <item quantity="many">%d епізодів помічено як відтворені</item>
+    <item quantity="other">%d епізодів помічено як відтворені</item>
+  </plurals>
   <string name="mark_unread_label">Позначити як не відтворений</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d епізод помічено як невідтворений</item>
+    <item quantity="few">%d епізоди помічено як невідтворені</item>
+    <item quantity="many">%d епізодів помічено як невідтворені</item>
+    <item quantity="other">%d епізодів помічено як невідтворені</item>
+  </plurals>
   <string name="add_to_queue_label">Додати до черги</string>
   <string name="added_to_queue_label">Додано до черги</string>
   <plurals name="added_to_queue_batch_label">
@@ -325,13 +337,14 @@
   <string name="enable_sonic">Включити Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">В черзі немає епізодів.</string>
-  <string name="no_items_label">Епізоди додаються до черги за допомогою довгого натискання або коли їх завантажують.</string>
+  <string name="no_items_label">Додайте епізод, завантаживши його, або довго натиснувши на нього і вибравши \"Додати до черги\".</string>
   <string name="no_feeds_label">Ви ще не підписалися на жодні подкасти.</string>
   <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
   <string name="no_shownotes_label">До цього епізода немає нотаток.</string>
   <string name="no_run_downloads_head_label">Зараз нічого не завантажується.</string>
   <string name="no_run_downloads_label">Завантажувати епізоди можна з детального перегляда подкаста.</string>
   <string name="no_comp_downloads_head_label">Немає завантажених епізодів</string>
+  <string name="no_comp_downloads_label">Можна завантажувати епізоди на екрані подробиць подкасту.</string>
   <string name="no_log_downloads_head_label">Журнал завантажень пустий.</string>
   <string name="no_log_downloads_label">Журнал завантажень з’явиться тут.</string>
   <string name="no_history_head_label">Немає історії прослуховувань</string>
@@ -513,6 +526,7 @@
   <string name="back_button_go_to_page">Перейти на сторінку…</string>
   <string name="back_button_go_to_page_title">Вибрати сторінку</string>
   <string name="pref_delete_removes_from_queue_title">Видалення з черги видалених епізодів</string>
+  <string name="pref_delete_removes_from_queue_sum">Автоматично видаляти епізод із черги, коли він буде видалений.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -711,6 +725,7 @@
   <string name="audio_effects">Аудіоефекти</string>
   <string name="stereo_to_mono">Зробити моно із стерео</string>
   <string name="sonic_only">Тільки Sonic</string>
+  <string name="exoplayer_only">Лише ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Тип</string>
   <string name="host_label">Хост</string>
@@ -723,6 +738,8 @@
   <string name="proxy_host_empty_error">Хост не може бути пустим</string>
   <string name="proxy_host_invalid_error">Хост не є правильною IP-адресою або доменним ім’ям</string>
   <string name="proxy_port_invalid_error">Порт недійсний</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Кількість стовпців</string>
   <!--Database import/export-->
   <string name="import_export">Імпортувати/Експортувати базу данних</string>
   <string name="import_export_warning">Ця експериментальна функція використовується для перенесення ваших підписок та вже прослуханих епізодів до іншого пристрою.\n\nЕкспортована база даних може бути імпортована тією ж самою версією AntennaPod. Інакше, результат може бути непередбаченим.\n\nПісля імпортування, епізоди можуть відображатися як завантажені, навіть якщо вони такими не є.  Просто натисніть кнопку відтворення епізодів, щоб AntennaPod виявив це.</string>

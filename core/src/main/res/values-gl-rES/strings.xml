@@ -69,7 +69,7 @@
   <string name="error_msg_prefix">Produciuse un fallo:</string>
   <string name="needs_storage_permission">Precísase o permiso de almacenamento para esta operación</string>
   <string name="refresh_label">Actualizar</string>
-  <string name="external_storage_error_msg">Non se dispón de almacenamento externo. Por favor asegúrese de que o almacenamento externo está montado e así o aplicativo poderá funcionar correctamente.</string>
+  <string name="external_storage_error_msg">Non se dispón de almacenamento externo. Por favor asegúrese de que o almacenamento externo está montado e así a aplicación poderá funcionar correctamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="chapter_duration">Duración: %1$s</string>
   <string name="shownotes_label">Notas do episodio</string>
@@ -95,10 +95,15 @@
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_queue_removal">Cando non esté na cola</string>
   <string name="episode_cleanup_after_listening">Tras rematar</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 hora tras rematar</item>
+    <item quantity="other">%d horas tras rematar</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 día despois de rematar</item>
     <item quantity="other">%d días despois de rematar</item>
   </plurals>
+  <string name="num_selected_label">%d escollido</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL da fonte</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -148,6 +153,10 @@
   <string name="open_podcast">Abrir podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Descargando %d episodio</item>
+    <item quantity="other">Descargando %d episodios</item>
+  </plurals>
   <string name="play_label">Reproducir</string>
   <string name="pause_label">Pausar</string>
   <string name="stop_label">Parar</string>
@@ -155,14 +164,35 @@
   <string name="remove_label">Eliminar</string>
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">Non se puido eliminar o ficheiro. Reiniciar o dispositivo podería axudar.</string>
+  <string name="delete_episode_label">Eliminar episodio</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d episodio eliminado.</item>
+    <item quantity="other">%d episodios eliminados.</item>
+  </plurals>
   <string name="mark_as_seen_label">Marcar como visto</string>
   <string name="marked_as_seen_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como reproducido</string>
   <string name="marked_as_read_label">Marcado como reproducido</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d episodio marcado como reproducido.</item>
+    <item quantity="other">%d episodios marcados como reproducidos.</item>
+  </plurals>
   <string name="mark_unread_label">Marcar como non reproducido</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d episodio marcado como non reproducido.</item>
+    <item quantity="other">%d episodios marcados como non reproducidos.</item>
+  </plurals>
   <string name="add_to_queue_label">Engadir a cola</string>
   <string name="added_to_queue_label">Engadido a cola</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d episodio engadido a cola.</item>
+    <item quantity="other">%d episodios engadidos a cola.</item>
+  </plurals>
   <string name="remove_from_queue_label">Quitar da cola</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%d episodio eliminado da cola.</item>
+    <item quantity="other">%d episodios elimnados da cola.</item>
+  </plurals>
   <string name="add_to_favorite_label">Engadir a favoritos</string>
   <string name="added_to_favorites">Engadido a favoritos</string>
   <string name="remove_from_favorite_label">Quitar dos favoritos</string>
@@ -214,6 +244,7 @@
   <string name="download_type_media">Ficheiro de medios</string>
   <string name="download_type_image">Imaxe</string>
   <string name="download_request_error_dialog_message_prefix">Houbo un fallo intentando descargar o ficheiro:\u0020</string>
+  <string name="null_value_podcast_error">Non se proporcionou ningún podcast que se poida mostrar.</string>
   <string name="authentication_notification_title">Precísase autenticación</string>
   <string name="authentication_notification_msg">O recurso solicitado require un usuario e contrasinal</string>
   <string name="confirm_mobile_download_dialog_title">Confirme a descarga con datos do móbil</string>
@@ -259,15 +290,15 @@
   <string name="flattr_auth_explanation">Pulse o botón inferior para iniciar o proceso de autenticación. Será redireccionado a pantalla de conexión en Flattr no seu navegador e pediralle permiso para que AntennaPod poida acceder. Despois de dar permiso, voltará a esta pantalla de xeito automático.</string>
   <string name="authenticate_label">Autenticar</string>
   <string name="return_home_label">Voltar ao inicio</string>
-  <string name="flattr_auth_success">Autenticouse correctamente! Xa pode enviar valoracións a Flattr desde o aplicativo.</string>
+  <string name="flattr_auth_success">Autenticouse correctamente! Xa pode enviar valoracións a Flattr desde a aplicación.</string>
   <string name="no_flattr_token_title">Non se atopou o testemuño de Flattr</string>
   <string name="no_flattr_token_notification_msg">A súa conta de Flattr non semella estar conectada a AntennaPod. Toque aquí para autenticarse.</string>
-  <string name="no_flattr_token_msg">A súa conta de Flattr non semella estar conectada a AntennaPod. Ben pode conectar a súa conta a AntennaPod para interactuar en Flattr desde o aplicativo ou ben pode visitar o sitio web do elemento e darlle ao flattr desde alí.</string>
+  <string name="no_flattr_token_msg">A súa conta de Flattr non semella estar conectada a AntennaPod. Ben pode conectar a súa conta a AntennaPod para interactuar en Flattr desde a aplicación ou ben pode visitar o sitio web do elemento e darlle ao flattr desde alí.</string>
   <string name="authenticate_now_label">Autenticar</string>
   <string name="action_forbidden_title">Acción non permitida</string>
   <string name="action_forbidden_msg">AntennaPod non ten permiso para esta acción. A razón podería ser que o testemuño de acceso de AntennaPod ou a súa conta fosen rexeitados. Pode voltar a autenticarse ou visitar o sitio web do elemento.</string>
   <string name="access_revoked_title">Acceso rexeitado</string>
-  <string name="access_revoked_info">Eliminou correctamente o token de acceso de AntennaPod á súa conta. Para completar o proceso deberá eliminar este aplicativo da lista de aplicativos autorizados nos axustes da súa conta na web de Flattr.</string>
+  <string name="access_revoked_info">Eliminou correctamente o token de acceso de AntennaPod á súa conta. Para completar o proceso deberá eliminar esta aplicación da lista de aplicacións autorizadas nos axustes da súa conta na web de Flattr.</string>
   <!--Flattr-->
   <string name="flattr_click_success">Flateraches algo!</string>
   <string name="flattr_click_success_count">Flateraches %d cousas!</string>
@@ -287,9 +318,25 @@
   <string name="set_playback_speed_label">Velocidade de reproducións</string>
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
+  <string name="no_items_header_label">Sen episodios na cola</string>
+  <string name="no_items_label">Engada un episodio descargándoo, ou manteña preso un episodio e escolla \"Engadir a cola\".</string>
   <string name="no_feeds_label">Aínda non está subscrito a ningún podcast.</string>
   <string name="no_chapters_label">Este episodio non ten capítulos.</string>
   <string name="no_shownotes_label">Este episodio non ten notas de episodio.</string>
+  <string name="no_run_downloads_head_label">Sen descargas activas</string>
+  <string name="no_run_downloads_label">Pode descargar episodios na pantalla con detalles do episodio.</string>
+  <string name="no_comp_downloads_head_label">Sen episodios descargados</string>
+  <string name="no_comp_downloads_label">Pode descargar episodios na pantalla de detalles do podcast.</string>
+  <string name="no_log_downloads_head_label">Sen rexistro da descarga</string>
+  <string name="no_log_downloads_label">Os rexistros de descarga aparecerán aquí se están dispoñibles.</string>
+  <string name="no_history_head_label">Sen Historial</string>
+  <string name="no_history_label">Tras a escoita de un episodio, aparecerá aquí.</string>
+  <string name="no_all_episodes_head_label">Sen episodios</string>
+  <string name="no_all_episodes_label">Cando engade un podcast, os episodios mostraranse aquí.</string>
+  <string name="no_new_episodes_head_label">Sen episodios novos</string>
+  <string name="no_new_episodes_label">Cando reciba novos episodios, mostraranse aquí.</string>
+  <string name="no_fav_episodes_head_label">Sen episodios favoritos</string>
+  <string name="no_fav_episodes_label">Pode engadir episodios aos favoritos manténdoos pulsados.</string>
   <!--Preferences-->
   <string name="storage_pref">Almacenamento</string>
   <string name="project_pref">Proxecto</string>
@@ -302,6 +349,7 @@
   <string name="automation">Automatizado</string>
   <string name="download_pref_details">Detalles</string>
   <string name="import_export_pref">Importar/Exportar</string>
+  <string name="import_export_search_keywords">respaldar, restaurar</string>
   <string name="appearance">Aspecto</string>
   <string name="external_elements">Elementos externos</string>
   <string name="interruptions">Interrupcións</string>
@@ -343,14 +391,17 @@
   <string name="pref_unpauseOnBluetoothReconnect_title">Reconexión bluetooth</string>
   <string name="pref_mobileUpdate_title">Actualizacións Móbil</string>
   <string name="pref_mobileUpdate_sum">Permitir actualizacións sobre a rede de datos do móbil</string>
+  <string name="pref_mobileUpdate_nothing">Nada</string>
+  <string name="pref_mobileUpdate_images">Só imaxes</string>
+  <string name="pref_mobileUpdate_everything">Todo</string>
   <string name="refreshing_label">Actualizando</string>
   <string name="flattr_settings_label">Axustes Flattr</string>
   <string name="pref_flattr_auth_title">Conexión Flattr</string>
-  <string name="pref_flattr_auth_sum">Conéctese a súa conta Flattr para interactuar desde o aplicativo.</string>
-  <string name="pref_flattr_this_app_title">Flattr este aplicativo</string>
+  <string name="pref_flattr_auth_sum">Conéctese a súa conta Flattr para interactuar desde a aplicación..</string>
+  <string name="pref_flattr_this_app_title">Flattr esta App</string>
   <string name="pref_flattr_this_app_sum">Axude ao desenvolvemento de AntennaPod comentandoo en Flattr. Grazas!</string>
   <string name="pref_revokeAccess_title">Retirar acceso</string>
-  <string name="pref_revokeAccess_sum">Retirar o permiso de acceso a súa conta Flattr en este aplicativo.</string>
+  <string name="pref_revokeAccess_sum">Retirar o permiso de acceso a súa conta Flattr en esta aplicación..</string>
   <string name="pref_auto_flattr_title">Flattr automático</string>
   <string name="pref_auto_flattr_sum">Configure o flattr automático</string>
   <string name="user_interface_label">Interface de usuaria</string>
@@ -414,7 +465,7 @@
   <string name="pref_compact_notification_buttons_dialog_title">Escolla un máximo de %1$d elementos</string>
   <string name="pref_compact_notification_buttons_dialog_error">Só pode selecionar un máximo de %1$d elementos.</string>
   <string name="pref_lockscreen_background_title">Establecer fondo da pantalla de bloqueo</string>
-  <string name="pref_lockscreen_background_sum">Establecer o fondo de pantalla de bloqueo coa imaxe do episodio actual. Como consecuencia, esto tamén mostrará a imaxe en aplicativos de terceiros.</string>
+  <string name="pref_lockscreen_background_sum">Establecer o fondo de pantalla de bloqueo coa imaxe do episodio actual. Como consecuencia, esto tamén mostrará a imaxe en aplicacións de terceiros.</string>
   <string name="pref_showDownloadReport_title">Mostrar informe de descarga</string>
   <string name="pref_showDownloadReport_sum">Si falla a descarga, xerar un informe que informe dos detalles do fallo.</string>
   <string name="pref_expand_notify_unsupport_toast">As versións de Android anteriores a 4.1 non teñen soporte para notificacións expandidas.</string>
@@ -424,7 +475,7 @@
   <string name="pref_image_cache_size_title">Tamaño da caché de imaxes</string>
   <string name="pref_image_cache_size_sum">Tamaño da caché en disco para as imaxes.</string>
   <string name="crash_report_title">Informe de Desgracias</string>
-  <string name="crash_report_sum">Enviar por email o informe de fallo xeral no aplicativo</string>
+  <string name="crash_report_sum">Enviar por correo-e o informe de fallo xeral na aplicación</string>
   <string name="send_email">Enviar email</string>
   <string name="experimental_pref">En probas</string>
   <string name="pref_media_player_message">Escolla o reprodutor de medios para reproducir ficheiros</string>
@@ -440,6 +491,7 @@
   <string name="pref_enqueue_downloaded_title">Foron descargados os elementos da cola</string>
   <string name="pref_enqueue_downloaded_summary">Engadir os episodios descargados a cola</string>
   <string name="media_player_builtin">Reprodutor android nativo</string>
+  <string name="pref_skip_silence_title">Saltar silencio no Audio</string>
   <string name="pref_videoBehavior_title">Ao saír do vídeo</string>
   <string name="pref_videoBehavior_sum">Comportamento cando saia do vídeo</string>
   <string name="stop_playback">Para a reprodución</string>
@@ -455,6 +507,8 @@
   <string name="double_tap_toast">Tocar o botón Atrás outra vez para saír</string>
   <string name="back_button_go_to_page">Ir á páxina...</string>
   <string name="back_button_go_to_page_title">Seleccionar páxina</string>
+  <string name="pref_delete_removes_from_queue_title">Eliminar quita da Cola</string>
+  <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio da cola cando se elimina.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Hablitar o flattring automático</string>
   <string name="auto_flattr_after_percent">Flattr o episodio tan pronto como o %d por cento foi reproducido</string>
@@ -475,7 +529,7 @@
   <string name="opml_import_option">Opción %1$d</string>
   <string name="opml_import_explanation_1">Escolla unha ruta de ficheiro concreta no sistema de ficheiros local.</string>
   <string name="opml_import_explanation_2">Utilice unha aplicación externa como Dropbox, Google Drive ou o seu xestor de ficheiros para abrir un ficheiro OPML.</string>
-  <string name="opml_import_explanation_3">Moitos aplicativos como Google Mail, Dropbox, Google Drive e a maioría dos xestores de ficheiros poden <i>abrir</i> ficheiros OPML <i>con</i> AntennaPod.</string>
+  <string name="opml_import_explanation_3">Moitas aplicacións, como Google Mail, Dropbox, Google Drive e a maioría dos xestores de ficheiros poden <i>abrir</i> ficheiros OPML <i>con</i> AntennaPod.</string>
   <string name="start_import_label">Iniciar a importación</string>
   <string name="opml_import_label">Importar OPML</string>
   <string name="opml_directory_error">FALLO!</string>
@@ -486,7 +540,7 @@
   <string name="deselect_all_label">Deseleccionar todo</string>
   <string name="select_options_label">Seleccionar...</string>
   <string name="choose_file_from_filesystem">Desde sistema local de ficheiros</string>
-  <string name="choose_file_from_external_application">Utilizar aplicativo externo</string>
+  <string name="choose_file_from_external_application">Utilizar aplicacións externa</string>
   <string name="opml_export_label">Exportar OPML</string>
   <string name="html_export_label">Exportar HTML</string>
   <string name="exporting_label">Exportando...</string>
@@ -570,7 +624,7 @@
   <string name="folder_not_empty_dialog_title">O cartafol non está baldeiro</string>
   <string name="folder_not_empty_dialog_msg">O cartafol escollido non está baldeiro. As descargas de medios e outros ficheiros situaranse directamente en este cartafol. Proceder de todos xeitos?</string>
   <string name="set_to_default_folder">Escolla o cartafol por omisión</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Pausar a reprodución en lugar de baixar o volume cando outro aplicativo quere reproducir un son.</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Pausar a reprodución en lugar de baixar o volume cando outra aplicación quere reproducir un son.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa para interrupcións</string>
   <string name="pref_resumeAfterCall_sum">Retomar a reprodución despois de rematar a chamada telefónica</string>
   <string name="pref_resumeAfterCall_title">Retomar despois da chamada</string>
@@ -602,7 +656,7 @@
   <!--Progress information-->
   <string name="progress_upgrading_database">Actualizando a base de datos</string>
   <!--AntennaPodSP-->
-  <string name="sp_apps_importing_feeds_msg">Importando as subscricións desde aplicativos de propósito único...</string>
+  <string name="sp_apps_importing_feeds_msg">Importando as subscricións desde aplicacións de propósito único...</string>
   <string name="search_itunes_label">Buscar en iTunes</string>
   <string name="filter">Filtrado</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
@@ -647,6 +701,7 @@
   <string name="audio_effects">Efectos de son</string>
   <string name="stereo_to_mono">Comprimir: stereo a mono</string>
   <string name="sonic_only">Só Sonic</string>
+  <string name="exoplayer_only">Só ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
   <string name="host_label">Servidor</string>
@@ -659,6 +714,8 @@
   <string name="proxy_host_empty_error">Servidor non pode quedar baldeiro</string>
   <string name="proxy_host_invalid_error">O servidor indicado non é un dominio ou IP válidos</string>
   <string name="proxy_port_invalid_error">Porto non válido</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Número de columnas</string>
   <!--Database import/export-->
   <string name="import_export">Importar/Exportar base de datos</string>
   <string name="import_export_warning">Esta función experimental utilízase para transferir as súas subscricións e episodios reproducidos noutro dispositivo.\n\nAs bases de datos exportadas só se poden importar se utiliza a misma versión de AntennaPod. De todos xeitos, esta función pode comportarse de xeito raro.\n\nDespois de importar, os episodios poderían ser mostrados como descargados sin telo sido. Simplemente pulse o botón de reprodución dos episodios para que AntennaPod detecte esto.</string>
@@ -677,7 +734,7 @@
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Non se puido establecer o volume</string>
   <string name="cast_failed_no_connection">Non hai conexión ao dispositivo de emisión</string>
-  <string name="cast_failed_no_connection_trans">Perdeuse a conexión ao dispositivo de emisión. O aplicativo está a intentar restablecela se fose posible. Por favor, agarde uns segundos e inténteo de novo.</string>
+  <string name="cast_failed_no_connection_trans">Perdeuse a conexión ao dispositivo de emisión. A aplicación está a intentar restablecela se fose posible. Por favor, agarde uns segundos e inténteo de novo.</string>
   <string name="cast_failed_perform_action">Non se puido completar a acción</string>
   <string name="cast_failed_status_request">Fallo de sincronización co dispositivo de emisión</string>
   <string name="cast_failed_seek">Non se puido cambiar a posición no dispositivo de emisión</string>

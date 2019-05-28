@@ -12,7 +12,7 @@
         <ImageButton
             android:id="@+id/butPlay"
             android:contentDescription="@string/play_label"
-            android:layout_width="56dp"
+            android:layout_width="@android:dimen/app_icon_size"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_margin="12dp"
@@ -26,26 +26,55 @@
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/butPlay"
             android:background="@drawable/borderless_button_dark"
-            android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:gravity="fill_horizontal"
+            android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/txtvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:maxLines="1"
-                android:text="@string/no_media_playing_label"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_medium"
-                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/imgvCover"
+                android:layout_width="@android:dimen/app_icon_size"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="12dp"
+                android:layout_toLeftOf="@id/layout_center" />
 
-            <TextView
-                android:id="@+id/txtvProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textColor="@color/white" />
+            <LinearLayout
+                android:id="@+id/layout_center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/txtNoPlaying"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="12dp"
+                    android:maxLines="3"
+                    android:text="@string/no_media_playing_label"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/txtvProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 

@@ -481,6 +481,7 @@
   <string name="proxy_host_empty_error">Hostinimi ei saa olla tühi</string>
   <string name="proxy_host_invalid_error">Se pole korrektne IP aadress või domeen</string>
   <string name="proxy_port_invalid_error">Port pole korrektne</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Andmebaasi importimine/eksportimine</string>
   <string name="label_import">Impordi</string>

@@ -40,7 +40,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Trier par compteur</string>
   <string name="drawer_feed_order_alphabetical">Trier alphabétiquement</string>
   <string name="drawer_feed_order_last_update">Trier par date de publication</string>
-  <string name="drawer_feed_order_most_played">Trier par nombre d\'épisodes lus</string>
+  <string name="drawer_feed_order_most_played">Trier par nombre lus</string>
   <string name="drawer_feed_counter_new_unplayed">Nombre de nouveaux épisodes non-lus</string>
   <string name="drawer_feed_counter_new">Nombre de nouveaux épisodes</string>
   <string name="drawer_feed_counter_unplayed">Nombre d\'épisodes non-lus</string>
@@ -108,7 +108,7 @@
   <string name="feedurl_label">Lien du flux</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Ajouter un podcast à partir de son lien</string>
-  <string name="podcastdirectories_label">Trouver le podcast dans la bibliothèque</string>
+  <string name="podcastdirectories_label">Trouver un podcast</string>
   <string name="podcastdirectories_descr">Pour de nouveaux podcasts vous pouvez chercher iTunes ou fyyd ou parcourir gpodder.net par nom, catégorie ou popularité.</string>
   <string name="browse_gpoddernet_label">Chercher sur gpodder.net</string>
   <!--Actions on feeds-->
@@ -139,9 +139,9 @@
   <string name="batch_edit">Edition groupée</string>
   <string name="select_all_above">Sélectionner avec ceux au-dessus</string>
   <string name="select_all_below">Sélectionner avec ceux en-dessous</string>
-  <string name="hide_unplayed_episodes_label">Non lus</string>
+  <string name="hide_unplayed_episodes_label">Non lu</string>
   <string name="hide_paused_episodes_label">En pause</string>
-  <string name="hide_played_episodes_label">Lus</string>
+  <string name="hide_played_episodes_label">Lu</string>
   <string name="hide_queued_episodes_label">Dans la liste de lecture</string>
   <string name="hide_not_queued_episodes_label">Pas dans la liste de lecture</string>
   <string name="hide_downloaded_episodes_label">Téléchargé</string>
@@ -216,7 +216,7 @@
   <string name="download_error_file_error">Accès au fichier impossible</string>
   <string name="download_error_http_data_error">Erreur de données HTTP</string>
   <string name="download_error_error_unknown">Erreur inconnue</string>
-  <string name="download_error_parser_exception">Exception de l\'analyseur</string>
+  <string name="download_error_parser_exception">Message d\'erreur</string>
   <string name="download_error_unsupported_type">Type de flux non géré</string>
   <string name="download_error_connection_error">Erreur de connexion</string>
   <string name="download_error_unknown_host">Hôte inconnu</string>
@@ -319,16 +319,16 @@
   <string name="enable_sonic">Activer Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Aucun épisode dans la liste de lecture</string>
-  <string name="no_items_label">Vous pouvez ajouter des épisodes à la liste de lecture par une pression longue ou en les téléchargeant.</string>
+  <string name="no_items_label">Pour ajouter un épisode, téléchargez le ou faites une pression longue dessus et taper sur \"Ajouter à la liste de lecture\".</string>
   <string name="no_feeds_label">Vous n\'êtes encore abonné à aucun podcast.</string>
-  <string name="no_chapters_label">Cet épisode n\'a pas de chapitres.</string>
+  <string name="no_chapters_label">Cet épisode n\'a pas de chapitre.</string>
   <string name="no_shownotes_label">Aucune notes pour cet épisode.</string>
   <string name="no_run_downloads_head_label">Aucun téléchargement en cours</string>
   <string name="no_run_downloads_label">Vous pouvez télécharger des épisodes à partir du détail d\'un podcast.</string>
   <string name="no_comp_downloads_head_label">Aucun épisode téléchargé</string>
   <string name="no_comp_downloads_label">Vous pouvez télécharger des épisodes à partir du détail d\'un podcast.</string>
-  <string name="no_log_downloads_head_label">Aucun téléchargement historisé</string>
-  <string name="no_log_downloads_label">L\'historique des téléchargements apparaîtra dès qu\'il ne sera pas vide. </string>
+  <string name="no_log_downloads_head_label">Aucun téléchargement dans l\'historique</string>
+  <string name="no_log_downloads_label">L\'historique des téléchargements apparaîtra quand il ne sera plus vide. </string>
   <string name="no_history_head_label">Aucun historique</string>
   <string name="no_history_label">Après avoir écouté un épisode il apparaîtra ici.</string>
   <string name="no_all_episodes_head_label">Aucun épisode</string>
@@ -358,8 +358,8 @@
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont pas dans la liste de lecture et qui ne sont pas marqués comme favoris peuvent être supprimés si l\'espace est insuffisant pour le téléchargement automatique de nouveaux épisodes</string>
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
-  <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont connectés</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se connecte</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand des écouteurs sont branchés</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
   <string name="pref_hardwareForwardButtonSkips_title">Le bouton \"saut avant\" saute l\'épisode</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand \"saut avant\" est pressé sur un périphérique bluetooth</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Le bouton \"saut arrière\" redémarre l\'épisode</string>
@@ -456,7 +456,7 @@
   <string name="pref_rewind_sum">Nombre de secondes à sauter quand le bouton \"saut arrière\" est pressé</string>
   <string name="pref_gpodnet_sethostname_title">Choisir un nom de domaine</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utiliser le nom de domaine par défaut</string>
-  <string name="pref_expandNotify_title">Haute priorité de notification</string>
+  <string name="pref_expandNotify_title">Priorité haute de notification</string>
   <string name="pref_expandNotify_sum">Permet, généralement, d\'étendre la notification pour montrer les boutons de lecture</string>
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verouillage quand la lecture est en pause</string>
@@ -491,13 +491,13 @@
   <string name="pref_enqueue_downloaded_title">Ajouter à la liste après téléchargement</string>
   <string name="pref_enqueue_downloaded_summary">Mettre les épisodes dans la la liste de lecture après téléchargement</string>
   <string name="media_player_builtin">Lecteur natif d\'Android</string>
-  <string name="pref_skip_silence_title">Sauter les silences audios</string>
+  <string name="pref_skip_silence_title">Supprimer les silences audios</string>
   <string name="pref_videoBehavior_title">Sorti du lecteur pendant une vidéo</string>
   <string name="pref_videoBehavior_sum">Définir ce qu\'il se passe si une vidéo est quittée pendant sa lecture</string>
   <string name="stop_playback">Arrêter la lecture</string>
   <string name="continue_playback">Continuer la lecture</string>
   <string name="behavior">Comportement</string>
-  <string name="pref_back_button_behavior_title">Comportement Bouton Retour</string>
+  <string name="pref_back_button_behavior_title">Comportement du bouton retour</string>
   <string name="pref_back_button_behavior_sum">Change le comportement du bouton retour</string>
   <string name="back_button_default">Défaut</string>
   <string name="back_button_open_drawer">Ouvrir le volet de navigation</string>
@@ -508,7 +508,7 @@
   <string name="back_button_go_to_page">Aller à la page...</string>
   <string name="back_button_go_to_page_title">Sélectionner une page</string>
   <string name="pref_delete_removes_from_queue_title">Supprimer retire de la liste de lecture</string>
-  <string name="pref_delete_removes_from_queue_sum">Retirer l\'épisode de la liste de lecture quand il est supprimé.</string>
+  <string name="pref_delete_removes_from_queue_sum">Retirer de la liste de lecture les épisodes quand ils sont supprimés.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr quand %d pourcent de l\'épisode a été lu</string>
@@ -661,7 +661,7 @@
   <string name="filter">Filtrer</string>
   <string name="search_fyyd_label">Chercher sur fyyd</string>
   <!--Episodes apply actions-->
-  <string name="all_label">Tout</string>
+  <string name="all_label">Tous</string>
   <string name="selected_all_label">Tous les épisodes ont été sélectionné</string>
   <string name="none_label">Aucun</string>
   <string name="deselected_all_label">Tous les épisodes ont été désélectionné</string>
@@ -714,6 +714,8 @@
   <string name="proxy_host_empty_error">Hôte ne peut pas être vide</string>
   <string name="proxy_host_invalid_error">L\'hôte n\'est pas une adresse IP ou un domaine valide</string>
   <string name="proxy_port_invalid_error">Port non valide</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Nombre de colonnes</string>
   <!--Database import/export-->
   <string name="import_export">Import / Export de la base de données</string>
   <string name="import_export_warning">Cette fonction expérimentale peut-être utilisée pour transférer vos abonnements et épisodes lus sur un autre appareil.\n\nLes bases de données exportées peuvent uniquement être importées sur la même version d\'AntennaPod. Dans le cas contraire, des dysfonctionnements peuvent apparaître.\n\nAprès import, il est possible que des épisodes apparaissent téléchargés alors qu\'ils ne le sont pas. Appuyer sur le bouton de lecture pour qu\'AntennaPod le détecte.</string>

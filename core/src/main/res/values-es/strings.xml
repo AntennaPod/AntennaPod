@@ -24,7 +24,7 @@
   <string name="gpodnet_auth_label">Iniciar sesión en gpodder.net</string>
   <string name="free_space_label">%1$s libre</string>
   <string name="episode_cache_full_title">Almacenamiento de episodios completo</string>
-  <string name="episode_cache_full_message">Se ha alcanzado el límite de almacenamiento de episodios. Puedes aumentar el tamaño en opciones.</string>
+  <string name="episode_cache_full_message">Se ha alcanzado el límite de almacenamiento de episodios. Puede aumentar el tamaño en opciones.</string>
   <string name="synchronizing">Sincronizando…</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tiempo total de reproducción de pódcast:</string>
@@ -95,16 +95,21 @@
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_queue_removal">Cuando no esté en la cola</string>
   <string name="episode_cleanup_after_listening">Después de acabar</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 hora después de acabar</item>
+    <item quantity="other">%d horas después de acabar</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 día después de acabar</item>
     <item quantity="other">%d días después de acabar</item>
   </plurals>
+  <string name="num_selected_label">%dseleccionado</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
   <string name="etxtFeedurlHint">www.ejemplo.com/feed</string>
   <string name="txtvfeedurl_label">Añadir pódcast por URL</string>
   <string name="podcastdirectories_label">Buscar pódcast en el directorio</string>
-  <string name="podcastdirectories_descr">Para nuevos pódcast, puedes buscar en iTunes o fyyd, o explorar en gpodder.net por nombre, categoría o popularidad.</string>
+  <string name="podcastdirectories_descr">Para nuevos pódcast, puede buscar en iTunes o fyyd, o explorar en gpodder.net por nombre, categoría o popularidad.</string>
   <string name="browse_gpoddernet_label">Explorar en gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todos como reproducidos</string>
@@ -144,10 +149,14 @@
   <string name="hide_has_media_label">Tiene multimedia</string>
   <string name="hide_is_favorite_label">Es favorito</string>
   <string name="filtered_label">Filtrados</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Error en última actualización</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Error en la última actualización</string>
   <string name="open_podcast">Abrir pódcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Descargando %d episodio.</item>
+    <item quantity="other">Descargando %d episodios.</item>
+  </plurals>
   <string name="play_label">Reproducir</string>
   <string name="pause_label">Pausar</string>
   <string name="stop_label">Detener</string>
@@ -155,14 +164,35 @@
   <string name="remove_label">Eliminar</string>
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">No se puede borrar el fichero. Reiniciar el dispositivo podría ayudar.</string>
+  <string name="delete_episode_label">Borrar Episodio</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%depisodio borrado.</item>
+    <item quantity="other">%depisodios borrados.</item>
+  </plurals>
   <string name="mark_as_seen_label">Marcar como visto</string>
   <string name="marked_as_seen_label">Marcado como visto</string>
   <string name="mark_read_label">Marcar como reproducido</string>
   <string name="marked_as_read_label">Marcado como reproducido</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%depisodio marcado como reproducido.</item>
+    <item quantity="other">%depisodios marcados como reproducidos.</item>
+  </plurals>
   <string name="mark_unread_label">Marcar como no reproducido</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d episodio marcado como no reproducido.</item>
+    <item quantity="other">%d episodios marcados como no reproducidos.</item>
+  </plurals>
   <string name="add_to_queue_label">Añadir a la cola</string>
   <string name="added_to_queue_label">Añadido a la cola</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d episodio añadido a la cola.</item>
+    <item quantity="other">%d episodios añadidos a la cola.</item>
+  </plurals>
   <string name="remove_from_queue_label">Eliminar de la cola</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%d episodio eliminado de la cola.</item>
+    <item quantity="other">%d episodios eliminados de la cola.</item>
+  </plurals>
   <string name="add_to_favorite_label">Añadir a favoritos</string>
   <string name="added_to_favorites">Añadido a favoritos</string>
   <string name="remove_from_favorite_label">Eliminar de favoritos</string>
@@ -214,6 +244,7 @@
   <string name="download_type_media">Archivo multimedia</string>
   <string name="download_type_image">Imagen</string>
   <string name="download_request_error_dialog_message_prefix">Ha ocurrido un error al intentar descargar el archivo:\u0020</string>
+  <string name="null_value_podcast_error">No se proporcionó ningún pódcast que pudiera mostrarse.</string>
   <string name="authentication_notification_title">Autenticación requerida</string>
   <string name="authentication_notification_msg">El recurso solicitado requiere un usuario y contraseña</string>
   <string name="confirm_mobile_download_dialog_title">Confirmar descarga por red móvil</string>
@@ -287,9 +318,25 @@
   <string name="set_playback_speed_label">Velocidades de reproducción</string>
   <string name="enable_sonic">Activar Sonic</string>
   <!--Empty list labels-->
+  <string name="no_items_header_label">Sin episodios en la cola</string>
+  <string name="no_items_label">Añada un episodio descargándolo o presione prolongadamente un episodio y seleccione \"Añadir a la cola\".</string>
   <string name="no_feeds_label">No se ha suscrito a ningún pódcast.</string>
   <string name="no_chapters_label">Este episodio no tiene capítulos.</string>
   <string name="no_shownotes_label">Este episodio no tiene notas del programa.</string>
+  <string name="no_run_downloads_head_label">No hay descargas en ejecución</string>
+  <string name="no_run_downloads_label">Puede descargar episodios en la pantalla de detalles del pódcast.</string>
+  <string name="no_comp_downloads_head_label">No hay episodios descargados</string>
+  <string name="no_comp_downloads_label">Puede descargar episodios en la pantalla de detalles del pódcast.</string>
+  <string name="no_log_downloads_head_label">Sin registro de descargas</string>
+  <string name="no_log_downloads_label">Los registros de descargas aparecerán aquí cuando estén disponibles.</string>
+  <string name="no_history_head_label">Sin historial</string>
+  <string name="no_history_label">Después de escuchar un episodio, aparecerá aquí.</string>
+  <string name="no_all_episodes_head_label">Sin episodios</string>
+  <string name="no_all_episodes_label">Cuando añada un pódcast, los episodios aparecerán aquí.</string>
+  <string name="no_new_episodes_head_label">Sin episodios nuevos</string>
+  <string name="no_new_episodes_label">Cuando lleguen nuevos episodios, aparecerán aquí.</string>
+  <string name="no_fav_episodes_head_label">Sin episodios favoritos</string>
+  <string name="no_fav_episodes_label">Puede añadir episodios a los favoritos presionándolos durante un tiempo prolongado.</string>
   <!--Preferences-->
   <string name="storage_pref">Almacenamiento</string>
   <string name="project_pref">Proyecto</string>
@@ -302,6 +349,7 @@
   <string name="automation">Automatización</string>
   <string name="download_pref_details">Detalles</string>
   <string name="import_export_pref">Importar/Exportar</string>
+  <string name="import_export_search_keywords">copia de seguridad, restaurar, backup, restore</string>
   <string name="appearance">Apariencia</string>
   <string name="external_elements">Elementos externos</string>
   <string name="interruptions">Interrupciones</string>
@@ -343,6 +391,9 @@
   <string name="pref_unpauseOnBluetoothReconnect_title">Reconectar con Bluetooth</string>
   <string name="pref_mobileUpdate_title">Actualizaciones por red móvil</string>
   <string name="pref_mobileUpdate_sum">Permitir actualizaciones por la red de datos móvil</string>
+  <string name="pref_mobileUpdate_nothing">Nada</string>
+  <string name="pref_mobileUpdate_images">Solo imágenes</string>
+  <string name="pref_mobileUpdate_everything">Todo</string>
   <string name="refreshing_label">Actualizando</string>
   <string name="flattr_settings_label">Ajustes de Flattr</string>
   <string name="pref_flattr_auth_title">Identificarse en Flattr</string>
@@ -412,13 +463,13 @@
   <string name="pref_compact_notification_buttons_title">Configurar botones en la pantalla de bloqueo</string>
   <string name="pref_compact_notification_buttons_sum">Cambiar los botones en la pantalla de bloqueo. El botón reproducir/pausar siempre está incluido.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Seleccionar máximo %1$d elementos</string>
-  <string name="pref_compact_notification_buttons_dialog_error">Sólo puedes seleccionar un máximo de %1$d elementos.</string>
+  <string name="pref_compact_notification_buttons_dialog_error">Sólo puede seleccionar un máximo de %1$d elementos.</string>
   <string name="pref_lockscreen_background_title">Establecer fondo de pantalla de bloqueo</string>
   <string name="pref_lockscreen_background_sum">Establecer el fondo de pantalla de bloqueo desde la imagen del episodio. Como efecto secundario, esto también mostrarán las imagen de aplicaciones de terceros.</string>
   <string name="pref_showDownloadReport_title">Mostrar informe de descarga</string>
   <string name="pref_showDownloadReport_sum">Si la descarga falla, generar un informe con los detalles del fallo</string>
   <string name="pref_expand_notify_unsupport_toast">Las versiones de Android anteriores a la 4.1 no soportan notificaciones expandidas</string>
-  <string name="pref_queueAddToFront_sum">Agregar nuevos episodios al principio de la cola.</string>
+  <string name="pref_queueAddToFront_sum">Añadir nuevos episodios al principio de la cola.</string>
   <string name="pref_queueAddToFront_title">Poner al principio de la cola.</string>
   <string name="pref_smart_mark_as_played_disabled">Deshabilitado</string>
   <string name="pref_image_cache_size_title">Tamaño del almacenamiento de imágenes</string>
@@ -437,9 +488,10 @@
   <string name="pref_cast_title">Soporte para Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar soporte para reproducción remota en dispositivos Cast (como Chromecast, altavoces o Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast requiere librerías propietarias de terceros que están deshabilitadas en esta versión de AntennaPod</string>
-  <string name="pref_enqueue_downloaded_title">Agregar descargados a la cola</string>
-  <string name="pref_enqueue_downloaded_summary">Agregar episodios descargados a la cola</string>
+  <string name="pref_enqueue_downloaded_title">Añadir descargados a la cola</string>
+  <string name="pref_enqueue_downloaded_summary">Añadir episodios descargados a la cola</string>
   <string name="media_player_builtin">Reproductor Android integrado</string>
+  <string name="pref_skip_silence_title">Saltar silencio en audio</string>
   <string name="pref_videoBehavior_title">Al salir del vídeo</string>
   <string name="pref_videoBehavior_sum">Comportamiento al salir de la reproducción de video</string>
   <string name="stop_playback">Parar reproducción</string>
@@ -451,10 +503,12 @@
   <string name="back_button_open_drawer">Abrir el cajón de navegación</string>
   <string name="back_button_double_tap">Tocar dos veces para salir</string>
   <string name="back_button_show_prompt">Confirmar para salir</string>
-  <string name="close_prompt">¿Estás seguro de que quieres cerrar AntennaPod?</string>
+  <string name="close_prompt">¿Está seguro de que quiere cerrar AntennaPod?</string>
   <string name="double_tap_toast">Pulsar el botón de nuevo para salir</string>
   <string name="back_button_go_to_page">Ir a la página...</string>
   <string name="back_button_go_to_page_title">Seleccionar página</string>
+  <string name="pref_delete_removes_from_queue_title">Eliminar quita de la cola</string>
+  <string name="pref_delete_removes_from_queue_sum">Quitar automáticamente un episodio de la cola cuando se elimina.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Valorar con Flattr el episodio cuando se haya reproducido el %d por ciento</string>
@@ -475,13 +529,13 @@
   <string name="opml_import_option">Opción %1$d</string>
   <string name="opml_import_explanation_1">Elegir un una ruta del sistema de ficheros local.</string>
   <string name="opml_import_explanation_2">Usar una aplicación externa tipo Dropbox, Google Drive o su gestor de ficheros favorito para abrir un archivo OPML.</string>
-  <string name="opml_import_explanation_3">Muchas aplicaciones como Google Mail, Dropbox, Google Drive y la mayoría de gestores de ficheros pueden <i>abrir</i> archivos OPML <i>de</i> AntennaPod.</string>
+  <string name="opml_import_explanation_3">Muchas aplicaciones como Google Mail, Dropbox, Google Drive y la mayoría de gestores de ficheros pueden <i>abrir</i> archivos OPML <i>con</i> AntennaPod.</string>
   <string name="start_import_label">Comenzar la importación</string>
   <string name="opml_import_label">Importar de OPML</string>
   <string name="opml_directory_error">¡ERROR!</string>
   <string name="reading_opml_label">Leyendo el archivo OPML</string>
   <string name="opml_reader_error">Error al leer el documento OPML:</string>
-  <string name="opml_import_error_no_file">¡Debes seleccionar un archivo!</string>
+  <string name="opml_import_error_no_file">¡Debe seleccionar un archivo!</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
   <string name="select_options_label">Seleccionar…</string>
@@ -528,9 +582,9 @@
   <string name="gpodnet_suggestions_header">SUGERENCIAS</string>
   <string name="gpodnet_search_hint">Buscar en gpodder.net</string>
   <string name="gpodnetauth_login_title">Iniciar sesión</string>
-  <string name="gpodnetauth_login_descr">Bienvenidoinicio de sesión de gpodder.net. Primero, escriba sus datos de inicio de sesión:</string>
+  <string name="gpodnetauth_login_descr">Bienvenido al inicio de sesión de gpodder.net. Primero, escriba sus datos de inicio de sesión:</string>
   <string name="gpodnetauth_login_butLabel">Iniciar sesión</string>
-  <string name="gpodnetauth_login_register">Si aún no tienes una cuenta, puedes crearla en:\nhttps://gpodder.net/register/</string>
+  <string name="gpodnetauth_login_register">Si aún no tiene una cuenta, puede crearla en:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Usuario</string>
   <string name="password_label">Contraseña</string>
   <string name="gpodnetauth_device_title">Selección del dispositivo</string>
@@ -539,8 +593,8 @@
   <string name="gpodnetauth_device_caption">Descripción</string>
   <string name="gpodnetauth_device_butCreateNewDevice">Crear dispositivo nuevo</string>
   <string name="gpodnetauth_device_chooseExistingDevice">Elegir dispositivo existente:</string>
-  <string name="gpodnetauth_device_errorEmpty">El ID de dispositivo no puede estar vacío</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">El ID de dispositivo ya está en uso</string>
+  <string name="gpodnetauth_device_errorEmpty">El id. de dispositivo no puede estar vacío</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">El id. de dispositivo ya está en uso</string>
   <string name="gpodnetauth_device_caption_errorEmpty">El texto no puede estar en blanco</string>
   <string name="gpodnetauth_device_butChoose">Elegir</string>
   <string name="gpodnetauth_finish_title">¡Inicio de sesión correcto!</string>
@@ -557,10 +611,10 @@
   <string name="selected_folder_label">Carpeta seleccionada</string>
   <string name="create_folder_label">Crear carpeta</string>
   <string name="choose_data_directory">Elegir carpeta de datos</string>
-  <string name="choose_data_directory_message">Por favor elige la raíz de la carpeta de datos. AntennaPod creará los subdirectorios apropiados.</string>
+  <string name="choose_data_directory_message">Elija la raíz de la carpeta de datos. AntennaPod creará los subdirectorios apropiados.</string>
   <string name="choose_data_directory_permission_rationale">Necesita acceso al almacenamiento externo para cambiar la carpeta de datos</string>
   <string name="create_folder_msg">¿Crear carpeta con nombre \"%1$s\"?</string>
-  <string name="create_folder_success">Carpeta creada</string>
+  <string name="create_folder_success">Carpeta nueva creada</string>
   <string name="create_folder_error_no_write_access">No se puede escribir en esta carpeta</string>
   <string name="create_folder_error_already_exists">Ya existe la carpeta</string>
   <string name="create_folder_error">No se ha podido crear la carpeta</string>
@@ -647,6 +701,7 @@
   <string name="audio_effects">Efectos de audio</string>
   <string name="stereo_to_mono">Mezclar: de estéreo a mono</string>
   <string name="sonic_only">Solo Sonic</string>
+  <string name="exoplayer_only">Sólo ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
   <string name="host_label">Host</string>
@@ -659,6 +714,8 @@
   <string name="proxy_host_empty_error">El host no puede estar en blanco</string>
   <string name="proxy_host_invalid_error">El host no es una dirección IP o dominio válido</string>
   <string name="proxy_port_invalid_error">Puerto no válido</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Número de columnas</string>
   <!--Database import/export-->
   <string name="import_export">Importar/Exportar base de datos</string>
   <string name="import_export_warning">Esta función experimental se puede usar para transferir sus suscripciones y episodios reproducidos a otro dispositivo.\n\nLas bases de datos exportadas solo se pueden importar cuando se usa la misma versión de AntennaPod. En otro caso, esta función podría provocar un comportamiento inesperado.\n\nDespués de la importación, los episodios podrían mostrarse como descargados cuando no lo están. Presione el botón de reproducción de los episodios para que AntennaPod lo detecte.</string>

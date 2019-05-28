@@ -643,6 +643,7 @@
   <string name="proxy_host_empty_error">El host no pot estar buit</string>
   <string name="proxy_host_invalid_error">El host no és una adreça IP o domini vàlid</string>
   <string name="proxy_port_invalid_error">El port no és vàlid</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Importa/exporta la base de dades</string>
   <string name="import_export_warning">Podeu fer servir aquesta funcionalitat experimental per a transferir les vostres subscripcions i episodis reproduïts a un altre dispositiu.\n\nNomés podreu importar la base de dades fent servir la mateixa versió de l\'AntennaPod. En cas contrari, aquesta funcionalitat es comportarà de forma imprevisible.\n\nDesprés d\'importar-los, els episodis es poden mostrar com a baixats tot i no estar disponibles. Premeu el botó per a reproduir-los per a que l\'AntennaPod ho detecti.</string>

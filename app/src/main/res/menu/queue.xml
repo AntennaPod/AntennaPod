@@ -42,10 +42,10 @@
                 <menu>
                     <item
                         android:id="@+id/queue_sort_date_asc"
-                        android:title="@string/ascending"/>
+                        android:title="@string/sort_old_to_new"/>
                     <item
                         android:id="@+id/queue_sort_date_desc"
-                        android:title="@string/descending"/>
+                        android:title="@string/sort_new_to_old"/>
                 </menu>
             </item>
 
@@ -103,10 +103,10 @@
                 <menu>
                     <item
                         android:id="@+id/queue_sort_smart_shuffle_asc"
-                        android:title="@string/ascending"/>
+                        android:title="@string/sort_old_to_new"/>
                     <item
                         android:id="@+id/queue_sort_smart_shuffle_desc"
-                        android:title="@string/descending"/>
+                        android:title="@string/sort_new_to_old"/>
                 </menu>
             </item>
         </menu>

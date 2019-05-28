@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -48,7 +49,6 @@ import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
-import de.greenrobot.event.EventBus;
 
 /**
  * Provides methods for writing data to AntennaPod's database.

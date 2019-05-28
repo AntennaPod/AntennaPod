@@ -674,6 +674,7 @@ URL файла:
   <string name="proxy_host_empty_error">Обязательно укажите хост</string>
   <string name="proxy_host_invalid_error">Неверный адрес или домен хоста</string>
   <string name="proxy_port_invalid_error">Неверный порт</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Импорт/экспорт базы данных</string>
   <string name="import_export_warning">Данная опытная функция поможет перенести Ваши подписки и прослушанные выпуски на другое устройство.\n\nЭкспортированные базы данных можно импортировать только в ту же версию AntennaPod. В противном случае может произойти непредвиденное.\n\nПосле импорта выпуски могут быть помечены как загруженные, хотя это и не так. Простого нажатия на кнопку воспроизведения достаточно, чтобы AntennaPod распознала такой случай.</string>

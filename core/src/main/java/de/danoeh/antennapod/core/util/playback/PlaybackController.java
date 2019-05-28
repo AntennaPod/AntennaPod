@@ -12,6 +12,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -25,6 +26,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -36,6 +38,7 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.Optional;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
@@ -43,6 +46,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
@@ -69,6 +75,7 @@ public abstract class PlaybackController {
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
     private boolean initialized = false;
+    private boolean eventsRegistered = false;
 
     private Disposable serviceBinder;
     private Disposable mediaLoader;
@@ -95,7 +102,11 @@ public abstract class PlaybackController {
     /**
      * Creates a new connection to the playbackService.
      */
-    public void init() {
+    public synchronized void init() {
+        if (!eventsRegistered) {
+            EventBus.getDefault().register(this);
+            eventsRegistered = true;
+        }
         if (PlaybackService.isRunning) {
             initServiceRunning();
         } else {
@@ -103,8 +114,14 @@ public abstract class PlaybackController {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+            init();
+        }
+    }
+
     private synchronized void initServiceRunning() {
-        Log.v(TAG, "initServiceRunning()");
         if (initialized) {
             return;
         }
@@ -165,6 +182,10 @@ public abstract class PlaybackController {
         media = null;
         released = true;
 
+        if (eventsRegistered) {
+            EventBus.getDefault().unregister(this);
+            eventsRegistered = false;
+        }
     }
 
     /**
@@ -189,13 +210,20 @@ public abstract class PlaybackController {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(optionalIntent -> {
                     boolean bound = false;
-                    if (optionalIntent.isPresent()) {
-                        Log.d(TAG, "Calling bind service");
-                        bound = activity.bindService(optionalIntent.get(), mConnection, 0);
+                    if (!PlaybackService.started) {
+                        if (optionalIntent.isPresent()) {
+                            Log.d(TAG, "Calling start service");
+                            ContextCompat.startForegroundService(activity, optionalIntent.get());
+                            bound = activity.bindService(optionalIntent.get(), mConnection, 0);
+                        } else {
+                            status = PlayerStatus.STOPPED;
+                            setupGUI();
+                            handleStatus();
+                        }
                     } else {
-                        status = PlayerStatus.STOPPED;
-                        setupGUI();
-                        handleStatus();
+                        Log.d(TAG, "PlaybackService is running, trying to connect without start command.");
+                        bound = activity.bindService(new Intent(activity, PlaybackService.class),
+                                mConnection, 0);
                     }
                     Log.d(TAG, "Result for service binding: " + bound);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -213,7 +241,6 @@ public abstract class PlaybackController {
             Log.d(TAG, "No last played media found");
             return Optional.empty();
         }
-
 
         boolean fileExists = media.localFileAvailable();
         boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
@@ -540,8 +567,8 @@ public abstract class PlaybackController {
         if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
-            txtvPosition.setText(Converter
-                    .getDurationStringLong((int) (prog * duration)));
+            int position = TimeSpeedConverter.convert((int) (prog * duration));
+            txtvPosition.setText(Converter.getDurationStringLong(position));
             return prog;
         }
         return 0;
@@ -582,8 +609,7 @@ public abstract class PlaybackController {
                     .startWhenPrepared(true)
                     .streamIfLastWasStream()
                     .start();
-            Log.d(TAG, "Play/Pause button was pressed, but playbackservice was null - " +
-                    "it is likely to have been released by Android system. Restarting it.");
+            Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
             return;
         }
         switch (status) {
@@ -760,7 +786,6 @@ public abstract class PlaybackController {
     }
 
     public void notifyVideoSurfaceAbandoned() {
-        Log.v(TAG, "notifyVideoSurfaceAbandoned() - hasPlaybackService=" + (playbackService != null));
         if (playbackService != null) {
             playbackService.notifyVideoSurfaceAbandoned();
         }

@@ -626,6 +626,7 @@ https://gpodder.net/register/</string>
   <string name="proxy_host_empty_error">Host nie może być pusty!</string>
   <string name="proxy_host_invalid_error">Host nie jest prawidłowym adresem IP albo domeną</string>
   <string name="proxy_port_invalid_error">Błędny port</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Import/Export bazy danych</string>
   <string name="import_export_warning">Ta eksperymentalna funkcja może zostać użyta do przeniesienia Twoich subskrypcji i już obejrzanych odcinków na inne urządzenie.\n\n Wyeksportowana baza może zostać zaimportowana jedynie taką samą wersją programu AntennaPod. W innym przypadku może to spowodować nieprzewidziane zachowanie programu.\n\n Po zaimportowaniu, odcinki mogą być pokazane jako pobrane pomimo tego iż nie zostały pobrane. Wystarczy kliknąć odtwórz odcinek aby AntennaPod wykrył poprawny stan pliku.</string>

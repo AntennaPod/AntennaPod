@@ -363,6 +363,7 @@
   <string name="proxy_test_failed">Teszt sikertelen</string>
   <string name="proxy_host_empty_error">Kiszolgáló nem lehet üres</string>
   <string name="proxy_port_invalid_error">Port nem helyes</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <string name="import_export">Adatbázis importálása/exportálása</string>
   <string name="label_import">Importálás</string>
