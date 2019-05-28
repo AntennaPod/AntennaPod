@@ -130,6 +130,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 views.setImageViewBitmap(R.id.imgvCover, icon);
             } catch (Throwable tr) {
                 Log.e(TAG, "Error loading the media icon for the widget", tr);
+                views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_foreground);
             }
 
             views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
