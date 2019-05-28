@@ -11,9 +11,11 @@ public class InReverseChronologicalOrder implements Comparator<SearchResult> {
      */
     @Override
     public int compare(SearchResult o1, SearchResult o2) {
-        if ((o1.getComponent() instanceof FeedItem) &&
-           (o2.getComponent() instanceof FeedItem))
-            return ((FeedItem) o2.getComponent()).getPubDate().compareTo(((FeedItem) o1.getComponent()).getPubDate());
+        if ((o1.getComponent() instanceof FeedItem) && (o2.getComponent() instanceof FeedItem)) {
+            FeedItem item1 = (FeedItem) o1.getComponent();
+            FeedItem item2 = (FeedItem) o2.getComponent();
+            return item1.getPubDate().compareTo(item2.getPubDate());
+        }
         return 0;
     }
 }

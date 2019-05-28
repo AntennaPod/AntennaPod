@@ -77,7 +77,6 @@ public class FeedSearcher {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        Collections.sort(result, new SearchResultValueComparator());
         Collections.sort(result, new InReverseChronologicalOrder());
         return result;
     }
