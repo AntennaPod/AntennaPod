@@ -21,7 +21,6 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
         Log.d(TAG, "Received intent");
         ClientConfig.initialize(context);
         FeedUpdateUtils.startAutoUpdate(context, null);
-        UserPreferences.restartUpdateAlarm(false);
     }
 
 }

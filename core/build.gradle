@@ -50,6 +50,8 @@ dependencies {
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:preference-v14:$supportVersion"
+    implementation "android.arch.work:work-runtime:$workManagerVersion"
+    
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "org.apache.commons:commons-text:$commonstextVersion"
     implementation ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
