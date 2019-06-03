@@ -139,6 +139,11 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
             // add authentication
             String[] auth = authentication.split(":");
+            if (auth.length != 2) {
+                Log.d(TAG, "Invalid credentials for '" + url + "'");
+                return chain.proceed(request);
+            }
+
             String credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "ISO-8859-1");
             Request newRequest = request
                     .newBuilder()
