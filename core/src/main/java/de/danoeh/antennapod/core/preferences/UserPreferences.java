@@ -381,6 +381,10 @@ public class UserPreferences {
         }
     }
 
+    public static boolean isAutoUpdateDisabled() {
+        return prefs.getString(PREF_UPDATE_INTERVAL, "").equals("0");
+    }
+
     public static String getMobileUpdatesEnabled() {
         return prefs.getString(PREF_MOBILE_UPDATE, "images");
     }
@@ -832,7 +836,9 @@ public class UserPreferences {
     }
 
     public static void restartUpdateAlarm() {
-        if (isAutoUpdateTimeOfDay()) {
+        if (isAutoUpdateDisabled()) {
+            AutoUpdateManager.disableAutoUpdate();
+        } else if (isAutoUpdateTimeOfDay()) {
             int[] timeOfDay = getUpdateTimeOfDay();
             Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
             AutoUpdateManager.restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
