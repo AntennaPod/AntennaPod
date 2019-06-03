@@ -7,7 +7,6 @@ import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 class DBUpgrader {
     /**
@@ -288,9 +287,6 @@ class DBUpgrader {
                     + " = " + PodDBAdapter.TABLE_NAME_FEEDS + "." + PodDBAdapter.KEY_IMAGE + ")");
 
             db.execSQL("DROP TABLE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES);
-        }
-        if (oldVersion < 1070300) {
-            UserPreferences.restartUpdateAlarm();
         }
     }
 
