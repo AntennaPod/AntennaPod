@@ -414,7 +414,7 @@
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
-    <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
+    <string name="pref_mobileUpdate_sum">Allow updates and manual episode downloads over the mobile data connection</string>
     <string name="pref_mobileUpdate_nothing">Nothing</string>
     <string name="pref_mobileUpdate_images">Images only</string>
     <string name="pref_mobileUpdate_everything">Everything</string>
