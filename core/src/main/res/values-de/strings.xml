@@ -425,7 +425,6 @@
   <string name="pref_automatic_download_on_battery_sum">Automatische Downloads auch erlauben, wenn die Batterie nicht geladen wird</string>
   <string name="pref_parallel_downloads_title">Parallele Downloads</string>
   <string name="pref_episode_cache_title">Episodenspeicher</string>
-  <string name="pref_episode_cache_summary">Gesamtzahl aller heruntergeladenen Episoden die auf dem Gerät zwischengespeichert werden. Falls diese Zahl erreicht ist, werden automatische Downloads ausgesetzt.</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>
   <string name="pref_theme_title_trueblack">Schwarz (für AMOLED)</string>
