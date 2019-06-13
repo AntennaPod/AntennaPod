@@ -7,7 +7,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
  */
 class PreferenceControllerFlavorHelper {
 
-    static void setupFlavoredUI(PreferenceController.PreferenceUI ui) {
+    public static void setupFlavoredUI(PlaybackPreferencesFragment ui) {
         ui.findPreference(UserPreferences.PREF_CAST_ENABLED).setEnabled(false);
     }
 }
