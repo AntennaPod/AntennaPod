@@ -366,18 +366,6 @@
                 <action android:name="de.danoeh.antennapdsp.intent.SP_APPS_QUERY_FEEDS_RESPONSE"/>
             </intent-filter>
         </receiver>
-        <receiver android:name="de.danoeh.antennapod.core.receiver.AlarmUpdateReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
-
-                <data
-                    android:path="de.danoeh.antennapod"
-                    android:scheme="package"/>
-            </intent-filter>
-        </receiver>
         
         <provider
             android:authorities="@string/provider_authority"
