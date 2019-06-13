@@ -693,6 +693,7 @@
     <string name="episode_filters_exclude">Exclude</string>
     <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
     <string name="keep_updated">Keep Updated</string>
+    <string name="keep_updated_summary">Include this feed when (auto-)refreshing all feeds</string>
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>

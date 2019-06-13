@@ -8,6 +8,13 @@
 
     <include layout="@layout/feeditemlist_header" />
 
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/settings_fragment_container" />
+
+<!--
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -24,48 +31,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.GridLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:columnCount="2"
-                app:rowCount="1">
 
-                <TextView
-                    android:id="@+id/txtvFeedAutoDelete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/auto_delete_label"
-                    app:layout_row="0"
-                    app:layout_column="0"
-                    app:layout_gravity="center_vertical"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginEnd="10dp" />
-
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/spnAutoDelete"
-                    android:entries="@array/spnAutoDeleteItems"
-                    android:layout_marginTop="8dp"
-                    app:layout_row="0"
-                    app:layout_column="1"
-                    android:spinnerMode="dropdown"
-                    app:layout_gravity="center"
-                    android:dropDownWidth="wrap_content"
-                    android:clickable="true" />
-            </android.support.v7.widget.GridLayout>
-
-            <CheckBox
-                android:id="@+id/cbxKeepUpdated"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/keep_updated"
-                android:enabled="true"
-                android:textColor="?android:attr/textColorPrimary"
-                tools:background="@android:color/holo_red_light"
-                android:checked="true" />
 
             <TextView
                 android:id="@+id/txtvAuthentication"
@@ -214,5 +180,5 @@
         </LinearLayout>
 
     </ScrollView>
-
+-->
 </LinearLayout>

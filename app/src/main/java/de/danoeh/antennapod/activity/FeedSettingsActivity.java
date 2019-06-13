@@ -1,46 +1,26 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.LightingColorFilter;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
+
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedFilter;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.fragment.FeedSettingsFragment;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -51,14 +31,16 @@ import io.reactivex.schedulers.Schedulers;
  * Displays information about a feed.
  */
 public class FeedSettingsActivity extends AppCompatActivity {
-
     public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedSettingsActivity";
-    private boolean autoDeleteChanged = false;
     private Feed feed;
-
+    private Disposable disposable;
     private ImageView imgvCover;
     private TextView txtvTitle;
+    private ImageView imgvBackground;
+    private TextView txtvAuthorHeader;
+
+    /*
     private EditText etxtUsername;
     private EditText etxtPassword;
     private EditText etxtFilterText;
@@ -68,42 +50,7 @@ public class FeedSettingsActivity extends AppCompatActivity {
     private CheckBox cbxKeepUpdated;
     private Spinner spnAutoDelete;
     private boolean filterInclude = true;
-
-    private Disposable disposable;
-
-    private boolean authInfoChanged = false;
-
-    private final TextWatcher authTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            authInfoChanged = true;
-        }
-    };
-
-    private boolean filterTextChanged = false;
-
-    private final TextWatcher filterTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            filterTextChanged = true;
-        }
-    };
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,16 +62,14 @@ public class FeedSettingsActivity extends AppCompatActivity {
 
         imgvCover = findViewById(R.id.imgvCover);
         txtvTitle = findViewById(R.id.txtvTitle);
-        TextView txtvAuthorHeader = findViewById(R.id.txtvAuthor);
-        ImageView imgvBackground = findViewById(R.id.imgvBackground);
+        txtvAuthorHeader = findViewById(R.id.txtvAuthor);
+        imgvBackground = findViewById(R.id.imgvBackground);
         findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
         findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
-        cbxAutoDownload = findViewById(R.id.cbxAutoDownload);
-        cbxKeepUpdated = findViewById(R.id.cbxKeepUpdated);
-        spnAutoDelete = findViewById(R.id.spnAutoDelete);
+        /*
         etxtUsername = findViewById(R.id.etxtUsername);
         etxtPassword = findViewById(R.id.etxtPassword);
         etxtFilterText = findViewById(R.id.etxtEpisodeFilterText);
@@ -138,115 +83,22 @@ public class FeedSettingsActivity extends AppCompatActivity {
             filterInclude = false;
             filterTextChanged = true;
         });
+        */
 
         disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
-            Feed feed = DBReader.getFeed(feedId);
-            if (feed != null) {
-                emitter.onSuccess(feed);
-            } else {
-                emitter.onComplete();
-            }
-        })
+                    Feed feed = DBReader.getFeed(feedId);
+                    if (feed != null) {
+                        emitter.onSuccess(feed);
+                    } else {
+                        emitter.onComplete();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result;
-                    FeedPreferences prefs = feed.getPreferences();
-                    Glide.with(FeedSettingsActivity.this)
-                            .load(feed.getImageLocation())
-                            .apply(new RequestOptions()
-                                .placeholder(R.color.light_gray)
-                                .error(R.color.light_gray)
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .fitCenter()
-                                .dontAnimate())
-                            .into(imgvCover);
-                    Glide.with(FeedSettingsActivity.this)
-                            .load(feed.getImageLocation())
-                            .apply(new RequestOptions()
-                                .placeholder(R.color.image_readability_tint)
-                                .error(R.color.image_readability_tint)
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .transform(new FastBlurTransformation())
-                                .dontAnimate())
-                            .into(imgvBackground);
-
-                    txtvTitle.setText(feed.getTitle());
-
-                    if (!TextUtils.isEmpty(feed.getAuthor())) {
-                        txtvAuthorHeader.setText(feed.getAuthor());
-                    }
-
-                    cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
-                    cbxAutoDownload.setChecked(prefs.getAutoDownload());
-                    cbxAutoDownload.setOnCheckedChangeListener((compoundButton, checked) -> {
-                        feed.getPreferences().setAutoDownload(checked);
-                        feed.savePreferences();
-                        updateAutoDownloadSettings();
-                        ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(FeedSettingsActivity.this,
-                                feed, checked);
-                        dialog.createNewDialog().show();
-                    });
-                    cbxKeepUpdated.setChecked(prefs.getKeepUpdated());
-                    cbxKeepUpdated.setOnCheckedChangeListener((compoundButton, checked) -> {
-                        feed.getPreferences().setKeepUpdated(checked);
-                        feed.savePreferences();
-                    });
-                    spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                            FeedPreferences.AutoDeleteAction auto_delete_action;
-                            switch (parent.getSelectedItemPosition()) {
-                                case 0:
-                                    auto_delete_action = FeedPreferences.AutoDeleteAction.GLOBAL;
-                                    break;
-                                case 1:
-                                    auto_delete_action = FeedPreferences.AutoDeleteAction.YES;
-                                    break;
-                                case 2:
-                                    auto_delete_action = FeedPreferences.AutoDeleteAction.NO;
-                                    break;
-                                default: // TODO - add exceptions here
-                                    return;
-                            }
-                            feed.getPreferences().setAutoDeleteAction(auto_delete_action);// p
-                            autoDeleteChanged = true;
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                            // Another interface callback
-                        }
-                    });
-                    spnAutoDelete.setSelection(prefs.getAutoDeleteAction().ordinal());
-
-                    etxtUsername.setText(prefs.getUsername());
-                    etxtPassword.setText(prefs.getPassword());
-
-                    etxtUsername.addTextChangedListener(authTextWatcher);
-                    etxtPassword.addTextChangedListener(authTextWatcher);
-
-                    FeedFilter filter = prefs.getFilter();
-                    if (filter.includeOnly()) {
-                        etxtFilterText.setText(filter.getIncludeFilter());
-                        rdoFilterInclude.setChecked(true);
-                        rdoFilterExclude.setChecked(false);
-                        filterInclude = true;
-                    } else if (filter.excludeOnly()) {
-                        etxtFilterText.setText(filter.getExcludeFilter());
-                        rdoFilterInclude.setChecked(false);
-                        rdoFilterExclude.setChecked(true);
-                        filterInclude = false;
-                    } else {
-                        Log.d(TAG, "No filter set");
-                        rdoFilterInclude.setChecked(false);
-                        rdoFilterExclude.setChecked(false);
-                        etxtFilterText.setText("");
-                    }
-                    etxtFilterText.addTextChangedListener(filterTextWatcher);
-
-                    supportInvalidateOptionsMenu();
-                    updateAutoDownloadSettings();
+                    showFragment();
+                    showHeader();
                 }, error -> {
                     Log.d(TAG, Log.getStackTraceString(error));
                     finish();
@@ -254,6 +106,79 @@ public class FeedSettingsActivity extends AppCompatActivity {
                     Log.e(TAG, "Activity was started with invalid arguments");
                     finish();
                 });
+    }
+
+    private void showFragment() {
+        FeedSettingsFragment fragment = new FeedSettingsFragment();
+        fragment.setArguments(getIntent().getExtras());
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction =
+                fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.settings_fragment_container, fragment);
+        fragmentTransaction.commit();
+    }
+
+    public Feed getFeed() {
+        return feed;
+    }
+
+    private void showHeader() {
+        txtvTitle.setText(feed.getTitle());
+
+        if (!TextUtils.isEmpty(feed.getAuthor())) {
+            txtvAuthorHeader.setText(feed.getAuthor());
+        }
+
+        Glide.with(FeedSettingsActivity.this)
+                .load(feed.getImageLocation())
+                .apply(new RequestOptions()
+                        .placeholder(R.color.light_gray)
+                        .error(R.color.light_gray)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate())
+                .into(imgvCover);
+        Glide.with(FeedSettingsActivity.this)
+                .load(feed.getImageLocation())
+                .apply(new RequestOptions()
+                        .placeholder(R.color.image_readability_tint)
+                        .error(R.color.image_readability_tint)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .transform(new FastBlurTransformation())
+                        .dontAnimate())
+                .into(imgvBackground);
+    }
+
+    /*
+    private void setupPrefs(Feed feed) {
+        FeedPreferences prefs = feed.getPreferences();
+
+        etxtUsername.setText(prefs.getUsername());
+        etxtPassword.setText(prefs.getPassword());
+
+        etxtUsername.addTextChangedListener(authTextWatcher);
+        etxtPassword.addTextChangedListener(authTextWatcher);
+
+        FeedFilter filter = prefs.getFilter();
+        if (filter.includeOnly()) {
+            etxtFilterText.setText(filter.getIncludeFilter());
+            rdoFilterInclude.setChecked(true);
+            rdoFilterExclude.setChecked(false);
+            filterInclude = true;
+        } else if (filter.excludeOnly()) {
+            etxtFilterText.setText(filter.getExcludeFilter());
+            rdoFilterInclude.setChecked(false);
+            rdoFilterExclude.setChecked(true);
+            filterInclude = false;
+        } else {
+            Log.d(TAG, "No filter set");
+            rdoFilterInclude.setChecked(false);
+            rdoFilterExclude.setChecked(false);
+            etxtFilterText.setText("");
+        }
+        etxtFilterText.addTextChangedListener(filterTextWatcher);
+
     }
 
     @Override
@@ -286,6 +211,7 @@ public class FeedSettingsActivity extends AppCompatActivity {
             filterTextChanged = false;
         }
     }
+    */
 
     @Override
     public void onDestroy() {
@@ -296,69 +222,13 @@ public class FeedSettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.feedinfo, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.support_item).setVisible(
-                feed != null && feed.getPaymentLink() != null);
-        menu.findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
-        menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null &&
-                IntentUtils.isCallable(this, new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;
             default:
-                try {
-                    return FeedMenuHandler.onOptionsItemClicked(this, item, feed);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
-                    DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
-                            e.getMessage());
-                }
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    private void updateAutoDownloadSettings() {
-        if (feed != null && feed.getPreferences() != null) {
-            boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
-            rdoFilterInclude.setEnabled(enabled);
-            rdoFilterExclude.setEnabled(enabled);
-            etxtFilterText.setEnabled(enabled);
-        }
-    }
-
-    private static class ApplyToEpisodesDialog extends ConfirmationDialog {
-
-        private final Feed feed;
-        private final boolean autoDownload;
-
-        ApplyToEpisodesDialog(Context context, Feed feed, boolean autoDownload) {
-            super(context, R.string.auto_download_apply_to_items_title,
-                    R.string.auto_download_apply_to_items_message);
-            this.feed = feed;
-            this.autoDownload = autoDownload;
-            setPositiveText(R.string.yes);
-            setNegativeText(R.string.no);
-        }
-
-        @Override
-        public  void onConfirmButtonPressed(DialogInterface dialog) {
-            DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
-        }
-    }
-
 }
