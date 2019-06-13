@@ -4,13 +4,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.fragment.preferences.PlaybackPreferencesFragment;
 
 /**
  * Implements functions from PreferenceController that are flavor dependent.
  */
 public class PreferenceControllerFlavorHelper {
 
-    static void setupFlavoredUI(PreferenceController.PreferenceUI ui) {
+    public static void setupFlavoredUI(PlaybackPreferencesFragment ui) {
         //checks whether Google Play Services is installed on the device (condition necessary for Cast support)
         ui.findPreference(UserPreferences.PREF_CAST_ENABLED).setOnPreferenceChangeListener((preference, o) -> {
             if (o instanceof Boolean && ((Boolean) o)) {
