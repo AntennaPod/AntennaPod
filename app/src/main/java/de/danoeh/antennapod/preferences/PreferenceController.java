@@ -464,15 +464,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                             }
                         }
                 );
-        ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
-                .setOnPreferenceChangeListener(
-                        (preference, o) -> {
-                            if (o instanceof String) {
-                                setEpisodeCacheSizeText(UserPreferences.readEpisodeCacheSize((String) o));
-                            }
-                            return true;
-                        }
-                );
     }
 
     private void setupNetworkScreen() {
@@ -695,7 +686,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                 setParallelDownloadsText(UserPreferences.getParallelDownloads());
                 break;
             case R.xml.preferences_autodownload:
-                setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
                 checkAutodownloadItemVisibility(UserPreferences.isEnableAutodownload());
                 break;
             case R.xml.preferences_storage:
@@ -940,20 +930,6 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         String s = Integer.toString(downloads)
                     + res.getString(R.string.parallel_downloads_suffix);
         ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS).setSummary(s);
-    }
-
-    private void setEpisodeCacheSizeText(int cacheSize) {
-        final Resources res = ui.getActivity().getResources();
-
-        String s;
-        if (cacheSize == res.getInteger(
-                R.integer.episode_cache_size_unlimited)) {
-            s = res.getString(R.string.pref_episode_cache_unlimited);
-        } else {
-            s = Integer.toString(cacheSize)
-                    + res.getString(R.string.episodes_suffix);
-        }
-        ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setSummary(s);
     }
 
     private void setDataFolderText() {
