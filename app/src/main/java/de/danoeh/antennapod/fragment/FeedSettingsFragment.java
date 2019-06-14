@@ -5,16 +5,21 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
+    private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
     private Feed feed;
     private FeedPreferences feedPreferences;
 
@@ -28,9 +33,40 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         setupAutoDownloadPreference();
         setupKeepUpdatedPreference();
         setupAutoDeletePreference();
+        setupAuthentificationPreference();
+        setupEpisodeFilterPreference();
 
         updateAutoDeleteSummary();
         updateAutoDownloadEnabled();
+    }
+
+    private void setupEpisodeFilterPreference() {
+        findPreference(PREF_EPISODE_FILTER).setOnPreferenceClickListener(preference -> {
+            new EpisodeFilterDialog(getContext(), feedPreferences.getFilter()) {
+                @Override
+                protected void onConfirmed(FeedFilter filter) {
+                    feedPreferences.setFilter(filter);
+                    feed.savePreferences();
+                }
+            }.show();
+            return false;
+        });
+    }
+
+    private void setupAuthentificationPreference() {
+        findPreference("authentication").setOnPreferenceClickListener(preference -> {
+            new AuthenticationDialog(getContext(),
+                    R.string.authentication_label, true, false,
+                    feedPreferences.getUsername(), feedPreferences.getPassword()) {
+                @Override
+                protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+                    feedPreferences.setUsername(username);
+                    feedPreferences.setPassword(password);
+                    feed.savePreferences();
+                }
+            }.show();
+            return false;
+        });
     }
 
     private void setupAutoDeletePreference() {
@@ -106,7 +142,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private void updateAutoDownloadEnabled() {
         if (feed != null && feed.getPreferences() != null) {
             boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
-            findPreference("filters").setEnabled(enabled);
+            findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
         }
     }
 

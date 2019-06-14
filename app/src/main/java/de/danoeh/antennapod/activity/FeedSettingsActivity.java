@@ -40,18 +40,6 @@ public class FeedSettingsActivity extends AppCompatActivity {
     private ImageView imgvBackground;
     private TextView txtvAuthorHeader;
 
-    /*
-    private EditText etxtUsername;
-    private EditText etxtPassword;
-    private EditText etxtFilterText;
-    private RadioButton rdoFilterInclude;
-    private RadioButton rdoFilterExclude;
-    private CheckBox cbxAutoDownload;
-    private CheckBox cbxKeepUpdated;
-    private Spinner spnAutoDelete;
-    private boolean filterInclude = true;
-    */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
@@ -68,22 +56,6 @@ public class FeedSettingsActivity extends AppCompatActivity {
         findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
-
-        /*
-        etxtUsername = findViewById(R.id.etxtUsername);
-        etxtPassword = findViewById(R.id.etxtPassword);
-        etxtFilterText = findViewById(R.id.etxtEpisodeFilterText);
-        rdoFilterInclude = findViewById(R.id.radio_filter_include);
-        rdoFilterInclude.setOnClickListener(v -> {
-            filterInclude = true;
-            filterTextChanged = true;
-        });
-        rdoFilterExclude = findViewById(R.id.radio_filter_exclude);
-        rdoFilterExclude.setOnClickListener(v -> {
-            filterInclude = false;
-            filterTextChanged = true;
-        });
-        */
 
         disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
                     Feed feed = DBReader.getFeed(feedId);
@@ -149,69 +121,6 @@ public class FeedSettingsActivity extends AppCompatActivity {
                         .dontAnimate())
                 .into(imgvBackground);
     }
-
-    /*
-    private void setupPrefs(Feed feed) {
-        FeedPreferences prefs = feed.getPreferences();
-
-        etxtUsername.setText(prefs.getUsername());
-        etxtPassword.setText(prefs.getPassword());
-
-        etxtUsername.addTextChangedListener(authTextWatcher);
-        etxtPassword.addTextChangedListener(authTextWatcher);
-
-        FeedFilter filter = prefs.getFilter();
-        if (filter.includeOnly()) {
-            etxtFilterText.setText(filter.getIncludeFilter());
-            rdoFilterInclude.setChecked(true);
-            rdoFilterExclude.setChecked(false);
-            filterInclude = true;
-        } else if (filter.excludeOnly()) {
-            etxtFilterText.setText(filter.getExcludeFilter());
-            rdoFilterInclude.setChecked(false);
-            rdoFilterExclude.setChecked(true);
-            filterInclude = false;
-        } else {
-            Log.d(TAG, "No filter set");
-            rdoFilterInclude.setChecked(false);
-            rdoFilterExclude.setChecked(false);
-            etxtFilterText.setText("");
-        }
-        etxtFilterText.addTextChangedListener(filterTextWatcher);
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (feed != null) {
-            FeedPreferences prefs = feed.getPreferences();
-            if (authInfoChanged) {
-                Log.d(TAG, "Auth info changed, saving credentials");
-                prefs.setUsername(etxtUsername.getText().toString());
-                prefs.setPassword(etxtPassword.getText().toString());
-            }
-            if (filterTextChanged) {
-                Log.d(TAG, "Filter info changed, saving...");
-                String filterText = etxtFilterText.getText().toString();
-                String includeString = "";
-                String excludeString = "";
-                if (filterInclude) {
-                    includeString = filterText;
-                } else {
-                    excludeString = filterText;
-                }
-                prefs.setFilter(new FeedFilter(includeString, excludeString));
-            }
-            if (authInfoChanged || autoDeleteChanged || filterTextChanged) {
-                DBWriter.setFeedPreferences(prefs);
-            }
-            authInfoChanged = false;
-            autoDeleteChanged = false;
-            filterTextChanged = false;
-        }
-    }
-    */
 
     @Override
     public void onDestroy() {

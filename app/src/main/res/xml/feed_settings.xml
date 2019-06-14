@@ -23,7 +23,7 @@
                 android:key="autoDownload"
                 android:title="@string/auto_download_label"/>
         <Preference
-                android:key="filters"
+                android:key="episodeFilter"
                 android:title="@string/episode_filters_label"
                 android:summary="@string/episode_filters_description"/>
     </PreferenceCategory>
