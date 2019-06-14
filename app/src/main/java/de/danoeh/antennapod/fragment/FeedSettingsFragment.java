@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedSettingsActivity;
@@ -125,7 +124,13 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         SwitchPreference pref = (SwitchPreference) findPreference("autoDownload");
 
         pref.setEnabled(UserPreferences.isEnableAutodownload());
-        pref.setChecked(feedPreferences.getAutoDownload());
+        if (UserPreferences.isEnableAutodownload()) {
+            pref.setChecked(feedPreferences.getAutoDownload());
+        } else {
+            pref.setChecked(false);
+            pref.setSummary(R.string.auto_download_disabled_globally);
+        }
+
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             boolean checked = newValue == Boolean.TRUE;
 

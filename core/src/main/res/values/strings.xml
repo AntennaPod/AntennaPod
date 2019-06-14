@@ -694,6 +694,7 @@
     <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this feed when (auto-)refreshing all feeds</string>
+    <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>
