@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+            android:key="keepUpdated"
+            android:title="@string/keep_updated"
+            android:summary="@string/keep_updated_summary"/>
+
+    <Preference
+            android:key="authentication"
+            android:title="@string/authentication_label"
+            android:summary="@string/authentication_descr"/>
+
+    <ListPreference
+            android:entries="@array/spnAutoDeleteItems"
+            android:entryValues="@array/spnAutoDeleteValues"
+            android:title="@string/auto_delete_label"
+            android:key="autoDelete"/>
+
+    <PreferenceCategory android:title="@string/auto_download_settings_label">
+        <SwitchPreference
+                android:key="autoDownload"
+                android:title="@string/auto_download_label"/>
+        <Preference
+                android:key="episodeFilter"
+                android:title="@string/episode_filters_label"
+                android:summary="@string/episode_filters_description"/>
+    </PreferenceCategory>
+</PreferenceScreen>
