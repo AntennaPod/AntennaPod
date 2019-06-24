@@ -309,21 +309,19 @@ public class AllEpisodesFragment extends Fragment {
         emptyView.attachToRecyclerView(recyclerView);
         emptyView.setTitle(R.string.no_all_episodes_head_label);
         emptyView.setMessage(R.string.no_all_episodes_label);
-        emptyView.hide();
 
-        createRecycleAdapter();
+        createRecycleAdapter(recyclerView, emptyView);
+        emptyView.hide();
 
         return root;
     }
 
-    private void onFragmentLoaded() {
-        if (episodes.size() > 0) {
-            recyclerView.setVisibility(View.VISIBLE);
-            listAdapter.notifyDataSetChanged();
-        } else {
-            createRecycleAdapter();
-            recyclerView.setVisibility(View.GONE);
-            emptyView.updateAdapter(listAdapter);
+    private void onFragmentLoaded(List<FeedItem> episodes) {
+        this.episodes = episodes;
+        listAdapter.notifyDataSetChanged();
+
+        if (episodes.size() == 0) {
+            createRecycleAdapter(recyclerView, emptyView);
         }
 
         restoreScrollPosition();
@@ -334,12 +332,12 @@ public class AllEpisodesFragment extends Fragment {
      * Currently, we need to recreate the list adapter in order to be able to undo last item via the
      * snackbar. See #3084 for details.
      */
-    private void createRecycleAdapter() {
+    private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
         MainActivity mainActivity = (MainActivity) getActivity();
         listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess, showOnlyNewEpisodes());
         listAdapter.setHasStableIds(true);
         recyclerView.setAdapter(listAdapter);
-        emptyView.updateAdapter(listAdapter);
+        emptyViewHandler.updateAdapter(listAdapter);
     }
 
     private final AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
@@ -455,10 +453,8 @@ public class AllEpisodesFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    recyclerView.setVisibility(View.VISIBLE);
                     progLoading.setVisibility(View.GONE);
-                    episodes = data;
-                    onFragmentLoaded();
+                    onFragmentLoaded(data);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
