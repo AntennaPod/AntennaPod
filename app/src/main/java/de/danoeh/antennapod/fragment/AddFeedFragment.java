@@ -42,6 +42,7 @@ public class AddFeedFragment extends Fragment {
         Button butSearchITunes = root.findViewById(R.id.butSearchItunes);
         Button butBrowserGpoddernet = root.findViewById(R.id.butBrowseGpoddernet);
         Button butSearchFyyd = root.findViewById(R.id.butSearchFyyd);
+        Button butSearchCombined = root.findViewById(R.id.butSearchCombined);
         Button butOpmlImport = root.findViewById(R.id.butOpmlImport);
         Button butConfirm = root.findViewById(R.id.butConfirm);
 
@@ -53,6 +54,8 @@ public class AddFeedFragment extends Fragment {
         butBrowserGpoddernet.setOnClickListener(v -> activity.loadChildFragment(new GpodnetMainFragment()));
 
         butSearchFyyd.setOnClickListener(v -> activity.loadChildFragment(new FyydSearchFragment()));
+
+        butSearchCombined.setOnClickListener(v -> activity.loadChildFragment(new CombinedSearchFragment()));
 
         butOpmlImport.setOnClickListener(v -> startActivity(new Intent(getActivity(),
                 OpmlImportFromPathActivity.class)));

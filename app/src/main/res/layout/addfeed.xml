@@ -29,10 +29,16 @@
             android:textSize="@dimen/text_size_medium"/>
 
         <Button
-            android:id="@+id/butSearchItunes"
+            android:id="@+id/butSearchCombined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:text="Search all providers"/>
+
+        <Button
+            android:id="@+id/butSearchItunes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/search_itunes_label"/>
 
         <Button
