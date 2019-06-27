@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
@@ -311,6 +313,17 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     UserPreferences.setPlaybackSpeed(String.valueOf(speed));
                 }
                 setPlaybackParams(speed, UserPreferences.isSkipSilence());
+                // TODO MAX Here and everywhere else volume is adapted
+				Playable playable = getPlayable();
+				if (playable instanceof FeedMedia) {
+					FeedMedia feedMedia = (FeedMedia) playable;
+					FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+
+					// TODO MAX Check if this feed should have volume adjusted (e.g. louder than others)
+
+
+				}
+
                 setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
