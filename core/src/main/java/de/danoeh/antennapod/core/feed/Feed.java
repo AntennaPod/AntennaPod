@@ -160,7 +160,7 @@ public class Feed extends FeedFile implements ImageResource {
      */
     public Feed(String url, String lastUpdate, String title, String username, String password) {
         this(url, lastUpdate, title);
-        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, username, password);
+        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, FeedPreferences.VolumeReductionSetting.OFF, username, password);
     }
 
     public static Feed fromCursor(Cursor cursor) {

@@ -18,6 +18,14 @@
             android:title="@string/auto_delete_label"
             android:key="autoDelete"/>
 
+    <ListPreference
+            android:entries="@array/spnVolumeReductionItems"
+            android:entryValues="@array/spnVolumeReductionValues"
+            android:summary="Reduce volume when playing episodes of this feed"
+            android:title="@string/feed_volume_reduction"
+
+            android:key="volumeReduction"/>
+
     <PreferenceCategory android:title="@string/auto_download_settings_label">
         <SwitchPreference
                 android:key="autoDownload"

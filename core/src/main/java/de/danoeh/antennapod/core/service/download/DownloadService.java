@@ -764,7 +764,7 @@ public class DownloadService extends Service {
             feed.setId(request.getFeedfileId());
             feed.setDownloaded(true);
             feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
-                    request.getUsername(), request.getPassword()));
+					FeedPreferences.VolumeReductionSetting.OFF, request.getUsername(), request.getPassword()));
             feed.setPageNr(request.getArguments().getInt(DownloadRequester.REQUEST_ARG_PAGE_NR, 0));
 
             DownloadError reason = null;

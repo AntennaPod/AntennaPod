@@ -193,6 +193,7 @@ class DBUpgrader {
             db.execSQL(sql);
         }
         if (oldVersion <= 17) {
+            // TODO maxbechtold Something like this for volume reduction
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0");
         }

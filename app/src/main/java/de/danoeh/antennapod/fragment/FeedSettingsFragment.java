@@ -38,10 +38,12 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     setupAutoDownloadPreference();
                     setupKeepUpdatedPreference();
                     setupAutoDeletePreference();
+                    setupVolumeReductionPreferences();
                     setupAuthentificationPreference();
                     setupEpisodeFilterPreference();
 
                     updateAutoDeleteSummary();
+                    updateVolumeReductionSummary();
                     updateAutoDownloadEnabled();
                 }).dispose();
     }
@@ -110,6 +112,46 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
             case NO:
                 autoDeletePreference.setSummary(R.string.feed_auto_download_never);
                 autoDeletePreference.setValue("never");
+                break;
+        }
+    }
+
+    private void setupVolumeReductionPreferences() {
+        ListPreference volumeReductionPreference = (ListPreference) findPreference("volumeReduction");
+        volumeReductionPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            switch ((String) newValue) {
+                case "off":
+                    feedPreferences.setVolumeReductionSetting(FeedPreferences.VolumeReductionSetting.OFF);
+                    break;
+                case "light":
+                    feedPreferences.setVolumeReductionSetting(FeedPreferences.VolumeReductionSetting.LIGHT);
+                    break;
+                case "heavy":
+                    feedPreferences.setVolumeReductionSetting(FeedPreferences.VolumeReductionSetting.HEAVY);
+                    break;
+            }
+            feed.savePreferences();
+            updateVolumeReductionSummary();
+            // TODO maxbechtold Check if we can call setVolume for the PlaybackService, if running
+            return false;
+        });
+    }
+
+    private void updateVolumeReductionSummary() {
+        ListPreference volumeReductionPreference = (ListPreference) findPreference("volumeReduction");
+
+        switch (feedPreferences.getVolumeReductionSetting()) {
+            case OFF:
+                volumeReductionPreference.setSummary(R.string.feed_volume_reduction_off);
+                volumeReductionPreference.setValue("off");
+                break;
+            case LIGHT:
+                volumeReductionPreference.setSummary(R.string.feed_volume_reduction_light);
+                volumeReductionPreference.setValue("light");
+                break;
+            case HEAVY:
+                volumeReductionPreference.setSummary(R.string.feed_volume_reduction_heavy);
+                volumeReductionPreference.setValue("heavy");
                 break;
         }
     }

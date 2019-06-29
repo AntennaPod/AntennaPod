@@ -103,6 +103,7 @@ public class PodDBAdapter {
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
     public static final String KEY_KEEP_UPDATED = "keep_updated";
     public static final String KEY_AUTO_DELETE_ACTION = "auto_delete_action";
+    public static final String KEY_FEED_VOLUME_REDUCTION = "feed_volume_reduction";
     public static final String KEY_PLAYED_DURATION = "played_duration";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
@@ -146,7 +147,8 @@ public class PodDBAdapter {
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
-            + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0)";
+            + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
+            + KEY_FEED_VOLUME_REDUCTION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -242,6 +244,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_HIDE,
             TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_REDUCTION,
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER
     };
@@ -404,6 +407,7 @@ public class PodDBAdapter {
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
         values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
         values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().ordinal());
+        values.put(KEY_FEED_VOLUME_REDUCTION, prefs.getVolumeReductionSetting().ordinal());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());

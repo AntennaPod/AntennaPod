@@ -13,6 +13,18 @@
         <item>never</item>
     </string-array>
 
+    <string-array name="spnVolumeReductionItems">
+        <item>@string/feed_volume_reduction_off</item>
+        <item>@string/feed_volume_reduction_light</item>
+        <item>@string/feed_volume_reduction_heavy</item>
+    </string-array>
+
+    <string-array name="spnVolumeReductionValues">
+        <item>off</item>
+        <item>light</item>
+        <item>heavy</item>
+    </string-array>
+
     <string-array name="smart_mark_as_played_values">
         <item>0</item>
         <item>15</item>

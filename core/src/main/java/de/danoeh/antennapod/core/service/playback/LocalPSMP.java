@@ -313,18 +313,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     UserPreferences.setPlaybackSpeed(String.valueOf(speed));
                 }
                 setPlaybackParams(speed, UserPreferences.isSkipSilence());
-                // TODO MAX Here and everywhere else volume is adapted
-				Playable playable = getPlayable();
-				if (playable instanceof FeedMedia) {
-					FeedMedia feedMedia = (FeedMedia) playable;
-					FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
 
-					// TODO MAX Check if this feed should have volume adjusted (e.g. louder than others)
-
-
-				}
-
-                setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
+                float leftVolume = UserPreferences.getLeftVolume();
+                float rightVolume = UserPreferences.getRightVolume();
+                setVolume(leftVolume, rightVolume);
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                     int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
@@ -344,8 +336,25 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         }
     }
 
+    private float getVolumeReductionFactor() {
+        Playable playable = getPlayable();
+        if (playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+            FeedPreferences.VolumeReductionSetting volumeReductionSetting = preferences.getVolumeReductionSetting();
 
-    /**
+            // TODO maxbechtold These numbers should be tested
+            if (volumeReductionSetting == FeedPreferences.VolumeReductionSetting.LIGHT) {
+                return 0.4f;
+            } else if (volumeReductionSetting == FeedPreferences.VolumeReductionSetting.HEAVY) {
+                return 0.2f;
+            }
+        }
+        return 1.0f;
+    }
+
+
+	/**
      * Saves the current position and pauses playback. Note that, if audiofocus
      * is abandoned, the lockscreen controls will also disapear.
      * <p/>
@@ -681,6 +690,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private void setVolumeSync(float volumeLeft, float volumeRight) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
+            // TODO maxbechtold does not apply to currently playing episode
+            float reductionFactor = getVolumeReductionFactor();
+            volumeLeft *= reductionFactor;
+            volumeRight *= reductionFactor;
             mediaPlayer.setVolume(volumeLeft, volumeRight);
             Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
         }
