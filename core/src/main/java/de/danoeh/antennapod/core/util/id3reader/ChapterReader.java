@@ -1,17 +1,16 @@
 package de.danoeh.antennapod.core.util.id3reader;
 
 import android.util.Log;
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.ID3Chapter;
+import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
+import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.ID3Chapter;
-import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
-import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
 
 public class ChapterReader extends ID3Reader {
     private static final String TAG = "ID3ChapterReader";
@@ -69,11 +68,14 @@ public class ChapterReader extends ID3Reader {
 					int descriptionLength = readString(null, input, header.getSize());
 					StringBuilder link = new StringBuilder();
 					readISOString(link, input, header.getSize() - descriptionLength);
-					String decodedLink = URLDecoder.decode(link.toString(), "UTF-8");
+					try {
+						String decodedLink = URLDecoder.decode(link.toString(), "UTF-8");
+						currentChapter.setLink(decodedLink);
+						Log.d(TAG, "Found link: " + currentChapter.getLink());
+					} catch (IllegalArgumentException _iae) {
+						Log.w(TAG, "Bad URL found in ID3 data");
+					}
 
-					currentChapter.setLink(decodedLink);
-
-					Log.d(TAG, "Found link: " + currentChapter.getLink());
 					return ID3Reader.ACTION_DONT_SKIP;
 				}
 				break;
