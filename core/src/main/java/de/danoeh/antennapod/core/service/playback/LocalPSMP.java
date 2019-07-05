@@ -343,9 +343,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
             FeedPreferences.VolumeReductionSetting volumeReductionSetting = preferences.getVolumeReductionSetting();
 
+            // TODO maxbechtold Move this logic out of this class
             // TODO maxbechtold These numbers should be tested
             if (volumeReductionSetting == FeedPreferences.VolumeReductionSetting.LIGHT) {
-                return 0.4f;
+                return 0.5f;
             } else if (volumeReductionSetting == FeedPreferences.VolumeReductionSetting.HEAVY) {
                 return 0.2f;
             }
