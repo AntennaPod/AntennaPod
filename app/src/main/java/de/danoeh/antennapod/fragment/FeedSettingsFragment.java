@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
@@ -16,6 +16,9 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
+import de.danoeh.antennapod.viewmodel.FeedSettingsViewModel;
+
+import static de.danoeh.antennapod.activity.FeedSettingsActivity.EXTRA_FEED_ID;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
@@ -26,17 +29,21 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.feed_settings);
 
-        feed = ((FeedSettingsActivity) getActivity()).getFeed();
-        feedPreferences = feed.getPreferences();
+        long feedId = getArguments().getLong(EXTRA_FEED_ID);
+        ViewModelProviders.of(getActivity()).get(FeedSettingsViewModel.class).getFeed(feedId)
+                .subscribe(result -> {
+                    feed = result;
+                    feedPreferences = feed.getPreferences();
 
-        setupAutoDownloadPreference();
-        setupKeepUpdatedPreference();
-        setupAutoDeletePreference();
-        setupAuthentificationPreference();
-        setupEpisodeFilterPreference();
+                    setupAutoDownloadPreference();
+                    setupKeepUpdatedPreference();
+                    setupAutoDeletePreference();
+                    setupAuthentificationPreference();
+                    setupEpisodeFilterPreference();
 
-        updateAutoDeleteSummary();
-        updateAutoDownloadEnabled();
+                    updateAutoDeleteSummary();
+                    updateAutoDownloadEnabled();
+                }).dispose();
     }
 
     private void setupEpisodeFilterPreference() {
