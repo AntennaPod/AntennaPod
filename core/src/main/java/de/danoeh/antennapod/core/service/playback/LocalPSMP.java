@@ -12,6 +12,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -25,8 +27,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
@@ -52,6 +52,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final AtomicBoolean startWhenPrepared;
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
     private volatile Pair<Integer, Integer> videoSize;
+
+    private final FeedVolumeReduction feedVolumeReduction;
 
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
@@ -138,6 +140,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         super(context, callback);
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new PlayerLock();
+        this.feedVolumeReduction = new FeedVolumeReduction();
         this.startWhenPrepared = new AtomicBoolean(false);
 
         executor = new PlayerExecutor();
@@ -336,26 +339,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         }
     }
 
-    private float getVolumeReductionFactor() {
-        Playable playable = getPlayable();
-        if (playable instanceof FeedMedia) {
-            FeedMedia feedMedia = (FeedMedia) playable;
-            FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
-            FeedPreferences.VolumeReductionSetting volumeReductionSetting = preferences.getVolumeReductionSetting();
 
-            // TODO maxbechtold Move this logic out of this class
-            // TODO maxbechtold These numbers should be tested
-            if (volumeReductionSetting == FeedPreferences.VolumeReductionSetting.LIGHT) {
-                return 0.5f;
-            } else if (volumeReductionSetting == FeedPreferences.VolumeReductionSetting.HEAVY) {
-                return 0.2f;
-            }
-        }
-        return 1.0f;
-    }
-
-
-	/**
+    /**
      * Saves the current position and pauses playback. Note that, if audiofocus
      * is abandoned, the lockscreen controls will also disapear.
      * <p/>
@@ -691,10 +676,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private void setVolumeSync(float volumeLeft, float volumeRight) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            // TODO maxbechtold does not apply to currently playing episode
-            float reductionFactor = getVolumeReductionFactor();
-            volumeLeft *= reductionFactor;
-            volumeRight *= reductionFactor;
+            Playable playable = getPlayable();
+            if (playable instanceof FeedMedia) {
+                FeedMedia feedMedia = (FeedMedia) playable;
+                FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+                float reductionFactor = feedVolumeReduction.getReductionFactor(preferences);
+                volumeLeft *= reductionFactor;
+                volumeRight *= reductionFactor;
+            }
             mediaPlayer.setVolume(volumeLeft, volumeRight);
             Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
         }

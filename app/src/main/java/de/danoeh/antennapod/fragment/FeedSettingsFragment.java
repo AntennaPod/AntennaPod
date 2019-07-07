@@ -132,7 +132,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
             }
             feed.savePreferences();
             updateVolumeReductionSummary();
-            // TODO maxbechtold Check if we can call setVolume for the PlaybackService, if running
+            // TODO maxbechtold Check if we can call setVolume for the PlaybackService, if running. Else, show toast?
             return false;
         });
     }
