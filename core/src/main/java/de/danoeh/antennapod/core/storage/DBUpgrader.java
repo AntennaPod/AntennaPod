@@ -193,7 +193,6 @@ class DBUpgrader {
             db.execSQL(sql);
         }
         if (oldVersion <= 17) {
-            // TODO maxbechtold Something like this for volume reduction
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0");
         }
@@ -288,6 +287,10 @@ class DBUpgrader {
                     + " = " + PodDBAdapter.TABLE_NAME_FEEDS + "." + PodDBAdapter.KEY_IMAGE + ")");
 
             db.execSQL("DROP TABLE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES);
+        }
+        if (oldVersion < 1070296) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_VOLUME_REDUCTION + " INTEGER DEFAULT 0");
         }
     }
 
