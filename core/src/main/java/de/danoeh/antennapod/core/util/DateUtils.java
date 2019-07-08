@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -162,11 +163,10 @@ public class DateUtils {
         if (date == null) {
             return "";
         }
+        GregorianCalendar now = new GregorianCalendar();
         GregorianCalendar cal = new GregorianCalendar();
-        cal.add(GregorianCalendar.YEAR, -1);
-        // some padding, because no one really remembers what day of the month it is
-        cal.add(GregorianCalendar.DAY_OF_MONTH, 10);
-        boolean withinLastYear = date.after(cal.getTime());
+        cal.setTime(date);
+        boolean withinLastYear = now.get(Calendar.YEAR) == cal.get(Calendar.YEAR);
         int format = android.text.format.DateUtils.FORMAT_ABBREV_ALL;
         if (withinLastYear) {
             format |= android.text.format.DateUtils.FORMAT_NO_YEAR;

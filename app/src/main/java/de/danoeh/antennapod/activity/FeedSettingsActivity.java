@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -7,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,10 +19,8 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.fragment.FeedSettingsFragment;
-import io.reactivex.Maybe;
-import io.reactivex.MaybeOnSubscribe;
+import de.danoeh.antennapod.viewmodel.FeedSettingsViewModel;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -46,7 +44,6 @@ public class FeedSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.feedsettings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        long feedId = getIntent().getLongExtra(EXTRA_FEED_ID, -1);
 
         imgvCover = findViewById(R.id.imgvCover);
         txtvTitle = findViewById(R.id.txtvTitle);
@@ -57,14 +54,8 @@ public class FeedSettingsActivity extends AppCompatActivity {
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
-        disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
-                    Feed feed = DBReader.getFeed(feedId);
-                    if (feed != null) {
-                        emitter.onSuccess(feed);
-                    } else {
-                        emitter.onComplete();
-                    }
-                })
+        long feedId = getIntent().getLongExtra(EXTRA_FEED_ID, -1);
+        disposable = ViewModelProviders.of(this).get(FeedSettingsViewModel.class).getFeed(feedId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
@@ -89,10 +80,6 @@ public class FeedSettingsActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.settings_fragment_container, fragment);
         fragmentTransaction.commit();
-    }
-
-    public Feed getFeed() {
-        return feed;
     }
 
     private void showHeader() {
