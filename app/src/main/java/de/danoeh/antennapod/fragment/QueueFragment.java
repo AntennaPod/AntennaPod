@@ -272,6 +272,13 @@ public class QueueFragment extends Fragment {
 
             MenuItemUtils.refreshLockItem(getActivity(), menu);
 
+            // Show Lock Item and Sort Item only if queue is sorted manually
+            boolean sortedManually = UserPreferences.isQueueSortedManually();
+            MenuItem lockItem = menu.findItem(R.id.queue_lock);
+            lockItem.setVisible(sortedManually);
+            MenuItem sortItem = menu.findItem(R.id.queue_sort);
+            sortItem.setVisible(sortedManually);
+
             isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
     }
@@ -317,37 +324,37 @@ public class QueueFragment extends Fragment {
                     conDialog.createNewDialog().show();
                     return true;
                 case R.id.queue_sort_episode_title_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.EPISODE_TITLE_ASC, true);
+                    QueueSorter.sort(QueueSorter.Rule.EPISODE_TITLE_ASC, true);
                     return true;
                 case R.id.queue_sort_episode_title_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.EPISODE_TITLE_DESC, true);
+                    QueueSorter.sort(QueueSorter.Rule.EPISODE_TITLE_DESC, true);
                     return true;
                 case R.id.queue_sort_date_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_ASC, true);
+                    QueueSorter.sort(QueueSorter.Rule.DATE_ASC, true);
                     return true;
                 case R.id.queue_sort_date_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_DESC, true);
+                    QueueSorter.sort(QueueSorter.Rule.DATE_DESC, true);
                     return true;
                 case R.id.queue_sort_duration_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_ASC, true);
+                    QueueSorter.sort(QueueSorter.Rule.DURATION_ASC, true);
                     return true;
                 case R.id.queue_sort_duration_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_DESC, true);
+                    QueueSorter.sort(QueueSorter.Rule.DURATION_DESC, true);
                     return true;
                 case R.id.queue_sort_feed_title_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.FEED_TITLE_ASC, true);
+                    QueueSorter.sort(QueueSorter.Rule.FEED_TITLE_ASC, true);
                     return true;
                 case R.id.queue_sort_feed_title_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.FEED_TITLE_DESC, true);
+                    QueueSorter.sort(QueueSorter.Rule.FEED_TITLE_DESC, true);
                     return true;
                 case R.id.queue_sort_random:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.RANDOM, true);
+                    QueueSorter.sort(QueueSorter.Rule.RANDOM, true);
                     return true;
                 case R.id.queue_sort_smart_shuffle_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.SMART_SHUFFLE_ASC, true);
+                    QueueSorter.sort(QueueSorter.Rule.SMART_SHUFFLE_ASC, true);
                     return true;
                 case R.id.queue_sort_smart_shuffle_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.SMART_SHUFFLE_DESC, true);
+                    QueueSorter.sort(QueueSorter.Rule.SMART_SHUFFLE_DESC, true);
                     return true;
                 default:
                     return false;
@@ -661,5 +668,4 @@ public class QueueFragment extends Fragment {
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
-
 }

@@ -54,6 +54,7 @@ public class UserPreferences {
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
+    public static final String PREF_QUEUE_SORT_ORDER = "prefQueueSortOrder";
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -506,7 +507,8 @@ public class UserPreferences {
     }
 
     public static boolean isQueueLocked() {
-        return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
+        return prefs.getBoolean(PREF_QUEUE_LOCKED, false)
+                || !isQueueSortedManually();
     }
 
     public static void setFastForwardSecs(int secs) {
@@ -893,5 +895,33 @@ public class UserPreferences {
 
     public static boolean timeRespectsSpeed() {
         return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
+    }
+
+    /**
+     * Supported episode queue sort orders.
+     * Use enum instead of integer to avoid mistakes at later maintenance changes.
+     */
+    public enum QueueSortOrder {
+        MANUALLY, DATE_NEW_OLD, DATE_OLD_NEW, DURATION_SHORT_LONG, DURATION_LONG_SHORT,
+        EPISODE_TITLE_A_Z, EPISODE_TITLE_Z_A, FEED_TITLE_A_Z, FEED_TITLE_Z_A
+    }
+
+    public static QueueSortOrder getQueueSortOrder() {
+        String sortOrderStr = prefs.getString(PREF_QUEUE_SORT_ORDER, "default");
+        return parseQueueSortOrder(sortOrderStr);
+    }
+
+    public static QueueSortOrder parseQueueSortOrder(String value) {
+        try {
+            return QueueSortOrder.valueOf(value);
+        } catch (IllegalArgumentException e) {
+            // default value
+            return QueueSortOrder.MANUALLY;
+        }
+    }
+
+    public static boolean isQueueSortedManually() {
+        QueueSortOrder sortedOrder = getQueueSortOrder();
+        return sortedOrder == QueueSortOrder.MANUALLY;
     }
 }

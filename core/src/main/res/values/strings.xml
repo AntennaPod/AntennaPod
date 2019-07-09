@@ -438,6 +438,8 @@
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
     <string name="pref_nav_drawer_feed_counter_title">Set Subscription Counter</string>
     <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter. Also affects the sorting of subscriptions if \'Subscription Order\' is set to \'Counter\'.</string>
+    <string name="pref_queue_sort_title">Set Queue Sort Order</string>
+    <string name="pref_queue_sort_sum">Change the sort order of the episodes in the queue.</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic Download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
@@ -735,6 +737,11 @@
     <string name="sort_date_old_new">Date (Old \u2192 New)</string>
     <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
     <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
+    <string name="sort_episode_title_a_z">Episode title (A \u2192 Z)</string>
+    <string name="sort_episode_title_z_a">Episode title (Z \u2192 A)</string>
+    <string name="sort_feed_title_a_z">Podcast title (A \u2192 Z)</string>
+    <string name="sort_feed_title_z_a">Podcast title (Z \u2192 A)</string>
+    <string name="sort_manually">Manually</string>
 
     <!-- Rating dialog -->
     <string name="rating_title">Like AntennaPod?</string>
