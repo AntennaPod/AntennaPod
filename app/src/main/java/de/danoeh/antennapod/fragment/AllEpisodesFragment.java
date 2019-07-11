@@ -258,6 +258,9 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         Log.d(TAG, "onContextItemSelected() called with: " + "item = [" + item + "]");
+        if (!getUserVisibleHint()) {
+            return false;
+        }
         if (!isVisible()) {
             return false;
         }

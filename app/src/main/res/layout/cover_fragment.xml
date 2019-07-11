@@ -26,7 +26,8 @@
         android:contentDescription="@string/cover_label"
         android:scaleType="fitCenter"
         android:transitionName="coverTransition"
-        tools:src="@android:drawable/sym_def_app_icon" />
+        tools:src="@android:drawable/sym_def_app_icon"
+        android:foreground="?attr/selectableItemBackground" />
 
     <TextView
         android:id="@+id/txtvEpisodeTitle"

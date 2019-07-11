@@ -44,6 +44,7 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
+        imgvCover.setOnClickListener(v -> onPlayPause());
         return root;
     }
 
@@ -113,5 +114,12 @@ public class CoverFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+    }
+
+    void onPlayPause() {
+        if (controller == null) {
+            return;
+        }
+        controller.playPause();
     }
 }
