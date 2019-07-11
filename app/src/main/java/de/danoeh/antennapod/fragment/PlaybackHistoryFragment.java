@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -34,9 +37,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 public class PlaybackHistoryFragment extends ListFragment {
 
@@ -47,21 +47,8 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private List<FeedItem> playbackHistory;
     private FeedItemlistAdapter adapter;
-
-    private boolean itemsLoaded = false;
-    private boolean viewsCreated = false;
-
     private List<Downloader> downloaderList;
-
     private Disposable disposable;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (viewsCreated && itemsLoaded) {
-            onFragmentLoaded();
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,16 +67,16 @@ public class PlaybackHistoryFragment extends ListFragment {
         final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
-        viewsCreated = true;
-        if (itemsLoaded) {
-            onFragmentLoaded();
-        }
-
         EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
         emptyView.attachToListView(getListView());
 
+        // played items shoudln't be transparent for this fragment since, *all* items
+        // in this fragment will, by definition, be played. So it serves no purpose and can make
+        // it harder to read.
+        adapter = new FeedItemlistAdapter(getActivity(), itemAccess, true, false);
+        setListAdapter(adapter);
     }
 
     @Override
@@ -105,24 +92,9 @@ public class PlaybackHistoryFragment extends ListFragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
         EventDistributor.getInstance().unregister(contentUpdate);
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        if(disposable != null) {
-            disposable.dispose();
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        adapter = null;
-        viewsCreated = false;
     }
 
     @Subscribe(sticky = true)
@@ -130,9 +102,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -145,27 +115,23 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!isAdded()) {
+        if (!isAdded()) {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded) {
-            MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-            MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-            TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
-            clearHistory.setIcon(drawables.getDrawable(0));
-            drawables.recycle();
-        }
+        MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
+        MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
+        clearHistory.setIcon(drawables.getDrawable(0));
+        drawables.recycle();
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded) {
-            MenuItem menuItem = menu.findItem(R.id.clear_history_item);
-            if (menuItem != null) {
-                menuItem.setVisible(playbackHistory != null && !playbackHistory.isEmpty());
-            }
+        MenuItem menuItem = menu.findItem(R.id.clear_history_item);
+        if (menuItem != null) {
+            menuItem.setVisible(playbackHistory != null && !playbackHistory.isEmpty());
         }
     }
 
@@ -211,14 +177,6 @@ public class PlaybackHistoryFragment extends ListFragment {
     };
 
     private void onFragmentLoaded() {
-        if (adapter == null) {
-            // played items shoudln't be transparent for this fragment since, *all* items
-            // in this fragment will, by definition, be played. So it serves no purpose and can make
-            // it harder to read.
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, true, false);
-            setListAdapter(adapter);
-        }
-        setListShown(true);
         adapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();
     }
@@ -277,10 +235,7 @@ public class PlaybackHistoryFragment extends ListFragment {
                 .subscribe(result -> {
                     if (result != null) {
                         playbackHistory = result;
-                        itemsLoaded = true;
-                        if (viewsCreated) {
-                            onFragmentLoaded();
-                        }
+                        onFragmentLoaded();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
@@ -291,5 +246,4 @@ public class PlaybackHistoryFragment extends ListFragment {
         DBReader.loadAdditionalFeedItemListData(history);
         return history;
     }
-
 }

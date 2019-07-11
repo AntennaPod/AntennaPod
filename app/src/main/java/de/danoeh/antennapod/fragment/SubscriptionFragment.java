@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -15,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -56,16 +60,13 @@ public class SubscriptionFragment extends Fragment {
     private Disposable disposable;
     private SharedPreferences prefs;
 
-    public SubscriptionFragment() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
-        prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        prefs = requireActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -123,23 +124,25 @@ public class SubscriptionFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         subscriptionAdapter = new SubscriptionsAdapter((MainActivity)getActivity(), itemAccess);
-
         subscriptionGridLayout.setAdapter(subscriptionAdapter);
-
-        loadSubscriptions();
-
         subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
 
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscriptions_label);
         }
-
-        EventDistributor.getInstance().register(contentUpdate);
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+        loadSubscriptions();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventDistributor.getInstance().unregister(contentUpdate);
         if(disposable != null) {
             disposable.dispose();
         }
@@ -172,7 +175,7 @@ public class SubscriptionFragment extends Fragment {
 
         Feed feed = (Feed)selectedObject;
 
-        MenuInflater inflater = getActivity().getMenuInflater();
+        MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.nav_feed_context, menu);
 
         menu.setHeaderTitle(feed.getTitle());
@@ -182,7 +185,6 @@ public class SubscriptionFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-
         final int position = mPosition;
         mPosition = -1; // reset
         if(position < 0) {
@@ -198,83 +200,72 @@ public class SubscriptionFragment extends Fragment {
         Feed feed = (Feed)selectedObject;
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(getActivity(),
+                displayConfirmationDialog(
                         R.string.mark_all_seen_label,
-                        R.string.mark_all_seen_confirmation_msg) {
-
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-
-                        Observable.fromCallable(() -> DBWriter.markFeedSeen(feed.getId()))
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(result -> loadSubscriptions(),
-                                        error -> Log.e(TAG, Log.getStackTraceString(error)));
-                    }
-                };
-                markAllSeenConfirmationDialog.createNewDialog().show();
+                        R.string.mark_all_seen_confirmation_msg,
+                        () -> DBWriter.markFeedSeen(feed.getId()));
                 return true;
             case R.id.mark_all_read_item:
-                ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
+                displayConfirmationDialog(
                         R.string.mark_all_read_label,
-                        R.string.mark_all_read_confirmation_msg) {
-
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-                        Observable.fromCallable(() -> DBWriter.markFeedRead(feed.getId()))
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(result -> loadSubscriptions(),
-                                        error -> Log.e(TAG, Log.getStackTraceString(error)));
-                    }
-                };
-                markAllReadConfirmationDialog.createNewDialog().show();
+                        R.string.mark_all_read_confirmation_msg,
+                        () -> DBWriter.markFeedRead(feed.getId()));
                 return true;
             case R.id.rename_item:
                 new RenameFeedDialog(getActivity(), feed).show();
                 return true;
             case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(getContext(), feed) {
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        super.onPostExecute(result);
-                        loadSubscriptions();
-                    }
-                };
-                ConfirmationDialog conDialog = new ConfirmationDialog(getContext(),
-                        R.string.remove_feed_label,
-                        getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
-                    @Override
-                    public void onConfirmButtonPressed(
-                            DialogInterface dialog) {
-                        dialog.dismiss();
-                        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
-                        if (mediaId > 0 &&
-                                FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId) >= 0) {
-                            Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
-                            remover.skipOnCompletion = true;
-                            int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
-                            if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                                IntentUtils.sendLocalBroadcast(getContext(), PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
-
-                            }
-                        }
-                        remover.executeAsync();
-                    }
-                };
-                conDialog.createNewDialog().show();
+                displayRemoveFeedDialog(feed);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        loadSubscriptions();
+    private void displayRemoveFeedDialog(Feed feed) {
+        final FeedRemover remover = new FeedRemover(getContext(), feed) {
+            @Override
+            protected void onPostExecute(Void result) {
+                super.onPostExecute(result);
+                loadSubscriptions();
+            }
+        };
+
+        String message = getString(R.string.feed_delete_confirmation_msg, feed.getTitle());
+        ConfirmationDialog dialog = new ConfirmationDialog(getContext(), R.string.remove_feed_label, message) {
+            @Override
+            public void onConfirmButtonPressed(DialogInterface clickedDialog) {
+                clickedDialog.dismiss();
+                long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
+                if (mediaId > 0 && FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId) >= 0) {
+                    Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
+                    remover.skipOnCompletion = true;
+                    int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
+                    if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
+                        IntentUtils.sendLocalBroadcast(getContext(), PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+
+                    }
+                }
+                remover.executeAsync();
+            }
+        };
+        dialog.createNewDialog().show();
+    }
+
+    private <T> void displayConfirmationDialog(@StringRes int title, @StringRes int message, Callable<? extends T> task) {
+        ConfirmationDialog dialog = new ConfirmationDialog(getActivity(), title, message) {
+            @Override
+            @SuppressLint("CheckResult")
+            public void onConfirmButtonPressed(DialogInterface clickedDialog) {
+                clickedDialog.dismiss();
+                Observable.fromCallable(task)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> loadSubscriptions(),
+                                error -> Log.e(TAG, Log.getStackTraceString(error)));
+            }
+        };
+        dialog.createNewDialog().show();
     }
 
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
