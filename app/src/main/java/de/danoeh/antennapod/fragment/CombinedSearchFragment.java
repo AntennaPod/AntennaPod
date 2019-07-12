@@ -16,36 +16,16 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
-import de.danoeh.antennapod.discovery.GpodnetPodcastSearcher;
-import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
+import de.danoeh.antennapod.discovery.CombinedSearcher;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
-import de.danoeh.antennapod.discovery.PodcastSearcher;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
-import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
 public class CombinedSearchFragment extends Fragment {
 
@@ -65,7 +45,7 @@ public class CombinedSearchFragment extends Fragment {
      * List of podcasts retreived from the search
      */
     private List<PodcastSearchResult> searchResults = new ArrayList<>();
-    private List<Disposable> disposables = new ArrayList<>();
+    private Disposable disposable;
 
     /**
      * Constructor
@@ -108,7 +88,9 @@ public class CombinedSearchFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        disposeAll();
+        if (disposable != null) {
+            disposable.dispose();
+        }
         adapter = null;
     }
 
@@ -149,58 +131,14 @@ public class CombinedSearchFragment extends Fragment {
     }
 
     private void search(String query) {
-        disposeAll();
+        if (disposable != null) {
+            disposable.dispose();
+        }
 
         showOnlyProgressBar();
 
-        List<PodcastSearcher> searchProviders = new ArrayList<>();
-        searchProviders.add(new FyydPodcastSearcher(query));
-        searchProviders.add(new ItunesPodcastSearcher(getContext(), query));
-        searchProviders.add(new GpodnetPodcastSearcher(query));
-
-        List<List<PodcastSearchResult>> singleResults = new ArrayList<>();
-        CountDownLatch latch = new CountDownLatch(searchProviders.size());
-        for (PodcastSearcher searchProvider : searchProviders) {
-            disposables.add(searchProvider.search(e -> {
-                    singleResults.add(e);
-                    latch.countDown();
-                }, throwable -> {
-                    Toast.makeText(getContext(), throwable.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                    latch.countDown();
-                }
-            ));
-        }
-
-        disposables.add(Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
-            latch.await();
-
-            HashMap<String, Float> resultRanking = new HashMap<>();
-            HashMap<String, PodcastSearchResult> urlToResult = new HashMap<>();
-            for (List<PodcastSearchResult> providerResults : singleResults) {
-                for (int position = 0; position < providerResults.size(); position++) {
-                    PodcastSearchResult result = providerResults.get(position);
-                    urlToResult.put(result.feedUrl, result);
-
-                    float ranking = 0;
-                    if (resultRanking.containsKey(result.feedUrl)) {
-                        ranking = resultRanking.get(result.feedUrl);
-                    }
-                    ranking += 1.f / (position + 1.f);
-                    resultRanking.put(result.feedUrl, ranking);
-                }
-            }
-            List<Map.Entry<String, Float>> sortedResults = new ArrayList<>(resultRanking.entrySet());
-            Collections.sort(sortedResults, (o1, o2) -> Double.compare(o2.getValue(), o1.getValue()));
-
-            List<PodcastSearchResult> results = new ArrayList<>();
-            for (Map.Entry<String, Float> res : sortedResults) {
-                results.add(urlToResult.get(res.getKey()));
-            }
-            subscriber.onSuccess(results);
-        })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(result -> {
+        CombinedSearcher searcher = new CombinedSearcher(getContext());
+        disposable = searcher.search(query).subscribe(result -> {
                 searchResults = result;
                 progressBar.setVisibility(View.GONE);
 
@@ -217,14 +155,7 @@ public class CombinedSearchFragment extends Fragment {
                 txtvError.setVisibility(View.VISIBLE);
                 butRetry.setOnClickListener(v -> search(query));
                 butRetry.setVisibility(View.VISIBLE);
-            }));
-    }
-
-    private void disposeAll() {
-        for (Disposable d : disposables) {
-            d.dispose();
-        }
-        disposables.clear();
+            });
     }
 
     private void showOnlyProgressBar() {
@@ -233,10 +164,5 @@ public class CombinedSearchFragment extends Fragment {
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-    }
-
-    public static <K, V extends Comparable<? super V>> Comparator<Map.Entry<K, V>> comparingByValue() {
-        return (Comparator<Map.Entry<K, V>> & Serializable)
-                (c1, c2) -> c1.getValue().compareTo(c2.getValue());
     }
 }

@@ -7,8 +7,6 @@ import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,14 +24,12 @@ import java.util.List;
 public class ItunesPodcastSearcher implements PodcastSearcher {
     private static final String ITUNES_API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
     private final Context context;
-    private final String query;
 
-    public ItunesPodcastSearcher(Context context, String query) {
+    public ItunesPodcastSearcher(Context context) {
         this.context = context;
-        this.query = query;
     }
 
-    public Disposable search(Consumer<? super List<PodcastSearchResult>> successHandler, Consumer<? super Throwable> errorHandler) {
+    public Single<List<PodcastSearchResult>> search(String query) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
             String encodedQuery = null;
             try {
@@ -75,7 +71,6 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
             subscriber.onSuccess(podcasts);
         })
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(successHandler, errorHandler);
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

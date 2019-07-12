@@ -136,8 +136,8 @@ public class FyydSearchFragment extends Fragment {
         }
         showOnlyProgressBar();
 
-        FyydPodcastSearcher searcher = new FyydPodcastSearcher(query);
-        disposable = searcher.search(result -> {
+        FyydPodcastSearcher searcher = new FyydPodcastSearcher();
+        disposable = searcher.search(query).subscribe(result -> {
             searchResults = result;
             progressBar.setVisibility(View.GONE);
 

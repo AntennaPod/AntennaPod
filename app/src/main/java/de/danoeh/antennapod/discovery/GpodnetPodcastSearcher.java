@@ -6,21 +6,13 @@ import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GpodnetPodcastSearcher implements PodcastSearcher {
-    private final String query;
-
-    public GpodnetPodcastSearcher(String query) {
-        this.query = query;
-    }
-
-    public Disposable search(Consumer<? super List<PodcastSearchResult>> successHandler, Consumer<? super Throwable> errorHandler) {
+    public Single<List<PodcastSearchResult>> search(String query) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
             GpodnetService service = null;
             try {
@@ -41,7 +33,6 @@ public class GpodnetPodcastSearcher implements PodcastSearcher {
             }
         })
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(successHandler, errorHandler);
+        .observeOn(AndroidSchedulers.mainThread());
     }
 }

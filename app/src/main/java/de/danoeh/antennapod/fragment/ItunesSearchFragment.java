@@ -308,8 +308,8 @@ public class ItunesSearchFragment extends Fragment {
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
-        ItunesPodcastSearcher searcher = new ItunesPodcastSearcher(getContext(), query);
-        disposable = searcher.search(podcasts -> {
+        ItunesPodcastSearcher searcher = new ItunesPodcastSearcher(getContext());
+        disposable = searcher.search(query).subscribe(podcasts -> {
             progressBar.setVisibility(View.GONE);
             updateData(podcasts);
         }, error -> {
