@@ -650,7 +650,7 @@
     <string name="choose_data_directory">Choose Data Folder</string>
     <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate sub-directories.</string>
     <string name="choose_data_directory_permission_rationale">Access to external storage is required to change the data folder</string>
-    <string name="choose_data_directory_available_space">%1$s free</string>
+    <string name="choose_data_directory_available_space">%1$s of %2$s free</string>
     <string name="create_folder_msg">Create new folder with name "%1$s"?</string>
     <string name="create_folder_success">Created new folder</string>
     <string name="create_folder_error_no_write_access">Cannot write to this folder</string>
