@@ -31,14 +31,12 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
 
     public Single<List<PodcastSearchResult>> search(String query) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
-            String encodedQuery = null;
+            String encodedQuery;
             try {
                 encodedQuery = URLEncoder.encode(query, "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 // this won't ever be thrown
-            }
-            if (encodedQuery == null) {
-                encodedQuery = query; // failsafe
+                encodedQuery = query;
             }
 
             String formattedUrl = String.format(ITUNES_API_URL, encodedQuery);
