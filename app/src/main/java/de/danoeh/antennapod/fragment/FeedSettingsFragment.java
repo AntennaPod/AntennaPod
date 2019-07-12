@@ -142,15 +142,12 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
 
         switch (feedPreferences.getVolumeReductionSetting()) {
             case OFF:
-                volumeReductionPreference.setSummary(R.string.feed_volume_reduction_off);
                 volumeReductionPreference.setValue("off");
                 break;
             case LIGHT:
-                volumeReductionPreference.setSummary(R.string.feed_volume_reduction_light);
                 volumeReductionPreference.setValue("light");
                 break;
             case HEAVY:
-                volumeReductionPreference.setSummary(R.string.feed_volume_reduction_heavy);
                 volumeReductionPreference.setValue("heavy");
                 break;
         }
