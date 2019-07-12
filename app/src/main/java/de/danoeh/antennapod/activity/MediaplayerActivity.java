@@ -330,11 +330,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         Playable media = controller.getMedia();
         boolean isFeedMedia = media != null && (media instanceof FeedMedia);
 
-        menu.findItem(R.id.support_item).setVisible(isFeedMedia && media.getPaymentLink() != null &&
-                        ((FeedMedia) media).getItem() != null &&
-                        ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
-        );
-
         boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
@@ -602,11 +597,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     case R.id.visit_website_item:
                         Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                        break;
-                    case R.id.support_item:
-                        if (media instanceof FeedMedia) {
-                            DBTasks.flattrItemIfLoggedIn(this, ((FeedMedia) media).getItem());
-                        }
                         break;
                     case R.id.share_link_item:
                         if (media instanceof FeedMedia) {

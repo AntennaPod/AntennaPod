@@ -142,25 +142,6 @@
         <activity android:name=".activity.StorageErrorActivity">
         </activity>
         <activity
-            android:name=".activity.FlattrAuthActivity"
-            android:label="@string/flattr_auth_label">
-            <intent-filter>
-                <action android:name=".activities.FlattrAuthActivity"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="de.danoeh.antennapod"
-                    android:scheme="flattr4j"/>
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".activity.AboutActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/about_pref">
