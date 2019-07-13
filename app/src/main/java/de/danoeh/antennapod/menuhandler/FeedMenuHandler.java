@@ -46,11 +46,6 @@ public class FeedMenuHandler {
         }
 
         Log.d(TAG, "Preparing options menu");
-        if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable()) {
-            menu.findItem(R.id.support_item).setVisible(true);
-        } else {
-            menu.findItem(R.id.support_item).setVisible(false);
-        }
 
         menu.findItem(R.id.refresh_complete_item).setVisible(selectedFeed.isPaged());
 
@@ -97,9 +92,6 @@ public class FeedMenuHandler {
                     Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
                             Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case R.id.support_item:
-                DBTasks.flattrFeedIfLoggedIn(context, selectedFeed);
                 break;
             case R.id.share_link_item:
                 ShareUtils.shareFeedlink(context, selectedFeed);

@@ -16,7 +16,6 @@ class ClientConfigurator {
         ClientConfig.downloadServiceCallbacks = new DownloadServiceCallbacksImpl();
         ClientConfig.gpodnetCallbacks = new GpodnetCallbacksImpl();
         ClientConfig.playbackServiceCallbacks = new PlaybackServiceCallbacksImpl();
-        ClientConfig.flattrCallbacks = new FlattrCallbacksImpl();
         ClientConfig.dbTasksCallbacks = new DBTasksCallbacksImpl();
         ClientConfig.castCallbacks = new CastCallbackImpl();
     }

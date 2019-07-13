@@ -84,10 +84,4 @@
                 android:title="@string/share_file_label" />
         </menu>
     </item>
-    <item
-        android:id="@+id/support_item"
-        android:menuCategory="container"
-        android:title="@string/support_label" />
-
-
 </menu>

@@ -27,8 +27,6 @@ public class ClientConfig {
 
     public static GpodnetCallbacks gpodnetCallbacks;
 
-    public static FlattrCallbacks flattrCallbacks;
-
     public static DBTasksCallbacks dbTasksCallbacks;
 
     public static CastCallbacks castCallbacks;

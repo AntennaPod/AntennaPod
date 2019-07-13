@@ -143,8 +143,5 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         config.index(R.xml.preferences_gpodder)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_integrations))
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_gpodder));
-        config.index(R.xml.preferences_flattr)
-                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_integrations))
-                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_flattr));
     }
 }

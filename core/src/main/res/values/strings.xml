@@ -211,7 +211,6 @@
     <string name="remove_from_favorite_label">Remove from Favorites</string>
     <string name="removed_from_favorites">Removed from Favorites</string>
     <string name="visit_website_label">Visit Website</string>
-    <string name="support_label">Flattr this</string>
     <string name="skip_episode_label">Skip episode</string>
     <string name="activate_auto_download">Activate Auto Download</string>
     <string name="deactivate_auto_download">Deactivate Auto Download</string>
@@ -305,34 +304,6 @@
     <string name="sort_old_to_new">Old to new</string>
     <string name="sort_new_to_old">New to old</string>
 
-    <!-- Flattr -->
-    <string name="flattr_auth_label">Flattr sign-in</string>
-    <string name="flattr_auth_explanation">Press the button below to start the authentication process. You will be forwarded to the flattr login screen in your browser and be asked to give AntennaPod the permission to flattr things. After you have given permission, you will return to this screen automatically.</string>
-    <string name="authenticate_label">Authenticate</string>
-    <string name="return_home_label">Return to home</string>
-    <string name="flattr_auth_success">Authentication was successful! You can now flattr things within the app.</string>
-    <string name="no_flattr_token_title">No Flattr token found</string>
-    <string name="no_flattr_token_notification_msg">Your flattr account does not seem to be connected to AntennaPod. Tap here to authenticate.</string>
-    <string name="no_flattr_token_msg">Your flattr account does not seem to be connected to AntennaPod. You can either connect your account to AntennaPod to flattr things within the app or you can visit the website of the thing to flattr it there.</string>
-    <string name="authenticate_now_label">Authenticate</string>
-    <string name="action_forbidden_title">Action forbidden</string>
-    <string name="action_forbidden_msg">AntennaPod has no permission for this action. The reason for this could be that the access token of AntennaPod to your account has been revoked. You can either re-reauthenticate or visit the website of the thing instead.</string>
-    <string name="access_revoked_title">Access revoked</string>
-    <string name="access_revoked_info">You have successfully revoked AntennaPod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
-    
-    <!-- Flattr -->
-    <string name="flattr_click_success">Flattr\'ed one thing!</string>
-    <string name="flattr_click_success_count">Flattr\'ed %d things!</string>
-    <string name="flattr_click_success_queue">Flattr\'ed: %s.</string>
-    <string name="flattr_click_failure_count">Failed to flattr %d things!</string>
-    <string name="flattr_click_failure">Not flattr\'ed: %s.</string>
-    <string name="flattr_click_enqueued">Thing will be flattr\'ed later</string>
-    <string name="flattring_thing">Flattring %s</string>
-    <string name="flattring_label">AntennaPod is flattring</string>
-    <string name="flattrd_label">AntennaPod has flattr\'ed</string>
-    <string name="flattrd_failed_label">AntennaPod flattr failed</string>
-    <string name="flattr_retrieving_status">Retrieving flattr\'ed things</string>
-
     <!--  Variable Speed -->
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
@@ -368,8 +339,6 @@
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
     <string name="integrations_label">Integrations</string>
-    <string name="flattr_label">Flattr</string>
-    <string name="flattr_summary">Micropayment service</string>
     <string name="automation">Automation</string>
     <string name="download_pref_details">Details</string>
     <string name="import_export_pref">Import/Export</string>
@@ -419,15 +388,6 @@
     <string name="pref_mobileUpdate_images">Images only</string>
     <string name="pref_mobileUpdate_everything">Everything</string>
     <string name="refreshing_label">Refreshing</string>
-    <string name="flattr_settings_label">Flattr settings</string>
-    <string name="pref_flattr_auth_title">Flattr sign-in</string>
-    <string name="pref_flattr_auth_sum">Sign in to your flattr account to flattr things directly from the app.</string>
-    <string name="pref_flattr_this_app_title">Flattr this App</string>
-    <string name="pref_flattr_this_app_sum">Support the development of AntennaPod by flattring it. Thanks!</string>
-    <string name="pref_revokeAccess_title">Revoke access</string>
-    <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
-    <string name="pref_auto_flattr_title">Automatic Flattr</string>
-    <string name="pref_auto_flattr_sum">Configure automatic flattring</string>
     <string name="user_interface_label">User Interface</string>
     <string name="pref_set_theme_title">Select Theme</string>
     <string name="pref_nav_drawer_title">Customize Navigation Drawer</string>
@@ -538,12 +498,6 @@
     <string name="back_button_go_to_page_title">Select page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
-
-    <!-- Auto-Flattr dialog -->
-    <string name="auto_flattr_enable">Enable automatic flattring</string>
-    <string name="auto_flattr_after_percent">Flattr episode as soon as %d percent have been played</string>
-    <string name="auto_flattr_ater_beginning">Flattr episode when playback starts</string>
-    <string name="auto_flattr_ater_end">Flattr episode when playback ends</string>
 
     <!-- Search -->
     <string name="search_hint">Search for episodes</string>

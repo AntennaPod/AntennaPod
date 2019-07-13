@@ -38,14 +38,6 @@
         android:title="@string/search_label"/>
 
     <item
-        android:id="@+id/support_item"
-        android:menuCategory="container"
-        android:title="@string/support_label"
-        android:visible="false"
-        custom:showAsAction="collapseActionView">
-    </item>
-
-    <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
         android:menuCategory="container"
