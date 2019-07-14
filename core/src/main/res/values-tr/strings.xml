@@ -107,9 +107,9 @@
   <string name="mark_all_read_msg">Tüm bölümleri oynatıldı olarak işaretle</string>
   <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="mark_all_read_feed_confirmation_msg">Lütfen bu yayındaki bütün bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
-  <string name="mark_all_seen_label">Hepsini görüldü olarak işaretle</string>
-  <string name="mark_all_seen_msg">Bütün bölümler görüldü olarak işaretlendi</string>
-  <string name="mark_all_seen_confirmation_msg">Lütfen tüm bölümleri görüldü olarak işaretlemek istediğinizi onaylayın.</string>
+  <string name="remove_all_new_flags_label">Hepsini görüldü olarak işaretle</string>
+  <string name="removed_all_new_flags_msg">Bütün bölümler görüldü olarak işaretlendi</string>
+  <string name="remove_all_new_flags_confirmation_msg">Lütfen tüm bölümleri görüldü olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="show_feed_settings_label">Cepyayın ayarlarını göster</string>
   <string name="feed_info_label">Cepyayın bilgisi</string>
@@ -151,8 +151,8 @@
   <string name="remove_label">Kaldır</string>
   <string name="delete_label">Sil</string>
   <string name="delete_failed">Dosya silinemiyor. Cihazı yeniden başlatmak yardımcı olabilir.</string>
-  <string name="mark_as_seen_label">Hepsini görüldü olarak işaretle</string>
-  <string name="marked_as_seen_label">Görüldü olarak işaretlendi</string>
+  <string name="remove_new_flag_label">Hepsini görüldü olarak işaretle</string>
+  <string name="removed_new_flag_label">Görüldü olarak işaretlendi</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
   <string name="marked_as_read_label">Oynatıldı olarak işaretlendi</string>
   <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>

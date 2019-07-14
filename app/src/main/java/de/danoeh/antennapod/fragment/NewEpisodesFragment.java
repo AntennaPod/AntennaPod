@@ -55,7 +55,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
-                markItemAsSeenWithUndo(holder.getFeedItem());
+                removeNewFlagWithUndo(holder.getFeedItem());
             }
 
             @Override

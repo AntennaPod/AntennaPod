@@ -43,7 +43,7 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Tandai semua diputar</string>
   <string name="mark_all_read_msg">Tandai semua Kisah diputar</string>
-  <string name="mark_all_seen_label">Tandai semua dilihat</string>
+  <string name="remove_all_new_flags_label">Tandai semua dilihat</string>
   <string name="remove_feed_label">Hapus Podcast</string>
   <string name="share_label">Bagikan...</string>
   <string name="share_link_label">Bagikan Tautan</string>

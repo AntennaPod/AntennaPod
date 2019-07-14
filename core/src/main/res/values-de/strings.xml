@@ -116,9 +116,9 @@
   <string name="mark_all_read_msg">Alle Episoden als gespielt markiert</string>
   <string name="mark_all_read_confirmation_msg">Bitte bestätige, dass alle Episoden als gespielt markiert werden sollen.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bitte bestätige, dass alle Episoden in diesem Feed als gespielt markiert werden sollen.</string>
-  <string name="mark_all_seen_label">Alle als gesehen markieren</string>
-  <string name="mark_all_seen_msg">Alle Episoden als gesehen markiert</string>
-  <string name="mark_all_seen_confirmation_msg">Bitte bestätige, dass alle Episoden als gesehen markiert werden sollen.</string>
+  <string name="remove_all_new_flags_label">Alle als gesehen markieren</string>
+  <string name="removed_all_new_flags_msg">Alle Episoden als gesehen markiert</string>
+  <string name="remove_all_new_flags_confirmation_msg">Bitte bestätige, dass alle Episoden als gesehen markiert werden sollen.</string>
   <string name="show_info_label">Informationen anzeigen</string>
   <string name="show_feed_settings_label">Zeige Feed-Einstellungen</string>
   <string name="feed_info_label">Feed-Informationen</string>
@@ -169,8 +169,8 @@
     <item quantity="one">%d Episode gelöscht.</item>
     <item quantity="other">%d Episoden gelöscht.</item>
   </plurals>
-  <string name="mark_as_seen_label">Als gelesen markieren</string>
-  <string name="marked_as_seen_label">Als gesehen markiert</string>
+  <string name="remove_new_flag_label">Als gelesen markieren</string>
+  <string name="removed_new_flag_label">Als gesehen markiert</string>
   <string name="mark_read_label">Als gespielt markieren</string>
   <string name="marked_as_read_label">Als gespielt markiert</string>
   <plurals name="marked_read_batch_label">

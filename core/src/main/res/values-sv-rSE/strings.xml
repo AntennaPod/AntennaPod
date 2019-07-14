@@ -116,9 +116,9 @@
   <string name="mark_all_read_msg">Markera alla episoder som spelade</string>
   <string name="mark_all_read_confirmation_msg">Bekräfta att du verkligen vill markera alla episoder som spelade.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bekräfta att du vill markera alla episider i denna podcast som spelade.</string>
-  <string name="mark_all_seen_label">Markera alla som sedda</string>
-  <string name="mark_all_seen_msg">Markerade alla episoder som sedda</string>
-  <string name="mark_all_seen_confirmation_msg">Bekräfta att du vill markera alla episoder som sedda.</string>
+  <string name="remove_all_new_flags_label">Markera alla som sedda</string>
+  <string name="removed_all_new_flags_msg">Markerade alla episoder som sedda</string>
+  <string name="remove_all_new_flags_confirmation_msg">Bekräfta att du vill markera alla episoder som sedda.</string>
   <string name="show_info_label">Visa information</string>
   <string name="show_feed_settings_label">Visa podcastinställningar</string>
   <string name="feed_info_label">Podcastinfo</string>
@@ -169,8 +169,8 @@
     <item quantity="one">1%d episod raderad.</item>
     <item quantity="other">1%d episder raderade.</item>
   </plurals>
-  <string name="mark_as_seen_label">Markera som sedd</string>
-  <string name="marked_as_seen_label">Markera som sedd</string>
+  <string name="remove_new_flag_label">Markera som sedd</string>
+  <string name="removed_new_flag_label">Markera som sedd</string>
   <string name="mark_read_label">Markera som spelad</string>
   <string name="marked_as_read_label">Markera som spelad</string>
   <plurals name="marked_read_batch_label">

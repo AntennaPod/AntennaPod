@@ -113,8 +113,8 @@
   <string name="mark_all_read_label">全部标识已读</string>
   <string name="mark_all_read_msg">将所有曲目标记为已播放</string>
   <string name="mark_all_read_confirmation_msg">请确认您要将所有曲目标为已播放</string>
-  <string name="mark_all_seen_label">所有可见</string>
-  <string name="mark_all_seen_confirmation_msg">请确认您要将所有曲目标记为已读。</string>
+  <string name="remove_all_new_flags_label">所有可见</string>
+  <string name="remove_all_new_flags_confirmation_msg">请确认您要将所有曲目标记为已读。</string>
   <string name="show_info_label">查看信息</string>
   <string name="feed_info_label">播客信息</string>
   <string name="feed_settings_label">播客设置</string>
@@ -145,8 +145,8 @@
   <string name="remove_label">删除</string>
   <string name="delete_label">删除</string>
   <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
-  <string name="mark_as_seen_label">标记为已读</string>
-  <string name="marked_as_seen_label">标记为已读</string>
+  <string name="remove_new_flag_label">标记为已读</string>
+  <string name="removed_new_flag_label">标记为已读</string>
   <string name="mark_read_label">标记已播放</string>
   <string name="marked_as_read_label">已标记为已播放</string>
   <string name="mark_unread_label">标记未播放</string>

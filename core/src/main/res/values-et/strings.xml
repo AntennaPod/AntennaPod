@@ -91,7 +91,7 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Märgi kuulatuks</string>
   <string name="mark_all_read_msg">Märgi kõik saated esitatuks</string>
-  <string name="mark_all_seen_label">Märgi kõik nähtuks</string>
+  <string name="remove_all_new_flags_label">Märgi kõik nähtuks</string>
   <string name="show_info_label">Näita infot</string>
   <string name="share_label">Jaga...</string>
   <string name="share_file_label">Jaga faili</string>
@@ -116,7 +116,7 @@
   <string name="stream_label">Voogedastusena</string>
   <string name="remove_label">Eemalda</string>
   <string name="delete_label">Kustuta</string>
-  <string name="marked_as_seen_label">Märgitud nähtuks</string>
+  <string name="removed_new_flag_label">Märgitud nähtuks</string>
   <string name="mark_read_label">Märgi esitatuks</string>
   <string name="marked_as_read_label">Märgitud kuulatuks</string>
   <string name="mark_unread_label">Märgitud kui kuulamata</string>

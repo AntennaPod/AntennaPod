@@ -202,9 +202,9 @@ public class AllEpisodesFragment extends Fragment {
         if (markAllRead != null) {
             markAllRead.setVisible(!showOnlyNewEpisodes() && !episodes.isEmpty());
         }
-        MenuItem markAllSeen = menu.findItem(R.id.mark_all_seen_item);
-        if (markAllSeen != null) {
-            markAllSeen.setVisible(showOnlyNewEpisodes() && !episodes.isEmpty());
+        MenuItem removeAllNewFlags = menu.findItem(R.id.remove_all_new_flags_item);
+        if (removeAllNewFlags != null) {
+            removeAllNewFlags.setVisible(showOnlyNewEpisodes() && !episodes.isEmpty());
         }
     }
 
@@ -232,19 +232,19 @@ public class AllEpisodesFragment extends Fragment {
                     };
                     markAllReadConfirmationDialog.createNewDialog().show();
                     return true;
-                case R.id.mark_all_seen_item:
-                    ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(getActivity(),
-                            R.string.mark_all_seen_label,
-                            R.string.mark_all_seen_confirmation_msg) {
+                case R.id.remove_all_new_flags_item:
+                    ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getActivity(),
+                            R.string.remove_all_new_flags_label,
+                            R.string.remove_all_new_flags_confirmation_msg) {
 
                         @Override
                         public void onConfirmButtonPressed(DialogInterface dialog) {
                             dialog.dismiss();
-                            DBWriter.markNewItemsSeen();
-                            Toast.makeText(getActivity(), R.string.mark_all_seen_msg, Toast.LENGTH_SHORT).show();
+                            DBWriter.removeAllNewFlags();
+                            Toast.makeText(getActivity(), R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT).show();
                         }
                     };
-                    markAllSeenConfirmationDialog.createNewDialog().show();
+                    removeAllNewFlagsConfirmationDialog.createNewDialog().show();
                     return true;
                 default:
                     return false;
@@ -274,13 +274,13 @@ public class AllEpisodesFragment extends Fragment {
         }
         FeedItem selectedItem = listAdapter.getSelectedItem();
 
-        // Mark as seen contains UI logic specific to All/New/FavoriteSegments,
+        // Remove new flag contains UI logic specific to All/New/FavoriteSegments,
         // e.g., Undo with Snackbar,
         // and is handled by this class rather than the generic FeedItemMenuHandler
-        // Undo is useful for Mark as seen, given there is no UI to undo it otherwise,
+        // Undo is useful for Remove new flag, given there is no UI to undo it otherwise,
         // i.e., there is context menu item for Mark as new
-        if (R.id.mark_as_seen_item == item.getItemId()) {
-            markItemAsSeenWithUndo(selectedItem);
+        if (R.id.remove_new_flag_item == item.getItemId()) {
+            removeNewFlagWithUndo(selectedItem);
             return true;
         }
 
@@ -466,12 +466,12 @@ public class AllEpisodesFragment extends Fragment {
         return DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
     }
 
-    void markItemAsSeenWithUndo(FeedItem item) {
+    void removeNewFlagWithUndo(FeedItem item) {
         if (item == null) {
             return;
         }
 
-        Log.d(TAG, "markItemAsSeenWithUndo(" + item.getId() + ")");
+        Log.d(TAG, "removeNewFlagWithUndo(" + item.getId() + ")");
         if (disposable != null) {
             disposable.dispose();
         }
@@ -487,7 +487,7 @@ public class AllEpisodesFragment extends Fragment {
             }
         };
 
-        Snackbar snackbar = Snackbar.make(getView(), getString(R.string.marked_as_seen_label),
+        Snackbar snackbar = Snackbar.make(getView(), getString(R.string.removed_new_flag_label),
                 Snackbar.LENGTH_LONG);
         snackbar.setAction(getString(R.string.undo), v -> {
             DBWriter.markItemPlayed(FeedItem.NEW, item.getId());

@@ -128,9 +128,9 @@
     <string name="mark_all_read_msg">Marked all Episodes as played</string>
     <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
     <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this podcast as being played.</string>
-    <string name="mark_all_seen_label">Mark all as seen</string>
-    <string name="mark_all_seen_msg">Marked all episodes as seen</string>
-    <string name="mark_all_seen_confirmation_msg">Please confirm that you want to mark all episodes as seen.</string>
+    <string name="remove_all_new_flags_label">Remove all \"new\" flags</string>
+    <string name="removed_all_new_flags_msg">Removed all \"new\" flags</string>
+    <string name="remove_all_new_flags_confirmation_msg">Please confirm that you want to remove the \"new\" flag from all episodes.</string>
     <string name="show_info_label">Show information</string>
     <string name="show_feed_settings_label">Show podcast settings</string>
     <string name="feed_info_label">Podcast info</string>
@@ -182,8 +182,8 @@
         <item quantity="one">%d episode deleted.</item>
         <item quantity="other">%d episodes deleted.</item>
     </plurals>
-    <string name="mark_as_seen_label">Mark as seen</string>
-    <string name="marked_as_seen_label">Marked as seen</string>
+    <string name="remove_new_flag_label">Remove \"new\" flag</string>
+    <string name="removed_new_flag_label">Removed \"new\" flag</string>
     <string name="mark_read_label">Mark as played</string>
     <string name="marked_as_read_label">Marked as played</string>
     <plurals name="marked_read_batch_label">

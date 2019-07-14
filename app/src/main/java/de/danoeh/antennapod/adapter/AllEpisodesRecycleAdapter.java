@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -280,7 +279,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             };
             FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
 
-            contextMenuInterface.setItemVisibility(R.id.mark_as_seen_item, item.isNew());
+            contextMenuInterface.setItemVisibility(R.id.remove_new_flag_item, item.isNew());
         }
 
     }

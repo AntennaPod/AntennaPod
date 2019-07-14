@@ -105,8 +105,8 @@
   <string name="mark_all_read_label">Az összes megjelölése lejátszottként</string>
   <string name="mark_all_read_msg">Az összes epizód lejátszottként megjelölve</string>
   <string name="mark_all_read_confirmation_msg">Biztosan megjelölöd az összes epizódot lejátszottként?</string>
-  <string name="mark_all_seen_label">Az összes megjelölése megnézettként</string>
-  <string name="mark_all_seen_confirmation_msg">Biztosan megjelölöd az összes epizódott megnézettként?</string>
+  <string name="remove_all_new_flags_label">Az összes megjelölése megnézettként</string>
+  <string name="remove_all_new_flags_confirmation_msg">Biztosan megjelölöd az összes epizódott megnézettként?</string>
   <string name="show_info_label">Információ mutatása</string>
   <string name="feed_settings_label">Podcast beállítások</string>
   <string name="share_label">Megosztás…</string>
@@ -132,7 +132,7 @@
   <string name="stream_label">Stream-elés</string>
   <string name="remove_label">Eltávolítás</string>
   <string name="delete_label">Törlés</string>
-  <string name="marked_as_seen_label">Megtekintettként megjelölve</string>
+  <string name="removed_new_flag_label">Megtekintettként megjelölve</string>
   <string name="mark_read_label">Jelölés játszottnak</string>
   <string name="marked_as_read_label">Lejátszottként megjelölve</string>
   <string name="mark_unread_label">Jelölés nem játszottnak</string>

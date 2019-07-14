@@ -116,9 +116,9 @@
   <string name="mark_all_read_msg">Segnati tutti gli episodi come riprodotti</string>
   <string name="mark_all_read_confirmation_msg">Conferma che desideri segnare tutti gli episodi come riprodotti.</string>
   <string name="mark_all_read_feed_confirmation_msg">Conferma che desideri segnare come riprodotti tutti gli episodi del podcast.</string>
-  <string name="mark_all_seen_label">Segna tutti come visti</string>
-  <string name="mark_all_seen_msg">Segna tutti gli episodi come visti</string>
-  <string name="mark_all_seen_confirmation_msg">Conferma che desideri segnare tutti gli episodi come visti.</string>
+  <string name="remove_all_new_flags_label">Segna tutti come visti</string>
+  <string name="removed_all_new_flags_msg">Segna tutti gli episodi come visti</string>
+  <string name="remove_all_new_flags_confirmation_msg">Conferma che desideri segnare tutti gli episodi come visti.</string>
   <string name="show_info_label">Informazioni</string>
   <string name="show_feed_settings_label">Mostra impostazioni podcast</string>
   <string name="feed_info_label">Info podcast</string>
@@ -169,8 +169,8 @@
     <item quantity="one">%d episodio eliminato.</item>
     <item quantity="other">%d episodi eliminati.</item>
   </plurals>
-  <string name="mark_as_seen_label">Segna come visto</string>
-  <string name="marked_as_seen_label">Segna come visto</string>
+  <string name="remove_new_flag_label">Segna come visto</string>
+  <string name="removed_new_flag_label">Segna come visto</string>
   <string name="mark_read_label">Segna come riprodotto</string>
   <string name="marked_as_read_label">Segnato come riprodotto</string>
   <plurals name="marked_read_batch_label">

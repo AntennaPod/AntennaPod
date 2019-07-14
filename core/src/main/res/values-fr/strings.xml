@@ -116,9 +116,9 @@
   <string name="mark_all_read_msg">Tous les épisodes ont été marqués comme lus</string>
   <string name="mark_all_read_confirmation_msg">Confirmer le marquage de tous les épisode comme lus</string>
   <string name="mark_all_read_feed_confirmation_msg">Confirmer le marquage de tous les épisodes de ce podcast comme lus</string>
-  <string name="mark_all_seen_label">Marquer tous les épisodes comme vus</string>
-  <string name="mark_all_seen_msg">Tous les épisodes ont été marqués vus</string>
-  <string name="mark_all_seen_confirmation_msg">Merci de confirmer que vous voulez marquer tous les épisodes comme vus.</string>
+  <string name="remove_all_new_flags_label">Marquer tous les épisodes comme vus</string>
+  <string name="removed_all_new_flags_msg">Tous les épisodes ont été marqués vus</string>
+  <string name="remove_all_new_flags_confirmation_msg">Merci de confirmer que vous voulez marquer tous les épisodes comme vus.</string>
   <string name="show_info_label">Voir les détails</string>
   <string name="show_feed_settings_label">Paramètres du podcast...</string>
   <string name="feed_info_label">Infos du podcast</string>
@@ -169,8 +169,8 @@
     <item quantity="one">%d épisode supprimé.</item>
     <item quantity="other">%d épisodes supprimés.</item>
   </plurals>
-  <string name="mark_as_seen_label">Marquer comme vu</string>
-  <string name="marked_as_seen_label">Marqué comme vu</string>
+  <string name="remove_new_flag_label">Marquer comme vu</string>
+  <string name="removed_new_flag_label">Marqué comme vu</string>
   <string name="mark_read_label">Marquer comme lu</string>
   <string name="marked_as_read_label">Les épisodes ont été marqués comme lus</string>
   <plurals name="marked_read_batch_label">

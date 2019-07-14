@@ -106,8 +106,8 @@
   <string name="mark_all_read_label">Označit vše jako poslechnuté</string>
   <string name="mark_all_read_msg">Všechny epizody označeny jako poslechnuté</string>
   <string name="mark_all_read_confirmation_msg">Potvrďte prosím, že chcete označit všechny vybrané epizody jako poslechnuté.</string>
-  <string name="mark_all_seen_label">Označit vše jako zobrazené</string>
-  <string name="mark_all_seen_confirmation_msg">Potvrďte prosím, že chcete označit všechny epizody jako shlédnuté.</string>
+  <string name="remove_all_new_flags_label">Označit vše jako zobrazené</string>
+  <string name="remove_all_new_flags_confirmation_msg">Potvrďte prosím, že chcete označit všechny epizody jako shlédnuté.</string>
   <string name="show_info_label">Informace o zdroji</string>
   <string name="share_label">Sdílet</string>
   <string name="share_feed_url_label">Sdílet URL kanálu</string>
@@ -131,7 +131,7 @@
   <string name="stream_label">Vysílat</string>
   <string name="remove_label">Odstranit</string>
   <string name="delete_label">Smazat</string>
-  <string name="marked_as_seen_label">Označit jako shlédnuté</string>
+  <string name="removed_new_flag_label">Označit jako shlédnuté</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
   <string name="marked_as_read_label">Označeno jako poslechnuté</string>
   <string name="mark_unread_label">Označit jako neposlechnuté</string>
