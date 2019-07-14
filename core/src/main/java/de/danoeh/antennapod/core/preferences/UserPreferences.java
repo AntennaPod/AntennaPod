@@ -443,7 +443,7 @@ public class UserPreferences {
     }
 
     public static int getRewindSecs() {
-        return prefs.getInt(PREF_REWIND_SECS, 30);
+        return prefs.getInt(PREF_REWIND_SECS, 10);
     }
 
     public static String[] getAutodownloadSelectedNetworks() {
