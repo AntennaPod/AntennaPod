@@ -30,7 +30,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/gpodnetauth_device_caption"
         android:layout_below="@id/txtvDescription"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:imeOptions="flagNoFullscreen"/>
 
     <TextView
         android:id="@+id/txtvDeviceID"
