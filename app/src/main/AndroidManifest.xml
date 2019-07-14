@@ -318,8 +318,7 @@
         <activity
             android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"
             android:configChanges="orientation"
-            android:label="@string/gpodnet_auth_label"
-            android:screenOrientation="portrait">
+            android:label="@string/gpodnet_auth_label">
             <intent-filter>
                 <action android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
