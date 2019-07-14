@@ -108,8 +108,8 @@
   <string name="mark_all_read_label">علامت گذاری همه به عنوان پخش شده</string>
   <string name="mark_all_read_msg">همه قسمت‌ها به عنوان پخش شده علامت‌گذاری شد</string>
   <string name="mark_all_read_confirmation_msg">لطفا تأیید کنید که می‌خواهید تمام قسمت‌ها را به عنوان پخش شده علامت بزنید.</string>
-  <string name="mark_all_seen_label">علامت گذاری همه به عنوان دیده شده</string>
-  <string name="mark_all_seen_confirmation_msg">لطفا تأیید کنید که می‌خواهید تمام قسمت‌ها را به عنوان دیده شده علامت بزنید.</string>
+  <string name="remove_all_new_flags_label">علامت گذاری همه به عنوان دیده شده</string>
+  <string name="remove_all_new_flags_confirmation_msg">لطفا تأیید کنید که می‌خواهید تمام قسمت‌ها را به عنوان دیده شده علامت بزنید.</string>
   <string name="show_info_label">نمایش اطلاعات</string>
   <string name="show_feed_settings_label">نمایش تنظیمات پادکست</string>
   <string name="feed_info_label">اطلاعات پادکست</string>
@@ -145,7 +145,7 @@
   <string name="delete_label">حذف</string>
   <string name="delete_failed">فایل حذف نشد.! راه اندازی مجدد دستگاه می تواند کمک کند.</string>
   <string name="remove_episode_lable">پاک کردن قسمت</string>
-  <string name="marked_as_seen_label">علامت گذاری به عنوان دیده شده</string>
+  <string name="removed_new_flag_label">علامت گذاری به عنوان دیده شده</string>
   <string name="mark_read_label">علامت گذاری به عنوان پخش شده</string>
   <string name="marked_as_read_label">بعنوان پخش شده علامت گذاری شد</string>
   <string name="mark_unread_label">علامت گذاری به عنوان پخش نشده</string>

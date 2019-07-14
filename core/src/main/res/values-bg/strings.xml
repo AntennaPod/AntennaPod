@@ -70,9 +70,9 @@
   <string name="mark_all_read_msg">Всички епизоди са маркирани като слушани</string>
   <string name="mark_all_read_confirmation_msg">Моля, потвърдете, че искате да маркирате всички епизоди като слушани.</string>
   <string name="mark_all_read_feed_confirmation_msg">Моля, потвърдете, че искате да маркирате всички епизоди в тази емисия като слушани.</string>
-  <string name="mark_all_seen_label">Маркирай всички като прегледани</string>
-  <string name="mark_all_seen_msg">Всички епизоди са маркирани като прегледани</string>
-  <string name="mark_all_seen_confirmation_msg">Моля, потвърдете, че искате да маркирате всички епизоди като прегледани.</string>
+  <string name="remove_all_new_flags_label">Маркирай всички като прегледани</string>
+  <string name="removed_all_new_flags_msg">Всички епизоди са маркирани като прегледани</string>
+  <string name="remove_all_new_flags_confirmation_msg">Моля, потвърдете, че искате да маркирате всички епизоди като прегледани.</string>
   <string name="show_info_label">Покажи информация</string>
   <string name="rename_feed_label">Преименуване на подкаст</string>
   <string name="remove_feed_label">Премахване на подкаст</string>
@@ -88,7 +88,7 @@
   <string name="hide_not_downloaded_episodes_label">Неизтеглени</string>
   <!--actions on feeditems-->
   <string name="stream_label">Стрийм</string>
-  <string name="marked_as_seen_label">Маркиран като прегледан</string>
+  <string name="removed_new_flag_label">Маркиран като прегледан</string>
   <string name="mark_read_label">Маркирай като слушан</string>
   <string name="marked_as_read_label">Маркиран като слушан</string>
   <string name="mark_unread_label">Маркирай като неслушан</string>

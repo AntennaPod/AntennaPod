@@ -75,7 +75,7 @@
   <string name="browse_gpoddernet_label">Navegar gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como leído</string>
-  <string name="mark_all_seen_label">Marcar todos como visto</string>
+  <string name="remove_all_new_flags_label">Marcar todos como visto</string>
   <string name="show_info_label">Información del programa</string>
   <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_link_label">Compartir el enlace de la web</string>

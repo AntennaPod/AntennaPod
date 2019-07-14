@@ -655,7 +655,7 @@ public class DBWriter {
      *
      * @param feedId  ID of the Feed.
      */
-    public static Future<?> markFeedSeen(final long feedId) {
+    public static Future<?> removeFeedNewFlag(final long feedId) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -699,7 +699,7 @@ public class DBWriter {
     /**
      * Sets the 'read'-attribute of all NEW FeedItems to UNPLAYED.
      */
-    public static Future<?> markNewItemsSeen() {
+    public static Future<?> removeAllNewFlags() {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();

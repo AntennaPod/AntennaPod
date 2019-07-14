@@ -111,9 +111,9 @@
   <string name="mark_all_read_msg">Marcar todos Episódios como reproduzidos</string>
   <string name="mark_all_read_confirmation_msg">Por favor, confirme que você deseja marcar todos os episódios como já reproduzidos.</string>
   <string name="mark_all_read_feed_confirmation_msg">Favor confirmar que deseja marcar todos os episódios nesse podcast como já ouvidos.</string>
-  <string name="mark_all_seen_label">Marcar todos como vistos</string>
-  <string name="mark_all_seen_msg">Todos os episódios marcados como já ouvidos</string>
-  <string name="mark_all_seen_confirmation_msg">Confirme se deseja marcar todos os episódios como vistos.</string>
+  <string name="remove_all_new_flags_label">Marcar todos como vistos</string>
+  <string name="removed_all_new_flags_msg">Todos os episódios marcados como já ouvidos</string>
+  <string name="remove_all_new_flags_confirmation_msg">Confirme se deseja marcar todos os episódios como vistos.</string>
   <string name="show_info_label">Mostrar informação</string>
   <string name="show_feed_settings_label">Exibir configurações do podcast</string>
   <string name="feed_info_label">Informações do podcast</string>
@@ -155,8 +155,8 @@
   <string name="remove_label">Remover</string>
   <string name="delete_label">Deletar</string>
   <string name="delete_failed">Não foi possível deletar o arquivo. Experimente reiniciar o dispositivo.</string>
-  <string name="mark_as_seen_label">Marcar como ouvido</string>
-  <string name="marked_as_seen_label">Marcar como visto</string>
+  <string name="remove_new_flag_label">Marcar como ouvido</string>
+  <string name="removed_new_flag_label">Marcar como visto</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
   <string name="marked_as_read_label">Marcado como reproduzido</string>
   <string name="mark_unread_label">Marcar como não reproduzido</string>

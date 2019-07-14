@@ -199,11 +199,11 @@ public class SubscriptionFragment extends Fragment {
 
         Feed feed = (Feed)selectedObject;
         switch(item.getItemId()) {
-            case R.id.mark_all_seen_item:
+            case R.id.remove_all_new_flags_item:
                 displayConfirmationDialog(
-                        R.string.mark_all_seen_label,
-                        R.string.mark_all_seen_confirmation_msg,
-                        () -> DBWriter.markFeedSeen(feed.getId()));
+                        R.string.remove_all_new_flags_label,
+                        R.string.remove_all_new_flags_confirmation_msg,
+                        () -> DBWriter.removeFeedNewFlag(feed.getId()));
                 return true;
             case R.id.mark_all_read_item:
                 displayConfirmationDialog(

@@ -116,9 +116,9 @@
   <string name="mark_all_read_msg">Alle afleveringen zijn gemarkeerd als afgespeeld</string>
   <string name="mark_all_read_confirmation_msg">Bevestig dat je alle afleveringen wilt markeren als afgespeeld.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bevestig dat je alle afleveringen van deze podcast wilt markeren als afgespeeld.</string>
-  <string name="mark_all_seen_label">Alles markeren als bekeken</string>
-  <string name="mark_all_seen_msg">Alle afleveringen zijn gemarkeerd als bekeken</string>
-  <string name="mark_all_seen_confirmation_msg">Bevestig dat je alle afleveringen wilt markeren als bekeken.</string>
+  <string name="remove_all_new_flags_label">Alles markeren als bekeken</string>
+  <string name="removed_all_new_flags_msg">Alle afleveringen zijn gemarkeerd als bekeken</string>
+  <string name="remove_all_new_flags_confirmation_msg">Bevestig dat je alle afleveringen wilt markeren als bekeken.</string>
   <string name="show_info_label">Informatie tonen</string>
   <string name="show_feed_settings_label">Podcast-instellingen tonen</string>
   <string name="feed_info_label">Podcast-informatie</string>
@@ -169,8 +169,8 @@
     <item quantity="one">%d aflevering verwijderd.</item>
     <item quantity="other">%d afleveringen verwijderd.</item>
   </plurals>
-  <string name="mark_as_seen_label">Markeren als bekeken</string>
-  <string name="marked_as_seen_label">Gemarkeerd als bekeken</string>
+  <string name="remove_new_flag_label">Markeren als bekeken</string>
+  <string name="removed_new_flag_label">Gemarkeerd als bekeken</string>
   <string name="mark_read_label">Markeren als afgespeeld</string>
   <string name="marked_as_read_label">Gemarkeerd als afgespeeld</string>
   <plurals name="marked_read_batch_label">
