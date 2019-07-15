@@ -43,7 +43,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     setupEpisodeFilterPreference();
 
                     updateAutoDeleteSummary();
-                    updateVolumeReductionSummary();
+                    updateVolumeReductionValue();
                     updateAutoDownloadEnabled();
                 }).dispose();
     }
@@ -131,13 +131,13 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     break;
             }
             feed.savePreferences();
-            updateVolumeReductionSummary();
+            updateVolumeReductionValue();
             // TODO maxbechtold Check if we can call setVolume for the PlaybackService, if running. Else, show toast?
             return false;
         });
     }
 
-    private void updateVolumeReductionSummary() {
+    private void updateVolumeReductionValue() {
         ListPreference volumeReductionPreference = (ListPreference) findPreference("volumeReduction");
 
         switch (feedPreferences.getVolumeReductionSetting()) {
