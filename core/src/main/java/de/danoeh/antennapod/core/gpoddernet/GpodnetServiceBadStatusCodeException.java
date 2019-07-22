@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.gpoddernet;
 
 class GpodnetServiceBadStatusCodeException extends GpodnetServiceException {
+    private static final long serialVersionUID = 1L;
+
     private final int statusCode;
 
     public GpodnetServiceBadStatusCodeException(String message, int statusCode) {

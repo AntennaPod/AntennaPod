@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.gpoddernet;
 
 public class GpodnetServiceException extends Exception {
+    private static final long serialVersionUID = 1L;
 
     GpodnetServiceException() {
     }

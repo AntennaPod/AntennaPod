@@ -5,6 +5,7 @@ package de.danoeh.antennapod.core.storage;
  * or something went wrong while processing the request.
  */
 public class DownloadRequestException extends Exception {
+    private static final long serialVersionUID = 1L;
 
     public DownloadRequestException() {
         super();
