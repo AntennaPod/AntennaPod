@@ -50,6 +50,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
+        emptyView.setIcon(R.attr.ic_unfav);
         emptyView.setTitle(R.string.no_fav_episodes_head_label);
         emptyView.setMessage(R.string.no_fav_episodes_label);
 

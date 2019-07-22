@@ -101,6 +101,7 @@ public class CompletedDownloadsFragment extends ListFragment {
 
     private void addEmptyView() {
         EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setIcon(R.attr.av_download);
         emptyView.setTitle(R.string.no_comp_downloads_head_label);
         emptyView.setMessage(R.string.no_comp_downloads_label);
         emptyView.attachToListView(getListView());

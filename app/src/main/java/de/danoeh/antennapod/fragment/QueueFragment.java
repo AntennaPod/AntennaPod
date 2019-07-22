@@ -511,6 +511,7 @@ public class QueueFragment extends Fragment {
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setIcon(R.attr.stat_playlist);
         emptyView.setTitle(R.string.no_items_header_label);
         emptyView.setMessage(R.string.no_items_label);
 

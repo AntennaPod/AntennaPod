@@ -310,6 +310,7 @@ public class AllEpisodesFragment extends Fragment {
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setIcon(R.attr.feed);
         emptyView.setTitle(R.string.no_all_episodes_head_label);
         emptyView.setMessage(R.string.no_all_episodes_label);
 

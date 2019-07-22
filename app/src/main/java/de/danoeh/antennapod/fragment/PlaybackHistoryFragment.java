@@ -68,6 +68,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
         EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setIcon(R.attr.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
         emptyView.attachToListView(getListView());
