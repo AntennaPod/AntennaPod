@@ -658,10 +658,13 @@
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
 
+    <!-- Add podcast fragment -->
+    <string name="search_podcast_hint">Search podcast…</string>
     <string name="search_itunes_label">Search iTunes</string>
-    <string name="filter">Filter</string>
-
     <string name="search_fyyd_label">Search fyyd</string>
+    <string name="advanced_search">Advanced search</string>
+
+    <string name="filter">Filter</string>
     
     <!-- Episodes apply actions -->
     <string name="all_label">All</string>

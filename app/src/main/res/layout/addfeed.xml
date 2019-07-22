@@ -1,106 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="vertical">
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp">
-
-        <TextView
-            android:id="@+id/txtvPodcastDirectories"
-            style="@style/AntennaPod.TextView.Heading"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/podcastdirectories_label"/>
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/txtvPodcastDirectoriesDescr"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/podcastdirectories_descr"
-            android:textSize="@dimen/text_size_medium"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
 
-        <Button
-            android:id="@+id/butSearchCombined"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Search all providers"/>
+            <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    android:elevation="16dp"
+                    android:layout_margin="8dp">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/butSearchItunes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/search_itunes_label"/>
+                    <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/search_podcast_hint"
+                            app:srcCompat="?attr/action_search"
+                            android:scaleType="center"/>
 
-        <Button
-            android:id="@+id/butSearchFyyd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/search_fyyd_label"/>
+                    <EditText
+                            android:id="@+id/combinedFeedSearchBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:inputType="text"
+                            android:imeOptions="actionSearch"
+                            android:importantForAutofill="no"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:paddingTop="16dp"
+                            android:paddingBottom="16dp"
+                            android:hint="@string/search_podcast_hint"
+                            android:background="@null"/>
 
-        <Button
-            android:id="@+id/butBrowseGpoddernet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/browse_gpoddernet_label"/>
+                </LinearLayout>
 
-        <View style="@style/Divider"/>
+            </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/txtvFeedurl"
-            style="@style/AntennaPod.TextView.Heading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/txtvfeedurl_label"/>
+            <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    android:elevation="8dp"
+                    android:layout_margin="8dp">
 
-        <EditText
-            android:id="@+id/etxtFeedurl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cursorVisible="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:hint="@string/etxtFeedurlHint"
-            android:inputType="textUri"/>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/butConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/confirm_label"/>
+                    <TextView
+                            android:id="@+id/txtvFeedurl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/txtvfeedurl_label"
+                            android:textSize="18sp"
+                            android:layout_marginBottom="8dp"
+                            android:textColor="?android:attr/textColorPrimary"/>
 
-        <View style="@style/Divider"/>
+                    <EditText
+                            android:id="@+id/etxtFeedurl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:cursorVisible="true"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:hint="@string/etxtFeedurlHint"
+                            android:inputType="textUri"/>
 
-        <TextView
-            android:id="@+id/txtvOpmlImport"
-            style="@style/AntennaPod.TextView.Heading"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/opml_import_label"/>
+                    <Button
+                            android:id="@+id/butConfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/confirm_label"/>
 
-        <TextView
-            android:id="@+id/txtvOpmlImportExpl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/opml_import_txtv_button_lable"
-            android:textSize="@dimen/text_size_medium"/>
+                </LinearLayout>
 
-        <Button
-            android:id="@+id/butOpmlImport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/opml_import_label"/>
 
-    </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-</ScrollView>
+
+            <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="4dp"
+                    android:elevation="8dp"
+                    android:layout_margin="8dp">
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                    <LinearLayout
+                            android:id="@+id/advanced_search"
+                            android:layout_width="96dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:padding="16dp"
+                            android:background="?android:attr/selectableItemBackground">
+
+                        <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/advanced_search"
+                                app:srcCompat="?attr/action_search"
+                                android:scaleType="center"
+                                android:layout_marginBottom="4dp"
+                                android:tint="?android:attr/textColorPrimary"/>
+
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/advanced_search"
+                                android:textAlignment="center"
+                                android:textColor="?android:attr/textColorPrimary"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:id="@+id/btn_opml_import"
+                            android:layout_width="96dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center_horizontal"
+                            android:padding="16dp"
+                            android:background="?android:attr/selectableItemBackground">
+
+                        <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/opml_import_label"
+                                app:srcCompat="?attr/av_download"
+                                android:scaleType="center"
+                                android:layout_marginBottom="4dp"
+                                android:tint="?android:attr/textColorPrimary"/>
+
+                        <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/opml_import_label"
+                                android:textAlignment="center"
+                                android:textColor="?android:attr/textColorPrimary"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>
