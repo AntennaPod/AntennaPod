@@ -7,6 +7,4 @@ class GpodnetServiceBadStatusCodeException extends GpodnetServiceException {
         super(message);
         this.statusCode = statusCode;
     }
-
-
 }

@@ -17,5 +17,4 @@ public class GpodnetServiceAuthenticationException extends GpodnetServiceExcepti
     public GpodnetServiceAuthenticationException(Throwable cause) {
         super(cause);
     }
-
 }

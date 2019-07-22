@@ -6,20 +6,19 @@ package de.danoeh.antennapod.core.storage;
  */
 public class DownloadRequestException extends Exception {
 
-	public DownloadRequestException() {
-		super();
-	}
+    public DownloadRequestException() {
+        super();
+    }
 
-	public DownloadRequestException(String detailMessage, Throwable throwable) {
-		super(detailMessage, throwable);
-	}
+    public DownloadRequestException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public DownloadRequestException(String detailMessage) {
-		super(detailMessage);
-	}
+    public DownloadRequestException(String message) {
+        super(message);
+    }
 
-	public DownloadRequestException(Throwable throwable) {
-		super(throwable);
-	}
-
+    public DownloadRequestException(Throwable cause) {
+        super(cause);
+    }
 }

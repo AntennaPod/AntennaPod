@@ -1,21 +1,22 @@
 package de.danoeh.antennapod.core.util;
 
-/** Thrown if a feed has invalid attribute values. */
+/**
+ * Thrown if a feed has invalid attribute values.
+ */
 public class InvalidFeedException extends Exception {
 
-	public InvalidFeedException() {
-	}
+    public InvalidFeedException() {
+    }
 
-	public InvalidFeedException(String detailMessage) {
-		super(detailMessage);
-	}
+    public InvalidFeedException(String message) {
+        super(message);
+    }
 
-	public InvalidFeedException(Throwable throwable) {
-		super(throwable);
-	}
+    public InvalidFeedException(Throwable cause) {
+        super(cause);
+    }
 
-	public InvalidFeedException(String detailMessage, Throwable throwable) {
-		super(detailMessage, throwable);
-	}
-
+    public InvalidFeedException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
