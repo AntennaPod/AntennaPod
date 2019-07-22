@@ -40,9 +40,9 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 26
+    compileSdkVersion = 28
     minSdkVersion = 14
-    targetSdkVersion = 26
+    targetSdkVersion = 28
 
     supportVersion = "27.1.1"
     lifecycle_version = "1.1.1"
