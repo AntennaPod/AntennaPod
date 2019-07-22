@@ -19,7 +19,7 @@ import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
-import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
+import de.danoeh.antennapod.discovery.CombinedSearcher;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import io.reactivex.disposables.Disposable;
@@ -27,9 +27,9 @@ import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FyydSearchFragment extends Fragment {
+public class CombinedSearchFragment extends Fragment {
 
-    private static final String TAG = "FyydSearchFragment";
+    private static final String TAG = "CombinedSearchFragment";
 
     /**
      * Adapter responsible with the search results
@@ -44,13 +44,13 @@ public class FyydSearchFragment extends Fragment {
     /**
      * List of podcasts retreived from the search
      */
-    private List<PodcastSearchResult> searchResults;
+    private List<PodcastSearchResult> searchResults = new ArrayList<>();
     private Disposable disposable;
 
     /**
      * Constructor
      */
-    public FyydSearchFragment() {
+    public CombinedSearchFragment() {
         // Required empty public constructor
     }
 
@@ -101,7 +101,7 @@ public class FyydSearchFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
         MenuItemUtils.adjustTextColor(getActivity(), sv);
-        sv.setQueryHint(getString(R.string.search_fyyd_label));
+        sv.setQueryHint(getString(R.string.search_label));
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -134,27 +134,28 @@ public class FyydSearchFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+
         showOnlyProgressBar();
 
-        FyydPodcastSearcher searcher = new FyydPodcastSearcher();
+        CombinedSearcher searcher = new CombinedSearcher(getContext());
         disposable = searcher.search(query).subscribe(result -> {
-            searchResults = result;
-            progressBar.setVisibility(View.GONE);
+                searchResults = result;
+                progressBar.setVisibility(View.GONE);
 
-            adapter.clear();
-            adapter.addAll(searchResults);
-            adapter.notifyDataSetInvalidated();
-            gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
-            txtvEmpty.setVisibility(searchResults.isEmpty() ? View.VISIBLE : View.GONE);
+                adapter.clear();
+                adapter.addAll(searchResults);
+                adapter.notifyDataSetInvalidated();
+                gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
+                txtvEmpty.setVisibility(searchResults.isEmpty() ? View.VISIBLE : View.GONE);
 
-        }, error -> {
-            Log.e(TAG, Log.getStackTraceString(error));
-            progressBar.setVisibility(View.GONE);
-            txtvError.setText(error.toString());
-            txtvError.setVisibility(View.VISIBLE);
-            butRetry.setOnClickListener(v -> search(query));
-            butRetry.setVisibility(View.VISIBLE);
-        });
+            }, error -> {
+                Log.e(TAG, Log.getStackTraceString(error));
+                progressBar.setVisibility(View.GONE);
+                txtvError.setText(error.toString());
+                txtvError.setVisibility(View.VISIBLE);
+                butRetry.setOnClickListener(v -> search(query));
+                butRetry.setVisibility(View.VISIBLE);
+            });
     }
 
     private void showOnlyProgressBar() {
