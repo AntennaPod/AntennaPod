@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
+import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,60 +115,30 @@ public class ItunesSearchFragment extends Fragment {
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             PodcastSearchResult podcast = searchResults.get(position);
-            if(podcast.feedUrl == null) {
+            if (podcast.feedUrl == null) {
                 return;
             }
-            if (!podcast.feedUrl.contains("itunes.apple.com")) {
-                Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-                intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
-                intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, "iTunes");
-                startActivity(intent);
-            } else {
-                gridView.setVisibility(View.GONE);
-                progressBar.setVisibility(View.VISIBLE);
-                disposable = Single.create((SingleOnSubscribe<String>) emitter -> {
-                            OkHttpClient client = AntennapodHttpClient.getHttpClient();
-                            Request.Builder httpReq = new Request.Builder()
-                                    .url(podcast.feedUrl)
-                                    .header("User-Agent", ClientConfig.USER_AGENT);
-                            try {
-                                Response response = client.newCall(httpReq.build()).execute();
-                                if (response.isSuccessful()) {
-                                    String resultString = response.body().string();
-                                    JSONObject result = new JSONObject(resultString);
-                                    JSONObject results = result.getJSONArray("results").getJSONObject(0);
-                                    String feedUrl = results.getString("feedUrl");
-                                    emitter.onSuccess(feedUrl);
-                                } else {
-                                    String prefix = getString(R.string.error_msg_prefix);
-                                    emitter.onError(new IOException(prefix + response));
-                                }
-                            } catch (IOException | JSONException e) {
-                                if (!disposable.isDisposed()) {
-                                    emitter.onError(e);
-                                }
-                            }
-                        })
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(feedUrl -> {
-                            progressBar.setVisibility(View.GONE);
-                            gridView.setVisibility(View.VISIBLE);
-                            Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-                            intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, feedUrl);
-                            intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, "iTunes");
-                            startActivity(intent);
-                        }, error -> {
-                            Log.e(TAG, Log.getStackTraceString(error));
-                            progressBar.setVisibility(View.GONE);
-                            gridView.setVisibility(View.VISIBLE);
-                            String prefix = getString(R.string.error_msg_prefix);
-                            new MaterialDialog.Builder(getActivity())
-                                    .content(prefix + " " + error.getMessage())
-                                    .neutralText(android.R.string.ok)
-                                    .show();
-                        });
-            }
+            gridView.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+            ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
+            disposable = loader.getFeedUrl(podcast)
+                    .subscribe(feedUrl -> {
+                        progressBar.setVisibility(View.GONE);
+                        gridView.setVisibility(View.VISIBLE);
+                        Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
+                        intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, feedUrl);
+                        intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, "iTunes");
+                        startActivity(intent);
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        progressBar.setVisibility(View.GONE);
+                        gridView.setVisibility(View.VISIBLE);
+                        String prefix = getString(R.string.error_msg_prefix);
+                        new MaterialDialog.Builder(getActivity())
+                                .content(prefix + " " + error.getMessage())
+                                .neutralText(android.R.string.ok)
+                                .show();
+                    });
         });
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
@@ -235,26 +206,9 @@ public class ItunesSearchFragment extends Fragment {
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
-        disposable = Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
-                    String lang = Locale.getDefault().getLanguage();
-                    OkHttpClient client = AntennapodHttpClient.getHttpClient();
-                    String feedString;
-                    try {
-                        try {
-                            feedString = getTopListFeed(client, lang);
-                        } catch (IOException e) {
-                            feedString = getTopListFeed(client, "us");
-                        }
-                        List<PodcastSearchResult> podcasts = parseFeed(feedString);
-                        emitter.onSuccess(podcasts);
-                    } catch (IOException | JSONException e) {
-                        if (!disposable.isDisposed()) {
-                            emitter.onError(e);
-                        }
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+
+        ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
+        disposable = loader.loadToplist(25)
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
                     topList = podcasts;
@@ -267,35 +221,6 @@ public class ItunesSearchFragment extends Fragment {
                     butRetry.setOnClickListener(v -> loadToplist());
                     butRetry.setVisibility(View.VISIBLE);
                 });
-    }
-
-    private String getTopListFeed(OkHttpClient client, String language) throws IOException {
-        String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit=25/explicit=true/json";
-        Request.Builder httpReq = new Request.Builder()
-                .header("User-Agent", ClientConfig.USER_AGENT)
-                .url(String.format(url, language));
-
-        try (Response response = client.newCall(httpReq.build()).execute()) {
-            if (response.isSuccessful()) {
-                return response.body().string();
-            }
-            String prefix = getString(R.string.error_msg_prefix);
-            throw new IOException(prefix + response);
-        }
-    }
-
-    private List<PodcastSearchResult> parseFeed(String jsonString) throws JSONException {
-        JSONObject result = new JSONObject(jsonString);
-        JSONObject feed = result.getJSONObject("feed");
-        JSONArray entries = feed.getJSONArray("entry");
-
-        List<PodcastSearchResult> results = new ArrayList<>();
-        for (int i=0; i < entries.length(); i++) {
-            JSONObject json = entries.getJSONObject(i);
-            results.add(PodcastSearchResult.fromItunesToplist(json));
-        }
-
-        return results;
     }
 
     private void search(String query) {

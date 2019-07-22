@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
->
+        xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <ScrollView
             android:layout_width="match_parent"
@@ -51,6 +50,13 @@
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
+
+            <fragment
+                    android:id="@+id/quickFeedDiscovery"
+                    android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp" />
 
             <android.support.v7.widget.CardView
                     android:layout_width="match_parent"

@@ -122,6 +122,8 @@
     <string name="podcastdirectories_label">Find Podcast in Directory</string>
     <string name="podcastdirectories_descr">For new podcasts, you can search iTunes or fyyd, or browse gpodder.net by name, category or popularity.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
+    <string name="discover">Discover</string>
+    <string name="discover_more">more »</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
