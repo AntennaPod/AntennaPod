@@ -169,6 +169,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         pager.setCurrentItem(lastPosition);
     }
 
+    @Override
     protected void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
