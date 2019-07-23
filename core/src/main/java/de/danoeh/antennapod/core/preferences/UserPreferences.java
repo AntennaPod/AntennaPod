@@ -647,12 +647,16 @@ public class UserPreferences {
         return selectedSpeeds;
     }
 
+    public static String getMediaPlayer() {
+        return prefs.getString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER);
+    }
+
     public static boolean useSonic() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("sonic");
+        return getMediaPlayer().equals("sonic");
     }
 
     public static boolean useExoplayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals(PREF_MEDIA_PLAYER_EXOPLAYER);
+        return getMediaPlayer().equals(PREF_MEDIA_PLAYER_EXOPLAYER);
     }
 
     public static void enableSonic() {

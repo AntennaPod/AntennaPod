@@ -208,7 +208,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         checkFirstLaunch();
         PreferenceUpgrader.checkUpgrades(this);
-        NotificationUtils.createChannels(this);
     }
 
     private void saveLastNavFragment(String tag) {
