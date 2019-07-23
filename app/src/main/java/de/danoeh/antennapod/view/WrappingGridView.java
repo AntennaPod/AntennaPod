@@ -32,5 +32,4 @@ public class WrappingGridView extends GridView {
         }
         super.onMeasure(widthMeasureSpec, heightSpec);
     }
-
 }
