@@ -122,6 +122,8 @@
     <string name="podcastdirectories_label">Find Podcast in Directory</string>
     <string name="podcastdirectories_descr">For new podcasts, you can search iTunes or fyyd, or browse gpodder.net by name, category or popularity.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
+    <string name="discover">Discover</string>
+    <string name="discover_more">more »</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -658,10 +660,13 @@
     <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
 
+    <!-- Add podcast fragment -->
+    <string name="search_podcast_hint">Search podcast…</string>
     <string name="search_itunes_label">Search iTunes</string>
-    <string name="filter">Filter</string>
-
     <string name="search_fyyd_label">Search fyyd</string>
+    <string name="advanced_search">Advanced search</string>
+
+    <string name="filter">Filter</string>
     
     <!-- Episodes apply actions -->
     <string name="all_label">All</string>

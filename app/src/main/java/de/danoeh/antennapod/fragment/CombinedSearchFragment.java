@@ -30,6 +30,7 @@ import java.util.List;
 public class CombinedSearchFragment extends Fragment {
 
     private static final String TAG = "CombinedSearchFragment";
+    public static final String ARGUMENT_QUERY = "query";
 
     /**
      * Adapter responsible with the search results
@@ -128,6 +129,10 @@ public class CombinedSearchFragment extends Fragment {
             }
         });
         MenuItemCompat.expandActionView(searchItem);
+
+        if (getArguments() != null && getArguments().getString(ARGUMENT_QUERY, null) != null) {
+            sv.setQuery(getArguments().getString(ARGUMENT_QUERY, null), true);
+        }
     }
 
     private void search(String query) {
