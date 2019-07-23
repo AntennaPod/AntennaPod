@@ -115,7 +115,7 @@
 
     <PreferenceCategory android:title="@string/media_player">
         <ListPreference
-                android:defaultValue="sonic"
+                android:defaultValue="exoplayer"
                 android:entries="@array/media_player_options"
                 android:key="prefMediaPlayer"
                 android:title="@string/media_player"
