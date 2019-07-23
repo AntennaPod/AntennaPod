@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -19,6 +20,9 @@ import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import io.reactivex.disposables.Disposable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "FeedDiscoveryFragment";
@@ -27,6 +31,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     private Disposable disposable;
     private FeedDiscoverAdapter adapter;
     private GridView subscriptionGridLayout;
+    private TextView errorTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,12 +40,22 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         View discoverMore = root.findViewById(R.id.discover_more);
         discoverMore.setOnClickListener(v ->
                 ((MainActivity) getActivity()).loadChildFragment(new ItunesSearchFragment()));
-        subscriptionGridLayout = root.findViewById(R.id.discover_grid);
 
+        subscriptionGridLayout = root.findViewById(R.id.discover_grid);
         progressBar = root.findViewById(R.id.discover_progress_bar);
+        errorTextView = root.findViewById(R.id.discover_error);
+
         adapter = new FeedDiscoverAdapter((MainActivity) getActivity());
         subscriptionGridLayout.setAdapter(adapter);
         subscriptionGridLayout.setOnItemClickListener(this);
+
+        // Fill with dummy elements to have a fixed height and
+        // prevent the UI elements below from jumping on slow connections
+        List<PodcastSearchResult> dummies = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            dummies.add(PodcastSearchResult.dummy());
+        }
+        adapter.updateData(dummies);
 
         loadToplist();
 
@@ -57,18 +72,22 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
 
     private void loadToplist() {
         progressBar.setVisibility(View.VISIBLE);
-        subscriptionGridLayout.setVisibility(View.GONE);
+        subscriptionGridLayout.setVisibility(View.INVISIBLE);
+        errorTextView.setVisibility(View.GONE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         disposable = loader.loadToplist(8)
                 .subscribe(podcasts -> {
+                    errorTextView.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     subscriptionGridLayout.setVisibility(View.VISIBLE);
                     adapter.updateData(podcasts);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
+                    errorTextView.setText(error.getLocalizedMessage());
+                    errorTextView.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
-                    subscriptionGridLayout.setVisibility(View.VISIBLE);
+                    subscriptionGridLayout.setVisibility(View.INVISIBLE);
                 });
     }
 

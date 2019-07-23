@@ -32,6 +32,10 @@ public class PodcastSearchResult {
         this.feedUrl = feedUrl;
     }
 
+    public static PodcastSearchResult dummy() {
+        return new PodcastSearchResult("", "", "");
+    }
+
     /**
      * Constructs a Podcast instance from a iTunes search result
      *

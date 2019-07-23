@@ -41,27 +41,41 @@
                     android:textColor="@color/antennapod_blue"/>
         </LinearLayout>
 
-
-        <de.danoeh.antennapod.view.WrappingGridView
-                android:id="@+id/discover_grid"
+        <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:numColumns="4"
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:horizontalSpacing="4dp"
-                android:verticalSpacing="4dp"
-                android:scrollbars="none"
-                android:layout_marginTop="8dp"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_height="wrap_content">
 
-        <ProgressBar
-                android:id="@+id/discover_progress_bar"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="30dp"/>
+            <de.danoeh.antennapod.view.WrappingGridView
+                    android:id="@+id/discover_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="4"
+                    app:layout_columnWeight="1"
+                    app:layout_rowWeight="1"
+                    android:horizontalSpacing="4dp"
+                    android:verticalSpacing="4dp"
+                    android:scrollbars="none"
+                    android:layout_marginTop="8dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"/>
+
+            <ProgressBar
+                    android:id="@+id/discover_progress_bar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="30dp"/>
+
+            <TextView
+                    android:id="@+id/discover_error"
+                    android:textColor="@color/md_edittext_error"
+                    android:layout_width="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
