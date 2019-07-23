@@ -603,8 +603,9 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     @Nullable
     private FeedItem loadInBackground() {
         FeedItem feedItem = DBReader.getFeedItem(feedItems[feedItemPos]);
-        if (feedItem != null) {
-            Timeline t = new Timeline(getContext(), feedItem);
+        Context context = getContext();
+        if (feedItem != null && context != null) {
+            Timeline t = new Timeline(context, feedItem);
             webviewData = t.processShownotes(false);
         }
         return feedItem;
