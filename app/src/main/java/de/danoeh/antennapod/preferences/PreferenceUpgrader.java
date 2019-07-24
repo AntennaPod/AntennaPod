@@ -2,13 +2,10 @@ package de.danoeh.antennapod.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceManager;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-
-import java.util.HashSet;
 
 public class PreferenceUpgrader {
     private static final String PREF_CONFIGURED_VERSION = "configuredVersion";

@@ -77,6 +77,10 @@
         <item>images</item>
     </string-array>
 
+    <string-array name="mobile_update_default_value">
+        <item>images</item>
+    </string-array>
+
     <string-array name="episode_cleanup_entries">
         <item>@string/episode_cleanup_queue_removal</item>
         <item>0</item>
