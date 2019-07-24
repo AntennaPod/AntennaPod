@@ -265,6 +265,8 @@
     <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
     <string name="confirm_mobile_download_dialog_message_not_in_queue">Downloading over mobile data connection is disabled in the settings.\n\nYou can choose to either only add the episode to the queue or you can allow downloading temporarily.\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
+    <string name="confirm_mobile_streaming_dialog_title">Confirm Mobile streaming</string>
+    <string name="confirm_mobile_streaming_dialog_message">Streaming over mobile data connection is disabled in the settings. Do you want to stream anyway?</string>
     <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
@@ -386,10 +388,12 @@
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
-    <string name="pref_mobileUpdate_sum">Allow updates and manual episode downloads over the mobile data connection</string>
-    <string name="pref_mobileUpdate_nothing">Nothing</string>
-    <string name="pref_mobileUpdate_images">Images only</string>
-    <string name="pref_mobileUpdate_everything">Everything</string>
+    <string name="pref_mobileUpdate_sum">Select what should be allowed over the mobile data connection</string>
+    <string name="pref_mobileUpdate_refresh">Feed refresh</string>
+    <string name="pref_mobileUpdate_images">Cover images</string>
+    <string name="pref_mobileUpdate_auto_download">Auto download</string>
+    <string name="pref_mobileUpdate_episode_download">Episode download</string>
+    <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="refreshing_label">Refreshing</string>
     <string name="user_interface_label">User Interface</string>
     <string name="pref_set_theme_title">Select Theme</string>

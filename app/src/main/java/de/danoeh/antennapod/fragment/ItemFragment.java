@@ -35,6 +35,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
+import de.danoeh.antennapod.adapter.actionbutton.MobileDownloadHelper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -248,9 +249,16 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
 
             if (item.hasMedia()) {
                 FeedMedia media = item.getMedia();
-                if (!media.isDownloaded()) {
-                    DBTasks.playMedia(getActivity(), media, true, true, true);
-                    ((MainActivity) getActivity()).dismissChildFragment();
+                if (!media.isDownloaded()) { // Stream
+                    if (NetworkUtils.isStreamingAllowed()) {
+                        DBTasks.playMedia(getActivity(), media, true, true, true);
+                        ((MainActivity) getActivity()).dismissChildFragment();
+                    } else {
+                        MobileDownloadHelper.confirmMobileStreaming(getContext(), (dialog, which) -> {
+                            DBTasks.playMedia(getActivity(), media, true, true, true);
+                            ((MainActivity) getActivity()).dismissChildFragment();
+                        });
+                    }
                 } else {
                     DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
                 }

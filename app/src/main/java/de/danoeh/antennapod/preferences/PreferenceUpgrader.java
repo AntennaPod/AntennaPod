@@ -2,10 +2,13 @@ package de.danoeh.antennapod.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.MultiSelectListPreference;
 import android.preference.PreferenceManager;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+
+import java.util.HashSet;
 
 public class PreferenceUpgrader {
     private static final String PREF_CONFIGURED_VERSION = "configuredVersion";
@@ -37,7 +40,7 @@ public class PreferenceUpgrader {
         }
         if (oldVersion < 1070197) {
             if (prefs.getBoolean("prefMobileUpdate", false)) {
-                prefs.edit().putString(UserPreferences.PREF_MOBILE_UPDATE, "everything").apply();
+                prefs.edit().putString("prefMobileUpdateAllowed", "everything").apply();
             }
         }
         if (oldVersion < 1070300) {
@@ -46,6 +49,23 @@ public class PreferenceUpgrader {
             if (UserPreferences.getMediaPlayer().equals("builtin")) {
                 prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
                         UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();
+            }
+
+            if (prefs.getBoolean("prefEnableAutoDownloadOnMobile", false)) {
+                UserPreferences.setAllowMobileAutoDownload(true);
+            }
+            switch (prefs.getString("prefMobileUpdateAllowed", "images")) {
+                case "everything":
+                    UserPreferences.setAllowMobileFeedRefresh(true);
+                    UserPreferences.setAllowMobileEpisodeDownload(true);
+                    UserPreferences.setAllowMobileImages(true);
+                    break;
+                case "images":
+                    UserPreferences.setAllowMobileImages(true);
+                    break;
+                case "nothing":
+                    UserPreferences.setAllowMobileImages(false);
+                    break;
             }
         }
     }

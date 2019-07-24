@@ -16,11 +16,11 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/download_pref_details">
-        <ListPreference
+        <MultiSelectListPreference
                 android:defaultValue="images"
                 android:entries="@array/mobile_update_entries"
                 android:entryValues="@array/mobile_update_values"
-                android:key="prefMobileUpdateAllowed"
+                android:key="prefMobileUpdateTypes"
                 android:summary="@string/pref_mobileUpdate_sum"
                 android:title="@string/pref_mobileUpdate_title"/>
         <de.danoeh.antennapod.preferences.NumberPickerPreference

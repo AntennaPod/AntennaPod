@@ -13,7 +13,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 
-class MobileDownloadHelper {
+public class MobileDownloadHelper {
     private static long addToQueueTimestamp;
     private static long allowMobileDownloadTimestamp;
     private static final int TEN_MINUTES_IN_MILLIS = 10 * 60 * 1000;
@@ -38,6 +38,16 @@ class MobileDownloadHelper {
                     .neutralText(R.string.confirm_mobile_download_dialog_only_add_to_queue)
                     .onNeutral((dialog, which) -> addToQueue(context, item));
         }
+        builder.show();
+    }
+
+    public static void confirmMobileStreaming(final Context context, MaterialDialog.SingleButtonCallback onAllowed) {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
+                .title(R.string.confirm_mobile_streaming_dialog_title)
+                .content(R.string.confirm_mobile_streaming_dialog_message)
+                .positiveText(R.string.yes)
+                .onPositive(onAllowed)
+                .negativeText(R.string.no);
         builder.show();
     }
 

@@ -31,11 +31,6 @@
             android:summary="@string/pref_automatic_download_on_battery_sum"
             android:defaultValue="true"/>
     <SwitchPreference
-            android:key="prefEnableAutoDownloadOnMobile"
-            android:title="@string/pref_autodl_allow_on_mobile_title"
-            android:summary="@string/pref_autodl_allow_on_mobile_sum"
-            android:defaultValue="false"/>
-    <SwitchPreference
             android:key="prefEnableAutoDownloadWifiFilter"
             android:title="@string/pref_autodl_wifi_filter_title"
             android:summary="@string/pref_autodl_wifi_filter_sum"/>
