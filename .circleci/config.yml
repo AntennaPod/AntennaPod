@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - checkout
-      
+
       - restore_cache:
           keys:
             - v1-android-{{ checksum "build.gradle" }}
