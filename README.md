@@ -30,8 +30,6 @@ AntennaPod is licensed under the MIT License. You can find the license text in t
 ## Translating AntennaPod
 If you want to translate AntennaPod into another language, you can visit the [Transifex project page](https://www.transifex.com/antennapod/antennapod/).
 
-
 ## Building AntennaPod
 
 Information on how to build AntennaPod can be found in the [Wiki](https://github.com/AntennaPod/AntennaPod/wiki/Building-AntennaPod).
-
