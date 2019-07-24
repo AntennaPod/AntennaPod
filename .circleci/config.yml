@@ -37,3 +37,9 @@ jobs:
             - ~/.gradle
             - ~/android
           key: v1-android-{{ checksum "build.gradle" }}
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build
