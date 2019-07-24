@@ -39,7 +39,6 @@ public class ClientConfig {
         }
         PodDBAdapter.init(context);
         UserPreferences.init(context);
-        UpdateManager.init(context);
         PlaybackPreferences.init(context);
         NetworkUtils.init(context);
         SleepTimerPreferences.init(context);
