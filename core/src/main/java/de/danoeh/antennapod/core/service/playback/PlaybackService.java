@@ -73,6 +73,7 @@ import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -853,7 +854,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.e(TAG, "Error handling the queue in order to retrieve the next item", e);
             return null;
         }
-        return (nextItem != null) ? nextItem.getMedia() : null;
+
+        if (nextItem == null || nextItem.getMedia() == null) {
+            return null;
+        }
+
+        if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()) {
+            displayStreamingNotAllowedNotification(
+                    new PlaybackServiceStarter(this, nextItem.getMedia())
+                    .prepareImmediately(true)
+                    .startWhenPrepared(true)
+                    .shouldStream(true)
+                    .getIntent());
+            stopService();
+            return null;
+        }
+        return nextItem.getMedia();
 
     }
 
