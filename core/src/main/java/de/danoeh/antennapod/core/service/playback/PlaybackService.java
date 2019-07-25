@@ -501,9 +501,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         intent.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
         PendingIntent pendingIntent;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            pendingIntent = PendingIntent.getForegroundService(this, 0, intent, 0);
+            pendingIntent = PendingIntent.getForegroundService(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            pendingIntent = PendingIntent.getService(this, 0, intent, 0);
+            pendingIntent = PendingIntent.getService(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_USER_ACTION)
