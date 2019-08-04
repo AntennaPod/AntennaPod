@@ -49,9 +49,10 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StoragePath storagePath = entries.get(position);
         String freeSpace = Converter.byteToString(storagePath.getAvailableSpace());
+        String totalSpace = Converter.byteToString(storagePath.getTotalSpace());
 
         holder.path.setText(storagePath.getShortPath());
-        holder.size.setText(String.format(freeSpaceString, freeSpace));
+        holder.size.setText(String.format(freeSpaceString, freeSpace, totalSpace));
         holder.progressBar.setProgress(storagePath.getUsagePercentage());
         holder.root.setOnClickListener((View v) -> selectAndDismiss(storagePath));
         holder.radioButton.setOnClickListener((View v) -> selectAndDismiss(storagePath));

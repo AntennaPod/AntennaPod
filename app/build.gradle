@@ -59,16 +59,10 @@ android {
 
     buildTypes {
         def STRING = "String"
-        def FLATTR_APP_KEY = "FLATTR_APP_KEY"
-        def FLATTR_APP_SECRET = "FLATTR_APP_SECRET"
-        def mFlattrAppKey = (project.hasProperty("flattrAppKey")) ? flattrAppKey : "\"\""
-        def mFlattrAppSecret = (project.hasProperty("flattrAppSecret")) ? flattrAppSecret : "\"\""
 
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
-            buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
-            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret            
             dexcount {
                 if (project.hasProperty("enableDexcountInDebug")) {
                     runOnEachPackage enableDexcountInDebug.toBoolean()
@@ -82,8 +76,6 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), "proguard.cfg"
             signingConfig signingConfigs.releaseConfig
-            buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
-            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
         }
     }
 
@@ -145,9 +137,6 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
 
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
-        exclude group: "org.json", module: "json"
-    }
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
@@ -176,7 +165,7 @@ dependencies {
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     implementation 'com.github.mfietz:fyydlin:v0.4.2'
-    implementation 'com.github.ByteHamster:SearchPreference:v1.2.5'
+    implementation 'com.github.ByteHamster:SearchPreference:v1.2.6'
     implementation "org.awaitility:awaitility:$awaitilityVersion"
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"

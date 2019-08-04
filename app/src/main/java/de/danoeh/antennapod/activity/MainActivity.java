@@ -208,7 +208,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         checkFirstLaunch();
         PreferenceUpgrader.checkUpgrades(this);
-        NotificationUtils.createChannels(this);
     }
 
     private void saveLastNavFragment(String tag) {
@@ -579,17 +578,17 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
-            case R.id.mark_all_seen_item:
-                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(this,
-                        R.string.mark_all_seen_label,
-                        R.string.mark_all_seen_confirmation_msg) {
+            case R.id.remove_all_new_flags_item:
+                ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(this,
+                        R.string.remove_all_new_flags_label,
+                        R.string.remove_all_new_flags_confirmation_msg) {
                     @Override
                     public void onConfirmButtonPressed(DialogInterface dialog) {
                         dialog.dismiss();
-                        DBWriter.markFeedSeen(feed.getId());
+                        DBWriter.removeFeedNewFlag(feed.getId());
                     }
                 };
-                markAllSeenConfirmationDialog.createNewDialog().show();
+                removeAllNewFlagsConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.mark_all_read_item:
                 ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(this,

@@ -61,6 +61,7 @@
     <attr name="ic_known_issues" format="reference" />
     <attr name="master_switch_background" format="color"/>
     <attr name="currently_playing_background" format="color"/>
+    <attr name="ic_bookmark" format="reference"/>
 
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference"/>

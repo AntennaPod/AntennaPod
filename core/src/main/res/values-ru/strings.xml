@@ -113,9 +113,9 @@
   <string name="mark_all_read_msg">Отметить все выпуски как прослушанные</string>
   <string name="mark_all_read_confirmation_msg">Подтвердите, что хотите пометить все эпизоды как прослушанные.</string>
   <string name="mark_all_read_feed_confirmation_msg">Пожалуйста, подтвердите желание отметить все выпуски этого подкаста как прослушанные.</string>
-  <string name="mark_all_seen_label">Отметить все как просмотренное</string>
-  <string name="mark_all_seen_msg">Все выпуски отмечены как просмотренные</string>
-  <string name="mark_all_seen_confirmation_msg">Пожалуйста, подтвердите намерение отметить все выпуски как просмотренные.</string>
+  <string name="remove_all_new_flags_label">Отметить все как просмотренное</string>
+  <string name="removed_all_new_flags_msg">Все выпуски отмечены как просмотренные</string>
+  <string name="remove_all_new_flags_confirmation_msg">Пожалуйста, подтвердите намерение отметить все выпуски как просмотренные.</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="show_feed_settings_label">Показать настройки подкаста</string>
   <string name="feed_info_label">Сведения о подкасте</string>
@@ -157,8 +157,8 @@
   <string name="remove_label">Удалить</string>
   <string name="delete_label">Удалить</string>
   <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
-  <string name="mark_as_seen_label">Просмотрено</string>
-  <string name="marked_as_seen_label">Отмечено как просмотренное</string>
+  <string name="remove_new_flag_label">Просмотрено</string>
+  <string name="removed_new_flag_label">Отмечено как просмотренное</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
   <string name="marked_as_read_label">Помечено как прослушанное</string>
   <string name="mark_unread_label">Отметить как непрослушанное</string>

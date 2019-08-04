@@ -26,7 +26,6 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparator;
-import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -1001,36 +1000,6 @@ public final class DBReader {
             this.episodesStarted = episodesStarted;
             this.episodesStartedIncludingMarked = episodesStartedIncludingMarked;
         }
-    }
-
-    /**
-     * Returns the flattr queue as a List of FlattrThings. The list consists of Feeds and FeedItems.
-     *
-     * @return The flattr queue as a List.
-     */
-    public static List<FlattrThing> getFlattrQueue() {
-        Log.d(TAG, "getFlattrQueue() called with: " + "");
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        List<FlattrThing> result = new ArrayList<>();
-
-        // load feeds
-        Cursor feedCursor = adapter.getFeedsInFlattrQueueCursor();
-        if (feedCursor.moveToFirst()) {
-            do {
-                result.add(extractFeedFromCursorRow(feedCursor));
-            } while (feedCursor.moveToNext());
-        }
-        feedCursor.close();
-
-        //load feed items
-        Cursor feedItemCursor = adapter.getFeedItemsInFlattrQueueCursor();
-        result.addAll(extractItemlistFromCursor(adapter, feedItemCursor));
-        feedItemCursor.close();
-
-        adapter.close();
-        Log.d(TAG, "Returning flattrQueueIterator for queue with " + result.size() + " items.");
-        return result;
     }
 
     /**

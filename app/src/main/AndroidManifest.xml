@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <supports-screens
         android:anyDensity="true"
@@ -140,25 +141,6 @@
         </receiver>
 
         <activity android:name=".activity.StorageErrorActivity">
-        </activity>
-        <activity
-            android:name=".activity.FlattrAuthActivity"
-            android:label="@string/flattr_auth_label">
-            <intent-filter>
-                <action android:name=".activities.FlattrAuthActivity"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="de.danoeh.antennapod"
-                    android:scheme="flattr4j"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.AboutActivity"
@@ -337,8 +319,7 @@
         <activity
             android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"
             android:configChanges="orientation"
-            android:label="@string/gpodnet_auth_label"
-            android:screenOrientation="portrait">
+            android:label="@string/gpodnet_auth_label">
             <intent-filter>
                 <action android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>

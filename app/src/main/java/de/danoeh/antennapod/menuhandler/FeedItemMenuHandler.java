@@ -124,10 +124,6 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
         }
 
-        if (selectedItem.getPaymentLink() == null || !selectedItem.getFlattrStatus().flattrable()) {
-            mi.setItemVisibility(R.id.support_item, false);
-        }
-
         boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
         mi.setItemVisibility(R.id.add_to_favorites_item, !isFavorite);
         mi.setItemVisibility(R.id.remove_from_favorites_item, isFavorite);
@@ -229,9 +225,6 @@ public class FeedItemMenuHandler {
                     Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
                             Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case R.id.support_item:
-                DBTasks.flattrItemIfLoggedIn(context, selectedItem);
                 break;
             case R.id.share_link_item:
                 ShareUtils.shareFeedItemLink(context, selectedItem);

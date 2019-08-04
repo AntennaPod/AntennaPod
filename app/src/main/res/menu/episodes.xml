@@ -25,8 +25,8 @@
         android:icon="?attr/navigation_accept"/>
 
     <item
-        android:id="@+id/mark_all_seen_item"
-        android:title="@string/mark_all_seen_label"
+        android:id="@+id/remove_all_new_flags_item"
+        android:title="@string/remove_all_new_flags_label"
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
         android:icon="?attr/navigation_accept"/>

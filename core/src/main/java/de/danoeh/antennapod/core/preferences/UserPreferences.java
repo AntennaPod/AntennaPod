@@ -95,8 +95,6 @@ public class UserPreferences {
     private static final String PREF_PROXY_PASSWORD = "prefProxyPassword";
 
     // Services
-    private static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
-    private static final String PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD = "prefAutoFlattrPlayedDurationThreshold";
     private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
 
     // Other
@@ -318,10 +316,6 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static boolean isAutoFlattr() {
-        return prefs.getBoolean(PREF_AUTO_FLATTR, false);
-    }
-
     public static String getPlaybackSpeed() {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
     }
@@ -450,16 +444,7 @@ public class UserPreferences {
     }
 
     public static int getRewindSecs() {
-        return prefs.getInt(PREF_REWIND_SECS, 30);
-    }
-
-
-    /**
-     * Returns the time after which an episode should be auto-flattr'd in percent of the episode's
-     * duration.
-     */
-    public static float getAutoFlattrPlayedDurationThreshold() {
-        return prefs.getFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD, 0.8f);
+        return prefs.getInt(PREF_REWIND_SECS, 10);
     }
 
     public static String[] getAutodownloadSelectedNetworks() {
@@ -588,23 +573,6 @@ public class UserPreferences {
         AutoUpdateManager.disableAutoUpdate();
     }
 
-    /**
-     * Change the auto-flattr settings
-     *
-     * @param enabled Whether automatic flattring should be enabled at all
-     * @param autoFlattrThreshold The percentage of playback time after which an episode should be
-     *                            flattrd. Must be a value between 0 and 1 (inclusive)
-     * */
-    public static void setAutoFlattrSettings( boolean enabled, float autoFlattrThreshold) {
-        if(autoFlattrThreshold < 0.0 || autoFlattrThreshold > 1.0) {
-            throw new IllegalArgumentException("Flattr threshold must be in range [0.0, 1.0]");
-        }
-        prefs.edit()
-             .putBoolean(PREF_AUTO_FLATTR, enabled)
-             .putFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD, autoFlattrThreshold)
-             .apply();
-    }
-
     public static boolean gpodnetNotificationsEnabled() {
         return prefs.getBoolean(PREF_GPODNET_NOTIFICATIONS, true);
     }
@@ -681,12 +649,16 @@ public class UserPreferences {
         return selectedSpeeds;
     }
 
+    public static String getMediaPlayer() {
+        return prefs.getString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER);
+    }
+
     public static boolean useSonic() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("sonic");
+        return getMediaPlayer().equals("sonic");
     }
 
     public static boolean useExoplayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals(PREF_MEDIA_PLAYER_EXOPLAYER);
+        return getMediaPlayer().equals(PREF_MEDIA_PLAYER_EXOPLAYER);
     }
 
     public static void enableSonic() {

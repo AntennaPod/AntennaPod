@@ -29,8 +29,6 @@ public class ClientConfig {
 
     public static GpodnetCallbacks gpodnetCallbacks;
 
-    public static FlattrCallbacks flattrCallbacks;
-
     public static DBTasksCallbacks dbTasksCallbacks;
 
     public static CastCallbacks castCallbacks;
@@ -43,7 +41,6 @@ public class ClientConfig {
         }
         PodDBAdapter.init(context);
         UserPreferences.init(context);
-        UpdateManager.init(context);
         PlaybackPreferences.init(context);
         NetworkUtils.init(context);
         CastManager.init(context);

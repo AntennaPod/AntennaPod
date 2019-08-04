@@ -16,24 +16,16 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
-import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
+import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.mfietz.fyydlin.FyydClient;
-import de.mfietz.fyydlin.FyydResponse;
-import de.mfietz.fyydlin.SearchHit;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
-import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.Podcast;
-import static java.util.Collections.emptyList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FyydSearchFragment extends Fragment {
 
@@ -49,12 +41,10 @@ public class FyydSearchFragment extends Fragment {
     private Button butRetry;
     private TextView txtvEmpty;
 
-    private final FyydClient client = new FyydClient(AntennapodHttpClient.getHttpClient());
-
     /**
      * List of podcasts retreived from the search
      */
-    private List<Podcast> searchResults;
+    private List<PodcastSearchResult> searchResults;
     private Disposable disposable;
 
     /**
@@ -81,7 +71,7 @@ public class FyydSearchFragment extends Fragment {
 
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
-            Podcast podcast = searchResults.get(position);
+            PodcastSearchResult podcast = searchResults.get(position);
             Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
             intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
             intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, podcast.title);
@@ -145,20 +135,26 @@ public class FyydSearchFragment extends Fragment {
             disposable.dispose();
         }
         showOnlyProgressBar();
-        disposable =  client.searchPodcasts(query, 10)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    progressBar.setVisibility(View.GONE);
-                    processSearchResult(result);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                    progressBar.setVisibility(View.GONE);
-                    txtvError.setText(error.toString());
-                    txtvError.setVisibility(View.VISIBLE);
-                    butRetry.setOnClickListener(v -> search(query));
-                    butRetry.setVisibility(View.VISIBLE);
-                });
+
+        FyydPodcastSearcher searcher = new FyydPodcastSearcher();
+        disposable = searcher.search(query).subscribe(result -> {
+            searchResults = result;
+            progressBar.setVisibility(View.GONE);
+
+            adapter.clear();
+            adapter.addAll(searchResults);
+            adapter.notifyDataSetInvalidated();
+            gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
+            txtvEmpty.setVisibility(searchResults.isEmpty() ? View.VISIBLE : View.GONE);
+
+        }, error -> {
+            Log.e(TAG, Log.getStackTraceString(error));
+            progressBar.setVisibility(View.GONE);
+            txtvError.setText(error.toString());
+            txtvError.setVisibility(View.VISIBLE);
+            butRetry.setOnClickListener(v -> search(query));
+            butRetry.setVisibility(View.VISIBLE);
+        });
     }
 
     private void showOnlyProgressBar() {
@@ -168,25 +164,4 @@ public class FyydSearchFragment extends Fragment {
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
-
-    private void processSearchResult(FyydResponse response) {
-        adapter.clear();
-        if (!response.getData().isEmpty()) {
-            adapter.clear();
-            searchResults = new ArrayList<>();
-            for (SearchHit searchHit : response.getData()) {
-                Podcast podcast = Podcast.fromSearch(searchHit);
-                searchResults.add(podcast);
-            }
-        } else {
-            searchResults = emptyList();
-        }
-        for(Podcast podcast : searchResults) {
-            adapter.add(podcast);
-        }
-        adapter.notifyDataSetInvalidated();
-        gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
-        txtvEmpty.setVisibility(searchResults.isEmpty() ? View.VISIBLE : View.GONE);
-    }
-
 }

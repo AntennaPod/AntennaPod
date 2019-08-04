@@ -14,7 +14,6 @@ class GeneratorUtil {
         String ns = (withNamespace) ? "http://www.w3.org/2005/Atom" : null;
         xml.startTag(ns, "link");
         xml.attribute(null, "rel", "payment");
-        xml.attribute(null, "title", "Flattr this!");
         xml.attribute(null, "href", paymentLink);
         xml.attribute(null, "type", "text/html");
         xml.endTag(ns, "link");

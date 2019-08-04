@@ -103,8 +103,8 @@
   <string name="mark_all_read_label">Marker alle som avspilt</string>
   <string name="mark_all_read_msg">Marker alle episoder som avspilt</string>
   <string name="mark_all_read_confirmation_msg">Vennligst bekreft at du ønsker å markere alle episoder som avspilt.</string>
-  <string name="mark_all_seen_label">Marker alle som sett</string>
-  <string name="mark_all_seen_confirmation_msg">Bekreft at du ønsker å markere alle episoder som sett.</string>
+  <string name="remove_all_new_flags_label">Marker alle som sett</string>
+  <string name="remove_all_new_flags_confirmation_msg">Bekreft at du ønsker å markere alle episoder som sett.</string>
   <string name="show_info_label">Vis informasjon</string>
   <string name="share_label">Del ...</string>
   <string name="share_file_label">Del fil</string>
@@ -130,7 +130,7 @@
   <string name="remove_label">Fjern</string>
   <string name="delete_label">Slett</string>
   <string name="delete_failed">Kan ikke slette filen. Omstart av enheten kan hjelpe.</string>
-  <string name="marked_as_seen_label">Marker som sett</string>
+  <string name="removed_new_flag_label">Marker som sett</string>
   <string name="mark_read_label">Marker som avspilt</string>
   <string name="marked_as_read_label">Marker som avspilt</string>
   <string name="mark_unread_label">Marker som ikke avspilt</string>

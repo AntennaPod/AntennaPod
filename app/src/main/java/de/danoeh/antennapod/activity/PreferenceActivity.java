@@ -15,7 +15,6 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;
-import de.danoeh.antennapod.fragment.preferences.FlattrPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.IntegrationsPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.MainPreferencesFragment;
@@ -64,8 +63,6 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             prefFragment = new AutoDownloadPreferencesFragment();
         } else if (screen == R.xml.preferences_gpodder) {
             prefFragment = new GpodderPreferencesFragment();
-        } else if (screen == R.xml.preferences_flattr) {
-            prefFragment = new FlattrPreferencesFragment();
         } else if (screen == R.xml.preferences_playback) {
             prefFragment = new PlaybackPreferencesFragment();
         }
@@ -86,8 +83,6 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                 return R.string.user_interface_label;
             case R.xml.preferences_integrations:
                 return R.string.integrations_label;
-            case R.xml.preferences_flattr:
-                return R.string.flattr_label;
             case R.xml.preferences_gpodder:
                 return R.string.gpodnet_main_label;
             default:
