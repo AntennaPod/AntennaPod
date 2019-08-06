@@ -60,7 +60,7 @@ public class EpisodesApplyActionFragment extends Fragment {
      *
      * Includes: the menu / action item and the actual logic
      */
-    private class ActionBinding {
+    private static class ActionBinding {
         int flag;
         @IdRes
         final int actionItemId;
