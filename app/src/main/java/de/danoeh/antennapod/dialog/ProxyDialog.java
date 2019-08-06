@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -23,6 +24,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
@@ -106,7 +109,14 @@ public class ProxyDialog {
                 .build();
         View view = dialog.getCustomView();
         spType = view.findViewById(R.id.spType);
-        String[] types = {Proxy.Type.DIRECT.name(), Proxy.Type.HTTP.name(), Proxy.Type.SOCKS.name()};
+
+        List<String> types= new ArrayList<>();
+        types.add(Proxy.Type.DIRECT.name());
+        types.add(Proxy.Type.HTTP.name());
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            types.add(Proxy.Type.SOCKS.name());
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
             android.R.layout.simple_spinner_item, types);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
