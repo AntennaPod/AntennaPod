@@ -114,8 +114,9 @@ public class ProxyDialog {
         types.add(Proxy.Type.DIRECT.name());
         types.add(Proxy.Type.HTTP.name());
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
             types.add(Proxy.Type.SOCKS.name());
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
             android.R.layout.simple_spinner_item, types);
