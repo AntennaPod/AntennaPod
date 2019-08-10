@@ -113,9 +113,9 @@
   <string name="mark_all_read_msg">Visi epizodai pažymėti kaip perklausyti</string>
   <string name="mark_all_read_confirmation_msg">Patvirtinkite, jog norite pažymėti visus epizodus kaip perklausytus.</string>
   <string name="mark_all_read_feed_confirmation_msg">Patvirtinkite, jog norite pažymėti visus šios tinklalaidės epizodus kaip perklausytus.</string>
-  <string name="mark_all_seen_label">Pažymėti visus kaip matytus</string>
-  <string name="mark_all_seen_msg">Pažymėti visus epizodus kaip matytus</string>
-  <string name="mark_all_seen_confirmation_msg">Patvirtinkite, jog norite pažymėti visus epizodus kaip matytus.</string>
+  <string name="remove_all_new_flags_label">Pažymėti visus kaip matytus</string>
+  <string name="removed_all_new_flags_msg">Pažymėti visus epizodus kaip matytus</string>
+  <string name="remove_all_new_flags_confirmation_msg">Patvirtinkite, jog norite pažymėti visus epizodus kaip matytus.</string>
   <string name="show_info_label">Rodyti informaciją</string>
   <string name="show_feed_settings_label">Rodyti tinklalaidės nustatymus</string>
   <string name="feed_info_label">Tinklalaidės informacija</string>
@@ -157,8 +157,8 @@
   <string name="remove_label">Pašalinti</string>
   <string name="delete_label">Ištrinti</string>
   <string name="delete_failed">Nepavyksta ištrinti failo. Įrenginio paleidimas iš naujo gali padėti.</string>
-  <string name="mark_as_seen_label">Pažymėti kaip matytą</string>
-  <string name="marked_as_seen_label">Pažymėtas kaip matytas</string>
+  <string name="remove_new_flag_label">Pažymėti kaip matytą</string>
+  <string name="removed_new_flag_label">Pažymėtas kaip matytas</string>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
   <string name="marked_as_read_label">Pažymėtas kaip perklausytas</string>
   <string name="mark_unread_label">Pažymėti kaip neperklausytą</string>

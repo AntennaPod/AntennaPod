@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="4dp"
+        android:elevation="16dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/discover"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="?android:attr/textColorPrimary"/>
+
+            <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/discover_more"
+                    android:gravity="end"
+                    android:textAlignment="viewEnd"
+                    android:textSize="18sp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_marginBottom="8dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:layout_weight="1"
+                    android:id="@+id/discover_more"
+                    android:textColor="@color/antennapod_blue"/>
+        </LinearLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <de.danoeh.antennapod.view.WrappingGridView
+                    android:id="@+id/discover_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="4"
+                    app:layout_columnWeight="1"
+                    app:layout_rowWeight="1"
+                    android:horizontalSpacing="4dp"
+                    android:verticalSpacing="4dp"
+                    android:scrollbars="none"
+                    android:layout_marginTop="8dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center_horizontal"/>
+
+            <ProgressBar
+                    android:id="@+id/discover_progress_bar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="30dp"/>
+
+            <TextView
+                    android:id="@+id/discover_error"
+                    android:textColor="@color/md_edittext_error"
+                    android:layout_width="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+

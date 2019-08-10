@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -54,7 +55,6 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -207,8 +207,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         transaction.commit();
 
         checkFirstLaunch();
-        NotificationUtils.createChannels(this);
-        UserPreferences.restartUpdateAlarm(false);
+        PreferenceUpgrader.checkUpgrades(this);
     }
 
     private void saveLastNavFragment(String tag) {
@@ -475,7 +474,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_FEED_ID) ||
@@ -580,17 +578,17 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
-            case R.id.mark_all_seen_item:
-                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(this,
-                        R.string.mark_all_seen_label,
-                        R.string.mark_all_seen_confirmation_msg) {
+            case R.id.remove_all_new_flags_item:
+                ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(this,
+                        R.string.remove_all_new_flags_label,
+                        R.string.remove_all_new_flags_confirmation_msg) {
                     @Override
                     public void onConfirmButtonPressed(DialogInterface dialog) {
                         dialog.dismiss();
-                        DBWriter.markFeedSeen(feed.getId());
+                        DBWriter.removeFeedNewFlag(feed.getId());
                     }
                 };
-                markAllSeenConfirmationDialog.createNewDialog().show();
+                removeAllNewFlagsConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.mark_all_read_item:
                 ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(this,

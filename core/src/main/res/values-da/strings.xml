@@ -109,9 +109,9 @@
   <string name="mark_all_read_label">Marker alle som afspillet</string>
   <string name="mark_all_read_msg">Marker alle udsendelser som afspillet</string>
   <string name="mark_all_read_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som værende afspillet.</string>
-  <string name="mark_all_seen_label">Marker alle som set</string>
-  <string name="mark_all_seen_msg">Markeret alle udsendelser som set</string>
-  <string name="mark_all_seen_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som set.</string>
+  <string name="remove_all_new_flags_label">Marker alle som set</string>
+  <string name="removed_all_new_flags_msg">Markeret alle udsendelser som set</string>
+  <string name="remove_all_new_flags_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som set.</string>
   <string name="show_info_label">Vis information</string>
   <string name="feed_info_label">Podcast-info</string>
   <string name="rename_feed_label">Omdøb podcast</string>
@@ -148,8 +148,8 @@
   <string name="remove_label">Fjern</string>
   <string name="delete_label">Slet</string>
   <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
-  <string name="mark_as_seen_label">Markér som set</string>
-  <string name="marked_as_seen_label">Markeret som set</string>
+  <string name="remove_new_flag_label">Markér som set</string>
+  <string name="removed_new_flag_label">Markeret som set</string>
   <string name="mark_read_label">Marker som læst</string>
   <string name="marked_as_read_label">Markeret som afspillet</string>
   <string name="mark_unread_label">Marker som uafspillet</string>

@@ -41,29 +41,10 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.AlarmUpdateReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
-                <data
-                    android:path="de.danoeh.antennapod"
-                    android:scheme="package" />
-            </intent-filter>
-        </receiver>
-
         <receiver android:name=".receiver.FeedUpdateReceiver"
             android:label="@string/feed_update_receiver_name"
             android:exported="true"> <!-- allow feeds update to be triggered by external apps -->
         </receiver>
-
-        <service
-                android:name=".service.FeedUpdateJobService"
-                android:permission="android.permission.BIND_JOB_SERVICE" >
-
-        </service>
-
     </application>
 
 </manifest>

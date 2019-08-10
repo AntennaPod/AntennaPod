@@ -24,13 +24,6 @@
         android:title="@string/search_label"/>
 
     <item
-        android:id="@+id/clear_queue"
-        android:title="@string/clear_queue_label"
-        android:menuCategory="container"
-        custom:showAsAction="collapseActionView"
-        android:icon="?attr/navigation_accept"/>
-
-    <item
         android:id="@+id/queue_sort"
         android:title="@string/sort">
 
@@ -42,10 +35,10 @@
                 <menu>
                     <item
                         android:id="@+id/queue_sort_date_asc"
-                        android:title="@string/ascending"/>
+                        android:title="@string/sort_old_to_new"/>
                     <item
                         android:id="@+id/queue_sort_date_desc"
-                        android:title="@string/descending"/>
+                        android:title="@string/sort_new_to_old"/>
                 </menu>
             </item>
 
@@ -103,13 +96,24 @@
                 <menu>
                     <item
                         android:id="@+id/queue_sort_smart_shuffle_asc"
-                        android:title="@string/ascending"/>
+                        android:title="@string/sort_old_to_new"/>
                     <item
                         android:id="@+id/queue_sort_smart_shuffle_desc"
-                        android:title="@string/descending"/>
+                        android:title="@string/sort_new_to_old"/>
                 </menu>
             </item>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/clear_queue"
+        android:title="@string/clear_queue_label"
+        custom:showAsAction="collapseActionView"
+        android:icon="?attr/navigation_accept"/>
+
+    <item
+        android:id="@+id/episode_actions"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/batch_edit" />
 
 </menu>

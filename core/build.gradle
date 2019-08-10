@@ -10,6 +10,12 @@ android {
         versionName "1.0"
         testApplicationId "de.danoeh.antennapod.core.tests"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ eventBusIndex : 'de.danoeh.antennapod.core.ApCoreEventBusIndex' ]
+            }
+        }
     }
     buildTypes {
         release {
@@ -44,11 +50,10 @@ dependencies {
     implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:preference-v14:$supportVersion"
+    implementation "android.arch.work:work-runtime:$workManagerVersion"
+    
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "org.apache.commons:commons-text:$commonstextVersion"
-    implementation ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
-        exclude group: "org.json", module: "json"
-    }
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
@@ -59,6 +64,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"
     implementation "org.greenrobot:eventbus:$eventbusVersion"
+    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "org.awaitility:awaitility:$awaitilityVersion"

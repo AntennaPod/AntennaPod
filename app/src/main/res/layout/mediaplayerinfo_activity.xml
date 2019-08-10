@@ -51,11 +51,13 @@
             android:orientation="vertical">
 
 
-                <RelativeLayout
+            <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/scrubber_vertical_padding"
+                    android:paddingBottom="@dimen/scrubber_vertical_padding">
 
-                    <TextView
+                <TextView
                         android:id="@+id/txtvPosition"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -67,9 +69,9 @@
                         android:text="@string/position_default_label"
                         android:textColor="?android:attr/textColorSecondary"
                         android:textSize="@dimen/text_size_micro"
-                        tools:background="@android:color/holo_green_dark" />
+                        tools:background="@android:color/holo_green_dark"/>
 
-                    <TextView
+                <TextView
                         android:id="@+id/txtvLength"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,9 +83,9 @@
                         android:text="@string/position_default_label"
                         android:textColor="?android:attr/textColorSecondary"
                         android:textSize="@dimen/text_size_micro"
-                        tools:background="@android:color/holo_green_dark" />
+                        tools:background="@android:color/holo_green_dark"/>
 
-                    <SeekBar
+                <SeekBar
                         android:id="@+id/sbPosition"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -97,9 +99,9 @@
                         android:layout_toRightOf="@id/txtvPosition"
                         android:layout_toEndOf="@id/txtvPosition"
                         android:max="500"
-                        tools:background="@android:color/holo_green_dark" />
+                        tools:background="@android:color/holo_green_dark"/>
 
-                </RelativeLayout>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/player_control"

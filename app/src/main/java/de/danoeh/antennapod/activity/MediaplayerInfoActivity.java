@@ -46,7 +46,6 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -173,7 +172,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     protected void onStart() {
         super.onStart();
-        AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadData();
@@ -341,8 +339,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         }
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
-            case R.id.mark_all_seen_item:
-                DBWriter.markFeedSeen(feed.getId());
+            case R.id.remove_all_new_flags_item:
+                DBWriter.removeFeedNewFlag(feed.getId());
                 return true;
             case R.id.mark_all_read_item:
                 DBWriter.markFeedRead(feed.getId());

@@ -199,8 +199,6 @@ public class FeedInfoActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.support_item).setVisible(
-                feed != null && feed.getPaymentLink() != null);
         menu.findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
         menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null &&
                 IntentUtils.isCallable(this, new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));

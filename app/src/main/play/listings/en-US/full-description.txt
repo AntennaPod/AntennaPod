@@ -1,5 +1,5 @@
 AntennaPod is a podcast manager and player that gives you instant access to millions of free and paid podcasts, from independent podcasters to large publishing houses such as the BBC, NPR and CNN. Add, import and export their feeds hassle-free using the iTunes podcast database, OPML files or simple RSS URLs. Save effort, battery power and mobile data usage with powerful automation controls for downloading episodes (specify times, intervals and WiFi networks) and deleting episodes (based on your favourites and delay settings).<br>
-But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer. You can even show your love to the content creators  with our Flattr integration.
+But most importantly: Download, stream or queue episodes and enjoy them the way you like with adjustable playback speeds, chapter support and a sleep timer.
 
 Made by podcast-enthousiast, AntennaPod is free in all senses of the word: open source, no costs, no ads.
 
@@ -15,7 +15,6 @@ KEEP TRACK, SHARE & APPRECIATE<br>
 &#8226; Keep track of the best of the best by marking episodes as favourites<br>
 &#8226; Find that one episode through the playback history or by searching (titles and shownotes)<br>
 &#8226; Share episodes and feeds through advanced social media and email options, the gPodder.net services and via OPML export<br>
-&#8226; Support content creators with Flattr integration including automatic flattring
 
 CONTROL THE SYSTEM<br>
 &#8226; Take control over automated downloading: choose feeds, exclude mobile networks, select specific WiFi networks, require the phone to be charging and set times or intervals<br>

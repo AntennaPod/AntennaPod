@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
@@ -73,18 +75,18 @@ public class UserPreferences {
     private static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
     public static final String PREF_VIDEO_BEHAVIOR = "prefVideoBehavior";
+    private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
-    public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateAllowed";
+    private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
-    public static final String PREF_ENABLE_AUTODL_ON_MOBILE = "prefEnableAutoDownloadOnMobile";
     private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
@@ -93,8 +95,6 @@ public class UserPreferences {
     private static final String PREF_PROXY_PASSWORD = "prefProxyPassword";
 
     // Services
-    private static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
-    private static final String PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD = "prefAutoFlattrPlayedDurationThreshold";
     private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
 
     // Other
@@ -316,10 +316,6 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static boolean isAutoFlattr() {
-        return prefs.getBoolean(PREF_AUTO_FLATTR, false);
-    }
-
     public static String getPlaybackSpeed() {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
     }
@@ -380,16 +376,67 @@ public class UserPreferences {
         }
     }
 
-    public static String getMobileUpdatesEnabled() {
-        return prefs.getString(PREF_MOBILE_UPDATE, "images");
+    public static boolean isAutoUpdateDisabled() {
+        return prefs.getString(PREF_UPDATE_INTERVAL, "").equals("0");
     }
 
-    public static boolean isAllowMobileUpdate() {
-        return getMobileUpdatesEnabled().equals("everything");
+    private static boolean isAllowMobileFor(String type) {
+        HashSet<String> defaultValue = new HashSet<>();
+        defaultValue.add("images");
+        Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
+        return allowed.contains(type);
+    }
+
+    public static boolean isAllowMobileFeedRefresh() {
+        return isAllowMobileFor("feed_refresh");
+    }
+
+    public static boolean isAllowMobileEpisodeDownload() {
+        return isAllowMobileFor("episode_download");
+    }
+
+    public static boolean isAllowMobileAutoDownload() {
+        return isAllowMobileFor("auto_download");
+    }
+
+    public static boolean isAllowMobileStreaming() {
+        return isAllowMobileFor("streaming");
     }
 
     public static boolean isAllowMobileImages() {
-        return isAllowMobileUpdate() || getMobileUpdatesEnabled().equals("images");
+        return isAllowMobileFor("images");
+    }
+
+    private static void setAllowMobileFor(String type, boolean allow) {
+        HashSet<String> defaultValue = new HashSet<>();
+        defaultValue.add("images");
+        Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
+        if (allow) {
+            allowed.remove(type);
+        } else {
+            allowed.add(type);
+        }
+        prefs.edit().putStringSet(PREF_MOBILE_UPDATE, allowed).apply();
+    }
+
+    public static void setAllowMobileFeedRefresh(boolean allow) {
+        setAllowMobileFor("feed_refresh", allow);
+    }
+
+    public static void setAllowMobileEpisodeDownload(boolean allow) {
+        setAllowMobileFor("episode_download", allow);
+    }
+
+    public static void setAllowMobileAutoDownload(boolean allow) {
+        setAllowMobileFor("auto_download", allow);
+    }
+
+    public static void setAllowMobileStreaming(boolean allow) {
+        setAllowMobileFor("streaming", allow);
+    }
+
+    public static void setAllowMobileImages(boolean allow) {
+        setAllowMobileFor("images", allow);
     }
 
     public static int getParallelDownloads() {
@@ -421,11 +468,6 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
 
-    public static boolean isEnableAutodownloadOnMobile() {
-        return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_MOBILE, false);
-    }
-
-
     public static int getImageCacheSize() {
         String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);
         int cacheSizeInt = Integer.parseInt(cacheSizeString);
@@ -444,16 +486,7 @@ public class UserPreferences {
     }
 
     public static int getRewindSecs() {
-        return prefs.getInt(PREF_REWIND_SECS, 30);
-    }
-
-
-    /**
-     * Returns the time after which an episode should be auto-flattr'd in percent of the episode's
-     * duration.
-     */
-    public static float getAutoFlattrPlayedDurationThreshold() {
-        return prefs.getFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD, 0.8f);
+        return prefs.getInt(PREF_REWIND_SECS, 10);
     }
 
     public static String[] getAutodownloadSelectedNetworks() {
@@ -561,7 +594,7 @@ public class UserPreferences {
              .apply();
         // when updating with an interval, we assume the user wants
         // to update *now* and then every 'hours' interval thereafter.
-        restartUpdateAlarm(true);
+        restartUpdateAlarm();
     }
 
     /**
@@ -571,24 +604,14 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
              .apply();
-        restartUpdateAlarm(false);
+        restartUpdateAlarm();
     }
 
-    /**
-     * Change the auto-flattr settings
-     *
-     * @param enabled Whether automatic flattring should be enabled at all
-     * @param autoFlattrThreshold The percentage of playback time after which an episode should be
-     *                            flattrd. Must be a value between 0 and 1 (inclusive)
-     * */
-    public static void setAutoFlattrSettings( boolean enabled, float autoFlattrThreshold) {
-        if(autoFlattrThreshold < 0.0 || autoFlattrThreshold > 1.0) {
-            throw new IllegalArgumentException("Flattr threshold must be in range [0.0, 1.0]");
-        }
+    public static void disableAutoUpdate() {
         prefs.edit()
-             .putBoolean(PREF_AUTO_FLATTR, enabled)
-             .putFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD, autoFlattrThreshold)
-             .apply();
+                .putString(PREF_UPDATE_INTERVAL, "0")
+                .apply();
+        AutoUpdateManager.disableAutoUpdate();
     }
 
     public static boolean gpodnetNotificationsEnabled() {
@@ -667,12 +690,16 @@ public class UserPreferences {
         return selectedSpeeds;
     }
 
+    public static String getMediaPlayer() {
+        return prefs.getString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER);
+    }
+
     public static boolean useSonic() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals("sonic");
+        return getMediaPlayer().equals("sonic");
     }
 
     public static boolean useExoplayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, "sonic").equals(PREF_MEDIA_PLAYER_EXOPLAYER);
+        return getMediaPlayer().equals(PREF_MEDIA_PLAYER_EXOPLAYER);
     }
 
     public static void enableSonic() {
@@ -814,18 +841,25 @@ public class UserPreferences {
         }
     }
 
-    public static void restartUpdateAlarm(boolean now) {
-        int[] timeOfDay = getUpdateTimeOfDay();
-        Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
-        if (timeOfDay.length == 2) {
-            AutoUpdateManager.restartUpdateTimeOfDayAlarm(context, timeOfDay[0], timeOfDay[1]);
+    /**
+     *
+     * @return true if auto update is set to a specific time
+     *         false if auto update is set to interval
+     */
+    public static boolean isAutoUpdateTimeOfDay() {
+        return getUpdateTimeOfDay().length == 2;
+    }
+
+    public static void restartUpdateAlarm() {
+        if (isAutoUpdateDisabled()) {
+            AutoUpdateManager.disableAutoUpdate();
+        } else if (isAutoUpdateTimeOfDay()) {
+            int[] timeOfDay = getUpdateTimeOfDay();
+            Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
+            AutoUpdateManager.restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
         } else {
             long milliseconds = getUpdateInterval();
-            long startTrigger = milliseconds;
-            if (now) {
-                startTrigger = TimeUnit.SECONDS.toMillis(10);
-            }
-            AutoUpdateManager.restartUpdateIntervalAlarm(context, startTrigger, milliseconds);
+            AutoUpdateManager.restartUpdateIntervalAlarm(milliseconds);
         }
     }
 
@@ -870,5 +904,9 @@ public class UserPreferences {
         prefs.edit()
                 .putString(PREF_BACK_BUTTON_GO_TO_PAGE, tag)
                 .apply();
+    }
+
+    public static boolean timeRespectsSpeed() {
+        return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
     }
 }

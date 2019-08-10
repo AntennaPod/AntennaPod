@@ -18,15 +18,13 @@ import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
-import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
-import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 
 /**
  * Data Object for a XML message
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements ShownotesProvider, FlattrThing, ImageResource {
+public class FeedItem extends FeedComponent implements ShownotesProvider, ImageResource {
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
@@ -60,7 +58,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     public static final int PLAYED = 1;
 
     private String paymentLink;
-    private final FlattrStatus flattrStatus;
 
     /**
      * Is true if the database contains any chapters that belong to this item. This attribute is only
@@ -92,7 +89,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     public FeedItem() {
         this.state = UNPLAYED;
-        this.flattrStatus = new FlattrStatus();
         this.hasChapters = false;
     }
 
@@ -100,7 +96,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
      * This constructor is used by DBReader.
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
-                    FlattrStatus flattrStatus, boolean hasChapters, String imageUrl, int state,
+                    boolean hasChapters, String imageUrl, int state,
                     String itemIdentifier, long autoDownload) {
         this.id = id;
         this.title = title;
@@ -108,7 +104,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.pubDate = pubDate;
         this.paymentLink = paymentLink;
         this.feedId = feedId;
-        this.flattrStatus = flattrStatus;
         this.hasChapters = hasChapters;
         this.imageUrl = imageUrl;
         this.state = state;
@@ -127,7 +122,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.pubDate = (pubDate != null) ? (Date) pubDate.clone() : null;
         this.state = state;
         this.feed = feed;
-        this.flattrStatus = new FlattrStatus();
         this.hasChapters = false;
     }
 
@@ -142,7 +136,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.pubDate = (pubDate != null) ? (Date) pubDate.clone() : null;
         this.state = state;
         this.feed = feed;
-        this.flattrStatus = new FlattrStatus();
         this.hasChapters = hasChapters;
     }
 
@@ -153,7 +146,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         int indexPubDate = cursor.getColumnIndex(PodDBAdapter.KEY_PUBDATE);
         int indexPaymentLink = cursor.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK);
         int indexFeedId = cursor.getColumnIndex(PodDBAdapter.KEY_FEED);
-        int indexFlattrStatus = cursor.getColumnIndex(PodDBAdapter.KEY_FLATTR_STATUS);
         int indexHasChapters = cursor.getColumnIndex(PodDBAdapter.KEY_HAS_CHAPTERS);
         int indexRead = cursor.getColumnIndex(PodDBAdapter.KEY_READ);
         int indexItemIdentifier = cursor.getColumnIndex(PodDBAdapter.KEY_ITEM_IDENTIFIER);
@@ -167,13 +159,12 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         String paymentLink = cursor.getString(indexPaymentLink);
         long feedId = cursor.getLong(indexFeedId);
         boolean hasChapters = cursor.getInt(indexHasChapters) > 0;
-        FlattrStatus flattrStatus = new FlattrStatus(cursor.getLong(indexFlattrStatus));
         int state = cursor.getInt(indexRead);
         String itemIdentifier = cursor.getString(indexItemIdentifier);
         long autoDownload = cursor.getLong(indexAutoDownload);
         String imageUrl = cursor.getString(indexImageUrl);
 
-        return new FeedItem(id, title, link, pubDate, paymentLink, feedId, flattrStatus,
+        return new FeedItem(id, title, link, pubDate, paymentLink, feedId,
                 hasChapters, imageUrl, state, itemIdentifier, autoDownload);
     }
 
@@ -328,10 +319,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     public void setContentEncoded(String contentEncoded) {
         this.contentEncoded = contentEncoded;
-    }
-    
-    public FlattrStatus getFlattrStatus() {
-        return flattrStatus;
     }
 
     public String getPaymentLink() {

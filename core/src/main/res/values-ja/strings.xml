@@ -114,9 +114,9 @@
   <string name="mark_all_read_msg">すべてのエピソードを再生済にしました</string>
   <string name="mark_all_read_confirmation_msg">再生済としてマークするすべてのエピソードを確認してください。</string>
   <string name="mark_all_read_feed_confirmation_msg">再生済としてマークするこのポッドキャストのすべてのエピソードを確認してください。</string>
-  <string name="mark_all_seen_label">すべて参照済としてマーク</string>
-  <string name="mark_all_seen_msg">すべてのエピソードを参照済にしました</string>
-  <string name="mark_all_seen_confirmation_msg">参照済としてマークするすべてのエピソードを確認してください。</string>
+  <string name="remove_all_new_flags_label">すべて参照済としてマーク</string>
+  <string name="removed_all_new_flags_msg">すべてのエピソードを参照済にしました</string>
+  <string name="remove_all_new_flags_confirmation_msg">参照済としてマークするすべてのエピソードを確認してください。</string>
   <string name="show_info_label">情報を表示</string>
   <string name="show_feed_settings_label">ポッドキャスト設定を表示</string>
   <string name="feed_info_label">ポッドキャスト情報</string>
@@ -165,8 +165,8 @@
   <plurals name="deleted_episode_batch_label">
     <item quantity="other">%d エピソードを削除しました。</item>
   </plurals>
-  <string name="mark_as_seen_label">参照済</string>
-  <string name="marked_as_seen_label">参照済としてマーク</string>
+  <string name="remove_new_flag_label">参照済</string>
+  <string name="removed_new_flag_label">参照済としてマーク</string>
   <string name="mark_read_label">再生済としてマーク</string>
   <string name="marked_as_read_label">再生済としてマークしました</string>
   <plurals name="marked_read_batch_label">

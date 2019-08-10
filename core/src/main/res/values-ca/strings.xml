@@ -111,9 +111,9 @@
   <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
   <string name="mark_all_read_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com reproduits.</string>
   <string name="mark_all_read_feed_confirmation_msg">Si us plau, confirmeu que voleu marcar tots els episodis d\'aquest podcast com a reproduïts.</string>
-  <string name="mark_all_seen_label">Marca tot com a llegit</string>
-  <string name="mark_all_seen_msg">Marcar tots episodis com a visualitzats</string>
-  <string name="mark_all_seen_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com vistos.</string>
+  <string name="remove_all_new_flags_label">Marca tot com a llegit</string>
+  <string name="removed_all_new_flags_msg">Marcar tots episodis com a visualitzats</string>
+  <string name="remove_all_new_flags_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com vistos.</string>
   <string name="show_info_label">Mostra informació</string>
   <string name="show_feed_settings_label">Mostrar configuració del podcast</string>
   <string name="feed_info_label">Informació del podcast</string>
@@ -153,8 +153,8 @@
   <string name="remove_label">Suprimeix</string>
   <string name="delete_label">Esborrar</string>
   <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
-  <string name="mark_as_seen_label">Marcar com a visualitzat</string>
-  <string name="marked_as_seen_label">Marcat com a vist</string>
+  <string name="remove_new_flag_label">Marcar com a visualitzat</string>
+  <string name="removed_new_flag_label">Marcat com a vist</string>
   <string name="mark_read_label">Marca com a llegit</string>
   <string name="marked_as_read_label">Marcats com llegits</string>
   <string name="mark_unread_label">Marca com a pendent</string>

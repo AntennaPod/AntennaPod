@@ -26,6 +26,7 @@ import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -46,8 +47,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     private final WeakReference<MainActivity> mainActivityRef;
     private final ItemAccess itemAccess;
-    private final ActionButtonCallback actionButtonCallback;
-    private final ActionButtonUtils actionButtonUtils;
     private final boolean showOnlyNewEpisodes;
 
     private FeedItem selectedItem;
@@ -57,13 +56,10 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
     public AllEpisodesRecycleAdapter(MainActivity mainActivity,
                                      ItemAccess itemAccess,
-                                     ActionButtonCallback actionButtonCallback,
                                      boolean showOnlyNewEpisodes) {
         super();
         this.mainActivityRef = new WeakReference<>(mainActivity);
         this.itemAccess = itemAccess;
-        this.actionButtonUtils = new ActionButtonUtils(mainActivity);
-        this.actionButtonCallback = actionButtonCallback;
         this.showOnlyNewEpisodes = showOnlyNewEpisodes;
 
         playingBackGroundColor = ThemeUtils.getColorFromAttr(mainActivity, R.attr.currently_playing_background);
@@ -134,7 +130,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 holder.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             } else if (media.getSize() > 0) {
                 holder.txtvDuration.setText(Converter.byteToString(media.getSize()));
-            } else if(NetworkUtils.isDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
+            } else if(NetworkUtils.isEpisodeHeadDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
                 holder.txtvDuration.setText("{fa-spinner}");
                 Iconify.addIcons(holder.txtvDuration);
                 NetworkUtils.getFeedMediaSizeObservable(media)
@@ -186,10 +182,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             holder.queueStatus.setVisibility(View.INVISIBLE);
         }
 
-        actionButtonUtils.configureActionButton(holder.butSecondary, item, isInQueue);
+        ItemActionButton actionButton = ItemActionButton.forItem(item, isInQueue);
+        actionButton.configure(holder.butSecondary, mainActivityRef.get());
+
         holder.butSecondary.setFocusable(false);
         holder.butSecondary.setTag(item);
-        holder.butSecondary.setOnClickListener(secondaryActionListener);
 
         new CoverLoader(mainActivityRef.get())
                 .withUri(item.getImageLocation())
@@ -214,14 +211,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     public int getItemCount() {
         return itemAccess.getCount();
     }
-
-    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            FeedItem item = (FeedItem) v.getTag();
-            actionButtonCallback.onActionButtonPressed(item, itemAccess.getQueueIds());
-        }
-    };
 
     public class Holder extends RecyclerView.ViewHolder
             implements View.OnClickListener,
@@ -290,7 +279,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             };
             FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
 
-            contextMenuInterface.setItemVisibility(R.id.mark_as_seen_item, item.isNew());
+            contextMenuInterface.setItemVisibility(R.id.remove_new_flag_item, item.isNew());
         }
 
     }

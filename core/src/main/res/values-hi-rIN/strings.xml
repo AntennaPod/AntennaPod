@@ -144,8 +144,8 @@
   <string name="remove_label"> हटाएँ</string>
   <string name="delete_label">डिलीट</string>
   <string name="delete_failed">फ़ाइल डिलीट करने में असमर्थ। डिवाइस को रिबूट करने से मदद मिल सकती है।</string>
-  <string name="mark_as_seen_label">देखा गया के रूप में चिह्नित करें</string>
-  <string name="marked_as_seen_label">देखा गया के रूप में चिह्नित किया गया</string>
+  <string name="remove_new_flag_label">देखा गया के रूप में चिह्नित करें</string>
+  <string name="removed_new_flag_label">देखा गया के रूप में चिह्नित किया गया</string>
   <string name="mark_read_label">चलाया गया के रूप में चिह्नित करें</string>
   <string name="marked_as_read_label">चलाया गया के रूप में चिह्नित किया गया</string>
   <string name="mark_unread_label">नही चलाया गया के रूप में चिह्नित करें</string>

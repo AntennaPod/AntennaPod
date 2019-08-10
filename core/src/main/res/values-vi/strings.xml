@@ -91,8 +91,8 @@
   <string name="mark_all_read_label">Đánh dấu đã nghe tất cả</string>
   <string name="mark_all_read_msg">Đánh dấu đã nghe tất cả các tập</string>
   <string name="mark_all_read_confirmation_msg">Hãy xác nhận bạn muốn đánh dấu đã nghe tất cả các tập.</string>
-  <string name="mark_all_seen_label">Đánh dấu đã xem tất cả</string>
-  <string name="mark_all_seen_confirmation_msg">Hãy xác nhận bạn muốn đánh dấu đã xem tất cả các tập.</string>
+  <string name="remove_all_new_flags_label">Đánh dấu đã xem tất cả</string>
+  <string name="remove_all_new_flags_confirmation_msg">Hãy xác nhận bạn muốn đánh dấu đã xem tất cả các tập.</string>
   <string name="show_info_label">Hiện thông tin</string>
   <string name="share_label">Chia sẻ…</string>
   <string name="share_feed_url_label">Chia sẻ liên kết feed</string>
@@ -116,7 +116,7 @@
   <string name="remove_label">Loại bỏ</string>
   <string name="delete_label">Xoá</string>
   <string name="remove_episode_lable">Xoá tập này</string>
-  <string name="marked_as_seen_label">Đánh dấu đã xem</string>
+  <string name="removed_new_flag_label">Đánh dấu đã xem</string>
   <string name="mark_read_label">Đánh dấu đã nghe</string>
   <string name="marked_as_read_label">Đã đánh dấu đã nghe</string>
   <string name="mark_unread_label">Đánh dấu chưa nghe</string>

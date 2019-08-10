@@ -14,7 +14,7 @@ import java.util.concurrent.FutureTask;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
-import de.danoeh.antennapod.core.util.comparator.SearchResultValueComparator;
+import de.danoeh.antennapod.core.util.comparator.InReverseChronologicalOrder;
 
 /**
  * Performs search on Feeds and FeedItems
@@ -76,7 +76,7 @@ public class FeedSearcher {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        Collections.sort(result, new SearchResultValueComparator());
+        Collections.sort(result, new InReverseChronologicalOrder());
         return result;
     }
 }

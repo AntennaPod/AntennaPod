@@ -1,9 +1,14 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.AttrRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,14 +20,18 @@ public class EmptyViewHandler {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
+    private final Context context;
     private final View emptyView;
     private final TextView tvTitle;
     private final TextView tvMessage;
+    private final ImageView ivIcon;
 
     public EmptyViewHandler(Context context) {
         emptyView = View.inflate(context, R.layout.empty_view_layout, null);
+        this.context = context;
         tvTitle = emptyView.findViewById(R.id.emptyViewTitle);
         tvMessage = emptyView.findViewById(R.id.emptyViewMessage);
+        ivIcon = emptyView.findViewById(R.id.emptyViewIcon);
     }
 
     public void setTitle(int title) {
@@ -31,6 +40,14 @@ public class EmptyViewHandler {
 
     public void setMessage(int message) {
         tvMessage.setText(message);
+    }
+
+    public void setIcon(@AttrRes int iconAttr) {
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(iconAttr, typedValue, true);
+        Drawable d = ContextCompat.getDrawable(context, typedValue.resourceId);
+        ivIcon.setImageDrawable(d);
+        ivIcon.setVisibility(View.VISIBLE);
     }
 
     public void hide() {
