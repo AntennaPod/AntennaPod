@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.core.util;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +9,7 @@ import java.util.Map;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
 /**
@@ -31,7 +30,30 @@ public class QueueSorter {
         SMART_SHUFFLE_DESC
     }
 
-    public static void sort(final Context context, final Rule rule, final boolean broadcastUpdate) {
+    /**
+     * Sorts the queue by the given rule and sends a broadcast update.
+     *
+     * @param rule Sort rule.
+     * @param broadcastUpdate Send broadcast update?
+     */
+    public static void sort(Rule rule, boolean broadcastUpdate) {
+        Permutor<FeedItem> permutor = getPermutor(rule);
+        if (permutor != null) {
+            DBWriter.reorderQueue(permutor, broadcastUpdate);
+        }
+    }
+
+    /**
+     * Returns a Permutor that sorts a list appropriate to the given sort rule.
+     *
+     * @param rule Sort rule.
+     * @return Permutor that sorts a list appropriate to the given sort rule. <code>null</code> if the rule is unknown or <code>null</code>.
+     */
+    public static Permutor<FeedItem> getPermutor(Rule rule) {
+        if (rule == null) {
+            return null;
+        }
+
         Comparator<FeedItem> comparator = null;
         Permutor<FeedItem> permutor = null;
 
@@ -86,13 +108,44 @@ public class QueueSorter {
             case SMART_SHUFFLE_DESC:
                 permutor = (queue) -> smartShuffle(queue, false);
                 break;
-            default:
         }
 
         if (comparator != null) {
-            DBWriter.sortQueue(comparator, broadcastUpdate);
-        } else if (permutor != null) {
-            DBWriter.reorderQueue(permutor, broadcastUpdate);
+            final Comparator<FeedItem> comparator2 = comparator;
+            permutor = (queue) -> Collections.sort(queue, comparator2);
+        }
+        return permutor;
+    }
+
+    /**
+     * Converts a QueueSortOrder value to its corresponding Rule value.
+     *
+     * @param sortOrder Sort order.
+     * @return Rule value corresponding to the given sort order. <code>null</code> if the sort order is unknown or <code>null</code>.
+     */
+    public static Rule queueSortOrder2Rule(UserPreferences.QueueSortOrder sortOrder) {
+        if (sortOrder == null) {
+            return null;
+        }
+        switch (sortOrder) {
+            case DATE_NEW_OLD:
+                return QueueSorter.Rule.DATE_DESC;
+            case DATE_OLD_NEW:
+                return QueueSorter.Rule.DATE_ASC;
+            case DURATION_SHORT_LONG:
+                return QueueSorter.Rule.DURATION_ASC;
+            case DURATION_LONG_SHORT:
+                return QueueSorter.Rule.DURATION_DESC;
+            case EPISODE_TITLE_A_Z:
+                return QueueSorter.Rule.EPISODE_TITLE_ASC;
+            case EPISODE_TITLE_Z_A:
+                return QueueSorter.Rule.EPISODE_TITLE_DESC;
+            case FEED_TITLE_A_Z:
+                return QueueSorter.Rule.FEED_TITLE_ASC;
+            case FEED_TITLE_Z_A:
+                return QueueSorter.Rule.FEED_TITLE_DESC;
+            default:
+                return null;
         }
     }
 

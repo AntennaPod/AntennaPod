@@ -44,6 +44,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
+import de.danoeh.antennapod.core.util.QueueSorter;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -383,6 +384,7 @@ public class DBWriter {
                         }
                     }
                     if (queueModified) {
+                        applySortOrder(queue, events);
                         adapter.setQueue(queue);
                         for (QueueEvent event : events) {
                             EventBus.getDefault().post(event);
@@ -399,6 +401,29 @@ public class DBWriter {
                 }
             }
         });
+    }
+
+    /**
+     * Sorts the queue depending on the configured sort order. If manual order is configured, the queue is not modified.
+     *
+     * @param queue  The queue to be sorted.
+     * @param events Replaces the events by a single SORT event if the list has to be sorted automatically.
+     */
+    private static void applySortOrder(List<FeedItem> queue, List<QueueEvent> events) {
+        if (UserPreferences.isQueueSortedManually()) {
+            // automatic sort order is disabled, don't change anything
+            return;
+        }
+
+        // Sort queue by configured sort order
+        UserPreferences.QueueSortOrder sortOrder = UserPreferences.getQueueSortOrder();
+        QueueSorter.Rule sortRule = QueueSorter.queueSortOrder2Rule(sortOrder);
+        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortRule);
+        permutor.reorder(queue);
+
+        // Replace ADDED events by a single SORTED event
+        events.clear();
+        events.add(QueueEvent.sorted(queue));
     }
 
     /**
@@ -850,31 +875,8 @@ public class DBWriter {
     }
 
     /**
-     * Sort the FeedItems in the queue with the given Comparator.
-     * @param comparator      FeedItem comparator
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> sortQueue(final Comparator<FeedItem> comparator, final boolean broadcastUpdate) {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            final List<FeedItem> queue = DBReader.getQueue(adapter);
-
-            if (queue != null) {
-                Collections.sort(queue, comparator);
-                adapter.setQueue(queue);
-                if (broadcastUpdate) {
-                    EventBus.getDefault().post(QueueEvent.sorted(queue));
-                }
-            } else {
-                Log.e(TAG, "sortQueue: Could not load queue");
-            }
-            adapter.close();
-        });
-    }
-
-    /**
-     * Similar to sortQueue, but allows more complex reordering by providing whole-queue context.
+     * Sort the FeedItems in the queue with the given Permutor.
+     *
      * @param permutor        Encapsulates whole-Queue reordering logic.
      * @param broadcastUpdate <code>true</code> if this operation should trigger a
      *                        QueueUpdateBroadcast. This option should be set to <code>false</code>
