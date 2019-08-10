@@ -578,6 +578,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaPlayer.playMediaObject(playable, false, true, true);
             started = true;
             PlaybackService.this.updateMediaSessionMetadata(playable);
+        } else {
+            stopService();
         }
     }
 
