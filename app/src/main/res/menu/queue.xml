@@ -29,6 +29,11 @@
 
         <menu>
             <item
+                android:id="@+id/queue_sort_automatically"
+                android:title="@string/sort_automatically"
+                android:checkable="true" />
+
+            <item
                 android:id="@+id/queue_sort_date"
                 android:title="@string/date">
 

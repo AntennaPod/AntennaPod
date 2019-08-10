@@ -493,7 +493,7 @@ public class UserPreferences {
 
     public static boolean isQueueLocked() {
         return prefs.getBoolean(PREF_QUEUE_LOCKED, false)
-                || !isQueueSortedManually();
+                || isQueueSortedAutomatically();
     }
 
     public static void setFastForwardSecs(int secs) {
@@ -883,6 +883,12 @@ public class UserPreferences {
         return parseQueueSortOrder(sortOrderStr);
     }
 
+    public static void setQueueSortOrder(QueueSortOrder queueSortOrder) {
+        prefs.edit()
+                .putString(PREF_QUEUE_SORT_ORDER, queueSortOrder.name())
+                .apply();
+    }
+
     public static QueueSortOrder parseQueueSortOrder(String value) {
         try {
             return QueueSortOrder.valueOf(value);
@@ -892,8 +898,8 @@ public class UserPreferences {
         }
     }
 
-    public static boolean isQueueSortedManually() {
+    public static boolean isQueueSortedAutomatically() {
         QueueSortOrder sortedOrder = getQueueSortOrder();
-        return sortedOrder == QueueSortOrder.MANUALLY;
+        return sortedOrder != QueueSortOrder.MANUALLY;
     }
 }

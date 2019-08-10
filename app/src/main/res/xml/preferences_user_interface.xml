@@ -32,14 +32,6 @@
                 android:summary="@string/pref_nav_drawer_feed_counter_sum"
                 android:defaultValue="0"
                 app:useStockLayout="true"/>
-        <ListPreference
-                android:entryValues="@array/nav_queue_sort_values"
-                android:entries="@array/nav_queue_sort_options"
-                android:title="@string/pref_queue_sort_title"
-                android:key="prefQueueSortOrder"
-                android:summary="@string/pref_queue_sort_sum"
-                android:defaultValue="MANUALLY"
-                app:useStockLayout="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreference

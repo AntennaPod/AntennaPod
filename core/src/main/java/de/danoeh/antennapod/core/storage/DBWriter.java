@@ -410,7 +410,7 @@ public class DBWriter {
      * @param events Replaces the events by a single SORT event if the list has to be sorted automatically.
      */
     private static void applySortOrder(List<FeedItem> queue, List<QueueEvent> events) {
-        if (UserPreferences.isQueueSortedManually()) {
+        if (!UserPreferences.isQueueSortedAutomatically()) {
             // automatic sort order is disabled, don't change anything
             return;
         }

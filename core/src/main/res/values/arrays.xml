@@ -187,29 +187,6 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="nav_queue_sort_options">
-        <item>@string/sort_manually</item>
-        <item>@string/sort_date_new_old</item>
-        <item>@string/sort_date_old_new</item>
-        <item>@string/sort_duration_short_long</item>
-        <item>@string/sort_duration_long_short</item>
-        <item>@string/sort_episode_title_a_z</item>
-        <item>@string/sort_episode_title_z_a</item>
-        <item>@string/sort_feed_title_a_z</item>
-        <item>@string/sort_feed_title_z_a</item>
-    </string-array>
-    <string-array name="nav_queue_sort_values">
-        <item>MANUALLY</item>
-        <item>DATE_NEW_OLD</item>
-        <item>DATE_OLD_NEW</item>
-        <item>DURATION_SHORT_LONG</item>
-        <item>DURATION_LONG_SHORT</item>
-        <item>EPISODE_TITLE_A_Z</item>
-        <item>EPISODE_TITLE_Z_A</item>
-        <item>FEED_TITLE_A_Z</item>
-        <item>FEED_TITLE_Z_A</item>
-    </string-array>
-
     <string-array name="nav_drawer_feed_counter_options">
         <item>@string/drawer_feed_counter_new_unplayed</item>
         <item>@string/drawer_feed_counter_new</item>

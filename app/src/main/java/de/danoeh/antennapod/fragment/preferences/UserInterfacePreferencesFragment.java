@@ -11,11 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.Permutor;
-import de.danoeh.antennapod.core.util.QueueSorter;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -94,17 +90,6 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
         }
-
-        findPreference(UserPreferences.PREF_QUEUE_SORT_ORDER)
-                .setOnPreferenceChangeListener((preference, newValue) -> {
-                    UserPreferences.QueueSortOrder newSortOrder = UserPreferences.parseQueueSortOrder((String) newValue);
-                    if (newSortOrder != UserPreferences.QueueSortOrder.MANUALLY) {
-                        QueueSorter.Rule sortRule = QueueSorter.queueSortOrder2Rule(newSortOrder);
-                        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortRule);
-                        DBWriter.reorderQueue(permutor, true);
-                    }
-                    return true;
-                });
     }
 
     private void showDrawerPreferencesDialog() {

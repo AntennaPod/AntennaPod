@@ -150,6 +150,38 @@ public class QueueSorter {
     }
 
     /**
+     * Converts a Rule value to its corresponding QueueSortOrder value.
+     *
+     * @param rule Rule value.
+     * @return QueueSortOrder value corresponding to the given Rule value. <code>null</code> if the Rule value is unsupported or <code>null</code>.
+     */
+    public static UserPreferences.QueueSortOrder rule2QueueSortOrder(Rule rule) {
+        if (rule == null) {
+            return null;
+        }
+        switch (rule) {
+            case EPISODE_TITLE_ASC:
+                return UserPreferences.QueueSortOrder.EPISODE_TITLE_A_Z;
+            case EPISODE_TITLE_DESC:
+                return UserPreferences.QueueSortOrder.EPISODE_TITLE_Z_A;
+            case DATE_ASC:
+                return UserPreferences.QueueSortOrder.DATE_OLD_NEW;
+            case DATE_DESC:
+                return UserPreferences.QueueSortOrder.DATE_NEW_OLD;
+            case DURATION_ASC:
+                return UserPreferences.QueueSortOrder.DURATION_SHORT_LONG;
+            case DURATION_DESC:
+                return UserPreferences.QueueSortOrder.DURATION_LONG_SHORT;
+            case FEED_TITLE_ASC:
+                return UserPreferences.QueueSortOrder.FEED_TITLE_A_Z;
+            case FEED_TITLE_DESC:
+                return UserPreferences.QueueSortOrder.FEED_TITLE_Z_A;
+            default:
+                return null;
+        }
+    }
+
+    /**
      * Implements a reordering by pubdate that avoids consecutive episodes from the same feed in
      * the queue.
      *

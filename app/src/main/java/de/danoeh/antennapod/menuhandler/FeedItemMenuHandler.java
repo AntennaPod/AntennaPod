@@ -15,7 +15,6 @@ import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -68,17 +67,17 @@ public class FeedItemMenuHandler {
         }
         boolean hasMedia = selectedItem.getMedia() != null;
         boolean isPlaying = hasMedia && selectedItem.getState() == FeedItem.State.PLAYING;
-        boolean sortedManually = UserPreferences.isQueueSortedManually();
+        boolean sortedAutomatically = UserPreferences.isQueueSortedAutomatically();
 
         if (!isPlaying) {
             mi.setItemVisibility(R.id.skip_episode_item, false);
         }
 
         boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
-        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId() || !sortedManually) {
+        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId() || sortedAutomatically) {
             mi.setItemVisibility(R.id.move_to_top_item, false);
         }
-        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId() || !sortedManually) {
+        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId() || sortedAutomatically) {
             mi.setItemVisibility(R.id.move_to_bottom_item, false);
         }
         if (!isInQueue) {

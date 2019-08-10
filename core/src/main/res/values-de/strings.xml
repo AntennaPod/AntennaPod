@@ -276,6 +276,7 @@
   <string name="move_to_top_label">Zum Anfang verschieben</string>
   <string name="move_to_bottom_label">Zum Ende verschieben</string>
   <string name="sort">Sortieren</string>
+  <string name="sort_automatically">Automatisch sortieren</string>
   <string name="date">Datum</string>
   <string name="duration">Dauer</string>
   <string name="episode_title">Episodentitel</string>
@@ -416,8 +417,6 @@
   <string name="pref_nav_drawer_feed_order_sum">Ändere die Reihenfolge deiner Abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Abonnement-Zähler einstellen</string>
   <string name="pref_nav_drawer_feed_counter_sum">Ändere die durch den Abonnementszähler angezeigten Informationen. Betrifft auch die Sortierung der Abonnements wenn \"Reihenfolge der Abonnements\" auf \"Zähler\" gesetzt ist.</string>
-  <string name="pref_queue_sort_title">Sortierung der Abspielliste einstellen</string>
-  <string name="pref_queue_sort_sum">Ändere die Sortierreihenfolge der Episoden in der Abspielliste.</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
@@ -690,11 +689,6 @@
   <string name="sort_date_old_new">Datum (alt \u2192 neu)</string>
   <string name="sort_duration_short_long">Dauer (kurz \u2192 lang)</string>
   <string name="sort_duration_long_short">Dauer (lang \u2192 kurz)</string>
-  <string name="sort_episode_title_a_z">Episodentitel (A \u2192 Z)</string>
-  <string name="sort_episode_title_z_a">Episodentitel (Z \u2192 A)</string>
-  <string name="sort_feed_title_a_z">Podcasttitel (A \u2192 Z)</string>
-  <string name="sort_feed_title_z_a">Podcasttitel (Z \u2192 A)</string>
-  <string name="sort_manually">Manuell</string>
   <!--Rating dialog-->
   <string name="rating_title">Gefällt dir AntennaPod?</string>
   <string name="rating_message">Wir würden uns freuen, wenn du dir kurz die Zeit nimmst, AntennaPod zu bewerten.</string>
