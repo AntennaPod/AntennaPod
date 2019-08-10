@@ -49,6 +49,7 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 
@@ -60,6 +61,9 @@ import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
+import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REMOVE_FROM_QUEUE;
 
 /**
  * Shows all items in the queue
@@ -316,6 +320,10 @@ public class QueueFragment extends Fragment {
                     };
                     conDialog.createNewDialog().show();
                     return true;
+                case R.id.episode_actions:
+                    ((MainActivity) requireActivity()) .loadChildFragment(
+                            EpisodesApplyActionFragment.newInstance(queue, ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE));
+                    return true;
                 case R.id.queue_sort_episode_title_asc:
                     QueueSorter.sort(getActivity(), QueueSorter.Rule.EPISODE_TITLE_ASC, true);
                     return true;
@@ -511,6 +519,7 @@ public class QueueFragment extends Fragment {
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
+        emptyView.setIcon(R.attr.stat_playlist);
         emptyView.setTitle(R.string.no_items_header_label);
         emptyView.setMessage(R.string.no_items_label);
 

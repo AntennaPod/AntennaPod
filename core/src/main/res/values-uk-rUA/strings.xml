@@ -120,9 +120,9 @@
   <string name="mark_all_read_msg">Позначено всі епізоди як відтворені</string>
   <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як відтворені.</string>
   <string name="mark_all_read_feed_confirmation_msg">Будь ласка, підтвердіть, що ви бажаєте позначити всі епізоди цього подкасту як відтворені. </string>
-  <string name="mark_all_seen_label">Позначити всі як переглянуті</string>
-  <string name="mark_all_seen_msg">Всі епізоди позначено як переглянуті</string>
-  <string name="mark_all_seen_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як переглянуті.</string>
+  <string name="remove_all_new_flags_label">Позначити всі як переглянуті</string>
+  <string name="removed_all_new_flags_msg">Всі епізоди позначено як переглянуті</string>
+  <string name="remove_all_new_flags_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як переглянуті.</string>
   <string name="show_info_label">Інформація</string>
   <string name="show_feed_settings_label">Показати налаштування подкасту</string>
   <string name="feed_info_label">Інформація про подкаст</string>
@@ -177,8 +177,8 @@
     <item quantity="many">%dепізодів видалено. </item>
     <item quantity="other">%d епізодів видалено.</item>
   </plurals>
-  <string name="mark_as_seen_label">Позначити як переглянутий</string>
-  <string name="marked_as_seen_label">Позначено як переглянутий</string>
+  <string name="remove_new_flag_label">Позначити як переглянутий</string>
+  <string name="removed_new_flag_label">Позначено як переглянутий</string>
   <string name="mark_read_label">Позначити як відтворений</string>
   <string name="marked_as_read_label">Позначено як відтворений</string>
   <plurals name="marked_read_batch_label">

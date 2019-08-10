@@ -9,12 +9,6 @@
         android:visible="true">
     </item>
     <item
-        android:id="@+id/support_item"
-        custom:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/support_label"
-        android:visible="false">
-    </item>
-    <item
         android:id="@+id/share_link_item"
         custom:showAsAction="collapseActionView"
         android:title="@string/share_link_label">

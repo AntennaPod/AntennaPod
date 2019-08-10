@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mark_all_seen_item"
+        android:id="@+id/remove_all_new_flags_item"
         android:menuCategory="container"
-        android:title="@string/mark_all_seen_label" />
+        android:title="@string/remove_all_new_flags_label" />
 
     <item
         android:id="@+id/mark_all_read_item"

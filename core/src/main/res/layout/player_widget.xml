@@ -15,6 +15,7 @@
             android:layout_width="@android:dimen/app_icon_size"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_margin="12dp"
             android:background="@drawable/borderless_button_dark"
             android:src="@drawable/ic_play_arrow_white_24dp" />
@@ -24,7 +25,9 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_toLeftOf="@id/butPlay"
+            android:layout_toStartOf="@id/butPlay"
             android:background="@drawable/borderless_button_dark"
             android:gravity="fill_horizontal"
             android:orientation="horizontal" >
@@ -33,15 +36,12 @@
                 android:id="@+id/imgvCover"
                 android:layout_width="@android:dimen/app_icon_size"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_margin="12dp"
-                android:layout_toLeftOf="@id/layout_center" />
+                android:layout_margin="12dp" />
 
             <LinearLayout
                 android:id="@+id/layout_center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
                 android:orientation="vertical" >
 
@@ -49,7 +49,6 @@
                     android:id="@+id/txtNoPlaying"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="12dp"
                     android:maxLines="3"
                     android:text="@string/no_media_playing_label"
                     android:textColor="@color/white"
@@ -60,7 +59,6 @@
                     android:id="@+id/txtvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
                     android:maxLines="1"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_medium"
@@ -71,7 +69,7 @@
                     android:id="@+id/txtvProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
+                    android:layout_marginTop="4dp"
                     android:textColor="@color/white"
                     android:visibility="gone" />
             </LinearLayout>

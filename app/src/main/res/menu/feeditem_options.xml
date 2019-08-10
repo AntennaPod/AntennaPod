@@ -92,12 +92,6 @@
     </item>
 
     <item
-        android:id="@+id/support_item"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/support_label">
-    </item>
-
-    <item
         android:id="@+id/open_podcast"
         custom:showAsAction="collapseActionView"
         android:title="@string/open_podcast">

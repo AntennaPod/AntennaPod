@@ -96,9 +96,9 @@
   <string name="mark_all_read_msg">Conseñáronse tolos episodios como reproducíos</string>
   <string name="mark_all_read_confirmation_msg">Confirma que quies conseñar tolos episodios como reproducíos, por favor.</string>
   <string name="mark_all_read_feed_confirmation_msg">Confirma que quies conseñar tolos episodios nesti feed como reproducíos, por favor.</string>
-  <string name="mark_all_seen_label">Conseñar too como visto</string>
-  <string name="mark_all_seen_msg">Conseñáronse tolos episodios como vistos</string>
-  <string name="mark_all_seen_confirmation_msg">Confirma que quies conseñar tolos episodios como vistos.</string>
+  <string name="remove_all_new_flags_label">Conseñar too como visto</string>
+  <string name="removed_all_new_flags_msg">Conseñáronse tolos episodios como vistos</string>
+  <string name="remove_all_new_flags_confirmation_msg">Confirma que quies conseñar tolos episodios como vistos.</string>
   <string name="show_info_label">Amosar información</string>
   <string name="rename_feed_label">Renomar podcast</string>
   <string name="remove_feed_label">Desaniciar podcast</string>
@@ -126,7 +126,7 @@
   <string name="remove_label">Desaniciar</string>
   <string name="delete_label">Desaniciar</string>
   <string name="remove_episode_lable">Desaniciar episodiu</string>
-  <string name="marked_as_seen_label">Conseñóse como vistu</string>
+  <string name="removed_new_flag_label">Conseñóse como vistu</string>
   <string name="mark_read_label">Conseñar como reproducíu</string>
   <string name="marked_as_read_label">Conseñóse como reproducíu</string>
   <string name="mark_unread_label">Conseñar como non reproducíu</string>

@@ -41,6 +41,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
     private PlaybackService playbackService;
     private final Object waitForService = new Object();
+    private final Object waitUsingService = new Object();
 
     private static final int JOB_ID = -17001;
 
@@ -67,7 +68,11 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             }
         }
 
-        updateViews();
+        synchronized (waitUsingService) {
+            if (playbackService != null) {
+                updateViews();
+            }
+        }
 
         if (playbackService != null) {
             try {
@@ -230,7 +235,9 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            playbackService = null;
+            synchronized (waitUsingService) {
+                playbackService = null;
+            }
             Log.d(TAG, "Disconnected from service");
         }
 

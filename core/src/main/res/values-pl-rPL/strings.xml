@@ -109,9 +109,9 @@
   <string name="mark_all_read_msg">Wszystkie odcinki zaznaczono jako odtworzone</string>
   <string name="mark_all_read_confirmation_msg">Proszę potwierdzić, że chcesz oznaczyć wszystkie odcinki jako odtworzone.</string>
   <string name="mark_all_read_feed_confirmation_msg">Proszę potwierdzić, że chcesz oznaczyć wszystkie odcinki tego podcastu jako odtworzone.</string>
-  <string name="mark_all_seen_label">Oznacz wszystkie jako wyświetlone</string>
-  <string name="mark_all_seen_msg">Oznacz wszystkie odcinki jako wyświetlone</string>
-  <string name="mark_all_seen_confirmation_msg">Proszę potwierdzić chęć zaznaczenia wszystkich odcinków jako obejrzanych.</string>
+  <string name="remove_all_new_flags_label">Oznacz wszystkie jako wyświetlone</string>
+  <string name="removed_all_new_flags_msg">Oznacz wszystkie odcinki jako wyświetlone</string>
+  <string name="remove_all_new_flags_confirmation_msg">Proszę potwierdzić chęć zaznaczenia wszystkich odcinków jako obejrzanych.</string>
   <string name="show_info_label">Pokaż informacje</string>
   <string name="show_feed_settings_label">Pokaż ustawienia podcastu</string>
   <string name="feed_settings_label">Ustawienia podcastu</string>
@@ -147,8 +147,8 @@
   <string name="remove_label">Usuń</string>
   <string name="delete_label">Usuń</string>
   <string name="delete_failed">Nie można usunąć pliku. Restart urządzenia może w tym pomóc.</string>
-  <string name="mark_as_seen_label">Oznacz jako wyświetlone</string>
-  <string name="marked_as_seen_label">Oznaczono jako wyświetlone</string>
+  <string name="remove_new_flag_label">Oznacz jako wyświetlone</string>
+  <string name="removed_new_flag_label">Oznaczono jako wyświetlone</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>
   <string name="marked_as_read_label">Oznaczone jako odtworzone</string>
   <string name="mark_unread_label">Oznacz jako nieodtworzone</string>

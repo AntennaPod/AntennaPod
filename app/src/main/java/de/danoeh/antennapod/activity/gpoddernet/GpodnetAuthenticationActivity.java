@@ -104,10 +104,6 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-    }
-
     private void setupLoginView(View view) {
         final EditText username = view.findViewById(R.id.etxtUsername);
         final EditText password = view.findViewById(R.id.etxtPassword);

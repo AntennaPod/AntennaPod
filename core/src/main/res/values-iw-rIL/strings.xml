@@ -120,9 +120,9 @@
   <string name="mark_all_read_msg">לסמן את כל הפרקים כנוגנו</string>
   <string name="mark_all_read_confirmation_msg">נא לאשר שברצונך לסמן את כל הפרקים כנוגנו.</string>
   <string name="mark_all_read_feed_confirmation_msg">נא לאשר שברצונך לסמן את הפרקים של הפודקאסט הזה כאילו כבר נוגנו.</string>
-  <string name="mark_all_seen_label">לסמן הכול כנצפו</string>
-  <string name="mark_all_seen_msg">כל הפרקים סומנו כאילו כבר נוגנו</string>
-  <string name="mark_all_seen_confirmation_msg">נא לאשר שברצונך לסמן את כל הפרקים כנצפו.</string>
+  <string name="remove_all_new_flags_label">לסמן הכול כנצפו</string>
+  <string name="removed_all_new_flags_msg">כל הפרקים סומנו כאילו כבר נוגנו</string>
+  <string name="remove_all_new_flags_confirmation_msg">נא לאשר שברצונך לסמן את כל הפרקים כנצפו.</string>
   <string name="show_info_label">הצגת מידע</string>
   <string name="show_feed_settings_label">הצגת הגדרות פודקאסט</string>
   <string name="feed_info_label">פרטי פודקאסט</string>
@@ -177,8 +177,8 @@
     <item quantity="many">%d פרקים נמחקו.</item>
     <item quantity="other">%d פרקים נמחקו.</item>
   </plurals>
-  <string name="mark_as_seen_label">עם סימון כנצפה</string>
-  <string name="marked_as_seen_label">סימון כנצפה</string>
+  <string name="remove_new_flag_label">עם סימון כנצפה</string>
+  <string name="removed_new_flag_label">סימון כנצפה</string>
   <string name="mark_read_label">סימון כנצפה</string>
   <string name="marked_as_read_label">סימון כנוגן</string>
   <plurals name="marked_read_batch_label">

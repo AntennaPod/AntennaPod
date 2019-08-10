@@ -54,9 +54,6 @@ dependencies {
     
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "org.apache.commons:commons-text:$commonstextVersion"
-    implementation ("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
-        exclude group: "org.json", module: "json"
-    }
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"

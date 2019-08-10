@@ -20,8 +20,6 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
-import de.danoeh.antennapod.core.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -35,7 +33,6 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
-import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -182,14 +179,6 @@ public final class DBTasks {
             SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
             prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
 
-            if (FlattrUtils.hasToken()) {
-                Log.d(TAG, "Flattring all pending things.");
-                new FlattrClickWorker(context).executeAsync(); // flattr pending things
-
-                Log.d(TAG, "Fetching flattr status.");
-                new FlattrStatusFetcher(context).start();
-
-            }
             if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                 GpodnetSyncService.sendSyncIntent(context);
             }
@@ -771,37 +760,4 @@ public final class DBTasks {
             this.result = result;
         }
     }
-
-    /**
-     * Adds the given FeedItem to the flattr queue if the user is logged in. Otherwise, a dialog
-     * will be opened that lets the user go either to the login screen or the website of the flattr thing.
-     *
-     * @param context
-     * @param item
-     */
-    public static void flattrItemIfLoggedIn(Context context, FeedItem item) {
-        if (FlattrUtils.hasToken()) {
-            item.getFlattrStatus().setFlattrQueue();
-            DBWriter.setFlattredStatus(context, item, true);
-        } else {
-            FlattrUtils.showNoTokenDialogOrRedirect(context, item.getPaymentLink());
-        }
-    }
-
-    /**
-     * Adds the given Feed to the flattr queue if the user is logged in. Otherwise, a dialog
-     * will be opened that lets the user go either to the login screen or the website of the flattr thing.
-     *
-     * @param context
-     * @param feed
-     */
-    public static void flattrFeedIfLoggedIn(Context context, Feed feed) {
-        if (FlattrUtils.hasToken()) {
-            feed.getFlattrStatus().setFlattrQueue();
-            DBWriter.setFlattredStatus(context, feed, true);
-        } else {
-            FlattrUtils.showNoTokenDialogOrRedirect(context, feed.getPaymentLink());
-        }
-    }
-
 }
