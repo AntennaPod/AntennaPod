@@ -12,7 +12,6 @@ import android.widget.Toast;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
