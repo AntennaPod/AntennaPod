@@ -309,8 +309,6 @@ public final class DBTasks {
         f.setId(feed.getId());
 
         if (f.isLocalFeed()) {
-            String path = f.getDownload_url().substring("file:".length()); //this is ugly
-            Uri uri = new Uri.Builder().scheme("file").path(path).build(); //very ugly
             f.setItems(feed.getItems()); //this prevents a null pointer exception when iterating
             new Thread(() -> LocalFeedUpdater.updateFeed(f, context)).start();
         } else {

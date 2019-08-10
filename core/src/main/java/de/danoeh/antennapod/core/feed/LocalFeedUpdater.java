@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,17 +18,10 @@ import de.danoeh.antennapod.core.util.DownloadError;
 
 public class LocalFeedUpdater {
 
-    private static long getFileDuration(File f) {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(f.getAbsolutePath());
-        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        return Long.parseLong(durationStr);
-    }
-
     /** Starts the import process. */
     public static Feed startImport(File dir, Context context) {
         if (!dir.isDirectory()) {
-            throw new RuntimeException("invalid path");
+            throw new IllegalArgumentException("Path is not a directory");
         } else {
             return startImportDirectory(dir, context);
         }
@@ -57,13 +49,9 @@ public class LocalFeedUpdater {
         }
 
         //find relevant files and create items for them
-        File[] itemFiles = f.listFiles(
-                new FilenameFilter() {
-                    @Override
-                    public boolean accept(File file, String s) {
-                        String m = getMimeType(s);
-                        return m != null && (m.startsWith("audio/") || m.startsWith("video/"));
-                    }
+        File[] itemFiles = f.listFiles((file, s) -> {
+                    String m = getMimeType(s);
+                    return m != null && (m.startsWith("audio/") || m.startsWith("video/"));
                 });
         List<FeedItem> newItems = dirFeed.getItems();
         for (File it: itemFiles) {
@@ -79,30 +67,23 @@ public class LocalFeedUpdater {
         //TODO do something about feeditems whose files are no longer in the directory
 
         //is there an icon? use the first one found
-        File[] iconFiles = f.listFiles(
-                new FilenameFilter() {
-                    @Override
-                    public boolean accept(File file, String s) {
-                        return s.toLowerCase().equals("folder.jpg") ||
-                                s.toLowerCase().equals("folder.png");
-                    }
-                }
-        );
+        File[] iconFiles = f.listFiles((file, s) ->
+                s.toLowerCase().equals("folder.jpg") || s.toLowerCase().equals("folder.png"));
         if (iconFiles.length > 0) {
-            dirFeed.setImageUrl(
-                    //TODO do we really need this gigantic mess?
-                    new Uri.Builder().scheme("file").path(iconFiles[0].getAbsolutePath())
-                            .build().toString());
+            Uri.Builder imageUri = new Uri.Builder()
+                    .scheme("file")
+                    .path(iconFiles[0].getAbsolutePath());
+            dirFeed.setImageUrl(imageUri.build().toString());
         }
 
         //merge to the db
-        Feed[] feeds = DBTasks.updateFeed(context, dirFeed);
+        DBTasks.updateFeed(context, dirFeed);
     }
 
     private static FeedItem feedContainsFile(Feed feed, String fileUrl) {
         List<FeedItem> items = feed.getItems();
         for (FeedItem i: items) {
-            if (i.getMedia().getFile_url().equals(fileUrl)) {
+            if (i.getMedia() != null && i.getMedia().getFile_url().equals(fileUrl)) {
                 return i;
             }
         }
@@ -144,5 +125,12 @@ public class LocalFeedUpdater {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private static long getFileDuration(File f) {
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(f.getAbsolutePath());
+        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        return Long.parseLong(durationStr);
     }
 }
