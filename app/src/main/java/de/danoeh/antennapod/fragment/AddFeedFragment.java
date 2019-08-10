@@ -3,15 +3,14 @@ package de.danoeh.antennapod.fragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +19,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.angads25.filepicker.controller.DialogSelectionListener;
 import com.github.angads25.filepicker.model.DialogConfigs;
@@ -32,7 +28,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
-import de.danoeh.antennapod.activity.AddLocalFilesActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -163,24 +158,17 @@ public class AddFeedFragment extends Fragment implements DialogSelectionListener
      * Lets the user choose a specific folder to import.
      */
     private void addLocalFolder() {
-        int permission = ActivityCompat.checkSelfPermission(getContext(),
-                android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permission = ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            requestPermission();
+            String[] permissions = { Manifest.permission.READ_EXTERNAL_STORAGE };
+            requestPermissions(permissions, PERMISSION_REQUEST_ADD_LOCAL_FOLDER);
             return;
         }
 
         DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.SINGLE_MODE;
         properties.selection_type = DialogConfigs.DIR_SELECT;
-        properties.root = new File(DialogConfigs.DEFAULT_DIR);
-        properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-        properties.offset = new File(DialogConfigs.DEFAULT_DIR);
-        properties.extensions = null;
-
         FilePickerDialog dialog = new FilePickerDialog(getContext(), properties);
-        dialog.setTitle("Select a File");
-
+        dialog.setTitle(R.string.folder_import_label);
         dialog.setDialogSelectionListener(this);
 
         dialog.show();
@@ -190,12 +178,18 @@ public class AddFeedFragment extends Fragment implements DialogSelectionListener
     public void onSelectedFilePaths(String[] files) {
         for (String f: files) {
             File dir = new File(f);
-            Log.d(TAG, "path is " + dir.getAbsolutePath());
-            boolean ret = importDirectory(dir);
-            if (ret == false) {
-                Toast.makeText(getContext(), "Could not import", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getContext(), "Success!", Toast.LENGTH_LONG).show();
+            Log.d(TAG, "Importing folder: " + dir.getAbsolutePath());
+
+            try {
+                Feed feed = LocalFeedUpdater.startImport(dir, getContext());
+                DBTasks.forceRefreshFeed(getContext(), feed);
+                Snackbar.make(getView(), R.string.folder_import_success, BaseTransientBottomBar.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Log.d(TAG, Log.getStackTraceString(e));
+                new MaterialDialog.Builder(getContext())
+                        .content(getString(R.string.folder_import_error, e.getMessage()))
+                        .positiveText(android.R.string.ok)
+                        .show();
             }
         }
     }
@@ -207,40 +201,5 @@ public class AddFeedFragment extends Fragment implements DialogSelectionListener
                 addLocalFolder(); // Retry
             }
         }
-    }
-
-    private void requestPermission() {
-        String[] permissions = { android.Manifest.permission.READ_EXTERNAL_STORAGE };
-        requestPermissions(permissions, PERMISSION_REQUEST_ADD_LOCAL_FOLDER);
-    }
-
-    private boolean importDirectory(File dir) {
-        if (!dir.isDirectory()) {
-            new MaterialDialog.Builder(getContext())
-                    .content(R.string.folder_import_error_not_dir)
-                    .positiveText(android.R.string.ok)
-                    .show();
-            return false;
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int permission = ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                return false;
-            }
-
-            try {
-                Feed feed = LocalFeedUpdater.startImport(dir, getContext());
-                DBTasks.forceRefreshFeed(getContext(), feed);
-                return true;
-            } catch (Exception e) {
-                Log.d(TAG, Log.getStackTraceString(e));
-                String message = getString(R.string.folder_import_error);
-                new MaterialDialog.Builder(getContext())
-                        .content(message + " " + e.getMessage())
-                        .positiveText(android.R.string.ok)
-                        .show();
-            }
-        }
-        return false;
     }
 }
