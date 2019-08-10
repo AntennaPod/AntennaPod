@@ -52,7 +52,7 @@ public class LocalFeedUpdater {
         File f = new File(uriStr.substring("file:".length())); //ugly
         //basic checks
         if (!f.exists() || !f.canRead()) {
-            reportError(context, feed, "Cannot read local directory");
+            reportError(feed, "Cannot read local directory");
             return;
         }
 
@@ -128,13 +128,12 @@ public class LocalFeedUpdater {
         return item;
     }
 
-    private static void reportError(Context context, Feed feed, String reasonDetailed) {
+    private static void reportError(Feed feed, String reasonDetailed) {
         DownloadStatus status = new DownloadStatus(-1, Feed.FEEDFILETYPE_FEED, feed.getTitle(),
                 DownloadError.ERROR_IO_ERROR, false, reasonDetailed);
         DBWriter.addDownloadStatus(status);
 
-        feed.setLastUpdateFailed(true);
-        DBTasks.updateFeed(context, feed);
+        DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
     }
 
     private static String getMimeType(String path) {
