@@ -66,7 +66,6 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled(autoDownload);
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled(autoDownload);
         findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setEnabled(autoDownload);
-        findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_MOBILE).setEnabled(autoDownload);
         setSelectedNetworksEnabled(autoDownload && UserPreferences.isEnableAutodownloadWifiFilter());
     }
 

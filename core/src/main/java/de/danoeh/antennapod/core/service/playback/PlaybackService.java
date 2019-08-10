@@ -25,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -67,10 +68,12 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -94,6 +97,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * True if media should be streamed.
      */
     public static final String EXTRA_SHOULD_STREAM = "extra.de.danoeh.antennapod.core.service.shouldStream";
+    public static final String EXTRA_ALLOW_STREAM_THIS_TIME = "extra.de.danoeh.antennapod.core.service.allowStream";
     /**
      * True if playback should be started immediately after media has been
      * prepared.
@@ -103,7 +107,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.core.service.prepareImmediately";
 
     public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.core.service.playerStatusChanged";
-    public static final String EXTRA_NEW_PLAYER_STATUS = "extra.de.danoeh.antennapod.service.playerStatusChanged.newStatus";
     private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
     private static final String AVRCP_ACTION_META_CHANGED = "com.android.music.metachanged";
 
@@ -206,6 +209,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static volatile boolean isCasting = false;
 
     private static final int NOTIFICATION_ID = 1;
+    private static final int NOTIFICATION_ID_STREAMING = 2;
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
@@ -467,8 +471,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
                 started = true;
-                boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
-                        true);
+                boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
+                boolean allowStreamThisTime = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_THIS_TIME, false);
                 boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
                 boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
@@ -476,6 +480,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 flavorHelper.castDisconnect(playable instanceof ExternalMedia);
                 if (playable instanceof FeedMedia) {
                     playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
+                }
+                if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
+                    displayStreamingNotAllowedNotification(intent);
+                    writePlaybackPreferencesNoMediaPlaying();
+                    stopService();
+                    return Service.START_NOT_STICKY;
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
             } else {
@@ -485,6 +495,29 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         return Service.START_NOT_STICKY;
+    }
+
+    private void displayStreamingNotAllowedNotification(Intent originalIntent) {
+        Intent intent = new Intent(originalIntent);
+        intent.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
+        PendingIntent pendingIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            pendingIntent = PendingIntent.getForegroundService(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getService(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_USER_ACTION)
+                .setSmallIcon(R.drawable.stat_notify_sync_error)
+                .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
+                .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(getString(R.string.confirm_mobile_streaming_notification_message)))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(NOTIFICATION_ID_STREAMING, builder.build());
     }
 
     /**
@@ -824,7 +857,23 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.e(TAG, "Error handling the queue in order to retrieve the next item", e);
             return null;
         }
-        return (nextItem != null) ? nextItem.getMedia() : null;
+
+        if (nextItem == null || nextItem.getMedia() == null) {
+            return null;
+        }
+
+        if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()) {
+            displayStreamingNotAllowedNotification(
+                    new PlaybackServiceStarter(this, nextItem.getMedia())
+                    .prepareImmediately(true)
+                    .startWhenPrepared(true)
+                    .shouldStream(true)
+                    .getIntent());
+            writePlaybackPreferencesNoMediaPlaying();
+            stopService();
+            return null;
+        }
+        return nextItem.getMedia();
 
     }
 

@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
@@ -78,14 +80,13 @@ public class UserPreferences {
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
-    public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateAllowed";
+    private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
-    public static final String PREF_ENABLE_AUTODL_ON_MOBILE = "prefEnableAutoDownloadOnMobile";
     private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
@@ -379,16 +380,63 @@ public class UserPreferences {
         return prefs.getString(PREF_UPDATE_INTERVAL, "").equals("0");
     }
 
-    public static String getMobileUpdatesEnabled() {
-        return prefs.getString(PREF_MOBILE_UPDATE, "images");
+    private static boolean isAllowMobileFor(String type) {
+        HashSet<String> defaultValue = new HashSet<>();
+        defaultValue.add("images");
+        Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
+        return allowed.contains(type);
     }
 
-    public static boolean isAllowMobileUpdate() {
-        return getMobileUpdatesEnabled().equals("everything");
+    public static boolean isAllowMobileFeedRefresh() {
+        return isAllowMobileFor("feed_refresh");
+    }
+
+    public static boolean isAllowMobileEpisodeDownload() {
+        return isAllowMobileFor("episode_download");
+    }
+
+    public static boolean isAllowMobileAutoDownload() {
+        return isAllowMobileFor("auto_download");
+    }
+
+    public static boolean isAllowMobileStreaming() {
+        return isAllowMobileFor("streaming");
     }
 
     public static boolean isAllowMobileImages() {
-        return isAllowMobileUpdate() || getMobileUpdatesEnabled().equals("images");
+        return isAllowMobileFor("images");
+    }
+
+    private static void setAllowMobileFor(String type, boolean allow) {
+        HashSet<String> defaultValue = new HashSet<>();
+        defaultValue.add("images");
+        Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
+        if (allow) {
+            allowed.remove(type);
+        } else {
+            allowed.add(type);
+        }
+        prefs.edit().putStringSet(PREF_MOBILE_UPDATE, allowed).apply();
+    }
+
+    public static void setAllowMobileFeedRefresh(boolean allow) {
+        setAllowMobileFor("feed_refresh", allow);
+    }
+
+    public static void setAllowMobileEpisodeDownload(boolean allow) {
+        setAllowMobileFor("episode_download", allow);
+    }
+
+    public static void setAllowMobileAutoDownload(boolean allow) {
+        setAllowMobileFor("auto_download", allow);
+    }
+
+    public static void setAllowMobileStreaming(boolean allow) {
+        setAllowMobileFor("streaming", allow);
+    }
+
+    public static void setAllowMobileImages(boolean allow) {
+        setAllowMobileFor("images", allow);
     }
 
     public static int getParallelDownloads() {
@@ -419,11 +467,6 @@ public class UserPreferences {
     public static boolean isEnableAutodownloadWifiFilter() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
-
-    public static boolean isEnableAutodownloadOnMobile() {
-        return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_MOBILE, false);
-    }
-
 
     public static int getImageCacheSize() {
         String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);

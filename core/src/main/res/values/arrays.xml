@@ -64,15 +64,23 @@
     </string-array>
 
     <string-array name="mobile_update_entries">
-        <item>@string/pref_mobileUpdate_nothing</item>
+        <item>@string/pref_mobileUpdate_refresh</item>
+        <item>@string/pref_mobileUpdate_episode_download</item>
+        <item>@string/pref_mobileUpdate_auto_download</item>
+        <item>@string/pref_mobileUpdate_streaming</item>
         <item>@string/pref_mobileUpdate_images</item>
-        <item>@string/pref_mobileUpdate_everything</item>
     </string-array>
 
     <string-array name="mobile_update_values">
-        <item>nothing</item>
+        <item>feed_refresh</item>
+        <item>episode_download</item>
+        <item>auto_download</item>
+        <item>streaming</item>
         <item>images</item>
-        <item>everything</item>
+    </string-array>
+
+    <string-array name="mobile_update_default_value">
+        <item>images</item>
     </string-array>
 
     <string-array name="episode_cleanup_entries">
