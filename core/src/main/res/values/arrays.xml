@@ -49,6 +49,7 @@
         <item>25</item>
         <item>50</item>
         <item>100</item>
+        <item>500</item>
         <item>@string/pref_episode_cache_unlimited</item>
     </string-array>
 
@@ -58,6 +59,7 @@
         <item>25</item>
         <item>50</item>
         <item>100</item>
+        <item>500</item>
         <item>-1</item>
     </string-array>
 
