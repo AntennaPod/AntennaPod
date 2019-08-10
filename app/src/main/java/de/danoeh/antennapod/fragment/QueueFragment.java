@@ -288,10 +288,8 @@ public class QueueFragment extends Fragment {
             // Hide sort menu items for sort orders that are not supported by automatic sort.
             MenuItem sortRandomItem = menu.findItem(R.id.queue_sort_random);
             sortRandomItem.setVisible(!sortedAutomatically);
-            MenuItem sortSmart1Item = menu.findItem(R.id.queue_sort_smart_shuffle_asc);
-            sortSmart1Item.setVisible(!sortedAutomatically);
-            MenuItem sortSmart2Item = menu.findItem(R.id.queue_sort_smart_shuffle_desc);
-            sortSmart2Item.setVisible(!sortedAutomatically);
+            MenuItem sortSmartShuffleItem = menu.findItem(R.id.queue_sort_smart_shuffle);
+            sortSmartShuffleItem.setVisible(!sortedAutomatically);
 
             isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
