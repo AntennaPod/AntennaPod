@@ -1,9 +1,15 @@
 package de.danoeh.antennapod.fragment;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,19 +22,30 @@ import android.widget.EditText;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.activity.AddLocalFilesActivity;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
+
+import java.io.File;
 
 /**
  * Provides actions for adding new podcast subscriptions
  */
-public class AddFeedFragment extends Fragment {
-
+public class AddFeedFragment extends Fragment implements DialogSelectionListener {
     public static final String TAG = "AddFeedFragment";
+    private static final int PERMISSION_REQUEST_ADD_LOCAL_FOLDER = 5;
 
     /**
      * Preset value for url text field.
@@ -37,6 +54,17 @@ public class AddFeedFragment extends Fragment {
 
     private EditText combinedFeedSearchBox;
     private MainActivity activity;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+
+        // So, we certainly *don't* have an options menu,
+        // but unless we say we do, old options menus sometimes
+        // persist.  mfietz thinks this causes the ActionBar to be invalidated
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,8 +82,7 @@ public class AddFeedFragment extends Fragment {
                 OpmlImportFromPathActivity.class)));
 
         View butAddLocalFolder = root.findViewById(R.id.btn_add_local_folder);
-        butAddLocalFolder.setOnClickListener(v -> startActivity(new Intent(getActivity(),
-                AddLocalFilesActivity.class)));
+        butAddLocalFolder.setOnClickListener(v -> addLocalFolder());
 
         return root;
     }
@@ -132,14 +159,88 @@ public class AddFeedFragment extends Fragment {
         activity.loadChildFragment(fragment);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+    /**
+     * Lets the user choose a specific folder to import.
+     */
+    private void addLocalFolder() {
+        int permission = ActivityCompat.checkSelfPermission(getContext(),
+                android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            requestPermission();
+            return;
+        }
 
-        // So, we certainly *don't* have an options menu,
-        // but unless we say we do, old options menus sometimes
-        // persist.  mfietz thinks this causes the ActionBar to be invalidated
-        setHasOptionsMenu(true);
+        DialogProperties properties = new DialogProperties();
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.DIR_SELECT;
+        properties.root = new File(DialogConfigs.DEFAULT_DIR);
+        properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+        properties.offset = new File(DialogConfigs.DEFAULT_DIR);
+        properties.extensions = null;
+
+        FilePickerDialog dialog = new FilePickerDialog(getContext(), properties);
+        dialog.setTitle("Select a File");
+
+        dialog.setDialogSelectionListener(this);
+
+        dialog.show();
+    }
+
+    @Override
+    public void onSelectedFilePaths(String[] files) {
+        for (String f: files) {
+            File dir = new File(f);
+            Log.d(TAG, "path is " + dir.getAbsolutePath());
+            boolean ret = importDirectory(dir);
+            if (ret == false) {
+                Toast.makeText(getContext(), "Could not import", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(), "Success!", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_ADD_LOCAL_FOLDER) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                addLocalFolder(); // Retry
+            }
+        }
+    }
+
+    private void requestPermission() {
+        String[] permissions = { android.Manifest.permission.READ_EXTERNAL_STORAGE };
+        requestPermissions(permissions, PERMISSION_REQUEST_ADD_LOCAL_FOLDER);
+    }
+
+    private boolean importDirectory(File dir) {
+        if (!dir.isDirectory()) {
+            new MaterialDialog.Builder(getContext())
+                    .content(R.string.folder_import_error_not_dir)
+                    .positiveText(android.R.string.ok)
+                    .show();
+            return false;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int permission = ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+
+            try {
+                Feed feed = LocalFeedUpdater.startImport(dir, getContext());
+                DBTasks.forceRefreshFeed(getContext(), feed);
+                return true;
+            } catch (Exception e) {
+                Log.d(TAG, Log.getStackTraceString(e));
+                String message = getString(R.string.folder_import_error);
+                new MaterialDialog.Builder(getContext())
+                        .content(message + " " + e.getMessage())
+                        .positiveText(android.R.string.ok)
+                        .show();
+            }
+        }
+        return false;
     }
 }
