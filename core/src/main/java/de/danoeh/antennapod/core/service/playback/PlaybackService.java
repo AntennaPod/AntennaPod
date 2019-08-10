@@ -483,6 +483,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
                     displayStreamingNotAllowedNotification(intent);
+                    writePlaybackPreferencesNoMediaPlaying();
                     stopService();
                     return Service.START_NOT_STICKY;
                 }
@@ -866,6 +867,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     .startWhenPrepared(true)
                     .shouldStream(true)
                     .getIntent());
+            writePlaybackPreferencesNoMediaPlaying();
             stopService();
             return null;
         }
