@@ -95,10 +95,11 @@ public class ProxyDialog {
                         if(!TextUtils.isEmpty(port)) {
                             portValue = Integer.valueOf(port);
                         }
-                        if (Proxy.Type.valueOf(type) == Proxy.Type.SOCKS)
+                        if (Proxy.Type.valueOf(type) == Proxy.Type.SOCKS) {
                             proxy = ProxyConfig.socks(host, portValue, username, password);
-                        else
+                        } else {
                             proxy = ProxyConfig.http(host, portValue, username, password);
+                        }
                     }
                     UserPreferences.setProxyConfig(proxy);
                     AntennapodHttpClient.reinit();
@@ -113,11 +114,9 @@ public class ProxyDialog {
         List<String> types= new ArrayList<>();
         types.add(Proxy.Type.DIRECT.name());
         types.add(Proxy.Type.HTTP.name());
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             types.add(Proxy.Type.SOCKS.name());
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
             android.R.layout.simple_spinner_item, types);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
