@@ -3,8 +3,7 @@ package de.test.antennapod.service.playback;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.annotation.UiThreadTest;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.InstrumentationTestCase;
+import android.support.test.filters.LargeTest;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,9 +22,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -33,7 +31,7 @@ import static org.junit.Assert.fail;
 /**
  * Test class for PlaybackServiceTaskManager
  */
-@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class PlaybackServiceTaskManagerTest {
 
     @After

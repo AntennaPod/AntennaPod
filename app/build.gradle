@@ -168,6 +168,7 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v1.2.6'
     implementation "org.awaitility:awaitility:$awaitilityVersion"
 
+    androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
