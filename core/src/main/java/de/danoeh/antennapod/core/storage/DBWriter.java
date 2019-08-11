@@ -11,11 +11,8 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +42,7 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -404,21 +402,21 @@ public class DBWriter {
     }
 
     /**
-     * Sorts the queue depending on the configured sort order. If manual order is configured, the queue is not modified.
+     * Sorts the queue depending on the configured sort order.
+     * If the queue is not in keep sorted mode, nothing happens.
      *
      * @param queue  The queue to be sorted.
      * @param events Replaces the events by a single SORT event if the list has to be sorted automatically.
      */
     private static void applySortOrder(List<FeedItem> queue, List<QueueEvent> events) {
-        if (!UserPreferences.isQueueSortedAutomatically()) {
-            // automatic sort order is disabled, don't change anything
+        if (!UserPreferences.isQueueKeepSorted()) {
+            // queue is not in keep sorted mode, there's nothing to do
             return;
         }
 
         // Sort queue by configured sort order
-        UserPreferences.QueueSortOrder sortOrder = UserPreferences.getQueueSortOrder();
-        QueueSorter.Rule sortRule = QueueSorter.queueSortOrder2Rule(sortOrder);
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortRule);
+        SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
+        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortOrder);
         permutor.reorder(queue);
 
         // Replace ADDED events by a single SORTED event

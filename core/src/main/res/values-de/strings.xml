@@ -276,7 +276,7 @@
   <string name="move_to_top_label">Zum Anfang verschieben</string>
   <string name="move_to_bottom_label">Zum Ende verschieben</string>
   <string name="sort">Sortieren</string>
-  <string name="sort_automatically">Automatisch sortieren</string>
+  <string name="keep_sorted">Automatisch sortieren</string>
   <string name="date">Datum</string>
   <string name="duration">Dauer</string>
   <string name="episode_title">Episodentitel</string>

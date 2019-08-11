@@ -27,6 +27,7 @@ import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 /**
@@ -54,10 +55,11 @@ public class UserPreferences {
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
-    public static final String PREF_QUEUE_SORT_ORDER = "prefQueueSortOrder";
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
+    public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
+    public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -493,7 +495,7 @@ public class UserPreferences {
 
     public static boolean isQueueLocked() {
         return prefs.getBoolean(PREF_QUEUE_LOCKED, false)
-                || isQueueSortedAutomatically();
+                || isQueueKeepSorted();
     }
 
     public static void setFastForwardSecs(int secs) {
@@ -870,36 +872,60 @@ public class UserPreferences {
     }
 
     /**
-     * Supported episode queue sort orders.
-     * Use enum instead of integer to avoid mistakes at later maintenance changes.
+     * Returns if the queue is in keep sorted mode.
+     *
+     * @see #getQueueKeepSortedOrder()
      */
-    public enum QueueSortOrder {
-        MANUALLY, DATE_NEW_OLD, DATE_OLD_NEW, DURATION_SHORT_LONG, DURATION_LONG_SHORT,
-        EPISODE_TITLE_A_Z, EPISODE_TITLE_Z_A, FEED_TITLE_A_Z, FEED_TITLE_Z_A
+    public static boolean isQueueKeepSorted() {
+        return prefs.getBoolean(PREF_QUEUE_KEEP_SORTED, false);
     }
 
-    public static QueueSortOrder getQueueSortOrder() {
-        String sortOrderStr = prefs.getString(PREF_QUEUE_SORT_ORDER, "default");
-        return parseQueueSortOrder(sortOrderStr);
-    }
-
-    public static void setQueueSortOrder(QueueSortOrder queueSortOrder) {
+    /**
+     * Enables/disables the keep sorted mode of the queue.
+     *
+     * @see #setQueueKeepSortedOrder(SortOrder)
+     */
+    public static void setQueueKeepSorted(boolean keepSorted) {
         prefs.edit()
-                .putString(PREF_QUEUE_SORT_ORDER, queueSortOrder.name())
+                .putBoolean(PREF_QUEUE_KEEP_SORTED, keepSorted)
                 .apply();
     }
 
-    public static QueueSortOrder parseQueueSortOrder(String value) {
-        try {
-            return QueueSortOrder.valueOf(value);
-        } catch (IllegalArgumentException e) {
-            // default value
-            return QueueSortOrder.MANUALLY;
-        }
+    /**
+     * Returns the sort order for the queue keep sorted mode.
+     * Note: This value is stored independently from the keep sorted state.
+     *
+     * @see #isQueueKeepSorted()
+     */
+    public static SortOrder getQueueKeepSortedOrder() {
+        String sortOrderStr = prefs.getString(PREF_QUEUE_KEEP_SORTED_ORDER, "use-default");
+        return parseSortOrder(sortOrderStr);
     }
 
-    public static boolean isQueueSortedAutomatically() {
-        QueueSortOrder sortedOrder = getQueueSortOrder();
-        return sortedOrder != QueueSortOrder.MANUALLY;
+    /**
+     * Sets the sort order for the queue keep sorted mode.
+     *
+     * @see #setQueueKeepSorted(boolean)
+     */
+    public static void setQueueKeepSortedOrder(SortOrder sortOrder) {
+        if (sortOrder == null) {
+            return;
+        }
+        prefs.edit()
+                .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
+                .apply();
+    }
+
+    /**
+     * Converts the string representation to its enum value. If the string value is unknown,
+     * a default value is retuned.
+     */
+    private static SortOrder parseSortOrder(String value) {
+        try {
+            return SortOrder.valueOf(value);
+        } catch (IllegalArgumentException e) {
+            // default value
+            return SortOrder.DATE_NEW_OLD;
+        }
     }
 }

@@ -49,6 +49,7 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -277,19 +278,17 @@ public class QueueFragment extends Fragment {
             MenuItemUtils.refreshLockItem(getActivity(), menu);
 
             // Show Lock Item only if queue is sorted manually
-            boolean sortedAutomatically = UserPreferences.isQueueSortedAutomatically();
+            boolean keepSorted = UserPreferences.isQueueKeepSorted();
             MenuItem lockItem = menu.findItem(R.id.queue_lock);
-            lockItem.setVisible(!sortedAutomatically);
+            lockItem.setVisible(!keepSorted);
+
+            // Random sort is not supported in keep sorted mode
+            MenuItem sortRandomItem = menu.findItem(R.id.queue_sort_random);
+            sortRandomItem.setVisible(!keepSorted);
 
             // Set keep sorted checkbox
-            MenuItem sortedAutomaticallyItem = menu.findItem(R.id.queue_sort_automatically);
-            sortedAutomaticallyItem.setChecked(sortedAutomatically);
-
-            // Hide sort menu items for sort orders that are not supported by automatic sort.
-            MenuItem sortRandomItem = menu.findItem(R.id.queue_sort_random);
-            sortRandomItem.setVisible(!sortedAutomatically);
-            MenuItem sortSmartShuffleItem = menu.findItem(R.id.queue_sort_smart_shuffle);
-            sortSmartShuffleItem.setVisible(!sortedAutomatically);
+            MenuItem keepSortedItem = menu.findItem(R.id.queue_keep_sorted);
+            keepSortedItem.setChecked(keepSorted);
 
             isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
@@ -339,52 +338,49 @@ public class QueueFragment extends Fragment {
                     ((MainActivity) requireActivity()) .loadChildFragment(
                             EpisodesApplyActionFragment.newInstance(queue, ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE));
                     return true;
-                case R.id.queue_sort_automatically:
-                    boolean sortedAutomaticallyOld = UserPreferences.isQueueSortedAutomatically();
-                    boolean sortedAutomaticallyNew = !sortedAutomaticallyOld;
-                    if (sortedAutomaticallyNew) {
-                        // We have to choose an initially sort order, let's sort by episode date
-                        UserPreferences.QueueSortOrder sortOrder = UserPreferences.QueueSortOrder.DATE_NEW_OLD;
-                        UserPreferences.setQueueSortOrder(sortOrder);
-                        QueueSorter.sort(QueueSorter.queueSortOrder2Rule(sortOrder), true);
-                    } else {
-                        UserPreferences.setQueueSortOrder(UserPreferences.QueueSortOrder.MANUALLY);
-                    }
-                    // Update sort menu items visibility and state
-                    getActivity().invalidateOptionsMenu();
-                    return true;
                 case R.id.queue_sort_episode_title_asc:
-                    queueSortOrderChanged(QueueSorter.Rule.EPISODE_TITLE_ASC);
+                    setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
                     return true;
                 case R.id.queue_sort_episode_title_desc:
-                    queueSortOrderChanged(QueueSorter.Rule.EPISODE_TITLE_DESC);
+                    setSortOrder(SortOrder.EPISODE_TITLE_Z_A);
                     return true;
                 case R.id.queue_sort_date_asc:
-                    queueSortOrderChanged(QueueSorter.Rule.DATE_ASC);
+                    setSortOrder(SortOrder.DATE_OLD_NEW);
                     return true;
                 case R.id.queue_sort_date_desc:
-                    queueSortOrderChanged(QueueSorter.Rule.DATE_DESC);
+                    setSortOrder(SortOrder.DATE_NEW_OLD);
                     return true;
                 case R.id.queue_sort_duration_asc:
-                    queueSortOrderChanged(QueueSorter.Rule.DURATION_ASC);
+                    setSortOrder(SortOrder.DURATION_SHORT_LONG);
                     return true;
                 case R.id.queue_sort_duration_desc:
-                    queueSortOrderChanged(QueueSorter.Rule.DURATION_DESC);
+                    setSortOrder(SortOrder.DURATION_LONG_SHORT);
                     return true;
                 case R.id.queue_sort_feed_title_asc:
-                    queueSortOrderChanged(QueueSorter.Rule.FEED_TITLE_ASC);
+                    setSortOrder(SortOrder.FEED_TITLE_A_Z);
                     return true;
                 case R.id.queue_sort_feed_title_desc:
-                    queueSortOrderChanged(QueueSorter.Rule.FEED_TITLE_DESC);
+                    setSortOrder(SortOrder.FEED_TITLE_Z_A);
                     return true;
                 case R.id.queue_sort_random:
-                    queueSortOrderChanged(QueueSorter.Rule.RANDOM);
+                    setSortOrder(SortOrder.RANDOM);
                     return true;
                 case R.id.queue_sort_smart_shuffle_asc:
-                    queueSortOrderChanged(QueueSorter.Rule.SMART_SHUFFLE_ASC);
+                    setSortOrder(SortOrder.SMART_SHUFFLE_OLD_NEW);
                     return true;
                 case R.id.queue_sort_smart_shuffle_desc:
-                    queueSortOrderChanged(QueueSorter.Rule.SMART_SHUFFLE_DESC);
+                    setSortOrder(SortOrder.SMART_SHUFFLE_NEW_OLD);
+                    return true;
+                case R.id.queue_keep_sorted:
+                    boolean keepSortedOld = UserPreferences.isQueueKeepSorted();
+                    boolean keepSortedNew = !keepSortedOld;
+                    UserPreferences.setQueueKeepSorted(keepSortedNew);
+                    if (keepSortedNew) {
+                        SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
+                        QueueSorter.sort(sortOrder, true);
+                    }
+                    // Update sort menu items and list lock elements
+                    getActivity().recreate();
                     return true;
                 default:
                     return false;
@@ -395,20 +391,19 @@ public class QueueFragment extends Fragment {
     }
 
     /**
-     * Sorts the queue on user interaction.
-     * If the queue is sorted automatically, the new sort order is stored in the preferences.
+     * This method is called if the user clicks on a sort order menu item.
      *
-     * @param rule Sort rule.
+     * If the queue is in keep sorted mode, the new sort order is stored in the preferences and
+     * the queue is sorted. Otherwise the queue is just sorted.
+     *
+     * @param sortOrder New sort order.
      */
-    private void queueSortOrderChanged(QueueSorter.Rule rule) {
-        boolean sortedAutomatically = UserPreferences.isQueueSortedAutomatically();
-        UserPreferences.QueueSortOrder sortOrder = QueueSorter.rule2QueueSortOrder(rule);
-        // remember sort order to keep queue sorted
-        if (sortedAutomatically && sortOrder != null) {
-            UserPreferences.setQueueSortOrder(sortOrder);
+    private void setSortOrder(SortOrder sortOrder) {
+        boolean keepSorted = UserPreferences.isQueueKeepSorted();
+        if (keepSorted) {
+            UserPreferences.setQueueKeepSortedOrder(sortOrder);
         }
-        // Sort queue
-        QueueSorter.sort(rule, true);
+        QueueSorter.sort(sortOrder, true);
     }
 
     @Override

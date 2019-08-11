@@ -67,17 +67,17 @@ public class FeedItemMenuHandler {
         }
         boolean hasMedia = selectedItem.getMedia() != null;
         boolean isPlaying = hasMedia && selectedItem.getState() == FeedItem.State.PLAYING;
-        boolean sortedAutomatically = UserPreferences.isQueueSortedAutomatically();
+        boolean keepSorted = UserPreferences.isQueueKeepSorted();
 
         if (!isPlaying) {
             mi.setItemVisibility(R.id.skip_episode_item, false);
         }
 
         boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
-        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId() || sortedAutomatically) {
+        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId() || keepSorted) {
             mi.setItemVisibility(R.id.move_to_top_item, false);
         }
-        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId() || sortedAutomatically) {
+        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId() || keepSorted) {
             mi.setItemVisibility(R.id.move_to_bottom_item, false);
         }
         if (!isInQueue) {

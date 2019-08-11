@@ -9,68 +9,54 @@ import java.util.Map;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
 /**
  * Provides method for sorting the queue according to rules.
  */
 public class QueueSorter {
-    public enum Rule {
-        EPISODE_TITLE_ASC,
-        EPISODE_TITLE_DESC,
-        DATE_ASC,
-        DATE_DESC,
-        DURATION_ASC,
-        DURATION_DESC,
-        FEED_TITLE_ASC,
-        FEED_TITLE_DESC,
-        RANDOM,
-        SMART_SHUFFLE_ASC,
-        SMART_SHUFFLE_DESC
-    }
 
     /**
-     * Sorts the queue by the given rule and sends a broadcast update.
+     * Sorts the queue by the given sort order and sends a broadcast update.
      *
-     * @param rule Sort rule.
+     * @param sortOrder Sort order.
      * @param broadcastUpdate Send broadcast update?
      */
-    public static void sort(Rule rule, boolean broadcastUpdate) {
-        Permutor<FeedItem> permutor = getPermutor(rule);
+    public static void sort(SortOrder sortOrder, boolean broadcastUpdate) {
+        Permutor<FeedItem> permutor = getPermutor(sortOrder);
         if (permutor != null) {
             DBWriter.reorderQueue(permutor, broadcastUpdate);
         }
     }
 
     /**
-     * Returns a Permutor that sorts a list appropriate to the given sort rule.
+     * Returns a Permutor that sorts a list appropriate to the given sort order.
      *
-     * @param rule Sort rule.
-     * @return Permutor that sorts a list appropriate to the given sort rule. <code>null</code> if the rule is unknown or <code>null</code>.
+     * @param sortOrder Sort order.
+     * @return Permutor that sorts a list appropriate to the given sort order. <code>null</code> if the order is unknown or <code>null</code>.
      */
-    public static Permutor<FeedItem> getPermutor(Rule rule) {
-        if (rule == null) {
+    public static Permutor<FeedItem> getPermutor(SortOrder sortOrder) {
+        if (sortOrder == null) {
             return null;
         }
 
         Comparator<FeedItem> comparator = null;
         Permutor<FeedItem> permutor = null;
 
-        switch (rule) {
-            case EPISODE_TITLE_ASC:
+        switch (sortOrder) {
+            case EPISODE_TITLE_A_Z:
                 comparator = (f1, f2) -> f1.getTitle().compareTo(f2.getTitle());
                 break;
-            case EPISODE_TITLE_DESC:
+            case EPISODE_TITLE_Z_A:
                 comparator = (f1, f2) -> f2.getTitle().compareTo(f1.getTitle());
                 break;
-            case DATE_ASC:
+            case DATE_OLD_NEW:
                 comparator = (f1, f2) -> f1.getPubDate().compareTo(f2.getPubDate());
                 break;
-            case DATE_DESC:
+            case DATE_NEW_OLD:
                 comparator = (f1, f2) -> f2.getPubDate().compareTo(f1.getPubDate());
                 break;
-            case DURATION_ASC:
+            case DURATION_SHORT_LONG:
                 comparator = (f1, f2) -> {
                     FeedMedia f1Media = f1.getMedia();
                     FeedMedia f2Media = f2.getMedia();
@@ -83,7 +69,7 @@ public class QueueSorter {
                         return duration1 - duration2;
                 };
                 break;
-            case DURATION_DESC:
+            case DURATION_LONG_SHORT:
                 comparator = (f1, f2) -> {
                     FeedMedia f1Media = f1.getMedia();
                     FeedMedia f2Media = f2.getMedia();
@@ -93,19 +79,19 @@ public class QueueSorter {
                     return -1 * (duration1 - duration2);
                 };
                 break;
-            case FEED_TITLE_ASC:
+            case FEED_TITLE_A_Z:
                 comparator = (f1, f2) -> f1.getFeed().getTitle().compareTo(f2.getFeed().getTitle());
                 break;
-            case FEED_TITLE_DESC:
+            case FEED_TITLE_Z_A:
                 comparator = (f1, f2) -> f2.getFeed().getTitle().compareTo(f1.getFeed().getTitle());
                 break;
             case RANDOM:
                 permutor = Collections::shuffle;
                 break;
-            case SMART_SHUFFLE_ASC:
+            case SMART_SHUFFLE_OLD_NEW:
                 permutor = (queue) -> smartShuffle(queue, true);
                 break;
-            case SMART_SHUFFLE_DESC:
+            case SMART_SHUFFLE_NEW_OLD:
                 permutor = (queue) -> smartShuffle(queue, false);
                 break;
         }
@@ -115,70 +101,6 @@ public class QueueSorter {
             permutor = (queue) -> Collections.sort(queue, comparator2);
         }
         return permutor;
-    }
-
-    /**
-     * Converts a QueueSortOrder value to its corresponding Rule value.
-     *
-     * @param sortOrder Sort order.
-     * @return Rule value corresponding to the given sort order. <code>null</code> if the sort order is unknown or <code>null</code>.
-     */
-    public static Rule queueSortOrder2Rule(UserPreferences.QueueSortOrder sortOrder) {
-        if (sortOrder == null) {
-            return null;
-        }
-        switch (sortOrder) {
-            case DATE_NEW_OLD:
-                return QueueSorter.Rule.DATE_DESC;
-            case DATE_OLD_NEW:
-                return QueueSorter.Rule.DATE_ASC;
-            case DURATION_SHORT_LONG:
-                return QueueSorter.Rule.DURATION_ASC;
-            case DURATION_LONG_SHORT:
-                return QueueSorter.Rule.DURATION_DESC;
-            case EPISODE_TITLE_A_Z:
-                return QueueSorter.Rule.EPISODE_TITLE_ASC;
-            case EPISODE_TITLE_Z_A:
-                return QueueSorter.Rule.EPISODE_TITLE_DESC;
-            case FEED_TITLE_A_Z:
-                return QueueSorter.Rule.FEED_TITLE_ASC;
-            case FEED_TITLE_Z_A:
-                return QueueSorter.Rule.FEED_TITLE_DESC;
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * Converts a Rule value to its corresponding QueueSortOrder value.
-     *
-     * @param rule Rule value.
-     * @return QueueSortOrder value corresponding to the given Rule value. <code>null</code> if the Rule value is unsupported or <code>null</code>.
-     */
-    public static UserPreferences.QueueSortOrder rule2QueueSortOrder(Rule rule) {
-        if (rule == null) {
-            return null;
-        }
-        switch (rule) {
-            case EPISODE_TITLE_ASC:
-                return UserPreferences.QueueSortOrder.EPISODE_TITLE_A_Z;
-            case EPISODE_TITLE_DESC:
-                return UserPreferences.QueueSortOrder.EPISODE_TITLE_Z_A;
-            case DATE_ASC:
-                return UserPreferences.QueueSortOrder.DATE_OLD_NEW;
-            case DATE_DESC:
-                return UserPreferences.QueueSortOrder.DATE_NEW_OLD;
-            case DURATION_ASC:
-                return UserPreferences.QueueSortOrder.DURATION_SHORT_LONG;
-            case DURATION_DESC:
-                return UserPreferences.QueueSortOrder.DURATION_LONG_SHORT;
-            case FEED_TITLE_ASC:
-                return UserPreferences.QueueSortOrder.FEED_TITLE_A_Z;
-            case FEED_TITLE_DESC:
-                return UserPreferences.QueueSortOrder.FEED_TITLE_Z_A;
-            default:
-                return null;
-        }
     }
 
     /**
