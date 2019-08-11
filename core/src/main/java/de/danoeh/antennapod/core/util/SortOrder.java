@@ -14,5 +14,17 @@ public enum SortOrder {
     FEED_TITLE_Z_A,
     RANDOM,
     SMART_SHUFFLE_OLD_NEW,
-    SMART_SHUFFLE_NEW_OLD
+    SMART_SHUFFLE_NEW_OLD;
+
+    /**
+     * Converts the string representation to its enum value. If the string value is unknown,
+     * the given default value is returned.
+     */
+    public static SortOrder parseWithDefault(String value, SortOrder defaultValue) {
+        try {
+            return valueOf(value);
+        } catch (IllegalArgumentException e) {
+            return defaultValue;
+        }
+    }
 }

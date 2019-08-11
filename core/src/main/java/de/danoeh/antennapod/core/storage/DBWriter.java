@@ -416,6 +416,10 @@ public class DBWriter {
 
         // Sort queue by configured sort order
         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
+        if (sortOrder == SortOrder.RANDOM) {
+            // do not shuffle the list on every change
+            return;
+        }
         Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortOrder);
         permutor.reorder(queue);
 

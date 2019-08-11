@@ -899,7 +899,7 @@ public class UserPreferences {
      */
     public static SortOrder getQueueKeepSortedOrder() {
         String sortOrderStr = prefs.getString(PREF_QUEUE_KEEP_SORTED_ORDER, "use-default");
-        return parseSortOrder(sortOrderStr);
+        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
     }
 
     /**
@@ -914,18 +914,5 @@ public class UserPreferences {
         prefs.edit()
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
                 .apply();
-    }
-
-    /**
-     * Converts the string representation to its enum value. If the string value is unknown,
-     * a default value is retuned.
-     */
-    private static SortOrder parseSortOrder(String value) {
-        try {
-            return SortOrder.valueOf(value);
-        } catch (IllegalArgumentException e) {
-            // default value
-            return SortOrder.DATE_NEW_OLD;
-        }
     }
 }

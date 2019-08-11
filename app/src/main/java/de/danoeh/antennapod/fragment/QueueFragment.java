@@ -378,9 +378,11 @@ public class QueueFragment extends Fragment {
                     if (keepSortedNew) {
                         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
                         QueueSorter.sort(sortOrder, true);
+                        recyclerAdapter.setLocked(true);
+                    } else {
+                        recyclerAdapter.setLocked(UserPreferences.isQueueLocked());
                     }
-                    // Update sort menu items and list lock elements
-                    getActivity().recreate();
+                    getActivity().invalidateOptionsMenu();
                     return true;
                 default:
                     return false;
@@ -393,16 +395,10 @@ public class QueueFragment extends Fragment {
     /**
      * This method is called if the user clicks on a sort order menu item.
      *
-     * If the queue is in keep sorted mode, the new sort order is stored in the preferences and
-     * the queue is sorted. Otherwise the queue is just sorted.
-     *
      * @param sortOrder New sort order.
      */
     private void setSortOrder(SortOrder sortOrder) {
-        boolean keepSorted = UserPreferences.isQueueKeepSorted();
-        if (keepSorted) {
-            UserPreferences.setQueueKeepSortedOrder(sortOrder);
-        }
+        UserPreferences.setQueueKeepSortedOrder(sortOrder);
         QueueSorter.sort(sortOrder, true);
     }
 
