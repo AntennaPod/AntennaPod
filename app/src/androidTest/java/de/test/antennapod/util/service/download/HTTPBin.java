@@ -3,6 +3,7 @@ package de.test.antennapod.util.service.download;
 import android.util.Base64;
 import android.util.Log;
 
+import fi.iki.elonen.NanoHTTPD;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 

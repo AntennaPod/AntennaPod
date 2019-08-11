@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
-import android.test.InstrumentationTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.MediumTest;
 import android.util.Log;
 
 import org.awaitility.Awaitility;
@@ -27,23 +29,32 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.Consumer;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for DBWriter
  */
-public class DBWriterTest extends InstrumentationTestCase {
+@MediumTest
+public class DBWriterTest {
 
     private static final String TAG = "DBWriterTest";
     private static final String TEST_FOLDER = "testDBWriter";
     private static final long TIMEOUT = 5L;
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-
+    @After
+    public void tearDown() throws Exception {
         assertTrue(PodDBAdapter.deleteDatabase());
 
-        final Context context = getInstrumentation().getTargetContext();
+        final Context context = InstrumentationRegistry.getTargetContext();
         File testDir = context.getExternalFilesDir(TEST_FOLDER);
         assertNotNull(testDir);
         for (File f : testDir.listFiles()) {
@@ -51,24 +62,23 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() throws Exception {
         // create new database
-        PodDBAdapter.init(getInstrumentation().getTargetContext());
+        PodDBAdapter.init(InstrumentationRegistry.getTargetContext());
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
 
-        Context context = getInstrumentation().getTargetContext();
+        Context context = InstrumentationRegistry.getTargetContext();
         SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putBoolean(UserPreferences.PREF_DELETE_REMOVES_FROM_QUEUE, true).commit();
 
         UserPreferences.init(context);
     }
 
+    @Test
     public void testSetFeedMediaPlaybackInformation()
             throws IOException, ExecutionException, InterruptedException, TimeoutException {
         final int POSITION = 50;
@@ -101,6 +111,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertEquals(DURATION, mediaFromDb.getDuration());
     }
 
+    @Test
     public void testDeleteFeedMediaOfItemFileExists()
             throws IOException, ExecutionException, InterruptedException, TimeoutException {
         File dest = new File(getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
@@ -133,6 +144,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertNull(media.getFile_url());
     }
 
+    @Test
     public void testDeleteFeedMediaOfItemRemoveFromQueue()
             throws IOException, ExecutionException, InterruptedException, TimeoutException {
         assertTrue(UserPreferences.shouldDeleteRemoveFromQueue());
@@ -174,6 +186,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertTrue(queue.size() == 0);
     }
 
+    @Test
     public void testDeleteFeed() throws ExecutionException, InterruptedException, IOException, TimeoutException {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
@@ -229,6 +242,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @Test
     public void testDeleteFeedNoItems() throws IOException, ExecutionException, InterruptedException, TimeoutException {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
@@ -254,6 +268,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @Test
     public void testDeleteFeedNoFeedMedia() throws IOException, ExecutionException, InterruptedException, TimeoutException {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
@@ -296,6 +311,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @Test
     public void testDeleteFeedWithQueueItems() throws ExecutionException, InterruptedException, TimeoutException {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
@@ -360,6 +376,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @Test
     public void testDeleteFeedNoDownloadedFiles() throws ExecutionException, InterruptedException, TimeoutException {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
@@ -427,6 +444,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         return media;
     }
 
+    @Test
     public void testAddItemToPlaybackHistoryNotPlayedYet()
             throws ExecutionException, InterruptedException, TimeoutException {
         FeedMedia media = playbackHistorySetup(null);
@@ -440,6 +458,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertNotNull(media.getPlaybackCompletionDate());
     }
 
+    @Test
     public void testAddItemToPlaybackHistoryAlreadyPlayed()
             throws ExecutionException, InterruptedException, TimeoutException {
         final long OLD_DATE = 0;
@@ -483,6 +502,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         return feed;
     }
 
+    @Test
     public void testAddQueueItemSingleItem() throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");
@@ -507,6 +527,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @Test
     public void testAddQueueItemSingleItemAlreadyInQueue() throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");
@@ -541,6 +562,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @Test
     public void testAddQueueItemMultipleItems() throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
         final int NUM_ITEMS = 10;
@@ -559,6 +581,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @Test
     public void testClearQueue() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
 
@@ -572,6 +595,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
     }
 
+    @Test
     public void testRemoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
         final Context context = getInstrumentation().getTargetContext();
@@ -604,6 +628,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
     }
 
+    @Test
     public void testRemoveQueueItemMultipleItems() throws InterruptedException, ExecutionException, TimeoutException {
         // Setup test data
         //
@@ -641,6 +666,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     }
 
+    @Test
     public void testMoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
         Feed feed = new Feed("url", null, "title");
@@ -687,6 +713,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
     }
 
+    @Test
     public void testMarkFeedRead() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
         Feed feed = new Feed("url", null, "title");
@@ -713,6 +740,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
     }
 
+    @Test
     public void testMarkAllItemsReadSameFeed() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
         Feed feed = new Feed("url", null, "title");
