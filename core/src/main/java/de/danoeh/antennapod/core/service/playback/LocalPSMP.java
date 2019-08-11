@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -54,19 +55,91 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
      * have to wait until these operations have finished.
      */
-    private final ReentrantLock playerLock;
+    private final PlayerLock playerLock;
+    private final PlayerExecutor executor;
+    private boolean useCallerThread = true;
+
+
     private CountDownLatch seekLatch;
 
-    private final ThreadPoolExecutor executor;
+    /**
+     * All ExoPlayer methods must be executed on the same thread.
+     * We use the main application thread. This class allows to
+     * "fake" an executor that just calls the methods on the
+     * calling thread instead of submitting to an executor.
+     * Other players are still executed in a background thread.
+     */
+    private class PlayerExecutor {
+        private ThreadPoolExecutor threadPool;
+
+        public Future<?> submit(Runnable r) {
+            if (useCallerThread) {
+                r.run();
+                return new FutureTask<Void>(() -> {}, null);
+            } else {
+                return threadPool.submit(r);
+            }
+        }
+
+        public void shutdown() {
+            threadPool.shutdown();
+        }
+    }
+
+    /**
+     * All ExoPlayer methods must be executed on the same thread.
+     * We use the main application thread. This class allows to
+     * "fake" a lock that does nothing. A lock is not needed if
+     * everything is called on the same thread.
+     * Other players are still executed in a background thread and
+     * therefore use a real lock.
+     */
+    private class PlayerLock {
+        private ReentrantLock lock = new ReentrantLock();
+
+        public void lock() {
+            if (!useCallerThread) {
+                lock.lock();
+            }
+        }
+
+        public boolean tryLock(int i, TimeUnit milliseconds) throws InterruptedException {
+            if (!useCallerThread) {
+                return lock.tryLock(i, milliseconds);
+            }
+            return true;
+        }
+
+        public boolean tryLock() {
+            if (!useCallerThread) {
+                return lock.tryLock();
+            }
+            return true;
+        }
+
+        public void unlock() {
+            if (!useCallerThread) {
+                lock.unlock();
+            }
+        }
+
+        public boolean isHeldByCurrentThread() {
+            if (!useCallerThread) {
+                return lock.isHeldByCurrentThread();
+            }
+            return true;
+        }
+    }
 
     public LocalPSMP(@NonNull Context context,
                      @NonNull PSMPCallback callback) {
         super(context, callback);
-
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        this.playerLock = new ReentrantLock();
+        this.playerLock = new PlayerLock();
         this.startWhenPrepared = new AtomicBoolean(false);
-        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
+
+        executor = new PlayerExecutor();
+        executor.threadPool = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<>(),
                 (r, executor) -> Log.d(TAG, "Rejected execution of runnable"));
 
         mediaPlayer = null;
@@ -105,6 +178,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     public void playMediaObject(@NonNull final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         Log.d(TAG, "playMediaObject(...)");
+        useCallerThread = UserPreferences.useExoplayer();
         executor.submit(() -> {
             playerLock.lock();
             try {
@@ -169,7 +243,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             callback.onMediaChanged(false);
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
-            } else if (new File(media.getLocalMediaUrl()).canRead()) {
+            } else if (media.getLocalMediaUrl() != null && new File(media.getLocalMediaUrl()).canRead()) {
                 mediaPlayer.setDataSource(media.getLocalMediaUrl());
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalMediaUrl());
@@ -236,7 +310,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                     Log.e(TAG, Log.getStackTraceString(e));
                     UserPreferences.setPlaybackSpeed(String.valueOf(speed));
                 }
-                setSpeed(speed);
+                setPlaybackParams(speed, UserPreferences.isSkipSilence());
                 setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
@@ -372,6 +446,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public void reinit() {
+        useCallerThread = UserPreferences.useExoplayer();
         executor.submit(() -> {
             playerLock.lock();
             Log.d(TAG, "reinit()");
@@ -537,14 +612,14 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * Sets the playback speed.
      * This method is executed on the caller's thread.
      */
-    private void setSpeedSync(float speed) {
+    private void setSpeedSyncAndSkipSilence(float speed, boolean skipSilence) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
             if (mediaPlayer.canSetSpeed()) {
-                mediaPlayer.setPlaybackSpeed(speed);
                 Log.d(TAG, "Playback speed was set to " + speed);
                 callback.playbackSpeedChanged(speed);
             }
+            mediaPlayer.setPlaybackParams(speed, skipSilence);
         }
         playerLock.unlock();
     }
@@ -554,8 +629,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      * This method is executed on an internal executor service.
      */
     @Override
-    public void setSpeed(final float speed) {
-        executor.submit(() -> setSpeedSync(speed));
+    public void setPlaybackParams(final float speed, final boolean skipSilence) {
+        executor.submit(() -> setSpeedSyncAndSkipSilence(speed, skipSilence));
     }
 
     /**
@@ -821,6 +896,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     protected Future<?> endPlayback(final boolean hasEnded, final boolean wasSkipped,
                                     final boolean shouldContinue, final boolean toStoppedState) {
+        useCallerThread = UserPreferences.useExoplayer();
         return executor.submit(() -> {
             playerLock.lock();
             releaseWifiLockIfNecessary();
@@ -991,7 +1067,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     private final MediaPlayer.OnErrorListener audioErrorListener =
             (mp, what, extra) -> {
-                if(mp.canFallback()) {
+                if(mp != null && mp.canFallback()) {
                     mp.fallback();
                     return true;
                 } else {
@@ -1012,11 +1088,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericSeekCompleteListener();
 
     private void genericSeekCompleteListener() {
-        Thread t = new Thread(() -> {
-            Log.d(TAG, "genericSeekCompleteListener");
-            if(seekLatch != null) {
-                seekLatch.countDown();
-            }
+        Log.d(TAG, "genericSeekCompleteListener");
+        if (seekLatch != null) {
+            seekLatch.countDown();
+        }
+
+        Runnable r = () -> {
             playerLock.lock();
             if (playerStatus == PlayerStatus.PLAYING) {
                 callback.onPlaybackStart(media, getPosition());
@@ -1025,7 +1102,12 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(statusBeforeSeeking, media, getPosition());
             }
             playerLock.unlock();
-        });
-        t.start();
+        };
+
+        if (useCallerThread) {
+            r.run();
+        } else {
+            executor.submit(r);
+        }
     }
 }

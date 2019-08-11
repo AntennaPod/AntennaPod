@@ -76,7 +76,7 @@
   <!--'Add Feed' Activity labels-->
   <!--Actions on feeds-->
   <string name="mark_all_read_label">تعليمه ك تم تشغيله</string>
-  <string name="mark_all_seen_label">تعليمه ك تم مشاهدته</string>
+  <string name="remove_all_new_flags_label">تعليمه ك تم مشاهدته</string>
   <string name="show_info_label">اظهار المعلومات</string>
   <string name="share_label">مشاركة</string>
   <string name="share_link_label">مشاركة الرابط</string>

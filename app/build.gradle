@@ -1,50 +1,35 @@
-import org.apache.tools.ant.filters.ReplaceTokens
+plugins {
+    id('com.github.triplet.play') version '2.2.0'
+}
 
 apply plugin: "com.android.application"
-apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.getkeepsafe.dexcount'
 
-repositories {
-    maven { url "https://jitpack.io" }
-    mavenCentral()
-}
-
-buildscript {
-    repositories {
-       jcenter()
-    }
-    dependencies {
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.2'
-    }
-}
-
-def getMyVersionName() {
-    def parsedManifestXml = (new XmlSlurper())
-            .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
-    return parsedManifestXml."@android:versionName"
-}
-
-def getMyVersionCode() {
-    def parsedManifestXml = (new XmlSlurper())
-            .parse("${projectDir}/src/main/AndroidManifest.xml")
-            .declareNamespace(android: "http://schemas.android.com/apk/res/android")
-    return parsedManifestXml."@android:versionCode".toInteger()
-}
+import org.apache.tools.ant.filters.ReplaceTokens
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled false
-        versionCode getMyVersionCode()
-        versionName "${getMyVersionName()}"
+        vectorDrawables.useSupportLibrary true
+        // Version code schema:
+        // "1.2.3-SNAPSHOT" -> 1020300
+        // "1.2.3-RC4"      -> 1020304
+        // "1.2.3"          -> 1020395
+        versionCode 1070296
+        versionName "1.7.2b"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         generatedDensities = []
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ eventBusIndex : 'de.danoeh.antennapod.ApEventBusIndex' ]
+            }
+        }
     }
 
     signingConfigs {
@@ -74,22 +59,18 @@ android {
 
     buildTypes {
         def STRING = "String"
-        def FLATTR_APP_KEY = "FLATTR_APP_KEY"
-        def FLATTR_APP_SECRET = "FLATTR_APP_SECRET"
-        def mFlattrAppKey = (project.hasProperty("flattrAppKey")) ? flattrAppKey : "\"\""
-        def mFlattrAppSecret = (project.hasProperty("flattrAppSecret")) ? flattrAppSecret : "\"\""
 
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
-            buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
-            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret            
+
             // debug build has method count over 64k single-dex threshold. 
             // For building debug build to use on Android < 21 (pre-Android 5) devices, 
             // you need to manually change class
             // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication . 
             // See Issue #2813
             multiDexEnabled true
+            
             dexcount {
                 if (project.hasProperty("enableDexcountInDebug")) {
                     runOnEachPackage enableDexcountInDebug.toBoolean()
@@ -101,10 +82,8 @@ android {
         release {
             resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
             minifyEnabled true
-            proguardFile "proguard.cfg"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), "proguard.cfg"
             signingConfig signingConfigs.releaseConfig
-            buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
-            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
         }
     }
 
@@ -158,13 +137,14 @@ dependencies {
     implementation "com.android.support:design:$supportVersion"
     implementation "com.android.support:preference-v14:$supportVersion"
     implementation "com.android.support:gridlayout-v7:$supportVersion"
-    implementation "com.android.support:percent:$supportVersion"
     implementation "com.android.support:recyclerview-v7:$supportVersion"
     compileOnly 'com.google.android.wearable:wearable:2.2.0'
+
+    // ViewModel and LiveData
+    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation("org.shredzone.flattr4j:flattr4j-core:$flattr4jVersion") {
-        exclude group: "org.json", module: "json"
-    }
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
@@ -172,7 +152,8 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
     implementation "com.squareup.okio:okio:$okioVersion"
-    implementation "de.greenrobot:eventbus:$eventbusVersion"
+    implementation "org.greenrobot:eventbus:$eventbusVersion"
+    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
@@ -187,11 +168,13 @@ dependencies {
     }
 
     implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
+    implementation 'com.leinardi.android:speed-dial:1.0.2' // 1.0.2 uses support 27.1.1 ; newer versions use 28.0.0;
 
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
-    implementation 'com.github.mfietz:fyydlin:v0.4.1'
-    implementation 'com.github.ByteHamster:SearchPreference:v1.0.8'
+    implementation 'com.github.mfietz:fyydlin:v0.4.2'
+    implementation 'com.github.ByteHamster:SearchPreference:v1.2.6'
+    implementation "org.awaitility:awaitility:$awaitilityVersion"
 
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -202,8 +185,18 @@ dependencies {
 }
 
 play {
-    serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
-    pk12File = file('../serviceaccount-c3d7d0f61387.p12')
+    track = 'alpha'
+
+    if (project.hasProperty("antennaPodServiceAccountEmail")) {
+        serviceAccountEmail = antennaPodServiceAccountEmail
+    } else {
+        serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
+    }
+    if (project.hasProperty("antennaPodPk12File")) {
+        serviceAccountCredentials = file(antennaPodPk12File)
+    } else {
+        serviceAccountCredentials = file('../serviceaccount-c3d7d0f61387.p12')
+    }
 }
 
 // about.html is templatized so that we can automatically insert
@@ -233,10 +226,3 @@ task copyTextFiles(type: Copy) {
 
 preBuild.dependsOn filterAbout, copyTextFiles
 
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint" << "-Xlint:-deprecation" << "-Xlint:-serial"
-        }
-    }
-}

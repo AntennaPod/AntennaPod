@@ -26,6 +26,10 @@
         android:id="@+id/remove_from_queue_item"
         android:menuCategory="container"
         android:title="@string/remove_from_queue_label" />
+    <item
+        android:id="@+id/remove_item"
+        android:menuCategory="container"
+        android:title="@string/delete_label" />
 
     <item
         android:id="@+id/add_to_favorites_item"
@@ -80,10 +84,4 @@
                 android:title="@string/share_file_label" />
         </menu>
     </item>
-    <item
-        android:id="@+id/support_item"
-        android:menuCategory="container"
-        android:title="@string/support_label" />
-
-
 </menu>

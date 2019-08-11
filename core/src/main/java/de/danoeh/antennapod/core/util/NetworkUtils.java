@@ -68,8 +68,13 @@ public class NetworkUtils {
 						}
 					}
 				}
+			} else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
+				Log.d(TAG, "Device is connected to Ethernet");
+				if (networkInfo.isConnected()) {
+					return true;
+				}
 			} else {
-				if (!UserPreferences.isEnableAutodownloadOnMobile()) {
+				if (!UserPreferences.isAllowMobileAutoDownload()) {
 					Log.d(TAG, "Auto Download not enabled on Mobile");
 					return false;
 				}
@@ -90,9 +95,27 @@ public class NetworkUtils {
         return info != null && info.isConnected();
     }
 
-	public static boolean isDownloadAllowed() {
-		return UserPreferences.isAllowMobileUpdate() || !NetworkUtils.isNetworkMetered();
-	}
+    public static boolean isEpisodeDownloadAllowed() {
+        return UserPreferences.isAllowMobileEpisodeDownload() || !NetworkUtils.isNetworkMetered();
+    }
+
+    public static boolean isEpisodeHeadDownloadAllowed() {
+        // It is not an image but it is a similarly tiny request
+        // that is probably not even considered a download by most users
+        return isImageAllowed();
+    }
+
+    public static boolean isImageAllowed() {
+        return UserPreferences.isAllowMobileImages() || !NetworkUtils.isNetworkMetered();
+    }
+
+    public static boolean isStreamingAllowed() {
+        return UserPreferences.isAllowMobileStreaming() || !NetworkUtils.isNetworkMetered();
+    }
+
+    public static boolean isFeedRefreshAllowed() {
+        return UserPreferences.isAllowMobileFeedRefresh() || !NetworkUtils.isNetworkMetered();
+    }
 
 	private static boolean isNetworkMetered() {
 		ConnectivityManager connManager = (ConnectivityManager) context
@@ -114,7 +137,7 @@ public class NetworkUtils {
 
 	public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {
         return Single.create((SingleOnSubscribe<Long>) emitter -> {
-            if (!NetworkUtils.isDownloadAllowed()) {
+            if (!NetworkUtils.isEpisodeHeadDownloadAllowed()) {
                 emitter.onSuccess(0L);
                 return;
             }

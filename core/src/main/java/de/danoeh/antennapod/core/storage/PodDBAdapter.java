@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -36,8 +38,7 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
-import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 
 // TODO Remove media column from feeditem table
 
@@ -94,7 +95,6 @@ public class PodDBAdapter {
     public static final String KEY_HAS_CHAPTERS = "has_simple_chapters";
     public static final String KEY_TYPE = "type";
     public static final String KEY_ITEM_IDENTIFIER = "item_identifier";
-    public static final String KEY_FLATTR_STATUS = "flattr_status";
     public static final String KEY_FEED_IDENTIFIER = "feed_identifier";
     public static final String KEY_REASON_DETAILED = "reason_detailed";
     public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
@@ -137,7 +137,6 @@ public class PodDBAdapter {
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
             + " TEXT," + KEY_IMAGE_URL + " TEXT," + KEY_TYPE + " TEXT,"
             + KEY_FEED_IDENTIFIER + " TEXT," + KEY_AUTO_DOWNLOAD + " INTEGER DEFAULT 1,"
-            + KEY_FLATTR_STATUS + " INTEGER,"
             + KEY_USERNAME + " TEXT,"
             + KEY_PASSWORD + " TEXT,"
             + KEY_INCLUDE_FILTER + " TEXT DEFAULT '',"
@@ -156,7 +155,6 @@ public class PodDBAdapter {
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
-            + KEY_FLATTR_STATUS + " INTEGER,"
             + KEY_IMAGE_URL + " TEXT,"
             + KEY_AUTO_DOWNLOAD + " INTEGER)";
 
@@ -237,7 +235,6 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
             TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED,
-            TABLE_NAME_FEEDS + "." + KEY_FLATTR_STATUS,
             TABLE_NAME_FEEDS + "." + KEY_IS_PAGED,
             TABLE_NAME_FEEDS + "." + KEY_NEXT_PAGE_LINK,
             TABLE_NAME_FEEDS + "." + KEY_USERNAME,
@@ -264,7 +261,6 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_FEED,
             TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
             TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER,
-            TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS,
             TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE_URL,
             TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD
     };
@@ -326,10 +322,14 @@ public class PodDBAdapter {
         return this;
     }
 
+    @SuppressLint("NewApi")
     private SQLiteDatabase openDb() {
         SQLiteDatabase newDb;
         try {
             newDb = SingletonHolder.dbHelper.getWritableDatabase();
+            if (Build.VERSION.SDK_INT >= 16) {
+                newDb.disableWriteAheadLogging();
+            }
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
             newDb = SingletonHolder.dbHelper.getReadableDatabase();
@@ -376,9 +376,6 @@ public class PodDBAdapter {
         values.put(KEY_TYPE, feed.getType());
         values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
 
-        Log.d(TAG, "Setting feed with flattr status " + feed.getTitle() + ": " + feed.getFlattrStatus().toLong());
-
-        values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         values.put(KEY_IS_PAGED, feed.isPaged());
         values.put(KEY_NEXT_PAGE_LINK, feed.getNextPageLink());
         if (feed.getItemFilter() != null && feed.getItemFilter().getValues().length > 0) {
@@ -510,31 +507,6 @@ public class PodDBAdapter {
     }
 
     /**
-     * Update the flattr status of a feed
-     */
-    public void setFeedFlattrStatus(Feed feed) {
-        ContentValues values = new ContentValues();
-        values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
-        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feed.getId())});
-    }
-
-    /**
-     * Get all feeds in the flattr queue.
-     */
-    public Cursor getFeedsInFlattrQueueCursor() {
-        return db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, KEY_FLATTR_STATUS + "=?",
-                new String[]{String.valueOf(FlattrStatus.STATUS_QUEUE)}, null, null, null);
-    }
-
-    /**
-     * Get all feed items in the flattr queue.
-     */
-    public Cursor getFeedItemsInFlattrQueueCursor() {
-        return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FLATTR_STATUS + "=?",
-                new String[]{String.valueOf(FlattrStatus.STATUS_QUEUE)}, null, null, null);
-    }
-
-    /**
      * Updates the download URL of a Feed.
      */
     public void setFeedDownloadUrl(String original, String updated) {
@@ -572,61 +544,6 @@ public class PodDBAdapter {
     }
 
     /**
-     * Update the flattr status of a FeedItem
-     */
-    public void setFeedItemFlattrStatus(FeedItem feedItem) {
-        ContentValues values = new ContentValues();
-        values.put(KEY_FLATTR_STATUS, feedItem.getFlattrStatus().toLong());
-        db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(feedItem.getId())});
-    }
-
-    /**
-     * Update the flattr status of a feed or feed item specified by its payment link
-     * and the new flattr status to use
-     */
-    public void setItemFlattrStatus(String url, FlattrStatus status) {
-        //Log.d(TAG, "setItemFlattrStatus(" + url + ") = " + status.toString());
-        ContentValues values = new ContentValues();
-        values.put(KEY_FLATTR_STATUS, status.toLong());
-
-        // regexps in sqlite would be neat!
-        String[] query_urls = new String[]{
-                "*" + url + "&*",
-                "*" + url + "%2F&*",
-                "*" + url + "",
-                "*" + url + "%2F"
-        };
-
-        if (db.update(TABLE_NAME_FEEDS, values,
-                KEY_PAYMENT_LINK + " GLOB ?"
-                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
-                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
-                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?", query_urls
-        ) > 0) {
-            Log.i(TAG, "setItemFlattrStatus found match for " + url + " = " + status.toLong() + " in Feeds table");
-            return;
-        }
-        if (db.update(TABLE_NAME_FEED_ITEMS, values,
-                KEY_PAYMENT_LINK + " GLOB ?"
-                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
-                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
-                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?", query_urls
-        ) > 0) {
-            Log.i(TAG, "setItemFlattrStatus found match for " + url + " = " + status.toLong() + " in FeedsItems table");
-        }
-    }
-
-    /**
-     * Reset flattr status to unflattrd for all items
-     */
-    public void clearAllFlattrStatus() {
-        ContentValues values = new ContentValues();
-        values.put(KEY_FLATTR_STATUS, 0);
-        db.update(TABLE_NAME_FEEDS, values, null, null);
-        db.update(TABLE_NAME_FEED_ITEMS, values, null, null);
-    }
-
-    /**
      * Inserts or updates a feeditem entry
      *
      * @param item     The FeedItem
@@ -659,7 +576,6 @@ public class PodDBAdapter {
         }
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null || item.hasChapters());
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
-        values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
         values.put(KEY_AUTO_DOWNLOAD, item.getAutoDownload());
         values.put(KEY_IMAGE_URL, item.getImageUrl());
 
@@ -1247,9 +1163,15 @@ public class PodDBAdapter {
     }
 
     public final int getNumberOfNewItems() {
-        final String query = "SELECT COUNT(" + KEY_ID + ")"
-                + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_READ + "=" + FeedItem.NEW;
+        Object[] args = new String[]{
+                TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
+                TABLE_NAME_FEED_ITEMS,
+                TABLE_NAME_FEEDS,
+                TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID,
+                TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW
+                        + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0"
+        };
+        final String query = String.format("SELECT COUNT(%s) FROM %s INNER JOIN %s ON %s WHERE %s", args);
         Cursor c = db.rawQuery(query, null);
         int result = 0;
         if (c.moveToFirst()) {

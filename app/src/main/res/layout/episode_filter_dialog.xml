@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/radio_filter_group"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radio_filter_include"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/episode_filters_include" />
+
+            <RadioButton
+                android:id="@+id/radio_filter_exclude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/episode_filters_exclude" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/etxtEpisodeFilterText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:lines="8"
+            android:minLines="1"
+            android:maxLines="20"
+            android:scrollbars="vertical"
+            android:hint="@string/episode_filters_hint"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:cursorVisible="true" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="fill_parent"
+        android:layout_height="48dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/dividerVertical" />
+
+        <View
+            android:id="@+id/horizontal_divider"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:background="?android:attr/dividerVertical" />
+
+        <Button
+            android:id="@+id/butCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/horizontal_divider"
+            android:layout_toStartOf="@id/horizontal_divider"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/cancel_label" />
+
+        <Button
+            android:id="@+id/butConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/horizontal_divider"
+            android:layout_toEndOf="@id/horizontal_divider"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/confirm_label" />
+    </RelativeLayout>
+
+</LinearLayout>

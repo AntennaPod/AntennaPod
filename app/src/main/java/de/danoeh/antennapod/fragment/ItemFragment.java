@@ -36,13 +36,16 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
+import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
@@ -61,14 +64,12 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.OnSwipeGesture;
 import de.danoeh.antennapod.view.SwipeGestureDetector;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -196,6 +197,9 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             webvDescription.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
             // Use cached resources, even if they have expired
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webvDescription.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webvDescription.getSettings().setUseWideViewPort(false);
         webvDescription.getSettings().setLayoutAlgorithm(
             WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
@@ -227,9 +231,9 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             if (item == null) {
                 return;
             }
-            DefaultActionButtonCallback actionButtonCallback = new DefaultActionButtonCallback(getActivity());
-            actionButtonCallback.onActionButtonPressed(item, item.isTagged(FeedItem.TAG_QUEUE) ?
-                    LongList.of(item.getId()) : new LongList(0));
+            ItemActionButton actionButton = ItemActionButton.forItem(item, item.isTagged(FeedItem.TAG_QUEUE));
+            actionButton.onClick(getActivity());
+
             FeedMedia media = item.getMedia();
             if (media != null && media.isDownloaded()) {
                 // playback was started, dialog should close itself
@@ -262,14 +266,19 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         load();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().registerSticky(this);
         if(itemsLoaded) {
             progbarLoading.setVisibility(View.GONE);
             updateAppearance();
@@ -277,8 +286,8 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
     }
@@ -297,19 +306,20 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
 
     @Override
     public boolean onSwipeLeftToRight() {
-        Log.d(TAG, "onSwipeLeftToRight()");
-        feedItemPos = feedItemPos - 1;
-        if(feedItemPos < 0) {
-            feedItemPos = feedItems.length - 1;
-        }
-        load();
-        return true;
+        return swipeFeedItem(-1);
     }
 
     @Override
     public boolean onSwipeRightToLeft() {
-        Log.d(TAG, "onSwipeRightToLeft()");
-        feedItemPos = (feedItemPos + 1) % feedItems.length;
+        return swipeFeedItem(+1);
+    }
+
+    private boolean swipeFeedItem(int position) {
+        Log.d(TAG, String.format("onSwipe() shift: %s", position));
+        feedItemPos = (feedItemPos + position) % feedItems.length;
+        if (feedItemPos < 0) {
+            feedItemPos = feedItems.length - 1;
+        }
         load();
         return true;
     }
@@ -358,7 +368,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
 
     private void onFragmentLoaded() {
         if (webviewData != null) {
-            webvDescription.loadDataWithBaseURL(null, webviewData, "text/html", "utf-8", "about:blank");
+            webvDescription.loadDataWithBaseURL("https://127.0.0.1", webviewData, "text/html", "utf-8", "about:blank");
         }
         updateAppearance();
     }
@@ -537,6 +547,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         ((MainActivity)getActivity()).loadChildFragment(fragment);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for(FeedItem item : event.items) {
@@ -547,6 +558,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
@@ -588,10 +600,12 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Nullable
     private FeedItem loadInBackground() {
         FeedItem feedItem = DBReader.getFeedItem(feedItems[feedItemPos]);
-        if (feedItem != null) {
-            Timeline t = new Timeline(getActivity(), feedItem);
+        Context context = getContext();
+        if (feedItem != null && context != null) {
+            Timeline t = new Timeline(context, feedItem);
             webviewData = t.processShownotes(false);
         }
         return feedItem;

@@ -5,7 +5,7 @@
   <string name="feeds_label">Flux</string>
   <string name="statistics_label">Statistiques</string>
   <string name="add_feed_label">Ajouter un podcast</string>
-  <string name="episodes_label">Épisodes</string>
+  <string name="episodes_label">Episodes</string>
   <string name="all_episodes_short_label">Tout</string>
   <string name="new_episodes_label">Nouveaux</string>
   <string name="favorite_episodes_label">Favoris</string>
@@ -40,7 +40,7 @@
   <string name="drawer_feed_order_unplayed_episodes">Trier par compteur</string>
   <string name="drawer_feed_order_alphabetical">Trier alphabétiquement</string>
   <string name="drawer_feed_order_last_update">Trier par date de publication</string>
-  <string name="drawer_feed_order_most_played">Trier par nombre d\'épisodes lus</string>
+  <string name="drawer_feed_order_most_played">Trier par nombre lus</string>
   <string name="drawer_feed_counter_new_unplayed">Nombre de nouveaux épisodes non-lus</string>
   <string name="drawer_feed_counter_new">Nombre de nouveaux épisodes</string>
   <string name="drawer_feed_counter_unplayed">Nombre d\'épisodes non-lus</string>
@@ -60,13 +60,14 @@
   <string name="yes">Oui</string>
   <string name="no">Non</string>
   <string name="reset">Réinitialiser</string>
-  <string name="author_label">Auteur</string>
+  <string name="author_label">Auteur(s)</string>
   <string name="language_label">Langue</string>
   <string name="url_label">Lien</string>
   <string name="podcast_settings_label">Préférences</string>
   <string name="cover_label">Image</string>
   <string name="error_label">Erreur</string>
   <string name="error_msg_prefix">Une erreur a eu lieu :</string>
+  <string name="needs_storage_permission">L\'autorisation d\'utiliser le stockage est requis pour cette opération</string>
   <string name="refresh_label">Rafraîchir</string>
   <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
@@ -94,56 +95,68 @@
   <string name="episode_cleanup_never">Jamais</string>
   <string name="episode_cleanup_queue_removal">Quand l’épisode n\'est pas dans la liste de lecture</string>
   <string name="episode_cleanup_after_listening">Après avoir terminé</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 heure après avoir été écouté</item>
+    <item quantity="other">%d heures après avoir été écouté</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 jour après avoir été écouté</item>
     <item quantity="other">%d jours après avoir été écouté</item>
   </plurals>
+  <string name="num_selected_label">%d sélectionné(s)</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Lien du flux</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Ajouter un podcast à partir de son lien</string>
-  <string name="podcastdirectories_label">Trouver le podcast dans la bibliothèque</string>
+  <string name="podcastdirectories_label">Trouver un podcast</string>
   <string name="podcastdirectories_descr">Pour de nouveaux podcasts vous pouvez chercher iTunes ou fyyd ou parcourir gpodder.net par nom, catégorie ou popularité.</string>
   <string name="browse_gpoddernet_label">Chercher sur gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marquer tous les épisodes comme lus</string>
   <string name="mark_all_read_msg">Tous les épisodes ont été marqués comme lus</string>
   <string name="mark_all_read_confirmation_msg">Confirmer le marquage de tous les épisode comme lus</string>
-  <string name="mark_all_read_feed_confirmation_msg">Confirmer le marquage de tous les épisode de ce flux comme lus</string>
-  <string name="mark_all_seen_label">Marquer tous les épisodes comme vus</string>
-  <string name="mark_all_seen_msg">Tous les épisodes ont été marqués vus</string>
-  <string name="mark_all_seen_confirmation_msg">Merci de confirmer que vous voulez marquer tous les épisodes comme vus.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Confirmer le marquage de tous les épisodes de ce podcast comme lus</string>
+  <string name="remove_all_new_flags_label">Marquer tous les épisodes comme vus</string>
+  <string name="removed_all_new_flags_msg">Tous les épisodes ont été marqués vus</string>
+  <string name="remove_all_new_flags_confirmation_msg">Merci de confirmer que vous voulez marquer tous les épisodes comme vus.</string>
   <string name="show_info_label">Voir les détails</string>
-  <string name="show_feed_settings_label">Paramètres de flux...</string>
-  <string name="feed_info_label">Infos du flux</string>
-  <string name="feed_settings_label">Paramètres du flux</string>
+  <string name="show_feed_settings_label">Paramètres du podcast...</string>
+  <string name="feed_info_label">Infos du podcast</string>
+  <string name="feed_settings_label">Paramètres du podcast</string>
   <string name="rename_feed_label">Renommer le podcast</string>
   <string name="remove_feed_label">Supprimer le podcast</string>
   <string name="share_label">Partager...</string>
-  <string name="share_link_label">Partager le lien du site</string>
-  <string name="share_file_label">Partager le fichier</string>
+  <string name="share_link_label">Partager le lien</string>
   <string name="share_link_with_position_label">Partager le lien avec la position</string>
+  <string name="share_file_label">Partager le fichier</string>
   <string name="share_feed_url_label">Partager le lien du flux</string>
   <string name="share_item_url_label">Partager le lien du fichier</string>
   <string name="share_item_url_with_position_label">Partager le lien du fichier avec la position</string>
-  <string name="feed_delete_confirmation_msg">Confirmer que vous voulez supprimer le flux \"%1$s\" et TOUS les épisodes que vous avez téléchargés.</string>
-  <string name="feed_remover_msg">Flux en cours de suppression</string>
-  <string name="load_complete_feed">Mettre à jour tout le flux</string>
+  <string name="feed_delete_confirmation_msg">Confirmer que vous voulez supprimer le podcast \"%1$s\" et TOUS ses épisodes téléchargés.</string>
+  <string name="feed_remover_msg">Podcast en cours de suppression</string>
+  <string name="load_complete_feed">Mettre à jour tout le podcast</string>
   <string name="hide_episodes_title">Cacher épisodes</string>
   <string name="batch_edit">Edition groupée</string>
-  <string name="hide_unplayed_episodes_label">Non lus</string>
+  <string name="select_all_above">Sélectionner avec ceux au-dessus</string>
+  <string name="select_all_below">Sélectionner avec ceux en-dessous</string>
+  <string name="hide_unplayed_episodes_label">Non lu</string>
   <string name="hide_paused_episodes_label">En pause</string>
-  <string name="hide_played_episodes_label">Lus</string>
+  <string name="hide_played_episodes_label">Lu</string>
   <string name="hide_queued_episodes_label">Dans la liste de lecture</string>
   <string name="hide_not_queued_episodes_label">Pas dans la liste de lecture</string>
   <string name="hide_downloaded_episodes_label">Téléchargé</string>
   <string name="hide_not_downloaded_episodes_label">Non téléchargé</string>
   <string name="hide_has_media_label">Avec média</string>
+  <string name="hide_is_favorite_label">Est un favori</string>
   <string name="filtered_label">Filtré</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} La dernière mise à jour a échoué</string>
   <string name="open_podcast">Ouvrir Podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Télécharger</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Téléchargement d\'%d épisode.</item>
+    <item quantity="other">Téléchargement de %d épisodes.</item>
+  </plurals>
   <string name="play_label">Lire</string>
   <string name="pause_label">Pause</string>
   <string name="stop_label">Stop</string>
@@ -151,14 +164,35 @@
   <string name="remove_label">Supprimer</string>
   <string name="delete_label">Effacer</string>
   <string name="delete_failed">Suppression du fichier impossible. Redémarrer pourrait aider.</string>
-  <string name="remove_episode_lable">Supprimer cet épisode</string>
-  <string name="marked_as_seen_label">Marqué comme vu</string>
+  <string name="delete_episode_label">Suppression de l\'épisode</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d épisode supprimé.</item>
+    <item quantity="other">%d épisodes supprimés.</item>
+  </plurals>
+  <string name="remove_new_flag_label">Marquer comme vu</string>
+  <string name="removed_new_flag_label">Marqué comme vu</string>
   <string name="mark_read_label">Marquer comme lu</string>
   <string name="marked_as_read_label">Les épisodes ont été marqués comme lus</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d épisode marqué comme lu.</item>
+    <item quantity="other">%d épisodes marqués comme lus.</item>
+  </plurals>
   <string name="mark_unread_label">Marquer comme non lu</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d épisode marqué comme non lu.</item>
+    <item quantity="other">%d épisodes marqués comme non lus.</item>
+  </plurals>
   <string name="add_to_queue_label">Ajouter à la liste de lecture</string>
   <string name="added_to_queue_label">Ajouté à la liste de lecture</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d épisode ajouté à la liste de lecture.</item>
+    <item quantity="other">%d épisodes ajoutés à la liste de lecture</item>
+  </plurals>
   <string name="remove_from_queue_label">Supprimer de la liste de lecture</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%d épisode supprimé de la liste de lecture.</item>
+    <item quantity="other">%d épisodes supprimés de la liste de lecture.</item>
+  </plurals>
   <string name="add_to_favorite_label">Ajouter aux Favoris</string>
   <string name="added_to_favorites">Ajouté aux Favoris</string>
   <string name="remove_from_favorite_label">Supprimer des Favoris</string>
@@ -182,7 +216,7 @@
   <string name="download_error_file_error">Accès au fichier impossible</string>
   <string name="download_error_http_data_error">Erreur de données HTTP</string>
   <string name="download_error_error_unknown">Erreur inconnue</string>
-  <string name="download_error_parser_exception">Exception de l\'analyseur</string>
+  <string name="download_error_parser_exception">Message d\'erreur</string>
   <string name="download_error_unsupported_type">Type de flux non géré</string>
   <string name="download_error_connection_error">Erreur de connexion</string>
   <string name="download_error_unknown_host">Hôte inconnu</string>
@@ -210,6 +244,7 @@
   <string name="download_type_media">Fichier média</string>
   <string name="download_type_image">Image</string>
   <string name="download_request_error_dialog_message_prefix">Une erreur s\'est produite durant le téléchargement du fichier :\u0020</string>
+  <string name="null_value_podcast_error">Aucun podcast correspondant.</string>
   <string name="authentication_notification_title">Authentification requise</string>
   <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
   <string name="confirm_mobile_download_dialog_title">Confirmer le téléchargement mobile</string>
@@ -244,7 +279,7 @@
   <string name="date">Date</string>
   <string name="duration">Durée</string>
   <string name="episode_title">Titre de l\'épisode</string>
-  <string name="feed_title">Nom du flux</string>
+  <string name="feed_title">Nom du podcast</string>
   <string name="random">Aléatoire</string>
   <string name="smart_shuffle">Tri intelligent</string>
   <string name="ascending">Ordre croissant</string>
@@ -283,34 +318,50 @@
   <string name="set_playback_speed_label">Vitesses de lecture</string>
   <string name="enable_sonic">Activer Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Cette liste est vide.</string>
-  <string name="no_feeds_label">Vous n\'êtes encore abonné à aucun flux.</string>
-  <string name="no_chapters_label">Cet épisode n\'a pas de chapitres.</string>
+  <string name="no_items_header_label">Aucun épisode dans la liste de lecture</string>
+  <string name="no_items_label">Pour ajouter un épisode, téléchargez le ou faites une pression longue dessus et taper sur \"Ajouter à la liste de lecture\".</string>
+  <string name="no_feeds_label">Vous n\'êtes encore abonné à aucun podcast.</string>
+  <string name="no_chapters_label">Cet épisode n\'a pas de chapitre.</string>
   <string name="no_shownotes_label">Aucune notes pour cet épisode.</string>
+  <string name="no_run_downloads_head_label">Aucun téléchargement en cours</string>
+  <string name="no_run_downloads_label">Vous pouvez télécharger des épisodes à partir du détail d\'un podcast.</string>
+  <string name="no_comp_downloads_head_label">Aucun épisode téléchargé</string>
+  <string name="no_comp_downloads_label">Vous pouvez télécharger des épisodes à partir du détail d\'un podcast.</string>
+  <string name="no_log_downloads_head_label">Aucun téléchargement dans l\'historique</string>
+  <string name="no_log_downloads_label">L\'historique des téléchargements apparaîtra quand il ne sera plus vide. </string>
+  <string name="no_history_head_label">Aucun historique</string>
+  <string name="no_history_label">Après avoir écouté un épisode il apparaîtra ici.</string>
+  <string name="no_all_episodes_head_label">Aucun épisode</string>
+  <string name="no_all_episodes_label">Quand vous ajouterez un podcast ses épisodes seront montrés ici.</string>
+  <string name="no_new_episodes_head_label">Aucun nouvel épisode</string>
+  <string name="no_new_episodes_label">Quand de nouveaux épisodes seront disponibles ils apparaîtront ici.</string>
+  <string name="no_fav_episodes_head_label">Aucun épisode favori</string>
+  <string name="no_fav_episodes_label">Vous pouvez marquer des épisodes comme favoris par une pression longue dessus.</string>
   <!--Preferences-->
   <string name="storage_pref">Stockage</string>
   <string name="project_pref">Projet</string>
   <string name="other_pref">Autres</string>
   <string name="about_pref">À propos</string>
-  <string name="queue_label">Liste</string>
+  <string name="queue_label">Liste de lecture</string>
   <string name="integrations_label">Intégrations</string>
   <string name="flattr_label">Flattr</string>
   <string name="flattr_summary">Service de micropaiement</string>
   <string name="automation">Automatisation</string>
   <string name="download_pref_details">Détails</string>
   <string name="import_export_pref">Importation / Exportation</string>
+  <string name="import_export_search_keywords">backup, restore, sauvegarde, restauration, import, export</string>
   <string name="appearance">Apparence</string>
   <string name="external_elements">Eléments externes</string>
   <string name="interruptions">Interruptions</string>
-  <string name="buttons">Boutons</string>
+  <string name="buttons">Boutons de lecture</string>
   <string name="media_player">Lecteur multimédia</string>
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont pas dans la liste de lecture et qui ne sont pas marqués comme favoris peuvent être supprimés si l\'espace est insuffisant pour le téléchargement automatique de nouveaux épisodes</string>
   <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
-  <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont connectés</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se connecte</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand des écouteurs sont branchés</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
   <string name="pref_hardwareForwardButtonSkips_title">Le bouton \"saut avant\" saute l\'épisode</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand un bouton physique \"saut avant\" est pressé</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Passer à l\'épisode suivant au lieu de faire un saut avant quand \"saut avant\" est pressé sur un périphérique bluetooth</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Le bouton \"saut arrière\" redémarre l\'épisode</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Repartir de zéro au lieu de faire un saut arrière quand un bouton physique \"saut arrière\" est pressé</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
@@ -324,12 +375,12 @@
   <string name="pref_favorite_keeps_episodes_title">Garder les épisodes favoris</string>
   <string name="playback_pref">Lecture</string>
   <string name="network_pref">Réseau</string>
-  <string name="pref_autoUpdateIntervallOrTime_title">Mettre à jour l’intervalle ou l\'heure</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Intervalle / Heure de mise à jour</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des flux</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez mettre en place un <i>intervalle</i> comme \"toutes les 2 heures\", une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note: les heures de mise à jour ne sont pas précises. Vous pouvez avoir un petit délai.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez définir un <i>intervalle</i> comme \"toutes les 2 heures\" ou une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note: les heures de mise à jour ne sont pas précises. Vous pouvez avoir un petit délai.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Désactiver</string>
-  <string name="pref_autoUpdateIntervallOrTime_Interval">Définir intervalle</string>
-  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Régler l\'heure</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Intervalle</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Heure</string>
   <string name="pref_autoUpdateIntervallOrTime_every">toutes les %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">à %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Ne télécharger les épisodes que par Wi-Fi</string>
@@ -340,6 +391,9 @@
   <string name="pref_unpauseOnBluetoothReconnect_title">Connexion du Bluetooth</string>
   <string name="pref_mobileUpdate_title">Mises à jour mobile</string>
   <string name="pref_mobileUpdate_sum">Autoriser les mises à jour avec la connexion mobile</string>
+  <string name="pref_mobileUpdate_nothing">Rien</string>
+  <string name="pref_mobileUpdate_images">Seulement les images</string>
+  <string name="pref_mobileUpdate_everything">Tout</string>
   <string name="refreshing_label">Mise à jour en cours</string>
   <string name="flattr_settings_label">Paramètres Flattr</string>
   <string name="pref_flattr_auth_title">Connexion à Flattr</string>
@@ -359,7 +413,7 @@
   <string name="pref_nav_drawer_feed_order_title">Définir l\'ordre des abonnements</string>
   <string name="pref_nav_drawer_feed_order_sum">Change l\'ordre de vos abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Définir le compteur d\'abonnements</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Changer l\'information affichée par le compteur d\'abonnements</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Changer l\'information affichée par le compteur d\'abonnements. Cela change aussi l\'ordre des podcasts si ils sont triés par le compteur.</string>
   <string name="pref_set_theme_sum">Modifier l\'apparence d\'AntennaPod.</string>
   <string name="pref_automatic_download_title">Téléchargement automatique</string>
   <string name="pref_automatic_download_sum">Configurer le téléchargement automatique des épisodes.</string>
@@ -373,7 +427,7 @@
   <string name="pref_episode_cache_title">Épisodes stockés localement</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>
-  <string name="pref_theme_title_trueblack">Noir / True Black</string>
+  <string name="pref_theme_title_trueblack">Noir (pour écran AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Illimité</string>
   <string name="pref_update_interval_hours_plural">heures</string>
   <string name="pref_update_interval_hours_singular">heure</string>
@@ -397,25 +451,25 @@
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture audio</string>
   <string name="pref_fast_forward">Durée du saut avant</string>
-  <string name="pref_fast_forward_sum">Nombre de secondes à sauter quand le bouton \"saut avant\" est cliqué</string>
+  <string name="pref_fast_forward_sum">Nombre de secondes à sauter quand le bouton \"saut avant\" est pressé</string>
   <string name="pref_rewind">Durée du saut arrière</string>
-  <string name="pref_rewind_sum">Nombre de secondes à sauter quand le bouton \"saut arrière\" est cliqué</string>
+  <string name="pref_rewind_sum">Nombre de secondes à sauter quand le bouton \"saut arrière\" est pressé</string>
   <string name="pref_gpodnet_sethostname_title">Choisir un nom de domaine</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utiliser le nom de domaine par défaut</string>
-  <string name="pref_expandNotify_title">Etendre la notification</string>
-  <string name="pref_expandNotify_sum">Toujours étendre la notification pour montrer tous les boutons de lecture </string>
+  <string name="pref_expandNotify_title">Priorité haute de notification</string>
+  <string name="pref_expandNotify_sum">Permet, généralement, d\'étendre la notification pour montrer les boutons de lecture</string>
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verouillage quand la lecture est en pause</string>
   <string name="pref_compact_notification_buttons_title">Définir les boutons de l\'écran de verrouillage</string>
   <string name="pref_compact_notification_buttons_sum">Change les boutons de lecture sur l\'écran de verrouillage. Le bouton de lecture/pause est toujours affiché.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Choisir un maximum de %1$d éléments</string>
   <string name="pref_compact_notification_buttons_dialog_error">Vous ne pouvez pas choisir plus de %1$d éléments.</string>
-  <string name="pref_lockscreen_background_title">Changer l’arrière plan de l\'écran de déverrouillage</string>
-  <string name="pref_lockscreen_background_sum">Placer l\'image de l’épisode en arrière plan de l\'écran de déverrouillage. Cela aura aussi pour effet de montrer l\'image dans les autres applications.</string>
+  <string name="pref_lockscreen_background_title">Changer l’arrière plan de l\'écran de verrouillage</string>
+  <string name="pref_lockscreen_background_sum">Placer l\'image de l’épisode en arrière plan de l\'écran de verrouillage. Cela aura aussi pour effet de montrer l\'image dans les autres applications.</string>
   <string name="pref_showDownloadReport_title">Afficher le rapport de téléchargements</string>
   <string name="pref_showDownloadReport_sum">Si les téléchargements échouent, générer un rapport détaillé des échecs.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
-  <string name="pref_queueAddToFront_sum">Ajouter les nouveaux épisodes au début de la liste de lecture.</string>
+  <string name="pref_queueAddToFront_sum">Ajouter les nouveaux épisodes au début de la liste de lecture</string>
   <string name="pref_queueAddToFront_title">Mettre au début de la liste de lecture</string>
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
   <string name="pref_image_cache_size_title">Taille du cache de l\'image</string>
@@ -437,10 +491,24 @@
   <string name="pref_enqueue_downloaded_title">Ajouter à la liste après téléchargement</string>
   <string name="pref_enqueue_downloaded_summary">Mettre les épisodes dans la la liste de lecture après téléchargement</string>
   <string name="media_player_builtin">Lecteur natif d\'Android</string>
+  <string name="pref_skip_silence_title">Supprimer les silences audios</string>
   <string name="pref_videoBehavior_title">Sorti du lecteur pendant une vidéo</string>
   <string name="pref_videoBehavior_sum">Définir ce qu\'il se passe si une vidéo est quittée pendant sa lecture</string>
   <string name="stop_playback">Arrêter la lecture</string>
   <string name="continue_playback">Continuer la lecture</string>
+  <string name="behavior">Comportement</string>
+  <string name="pref_back_button_behavior_title">Comportement du bouton retour</string>
+  <string name="pref_back_button_behavior_sum">Change le comportement du bouton retour</string>
+  <string name="back_button_default">Défaut</string>
+  <string name="back_button_open_drawer">Ouvrir le volet de navigation</string>
+  <string name="back_button_double_tap">Taper 2 fois pour quitter</string>
+  <string name="back_button_show_prompt">Confirmer la fermeture</string>
+  <string name="close_prompt">Etes-vous sur de vouloir fermer AntennaPod ?</string>
+  <string name="double_tap_toast">Taper encore une fois retour pour quitter</string>
+  <string name="back_button_go_to_page">Aller à la page...</string>
+  <string name="back_button_go_to_page_title">Sélectionner une page</string>
+  <string name="pref_delete_removes_from_queue_title">Supprimer retire de la liste de lecture</string>
+  <string name="pref_delete_removes_from_queue_sum">Retirer de la liste de lecture les épisodes quand ils sont supprimés.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr quand %d pourcent de l\'épisode a été lu</string>
@@ -450,8 +518,8 @@
   <string name="search_hint">Chercher les épisodes</string>
   <string name="found_in_shownotes_label">Trouvé dans les notes d\'épisodes</string>
   <string name="found_in_chapters_label">Trouvé dans les titres de chapitre</string>
-  <string name="found_in_authors_label">Trouvés en tant qu\'auteur</string>
-  <string name="found_in_feeds_label">Trouvés dans les flux</string>
+  <string name="found_in_authors_label">Trouvés dans les auteurs</string>
+  <string name="found_in_feeds_label">Trouvés dans les podcasts</string>
   <string name="search_status_no_results">Aucun résultat trouvé</string>
   <string name="search_label">Recherche</string>
   <string name="found_in_title_label">Trouvé dans le titre</string>
@@ -591,9 +659,9 @@
   <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
   <string name="search_itunes_label">Chercher sur iTunes</string>
   <string name="filter">Filtrer</string>
-  <string name="search_fyyd_label">Chercher fyyd</string>
+  <string name="search_fyyd_label">Chercher sur fyyd</string>
   <!--Episodes apply actions-->
-  <string name="all_label">Tout</string>
+  <string name="all_label">Tous</string>
   <string name="selected_all_label">Tous les épisodes ont été sélectionné</string>
   <string name="none_label">Aucun</string>
   <string name="deselected_all_label">Tous les épisodes ont été désélectionné</string>
@@ -609,7 +677,7 @@
   <string name="selected_queued_label">Episodes présents dans la liste de lecture sélectionnés</string>
   <string name="not_queued_label">En dehors de la liste de lecture</string>
   <string name="selected_not_queued_label">Episodes absents de la liste de lecture sélectionnés</string>
-  <string name="has_media">À des médias</string>
+  <string name="has_media">A des médias</string>
   <string name="selected_has_media_label">Sélectionner les épisodes avec des médias</string>
   <!--Sort-->
   <string name="sort_title_a_z">Titre (A \u2192 Z)</string>
@@ -633,6 +701,7 @@
   <string name="audio_effects">Effets audio</string>
   <string name="stereo_to_mono">Mixage : stéréo à mono</string>
   <string name="sonic_only">Sonic seulement</string>
+  <string name="exoplayer_only">ExoPlayer seulement</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Type</string>
   <string name="host_label">Hôte</string>
@@ -645,6 +714,8 @@
   <string name="proxy_host_empty_error">Hôte ne peut pas être vide</string>
   <string name="proxy_host_invalid_error">L\'hôte n\'est pas une adresse IP ou un domaine valide</string>
   <string name="proxy_port_invalid_error">Port non valide</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Nombre de colonnes</string>
   <!--Database import/export-->
   <string name="import_export">Import / Export de la base de données</string>
   <string name="import_export_warning">Cette fonction expérimentale peut-être utilisée pour transférer vos abonnements et épisodes lus sur un autre appareil.\n\nLes bases de données exportées peuvent uniquement être importées sur la même version d\'AntennaPod. Dans le cas contraire, des dysfonctionnements peuvent apparaître.\n\nAprès import, il est possible que des épisodes apparaissent téléchargés alors qu\'ils ne le sont pas. Appuyer sur le bouton de lecture pour qu\'AntennaPod le détecte.</string>

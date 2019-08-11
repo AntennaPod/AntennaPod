@@ -25,7 +25,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import org.antennapod.audio.MediaPlayer;
-
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 
 
@@ -43,7 +42,7 @@ public class ExoPlayerWrapper implements IPlayer {
     }
 
     private SimpleExoPlayer createPlayer() {
-        SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(mContext),
+        SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext),
                 new DefaultTrackSelector(), new DefaultLoadControl());
         p.setSeekParameters(SeekParameters.PREVIOUS_SYNC);
         p.addListener(new Player.EventListener() {
@@ -166,6 +165,7 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void seekTo(int i) throws IllegalStateException {
         mExoPlayer.seekTo(i);
+        audioSeekCompleteListener.onSeekComplete(null);
     }
 
     @Override
@@ -192,9 +192,9 @@ public class ExoPlayerWrapper implements IPlayer {
     }
 
     @Override
-    public void setPlaybackSpeed(float v) {
+    public void setPlaybackParams(float speed, boolean skipSilence) {
         PlaybackParameters params = mExoPlayer.getPlaybackParameters();
-        mExoPlayer.setPlaybackParameters(new PlaybackParameters(v, params.pitch));
+        mExoPlayer.setPlaybackParameters(new PlaybackParameters(speed, params.pitch, skipSilence));
     }
 
     @Override

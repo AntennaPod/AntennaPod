@@ -49,7 +49,6 @@
   <string name="cancel_label">Ακύρωση</string>
   <string name="yes">Ναι</string>
   <string name="no">Όχι</string>
-  <string name="author_label">Δημιουργός</string>
   <string name="language_label">Γλώσσα</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Ρυθμίσεις</string>
@@ -76,6 +75,7 @@
   <string name="parallel_downloads_suffix">\u0020παράλληλες λήψεις</string>
   <string name="feed_auto_download_always">Πάντα</string>
   <string name="feed_auto_download_never">Ποτέ</string>
+  <string name="send_label">Αποστολή...</string>
   <string name="episode_cleanup_never">Ποτέ</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL της Ροής</string>
@@ -85,10 +85,6 @@
   <string name="browse_gpoddernet_label">Περιήγηση στο gpodder.net</string>
   <!--Actions on feeds-->
   <string name="show_info_label">Εμφάνιση πληροφοριών</string>
-  <string name="feed_info_label">Πληροφορίες Ροής</string>
-  <string name="feed_settings_label">Ρυθμίσεις Ροής</string>
-  <string name="rename_feed_label">Μετονομασία podcast</string>
-  <string name="remove_feed_label">Κατάργηση Podcast</string>
   <string name="hide_episodes_title">Απόκρυψη Επεισοδίων</string>
   <string name="hide_downloaded_episodes_label">Ειλημμένα</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Η Τελευταία Ανανέωση Απέτυχε</string>
@@ -196,8 +192,6 @@
   <string name="no_playback_plugin_title">Το Πρόσθετο δεν είναι εγκατεστημένο</string>
   <string name="set_playback_speed_label">Ταχύτητες αναπαραγωγής</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Δεν υπάρχουν στοιχεία σε αυτή τη λίστα.</string>
-  <string name="no_feeds_label">Δεν έχετε εγγραφεί σε οποιεσδήποτε τροφοδοσίες ακόμα</string>
   <!--Preferences-->
   <string name="other_pref">Άλλα</string>
   <string name="about_pref">Σχετικά με</string>
@@ -244,8 +238,6 @@
   <string name="pref_playback_speed_sum">Προσαρμόστε τις διαθέσιμες ταχύτητες για αναπαραγωγή ήχου μεταβλητής ταχύτητας</string>
   <string name="pref_gpodnet_sethostname_title">Ορισμός κεντρικού υπολογιστή</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Χρήση προεπιλεγμένης υποδοχής</string>
-  <string name="pref_expandNotify_title">Ανάπτυξη κοινοποίησης</string>
-  <string name="pref_expandNotify_sum">Πάντα επέκταση της ειδοποίησης για εμφανιση κουμπιων αναπαραγωγής.</string>
   <string name="pref_persistNotify_sum">Διατηρηση των ελέγχων κοινοποίησης και lockscreen όταν γίνεται παύση της αναπαραγωγής.</string>
   <string name="pref_expand_notify_unsupport_toast">Εκδόσεις του Android πριν από το 4.1 δεν υποστηρίζουν εκτεταμένες κοινοποιήσεις.</string>
   <string name="pref_queueAddToFront_sum">Προσθήκη νέων επεισοδίων στο μπροστινό μέρος της ουράς.</string>
@@ -357,6 +349,7 @@
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->

@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
@@ -18,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -31,14 +31,12 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
  */
 public class FeedItemlistAdapter extends BaseAdapter {
 
-    private final ActionButtonCallback callback;
     private final ItemAccess itemAccess;
     private final Context context;
     private final boolean showFeedtitle;
     private final int selectedItemIndex;
     /** true if played items should be made partially transparent */
     private final boolean makePlayedItemsTransparent;
-    private final ActionButtonUtils actionButtonUtils;
 
     private static final int SELECTION_NONE = -1;
 
@@ -47,16 +45,13 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
     public FeedItemlistAdapter(Context context,
                                ItemAccess itemAccess,
-                               ActionButtonCallback callback,
                                boolean showFeedtitle,
                                boolean makePlayedItemsTransparent) {
         super();
-        this.callback = callback;
         this.context = context;
         this.itemAccess = itemAccess;
         this.showFeedtitle = showFeedtitle;
         this.selectedItemIndex = SELECTION_NONE;
-        this.actionButtonUtils = new ActionButtonUtils(context);
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
 
         playingBackGroundColor = ThemeUtils.getColorFromAttr(context, R.attr.currently_playing_background);
@@ -199,24 +194,17 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 }
             }
 
-            actionButtonUtils.configureActionButton(holder.butAction, item, isInQueue);
+            ItemActionButton actionButton = ItemActionButton.forItem(item, isInQueue);
+            actionButton.configure(holder.butAction, context);
+
             holder.butAction.setFocusable(false);
             holder.butAction.setTag(item);
-            holder.butAction.setOnClickListener(butActionListener);
 
         } else {
             convertView.setVisibility(View.GONE);
         }
         return convertView;
     }
-
-    private final OnClickListener butActionListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            FeedItem item = (FeedItem) v.getTag();
-            callback.onActionButtonPressed(item, itemAccess.getQueueIds());
-        }
-    };
 
     static class Holder {
         LinearLayout container;

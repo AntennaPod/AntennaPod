@@ -1,9 +1,13 @@
 package de.test.antennapod.storage;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
+
+import org.awaitility.Awaitility;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,9 +22,11 @@ import java.util.concurrent.TimeoutException;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.Consumer;
 
 /**
  * Test class for DBWriter
@@ -55,6 +61,12 @@ public class DBWriterTest extends InstrumentationTestCase {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
+
+        Context context = getInstrumentation().getTargetContext();
+        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
+        prefEdit.putBoolean(UserPreferences.PREF_DELETE_REMOVES_FROM_QUEUE, true).commit();
+
+        UserPreferences.init(context);
     }
 
     public void testSetFeedMediaPlaybackInformation()
@@ -119,6 +131,47 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertFalse(dest.exists());
         assertFalse(media.isDownloaded());
         assertNull(media.getFile_url());
+    }
+
+    public void testDeleteFeedMediaOfItemRemoveFromQueue()
+            throws IOException, ExecutionException, InterruptedException, TimeoutException {
+        assertTrue(UserPreferences.shouldDeleteRemoveFromQueue());
+
+        File dest = new File(getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
+
+        assertTrue(dest.createNewFile());
+
+        Feed feed = new Feed("url", null, "title");
+        List<FeedItem> items = new ArrayList<>();
+        List<FeedItem> queue = new ArrayList<>();
+        feed.setItems(items);
+        FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), FeedItem.UNPLAYED, feed);
+
+        FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", dest.getAbsolutePath(), "download_url", true, null, 0, 0);
+        item.setMedia(media);
+
+        items.add(item);
+        queue.add(item);
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.setQueue(queue);
+        adapter.close();
+        assertTrue(media.getId() != 0);
+        assertTrue(item.getId() != 0);
+        queue = DBReader.getQueue();
+        assertTrue(queue.size() != 0);
+
+        DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId());
+        Awaitility.await().until(() -> dest.exists() == false);
+        media = DBReader.getFeedMedia(media.getId());
+        assertNotNull(media);
+        assertFalse(dest.exists());
+        assertFalse(media.isDownloaded());
+        assertNull(media.getFile_url());
+        queue = DBReader.getQueue();
+        assertTrue(queue.size() == 0);
     }
 
     public void testDeleteFeed() throws ExecutionException, InterruptedException, IOException, TimeoutException {
@@ -522,29 +575,16 @@ public class DBWriterTest extends InstrumentationTestCase {
     public void testRemoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
         final Context context = getInstrumentation().getTargetContext();
-        Feed feed = new Feed("url", null, "title");
-        feed.setItems(new ArrayList<>());
-        for (int i = 0; i < NUM_ITEMS; i++) {
-            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.PLAYED, feed);
-            feed.getItems().add(item);
-        }
+        Feed feed = createTestFeed(NUM_ITEMS);
 
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-
-        for (FeedItem item : feed.getItems()) {
-            assertTrue(item.getId() != 0);
-        }
         for (int removeIndex = 0; removeIndex < NUM_ITEMS; removeIndex++) {
             final FeedItem item = feed.getItems().get(removeIndex);
-            adapter = PodDBAdapter.getInstance();
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setQueue(feed.getItems());
             adapter.close();
 
-            DBWriter.removeQueueItem(context, item, false).get(TIMEOUT, TimeUnit.SECONDS);
+            DBWriter.removeQueueItem(context, false, item).get(TIMEOUT, TimeUnit.SECONDS);
             adapter = PodDBAdapter.getInstance();
             adapter.open();
             Cursor queue = adapter.getQueueIDCursor();
@@ -562,6 +602,43 @@ public class DBWriterTest extends InstrumentationTestCase {
             queue.close();
             adapter.close();
         }
+    }
+
+    public void testRemoveQueueItemMultipleItems() throws InterruptedException, ExecutionException, TimeoutException {
+        // Setup test data
+        //
+        final int NUM_ITEMS = 5;
+        final int NUM_IN_QUEUE = NUM_ITEMS - 1; // the last one not in queue for boundary condition
+        final Context context = getInstrumentation().getTargetContext();
+        Feed feed = createTestFeed(NUM_ITEMS);
+
+        List<FeedItem> itemsToAdd = feed.getItems().subList(0, NUM_IN_QUEUE);
+        withPodDB(adapter -> adapter.setQueue(itemsToAdd) );
+
+        // Actual tests
+        //
+
+        // Use array rather than List to make codes more succinct
+        Long[] itemIds = toItemIds(feed.getItems()).toArray(new Long[0]);
+
+        DBWriter.removeQueueItem(context, false,
+                itemIds[1], itemIds[3]).get(TIMEOUT, TimeUnit.SECONDS);
+        assertQueueByItemIds("Average case - 2 items removed successfully",
+                itemIds[0], itemIds[2]);
+
+        DBWriter.removeQueueItem(context, false).get(TIMEOUT, TimeUnit.SECONDS);
+        assertQueueByItemIds("Boundary case - no items supplied. queue should see no change",
+                itemIds[0], itemIds[2]);
+
+        DBWriter.removeQueueItem(context, false,
+                itemIds[0], itemIds[4], -1L).get(TIMEOUT, TimeUnit.SECONDS);
+        assertQueueByItemIds("Boundary case - items not in queue ignored",
+                itemIds[2]);
+
+        DBWriter.removeQueueItem(context, false,
+                itemIds[2], -1L).get(TIMEOUT, TimeUnit.SECONDS);
+        assertQueueByItemIds("Boundary case - invalid itemIds ignored"); // the queue is empty
+
     }
 
     public void testMoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
@@ -661,4 +738,53 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(item.isPlayed());
         }
     }
+
+    private static Feed createTestFeed(int numItems) {
+        Feed feed = new Feed("url", null, "title");
+        feed.setItems(new ArrayList<>());
+        for (int i = 0; i < numItems; i++) {
+            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.PLAYED, feed);
+            feed.getItems().add(item);
+        }
+
+        withPodDB(adapter -> adapter.setCompleteFeed(feed));
+
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+        }
+        return feed;
+    }
+
+    private static void withPodDB(Consumer<PodDBAdapter> action) {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        try {
+            adapter.open();
+            action.accept(adapter);
+        } finally {
+            adapter.close();
+        }
+    }
+
+    private static void assertQueueByItemIds(
+            String message,
+            long... itemIdsExpected
+    ) {
+        List<FeedItem> queue = DBReader.getQueue();
+        List<Long> itemIdsActualList = toItemIds(queue);
+        List<Long> itemIdsExpectedList = new ArrayList<Long>(itemIdsExpected.length);
+        for (long id : itemIdsExpected) {
+            itemIdsExpectedList.add(id);
+        }
+
+        assertEquals(message, itemIdsExpectedList, itemIdsActualList);
+    }
+
+    private static List<Long> toItemIds(List<FeedItem> items) {
+        List<Long> itemIds = new ArrayList<Long>(items.size());
+        for(FeedItem item : items) {
+            itemIds.add(item.getId());
+        }
+        return itemIds;
+    }
+
 }

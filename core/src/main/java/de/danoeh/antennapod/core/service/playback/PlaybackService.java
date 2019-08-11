@@ -25,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -67,11 +68,13 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.greenrobot.event.EventBus;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -89,11 +92,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * True if cast session should disconnect.
      */
-    private static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
+    public static final String EXTRA_CAST_DISCONNECT = "extra.de.danoeh.antennapod.core.service.castDisconnect";
     /**
      * True if media should be streamed.
      */
     public static final String EXTRA_SHOULD_STREAM = "extra.de.danoeh.antennapod.core.service.shouldStream";
+    public static final String EXTRA_ALLOW_STREAM_THIS_TIME = "extra.de.danoeh.antennapod.core.service.allowStream";
     /**
      * True if playback should be started immediately after media has been
      * prepared.
@@ -103,7 +107,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.core.service.prepareImmediately";
 
     public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.core.service.playerStatusChanged";
-    public static final String EXTRA_NEW_PLAYER_STATUS = "extra.de.danoeh.antennapod.service.playerStatusChanged.newStatus";
     private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
     private static final String AVRCP_ACTION_META_CHANGED = "com.android.music.metachanged";
 
@@ -206,6 +209,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static volatile boolean isCasting = false;
 
     private static final int NOTIFICATION_ID = 1;
+    private static final int NOTIFICATION_ID_STREAMING = 2;
 
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
@@ -264,7 +268,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Service created.");
         isRunning = true;
 
-        NotificationCompat.Builder notificationBuilder = createBasicNotification();
+        PlaybackServiceNotificationBuilder notificationBuilder = new PlaybackServiceNotificationBuilder(this);
         startForeground(NOTIFICATION_ID, notificationBuilder.build());
 
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
@@ -318,24 +322,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaSession.setActive(true);
 
         EventBus.getDefault().post(new ServiceEvent(ServiceEvent.Action.SERVICE_STARTED));
-    }
-
-    private NotificationCompat.Builder createBasicNotification() {
-        final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
-
-        final PendingIntent pIntent = PendingIntent.getActivity(this, 0,
-                PlaybackService.getPlayerActivityIntent(this),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        return new NotificationCompat.Builder(
-                this, NotificationUtils.CHANNEL_ID_PLAYING)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText("Service is running") // Just in case the notification is not updated (should not occur)
-                .setOngoing(false)
-                .setContentIntent(pIntent)
-                .setWhen(0) // we don't need the time
-                .setSmallIcon(smallIcon)
-                .setPriority(NotificationCompat.PRIORITY_MIN);
     }
 
     @Override
@@ -428,7 +414,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             // Child List
             try {
                 for (FeedItem feedItem : taskManager.getQueue()) {
-                    mediaItems.add(feedItem.getMedia().getMediaItem());
+                    FeedMedia media = feedItem.getMedia();
+                    if (media != null) {
+                        mediaItems.add(media.getMediaItem());
+                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -482,8 +471,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             } else if (!flavorHelper.castDisconnect(castDisconnect) && playable != null) {
                 started = true;
-                boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
-                        true);
+                boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
+                boolean allowStreamThisTime = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_THIS_TIME, false);
                 boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
                 boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
@@ -492,12 +481,43 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (playable instanceof FeedMedia) {
                     playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
                 }
+                if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
+                    displayStreamingNotAllowedNotification(intent);
+                    writePlaybackPreferencesNoMediaPlaying();
+                    stopService();
+                    return Service.START_NOT_STICKY;
+                }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+            } else {
+                Log.d(TAG, "Did not handle intent to PlaybackService: " + intent);
+                Log.d(TAG, "Extras: " + intent.getExtras());
             }
-            setupNotification(playable);
         }
 
         return Service.START_NOT_STICKY;
+    }
+
+    private void displayStreamingNotAllowedNotification(Intent originalIntent) {
+        Intent intent = new Intent(originalIntent);
+        intent.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
+        PendingIntent pendingIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            pendingIntent = PendingIntent.getForegroundService(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pendingIntent = PendingIntent.getService(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_USER_ACTION)
+                .setSmallIcon(R.drawable.stat_notify_sync_error)
+                .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
+                .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(getString(R.string.confirm_mobile_streaming_notification_message)))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(NOTIFICATION_ID_STREAMING, builder.build());
     }
 
     /**
@@ -591,6 +611,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaPlayer.playMediaObject(playable, false, true, true);
             started = true;
             PlaybackService.this.updateMediaSessionMetadata(playable);
+        } else {
+            stopService();
         }
     }
 
@@ -835,7 +857,23 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.e(TAG, "Error handling the queue in order to retrieve the next item", e);
             return null;
         }
-        return (nextItem != null) ? nextItem.getMedia() : null;
+
+        if (nextItem == null || nextItem.getMedia() == null) {
+            return null;
+        }
+
+        if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()) {
+            displayStreamingNotAllowedNotification(
+                    new PlaybackServiceStarter(this, nextItem.getMedia())
+                    .prepareImmediately(true)
+                    .startWhenPrepared(true)
+                    .shouldStream(true)
+                    .getIntent());
+            writePlaybackPreferencesNoMediaPlaying();
+            stopService();
+            return null;
+        }
+        return nextItem.getMedia();
 
     }
 
@@ -918,7 +956,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     final List<FeedItem> queue = taskManager.getQueue();
                     if (QueueAccess.ItemListAccess(queue).contains(item.getId())) {
                         // don't know if it actually matters to not autodownload when smart mark as played is triggered
-                        DBWriter.removeQueueItem(PlaybackService.this, item, ended);
+                        DBWriter.removeQueueItem(PlaybackService.this, ended, item);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -1215,15 +1253,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             notificationSetupThread.interrupt();
         }
         if (playable == null) {
-            Log.d(TAG, "setupNotification: playable is null");
+            Log.d(TAG, "setupNotification: playable is null" + Log.getStackTraceString(new Exception()));
             if (!started) {
                 stopService();
             }
             return;
         }
         Runnable notificationSetupTask = new Runnable() {
-            Bitmap icon = null;
-
             @Override
             public void run() {
                 Log.d(TAG, "Starting background work");
@@ -1235,115 +1271,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     }
                     return;
                 }
-
-                int iconSize = getResources().getDimensionPixelSize(
-                        android.R.dimen.notification_large_icon_width);
-                try {
-                    icon = Glide.with(PlaybackService.this)
-                            .asBitmap()
-                            .load(playable.getImageLocation())
-                            .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                            .apply(new RequestOptions().centerCrop())
-                            .submit(iconSize, iconSize)
-                            .get();
-                } catch (Throwable tr) {
-                    Log.e(TAG, "Error loading the media icon for the notification", tr);
-                }
-
-                if (icon == null) {
-                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
-                            ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext()));
-                }
-
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
+                PlaybackServiceNotificationBuilder notificationBuilder =
+                        new PlaybackServiceNotificationBuilder(PlaybackService.this);
+                notificationBuilder.addMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
+
+                if (!notificationBuilder.isIconCached(playable)) {
+                    // To make sure that the notification is shown instantly
+                    notificationBuilder.loadDefaultIcon();
+                    startForeground(NOTIFICATION_ID, notificationBuilder.build());
+                }
+                notificationBuilder.loadIcon(playable);
 
                 if (!Thread.currentThread().isInterrupted() && started) {
-                    String contentText = playable.getEpisodeTitle();
-                    String contentTitle = playable.getFeedTitle();
-                    Notification notification;
-
-                    // Builder is v7, even if some not overwritten methods return its parent's v4 interface
-                    NotificationCompat.Builder notificationBuilder = createBasicNotification();
-                    notificationBuilder.setContentTitle(contentTitle)
-                            .setContentText(contentText)
-                            .setPriority(UserPreferences.getNotifyPriority())
-                            .setLargeIcon(icon); // set notification priority
-                    IntList compactActionList = new IntList();
-
-                    int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
-
-                    if (isCasting) {
-                        Intent stopCastingIntent = new Intent(PlaybackService.this, PlaybackService.class);
-                        stopCastingIntent.putExtra(EXTRA_CAST_DISCONNECT, true);
-                        PendingIntent stopCastingPendingIntent = PendingIntent.getService(PlaybackService.this,
-                                numActions, stopCastingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        notificationBuilder.addAction(R.drawable.ic_media_cast_disconnect,
-                                getString(R.string.cast_disconnect_label),
-                                stopCastingPendingIntent);
-                        numActions++;
-                    }
-
-                    // always let them rewind
-                    PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
-                    notificationBuilder.addAction(android.R.drawable.ic_media_rew,
-                            getString(R.string.rewind_label),
-                            rewindButtonPendingIntent);
-                    if (UserPreferences.showRewindOnCompactNotification()) {
-                        compactActionList.add(numActions);
-                    }
-                    numActions++;
-
-                    if (playerStatus == PlayerStatus.PLAYING) {
-                        PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
-                                KeyEvent.KEYCODE_MEDIA_PAUSE, numActions);
-                        notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
-                                getString(R.string.pause_label),
-                                pauseButtonPendingIntent);
-                        compactActionList.add(numActions++);
-                    } else {
-                        PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
-                                KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
-                        notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
-                                getString(R.string.play_label),
-                                playButtonPendingIntent);
-                        compactActionList.add(numActions++);
-                    }
-
-                    // ff follows play, then we have skip (if it's present)
-                    PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
-                    notificationBuilder.addAction(android.R.drawable.ic_media_ff,
-                            getString(R.string.fast_forward_label),
-                            ffButtonPendingIntent);
-                    if (UserPreferences.showFastForwardOnCompactNotification()) {
-                        compactActionList.add(numActions);
-                    }
-                    numActions++;
-
-                    if (UserPreferences.isFollowQueue()) {
-                        PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
-                                KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
-                        notificationBuilder.addAction(android.R.drawable.ic_media_next,
-                                getString(R.string.skip_episode_label),
-                                skipButtonPendingIntent);
-                        if (UserPreferences.showSkipOnCompactNotification()) {
-                            compactActionList.add(numActions);
-                        }
-                        numActions++;
-                    }
-
-                    PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
-                            KeyEvent.KEYCODE_MEDIA_STOP, numActions);
-                    notificationBuilder.setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
-                            .setMediaSession(mediaSession.getSessionToken())
-                            .setShowActionsInCompactView(compactActionList.toArray())
-                            .setShowCancelButton(true)
-                            .setCancelButtonIntent(stopButtonPendingIntent))
-                            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                            .setColor(NotificationCompat.COLOR_DEFAULT);
-
-                    notification = notificationBuilder.build();
+                    Notification notification = notificationBuilder.build();
 
                     if (playerStatus == PlayerStatus.PLAYING ||
                             playerStatus == PlayerStatus.PREPARING ||
@@ -1361,18 +1302,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         };
         notificationSetupThread = new Thread(notificationSetupTask);
         notificationSetupThread.start();
-    }
-
-    private PendingIntent getPendingIntentForMediaAction(int keycodeValue, int requestCode) {
-        Intent intent = new Intent(
-                PlaybackService.this, PlaybackService.class);
-        intent.putExtra(
-                MediaButtonReceiver.EXTRA_KEYCODE,
-                keycodeValue);
-        return PendingIntent
-                .getService(PlaybackService.this, requestCode,
-                        intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -1629,7 +1558,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void setSpeed(float speed) {
-        mediaPlayer.setSpeed(speed);
+        mediaPlayer.setPlaybackParams(speed, UserPreferences.isSkipSilence());
+    }
+
+    public void skipSilence(boolean skipSilence) {
+        mediaPlayer.setPlaybackParams(getCurrentPlaybackSpeed(), skipSilence);
     }
 
     public void setVolume(float leftVolume, float rightVolume) {

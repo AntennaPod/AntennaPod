@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 import requests
 import subprocess
+import configparser
+import os
 
-TRANSIFEX_USER = ""
-TRANSIFEX_PW = ""
+config = configparser.ConfigParser()
+config.read(os.path.expanduser("~") + '/.transifexrc')
+if 'https://www.transifex.com' in config:
+    TRANSIFEX_USER = config['https://www.transifex.com']['username']
+    TRANSIFEX_PW = config['https://www.transifex.com']['password']
+else:
+    TRANSIFEX_USER = ""
+    TRANSIFEX_PW = ""
 
 print('DEVELOPERS\n==========\n')
 p = subprocess.Popen("git log --format='%aN' --no-merges "

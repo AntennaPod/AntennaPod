@@ -21,10 +21,8 @@ import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
+import okhttp3.internal.http.RealResponseBody;
 
 /**
  * @see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
@@ -111,10 +109,16 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            if (NetworkUtils.isDownloadAllowed()) {
+            if (NetworkUtils.isImageAllowed()) {
                 return chain.proceed(chain.request());
             } else {
-                return null;
+                return new Response.Builder()
+                        .protocol(Protocol.HTTP_2)
+                        .code(420)
+                        .message("Policy Not Fulfilled")
+                        .body(ResponseBody.create(null, new byte[0]))
+                        .request(chain.request())
+                        .build();
             }
         }
 
@@ -135,6 +139,11 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
             // add authentication
             String[] auth = authentication.split(":");
+            if (auth.length != 2) {
+                Log.d(TAG, "Invalid credentials for '" + url + "'");
+                return chain.proceed(request);
+            }
+
             String credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "ISO-8859-1");
             Request newRequest = request
                     .newBuilder()

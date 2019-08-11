@@ -14,15 +14,18 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -35,18 +38,13 @@ public class DownloadLogFragment extends ListFragment {
 
     private static final String TAG = "DownloadLogFragment";
 
-    private List<DownloadStatus> downloadLog;
+    private List<DownloadStatus> downloadLog = new ArrayList<>();
     private DownloadLogAdapter adapter;
-
-    private boolean viewsCreated = false;
-    private boolean itemsLoaded = false;
-
     private Disposable disposable;
 
     @Override
     public void onStart() {
         super.onStart();
-        setHasOptionsMenu(true);
         EventDistributor.getInstance().register(contentUpdate);
         loadItems();
     }
@@ -55,7 +53,7 @@ public class DownloadLogFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
@@ -63,6 +61,7 @@ public class DownloadLogFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
 
         // add padding
         final ListView lv = getListView();
@@ -70,17 +69,17 @@ public class DownloadLogFragment extends ListFragment {
         final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
-        viewsCreated = true;
-        if (itemsLoaded) {
-            onFragmentLoaded();
-        }
+        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView.setIcon(R.attr.av_download);
+        emptyView.setTitle(R.string.no_log_downloads_head_label);
+        emptyView.setMessage(R.string.no_log_downloads_label);
+        emptyView.attachToListView(getListView());
+
+        adapter = new DownloadLogAdapter(getActivity(), itemAccess);
+        setListAdapter(adapter);
     }
 
     private void onFragmentLoaded() {
-        if (adapter == null) {
-            adapter = new DownloadLogAdapter(getActivity(), itemAccess);
-            setListAdapter(adapter);
-        }
         setListShown(true);
         adapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();
@@ -93,10 +92,18 @@ public class DownloadLogFragment extends ListFragment {
         DownloadStatus status = adapter.getItem(position);
         String url = "unknown";
         String message = getString(R.string.download_successful);
-        FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
-        if (media != null) {
-            url = media.getDownload_url();
+        if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
+            if (media != null) {
+                url = media.getDownload_url();
+            }
+        } else if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            Feed feed = DBReader.getFeed(status.getFeedfileId());
+            if (feed != null) {
+                url = feed.getDownload_url();
+            }
         }
+
         if (!status.isSuccessful()) {
             message = status.getReasonDetailed();
         }
@@ -113,12 +120,12 @@ public class DownloadLogFragment extends ListFragment {
 
         @Override
         public int getCount() {
-            return (downloadLog != null) ? downloadLog.size() : 0;
+            return downloadLog.size();
         }
 
         @Override
         public DownloadStatus getItem(int position) {
-            if (downloadLog != null && 0 <= position && position < downloadLog.size()) {
+            if (0 <= position && position < downloadLog.size()) {
                 return downloadLog.get(position);
             } else {
                 return null;
@@ -138,27 +145,23 @@ public class DownloadLogFragment extends ListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!isAdded()) {
+        if (!isAdded()) {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded) {
-            MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-            MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-            TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
-            clearHistory.setIcon(drawables.getDrawable(0));
-            drawables.recycle();
-        }
+        MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
+        MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
+        clearHistory.setIcon(drawables.getDrawable(0));
+        drawables.recycle();
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded) {
-            MenuItem menuItem = menu.findItem(R.id.clear_history_item);
-            if(menuItem != null) {
-                menuItem.setVisible(downloadLog != null && !downloadLog.isEmpty());
-            }
+        MenuItem menuItem = menu.findItem(R.id.clear_history_item);
+        if (menuItem != null) {
+            menuItem.setVisible(!downloadLog.isEmpty());
         }
     }
 
@@ -178,7 +181,7 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     private void loadItems() {
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(DBReader::getDownloadLog)
@@ -187,12 +190,8 @@ public class DownloadLogFragment extends ListFragment {
                 .subscribe(result -> {
                     if (result != null) {
                         downloadLog = result;
-                        itemsLoaded = true;
-                        if (viewsCreated) {
-                            onFragmentLoaded();
-                        }
+                        onFragmentLoaded();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
-
 }

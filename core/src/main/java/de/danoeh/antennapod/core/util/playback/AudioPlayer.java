@@ -35,6 +35,14 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
 	}
 
 	@Override
+	public void setPlaybackParams(float speed, boolean skipSilence) {
+		if(canSetSpeed()) {
+			setPlaybackSpeed(speed);
+		}
+		//Default player does not support silence skipping
+	}
+
+	@Override
 	protected boolean useSonic() {
 		return UserPreferences.useSonic();
 	}

@@ -7,6 +7,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.util.TypedValue;
 
 import org.jsoup.Jsoup;
@@ -14,6 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -68,7 +70,7 @@ public class Timeline {
 
     private static final Pattern TIMECODE_LINK_REGEX = Pattern.compile("antennapod://timecode/((\\d+))");
     private static final String TIMECODE_LINK = "<a class=\"timecode\" href=\"antennapod://timecode/%d\">%s</a>";
-    private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b(?:(?:(([0-9][0-9])):))?(([0-9][0-9])):(([0-9][0-9]))\\b");
+    private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b((\\d+):)?(\\d+):(\\d{2})\\b");
     private static final Pattern LINE_BREAK_REGEX = Pattern.compile("<br */?>");
 
 
@@ -81,6 +83,7 @@ public class Timeline {
      * @param addTimecodes True if this method should add timecode links
      * @return The processed HTML string.
      */
+    @NonNull
     public String processShownotes(final boolean addTimecodes) {
         final Playable playable = (shownotesProvider instanceof Playable) ? (Playable) shownotesProvider : null;
 
@@ -90,8 +93,8 @@ public class Timeline {
         try {
             shownotes = shownotesProvider.loadShownotes().call();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            Log.e(TAG, "processShownotes() - encounters exceptions unexpectedly in load, treat as if no shownotes.", e);
+            shownotes = "";
         }
 
         if (TextUtils.isEmpty(shownotes)) {
@@ -127,34 +130,11 @@ public class Timeline {
 
         // apply timecode links
         if (addTimecodes) {
-            Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
-            Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
-            for (Element element : elementsWithTimeCodes) {
-                Matcher matcherLong = TIMECODE_REGEX.matcher(element.html());
-                StringBuffer buffer = new StringBuffer();
-                while (matcherLong.find()) {
-                    String h = matcherLong.group(1);
-                    String group = matcherLong.group(0);
-                    int time = (h != null) ? Converter.durationStringLongToMs(group) :
-                            Converter.durationStringShortToMs(group);
-
-                    String rep;
-                    if (playable == null || playable.getDuration() > time) {
-                        rep = String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
-                    } else {
-                        rep = group;
-                    }
-                    matcherLong.appendReplacement(buffer, rep);
-                }
-                matcherLong.appendTail(buffer);
-
-                element.html(buffer.toString());
-            }
+            addTimecodes(document, playable);
         }
 
         return document.toString();
     }
-
 
     /**
      * Returns true if the given link is a timecode link.
@@ -185,5 +165,70 @@ public class Timeline {
 
     public void setShownotesProvider(@NonNull ShownotesProvider shownotesProvider) {
         this.shownotesProvider = shownotesProvider;
+    }
+
+    private void addTimecodes(Document document, final Playable playable) {
+        Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
+        Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
+
+        if (elementsWithTimeCodes.size() == 0) {
+            // No elements with timecodes
+            return;
+        }
+
+        int playableDuration = playable == null ? Integer.MAX_VALUE : playable.getDuration();
+        boolean useHourFormat = true;
+
+        if (playableDuration != Integer.MAX_VALUE) {
+
+            // We need to decide if we are going to treat short timecodes as HH:MM or MM:SS. To do
+            // so we will parse all the short timecodes and see if they fit in the duration. If one
+            // does not we will use MM:SS, otherwise all will be parsed as HH:MM.
+            for (Element element : elementsWithTimeCodes) {
+                Matcher matcherForElement = TIMECODE_REGEX.matcher(element.html());
+                while (matcherForElement.find()) {
+
+                    // We only want short timecodes right now.
+                    if (matcherForElement.group(1) == null) {
+                        int time = Converter.durationStringShortToMs(matcherForElement.group(0), true);
+
+                        // If the parsed timecode is greater then the duration then we know we need to
+                        // use the minute format so we are done.
+                        if (time > playableDuration) {
+                            useHourFormat = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (!useHourFormat) {
+                    break;
+                }
+            }
+        }
+
+        for (Element element : elementsWithTimeCodes) {
+
+            Matcher matcherForElement = TIMECODE_REGEX.matcher(element.html());
+            StringBuffer buffer = new StringBuffer();
+
+            while (matcherForElement.find()) {
+                String group = matcherForElement.group(0);
+
+                int time = matcherForElement.group(1) != null
+                                        ? Converter.durationStringLongToMs(group)
+                                        : Converter.durationStringShortToMs(group, useHourFormat);
+
+                String replacementText = group;
+                if (time < playableDuration) {
+                    replacementText = String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
+                }
+
+                matcherForElement.appendReplacement(buffer, replacementText);
+            }
+
+            matcherForElement.appendTail(buffer);
+            element.html(buffer.toString());
+        }
     }
 }

@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -90,10 +91,6 @@ public class ExternalPlayerFragment extends Fragment {
         loadMediaInfo();
     }
 
-    public void connectToPlaybackService() {
-        controller.init();
-    }
-
     private PlaybackController setupPlaybackController() {
         return new PlaybackController(getActivity(), true) {
 
@@ -109,12 +106,12 @@ public class ExternalPlayerFragment extends Fragment {
 
             @Override
             public boolean loadMediaInfo() {
-                ExternalPlayerFragment fragment = ExternalPlayerFragment.this;
-                if (fragment != null) {
-                    return fragment.loadMediaInfo();
-                } else {
-                    return false;
-                }
+                return ExternalPlayerFragment.this.loadMediaInfo();
+            }
+
+            @Override
+            public void setupGUI() {
+                ExternalPlayerFragment.this.loadMediaInfo();
             }
 
             @Override
@@ -133,17 +130,29 @@ public class ExternalPlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
         onPositionObserverUpdate();
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        controller = setupPlaybackController();
         controller.init();
+        loadMediaInfo();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (controller != null) {
+            controller.release();
+            controller = null;
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Fragment is about to be destroyed");
-        if (controller != null) {
-            controller.release();
-        }
         if (disposable != null) {
             disposable.dispose();
         }
@@ -196,7 +205,8 @@ public class ExternalPlayerFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> updateUi((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+                        error -> Log.e(TAG, Log.getStackTraceString(error)),
+                        () -> fragmentLayout.setVisibility(View.GONE));
         return true;
     }
 
@@ -217,7 +227,7 @@ public class ExternalPlayerFragment extends Fragment {
                     .into(imgvCover);
 
             fragmentLayout.setVisibility(View.VISIBLE);
-            if (controller.isPlayingVideoLocally()) {
+            if (controller != null && controller.isPlayingVideoLocally()) {
                 butPlay.setVisibility(View.GONE);
             } else {
                 butPlay.setVisibility(View.VISIBLE);
@@ -232,7 +242,9 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     private void onPositionObserverUpdate() {
-        if (controller.getPosition() == PlaybackService.INVALID_TIME
+        if (controller == null) {
+            return;
+        } else if (controller.getPosition() == PlaybackService.INVALID_TIME
                 || controller.getDuration() == PlaybackService.INVALID_TIME) {
             return;
         }

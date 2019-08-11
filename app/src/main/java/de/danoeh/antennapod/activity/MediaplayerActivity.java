@@ -38,7 +38,6 @@ import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -56,6 +55,7 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.Supplier;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
@@ -79,6 +79,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final int REQUEST_CODE_STORAGE = 42;
+    private static final float PLAYBACK_SPEED_STEP = 0.05f;
+    private static final float DEFAULT_MIN_PLAYBACK_SPEED = 0.5f;
+    private static final float DEFAULT_MAX_PLAYBACK_SPEED = 2.5f;
 
     PlaybackController controller;
 
@@ -235,6 +238,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         StorageUtils.checkStorageAvailability(this);
 
         getWindow().setFormat(PixelFormat.TRANSPARENT);
+        setupGUI();
     }
 
     @Override
@@ -274,11 +278,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        if (controller != null) {
-            controller.release();
-        }
         controller = newPlaybackController();
-        setupGUI();
+        controller.init();
         loadMediaInfo();
         onPositionObserverUpdate();
     }
@@ -328,11 +329,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
         Playable media = controller.getMedia();
         boolean isFeedMedia = media != null && (media instanceof FeedMedia);
-
-        menu.findItem(R.id.support_item).setVisible(isFeedMedia && media.getPaymentLink() != null &&
-                        ((FeedMedia) media).getItem() != null &&
-                        ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
-        );
 
         boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
@@ -469,7 +465,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         final Button butDecSpeed = (Button) dialog.findViewById(R.id.butDecSpeed);
                         butDecSpeed.setOnClickListener(v -> {
                             if(controller != null && controller.canSetPlaybackSpeed()) {
-                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 2);
+                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 1);
                             } else {
                                 VariableSpeedDialog.showGetPluginDialog(this);
                             }
@@ -477,7 +473,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         final Button butIncSpeed = (Button) dialog.findViewById(R.id.butIncSpeed);
                         butIncSpeed.setOnClickListener(v -> {
                             if(controller != null && controller.canSetPlaybackSpeed()) {
-                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 2);
+                                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 1);
                             } else {
                                 VariableSpeedDialog.showGetPluginDialog(this);
                             }
@@ -492,12 +488,20 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             UserPreferences.setPlaybackSpeed(String.valueOf(currentSpeed));
                         }
 
+                        String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+                        final float minPlaybackSpeed = availableSpeeds.length > 1 ?
+                                Float.valueOf(availableSpeeds[0]) : DEFAULT_MIN_PLAYBACK_SPEED;
+                        float maxPlaybackSpeed = availableSpeeds.length > 1 ?
+                                Float.valueOf(availableSpeeds[availableSpeeds.length - 1]) : DEFAULT_MAX_PLAYBACK_SPEED;
+                        int progressMax = (int) ((maxPlaybackSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP);
+                        barPlaybackSpeed.setMax(progressMax);
+
                         txtvPlaybackSpeed.setText(String.format("%.2fx", currentSpeed));
                         barPlaybackSpeed.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
                             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                                 if(controller != null && controller.canSetPlaybackSpeed()) {
-                                    float playbackSpeed = (progress + 10) / 20.0f;
+                                    float playbackSpeed = progress * PLAYBACK_SPEED_STEP + minPlaybackSpeed;
                                     controller.setPlaybackSpeed(playbackSpeed);
                                     String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
                                     UserPreferences.setPlaybackSpeed(speedPref);
@@ -505,7 +509,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                                     txtvPlaybackSpeed.setText(speedStr);
                                 } else if(fromUser) {
                                     float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
-                                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress((int) (20 * speed) - 10));
+                                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress(
+                                            (int) ((speed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP)));
                                 }
                             }
 
@@ -520,7 +525,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             public void onStopTrackingTouch(SeekBar seekBar) {
                             }
                         });
-                        barPlaybackSpeed.setProgress((int) (20 * currentSpeed) - 10);
+                        barPlaybackSpeed.setProgress((int) ((currentSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP));
 
                         final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
                         barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
@@ -533,6 +538,22 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             String sonicOnly = getString(R.string.sonic_only);
                             stereoToMono.setText(stereoToMono.getText() + " [" + sonicOnly + "]");
                         }
+
+                        if (UserPreferences.useExoplayer()) {
+                            barRightVolume.setEnabled(false);
+                        }
+
+                        final CheckBox skipSilence = (CheckBox) dialog.findViewById(R.id.skipSilence);
+                        skipSilence.setChecked(UserPreferences.isSkipSilence());
+                        if (!UserPreferences.useExoplayer()) {
+                            skipSilence.setEnabled(false);
+                            String exoplayerOnly = getString(R.string.exoplayer_only);
+                            skipSilence.setText(skipSilence.getText() + " [" + exoplayerOnly + "]");
+                        }
+                        skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                            UserPreferences.setSkipSilence(isChecked);
+                            controller.setSkipSilence(isChecked);
+                        });
 
                         barLeftVolume.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
                             @Override
@@ -576,11 +597,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     case R.id.visit_website_item:
                         Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                        break;
-                    case R.id.support_item:
-                        if (media instanceof FeedMedia) {
-                            DBTasks.flattrItemIfLoggedIn(this, ((FeedMedia) media).getItem());
-                        }
                         break;
                     case R.id.share_link_item:
                         if (media instanceof FeedMedia) {
@@ -633,18 +649,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         super.onResume();
         Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
-        if (controller != null) {
-            controller.init();
-        }
-    }
-
-    public void onEventMainThread(ServiceEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
-            if (controller != null) {
-                controller.init();
-            }
-        }
     }
 
     /**
@@ -661,8 +665,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (controller == null || txtvPosition == null || txtvLength == null) {
             return;
         }
-        int currentPosition = controller.getPosition();
-        int duration = controller.getDuration();
+
+        int currentPosition = TimeSpeedConverter.convert(controller.getPosition());
+        int duration = TimeSpeedConverter.convert(controller.getDuration());
+        int remainingTime = TimeSpeedConverter.convert(
+                controller.getDuration() - controller.getPosition());
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == PlaybackService.INVALID_TIME ||
                 duration == PlaybackService.INVALID_TIME) {
@@ -671,7 +678,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
         if (showTimeLeft) {
-            txtvLength.setText("-" + Converter.getDurationStringLong(duration - currentPosition));
+            txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {
             txtvLength.setText(Converter.getDurationStringLong(duration));
         }
@@ -819,9 +826,13 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
                 String length;
                 if (showTimeLeft) {
-                    length = "-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition());
+                    int remainingTime = TimeSpeedConverter.convert(
+                            media.getDuration() - media.getPosition());
+
+                    length = "-" + Converter.getDurationStringLong(remainingTime);
                 } else {
-                    length = Converter.getDurationStringLong(media.getDuration());
+                    int duration = TimeSpeedConverter.convert(media.getDuration());
+                    length = Converter.getDurationStringLong(duration);
                 }
                 txtvLength.setText(length);
 
@@ -924,7 +935,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
         if (showTimeLeft && prog != 0) {
             int duration = controller.getDuration();
-            String length = "-" + Converter.getDurationStringLong(duration - (int) (prog * duration));
+            int timeLeft = TimeSpeedConverter.convert(duration - (int) (prog * duration));
+            String length = "-" + Converter.getDurationStringLong(timeLeft);
             txtvLength.setText(length);
         }
     }

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -39,11 +41,7 @@ public class SearchFragment extends ListFragment {
     private static final String ARG_FEED = "feed";
 
     private SearchlistAdapter searchAdapter;
-    private List<SearchResult> searchResults;
-
-    private boolean viewCreated = false;
-    private boolean itemsLoaded = false;
-
+    private List<SearchResult> searchResults = new ArrayList<>();
     private Disposable disposable;
 
     /**
@@ -73,13 +71,13 @@ public class SearchFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        search();
     }
 
     @Override
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        search();
     }
 
     @Override
@@ -89,21 +87,6 @@ public class SearchFragment extends ListFragment {
             disposable.dispose();
         }
         EventDistributor.getInstance().unregister(contentUpdate);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        if(disposable != null) {
-            disposable.dispose();
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        searchAdapter = null;
-        viewCreated = false;
     }
 
     @Override
@@ -117,10 +100,9 @@ public class SearchFragment extends ListFragment {
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_label);
-        viewCreated = true;
-        if (itemsLoaded) {
-            onFragmentLoaded();
-        }
+
+        searchAdapter = new SearchlistAdapter(getActivity(), itemAccess);
+        setListAdapter(searchAdapter);
     }
 
     @Override
@@ -141,28 +123,26 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded) {
-            MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
-            MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-            final SearchView sv = new SearchView(getActivity());
-            sv.setQueryHint(getString(R.string.search_hint));
-            sv.setQuery(getArguments().getString(ARG_QUERY), false);
-            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    getArguments().putString(ARG_QUERY, s);
-                    itemsLoaded = false;
-                    search();
-                    return true;
-                }
+        MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        final SearchView sv = new SearchView(getActivity());
+        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setQuery(getArguments().getString(ARG_QUERY), false);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                getArguments().putString(ARG_QUERY, s);
+                search();
+                return true;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return false;
-                }
-            });
-            MenuItemCompat.setActionView(item, sv);
-        }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        MenuItemCompat.setActionView(item, sv);
     }
 
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -175,14 +155,9 @@ public class SearchFragment extends ListFragment {
         }
     };
 
-    private void onFragmentLoaded() {
-        if (searchAdapter == null) {
-            searchAdapter = new SearchlistAdapter(getActivity(), itemAccess);
-            setListAdapter(searchAdapter);
-        }
+    private void onSearchResults(List<SearchResult> results) {
+        searchResults = results;
         searchAdapter.notifyDataSetChanged();
-        setListShown(true);
-
         String query = getArguments().getString(ARG_QUERY);
         setEmptyText(getString(R.string.no_results_for_query, query));
     }
@@ -190,12 +165,12 @@ public class SearchFragment extends ListFragment {
     private final SearchlistAdapter.ItemAccess itemAccess = new SearchlistAdapter.ItemAccess() {
         @Override
         public int getCount() {
-            return (searchResults != null) ? searchResults.size() : 0;
+            return searchResults.size();
         }
 
         @Override
         public SearchResult getItem(int position) {
-            if (searchResults != null && 0 <= position && position < searchResults.size()) {
+            if (0 <= position && position < searchResults.size()) {
                 return searchResults.get(position);
             } else {
                 return null;
@@ -203,28 +178,17 @@ public class SearchFragment extends ListFragment {
         }
     };
 
-
     private void search() {
         if(disposable != null) {
             disposable.dispose();
         }
-        if (viewCreated && !itemsLoaded) {
-            setListShown(false);
-        }
         disposable = Observable.fromCallable(this::performSearch)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    if (result != null) {
-                        itemsLoaded = true;
-                        searchResults = result;
-                        if (viewCreated) {
-                            onFragmentLoaded();
-                        }
-                    }
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(this::onSearchResults, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @NonNull
     private List<SearchResult> performSearch() {
         Bundle args = getArguments();
         String query = args.getString(ARG_QUERY);
@@ -232,5 +196,4 @@ public class SearchFragment extends ListFragment {
         Context context = getActivity();
         return FeedSearcher.performSearch(context, query, feed);
     }
-
 }

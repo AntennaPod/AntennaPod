@@ -95,10 +95,15 @@
   <string name="episode_cleanup_never">Nie</string>
   <string name="episode_cleanup_queue_removal">Wenn nicht in der Abspielliste</string>
   <string name="episode_cleanup_after_listening">Wenn fertig gespielt</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 Stunde nachdem fertig gespielt</item>
+    <item quantity="other">%d Stunden nachdem fertig gespielt</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 Tag nachdem fertig gespielt</item>
     <item quantity="other">%d Tage nachdem fertig gespielt</item>
   </plurals>
+  <string name="num_selected_label">%d ausgewählt</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="etxtFeedurlHint">URL des Feeds oder der Webseite</string>
@@ -111,9 +116,9 @@
   <string name="mark_all_read_msg">Alle Episoden als gespielt markiert</string>
   <string name="mark_all_read_confirmation_msg">Bitte bestätige, dass alle Episoden als gespielt markiert werden sollen.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bitte bestätige, dass alle Episoden in diesem Feed als gespielt markiert werden sollen.</string>
-  <string name="mark_all_seen_label">Alle als gesehen markieren</string>
-  <string name="mark_all_seen_msg">Alle Episoden als gesehen markiert</string>
-  <string name="mark_all_seen_confirmation_msg">Bitte bestätige, dass alle Episoden als gesehen markiert werden sollen.</string>
+  <string name="remove_all_new_flags_label">Alle als gesehen markieren</string>
+  <string name="removed_all_new_flags_msg">Alle Episoden als gesehen markiert</string>
+  <string name="remove_all_new_flags_confirmation_msg">Bitte bestätige, dass alle Episoden als gesehen markiert werden sollen.</string>
   <string name="show_info_label">Informationen anzeigen</string>
   <string name="show_feed_settings_label">Zeige Feed-Einstellungen</string>
   <string name="feed_info_label">Feed-Informationen</string>
@@ -128,9 +133,12 @@
   <string name="share_item_url_label">Teile URL der Episodendatei</string>
   <string name="share_item_url_with_position_label">Teile URL der Episodendatei mit Zeitmarke</string>
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast \"%1$s\" und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
+  <string name="feed_remover_msg">Entferne Podcast</string>
   <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
   <string name="hide_episodes_title">Episoden verbergen</string>
   <string name="batch_edit">Stapelbearbeitung</string>
+  <string name="select_all_above">Alles oberhalb auswählen</string>
+  <string name="select_all_below">Alles unterhalb auswählen</string>
   <string name="hide_unplayed_episodes_label">Ungespielt</string>
   <string name="hide_paused_episodes_label">Pausiert</string>
   <string name="hide_played_episodes_label">Gespielt</string>
@@ -145,6 +153,10 @@
   <string name="open_podcast">Podcast öffnen</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Lade %d Episode herunter.</item>
+    <item quantity="other">Lade %d Episoden herunter.</item>
+  </plurals>
   <string name="play_label">Abspielen</string>
   <string name="pause_label">Pausieren</string>
   <string name="stop_label">Stop</string>
@@ -152,15 +164,35 @@
   <string name="remove_label">Entfernen</string>
   <string name="delete_label">Löschen</string>
   <string name="delete_failed">Die Datei kann nicht gelöscht werden. Eventuell hilft es, das Gerät neu zu starten.</string>
-  <string name="remove_episode_lable">Episode entfernen</string>
-  <string name="mark_as_seen_label">Als gelesen markieren</string>
-  <string name="marked_as_seen_label">Als gesehen markiert</string>
+  <string name="delete_episode_label">Episode entfernen</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d Episode gelöscht.</item>
+    <item quantity="other">%d Episoden gelöscht.</item>
+  </plurals>
+  <string name="remove_new_flag_label">Als gelesen markieren</string>
+  <string name="removed_new_flag_label">Als gesehen markiert</string>
   <string name="mark_read_label">Als gespielt markieren</string>
   <string name="marked_as_read_label">Als gespielt markiert</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d Episode als gespielt markiert.</item>
+    <item quantity="other">%d Episoden als gespielt markiert.</item>
+  </plurals>
   <string name="mark_unread_label">Als ungespielt markieren</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d Episode als ungespielt markiert.</item>
+    <item quantity="other">%d Episoden als ungespielt markiert.</item>
+  </plurals>
   <string name="add_to_queue_label">Zur Abspielliste hinzufügen</string>
   <string name="added_to_queue_label">Zur Abspielliste hinzugefügt</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d Episode zur Abspielliste hinzugefügt.</item>
+    <item quantity="other">%d Episoden zur Abspielliste hinzugefügt.</item>
+  </plurals>
   <string name="remove_from_queue_label">Aus der Abspielliste entfernen</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%dEpisode aus der Abspielliste entfernt. </item>
+    <item quantity="other">%d Episoden aus der Abspielliste entfernt.</item>
+  </plurals>
   <string name="add_to_favorite_label">Zu Favoriten hinzufügen</string>
   <string name="added_to_favorites">Zu Favoriten hinzugefügt</string>
   <string name="remove_from_favorite_label">Aus Favoriten entfernen</string>
@@ -212,6 +244,7 @@
   <string name="download_type_media">Mediendatei</string>
   <string name="download_type_image">Bild</string>
   <string name="download_request_error_dialog_message_prefix">Beim Herunterladen der Datei ist ein Fehler aufgetreten:\u0020</string>
+  <string name="null_value_podcast_error">Es wurde kein Podcast angegeben, der angezeigt werden könnte.</string>
   <string name="authentication_notification_title">Authentifizierung erforderlich</string>
   <string name="authentication_notification_msg">Die angeforderte Quelle erfordert einen Benutzernamen und ein Passwort</string>
   <string name="confirm_mobile_download_dialog_title">Mobilen Download bestätigen</string>
@@ -243,6 +276,7 @@
   <string name="move_to_top_label">Zum Anfang verschieben</string>
   <string name="move_to_bottom_label">Zum Ende verschieben</string>
   <string name="sort">Sortieren</string>
+  <string name="keep_sorted">Automatisch sortieren</string>
   <string name="date">Datum</string>
   <string name="duration">Dauer</string>
   <string name="episode_title">Episodentitel</string>
@@ -252,6 +286,8 @@
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
   <string name="clear_queue_confirmation_msg">Bitte bestätige, dass ALLE Episoden aus der Abspielliste entfernt werden sollen</string>
+  <string name="sort_new_to_old">Neu bis alt</string>
+  <string name="sort_old_to_new">Alt bis neu</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr Anmeldung</string>
   <string name="flattr_auth_explanation">Drücke den Button unten, um den Authentifizierungsprozess zu starten. Du wirst zur Flattr-Anmeldeseite weitergeleitet. Hier wirst du gefragt, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
@@ -285,10 +321,25 @@
   <string name="set_playback_speed_label">Wiedergabegeschwindigkeiten</string>
   <string name="enable_sonic">Sonic aktivieren</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Es sind keine Einträge in dieser Liste.</string>
+  <string name="no_items_header_label">Leere Abspielliste</string>
+  <string name="no_items_label">Du kannst Episoden hinzufügen, indem du sie herunterlädst oder sie lange antippst und \"Zur Abspielliste hinzufügen\" auswählst.</string>
   <string name="no_feeds_label">Du hast noch keine Feeds abonniert.</string>
   <string name="no_chapters_label">Diese Episode hat keine Kapitel.</string>
   <string name="no_shownotes_label">Episode hat keine Shownotizen.</string>
+  <string name="no_run_downloads_head_label">Keine laufenden Downloads</string>
+  <string name="no_run_downloads_label">Du kannst Episoden auf der Podcast-Seite herunterladen.</string>
+  <string name="no_comp_downloads_head_label">Keine heruntergeladenen Episoden</string>
+  <string name="no_comp_downloads_label">Du kannst Episoden auf der Podcast-Seite herunterladen.</string>
+  <string name="no_log_downloads_head_label">Keine Downloadhistorie</string>
+  <string name="no_log_downloads_label">Die Downloadhistorie erscheint hier, sobald eine Episode heruntergeladen wurde.</string>
+  <string name="no_history_head_label">Kein Verlauf</string>
+  <string name="no_history_label">Nach dem Anhören einer Episode erscheint sie hier.</string>
+  <string name="no_all_episodes_head_label">Keine Episoden</string>
+  <string name="no_all_episodes_label">Wenn du einen Podcast hinzufügst, werden die Episoden hier angezeigt.</string>
+  <string name="no_new_episodes_head_label">Keine neuen Episoden</string>
+  <string name="no_new_episodes_label">Wenn neue Episoden veröffentlicht werden, erscheinen sie hier.</string>
+  <string name="no_fav_episodes_head_label">Keine Favoriten</string>
+  <string name="no_fav_episodes_label">Du kannst Episoden als Favorit markieren, indem du sie lange antippst.</string>
   <!--Preferences-->
   <string name="storage_pref">Speicher</string>
   <string name="project_pref">Projekt</string>
@@ -301,6 +352,7 @@
   <string name="automation">Automatisierung</string>
   <string name="download_pref_details">Details</string>
   <string name="import_export_pref">Import/Export</string>
+  <string name="import_export_search_keywords">backup, Sicherung, Datensicherung, Wiederherstellung</string>
   <string name="appearance">Erscheinungsbild</string>
   <string name="external_elements">Externe Elemente</string>
   <string name="interruptions">Unterbrechungen</string>
@@ -312,7 +364,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder eingesteckt werden</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wiedergabe fortsetzen, wenn Bluetooth wieder verbunden ist</string>
   <string name="pref_hardwareForwardButtonSkips_title">\"Nächster\"-Taste springt zur nächsten Episode</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Zur nächsten Episode springen, wenn die \"Nächster\"-Taste gedrückt wird (statt vorzuspulen)</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Wenn ein Vorwärts Button auf einem Bluetooth Gerät gedrückt wird, überspringe die nächste Episode anstatt vorzuspulen.</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Vorheriger-Taste startet neu</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Die Wiedergabe der aktuellen Episode neu starten, wenn die \"Vorheriger\"-Taste gedrückt wird (statt zurückzuspulen)</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode in der Abspielliste, wenn die Wiedergabe endet</string>
@@ -342,6 +394,9 @@
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth wieder verbunden</string>
   <string name="pref_mobileUpdate_title">Mobile Aktualisierungen</string>
   <string name="pref_mobileUpdate_sum">Erlaube Aktualisierungen über die mobile Datenverbindung</string>
+  <string name="pref_mobileUpdate_nothing">Nichts</string>
+  <string name="pref_mobileUpdate_images">Nur Bilder</string>
+  <string name="pref_mobileUpdate_everything">Alles</string>
   <string name="refreshing_label">Aktualisiere</string>
   <string name="flattr_settings_label">Flattr Einstellungen</string>
   <string name="pref_flattr_auth_title">Flattr Anmeldung</string>
@@ -361,6 +416,7 @@
   <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>
   <string name="pref_nav_drawer_feed_order_sum">Ändere die Reihenfolge deiner Abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Abonnement-Zähler einstellen</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Ändere die durch den Abonnementszähler angezeigten Informationen. Betrifft auch die Sortierung der Abonnements wenn \"Reihenfolge der Abonnements\" auf \"Zähler\" gesetzt ist.</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
@@ -374,6 +430,7 @@
   <string name="pref_episode_cache_title">Episodenspeicher</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>
+  <string name="pref_theme_title_trueblack">Schwarz (für AMOLED)</string>
   <string name="pref_episode_cache_unlimited">Unbegrenzt</string>
   <string name="pref_update_interval_hours_plural">Stunden</string>
   <string name="pref_update_interval_hours_singular">Stunde</string>
@@ -402,8 +459,8 @@
   <string name="pref_rewind_sum">Passe an, wie viele Sekunden zurückgespult wird, wenn die entsprechende Hardware-Taste gedrückt wird</string>
   <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
-  <string name="pref_expandNotify_title">Benachrichtigung erweitern</string>
-  <string name="pref_expandNotify_sum">Erweiterte Wiedergabebenachrichtigung mit Abspiel-, Pause- und Stop-Knöpfen anzeigen.</string>
+  <string name="pref_expandNotify_title">Hohe Benachrichtigungspriorität</string>
+  <string name="pref_expandNotify_sum">Dies erweitert normalerweise die Benachrichtigung und zeigt so die Wiedergabe-Buttons an.</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
   <string name="pref_compact_notification_buttons_title">Lockscreen-Wiedergabetasten festlegen</string>
@@ -437,10 +494,24 @@
   <string name="pref_enqueue_downloaded_title">Downloads einreihen</string>
   <string name="pref_enqueue_downloaded_summary">Füge heruntergeladene Episoden zur Abspielliste hinzu</string>
   <string name="media_player_builtin">Androids eingebauter Abspieler</string>
+  <string name="pref_skip_silence_title">Stille im Ton überspringen</string>
   <string name="pref_videoBehavior_title">Beim Beenden des Videos</string>
   <string name="pref_videoBehavior_sum">Verhalten beim Verlassen der Video-Wiedergabe</string>
   <string name="stop_playback">Wiedergabe anhalten</string>
   <string name="continue_playback">Audiowiedergabe fortsetzen</string>
+  <string name="behavior">Verhalten</string>
+  <string name="pref_back_button_behavior_title">Verhalten des Zurück-Buttons</string>
+  <string name="pref_back_button_behavior_sum">Verändere das Verhalten vom Zurück-Button</string>
+  <string name="back_button_default">Standard</string>
+  <string name="back_button_open_drawer">Öffne Seitenleiste</string>
+  <string name="back_button_double_tap">Doppelt tippen zum Verlassen</string>
+  <string name="back_button_show_prompt">Bestätigen zum Verlassen</string>
+  <string name="close_prompt">Bist du sicher, dass du AntennaPod schließen möchtest?</string>
+  <string name="double_tap_toast">Zurück-Button erneut tippen zum Verlassen</string>
+  <string name="back_button_go_to_page">Gehe zu Seite…</string>
+  <string name="back_button_go_to_page_title">Seite auswählen</string>
+  <string name="pref_delete_removes_from_queue_title">Löschen entfernt aus Abspielliste</string>
+  <string name="pref_delete_removes_from_queue_sum">Entferne Episoden automatisch aus der Abspielliste, wenn sie gelöscht werden.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
@@ -450,6 +521,8 @@
   <string name="search_hint">Suche nach Episoden</string>
   <string name="found_in_shownotes_label">In Shownotizen gefunden</string>
   <string name="found_in_chapters_label">In Kapiteln gefunden</string>
+  <string name="found_in_authors_label">Gefunden in Autor(en)</string>
+  <string name="found_in_feeds_label">Gefunden in Podcast</string>
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
   <string name="search_label">Suchen</string>
   <string name="found_in_title_label">In Titel gefunden</string>
@@ -631,6 +704,7 @@
   <string name="audio_effects">Audioeffekte</string>
   <string name="stereo_to_mono">Heruntermischen: Stereo zu Mono</string>
   <string name="sonic_only">nur Sonic</string>
+  <string name="exoplayer_only">Nur ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>
   <string name="host_label">Host</string>
@@ -643,6 +717,8 @@
   <string name="proxy_host_empty_error">Host darf nicht leer sein</string>
   <string name="proxy_host_invalid_error">Host ist keine gültige IP oder Domain</string>
   <string name="proxy_port_invalid_error">Port ungültig</string>
+  <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Spaltenanzahl</string>
   <!--Database import/export-->
   <string name="import_export">Datenbankimport/-export</string>
   <string name="import_export_warning">Diese experimentelle Funktion kann dazu benutzt werden, deine Abonnements und abgespielten Episoden auf ein anderes Gerät zu übertragen.\n\nExportierte Datenbanken können nur mit der gleichen AntennaPod-Version wieder importiert werden, andernfalls kann dies zu unerwartetem Verhalten führen.\n\nNach dem Importieren können Episoden als heruntergeladen angezeigt werden, obwohl sie dies nicht sind. Einfach den Abspielknopf der Episoden drücken, damit AntennaPod das erkennt.</string>

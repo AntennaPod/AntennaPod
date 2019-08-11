@@ -56,7 +56,6 @@
   <string name="yes">是</string>
   <string name="no">否</string>
   <string name="reset">重置</string>
-  <string name="author_label">作者</string>
   <string name="language_label">語言</string>
   <string name="url_label">鏈接</string>
   <string name="podcast_settings_label">設置</string>
@@ -104,23 +103,12 @@
   <string name="mark_all_read_label">全部標記為已播放</string>
   <string name="mark_all_read_msg">全部劇集標記為已播放</string>
   <string name="mark_all_read_confirmation_msg">請確認你要將所有劇集標記為已播放。</string>
-  <string name="mark_all_read_feed_confirmation_msg">請確認你要將此播放源的所有劇集標記為已播放。</string>
-  <string name="mark_all_seen_label">標記為已讀</string>
-  <string name="mark_all_seen_msg">全部劇集標記為已讀</string>
-  <string name="mark_all_seen_confirmation_msg">請確認你要將所有劇集標記為已讀。</string>
+  <string name="remove_all_new_flags_label">標記為已讀</string>
+  <string name="remove_all_new_flags_confirmation_msg">請確認你要將所有劇集標記為已讀。</string>
   <string name="show_info_label">顯示資料</string>
-  <string name="rename_feed_label">重命名播客</string>
-  <string name="remove_feed_label">移除播客</string>
   <string name="share_label">分享</string>
-  <string name="share_link_label">分享鏈接</string>
   <string name="share_file_label">分享文件</string>
-  <string name="share_link_with_position_label">分享鏈接與位置</string>
   <string name="share_feed_url_label">分享播客源鏈接</string>
-  <string name="share_item_url_label">分享劇集文件鏈接</string>
-  <string name="share_item_url_with_position_label">分享劇集文件鏈接和位置</string>
-  <string name="feed_delete_confirmation_msg">請確認您即將刪除播客源\"%1$s\" 和它所有的劇集。</string>
-  <string name="feed_remover_msg">移除播客源</string>
-  <string name="load_complete_feed">刷新完成播客源</string>
   <string name="hide_episodes_title">隱藏劇集</string>
   <string name="hide_unplayed_episodes_label">未播放</string>
   <string name="hide_paused_episodes_label">暫停</string>
@@ -143,7 +131,7 @@
   <string name="delete_label">刪除</string>
   <string name="delete_failed">刪除文件失敗。重啟設備試試看。</string>
   <string name="remove_episode_lable">移除劇集</string>
-  <string name="marked_as_seen_label">標記為已讀</string>
+  <string name="removed_new_flag_label">標記為已讀</string>
   <string name="mark_read_label">標記為已播放</string>
   <string name="marked_as_read_label">已標記為已播放</string>
   <string name="mark_unread_label">標記為未播放</string>
@@ -231,7 +219,6 @@
   <string name="date">日期</string>
   <string name="duration">時長</string>
   <string name="episode_title">劇集標題</string>
-  <string name="feed_title">源標題</string>
   <string name="ascending">升序</string>
   <string name="descending">降序</string>
   <string name="clear_queue_confirmation_msg">請確認您要清除隊列以及其中所有的劇集</string>
@@ -269,7 +256,6 @@
   <string name="enable_sonic">啟用Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_label">列表裡沒有項目。</string>
-  <string name="no_feeds_label">您還未訂閱任何源。</string>
   <string name="no_chapters_label">本劇集沒有章節。</string>
   <string name="no_shownotes_label">本劇集沒有筆記。</string>
   <!--Preferences-->
@@ -285,7 +271,6 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">當耳機再次連接時繼續播放</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">當藍牙再次連接時繼續播放</string>
   <string name="pref_hardwareForwardButtonSkips_title">快進按鈕跳過</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">當按下一個實體的快進按鈕時，跳過下一個劇集而不進行快進</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">後退鍵重新播放</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">當按下一個實體鍵的後退按鈕時，重新播放本劇集而不是後退</string>
   <string name="pref_followQueue_sum">當播放完畢時自動跳至列表中的下一個項目</string>

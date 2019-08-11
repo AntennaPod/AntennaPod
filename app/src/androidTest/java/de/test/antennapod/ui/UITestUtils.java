@@ -27,9 +27,9 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
-import de.greenrobot.event.EventBus;
 import de.test.antennapod.util.service.download.HTTPBin;
 import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Utility methods for UI tests.

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -20,11 +21,12 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
     private static final String TAG = "APCleanupAlgorithm";
-    /** the number of days after playback to wait before an item is eligible to be cleaned up */
-    private final int numberOfDaysAfterPlayback;
+    /** the number of days after playback to wait before an item is eligible to be cleaned up.
+        Fractional for number of hours, e.g., 0.5 = 12 hours, 0.0416 = 1 hour.  */
+    private final int numberOfHoursAfterPlayback;
 
-    public APCleanupAlgorithm(int numberOfDaysAfterPlayback) {
-        this.numberOfDaysAfterPlayback = numberOfDaysAfterPlayback;
+    public APCleanupAlgorithm(int numberOfHoursAfterPlayback) {
+        this.numberOfHoursAfterPlayback = numberOfHoursAfterPlayback;
     }
 
     /**
@@ -77,13 +79,17 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         return counter;
     }
 
+    @VisibleForTesting
+    Date calcMostRecentDateForDeletion(@NonNull Date currentDate) {
+        return minusHours(currentDate, numberOfHoursAfterPlayback);
+    }
+
     @NonNull
     private List<FeedItem> getCandidates() {
         List<FeedItem> candidates = new ArrayList<>();
         List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH, -1 * numberOfDaysAfterPlayback);
-        Date mostRecentDateForDeletion = cal.getTime();
+
+        Date mostRecentDateForDeletion = calcMostRecentDateForDeletion(new Date());
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia()
                     && item.getMedia().isDownloaded()
@@ -108,5 +114,16 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         return getNumEpisodesToCleanup(0);
     }
 
-    public int getNumberOfDaysAfterPlayback() { return numberOfDaysAfterPlayback; }
+    @VisibleForTesting
+    public int getNumberOfHoursAfterPlayback() { return numberOfHoursAfterPlayback; }
+
+    private static Date minusHours(Date baseDate, int numberOfHours) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(baseDate);
+
+        cal.add(Calendar.HOUR_OF_DAY, -1 * numberOfHours);
+
+        return cal.getTime();
+    }
+
 }

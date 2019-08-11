@@ -1,11 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
+  <string name="feed_update_receiver_name">Aktualizovat sbírky</string>
   <string name="feeds_label">Kanály</string>
   <string name="statistics_label">Statistiky</string>
   <string name="add_feed_label">Přidat podcast</string>
   <string name="episodes_label">Epizody</string>
   <string name="all_episodes_short_label">Vše</string>
+  <string name="new_episodes_label">Nový</string>
   <string name="favorite_episodes_label">Oblíbené</string>
   <string name="new_label">Nový</string>
   <string name="settings_label">Nastavení</string>
@@ -18,10 +20,12 @@
   <string name="cancel_download_label">Zrušit stahování</string>
   <string name="playback_history_label">Historie přehrávání</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_summary">Synchronizovat s ostatními přístroji</string>
   <string name="gpodnet_auth_label">Login pro gpodder.net</string>
   <string name="free_space_label">%1$s volné</string>
   <string name="episode_cache_full_title">Odkládací prostor pro epizody je plný</string>
   <string name="episode_cache_full_message">Došlo k zaplnění limitu odkládacího prostoru pro epizody. Můžete navýšit vyhrazený prostor v Nastavení.</string>
+  <string name="synchronizing">Synchronizace...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Celkový čas poslechnutých podcastů:</string>
   <string name="statistics_details_dialog">%1$d z %2$d započatých epizod.\n\nPřehraných %3$s z %4$s.</string>
@@ -52,7 +56,7 @@
   <string name="no">Ne
 </string>
   <string name="reset">Reset</string>
-  <string name="author_label">Autor</string>
+  <string name="author_label">Přispěvatel(é)</string>
   <string name="language_label">Jazyk</string>
   <string name="url_label">URL</string>
   <string name="podcast_settings_label">Nastavení</string>
@@ -102,21 +106,11 @@
   <string name="mark_all_read_label">Označit vše jako poslechnuté</string>
   <string name="mark_all_read_msg">Všechny epizody označeny jako poslechnuté</string>
   <string name="mark_all_read_confirmation_msg">Potvrďte prosím, že chcete označit všechny vybrané epizody jako poslechnuté.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Potvrďte prosím, že chcete označit všechny epizody z tohoto zdroje jako poslechnuté.</string>
-  <string name="mark_all_seen_label">Označit vše jako zobrazené</string>
-  <string name="mark_all_seen_msg">Označit všechny epizody jako shlédnuté</string>
-  <string name="mark_all_seen_confirmation_msg">Potvrďte prosím, že chcete označit všechny epizody jako shlédnuté.</string>
+  <string name="remove_all_new_flags_label">Označit vše jako zobrazené</string>
+  <string name="remove_all_new_flags_confirmation_msg">Potvrďte prosím, že chcete označit všechny epizody jako shlédnuté.</string>
   <string name="show_info_label">Informace o zdroji</string>
-  <string name="rename_feed_label">Přejmenovat podcast</string>
-  <string name="remove_feed_label">Odstranit podcast</string>
   <string name="share_label">Sdílet</string>
-  <string name="share_link_label">Sdílet odkaz</string>
-  <string name="share_link_with_position_label">Sdílet odkaz s pozicí</string>
   <string name="share_feed_url_label">Sdílet URL kanálu</string>
-  <string name="share_item_url_label">Sdílet URL souboru epizody</string>
-  <string name="share_item_url_with_position_label">Sdílet URL souboru epizody s pozicí</string>
-  <string name="feed_remover_msg">Odstranit kanál</string>
-  <string name="load_complete_feed">Obnovit kompletní kanál</string>
   <string name="hide_episodes_title">Skrýt epizody</string>
   <string name="hide_unplayed_episodes_label">Neposlechnuté</string>
   <string name="hide_paused_episodes_label">Pozastavené</string>
@@ -137,8 +131,7 @@
   <string name="stream_label">Vysílat</string>
   <string name="remove_label">Odstranit</string>
   <string name="delete_label">Smazat</string>
-  <string name="remove_episode_lable">Odstranit epizodu</string>
-  <string name="marked_as_seen_label">Označit jako shlédnuté</string>
+  <string name="removed_new_flag_label">Označit jako shlédnuté</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
   <string name="marked_as_read_label">Označeno jako poslechnuté</string>
   <string name="mark_unread_label">Označit jako neposlechnuté</string>
@@ -229,7 +222,6 @@
   <string name="date">Datum</string>
   <string name="duration">Délka</string>
   <string name="episode_title">Název epizody</string>
-  <string name="feed_title">Název kanálu</string>
   <string name="ascending">Vzestupně</string>
   <string name="descending">Sestupně</string>
   <string name="clear_queue_confirmation_msg">Potvrďte prosím, že chcete vyčistit tuto frontu a VŠECHNY v ní obsažené epizody</string>
@@ -266,8 +258,6 @@
   <string name="set_playback_speed_label">Rychlosti přehrávání</string>
   <string name="enable_sonic">Povolit Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Žádné položky v seznamu.</string>
-  <string name="no_feeds_label">Zatím nebyly přidány žádné kanály.</string>
   <string name="no_chapters_label">Tato epizoda nemá žádné kapitoly.</string>
   <string name="no_shownotes_label">Tato epizoda neobsahuje žádné poznámky.</string>
   <!--Preferences-->
@@ -282,7 +272,6 @@
   <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo bluetooth připojení pozastavit přehrávání.</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Pokračovat v přehrávání po připojení bluetooth</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Po stlačení hardwarového tlačítka pro posun vpřed místo přetočení vpřed přeskočit na další epizodu</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Tlačítko zpět restartuje</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Po stlačení hardwarového tlačítka pro posun zpět místo přetočení vpřed restartovat přehrávání aktuální epizody</string>
   <string name="pref_followQueue_sum">Po přehrání položky z fronty přejít automaticky na další</string>
@@ -328,7 +317,6 @@
   <string name="pref_nav_drawer_feed_order_title">Nastavit pořadí sbírek</string>
   <string name="pref_nav_drawer_feed_order_sum">Upravit pořadí vašich sbírek</string>
   <string name="pref_nav_drawer_feed_counter_title">Nastavit počítadlo sbírek</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Upravit informaci zobrazovanou počítadlem sbírek</string>
   <string name="pref_set_theme_sum">Změnit vzhled AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatické stahování</string>
   <string name="pref_automatic_download_sum">Nastavení automatického stahování epizod.</string>
@@ -364,8 +352,6 @@
   <string name="pref_playback_speed_sum">Přizpůsobení rychlosti je dostupné pro přehrávání zvuku různými rychlostmi</string>
   <string name="pref_gpodnet_sethostname_title">Nastavit hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Použít přednastaveného hosta</string>
-  <string name="pref_expandNotify_title">Rozšířené upozornění</string>
-  <string name="pref_expandNotify_sum">Vždy zobrazovat tlačítka pro přehrávání v upozornění.</string>
   <string name="pref_persistNotify_title">Pevné ovládání přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat upozornění a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
   <string name="pref_compact_notification_buttons_title">Nastavení tlačítek uzamčené obrazovky</string>
@@ -601,6 +587,7 @@
   <string name="proxy_host_empty_error">Host nesmí být prázdný</string>
   <string name="proxy_host_invalid_error">Host není platná IP nebo doména</string>
   <string name="proxy_port_invalid_error">Neplatný port</string>
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <!--Casting-->
   <string name="cast_media_route_menu_title">Přehrát na...</string>

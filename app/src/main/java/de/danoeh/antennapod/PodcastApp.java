@@ -8,9 +8,11 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.joanzapata.iconify.fonts.MaterialModule;
 
+import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.spa.SPAUtil;
+import org.greenrobot.eventbus.EventBus;
 
 /** Main application class. */
 public class PodcastApp extends Application {
@@ -58,6 +60,10 @@ public class PodcastApp extends Application {
 		Iconify.with(new MaterialModule());
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
+		EventBus.builder()
+				.addIndex(new ApEventBusIndex())
+				.addIndex(new ApCoreEventBusIndex())
+				.installDefaultEventBus();
     }
 
 }

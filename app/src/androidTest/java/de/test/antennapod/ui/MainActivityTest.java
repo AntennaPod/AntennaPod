@@ -7,6 +7,7 @@ import android.support.test.espresso.intent.Intents;
 import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.view.Gravity;
 import android.widget.ListView;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
@@ -17,6 +18,7 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
@@ -36,6 +38,8 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.longClick;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.DrawerMatchers.isClosed;
 import static android.support.test.espresso.intent.Intents.intended;
 import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -76,6 +80,9 @@ public class MainActivityTest {
         prefs = context.getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false).commit();
 
+        RatingDialog.init(context);
+        RatingDialog.saveRated();
+
         solo = new Solo(getInstrumentation(), mActivityRule.getActivity());
     }
 
@@ -89,7 +96,9 @@ public class MainActivityTest {
     }
 
     private void openNavDrawer() {
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
+        onView(withId(R.id.drawer_layout))
+                .check(matches(isClosed(Gravity.LEFT)))
+                .perform(DrawerActions.open());
     }
 
     @Test

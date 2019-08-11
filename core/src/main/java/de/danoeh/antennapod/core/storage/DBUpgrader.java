@@ -76,10 +76,10 @@ class DBUpgrader {
         }
         if (oldVersion <= 10) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_FLATTR_STATUS
+                    + " ADD COLUMN flattr_status"
                     + " INTEGER");
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_FLATTR_STATUS
+                    + " ADD COLUMN flattr_status"
                     + " INTEGER");
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
                     + " ADD COLUMN " + PodDBAdapter.KEY_PLAYED_DURATION

@@ -6,28 +6,28 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.List;
+import java.util.ListIterator;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MediaplayerInfoActivity.MediaplayerInfoContentFragment;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
+import de.danoeh.antennapod.view.EmptyViewHandler;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
-public class ChaptersFragment extends ListFragment implements MediaplayerInfoContentFragment {
-
+public class ChaptersFragment extends ListFragment {
     private static final String TAG = "ChaptersFragment";
-
-    private Playable media;
-    private PlaybackController controller;
-
     private ChaptersListAdapter adapter;
+    private PlaybackController controller;
+    private Disposable disposable;
+    private EmptyViewHandler emptyView;
 
-    public static ChaptersFragment newInstance(Playable media) {
-        ChaptersFragment f = new ChaptersFragment();
-        f.media = media;
-        return f;
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -38,11 +38,13 @@ public class ChaptersFragment extends ListFragment implements MediaplayerInfoCon
         final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.attachToListView(lv);
+        emptyView.setIcon(R.attr.ic_bookmark);
+        emptyView.setTitle(R.string.no_chapters_head_label);
+        emptyView.setMessage(R.string.no_chapters_label);
+
         adapter = new ChaptersListAdapter(getActivity(), 0, pos -> {
-            if(controller == null) {
-                Log.d(TAG, "controller is null");
-                return;
-            }
             Chapter chapter = (Chapter) getListAdapter().getItem(pos);
             controller.seekToChapter(chapter);
         });
@@ -50,42 +52,83 @@ public class ChaptersFragment extends ListFragment implements MediaplayerInfoCon
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        adapter.setMedia(media);
-        adapter.notifyDataSetChanged();
-        if(media == null || media.getChapters() == null) {
-            setEmptyText(getString(R.string.no_chapters_label));
-        } else {
-            setEmptyText(null);
-        }
-    }
+    public void onStart() {
+        super.onStart();
+        controller = new PlaybackController(getActivity(), false) {
+            @Override
+            public boolean loadMediaInfo() {
+                ChaptersFragment.this.loadMediaInfo();
+                return true;
+            }
 
-    public void onDestroy() {
-        super.onDestroy();
-        adapter = null;
-        controller = null;
+            @Override
+            public void onPositionObserverUpdate() {
+                adapter.notifyDataSetChanged();
+            }
+        };
+        controller.init();
+
+        loadMediaInfo();
     }
 
     @Override
-    public void onMediaChanged(Playable media) {
-        if(this.media == media) {
-            return;
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (disposable != null) {
+            disposable.dispose();
         }
-        this.media = media;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        controller.release();
+        controller = null;
+    }
+
+    private void scrollTo(int position) {
+        getListView().setSelection(position);
+    }
+
+    private int getCurrentChapter(Playable media) {
+        int currentPosition = controller.getPosition();
+
+        List<Chapter> chapters = media.getChapters();
+        for (final ListIterator<Chapter> it = chapters.listIterator(); it.hasNext(); ) {
+            Chapter chapter = it.next();
+            if (chapter.getStart() > currentPosition) {
+                return it.previousIndex() - 1;
+            }
+        }
+        return chapters.size() - 1;
+    }
+
+    private void loadMediaInfo() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Maybe.create(emitter -> {
+                    Playable media = controller.getMedia();
+                    if (media != null) {
+                        emitter.onSuccess(media);
+                    } else {
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> onMediaChanged((Playable) media),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private void onMediaChanged(Playable media) {
         if (adapter != null) {
             adapter.setMedia(media);
             adapter.notifyDataSetChanged();
-            if(media == null || media.getChapters() == null || media.getChapters().size() == 0) {
-                setEmptyText(getString(R.string.no_items_label));
-            } else {
-                setEmptyText(null);
+            if (media != null && media.getChapters() != null && media.getChapters().size() != 0) {
+                scrollTo(getCurrentChapter(media));
             }
         }
     }
-
-    public void setController(PlaybackController controller) {
-        this.controller = controller;
-    }
-
 }

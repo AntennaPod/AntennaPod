@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/android:api-26-alpha
+      - image: circleci/android:api-28
 
     working_directory: ~/AntennaPod
 
@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - checkout
-      
+
       - restore_cache:
           keys:
             - v1-android-{{ checksum "build.gradle" }}
@@ -21,7 +21,10 @@ jobs:
             - v1-android-
 
       - run:
-          command: ./gradlew assembleDebug :core:testPlayDebugUnitTest -PdisablePreDex
+          # To build release, we need to create a temporary keystore that can be used to sign the app
+          command: |
+            keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
+            ./gradlew assembleRelease :core:testPlayReleaseUnitTest -PdisablePreDex
           no_output_timeout: 1800
       
       - store_artifacts:

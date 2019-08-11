@@ -25,7 +25,6 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 public class FeedMedia extends FeedFile implements Playable {
@@ -49,7 +48,7 @@ public class FeedMedia extends FeedFile implements Playable {
     private int duration;
     private int position; // Current position in file
     private long lastPlayedTime; // Last time this media was played (in ms)
-    private int played_duration; // How many ms of this file have been played (for autoflattring)
+    private int played_duration; // How many ms of this file have been played
     private long size; // File size in Byte
     private String mime_type;
     @Nullable private volatile FeedItem item;
@@ -526,16 +525,6 @@ public class FeedMedia extends FeedFile implements Playable {
                         .build();
                 GpodnetPreferences.enqueueEpisodeAction(action);
             }
-            // Auto flattr
-            float autoFlattrThreshold = UserPreferences.getAutoFlattrPlayedDurationThreshold();
-            if (FlattrUtils.hasToken() &&
-                    UserPreferences.isAutoFlattr() &&
-                    item.getPaymentLink() != null &&
-                    item.getFlattrStatus().getUnflattred() &&
-                    ((completed && autoFlattrThreshold <= 1.0f) ||
-                            (played_duration >= autoFlattrThreshold * duration))) {
-                DBTasks.flattrItemIfLoggedIn(context, item);
-            }
         }
     }
 
@@ -594,7 +583,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void setDownloaded(boolean downloaded) {
         super.setDownloaded(downloaded);
-        if(item != null && downloaded) {
+        if(item != null && downloaded && item.isNew()) {
             item.setPlayed(false);
         }
     }

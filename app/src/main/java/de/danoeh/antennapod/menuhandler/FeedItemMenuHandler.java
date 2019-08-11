@@ -15,7 +15,6 @@ import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -68,16 +67,17 @@ public class FeedItemMenuHandler {
         }
         boolean hasMedia = selectedItem.getMedia() != null;
         boolean isPlaying = hasMedia && selectedItem.getState() == FeedItem.State.PLAYING;
+        boolean keepSorted = UserPreferences.isQueueKeepSorted();
 
         if (!isPlaying) {
             mi.setItemVisibility(R.id.skip_episode_item, false);
         }
 
         boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
-        if(queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId()) {
+        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId() || keepSorted) {
             mi.setItemVisibility(R.id.move_to_top_item, false);
         }
-        if(queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId()) {
+        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId() || keepSorted) {
             mi.setItemVisibility(R.id.move_to_bottom_item, false);
         }
         if (!isInQueue) {
@@ -101,7 +101,8 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
 
-        mi.setItemVisibility(R.id.share_file, hasMedia && selectedItem.getMedia().fileExists());
+        boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
+        mi.setItemVisibility(R.id.share_file, fileDownloaded);
 
         if (selectedItem.isPlayed()) {
             mi.setItemVisibility(R.id.mark_read_item, false);
@@ -122,13 +123,11 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
         }
 
-        if (selectedItem.getPaymentLink() == null || !selectedItem.getFlattrStatus().flattrable()) {
-            mi.setItemVisibility(R.id.support_item, false);
-        }
-
         boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
         mi.setItemVisibility(R.id.add_to_favorites_item, !isFavorite);
         mi.setItemVisibility(R.id.remove_from_favorites_item, isFavorite);
+
+        mi.setItemVisibility(R.id.remove_item, fileDownloaded);
 
         return true;
     }
@@ -196,7 +195,7 @@ public class FeedItemMenuHandler {
                 DBWriter.addQueueItem(context, selectedItem);
                 break;
             case R.id.remove_from_queue_item:
-                DBWriter.removeQueueItem(context, selectedItem, true);
+                DBWriter.removeQueueItem(context, true, selectedItem);
                 break;
             case R.id.add_to_favorites_item:
                 DBWriter.addFavoriteItem(selectedItem);
@@ -225,9 +224,6 @@ public class FeedItemMenuHandler {
                     Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
                             Toast.LENGTH_SHORT).show();
                 }
-                break;
-            case R.id.support_item:
-                DBTasks.flattrItemIfLoggedIn(context, selectedItem);
                 break;
             case R.id.share_link_item:
                 ShareUtils.shareFeedItemLink(context, selectedItem);

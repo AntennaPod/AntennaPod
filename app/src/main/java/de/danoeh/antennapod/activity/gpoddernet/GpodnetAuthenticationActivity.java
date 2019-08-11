@@ -25,6 +25,8 @@ import android.widget.ViewFlipper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
@@ -102,10 +104,6 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-    }
-
     private void setupLoginView(View view) {
         final EditText username = view.findViewById(R.id.etxtUsername);
         final EditText password = view.findViewById(R.id.etxtPassword);
@@ -123,6 +121,11 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
                 final String usernameStr = username.getText().toString();
                 final String passwordStr = password.getText().toString();
 
+                if (usernameHasUnwantedChars(usernameStr)) {
+                    txtvError.setText(R.string.gpodnetsync_username_characters_error);
+                    txtvError.setVisibility(View.VISIBLE);
+                    return;
+                }
                 if (BuildConfig.DEBUG) Log.d(TAG, "Checking login credentials");
                 AsyncTask<GpodnetService, Void, Void> authTask = new AsyncTask<GpodnetService, Void, Void>() {
 
@@ -394,5 +397,11 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
         } else {
             finish();
         }
+    }
+
+    private boolean usernameHasUnwantedChars(String username) {
+        Pattern special = Pattern.compile("[!@#$%&*()+=|<>?{}\\[\\]~]");
+        Matcher containsUnwantedChars = special.matcher(username);
+        return containsUnwantedChars.find();
     }
 }

@@ -17,15 +17,20 @@ public class FeedUpdateUtils {
     private FeedUpdateUtils() {}
 
     public static void startAutoUpdate(Context context, Runnable callback) {
-        try {
-            with().pollInterval(1, TimeUnit.SECONDS)
-                    .await()
-                    .atMost(10, TimeUnit.SECONDS)
-                    .until(() -> NetworkUtils.networkAvailable() && NetworkUtils.isDownloadAllowed());
-            DBTasks.refreshAllFeeds(context, null, callback);
-        } catch (ConditionTimeoutException ignore) {
-            Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
-        }
+        // the network check is blocking for possibly a long time: so run the logic
+        // in a separate thread to prevent the code blocking the callers
+        final Runnable runnable = () -> {
+            try {
+                with().pollInterval(1, TimeUnit.SECONDS)
+                        .await()
+                        .atMost(10, TimeUnit.SECONDS)
+                        .until(() -> NetworkUtils.networkAvailable() && NetworkUtils.isFeedRefreshAllowed());
+                DBTasks.refreshAllFeeds(context, null, callback);
+            } catch (ConditionTimeoutException ignore) {
+                Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
+            }
+        };
+        new Thread(runnable).start();
     }
 
 }

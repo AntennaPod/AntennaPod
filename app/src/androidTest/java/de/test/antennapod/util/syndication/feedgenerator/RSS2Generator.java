@@ -54,6 +54,13 @@ public class RSS2Generator implements FeedGenerator{
             xml.text(feed.getLanguage());
             xml.endTag(null, "language");
         }
+        if (feed.getImageUrl() != null) {
+            xml.startTag(null, "image");
+            xml.startTag(null, "url");
+            xml.text(feed.getImageUrl());
+            xml.endTag(null, "url");
+            xml.endTag(null, "image");
+        }
 
         if (feed.getPaymentLink() != null) {
             GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(), true);

@@ -7,6 +7,12 @@
         <item>@string/feed_auto_download_never</item>
     </string-array>
 
+    <string-array name="spnAutoDeleteValues">
+        <item>global</item>
+        <item>always</item>
+        <item>never</item>
+    </string-array>
+
     <string-array name="smart_mark_as_played_values">
         <item>0</item>
         <item>15</item>
@@ -43,6 +49,7 @@
         <item>25</item>
         <item>50</item>
         <item>100</item>
+        <item>500</item>
         <item>@string/pref_episode_cache_unlimited</item>
     </string-array>
 
@@ -52,7 +59,28 @@
         <item>25</item>
         <item>50</item>
         <item>100</item>
+        <item>500</item>
         <item>-1</item>
+    </string-array>
+
+    <string-array name="mobile_update_entries">
+        <item>@string/pref_mobileUpdate_refresh</item>
+        <item>@string/pref_mobileUpdate_episode_download</item>
+        <item>@string/pref_mobileUpdate_auto_download</item>
+        <item>@string/pref_mobileUpdate_streaming</item>
+        <item>@string/pref_mobileUpdate_images</item>
+    </string-array>
+
+    <string-array name="mobile_update_values">
+        <item>feed_refresh</item>
+        <item>episode_download</item>
+        <item>auto_download</item>
+        <item>streaming</item>
+        <item>images</item>
+    </string-array>
+
+    <string-array name="mobile_update_default_value">
+        <item>images</item>
     </string-array>
 
     <string-array name="episode_cleanup_entries">
@@ -68,10 +96,11 @@
     <string-array name="episode_cleanup_values">
         <item>-1</item>
         <item>0</item>
-        <item>1</item>
-        <item>3</item>
-        <item>5</item>
-        <item>7</item>
+        <item>12</item>
+        <item>24</item>
+        <item>72</item>
+        <item>120</item>
+        <item>168</item>
         <item>-2</item>
     </string-array>
 

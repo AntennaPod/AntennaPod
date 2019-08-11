@@ -129,6 +129,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                     }
                     UserPreferences.setPlaybackSpeed(newSpeed);
                     controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
+                    onPositionObserverUpdate();
                 } else {
                     VariableSpeedDialog.showGetPluginDialog(this);
                 }
