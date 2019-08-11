@@ -29,6 +29,7 @@ import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 /**
@@ -59,6 +60,8 @@ public class UserPreferences {
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
+    public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
+    public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -534,7 +537,8 @@ public class UserPreferences {
     }
 
     public static boolean isQueueLocked() {
-        return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
+        return prefs.getBoolean(PREF_QUEUE_LOCKED, false)
+                || isQueueKeepSorted();
     }
 
     public static void setFastForwardSecs(int secs) {
@@ -908,5 +912,50 @@ public class UserPreferences {
 
     public static boolean timeRespectsSpeed() {
         return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
+    }
+
+    /**
+     * Returns if the queue is in keep sorted mode.
+     *
+     * @see #getQueueKeepSortedOrder()
+     */
+    public static boolean isQueueKeepSorted() {
+        return prefs.getBoolean(PREF_QUEUE_KEEP_SORTED, false);
+    }
+
+    /**
+     * Enables/disables the keep sorted mode of the queue.
+     *
+     * @see #setQueueKeepSortedOrder(SortOrder)
+     */
+    public static void setQueueKeepSorted(boolean keepSorted) {
+        prefs.edit()
+                .putBoolean(PREF_QUEUE_KEEP_SORTED, keepSorted)
+                .apply();
+    }
+
+    /**
+     * Returns the sort order for the queue keep sorted mode.
+     * Note: This value is stored independently from the keep sorted state.
+     *
+     * @see #isQueueKeepSorted()
+     */
+    public static SortOrder getQueueKeepSortedOrder() {
+        String sortOrderStr = prefs.getString(PREF_QUEUE_KEEP_SORTED_ORDER, "use-default");
+        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
+    }
+
+    /**
+     * Sets the sort order for the queue keep sorted mode.
+     *
+     * @see #setQueueKeepSorted(boolean)
+     */
+    public static void setQueueKeepSortedOrder(SortOrder sortOrder) {
+        if (sortOrder == null) {
+            return;
+        }
+        prefs.edit()
+                .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
+                .apply();
     }
 }

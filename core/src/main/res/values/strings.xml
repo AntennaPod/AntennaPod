@@ -296,6 +296,7 @@
     <string name="move_to_top_label">Move to top</string>
     <string name="move_to_bottom_label">Move to bottom</string>
     <string name="sort">Sort</string>
+    <string name="keep_sorted">Keep sorted</string>
     <string name="date">Date</string>
     <string name="duration">Duration</string>
     <string name="episode_title">Episode title</string>

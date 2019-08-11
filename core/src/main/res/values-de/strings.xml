@@ -276,6 +276,7 @@
   <string name="move_to_top_label">Zum Anfang verschieben</string>
   <string name="move_to_bottom_label">Zum Ende verschieben</string>
   <string name="sort">Sortieren</string>
+  <string name="keep_sorted">Automatisch sortieren</string>
   <string name="date">Datum</string>
   <string name="duration">Dauer</string>
   <string name="episode_title">Episodentitel</string>
@@ -285,6 +286,8 @@
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
   <string name="clear_queue_confirmation_msg">Bitte bestätige, dass ALLE Episoden aus der Abspielliste entfernt werden sollen</string>
+  <string name="sort_new_to_old">Neu bis alt</string>
+  <string name="sort_old_to_new">Alt bis neu</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr Anmeldung</string>
   <string name="flattr_auth_explanation">Drücke den Button unten, um den Authentifizierungsprozess zu starten. Du wirst zur Flattr-Anmeldeseite weitergeleitet. Hier wirst du gefragt, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
