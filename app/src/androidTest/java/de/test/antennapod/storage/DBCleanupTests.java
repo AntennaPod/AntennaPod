@@ -3,8 +3,6 @@ package de.test.antennapod.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.test.FlakyTest;
-import android.test.InstrumentationTestCase;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,41 +10,46 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for DBTasks
  */
-public class DBCleanupTests extends InstrumentationTestCase {
-
-    private static final String TAG = "DBTasksTest";
+@SmallTest
+public class DBCleanupTests {
     static final int EPISODE_CACHE_SIZE = 5;
-    private final int cleanupAlgorithm;
+    private int cleanupAlgorithm;
 
     Context context;
 
     private File destFolder;
 
     public DBCleanupTests() {
-        this.cleanupAlgorithm = UserPreferences.EPISODE_CLEANUP_DEFAULT;
+        setCleanupAlgorithm(UserPreferences.EPISODE_CLEANUP_DEFAULT);
     }
 
-    public DBCleanupTests(int cleanupAlgorithm) {
+    protected void setCleanupAlgorithm(int cleanupAlgorithm) {
         this.cleanupAlgorithm = cleanupAlgorithm;
     }
 
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-
+    @After
+    public void tearDown() throws Exception {
         assertTrue(PodDBAdapter.deleteDatabase());
 
         cleanupDestFolder(destFolder);
@@ -59,11 +62,11 @@ public class DBCleanupTests extends InstrumentationTestCase {
         }
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        context = getInstrumentation().getTargetContext();
-        destFolder = context.getExternalCacheDir();
+    @Before
+    public void setUp() throws Exception {
+        context = InstrumentationRegistry.getTargetContext();
+        destFolder = new File(context.getCacheDir(), "DDCleanupTests");
+        destFolder.mkdir();
         cleanupDestFolder(destFolder);
         assertNotNull(destFolder);
         assertTrue(destFolder.exists());
@@ -84,7 +87,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
         UserPreferences.init(context);
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testPerformAutoCleanupShouldDelete() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
@@ -140,7 +143,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
         }
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testPerformAutoCleanupHandleUnplayed() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
@@ -156,7 +159,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
         }
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
@@ -177,7 +180,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
      * call to DBWriter.deleteFeedMediaOfItem instead of the ID of the FeedMedia. This would cause the wrong item to be deleted.
      * @throws IOException
      */
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue_withFeedsWithNoMedia() throws IOException {
         // add feed with no enclosures so that item ID != media ID
         saveFeedlist(1, 10, false);
@@ -195,7 +198,7 @@ public class DBCleanupTests extends InstrumentationTestCase {
         testPerformAutoCleanupShouldNotDeleteBecauseInQueue();
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testPerformAutoCleanupShouldNotDeleteBecauseFavorite() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 

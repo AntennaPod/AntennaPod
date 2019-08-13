@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.menuhandler;
 
-import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,7 +24,7 @@ public class MenuItemUtils {
         // expand actionview if feeds are being downloaded, collapse otherwise
         if (checker.isRefreshing()) {
             MenuItem refreshItem = menu.findItem(resId);
-            MenuItemCompat.setActionView(refreshItem, R.layout.refresh_action_view);
+            refreshItem.setActionView(R.layout.refresh_action_view);
             return true;
         } else {
             return false;

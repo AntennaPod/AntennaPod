@@ -1,33 +1,37 @@
 package de.test.antennapod.storage;
 
-import android.test.FlakyTest;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.support.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests that the APQueueCleanupAlgorithm is working correctly.
  */
+@SmallTest
 public class DBQueueCleanupAlgorithmTest extends DBCleanupTests {
 
     private static final String TAG = "DBQueueCleanupAlgorithmTest";
 
     public DBQueueCleanupAlgorithmTest() {
-        super(UserPreferences.EPISODE_CLEANUP_QUEUE);
+        setCleanupAlgorithm(UserPreferences.EPISODE_CLEANUP_QUEUE);
     }
 
     /**
      * For APQueueCleanupAlgorithm we expect even unplayed episodes to be deleted if needed
      * if they aren't in the queue
      */
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testPerformAutoCleanupHandleUnplayed() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 

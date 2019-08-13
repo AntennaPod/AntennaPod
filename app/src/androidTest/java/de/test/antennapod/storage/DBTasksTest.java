@@ -1,14 +1,15 @@
 package de.test.antennapod.storage;
 
 import android.content.Context;
-import android.test.FlakyTest;
-import android.test.InstrumentationTestCase;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -16,28 +17,30 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for DBTasks
  */
-public class DBTasksTest extends InstrumentationTestCase {
-
-    private static final String TAG = "DBTasksTest";
-
+@SmallTest
+public class DBTasksTest {
     private Context context;
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         assertTrue(PodDBAdapter.deleteDatabase());
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        context = getInstrumentation().getTargetContext();
+    @Before
+    public void setUp() throws Exception {
+        context = InstrumentationRegistry.getTargetContext();
 
         // create new database
         PodDBAdapter.init(context);
@@ -49,7 +52,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         UserPreferences.init(context);
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testUpdateFeedNewFeed() {
         final int NUM_ITEMS = 10;
 
@@ -69,6 +72,7 @@ public class DBTasksTest extends InstrumentationTestCase {
     }
 
     /** Two feeds with the same title, but different download URLs should be treated as different feeds. */
+    @Test
     public void testUpdateFeedSameTitle() {
 
         Feed feed1 = new Feed("url1", null, "title");
@@ -83,6 +87,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         assertTrue(savedFeed1.getId() != savedFeed2.getId());
     }
 
+    @Test
     public void testUpdateFeedUpdatedFeed() {
         final int NUM_ITEMS_OLD = 10;
         final int NUM_ITEMS_NEW = 10;
@@ -123,6 +128,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
     }
 
+    @Test
     public void testUpdateFeedMediaUrlResetState() {
         final Feed feed = new Feed("url", null, "title");
         FeedItem item = new FeedItem(0, "item", "id", "link", new Date(), FeedItem.PLAYED, feed);
@@ -139,7 +145,9 @@ public class DBTasksTest extends InstrumentationTestCase {
 
         FeedMedia media = new FeedMedia(item, "url", 1024, "mime/type");
         item.setMedia(media);
-        feed.setItems(singletonList(item));
+        List<FeedItem> list = new ArrayList<>();
+        list.add(item);
+        feed.setItems(list);
 
         final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
         assertTrue(feed != newFeed);

@@ -79,7 +79,7 @@ public class CoverLoader {
         builder.into(new CoverTarget(txtvPlaceholder, imgvCover));
     }
 
-    class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
+    static class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
         private final WeakReference<TextView> placeholder;
         private final WeakReference<ImageView> cover;
 

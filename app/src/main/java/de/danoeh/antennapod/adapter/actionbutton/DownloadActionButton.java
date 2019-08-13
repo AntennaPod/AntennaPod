@@ -43,7 +43,7 @@ class DownloadActionButton extends ItemActionButton {
             return;
         }
 
-        if (NetworkUtils.isDownloadAllowed() || MobileDownloadHelper.userAllowedMobileDownloads()) {
+        if (NetworkUtils.isEpisodeDownloadAllowed() || MobileDownloadHelper.userAllowedMobileDownloads()) {
             downloadEpisode(context);
         } else if (MobileDownloadHelper.userChoseAddToQueue() && !isInQueue) {
             addEpisodeToQueue(context);
