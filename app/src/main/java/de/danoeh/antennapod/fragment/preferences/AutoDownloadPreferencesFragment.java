@@ -88,7 +88,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
             return;
         }
         Collections.sort(networks, (x, y) ->
-                blankIfNull(x.SSID).compareTo(blankIfNull(y.SSID)));
+                blankIfNull(x.SSID).compareToIgnoreCase(blankIfNull(y.SSID)));
         selectedNetworks = new CheckBoxPreference[networks.size()];
         List<String> prefValues = Arrays.asList(UserPreferences
                 .getAutodownloadSelectedNetworks());
