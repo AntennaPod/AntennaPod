@@ -9,10 +9,12 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,8 +23,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.joanzapata.iconify.Iconify;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,7 +34,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -42,6 +50,7 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
@@ -83,7 +92,9 @@ public class AllEpisodesFragment extends Fragment {
     EmptyViewHandler emptyView;
 
     @NonNull
-    List<FeedItem> episodes = new ArrayList<>();
+    List<FeedItem> allEpisodes = new ArrayList<>();
+    @NonNull
+    List<FeedItem> displayedEpisodes = new ArrayList<>();
     @NonNull
     private List<Downloader> downloaderList = new ArrayList<>();
 
@@ -92,6 +103,9 @@ public class AllEpisodesFragment extends Fragment {
 
     Disposable disposable;
     private LinearLayoutManager layoutManager;
+
+    protected TextView txtvInformation;
+    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     boolean showOnlyNewEpisodes() {
         return false;
@@ -200,11 +214,11 @@ public class AllEpisodesFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
         MenuItem markAllRead = menu.findItem(R.id.mark_all_read_item);
         if (markAllRead != null) {
-            markAllRead.setVisible(!showOnlyNewEpisodes() && !episodes.isEmpty());
+            markAllRead.setVisible(!showOnlyNewEpisodes() && !displayedEpisodes.isEmpty());
         }
         MenuItem removeAllNewFlags = menu.findItem(R.id.remove_all_new_flags_item);
         if (removeAllNewFlags != null) {
-            removeAllNewFlags.setVisible(showOnlyNewEpisodes() && !episodes.isEmpty());
+            removeAllNewFlags.setVisible(showOnlyNewEpisodes() && !displayedEpisodes.isEmpty());
         }
     }
 
@@ -245,6 +259,9 @@ public class AllEpisodesFragment extends Fragment {
                         }
                     };
                     removeAllNewFlagsConfirmationDialog.createNewDialog().show();
+                    return true;
+                case R.id.filter_items:
+                    showFilterDialog();
                     return true;
                 default:
                     return false;
@@ -292,6 +309,7 @@ public class AllEpisodesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.all_episodes_fragment, container, false);
+        txtvInformation = root.findViewById(R.id.txtvInformation);
 
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView = root.findViewById(android.R.id.list);
@@ -321,11 +339,18 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     private void onFragmentLoaded(List<FeedItem> episodes) {
-        this.episodes = episodes;
         listAdapter.notifyDataSetChanged();
 
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
+        }
+
+        if(feedItemFilter.getValues().length > 0) {
+            txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+            Iconify.addIcons(txtvInformation);
+            txtvInformation.setVisibility(View.VISIBLE);
+        } else {
+            txtvInformation.setVisibility(View.GONE);
         }
 
         restoreScrollPosition();
@@ -348,21 +373,21 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return episodes.size();
+            return displayedEpisodes.size();
         }
 
         @Override
         public FeedItem getItem(int position) {
-            if (0 <= position && position < episodes.size()) {
-                return episodes.get(position);
+            if (0 <= position && position < displayedEpisodes.size()) {
+                return displayedEpisodes.get(position);
             }
             return null;
         }
 
         @Override
         public LongList getItemsIds() {
-            LongList ids = new LongList(episodes.size());
-            for (FeedItem episode : episodes) {
+            LongList ids = new LongList(displayedEpisodes.size());
+            for (FeedItem episode : displayedEpisodes) {
                 ids.add(episode.getId());
             }
             return ids;
@@ -388,7 +413,7 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public LongList getQueueIds() {
             LongList queueIds = new LongList();
-            for (FeedItem item : episodes) {
+            for (FeedItem item : displayedEpisodes) {
                 if (item.isTagged(FeedItem.TAG_QUEUE)) {
                     queueIds.add(item.getId());
                 }
@@ -402,11 +427,11 @@ public class AllEpisodesFragment extends Fragment {
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for (FeedItem item : event.items) {
-            int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
+            int pos = FeedItemUtil.indexOfItemWithId(displayedEpisodes, item.getId());
             if (pos >= 0) {
-                episodes.remove(pos);
+                displayedEpisodes.remove(pos);
                 if (shouldUpdatedItemRemainInList(item)) {
-                    episodes.add(pos, item);
+                    displayedEpisodes.add(pos, item);
                     listAdapter.notifyItemChanged(pos);
                 } else {
                     listAdapter.notifyItemRemoved(pos);
@@ -429,7 +454,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
+                int pos = FeedItemUtil.indexOfItemWithMediaId(displayedEpisodes, mediaId);
                 if (pos >= 0) {
                     listAdapter.notifyItemChanged(pos);
                 }
@@ -458,7 +483,9 @@ public class AllEpisodesFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     progLoading.setVisibility(View.GONE);
-                    onFragmentLoaded(data);
+                    allEpisodes = data;
+                    displayedEpisodes = feedItemFilter.filter(allEpisodes);
+                    onFragmentLoaded(displayedEpisodes);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
@@ -497,5 +524,44 @@ public class AllEpisodesFragment extends Fragment {
         });
         snackbar.show();
         h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
+    }
+
+    private void showFilterDialog() {
+        Context context = getContext();
+        final String[] items = context.getResources().getStringArray(R.array.episode_filter_options);
+        final String[] values = context.getResources().getStringArray(R.array.episode_filter_values);
+        final boolean[] checkedItems = new boolean[items.length];
+
+        final Set<String> filter = new HashSet<>(Arrays.asList(feedItemFilter.getValues()));
+        Iterator<String> it = filter.iterator();
+        while(it.hasNext()) {
+            // make sure we have no empty strings in the filter list
+            if(TextUtils.isEmpty(it.next())) {
+                it.remove();
+            }
+        }
+        for(int i=0; i < values.length; i++) {
+            String value = values[i];
+            if(filter.contains(value)) {
+                checkedItems[i] = true;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.filter);
+        builder.setMultiChoiceItems(items, checkedItems, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                filter.add(values[which]);
+            } else {
+                filter.remove(values[which]);
+            }
+        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+            feedItemFilter = new FeedItemFilter(filter.toArray(new String[filter.size()]));
+            displayedEpisodes = feedItemFilter.filter(allEpisodes);
+            onFragmentLoaded(displayedEpisodes);
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
     }
 }
