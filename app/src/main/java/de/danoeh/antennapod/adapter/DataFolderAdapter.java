@@ -100,7 +100,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         dialog.dismiss();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         private View root;
         private TextView path;
         private TextView size;
@@ -117,7 +117,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         }
     }
 
-    class StoragePath {
+    static class StoragePath {
         private final String path;
 
         StoragePath(String path) {
