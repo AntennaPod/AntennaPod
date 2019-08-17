@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -43,6 +42,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +54,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -66,7 +67,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
@@ -80,6 +80,7 @@ import org.greenrobot.eventbus.EventBus;
  * Controls the MediaPlayer that plays a FeedMedia-file
  */
 public class PlaybackService extends MediaBrowserServiceCompat {
+
     /**
      * Logging tag
      */
@@ -131,6 +132,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
 
+    /**
+     * If the PlaybackService receives this action, it will try to apply the supplied volume reduction setting.
+     */
+    public static final String ACTION_VOLUME_REDUCTION_CHANGED = "action.de.danoeh.antennapod.core.service.volumedReductionChanged";
+    public static final String EXTRA_VOLUME_REDUCTION_SETTING = "PlaybackService.VolumeReductionSettingExtra";
+    public static final String EXTRA_VOLUME_REDUCTION_AFFECTED_FEED = "PlaybackService.VolumeReductionSettingAffectedFeed";
 
     /**
      * If the PlaybackService receives this action, it will resume playback.
@@ -279,6 +286,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
         registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
         registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(ACTION_RESUME_PLAY_CURRENT_EPISODE));
+        registerReceiver(volumeReductionChangedReceiver, new IntentFilter(ACTION_VOLUME_REDUCTION_CHANGED));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
         flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
@@ -1513,6 +1521,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (TextUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received PAUSE_PLAY_CURRENT_EPISODE intent");
                 mediaPlayer.pause(false, false);
+            }
+        }
+    };
+
+    private final BroadcastReceiver volumeReductionChangedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (TextUtils.equals(intent.getAction(), ACTION_VOLUME_REDUCTION_CHANGED)) {
+                Log.d(TAG, "Received ACTION_VOLUME_REDUCTION_CHANGED intent");
+
+                String affectedFeed = intent.getStringExtra(EXTRA_VOLUME_REDUCTION_AFFECTED_FEED);
+                Serializable volumeReductionExtra = intent.getSerializableExtra(EXTRA_VOLUME_REDUCTION_SETTING);
+                FeedPreferences.VolumeReductionSetting volumeReductionSetting = (FeedPreferences.VolumeReductionSetting) volumeReductionExtra;
+
+                PlaybackVolumeAdaptor playbackVolumeAdaptor = new PlaybackVolumeAdaptor();
+                playbackVolumeAdaptor.adaptVolumeIfNecessary(mediaPlayer, affectedFeed, volumeReductionSetting);
             }
         }
     };

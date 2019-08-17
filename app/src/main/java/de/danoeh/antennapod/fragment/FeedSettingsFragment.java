@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
@@ -13,6 +14,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
@@ -132,9 +134,18 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
             }
             feed.savePreferences();
             updateVolumeReductionValue();
-            // TODO maxbechtold Check if we can call setVolume for the PlaybackService, if running. Else, show toast?
+            sendVolumeReductionChangedIntent();
+
             return false;
         });
+    }
+
+    private void sendVolumeReductionChangedIntent() {
+        Context context = getContext();
+        Intent intent = new Intent(PlaybackService.ACTION_VOLUME_REDUCTION_CHANGED).setPackage(context.getPackageName());
+        intent.putExtra(PlaybackService.EXTRA_VOLUME_REDUCTION_AFFECTED_FEED, feed.getIdentifyingValue());
+        intent.putExtra(PlaybackService.EXTRA_VOLUME_REDUCTION_SETTING, feedPreferences.getVolumeReductionSetting());
+        context.sendBroadcast(intent);
     }
 
     private void updateVolumeReductionValue() {
