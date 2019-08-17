@@ -20,11 +20,13 @@ import java.util.Set;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.dialog.FilterDialog;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -105,42 +107,15 @@ public class FeedMenuHandler {
         return true;
     }
 
-    private static void showFilterDialog(final Context context, final Feed feed) {
-        final String[] items = context.getResources().getStringArray(R.array.episode_filter_options);
-        final String[] values = context.getResources().getStringArray(R.array.episode_filter_values);
-        final boolean[] checkedItems = new boolean[items.length];
-
-        final Set<String> filter = new HashSet<>(Arrays.asList(feed.getItemFilter().getValues()));
-        Iterator<String> it = filter.iterator();
-        while(it.hasNext()) {
-            // make sure we have no empty strings in the filter list
-            if(TextUtils.isEmpty(it.next())) {
-                it.remove();
+    private static void showFilterDialog(Context context, Feed selectedFeed) {
+        FilterDialog filterDialog = new FilterDialog(context, selectedFeed.getItemFilter()) {
+            @Override
+            protected void updateFilter(Set<String> filterValues) {
+                selectedFeed.setItemFilter(filterValues.toArray(new String[filterValues.size()]));
+                DBWriter.setFeedItemsFilter(selectedFeed.getId(), filterValues);
             }
-        }
-        for(int i=0; i < values.length; i++) {
-            String value = values[i];
-            if(filter.contains(value)) {
-                checkedItems[i] = true;
-            }
-        }
+        };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.filter);
-        builder.setMultiChoiceItems(items, checkedItems, (dialog, which, isChecked) -> {
-            if (isChecked) {
-                filter.add(values[which]);
-            } else {
-                filter.remove(values[which]);
-            }
-        });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            feed.setItemFilter(filter.toArray(new String[filter.size()]));
-            DBWriter.setFeedItemsFilter(feed.getId(), filter);
-        });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
-
+        filterDialog.openDialog();
     }
-
 }
