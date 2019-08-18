@@ -32,6 +32,7 @@ public class VariableSpeedDialog {
     public static void showDialog(final Context context) {
         if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(context)
                 || UserPreferences.useSonic()
+                || UserPreferences.useExoplayer()
                 || Build.VERSION.SDK_INT >= 23) {
             showSpeedSelectorDialog(context);
         } else {
