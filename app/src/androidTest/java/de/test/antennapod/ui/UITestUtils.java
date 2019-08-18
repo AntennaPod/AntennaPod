@@ -59,7 +59,7 @@ class UITestUtils {
 
     public void setup() throws IOException {
         destDir = new File(context.getFilesDir(), "test/UITestUtils");
-        destDir.mkdir();
+        destDir.mkdirs();
         hostedFeedDir = new File(destDir, "hostedFeeds");
         hostedFeedDir.mkdir();
         hostedMediaDir = new File(destDir, "hostedMediaDir");

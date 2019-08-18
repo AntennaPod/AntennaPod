@@ -5,8 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.intent.Intents;
-import android.support.test.rule.ActivityTestRule;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
@@ -29,7 +28,6 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.contrib.ActivityResultMatchers.hasResultCode;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
@@ -48,7 +46,7 @@ public class MainActivityTest {
     private SharedPreferences prefs;
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, false, false);
+    public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(MainActivity.class, false, false);
 
     @Before
     public void setUp() throws IOException {
@@ -61,7 +59,6 @@ public class MainActivityTest {
 
         mActivityRule.launchActivity(new Intent());
 
-        Intents.init();
         Context context = mActivityRule.getActivity();
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
@@ -83,7 +80,6 @@ public class MainActivityTest {
     public void tearDown() throws Exception {
         uiTestUtils.tearDown();
         solo.finishOpenedActivities();
-        Intents.release();
         PodDBAdapter.deleteDatabase();
         prefs.edit().clear().commit();
     }
