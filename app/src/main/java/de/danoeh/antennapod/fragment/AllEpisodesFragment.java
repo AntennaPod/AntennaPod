@@ -332,7 +332,7 @@ public class AllEpisodesFragment extends Fragment {
         return root;
     }
 
-    private void onFragmentLoaded(List<FeedItem> episodes) {
+    protected void onFragmentLoaded(List<FeedItem> episodes) {
         listAdapter.notifyDataSetChanged();
 
         if (episodes.size() == 0) {
@@ -476,7 +476,7 @@ public class AllEpisodesFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    progLoading.setVisibility(View.GONE);
+//                    progLoading.setVisibility(View.GONE);
                     episodes = data;
                     onFragmentLoaded(episodes);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));

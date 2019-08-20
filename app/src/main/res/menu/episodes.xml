@@ -11,18 +11,18 @@
         android:title="@string/search_label"/>
 
     <item
-        android:id="@+id/filter_items"
-        android:icon="?attr/ic_filter"
-        android:menuCategory="container"
-        android:title="@string/filter"
-        custom:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/refresh_item"
         android:title="@string/refresh_label"
         android:menuCategory="container"
         custom:showAsAction="ifRoom"
         android:icon="?attr/navigation_refresh"/>
+
+    <item
+        android:id="@+id/filter_items"
+        android:icon="?attr/ic_filter"
+        android:menuCategory="container"
+        android:title="@string/filter"
+        custom:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/mark_all_read_item"
