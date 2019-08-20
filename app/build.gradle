@@ -1,9 +1,8 @@
 plugins {
-    id('com.github.triplet.play') version '2.2.0'
+    id('com.android.application')
+    id('com.getkeepsafe.dexcount')
+    id('com.github.triplet.play') version '2.3.0' apply false
 }
-
-apply plugin: "com.android.application"
-apply plugin: 'com.getkeepsafe.dexcount'
 
 import org.apache.tools.ant.filters.ReplaceTokens
 
@@ -185,18 +184,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
 }
 
-play {
-    track = 'alpha'
-
-    if (project.hasProperty("antennaPodServiceAccountEmail")) {
+if (project.hasProperty("antennaPodServiceAccountEmail")) {
+    apply plugin: 'com.github.triplet.play'
+    play {
+        track = 'alpha'
         serviceAccountEmail = antennaPodServiceAccountEmail
-    } else {
-        serviceAccountEmail = '522080222319-compute@developer.gserviceaccount.com'
-    }
-    if (project.hasProperty("antennaPodPk12File")) {
         serviceAccountCredentials = file(antennaPodPk12File)
-    } else {
-        serviceAccountCredentials = file('../serviceaccount-c3d7d0f61387.p12')
     }
 }
 
