@@ -418,18 +418,17 @@ public final class DBReader {
     /**
      * Loads a list of FeedItems sorted by pubDate in descending order.
      *
-     * @param offset The first episode that should be loaded.
      * @param limit The maximum number of episodes that should be loaded.
      */
     @NonNull
-    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit) {
-        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "offset = [" + offset + "]" + " limit = [" + limit + "]" );
+    public static List<FeedItem> getRecentlyPublishedEpisodes(int limit) {
+        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "limit = [" + limit + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor cursor = null;
         try {
-            cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit);
+            cursor = adapter.getRecentlyPublishedItemsCursor(limit);
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
