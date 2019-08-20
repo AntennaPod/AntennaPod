@@ -1,1 +1,0 @@
-Um aplicativo de gerenciar e tocar podcasts que é fácil de usar, flexível e código aberto
