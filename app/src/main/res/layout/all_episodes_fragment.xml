@@ -16,30 +16,32 @@
         android:visibility="gone"
         tools:text="(i) Information" />
 
-    <ProgressBar
-        android:id="@+id/progLoading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_below="@+id/txtvInformation"
-        android:indeterminateOnly="true"
-        android:visibility="gone"
-        tools:visibility="gone"
-        tools:layout_width="match_parent"
-        tools:layout_height="64dp"
-        tools:background="@android:color/holo_red_light"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/progLoading"
+        android:layout_below="@+id/txtvInformation"
+        android:layout_above="@+id/progLoading"
         android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:clipToPadding="false"
         android:paddingTop="@dimen/list_vertical_padding"
         android:paddingBottom="@dimen/list_vertical_padding"
         android:scrollbarStyle="outsideOverlay"
         tools:itemCount="13"
         tools:listitem="@layout/new_episodes_listitem" />
+
+    <ProgressBar
+        android:id="@+id/progLoading"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:indeterminateOnly="true"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        tools:visibility="gone"
+        tools:layout_width="match_parent"
+        tools:layout_height="64dp"
+        tools:background="@android:color/holo_red_light"/>
 
 </RelativeLayout>
