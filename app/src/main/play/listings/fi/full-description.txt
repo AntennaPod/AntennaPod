@@ -1,0 +1,42 @@
+AntennaPod on podcastien hallinta- ja soitto-ohjelma, joka antaa sinulle suoran pääsyn miljooniin ilmaisiin ja maksettuihin podcasteihin yksityisiltä podcastereista suuriin julkaisutaloihin kuten BBC, NPR ja CNN. Lisää, tuo ja vie syötteitä helposti iTunes tietokannasta, OPML tiedostoista tai suoraan RSS URL:sta. Säästä työtä, paristoa ja mobiilidataa kehittyneillä automaatiotyökaluilla jaksojen lataukseen (aseta ajat, intervallit ja WiFi verkot) ja poista jaksoja (omien suosikkien ja odotusasetusten mukaan).<br>
+Tärkeimmät: Lataa, Striimaa tai Listaa jaksoja ja viihdy kuten haluat mukautetun soittonopeuden, kappaletuen ja uniajastimen kanssa.
+
+Podcast harrastajien tekemä, AntennaPod on vapaa kaikilla tavoilla: Vapaa lähdekoodi, ei maksuja, ei mainoksia.
+
+<b>Kaikki ominaisuudet:</b><br>
+TUO, ORGANISOI JA SOITA<br>
+&#8226; Lisää ja tuo syötteitä iTunes ja gPodder.net hakemistoista, OPML tiedostot ja RSS tai Atom linkit<br>
+&#8226; Hallitse äänentoistoa mistä tahansa: etusivun widget, ilmoituksissa ja korvanappien tai bluetooth kontrolleilla<br>
+&#8226; Viihdy kuuntelusta omalla tavallasi mukautetun soittonopeuden, jaksojen tuen (MP3, VorbisComment and Podlove), tallennettu soittoaika ja kehittyneen uniajastimen avulla (ravista resetointiin, vähennä äänenvoimakkuutta ja hidasta soittonopeutta)<br>
+&#8226; Lataa salasanasuojattuja syötteitä ja jaksoja<br>
+&#8226; Ota käyttöön sivulliset syötteet (www.podlove.org/paged-feeds)
+
+OMISTA JAKSO, JAA & ILOITSE<br>
+&#8226; Muista parhaista parhaimmat merkkaamalla jakso suosikiksi<br>
+&#8226; Löydä juuri haluttu jakso soittohistorian tai haun avulla (otsikot ja jaksomuisiot)<br>
+&#8226; Jaa jaksoja ja syötteitä kehittyneiden sosiaalisen median ja sähköpostiasetusten avulla, gPodder.net palvelut ja OPML vienti<br>
+
+HALLITSE LAITTEITA<br>
+&#8226; Ota haltuun automaattiset lataukset: Valitse syötteet, ohita mobiililataukset, valitset halutut WiFi-verkot, vaadi puhelimen latausta ja aseta aikavälejä tai intervalleja<br>
+&#8226; Hallitse tallennustilaa asettamalla välimuistissa olevat jaksot, älykäs poisto (suosikkien ja soittostatuksen mukaan) ja valitsella haluamasi tallennuspaikka<br>
+&#8226; Käytä AntennaPodia omalla kielelläsi (EN, DE, CS, NL, NB, JA, PT, ES, SV, CA, UK, FR, KO, TR, ZH)<br>
+&#8226; Mukaudu ympäristöön käyttämällä valoisaa tai tummaa teemaa<br>
+&#8226; Varmuuskopio tilauksesi gPodder.net integraatiolla ja OPML viennillä
+
+<b>Liity AntennaPod yhteisöön!</b><br>
+AntennaPod on vapaaehtoisten aktiivisessa kehityksessä. Sinä voit auttaa koodilla tai kommentilla!
+
+GitHubista löytyvät ominaisuuspyynnöt, bugi-raportit ja koodin lisäykset:<br>
+https://www.github.com/AntennaPod/AntennaPod
+
+Google Group on paikka jossa ideoida, keskustella podcastien suosikkitapahtumista ja antaa kiitosta kaikille vapaaehtoisille:<br>
+https://groups.google.com/forum/#!forum/antennapod
+
+Onko sinulla kysymys tai haluatko antaa palautetta?
+https://twitter.com/@AntennaPod
+
+Transifex on kielikäännöksien kirjoitusalusta:<br>
+https://www.transifex.com/antennapod/antennapod
+
+Testaa meidän Beta Testaus ohjelma, jossa saat uusimmat ominaisuudet ensimmäisenä:<br>
+https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod
