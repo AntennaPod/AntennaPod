@@ -1,24 +1,21 @@
 package de.danoeh.antennapod.core.util.vorbiscommentreader;
+
 public class VorbisCommentReaderException extends Exception {
+    private static final long serialVersionUID = 1L;
 
-	public VorbisCommentReaderException() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    public VorbisCommentReaderException() {
+        super();
+    }
 
-	public VorbisCommentReaderException(String arg0, Throwable arg1) {
-		super(arg0, arg1);
-		// TODO Auto-generated constructor stub
-	}
+    public VorbisCommentReaderException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public VorbisCommentReaderException(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
+    public VorbisCommentReaderException(String message) {
+        super(message);
+    }
 
-	public VorbisCommentReaderException(Throwable arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
-
+    public VorbisCommentReaderException(Throwable message) {
+        super(message);
+    }
 }

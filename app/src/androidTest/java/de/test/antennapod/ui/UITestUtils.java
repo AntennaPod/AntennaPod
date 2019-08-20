@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import junit.framework.Assert;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +28,7 @@ import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.test.antennapod.util.service.download.HTTPBin;
 import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 import org.greenrobot.eventbus.EventBus;
+import org.junit.Assert;
 
 /**
  * Utility methods for UI tests.
@@ -38,8 +37,6 @@ import org.greenrobot.eventbus.EventBus;
 class UITestUtils {
 
     private static final String TAG = UITestUtils.class.getSimpleName();
-
-    private static final String DATA_FOLDER = "test/UITestUtils";
 
     private static final int NUM_FEEDS = 5;
     private static final int NUM_ITEMS_PER_FEED = 10;
@@ -61,8 +58,8 @@ class UITestUtils {
 
 
     public void setup() throws IOException {
-        destDir = context.getExternalFilesDir(DATA_FOLDER);
-        destDir.mkdir();
+        destDir = new File(context.getFilesDir(), "test/UITestUtils");
+        destDir.mkdirs();
         hostedFeedDir = new File(destDir, "hostedFeeds");
         hostedFeedDir.mkdir();
         hostedMediaDir = new File(destDir, "hostedMediaDir");

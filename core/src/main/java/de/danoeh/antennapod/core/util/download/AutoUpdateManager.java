@@ -67,7 +67,7 @@ public class AutoUpdateManager {
     private static Constraints getConstraints() {
         Constraints.Builder constraints = new Constraints.Builder();
 
-        if (UserPreferences.isAllowMobileUpdate()) {
+        if (UserPreferences.isAllowMobileFeedRefresh()) {
             constraints.setRequiredNetworkType(NetworkType.CONNECTED);
         } else {
             constraints.setRequiredNetworkType(NetworkType.UNMETERED);

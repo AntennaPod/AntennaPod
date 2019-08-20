@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.core.util;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,38 +15,48 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  * Provides method for sorting the queue according to rules.
  */
 public class QueueSorter {
-    public enum Rule {
-        EPISODE_TITLE_ASC,
-        EPISODE_TITLE_DESC,
-        DATE_ASC,
-        DATE_DESC,
-        DURATION_ASC,
-        DURATION_DESC,
-        FEED_TITLE_ASC,
-        FEED_TITLE_DESC,
-        RANDOM,
-        SMART_SHUFFLE_ASC,
-        SMART_SHUFFLE_DESC
+
+    /**
+     * Sorts the queue by the given sort order and sends a broadcast update.
+     *
+     * @param sortOrder Sort order.
+     * @param broadcastUpdate Send broadcast update?
+     */
+    public static void sort(SortOrder sortOrder, boolean broadcastUpdate) {
+        Permutor<FeedItem> permutor = getPermutor(sortOrder);
+        if (permutor != null) {
+            DBWriter.reorderQueue(permutor, broadcastUpdate);
+        }
     }
 
-    public static void sort(final Context context, final Rule rule, final boolean broadcastUpdate) {
+    /**
+     * Returns a Permutor that sorts a list appropriate to the given sort order.
+     *
+     * @param sortOrder Sort order.
+     * @return Permutor that sorts a list appropriate to the given sort order. <code>null</code> if the order is unknown or <code>null</code>.
+     */
+    public static Permutor<FeedItem> getPermutor(SortOrder sortOrder) {
+        if (sortOrder == null) {
+            return null;
+        }
+
         Comparator<FeedItem> comparator = null;
         Permutor<FeedItem> permutor = null;
 
-        switch (rule) {
-            case EPISODE_TITLE_ASC:
+        switch (sortOrder) {
+            case EPISODE_TITLE_A_Z:
                 comparator = (f1, f2) -> f1.getTitle().compareTo(f2.getTitle());
                 break;
-            case EPISODE_TITLE_DESC:
+            case EPISODE_TITLE_Z_A:
                 comparator = (f1, f2) -> f2.getTitle().compareTo(f1.getTitle());
                 break;
-            case DATE_ASC:
+            case DATE_OLD_NEW:
                 comparator = (f1, f2) -> f1.getPubDate().compareTo(f2.getPubDate());
                 break;
-            case DATE_DESC:
+            case DATE_NEW_OLD:
                 comparator = (f1, f2) -> f2.getPubDate().compareTo(f1.getPubDate());
                 break;
-            case DURATION_ASC:
+            case DURATION_SHORT_LONG:
                 comparator = (f1, f2) -> {
                     FeedMedia f1Media = f1.getMedia();
                     FeedMedia f2Media = f2.getMedia();
@@ -61,7 +69,7 @@ public class QueueSorter {
                         return duration1 - duration2;
                 };
                 break;
-            case DURATION_DESC:
+            case DURATION_LONG_SHORT:
                 comparator = (f1, f2) -> {
                     FeedMedia f1Media = f1.getMedia();
                     FeedMedia f2Media = f2.getMedia();
@@ -71,29 +79,28 @@ public class QueueSorter {
                     return -1 * (duration1 - duration2);
                 };
                 break;
-            case FEED_TITLE_ASC:
+            case FEED_TITLE_A_Z:
                 comparator = (f1, f2) -> f1.getFeed().getTitle().compareTo(f2.getFeed().getTitle());
                 break;
-            case FEED_TITLE_DESC:
+            case FEED_TITLE_Z_A:
                 comparator = (f1, f2) -> f2.getFeed().getTitle().compareTo(f1.getFeed().getTitle());
                 break;
             case RANDOM:
                 permutor = Collections::shuffle;
                 break;
-            case SMART_SHUFFLE_ASC:
+            case SMART_SHUFFLE_OLD_NEW:
                 permutor = (queue) -> smartShuffle(queue, true);
                 break;
-            case SMART_SHUFFLE_DESC:
+            case SMART_SHUFFLE_NEW_OLD:
                 permutor = (queue) -> smartShuffle(queue, false);
                 break;
-            default:
         }
 
         if (comparator != null) {
-            DBWriter.sortQueue(comparator, broadcastUpdate);
-        } else if (permutor != null) {
-            DBWriter.reorderQueue(permutor, broadcastUpdate);
+            final Comparator<FeedItem> comparator2 = comparator;
+            permutor = (queue) -> Collections.sort(queue, comparator2);
         }
+        return permutor;
     }
 
     /**

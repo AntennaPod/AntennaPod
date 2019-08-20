@@ -11,11 +11,8 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +41,8 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
+import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -383,6 +382,7 @@ public class DBWriter {
                         }
                     }
                     if (queueModified) {
+                        applySortOrder(queue, events);
                         adapter.setQueue(queue);
                         for (QueueEvent event : events) {
                             EventBus.getDefault().post(event);
@@ -399,6 +399,33 @@ public class DBWriter {
                 }
             }
         });
+    }
+
+    /**
+     * Sorts the queue depending on the configured sort order.
+     * If the queue is not in keep sorted mode, nothing happens.
+     *
+     * @param queue  The queue to be sorted.
+     * @param events Replaces the events by a single SORT event if the list has to be sorted automatically.
+     */
+    private static void applySortOrder(List<FeedItem> queue, List<QueueEvent> events) {
+        if (!UserPreferences.isQueueKeepSorted()) {
+            // queue is not in keep sorted mode, there's nothing to do
+            return;
+        }
+
+        // Sort queue by configured sort order
+        SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
+        if (sortOrder == SortOrder.RANDOM) {
+            // do not shuffle the list on every change
+            return;
+        }
+        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortOrder);
+        permutor.reorder(queue);
+
+        // Replace ADDED events by a single SORTED event
+        events.clear();
+        events.add(QueueEvent.sorted(queue));
     }
 
     /**
@@ -850,31 +877,8 @@ public class DBWriter {
     }
 
     /**
-     * Sort the FeedItems in the queue with the given Comparator.
-     * @param comparator      FeedItem comparator
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> sortQueue(final Comparator<FeedItem> comparator, final boolean broadcastUpdate) {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            final List<FeedItem> queue = DBReader.getQueue(adapter);
-
-            if (queue != null) {
-                Collections.sort(queue, comparator);
-                adapter.setQueue(queue);
-                if (broadcastUpdate) {
-                    EventBus.getDefault().post(QueueEvent.sorted(queue));
-                }
-            } else {
-                Log.e(TAG, "sortQueue: Could not load queue");
-            }
-            adapter.close();
-        });
-    }
-
-    /**
-     * Similar to sortQueue, but allows more complex reordering by providing whole-queue context.
+     * Sort the FeedItems in the queue with the given Permutor.
+     *
      * @param permutor        Encapsulates whole-Queue reordering logic.
      * @param broadcastUpdate <code>true</code> if this operation should trigger a
      *                        QueueUpdateBroadcast. This option should be set to <code>false</code>
