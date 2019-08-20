@@ -109,9 +109,6 @@
   <string name="mark_all_read_msg">Wszystkie odcinki zaznaczono jako odtworzone</string>
   <string name="mark_all_read_confirmation_msg">Proszę potwierdzić, że chcesz oznaczyć wszystkie odcinki jako odtworzone.</string>
   <string name="mark_all_read_feed_confirmation_msg">Proszę potwierdzić, że chcesz oznaczyć wszystkie odcinki tego podcastu jako odtworzone.</string>
-  <string name="remove_all_new_flags_label">Oznacz wszystkie jako wyświetlone</string>
-  <string name="removed_all_new_flags_msg">Oznacz wszystkie odcinki jako wyświetlone</string>
-  <string name="remove_all_new_flags_confirmation_msg">Proszę potwierdzić chęć zaznaczenia wszystkich odcinków jako obejrzanych.</string>
   <string name="show_info_label">Pokaż informacje</string>
   <string name="show_feed_settings_label">Pokaż ustawienia podcastu</string>
   <string name="feed_settings_label">Ustawienia podcastu</string>
@@ -147,8 +144,6 @@
   <string name="remove_label">Usuń</string>
   <string name="delete_label">Usuń</string>
   <string name="delete_failed">Nie można usunąć pliku. Restart urządzenia może w tym pomóc.</string>
-  <string name="remove_new_flag_label">Oznacz jako wyświetlone</string>
-  <string name="removed_new_flag_label">Oznaczono jako wyświetlone</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>
   <string name="marked_as_read_label">Oznaczone jako odtworzone</string>
   <string name="mark_unread_label">Oznacz jako nieodtworzone</string>
@@ -160,7 +155,6 @@
   <string name="remove_from_favorite_label">Usuń z Ulubionych</string>
   <string name="removed_from_favorites">Usunięto z ulubionych</string>
   <string name="visit_website_label">Odwiedź stronę</string>
-  <string name="support_label">Wspomóż na Flattr</string>
   <string name="skip_episode_label">Pomiń odcinek</string>
   <string name="activate_auto_download">Włącz automatyczne pobieranie</string>
   <string name="deactivate_auto_download">Wyłącz automatyczne pobieranie</string>
@@ -246,32 +240,6 @@
   <string name="ascending">Rosnąco</string>
   <string name="descending">Malejąco</string>
   <string name="clear_queue_confirmation_msg">Potwierdź usunięcie WSZYSTKICH pozycji z kolejki</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Logowanie do Flattr</string>
-  <string name="flattr_auth_explanation">Naciśnij przycisk poniżej by zacząć proces autoryzacji. Zostaniesz przekierowany na stronę logowania do flattr w przeglądarce i zostaniesz poproszony o przyznanie zezwolenia AntennaPod-owi na flattr-owanie. Po daniu zezwolenia powrócisz do tej strony automatycznie.</string>
-  <string name="authenticate_label">Autoryzacja</string>
-  <string name="return_home_label">Wróć do ekranu głównego</string>
-  <string name="flattr_auth_success">Autoryzacja się powiodła. Możesz teraz używać flattr w aplikacji.</string>
-  <string name="no_flattr_token_title">Nie znaleziono tokenu Flattr</string>
-  <string name="no_flattr_token_notification_msg">Twoje konto flattr nie jest połączone z AntennaPod. Naciśnij tutaj aby autoryzować.</string>
-  <string name="no_flattr_token_msg">Twoje konto Flattr wydaje się nie być podłączone do AntennaPod. Możesz połączyć konto do AntennaPod by przez program flattr-ować lub możesz odwiedzić stronę wątku by zrobić to tam.</string>
-  <string name="authenticate_now_label">Autoryzuj</string>
-  <string name="action_forbidden_title">Akcja zabroniona</string>
-  <string name="action_forbidden_msg">AntennaPod nie ma zezwolenia na tą akcję. Powodem może być fakt iż dostęp dla AntennaPod do Twojego konta został cofnięty. Możesz ponownie autoryzować aplikację lub odwiedzić stronę.  </string>
-  <string name="access_revoked_title">Anulowano dostęp</string>
-  <string name="access_revoked_info">Odwołałeś dostęp AntennaPod do swojego konta. W celu zakończenia procesu musisz usunąć aplikację z listy aplikacji dozwolonych na koncie Flattr.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Poprawnie z-flattr-owano</string>
-  <string name="flattr_click_success_count">Z-flattr-owano %d elementów</string>
-  <string name="flattr_click_success_queue">Z-flattr-owano: %s</string>
-  <string name="flattr_click_failure_count">Flattr-owanie %d elementów nie powiodło się</string>
-  <string name="flattr_click_failure">Flattr-owanie zakończone niepowodzeniem: %s</string>
-  <string name="flattr_click_enqueued">Elementy zostaną z-flattr-owane później</string>
-  <string name="flattring_thing">Flattr-owanie %s</string>
-  <string name="flattring_label">Flattr-uję</string>
-  <string name="flattrd_label">AntennaPod z-flattr-owała</string>
-  <string name="flattrd_failed_label">Flattr-owanie AntennaPod nie powiodło się</string>
-  <string name="flattr_retrieving_status">Wyszukiwanie z-flattr-owanych elementów</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Pobierz wtyczkę</string>
   <string name="no_playback_plugin_title">Wtyczka nie zainstalowana</string>
@@ -280,15 +248,14 @@
   <string name="enable_sonic">Włącz Sonic</string>
   <!--Empty list labels-->
   <string name="no_feeds_label">Nie subskrybowałeś jeszcze żadnego podcastu.</string>
-  <string name="no_chapters_label">Ten odcinek nie ma rozdziałów.</string>
   <string name="no_shownotes_label">Ten epizod nie ma notatek.</string>
+  <string name="no_chapters_label">Ten odcinek nie ma rozdziałów.</string>
   <!--Preferences-->
   <string name="storage_pref">Pamięć</string>
   <string name="project_pref">Projekt</string>
   <string name="other_pref">Inne</string>
   <string name="about_pref">O...</string>
   <string name="queue_label">Kolejka</string>
-  <string name="flattr_label">Flattr</string>
   <string name="download_pref_details">Szczegóły</string>
   <string name="appearance">Wygląd</string>
   <string name="pref_episode_cleanup_title">Usuwanie odcinków</string>
@@ -325,17 +292,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Słuchawki podłączone ponownie</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth podłączony ponownie</string>
   <string name="pref_mobileUpdate_title">Aktualizacje mobilne</string>
-  <string name="pref_mobileUpdate_sum">Zezwól na aktualizacje poprzez sieć komórkową</string>
   <string name="refreshing_label">Odświeżanie</string>
-  <string name="flattr_settings_label">Ustawienia Flattr</string>
-  <string name="pref_flattr_auth_title">Logowanie do Flattr</string>
-  <string name="pref_flattr_auth_sum">Zaloguj się do konta Flattr aby wspierać twórców  bezpośrednio z aplikacji.</string>
-  <string name="pref_flattr_this_app_title">Wesprzyj aplikację na Flattr</string>
-  <string name="pref_flattr_this_app_sum">Wesprzyj twórcę AntennaPod przez Flattr. Dzięki!</string>
-  <string name="pref_revokeAccess_title">Anuluj dostęp</string>
-  <string name="pref_revokeAccess_sum">Anuluj dostęp tej aplikacji do konta Flattr </string>
-  <string name="pref_auto_flattr_title">Automatyczne wsparcie na Flattr</string>
-  <string name="pref_auto_flattr_sum">Skonfiguruj automatyczne flattr-owanie</string>
   <string name="user_interface_label">Interfejs użytkownika</string>
   <string name="pref_set_theme_title">Wybierz motyw</string>
   <string name="pref_nav_drawer_title">Dopasuj panel nawigacyjny</string>
@@ -417,11 +374,6 @@
   <string name="pref_cast_message_free_flavor">Chromecast wymagadodatkowych bibliotek, które są zablokowane w tej wersji AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Rzeczy z kolejki pobrane</string>
   <string name="pref_enqueue_downloaded_summary">Dodaj pobrane odcinki do kolejki</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Włącz automatyczne wspieranie na flattr.</string>
-  <string name="auto_flattr_after_percent">Z-flattr-uj odcinki odegrane %d procentach.</string>
-  <string name="auto_flattr_ater_beginning">Z-flattr-uj odcinek gdy odtawarzanie zostanie rozpoczęte</string>
-  <string name="auto_flattr_ater_end">Z-flattr-uj odcinek gdy odtwarzanie zostanie zakończone</string>
   <!--Search-->
   <string name="search_hint">Szukaj odcinków</string>
   <string name="found_in_shownotes_label">Znalezione w notatkach dotyczących show</string>
@@ -570,9 +522,10 @@ https://gpodder.net/register/</string>
   <string name="progress_upgrading_database">Aktualizacja bazy danych</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importowanie subskrybcji z jednozadaniowych aplikacji</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">Szukaj w iTunes</string>
-  <string name="filter">Filtruj</string>
   <string name="search_fyyd_label">Szukaj w fyyd</string>
+  <string name="filter">Filtruj</string>
   <!--Episodes apply actions-->
   <string name="all_label">Wszystkie</string>
   <string name="selected_all_label">Zaznaczono wszystkie odcinki</string>

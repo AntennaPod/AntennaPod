@@ -109,14 +109,16 @@
   <string name="podcastdirectories_label">ディレクトリでポッドキャストを検索</string>
   <string name="podcastdirectories_descr">新しいポッドキャストでは、名前、カテゴリー、人気でiTunesやfyydを検索したり、gpodder.netを参照することができます。</string>
   <string name="browse_gpoddernet_label">gpodder.netを参照</string>
+  <string name="discover">発見</string>
+  <string name="discover_more">さらに »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">すべて再生済としてマーク</string>
   <string name="mark_all_read_msg">すべてのエピソードを再生済にしました</string>
   <string name="mark_all_read_confirmation_msg">再生済としてマークするすべてのエピソードを確認してください。</string>
   <string name="mark_all_read_feed_confirmation_msg">再生済としてマークするこのポッドキャストのすべてのエピソードを確認してください。</string>
-  <string name="remove_all_new_flags_label">すべて参照済としてマーク</string>
-  <string name="removed_all_new_flags_msg">すべてのエピソードを参照済にしました</string>
-  <string name="remove_all_new_flags_confirmation_msg">参照済としてマークするすべてのエピソードを確認してください。</string>
+  <string name="remove_all_new_flags_label">すべての \"新規\" フラグを削除</string>
+  <string name="removed_all_new_flags_msg">すべての \"新規\" フラグを削除しました</string>
+  <string name="remove_all_new_flags_confirmation_msg">\"新規\" フラグを削除するすべてのエピソードを確認してください。</string>
   <string name="show_info_label">情報を表示</string>
   <string name="show_feed_settings_label">ポッドキャスト設定を表示</string>
   <string name="feed_info_label">ポッドキャスト情報</string>
@@ -165,8 +167,8 @@
   <plurals name="deleted_episode_batch_label">
     <item quantity="other">%d エピソードを削除しました。</item>
   </plurals>
-  <string name="remove_new_flag_label">参照済</string>
-  <string name="removed_new_flag_label">参照済としてマーク</string>
+  <string name="remove_new_flag_label">\"新規\" フラグを削除</string>
+  <string name="removed_new_flag_label">\"新規\" フラグを削除しました</string>
   <string name="mark_read_label">再生済としてマーク</string>
   <string name="marked_as_read_label">再生済としてマークしました</string>
   <plurals name="marked_read_batch_label">
@@ -190,7 +192,6 @@
   <string name="remove_from_favorite_label">お気に入りから削除</string>
   <string name="removed_from_favorites">お気に入りから削除</string>
   <string name="visit_website_label">Webサイトを訪問</string>
-  <string name="support_label">これをFlattr</string>
   <string name="skip_episode_label">エピソードをスキップ</string>
   <string name="activate_auto_download">自動ダウンロードを有効にする</string>
   <string name="deactivate_auto_download">自動ダウンロードを無効にする</string>
@@ -241,6 +242,8 @@
   <string name="confirm_mobile_download_dialog_title">モバイルダウンロードの確認</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">モバイルデータ接続でのダウンロードは設定で無効になっています。\n\n一時的に有効にするか、またはキューに追加するだけにしますか?\n\n<small>選択は 10 分間記憶されます。</small></string>
   <string name="confirm_mobile_download_dialog_message">モバイルデータ接続でのダウンロードは設定で無効になっています。\n\n一時的に有効にしますか?\n\n<small>選択は 10 分間記憶されます。</small></string>
+  <string name="confirm_mobile_streaming_notification_title">モバイルストリーミングの確認</string>
+  <string name="confirm_mobile_streaming_notification_message">モバイルデータ接続を介したストリーミングは設定で無効になっています。 タップするととにかくストリーミングします。</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">キューに追加するだけ</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">一時的に有効にする</string>
   <!--Mediaplayer messages-->
@@ -267,6 +270,7 @@
   <string name="move_to_top_label">先頭に移動</string>
   <string name="move_to_bottom_label">最後に移動</string>
   <string name="sort">並べ替え</string>
+  <string name="keep_sorted">ソート順を保持</string>
   <string name="date">日付</string>
   <string name="duration">継続時間</string>
   <string name="episode_title">エピソード タイトル</string>
@@ -276,32 +280,8 @@
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
   <string name="clear_queue_confirmation_msg">クリアする、キューに含まれるすべてのエピソードを確認してください。</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Flattrにサインイン</string>
-  <string name="flattr_auth_explanation">認証処理を開始するには、下のボタンを押します。お使いのブラウザでflattrのログイン画面に転送され、AntennaPodにflattrする許可を与えるように求められます。あなたが許可を与えた後、自動的にこの画面に戻ります。</string>
-  <string name="authenticate_label">認証</string>
-  <string name="return_home_label">ホームに戻る</string>
-  <string name="flattr_auth_success">認証が成功しました! アプリからflattrすることができます。</string>
-  <string name="no_flattr_token_title">Flattrのトークンが見つかりません</string>
-  <string name="no_flattr_token_notification_msg">あなたのflattrアカウントがAntennaPodに接続していないようです。認証するにはここをタップしてください。</string>
-  <string name="no_flattr_token_msg">あなたのflattrアカウントがAntennaPodに接続していないようです。アプリからflattrするためにAntennaPodのアカウントに接続するか、またはflattrするためにWebサイトを訪問してください。</string>
-  <string name="authenticate_now_label">認証</string>
-  <string name="action_forbidden_title">操作は禁止されています</string>
-  <string name="action_forbidden_msg">AntennaPodにこの操作をする権限がありません。あなたのアカウントへのAntennaPodのアクセストークンが取り消されたことが考えられます。あなたは再認証するか、またはその代わりにWebサイトを訪問してください。</string>
-  <string name="access_revoked_title">アクセスが取り消されました</string>
-  <string name="access_revoked_info">あなたのアカウントへのAntennaPodのアクセストークンを取り消しました。処理を完了するには、flattrのWebサイトで、あなたのアカウント設定で承認されたアプリケーションのリストから、このアプリを削除する必要があります。</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">1 件Flattrしました!</string>
-  <string name="flattr_click_success_count">%d 件Flattrしました!</string>
-  <string name="flattr_click_success_queue">Flattrしました: %s.</string>
-  <string name="flattr_click_failure_count">Flattrに失敗 %d 件!</string>
-  <string name="flattr_click_failure">Flattrしませんでした: %s.</string>
-  <string name="flattr_click_enqueued">後でFlattrされます</string>
-  <string name="flattring_thing">Flattr中 %s</string>
-  <string name="flattring_label">AntennaPod がFlattr中</string>
-  <string name="flattrd_label">AntennaPod がFlattrしました</string>
-  <string name="flattrd_failed_label">AntennaPod はFlattrに失敗しました</string>
-  <string name="flattr_retrieving_status">Flattｒの取得中</string>
+  <string name="sort_old_to_new">古いものから新しいもの</string>
+  <string name="sort_new_to_old">新しいものから古いもの</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">プラグインをダウンロード</string>
   <string name="no_playback_plugin_title">プラグイン はインストールされていません</string>
@@ -312,7 +292,6 @@
   <string name="no_items_header_label">エピソードはキューにありません</string>
   <string name="no_items_label">エピソードをダウンロードして追加するか、エピソードを長押しして \"キューに追加\" を選択してください。</string>
   <string name="no_feeds_label">まだポッドキャストを何も購読していません。</string>
-  <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
   <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
   <string name="no_run_downloads_head_label">実行中のダウンロードはありません</string>
   <string name="no_run_downloads_label">ポッドキャスト詳細画面でエピソードをダウンロードできます。</string>
@@ -328,6 +307,8 @@
   <string name="no_new_episodes_label">新しいエピソードが届くと、ここに表示されます。</string>
   <string name="no_fav_episodes_head_label">お気に入りのエピソードはありません</string>
   <string name="no_fav_episodes_label">長押ししてお気に入りにエピソードを追加できます。</string>
+  <string name="no_chapters_head_label">チャプターなし</string>
+  <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
   <!--Preferences-->
   <string name="storage_pref">ストレージ</string>
   <string name="project_pref">プロジェクト</string>
@@ -335,8 +316,6 @@
   <string name="about_pref">について</string>
   <string name="queue_label">キュー</string>
   <string name="integrations_label">統合</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">マイクロペイメント サービス</string>
   <string name="automation">自動</string>
   <string name="download_pref_details">詳細</string>
   <string name="import_export_pref">インポート/エクスポート</string>
@@ -344,7 +323,7 @@
   <string name="appearance">外観</string>
   <string name="external_elements">外部要素</string>
   <string name="interruptions">割り込み</string>
-  <string name="buttons">再生コントロールボタン</string>
+  <string name="playback_control">再生コントロール</string>
   <string name="media_player">メディアプレーヤー</string>
   <string name="pref_episode_cleanup_title">エピソード クリーンアップ</string>
   <string name="pref_episode_cleanup_summary">キューに含まれておらず、お気に入りではないエピソードは、自動ダウンロードで新しいエピソードのためにスペースが必要な場合、除去の対象になります</string>
@@ -381,20 +360,13 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">ヘッドフォン再接続</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth再接続</string>
   <string name="pref_mobileUpdate_title">モバイル更新</string>
-  <string name="pref_mobileUpdate_sum">モバイルデータ接続時に更新を許可します</string>
-  <string name="pref_mobileUpdate_nothing">なし</string>
-  <string name="pref_mobileUpdate_images">画像のみ</string>
-  <string name="pref_mobileUpdate_everything">すべて</string>
+  <string name="pref_mobileUpdate_sum">モバイルデータ接続時に許可するものを選択します</string>
+  <string name="pref_mobileUpdate_refresh">フィード更新</string>
+  <string name="pref_mobileUpdate_images">カバー画像</string>
+  <string name="pref_mobileUpdate_auto_download">自動ダウンロード</string>
+  <string name="pref_mobileUpdate_episode_download">エピソードのダウンロード</string>
+  <string name="pref_mobileUpdate_streaming">ストリーミング</string>
   <string name="refreshing_label">更新中</string>
-  <string name="flattr_settings_label">Flattr設定</string>
-  <string name="pref_flattr_auth_title">Flattrにサインイン</string>
-  <string name="pref_flattr_auth_sum">アプリから直接Flattrするため、あなたのFlattrアカウントにサインインしてください。</string>
-  <string name="pref_flattr_this_app_title">このアプリをFlattr</string>
-  <string name="pref_flattr_this_app_sum">FlattrしてAntennaPodの開発を支援してください。ありがとうございます!</string>
-  <string name="pref_revokeAccess_title">アクセスを取り消し</string>
-  <string name="pref_revokeAccess_sum">あなたのflattrアカウントへのこのアプリのアクセス許可を取り消します。</string>
-  <string name="pref_auto_flattr_title">自動Flattr</string>
-  <string name="pref_auto_flattr_sum">自動Flattrを構成</string>
   <string name="user_interface_label">インターフェース</string>
   <string name="pref_set_theme_title">テーマを選択</string>
   <string name="pref_nav_drawer_title">ナビゲーションドロワーをカスタマイズ</string>
@@ -416,6 +388,7 @@
   <string name="pref_automatic_download_on_battery_sum">バッテリーを充電していない時に自動ダウンロードを許可します</string>
   <string name="pref_parallel_downloads_title">パラレル ダウンロード</string>
   <string name="pref_episode_cache_title">エピソードキャッシュ</string>
+  <string name="pref_episode_cache_summary">デバイスにキャッシュされたダウンロード済エピソードの合計数。この数に達すると自動ダウンロードが抑制されます。</string>
   <string name="pref_theme_title_light">ライト</string>
   <string name="pref_theme_title_dark">ダーク</string>
   <string name="pref_theme_title_trueblack">黒 (AMOLED 対応)</string>
@@ -441,6 +414,8 @@
   <string name="pref_gpodnet_notifications_sum">この設定は、認証エラーには適用されません。</string>
   <string name="pref_playback_speed_title">再生速度</string>
   <string name="pref_playback_speed_sum">可変速度音声再生に使用可能な速度をカスタマイズします</string>
+  <string name="pref_playback_time_respects_speed_title">メディア情報を再生速度に調整</string>
+  <string name="pref_playback_time_respects_speed_sum">表示される位置と時間が再生速度に調整されます</string>
   <string name="pref_fast_forward">早送りのスキップ時間</string>
   <string name="pref_fast_forward_sum">早送りボタンがクリックされたときにジャンプする秒数をカスタマイズします</string>
   <string name="pref_rewind">巻き戻しスキップ時間</string>
@@ -500,11 +475,6 @@
   <string name="back_button_go_to_page_title">ページの選択</string>
   <string name="pref_delete_removes_from_queue_title">キューから削除済を削除</string>
   <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">自動Flattrを有効にする</string>
-  <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
-  <string name="auto_flattr_ater_beginning">再生を開始した時にエピソードをFlattr</string>
-  <string name="auto_flattr_ater_end">再生が終了した時にエピソードをFlattr</string>
   <!--Search-->
   <string name="search_hint">エピソードの検索</string>
   <string name="found_in_shownotes_label">ショーノートで見つかりました</string>
@@ -595,12 +565,14 @@
   <string name="gpodnetsync_error_descr">同期中にエラーが発生しました:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">成功しました</string>
   <string name="gpodnetsync_pref_report_failed">失敗しました</string>
+  <string name="gpodnetsync_username_characters_error">ユーザー名には文字、数字、ハイフン、下線のみ含めることができます。</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">選択したフォルダー:</string>
   <string name="create_folder_label">フォルダーを作成</string>
   <string name="choose_data_directory">データ フォルダーを選択</string>
   <string name="choose_data_directory_message">基本のデータフォルダーを選択してください。 AntennaPodは、適切なサブディレクトリを作成します。</string>
   <string name="choose_data_directory_permission_rationale">データフォルダーを変更するために外部ストレージのアクセスが必要です</string>
+  <string name="choose_data_directory_available_space">%1$s / %2$s 空き</string>
   <string name="create_folder_msg">名前 \"%1$s\" で新しいフォルダーを作成しますか?</string>
   <string name="create_folder_success">新しいフォルダーを作成しました</string>
   <string name="create_folder_error_no_write_access">このフォルダーに書き込みできません</string>
@@ -641,13 +613,18 @@
   <string name="episode_filters_exclude">含まない</string>
   <string name="episode_filters_hint">単一の単語 \n\"複数の 単語\"</string>
   <string name="keep_updated">更新済を保持</string>
+  <string name="keep_updated_summary">すべてのフィードを (自動)更新する時にこのフィードを含めます</string>
+  <string name="auto_download_disabled_globally">メインの AntennaPod 設定で自動ダウンロードが無効になっています</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">データベースをアップグレードしています</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
+  <!--Add podcast fragment-->
+  <string name="search_podcast_hint">ポッドキャストの検索…</string>
   <string name="search_itunes_label">iTunes を検索</string>
-  <string name="filter">フィルター</string>
   <string name="search_fyyd_label">fyydを検索</string>
+  <string name="advanced_search">高度な検索</string>
+  <string name="filter">フィルター</string>
   <!--Episodes apply actions-->
   <string name="all_label">すべて</string>
   <string name="selected_all_label">すべてのエピソードを選択しました</string>
@@ -737,4 +714,5 @@
   <string name="notification_channel_playing_description">再生をコントロールできます。これはポッドキャスト再生中のメイン通知です。</string>
   <string name="notification_channel_error">エラー</string>
   <string name="notification_channel_error_description">ダウンロードや gpodder の同期に失敗した場合など、何か問題が発生した場合に表示されます。</string>
+  <string name="import_bad_file">無効/破損ファイル</string>
 </resources>

@@ -25,8 +25,9 @@
   <string name="free_space_label">%1$s szabad</string>
   <string name="episode_cache_full_title">Epizód tárhely megtelt</string>
   <string name="episode_cache_full_message">Az epizódok tárolására megadott maximális tárhely megtelt. A méretét a \"Beállítások\" menüpontban tudod megnövelni.</string>
+  <string name="synchronizing">Szinkronizálás...</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">A lejátszott podcast-ok összideje:</string>
+  <string name="total_time_listened_to_podcasts">A lejátszott podcastok összideje:</string>
   <string name="statistics_details_dialog">%1$d-ból %2$d epizód elindítva.\n\n%3$s-ból %4$s lejátszva.</string>
   <string name="statistics_mode">Statisztikai módok</string>
   <!--Main activity-->
@@ -90,10 +91,15 @@
   <string name="episode_cleanup_never">Soha</string>
   <string name="episode_cleanup_queue_removal">Ha nincs sorbaállítva</string>
   <string name="episode_cleanup_after_listening">Befejezés után</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">befejezés után 1 órával</item>
+    <item quantity="other">befejezés után %d órával</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 nappal a befejezés után</item>
     <item quantity="other">%d nappal a befejezés után</item>
   </plurals>
+  <string name="num_selected_label">%d kiválasztva</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Idővonal URL</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -105,13 +111,19 @@
   <string name="mark_all_read_label">Az összes megjelölése lejátszottként</string>
   <string name="mark_all_read_msg">Az összes epizód lejátszottként megjelölve</string>
   <string name="mark_all_read_confirmation_msg">Biztosan megjelölöd az összes epizódot lejátszottként?</string>
-  <string name="remove_all_new_flags_label">Az összes megjelölése megnézettként</string>
-  <string name="remove_all_new_flags_confirmation_msg">Biztosan megjelölöd az összes epizódott megnézettként?</string>
   <string name="show_info_label">Információ mutatása</string>
   <string name="feed_settings_label">Podcast beállítások</string>
+  <string name="rename_feed_label">Podcast átnevezése</string>
+  <string name="remove_feed_label">Podcast eltávolítása</string>
   <string name="share_label">Megosztás…</string>
+  <string name="share_link_label">Epizód URL megosztása</string>
+  <string name="share_link_with_position_label">Epizód URL megosztása pozícióval</string>
   <string name="share_file_label">Fájl megosztása</string>
   <string name="share_feed_url_label">Idővonal URL megosztása</string>
+  <string name="share_item_url_label">Médiafájl URL megosztása</string>
+  <string name="share_item_url_with_position_label">Médiafájl URL megosztása pozícióval</string>
+  <string name="feed_delete_confirmation_msg">Kérlek erősítsd meg, hogy törlöd a \"%1$s\" podcastot, az ÖSSZES epizóddal együtt (a letöltötteket is beleértve).</string>
+  <string name="feed_remover_msg">Podcast eltávolítása folyamatban</string>
   <string name="hide_episodes_title">Epizódok elrejtése</string>
   <string name="hide_unplayed_episodes_label">Nem lejátszott</string>
   <string name="hide_paused_episodes_label">Szüneteltetett</string>
@@ -121,21 +133,39 @@
   <string name="hide_downloaded_episodes_label">Letöltött</string>
   <string name="hide_not_downloaded_episodes_label">Nem letöltött</string>
   <string name="hide_has_media_label">További tartalma van</string>
+  <string name="hide_is_favorite_label">Kedvenc</string>
   <string name="filtered_label">Szűrt</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} A legutóbbi frissítés sikertelen</string>
   <string name="open_podcast">Podcast megnyitása</string>
   <!--actions on feeditems-->
   <string name="download_label">Letöltés</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">%d epizód letöltése.</item>
+    <item quantity="other">%d epizód letöltése.</item>
+  </plurals>
   <string name="play_label">Lejátszás</string>
   <string name="pause_label">Szüneteltetés</string>
   <string name="stop_label">Megállítás</string>
   <string name="stream_label">Stream-elés</string>
   <string name="remove_label">Eltávolítás</string>
   <string name="delete_label">Törlés</string>
-  <string name="removed_new_flag_label">Megtekintettként megjelölve</string>
+  <string name="delete_failed">A fájl törlése nem sikerült. Az eszköz újraindítása segíthet a probléma megoldásában.</string>
+  <string name="delete_episode_label">Epizód törlése</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d epizód törölve. </item>
+    <item quantity="other">%d epizód törölve.</item>
+  </plurals>
   <string name="mark_read_label">Jelölés játszottnak</string>
   <string name="marked_as_read_label">Lejátszottként megjelölve</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d epizód lejátszottként megjelölve. </item>
+    <item quantity="other">%d epizód lejátszottként megjelölve.</item>
+  </plurals>
   <string name="mark_unread_label">Jelölés nem játszottnak</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d epizód nem játszottként megjelölve. </item>
+    <item quantity="other">%d epizód nem játszottként megjelölve.</item>
+  </plurals>
   <string name="add_to_queue_label">Sorbaállítás</string>
   <string name="added_to_queue_label">Hozzáadva a lejátszási sorhoz</string>
   <string name="remove_from_queue_label">Eltávolítás lejátszási sorból</string>
@@ -144,7 +174,6 @@
   <string name="remove_from_favorite_label">Kedvencekből eltávolítás</string>
   <string name="removed_from_favorites">Kedvencekből eltávolítva</string>
   <string name="visit_website_label">Honlap megtekintése</string>
-  <string name="support_label">Flattr-ezés</string>
   <string name="skip_episode_label">Epizód átugrása</string>
   <string name="activate_auto_download">Automatikus letöltés bekapcsolása</string>
   <string name="deactivate_auto_download">Automatikus letöltés kikapcsolása</string>
@@ -172,7 +201,8 @@
   <string name="cancel_all_downloads_label">Az összes letöltés visszavonása</string>
   <string name="download_canceled_msg">Letöltés visszavonva</string>
   <string name="download_report_title">Letöltés befejeződött, hibák léptek fel</string>
-  <string name="download_report_content_title">Jelentés letöltése</string>
+  <string name="download_report_content_title">Letöltési jelentés</string>
+  <string name="download_error_malformed_url">Hibás URL</string>
   <string name="download_error_request_error">Lekérési hiba</string>
   <string name="download_error_db_access">Adatbázis hozzáférési hiba</string>
   <plurals name="downloads_left">
@@ -212,25 +242,25 @@
   <string name="date">Dátum</string>
   <string name="duration">Hossz</string>
   <string name="episode_title">Epizód cím</string>
+  <string name="feed_title">Podcast cím</string>
   <string name="ascending">Növekvő</string>
   <string name="descending">Csökkenő</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Flattr bejelentkezés</string>
-  <string name="access_revoked_title">Hozzáférés megtagadva</string>
-  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Kiegészítő letöltése</string>
   <string name="no_playback_plugin_title">Kiegészítő nincs telepítve</string>
   <string name="set_playback_speed_label">Lejátszási sebesség</string>
   <string name="enable_sonic">Sonic engedélyezése</string>
   <!--Empty list labels-->
+  <string name="no_history_head_label">Napló üres</string>
   <!--Preferences-->
   <string name="storage_pref">Tároló</string>
   <string name="project_pref">Projekt</string>
   <string name="other_pref">Egyebek</string>
   <string name="about_pref">Rólam</string>
   <string name="queue_label">Lejátszási sor</string>
-  <string name="flattr_label">Flattr</string>
+  <string name="download_pref_details">Részletek</string>
+  <string name="import_export_pref">Importálás/exportálás</string>
+  <string name="appearance">Megjelenés</string>
   <string name="pref_pauseOnDisconnect_sum">Lejátszás szüneteltetése fejhallgató és bluetooth leválasztásakor</string>
   <string name="pref_hardwareForwardButtonSkips_title">Előre gomb átugor</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Előző gomb újraindít</string>
@@ -249,25 +279,24 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Fejhallgató újracsatlakoztatása</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth újracsatlakozás</string>
   <string name="pref_mobileUpdate_title">Frissítések mobiladat-kapcsolaton</string>
-  <string name="pref_mobileUpdate_sum">Frissítések engedélyezése mobiladat-kapcsolaton keresztül</string>
-  <string name="flattr_settings_label">Flattr beállítások</string>
-  <string name="pref_flattr_auth_title">Flattr bejelentkezés</string>
-  <string name="pref_revokeAccess_title">Hozzáférés megvonása</string>
   <string name="user_interface_label">Felhasználói felület</string>
   <string name="pref_set_theme_title">Téma kiválasztása</string>
   <string name="pref_nav_drawer_title">Navigációs fiók testreszabása</string>
   <string name="pref_nav_drawer_sum">Navigációs fiók kinézetének testreszabás</string>
-  <string name="pref_nav_drawer_items_title">Navigációs fiók elemeinek kiválaasztása</string>
+  <string name="pref_nav_drawer_items_title">Navigációs fiók elemeinek kiválasztása</string>
   <string name="pref_set_theme_sum">AntennaPod kinézetének megváltoztatása</string>
-  <string name="pref_automatic_download_title">Autómatikus letöltés</string>
-  <string name="pref_automatic_download_sum">Epizódok autómatikus letöltésének beállítása</string>
+  <string name="pref_automatic_download_title">Automatikus letöltés</string>
+  <string name="pref_automatic_download_sum">Epizódok automatikus letöltésének beállítása</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi szűrő beállítása</string>
+  <string name="pref_autodl_allow_on_mobile_title">Letöltés mobiladat-kapcsolaton keresztül</string>
   <string name="pref_parallel_downloads_title">Párhuzamos letöltések</string>
   <string name="pref_episode_cache_title">Epizód gyorsítótár</string>
   <string name="pref_theme_title_light">Világos</string>
   <string name="pref_theme_title_dark">Sötét</string>
+  <string name="pref_theme_title_trueblack">Fekete (AMOLED-hez alkalmas)</string>
   <string name="pref_update_interval_hours_plural">óra</string>
   <string name="pref_update_interval_hours_singular">óra</string>
+  <string name="pref_update_interval_hours_manual">Manuális</string>
   <string name="pref_gpodnet_authenticate_title">Bejelentkezés</string>
   <string name="pref_gpodnet_authenticate_sum">Jelentkezz be a gpodder.net fiókodba a feliratkozások szinkronizálásához.</string>
   <string name="pref_gpodnet_logout_title">Kijelentkezés</string>
@@ -278,6 +307,7 @@
   <string name="pref_compact_notification_buttons_title">Zárképernyő gombok beállítása</string>
   <string name="pref_lockscreen_background_title">Zárképernyő háttérkép</string>
   <string name="pref_lockscreen_background_sum">Zárképernyő háttérkép átállítása az epizód képeként.</string>
+  <string name="pref_showDownloadReport_title">Letöltési jelentés megtekintése</string>
   <string name="pref_image_cache_size_title">Kép gyorsítótár mérete</string>
   <string name="pref_image_cache_size_sum">Kép gyorsítótár méretének a lemezen</string>
   <string name="crash_report_title">Hibajelentés</string>
@@ -288,7 +318,6 @@
   <string name="pref_known_issues">Ismert hibák</string>
   <string name="pref_no_browser_found">Nem található webböngésző</string>
   <string name="pref_cast_title">Chromecast támogatás</string>
-  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Epizódok keresése</string>
   <string name="search_label">Keresés</string>
@@ -327,6 +356,7 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">iTunes keresés</string>
   <string name="search_fyyd_label">fyyd keresés</string>
   <!--Episodes apply actions-->

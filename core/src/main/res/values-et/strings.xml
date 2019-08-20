@@ -91,7 +91,6 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Märgi kuulatuks</string>
   <string name="mark_all_read_msg">Märgi kõik saated esitatuks</string>
-  <string name="remove_all_new_flags_label">Märgi kõik nähtuks</string>
   <string name="show_info_label">Näita infot</string>
   <string name="share_label">Jaga...</string>
   <string name="share_file_label">Jaga faili</string>
@@ -116,7 +115,6 @@
   <string name="stream_label">Voogedastusena</string>
   <string name="remove_label">Eemalda</string>
   <string name="delete_label">Kustuta</string>
-  <string name="removed_new_flag_label">Märgitud nähtuks</string>
   <string name="mark_read_label">Märgi esitatuks</string>
   <string name="marked_as_read_label">Märgitud kuulatuks</string>
   <string name="mark_unread_label">Märgitud kui kuulamata</string>
@@ -201,28 +199,20 @@
   <string name="episode_title">Saate pealkiri</string>
   <string name="ascending">Kasvavalt</string>
   <string name="descending">Kahanevalt</string>
-  <!--Flattr-->
-  <string name="authenticate_label">Autendi</string>
-  <string name="return_home_label">Tagasi koju</string>
-  <string name="authenticate_now_label">Autendi</string>
-  <string name="action_forbidden_title">Tegevus on keelatud</string>
-  <string name="access_revoked_title">Ligipääs on eemaldatud</string>
-  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Laadi plugin alla</string>
   <string name="no_playback_plugin_title">Pluginat pole paigaldatud</string>
   <string name="set_playback_speed_label">Esitamise kiirused</string>
   <string name="enable_sonic">Luba Sonicu kasutamine</string>
   <!--Empty list labels-->
-  <string name="no_chapters_label">Saatel pole peatükke.</string>
   <string name="no_shownotes_label">Sellel saatel pole mingeid märkusi.</string>
+  <string name="no_chapters_label">Saatel pole peatükke.</string>
   <!--Preferences-->
   <string name="storage_pref">Salvestusruum</string>
   <string name="project_pref">Projekt</string>
   <string name="other_pref">Muud</string>
   <string name="about_pref">Info</string>
   <string name="queue_label">Järjekord</string>
-  <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Saadete kustutamien</string>
   <string name="pref_followQueue_sum">Kui saade lõpeb, siis esita kohe järgmine järjekorras olev saade.</string>
   <string name="pref_auto_delete_sum">Kustuta saated, kui need on kuulatud</string>
@@ -245,10 +235,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Kõrvaklappide uuesti ühendamine</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bloetoothi uuesti ühendamin</string>
   <string name="pref_mobileUpdate_title">Uuendamine üle andmeside</string>
-  <string name="pref_mobileUpdate_sum">Luba uuendamised kasutades mobiilset andmesidet</string>
   <string name="refreshing_label">Värskendamine</string>
-  <string name="flattr_settings_label">Flattri seaded</string>
-  <string name="pref_revokeAccess_title">Eemalda ligipääs</string>
   <string name="user_interface_label">Kasutajalidies</string>
   <string name="pref_set_theme_title">Vali teema</string>
   <string name="pref_nav_drawer_title">Kohanda peamenüüd</string>
@@ -301,7 +288,6 @@
   <string name="pref_known_issues">Teadaolevad probleemid</string>
   <string name="pref_no_browser_found">Veebilehitsejat ei leitud.</string>
   <string name="pref_cast_title">Chromecasti tugi</string>
-  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Otsi saateid</string>
   <string name="found_in_shownotes_label">Leitud saate märkmetest</string>
@@ -426,6 +412,7 @@
   <!--Progress information-->
   <string name="progress_upgrading_database">Andmebaasi uuendamine</string>
   <!--AntennaPodSP-->
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">Otsi iTunest</string>
   <string name="filter">Filter</string>
   <!--Episodes apply actions-->

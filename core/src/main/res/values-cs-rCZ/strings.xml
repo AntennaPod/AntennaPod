@@ -106,9 +106,9 @@
   <string name="mark_all_read_label">Označit vše jako poslechnuté</string>
   <string name="mark_all_read_msg">Všechny epizody označeny jako poslechnuté</string>
   <string name="mark_all_read_confirmation_msg">Potvrďte prosím, že chcete označit všechny vybrané epizody jako poslechnuté.</string>
-  <string name="remove_all_new_flags_label">Označit vše jako zobrazené</string>
-  <string name="remove_all_new_flags_confirmation_msg">Potvrďte prosím, že chcete označit všechny epizody jako shlédnuté.</string>
   <string name="show_info_label">Informace o zdroji</string>
+  <string name="rename_feed_label">Přejmenovat podcast</string>
+  <string name="remove_feed_label">Odstranit podcast</string>
   <string name="share_label">Sdílet</string>
   <string name="share_feed_url_label">Sdílet URL kanálu</string>
   <string name="hide_episodes_title">Skrýt epizody</string>
@@ -131,7 +131,7 @@
   <string name="stream_label">Vysílat</string>
   <string name="remove_label">Odstranit</string>
   <string name="delete_label">Smazat</string>
-  <string name="removed_new_flag_label">Označit jako shlédnuté</string>
+  <string name="delete_episode_label">Smazat epizodu</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
   <string name="marked_as_read_label">Označeno jako poslechnuté</string>
   <string name="mark_unread_label">Označit jako neposlechnuté</string>
@@ -143,7 +143,6 @@
   <string name="remove_from_favorite_label">Odebrat z obíbených</string>
   <string name="removed_from_favorites">Odebráno z oblíbených</string>
   <string name="visit_website_label">Navštívit stránku</string>
-  <string name="support_label">Flattrovat</string>
   <string name="skip_episode_label">Přeskočit epizodu</string>
   <string name="activate_auto_download">Aktivovat automatické stahování</string>
   <string name="deactivate_auto_download">Deaktivovat automatické stahování</string>
@@ -222,35 +221,13 @@
   <string name="date">Datum</string>
   <string name="duration">Délka</string>
   <string name="episode_title">Název epizody</string>
+  <string name="feed_title">Jméno podcastu</string>
+  <string name="random">Náhodné</string>
   <string name="ascending">Vzestupně</string>
   <string name="descending">Sestupně</string>
   <string name="clear_queue_confirmation_msg">Potvrďte prosím, že chcete vyčistit tuto frontu a VŠECHNY v ní obsažené epizody</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Flattr přihlášení</string>
-  <string name="flattr_auth_explanation">Stiskněte následující tlačítko pro spuštění autentizačního procesu. Budete přesměrováni na přihlašovací obrazovku flattru a vyzváni k potvrzení udělení práv pro použití flattru aplikací AntennaPod. Po udělení práv se automaticky vrátíte na tuto obrazovku.</string>
-  <string name="authenticate_label">Přihlásit</string>
-  <string name="return_home_label">Návrat domů</string>
-  <string name="flattr_auth_success">Úspěšně přihlášen. Nyní můžete využít flattru přímo v aplikaci. </string>
-  <string name="no_flattr_token_title">Nenalezen Flattr token</string>
-  <string name="no_flattr_token_notification_msg">Váš flattr účet není propojen s AntennaPod. Pro ověření tapněte sem.</string>
-  <string name="no_flattr_token_msg">Váš flattr učet není napojen do AntenaPodu. Můžete buďto napojit váš flattr účet do AntennaPodu a využít flattru přímo v aplikaci a nebo použít flattr přímo na webových stránkách zdroje v prohlížeči.  </string>
-  <string name="authenticate_now_label">Přihlásit</string>
-  <string name="action_forbidden_title">Akce zakázána</string>
-  <string name="action_forbidden_msg">AntennaPod nemá oprávnění pro tuto akci. Důvodem může být revokování přístupového tokenu AntennaPodu k vašemu účtu. Přístup můžete obnovit nebo využít prohlížeče k návštěvě stránky zdroje.</string>
-  <string name="access_revoked_title">Přístup ukončen</string>
-  <string name="access_revoked_info">Úspěšně revokován přístup AntennPodu k vašemu účtu. Pro dokončení tohoto procesu je  ještě zapotřebí na stránkách flattru odebrat z vašeho účtu AntennaPod ze seznamu povolených aplikací.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Flattrován jeden příspěvek!</string>
-  <string name="flattr_click_success_count">Flattrováno %d příspěvků!</string>
-  <string name="flattr_click_success_queue">Flattrován: %s.</string>
-  <string name="flattr_click_failure_count">Selhalo flattrování %d příspěvků!</string>
-  <string name="flattr_click_failure">Neflattrováno: %s.</string>
-  <string name="flattr_click_enqueued">Příspěvek bude flattrován později</string>
-  <string name="flattring_thing">Flattruji %s</string>
-  <string name="flattring_label">AntennaPod flattruje</string>
-  <string name="flattrd_label">AntennaPod flattroval</string>
-  <string name="flattrd_failed_label">AntennaPod flattr selhal</string>
-  <string name="flattr_retrieving_status">Získávání flattrovaných příspěvků</string>
+  <string name="sort_old_to_new">Od nejstaršího po nejnovější</string>
+  <string name="sort_new_to_old">Od nejnovějšího po nejstarší</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Stáhnout modul</string>
   <string name="no_playback_plugin_title">Modul není nainstalován</string>
@@ -258,15 +235,14 @@
   <string name="set_playback_speed_label">Rychlosti přehrávání</string>
   <string name="enable_sonic">Povolit Sonic</string>
   <!--Empty list labels-->
-  <string name="no_chapters_label">Tato epizoda nemá žádné kapitoly.</string>
   <string name="no_shownotes_label">Tato epizoda neobsahuje žádné poznámky.</string>
+  <string name="no_chapters_label">Tato epizoda nemá žádné kapitoly.</string>
   <!--Preferences-->
   <string name="storage_pref">Úložiště</string>
   <string name="project_pref">Projekt</string>
   <string name="other_pref">Ostatní</string>
   <string name="about_pref">O aplikaci</string>
   <string name="queue_label">Fronta</string>
-  <string name="flattr_label">Flattr</string>
   <string name="pref_episode_cleanup_title">Vyčistit epizody</string>
   <string name="pref_episode_cleanup_summary">Epizody, které nejsou ve frontě a nejsou označeny za oblíbené by mělo být možné smazat, pokud bude funkce automatického stahování potřebovat místo pro nové epizody</string>
   <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo bluetooth připojení pozastavit přehrávání.</string>
@@ -297,17 +273,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Sluchátka připojena</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth připojeno</string>
   <string name="pref_mobileUpdate_title">Mobilní aktualizace</string>
-  <string name="pref_mobileUpdate_sum">Povolit aktualizace pomocí mobilního připojení</string>
   <string name="refreshing_label">Obnovuji</string>
-  <string name="flattr_settings_label">Nastavení Flattr</string>
-  <string name="pref_flattr_auth_title">Flattr přihlášení</string>
-  <string name="pref_flattr_auth_sum">Přihlásit se k flattr účtu a umožnit flattrování přímo z aplikace.</string>
-  <string name="pref_flattr_this_app_title">Flattrovat tuto aplikaci</string>
-  <string name="pref_flattr_this_app_sum">Podpořit vývoj AntennaPodu na flatteru. Děkujeme!</string>
-  <string name="pref_revokeAccess_title">Odebrat přístup</string>
-  <string name="pref_revokeAccess_sum">Odebere aplikaci přístupová práva k vašemu flattr účtu.</string>
-  <string name="pref_auto_flattr_title">Automatický Flattr</string>
-  <string name="pref_auto_flattr_sum">Nastavit automatické flattrování</string>
   <string name="user_interface_label">Uživatelské rozhraní</string>
   <string name="pref_set_theme_title">Vybrat motiv</string>
   <string name="pref_nav_drawer_title">Upravit navigační panel</string>
@@ -381,11 +347,6 @@
   <string name="pref_cast_title">Chromecast podpora</string>
   <string name="pref_cast_message_play_flavor">Povolit podporu vzdáleného přehrávání médií na Cast přístrojích (jako třeba Chromecast, Audio Speakers nebo Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast vyžaduje proprietární knihovny třetích stran, které jsou vypnuty v této verzi AntennaPod</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Povolit automatické flattrování</string>
-  <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>
-  <string name="auto_flattr_ater_beginning">Flattrovat díl po začátku přehrávání</string>
-  <string name="auto_flattr_ater_end">Flattrovat díl po konci přehrávání</string>
   <!--Search-->
   <string name="search_hint">Hledat epizody</string>
   <string name="found_in_shownotes_label">Nalezeno v poznámkách pořadu</string>
@@ -531,9 +492,10 @@
   <string name="progress_upgrading_database">Probíhá aktualizace databáze</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">Prohledat iTunes</string>
-  <string name="filter">Filtr</string>
   <string name="search_fyyd_label">Prohledat fyyd</string>
+  <string name="filter">Filtr</string>
   <!--Episodes apply actions-->
   <string name="all_label">Vše</string>
   <string name="selected_all_label">Vybrány všechny epizody</string>
