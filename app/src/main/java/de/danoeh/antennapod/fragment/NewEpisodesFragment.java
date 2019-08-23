@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -90,6 +91,19 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return root;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        menu.removeItem(R.id.filter_items);
+    }
+
+    @Override
+    protected void onFragmentLoaded(List<FeedItem> episodes) {
+        super.onFragmentLoaded(episodes);
+        txtvInformation.setVisibility(View.GONE);
     }
 
     @NonNull
