@@ -463,7 +463,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (keycode != -1) {
                 Log.d(TAG, "Received media button event");
                 boolean handled = handleKeycode(keycode, true);
-                if (!handled) {
+                if (!handled && !stateManager.hasReceivedValidStartCommand()) {
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
                 }
