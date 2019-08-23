@@ -56,47 +56,47 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:preference-v14:$supportVersion"
-    implementation "android.arch.work:work-runtime:$workManagerVersion"
-    
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "org.apache.commons:commons-text:$commonstextVersion"
-    implementation "commons-io:commons-io:$commonsioVersion"
-    implementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
-    implementation "org.jsoup:jsoup:$jsoupVersion"
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
-    implementation "com.github.bumptech.glide:okhttp3-integration:$glideOkhttpIntegrationVersion@aar"
-    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
-    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okhttpVersion"
-    implementation "com.squareup.okio:okio:$okioVersion"
-    implementation "org.greenrobot:eventbus:$eventbusVersion"
-    annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    implementation "org.awaitility:awaitility:$awaitilityVersion"
+    implementation(Libs.support_v4)
+    implementation(Libs.appcompat_v7)
+    implementation(Libs.preference_v14)
+    implementation(Libs.work_runtime)
 
-    implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
-    implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
+    implementation(Libs.commons_lang3)
+    implementation(Libs.commons_text)
+    implementation(Libs.commons_io)
+    implementation(Libs.robotium_solo)
+    implementation(Libs.jsoup)
+    implementation(Libs.glide)
+    annotationProcessor(Libs.com_github_bumptech_glide_compiler)
+    implementation(Libs.okhttp3_integration)
+    implementation(Libs.okhttp)
+    implementation(Libs.okhttp_urlconnection)
+    implementation(Libs.okio)
+    implementation(Libs.eventbus)
+    annotationProcessor(Libs.eventbus_annotation_processor)
+    implementation(Libs.rxandroid)
+    implementation(Libs.rxjava)
+    implementation(Libs.awaitility)
+
+    implementation(Libs.exoplayer)
+    implementation(Libs.antennapod_audioplayer)
 
     // Add casting features
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
-        playApi "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-        api "com.android.support:mediarouter-v7:$supportVersion"
-        playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
-        api "com.google.android.support:wearable:$wearableSupportVersion"
+        playApi(Libs.com_google_android_libraries_cast_companionlibrary_ccl)
+        api(Libs.mediarouter_v7)
+        playApi(Libs.play_services_cast)
+        api(Libs.com_google_android_support_wearable)
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
     }
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:1.10.19'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    testImplementation(Libs.junit)
+    testImplementation(Libs.mockito_core)
+    androidTestImplementation(Libs.espresso_core)
+    androidTestImplementation(Libs.com_android_support_test_runner)
+    androidTestImplementation(Libs.com_android_support_test_rules)
 
 }
 

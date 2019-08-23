@@ -5,9 +5,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
+        classpath Libs.com_android_tools_build_gradle
+        classpath Libs.dexcount_gradle_plugin
     }
+}
+plugins {
+    id("de.fayard.buildSrcVersions").version("0.4.2")
 }
 
 allprojects {
@@ -81,4 +84,9 @@ wrapper {
 // free build hack: common functions
 def doFreeBuild() {
     return hasProperty("freeBuild")
+}
+
+buildSrcVersions {
+    useFdqnFor("ccl")
+    indent = "    "
 }
