@@ -13,6 +13,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -123,13 +124,13 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         volumeReductionPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             switch ((String) newValue) {
                 case "off":
-                    feedPreferences.setVolumeReductionSetting(FeedPreferences.VolumeReductionSetting.OFF);
+                    feedPreferences.setVolumeReductionSetting(VolumeReductionSetting.OFF);
                     break;
                 case "light":
-                    feedPreferences.setVolumeReductionSetting(FeedPreferences.VolumeReductionSetting.LIGHT);
+                    feedPreferences.setVolumeReductionSetting(VolumeReductionSetting.LIGHT);
                     break;
                 case "heavy":
-                    feedPreferences.setVolumeReductionSetting(FeedPreferences.VolumeReductionSetting.HEAVY);
+                    feedPreferences.setVolumeReductionSetting(VolumeReductionSetting.HEAVY);
                     break;
             }
             feed.savePreferences();

@@ -2,11 +2,12 @@ package de.danoeh.antennapod.core.service.playback;
 
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 class PlaybackVolumeAdaptor {
 
-    public void adaptVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, FeedPreferences.VolumeReductionSetting volumeReductionSetting) {
+    public void adaptVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeReductionSetting volumeReductionSetting) {
         Playable playable = mediaPlayer.getPlayable();
         boolean isFeedMedia = playable instanceof FeedMedia;
         boolean isPlayableLoaded = isPlayableLoaded(mediaPlayer.getPlayerStatus());
@@ -16,7 +17,7 @@ class PlaybackVolumeAdaptor {
         }
     }
 
-    private void adaptFeedMediaVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, FeedPreferences.VolumeReductionSetting volumeReductionSetting, FeedMedia feedMedia) {
+    private void adaptFeedMediaVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeReductionSetting volumeReductionSetting, FeedMedia feedMedia) {
         if (mediaBelongsToAffectedFeed(feedMedia, affectedFeedIdentifier)) {
             FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
             preferences.setVolumeReductionSetting(volumeReductionSetting);

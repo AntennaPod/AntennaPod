@@ -4,7 +4,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.FeedPreferences.VolumeReductionSetting;
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import org.junit.Before;
 import org.junit.Test;

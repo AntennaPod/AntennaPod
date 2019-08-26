@@ -27,11 +27,6 @@ public class FeedPreferences {
     }
     private AutoDeleteAction auto_delete_action;
 
-    public enum VolumeReductionSetting {
-        OFF,
-        LIGHT,
-        HEAVY
-    }
     private VolumeReductionSetting volumeReductionSetting;
 
     private String username;
@@ -68,8 +63,8 @@ public class FeedPreferences {
         boolean autoRefresh = cursor.getInt(indexAutoRefresh) > 0;
         int autoDeleteActionIndex = cursor.getInt(indexAutoDeleteAction);
         AutoDeleteAction autoDeleteAction = AutoDeleteAction.values()[autoDeleteActionIndex];
-        int volumeReductionIndex = cursor.getInt(indexVolumeReduction);
-        VolumeReductionSetting volumeReductionSetting = VolumeReductionSetting.values()[volumeReductionIndex];
+        int volumeReductionValue = cursor.getInt(indexVolumeReduction);
+        VolumeReductionSetting volumeReductionSetting = VolumeReductionSetting.fromInteger(volumeReductionValue);
         String username = cursor.getString(indexUsername);
         String password = cursor.getString(indexPassword);
         String includeFilter = cursor.getString(indexIncludeFilter);

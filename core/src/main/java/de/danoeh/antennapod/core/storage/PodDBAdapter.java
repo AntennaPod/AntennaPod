@@ -407,7 +407,7 @@ public class PodDBAdapter {
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
         values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
         values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().ordinal());
-        values.put(KEY_FEED_VOLUME_REDUCTION, prefs.getVolumeReductionSetting().ordinal());
+        values.put(KEY_FEED_VOLUME_REDUCTION, prefs.getVolumeReductionSetting().toInteger());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());

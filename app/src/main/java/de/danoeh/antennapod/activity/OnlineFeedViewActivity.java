@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -270,7 +271,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, null);
         if (username != null && password != null) {
-            feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, FeedPreferences.VolumeReductionSetting.OFF, username, password));
+            feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeReductionSetting.OFF, username, password));
         }
         String fileUrl = new File(getExternalCacheDir(),
                 FileNameGenerator.generateFileName(feed.getDownload_url())).toString();

@@ -19,6 +19,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.webkit.URLUtil;
 
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.xml.sax.SAXException;
@@ -764,7 +765,7 @@ public class DownloadService extends Service {
             feed.setId(request.getFeedfileId());
             feed.setDownloaded(true);
             feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
-					FeedPreferences.VolumeReductionSetting.OFF, request.getUsername(), request.getPassword()));
+					VolumeReductionSetting.OFF, request.getUsername(), request.getPassword()));
             feed.setPageNr(request.getArguments().getInt(DownloadRequester.REQUEST_ARG_PAGE_NR, 0));
 
             DownloadError reason = null;

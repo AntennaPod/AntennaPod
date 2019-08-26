@@ -54,9 +54,9 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SearchResult;
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -1533,7 +1533,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
                 String affectedFeed = intent.getStringExtra(EXTRA_VOLUME_REDUCTION_AFFECTED_FEED);
                 Serializable volumeReductionExtra = intent.getSerializableExtra(EXTRA_VOLUME_REDUCTION_SETTING);
-                FeedPreferences.VolumeReductionSetting volumeReductionSetting = (FeedPreferences.VolumeReductionSetting) volumeReductionExtra;
+                VolumeReductionSetting volumeReductionSetting = (VolumeReductionSetting) volumeReductionExtra;
 
                 PlaybackVolumeAdaptor playbackVolumeAdaptor = new PlaybackVolumeAdaptor();
                 playbackVolumeAdaptor.adaptVolumeIfNecessary(mediaPlayer, affectedFeed, volumeReductionSetting);

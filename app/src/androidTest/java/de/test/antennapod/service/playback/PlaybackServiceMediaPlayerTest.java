@@ -4,6 +4,7 @@ import android.content.Context;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.MediumTest;
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.test.antennapod.EspressoTestUtils;
 import junit.framework.AssertionFailedError;
 
@@ -129,7 +130,7 @@ public class PlaybackServiceMediaPlayerTest {
     private Playable writeTestPlayable(String downloadUrl, String fileUrl) {
         final Context c = getInstrumentation().getTargetContext();
         Feed f = new Feed(0, null, "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
-        FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, FeedPreferences.VolumeReductionSetting.OFF, null, null);
+        FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, VolumeReductionSetting.OFF, null, null);
         f.setPreferences(prefs);
         f.setItems(new ArrayList<>());
         FeedItem i = new FeedItem(0, "t", "i", "l", new Date(), FeedItem.UNPLAYED, f);
