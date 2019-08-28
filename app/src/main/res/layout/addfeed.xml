@@ -132,8 +132,7 @@
                             android:contentDescription="@string/advanced_search"
                             app:srcCompat="?attr/action_search"
                             android:scaleType="center"
-                            android:layout_marginBottom="4dp"
-                            android:tint="?android:attr/textColorPrimary"/>
+                            android:layout_marginBottom="4dp"/>
 
                     <TextView
                             android:layout_width="match_parent"
@@ -158,8 +157,7 @@
                             android:contentDescription="@string/opml_import_label"
                             app:srcCompat="?attr/av_download"
                             android:scaleType="center"
-                            android:layout_marginBottom="4dp"
-                            android:tint="?android:attr/textColorPrimary"/>
+                            android:layout_marginBottom="4dp"/>
 
                     <TextView
                             android:layout_width="match_parent"
