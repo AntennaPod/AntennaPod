@@ -112,9 +112,6 @@ public class AllEpisodesFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     protected TextView txtvInformation;
 
-    protected TextView txtvInformation;
-    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
-
     boolean showOnlyNewEpisodes() {
         return false;
     }
@@ -352,7 +349,6 @@ public class AllEpisodesFragment extends Fragment {
                 /* Determine if loading more episodes has finished */
                 if (isLoading) {
                     if (totalEpisodeCount > previousTotalEpisodes) {
-                        isLoading = false;
                         isLoading = false;
                         previousTotalEpisodes = totalEpisodeCount;
                     }
