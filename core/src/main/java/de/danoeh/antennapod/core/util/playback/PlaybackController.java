@@ -210,7 +210,7 @@ public abstract class PlaybackController {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(optionalIntent -> {
                     boolean bound = false;
-                    if (!PlaybackService.started) {
+                    if (!PlaybackService.isRunning) {
                         if (optionalIntent.isPresent()) {
                             Log.d(TAG, "Calling start service");
                             ContextCompat.startForegroundService(activity, optionalIntent.get());

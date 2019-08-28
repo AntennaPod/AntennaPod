@@ -70,6 +70,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -117,6 +118,9 @@ public class AllEpisodesFragment extends Fragment {
     protected Disposable disposable;
     private LinearLayoutManager layoutManager;
     protected TextView txtvInformation;
+
+    protected TextView txtvInformation;
+    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     boolean showOnlyNewEpisodes() {
         return false;
@@ -388,13 +392,21 @@ public class AllEpisodesFragment extends Fragment {
         return root;
     }
 
-    private void onFragmentLoaded(List<FeedItem> episodes) {
+    protected void onFragmentLoaded(List<FeedItem> episodes) {
         listAdapter.notifyDataSetChanged();
 
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
         }
         if(feedItemFilter.getValues().length > 0) {
+            txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+            Iconify.addIcons(txtvInformation);
+            txtvInformation.setVisibility(View.VISIBLE);
+        } else {
+            txtvInformation.setVisibility(View.GONE);
+        }
+
+        if (feedItemFilter.getValues().length > 0) {
             txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
             Iconify.addIcons(txtvInformation);
             txtvInformation.setVisibility(View.VISIBLE);
@@ -532,9 +544,8 @@ public class AllEpisodesFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     progLoading.setVisibility(View.GONE);
-                    allEpisodes = data;
-                    displayedEpisodes = feedItemFilter.filter(allEpisodes);
-                    onFragmentLoaded(displayedEpisodes);
+                    episodes = data;
+                    onFragmentLoaded(episodes);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
@@ -547,19 +558,18 @@ public class AllEpisodesFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     progLoading.setVisibility(View.GONE);
-                    allEpisodes.addAll(data);
-                    displayedEpisodes = feedItemFilter.filter(allEpisodes);
-                    onFragmentLoaded(displayedEpisodes);
+                    episodes.addAll(data);
+                    onFragmentLoaded(episodes);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @NonNull
     List<FeedItem> loadData() {
-        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE);
+        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE));
     }
 
     List<FeedItem> loadMoreData() {
-        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE));
     }
 
     void removeNewFlagWithUndo(FeedItem item) {
@@ -595,42 +605,14 @@ public class AllEpisodesFragment extends Fragment {
     }
 
     private void showFilterDialog() {
-        Context context = getContext();
-        final String[] items = context.getResources().getStringArray(R.array.episode_filter_options);
-        final String[] values = context.getResources().getStringArray(R.array.episode_filter_values);
-        final boolean[] checkedItems = new boolean[items.length];
+        FilterDialog filterDialog = new FilterDialog(getContext(), feedItemFilter) {
+            @Override
+            protected void updateFilter(Set<String> filterValues) {
+                feedItemFilter = new FeedItemFilter(filterValues.toArray(new String[filterValues.size()]));
+                loadItems();
+            }
+        };
 
-        final Set<String> filter = new HashSet<>(Arrays.asList(feedItemFilter.getValues()));
-        Iterator<String> it = filter.iterator();
-        while(it.hasNext()) {
-            // make sure we have no empty strings in the filter list
-            if(TextUtils.isEmpty(it.next())) {
-                it.remove();
-            }
-        }
-        for(int i=0; i < values.length; i++) {
-            String value = values[i];
-            if(filter.contains(value)) {
-                checkedItems[i] = true;
-            }
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.filter);
-        builder.setMultiChoiceItems(items, checkedItems, (dialog, which, isChecked) -> {
-            if (isChecked) {
-                filter.add(values[which]);
-            } else {
-                filter.remove(values[which]);
-            }
-        });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            feedItemFilter = new FeedItemFilter(filter.toArray(new String[filter.size()]));
-            displayedEpisodes = feedItemFilter.filter(allEpisodes);
-            page = displayedEpisodes.size() / EPISODES_PER_PAGE + 1;
-            onFragmentLoaded(displayedEpisodes);
-        });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
+        filterDialog.openDialog();
     }
 }

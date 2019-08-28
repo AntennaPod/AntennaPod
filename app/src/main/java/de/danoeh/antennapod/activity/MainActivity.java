@@ -233,6 +233,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
+            loadFragment(AddFeedFragment.TAG, null);
             new Handler().postDelayed(() -> drawerLayout.openDrawer(navDrawer), 1500);
 
             // for backward compatibility, we only change defaults for fresh installs

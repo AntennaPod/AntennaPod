@@ -120,9 +120,6 @@
   <string name="mark_all_read_msg">Позначено всі епізоди як відтворені</string>
   <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як відтворені.</string>
   <string name="mark_all_read_feed_confirmation_msg">Будь ласка, підтвердіть, що ви бажаєте позначити всі епізоди цього подкасту як відтворені. </string>
-  <string name="remove_all_new_flags_label">Позначити всі як переглянуті</string>
-  <string name="removed_all_new_flags_msg">Всі епізоди позначено як переглянуті</string>
-  <string name="remove_all_new_flags_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як переглянуті.</string>
   <string name="show_info_label">Інформація</string>
   <string name="show_feed_settings_label">Показати налаштування подкасту</string>
   <string name="feed_info_label">Інформація про подкаст</string>
@@ -177,8 +174,6 @@
     <item quantity="many">%dепізодів видалено. </item>
     <item quantity="other">%d епізодів видалено.</item>
   </plurals>
-  <string name="remove_new_flag_label">Позначити як переглянутий</string>
-  <string name="removed_new_flag_label">Позначено як переглянутий</string>
   <string name="mark_read_label">Позначити як відтворений</string>
   <string name="marked_as_read_label">Позначено як відтворений</string>
   <plurals name="marked_read_batch_label">
@@ -214,7 +209,6 @@
   <string name="remove_from_favorite_label">Видалити з улюблених</string>
   <string name="removed_from_favorites">Видалено з улюблених</string>
   <string name="visit_website_label">Відкрити сайт</string>
-  <string name="support_label">Підтримати за допомогою Flattr</string>
   <string name="skip_episode_label">Пропустити епізод</string>
   <string name="activate_auto_download">Включити автозавантаження</string>
   <string name="deactivate_auto_download">Виключити автозавантаження</string>
@@ -303,32 +297,6 @@
   <string name="ascending">За зростанням</string>
   <string name="descending">За спаданням</string>
   <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте вилучити всі епізоди з черги.</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Увійти до Flattr</string>
-  <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу AntennaPod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
-  <string name="authenticate_label">Ввісти ім\'я та пароль</string>
-  <string name="return_home_label">Повернення до початку</string>
-  <string name="flattr_auth_success">Вдала авторизація. Тепер ви можете flattr things за допомогою додатку</string>
-  <string name="no_flattr_token_title">Немає flattr token</string>
-  <string name="no_flattr_token_notification_msg">Ваш обліковий запис flattr, здається, не підключений до AntennaPod. Натисніть тут для підключення.</string>
-  <string name="no_flattr_token_msg">Здається ваш обліковий запис flattr не під\'єднано до AntennaPod. Ви можете або під\'єднати її або відкривати web сторінку в браузері</string>
-  <string name="authenticate_now_label">Пароль та логін</string>
-  <string name="action_forbidden_title">Заборонено</string>
-  <string name="action_forbidden_msg">AntennaPod не маэ дозвілу це зробити. Можливо відкликаний доступ до AntennaPod. Або ввідіть логін пароль в налаштуваннях або зробить це на сайті</string>
-  <string name="access_revoked_title">Доступ відкликано</string>
-  <string name="access_revoked_info">Ви відкликали доступ AntennaPod до облікового запису. Для закінчення процессу вам потрібно видалити додаток з затвержденного списку в вашому облікову запису на сайті flattr</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Підтримано через Flattr!</string>
-  <string name="flattr_click_success_count">Flattr\'ed %d things!</string>
-  <string name="flattr_click_success_queue">Підтримано через Flattr: %s.</string>
-  <string name="flattr_click_failure_count">Failed to flattr %d things!</string>
-  <string name="flattr_click_failure">Не підтримано через flattr: %s.</string>
-  <string name="flattr_click_enqueued">Буде підтримано через flattr пізніше</string>
-  <string name="flattring_thing">Flattring %s</string>
-  <string name="flattring_label">AntennaPod is flattring</string>
-  <string name="flattrd_label">AntennaPod has flattr\'ed</string>
-  <string name="flattrd_failed_label">AntennaPod flattr failed</string>
-  <string name="flattr_retrieving_status">Retrieving flattr\'ed things</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити додаток</string>
   <string name="no_playback_plugin_title">Додаток не встановлено</string>
@@ -339,7 +307,6 @@
   <string name="no_items_header_label">В черзі немає епізодів.</string>
   <string name="no_items_label">Додайте епізод, завантаживши його, або довго натиснувши на нього і вибравши \"Додати до черги\".</string>
   <string name="no_feeds_label">Ви ще не підписалися на жодні подкасти.</string>
-  <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
   <string name="no_shownotes_label">До цього епізода немає нотаток.</string>
   <string name="no_run_downloads_head_label">Зараз нічого не завантажується.</string>
   <string name="no_run_downloads_label">Завантажувати епізоди можна з детального перегляда подкаста.</string>
@@ -355,6 +322,7 @@
   <string name="no_new_episodes_label">Коли з’являться нові епізоди, іх буде показано тут.</string>
   <string name="no_fav_episodes_head_label">Немає улюблених епізодів</string>
   <string name="no_fav_episodes_label">Ви можете додавати епізоди до улюблених за допомогою довгого натискання.</string>
+  <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
   <!--Preferences-->
   <string name="storage_pref">Зберігання</string>
   <string name="project_pref">Проект</string>
@@ -362,8 +330,6 @@
   <string name="about_pref">Про програму</string>
   <string name="queue_label">Черга</string>
   <string name="integrations_label">Інтеграції</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Сервіс мікроплатежів</string>
   <string name="automation">Автоматизація</string>
   <string name="download_pref_details">Детально</string>
   <string name="import_export_pref">Імпорт/Експорт</string>
@@ -371,7 +337,6 @@
   <string name="appearance">Вигляд</string>
   <string name="external_elements">Зовнішні елементи</string>
   <string name="interruptions">Тимчасові паузи</string>
-  <string name="buttons">Кнопки керування відтворенням</string>
   <string name="media_player">Медіа програвач</string>
   <string name="pref_episode_cleanup_title">Очищення епізодів</string>
   <string name="pref_episode_cleanup_summary">Епізоди що не знаходяться в черзі та не помічені як улюблені можуть бути видалені якщо Автозавантажувач потребуватиме місце для нових епізодів.</string>
@@ -408,20 +373,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Повторне під’єднання навушників</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Повторне під’єднання блютуз</string>
   <string name="pref_mobileUpdate_title">Мобільне оновлення</string>
-  <string name="pref_mobileUpdate_sum">Дозволити оновлення через оператора зв\'язку</string>
-  <string name="pref_mobileUpdate_nothing">Нічого</string>
-  <string name="pref_mobileUpdate_images">Тільки зображення</string>
-  <string name="pref_mobileUpdate_everything">Все</string>
   <string name="refreshing_label">Оновлення</string>
-  <string name="flattr_settings_label">Налаштування Flattr</string>
-  <string name="pref_flattr_auth_title">Увійти до Flattr</string>
-  <string name="pref_flattr_auth_sum">Увійти в облікову flattr для підтримки авторів напряму з додатку</string>
-  <string name="pref_flattr_this_app_title">Підтримати цей додаток за допомогою Flattr</string>
-  <string name="pref_flattr_this_app_sum">Підтримайте розробку AntennaPod за допомогою flattr. Дякую!</string>
-  <string name="pref_revokeAccess_title">Відкликати доступ</string>
-  <string name="pref_revokeAccess_sum">Відкликати дозвіл на доступ до вашого flattr з цього додатку</string>
-  <string name="pref_auto_flattr_title">Automatic Flattr</string>
-  <string name="pref_auto_flattr_sum">Налаштування автоматичного заохочення авторів через сервіс flattr</string>
   <string name="user_interface_label">Вигляд</string>
   <string name="pref_set_theme_title">Обрати тему</string>
   <string name="pref_nav_drawer_title">Налаштувати меню навігації</string>
@@ -527,11 +479,6 @@
   <string name="back_button_go_to_page_title">Вибрати сторінку</string>
   <string name="pref_delete_removes_from_queue_title">Видалення з черги видалених епізодів</string>
   <string name="pref_delete_removes_from_queue_sum">Автоматично видаляти епізод із черги, коли він буде видалений.</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
-  <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
-  <string name="auto_flattr_ater_beginning">Заохотити автора через Flattr коли починається відтворення</string>
-  <string name="auto_flattr_ater_end">Заохотити автора через Flattr коли закінчується відтворення</string>
   <!--Search-->
   <string name="search_hint">Пошук епізодів</string>
   <string name="found_in_shownotes_label">Знайдено в нотатках епізода</string>
@@ -681,9 +628,10 @@
   <string name="progress_upgrading_database">Оновлення бази даних</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">Пошук в iTunes</string>
-  <string name="filter">Фільтр</string>
   <string name="search_fyyd_label">Шукати в fyyd</string>
+  <string name="filter">Фільтр</string>
   <!--Episodes apply actions-->
   <string name="all_label">Всі</string>
   <string name="selected_all_label">Обрано всі епізоди</string>
