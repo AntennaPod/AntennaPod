@@ -12,12 +12,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,9 +39,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -106,9 +101,7 @@ public class AllEpisodesFragment extends Fragment {
     EmptyViewHandler emptyView;
 
     @NonNull
-    List<FeedItem> allEpisodes = new ArrayList<>();
-    @NonNull
-    List<FeedItem> displayedEpisodes = new ArrayList<>();
+    List<FeedItem> episodes = new ArrayList<>();
     @NonNull
     private List<Downloader> downloaderList = new ArrayList<>();
 
@@ -229,11 +222,11 @@ public class AllEpisodesFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
         MenuItem markAllRead = menu.findItem(R.id.mark_all_read_item);
         if (markAllRead != null) {
-            markAllRead.setVisible(!showOnlyNewEpisodes() && !displayedEpisodes.isEmpty());
+            markAllRead.setVisible(!showOnlyNewEpisodes() && !episodes.isEmpty());
         }
         MenuItem removeAllNewFlags = menu.findItem(R.id.remove_all_new_flags_item);
         if (removeAllNewFlags != null) {
-            removeAllNewFlags.setVisible(showOnlyNewEpisodes() && !displayedEpisodes.isEmpty());
+            removeAllNewFlags.setVisible(showOnlyNewEpisodes() && !episodes.isEmpty());
         }
     }
 
@@ -398,7 +391,7 @@ public class AllEpisodesFragment extends Fragment {
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
         }
-        if(feedItemFilter.getValues().length > 0) {
+        if (feedItemFilter.getValues().length > 0) {
             txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
             Iconify.addIcons(txtvInformation);
             txtvInformation.setVisibility(View.VISIBLE);
@@ -434,21 +427,21 @@ public class AllEpisodesFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return displayedEpisodes.size();
+            return episodes.size();
         }
 
         @Override
         public FeedItem getItem(int position) {
-            if (0 <= position && position < displayedEpisodes.size()) {
-                return displayedEpisodes.get(position);
+            if (0 <= position && position < episodes.size()) {
+                return episodes.get(position);
             }
             return null;
         }
 
         @Override
         public LongList getItemsIds() {
-            LongList ids = new LongList(displayedEpisodes.size());
-            for (FeedItem episode : displayedEpisodes) {
+            LongList ids = new LongList(episodes.size());
+            for (FeedItem episode : episodes) {
                 ids.add(episode.getId());
             }
             return ids;
@@ -474,7 +467,7 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public LongList getQueueIds() {
             LongList queueIds = new LongList();
-            for (FeedItem item : displayedEpisodes) {
+            for (FeedItem item : episodes) {
                 if (item.isTagged(FeedItem.TAG_QUEUE)) {
                     queueIds.add(item.getId());
                 }
@@ -488,11 +481,11 @@ public class AllEpisodesFragment extends Fragment {
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         for (FeedItem item : event.items) {
-            int pos = FeedItemUtil.indexOfItemWithId(displayedEpisodes, item.getId());
+            int pos = FeedItemUtil.indexOfItemWithId(episodes, item.getId());
             if (pos >= 0) {
-                displayedEpisodes.remove(pos);
+                episodes.remove(pos);
                 if (shouldUpdatedItemRemainInList(item)) {
-                    displayedEpisodes.add(pos, item);
+                    episodes.add(pos, item);
                     listAdapter.notifyItemChanged(pos);
                 } else {
                     listAdapter.notifyItemRemoved(pos);
@@ -515,7 +508,7 @@ public class AllEpisodesFragment extends Fragment {
         }
         if (update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
-                int pos = FeedItemUtil.indexOfItemWithMediaId(displayedEpisodes, mediaId);
+                int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if (pos >= 0) {
                     listAdapter.notifyItemChanged(pos);
                 }
