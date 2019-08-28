@@ -85,7 +85,6 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
     private static int page = 1;
-    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
@@ -103,6 +102,7 @@ public class AllEpisodesFragment extends Fragment {
     protected Disposable disposable;
     private LinearLayoutManager layoutManager;
     protected TextView txtvInformation;
+    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     boolean showOnlyNewEpisodes() {
         return false;
