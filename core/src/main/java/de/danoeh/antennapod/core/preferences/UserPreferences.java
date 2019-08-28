@@ -17,7 +17,9 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
@@ -27,6 +29,7 @@ import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 /**
@@ -57,6 +60,8 @@ public class UserPreferences {
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
+    public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
+    public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -78,14 +83,13 @@ public class UserPreferences {
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
-    public static final String PREF_MOBILE_UPDATE = "prefMobileUpdateAllowed";
+    private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
-    public static final String PREF_ENABLE_AUTODL_ON_MOBILE = "prefEnableAutoDownloadOnMobile";
     private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     private static final String PREF_PROXY_TYPE = "prefProxyType";
     private static final String PREF_PROXY_HOST = "prefProxyHost";
@@ -379,16 +383,63 @@ public class UserPreferences {
         return prefs.getString(PREF_UPDATE_INTERVAL, "").equals("0");
     }
 
-    public static String getMobileUpdatesEnabled() {
-        return prefs.getString(PREF_MOBILE_UPDATE, "images");
+    private static boolean isAllowMobileFor(String type) {
+        HashSet<String> defaultValue = new HashSet<>();
+        defaultValue.add("images");
+        Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
+        return allowed.contains(type);
     }
 
-    public static boolean isAllowMobileUpdate() {
-        return getMobileUpdatesEnabled().equals("everything");
+    public static boolean isAllowMobileFeedRefresh() {
+        return isAllowMobileFor("feed_refresh");
+    }
+
+    public static boolean isAllowMobileEpisodeDownload() {
+        return isAllowMobileFor("episode_download");
+    }
+
+    public static boolean isAllowMobileAutoDownload() {
+        return isAllowMobileFor("auto_download");
+    }
+
+    public static boolean isAllowMobileStreaming() {
+        return isAllowMobileFor("streaming");
     }
 
     public static boolean isAllowMobileImages() {
-        return isAllowMobileUpdate() || getMobileUpdatesEnabled().equals("images");
+        return isAllowMobileFor("images");
+    }
+
+    private static void setAllowMobileFor(String type, boolean allow) {
+        HashSet<String> defaultValue = new HashSet<>();
+        defaultValue.add("images");
+        Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
+        if (allow) {
+            allowed.add(type);
+        } else {
+            allowed.remove(type);
+        }
+        prefs.edit().putStringSet(PREF_MOBILE_UPDATE, allowed).apply();
+    }
+
+    public static void setAllowMobileFeedRefresh(boolean allow) {
+        setAllowMobileFor("feed_refresh", allow);
+    }
+
+    public static void setAllowMobileEpisodeDownload(boolean allow) {
+        setAllowMobileFor("episode_download", allow);
+    }
+
+    public static void setAllowMobileAutoDownload(boolean allow) {
+        setAllowMobileFor("auto_download", allow);
+    }
+
+    public static void setAllowMobileStreaming(boolean allow) {
+        setAllowMobileFor("streaming", allow);
+    }
+
+    public static void setAllowMobileImages(boolean allow) {
+        setAllowMobileFor("images", allow);
     }
 
     public static int getParallelDownloads() {
@@ -419,11 +470,6 @@ public class UserPreferences {
     public static boolean isEnableAutodownloadWifiFilter() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
-
-    public static boolean isEnableAutodownloadOnMobile() {
-        return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_MOBILE, false);
-    }
-
 
     public static int getImageCacheSize() {
         String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);
@@ -491,7 +537,8 @@ public class UserPreferences {
     }
 
     public static boolean isQueueLocked() {
-        return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
+        return prefs.getBoolean(PREF_QUEUE_LOCKED, false)
+                || isQueueKeepSorted();
     }
 
     public static void setFastForwardSecs(int secs) {
@@ -865,5 +912,50 @@ public class UserPreferences {
 
     public static boolean timeRespectsSpeed() {
         return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
+    }
+
+    /**
+     * Returns if the queue is in keep sorted mode.
+     *
+     * @see #getQueueKeepSortedOrder()
+     */
+    public static boolean isQueueKeepSorted() {
+        return prefs.getBoolean(PREF_QUEUE_KEEP_SORTED, false);
+    }
+
+    /**
+     * Enables/disables the keep sorted mode of the queue.
+     *
+     * @see #setQueueKeepSortedOrder(SortOrder)
+     */
+    public static void setQueueKeepSorted(boolean keepSorted) {
+        prefs.edit()
+                .putBoolean(PREF_QUEUE_KEEP_SORTED, keepSorted)
+                .apply();
+    }
+
+    /**
+     * Returns the sort order for the queue keep sorted mode.
+     * Note: This value is stored independently from the keep sorted state.
+     *
+     * @see #isQueueKeepSorted()
+     */
+    public static SortOrder getQueueKeepSortedOrder() {
+        String sortOrderStr = prefs.getString(PREF_QUEUE_KEEP_SORTED_ORDER, "use-default");
+        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
+    }
+
+    /**
+     * Sets the sort order for the queue keep sorted mode.
+     *
+     * @see #setQueueKeepSorted(boolean)
+     */
+    public static void setQueueKeepSortedOrder(SortOrder sortOrder) {
+        if (sortOrder == null) {
+            return;
+        }
+        prefs.edit()
+                .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
+                .apply();
     }
 }

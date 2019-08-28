@@ -66,7 +66,6 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled(autoDownload);
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled(autoDownload);
         findPreference(UserPreferences.PREF_EPISODE_CLEANUP).setEnabled(autoDownload);
-        findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_MOBILE).setEnabled(autoDownload);
         setSelectedNetworksEnabled(autoDownload && UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
@@ -89,7 +88,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
             return;
         }
         Collections.sort(networks, (x, y) ->
-                blankIfNull(x.SSID).compareTo(blankIfNull(y.SSID)));
+                blankIfNull(x.SSID).compareToIgnoreCase(blankIfNull(y.SSID)));
         selectedNetworks = new CheckBoxPreference[networks.size()];
         List<String> prefValues = Arrays.asList(UserPreferences
                 .getAutodownloadSelectedNetworks());

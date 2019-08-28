@@ -21,8 +21,8 @@
   <string name="playback_history_label">تاریخچه پخش</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">هم‌گام‌سازی با دیگر دستگاه‌ها</string>
-  <string name="gpodnet_auth_label">gpodder.net Login</string>
-  <string name="free_space_label">%1$s free </string>
+  <string name="gpodnet_auth_label">gpodder.net ورود</string>
+  <string name="free_space_label">%1$s تخفیف </string>
   <string name="episode_cache_full_title">ظرفیت حافظه پنهان تکمیل شده است</string>
   <string name="episode_cache_full_message">حد مجاز  تکمیل شده است . شما می توانید اندازه حافظه پنهان را در تنظیمات افزایش دهید.</string>
   <string name="synchronizing">در حال هم‌گام‌سازی</string>
@@ -66,6 +66,7 @@
   <string name="cover_label">تصویر</string>
   <string name="error_label">خطا</string>
   <string name="error_msg_prefix">یک خطا رخ داد:</string>
+  <string name="needs_storage_permission">برای انجام فرایند دسترسی با حافظه نیازمند است</string>
   <string name="refresh_label">تازه کردن</string>
   <string name="external_storage_error_msg">هیچ  فضای ذخیره سازی خارجی موجود نیست لطفا مطمئن شوید که کارت حافظه به درستی نصب شده است تا برنامه بتواند به درستی کار کند.</string>
   <string name="chapters_label">فصل ها</string>
@@ -88,15 +89,20 @@
   <string name="parallel_downloads_suffix">\u0020بارگیری هم‌زمان</string>
   <string name="feed_auto_download_global">پیش فرض جهانی</string>
   <string name="feed_auto_download_always">همیشه</string>
-  <string name="feed_auto_download_never">Never</string>
+  <string name="feed_auto_download_never">هیچگاه</string>
   <string name="send_label">ارسال...</string>
   <string name="episode_cleanup_never">هرگز</string>
   <string name="episode_cleanup_queue_removal">وقتی که در صف نیست</string>
   <string name="episode_cleanup_after_listening">بعد از تمام شدن</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">۱ ساعت پس از پایان</item>
+    <item quantity="other">%d ساعت پس از پایان</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">%dروز بعد از اتمام</item>
     <item quantity="other">%dروز بعد از اتمام</item>
   </plurals>
+  <string name="num_selected_label">%d انتخاب شده</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -108,8 +114,7 @@
   <string name="mark_all_read_label">علامت گذاری همه به عنوان پخش شده</string>
   <string name="mark_all_read_msg">همه قسمت‌ها به عنوان پخش شده علامت‌گذاری شد</string>
   <string name="mark_all_read_confirmation_msg">لطفا تأیید کنید که می‌خواهید تمام قسمت‌ها را به عنوان پخش شده علامت بزنید.</string>
-  <string name="remove_all_new_flags_label">علامت گذاری همه به عنوان دیده شده</string>
-  <string name="remove_all_new_flags_confirmation_msg">لطفا تأیید کنید که می‌خواهید تمام قسمت‌ها را به عنوان دیده شده علامت بزنید.</string>
+  <string name="mark_all_read_feed_confirmation_msg">لطفا تأیید کنید که میخواهید تمام قسمتهای این پادکست را بعنوان پخش شده علامت بزنید.</string>
   <string name="show_info_label">نمایش اطلاعات</string>
   <string name="show_feed_settings_label">نمایش تنظیمات پادکست</string>
   <string name="feed_info_label">اطلاعات پادکست</string>
@@ -118,13 +123,18 @@
   <string name="remove_feed_label">پاک‌کردن پادکست</string>
   <string name="share_label">اشتراک گذاری...</string>
   <string name="share_link_label">هم‌رسانی نشانی پادکست</string>
+  <string name="share_link_with_position_label">اشتراک گذاری URL قسمت با موقعیت پخش</string>
   <string name="share_file_label">اشتراک گذاری فایل</string>
   <string name="share_feed_url_label">اشتراک گذاری URL خوراک </string>
   <string name="share_item_url_label">هم‌رسانی نشانی پرونده رسانه</string>
+  <string name="share_item_url_with_position_label">اشتراک گذاری URL فایل قسمت با موقعیت پخش</string>
+  <string name="feed_delete_confirmation_msg">لطفا تأیید کنید که میخواهید پادکست \"%1$s\" و تمام قسمتهای آن که دانلود کرده اید را حذف کنید.</string>
   <string name="feed_remover_msg">در حال پاک‌کردن پادکست</string>
   <string name="load_complete_feed">تازه‌سازی تمام پادکست</string>
   <string name="hide_episodes_title">پنهان کردن قسمت‌ها</string>
   <string name="batch_edit">ویرایش گروهی</string>
+  <string name="select_all_above">انتخاب همه بالایی ها</string>
+  <string name="select_all_below">انتخاب همه پایینی ها</string>
   <string name="hide_unplayed_episodes_label">پخش نشده</string>
   <string name="hide_paused_episodes_label">متوقف شد</string>
   <string name="hide_played_episodes_label">پخش شد</string>
@@ -133,10 +143,16 @@
   <string name="hide_downloaded_episodes_label">بارگیری شده</string>
   <string name="hide_not_downloaded_episodes_label">بارگیری نشده</string>
   <string name="hide_has_media_label">دارای رسانه</string>
+  <string name="hide_is_favorite_label">مورد علاقه</string>
   <string name="filtered_label">فیلتر شده</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} آخرین تازه‌سازی ناموفق بود</string>
   <string name="open_podcast">باز کردن پادکست</string>
   <!--actions on feeditems-->
   <string name="download_label">بارگیری</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">بارگیری %dقسمت.</item>
+    <item quantity="other">بارگیری %d قسمت.</item>
+  </plurals>
   <string name="play_label">پخش</string>
   <string name="pause_label">مکث</string>
   <string name="stop_label">توقف</string>
@@ -144,8 +160,11 @@
   <string name="remove_label">حذف</string>
   <string name="delete_label">حذف</string>
   <string name="delete_failed">فایل حذف نشد.! راه اندازی مجدد دستگاه می تواند کمک کند.</string>
-  <string name="remove_episode_lable">پاک کردن قسمت</string>
-  <string name="removed_new_flag_label">علامت گذاری به عنوان دیده شده</string>
+  <string name="delete_episode_label">حذف قسمت</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d قسمت حذف شد.</item>
+    <item quantity="other">%d قسمت حذف شد.</item>
+  </plurals>
   <string name="mark_read_label">علامت گذاری به عنوان پخش شده</string>
   <string name="marked_as_read_label">بعنوان پخش شده علامت گذاری شد</string>
   <string name="mark_unread_label">علامت گذاری به عنوان پخش نشده</string>
@@ -212,9 +231,6 @@
   <string name="episode_title">عنوان قسمت</string>
   <string name="feed_title">عنوان پادکست</string>
   <string name="random">تصادفی</string>
-  <!--Flattr-->
-  <string name="return_home_label">بازگشت به خانه</string>
-  <!--Flattr-->
   <!--Variable Speed-->
   <!--Empty list labels-->
   <!--Preferences-->
@@ -227,7 +243,6 @@
   <string name="import_export_pref">وارد/صادر کرد</string>
   <string name="appearance">نمایش</string>
   <string name="external_elements">عناصر خارجی</string>
-  <string name="buttons">دکمه‌های کنترل پخش</string>
   <string name="media_player">پخش‌کننده رسانه</string>
   <string name="pref_auto_delete_title">حذف خودکار</string>
   <string name="playback_pref">پخش</string>
@@ -263,7 +278,6 @@
   <string name="media_player_builtin">پخش‌کننده پیش‌فرض اندروید</string>
   <string name="stop_playback">توقف پخش</string>
   <string name="continue_playback">ادامه پخش صدا</string>
-  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">جستجو برای قسمت‌ها</string>
   <string name="search_status_no_results">نتیجه‌ای یافت نشد</string>
@@ -297,11 +311,13 @@
   <!--Feed information screen-->
   <!--Progress information-->
   <!--AntennaPodSP-->
+  <!--Add podcast fragment-->
   <!--Episodes apply actions-->
   <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
+  <!--Subscriptions fragment-->
   <!--Database import/export-->
   <!--Casting-->
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->

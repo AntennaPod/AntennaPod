@@ -29,4 +29,13 @@ public class TextUtils {
         return false;
     }
 
+    /**
+     * Returns <code>true</code> if the string is <code>null</code> or has zero length.
+     *
+     * @param str The string to be examined, can be <code>null</code>.
+     * @return <code>true</code> if the string is <code>null</code> or has zero length.
+     */
+    public static boolean isEmpty(CharSequence str) {
+        return str == null || str.length() == 0;
+    }
 }

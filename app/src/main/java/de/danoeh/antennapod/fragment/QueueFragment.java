@@ -49,6 +49,7 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -276,6 +277,19 @@ public class QueueFragment extends Fragment {
 
             MenuItemUtils.refreshLockItem(getActivity(), menu);
 
+            // Show Lock Item only if queue is sorted manually
+            boolean keepSorted = UserPreferences.isQueueKeepSorted();
+            MenuItem lockItem = menu.findItem(R.id.queue_lock);
+            lockItem.setVisible(!keepSorted);
+
+            // Random sort is not supported in keep sorted mode
+            MenuItem sortRandomItem = menu.findItem(R.id.queue_sort_random);
+            sortRandomItem.setVisible(!keepSorted);
+
+            // Set keep sorted checkbox
+            MenuItem keepSortedItem = menu.findItem(R.id.queue_keep_sorted);
+            keepSortedItem.setChecked(keepSorted);
+
             isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
     }
@@ -325,37 +339,50 @@ public class QueueFragment extends Fragment {
                             EpisodesApplyActionFragment.newInstance(queue, ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE));
                     return true;
                 case R.id.queue_sort_episode_title_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.EPISODE_TITLE_ASC, true);
+                    setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
                     return true;
                 case R.id.queue_sort_episode_title_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.EPISODE_TITLE_DESC, true);
+                    setSortOrder(SortOrder.EPISODE_TITLE_Z_A);
                     return true;
                 case R.id.queue_sort_date_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_ASC, true);
+                    setSortOrder(SortOrder.DATE_OLD_NEW);
                     return true;
                 case R.id.queue_sort_date_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_DESC, true);
+                    setSortOrder(SortOrder.DATE_NEW_OLD);
                     return true;
                 case R.id.queue_sort_duration_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_ASC, true);
+                    setSortOrder(SortOrder.DURATION_SHORT_LONG);
                     return true;
                 case R.id.queue_sort_duration_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_DESC, true);
+                    setSortOrder(SortOrder.DURATION_LONG_SHORT);
                     return true;
                 case R.id.queue_sort_feed_title_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.FEED_TITLE_ASC, true);
+                    setSortOrder(SortOrder.FEED_TITLE_A_Z);
                     return true;
                 case R.id.queue_sort_feed_title_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.FEED_TITLE_DESC, true);
+                    setSortOrder(SortOrder.FEED_TITLE_Z_A);
                     return true;
                 case R.id.queue_sort_random:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.RANDOM, true);
+                    setSortOrder(SortOrder.RANDOM);
                     return true;
                 case R.id.queue_sort_smart_shuffle_asc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.SMART_SHUFFLE_ASC, true);
+                    setSortOrder(SortOrder.SMART_SHUFFLE_OLD_NEW);
                     return true;
                 case R.id.queue_sort_smart_shuffle_desc:
-                    QueueSorter.sort(getActivity(), QueueSorter.Rule.SMART_SHUFFLE_DESC, true);
+                    setSortOrder(SortOrder.SMART_SHUFFLE_NEW_OLD);
+                    return true;
+                case R.id.queue_keep_sorted:
+                    boolean keepSortedOld = UserPreferences.isQueueKeepSorted();
+                    boolean keepSortedNew = !keepSortedOld;
+                    UserPreferences.setQueueKeepSorted(keepSortedNew);
+                    if (keepSortedNew) {
+                        SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
+                        QueueSorter.sort(sortOrder, true);
+                        recyclerAdapter.setLocked(true);
+                    } else {
+                        recyclerAdapter.setLocked(UserPreferences.isQueueLocked());
+                    }
+                    getActivity().invalidateOptionsMenu();
                     return true;
                 default:
                     return false;
@@ -365,6 +392,15 @@ public class QueueFragment extends Fragment {
         }
     }
 
+    /**
+     * This method is called if the user clicks on a sort order menu item.
+     *
+     * @param sortOrder New sort order.
+     */
+    private void setSortOrder(SortOrder sortOrder) {
+        UserPreferences.setQueueKeepSortedOrder(sortOrder);
+        QueueSorter.sort(sortOrder, true);
+    }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -670,5 +706,4 @@ public class QueueFragment extends Fragment {
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
-
 }

@@ -5,21 +5,21 @@ package de.danoeh.antennapod.core.storage;
  * or something went wrong while processing the request.
  */
 public class DownloadRequestException extends Exception {
+    private static final long serialVersionUID = 1L;
 
-	public DownloadRequestException() {
-		super();
-	}
+    public DownloadRequestException() {
+        super();
+    }
 
-	public DownloadRequestException(String detailMessage, Throwable throwable) {
-		super(detailMessage, throwable);
-	}
+    public DownloadRequestException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-	public DownloadRequestException(String detailMessage) {
-		super(detailMessage);
-	}
+    public DownloadRequestException(String message) {
+        super(message);
+    }
 
-	public DownloadRequestException(Throwable throwable) {
-		super(throwable);
-	}
-
+    public DownloadRequestException(Throwable cause) {
+        super(cause);
+    }
 }

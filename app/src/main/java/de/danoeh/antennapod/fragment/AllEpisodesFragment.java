@@ -112,6 +112,9 @@ public class AllEpisodesFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     protected TextView txtvInformation;
 
+    protected TextView txtvInformation;
+    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
+
     boolean showOnlyNewEpisodes() {
         return false;
     }
@@ -382,12 +385,20 @@ public class AllEpisodesFragment extends Fragment {
         return root;
     }
 
-    private void onFragmentLoaded(List<FeedItem> episodes) {
+    protected void onFragmentLoaded(List<FeedItem> episodes) {
         listAdapter.notifyDataSetChanged();
 
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
         }
+        if (feedItemFilter.getValues().length > 0) {
+            txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+            Iconify.addIcons(txtvInformation);
+            txtvInformation.setVisibility(View.VISIBLE);
+        } else {
+            txtvInformation.setVisibility(View.GONE);
+        }
+
         if (feedItemFilter.getValues().length > 0) {
             txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
             Iconify.addIcons(txtvInformation);
@@ -540,19 +551,18 @@ public class AllEpisodesFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     progLoading.setVisibility(View.GONE);
-                    allEpisodes.addAll(data);
-                    displayedEpisodes = feedItemFilter.filter(allEpisodes);
-                    onFragmentLoaded(displayedEpisodes);
+                    episodes.addAll(data);
+                    onFragmentLoaded(episodes);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @NonNull
     List<FeedItem> loadData() {
-        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT) );
+        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE));
     }
 
     List<FeedItem> loadMoreData() {
-        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes(( page - 1 ) * EPISODES_PER_PAGE, EPISODES_PER_PAGE ));
+        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE));
     }
 
     void removeNewFlagWithUndo(FeedItem item) {

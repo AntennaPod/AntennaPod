@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.LightingColorFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
@@ -30,6 +32,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -393,6 +396,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         this.selectedDownloadUrl = feed.getDownload_url();
         EventDistributor.getInstance().register(listener);
         ListView listView = findViewById(R.id.listview);
+        listView.setSelector(android.R.color.transparent);
         LayoutInflater inflater = LayoutInflater.from(this);
         View header = inflater.inflate(R.layout.onlinefeedview_header, listView, false);
         listView.addHeaderView(header);
@@ -400,6 +404,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
         ImageView cover = header.findViewById(R.id.imgvCover);
+        ImageView headerBackground = header.findViewById(R.id.imgvBackground);
+        header.findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
+        header.findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
+        headerBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
         TextView title = header.findViewById(R.id.txtvTitle);
         TextView author = header.findViewById(R.id.txtvAuthor);
         TextView description = header.findViewById(R.id.txtvDescription);
@@ -417,6 +425,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                         .fitCenter()
                         .dontAnimate())
                     .into(cover);
+            Glide.with(this)
+                    .load(feed.getImageUrl())
+                    .apply(new RequestOptions()
+                            .placeholder(R.color.image_readability_tint)
+                            .error(R.color.image_readability_tint)
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .transform(new FastBlurTransformation())
+                            .dontAnimate())
+                    .into(headerBackground);
         }
 
         title.setText(feed.getTitle());
@@ -442,6 +459,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
                 }
                 setSubscribeButtonState(feed);
+            }
+        });
+
+        final int MAX_LINES_COLLAPSED = 10;
+        description.setMaxLines(MAX_LINES_COLLAPSED);
+        description.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                    && description.getMaxLines() > MAX_LINES_COLLAPSED) {
+                description.setMaxLines(MAX_LINES_COLLAPSED);
+            } else {
+                description.setMaxLines(2000);
             }
         });
 

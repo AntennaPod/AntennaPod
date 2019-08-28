@@ -1,5 +1,5 @@
-AntennaPod est un lecteur et gestionnaire de podcast permettant l'accès à des millions de podcast gratuits ou payants produit aussi bien par des podcasters indépendants que de gros éditeurs comme la BBC, NPR ou CNN. Ajoutez, importez et exportez leurs flux facilement à partir d'ITunes, de fichiers OPML ou simplement à partir de liens RSS. Gagnez du temps, préservez votre batterie et consommation internet grâce à une automatisation puissante des téléchargements (date, fréquence, choix du réseau WiFi, etc...) et des suppressions d’épisodes écoutés (selon vos critères)<br>
-Avant tout : téléchargez, streamez ou ajoutez à la liste de lecture vos épisodes et écoutez les comme vous voulez grâce au réglage de vitesse de lecture, au support des chapitres et au minuteur d'arrêt. Vous pouvez même montrer votre appréciation aux créateurs de contenu avec notre intégration de Flattr.
+AntennaPod est un lecteur de podcast permettant l'accès à des millions de podcast gratuits ou payants produit aussi bien par des podcasters indépendants que des éditeurs professionnels comme la BBC, NPR ou CNN. Ajoutez, importez et exportez leurs flux facilement à partir d'ITunes, de fichiers OPML ou simplement à partir de liens RSS. Economisez votre temps, votre batterie et votre consommation de données grâce à l'automatisation des téléchargements (date, fréquence, choix du réseau WiFi, etc...) et de la suppression des épisodes (selon vos critères)<br>
+Avant tout : téléchargez, streamez ou ajoutez à la liste de lecture vos épisodes et écoutez les comme vous voulez grâce au réglage de vitesse de lecture, au support des chapitres et au minuteur d'arrêt.
 
 Conçu par des fans de podcast, AntennaPod est gratuit dans tous les sens du terme : open source, gratuit et sans publicité.
 
@@ -15,7 +15,6 @@ SUIVEZ, PARTAGEZ & PROFITEZ<br>
 &#8226; Marquer les meilleurs épisodes en tant que favoris<br>
 &#8226; Retrouvez un épisode à partir de l'historique de lecture ou en recherchant parmi les titres et commentaires des épisodes précédents<br>
 &#8226; Partagez vos épisodes et flux sur les réseaux sociaux, par email, sur gPodder.net ou en les exportant au format OPML<br>
-&#8226; Soutenez les créateurs de contenu avec l'intégration à Flattr et la possibilité de flatter automatiquement
 
 CONTRÔLER LE SYSTÈME<br>
 &#8226; Prenez le contrôle en automatisant vos téléchargements : choix des flux, restriction de la connexion mobile, sélection du réseau WIFI à utiliser, uniquement durant la recharge et spécifiez la fréquence de mise à jour vous-même<br>

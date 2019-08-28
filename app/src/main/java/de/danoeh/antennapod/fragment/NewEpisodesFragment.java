@@ -100,6 +100,12 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         menu.removeItem(R.id.filter_items);
     }
 
+    @Override
+    protected void onFragmentLoaded(List<FeedItem> episodes) {
+        super.onFragmentLoaded(episodes);
+        txtvInformation.setVisibility(View.GONE);
+    }
+
     @NonNull
     @Override
     protected List<FeedItem> loadData() {

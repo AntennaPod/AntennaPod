@@ -1,5 +1,8 @@
-- Added configurable behavior of the back button
-- Added delete option to episode's context menu
-- New UI for batch edit feature
-- Set number of columns in subscription list
-- Lots of bug fixes
+- Display episode image on widget (by @brad)
+- Added checkbox to keep queue sorted (by @damoasda)
+- New UI for "Add podcast" screen (by @ByteHamster)
+- Added batch editing to the queue (by @ByteHamster)
+- Added option to adapt remaining time to playback speed (by @CedricCabessa)
+- Removed broken Flattr integration (by @ByteHamster)
+- Added filter to "All episodes" list (by @jhunnius)
+- Tons of bug fixes and performance improvements
