@@ -379,13 +379,6 @@ public class AllEpisodesFragment extends Fragment {
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
         }
-        if (feedItemFilter.getValues().length > 0) {
-            txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
-            Iconify.addIcons(txtvInformation);
-            txtvInformation.setVisibility(View.VISIBLE);
-        } else {
-            txtvInformation.setVisibility(View.GONE);
-        }
 
         if (feedItemFilter.getValues().length > 0) {
             txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
