@@ -415,9 +415,9 @@ public class UserPreferences {
         defaultValue.add("images");
         Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
         if (allow) {
-            allowed.remove(type);
-        } else {
             allowed.add(type);
+        } else {
+            allowed.remove(type);
         }
         prefs.edit().putStringSet(PREF_MOBILE_UPDATE, allowed).apply();
     }
