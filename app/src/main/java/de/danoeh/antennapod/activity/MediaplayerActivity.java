@@ -357,7 +357,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             menu.findItem(R.id.audio_controls).setIcon(new IconDrawable(this,
                     FontAwesomeIcons.fa_sliders).color(textColor).actionBarSize());
         } else {
-            menu.findItem(R.id.audio_controls).setVisible(false);
+            menu.findItem(R.id.audio_controls).setIcon(new IconDrawable(this,
+                    FontAwesomeIcons.fa_sliders).color(0xffffffff).actionBarSize());
         }
 
         return true;
@@ -443,8 +444,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         }
                         break;
                     case R.id.audio_controls:
-                        PlaybackControlsDialog playbackControlsDialog = new PlaybackControlsDialog();
-                        playbackControlsDialog.show(getSupportFragmentManager(), "playback_controls");
+                        boolean isPlayingVideo = controller.getMedia().getMediaType() == MediaType.VIDEO;
+                        PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance(isPlayingVideo);
+                        dialog.show(getSupportFragmentManager(), "playback_controls");
                         break;
                     case R.id.visit_website_item:
                         Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
@@ -518,9 +520,10 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return;
         }
 
-        int currentPosition = TimeSpeedConverter.convert(controller.getPosition());
-        int duration = TimeSpeedConverter.convert(controller.getDuration());
-        int remainingTime = TimeSpeedConverter.convert(
+        TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
+        int currentPosition = converter.convert(controller.getPosition());
+        int duration = converter.convert(controller.getDuration());
+        int remainingTime = converter.convert(
                 controller.getDuration() - controller.getPosition());
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == PlaybackService.INVALID_TIME ||
@@ -676,14 +679,15 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     return;
                 }
 
+                TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
                 String length;
                 if (showTimeLeft) {
-                    int remainingTime = TimeSpeedConverter.convert(
+                    int remainingTime = converter.convert(
                             media.getDuration() - media.getPosition());
 
                     length = "-" + Converter.getDurationStringLong(remainingTime);
                 } else {
-                    int duration = TimeSpeedConverter.convert(media.getDuration());
+                    int duration = converter.convert(media.getDuration());
                     length = Converter.getDurationStringLong(duration);
                 }
                 txtvLength.setText(length);
@@ -787,7 +791,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
         if (showTimeLeft && prog != 0) {
             int duration = controller.getDuration();
-            int timeLeft = TimeSpeedConverter.convert(duration - (int) (prog * duration));
+            TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
+            int timeLeft = converter.convert(duration - (int) (prog * duration));
             String length = "-" + Converter.getDurationStringLong(timeLeft);
             txtvLength.setText(length);
         }

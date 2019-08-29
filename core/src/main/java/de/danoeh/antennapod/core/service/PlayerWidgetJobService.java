@@ -213,8 +213,9 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
     private String getProgressString(int position, int duration) {
         if (position > 0 && duration > 0) {
-            position = TimeSpeedConverter.convert(position);
-            duration = TimeSpeedConverter.convert(duration);
+            TimeSpeedConverter converter = new TimeSpeedConverter(playbackService.getCurrentPlaybackSpeed());
+            position = converter.convert(position);
+            duration = converter.convert(duration);
             return Converter.getDurationStringLong(position) + " / "
                     + Converter.getDurationStringLong(duration);
         } else {

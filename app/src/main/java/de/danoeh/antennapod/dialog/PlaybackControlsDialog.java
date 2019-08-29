@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
@@ -21,9 +20,19 @@ public class PlaybackControlsDialog extends DialogFragment {
     private static final float PLAYBACK_SPEED_STEP = 0.05f;
     private static final float DEFAULT_MIN_PLAYBACK_SPEED = 0.5f;
     private static final float DEFAULT_MAX_PLAYBACK_SPEED = 2.5f;
-    private static final String TAG = "AudioControlsDialog";
+    private static final String ARGUMENT_IS_PLAYING_VIDEO = "isPlayingVideo";
 
     private PlaybackController controller;
+    private MaterialDialog dialog;
+    private boolean isPlayingVideo;
+
+    public static PlaybackControlsDialog newInstance(boolean isPlayingVideo) {
+        Bundle arguments = new Bundle();
+        arguments.putBoolean(ARGUMENT_IS_PLAYING_VIDEO, isPlayingVideo);
+        PlaybackControlsDialog dialog = new PlaybackControlsDialog();
+        dialog.setArguments(arguments);
+        return dialog;
+    }
 
     public PlaybackControlsDialog() {
         // Empty constructor required for DialogFragment
@@ -34,6 +43,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         super.onStart();
         controller = new PlaybackController(getActivity(), false);
         controller.init();
+        setupUi();
     }
 
     @Override
@@ -46,7 +56,9 @@ public class PlaybackControlsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        MaterialDialog dialog = new MaterialDialog.Builder(getContext())
+        isPlayingVideo = getArguments() != null && getArguments().getBoolean(ARGUMENT_IS_PLAYING_VIDEO);
+
+        dialog = new MaterialDialog.Builder(getContext())
                 .title(R.string.audio_controls)
                 .customView(R.layout.audio_controls, true)
                 .neutralText(R.string.close_label)
@@ -55,7 +67,10 @@ public class PlaybackControlsDialog extends DialogFragment {
                     final SeekBar right = (SeekBar) dialog1.findViewById(R.id.volume_right);
                     UserPreferences.setVolume(left.getProgress(), right.getProgress());
                 }).build();
+        return dialog;
+    }
 
+    private void setupUi() {
         final SeekBar barPlaybackSpeed = (SeekBar) dialog.findViewById(R.id.playback_speed);
         final Button butDecSpeed = (Button) dialog.findViewById(R.id.butDecSpeed);
         butDecSpeed.setOnClickListener(v -> {
@@ -75,13 +90,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         });
 
         final TextView txtvPlaybackSpeed = (TextView) dialog.findViewById(R.id.txtvPlaybackSpeed);
-        float currentSpeed = 1.0f;
-        try {
-            currentSpeed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-        } catch (NumberFormatException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-            UserPreferences.setPlaybackSpeed(String.valueOf(currentSpeed));
-        }
+        float currentSpeed = getCurrentSpeed();
 
         String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
         final float minPlaybackSpeed = availableSpeeds.length > 1 ?
@@ -99,11 +108,17 @@ public class PlaybackControlsDialog extends DialogFragment {
                     float playbackSpeed = progress * PLAYBACK_SPEED_STEP + minPlaybackSpeed;
                     controller.setPlaybackSpeed(playbackSpeed);
                     String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
-                    UserPreferences.setPlaybackSpeed(speedPref);
+
+                    if (isPlayingVideo) {
+                        UserPreferences.setVideoPlaybackSpeed(speedPref);
+                    } else {
+                        UserPreferences.setPlaybackSpeed(speedPref);
+                    }
+
                     String speedStr = String.format("%.2fx", playbackSpeed);
                     txtvPlaybackSpeed.setText(speedStr);
                 } else if (fromUser) {
-                    float speed = Float.valueOf(UserPreferences.getPlaybackSpeed());
+                    float speed = getCurrentSpeed();
                     barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress(
                             (int) ((speed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP)));
                 }
@@ -188,7 +203,12 @@ public class PlaybackControlsDialog extends DialogFragment {
                 controller.setDownmix(isChecked);
             }
         });
+    }
 
-        return dialog;
+    private float getCurrentSpeed() {
+        if (isPlayingVideo) {
+            return UserPreferences.getVideoPlaybackSpeed();
+        }
+        return UserPreferences.getPlaybackSpeed();
     }
 }

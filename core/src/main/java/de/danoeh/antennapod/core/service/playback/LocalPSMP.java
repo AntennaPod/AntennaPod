@@ -303,14 +303,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Audiofocus successfully requested");
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
-                float speed = 1.0f;
-                try {
-                    speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-                } catch(NumberFormatException e) {
-                    Log.e(TAG, Log.getStackTraceString(e));
-                    UserPreferences.setPlaybackSpeed(String.valueOf(speed));
+                if (media.getMediaType() == MediaType.VIDEO) {
+                    setPlaybackParams(UserPreferences.getVideoPlaybackSpeed(), UserPreferences.isSkipSilence());
+                } else {
+                    setPlaybackParams(UserPreferences.getPlaybackSpeed(), UserPreferences.isSkipSilence());
                 }
-                setPlaybackParams(speed, UserPreferences.isSkipSilence());
                 setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
@@ -601,11 +598,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public boolean canSetSpeed() {
-        boolean retVal = false;
-        if (mediaPlayer != null && media != null && media.getMediaType() == MediaType.AUDIO) {
-            retVal = (mediaPlayer).canSetSpeed();
-        }
-        return retVal;
+        return mediaPlayer != null && mediaPlayer.canSetSpeed();
     }
 
     /**
@@ -614,13 +607,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     private void setSpeedSyncAndSkipSilence(float speed, boolean skipSilence) {
         playerLock.lock();
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            if (mediaPlayer.canSetSpeed()) {
-                Log.d(TAG, "Playback speed was set to " + speed);
-                callback.playbackSpeedChanged(speed);
-            }
-            mediaPlayer.setPlaybackParams(speed, skipSilence);
+        if (mediaPlayer.canSetSpeed()) {
+            Log.d(TAG, "Playback speed was set to " + speed);
+            callback.playbackSpeedChanged(speed);
         }
+        mediaPlayer.setPlaybackParams(speed, skipSilence);
         playerLock.unlock();
     }
 
@@ -667,10 +658,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     private void setVolumeSync(float volumeLeft, float volumeRight) {
         playerLock.lock();
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            mediaPlayer.setVolume(volumeLeft, volumeRight);
-            Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
-        }
+        mediaPlayer.setVolume(volumeLeft, volumeRight);
+        Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
         playerLock.unlock();
     }
 
