@@ -72,6 +72,7 @@
         <item name="ic_bug">@drawable/ic_bug_grey600_24dp</item>
         <item name="ic_known_issues">@drawable/ic_format_list_bulleted_grey600_24dp</item>
         <item name="ic_bookmark">@drawable/ic_bookmark_grey600_24dp</item>
+        <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
         <item name="master_switch_background">@color/master_switch_background_light</item>
         <item name="currently_playing_background">@color/highlight_light</item>
 
@@ -156,6 +157,7 @@
         <item name="ic_bug">@drawable/ic_bug_white_24dp</item>
         <item name="ic_known_issues">@drawable/ic_format_list_bulleted_white_24dp</item>
         <item name="ic_bookmark">@drawable/ic_bookmark_white_24dp</item>
+        <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
         <item name="master_switch_background">@color/master_switch_background_dark</item>
         <item name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
@@ -176,6 +178,7 @@
         <item name="overlay_background">@color/black</item>
         <item name="overlay_drawable">@drawable/overlay_drawable_dark_trueblack</item>
         <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
+        <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_black</item>
         <item name="dragview_float_background">@color/black</item>
         <item name="nav_drawer_background">@color/black</item>
         <item name="drawer_activated_color">@color/highlight_trueblack</item>
@@ -213,23 +216,10 @@
         <!-- Room for API dependent attributes -->
     </style>
 
-    <style name="Theme.Base.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
-        <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
-        <item name="non_transparent_background">@color/black</item>
-        <item name="overlay_background">@color/black</item>
-        <item name="overlay_drawable">@drawable/overlay_drawable_dark_trueblack</item>
-        <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
-        <item name="dragview_float_background">@color/black</item>
-        <item name="nav_drawer_background">@color/black</item>
-        <item name="drawer_activated_color">@color/highlight_trueblack</item>
-        <item name="currently_playing_background">@color/highlight_trueblack</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:color">@color/white</item>
-        <item name="android:colorBackground">@color/black</item>
-        <item name="android:windowBackground">@color/black</item>
-        <item name="android:actionBarStyle">@color/black</item>
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/black</item>
+    <style name="Theme.Base.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.TrueBlack">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
 
