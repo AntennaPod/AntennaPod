@@ -54,7 +54,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * Communicates with the playback service. GUI classes should use this class to
  * control playback instead of communicating with the PlaybackService directly.
  */
-public abstract class PlaybackController {
+public class PlaybackController {
 
     private static final String TAG = "PlaybackController";
 
