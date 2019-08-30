@@ -79,7 +79,7 @@ public class EpisodesFragment extends Fragment {
     public static class EpisodesPagerAdapter extends FragmentPagerAdapter {
 
         private final Resources resources;
-        private final AllEpisodesFragment[] fragments = {
+        private final EpisodesListFragment[] fragments = {
                 new NewEpisodesFragment(),
                 new AllEpisodesFragment(),
                 new FavoriteEpisodesFragment()
