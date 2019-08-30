@@ -1020,8 +1020,8 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getRecentlyPublishedItemsCursor(int limit) {
-        return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, null, null, null, null, KEY_PUBDATE + " DESC LIMIT " + limit);
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit) {
+        return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, null, null, null, null, KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit);
     }
 
     public Cursor getDownloadedItemsCursor() {

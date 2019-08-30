@@ -77,10 +77,14 @@ public class AllEpisodesFragment extends Fragment {
             EventDistributor.UNREAD_ITEMS_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
-    private static final int RECENT_EPISODES_LIMIT = 150;
+    private static final int EPISODES_PER_PAGE = 150;
+    private static final int VISIBLE_EPISODES_SCROLL_THRESHOLD = 5;
+
     private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
+
+    private static int page = 1;
 
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
@@ -95,9 +99,8 @@ public class AllEpisodesFragment extends Fragment {
     private boolean isUpdatingFeeds;
     boolean isMenuInvalidationAllowed = false;
 
-    Disposable disposable;
+    protected Disposable disposable;
     private LinearLayoutManager layoutManager;
-
     protected TextView txtvInformation;
     private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
@@ -317,6 +320,44 @@ public class AllEpisodesFragment extends Fragment {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
 
+        /* Add a scroll listener to the recycler view that loads more items,
+           when the user scrolled to the bottom of the list */
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            /* Total number of episodes after last load */
+            private int previousTotalEpisodes = 0;
+
+            /* True if loading more episodes is still in progress */
+            private boolean isLoading = true;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int deltaX, int deltaY) {
+                super.onScrolled(recyclerView, deltaX, deltaY);
+
+                int visibleEpisodeCount = recyclerView.getChildCount();
+                int totalEpisodeCount = recyclerView.getLayoutManager().getItemCount();
+                int firstVisibleEpisode = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+                /* Determine if loading more episodes has finished */
+                if (isLoading) {
+                    if (totalEpisodeCount > previousTotalEpisodes) {
+                        isLoading = false;
+                        previousTotalEpisodes = totalEpisodeCount;
+                    }
+                }
+
+                /* Determine if the user scrolled to the bottom and loading more episodes is not already in progress */
+                if (!isLoading && (totalEpisodeCount - visibleEpisodeCount)
+                        <= (firstVisibleEpisode + VISIBLE_EPISODES_SCROLL_THRESHOLD)) {
+
+                    /* The end of the list has been reached. Load more data. */
+                    page++;
+                    loadMoreItems();
+                    isLoading = true;
+                }
+            }
+        });
+
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
 
@@ -482,9 +523,27 @@ public class AllEpisodesFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    void loadMoreItems() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Observable.fromCallable(this::loadMoreData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    progLoading.setVisibility(View.GONE);
+                    episodes.addAll(data);
+                    onFragmentLoaded(episodes);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
     @NonNull
     List<FeedItem> loadData() {
-        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT) );
+        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE));
+    }
+
+    List<FeedItem> loadMoreData() {
+        return feedItemFilter.filter( DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE));
     }
 
     void removeNewFlagWithUndo(FeedItem item) {
