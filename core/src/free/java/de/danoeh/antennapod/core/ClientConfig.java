@@ -7,6 +7,7 @@ import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.exception.RxJavaErrorHandlerSetup;
 
 /**
  * Stores callbacks for core classes like Services, DB classes etc. and other configuration variables.
