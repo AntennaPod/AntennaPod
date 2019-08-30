@@ -79,7 +79,7 @@ import io.reactivex.schedulers.Schedulers;
  * Displays a list of FeedItems.
  */
 @SuppressLint("ValidFragment")
-public class ItemlistFragment extends ListFragment {
+public class FeedItemlistFragment extends ListFragment {
     private static final String TAG = "ItemlistFragment";
 
     private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE
@@ -120,8 +120,8 @@ public class ItemlistFragment extends ListFragment {
      * @param feedId The id of the feed to show
      * @return the newly created instance of an ItemlistFragment
      */
-    public static ItemlistFragment newInstance(long feedId) {
-        ItemlistFragment i = new ItemlistFragment();
+    public static FeedItemlistFragment newInstance(long feedId) {
+        FeedItemlistFragment i = new FeedItemlistFragment();
         Bundle b = new Bundle();
         b.putLong(ARGUMENT_FEED_ID, feedId);
         i.setArguments(b);

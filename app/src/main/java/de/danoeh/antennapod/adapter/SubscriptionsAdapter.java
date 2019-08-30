@@ -14,13 +14,11 @@ import com.bumptech.glide.Glide;
 
 import java.lang.ref.WeakReference;
 
-import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.ItemlistFragment;
+import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import jp.shts.android.library.TriangleLabelView;
 
 /**
@@ -142,7 +140,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         if (position == getAddTilePosition()) {
             mainActivityRef.get().loadChildFragment(new AddFeedFragment());
         } else {
-            Fragment fragment = ItemlistFragment.newInstance(getItemId(position));
+            Fragment fragment = FeedItemlistFragment.newInstance(getItemId(position));
             mainActivityRef.get().loadChildFragment(fragment);
         }
     }
