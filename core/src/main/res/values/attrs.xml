@@ -74,4 +74,5 @@
     <attr name="about_screen_card_background" format="color"/>
     <attr name="about_screen_card_border" format="color"/>
     <attr name="about_screen_font_color" format="color"/>
+    <attr name="batch_edit_fab_icon" format="reference"/>
 </resources>
