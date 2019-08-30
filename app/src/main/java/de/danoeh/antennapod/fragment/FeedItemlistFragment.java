@@ -195,6 +195,21 @@ public class FeedItemlistFragment extends ListFragment {
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
         MenuItemUtils.adjustTextColor(getActivity(), sv);
         sv.setQueryHint(getString(R.string.search_hint));
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+             @Override
+             public boolean onMenuItemActionExpand(MenuItem item) {
+                 menu.findItem(R.id.filter_items).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                 menu.findItem(R.id.episode_actions).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                 menu.findItem(R.id.refresh_item).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                 return true;
+             }
+
+             @Override
+             public boolean onMenuItemActionCollapse(MenuItem item) {
+                 getActivity().invalidateOptionsMenu();
+                 return true;
+             }
+         });
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
