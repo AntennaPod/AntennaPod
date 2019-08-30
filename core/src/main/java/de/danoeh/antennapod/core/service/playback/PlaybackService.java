@@ -326,7 +326,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
-        stateManager.stopForeground(true);
+        stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
 
@@ -733,7 +733,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            stateManager.stopService();
+            setupNotification(getPlayable()); // Stops foreground if not playing
         }
 
         @Override
