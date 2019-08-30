@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,6 +39,12 @@ public class NewEpisodesFragment extends EpisodesListFragment {
     @Override
     protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
         return item.isNew();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(!episodes.isEmpty());
     }
 
     @NonNull
