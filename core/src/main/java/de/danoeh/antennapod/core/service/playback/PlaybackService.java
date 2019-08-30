@@ -444,6 +444,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (!stateManager.isInForeground()) {
             PlaybackServiceNotificationBuilder notificationBuilder = new PlaybackServiceNotificationBuilder(this);
+            if (mediaPlayer != null && getPlayable() != null) {
+                notificationBuilder.addMetadata(getPlayable(), mediaSession.getSessionToken(), getStatus(), isCasting);
+                if (notificationBuilder.isIconCached(getPlayable())) {
+                    notificationBuilder.loadIcon(getPlayable());
+                }
+            }
             startForeground(NOTIFICATION_ID, notificationBuilder.build());
         }
 
