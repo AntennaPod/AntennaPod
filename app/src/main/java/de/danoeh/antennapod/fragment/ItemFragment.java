@@ -446,15 +446,6 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             }
         }
 
-        FeedItem.State state = item.getState();
-        if (butAction2Text == R.string.delete_label && state == FeedItem.State.PLAYING && PlaybackService.isRunning) {
-            butAction2.setEnabled(false);
-            butAction2.setAlpha(0.5f);
-        } else {
-            butAction2.setEnabled(true);
-            butAction2.setAlpha(1.0f);
-        }
-
         if(butAction1Icon != null && butAction1Text != 0) {
             butAction1.setText(butAction1Icon +"\u0020\u0020" + getActivity().getString(butAction1Text));
             Iconify.addIcons(butAction1);
