@@ -22,6 +22,7 @@
         android:icon="?attr/ic_filter"
         android:menuCategory="container"
         android:title="@string/filter"
+        android:visible="false"
         custom:showAsAction="ifRoom"/>
 
     <item
@@ -29,6 +30,7 @@
         android:title="@string/mark_all_read_label"
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
+        android:visible="false"
         android:icon="?attr/navigation_accept"/>
 
     <item
@@ -36,6 +38,7 @@
         android:title="@string/remove_all_new_flags_label"
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
+        android:visible="false"
         android:icon="?attr/navigation_accept"/>
 
 </menu>

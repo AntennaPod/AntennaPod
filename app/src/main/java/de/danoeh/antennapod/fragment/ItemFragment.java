@@ -534,7 +534,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     }
 
     private void openPodcast() {
-        Fragment fragment = ItemlistFragment.newInstance(item.getFeedId());
+        Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
         ((MainActivity)getActivity()).loadChildFragment(fragment);
     }
 

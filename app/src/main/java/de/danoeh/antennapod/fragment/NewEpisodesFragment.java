@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,7 +21,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-public class NewEpisodesFragment extends AllEpisodesFragment {
+public class NewEpisodesFragment extends EpisodesListFragment {
 
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
@@ -38,6 +39,12 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     @Override
     protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
         return item.isNew();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(!episodes.isEmpty());
     }
 
     @NonNull
@@ -91,19 +98,6 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return root;
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        menu.removeItem(R.id.filter_items);
-    }
-
-    @Override
-    protected void onFragmentLoaded(List<FeedItem> episodes) {
-        super.onFragmentLoaded(episodes);
-        txtvInformation.setVisibility(View.GONE);
     }
 
     @NonNull
