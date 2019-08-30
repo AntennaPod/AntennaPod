@@ -495,7 +495,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
                     displayStreamingNotAllowedNotification(intent);
-                    writePlaybackPreferencesNoMediaPlaying();
+                    PlaybackPreferences.writeNoMediaPlaying();
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
                 }
@@ -748,7 +748,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case ERROR:
-                    writePlaybackPreferencesNoMediaPlaying();
+                    PlaybackPreferences.writeNoMediaPlaying();
                     stateManager.stopService();
                     break;
 
@@ -810,7 +810,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 mediaPlayer.pause(true, false);
             }
             sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
-            writePlaybackPreferencesNoMediaPlaying();
+            PlaybackPreferences.writeNoMediaPlaying();
             stateManager.stopService();
             return true;
         }
@@ -895,7 +895,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     .startWhenPrepared(true)
                     .shouldStream(true)
                     .getIntent());
-            writePlaybackPreferencesNoMediaPlaying();
+            PlaybackPreferences.writeNoMediaPlaying();
             stateManager.stopService();
             return null;
         }
@@ -910,7 +910,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Playback ended");
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
-            writePlaybackPreferencesNoMediaPlaying();
+            PlaybackPreferences.writeNoMediaPlaying();
             if (!isCasting) {
                 stateManager.stopForeground(true);
             }
@@ -1014,22 +1014,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         taskManager.disableSleepTimer();
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_disabled_label)));
-    }
-
-    private void writePlaybackPreferencesNoMediaPlaying() {
-        SharedPreferences.Editor editor = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext()).edit();
-        editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
-                PlaybackPreferences.NO_MEDIA_PLAYING);
-        editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-                PlaybackPreferences.NO_MEDIA_PLAYING);
-        editor.putLong(
-                PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
-                PlaybackPreferences.NO_MEDIA_PLAYING);
-        editor.putInt(
-                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS,
-                PlaybackPreferences.PLAYER_STATUS_OTHER);
-        editor.commit();
     }
 
     private int getCurrentPlayerStatusAsInt(PlayerStatus playerStatus) {
