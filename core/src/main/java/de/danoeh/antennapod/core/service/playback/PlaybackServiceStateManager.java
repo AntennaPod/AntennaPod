@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.app.Notification;
+import android.app.Service;
+import android.os.Build;
 
 class PlaybackServiceStateManager {
     private final PlaybackService playbackService;
@@ -19,12 +21,19 @@ class PlaybackServiceStateManager {
 
     void stopService() {
         stopForeground(true);
-        isInForeground = false;
         playbackService.stopSelf();
     }
 
     void stopForeground(boolean removeNotification) {
-        playbackService.stopForeground(removeNotification);
+        if (isInForeground) {
+            if (Build.VERSION.SDK_INT < 24) {
+                playbackService.stopForeground(removeNotification);
+            } else if (removeNotification) {
+                playbackService.stopForeground(Service.STOP_FOREGROUND_REMOVE);
+            } else {
+                playbackService.stopForeground(Service.STOP_FOREGROUND_DETACH);
+            }
+        }
         isInForeground = false;
         hasReceivedValidStartCommand = false;
     }

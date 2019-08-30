@@ -98,6 +98,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public static final String EXTRA_SHOULD_STREAM = "extra.de.danoeh.antennapod.core.service.shouldStream";
     public static final String EXTRA_ALLOW_STREAM_THIS_TIME = "extra.de.danoeh.antennapod.core.service.allowStream";
+    public static final String EXTRA_ALLOW_STREAM_ALWAYS = "extra.de.danoeh.antennapod.core.service.allowStreamAlways";
     /**
      * True if playback should be started immediately after media has been
      * prepared.
@@ -326,7 +327,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
-        stateManager.stopForeground(true);
+        stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
 
@@ -444,8 +445,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         if (!stateManager.isInForeground()) {
             PlaybackServiceNotificationBuilder notificationBuilder = new PlaybackServiceNotificationBuilder(this);
+            if (mediaPlayer != null && getPlayable() != null) {
+                notificationBuilder.addMetadata(getPlayable(), mediaSession.getSessionToken(), getStatus(), isCasting);
+                if (notificationBuilder.isIconCached(getPlayable())) {
+                    notificationBuilder.loadIcon(getPlayable());
+                }
+            }
             startForeground(NOTIFICATION_ID, notificationBuilder.build());
         }
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.cancel(NOTIFICATION_ID_STREAMING);
 
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
         final boolean castDisconnect = intent.getBooleanExtra(EXTRA_CAST_DISCONNECT, false);
@@ -471,6 +481,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 stateManager.validStartCommandWasReceived();
                 boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
                 boolean allowStreamThisTime = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_THIS_TIME, false);
+                boolean allowStreamAlways = intent.getBooleanExtra(EXTRA_ALLOW_STREAM_ALWAYS, false);
                 boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
                 boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
@@ -478,6 +489,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 flavorHelper.castDisconnect(playable instanceof ExternalMedia);
                 if (playable instanceof FeedMedia) {
                     playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
+                }
+                if (allowStreamAlways) {
+                    UserPreferences.setAllowMobileStreaming(true);
                 }
                 if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
                     displayStreamingNotAllowedNotification(intent);
@@ -496,23 +510,38 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
-        Intent intent = new Intent(originalIntent);
-        intent.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
-        PendingIntent pendingIntent;
+        Intent intentAllowThisTime = new Intent(originalIntent);
+        intentAllowThisTime.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
+        PendingIntent pendingIntentAllowThisTime;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            pendingIntent = PendingIntent.getForegroundService(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentAllowThisTime = PendingIntent.getForegroundService(this, 0, intentAllowThisTime,  PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            pendingIntent = PendingIntent.getService(this, 0, intent,  PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentAllowThisTime = PendingIntent.getService(this, 0, intentAllowThisTime,  PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        Intent intentAlwaysAllow = new Intent(intentAllowThisTime);
+        intentAlwaysAllow.putExtra(EXTRA_ALLOW_STREAM_ALWAYS, true);
+        PendingIntent pendingIntentAlwaysAllow;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            pendingIntentAlwaysAllow = PendingIntent.getForegroundService(this, 0, intentAlwaysAllow,  PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pendingIntentAlwaysAllow = PendingIntent.getService(this, 0, intentAlwaysAllow,  PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_USER_ACTION)
-                .setSmallIcon(R.drawable.stat_notify_sync_error)
+                .setSmallIcon(R.drawable.ic_stream_white)
                 .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
                 .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(getString(R.string.confirm_mobile_streaming_notification_message)))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
+                .setContentIntent(pendingIntentAllowThisTime)
+                .addAction(R.drawable.ic_stream_white,
+                        getString(R.string.stream_label),
+                        pendingIntentAllowThisTime)
+                .addAction(R.drawable.ic_stream_white,
+                        getString(R.string.confirm_mobile_streaming_button_always),
+                        pendingIntentAlwaysAllow)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFICATION_ID_STREAMING, builder.build());
@@ -733,7 +762,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void shouldStop() {
-            stateManager.stopService();
+            setupNotification(getPlayable()); // Stops foreground if not playing
         }
 
         @Override
