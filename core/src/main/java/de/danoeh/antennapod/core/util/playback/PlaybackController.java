@@ -54,7 +54,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * Communicates with the playback service. GUI classes should use this class to
  * control playback instead of communicating with the PlaybackService directly.
  */
-public abstract class PlaybackController {
+public class PlaybackController {
 
     private static final String TAG = "PlaybackController";
 
@@ -567,7 +567,8 @@ public abstract class PlaybackController {
         if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
-            int position = TimeSpeedConverter.convert((int) (prog * duration));
+            TimeSpeedConverter converter = new TimeSpeedConverter(playbackService.getCurrentPlaybackSpeed());
+            int position = converter.convert((int) (prog * duration));
             txtvPosition.setText(Converter.getDurationStringLong(position));
             return prog;
         }
@@ -719,6 +720,7 @@ public abstract class PlaybackController {
     public boolean canSetPlaybackSpeed() {
         return org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
                 || UserPreferences.useSonic()
+                || UserPreferences.useExoplayer()
                 || Build.VERSION.SDK_INT >= 23
                 || (playbackService != null && playbackService.canSetSpeed());
     }
@@ -741,7 +743,7 @@ public abstract class PlaybackController {
     }
 
     public float getCurrentPlaybackSpeedMultiplier() {
-        if (canSetPlaybackSpeed()) {
+        if (playbackService != null && canSetPlaybackSpeed()) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
             return -1;

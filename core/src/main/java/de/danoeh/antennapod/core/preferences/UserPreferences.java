@@ -109,6 +109,7 @@ public class UserPreferences {
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
     public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+    private static final String PREF_VIDEO_PLAYBACK_SPEED = "prefVideoPlaybackSpeed";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
@@ -319,8 +320,24 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static String getPlaybackSpeed() {
-        return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
+    public static float getPlaybackSpeed() {
+        try {
+            return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            UserPreferences.setPlaybackSpeed("1.00");
+            return 1.0f;
+        }
+    }
+
+    public static float getVideoPlaybackSpeed() {
+        try {
+            return Float.parseFloat(prefs.getString(PREF_VIDEO_PLAYBACK_SPEED, "1.00"));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            UserPreferences.setVideoPlaybackSpeed("1.00");
+            return 1.0f;
+        }
     }
 
     public static boolean isSkipSilence() {
@@ -557,6 +574,12 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_PLAYBACK_SPEED, speed)
              .apply();
+    }
+
+    public static void setVideoPlaybackSpeed(String speed) {
+        prefs.edit()
+                .putString(PREF_VIDEO_PLAYBACK_SPEED, speed)
+                .apply();
     }
 
     public static void setSkipSilence(boolean skipSilence) {
