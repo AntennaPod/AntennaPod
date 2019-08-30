@@ -503,7 +503,7 @@ public class QueueFragment extends Fragment {
 
                 @Override
                 public boolean isLongPressDragEnabled() {
-                    return !UserPreferences.isQueueLocked();
+                    return false;
                 }
 
                 @Override
