@@ -529,17 +529,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_USER_ACTION)
-                .setSmallIcon(R.drawable.stat_notify_sync_error)
+                .setSmallIcon(R.drawable.ic_stream_white)
                 .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
                 .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(getString(R.string.confirm_mobile_streaming_notification_message)))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntentAllowThisTime)
-                .addAction(R.drawable.stat_notify_sync_error,
+                .addAction(R.drawable.ic_stream_white,
                         getString(R.string.stream_label),
                         pendingIntentAllowThisTime)
-                .addAction(R.drawable.stat_notify_sync_error,
+                .addAction(R.drawable.ic_stream_white,
                         getString(R.string.confirm_mobile_streaming_button_always),
                         pendingIntentAlwaysAllow)
                 .setAutoCancel(true);
