@@ -198,19 +198,6 @@ public abstract class EpisodesListFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem markAllRead = menu.findItem(R.id.mark_all_read_item);
-        if (markAllRead != null) {
-            markAllRead.setVisible(!showOnlyNewEpisodes() && !episodes.isEmpty());
-        }
-        MenuItem removeAllNewFlags = menu.findItem(R.id.remove_all_new_flags_item);
-        if (removeAllNewFlags != null) {
-            removeAllNewFlags.setVisible(showOnlyNewEpisodes() && !episodes.isEmpty());
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
