@@ -34,7 +34,7 @@ public class ClientConfig {
     private static boolean initialized = false;
 
     public static synchronized void initialize(Context context) {
-        if(initialized) {
+        if (initialized) {
             return;
         }
         PodDBAdapter.init(context);
@@ -42,6 +42,7 @@ public class ClientConfig {
         PlaybackPreferences.init(context);
         NetworkUtils.init(context);
         SleepTimerPreferences.init(context);
+        RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
         initialized = true;
     }
 
