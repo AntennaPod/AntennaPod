@@ -26,7 +26,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  * Like 'EpisodesFragment' except that it only shows favorite episodes and
  * supports swiping to remove from favorites.
  */
-public class FavoriteEpisodesFragment extends AllEpisodesFragment {
+public class FavoriteEpisodesFragment extends EpisodesListFragment {
 
     private static final String TAG = "FavoriteEpisodesFrag";
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
@@ -83,19 +83,6 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         return root;
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        menu.removeItem(R.id.filter_items);
-    }
-
-    @Override
-    protected void onFragmentLoaded(List<FeedItem> episodes) {
-        super.onFragmentLoaded(episodes);
-        txtvInformation.setVisibility(View.GONE);
     }
 
     @NonNull

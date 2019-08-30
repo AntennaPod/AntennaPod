@@ -20,7 +20,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-public class NewEpisodesFragment extends AllEpisodesFragment {
+public class NewEpisodesFragment extends EpisodesListFragment {
 
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
@@ -91,19 +91,6 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         return root;
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        menu.removeItem(R.id.filter_items);
-    }
-
-    @Override
-    protected void onFragmentLoaded(List<FeedItem> episodes) {
-        super.onFragmentLoaded(episodes);
-        txtvInformation.setVisibility(View.GONE);
     }
 
     @NonNull
