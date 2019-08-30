@@ -1013,6 +1013,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ExoPlayerWrapper ap = (ExoPlayerWrapper) mp;
             ap.setOnCompletionListener(audioCompletionListener);
             ap.setOnSeekCompleteListener(audioSeekCompleteListener);
+            ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
             ap.setOnErrorListener(audioErrorListener);
         } else {
             Log.w(TAG, "Unknown media player: " + mp);
