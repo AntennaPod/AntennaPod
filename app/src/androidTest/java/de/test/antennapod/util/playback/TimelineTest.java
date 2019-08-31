@@ -1,8 +1,9 @@
 package de.test.antennapod.util.playback;
 
 import android.content.Context;
-import android.test.InstrumentationTestCase;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.SmallTest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,18 +17,25 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.Timeline;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for timeline
  */
-public class TimelineTest extends InstrumentationTestCase {
+@SmallTest
+public class TimelineTest {
 
     private Context context;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-        context = getInstrumentation().getTargetContext();
+        context = InstrumentationRegistry.getTargetContext();
     }
 
     private Playable newTestPlayable(List<Chapter> chapters, String shownotes, int duration) {
@@ -40,6 +48,7 @@ public class TimelineTest extends InstrumentationTestCase {
         return media;
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeHHMMSSNoChapters() throws Exception {
         final String timeStr = "10:11:12";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11 + 12 * 1000;
@@ -50,6 +59,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeHHMMSSMoreThen24HoursNoChapters() throws Exception {
         final String timeStr = "25:00:00";
         final long time = 25 * 60 * 60 * 1000;
@@ -60,6 +70,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeHHMMNoChapters() throws Exception {
         final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
@@ -70,6 +81,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeMMSSNoChapters() throws Exception {
         final String timeStr = "10:11";
         final long time = 10 * 60 * 1000 + 11 * 1000;
@@ -80,6 +92,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeHMMSSNoChapters() throws Exception {
         final String timeStr = "2:11:12";
         final long time = 2 * 60 * 60 * 1000 + 11 * 60 * 1000 + 12 * 1000;
@@ -90,6 +103,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeMSSNoChapters() throws Exception {
         final String timeStr = "1:12";
         final long time = 60 * 1000 + 12 * 1000;
@@ -100,6 +114,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeMultipleFormatsNoChapters() throws Exception {
         final String[] timeStrings = new String[]{ "10:12", "1:10:12" };
 
@@ -109,6 +124,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 60 * 60 * 1000 + 10 * 60 * 1000 + 12 * 1000 }, timeStrings);
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeMultipleShortFormatNoChapters() throws Exception {
 
         // One of these timecodes fits as HH:MM and one does not so both should be parsed as MM:SS.
@@ -120,6 +136,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 2 * 60 * 1000 + 12 * 1000 }, timeStrings);
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeParentheses() throws Exception {
         final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
@@ -130,6 +147,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeBrackets() throws Exception {
         final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
@@ -140,6 +158,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAddTimecodeAngleBrackets() throws Exception {
         final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
@@ -150,6 +169,7 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    @Test
     public void testProcessShownotesAndInvalidTimecode() throws Exception {
         final String[] timeStrs = new String[] {"2:1", "0:0", "000", "00", "00:000"};
 
@@ -183,6 +203,7 @@ public class TimelineTest extends InstrumentationTestCase {
         assertEquals(timecodes.length, countedLinks);
     }
 
+    @Test
     public void testIsTimecodeLink() throws Exception {
         assertFalse(Timeline.isTimecodeLink(null));
         assertFalse(Timeline.isTimecodeLink("http://antennapod/timecode/123123"));
@@ -193,6 +214,7 @@ public class TimelineTest extends InstrumentationTestCase {
         assertTrue(Timeline.isTimecodeLink("antennapod://timecode/1"));
     }
 
+    @Test
     public void testGetTimecodeLinkTime() throws Exception {
         assertEquals(-1, Timeline.getTimecodeLinkTime(null));
         assertEquals(-1, Timeline.getTimecodeLinkTime("http://timecode/123"));

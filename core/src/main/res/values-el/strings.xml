@@ -100,7 +100,6 @@
   <string name="add_to_favorite_label">Προσθήκη στα Αγαπημένα</string>
   <string name="remove_from_favorite_label">Προσθήκη από τα Αγαπημένα</string>
   <string name="visit_website_label">Επισκεφθείτε την ιστοσελίδα</string>
-  <string name="support_label">Flattr αυτό</string>
   <string name="skip_episode_label">Μετάβαση επεισοδίων</string>
   <string name="activate_auto_download">Ενεργοποίηση Αυτόματης Λήψης</string>
   <string name="deactivate_auto_download">Απενεργοποίηση Αυτόματης Λήψης</string>
@@ -161,32 +160,6 @@
   <string name="ascending">Αύξουσα</string>
   <string name="descending">Φθίνουσα</string>
   <string name="clear_queue_confirmation_msg">Παρακαλούμε επιβεβαιώστε ότι θέλετε να διαγράψετε την ουρά όλων των επεισοδίων σε αυτό</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Flattr σύνδεση </string>
-  <string name="flattr_auth_explanation">Πατήστε το κουμπί παρακάτω για να ξεκινήσει η διαδικασία ελέγχου ταυτότητας. Θα πρέπει να διαβιβάζονται στην οθόνη σύνδεσης Flattr στον browser σας και να σας ζητηθεί να δώσει AntennaPod την άδεια να Flattr πράγματα. Αφού έχετε δώσει την άδεια, θα επιστρέψετε σε αυτήν την οθόνη αυτόματα.</string>
-  <string name="authenticate_label">Έλεγχος</string>
-  <string name="return_home_label">Επιστροφή στην αρχική σελίδα</string>
-  <string name="flattr_auth_success">Έλεγχος ταυτότητας ήταν επιτυχής! Μπορείτε τώρα να Flattr πράγματα μέσα από την εφαρμογή.</string>
-  <string name="no_flattr_token_title">Δεν βρέθηκε Flattr διακριτικό</string>
-  <string name="no_flattr_token_notification_msg">Ο Flattr λογαριασμός σας δεν φαίνεται να συνδέεται με το AntennaPod. Πατήστε εδώ για να επικυρωθει.</string>
-  <string name="no_flattr_token_msg">Ο Flattr λογαριασμός σας δεν φαίνεται να συνδέεται με το AntennaPod. Μπορείτε είτε να συνδέσετε το λογαριασμό σας στο AntennaPod να Flattr πράγματα μέσα από την εφαρμογή ή μπορείτε να επισκεφθείτε την ιστοσελίδα του πράγματος για Flattr εκεί</string>
-  <string name="authenticate_now_label">Έλεγχος</string>
-  <string name="action_forbidden_title">Δράση απαγορεύεται</string>
-  <string name="action_forbidden_msg">Το AntennaPod δεν έχει άδεια για τη δράση αυτή. Ο λόγος ειναι οτι θα μπορούσε να είναι ότι το διακριτικό πρόσβασης του AntennaPod στο λογαριασμό σας έχει ανακληθεί. Μπορείτε να κανετε εκ νέου τον ελεγχο ταυτοποιησης ή επισκεφθείτε την ιστοσελίδα του πράγματος.</string>
-  <string name="access_revoked_title">Πρόσβαση ανακαλείται</string>
-  <string name="access_revoked_info">Έχετε ανακαλέσει επιτυχώς διακριτικό πρόσβασης AntennaPod στον λογαριασμό σας. Για να ολοκληρωθεί η διαδικασία, θα πρέπει να αφαιρέσετε αυτή η εφαρμογή από τον κατάλογο των εγκεκριμένων αιτήσεων στις ρυθμίσεις του λογαριασμού σας στην Flattr ιστοσελίδα.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Flattr\'ed ένα πράγμα!</string>
-  <string name="flattr_click_success_count">Flattr\'ed%d πράγματα!</string>
-  <string name="flattr_click_success_queue">Flattr\'ed: %s.</string>
-  <string name="flattr_click_failure_count">Αποτυχία Flattr%d πράγματα!</string>
-  <string name="flattr_click_failure">Οχι flattr\'ed: %s.</string>
-  <string name="flattr_click_enqueued">Πράγμα θα flattr\'ed αργότερα</string>
-  <string name="flattring_thing">Flattring %s</string>
-  <string name="flattring_label">Το AntennaPod είναι flattring</string>
-  <string name="flattrd_label">Το AntennaPod έχει flattr\'ed</string>
-  <string name="flattrd_failed_label">AntennaPod Flattr απέτυχε</string>
-  <string name="flattr_retrieving_status">Ανάκτηση flattr\'ed πραγμάτων</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Λήψη Πρόσθετου</string>
   <string name="no_playback_plugin_title">Το Πρόσθετο δεν είναι εγκατεστημένο</string>
@@ -196,7 +169,6 @@
   <string name="other_pref">Άλλα</string>
   <string name="about_pref">Σχετικά με</string>
   <string name="queue_label">Σειρά αναμονής</string>
-  <string name="flattr_label">Flattr</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Συνέχιση της αναπαραγωγής, όταν τα ακουστικά επανασυνδέονται</string>
   <string name="pref_followQueue_sum">Μετάβαση στο επόμενο στοιχείο σειράς αναμονής όταν η αναπαραγωγή ολοκληρωθεί</string>
   <string name="pref_auto_delete_sum">Διαγραφή επεισοδίων όταν η αναπαραγωγή ολοκληρωθεί</string>
@@ -205,16 +177,7 @@
   <string name="network_pref">Δίκτυο</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Λήψη αρχείων πολυμέσων μόνο μέσω WiFi</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi λυψη πολυμεσων</string>
-  <string name="pref_mobileUpdate_sum">Να επιτρέπονται ενημερώσεις μέσω της σύνδεσης δεδομένων κινητής τηλεφωνίας</string>
   <string name="refreshing_label">Ανανεωση</string>
-  <string name="flattr_settings_label">Flattr Ρυθμισεις</string>
-  <string name="pref_flattr_auth_title">Flattr Συνδεση</string>
-  <string name="pref_flattr_auth_sum">Συνδεθείτε στον Flattr λογαριασμό σας για να Flattr πράγματα απευθείας από την εφαρμογή.</string>
-  <string name="pref_flattr_this_app_sum">Υποστήριξη της ανάπτυξης του AntennaPod flattring αυτό. Ευχαριστούμε!</string>
-  <string name="pref_revokeAccess_title">Ανάκληση πρόσβασης</string>
-  <string name="pref_revokeAccess_sum">Ανακληση της άδειας πρόσβασης στον Flattr λογαριασμό για αυτη την εφαρμογή.</string>
-  <string name="pref_auto_flattr_title">Αυτόματο Flattr</string>
-  <string name="pref_auto_flattr_sum">Διαμόρφωση αυτόματου flattring</string>
   <string name="user_interface_label">Περιβάλλον χρήστη</string>
   <string name="pref_set_theme_sum">Αλλαγή της εμφάνισης του AntennaPod.</string>
   <string name="pref_automatic_download_sum">Ρύθμιση της αυτόματης λήψης των επεισοδίων.</string>
@@ -243,11 +206,6 @@
   <string name="pref_queueAddToFront_sum">Προσθήκη νέων επεισοδίων στο μπροστινό μέρος της ουράς.</string>
   <string name="pref_queueAddToFront_title">Τοποθέτηση στην Αρχή της Ουράς</string>
   <string name="experimental_pref">Πειραματικό</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Ενεργοποίηση αυτόματου flattring</string>
-  <string name="auto_flattr_after_percent">Flattr επεισόδιο συντομότερο απο %d τοις εκατό έχει παιχτεί</string>
-  <string name="auto_flattr_ater_beginning">Flattr επεισόδιο όταν αρχίζει η αναπαραγωγή</string>
-  <string name="auto_flattr_ater_end">Flattr επεισόδιο όταν ολοκληρωθεί η αναπαραγωγή του</string>
   <!--Search-->
   <string name="found_in_chapters_label">Βρέθηκε σε κεφάλαια</string>
   <string name="search_status_no_results">Δεν βρέθηκαν αποτελέσματα</string>
@@ -341,6 +299,7 @@
   <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Εισαγωγή εγγραφών από εφαρμογές και μονο...</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">iTunes Αναζήτηση</string>
   <!--Episodes apply actions-->
   <string name="all_label">Όλα</string>

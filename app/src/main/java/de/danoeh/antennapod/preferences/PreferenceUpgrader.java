@@ -8,22 +8,23 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class PreferenceUpgrader {
-    private static final String PREF_CONFIGURED_VERSION = "configuredVersion";
-    private static final String PREF_NAME = "PreferenceUpgrader";
+    private static final String PREF_CONFIGURED_VERSION = "version_code";
+    private static final String PREF_NAME = "app_version";
 
     private static SharedPreferences prefs;
 
     public static void checkUpgrades(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences upgraderPrefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        int oldVersion = upgraderPrefs.getInt(PREF_CONFIGURED_VERSION, 1070200);
+        int oldVersion = upgraderPrefs.getInt(PREF_CONFIGURED_VERSION, -1);
         int newVersion = BuildConfig.VERSION_CODE;
 
         if (oldVersion != newVersion) {
             NotificationUtils.createChannels(context);
+            UserPreferences.restartUpdateAlarm();
 
-            upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
             upgrade(oldVersion);
+            upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
         }
     }
 
@@ -41,8 +42,6 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 1070300) {
-            UserPreferences.restartUpdateAlarm();
-
             if (UserPreferences.getMediaPlayer().equals("builtin")) {
                 prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
                         UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();

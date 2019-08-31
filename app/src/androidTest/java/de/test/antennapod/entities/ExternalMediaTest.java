@@ -3,21 +3,27 @@ package de.test.antennapod.entities;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.test.InstrumentationTestCase;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
+import org.junit.After;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests for {@link ExternalMedia} entity.
  */
-public class ExternalMediaTest extends InstrumentationTestCase {
+@SmallTest
+public class ExternalMediaTest {
 
     private static final int NOT_SET = -1;
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         clearSharedPrefs();
     }
 
@@ -30,9 +36,10 @@ public class ExternalMediaTest extends InstrumentationTestCase {
     }
 
     private SharedPreferences getDefaultSharedPrefs() {
-        return PreferenceManager.getDefaultSharedPreferences(getInstrumentation().getTargetContext());
+        return PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
     }
 
+    @Test
     public void testSaveCurrentPositionUpdatesPreferences() {
         final int POSITION = 50;
         final int LAST_PLAYED_TIME = 1650;

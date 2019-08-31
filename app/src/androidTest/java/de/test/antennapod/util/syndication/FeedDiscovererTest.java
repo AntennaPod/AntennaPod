@@ -1,38 +1,43 @@
 package de.test.antennapod.util.syndication;
 
-import android.test.InstrumentationTestCase;
-
+import android.support.test.InstrumentationRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.util.Map;
 
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for FeedDiscoverer
  */
-public class FeedDiscovererTest extends InstrumentationTestCase {
+public class FeedDiscovererTest {
 
     private FeedDiscoverer fd;
 
     private File testDir;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         fd = new FeedDiscoverer();
-        testDir = getInstrumentation().getTargetContext().getExternalFilesDir("FeedDiscovererTest");
+        testDir = new File(InstrumentationRegistry.getTargetContext().getFilesDir(), "FeedDiscovererTest");
         testDir.mkdir();
         assertTrue(testDir.exists());
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         FileUtils.deleteDirectory(testDir);
-        super.tearDown();
     }
 
     private String createTestHtmlString(String rel, String type, String href, String title) {
@@ -81,30 +86,37 @@ public class FeedDiscovererTest extends InstrumentationTestCase {
         }
     }
 
+    @Test
     public void testAlternateRSSWithTitleAbsolute() throws Exception {
         checkFindUrls(true, true, true, true, true);
     }
 
+    @Test
     public void testAlternateRSSWithTitleRelative() throws Exception {
         checkFindUrls(true, true, true, false, true);
     }
 
+    @Test
     public void testAlternateRSSNoTitleAbsolute() throws Exception {
         checkFindUrls(true, true, false, true, true);
     }
 
+    @Test
     public void testAlternateRSSNoTitleRelative() throws Exception {
         checkFindUrls(true, true, false, false, true);
     }
 
+    @Test
     public void testAlternateAtomWithTitleAbsolute() throws Exception {
         checkFindUrls(true, false, true, true, true);
     }
 
+    @Test
     public void testFeedAtomWithTitleAbsolute() throws Exception {
         checkFindUrls(false, false, true, true, true);
     }
 
+    @Test
     public void testAlternateRSSWithTitleAbsoluteFromFile() throws Exception {
         checkFindUrls(true, true, true, true, false);
     }

@@ -109,9 +109,6 @@
   <string name="mark_all_read_label">Marker alle som afspillet</string>
   <string name="mark_all_read_msg">Marker alle udsendelser som afspillet</string>
   <string name="mark_all_read_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som værende afspillet.</string>
-  <string name="remove_all_new_flags_label">Marker alle som set</string>
-  <string name="removed_all_new_flags_msg">Markeret alle udsendelser som set</string>
-  <string name="remove_all_new_flags_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som set.</string>
   <string name="show_info_label">Vis information</string>
   <string name="feed_info_label">Podcast-info</string>
   <string name="rename_feed_label">Omdøb podcast</string>
@@ -148,8 +145,6 @@
   <string name="remove_label">Fjern</string>
   <string name="delete_label">Slet</string>
   <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
-  <string name="remove_new_flag_label">Markér som set</string>
-  <string name="removed_new_flag_label">Markeret som set</string>
   <string name="mark_read_label">Marker som læst</string>
   <string name="marked_as_read_label">Markeret som afspillet</string>
   <string name="mark_unread_label">Marker som uafspillet</string>
@@ -161,7 +156,6 @@
   <string name="remove_from_favorite_label">Fjern fra foretrukne</string>
   <string name="removed_from_favorites">Fjernet fra foretrukne</string>
   <string name="visit_website_label">Besøg webside</string>
-  <string name="support_label">Flattr dette</string>
   <string name="skip_episode_label">Spring udsendelse over</string>
   <string name="activate_auto_download">Slå Automatisk overførsel til</string>
   <string name="deactivate_auto_download">Slå Automatisk overførsel fra</string>
@@ -246,32 +240,6 @@
   <string name="ascending">Stigende</string>
   <string name="descending">Faldende</string>
   <string name="clear_queue_confirmation_msg">Bekræft venligst at du vil rydde ALLE udsendelser fra køen</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Log ind på Flattr</string>
-  <string name="flattr_auth_explanation">Tryk på knappen nedenfor for at starte godkendelsesprocessen. Du vil blive ført til flattr\'s log ind-side i din browser og bedt om at give AntennaPod tilladelse til at flattre emner. Efter at du har givet tilladelsen, vil du automatisk vende tilbage til denne side.</string>
-  <string name="authenticate_label">Godkend</string>
-  <string name="return_home_label">Gå tilbage hjem</string>
-  <string name="flattr_auth_success">Godkendelse lykkedes! Du kan nu flattre ting inde fra appen.</string>
-  <string name="no_flattr_token_title">Ingen flattr-polet (token) fundet</string>
-  <string name="no_flattr_token_notification_msg">Din flattr-konto ser ikke ud til at være forbundet med AntennaPod. Tryk her for at forbinde.</string>
-  <string name="no_flattr_token_msg">Din flattr konto ser ikke ud til at være forbundet til AntennaPod. Du kan enten forbinde din konto til AntennaPod for at flattre emner inde fra appen, eller du kan besøge websiden for det du vil flattre for at gøre det dér.</string>
-  <string name="authenticate_now_label">Godkend</string>
-  <string name="action_forbidden_title">Handling ikke tilladt</string>
-  <string name="action_forbidden_msg">AntennaPod har ikke tilladelse til denne handling. Årsagen kunne være at adgangspoletten for AntennaPod til din konto er blevet tilbagekaldt. Du kan enten godkende igen eller alternativt besøge websiden for det du vil flattre.</string>
-  <string name="access_revoked_title">Adgang tilbagekaldt</string>
-  <string name="access_revoked_info">Du har nu tilbagekaldt AntennaPods adgangspolet (\'access token\') til din konto. For at fuldføre processen skal du fjerne denne app fra listen over godkendte applikationer i dine kontoindstillinger på flattr\'s hjemmeside.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Flattret en ting!</string>
-  <string name="flattr_click_success_count">Flattret %d ting!</string>
-  <string name="flattr_click_success_queue">Flattr\'et: %s.</string>
-  <string name="flattr_click_failure_count">Det lykkedes ikke at flattre %d ting!</string>
-  <string name="flattr_click_failure">Ikke flattr\'et: %s.</string>
-  <string name="flattr_click_enqueued">Tingen vil blive flattret senere</string>
-  <string name="flattring_thing">Flattr\'er %s</string>
-  <string name="flattring_label">AntennaPod flattrer</string>
-  <string name="flattrd_label">AntennaPod har flattr\'et</string>
-  <string name="flattrd_failed_label">AntennaPod-flattring mislykkedes</string>
-  <string name="flattr_retrieving_status">Henter flattrede ting</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
@@ -280,8 +248,8 @@
   <string name="enable_sonic">Slå Sonic til</string>
   <!--Empty list labels-->
   <string name="no_feeds_label">Du har ikke abonneret på nogen podcasts endnu.</string>
-  <string name="no_chapters_label">Denne udsendelse har ingen kapitler.</string>
   <string name="no_shownotes_label">Denne udsendelse har ingen beskrivelse.</string>
+  <string name="no_chapters_label">Denne udsendelse har ingen kapitler.</string>
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
   <string name="project_pref">Projekt</string>
@@ -289,8 +257,6 @@
   <string name="about_pref">Om</string>
   <string name="queue_label">Kø</string>
   <string name="integrations_label">Integrerede tjenester</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Mikrobetalingstjeneste</string>
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Import/eksport</string>
@@ -331,17 +297,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Tilslutning af hovedtelefoner igen</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth forbundet igen</string>
   <string name="pref_mobileUpdate_title">Mobile opdateringer</string>
-  <string name="pref_mobileUpdate_sum">Tillad opdateringer over mobildataforbindelsen</string>
   <string name="refreshing_label">Opdaterer</string>
-  <string name="flattr_settings_label">Flattr-indstillinger</string>
-  <string name="pref_flattr_auth_title">Log ind på Flattr</string>
-  <string name="pref_flattr_auth_sum">Log ind på din flattr-konto for at flattre emner direkte fra appen.</string>
-  <string name="pref_flattr_this_app_title">Flattr denne app</string>
-  <string name="pref_flattr_this_app_sum">Støt udviklingen af AntennaPod ved at flattre den. Tak!</string>
-  <string name="pref_revokeAccess_title">Tilbagekald adgang</string>
-  <string name="pref_revokeAccess_sum">Tilbagekald adgangstilladelsen til din flattr-konto fra denne app.</string>
-  <string name="pref_auto_flattr_title">Automatisk flattring</string>
-  <string name="pref_auto_flattr_sum">Konfigurer automatisk flattring</string>
   <string name="user_interface_label">Brugergrænseflade</string>
   <string name="pref_set_theme_title">Vælg tema</string>
   <string name="pref_nav_drawer_title">Tilpas navigationspanel</string>
@@ -440,11 +396,6 @@
   <string name="double_tap_toast">Tryk på tilbageknappen igen for at afslutte</string>
   <string name="back_button_go_to_page">Gå til side ...</string>
   <string name="back_button_go_to_page_title">Vælg side</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Aktiver automatisk flattring</string>
-  <string name="auto_flattr_after_percent">Flattr udsendelser så snart %d procent er blevet afspillet</string>
-  <string name="auto_flattr_ater_beginning">Flattr udsendelse når afspilning starter</string>
-  <string name="auto_flattr_ater_end">Flattr udsendelse når afspilning slutter</string>
   <!--Search-->
   <string name="search_hint">Søg efter udsendelser</string>
   <string name="found_in_shownotes_label">Fundet i beskrivelse</string>
@@ -588,9 +539,10 @@
   <string name="progress_upgrading_database">Opgraderer databasen</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltformålsapps…</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">Søg i iTunes</string>
-  <string name="filter">Filtrér</string>
   <string name="search_fyyd_label">Søg i fyyd</string>
+  <string name="filter">Filtrér</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
   <string name="selected_all_label">Markerede alle udsendelser</string>

@@ -27,6 +27,8 @@
                 <ImageView
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
                         android:contentDescription="@string/search_podcast_hint"
                         app:srcCompat="?attr/action_search"
                         android:scaleType="center"/>
@@ -39,8 +41,10 @@
                         android:inputType="text"
                         android:imeOptions="actionSearch"
                         android:importantForAutofill="no"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginLeft="0dp"
                         android:layout_marginRight="8dp"
+                        android:layout_marginEnd="8dp"
                         android:paddingTop="16dp"
                         android:paddingBottom="16dp"
                         android:hint="@string/search_podcast_hint"
@@ -109,16 +113,17 @@
             <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="8dp"
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal">
 
                 <LinearLayout
                         android:id="@+id/advanced_search"
-                        android:layout_width="96dp"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
-                        android:padding="16dp"
+                        android:padding="8dp"
                         android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
@@ -127,8 +132,7 @@
                             android:contentDescription="@string/advanced_search"
                             app:srcCompat="?attr/action_search"
                             android:scaleType="center"
-                            android:layout_marginBottom="4dp"
-                            android:tint="?android:attr/textColorPrimary"/>
+                            android:layout_marginBottom="4dp"/>
 
                     <TextView
                             android:layout_width="match_parent"
@@ -140,11 +144,11 @@
 
                 <LinearLayout
                         android:id="@+id/btn_opml_import"
-                        android:layout_width="96dp"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:gravity="center_horizontal"
-                        android:padding="16dp"
+                        android:padding="8dp"
                         android:background="?android:attr/selectableItemBackground">
 
                     <ImageView
@@ -153,8 +157,7 @@
                             android:contentDescription="@string/opml_import_label"
                             app:srcCompat="?attr/av_download"
                             android:scaleType="center"
-                            android:layout_marginBottom="4dp"
-                            android:tint="?android:attr/textColorPrimary"/>
+                            android:layout_marginBottom="4dp"/>
 
                     <TextView
                             android:layout_width="match_parent"

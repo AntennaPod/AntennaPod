@@ -109,23 +109,36 @@
   <string name="podcastdirectories_label">从目录中寻找播客</string>
   <string name="podcastdirectories_descr">您可以在 gpodder.net 通过名称、类别或热门来搜索新播客</string>
   <string name="browse_gpoddernet_label">浏览 gpodder.net</string>
+  <string name="discover">发现</string>
+  <string name="discover_more">更多</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">全部标识已读</string>
   <string name="mark_all_read_msg">将所有曲目标记为已播放</string>
   <string name="mark_all_read_confirmation_msg">请确认您要将所有曲目标为已播放</string>
-  <string name="remove_all_new_flags_label">所有可见</string>
-  <string name="remove_all_new_flags_confirmation_msg">请确认您要将所有曲目标记为已读。</string>
+  <string name="mark_all_read_feed_confirmation_msg">请确认您想将该播客中的所有节目标记为播放</string>
+  <string name="remove_all_new_flags_label">移除所有“新”标签</string>
+  <string name="removed_all_new_flags_msg">移除了所有“新”标签</string>
+  <string name="remove_all_new_flags_confirmation_msg">请确认您想从所有节目中移除“新”标签</string>
   <string name="show_info_label">查看信息</string>
+  <string name="show_feed_settings_label">显示播客设置</string>
   <string name="feed_info_label">播客信息</string>
   <string name="feed_settings_label">播客设置</string>
   <string name="rename_feed_label">重命名播客</string>
   <string name="remove_feed_label">移除播客</string>
   <string name="share_label">分享</string>
+  <string name="share_link_label">分享剧集地址</string>
+  <string name="share_link_with_position_label">分享带播放位置的节目地址</string>
   <string name="share_file_label">分享文件</string>
   <string name="share_feed_url_label">分享订阅地址</string>
+  <string name="share_item_url_label">分享媒体文件地址</string>
+  <string name="share_item_url_with_position_label">分享带播放位置的媒体文件地址</string>
+  <string name="feed_delete_confirmation_msg">请确认您想删除播客“1%1$s” 及其所有节目(包括已经下载的）</string>
   <string name="feed_remover_msg">正在移除播客</string>
+  <string name="load_complete_feed">刷新整档博客</string>
   <string name="hide_episodes_title">隐藏曲目</string>
   <string name="batch_edit">批量编辑</string>
+  <string name="select_all_above">选中上面所有</string>
+  <string name="select_all_below">选中下面所有</string>
   <string name="hide_unplayed_episodes_label">未播放</string>
   <string name="hide_paused_episodes_label">已暂停</string>
   <string name="hide_played_episodes_label">已播放</string>
@@ -133,11 +146,16 @@
   <string name="hide_not_queued_episodes_label">不在播放列表中</string>
   <string name="hide_downloaded_episodes_label">已下载</string>
   <string name="hide_not_downloaded_episodes_label">未下载</string>
+  <string name="hide_has_media_label">包含媒体文件</string>
+  <string name="hide_is_favorite_label">喜爱的</string>
   <string name="filtered_label">已过滤的</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} 上次刷新失败</string>
   <string name="open_podcast">打开播客</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="other">正下载1%d个音频节目</item>
+  </plurals>
   <string name="play_label">播放</string>
   <string name="pause_label">暂停</string>
   <string name="stop_label">停止</string>
@@ -145,20 +163,35 @@
   <string name="remove_label">删除</string>
   <string name="delete_label">删除</string>
   <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
-  <string name="remove_new_flag_label">标记为已读</string>
-  <string name="removed_new_flag_label">标记为已读</string>
+  <string name="delete_episode_label">删除节目</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="other">已删除1%d个节目</item>
+  </plurals>
+  <string name="remove_new_flag_label">移除“新的”标签</string>
+  <string name="removed_new_flag_label">已移除“新的”标签</string>
   <string name="mark_read_label">标记已播放</string>
   <string name="marked_as_read_label">已标记为已播放</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="other">已将1%d个节目标记为已播放</item>
+  </plurals>
   <string name="mark_unread_label">标记未播放</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="other">已将1%d个节目标记为未播放</item>
+  </plurals>
   <string name="add_to_queue_label">添加到播放列表</string>
   <string name="added_to_queue_label">已添加到播放列表</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="other">已将1%d个节目添加到序列中</item>
+  </plurals>
   <string name="remove_from_queue_label">从播放列表中删除</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="other">已从序列中移除1%d个节目</item>
+  </plurals>
   <string name="add_to_favorite_label">加入收藏</string>
   <string name="added_to_favorites">添加到收藏</string>
   <string name="remove_from_favorite_label">从收藏删除</string>
   <string name="removed_from_favorites">从收藏中移除</string>
   <string name="visit_website_label">访问网站</string>
-  <string name="support_label">Flattr 他</string>
   <string name="skip_episode_label">跳过曲目</string>
   <string name="activate_auto_download">开启自动下载</string>
   <string name="deactivate_auto_download">关闭自动下载</string>
@@ -242,59 +275,69 @@
   <string name="ascending">升序</string>
   <string name="descending">降序</string>
   <string name="clear_queue_confirmation_msg">请确认您要清除队列中的全部曲目</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Flattr 登录</string>
-  <string name="flattr_auth_explanation">按下面的按钮开始身份验证过程. 将在浏览器中打开 Flattr 登录界面并要求给予 AntennaPod 访问 Flattr 的权限. 权限许可后, 将自动回到这个界面.</string>
-  <string name="authenticate_label">验证</string>
-  <string name="return_home_label">返回主页</string>
-  <string name="flattr_auth_success">验证成功!  现在可以使用应用内 Flattr 相关功能了.</string>
-  <string name="no_flattr_token_title">没有找到 Flattr 验证令牌信息</string>
-  <string name="no_flattr_token_notification_msg">您的 flattr 账户似乎并没有连接到 AntennaPod，点这里验证。</string>
-  <string name="no_flattr_token_msg">您的 flattr 账户似乎并没有连接到 AntennaPod. 您可以关联您的账户到AntennaPod以便在应用内flattr条目，或者您可以自己访问条目的网站完成flattr</string>
-  <string name="authenticate_now_label">验证</string>
-  <string name="action_forbidden_title">被禁止</string>
-  <string name="action_forbidden_msg">AntennaPod 没有权限执行本动作. 原因可能是: AntennaPod 对您账户的访问令牌被撤销. 你可以重新\"验证\"或访问该网站来授权.</string>
-  <string name="access_revoked_title">撤销访问</string>
-  <string name="access_revoked_info">您已经成功撤销 AntennaPod 对账户令牌的访问. 为了完成这个过程, 您必须到 Flattr 网站 \"账户设置-&gt;已批准应用\" 列表内删除本应用.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">成功Flattr一个条目</string>
-  <string name="flattr_click_success_count">成功Flattr%d个条目</string>
-  <string name="flattr_click_success_queue">Flattr%s成功.</string>
-  <string name="flattr_click_failure_count">Flattr失败%d个条目</string>
-  <string name="flattr_click_failure">%sFlattr失败.</string>
-  <string name="flattr_click_enqueued">稍后将Flattr该条目</string>
-  <string name="flattring_thing">正在Flattr%s</string>
-  <string name="flattring_label">AntennaPod正在Flattr</string>
-  <string name="flattrd_label">AntennaPod已经Flattr</string>
-  <string name="flattrd_failed_label">AntennaPod Flattr失败</string>
-  <string name="flattr_retrieving_status">查询Flattr结果状态</string>
+  <string name="sort_old_to_new">从旧到新</string>
+  <string name="sort_new_to_old">从新到旧</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">插件下载</string>
   <string name="no_playback_plugin_title">插件没有安装</string>
+  <string name="no_playback_plugin_or_sonic_msg">为使可变速度回放正常工作，我们建议启用内置的Sonic媒体播放器［安卓系统4.1以上］您也可以从谷歌商城下载第三方插件1 Prestissimo1 ，但任何有关该插件的问题均非AntennaPod的责任，应当报告插件所有者</string>
   <string name="set_playback_speed_label">播放速度</string>
   <string name="enable_sonic">允许声音</string>
   <!--Empty list labels-->
-  <string name="no_chapters_label">此曲目没有章节信息</string>
+  <string name="no_items_header_label">没有处在播放列表的曲目</string>
+  <string name="no_items_label">通过下载或者长按一项剧集再选择“添加到播放列表”以添加剧集</string>
+  <string name="no_feeds_label">您尚未订阅任何播客</string>
   <string name="no_shownotes_label">本集不包含展示信息</string>
+  <string name="no_run_downloads_head_label">没有正在运行的下载</string>
+  <string name="no_run_downloads_label">您可以在播客的详情界面下载曲目</string>
+  <string name="no_comp_downloads_head_label">没有已下载的剧集</string>
+  <string name="no_comp_downloads_label">您可以在播客的详情界面下载曲目</string>
+  <string name="no_log_downloads_head_label">没有下载日志</string>
+  <string name="no_log_downloads_label">可用的下载日志会显示在这里</string>
+  <string name="no_history_head_label">没有历史</string>
+  <string name="no_history_label">在您收听一项剧集之后，它会显示在这里。</string>
+  <string name="no_all_episodes_head_label">无节目</string>
+  <string name="no_all_episodes_label">当您添加一个播客时，节目会显示在此处</string>
+  <string name="no_new_episodes_head_label">没有新的曲目</string>
+  <string name="no_new_episodes_label">当新节目到来，它们会显示在此处</string>
+  <string name="no_fav_episodes_head_label">没有收藏的曲目</string>
+  <string name="no_fav_episodes_label">您可以通过长按曲目将其添加至收藏</string>
+  <string name="no_chapters_head_label">无章节</string>
+  <string name="no_chapters_label">此曲目没有章节信息</string>
   <!--Preferences-->
   <string name="storage_pref">存储</string>
   <string name="project_pref">项目</string>
   <string name="other_pref">其他</string>
   <string name="about_pref">关于</string>
   <string name="queue_label">播放列表</string>
-  <string name="flattr_label">Flattr</string>
+  <string name="integrations_label">插件</string>
+  <string name="automation">自动化</string>
+  <string name="download_pref_details">细节</string>
   <string name="import_export_pref">导入/导出</string>
   <string name="import_export_search_keywords">数据, 备份, 还原, backup, restore</string>
   <string name="appearance">样式</string>
+  <string name="external_elements">外部元素</string>
+  <string name="interruptions">中断</string>
+  <string name="playback_control">回放控制</string>
+  <string name="media_player">媒体播放器</string>
   <string name="pref_episode_cleanup_title">清理曲目</string>
+  <string name="pref_episode_cleanup_summary">如果自动下载需要为新剧集腾出空间时不在列表和收藏里的剧集可以被移除</string>
   <string name="pref_pauseOnDisconnect_sum">暂停播放曲目当耳机或蓝牙重新连接</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">恢复播放曲目当蓝牙重新连接</string>
+  <string name="pref_hardwareForwardButtonSkips_title"> 快进按钮跳过曲目</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">当按压一个蓝牙连接设备的快进按钮时跳到下一项曲目而不是快进</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">“上一个”按钮重启</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">当按压硬件上一个按钮时重新开始播放当前曲目而不是倒回</string>
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
   <string name="pref_auto_delete_sum">当播放完成后删除曲目</string>
   <string name="pref_auto_delete_title">自动删除</string>
   <string name="pref_smart_mark_as_played_sum">当曲目的剩余未播放时间小于一个确定值时将其表为已播放</string>
   <string name="pref_smart_mark_as_played_title">智能标记为已播放</string>
+  <string name="pref_skip_keeps_episodes_sum">当剧集被跳过时保留它们</string>
+  <string name="pref_skip_keeps_episodes_title">保留跳过的剧集</string>
+  <string name="pref_favorite_keeps_episodes_sum">当剧集被收藏时保留它们</string>
+  <string name="pref_favorite_keeps_episodes_title">保留收藏的剧集</string>
   <string name="playback_pref">播放</string>
   <string name="network_pref">网络</string>
   <string name="pref_autoUpdateIntervallOrTime_title">定时更新</string>
@@ -312,18 +355,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">耳机重新连接</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">蓝牙重新连接</string>
   <string name="pref_mobileUpdate_title">数据网络时更新</string>
-  <string name="pref_mobileUpdate_sum">允许移动数据网络情况下进行数据链接</string>
   <string name="refreshing_label">刷新中</string>
-  <string name="flattr_settings_label">Flattr 设置</string>
-  <string name="pref_flattr_auth_title">Flattr 登录</string>
-  <string name="pref_flattr_auth_sum">登录 Flattr 账户, 以便直接使用本应用中的相关功能.</string>
-  <string name="pref_flattr_this_app_title">Flattr 本应用</string>
-  <string name="pref_flattr_this_app_sum">支持 AntennaPod 发展, 请 Flattring 他. 谢谢!!
-</string>
-  <string name="pref_revokeAccess_title">撤销访问</string>
-  <string name="pref_revokeAccess_sum">撤销访问本应用对您 Flattr 账户的访问权限.</string>
-  <string name="pref_auto_flattr_title">自动Flattr</string>
-  <string name="pref_auto_flattr_sum">设置自动 flattring</string>
   <string name="user_interface_label">界面</string>
   <string name="pref_set_theme_title">主题选择</string>
   <string name="pref_nav_drawer_title">侧边栏设置</string>
@@ -333,15 +365,20 @@
   <string name="pref_nav_drawer_feed_order_title">设置订阅的排序方式</string>
   <string name="pref_nav_drawer_feed_order_sum">改变你的订阅的排序方式</string>
   <string name="pref_nav_drawer_feed_counter_title">设定订阅数</string>
+  <string name="pref_nav_drawer_feed_counter_sum">更改订阅计数器显示的信息。 如果“订阅的排序顺序”设置为“按数量排序”，这也会影响订阅的排序。</string>
   <string name="pref_set_theme_sum">改变 AntennaPod 外观</string>
   <string name="pref_automatic_download_title">自动下载</string>
   <string name="pref_automatic_download_sum">配置自动下载的曲目</string>
   <string name="pref_autodl_wifi_filter_title">打开 Wi-Fi 过滤器</string>
   <string name="pref_autodl_wifi_filter_sum">只允许在 Wi-Fi 网络下自动下载</string>
+  <string name="pref_autodl_allow_on_mobile_title">移动数据连接时下载</string>
+  <string name="pref_autodl_allow_on_mobile_sum">允许在数据连接下自动下载</string>
   <string name="pref_automatic_download_on_battery_title">未充电时下载</string>
   <string name="pref_automatic_download_on_battery_sum">未充电时允许自动下载</string>
   <string name="pref_parallel_downloads_title">并行下载</string>
   <string name="pref_episode_cache_title">曲目缓存</string>
+  <string name="pref_episode_cache_summary">缓存在设备上的已下载节目总数
+若达到此数目，自动下载将被暂停</string>
   <string name="pref_theme_title_light">浅色</string>
   <string name="pref_theme_title_dark">暗色</string>
   <string name="pref_theme_title_trueblack">纯黑（适用于 AMOLED 设备）</string>
@@ -356,7 +393,9 @@
   <string name="pref_gpodnet_setlogin_information_title">改变登录信息</string>
   <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
   <string name="pref_gpodnet_sync_changes_title">立即同步改动</string>
+  <string name="pref_gpodnet_sync_changes_sum">和gpodder.net同步订阅和节目状态</string>
   <string name="pref_gpodnet_full_sync_title">立即完整同步</string>
+  <string name="pref_gpodnet_full_sync_sum">与gpodder.net同步所有订阅和节目状态</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">最后同步尝试于：%1$s（%2$s）</string>
   <string name="pref_gpodnet_sync_started">已开始同步</string>
   <string name="pref_gpodnet_full_sync_started">完整同步以开始</string>
@@ -365,10 +404,16 @@
   <string name="pref_gpodnet_notifications_sum">该设置无法适用于验证错误。</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
+  <string name="pref_playback_time_respects_speed_title">根据回放速度调整媒体信息</string>
+  <string name="pref_playback_time_respects_speed_sum">显示的播放位置和持续时间已根据回放速度进行调整</string>
+  <string name="pref_fast_forward">快进跳过时间</string>
   <string name="pref_fast_forward_sum">自定义每次快进节目的秒数</string>
+  <string name="pref_rewind">倒回跳过时间</string>
   <string name="pref_rewind_sum">自定义每次倒回节目的秒数</string>
   <string name="pref_gpodnet_sethostname_title">设置主机名</string>
   <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
+  <string name="pref_expandNotify_title">高通知优先级</string>
+  <string name="pref_expandNotify_sum">这通常会拓展通知以显示播放按钮。</string>
   <string name="pref_persistNotify_title">保持播放控制</string>
   <string name="pref_persistNotify_sum">在暂停时保持通知和锁屏界面的控制。</string>
   <string name="pref_compact_notification_buttons_title">设置锁屏按钮</string>
@@ -389,6 +434,7 @@
   <string name="crash_report_sum">通过 E-mail 发送最后崩溃报告</string>
   <string name="send_email">发送 E-mail</string>
   <string name="experimental_pref">实验性</string>
+  <string name="pref_media_player_message">选择使用哪个媒体播放器来播放文件</string>
   <string name="pref_current_value">当前值：%1$s</string>
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
@@ -398,17 +444,33 @@
   <string name="pref_cast_title">Chromecast 支持</string>
   <string name="pref_cast_message_play_flavor">启用在 Cast 设备（例如 Chromecast 、 Audio Speakers 和 Android TV ）上对于远端媒体回放的支持</string>
   <string name="pref_cast_message_free_flavor">Chromecast 所需要的第三方库文件在这个版本的 AntennaPod 中被禁用</string>
+  <string name="pref_enqueue_downloaded_title">已下载队列</string>
   <string name="pref_enqueue_downloaded_summary">向队列添加已下载的节目</string>
+  <string name="media_player_builtin">内置安卓播放器</string>
+  <string name="pref_skip_silence_title">跳过没有声音的音频</string>
+  <string name="pref_videoBehavior_title">退出视频后</string>
+  <string name="pref_videoBehavior_sum">离开视频播放后的行为</string>
+  <string name="stop_playback">停止播放</string>
+  <string name="continue_playback">继续播放音频</string>
+  <string name="behavior">行为</string>
+  <string name="pref_back_button_behavior_title">返回键行为</string>
+  <string name="pref_back_button_behavior_sum">改变返回键的行为</string>
   <string name="back_button_default">默认</string>
   <string name="back_button_open_drawer">打开导航抽屉</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">启用自动 flattring</string>
-  <string name="auto_flattr_after_percent">当播放到百分之%d时Flattr改曲目</string>
-  <string name="auto_flattr_ater_beginning">当播放开始时Flattr改曲目</string>
-  <string name="auto_flattr_ater_end">当播放结束时Flattr改曲目</string>
+  <string name="back_button_double_tap">双击退出</string>
+  <string name="back_button_show_prompt">确认退出</string>
+  <string name="close_prompt">您确定想要关闭AntennaPod吗？</string>
+  <string name="double_tap_toast">再次点按返回键以退出</string>
+  <string name="back_button_go_to_page">前往页面</string>
+  <string name="back_button_go_to_page_title">选择页面</string>
+  <string name="pref_delete_removes_from_queue_title">删除队列间距</string>
+  <string name="pref_delete_removes_from_queue_sum">剧集被删除时自动将其移除列表</string>
   <!--Search-->
   <string name="search_hint">查找节目</string>
+  <string name="found_in_shownotes_label">在节目笔记中找到</string>
   <string name="found_in_chapters_label">章节中查找</string>
+  <string name="found_in_authors_label">在作者中找到</string>
+  <string name="found_in_feeds_label">在播客中找到</string>
   <string name="search_status_no_results">没有找到任何结果</string>
   <string name="search_label">搜索</string>
   <string name="found_in_title_label">标题中查找</string>
@@ -434,6 +496,8 @@
   <string name="html_export_label">导出为 HTML 文件</string>
   <string name="exporting_label">正在导出</string>
   <string name="export_error_label">导出出错</string>
+  <string name="export_success_title">成功导出</string>
+  <string name="export_success_sum">导出文件被写入:\n\n 1%1$s</string>
   <string name="opml_import_ask_read_permission">读取 OPML 文件需要访问外部存储的权限</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">设置休眠计时器</string>
@@ -491,6 +555,7 @@
   <string name="gpodnetsync_error_descr">同步过程中发生错误: \u0020</string>
   <string name="gpodnetsync_pref_report_successful">成功了</string>
   <string name="gpodnetsync_pref_report_failed">失败了</string>
+  <string name="gpodnetsync_username_characters_error">用户名只能包含字母、数字、连字符和下划线</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">已选文件夹:</string>
   <string name="create_folder_label">穿件文件夹</string>
@@ -532,16 +597,22 @@
   <string name="authentication_descr">给本播客及曲目变更用户名及密码</string>
   <string name="auto_download_settings_label">自动下载设置</string>
   <string name="episode_filters_label">曲目过滤器</string>
+  <string name="episode_filters_description">条款列表曾用于确定是否应在自动下载时包含或排除剧集</string>
   <string name="episode_filters_include">包含</string>
   <string name="episode_filters_exclude">排除</string>
   <string name="keep_updated">保持最新</string>
+  <string name="keep_updated_summary">（自动）刷新所有源时包含该源</string>
+  <string name="auto_download_disabled_globally">AntennaPod主设置中已禁用自动下载</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">升级数据库</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">正在从选定的应用中导入订阅...</string>
+  <!--Add podcast fragment-->
+  <string name="search_podcast_hint">搜索播客……</string>
   <string name="search_itunes_label">搜索 iTunes</string>
+  <string name="search_fyyd_label">搜索 fydd</string>
+  <string name="advanced_search">高级搜索</string>
   <string name="filter">过滤器</string>
-  <string name="search_fyyd_label">在 fyyd 上搜索</string>
   <!--Episodes apply actions-->
   <string name="all_label">全部</string>
   <string name="selected_all_label">全选</string>
@@ -559,6 +630,8 @@
   <string name="selected_queued_label">已选曲目</string>
   <string name="not_queued_label">不在播放列表中</string>
   <string name="selected_not_queued_label">选择不在播放列表的曲目</string>
+  <string name="has_media">包含媒体</string>
+  <string name="selected_has_media_label">已选中含媒体的节目</string>
   <!--Sort-->
   <string name="sort_title_a_z">标题 (A \u2192 Z)</string>
   <string name="sort_title_z_a">标题 (Z \u2192 A)</string>
@@ -579,7 +652,9 @@
   <string name="left_short">L</string>
   <string name="right_short">R</string>
   <string name="audio_effects">音频效果</string>
+  <string name="stereo_to_mono">下降混合：由立体声到单声道</string>
   <string name="sonic_only">仅声音</string>
+  <string name="exoplayer_only">仅ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">类型</string>
   <string name="host_label">主机地址</string>
@@ -593,18 +668,39 @@
   <string name="proxy_host_invalid_error">主机地址为无效的IP地址或域名</string>
   <string name="proxy_port_invalid_error">端口不可用</string>
   <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">列数</string>
   <!--Database import/export-->
+  <string name="import_export">数据库导入/导出</string>
+  <string name="import_export_warning">此实验功能可将您订阅和播放的剧集转移到另一台设备。\ n \ n导出的数据库只有在使用相同版本的 AntennaPod 时才能导入。 否则，此功能将导致意外行为。\ n \ n剧集被导入后，可能会显示为已下载，如果它们没有。 只需点击剧集的播放按钮即可使 AntennaPod 检测到状态。</string>
   <string name="label_import">导入</string>
   <string name="label_export">导出</string>
+  <string name="import_select_file">选择导入文件</string>
   <string name="export_ok">导出成功。</string>
+  <string name="import_ok">成功导入，请按OK重启AntennaPod</string>
   <!--Casting-->
+  <string name="cast_media_route_menu_title">投影路径</string>
+  <string name="cast_disconnect_label">断开投影会话</string>
+  <string name="cast_not_castable">选中的媒体文件不兼容投影设备</string>
   <string name="cast_failed_to_play">媒体回放开始失败</string>
   <string name="cast_failed_to_stop">媒体回放停止失败</string>
   <string name="cast_failed_to_pause">媒体回放暂停失败</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">音量设置失败</string>
+  <string name="cast_failed_no_connection">与投影设备间无连接</string>
+  <string name="cast_failed_no_connection_trans">与投影设备间的连接已丢失。程序正尝试重新建立连接。请等待数秒并再次尝试。</string>
+  <string name="cast_failed_perform_action">未能执行动作</string>
+  <string name="cast_failed_status_request">未能与投影设备同步</string>
+  <string name="cast_failed_seek">未能在投影设备上找到新播放位置</string>
+  <string name="cast_failed_receiver_player_error">接收播放器遇到一个严重错误</string>
   <string name="cast_failed_media_error_skipping">媒体播放出错.跳转中...</string>
   <!--Notification channels-->
+  <string name="notification_channel_user_action">需要操作</string>
+  <string name="notification_channel_user_action_description">显示是否需要您的操作，比如是否需要您输入一个密码</string>
   <string name="notification_channel_downloading">正在下载</string>
+  <string name="notification_channel_downloading_description">下载时显示</string>
+  <string name="notification_channel_playing">当前播放</string>
+  <string name="notification_channel_playing_description">允许控制回放。这是播放播客时您所见的主通知。</string>
   <string name="notification_channel_error">错误</string>
+  <string name="notification_channel_error_description">发生错误时显示，比如下载或与gpodder的同步失败</string>
+  <string name="import_bad_file">无效/损坏文件</string>
 </resources>

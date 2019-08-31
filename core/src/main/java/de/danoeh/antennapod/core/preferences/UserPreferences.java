@@ -29,6 +29,7 @@ import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 /**
@@ -59,6 +60,8 @@ public class UserPreferences {
 
     // Queue
     private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
+    public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
+    public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
     // Playback
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -106,6 +109,7 @@ public class UserPreferences {
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
     public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+    private static final String PREF_VIDEO_PLAYBACK_SPEED = "prefVideoPlaybackSpeed";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
@@ -316,8 +320,24 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static String getPlaybackSpeed() {
-        return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
+    public static float getPlaybackSpeed() {
+        try {
+            return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            UserPreferences.setPlaybackSpeed("1.00");
+            return 1.0f;
+        }
+    }
+
+    public static float getVideoPlaybackSpeed() {
+        try {
+            return Float.parseFloat(prefs.getString(PREF_VIDEO_PLAYBACK_SPEED, "1.00"));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            UserPreferences.setVideoPlaybackSpeed("1.00");
+            return 1.0f;
+        }
     }
 
     public static boolean isSkipSilence() {
@@ -412,9 +432,9 @@ public class UserPreferences {
         defaultValue.add("images");
         Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
         if (allow) {
-            allowed.remove(type);
-        } else {
             allowed.add(type);
+        } else {
+            allowed.remove(type);
         }
         prefs.edit().putStringSet(PREF_MOBILE_UPDATE, allowed).apply();
     }
@@ -534,7 +554,8 @@ public class UserPreferences {
     }
 
     public static boolean isQueueLocked() {
-        return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
+        return prefs.getBoolean(PREF_QUEUE_LOCKED, false)
+                || isQueueKeepSorted();
     }
 
     public static void setFastForwardSecs(int secs) {
@@ -553,6 +574,12 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_PLAYBACK_SPEED, speed)
              .apply();
+    }
+
+    public static void setVideoPlaybackSpeed(String speed) {
+        prefs.edit()
+                .putString(PREF_VIDEO_PLAYBACK_SPEED, speed)
+                .apply();
     }
 
     public static void setSkipSilence(boolean skipSilence) {
@@ -908,5 +935,50 @@ public class UserPreferences {
 
     public static boolean timeRespectsSpeed() {
         return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
+    }
+
+    /**
+     * Returns if the queue is in keep sorted mode.
+     *
+     * @see #getQueueKeepSortedOrder()
+     */
+    public static boolean isQueueKeepSorted() {
+        return prefs.getBoolean(PREF_QUEUE_KEEP_SORTED, false);
+    }
+
+    /**
+     * Enables/disables the keep sorted mode of the queue.
+     *
+     * @see #setQueueKeepSortedOrder(SortOrder)
+     */
+    public static void setQueueKeepSorted(boolean keepSorted) {
+        prefs.edit()
+                .putBoolean(PREF_QUEUE_KEEP_SORTED, keepSorted)
+                .apply();
+    }
+
+    /**
+     * Returns the sort order for the queue keep sorted mode.
+     * Note: This value is stored independently from the keep sorted state.
+     *
+     * @see #isQueueKeepSorted()
+     */
+    public static SortOrder getQueueKeepSortedOrder() {
+        String sortOrderStr = prefs.getString(PREF_QUEUE_KEEP_SORTED_ORDER, "use-default");
+        return SortOrder.parseWithDefault(sortOrderStr, SortOrder.DATE_NEW_OLD);
+    }
+
+    /**
+     * Sets the sort order for the queue keep sorted mode.
+     *
+     * @see #setQueueKeepSorted(boolean)
+     */
+    public static void setQueueKeepSortedOrder(SortOrder sortOrder) {
+        if (sortOrder == null) {
+            return;
+        }
+        prefs.edit()
+                .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
+                .apply();
     }
 }

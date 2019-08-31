@@ -11,11 +11,8 @@ import android.util.Log;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -44,6 +41,8 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
+import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -109,23 +108,11 @@ public class DBWriter {
             adapter.setMedia(media);
             adapter.close();
 
-            // If media is currently being played, change playback
-            // type to 'stream' and shutdown playback service
-            SharedPreferences prefs = PreferenceManager
-                    .getDefaultSharedPreferences(context);
-            if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
-                if (media.getId() == PlaybackPreferences
-                        .getCurrentlyPlayingFeedMediaId()) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean(
-                            PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
-                            true);
-                    editor.commit();
-                }
-                if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId()) {
-                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-                }
+            if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+                PlaybackPreferences.writeNoMediaPlaying();
+                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
+
             // Gpodder: queue delete action for synchronization
             if(GpodnetPreferences.loggedIn()) {
                 FeedItem item = media.getItem();
@@ -151,23 +138,9 @@ public class DBWriter {
     public static Future<?> deleteFeed(final Context context, final long feedId) {
         return dbExec.submit(() -> {
             DownloadRequester requester = DownloadRequester.getInstance();
-            SharedPreferences prefs = PreferenceManager
-                    .getDefaultSharedPreferences(context
-                            .getApplicationContext());
             final Feed feed = DBReader.getFeed(feedId);
 
             if (feed != null) {
-                if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
-                        && PlaybackPreferences.getLastPlayedFeedId() == feed
-                        .getId()) {
-                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putLong(
-                            PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-                            -1);
-                    editor.commit();
-                }
-
                 // delete stored media files and mark them as read
                 List<FeedItem> queue = DBReader.getQueue();
                 List<FeedItem> removed = new ArrayList<>();
@@ -176,20 +149,12 @@ public class DBWriter {
                 }
 
                 for (FeedItem item : feed.getItems()) {
-                    if(queue.remove(item)) {
+                    if (queue.remove(item)) {
                         removed.add(item);
                     }
-                    if (item.getState() == FeedItem.State.PLAYING && PlaybackService.isRunning) {
-                        context.stopService(new Intent(context, PlaybackService.class));
-                    }
-                    if (item.getMedia() != null
-                            && item.getMedia().isDownloaded()
-                            && !feed.isLocalFeed()) {
-                        File mediaFile = new File(item.getMedia()
-                                .getFile_url());
-                        mediaFile.delete();
-                    } else if (item.getMedia() != null
-                            && requester.isDownloadingFile(item.getMedia())) {
+                    if (item.getMedia() != null && item.getMedia().isDownloaded() && !feed.isLocalFeed()) {
+                        deleteFeedMediaSynchronous(context, item.getMedia());
+                    } else if (item.getMedia() != null && requester.isDownloadingFile(item.getMedia())) {
                         requester.cancelDownload(context, item.getMedia());
                     }
                 }
@@ -384,6 +349,7 @@ public class DBWriter {
                         }
                     }
                     if (queueModified) {
+                        applySortOrder(queue, events);
                         adapter.setQueue(queue);
                         for (QueueEvent event : events) {
                             EventBus.getDefault().post(event);
@@ -400,6 +366,33 @@ public class DBWriter {
                 }
             }
         });
+    }
+
+    /**
+     * Sorts the queue depending on the configured sort order.
+     * If the queue is not in keep sorted mode, nothing happens.
+     *
+     * @param queue  The queue to be sorted.
+     * @param events Replaces the events by a single SORT event if the list has to be sorted automatically.
+     */
+    private static void applySortOrder(List<FeedItem> queue, List<QueueEvent> events) {
+        if (!UserPreferences.isQueueKeepSorted()) {
+            // queue is not in keep sorted mode, there's nothing to do
+            return;
+        }
+
+        // Sort queue by configured sort order
+        SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
+        if (sortOrder == SortOrder.RANDOM) {
+            // do not shuffle the list on every change
+            return;
+        }
+        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortOrder);
+        permutor.reorder(queue);
+
+        // Replace ADDED events by a single SORTED event
+        events.clear();
+        events.add(QueueEvent.sorted(queue));
     }
 
     /**
@@ -851,31 +844,8 @@ public class DBWriter {
     }
 
     /**
-     * Sort the FeedItems in the queue with the given Comparator.
-     * @param comparator      FeedItem comparator
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> sortQueue(final Comparator<FeedItem> comparator, final boolean broadcastUpdate) {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            final List<FeedItem> queue = DBReader.getQueue(adapter);
-
-            if (queue != null) {
-                Collections.sort(queue, comparator);
-                adapter.setQueue(queue);
-                if (broadcastUpdate) {
-                    EventBus.getDefault().post(QueueEvent.sorted(queue));
-                }
-            } else {
-                Log.e(TAG, "sortQueue: Could not load queue");
-            }
-            adapter.close();
-        });
-    }
-
-    /**
-     * Similar to sortQueue, but allows more complex reordering by providing whole-queue context.
+     * Sort the FeedItems in the queue with the given Permutor.
+     *
      * @param permutor        Encapsulates whole-Queue reordering logic.
      * @param broadcastUpdate <code>true</code> if this operation should trigger a
      *                        QueueUpdateBroadcast. This option should be set to <code>false</code>

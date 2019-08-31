@@ -267,6 +267,7 @@
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
     <string name="confirm_mobile_streaming_notification_title">Confirm Mobile streaming</string>
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
+    <string name="confirm_mobile_streaming_button_always">Always allow</string>
     <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
@@ -277,6 +278,8 @@
     <string name="player_ready_msg">Ready</string>
     <string name="player_seeking_msg">Seeking</string>
     <string name="playback_error_server_died">Server died</string>
+    <string name="playback_error_unsupported">Unsupported media type</string>
+    <string name="playback_error_timeout">Operation timed out</string>
     <string name="playback_error_unknown">Unknown Error</string>
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translate="false">00:00:00</string>
@@ -296,6 +299,7 @@
     <string name="move_to_top_label">Move to top</string>
     <string name="move_to_bottom_label">Move to bottom</string>
     <string name="sort">Sort</string>
+    <string name="keep_sorted">Keep sorted</string>
     <string name="date">Date</string>
     <string name="duration">Duration</string>
     <string name="episode_title">Episode title</string>
@@ -352,6 +356,9 @@
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
     <string name="playback_control">Playback control</string>
+    <string name="preference_search_hint">Search…</string>
+    <string name="preference_search_no_results">No results</string>
+    <string name="preference_search_clear_history">Clear history</string>
     <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>

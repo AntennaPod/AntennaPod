@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -79,7 +80,7 @@ import io.reactivex.schedulers.Schedulers;
  * Displays a list of FeedItems.
  */
 @SuppressLint("ValidFragment")
-public class ItemlistFragment extends ListFragment {
+public class FeedItemlistFragment extends ListFragment {
     private static final String TAG = "ItemlistFragment";
 
     private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE
@@ -120,8 +121,8 @@ public class ItemlistFragment extends ListFragment {
      * @param feedId The id of the feed to show
      * @return the newly created instance of an ItemlistFragment
      */
-    public static ItemlistFragment newInstance(long feedId) {
-        ItemlistFragment i = new ItemlistFragment();
+    public static FeedItemlistFragment newInstance(long feedId) {
+        FeedItemlistFragment i = new FeedItemlistFragment();
         Bundle b = new Bundle();
         b.putLong(ARGUMENT_FEED_ID, feedId);
         i.setArguments(b);
@@ -137,6 +138,13 @@ public class ItemlistFragment extends ListFragment {
         Bundle args = getArguments();
         Validate.notNull(args);
         feedID = args.getLong(ARGUMENT_FEED_ID);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        ((ListView) view.findViewById(android.R.id.list)).setFastScrollEnabled(true);
+        return view;
     }
 
     @Override
@@ -195,6 +203,21 @@ public class ItemlistFragment extends ListFragment {
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
         MenuItemUtils.adjustTextColor(getActivity(), sv);
         sv.setQueryHint(getString(R.string.search_hint));
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+             @Override
+             public boolean onMenuItemActionExpand(MenuItem item) {
+                 menu.findItem(R.id.filter_items).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                 menu.findItem(R.id.episode_actions).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                 menu.findItem(R.id.refresh_item).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                 return true;
+             }
+
+             @Override
+             public boolean onMenuItemActionCollapse(MenuItem item) {
+                 getActivity().invalidateOptionsMenu();
+                 return true;
+             }
+         });
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
