@@ -158,6 +158,10 @@ public class DownloadService extends Service {
     private class DownloadCompletionThread extends Thread {
         private static final String TAG = "downloadCompletionThd";
 
+        DownloadCompletionThread() {
+            super("DownloadCompletionThread");
+        }
+
         @Override
         public void run() {
             Log.d(TAG, "downloadCompletionThread was started");

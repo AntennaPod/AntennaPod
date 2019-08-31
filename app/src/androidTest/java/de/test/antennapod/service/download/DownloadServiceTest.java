@@ -6,6 +6,8 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +32,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Consumer;
-import de.greenrobot.event.EventBus;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -96,6 +97,7 @@ public class DownloadServiceTest {
          * The actual logic in asserting the sequence of DownloadEvents generated,
          * as well as the correspond states in the database.
          */
+        @Subscribe
         public void onEvent(DownloadEvent event) {
             DownloadStatus status = getDownloadStatus(event, FeedMedia.FEEDFILETYPE_FEEDMEDIA, testMedia11.getId());
             trace("DownloadEvent: " + event);
