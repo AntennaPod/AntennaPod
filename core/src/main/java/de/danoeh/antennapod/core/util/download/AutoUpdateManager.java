@@ -1,21 +1,25 @@
 package de.danoeh.antennapod.core.util.download;
 
 import android.util.Log;
+
 import androidx.work.Constraints;
+import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.FeedUpdateWorker;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.FeedUpdateWorker;
+
 public class AutoUpdateManager {
     private static final String WORK_ID_FEED_UPDATE = FeedUpdateWorker.class.getName();
+    private static final String WORK_ID_FEED_UPDATE_IMMEDIATE = FeedUpdateWorker.class.getName() +"Immediate";
     private static final String TAG = "AutoUpdateManager";
 
     private AutoUpdateManager() {
@@ -58,6 +62,22 @@ public class AutoUpdateManager {
                 .build();
 
         WorkManager.getInstance().enqueueUniqueWork(WORK_ID_FEED_UPDATE, ExistingWorkPolicy.REPLACE, workRequest);
+    }
+
+    public static void runImmediate() {
+        Log.d(TAG, "Run auto update immediately.");
+
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
+                .setConstraints(getConstraints())
+                .setInitialDelay(0L, TimeUnit.MILLISECONDS)
+                .setInputData(new Data.Builder()
+                        .putBoolean(FeedUpdateWorker.PARAM_RUN_IMMEDIATE, true)
+                        .build()
+                )
+                .build();
+
+        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_FEED_UPDATE_IMMEDIATE, ExistingWorkPolicy.REPLACE, workRequest);
+
     }
 
     public static void disableAutoUpdate() {
