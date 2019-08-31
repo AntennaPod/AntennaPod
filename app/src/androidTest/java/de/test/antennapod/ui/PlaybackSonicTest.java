@@ -122,7 +122,7 @@ public class PlaybackSonicTest {
         solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
         getInstrumentation().waitForIdleSync();
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
 
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
@@ -241,7 +241,7 @@ public class PlaybackSonicTest {
         setContinuousPlaybackPreference(followQueue);
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
 
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();
