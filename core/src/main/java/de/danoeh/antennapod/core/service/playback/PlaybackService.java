@@ -487,15 +487,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
                 //If the user asks to play External Media, the casting session, if on, should end.
                 flavorHelper.castDisconnect(playable instanceof ExternalMedia);
-                if (playable instanceof FeedMedia) {
-                    playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
-                }
                 if (allowStreamAlways) {
                     UserPreferences.setAllowMobileStreaming(true);
                 }
                 if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
                     displayStreamingNotAllowedNotification(intent);
                     PlaybackPreferences.writeNoMediaPlaying();
+                    stateManager.stopService();
+                    return Service.START_NOT_STICKY;
+                }
+                if (playable instanceof FeedMedia) {
+                    playable = DBReader.getFeedMedia(((FeedMedia) playable).getId());
+                }
+                if (playable == null) {
+                    Log.d(TAG, "Playable was not found. Stopping service.");
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
                 }
