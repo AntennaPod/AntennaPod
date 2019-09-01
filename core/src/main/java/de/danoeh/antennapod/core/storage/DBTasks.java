@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.support.annotation.Nullable;
+import android.os.Looper;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -144,53 +144,37 @@ public final class DBTasks {
     private static final AtomicBoolean isRefreshing = new AtomicBoolean(false);
 
     /**
-     * Refreshes a given list of Feeds in a separate Thread. This method might ignore subsequent calls if it is still
+     * Refreshes all feeds.
+     * It must not be from the main thread.
+     * This method might ignore subsequent calls if it is still
      * enqueuing Feeds for download from a previous call
      *
      * @param context  Might be used for accessing the database
-     * @param feeds    List of Feeds that should be refreshed.
      */
-    public static void refreshAllFeeds(final Context context, final List<Feed> feeds) {
-        refreshAllFeeds(context, feeds, null);
-    }
-
-    /**
-     * Refreshes a given list of Feeds in a separate Thread. This method might ignore subsequent calls if it is still
-     * enqueuing Feeds for download from a previous call
-     *
-     * @param context  Might be used for accessing the database
-     * @param feeds    List of Feeds that should be refreshed.
-     * @param callback Called after everything was added enqueued for download. Might be null.
-     */
-    public static void refreshAllFeeds(final Context context, final List<Feed> feeds, @Nullable Runnable callback) {
+    public static void refreshAllFeeds(final Context context) {
         if (!isRefreshing.compareAndSet(false, true)) {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
             return;
         }
 
-        new Thread(() -> {
-            if (feeds != null) {
-                refreshFeeds(context, feeds);
-            } else {
-                refreshFeeds(context, DBReader.getFeedList());
-            }
-            isRefreshing.set(false);
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            Log.wtf(TAG, "DBTasks.refreshAllFeeds() must not be called from the main thread");
+            return;
+        }
 
-            SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-            prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
+        refreshFeeds(context, DBReader.getFeedList());
+        isRefreshing.set(false);
 
-            if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
-                GpodnetSyncService.sendSyncIntent(context);
-            }
-            // Note: automatic download of episodes will be done but not here.
-            // Instead it is done after all feeds have been refreshed (asynchronously),
-            // in DownloadService.onDestroy()
-            // See Issue #2577 for the details of the rationale
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
 
-            if (callback != null) {
-                callback.run();
-            }
-        }).start();
+        if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
+            GpodnetSyncService.sendSyncIntent(context);
+        }
+        // Note: automatic download of episodes will be done but not here.
+        // Instead it is done after all feeds have been refreshed (asynchronously),
+        // in DownloadService.onDestroy()
+        // See Issue #2577 for the details of the rationale
     }
 
     /**

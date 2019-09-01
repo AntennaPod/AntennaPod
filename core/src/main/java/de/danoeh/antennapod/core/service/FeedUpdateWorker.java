@@ -7,10 +7,6 @@ import android.util.Log;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import org.awaitility.Awaitility;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -34,9 +30,7 @@ public class FeedUpdateWorker extends Worker {
         ClientConfig.initialize(getApplicationContext());
 
         if (NetworkUtils.networkAvailable() && NetworkUtils.isFeedRefreshAllowed()) {
-            AtomicBoolean finished = new AtomicBoolean(false);
-            DBTasks.refreshAllFeeds(getApplicationContext(), null, () -> finished.set(true));
-            Awaitility.await().until(finished::get);
+            DBTasks.refreshAllFeeds(getApplicationContext());
         } else {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
         }
