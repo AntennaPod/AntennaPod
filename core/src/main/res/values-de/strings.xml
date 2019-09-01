@@ -49,7 +49,7 @@
   <!--Webview actions-->
   <string name="open_in_browser_label">Im Browser öffnen</string>
   <string name="copy_url_label">URL kopieren</string>
-  <string name="share_url_label">Teile URL</string>
+  <string name="share_url_label">URL teilen</string>
   <string name="copied_url_msg">URL wurde in die Zwischenablage kopiert.</string>
   <string name="go_to_position_label">Gehe zu dieser Position</string>
   <!--Playback history-->
@@ -253,6 +253,7 @@
   <string name="confirm_mobile_download_dialog_message">Das Herunterladen über die mobile Datenverbindung ist in den Einstellungen deaktiviert.\n\nVorübergehend erlauben?\n\n<small>Deine Entscheidung wird für 10 Minuten gespeichert.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Mobiles Streamen bestätigen</string>
   <string name="confirm_mobile_streaming_notification_message">Streamen über mobile Datenverbindung ist in den Einstellungen deaktiviert. Tippen, um trotzdem zu streamen.</string>
+  <string name="confirm_mobile_streaming_button_always">Immer erlauben</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Zur Abspielliste hinzufügen</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Vorübergehend erlauben</string>
   <!--Mediaplayer messages-->
@@ -262,6 +263,8 @@
   <string name="player_ready_msg">Fertig</string>
   <string name="player_seeking_msg">Spule</string>
   <string name="playback_error_server_died">Server ist offline</string>
+  <string name="playback_error_unsupported">Dateityp nicht unterstützt</string>
+  <string name="playback_error_timeout">Zeitüberschreitung</string>
   <string name="playback_error_unknown">Unbekannter Fehler</string>
   <string name="no_media_playing_label">Keine Medienwiedergabe</string>
   <string name="player_buffering_msg">Puffert</string>
@@ -333,6 +336,9 @@
   <string name="external_elements">Externe Elemente</string>
   <string name="interruptions">Unterbrechungen</string>
   <string name="playback_control">Wiedergabesteurung</string>
+  <string name="preference_search_hint">Suchen…</string>
+  <string name="preference_search_no_results">Keine Ergebnisse</string>
+  <string name="preference_search_clear_history">Verlauf leeren</string>
   <string name="media_player">Medienabspieler</string>
   <string name="pref_episode_cleanup_title">Automatisches Löschen</string>
   <string name="pref_episode_cleanup_summary">Episoden, die weder in der Abspielliste noch Favoriten sind, können gelöscht werden, wenn beim automatischen Herunterladen Speicherplatz für neue Episoden gebraucht wird</string>

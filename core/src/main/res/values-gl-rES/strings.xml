@@ -253,6 +253,7 @@
   <string name="confirm_mobile_download_dialog_message">A descarga con datos móbiles está desactivada nos axustes.\n\nQuere permitir a descarga temporalmente?\n\n <small>A súa decisión lembrarase durante 10 minutos.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Confirmar retransmisión Móbil</string>
   <string name="confirm_mobile_streaming_notification_message">Desactivouse nos axustes Retransmitir mediante a conexión de datos. Toque para retransmitir igualmente.</string>
+  <string name="confirm_mobile_streaming_button_always">Permitir sempre</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Engadir a cola</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permitir temporalmente</string>
   <!--Mediaplayer messages-->
@@ -262,6 +263,8 @@
   <string name="player_ready_msg">Listo</string>
   <string name="player_seeking_msg">Buscando</string>
   <string name="playback_error_server_died">Servidor desconectado</string>
+  <string name="playback_error_unsupported">Tipo de ficheiro non soportado</string>
+  <string name="playback_error_timeout">A operación caducou</string>
   <string name="playback_error_unknown">Fallo descoñecido</string>
   <string name="no_media_playing_label">Non reproducindo</string>
   <string name="player_buffering_msg">Almacenando</string>
@@ -333,6 +336,9 @@
   <string name="external_elements">Elementos externos</string>
   <string name="interruptions">Interrupcións</string>
   <string name="playback_control">Control de reprodución</string>
+  <string name="preference_search_hint">Busca....</string>
+  <string name="preference_search_no_results">Sen resultados</string>
+  <string name="preference_search_clear_history">Limpar historial</string>
   <string name="media_player">Reprodutor de medios</string>
   <string name="pref_episode_cleanup_title">Limpeza de episodios</string>
   <string name="pref_episode_cleanup_summary">Os episodios que non están na cola e tampouco son favoritos deberían poder ser candidatos a ser eliminados si a función Descarga Automática precisa espazo para novos episodios.</string>

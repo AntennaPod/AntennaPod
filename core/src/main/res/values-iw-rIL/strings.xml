@@ -271,6 +271,7 @@
   <string name="confirm_mobile_download_dialog_message">הורדה דרך חיבור נתונים של רשת סלולרית מושבת דרך ההגדרות.\n\nלאפשר את ההורדה באופן זמני?\n\n<small>הבחירה שלך תישמר למשך 10 דקות.</small></string>
   <string name="confirm_mobile_streaming_notification_title">אישור הזרמה דרך רשת סלולרית</string>
   <string name="confirm_mobile_streaming_notification_message">הזרמה דרך חיבור רשת סלולרית מושבתת בהגדרות. ניתן לגעת כדי להזרים בכל זאת.</string>
+  <string name="confirm_mobile_streaming_button_always">לאפשר תמיד</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">הוספה לתור</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">לאפשר לבינתיים</string>
   <!--Mediaplayer messages-->
@@ -280,6 +281,8 @@
   <string name="player_ready_msg">בהמתנה</string>
   <string name="player_seeking_msg">מתבצע איתור</string>
   <string name="playback_error_server_died">השרת לא מגיב</string>
+  <string name="playback_error_unsupported">אין תמיכה בסוג המדיה הזה</string>
+  <string name="playback_error_timeout">הזמן שהוקצב לפעולה תם</string>
   <string name="playback_error_unknown">שגיאה לא ידועה</string>
   <string name="no_media_playing_label">אין מדיה מתנגנת</string>
   <string name="player_buffering_msg">החוצץ מתמלא</string>
@@ -351,6 +354,9 @@
   <string name="external_elements">רכיבים חיצוניים</string>
   <string name="interruptions">הפרעות</string>
   <string name="playback_control">בקרת נגינה</string>
+  <string name="preference_search_hint">חיפוש…</string>
+  <string name="preference_search_no_results">אין תוצאות</string>
+  <string name="preference_search_clear_history">פינוי ההיסטוריה</string>
   <string name="media_player">נגן מדיה</string>
   <string name="pref_episode_cleanup_title">ניקוי פרקים</string>
   <string name="pref_episode_cleanup_summary">פרקים שאינם בתור ואינם במועדפים אמורים לענות לתנאים של הסרה במקרה שההורדה האוטומטית זקוקה למקום לפרקים חדשים</string>

@@ -83,7 +83,7 @@
   <string name="save_username_password_label">Sauvegarder votre identifiant et votre mot de passe</string>
   <string name="close_label">Fermer</string>
   <string name="retry_label">Réessayer</string>
-  <string name="auto_download_label">Télécharger automatiquement à l\'avenir</string>
+  <string name="auto_download_label">Télécharger automatiquement</string>
   <string name="auto_download_apply_to_items_title">Appliquer aux épisodes précédents</string>
   <string name="auto_download_apply_to_items_message">Le nouveau paramètre <i>Téléchargement Automatique</i> sera automatiquement appliqué sur chaque nouvel épisode.\nVoulez-vous faire de même avec les épisodes précédents ?</string>
   <string name="auto_delete_label">Suppression automatique de l\'épisode</string>
@@ -118,9 +118,9 @@
   <string name="mark_all_read_msg">Tous les épisodes ont été marqués comme lus</string>
   <string name="mark_all_read_confirmation_msg">Confirmer le marquage de tous les épisode comme lus</string>
   <string name="mark_all_read_feed_confirmation_msg">Confirmer le marquage de tous les épisodes de ce podcast comme lus</string>
-  <string name="remove_all_new_flags_label">Ne plus rien afficher comme \"nouveau\"</string>
-  <string name="removed_all_new_flags_msg">Tous les statuts \"nouveau\" ont été supprimés</string>
-  <string name="remove_all_new_flags_confirmation_msg">Veuillez confirmer que vous ne voulez plus aucun épisode apparaissant comme \"nouveau\".</string>
+  <string name="remove_all_new_flags_label">Ne plus rien considérer nouveau</string>
+  <string name="removed_all_new_flags_msg">Les statuts \"nouveau\" ont été supprimés</string>
+  <string name="remove_all_new_flags_confirmation_msg">Confirmer que vous ne voulez plus d\'épisodes apparaissant comme \"nouveau\".</string>
   <string name="show_info_label">Voir les détails</string>
   <string name="show_feed_settings_label">Paramètres du podcast...</string>
   <string name="feed_info_label">Infos du podcast</string>
@@ -171,7 +171,7 @@
     <item quantity="one">%d épisode supprimé.</item>
     <item quantity="other">%d épisodes supprimés.</item>
   </plurals>
-  <string name="remove_new_flag_label">Ne plus afficher comme \"nouveau\"</string>
+  <string name="remove_new_flag_label">Ne plus considérer nouveau</string>
   <string name="removed_new_flag_label">Le statut \"nouveau\" a été supprimé</string>
   <string name="mark_read_label">Marquer comme lu</string>
   <string name="marked_as_read_label">Les épisodes ont été marqués comme lus</string>
@@ -251,8 +251,9 @@
   <string name="confirm_mobile_download_dialog_title">Confirmer le téléchargement mobile</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement avec la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\'épisode à la liste de lecture ou vous pouvez autoriser temporairement le téléchargement.\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
   <string name="confirm_mobile_download_dialog_message">Le téléchargement avec la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
-  <string name="confirm_mobile_streaming_notification_title">Confirmez l\'utilisation de la connexion mobile pour le streaming</string>
-  <string name="confirm_mobile_streaming_notification_message">L\'usage de la connexion mobile pour le streaming est désactivé dans les paramètres. Toucher pour streamer quand même.</string>
+  <string name="confirm_mobile_streaming_notification_title">Toucher pour autoriser le streaming avec la connexion mobile</string>
+  <string name="confirm_mobile_streaming_notification_message">Le streaming par la connexion mobile est désactivé dans les paramètres. Toucher pour streamer quand même.</string>
+  <string name="confirm_mobile_streaming_button_always">Toujours autoriser</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Rajouter à la liste de lecture</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Autoriser temporairement</string>
   <!--Mediaplayer messages-->
@@ -262,6 +263,8 @@
   <string name="player_ready_msg">Prêt</string>
   <string name="player_seeking_msg">Recherche</string>
   <string name="playback_error_server_died">Le serveur ne répond pas</string>
+  <string name="playback_error_unsupported">Format de média non géré</string>
+  <string name="playback_error_timeout">L\'opération a expiré</string>
   <string name="playback_error_unknown">Erreur inconnue</string>
   <string name="no_media_playing_label">Aucune lecture</string>
   <string name="player_buffering_msg">Mise en mémoire</string>
@@ -333,6 +336,9 @@
   <string name="external_elements">Eléments externes</string>
   <string name="interruptions">Interruptions</string>
   <string name="playback_control">Contrôle de lecture</string>
+  <string name="preference_search_hint">Chercher...</string>
+  <string name="preference_search_no_results">Aucun résultat</string>
+  <string name="preference_search_clear_history">Effacer l\'historique</string>
   <string name="media_player">Lecteur multimédia</string>
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont pas dans la liste de lecture et qui ne sont pas marqués comme favoris peuvent être supprimés si l\'espace est insuffisant pour le téléchargement automatique de nouveaux épisodes</string>
@@ -368,10 +374,10 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion des écouteurs ou du Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Connexion des écouteurs</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Connexion du Bluetooth</string>
-  <string name="pref_mobileUpdate_title">Mises à jour mobile</string>
-  <string name="pref_mobileUpdate_sum">Choisisser ce qui est autorisé lorsque la connexion mobile est utilisé</string>
+  <string name="pref_mobileUpdate_title">Mises à jour avec connexion mobile</string>
+  <string name="pref_mobileUpdate_sum">Choisir ce qui est autorisé lorsque la connexion mobile est utilisée</string>
   <string name="pref_mobileUpdate_refresh">Rafraîchissement des flux</string>
-  <string name="pref_mobileUpdate_images">Récupération des images de couverture</string>
+  <string name="pref_mobileUpdate_images">Récupération des images</string>
   <string name="pref_mobileUpdate_auto_download">Téléchargement automatique</string>
   <string name="pref_mobileUpdate_episode_download">Téléchargement d\'épisodes</string>
   <string name="pref_mobileUpdate_streaming">Streaming</string>
@@ -396,7 +402,7 @@
   <string name="pref_automatic_download_on_battery_title">Télécharger lorsque l\'appareil n\'est pas en charge</string>
   <string name="pref_automatic_download_on_battery_sum">Autoriser le téléchargement automatique quand l\'appareil n\'est pas en train de charger</string>
   <string name="pref_parallel_downloads_title">Téléchargements simultanés</string>
-  <string name="pref_episode_cache_title">Épisodes stockés localement</string>
+  <string name="pref_episode_cache_title">Nombre d\'épisodes stockés</string>
   <string name="pref_episode_cache_summary">Nombre maximum d\'épisodes stockés sur l\'appareil. Le téléchargement automatique sera suspendu si ce nombre est atteint.</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>
@@ -423,7 +429,7 @@
   <string name="pref_gpodnet_notifications_sum">Ce paramètre ne s\'applique pas aux erreurs d\'authentification.</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture audio</string>
-  <string name="pref_playback_time_respects_speed_title">Tenir compte de la vitesse de lecture pour les infos des épisodes</string>
+  <string name="pref_playback_time_respects_speed_title">Ajuster les informations en fonction la vitesse de lecture</string>
   <string name="pref_playback_time_respects_speed_sum">La position et la durée affichée tiendront compte de la vitesse de lecture.</string>
   <string name="pref_fast_forward">Durée du saut avant</string>
   <string name="pref_fast_forward_sum">Nombre de secondes à sauter quand le bouton \"saut avant\" est pressé</string>
@@ -550,7 +556,7 @@
   <string name="gpodnet_taglist_header">CATEGORIES</string>
   <string name="gpodnet_toplist_header">PODCASTS POPULAIRES</string>
   <string name="gpodnet_suggestions_header">SUGGESTIONS</string>
-  <string name="gpodnet_search_hint">Chercher gpodder.net</string>
+  <string name="gpodnet_search_hint">Chercher sur gpodder.net</string>
   <string name="gpodnetauth_login_title">Se connecter</string>
   <string name="gpodnetauth_login_descr">Bienvenue dans le processus de connexion à gpodder.net. Premièrement, veuillez entrer vos informations de connexion :</string>
   <string name="gpodnetauth_login_butLabel">Connexion</string>
@@ -577,7 +583,7 @@
   <string name="gpodnetsync_error_descr">Une erreur est apparue lors de la synchronisation :\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Réussie</string>
   <string name="gpodnetsync_pref_report_failed">Échoué</string>
-  <string name="gpodnetsync_username_characters_error">Le nom d\'utilisateur ne peut contenir que des lettres, des chiffres, des traits d\'union ou des underscores.</string>
+  <string name="gpodnetsync_username_characters_error">Le nom d\'utilisateur ne peut contenir que des lettres, des chiffres, des traits d\'union ou des tirets bas.</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Répertoire choisi :</string>
   <string name="create_folder_label">Créer répertoire</string>
