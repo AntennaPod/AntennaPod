@@ -70,11 +70,8 @@ public class AddFeedFragment extends Fragment {
 
         combinedFeedSearchBox = root.findViewById(R.id.combinedFeedSearchBox);
         combinedFeedSearchBox.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                performSearch();
-                return true;
-            }
-            return false;
+            performSearch();
+            return true;
         });
     }
 
