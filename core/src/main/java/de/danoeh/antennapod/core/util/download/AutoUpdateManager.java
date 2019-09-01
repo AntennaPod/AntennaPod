@@ -18,8 +18,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.FeedUpdateWorker;
 
 public class AutoUpdateManager {
-    private static final String WORK_ID_FEED_UPDATE = FeedUpdateWorker.class.getName();
-    private static final String WORK_ID_FEED_UPDATE_IMMEDIATE = FeedUpdateWorker.class.getName() +"Immediate";
+    private static final String WORK_ID_FEED_UPDATE = "de.danoeh.antennapod.core.service.FeedUpdateWorker";
+    private static final String WORK_ID_FEED_UPDATE_IMMEDIATE = WORK_ID_FEED_UPDATE + "Immediate";
     private static final String TAG = "AutoUpdateManager";
 
     private AutoUpdateManager() {
