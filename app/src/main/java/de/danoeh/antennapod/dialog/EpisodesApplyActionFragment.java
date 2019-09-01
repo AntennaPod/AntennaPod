@@ -205,10 +205,6 @@ public class EpisodesApplyActionFragment extends Fragment {
             return true;
         });
 
-        if (Build.VERSION.SDK_INT == 23 || Build.VERSION.SDK_INT == 24) {
-            ViewCompat.setElevation(view.findViewById(R.id.fabSDScrollCtr), 8);
-        }
-
         showSpeedDialIfAnyChecked();
 
         return view;
