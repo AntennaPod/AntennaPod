@@ -34,13 +34,13 @@ public class FeedUpdateWorker extends Worker {
         Log.d(TAG, "doWork() : isImmediate = " + isImmediate);
         ClientConfig.initialize(getApplicationContext());
 
-        AtomicBoolean finished = new AtomicBoolean(false);
         if (NetworkUtils.networkAvailable() && NetworkUtils.isFeedRefreshAllowed()) {
+            AtomicBoolean finished = new AtomicBoolean(false);
             DBTasks.refreshAllFeeds(getApplicationContext(), null, () -> finished.set(true));
+            Awaitility.await().until(finished::get);
         } else {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
         }
-        Awaitility.await().until(finished::get);
 
         if (!isImmediate && UserPreferences.isAutoUpdateTimeOfDay()) {
             // WorkManager does not allow to set specific time for repeated tasks.
