@@ -168,7 +168,8 @@ public class EpisodesApplyActionFragment extends Fragment {
             return true;
         });
 
-        for(FeedItem episode : episodes) {
+        titles.clear();
+        for (FeedItem episode : episodes) {
             titles.add(episode.getTitle());
         }
 
