@@ -29,8 +29,7 @@ public class FeedUpdateWorker extends Worker {
     @Override
     @NonNull
     public Result doWork() {
-        final boolean isImmediate = getInputData() != null ?
-                getInputData().getBoolean(PARAM_RUN_IMMEDIATE, false) : false;
+        final boolean isImmediate = getInputData().getBoolean(PARAM_RUN_IMMEDIATE, false);
         Log.d(TAG, "doWork() : isImmediate = " + isImmediate);
         ClientConfig.initialize(getApplicationContext());
 
