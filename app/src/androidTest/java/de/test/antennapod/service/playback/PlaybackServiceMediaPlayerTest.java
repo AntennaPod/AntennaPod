@@ -63,15 +63,11 @@ public class PlaybackServiceMediaPlayerTest {
     @Before
     public void setUp() throws Exception {
         assertionError = null;
-        EspressoTestUtils.clearAppData();
-        final Context context = InstrumentationRegistry.getTargetContext();
+        EspressoTestUtils.clearPreferences();
+        EspressoTestUtils.makeNotFirstRun();
+        EspressoTestUtils.clearDatabase();
 
-        // create new database
-        PodDBAdapter.init(context);
-        PodDBAdapter.deleteDatabase();
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
+        final Context context = InstrumentationRegistry.getTargetContext();
 
         httpServer = new HTTPBin();
         httpServer.start();

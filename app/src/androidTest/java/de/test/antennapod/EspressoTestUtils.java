@@ -12,6 +12,9 @@ import android.support.test.espresso.util.HumanReadables;
 import android.support.test.espresso.util.TreeIterables;
 import android.view.View;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.dialog.RatingDialog;
 import org.hamcrest.Matcher;
 
 import java.io.File;
@@ -74,7 +77,7 @@ public class EspressoTestUtils {
     /**
      * Clear all app databases
      */
-    public static void clearAppData() {
+    public static void clearPreferences() {
         File root = InstrumentationRegistry.getTargetContext().getFilesDir().getParentFile();
         String[] sharedPreferencesFileNames = new File(root, "shared_prefs").list();
         for (String fileName : sharedPreferencesFileNames) {
@@ -82,6 +85,24 @@ public class EspressoTestUtils {
             InstrumentationRegistry.getTargetContext().
                     getSharedPreferences(fileName.replace(".xml", ""), Context.MODE_PRIVATE).edit().clear().commit();
         }
+    }
+
+    public static void makeNotFirstRun() {
+        InstrumentationRegistry.getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false)
+                .commit();
+
+        RatingDialog.init(InstrumentationRegistry.getTargetContext());
+        RatingDialog.saveRated();
+    }
+
+    public static void clearDatabase() {
+        PodDBAdapter.init(InstrumentationRegistry.getTargetContext());
+        PodDBAdapter.deleteDatabase();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.close();
     }
 
     public static void clickPreference(@StringRes int title) {

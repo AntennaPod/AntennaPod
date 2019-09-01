@@ -52,11 +52,10 @@ public class PlaybackSonicTest {
 
     @Before
     public void setUp() throws Exception {
-        EspressoTestUtils.clearAppData();
+        EspressoTestUtils.clearPreferences();
+        EspressoTestUtils.makeNotFirstRun();
+        EspressoTestUtils.clearDatabase();
         context = InstrumentationRegistry.getTargetContext();
-
-        PodDBAdapter.init(context);
-        PodDBAdapter.deleteDatabase();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
@@ -71,11 +70,6 @@ public class PlaybackSonicTest {
 
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
-
-        // create database
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
     }
 
     @After

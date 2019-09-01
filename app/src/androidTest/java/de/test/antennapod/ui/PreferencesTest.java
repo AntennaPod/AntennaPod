@@ -49,7 +49,7 @@ public class PreferencesTest {
 
     @Before
     public void setUp() {
-        EspressoTestUtils.clearAppData();
+        EspressoTestUtils.clearPreferences();
         mActivityRule.launchActivity(new Intent());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true).commit();
