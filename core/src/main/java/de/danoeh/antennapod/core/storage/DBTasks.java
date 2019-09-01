@@ -158,8 +158,7 @@ public final class DBTasks {
         }
 
         if (Looper.myLooper() == Looper.getMainLooper()) {
-            Log.wtf(TAG, "DBTasks.refreshAllFeeds() must not be called from the main thread");
-            return;
+            throw new IllegalStateException("DBTasks.refreshAllFeeds() must not be called from the main thread.");
         }
 
         refreshFeeds(context, DBReader.getFeedList());
