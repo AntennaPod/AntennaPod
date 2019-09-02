@@ -58,11 +58,13 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         if (controller == null) {
             butPlaybackSpeed.setVisibility(View.GONE);
+            txtvPlaybackSpeed.setVisibility(View.GONE);
             return;
         }
         updatePlaybackSpeedButtonText();
         ViewCompat.setAlpha(butPlaybackSpeed, controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
         butPlaybackSpeed.setVisibility(View.VISIBLE);
+        txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -72,6 +74,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         if (controller == null) {
             butPlaybackSpeed.setVisibility(View.GONE);
+            txtvPlaybackSpeed.setVisibility(View.GONE);
             return;
         }
         float speed = 1.0f;
@@ -79,7 +82,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             speed = UserPreferences.getPlaybackSpeed();
         }
         String speedStr = new DecimalFormat("0.00x").format(speed);
-        butPlaybackSpeed.setText(speedStr);
+        txtvPlaybackSpeed.setText(speedStr);
     }
 
     @Override
@@ -132,6 +135,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 return true;
             });
             butPlaybackSpeed.setVisibility(View.VISIBLE);
+            txtvPlaybackSpeed.setVisibility(View.VISIBLE);
         }
     }
 }
