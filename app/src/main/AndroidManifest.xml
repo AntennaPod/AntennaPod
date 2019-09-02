@@ -170,11 +170,6 @@
             android:label="@string/opml_import_label">
         </activity>
         <activity
-            android:name=".activity.OpmlExportToPathActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/opml_export_label">
-        </activity>
-        <activity
             android:name=".activity.OpmlImportFromIntentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/opml_import_label">
