@@ -12,6 +12,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -104,7 +105,6 @@ public abstract class PlaybackController {
     }
 
     private synchronized void initServiceRunning() {
-        Log.v(TAG, "initServiceRunning()");
         if (initialized) {
             return;
         }
@@ -189,13 +189,20 @@ public abstract class PlaybackController {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(optionalIntent -> {
                     boolean bound = false;
-                    if (optionalIntent.isPresent()) {
-                        Log.d(TAG, "Calling bind service");
-                        bound = activity.bindService(optionalIntent.get(), mConnection, 0);
+                    if (!PlaybackService.started) {
+                        if (optionalIntent.isPresent()) {
+                            Log.d(TAG, "Calling start service");
+                            ContextCompat.startForegroundService(activity, optionalIntent.get());
+                            bound = activity.bindService(optionalIntent.get(), mConnection, 0);
+                        } else {
+                            status = PlayerStatus.STOPPED;
+                            setupGUI();
+                            handleStatus();
+                        }
                     } else {
-                        status = PlayerStatus.STOPPED;
-                        setupGUI();
-                        handleStatus();
+                        Log.d(TAG, "PlaybackService is running, trying to connect without start command.");
+                        bound = activity.bindService(new Intent(activity, PlaybackService.class),
+                                mConnection, 0);
                     }
                     Log.d(TAG, "Result for service binding: " + bound);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -213,7 +220,6 @@ public abstract class PlaybackController {
             Log.d(TAG, "No last played media found");
             return Optional.empty();
         }
-
 
         boolean fileExists = media.localFileAvailable();
         boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
@@ -582,8 +588,7 @@ public abstract class PlaybackController {
                     .startWhenPrepared(true)
                     .streamIfLastWasStream()
                     .start();
-            Log.d(TAG, "Play/Pause button was pressed, but playbackservice was null - " +
-                    "it is likely to have been released by Android system. Restarting it.");
+            Log.w(TAG, "Play/Pause button was pressed, but playbackservice was null!");
             return;
         }
         switch (status) {
@@ -760,7 +765,6 @@ public abstract class PlaybackController {
     }
 
     public void notifyVideoSurfaceAbandoned() {
-        Log.v(TAG, "notifyVideoSurfaceAbandoned() - hasPlaybackService=" + (playbackService != null));
         if (playbackService != null) {
             playbackService.notifyVideoSurfaceAbandoned();
         }

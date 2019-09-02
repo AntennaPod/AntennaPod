@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -12,12 +13,17 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.greenrobot.event.EventBus;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class ChaptersFragment extends ListFragment {
     private static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
     private PlaybackController controller;
+    private Disposable disposable;
 
 
     @Override
@@ -42,10 +48,7 @@ public class ChaptersFragment extends ListFragment {
         controller = new PlaybackController(getActivity(), false) {
             @Override
             public boolean loadMediaInfo() {
-                if (getMedia() == null) {
-                    return false;
-                }
-                onMediaChanged(getMedia());
+                ChaptersFragment.this.loadMediaInfo();
                 return true;
             }
 
@@ -55,8 +58,17 @@ public class ChaptersFragment extends ListFragment {
             }
         };
         controller.init();
-        onMediaChanged(controller.getMedia());
+        loadMediaInfo();
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     @Override
@@ -71,6 +83,24 @@ public class ChaptersFragment extends ListFragment {
         if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
             controller.init();
         }
+    }
+
+    private void loadMediaInfo() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Maybe.create(emitter -> {
+                    Playable media = controller.getMedia();
+                    if (media != null) {
+                        emitter.onSuccess(media);
+                    } else {
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> onMediaChanged((Playable) media),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void onMediaChanged(Playable media) {
