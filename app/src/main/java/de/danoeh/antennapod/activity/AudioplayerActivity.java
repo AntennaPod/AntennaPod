@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -98,7 +100,9 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 }
                 if (controller.canSetPlaybackSpeed()) {
                     String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-                    String currentSpeed = new DecimalFormat("0.00x").format(UserPreferences.getPlaybackSpeed());
+                    DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
+                    format.setDecimalSeparator('.');
+                    String currentSpeed = new DecimalFormat("0.00", format).format(UserPreferences.getPlaybackSpeed());
 
                     // Provide initial value in case the speed list has changed
                     // out from under us
