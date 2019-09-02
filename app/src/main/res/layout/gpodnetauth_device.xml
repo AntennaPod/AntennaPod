@@ -30,7 +30,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/gpodnetauth_device_caption"
         android:layout_below="@id/txtvDescription"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:imeOptions="flagNoFullscreen"/>
 
     <TextView
         android:id="@+id/txtvDeviceID"
@@ -53,7 +54,8 @@
         android:layout_toEndOf="@id/txtvDeviceID"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:imeOptions="flagNoFullscreen"/>
 
     <Button
         android:id="@+id/butCreateNewDevice"

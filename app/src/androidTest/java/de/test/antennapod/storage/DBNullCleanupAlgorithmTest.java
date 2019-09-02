@@ -3,8 +3,6 @@ package de.test.antennapod.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.test.FlakyTest;
-import android.test.InstrumentationTestCase;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,17 +10,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests that the APNullCleanupAlgorithm is working correctly.
  */
-public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
+@SmallTest
+public class DBNullCleanupAlgorithmTest {
 
     private static final String TAG = "DBNullCleanupAlgorithmTest";
     private static final int EPISODE_CACHE_SIZE = 5;
@@ -31,10 +39,8 @@ public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
 
     private File destFolder;
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-
+    @After
+    public void tearDown() throws Exception {
         assertTrue(PodDBAdapter.deleteDatabase());
 
         cleanupDestFolder(destFolder);
@@ -47,10 +53,9 @@ public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
         }
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        context = getInstrumentation().getTargetContext();
+    @Before
+    public void setUp() throws Exception {
+        context = InstrumentationRegistry.getTargetContext();
         destFolder = context.getExternalCacheDir();
         cleanupDestFolder(destFolder);
         assertNotNull(destFolder);
@@ -77,7 +82,7 @@ public class DBNullCleanupAlgorithmTest extends InstrumentationTestCase {
      * The null algorithm should never delete any items, even if they're played and not in the queue.
      * @throws IOException
      */
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testPerformAutoCleanupShouldNotDelete() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 

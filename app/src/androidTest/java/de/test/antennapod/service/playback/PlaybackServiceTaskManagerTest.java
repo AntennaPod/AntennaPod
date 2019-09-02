@@ -3,8 +3,7 @@ package de.test.antennapod.service.playback;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.annotation.UiThreadTest;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.InstrumentationTestCase;
+import android.support.test.filters.LargeTest;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,13 +18,12 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -33,7 +31,7 @@ import static org.junit.Assert.fail;
 /**
  * Test class for PlaybackServiceTaskManager
  */
-@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class PlaybackServiceTaskManagerTest {
 
     @After
@@ -226,6 +224,15 @@ public class PlaybackServiceTaskManagerTest {
         pstm.startWidgetUpdater();
         countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS);
         pstm.shutdown();
+    }
+
+    @Test
+    public void testStartWidgetUpdaterAfterShutdown() {
+        // Should not throw.
+        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
+        pstm.shutdown();
+        pstm.startWidgetUpdater();
     }
 
     @Test

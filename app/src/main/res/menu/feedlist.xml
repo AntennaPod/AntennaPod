@@ -33,17 +33,9 @@
     <item
         android:id="@+id/action_search"
         android:icon="?attr/action_search"
-        custom:showAsAction="always"
+        custom:showAsAction="always|collapseActionView"
         custom:actionViewClass="android.support.v7.widget.SearchView"
         android:title="@string/search_label"/>
-
-    <item
-        android:id="@+id/support_item"
-        android:menuCategory="container"
-        android:title="@string/support_label"
-        android:visible="false"
-        custom:showAsAction="collapseActionView">
-    </item>
 
     <item
         android:id="@+id/visit_website_item"

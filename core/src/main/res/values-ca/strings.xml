@@ -111,9 +111,6 @@
   <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
   <string name="mark_all_read_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com reproduits.</string>
   <string name="mark_all_read_feed_confirmation_msg">Si us plau, confirmeu que voleu marcar tots els episodis d\'aquest podcast com a reproduïts.</string>
-  <string name="mark_all_seen_label">Marca tot com a llegit</string>
-  <string name="mark_all_seen_msg">Marcar tots episodis com a visualitzats</string>
-  <string name="mark_all_seen_confirmation_msg">Si us plau confirma que vols marcar tots els episodis com vistos.</string>
   <string name="show_info_label">Mostra informació</string>
   <string name="show_feed_settings_label">Mostrar configuració del podcast</string>
   <string name="feed_info_label">Informació del podcast</string>
@@ -153,8 +150,6 @@
   <string name="remove_label">Suprimeix</string>
   <string name="delete_label">Esborrar</string>
   <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
-  <string name="mark_as_seen_label">Marcar com a visualitzat</string>
-  <string name="marked_as_seen_label">Marcat com a vist</string>
   <string name="mark_read_label">Marca com a llegit</string>
   <string name="marked_as_read_label">Marcats com llegits</string>
   <string name="mark_unread_label">Marca com a pendent</string>
@@ -166,7 +161,6 @@
   <string name="remove_from_favorite_label">Suprimeix de preferits</string>
   <string name="removed_from_favorites">S\'ha suprimit de preferits</string>
   <string name="visit_website_label">Visita el lloc web</string>
-  <string name="support_label">Comparteix amb Flattr</string>
   <string name="skip_episode_label">Omet l\'episodi</string>
   <string name="activate_auto_download">Activa baixades automàtiques</string>
   <string name="deactivate_auto_download">Desactiva les baixades automàtiques</string>
@@ -252,32 +246,6 @@
   <string name="ascending">Ascendent</string>
   <string name="descending">Descendent</string>
   <string name="clear_queue_confirmation_msg">Si us plau, confirma que vols suprimir tots els episodis de la cua</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Inici de sessió a Flattr</string>
-  <string name="flattr_auth_explanation">Premeu el botó per iniciar el procés d\'autenticació. Quan s\'obri la pantalla d\'inici de sessió de Flattr al vostre navegador, introduïu les vostres credencials i concediu a AntennaPod els permisos de compartir mitjançant Flattr. En finalitzar el procés, tornareu automàticament a aquesta pantalla.</string>
-  <string name="authenticate_label">Autenticació</string>
-  <string name="return_home_label">Torna a l\'inici</string>
-  <string name="flattr_auth_success">L\'autenticació ha acabat correctament. Ja podeu compartir amb Flattr des de l\'aplicació.</string>
-  <string name="no_flattr_token_title">No s\'ha trobat cap testimoni Flattr</string>
-  <string name="no_flattr_token_notification_msg">Sembla que el compte flattr no està vinculat amb AntennaPod. Toqueu aquí per autenticar-vos.</string>
-  <string name="no_flattr_token_msg">Sembla que el vostre compte de Flattr no està vinculat amb AntennaPod. Podeu connectar el vostre compte Flattr amb AntennaPod per a compartir continguts des de l\'aplicació, o bé accediu a la plana web de Flattr i compartiu els continguts des d\'allà.</string>
-  <string name="authenticate_now_label">Autentica</string>
-  <string name="action_forbidden_title">L\'acció no és permesa</string>
-  <string name="action_forbidden_msg">AntennaPod no té permisos per executar aquesta acció. És possible que el testimoni d\'accés de Flattr per a AntennaPod hagi estat revocat. Podeu tornar-vos a autenticar amb el servei de Flattr, o podeu visitar el web del contingut directament.</string>
-  <string name="access_revoked_title">L\'accés ha estat revocat</string>
-  <string name="access_revoked_info">El testimoni d\'accés a Flattr de l\'AntennaPod s\'ha revocat correctament. Per completar el procés, heu de suprimir aquesta aplicació de la llista d\'aplicacions aprovades que trobareu a l\'apartat de configuració del compte de la plana web de Flattr.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">S\'ha compartit una cosa per Flattr!</string>
-  <string name="flattr_click_success_count">S\'han compartit %d coses per Flattr!</string>
-  <string name="flattr_click_success_queue">Compartit per Flattr: %s.</string>
-  <string name="flattr_click_failure_count">No s\'han pogut compartir %d coses per Flattr!</string>
-  <string name="flattr_click_failure">No s\'ha compartit per Flattr: %s.</string>
-  <string name="flattr_click_enqueued">Es compartirà per Flattr després</string>
-  <string name="flattring_thing">%s s\'està compartint per Flattr</string>
-  <string name="flattring_label">AntennaPod està compartint per Flattr</string>
-  <string name="flattrd_label">AntennaPod ha compartit per Flattr</string>
-  <string name="flattrd_failed_label">AntennaPod no ha pogut compartir per Flattr</string>
-  <string name="flattr_retrieving_status">S\'estan recuperant les coses compartides per Flattr</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Baixa el connector</string>
   <string name="no_playback_plugin_title">Connector no instal·lat</string>
@@ -286,8 +254,8 @@
   <string name="enable_sonic">Activa Sonic</string>
   <!--Empty list labels-->
   <string name="no_feeds_label">Encara no us heu subscrit a cap podcast.</string>
-  <string name="no_chapters_label">Aquest episodi no té capítols</string>
   <string name="no_shownotes_label">Aquest episodi no té notes.</string>
+  <string name="no_chapters_label">Aquest episodi no té capítols</string>
   <!--Preferences-->
   <string name="storage_pref">Emmagatzematge</string>
   <string name="project_pref">Projecte</string>
@@ -295,15 +263,12 @@
   <string name="about_pref">Quant a</string>
   <string name="queue_label">Cua</string>
   <string name="integrations_label">Integracions</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Servei de micropagaments</string>
   <string name="automation">Automatització</string>
   <string name="download_pref_details">Detalls</string>
   <string name="import_export_pref">Importa/Exporta</string>
   <string name="appearance">Aparença</string>
   <string name="external_elements">Elements externs</string>
   <string name="interruptions">Interrupcions</string>
-  <string name="buttons">Botons de control de reproducció</string>
   <string name="media_player">Reproductor multimèdia</string>
   <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
   <string name="pref_episode_cleanup_summary">Els episodis que no es troben a la cua i no són preferits seran candidats a ser suprimits si l\'Auto Descàrrega necessita espai per a nous episodis</string>
@@ -339,17 +304,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Connexió d\'auriculars</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Connexió de bluetooth</string>
   <string name="pref_mobileUpdate_title">Actualitzacions sobre xarxes mòbils</string>
-  <string name="pref_mobileUpdate_sum">Permet actualitzacions a través de xarxes mòbils.</string>
   <string name="refreshing_label">S\'està actualitzant</string>
-  <string name="flattr_settings_label">Configuració de Flattr</string>
-  <string name="pref_flattr_auth_title">Inici de sessió Flattr</string>
-  <string name="pref_flattr_auth_sum">Inicieu sessió al vostre compte Flattr per compartir continguts directament des de l\'aplicació.</string>
-  <string name="pref_flattr_this_app_title">Recolza aquesta aplicació amb Flattr</string>
-  <string name="pref_flattr_this_app_sum">Doneu suport al desenvolupament d\'AntennaPod compartint l\'aplicació a través de Flattr. Gràcies!</string>
-  <string name="pref_revokeAccess_title">Revoca l\'accés</string>
-  <string name="pref_revokeAccess_sum">Revoqueu el permís d\'accés d\'aquesta aplicació al vostre compte Flattr.</string>
-  <string name="pref_auto_flattr_title">Flattr automàtic</string>
-  <string name="pref_auto_flattr_sum">Configura la compartició automàtica per Flattr</string>
   <string name="user_interface_label">Interfície d\'usuari</string>
   <string name="pref_set_theme_title">Selecciona el tema</string>
   <string name="pref_nav_drawer_title">Personalitza el calaix de navegació</string>
@@ -439,11 +394,6 @@
   <string name="pref_videoBehavior_sum">Comportament a l\'abandonar la reproducció d\'un vídeo</string>
   <string name="stop_playback">Atura reproducció</string>
   <string name="continue_playback">Continuar reproducció d\'audio</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Activa la compartició automàtica per Flattr</string>
-  <string name="auto_flattr_after_percent">Comparteix per Flattr l\'episodi en haver-ne reproduït el %d per cent</string>
-  <string name="auto_flattr_ater_beginning">Comparteix per Flattr l\'episodi en haver-ne iniciat la reproducció</string>
-  <string name="auto_flattr_ater_end">Comparteix per Flattr l\'episodi en acabar-se\'n la reproducció</string>
   <!--Search-->
   <string name="search_hint">Cerca episodis</string>
   <string name="found_in_shownotes_label">Troba a les notes dels canals</string>
@@ -587,9 +537,10 @@
   <string name="progress_upgrading_database">Actualitzant la base de dades</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">Cerca a iTunes</string>
-  <string name="filter">Filtra</string>
   <string name="search_fyyd_label">Cerca a fyyd</string>
+  <string name="filter">Filtra</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tot</string>
   <string name="selected_all_label">Selecciona tots els episodis</string>

@@ -1,13 +1,12 @@
 package de.test.antennapod.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.test.ActivityInstrumentationTestCase2;
-import android.test.FlakyTest;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
 
@@ -25,14 +24,21 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.test.antennapod.EspressoTestUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * test cases for starting and ending playback from the MainActivity and AudioPlayerActivity
  */
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActivity> {
-
-    private static final String TAG = PlaybackTest.class.getSimpleName();
+@LargeTest
+public class PlaybackSonicTest {
     private static final int EPISODES_DRAWER_LIST_INDEX = 1;
     private static final int QUEUE_DRAWER_LIST_INDEX = 0;
 
@@ -41,18 +47,15 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
 
     private Context context;
 
-    public PlaybackSonicTest() {
-        super(MainActivity.class);
-    }
+    @Rule
+    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, false, false);
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-
-        context = getInstrumentation().getTargetContext();
-
-        PodDBAdapter.init(context);
-        PodDBAdapter.deleteDatabase();
+        EspressoTestUtils.clearPreferences();
+        EspressoTestUtils.makeNotFirstRun();
+        EspressoTestUtils.clearDatabase();
+        context = InstrumentationRegistry.getTargetContext();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
@@ -62,18 +65,14 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
                 .putString(UserPreferences.PREF_MEDIA_PLAYER, "sonic")
                 .commit();
 
-        solo = new Solo(getInstrumentation(), getActivity());
+        activityTestRule.launchActivity(new Intent());
+        solo = new Solo(getInstrumentation(), activityTestRule.getActivity());
 
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
-
-        // create database
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
     }
 
-    @Override
+    @After
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
         uiTestUtils.tearDown();
@@ -81,8 +80,10 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         // shut down playback service
         skipEpisode();
         context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+    }
 
-        super.tearDown();
+    private MainActivity getActivity() {
+        return activityTestRule.getActivity();
     }
 
     private void openNavDrawer() {
@@ -115,7 +116,7 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
         getInstrumentation().waitForIdleSync();
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
 
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
@@ -158,12 +159,14 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         assertTrue(playing);
     }
 
+    @Test
     public void testStartLocal() throws Exception {
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
         startLocalPlayback();
     }
 
+    @Test
     public void testContinousPlaybackOffSingleEpisode() throws Exception {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
@@ -171,7 +174,7 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         startLocalPlayback();
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testContinousPlaybackOffMultipleEpisodes() throws Exception {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
@@ -196,7 +199,7 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         assertFalse(status.equals(PlayerStatus.PLAYING));
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testContinuousPlaybackOnMultipleEpisodes() throws Exception {
         setContinuousPlaybackPreference(true);
         uiTestUtils.addLocalFeedData(true);
@@ -232,7 +235,7 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         setContinuousPlaybackPreference(followQueue);
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
 
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();
@@ -262,13 +265,14 @@ public class PlaybackSonicTest extends ActivityInstrumentationTestCase2<MainActi
         assertTrue(startedReplay);
     }
 
+    @Test
     public void testReplayEpisodeContinuousPlaybackOn() throws Exception {
         replayEpisodeCheck(true);
     }
 
+    @Test
     public void testReplayEpisodeContinuousPlaybackOff() throws Exception {
         replayEpisodeCheck(false);
     }
-
 
 }

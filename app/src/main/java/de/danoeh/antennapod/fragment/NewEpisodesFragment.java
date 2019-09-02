@@ -1,40 +1,39 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-
-public class NewEpisodesFragment extends AllEpisodesFragment {
+public class NewEpisodesFragment extends EpisodesListFragment {
 
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
-    @Override
-    protected boolean showOnlyNewEpisodes() { return true; }
 
     @Override
-    protected String getPrefName() { return PREF_NAME; }
+    protected boolean showOnlyNewEpisodes() {
+        return true;
+    }
 
     @Override
-    protected void resetViewState() {
-        super.resetViewState();
+    protected String getPrefName() {
+        return PREF_NAME;
     }
 
     @Override
@@ -43,9 +42,15 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
-                R.layout.all_episodes_fragment);
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(!episodes.isEmpty());
+    }
+
+    @NonNull
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = super.onCreateView(inflater, container, savedInstanceState);
         emptyView.setTitle(R.string.no_new_episodes_head_label);
         emptyView.setMessage(R.string.no_new_episodes_label);
 
@@ -57,8 +62,8 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)viewHolder;
-                markItemAsSeenWithUndo(holder.getFeedItem());
+                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
+                removeNewFlagWithUndo(holder.getFeedItem());
             }
 
             @Override
@@ -75,6 +80,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
 
                 super.onSelectedChanged(viewHolder, actionState);
             }
+
             @Override
             public void clearView(RecyclerView recyclerView,
                                   RecyclerView.ViewHolder viewHolder) {
@@ -94,9 +100,9 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         return root;
     }
 
+    @NonNull
     @Override
     protected List<FeedItem> loadData() {
         return DBReader.getNewItemsList();
     }
-
 }

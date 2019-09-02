@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.app.AlertDialog;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -45,7 +47,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     public static final String TAG = "EpisodeActionFragment";
 
     public static final int ACTION_ADD_TO_QUEUE = 1;
-    private static final int ACTION_REMOVE_FROM_QUEUE = 2;
+    public static final int ACTION_REMOVE_FROM_QUEUE = 2;
     private static final int ACTION_MARK_PLAYED = 4;
     private static final int ACTION_MARK_UNPLAYED = 8;
     private static final int ACTION_DOWNLOAD = 16;
@@ -58,7 +60,7 @@ public class EpisodesApplyActionFragment extends Fragment {
      *
      * Includes: the menu / action item and the actual logic
      */
-    private class ActionBinding {
+    private static class ActionBinding {
         int flag;
         @IdRes
         final int actionItemId;
@@ -203,6 +205,10 @@ public class EpisodesApplyActionFragment extends Fragment {
             return true;
         });
 
+        if (Build.VERSION.SDK_INT == 23 || Build.VERSION.SDK_INT == 24) {
+            ViewCompat.setElevation(view.findViewById(R.id.fabSDScrollCtr), 8);
+        }
+
         showSpeedDialIfAnyChecked();
 
         return view;
@@ -216,10 +222,6 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void showSpeedDialIfAnyChecked() {
         mSpeedDialView.setVisibility(checkedIds.size() > 0 ? View.VISIBLE : View.GONE);
-    }
-
-    private void hideSpeedDial() {
-        mSpeedDialView.setVisibility(View.GONE);
     }
 
     @Override

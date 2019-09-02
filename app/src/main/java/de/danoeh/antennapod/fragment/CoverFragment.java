@@ -14,11 +14,9 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -46,6 +44,7 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
+        imgvCover.setOnClickListener(v -> onPlayPause());
         return root;
     }
 
@@ -99,19 +98,11 @@ public class CoverFragment extends Fragment {
         };
         controller.init();
         loadMediaInfo();
-        EventBus.getDefault().register(this);
-    }
-
-    public void onEventMainThread(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
-            controller.init();
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
         controller.release();
         controller = null;
     }
@@ -123,5 +114,12 @@ public class CoverFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+    }
+
+    void onPlayPause() {
+        if (controller == null) {
+            return;
+        }
+        controller.playPause();
     }
 }

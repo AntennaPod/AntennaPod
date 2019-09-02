@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.LightingColorFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.UiThread;
@@ -30,7 +32,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -68,7 +74,6 @@ import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -123,6 +128,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     };
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         setSubscribeButtonState(feed);
@@ -193,24 +199,19 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         isPaused = false;
         EventDistributor.getInstance().register(listener);
         EventBus.getDefault().register(this);
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
         isPaused = true;
         EventDistributor.getInstance().unregister(listener);
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }
@@ -395,6 +396,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         this.selectedDownloadUrl = feed.getDownload_url();
         EventDistributor.getInstance().register(listener);
         ListView listView = findViewById(R.id.listview);
+        listView.setSelector(android.R.color.transparent);
         LayoutInflater inflater = LayoutInflater.from(this);
         View header = inflater.inflate(R.layout.onlinefeedview_header, listView, false);
         listView.addHeaderView(header);
@@ -402,6 +404,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
         ImageView cover = header.findViewById(R.id.imgvCover);
+        ImageView headerBackground = header.findViewById(R.id.imgvBackground);
+        header.findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
+        header.findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
+        headerBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
         TextView title = header.findViewById(R.id.txtvTitle);
         TextView author = header.findViewById(R.id.txtvAuthor);
         TextView description = header.findViewById(R.id.txtvDescription);
@@ -419,6 +425,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                         .fitCenter()
                         .dontAnimate())
                     .into(cover);
+            Glide.with(this)
+                    .load(feed.getImageUrl())
+                    .apply(new RequestOptions()
+                            .placeholder(R.color.image_readability_tint)
+                            .error(R.color.image_readability_tint)
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .transform(new FastBlurTransformation())
+                            .dontAnimate())
+                    .into(headerBackground);
         }
 
         title.setText(feed.getTitle());
@@ -444,6 +459,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
                 }
                 setSubscribeButtonState(feed);
+            }
+        });
+
+        final int MAX_LINES_COLLAPSED = 10;
+        description.setMaxLines(MAX_LINES_COLLAPSED);
+        description.setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                    && description.getMaxLines() > MAX_LINES_COLLAPSED) {
+                description.setMaxLines(MAX_LINES_COLLAPSED);
+            } else {
+                description.setMaxLines(2000);
             }
         });
 

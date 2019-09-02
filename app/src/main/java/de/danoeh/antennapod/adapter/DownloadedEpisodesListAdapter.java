@@ -100,14 +100,6 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         String pubDateStr = DateUtils.formatAbbrev(context, item.getPubDate());
         holder.pubDate.setText(pubDateStr);
 
-        FeedItem.State state = item.getState();
-        if (state == FeedItem.State.PLAYING && PlaybackService.isRunning) {
-            holder.butSecondary.setEnabled(false);
-            holder.butSecondary.setAlpha(0.5f);
-        } else {
-            holder.butSecondary.setEnabled(true);
-            holder.butSecondary.setAlpha(1.0f);
-        }
         holder.butSecondary.setFocusable(false);
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);

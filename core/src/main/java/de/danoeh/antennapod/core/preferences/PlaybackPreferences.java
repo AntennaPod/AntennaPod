@@ -111,4 +111,12 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         return prefs.getInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
     }
 
+    public static void writeNoMediaPlaying() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA, NO_MEDIA_PLAYING);
+        editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, NO_MEDIA_PLAYING);
+        editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
+        editor.putInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
+        editor.apply();
+    }
 }

@@ -4,8 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.test.ActivityInstrumentationTestCase2;
-import android.test.FlakyTest;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
+import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
 
@@ -23,30 +24,32 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * test cases for starting and ending playback from the MainActivity and AudioPlayerActivity
  */
-public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity> {
-
-    private static final String TAG = PlaybackTest.class.getSimpleName();
+@LargeTest
+public class PlaybackTest {
     private static final int EPISODES_DRAWER_LIST_INDEX = 1;
     private static final int QUEUE_DRAWER_LIST_INDEX = 0;
 
+    @Rule
+    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+
     private Solo solo;
     private UITestUtils uiTestUtils;
-
     private Context context;
 
-    public PlaybackTest() {
-        super(MainActivity.class);
-    }
-
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-
-        context = getInstrumentation().getTargetContext();
+        context = InstrumentationRegistry.getTargetContext();
 
         PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
@@ -58,7 +61,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
                 .putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false)
                 .commit();
 
-        solo = new Solo(getInstrumentation(), getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), getActivity());
 
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
@@ -69,7 +72,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         adapter.close();
     }
 
-    @Override
+    @After
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
         uiTestUtils.tearDown();
@@ -77,12 +80,15 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         // shut down playback service
         skipEpisode();
         context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-
-        super.tearDown();
     }
+
+    private MainActivity getActivity() {
+        return activityTestRule.getActivity();
+    }
+
     private void openNavDrawer() {
         solo.clickOnImageButton(0);
-        getInstrumentation().waitForIdleSync();
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     }
 
     private void setContinuousPlaybackPreference(boolean value) {
@@ -108,7 +114,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         solo.waitForText(solo.getString(R.string.all_episodes_short_label));
         solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
 
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
@@ -150,12 +156,14 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         assertTrue(playing);
     }
 
+    @Test
     public void testStartLocal() throws Exception {
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
         startLocalPlayback();
     }
 
+    @Test
     public void testContinousPlaybackOffSingleEpisode() throws Exception {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
@@ -163,7 +171,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         startLocalPlayback();
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testContinousPlaybackOffMultipleEpisodes() throws Exception {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
@@ -187,7 +195,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         assertFalse(status.equals(PlayerStatus.PLAYING));
     }
 
-    @FlakyTest(tolerance = 3)
+    @Test
     public void testContinuousPlaybackOnMultipleEpisodes() throws Exception {
         setContinuousPlaybackPreference(true);
         uiTestUtils.addLocalFeedData(true);
@@ -223,7 +231,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         setContinuousPlaybackPreference(followQueue);
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
 
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();
@@ -252,13 +260,13 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         assertTrue(startedReplay);
     }
 
+    @Test
     public void testReplayEpisodeContinuousPlaybackOn() throws Exception {
         replayEpisodeCheck(true);
     }
 
+    @Test
     public void testReplayEpisodeContinuousPlaybackOff() throws Exception {
         replayEpisodeCheck(false);
     }
-
-
 }

@@ -26,6 +26,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -37,6 +38,7 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.Optional;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
@@ -44,12 +46,15 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
  * control playback instead of communicating with the PlaybackService directly.
  */
-public abstract class PlaybackController {
+public class PlaybackController {
 
     private static final String TAG = "PlaybackController";
 
@@ -70,6 +75,7 @@ public abstract class PlaybackController {
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
     private boolean initialized = false;
+    private boolean eventsRegistered = false;
 
     private Disposable serviceBinder;
     private Disposable mediaLoader;
@@ -96,11 +102,22 @@ public abstract class PlaybackController {
     /**
      * Creates a new connection to the playbackService.
      */
-    public void init() {
+    public synchronized void init() {
+        if (!eventsRegistered) {
+            EventBus.getDefault().register(this);
+            eventsRegistered = true;
+        }
         if (PlaybackService.isRunning) {
             initServiceRunning();
         } else {
             initServiceNotRunning();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(ServiceEvent event) {
+        if (event.action == ServiceEvent.Action.SERVICE_STARTED) {
+            init();
         }
     }
 
@@ -165,6 +182,10 @@ public abstract class PlaybackController {
         media = null;
         released = true;
 
+        if (eventsRegistered) {
+            EventBus.getDefault().unregister(this);
+            eventsRegistered = false;
+        }
     }
 
     /**
@@ -189,7 +210,7 @@ public abstract class PlaybackController {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(optionalIntent -> {
                     boolean bound = false;
-                    if (!PlaybackService.started) {
+                    if (!PlaybackService.isRunning) {
                         if (optionalIntent.isPresent()) {
                             Log.d(TAG, "Calling start service");
                             ContextCompat.startForegroundService(activity, optionalIntent.get());
@@ -546,8 +567,9 @@ public abstract class PlaybackController {
         if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
-            txtvPosition.setText(Converter
-                    .getDurationStringLong((int) (prog * duration)));
+            TimeSpeedConverter converter = new TimeSpeedConverter(playbackService.getCurrentPlaybackSpeed());
+            int position = converter.convert((int) (prog * duration));
+            txtvPosition.setText(Converter.getDurationStringLong(position));
             return prog;
         }
         return 0;
@@ -698,6 +720,7 @@ public abstract class PlaybackController {
     public boolean canSetPlaybackSpeed() {
         return org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
                 || UserPreferences.useSonic()
+                || UserPreferences.useExoplayer()
                 || Build.VERSION.SDK_INT >= 23
                 || (playbackService != null && playbackService.canSetSpeed());
     }
@@ -720,7 +743,7 @@ public abstract class PlaybackController {
     }
 
     public float getCurrentPlaybackSpeedMultiplier() {
-        if (canSetPlaybackSpeed()) {
+        if (playbackService != null && canSetPlaybackSpeed()) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
             return -1;

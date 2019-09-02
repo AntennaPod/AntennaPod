@@ -107,9 +107,6 @@
   <string name="mark_all_read_msg">Tüm bölümleri oynatıldı olarak işaretle</string>
   <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="mark_all_read_feed_confirmation_msg">Lütfen bu yayındaki bütün bölümleri oynatıldı olarak işaretlemek istediğinizi onaylayın.</string>
-  <string name="mark_all_seen_label">Hepsini görüldü olarak işaretle</string>
-  <string name="mark_all_seen_msg">Bütün bölümler görüldü olarak işaretlendi</string>
-  <string name="mark_all_seen_confirmation_msg">Lütfen tüm bölümleri görüldü olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="show_feed_settings_label">Cepyayın ayarlarını göster</string>
   <string name="feed_info_label">Cepyayın bilgisi</string>
@@ -151,8 +148,6 @@
   <string name="remove_label">Kaldır</string>
   <string name="delete_label">Sil</string>
   <string name="delete_failed">Dosya silinemiyor. Cihazı yeniden başlatmak yardımcı olabilir.</string>
-  <string name="mark_as_seen_label">Hepsini görüldü olarak işaretle</string>
-  <string name="marked_as_seen_label">Görüldü olarak işaretlendi</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
   <string name="marked_as_read_label">Oynatıldı olarak işaretlendi</string>
   <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>
@@ -164,7 +159,6 @@
   <string name="remove_from_favorite_label">Favorilerden Kaldır</string>
   <string name="removed_from_favorites">Favorilerden Kaldırıldı</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
-  <string name="support_label">Flattr ile destekle</string>
   <string name="skip_episode_label">Bölümü atla</string>
   <string name="activate_auto_download">Otomatik indirmeyi etkinleştir</string>
   <string name="deactivate_auto_download">Otomatik indirmeyi devre dışı bırak</string>
@@ -249,32 +243,6 @@
   <string name="ascending">Artan</string>
   <string name="descending">Azalan</string>
   <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Flattr giriş</string>
-  <string name="flattr_auth_explanation">Yetkilendirme işlemini başlatmak için aşağıdaki butona basın. Tarayıcınızda flattr giriş ekranına yönlendirileceksiniz ve AntennaPod\'un flattr ile etkileşime girebilmesi için izniniz istenecek. İzin verdikten sonra otomatik olarak bu ekrana döneceksiniz.</string>
-  <string name="authenticate_label">Yetkilendir</string>
-  <string name="return_home_label">Anasayfaya dön</string>
-  <string name="flattr_auth_success">Yetkilendirme başarılı! Şimdi istediğiniz şeyleri uygulama içinden flattr ile destekleyebilirsiniz.</string>
-  <string name="no_flattr_token_title">Flattr jetonu bulunamadı</string>
-  <string name="no_flattr_token_notification_msg">Flattr hesabınız AntennaPod ile bağlı görünmüyor. Yetkilendirme için buraya tıklayın.</string>
-  <string name="no_flattr_token_msg">Flattr hesabınız AntennaPod\'a bağlanmamış. Bazı şeyleri uyuglama içinden flattr\'lamak için hesabınızı AntennaPod\'a bağlayabilirsiniz veya o şeyin sitesine gidip oradan yapabilirsiniz.</string>
-  <string name="authenticate_now_label">Yetkilendir</string>
-  <string name="action_forbidden_title">Yasaklanmış eylem</string>
-  <string name="action_forbidden_msg">AntennaPod bu eylem için izni yok. Bunun sebebi AntennaPod\'un hesabınıza erişimi iptal edilmiş olabilir. Yeniden erişim izni verebilirsiniz veya bu şeyin web sayfasını ziyaret edebilirsiniz.</string>
-  <string name="access_revoked_title">Erişim iptal edildi</string>
-  <string name="access_revoked_info">AntennaPod\'un hesabınıza erişebilmesini başarıyla iptal ettiniz. İşlemi tamamlamak için flattr web sayfasındaki hesap ayarları kısmından bu uygulamayı doğrulanan uygulamalar içinden çıkarmalısınız.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Bir öğe Flattr\'landı!</string>
-  <string name="flattr_click_success_count">%d öğe Flattr\'landı!</string>
-  <string name="flattr_click_success_queue">Flattr\'landı: %s.</string>
-  <string name="flattr_click_failure_count">%d öğe Flattr\'lanamadı!</string>
-  <string name="flattr_click_failure">Flattr\'lanmadı: %s.</string>
-  <string name="flattr_click_enqueued">Daha sonra Flattr\'lanacak</string>
-  <string name="flattring_thing">%s Flattr\'lanıyor</string>
-  <string name="flattring_label">AntennaPod flattr\'lıyor</string>
-  <string name="flattrd_label">AntennaPod flattr\'ladı</string>
-  <string name="flattrd_failed_label">AntennaPod flattr\'layamadı</string>
-  <string name="flattr_retrieving_status">Flattr\'lanan öğeler alınıyor</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Eklentiyi İndir</string>
   <string name="no_playback_plugin_title">Eklenti Yüklenmedi</string>
@@ -283,8 +251,8 @@
   <string name="enable_sonic">Sonic\'i Etkinleştir</string>
   <!--Empty list labels-->
   <string name="no_feeds_label">Henüz hiç bir Cepyayınına abone olmadınız.</string>
-  <string name="no_chapters_label">Bu dosya herhangi bir bölüm içermiyor.</string>
   <string name="no_shownotes_label">Bu dosya herhangi bir bilgi notu içermiyor.</string>
+  <string name="no_chapters_label">Bu dosya herhangi bir bölüm içermiyor.</string>
   <!--Preferences-->
   <string name="storage_pref">Depolama</string>
   <string name="project_pref">Proje</string>
@@ -292,15 +260,12 @@
   <string name="about_pref">Hakkında</string>
   <string name="queue_label">Kuyruk</string>
   <string name="integrations_label">Entegrasyon</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Mikro ödeme hizmeti</string>
   <string name="automation">Otomasyon</string>
   <string name="download_pref_details">Detaylar</string>
   <string name="import_export_pref">Al/Aktar</string>
   <string name="appearance">Görünüm</string>
   <string name="external_elements">Dış elemanlar</string>
   <string name="interruptions">Kesintiler</string>
-  <string name="buttons">Oynatıcı kontrol düğmeleri</string>
   <string name="media_player">Medya oynatıcı</string>
   <string name="pref_episode_cleanup_title">Bölüm Temizliği</string>
   <string name="pref_episode_cleanup_summary">Yeni bölümleri otomatik indirme için alan gerekirse, kuyrukta veya favorilerde olmayan bölümler otomatik olarak silinebilir</string>
@@ -337,17 +302,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Kulaklıklar yeniden bağlı</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth yeniden bağlandı</string>
   <string name="pref_mobileUpdate_title">Mobil güncellemeler</string>
-  <string name="pref_mobileUpdate_sum">Mobil veri üzerinden güncellemelere izin ver</string>
   <string name="refreshing_label">Yenileniyor</string>
-  <string name="flattr_settings_label">Flattr ayarları</string>
-  <string name="pref_flattr_auth_title">Flattr giriş</string>
-  <string name="pref_flattr_auth_sum">Diğer şeyleri uygulama içinden Flattr\'layabilmek için Flattr hesabınıza oturum açın.</string>
-  <string name="pref_flattr_this_app_title">Bu uygulamayı Flattr\'la</string>
-  <string name="pref_flattr_this_app_sum">AntennaPod\'u flattr\'layarak geliştirilmesine destek olun. Teşekkürler!</string>
-  <string name="pref_revokeAccess_title">Erişimi İptal et</string>
-  <string name="pref_revokeAccess_sum">Bu uygulamanın flattr hesabınıza erişim iznini iptal edin.</string>
-  <string name="pref_auto_flattr_title">Otomatik Flattr</string>
-  <string name="pref_auto_flattr_sum">Otomatik Flattr\'lamayı Yapılandır</string>
   <string name="user_interface_label">Kullanıcı Arayüzü</string>
   <string name="pref_set_theme_title">Temayı seç</string>
   <string name="pref_nav_drawer_title">Uygulama Çekmecesini Özelleştir</string>
@@ -397,11 +352,6 @@
   <string name="send_email">E-posta gönder</string>
   <string name="experimental_pref">Deneysel</string>
   <string name="pref_faq">SSS</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Otomatik Flattr\'lamayı etkinleştir</string>
-  <string name="auto_flattr_after_percent">Bölümün yüzde %d kısmı oynatıldığında Flattr\'la</string>
-  <string name="auto_flattr_ater_beginning">Oynatma başladığında bölümü Flattr\'la</string>
-  <string name="auto_flattr_ater_end">Oynatma bittiğinde bölümü Flattr\'la</string>
   <!--Search-->
   <string name="found_in_chapters_label">Kısımlarda bulundu</string>
   <string name="search_status_no_results">Sonuç bulunamadı</string>
@@ -520,6 +470,7 @@
   <string name="progress_upgrading_database">Veritabanı yükseltiliyor</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">iTunes\'da Arama</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tümü</string>

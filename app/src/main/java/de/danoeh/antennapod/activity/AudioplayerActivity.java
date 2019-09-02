@@ -76,14 +76,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         float speed = 1.0f;
         if(controller.canSetPlaybackSpeed()) {
-            try {
-                // we can only retrieve the playback speed from the controller/playback service
-                // once mediaplayer has been initialized
-                speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-            } catch (NumberFormatException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
-                UserPreferences.setPlaybackSpeed(String.valueOf(speed));
-            }
+            speed = UserPreferences.getPlaybackSpeed();
         }
         String speedStr = new DecimalFormat("0.00x").format(speed);
         butPlaybackSpeed.setText(speedStr);
@@ -105,7 +98,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 }
                 if (controller.canSetPlaybackSpeed()) {
                     String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-                    String currentSpeed = UserPreferences.getPlaybackSpeed();
+                    String currentSpeed = new DecimalFormat("0.00x").format(UserPreferences.getPlaybackSpeed());
 
                     // Provide initial value in case the speed list has changed
                     // out from under us
@@ -129,6 +122,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                     }
                     UserPreferences.setPlaybackSpeed(newSpeed);
                     controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
+                    onPositionObserverUpdate();
                 } else {
                     VariableSpeedDialog.showGetPluginDialog(this);
                 }

@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/txtvInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:visibility="gone"
+        tools:text="(i) Information" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/txtvInformation"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
         android:clipToPadding="false"
         android:paddingTop="@dimen/list_vertical_padding"
         android:paddingBottom="@dimen/list_vertical_padding"
-        android:scrollbarStyle="outsideOverlay"
+        app:fastScrollEnabled="true"
+        app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+        app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+        app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+        app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
         tools:itemCount="13"
         tools:listitem="@layout/new_episodes_listitem" />
 
@@ -21,12 +39,13 @@
         android:id="@+id/progLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:gravity="center"
         android:indeterminateOnly="true"
         android:visibility="gone"
+        android:layout_centerInParent="true"
         tools:visibility="gone"
         tools:layout_width="match_parent"
         tools:layout_height="64dp"
         tools:background="@android:color/holo_red_light"/>
 
-</FrameLayout>
+</RelativeLayout>

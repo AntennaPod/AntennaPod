@@ -10,6 +10,7 @@ import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
@@ -43,7 +45,6 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -55,24 +56,24 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
-import de.danoeh.antennapod.fragment.ItemlistFragment;
+import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -206,8 +207,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         transaction.commit();
 
         checkFirstLaunch();
-        NotificationUtils.createChannels(this);
-        UserPreferences.restartUpdateAlarm(false);
+        PreferenceUpgrader.checkUpgrades(this);
     }
 
     private void saveLastNavFragment(String tag) {
@@ -232,6 +232,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private void checkFirstLaunch() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
+            loadFragment(AddFeedFragment.TAG, null);
             new Handler().postDelayed(() -> drawerLayout.openDrawer(navDrawer), 1500);
 
             // for backward compatibility, we only change defaults for fresh installs
@@ -336,7 +337,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     }
 
     public void loadFeedFragmentById(long feedId, Bundle args) {
-        Fragment fragment = ItemlistFragment.newInstance(feedId);
+        Fragment fragment = FeedItemlistFragment.newInstance(feedId);
         if(args != null) {
             fragment.setArguments(args);
         }
@@ -474,7 +475,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
 
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_FEED_ID) ||
@@ -579,17 +579,17 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
-            case R.id.mark_all_seen_item:
-                ConfirmationDialog markAllSeenConfirmationDialog = new ConfirmationDialog(this,
-                        R.string.mark_all_seen_label,
-                        R.string.mark_all_seen_confirmation_msg) {
+            case R.id.remove_all_new_flags_item:
+                ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(this,
+                        R.string.remove_all_new_flags_label,
+                        R.string.remove_all_new_flags_confirmation_msg) {
                     @Override
                     public void onConfirmButtonPressed(DialogInterface dialog) {
                         dialog.dismiss();
-                        DBWriter.markFeedSeen(feed.getId());
+                        DBWriter.removeFeedNewFlag(feed.getId());
                     }
                 };
-                markAllSeenConfirmationDialog.createNewDialog().show();
+                removeAllNewFlagsConfirmationDialog.createNewDialog().show();
                 return true;
             case R.id.mark_all_read_item:
                 ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(this,
@@ -765,6 +765,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Subscribe
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         // we are only interested in the number of queue items, not download status or position
@@ -776,6 +777,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         loadData();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(ProgressEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         switch(event.action) {
@@ -794,6 +796,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         View parentLayout = findViewById(R.id.drawer_layout);
@@ -840,5 +843,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+    }
+
+    @VisibleForTesting
+    public void updateNavDrawer() {
+        navAdapter.notifyDataSetChanged();
     }
 }

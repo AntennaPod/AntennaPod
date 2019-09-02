@@ -11,15 +11,12 @@ import java.util.List;
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
-import de.danoeh.antennapod.core.util.flattr.FlattrThing;
-
 /**
  * Data Object for a whole feed
  *
  * @author daniel
  */
-public class Feed extends FeedFile implements FlattrThing, ImageResource {
+public class Feed extends FeedFile implements ImageResource {
 
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
@@ -52,7 +49,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     private String lastUpdate;
 
-    private FlattrStatus flattrStatus;
     private String paymentLink;
     /**
      * Feed type, for example RSS 2 or Atom
@@ -97,7 +93,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
-                String downloadUrl, boolean downloaded, FlattrStatus status, boolean paged, String nextPageLink,
+                String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
                 String filter, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
         this.id = id;
@@ -112,7 +108,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         this.type = type;
         this.feedIdentifier = feedIdentifier;
         this.imageUrl = imageUrl;
-        this.flattrStatus = status;
         this.paged = paged;
         this.nextPageLink = nextPageLink;
         this.items = new ArrayList<>();
@@ -125,13 +120,13 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     }
 
     /**
-     * This constructor is used for test purposes and uses a default flattr status object.
+     * This constructor is used for test purposes
      */
     public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
         this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, imageUrl,
-                fileUrl, downloadUrl, downloaded, new FlattrStatus(), false, null, null, false);
+                fileUrl, downloadUrl, downloaded, false, null, null, false);
     }
 
     /**
@@ -139,7 +134,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
      */
     public Feed() {
         super();
-        this.flattrStatus = new FlattrStatus();
     }
 
     /**
@@ -149,7 +143,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     public Feed(String url, String lastUpdate) {
         super(null, url, false);
         this.lastUpdate = lastUpdate;
-        this.flattrStatus = new FlattrStatus();
     }
 
     /**
@@ -159,7 +152,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     public Feed(String url, String lastUpdate, String title) {
         this(url, lastUpdate);
         this.feedTitle = title;
-        this.flattrStatus = new FlattrStatus();
     }
 
     /**
@@ -186,7 +178,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         int indexFileUrl = cursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL);
         int indexDownloadUrl = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL);
         int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
-        int indexFlattrStatus = cursor.getColumnIndex(PodDBAdapter.KEY_FLATTR_STATUS);
         int indexIsPaged = cursor.getColumnIndex(PodDBAdapter.KEY_IS_PAGED);
         int indexNextPageLink = cursor.getColumnIndex(PodDBAdapter.KEY_NEXT_PAGE_LINK);
         int indexHide = cursor.getColumnIndex(PodDBAdapter.KEY_HIDE);
@@ -209,7 +200,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
                 cursor.getString(indexFileUrl),
                 cursor.getString(indexDownloadUrl),
                 cursor.getInt(indexDownloaded) > 0,
-                new FlattrStatus(cursor.getLong(indexFlattrStatus)),
                 cursor.getInt(indexIsPaged) > 0,
                 cursor.getString(indexNextPageLink),
                 cursor.getString(indexHide),
@@ -290,9 +280,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         }
         if (other.paymentLink != null) {
             paymentLink = other.paymentLink;
-        }
-        if (other.flattrStatus != null) {
-            flattrStatus = other.flattrStatus;
         }
         // this feed's nextPage might already point to a higher page, so we only update the nextPage value
         // if this feed is not paged and the other feed is.
@@ -442,14 +429,6 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
 
     public void setFeedIdentifier(String feedIdentifier) {
         this.feedIdentifier = feedIdentifier;
-    }
-
-    public void setFlattrStatus(FlattrStatus status) {
-        this.flattrStatus = status;
-    }
-
-    public FlattrStatus getFlattrStatus() {
-        return flattrStatus;
     }
 
     public String getPaymentLink() {

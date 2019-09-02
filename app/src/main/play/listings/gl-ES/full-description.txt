@@ -1,5 +1,5 @@
 AntenaPod é un xestor de podcast e reprodutor que lle da acceso a millóns de podcast tanto gratuítos como de pagamento, desde podcasters independentes a grandes productores como BBC, NPR e CNN. Engada, importe e exporte as súas fontes de xeito doado utilizando a base de datos de iTunes, ficheiros OPML ou URLs RSS. Aforre traballo, enerxía da batería e datos móbiles co sistema automatizado de control das descargas de episodios (indicando horario, intervalos e redes WiFi) e borrando episodios (baseado nos seus favoritos e axustes de retardo).<br>
-Mais o máis importante: Descargue, envíe ou poña na cola os episodios e disfrúteos do xeito en que máis lle conveña, axustando a velocidade de reprodución, xestión de capítulos e apagado automático. Poderá tamén mostrarlle aos creadores canto lle gustan os seus contidos gracias a integración con Flattr.
+O máis importante: Descarga, reproduce ou pon en cola os episodios e desfrútaos do xeito en que máis che conveña axustando a velocidade de reprodución, o soporte de capítulos e o apagado programable.
 
 Escrito por namorados dos podcast, AntennaPod é gratuíto e libre: open source, sen custos, sen publicidade.
 
@@ -15,7 +15,6 @@ SIGA, COMPARTA E VALORE <br>
 &#8226; Garde o melloriño de cada casa marcando episodios como favoritos<br>
 &#8226; Atope ese episodio especial no historial de reprodución ou buscando (títulos e notas do episodio)<br>
 &#8226; Comparta episodios e fontes a través das opcións de redes sociais e correro electrónico, os servizos de gPodder.net e exportando a OPML<br>
-&#8226; Axude aos creadores de contido coa integración con Flattr incluíndo o flattring automático
 
 CONTROL DO SISTEMA <br>
 &#8226; Tome control sobre as descargas automáticas: escolla fontes, exclúa redes móbiles, redes WIFI concretas, requerir que o móbil esté a cargar e horarios e intervalos<br>

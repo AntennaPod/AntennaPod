@@ -26,7 +26,6 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparator;
-import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -419,17 +418,18 @@ public final class DBReader {
     /**
      * Loads a list of FeedItems sorted by pubDate in descending order.
      *
+     * @param offset The first episode that should be loaded.
      * @param limit The maximum number of episodes that should be loaded.
      */
     @NonNull
-    public static List<FeedItem> getRecentlyPublishedEpisodes(int limit) {
-        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "limit = [" + limit + "]");
+    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit) {
+        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "offset = [" + offset + "]" + " limit = [" + limit + "]" );
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor cursor = null;
         try {
-            cursor = adapter.getRecentlyPublishedItemsCursor(limit);
+            cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit);
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
@@ -831,15 +831,14 @@ public final class DBReader {
      * Searches the DB for a FeedMedia of the given id.
      *
      * @param mediaId The id of the object
-     * @return The found object
+     * @return The found object, or null if it does not exist
      */
+    @Nullable
     public static FeedMedia getFeedMedia(final long mediaId) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
-
         adapter.open();
-        Cursor mediaCursor = null;
-        try {
-            mediaCursor = adapter.getSingleFeedMediaCursor(mediaId);
+
+        try (Cursor mediaCursor = adapter.getSingleFeedMediaCursor(mediaId)) {
             if (!mediaCursor.moveToFirst()) {
                 return null;
             }
@@ -847,19 +846,13 @@ public final class DBReader {
             int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
             long itemId = mediaCursor.getLong(indexFeedItem);
             FeedMedia media = FeedMedia.fromCursor(mediaCursor);
-            if (media != null) {
-                FeedItem item = getFeedItem(itemId);
-                if (item != null) {
-                    media.setItem(item);
-                    item.setMedia(media);
-                }
+            FeedItem item = getFeedItem(itemId);
+            if (item != null) {
+                media.setItem(item);
+                item.setMedia(media);
             }
             return media;
-
         } finally {
-            if (mediaCursor != null) {
-                mediaCursor.close();
-            }
             adapter.close();
         }
     }
@@ -1001,36 +994,6 @@ public final class DBReader {
             this.episodesStarted = episodesStarted;
             this.episodesStartedIncludingMarked = episodesStartedIncludingMarked;
         }
-    }
-
-    /**
-     * Returns the flattr queue as a List of FlattrThings. The list consists of Feeds and FeedItems.
-     *
-     * @return The flattr queue as a List.
-     */
-    public static List<FlattrThing> getFlattrQueue() {
-        Log.d(TAG, "getFlattrQueue() called with: " + "");
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        List<FlattrThing> result = new ArrayList<>();
-
-        // load feeds
-        Cursor feedCursor = adapter.getFeedsInFlattrQueueCursor();
-        if (feedCursor.moveToFirst()) {
-            do {
-                result.add(extractFeedFromCursorRow(feedCursor));
-            } while (feedCursor.moveToNext());
-        }
-        feedCursor.close();
-
-        //load feed items
-        Cursor feedItemCursor = adapter.getFeedItemsInFlattrQueueCursor();
-        result.addAll(extractItemlistFromCursor(adapter, feedItemCursor));
-        feedItemCursor.close();
-
-        adapter.close();
-        Log.d(TAG, "Returning flattrQueueIterator for queue with " + result.size() + " items.");
-        return result;
     }
 
     /**

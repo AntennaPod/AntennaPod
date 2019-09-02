@@ -113,9 +113,6 @@
   <string name="mark_all_read_msg">Visi epizodai pažymėti kaip perklausyti</string>
   <string name="mark_all_read_confirmation_msg">Patvirtinkite, jog norite pažymėti visus epizodus kaip perklausytus.</string>
   <string name="mark_all_read_feed_confirmation_msg">Patvirtinkite, jog norite pažymėti visus šios tinklalaidės epizodus kaip perklausytus.</string>
-  <string name="mark_all_seen_label">Pažymėti visus kaip matytus</string>
-  <string name="mark_all_seen_msg">Pažymėti visus epizodus kaip matytus</string>
-  <string name="mark_all_seen_confirmation_msg">Patvirtinkite, jog norite pažymėti visus epizodus kaip matytus.</string>
   <string name="show_info_label">Rodyti informaciją</string>
   <string name="show_feed_settings_label">Rodyti tinklalaidės nustatymus</string>
   <string name="feed_info_label">Tinklalaidės informacija</string>
@@ -157,8 +154,6 @@
   <string name="remove_label">Pašalinti</string>
   <string name="delete_label">Ištrinti</string>
   <string name="delete_failed">Nepavyksta ištrinti failo. Įrenginio paleidimas iš naujo gali padėti.</string>
-  <string name="mark_as_seen_label">Pažymėti kaip matytą</string>
-  <string name="marked_as_seen_label">Pažymėtas kaip matytas</string>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>
   <string name="marked_as_read_label">Pažymėtas kaip perklausytas</string>
   <string name="mark_unread_label">Pažymėti kaip neperklausytą</string>
@@ -170,7 +165,6 @@
   <string name="remove_from_favorite_label">Pašalinti iš mėgiamų</string>
   <string name="removed_from_favorites">Pašalintas iš mėgiamų</string>
   <string name="visit_website_label">Aplankyti svetainę</string>
-  <string name="support_label">Paremti „Flattr“</string>
   <string name="skip_episode_label">Praleisti epizodą</string>
   <string name="activate_auto_download">Įjungti automatinį atsiuntimą</string>
   <string name="deactivate_auto_download">Išjungti automatinį atsiuntimą</string>
@@ -258,32 +252,6 @@
   <string name="ascending">Didėjančia tvarka</string>
   <string name="descending">Mažėjančia tvarka</string>
   <string name="clear_queue_confirmation_msg">Patvirtinkite, jog norite pašalinti VISUS epizodus iš perklausos eilės</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">„Flattr“ prisijungimas</string>
-  <string name="flattr_auth_explanation">Jei norite pradėti tapatumo nustatymo procesą, paspauskite žemiau esantį mygtuką. Būsite nukreipti į „Flattr“ prisijungimo langą naršyklėje ir paprašyti suteikti „AntennaPod“ programėlei leidimą paremti turinį. Kai suteiksite leidimą, būsite automatiškai sugrąžinti į šį ekraną.</string>
-  <string name="authenticate_label">Nustatyti tapatumą</string>
-  <string name="return_home_label">Grįžti atgal</string>
-  <string name="flattr_auth_success">Tapatumas patvirtintas! Nuo šiol programėlėje galėsite paremti epizodus naudodami „Flattr“ paslaugą.</string>
-  <string name="no_flattr_token_title">Nerastas „Flattr“ žetonas</string>
-  <string name="no_flattr_token_notification_msg">Panašu, jog Jūsų „Flattr“ paskyra nesusieta su „AntennaPod“. Spustelėkite čia, jei norite nustatyti tapatybę.</string>
-  <string name="no_flattr_token_msg">Panašu, jog Jūsų „Flattr“ paskyra nėra susieta su „AntennaPod“. Galite susieti savo paskyrą su „AntennaPod“, jei norite paremti turinį naudodamiesi programėle, arba paremkite elementą apsilankę jo svetainėje.</string>
-  <string name="authenticate_now_label">Tikrinti tapatumą</string>
-  <string name="action_forbidden_title">Veiksmas uždraustas</string>
-  <string name="action_forbidden_msg">„AntennaPod“ neturi leidimo šiam veiksmui atlikti. Gali būti, jog „AntennaPod“ prieigos žetono galiojimas buvo sustabdytas. Galite iš naujo patvirtinti tapatybę arba aplankyti elemento svetainę.</string>
-  <string name="access_revoked_title">Prieiga panaikinta</string>
-  <string name="access_revoked_info">Sėkmingai sustabdėte „AntennaPod“ prieigos prie Jūsų paskyros žetono galiojimą. Jei norite užbaigti šį procesą, pašalinkite šią programėlę iš patvirtintų programėlių sąrašo paskyros nustatymuose „Flattr“ svetainėje.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Vienas elementas paremtas „Flattr“!</string>
-  <string name="flattr_click_success_count">%d elementai paremti „Flattr“!</string>
-  <string name="flattr_click_success_queue">Paremta „Flattr“: %s.</string>
-  <string name="flattr_click_failure_count">„Flattr“ nepavyko paremti %d elementų!</string>
-  <string name="flattr_click_failure">„Flattr“ neparemta: %s.</string>
-  <string name="flattr_click_enqueued">Šis elementas bus paremtas „Flattr“ vėliau</string>
-  <string name="flattring_thing">Remiama „Flattr“: %s</string>
-  <string name="flattring_label">„AntennaPod“ šiuo metu paremia „Flattr“</string>
-  <string name="flattrd_label">„AntennaPod“ parama „Flattr“ pavyko</string>
-  <string name="flattrd_failed_label">„AntennaPod“ parama „Flattr“ nepavyko</string>
-  <string name="flattr_retrieving_status">Nuskaitomi „Flattr“ paremti elementai</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Atsiųsti įskiepį</string>
   <string name="no_playback_plugin_title">Įskiepis neįdiegtas</string>
@@ -292,8 +260,8 @@
   <string name="enable_sonic">Įjungti „Sonic“</string>
   <!--Empty list labels-->
   <string name="no_feeds_label">Kol kas neprenumeruojate jokios tinklalaidės.</string>
-  <string name="no_chapters_label">Šis epizodas neturi skyrių.</string>
   <string name="no_shownotes_label">Šis epizodas neturi užrašų.</string>
+  <string name="no_chapters_label">Šis epizodas neturi skyrių.</string>
   <!--Preferences-->
   <string name="storage_pref">Laikmena</string>
   <string name="project_pref">Projektas</string>
@@ -301,15 +269,12 @@
   <string name="about_pref">Apie</string>
   <string name="queue_label">Eilė</string>
   <string name="integrations_label">Integracijos</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Mikromokėjimų paslauga</string>
   <string name="automation">Automatizacija</string>
   <string name="download_pref_details">Išsamiau</string>
   <string name="import_export_pref">Importas/Eksportas</string>
   <string name="appearance">Išvaizda</string>
   <string name="external_elements">Išoriniai elementai</string>
   <string name="interruptions">Pertraukimai</string>
-  <string name="buttons">Atkūrimo valdymo mygtukai</string>
   <string name="media_player">Medijos grotuvas</string>
   <string name="pref_episode_cleanup_title">Epizodų valymas</string>
   <string name="pref_episode_cleanup_summary">Epizodai, nesantys eilėje ar tarp mėgiamųjų, gali būti ištrinti automatinio atsiuntimo metu pritrūkus laisvos vietos naujiems epizodams </string>
@@ -346,17 +311,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Pakartotinai prijungus ausines</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Pakartotinai prisijungus prie „Bluetooth“</string>
   <string name="pref_mobileUpdate_title">Atnaujinimai mobiliuoju internetu</string>
-  <string name="pref_mobileUpdate_sum">Leisti atnaujinimus mobiliuoju internetu</string>
   <string name="refreshing_label">Atnaujinama</string>
-  <string name="flattr_settings_label">„Flattr“ nustatymai</string>
-  <string name="pref_flattr_auth_title">„Flattr“ prisijungimas</string>
-  <string name="pref_flattr_auth_sum">Prisijunkite prie savo „Flattr“ paskyros ir remkite turinį tiesiai iš programėlės</string>
-  <string name="pref_flattr_this_app_title">Paremti šią programėlę per „Flattr“</string>
-  <string name="pref_flattr_this_app_sum">Paskatinkite „AntennaPod“ tobulinimą paremdami ją per „Flattr“. Ačiū!</string>
-  <string name="pref_revokeAccess_title">Panaikinti prieigą</string>
-  <string name="pref_revokeAccess_sum">Panaikinti šios programėlės prieigos prie Jūsų „Flattr“ paskyros leidimą. </string>
-  <string name="pref_auto_flattr_title">Automatinis rėmimas per „Flattr“</string>
-  <string name="pref_auto_flattr_sum">Konfigūruoti automatinį rėmimą per „Flattr“</string>
   <string name="user_interface_label">Vartotojo sąsaja</string>
   <string name="pref_set_theme_title">Pasirinkti temą</string>
   <string name="pref_nav_drawer_title">Derinti naršymo stalčių</string>
@@ -459,11 +414,6 @@
   <string name="double_tap_toast">Jei norite išeiti, dar kartą paspauskite grįžimo mygtuką</string>
   <string name="back_button_go_to_page">Eiti į puslapį…</string>
   <string name="back_button_go_to_page_title">Pažymėti puslapį</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Įjungti automatinį rėmimą „Flattr“</string>
-  <string name="auto_flattr_after_percent">Paremti epizodą „Flattr“ perklausius %d procentus jo trukmės</string>
-  <string name="auto_flattr_ater_beginning">Paremti epizodą „Flattr“ atkūrimui prasidėjus</string>
-  <string name="auto_flattr_ater_end">Paremti epizodą „Flattr“ atkūrimui pasibaigus</string>
   <!--Search-->
   <string name="search_hint">Ieškoti epizodų</string>
   <string name="found_in_shownotes_label">Rasta laidos užrašuose</string>
@@ -613,9 +563,10 @@
   <string name="progress_upgrading_database">Atnaujinama duomenų bazė</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Įkeliamos prenumeratos iš specializuotų programėlių...</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">Ieškoti „iTunes“</string>
-  <string name="filter">Filtruoti</string>
   <string name="search_fyyd_label">Ieškoti „fyyd“</string>
+  <string name="filter">Filtruoti</string>
   <!--Episodes apply actions-->
   <string name="all_label">Visi</string>
   <string name="selected_all_label">Pažymėti visi epizodai</string>

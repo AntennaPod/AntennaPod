@@ -111,9 +111,6 @@
   <string name="mark_all_read_msg">Marcar todos Episódios como reproduzidos</string>
   <string name="mark_all_read_confirmation_msg">Por favor, confirme que você deseja marcar todos os episódios como já reproduzidos.</string>
   <string name="mark_all_read_feed_confirmation_msg">Favor confirmar que deseja marcar todos os episódios nesse podcast como já ouvidos.</string>
-  <string name="mark_all_seen_label">Marcar todos como vistos</string>
-  <string name="mark_all_seen_msg">Todos os episódios marcados como já ouvidos</string>
-  <string name="mark_all_seen_confirmation_msg">Confirme se deseja marcar todos os episódios como vistos.</string>
   <string name="show_info_label">Mostrar informação</string>
   <string name="show_feed_settings_label">Exibir configurações do podcast</string>
   <string name="feed_info_label">Informações do podcast</string>
@@ -148,6 +145,10 @@
   <string name="open_podcast">Abrir Podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Baixar %d episódio.</item>
+    <item quantity="other">Baixar %d episódios.</item>
+  </plurals>
   <string name="play_label">Reproduzir</string>
   <string name="pause_label">Pausar</string>
   <string name="stop_label">Parar</string>
@@ -155,20 +156,38 @@
   <string name="remove_label">Remover</string>
   <string name="delete_label">Deletar</string>
   <string name="delete_failed">Não foi possível deletar o arquivo. Experimente reiniciar o dispositivo.</string>
-  <string name="mark_as_seen_label">Marcar como ouvido</string>
-  <string name="marked_as_seen_label">Marcar como visto</string>
+  <string name="delete_episode_label">Apagar Episódio</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d episódio apagado.</item>
+    <item quantity="other">%d episódios apagados.</item>
+  </plurals>
   <string name="mark_read_label">Marcar como reproduzido</string>
   <string name="marked_as_read_label">Marcado como reproduzido</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d episódio marcado como reproduzido.</item>
+    <item quantity="other">%d episódios marcados como reproduzidos.</item>
+  </plurals>
   <string name="mark_unread_label">Marcar como não reproduzido</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d episódio marcado como não reproduzido.</item>
+    <item quantity="other">%d episódios marcados como não reproduzidos.</item>
+  </plurals>
   <string name="add_to_queue_label">Adicionar à fila</string>
   <string name="added_to_queue_label">Adicionado à fila</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d episódio adicionado à fila.</item>
+    <item quantity="other">%d episódios adicionados à fila.</item>
+  </plurals>
   <string name="remove_from_queue_label">Remover da fila</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%d episódio removido da fila.</item>
+    <item quantity="other">%d episódios removidos da fila.</item>
+  </plurals>
   <string name="add_to_favorite_label">Adicionar aos Favoritos</string>
   <string name="added_to_favorites">Adicionado aos Favoritos</string>
   <string name="remove_from_favorite_label">Remover dos Favoritos</string>
   <string name="removed_from_favorites">Removido dos Favoritos</string>
   <string name="visit_website_label">Visitar Website</string>
-  <string name="support_label">Adicionar ao Flattr</string>
   <string name="skip_episode_label">Pular episódio</string>
   <string name="activate_auto_download">Ativar download automático </string>
   <string name="deactivate_auto_download">Desativar download automático</string>
@@ -254,32 +273,6 @@
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
   <string name="clear_queue_confirmation_msg">Por favor confirme que você deseja limpar TODOS episódios da fila</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Logar no Flattr</string>
-  <string name="flattr_auth_explanation">Pressione o botão abaixo para iniciar o processo de autenticação. Você será direcionado para a tela de login do Flattr, que pedirá autorização para que o AntennaPod utilize o Flattr. Após conceder a permissão, você retornará a esta tela automaticamente.</string>
-  <string name="authenticate_label">Autenticar</string>
-  <string name="return_home_label">Retornar ao início</string>
-  <string name="flattr_auth_success">Autenticado com sucesso! Agora você poderá utilizar o Flattr de dentro do AntennaPod.</string>
-  <string name="no_flattr_token_title">Nenhum token do Flattr encontrado</string>
-  <string name="no_flattr_token_notification_msg">Sua conta flattr parece não estar conectada ao AntennaPod. Toque aqui para autenticar.</string>
-  <string name="no_flattr_token_msg">Sua conta Flattr não está conectada ao AntennaPod. Você pode conectar sua conta ao AntennaPod para usar o Flattr de dentro da aplicação ou pode visitar o website do feed para usar o Flattr por lá.</string>
-  <string name="authenticate_now_label">Autenticar</string>
-  <string name="action_forbidden_title">Ação proibida</string>
-  <string name="action_forbidden_msg">AntennaPod não tem permissão para esta ação. A permissão de acesso do AntennaPod pode ter sido revogada. Você pode re-autenticar ou visitar o website do feed.</string>
-  <string name="access_revoked_title">Acesso revogado</string>
-  <string name="access_revoked_info">Você revogou o token de acesso do AntennaPod com sucesso. Para finalizar o processo, você deve remover esta app da lista de aplicativos aprovados nas configurações de sua conta no website do Flattr.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Flattr\'ou alguma coisa!</string>
-  <string name="flattr_click_success_count">Flattr\'ou %d coisas!</string>
-  <string name="flattr_click_success_queue">Flattr\'ou: %s</string>
-  <string name="flattr_click_failure_count">Falou em flattr %d coisas!</string>
-  <string name="flattr_click_failure">Não flattr\'ou: %s.</string>
-  <string name="flattr_click_enqueued">Coisas que serão flattr\'adas mais tarde</string>
-  <string name="flattring_thing">Flattrando %s</string>
-  <string name="flattring_label">AntennaPod está flattrando</string>
-  <string name="flattrd_label">AntennaPod foi flattr\'ado</string>
-  <string name="flattrd_failed_label">AntennaPod flattr falhou</string>
-  <string name="flattr_retrieving_status">Recebendo coisas flattr\'adas</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Download Plugin</string>
   <string name="no_playback_plugin_title">Plugin Não Instalado</string>
@@ -288,8 +281,8 @@
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
   <string name="no_feeds_label">Você ainda não se inscreveu a nenhum podcast.</string>
-  <string name="no_chapters_label">Este episódio não possui capítulos</string>
   <string name="no_shownotes_label">Este episódio não possui notas.</string>
+  <string name="no_chapters_label">Este episódio não possui capítulos</string>
   <!--Preferences-->
   <string name="storage_pref">Armazenamento</string>
   <string name="project_pref">Projeto</string>
@@ -297,15 +290,12 @@
   <string name="about_pref">Sobre</string>
   <string name="queue_label">Fila</string>
   <string name="integrations_label">Integrações</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Serviço de micropagamento</string>
   <string name="automation">Automação</string>
   <string name="download_pref_details">Detalhes</string>
   <string name="import_export_pref">Importar/Exportar</string>
   <string name="appearance">Aparência</string>
   <string name="external_elements">Elementos externos</string>
   <string name="interruptions">Interrupções</string>
-  <string name="buttons">Botões de controle de reprodução</string>
   <string name="media_player">Reprodutor de mídia</string>
   <string name="pref_episode_cleanup_title">Limpar Episódio</string>
   <string name="pref_episode_cleanup_summary">Episódios que não estão na fila e não estão nos favoritos podem ser removidos se o Download Automático precisar de espaço para novos episódios</string>
@@ -342,17 +332,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Fones de ouvido reconectados</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth reconectado</string>
   <string name="pref_mobileUpdate_title">Atualizações via Rede de Dados Celular</string>
-  <string name="pref_mobileUpdate_sum">Permite atualizações quando conectado na rede de dados celular</string>
   <string name="refreshing_label">Atualizando</string>
-  <string name="flattr_settings_label">Configurações do Flattr</string>
-  <string name="pref_flattr_auth_title">Logar no Flattr</string>
-  <string name="pref_flattr_auth_sum">Loga na sua conta Flattr para utilizá-lo diretamente da aplicação</string>
-  <string name="pref_flattr_this_app_title">Registra este aplicativo no Flattr</string>
-  <string name="pref_flattr_this_app_sum">Suportar o desenvolvimento do AntennaPod usando o Flattr. Obrigado!</string>
-  <string name="pref_revokeAccess_title">Revogar acesso</string>
-  <string name="pref_revokeAccess_sum">Cancelar permissão de acesso à sua conta Flattr</string>
-  <string name="pref_auto_flattr_title">Flattr automático</string>
-  <string name="pref_auto_flattr_sum">Configurar automaticamente com flattr</string>
   <string name="user_interface_label">Interface com usuário</string>
   <string name="pref_set_theme_title">Selecionar tema</string>
   <string name="pref_nav_drawer_title">Customizar Gaveta de Navegação</string>
@@ -440,6 +420,7 @@
   <string name="pref_enqueue_downloaded_title">Enfileirar os baixados</string>
   <string name="pref_enqueue_downloaded_summary">Adicionar episódios baixados à fila</string>
   <string name="media_player_builtin">Reprodutor próprio do Android</string>
+  <string name="pref_skip_silence_title">Pular silêncio no áudio</string>
   <string name="pref_videoBehavior_title">Após fechar vídeo</string>
   <string name="pref_videoBehavior_sum">Comportamento ao parar a reprodução de vídeo</string>
   <string name="stop_playback">Parar a reprodução</string>
@@ -455,11 +436,6 @@
   <string name="double_tap_toast">Clique novamente no botão voltar para sair</string>
   <string name="back_button_go_to_page">Vá para a página...</string>
   <string name="back_button_go_to_page_title">Selecione a página</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Abilitar automaticamente o flattr</string>
-  <string name="auto_flattr_after_percent">Episódio Flattr assim que %d porcento for tocado</string>
-  <string name="auto_flattr_ater_beginning">Episódio Flattr quando a repodução iniciar</string>
-  <string name="auto_flattr_ater_end">Episódio Flattr quando a reprodução finalizar</string>
   <!--Search-->
   <string name="search_hint">Buscar por episódios</string>
   <string name="found_in_shownotes_label">Encontrados em exibir descrição</string>
@@ -603,9 +579,10 @@
   <string name="progress_upgrading_database">Atualizando o banco de dados</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando assinaturas de aplicativos de finalidade única...</string>
+  <!--Add podcast fragment-->
   <string name="search_itunes_label">Procurar no iTunes</string>
-  <string name="filter">Filtrar</string>
   <string name="search_fyyd_label">Pesquisar em fyyd</string>
+  <string name="filter">Filtrar</string>
   <!--Episodes apply actions-->
   <string name="all_label">Todos</string>
   <string name="selected_all_label">Selecionar todos Episódios</string>
@@ -647,6 +624,7 @@
   <string name="audio_effects">Efeitos Sonoros</string>
   <string name="stereo_to_mono">Downmix: Stereo para mono</string>
   <string name="sonic_only">Apenas Sonic</string>
+  <string name="exoplayer_only">Somente ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
   <string name="host_label">Host</string>

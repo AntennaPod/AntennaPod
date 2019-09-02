@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:search="http://schemas.android.com/apk/res-auto">
 
     <com.bytehamster.lib.preferencesearch.SearchPreference
-            android:key="searchPreference" />
+            android:key="searchPreference"
+            search:textHint="@string/preference_search_hint"
+            search:textNoResults="@string/preference_search_no_results"
+            search:textClearHistory="@string/preference_search_clear_history" />
 
     <Preference
             android:key="prefScreenInterface"

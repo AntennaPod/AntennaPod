@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -34,7 +33,6 @@ import com.viewpagerindicator.CirclePageIndicator;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.ChaptersListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -48,7 +46,6 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -62,11 +59,13 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Activity for playing files that do not require a video surface.
@@ -108,12 +107,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private Disposable disposable;
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportPostponeEnterTransition();
@@ -127,6 +120,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             disposable.dispose();
         }
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         saveCurrentFragment();
     }
 
@@ -176,10 +170,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        AutoUpdateManager.checkShouldRefreshFeeds(getApplicationContext());
-
+    protected void onStart() {
+        super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadData();
@@ -347,8 +339,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         }
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
-            case R.id.mark_all_seen_item:
-                DBWriter.markFeedSeen(feed.getId());
+            case R.id.remove_all_new_flags_item:
+                DBWriter.removeFeedNewFlag(feed.getId());
                 return true;
             case R.id.mark_all_read_item:
                 DBWriter.markFeedRead(feed.getId());
@@ -443,6 +435,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         View parentLayout = findViewById(R.id.drawer_layout);

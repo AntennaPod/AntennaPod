@@ -8,14 +8,11 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.shredzone.flattr4j.model.Flattr;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +22,6 @@ import java.util.concurrent.Future;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
@@ -45,10 +41,8 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
-import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
-import de.danoeh.antennapod.core.util.flattr.FlattrThing;
-import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
-import de.greenrobot.event.EventBus;
+import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -114,23 +108,11 @@ public class DBWriter {
             adapter.setMedia(media);
             adapter.close();
 
-            // If media is currently being played, change playback
-            // type to 'stream' and shutdown playback service
-            SharedPreferences prefs = PreferenceManager
-                    .getDefaultSharedPreferences(context);
-            if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
-                if (media.getId() == PlaybackPreferences
-                        .getCurrentlyPlayingFeedMediaId()) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean(
-                            PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
-                            true);
-                    editor.commit();
-                }
-                if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId()) {
-                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-                }
+            if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+                PlaybackPreferences.writeNoMediaPlaying();
+                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
+
             // Gpodder: queue delete action for synchronization
             if(GpodnetPreferences.loggedIn()) {
                 FeedItem item = media.getItem();
@@ -156,23 +138,9 @@ public class DBWriter {
     public static Future<?> deleteFeed(final Context context, final long feedId) {
         return dbExec.submit(() -> {
             DownloadRequester requester = DownloadRequester.getInstance();
-            SharedPreferences prefs = PreferenceManager
-                    .getDefaultSharedPreferences(context
-                            .getApplicationContext());
             final Feed feed = DBReader.getFeed(feedId);
 
             if (feed != null) {
-                if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
-                        && PlaybackPreferences.getLastPlayedFeedId() == feed
-                        .getId()) {
-                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putLong(
-                            PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-                            -1);
-                    editor.commit();
-                }
-
                 // delete stored media files and mark them as read
                 List<FeedItem> queue = DBReader.getQueue();
                 List<FeedItem> removed = new ArrayList<>();
@@ -181,19 +149,12 @@ public class DBWriter {
                 }
 
                 for (FeedItem item : feed.getItems()) {
-                    if(queue.remove(item)) {
+                    if (queue.remove(item)) {
                         removed.add(item);
                     }
-                    if (item.getState() == FeedItem.State.PLAYING && PlaybackService.isRunning) {
-                        context.stopService(new Intent(context, PlaybackService.class));
-                    }
-                    if (item.getMedia() != null
-                            && item.getMedia().isDownloaded()) {
-                        File mediaFile = new File(item.getMedia()
-                                .getFile_url());
-                        mediaFile.delete();
-                    } else if (item.getMedia() != null
-                            && requester.isDownloadingFile(item.getMedia())) {
+                    if (item.getMedia() != null && item.getMedia().isDownloaded()) {
+                        deleteFeedMediaSynchronous(context, item.getMedia());
+                    } else if (item.getMedia() != null && requester.isDownloadingFile(item.getMedia())) {
                         requester.cancelDownload(context, item.getMedia());
                     }
                 }
@@ -388,6 +349,7 @@ public class DBWriter {
                         }
                     }
                     if (queueModified) {
+                        applySortOrder(queue, events);
                         adapter.setQueue(queue);
                         for (QueueEvent event : events) {
                             EventBus.getDefault().post(event);
@@ -404,6 +366,33 @@ public class DBWriter {
                 }
             }
         });
+    }
+
+    /**
+     * Sorts the queue depending on the configured sort order.
+     * If the queue is not in keep sorted mode, nothing happens.
+     *
+     * @param queue  The queue to be sorted.
+     * @param events Replaces the events by a single SORT event if the list has to be sorted automatically.
+     */
+    private static void applySortOrder(List<FeedItem> queue, List<QueueEvent> events) {
+        if (!UserPreferences.isQueueKeepSorted()) {
+            // queue is not in keep sorted mode, there's nothing to do
+            return;
+        }
+
+        // Sort queue by configured sort order
+        SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
+        if (sortOrder == SortOrder.RANDOM) {
+            // do not shuffle the list on every change
+            return;
+        }
+        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortOrder);
+        permutor.reorder(queue);
+
+        // Replace ADDED events by a single SORTED event
+        events.clear();
+        events.add(QueueEvent.sorted(queue));
     }
 
     /**
@@ -660,7 +649,7 @@ public class DBWriter {
      *
      * @param feedId  ID of the Feed.
      */
-    public static Future<?> markFeedSeen(final long feedId) {
+    public static Future<?> removeFeedNewFlag(final long feedId) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -704,7 +693,7 @@ public class DBWriter {
     /**
      * Sets the 'read'-attribute of all NEW FeedItems to UNPLAYED.
      */
-    public static Future<?> markNewItemsSeen() {
+    public static Future<?> removeAllNewFlags() {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -830,44 +819,6 @@ public class DBWriter {
     }
 
     /**
-     * Saves the FlattrStatus of a FeedItem object in the database.
-     *
-     * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
-     */
-    private static Future<?> setFeedItemFlattrStatus(final Context context,
-                                                     final FeedItem item,
-                                                     final boolean startFlattrClickWorker) {
-        return dbExec.submit(() -> {
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedItemFlattrStatus(item);
-            adapter.close();
-            if (startFlattrClickWorker) {
-                new FlattrClickWorker(context).executeAsync();
-            }
-        });
-    }
-
-    /**
-     * Saves the FlattrStatus of a Feed object in the database.
-     *
-     * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
-     */
-    private static Future<?> setFeedFlattrStatus(final Context context,
-                                                 final Feed feed,
-                                                 final boolean startFlattrClickWorker) {
-        return dbExec.submit(() -> {
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.setFeedFlattrStatus(feed);
-            adapter.close();
-            if (startFlattrClickWorker) {
-                new FlattrClickWorker(context).executeAsync();
-            }
-        });
-    }
-
-    /**
      * Saves if a feed's last update failed
      *
      * @param lastUpdateFailed true if last update failed
@@ -892,103 +843,9 @@ public class DBWriter {
         });
     }
 
-
     /**
-     * format an url for querying the database
-     * (postfix a / and apply percent-encoding)
-     */
-    private static String formatURIForQuery(String uri) {
-        try {
-            return URLEncoder.encode(uri.endsWith("/") ? uri.substring(0, uri.length() - 1) : uri, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, e.getMessage());
-            return "";
-        }
-    }
-
-
-    /**
-     * Set flattr status of the passed thing (either a FeedItem or a Feed)
+     * Sort the FeedItems in the queue with the given Permutor.
      *
-     * @param context
-     * @param thing
-     * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
-     * @return
-     */
-    public static Future<?> setFlattredStatus(Context context, FlattrThing thing, boolean startFlattrClickWorker) {
-        // must propagate this to back db
-        if (thing instanceof FeedItem) {
-            return setFeedItemFlattrStatus(context, (FeedItem) thing, startFlattrClickWorker);
-        } else if (thing instanceof Feed) {
-            return setFeedFlattrStatus(context, (Feed) thing, startFlattrClickWorker);
-        }  else if (thing instanceof SimpleFlattrThing) {
-            // SimpleFlattrThings are generated on the fly and do not have DB backing
-        } else {
-            Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed nor SimpleFlattrThing");
-        }
-
-        return null;
-    }
-
-    /**
-     * Reset flattr status to unflattrd for all items
-     */
-    public static Future<?> clearAllFlattrStatus() {
-        Log.d(TAG, "clearAllFlattrStatus()");
-        return dbExec.submit(() -> {
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            adapter.clearAllFlattrStatus();
-            adapter.close();
-        });
-    }
-
-    /**
-     * Set flattr status of the feeds/feeditems in flattrList to flattred at the given timestamp,
-     * where the information has been retrieved from the flattr API
-     */
-    public static Future<?> setFlattredStatus(final List<Flattr> flattrList) {
-        Log.d(TAG, "setFlattredStatus to status retrieved from flattr api running with " + flattrList.size() + " items");
-        // clear flattr status in db
-        clearAllFlattrStatus();
-
-        // submit list with flattred things having normalized URLs to db
-        return dbExec.submit(() -> {
-            PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            for (Flattr flattr : flattrList) {
-                adapter.setItemFlattrStatus(formatURIForQuery(flattr.getThing().getUrl()), new FlattrStatus(flattr.getCreated().getTime()));
-            }
-            adapter.close();
-        });
-    }
-
-    /**
-     * Sort the FeedItems in the queue with the given Comparator.
-     * @param comparator      FeedItem comparator
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     */
-    public static Future<?> sortQueue(final Comparator<FeedItem> comparator, final boolean broadcastUpdate) {
-        return dbExec.submit(() -> {
-            final PodDBAdapter adapter = PodDBAdapter.getInstance();
-            adapter.open();
-            final List<FeedItem> queue = DBReader.getQueue(adapter);
-
-            if (queue != null) {
-                Collections.sort(queue, comparator);
-                adapter.setQueue(queue);
-                if (broadcastUpdate) {
-                    EventBus.getDefault().post(QueueEvent.sorted(queue));
-                }
-            } else {
-                Log.e(TAG, "sortQueue: Could not load queue");
-            }
-            adapter.close();
-        });
-    }
-
-    /**
-     * Similar to sortQueue, but allows more complex reordering by providing whole-queue context.
      * @param permutor        Encapsulates whole-Queue reordering logic.
      * @param broadcastUpdate <code>true</code> if this operation should trigger a
      *                        QueueUpdateBroadcast. This option should be set to <code>false</code>

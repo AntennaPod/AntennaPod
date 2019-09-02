@@ -46,7 +46,7 @@
                 app:useStockLayout="true"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/buttons">
+    <PreferenceCategory android:title="@string/playback_control">
         <SwitchPreference
                 android:defaultValue="false"
                 android:enabled="true"
@@ -71,6 +71,11 @@
                 android:key="prefPlaybackSpeedLauncher"
                 android:summary="@string/pref_playback_speed_sum"
                 android:title="@string/pref_playback_speed_title"/>
+        <SwitchPreference
+                android:defaultValue="false"
+                android:key="prefPlaybackTimeRespectsSpeed"
+                android:summary="@string/pref_playback_time_respects_speed_sum"
+                android:title="@string/pref_playback_time_respects_speed_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">
@@ -110,7 +115,7 @@
 
     <PreferenceCategory android:title="@string/media_player">
         <ListPreference
-                android:defaultValue="sonic"
+                android:defaultValue="exoplayer"
                 android:entries="@array/media_player_options"
                 android:key="prefMediaPlayer"
                 android:title="@string/media_player"

@@ -15,14 +15,14 @@
         tools:background="@android:color/darker_gray">
 
         <TextView
-            android:id="@+id/txtvHeadingExplanation1"
+            android:id="@+id/txtvHeadingExplanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/AntennaPod.TextView.Heading"
             android:text="@string/txtvfeedurl_label"/>
 
         <TextView
-            android:id="@+id/txtvExplanation1"
+            android:id="@+id/txtvExplanation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/opml_import_explanation_1"
@@ -39,52 +39,21 @@
             android:text="@string/choose_file_from_filesystem" />
 
         <View
-            android:id="@+id/divider1"
+            android:id="@+id/divider"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:layout_margin="16dp"
             android:background="?android:attr/listDivider"/>
 
         <TextView
-            android:id="@+id/txtvHeadingExplanation2"
+            android:id="@+id/txtvHeadingExplanationOpenWith"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/AntennaPod.TextView.Heading"
             android:text="@string/txtvfeedurl_label"/>
 
         <TextView
-            android:id="@+id/txtvExplanation2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/opml_import_explanation_2"
-            android:textSize="@dimen/text_size_medium"
-            android:layout_marginTop="4dp"
-            tools:background="@android:color/holo_green_dark" />
-
-        <Button
-            android:id="@+id/butChooseFileFromExternal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            android:text="@string/choose_file_from_external_application" />
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_margin="16dp"
-            android:background="?android:attr/listDivider"/>
-
-        <TextView
-            android:id="@+id/txtvHeadingExplanation3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/AntennaPod.TextView.Heading"
-            android:text="@string/txtvfeedurl_label"/>
-
-        <TextView
-            android:id="@+id/txtvExplanation3"
+            android:id="@+id/txtvExplanationOpenWith"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/opml_import_explanation_3"

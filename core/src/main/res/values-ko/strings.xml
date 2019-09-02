@@ -105,9 +105,9 @@
   <string name="mark_all_read_msg">모든 에피소드를 재생했다고 표시했습니다</string>
   <string name="mark_all_read_confirmation_msg">모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
   <string name="mark_all_read_feed_confirmation_msg">이 피드에 들어 있는 모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
-  <string name="mark_all_seen_label">모두 봤다고 표시</string>
-  <string name="mark_all_seen_msg">모든 에피소드를 봤다고 표시했습니다</string>
-  <string name="mark_all_seen_confirmation_msg">모든 에피소드를 본 것으로 표시하는지 확인하십시오.</string>
+  <string name="remove_all_new_flags_label">모두 봤다고 표시</string>
+  <string name="removed_all_new_flags_msg">모든 에피소드를 봤다고 표시했습니다</string>
+  <string name="remove_all_new_flags_confirmation_msg">모든 에피소드를 본 것으로 표시하는지 확인하십시오.</string>
   <string name="show_info_label">정보 표시</string>
   <string name="rename_feed_label">팟캐스트 이름 바꾸기</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
@@ -143,7 +143,7 @@
   <string name="delete_label">삭제</string>
   <string name="delete_failed">파일을 삭제할 수 없습니다. 장치를 재부팅하면 동작할 수도 있습니다.</string>
   <string name="remove_episode_lable">에피소드 제거</string>
-  <string name="marked_as_seen_label">봤다고 표시했습니다</string>
+  <string name="removed_new_flag_label">봤다고 표시했습니다</string>
   <string name="mark_read_label">재생했다고 표시</string>
   <string name="marked_as_read_label">재생했다고 표시했습니다</string>
   <string name="mark_unread_label">재생하지 않음으로 표시</string>

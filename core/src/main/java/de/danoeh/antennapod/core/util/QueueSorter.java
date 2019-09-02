@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.core.util;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,38 +15,48 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  * Provides method for sorting the queue according to rules.
  */
 public class QueueSorter {
-    public enum Rule {
-        EPISODE_TITLE_ASC,
-        EPISODE_TITLE_DESC,
-        DATE_ASC,
-        DATE_DESC,
-        DURATION_ASC,
-        DURATION_DESC,
-        FEED_TITLE_ASC,
-        FEED_TITLE_DESC,
-        RANDOM,
-        SMART_SHUFFLE_ASC,
-        SMART_SHUFFLE_DESC
+
+    /**
+     * Sorts the queue by the given sort order and sends a broadcast update.
+     *
+     * @param sortOrder Sort order.
+     * @param broadcastUpdate Send broadcast update?
+     */
+    public static void sort(SortOrder sortOrder, boolean broadcastUpdate) {
+        Permutor<FeedItem> permutor = getPermutor(sortOrder);
+        if (permutor != null) {
+            DBWriter.reorderQueue(permutor, broadcastUpdate);
+        }
     }
 
-    public static void sort(final Context context, final Rule rule, final boolean broadcastUpdate) {
+    /**
+     * Returns a Permutor that sorts a list appropriate to the given sort order.
+     *
+     * @param sortOrder Sort order.
+     * @return Permutor that sorts a list appropriate to the given sort order. <code>null</code> if the order is unknown or <code>null</code>.
+     */
+    public static Permutor<FeedItem> getPermutor(SortOrder sortOrder) {
+        if (sortOrder == null) {
+            return null;
+        }
+
         Comparator<FeedItem> comparator = null;
         Permutor<FeedItem> permutor = null;
 
-        switch (rule) {
-            case EPISODE_TITLE_ASC:
+        switch (sortOrder) {
+            case EPISODE_TITLE_A_Z:
                 comparator = (f1, f2) -> f1.getTitle().compareTo(f2.getTitle());
                 break;
-            case EPISODE_TITLE_DESC:
+            case EPISODE_TITLE_Z_A:
                 comparator = (f1, f2) -> f2.getTitle().compareTo(f1.getTitle());
                 break;
-            case DATE_ASC:
+            case DATE_OLD_NEW:
                 comparator = (f1, f2) -> f1.getPubDate().compareTo(f2.getPubDate());
                 break;
-            case DATE_DESC:
+            case DATE_NEW_OLD:
                 comparator = (f1, f2) -> f2.getPubDate().compareTo(f1.getPubDate());
                 break;
-            case DURATION_ASC:
+            case DURATION_SHORT_LONG:
                 comparator = (f1, f2) -> {
                     FeedMedia f1Media = f1.getMedia();
                     FeedMedia f2Media = f2.getMedia();
@@ -61,7 +69,7 @@ public class QueueSorter {
                         return duration1 - duration2;
                 };
                 break;
-            case DURATION_DESC:
+            case DURATION_LONG_SHORT:
                 comparator = (f1, f2) -> {
                     FeedMedia f1Media = f1.getMedia();
                     FeedMedia f2Media = f2.getMedia();
@@ -71,29 +79,28 @@ public class QueueSorter {
                     return -1 * (duration1 - duration2);
                 };
                 break;
-            case FEED_TITLE_ASC:
+            case FEED_TITLE_A_Z:
                 comparator = (f1, f2) -> f1.getFeed().getTitle().compareTo(f2.getFeed().getTitle());
                 break;
-            case FEED_TITLE_DESC:
+            case FEED_TITLE_Z_A:
                 comparator = (f1, f2) -> f2.getFeed().getTitle().compareTo(f1.getFeed().getTitle());
                 break;
             case RANDOM:
                 permutor = Collections::shuffle;
                 break;
-            case SMART_SHUFFLE_ASC:
+            case SMART_SHUFFLE_OLD_NEW:
                 permutor = (queue) -> smartShuffle(queue, true);
                 break;
-            case SMART_SHUFFLE_DESC:
+            case SMART_SHUFFLE_NEW_OLD:
                 permutor = (queue) -> smartShuffle(queue, false);
                 break;
-            default:
         }
 
         if (comparator != null) {
-            DBWriter.sortQueue(comparator, broadcastUpdate);
-        } else if (permutor != null) {
-            DBWriter.reorderQueue(permutor, broadcastUpdate);
+            final Comparator<FeedItem> comparator2 = comparator;
+            permutor = (queue) -> Collections.sort(queue, comparator2);
         }
+        return permutor;
     }
 
     /**
@@ -104,13 +111,10 @@ public class QueueSorter {
      * prefer a more balanced ordering that avoids having to listen to clusters of consecutive
      * episodes from the same feed. This is what "Smart Shuffle" tries to accomplish.
      *
-     * The Smart Shuffle algorithm involves choosing episodes (in round-robin fashion) from a
-     * collection of individual, pubdate-sorted lists that each contain only items from a specific
-     * feed.
-     *
-     * Of course, clusters of consecutive episodes <i>at the end of the queue</i> may be
-     * unavoidable. This seems unlikely to be an issue for most users who presumably maintain
-     * large queues with new episodes continuously being added.
+     * The Smart Shuffle algorithm involves spreading episodes from each feed out over the whole
+     * queue. To do this, we calculate the number of episodes in each feed, then a common multiple
+     * (not the smallest); each episode is then spread out, and we sort the resulting list of
+     * episodes by "spread out factor" and feed name.
      *
      * For example, given a queue containing three episodes each from three different feeds
      * (A, B, and C), a simple pubdate sort might result in a queue that looks like the following:
@@ -152,8 +156,17 @@ public class QueueSorter {
             ? (f1, f2) -> f1.getPubDate().compareTo(f2.getPubDate())
             : (f1, f2) -> f2.getPubDate().compareTo(f1.getPubDate());
 
-        for (Long id : map.keySet()) {
-            Collections.sort(map.get(id), itemComparator);
+        // Calculate the spread
+
+        long spread = 0;
+        for (Map.Entry<Long, List<FeedItem>> mapEntry : map.entrySet()) {
+            List<FeedItem> feedItems = mapEntry.getValue();
+            Collections.sort(feedItems, itemComparator);
+            if (spread == 0) {
+                spread = feedItems.size();
+            } else if (feedItems.size() % spread != 0){
+                spread *= feedItems.size();
+            }
         }
 
         // Create a list of the individual FeedItems lists, and sort it by feed title (ascending).
@@ -161,25 +174,29 @@ public class QueueSorter {
 
         List<List<FeedItem>> feeds = new ArrayList<>(map.values());
         Collections.sort(feeds,
-            // (we use a desc sort here, since we're iterating back-to-front below)
-            (f1, f2) -> f2.get(0).getFeed().getTitle().compareTo(f1.get(0).getFeed().getTitle()));
+                (f1, f2) -> f1.get(0).getFeed().getTitle().compareTo(f2.get(0).getFeed().getTitle()));
 
-        // Cycle through the (sorted) feed lists in a round-robin fashion, removing the first item
-        // and adding it back into to the original queue
-
-        while (!feeds.isEmpty()) {
-            // Iterate across the (sorted) list of feeds, removing the first item in each, and
-            // appending it to the queue. Note that we're iterating back-to-front here, since we
-            // will be deleting feed lists as they become empty.
-            for (int i = feeds.size() - 1; i >= 0; --i) {
-                List<FeedItem> items = feeds.get(i);
-                queue.add(items.remove(0));
-                // Removed the last item in this particular feed? Then remove this feed from the
-                // list of feeds.
-                if (items.isEmpty()) {
-                    feeds.remove(i);
+        // Spread each episode out
+        Map<Long, List<FeedItem>> spreadItems = new HashMap<>();
+        for (List<FeedItem> feedItems : feeds) {
+            long thisSpread = spread / feedItems.size();
+            // Starting from 0 ensures we front-load, so the queue starts with one episode from
+            // each feed in the queue
+            long itemSpread = 0;
+            for (FeedItem feedItem : feedItems) {
+                if (!spreadItems.containsKey(itemSpread)) {
+                    spreadItems.put(itemSpread, new ArrayList<>());
                 }
+                spreadItems.get(itemSpread).add(feedItem);
+                itemSpread += thisSpread;
             }
+        }
+
+        // Go through the spread items and add them to the queue
+        List<Long> spreads = new ArrayList<>(spreadItems.keySet());
+        Collections.sort(spreads);
+        for (long itemSpread : spreads) {
+            queue.addAll(spreadItems.get(itemSpread));
         }
     }
 }

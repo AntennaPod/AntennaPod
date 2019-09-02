@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,6 @@ import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MediaplayerInfoActivity;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
@@ -36,7 +36,6 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
-import de.greenrobot.event.EventBus;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -63,7 +62,6 @@ public class ItemDescriptionFragment extends Fragment {
     private String selectedURL;
 
 
-    @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -83,6 +81,10 @@ public class ItemDescriptionFragment extends Fragment {
             webvDescription.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
             // Use cached resources, even if they have expired
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webvDescription.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         webvDescription.getSettings().setUseWideViewPort(false);
         webvDescription.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         webvDescription.getSettings().setLoadWithOverviewMode(true);
@@ -310,19 +312,11 @@ public class ItemDescriptionFragment extends Fragment {
         };
         controller.init();
         load();
-        EventBus.getDefault().register(this);
-    }
-
-    public void onEventMainThread(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
-            controller.init();
-        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
         controller.release();
         controller = null;
     }

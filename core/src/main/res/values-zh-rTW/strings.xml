@@ -103,8 +103,8 @@
   <string name="mark_all_read_label">全部標記為已播放</string>
   <string name="mark_all_read_msg">全部劇集標記為已播放</string>
   <string name="mark_all_read_confirmation_msg">請確認你要將所有劇集標記為已播放。</string>
-  <string name="mark_all_seen_label">標記為已讀</string>
-  <string name="mark_all_seen_confirmation_msg">請確認你要將所有劇集標記為已讀。</string>
+  <string name="remove_all_new_flags_label">標記為已讀</string>
+  <string name="remove_all_new_flags_confirmation_msg">請確認你要將所有劇集標記為已讀。</string>
   <string name="show_info_label">顯示資料</string>
   <string name="share_label">分享</string>
   <string name="share_file_label">分享文件</string>
@@ -131,7 +131,7 @@
   <string name="delete_label">刪除</string>
   <string name="delete_failed">刪除文件失敗。重啟設備試試看。</string>
   <string name="remove_episode_lable">移除劇集</string>
-  <string name="marked_as_seen_label">標記為已讀</string>
+  <string name="removed_new_flag_label">標記為已讀</string>
   <string name="mark_read_label">標記為已播放</string>
   <string name="marked_as_read_label">已標記為已播放</string>
   <string name="mark_unread_label">標記為未播放</string>

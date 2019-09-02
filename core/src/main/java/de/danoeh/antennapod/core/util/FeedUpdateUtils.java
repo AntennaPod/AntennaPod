@@ -24,7 +24,7 @@ public class FeedUpdateUtils {
                 with().pollInterval(1, TimeUnit.SECONDS)
                         .await()
                         .atMost(10, TimeUnit.SECONDS)
-                        .until(() -> NetworkUtils.networkAvailable() && NetworkUtils.isDownloadAllowed());
+                        .until(() -> NetworkUtils.networkAvailable() && NetworkUtils.isFeedRefreshAllowed());
                 DBTasks.refreshAllFeeds(context, null, callback);
             } catch (ConditionTimeoutException ignore) {
                 Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");

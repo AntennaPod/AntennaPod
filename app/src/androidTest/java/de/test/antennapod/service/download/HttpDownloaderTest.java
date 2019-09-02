@@ -1,6 +1,7 @@
 package de.test.antennapod.service.download;
 
-import android.test.InstrumentationTestCase;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.LargeTest;
 import android.util.Log;
 
 import java.io.File;
@@ -14,8 +15,17 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.test.antennapod.util.service.download.HTTPBin;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class HttpDownloaderTest extends InstrumentationTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+@LargeTest
+public class HttpDownloaderTest {
     private static final String TAG = "HttpDownloaderTest";
     private static final String DOWNLOAD_DIR = "testdownloads";
 
@@ -29,9 +39,8 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         super();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         File[] contents = destDir.listFiles();
         for (File f : contents) {
             assertTrue(f.delete());
@@ -40,11 +49,10 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         httpServer.stop();
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        UserPreferences.init(getInstrumentation().getTargetContext());
-        destDir = getInstrumentation().getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
+    @Before
+    public void setUp() throws Exception {
+        UserPreferences.init(InstrumentationRegistry.getInstrumentation().getTargetContext());
+        destDir = InstrumentationRegistry.getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
         assertNotNull(destDir);
         assertTrue(destDir.exists());
         httpServer = new HTTPBin();
@@ -84,22 +92,27 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     private static final String URL_404 = HTTPBin.BASE_URL + "/status/404";
     private static final String URL_AUTH = HTTPBin.BASE_URL + "/basic-auth/user/passwd";
 
+    @Test
     public void testPassingHttp() {
         download(HTTPBin.BASE_URL + "/status/200", "test200", true);
     }
 
+    @Test
     public void testRedirect() {
         download(HTTPBin.BASE_URL + "/redirect/4", "testRedirect", true);
     }
 
+    @Test
     public void testGzip() {
         download(HTTPBin.BASE_URL + "/gzip/100", "testGzip", true);
     }
 
+    @Test
     public void test404() {
         download(URL_404, "test404", false);
     }
 
+    @Test
     public void testCancel() {
         final String url = HTTPBin.BASE_URL + "/delay/3";
         FeedFileImpl feedFile = setupFeedFile(url, "delay", true);
@@ -124,11 +137,13 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         assertFalse(new File(feedFile.getFile_url()).exists());
     }
 
+    @Test
     public void testDeleteOnFailShouldDelete() {
         Downloader downloader = download(URL_404, "testDeleteOnFailShouldDelete", false, true, null, null, true);
         assertFalse(new File(downloader.getDownloadRequest().getDestination()).exists());
     }
 
+    @Test
     public void testDeleteOnFailShouldNotDelete() throws IOException {
         String filename = "testDeleteOnFailShouldDelete";
         File dest = new File(destDir, filename);
@@ -138,10 +153,12 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         assertTrue(new File(downloader.getDownloadRequest().getDestination()).exists());
     }
 
+    @Test
     public void testAuthenticationShouldSucceed() throws InterruptedException {
         download(URL_AUTH, "testAuthSuccess", true, true, "user", "passwd", true);
     }
 
+    @Test
     public void testAuthenticationShouldFail() {
         Downloader downloader = download(URL_AUTH, "testAuthSuccess", false, true, "user", "Wrong passwd", true);
         assertEquals(DownloadError.ERROR_UNAUTHORIZED, downloader.getResult().getReason());

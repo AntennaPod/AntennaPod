@@ -20,6 +20,7 @@ import android.util.Pair;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FileUtils;
+import org.greenrobot.eventbus.EventBus;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -71,7 +72,6 @@ import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.InvalidFeedException;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-import de.greenrobot.event.EventBus;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued via the startService intent.

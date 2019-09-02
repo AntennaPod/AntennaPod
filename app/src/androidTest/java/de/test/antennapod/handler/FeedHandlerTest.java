@@ -2,14 +2,17 @@ package de.test.antennapod.handler;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.test.InstrumentationTestCase;
-
+import android.support.test.filters.SmallTest;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,17 +29,23 @@ import de.test.antennapod.util.syndication.feedgenerator.AtomGenerator;
 import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
 import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Tests for FeedHandler
  */
-public class FeedHandlerTest extends InstrumentationTestCase {
+@SmallTest
+public class FeedHandlerTest {
     private static final String FEEDS_DIR = "testfeeds";
 
     private File file = null;
     private OutputStream outputStream = null;
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         Context context = InstrumentationRegistry.getTargetContext();
         File destDir = context.getExternalFilesDir(FEEDS_DIR);
         assertNotNull(destDir);
@@ -51,9 +60,8 @@ public class FeedHandlerTest extends InstrumentationTestCase {
     }
 
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         file.delete();
         file = null;
 
@@ -130,12 +138,14 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         }
     }
 
+    @Test
     public void testRSS2Basic() throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
         Feed f1 = createTestFeed(10, false, true, true);
         Feed f2 = runFeedTest(f1, new RSS2Generator(), "UTF-8", RSS2Generator.FEATURE_WRITE_GUID);
         feedValid(f1, f2, Feed.TYPE_RSS2);
     }
 
+    @Test
     public void testAtomBasic() throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
         Feed f1 = createTestFeed(10, false, true, true);
         Feed f2 = runFeedTest(f1, new AtomGenerator(), "UTF-8", 0);

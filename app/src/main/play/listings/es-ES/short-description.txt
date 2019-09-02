@@ -1,0 +1,1 @@
+Reproductor y gestor de pódcast fácil de usar, flexible y de código abierto

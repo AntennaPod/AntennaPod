@@ -1,38 +1,36 @@
 package de.test.antennapod.ui;
 
-import android.test.ActivityInstrumentationTestCase2;
+import android.content.Intent;
+import android.support.test.filters.MediumTest;
+import android.support.test.rule.ActivityTestRule;
 
-import com.robotium.solo.Solo;
-
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * Test class for VideoplayerActivity
  */
-public class VideoplayerActivityTest extends ActivityInstrumentationTestCase2<VideoplayerActivity> {
+@MediumTest
+@Ignore
+public class VideoplayerActivityTest {
 
-    private Solo solo;
-
-    public VideoplayerActivityTest() {
-        super(VideoplayerActivity.class);
-    }
-
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        solo = new Solo(getInstrumentation(), getActivity());
-    }
-
-    @Override
-    public void tearDown() throws Exception {
-        solo.finishOpenedActivities();
-        super.tearDown();
-    }
+    @Rule
+    public ActivityTestRule<VideoplayerActivity> activityTestRule = new ActivityTestRule<>(VideoplayerActivity.class, false, false);
 
     /**
      * Test if activity can be started.
      */
+    @Test
     public void testStartActivity() throws Exception {
-        solo.waitForActivity(VideoplayerActivity.class);
+        activityTestRule.launchActivity(new Intent());
+        onView(withId(R.id.videoframe)).check(matches(isDisplayed()));
     }
 }

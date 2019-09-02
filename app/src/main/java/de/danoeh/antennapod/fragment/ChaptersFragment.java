@@ -6,24 +6,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.List;
+import java.util.ListIterator;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
-import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.greenrobot.event.EventBus;
+
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-
 
 public class ChaptersFragment extends ListFragment {
     private static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
     private PlaybackController controller;
     private Disposable disposable;
+    private EmptyViewHandler emptyView;
 
 
     @Override
@@ -34,6 +37,12 @@ public class ChaptersFragment extends ListFragment {
         lv.setClipToPadding(false);
         final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
         lv.setPadding(0, vertPadding, 0, vertPadding);
+
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.attachToListView(lv);
+        emptyView.setIcon(R.attr.ic_bookmark);
+        emptyView.setTitle(R.string.no_chapters_head_label);
+        emptyView.setMessage(R.string.no_chapters_label);
 
         adapter = new ChaptersListAdapter(getActivity(), 0, pos -> {
             Chapter chapter = (Chapter) getListAdapter().getItem(pos);
@@ -58,8 +67,8 @@ public class ChaptersFragment extends ListFragment {
             }
         };
         controller.init();
+
         loadMediaInfo();
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -74,15 +83,25 @@ public class ChaptersFragment extends ListFragment {
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
         controller.release();
         controller = null;
     }
 
-    public void onEventMainThread(ServiceEvent event) {
-        if (event.action == ServiceEvent.Action.SERVICE_STARTED && controller != null) {
-            controller.init();
+    private void scrollTo(int position) {
+        getListView().setSelection(position);
+    }
+
+    private int getCurrentChapter(Playable media) {
+        int currentPosition = controller.getPosition();
+
+        List<Chapter> chapters = media.getChapters();
+        for (final ListIterator<Chapter> it = chapters.listIterator(); it.hasNext(); ) {
+            Chapter chapter = it.next();
+            if (chapter.getStart() > currentPosition) {
+                return it.previousIndex() - 1;
+            }
         }
+        return chapters.size() - 1;
     }
 
     private void loadMediaInfo() {
@@ -107,10 +126,8 @@ public class ChaptersFragment extends ListFragment {
         if (adapter != null) {
             adapter.setMedia(media);
             adapter.notifyDataSetChanged();
-            if (media == null || media.getChapters() == null || media.getChapters().size() == 0) {
-                setEmptyText(getString(R.string.no_chapters_label));
-            } else {
-                setEmptyText(null);
+            if (media != null && media.getChapters() != null && media.getChapters().size() != 0) {
+                scrollTo(getCurrentChapter(media));
             }
         }
     }
