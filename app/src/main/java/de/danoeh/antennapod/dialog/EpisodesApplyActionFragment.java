@@ -168,7 +168,8 @@ public class EpisodesApplyActionFragment extends Fragment {
             return true;
         });
 
-        for(FeedItem episode : episodes) {
+        titles.clear();
+        for (FeedItem episode : episodes) {
             titles.add(episode.getTitle());
         }
 
@@ -204,10 +205,6 @@ public class EpisodesApplyActionFragment extends Fragment {
             }
             return true;
         });
-
-        if (Build.VERSION.SDK_INT == 23 || Build.VERSION.SDK_INT == 24) {
-            ViewCompat.setElevation(view.findViewById(R.id.fabSDScrollCtr), 8);
-        }
 
         showSpeedDialIfAnyChecked();
 
