@@ -244,10 +244,13 @@ public class EpisodesApplyActionFragment extends Fragment {
         // Prepare icon for select toggle button
 
         int[] icon = new int[1];
+        @StringRes int titleResId;
         if (checkedIds.size() == episodes.size()) {
             icon[0] = R.attr.ic_select_none;
+            titleResId = R.string.deselect_all_label;
         } else {
             icon[0] = R.attr.ic_select_all;
+            titleResId = R.string.select_all_label;
         }
 
         TypedArray a = getActivity().obtainStyledAttributes(icon);
@@ -255,6 +258,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         a.recycle();
 
         mSelectToggle.setIcon(iconDrawable);
+        mSelectToggle.setTitle(titleResId);
     }
 
     @Override
