@@ -155,7 +155,7 @@
                     android:layout_marginTop="-8dp"
                     android:gravity="center"
                     android:text="30"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:clickable="false"/>
 
@@ -184,8 +184,8 @@
                     android:layout_alignEnd="@id/butPlaybackSpeed"
                     android:layout_marginTop="-8dp"
                     android:gravity="center"
-                    android:text="1.00X"
-                    android:textSize="10sp"
+                    android:text="1.00"
+                    android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:clickable="false"/>
 
@@ -231,7 +231,7 @@
                     android:layout_marginTop="-8dp"
                     android:gravity="center"
                     android:text="30"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:clickable="false"/>
 
