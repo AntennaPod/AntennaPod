@@ -3,7 +3,6 @@ package de.danoeh.antennapod.dialog;
 import android.app.AlertDialog;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -13,7 +12,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -218,7 +216,13 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void showSpeedDialIfAnyChecked() {
-        mSpeedDialView.setVisibility(checkedIds.size() > 0 ? View.VISIBLE : View.GONE);
+        if (checkedIds.size() > 0) {
+            if (!mSpeedDialView.isShown()) {
+                mSpeedDialView.show();
+            }
+        } else {
+            mSpeedDialView.hide(); // hide() also handles UI, e.g., overlay properly.
+        }
     }
 
     @Override
@@ -242,10 +246,13 @@ public class EpisodesApplyActionFragment extends Fragment {
         // Prepare icon for select toggle button
 
         int[] icon = new int[1];
+        @StringRes int titleResId;
         if (checkedIds.size() == episodes.size()) {
             icon[0] = R.attr.ic_select_none;
+            titleResId = R.string.deselect_all_label;
         } else {
             icon[0] = R.attr.ic_select_all;
+            titleResId = R.string.select_all_label;
         }
 
         TypedArray a = getActivity().obtainStyledAttributes(icon);
@@ -253,6 +260,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         a.recycle();
 
         mSelectToggle.setIcon(iconDrawable);
+        mSelectToggle.setTitle(titleResId);
     }
 
     @Override
