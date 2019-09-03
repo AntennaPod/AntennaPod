@@ -217,7 +217,9 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void showSpeedDialIfAnyChecked() {
         if (checkedIds.size() > 0) {
-            mSpeedDialView.show();
+            if (!mSpeedDialView.isShown()) {
+                mSpeedDialView.show();
+            }
         } else {
             mSpeedDialView.hide(); // hide() also handles UI, e.g., overlay properly.
         }
