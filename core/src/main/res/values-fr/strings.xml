@@ -252,7 +252,7 @@
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Le téléchargement avec la connexion mobile est désactivé dans les options.\n\nVous pouvez choisir d\'ajouter seulement l\'épisode à la liste de lecture ou vous pouvez autoriser temporairement le téléchargement.\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
   <string name="confirm_mobile_download_dialog_message">Le téléchargement avec la connexion mobile est désactivé dans les options.\n\nVoulez-vous autoriser temporairement le téléchargement?\n\n<small>Votre choix sera retenu pour les 10 prochaines minutes.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Toucher pour autoriser le streaming avec la connexion mobile</string>
-  <string name="confirm_mobile_streaming_notification_message">Le streaming par la connexion mobile est désactivé dans les paramètres. Toucher pour streamer quand même.</string>
+  <string name="confirm_mobile_streaming_notification_message">Le streaming avec la connexion mobile est désactivé dans les paramètres. Toucher pour streamer quand même.</string>
   <string name="confirm_mobile_streaming_button_always">Toujours autoriser</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Rajouter à la liste de lecture</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Autoriser temporairement</string>
@@ -374,7 +374,7 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion des écouteurs ou du Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Connexion des écouteurs</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Connexion du Bluetooth</string>
-  <string name="pref_mobileUpdate_title">Mises à jour avec connexion mobile</string>
+  <string name="pref_mobileUpdate_title">Utilisation de la connexion mobile</string>
   <string name="pref_mobileUpdate_sum">Choisir ce qui est autorisé lorsque la connexion mobile est utilisée</string>
   <string name="pref_mobileUpdate_refresh">Rafraîchissement des flux</string>
   <string name="pref_mobileUpdate_images">Récupération des images</string>
@@ -658,15 +658,15 @@
   <string name="selected_not_downloaded_label">Épisodes non téléchargés sélectionnés</string>
   <string name="queued_label">Dans la liste de lecture</string>
   <string name="selected_queued_label">Episodes présents dans la liste de lecture sélectionnés</string>
-  <string name="not_queued_label">En dehors de la liste de lecture</string>
+  <string name="not_queued_label">Pas dans la liste de lecture</string>
   <string name="selected_not_queued_label">Episodes absents de la liste de lecture sélectionnés</string>
-  <string name="has_media">A des médias</string>
+  <string name="has_media">Avec média</string>
   <string name="selected_has_media_label">Sélectionner les épisodes avec des médias</string>
   <!--Sort-->
   <string name="sort_title_a_z">Titre (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titre (Z \u2192 A)</string>
-  <string name="sort_date_new_old">Date (Nouveau \u2192 Ancien)</string>
-  <string name="sort_date_old_new">Date (Ancien \u2192 Nouveau)</string>
+  <string name="sort_date_new_old">Date (Récent \u2192 Ancien)</string>
+  <string name="sort_date_old_new">Date (Ancien \u2192 Récent)</string>
   <string name="sort_duration_short_long">Durée (Courte \u2192 Longue)</string>
   <string name="sort_duration_long_short">Durée (Longue \u2192 Courte)</string>
   <!--Rating dialog-->
