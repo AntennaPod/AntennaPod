@@ -969,7 +969,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         FeedMedia media = (FeedMedia) playable;
         FeedItem item = media.getItem();
-        boolean smartMarkAsPlayed = playingNext && media.hasAlmostEnded();
+        boolean smartMarkAsPlayed = media.hasAlmostEnded();
         if (!ended && smartMarkAsPlayed) {
             Log.d(TAG, "smart mark as played");
         }

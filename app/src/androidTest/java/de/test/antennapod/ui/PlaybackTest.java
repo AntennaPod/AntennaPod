@@ -304,7 +304,7 @@ public class PlaybackTest {
 
     @Test
     public void testSmartMarkAsPlayed_Skip_LastEpisodeInQueue() throws Exception {
-        // TODO: The test fails for now: doTestSmartMarkAsPlayed_Skip_ForEpisode(-1);
+        doTestSmartMarkAsPlayed_Skip_ForEpisode(-1);
     }
 
     private void doTestSmartMarkAsPlayed_Skip_ForEpisode(int itemIdxNegAllowed) throws Exception {
