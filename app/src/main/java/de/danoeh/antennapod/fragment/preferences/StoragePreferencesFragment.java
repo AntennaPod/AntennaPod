@@ -160,24 +160,24 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
                     .subscribe(output -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
                                 context.getString(R.string.provider_authority), output);
-                        buildExportSuccessDialog(context, context.getString(R.string.export_success_sum, output.toString()), fileUri);
+                        showExportSuccessDialog(context, context.getString(R.string.export_success_sum, output.toString()), fileUri);
                     }, error -> {
-                        buildExportErrorDialog(context, error);
+                        showExportErrorDialog(context, error);
                     }, progressDialog::dismiss);
         } else {
             Observable<DocumentFile> observable = new DocumentFileExportWorker(exportWriter, context, uri).exportObservable();
             disposable = observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output -> {
-                        buildExportSuccessDialog(context, context.getString(R.string.export_success_sum, output.getUri()), output.getUri());
+                        showExportSuccessDialog(context, context.getString(R.string.export_success_sum, output.getUri()), output.getUri());
                     }, error -> {
-                        buildExportErrorDialog(context, error);
+                        showExportErrorDialog(context, error);
                     }, progressDialog::dismiss);
         }
         return true;
     }
 
-    private void buildExportSuccessDialog(final Context context, final String message, final Uri streamUri) {
+    private void showExportSuccessDialog(final Context context, final String message, final Uri streamUri) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         alert.setTitle(R.string.export_success_title);
@@ -202,14 +202,14 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         alert.create().show();
     }
 
-    private void buildExportErrorDialog(final Context context, final Throwable error) {
+    private void showExportErrorDialog(final Context context, final Throwable error) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(context)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         alert.setTitle(R.string.export_error_label);
         alert.setMessage(error.getMessage());
         alert.show();
     }
-    
+
     public void unsubscribeExportSubscription() {
         if (disposable != null) {
             disposable.dispose();
