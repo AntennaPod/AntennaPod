@@ -153,76 +153,63 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         progressDialog.setMessage(context.getString(R.string.exporting_label));
         progressDialog.setIndeterminate(true);
         progressDialog.show();
-        final AlertDialog.Builder alert = new AlertDialog.Builder(context)
-                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         if (uri == null) {
             Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
             disposable = observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output -> {
-                        alert.setTitle(R.string.export_success_title);
-                        String message = context.getString(R.string.export_success_sum, output.toString());
-                        alert.setMessage(message);
-                        alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
-                            Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
-                                    context.getString(R.string.provider_authority), output);
-                            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                            sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-                                    context.getResources().getText(R.string.opml_export_label));
-                            sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                            sendIntent.setType("text/plain");
-                            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                                for (ResolveInfo resolveInfo : resInfoList) {
-                                    String packageName = resolveInfo.activityInfo.packageName;
-                                    context.grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                }
-                            }
-                            context.startActivity(Intent.createChooser(sendIntent,
-                                    context.getResources().getText(R.string.send_label)));
-                        });
-                        alert.create().show();
+                        Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
+                                context.getString(R.string.provider_authority), output);
+                        buildExportSuccessDialog(context, context.getString(R.string.export_success_sum, output.toString()), fileUri);
                     }, error -> {
-                        alert.setTitle(R.string.export_error_label);
-                        alert.setMessage(error.getMessage());
-                        alert.show();
+                        buildExportErrorDialog(context, error);
                     }, progressDialog::dismiss);
         } else {
             Observable<DocumentFile> observable = new DocumentFileExportWorker(exportWriter, context, uri).exportObservable();
             disposable = observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output -> {
-                        alert.setTitle(R.string.export_success_title);
-                        String message = context.getString(R.string.export_success_sum, output.getUri());
-                        alert.setMessage(message);
-                        alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
-                            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                            sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-                                    context.getResources().getText(R.string.opml_export_label));
-                            sendIntent.putExtra(Intent.EXTRA_STREAM, output.getUri());
-                            sendIntent.setType("text/plain");
-                            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                                for (ResolveInfo resolveInfo : resInfoList) {
-                                    String packageName = resolveInfo.activityInfo.packageName;
-                                    context.grantUriPermission(packageName, output.getUri(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                }
-                            }
-                            context.startActivity(Intent.createChooser(sendIntent,
-                                    context.getResources().getText(R.string.send_label)));
-                        });
-                        alert.create().show();
+                        buildExportSuccessDialog(context, context.getString(R.string.export_success_sum, output.getUri()), output.getUri());
                     }, error -> {
-                        alert.setTitle(R.string.export_error_label);
-                        alert.setMessage(error.getMessage());
-                        alert.show();
+                        buildExportErrorDialog(context, error);
                     }, progressDialog::dismiss);
         }
         return true;
     }
 
+    private void buildExportSuccessDialog(final Context context, final String message, final Uri streamUri) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(context)
+                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        alert.setTitle(R.string.export_success_title);
+        alert.setMessage(message);
+        alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT,
+                    context.getResources().getText(R.string.opml_export_label));
+            sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
+            sendIntent.setType("text/plain");
+            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    context.grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+            }
+            context.startActivity(Intent.createChooser(sendIntent,
+                    context.getResources().getText(R.string.send_label)));
+        });
+        alert.create().show();
+    }
+
+    private void buildExportErrorDialog(final Context context, final Throwable error) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(context)
+                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        alert.setTitle(R.string.export_error_label);
+        alert.setMessage(error.getMessage());
+        alert.show();
+    }
+    
     public void unsubscribeExportSubscription() {
         if (disposable != null) {
             disposable.dispose();
@@ -263,8 +250,7 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
             }
         }
 
-        if (resultCode == Activity.RESULT_OK &&
-                requestCode == CHOOSE_OPML_EXPORT_PATH) {
+        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_OPML_EXPORT_PATH) {
             Uri uri = data.getData();
             export(new OpmlWriter(), uri);
         }
