@@ -178,6 +178,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
 
     private PendingIntent getPendingIntentForMediaAction(int keycodeValue, int requestCode) {
         Intent intent = new Intent(context, PlaybackService.class);
+        intent.setAction("MediaCode" + keycodeValue);
         intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, keycodeValue);
 
         if (Build.VERSION.SDK_INT >= 26) {

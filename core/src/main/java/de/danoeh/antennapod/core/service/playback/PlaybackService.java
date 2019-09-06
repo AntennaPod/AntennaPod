@@ -516,6 +516,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
         Intent intentAllowThisTime = new Intent(originalIntent);
+        intentAllowThisTime.setAction(EXTRA_ALLOW_STREAM_THIS_TIME);
         intentAllowThisTime.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
         PendingIntent pendingIntentAllowThisTime;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -525,6 +526,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         Intent intentAlwaysAllow = new Intent(intentAllowThisTime);
+        intentAlwaysAllow.setAction(EXTRA_ALLOW_STREAM_ALWAYS);
         intentAlwaysAllow.putExtra(EXTRA_ALLOW_STREAM_ALWAYS, true);
         PendingIntent pendingIntentAlwaysAllow;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
