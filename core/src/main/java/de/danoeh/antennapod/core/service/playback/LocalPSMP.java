@@ -350,13 +350,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.PAUSED, media, getPosition());
 
                 if (abandonFocus) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                                .setOnAudioFocusChangeListener(audioFocusChangeListener);
-                        audioManager.abandonAudioFocusRequest(builder.build());
-                    } else {
-                        audioManager.abandonAudioFocus(audioFocusChangeListener);
-                    }
+                    abandonAudioFocus();
                     pausedBecauseOfTransientAudiofocusLoss = false;
                 }
                 if (stream && reinit) {
@@ -368,6 +362,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
             playerLock.unlock();
         });
+    }
+
+    private void abandonAudioFocus() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setOnAudioFocusChangeListener(audioFocusChangeListener);
+            audioManager.abandonAudioFocusRequest(builder.build());
+        } else {
+            audioManager.abandonAudioFocus(audioFocusChangeListener);
+        }
     }
 
     /**
@@ -701,6 +705,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public void shutdown() {
+        abandonAudioFocus();
         executor.shutdown();
         if (mediaPlayer != null) {
             try {
@@ -907,13 +912,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 mediaPlayer.reset();
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                        .setOnAudioFocusChangeListener(audioFocusChangeListener);
-                audioManager.abandonAudioFocusRequest(builder.build());
-            } else {
-                audioManager.abandonAudioFocus(audioFocusChangeListener);
-            }
+            abandonAudioFocus();
 
             final Playable currentMedia = media;
             Playable nextMedia = null;
