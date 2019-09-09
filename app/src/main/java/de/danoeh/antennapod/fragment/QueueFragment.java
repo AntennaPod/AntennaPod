@@ -378,8 +378,10 @@ public class QueueFragment extends Fragment {
                     if (keepSortedNew) {
                         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
                         QueueSorter.sort(sortOrder, true);
-                        recyclerAdapter.setLocked(true);
-                    } else {
+                        if (recyclerAdapter != null) {
+                            recyclerAdapter.setLocked(true);
+                        }
+                    } else if (recyclerAdapter != null) {
                         recyclerAdapter.setLocked(UserPreferences.isQueueLocked());
                     }
                     getActivity().invalidateOptionsMenu();

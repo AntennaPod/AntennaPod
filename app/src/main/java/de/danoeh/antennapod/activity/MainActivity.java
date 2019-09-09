@@ -87,7 +87,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
-    private static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
+    public static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
 
     public static final String EXTRA_NAV_TYPE = "nav_type";
     public static final String EXTRA_NAV_INDEX = "nav_index";
