@@ -34,12 +34,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
     private final ItemAccess itemAccess;
     private final Context context;
     private final boolean showFeedtitle;
-    private final int selectedItemIndex;
     /** true if played items should be made partially transparent */
     private final boolean makePlayedItemsTransparent;
-
-    private static final int SELECTION_NONE = -1;
-
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
 
@@ -51,7 +47,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
         this.context = context;
         this.itemAccess = itemAccess;
         this.showFeedtitle = showFeedtitle;
-        this.selectedItemIndex = SELECTION_NONE;
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
 
         playingBackGroundColor = ThemeUtils.getColorFromAttr(context, R.attr.currently_playing_background);
@@ -112,12 +107,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
         if (!(getItemViewType(position) == Adapter.IGNORE_ITEM_VIEW_TYPE)) {
             convertView.setVisibility(View.VISIBLE);
-            if (position == selectedItemIndex) {
-                convertView.setBackgroundColor(ContextCompat.getColor(convertView.getContext(),
-                        ThemeUtils.getSelectionBackgroundColor()));
-            } else {
-                convertView.setBackgroundResource(0);
-            }
 
             StringBuilder buffer = new StringBuilder(item.getTitle());
             if (showFeedtitle) {
