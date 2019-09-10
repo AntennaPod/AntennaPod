@@ -22,10 +22,6 @@
     <color name="image_readability_tint">#80000000</color>
     <color name="feed_image_bg">#50000000</color>
 
-    <color name="selection_background_color_trueblack">#286E8A</color>
-    <color name="selection_background_color_dark">#286E8A</color>
-    <color name="selection_background_color_light">#81CFEA</color>
-
     <!-- Theme colors -->
     <color name="primary_light">#FFFFFF</color>
     <color name="primary_darktheme">#212121</color>

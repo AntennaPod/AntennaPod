@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,20 +14,15 @@ import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class DownloadlistAdapter extends BaseAdapter {
 
-    private static final int SELECTION_NONE = -1;
-
-    private int selectedItemIndex;
     private final ItemAccess itemAccess;
     private final Context context;
 
     public DownloadlistAdapter(Context context,
                                ItemAccess itemAccess) {
         super();
-        this.selectedItemIndex = SELECTION_NONE;
         this.context = context;
         this.itemAccess = itemAccess;
     }
@@ -72,13 +66,6 @@ public class DownloadlistAdapter extends BaseAdapter {
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
-        }
-
-        if (position == selectedItemIndex) {
-            convertView.setBackgroundColor(ContextCompat.getColor(convertView.getContext(),
-                    ThemeUtils.getSelectionBackgroundColor()));
-        } else {
-            convertView.setBackgroundResource(0);
         }
 
         holder.title.setText(request.getTitle());
