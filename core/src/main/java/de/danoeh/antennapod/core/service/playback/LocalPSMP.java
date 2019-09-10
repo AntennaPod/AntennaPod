@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -705,7 +706,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public void shutdown() {
-        abandonAudioFocus();
         executor.shutdown();
         if (mediaPlayer != null) {
             try {
@@ -839,6 +839,19 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         @Override
         public void onAudioFocusChange(final int focusChange) {
+            if (!PlaybackService.isRunning) {
+                abandonAudioFocus();
+                Log.d(TAG, "onAudioFocusChange: PlaybackService is no longer running");
+                if (focusChange == AudioManager.AUDIOFOCUS_GAIN && pausedBecauseOfTransientAudiofocusLoss) {
+                    new PlaybackServiceStarter(context, getPlayable())
+                            .startWhenPrepared(true)
+                            .streamIfLastWasStream()
+                            .callEvenIfRunning(false)
+                            .start();
+                }
+                return;
+            }
+
             executor.submit(() -> {
                 playerLock.lock();
 
