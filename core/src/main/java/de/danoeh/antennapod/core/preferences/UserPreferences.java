@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -164,7 +165,7 @@ public class UserPreferences {
      * @return R.style.Theme_AntennaPod_Light or R.style.Theme_AntennaPod_Dark
      */
     public static int getTheme() {
-        return readThemeValue(prefs.getString(PREF_THEME, "0"));
+        return readThemeValue(prefs.getString(PREF_THEME, "system"));
     }
 
     public static int getNoTitleTheme() {
@@ -672,14 +673,18 @@ public class UserPreferences {
     }
 
     private static int readThemeValue(String valueFromPrefs) {
-        switch (Integer.parseInt(valueFromPrefs)) {
-            case 0:
+        switch (valueFromPrefs) {
+            case "0":
                 return R.style.Theme_AntennaPod_Light;
-            case 1:
+            case "1":
                 return R.style.Theme_AntennaPod_Dark;
-            case 2:
+            case "2":
                 return R.style.Theme_AntennaPod_TrueBlack;
             default:
+                int nightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
+                    return R.style.Theme_AntennaPod_Dark;
+                }
                 return R.style.Theme_AntennaPod_Light;
         }
     }
