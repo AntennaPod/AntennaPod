@@ -15,6 +15,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
@@ -481,5 +482,17 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
+    /**
+     *
+     * @return playback speed for this feed, or the global setting if no feed-specific setting
+     */
+    public float getFeedPlaybackSpeed() {
+        Feed feed = getFeed();
+        if (feed != null) {
+            return feed.getPreferences().getCurrentPlaybackSpeed();
+        }
+        return UserPreferences.getPlaybackSpeed();
     }
 }

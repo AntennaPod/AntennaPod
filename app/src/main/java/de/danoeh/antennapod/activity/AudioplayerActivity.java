@@ -24,6 +24,9 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
 
     private final AtomicBoolean isSetup = new AtomicBoolean(false);
 
+    // Used to work around race condition in updating the controller speed and receiving the callback that it has changed
+    private float playbackSpeed = -1;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -78,7 +81,10 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         float speed = 1.0f;
         if(controller.canSetPlaybackSpeed()) {
-            speed = UserPreferences.getPlaybackSpeed();
+            speed = playbackSpeed;
+            if (speed == -1) {
+                speed = getPlaybackSpeedForMedia();
+            }
         }
         String speedStr = new DecimalFormat("0.00x").format(speed);
         butPlaybackSpeed.setText(speedStr);
@@ -102,7 +108,13 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                     String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
                     DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
                     format.setDecimalSeparator('.');
-                    String currentSpeed = new DecimalFormat("0.00", format).format(UserPreferences.getPlaybackSpeed());
+
+                    float currentSpeedValue = controller.getCurrentPlaybackSpeedMultiplier();
+                    if (currentSpeedValue == -1) {
+                        currentSpeedValue = getPlaybackSpeedForMedia();
+                    }
+
+                    String currentSpeed = new DecimalFormat("0.00", format).format(currentSpeedValue);
 
                     // Provide initial value in case the speed list has changed
                     // out from under us
@@ -124,8 +136,9 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                             break;
                         }
                     }
+                    playbackSpeed = Float.parseFloat(newSpeed);
                     UserPreferences.setPlaybackSpeed(newSpeed);
-                    controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
+                    controller.setPlaybackSpeed(playbackSpeed);
                     onPositionObserverUpdate();
                 } else {
                     VariableSpeedDialog.showGetPluginDialog(this);

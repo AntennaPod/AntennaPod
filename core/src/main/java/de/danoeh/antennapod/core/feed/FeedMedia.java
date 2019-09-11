@@ -623,4 +623,16 @@ public class FeedMedia extends FeedFile implements Playable {
         }
         return super.equals(o);
     }
+
+    /**
+     *
+     * @return playback speed for this feed, or the global setting if no feed-specific setting
+     */
+    public float getFeedPlaybackSpeed() {
+        FeedItem item = getItem();
+        if (item != null) {
+            return item.getFeedPlaybackSpeed();
+        }
+        return UserPreferences.getPlaybackSpeed();
+    }
 }

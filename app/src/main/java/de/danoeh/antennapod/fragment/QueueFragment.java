@@ -598,8 +598,8 @@ public class QueueFragment extends Fragment {
         String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
             long timeLeft = 0;
-            float playbackSpeed = UserPreferences.getPlaybackSpeed();
             for(FeedItem item : queue) {
+                float playbackSpeed = item.getFeedPlaybackSpeed();
                 if(item.getMedia() != null) {
                     timeLeft +=
                             (long) ((item.getMedia().getDuration() - item.getMedia().getPosition())

@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
@@ -306,6 +307,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 acquireWifiLockIfNecessary();
                 if (media.getMediaType() == MediaType.VIDEO) {
                     setPlaybackParams(UserPreferences.getVideoPlaybackSpeed(), UserPreferences.isSkipSilence());
+                } else if (media instanceof FeedMedia) {
+                    setPlaybackParams(((FeedMedia) media).getFeedPlaybackSpeed(), UserPreferences.isSkipSilence());
                 } else {
                     setPlaybackParams(UserPreferences.getPlaybackSpeed(), UserPreferences.isSkipSilence());
                 }

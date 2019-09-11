@@ -7,6 +7,10 @@
             android:title="@string/keep_updated"
             android:summary="@string/keep_updated_summary"/>
 
+    <ListPreference
+      android:title="@string/playback_speed"
+      android:key="feedPlaybackSpeed"/>
+
     <Preference
             android:key="authentication"
             android:title="@string/authentication_label"

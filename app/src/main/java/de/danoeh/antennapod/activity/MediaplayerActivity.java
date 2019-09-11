@@ -872,4 +872,17 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
         }
     }
+
+    protected float getPlaybackSpeedForMedia() {
+        if (controller != null) {
+            Playable media = controller.getMedia();
+            boolean isFeedMedia = media instanceof FeedMedia;
+
+            if (isFeedMedia) {
+                return ((FeedMedia) media).getFeedPlaybackSpeed();
+            }
+        }
+
+        return UserPreferences.getPlaybackSpeed();
+    }
 }

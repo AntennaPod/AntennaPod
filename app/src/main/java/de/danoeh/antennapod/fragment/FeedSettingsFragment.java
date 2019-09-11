@@ -22,6 +22,7 @@ import static de.danoeh.antennapod.activity.FeedSettingsActivity.EXTRA_FEED_ID;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
+    private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
     private Feed feed;
     private FeedPreferences feedPreferences;
 
@@ -40,10 +41,39 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     setupAutoDeletePreference();
                     setupAuthentificationPreference();
                     setupEpisodeFilterPreference();
+                    setupPlaybackSpeedPreference();
 
                     updateAutoDeleteSummary();
                     updateAutoDownloadEnabled();
+                    updatePlaybackSpeedPreference();
                 }).dispose();
+    }
+
+    private void setupPlaybackSpeedPreference() {
+        ListPreference feedPlaybackSpeedPreference = (ListPreference) findPreference(PREF_FEED_PLAYBACK_SPEED);
+
+        String[] speeds = UserPreferences.getPlaybackSpeedArray();
+
+        String[] values = new String[speeds.length + 1];
+        values[0] = "global";
+
+        String[] entries = new String[speeds.length + 1];
+        entries[0] = getString(R.string.feed_auto_download_global);
+
+        for (int i = 0; i < speeds.length; i++) {
+            values[i + 1] = speeds[i];
+            entries[i + 1] = speeds[i];
+        }
+
+        feedPlaybackSpeedPreference.setEntryValues(values);
+        feedPlaybackSpeedPreference.setEntries(entries);
+
+        feedPlaybackSpeedPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            feedPreferences.setFeedPlaybackSpeed((String) newValue);
+            feed.savePreferences();
+            updatePlaybackSpeedPreference();
+            return false;
+        });
     }
 
     private void setupEpisodeFilterPreference() {
@@ -93,6 +123,19 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
             updateAutoDeleteSummary();
             return false;
         });
+    }
+
+    private void updatePlaybackSpeedPreference() {
+        ListPreference feedPlaybackSpeedPreference = (ListPreference) findPreference(PREF_FEED_PLAYBACK_SPEED);
+
+        String summary = feedPreferences.getFeedPlaybackSpeed();
+
+        feedPlaybackSpeedPreference.setValue(summary);
+        if (summary.equals("global")) {
+            summary = getString(R.string.feed_auto_download_global);
+        }
+
+        feedPlaybackSpeedPreference.setSummary(summary);
     }
 
     private void updateAutoDeleteSummary() {

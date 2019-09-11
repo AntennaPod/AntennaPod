@@ -114,6 +114,7 @@ public class PodDBAdapter {
     public static final String KEY_LAST_PLAYED_TIME = "last_played_time";
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
+    public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
 
     // Table names
     static final String TABLE_NAME_FEEDS = "Feeds";
@@ -146,7 +147,8 @@ public class PodDBAdapter {
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
-            + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0)";
+            + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
+            + KEY_FEED_PLAYBACK_SPEED + " TEXT)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -243,7 +245,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
-            TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER
+            TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED
     };
 
     /**
@@ -408,6 +411,7 @@ public class PodDBAdapter {
         values.put(KEY_PASSWORD, prefs.getPassword());
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
+        values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -1452,7 +1456,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private static final int VERSION = 1060596;
+        private static final int VERSION = 1070306;
 
         private final Context context;
 
