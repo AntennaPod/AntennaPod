@@ -476,8 +476,10 @@
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
     <string name="crash_report_title">Crash Report</string>
-    <string name="crash_report_sum">Send the latest crash report via e-mail</string>
-    <string name="send_email">Send e-mail</string>
+    <string name="crash_report_sum">View details about last crash</string>
+    <string name="open_bug_tracker">Open bug tracker</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="experimental_pref">Experimental</string>
     <string name="pref_media_player_message">Select which media player to use to play files</string>
     <string name="pref_current_value">Current value: %1$s</string>
