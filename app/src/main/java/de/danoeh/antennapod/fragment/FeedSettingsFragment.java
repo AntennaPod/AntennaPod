@@ -60,10 +60,8 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         String[] entries = new String[speeds.length + 1];
         entries[0] = getString(R.string.feed_auto_download_global);
 
-        for (int i = 0; i < speeds.length; i++) {
-            values[i + 1] = speeds[i];
-            entries[i + 1] = speeds[i];
-        }
+        System.arraycopy(speeds, 0, values, 1, speeds.length);
+        System.arraycopy(speeds, 0, entries, 1, speeds.length);
 
         feedPlaybackSpeedPreference.setEntryValues(values);
         feedPlaybackSpeedPreference.setEntries(entries);
