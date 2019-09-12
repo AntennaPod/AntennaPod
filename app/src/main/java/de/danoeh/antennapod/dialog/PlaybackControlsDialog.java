@@ -212,10 +212,6 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
 
     private float getCurrentSpeed() {
-        if (isPlayingVideo) {
-            return UserPreferences.getVideoPlaybackSpeed();
-        }
-
         float playbackSpeed = SPEED_USE_GLOBAL;
         if (controller != null) {
             Playable media = controller.getMedia();
@@ -227,7 +223,11 @@ public class PlaybackControlsDialog extends DialogFragment {
         }
 
         if (playbackSpeed == SPEED_USE_GLOBAL) {
-            playbackSpeed = UserPreferences.getPlaybackSpeed();
+            if (isPlayingVideo) {
+                playbackSpeed = UserPreferences.getVideoPlaybackSpeed();
+            } else {
+                playbackSpeed = UserPreferences.getPlaybackSpeed();
+            }
         }
 
         return playbackSpeed;
