@@ -35,6 +35,8 @@ import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+
 /**
  * Manages the MediaPlayer object of the PlaybackService.
  */
@@ -305,13 +307,18 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Audiofocus successfully requested");
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
+                float playbackSpeed;
                 if (media.getMediaType() == MediaType.VIDEO) {
-                    setPlaybackParams(UserPreferences.getVideoPlaybackSpeed(), UserPreferences.isSkipSilence());
+                    playbackSpeed = UserPreferences.getVideoPlaybackSpeed();
                 } else if (media instanceof FeedMedia) {
-                    setPlaybackParams(((FeedMedia) media).getMediaPlaybackSpeed(), UserPreferences.isSkipSilence());
+                    playbackSpeed = ((FeedMedia) media).getMediaPlaybackSpeed();
                 } else {
-                    setPlaybackParams(UserPreferences.getPlaybackSpeed(), UserPreferences.isSkipSilence());
+                    playbackSpeed = SPEED_USE_GLOBAL;
                 }
+                if (playbackSpeed == SPEED_USE_GLOBAL) {
+                    playbackSpeed = UserPreferences.getPlaybackSpeed();
+                }
+                setPlaybackParams(playbackSpeed, UserPreferences.isSkipSilence());
                 setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {

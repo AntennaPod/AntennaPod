@@ -152,7 +152,11 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
     private void storeNewMediaPlaybackSpeed(String speed) {
         Playable media = controller.getMedia();
         if (media instanceof FeedMedia) {
-            ((FeedMedia) media).updateLastPlaybackSpeed(speed);
+            try {
+                ((FeedMedia) media).updateLastPlaybackSpeed(Float.parseFloat(speed));
+            } catch (NumberFormatException e) {
+                // Well this was awkward...
+            }
         }
     }
 }

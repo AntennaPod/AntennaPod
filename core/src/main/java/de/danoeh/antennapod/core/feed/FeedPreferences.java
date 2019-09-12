@@ -14,6 +14,8 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
  */
 public class FeedPreferences {
 
+    public static final float SPEED_USE_GLOBAL = -1;
+
     @NonNull
     private FeedFilter filter;
     private long feedID;
@@ -180,7 +182,7 @@ public class FeedPreferences {
         this.password = password;
     }
 
-    public float getCurrentPlaybackSpeed() {
+    float getCurrentPlaybackSpeed() {
         float speed = 0.0f;
 
         if (!"global".equals(feedPlaybackSpeed)) {
@@ -193,7 +195,7 @@ public class FeedPreferences {
 
         // Either global or error happened
         if (speed == 0.0f) {
-            speed = UserPreferences.getPlaybackSpeed();
+            speed = SPEED_USE_GLOBAL;
         }
 
         return speed;

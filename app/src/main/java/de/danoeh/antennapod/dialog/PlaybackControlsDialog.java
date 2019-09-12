@@ -20,6 +20,8 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+
 public class PlaybackControlsDialog extends DialogFragment {
     private static final float PLAYBACK_SPEED_STEP = 0.05f;
     private static final float DEFAULT_MIN_PLAYBACK_SPEED = 0.5f;
@@ -214,15 +216,20 @@ public class PlaybackControlsDialog extends DialogFragment {
             return UserPreferences.getVideoPlaybackSpeed();
         }
 
+        float playbackSpeed = SPEED_USE_GLOBAL;
         if (controller != null) {
             Playable media = controller.getMedia();
             boolean isFeedMedia = media instanceof FeedMedia;
 
             if (isFeedMedia) {
-                return ((FeedMedia) media).getMediaPlaybackSpeed();
+                playbackSpeed = ((FeedMedia) media).getMediaPlaybackSpeed();
             }
         }
 
-        return UserPreferences.getPlaybackSpeed();
+        if (playbackSpeed == SPEED_USE_GLOBAL) {
+            playbackSpeed = UserPreferences.getPlaybackSpeed();
+        }
+
+        return playbackSpeed;
     }
 }

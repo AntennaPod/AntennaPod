@@ -12,10 +12,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.media.MediaMetadataRetriever;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -39,6 +36,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import org.greenrobot.eventbus.EventBus;
+
+import static de.danoeh.antennapod.core.feed.FeedMedia.LAST_PLAYBACK_SPEED_UNSET;
 
 // TODO Remove media column from feeditem table
 
@@ -115,7 +114,7 @@ public class PodDBAdapter {
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
-    public static final String KEY_LAST_PLAYBACK_SPEED = "last_playback_speed";
+    public static final String KEY_MEDIA_LAST_PLAYBACK_SPEED = "last_playback_speed";
 
     // Table names
     static final String TABLE_NAME_FEEDS = "Feeds";
@@ -171,7 +170,7 @@ public class PodDBAdapter {
             + KEY_PLAYED_DURATION + " INTEGER,"
             + KEY_HAS_EMBEDDED_PICTURE + " INTEGER,"
             + KEY_LAST_PLAYED_TIME + " INTEGER,"
-            + KEY_LAST_PLAYBACK_SPEED + " TEXT)";
+            + KEY_MEDIA_LAST_PLAYBACK_SPEED + " REAL)";
 
     private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -442,7 +441,7 @@ public class PodDBAdapter {
         values.put(KEY_FILE_URL, media.getFile_url());
         values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
         values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
-        values.put(KEY_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
+        values.put(KEY_MEDIA_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
 
         if (media.getPlaybackCompletionDate() != null) {
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
@@ -468,7 +467,7 @@ public class PodDBAdapter {
             values.put(KEY_DURATION, media.getDuration());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
-            values.put(KEY_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
+            values.put(KEY_MEDIA_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
@@ -479,7 +478,7 @@ public class PodDBAdapter {
     public void setFeedMediaLastPlaybackSpeed(FeedMedia media) {
         if (media.getId() != 0) {
             ContentValues values = new ContentValues();
-            values.put(KEY_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
+            values.put(KEY_MEDIA_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
@@ -493,7 +492,7 @@ public class PodDBAdapter {
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             // Also reset stored playback speed for media
-            values.putNull(KEY_LAST_PLAYBACK_SPEED);
+            values.put(KEY_MEDIA_LAST_PLAYBACK_SPEED, LAST_PLAYBACK_SPEED_UNSET);
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {

@@ -20,6 +20,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+
 /**
  * Data Object for a XML message
  *
@@ -493,6 +495,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         if (feed != null) {
             return feed.getPreferences().getCurrentPlaybackSpeed();
         }
-        return UserPreferences.getPlaybackSpeed();
+        return SPEED_USE_GLOBAL;
     }
 }

@@ -64,6 +64,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+
 
 /**
  * Provides general features which are both needed for playing audio and video
@@ -873,16 +875,21 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    protected float getPlaybackSpeedForMedia() {
+    float getPlaybackSpeedForMedia() {
+        float playbackSpeed = SPEED_USE_GLOBAL;
         if (controller != null) {
             Playable media = controller.getMedia();
             boolean isFeedMedia = media instanceof FeedMedia;
 
             if (isFeedMedia) {
-                return ((FeedMedia) media).getMediaPlaybackSpeed();
+                playbackSpeed = ((FeedMedia) media).getMediaPlaybackSpeed();
             }
         }
 
-        return UserPreferences.getPlaybackSpeed();
+        if (playbackSpeed == SPEED_USE_GLOBAL) {
+            playbackSpeed = UserPreferences.getPlaybackSpeed();
+        }
+
+        return playbackSpeed;
     }
 }

@@ -63,6 +63,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REMOVE_FROM_QUEUE;
 
@@ -600,6 +601,9 @@ public class QueueFragment extends Fragment {
             long timeLeft = 0;
             for(FeedItem item : queue) {
                 float playbackSpeed = item.getFeedPlaybackSpeed();
+                if (playbackSpeed == SPEED_USE_GLOBAL) {
+                    playbackSpeed = UserPreferences.getPlaybackSpeed();
+                }
                 if(item.getMedia() != null) {
                     timeLeft +=
                             (long) ((item.getMedia().getDuration() - item.getMedia().getPosition())
