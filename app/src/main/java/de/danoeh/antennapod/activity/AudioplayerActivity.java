@@ -11,9 +11,11 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 
 /**
@@ -23,9 +25,6 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
     private static final String TAG = "AudioPlayerActivity";
 
     private final AtomicBoolean isSetup = new AtomicBoolean(false);
-
-    // Used to work around race condition in updating the controller speed and receiving the callback that it has changed
-    private float playbackSpeed = -1;
 
     @Override
     protected void onResume() {
@@ -81,10 +80,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         float speed = 1.0f;
         if(controller.canSetPlaybackSpeed()) {
-            speed = playbackSpeed;
-            if (speed == -1) {
-                speed = getPlaybackSpeedForMedia();
-            }
+            speed = getPlaybackSpeedForMedia();
         }
         String speedStr = new DecimalFormat("0.00x").format(speed);
         butPlaybackSpeed.setText(speedStr);
@@ -136,9 +132,10 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                             break;
                         }
                     }
-                    playbackSpeed = Float.parseFloat(newSpeed);
+
+                    storeNewMediaPlaybackSpeed(newSpeed);
                     UserPreferences.setPlaybackSpeed(newSpeed);
-                    controller.setPlaybackSpeed(playbackSpeed);
+                    controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
                     onPositionObserverUpdate();
                 } else {
                     VariableSpeedDialog.showGetPluginDialog(this);
@@ -149,6 +146,13 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 return true;
             });
             butPlaybackSpeed.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void storeNewMediaPlaybackSpeed(String speed) {
+        Playable media = controller.getMedia();
+        if (media instanceof FeedMedia) {
+            ((FeedMedia) media).updateLastPlaybackSpeed(speed);
         }
     }
 }

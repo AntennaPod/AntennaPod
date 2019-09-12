@@ -761,6 +761,20 @@ public class DBWriter {
     }
 
     /**
+     * Saves the 'lastPlaybackSpeed' attribute of a FeedMedia object
+     *
+     * @param media   The FeedMedia object.
+     */
+    public static Future<?> setFeedMediaLastPlaybackSpeed(final FeedMedia media) {
+        return dbExec.submit(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedMediaLastPlaybackSpeed(media);
+            adapter.close();
+        });
+    }
+
+    /**
      * Saves a FeedItem object in the database. This method will save all attributes of the FeedItem object including
      * the content of FeedComponent-attributes.
      *

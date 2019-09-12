@@ -219,7 +219,7 @@ public class PlaybackControlsDialog extends DialogFragment {
             boolean isFeedMedia = media instanceof FeedMedia;
 
             if (isFeedMedia) {
-                return ((FeedMedia) media).getFeedPlaybackSpeed();
+                return ((FeedMedia) media).getMediaPlaybackSpeed();
             }
         }
 

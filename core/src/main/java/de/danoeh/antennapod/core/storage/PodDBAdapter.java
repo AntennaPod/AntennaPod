@@ -115,6 +115,7 @@ public class PodDBAdapter {
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
+    public static final String KEY_LAST_PLAYBACK_SPEED = "last_playback_speed";
 
     // Table names
     static final String TABLE_NAME_FEEDS = "Feeds";
@@ -169,7 +170,8 @@ public class PodDBAdapter {
             + KEY_FEEDITEM + " INTEGER,"
             + KEY_PLAYED_DURATION + " INTEGER,"
             + KEY_HAS_EMBEDDED_PICTURE + " INTEGER,"
-            + KEY_LAST_PLAYED_TIME + " INTEGER)";
+            + KEY_LAST_PLAYED_TIME + " INTEGER,"
+            + KEY_LAST_PLAYBACK_SPEED + " TEXT)";
 
     private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -440,6 +442,7 @@ public class PodDBAdapter {
         values.put(KEY_FILE_URL, media.getFile_url());
         values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
         values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
+        values.put(KEY_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
 
         if (media.getPlaybackCompletionDate() != null) {
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
@@ -465,10 +468,22 @@ public class PodDBAdapter {
             values.put(KEY_DURATION, media.getDuration());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             values.put(KEY_LAST_PLAYED_TIME, media.getLastPlayedTime());
+            values.put(KEY_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
             Log.e(TAG, "setFeedMediaPlaybackInformation: ID of media was 0");
+        }
+    }
+
+    public void setFeedMediaLastPlaybackSpeed(FeedMedia media) {
+        if (media.getId() != 0) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
+            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
+                    new String[]{String.valueOf(media.getId())});
+        } else {
+            Log.e(TAG, "setFeedMediaLastPlaybackSpeed: ID of media was 0");
         }
     }
 
@@ -477,6 +492,8 @@ public class PodDBAdapter {
             ContentValues values = new ContentValues();
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
+            // Also reset stored playback speed for media
+            values.putNull(KEY_LAST_PLAYBACK_SPEED);
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {

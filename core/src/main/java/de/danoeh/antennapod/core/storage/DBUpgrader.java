@@ -291,6 +291,8 @@ class DBUpgrader {
         if (oldVersion < 1070306) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_FEED_PLAYBACK_SPEED + " TEXT");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                    + " ADD COLUMN " + PodDBAdapter.KEY_LAST_PLAYBACK_SPEED + " TEXT");
         }
     }
 

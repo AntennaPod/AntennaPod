@@ -187,7 +187,6 @@ public class FeedPreferences {
             try {
                 speed = Float.parseFloat(getFeedPlaybackSpeed());
             } catch (NumberFormatException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
                 setFeedPlaybackSpeed("global");
             }
         }

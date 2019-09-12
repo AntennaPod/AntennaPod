@@ -308,7 +308,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 if (media.getMediaType() == MediaType.VIDEO) {
                     setPlaybackParams(UserPreferences.getVideoPlaybackSpeed(), UserPreferences.isSkipSilence());
                 } else if (media instanceof FeedMedia) {
-                    setPlaybackParams(((FeedMedia) media).getFeedPlaybackSpeed(), UserPreferences.isSkipSilence());
+                    setPlaybackParams(((FeedMedia) media).getMediaPlaybackSpeed(), UserPreferences.isSkipSilence());
                 } else {
                     setPlaybackParams(UserPreferences.getPlaybackSpeed(), UserPreferences.isSkipSilence());
                 }

@@ -55,6 +55,7 @@ public class FeedMedia extends FeedFile implements Playable {
     private Date playbackCompletionDate;
     private int startPosition = -1;
     private int playedDurationWhenStarted;
+    private String lastPlaybackSpeed = null;
 
     // if null: unknown, will be checked
     private Boolean hasEmbeddedPicture;
@@ -91,10 +92,11 @@ public class FeedMedia extends FeedFile implements Playable {
     private FeedMedia(long id, FeedItem item, int duration, int position,
                       long size, String mime_type, String file_url, String download_url,
                       boolean downloaded, Date playbackCompletionDate, int played_duration,
-                      Boolean hasEmbeddedPicture, long lastPlayedTime) {
+                      Boolean hasEmbeddedPicture, long lastPlayedTime, String lastPlaybackSpeed) {
         this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
                 playbackCompletionDate, played_duration, lastPlayedTime);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
+        this.lastPlaybackSpeed = lastPlaybackSpeed;
     }
 
     public static FeedMedia fromCursor(Cursor cursor) {
@@ -109,6 +111,7 @@ public class FeedMedia extends FeedFile implements Playable {
         int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
         int indexPlayedDuration = cursor.getColumnIndex(PodDBAdapter.KEY_PLAYED_DURATION);
         int indexLastPlayedTime = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_PLAYED_TIME);
+        int indexLastPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_PLAYBACK_SPEED);
 
         long mediaId = cursor.getLong(indexId);
         Date playbackCompletionDate = null;
@@ -143,7 +146,8 @@ public class FeedMedia extends FeedFile implements Playable {
                 playbackCompletionDate,
                 cursor.getInt(indexPlayedDuration),
                 hasEmbeddedPicture,
-                cursor.getLong(indexLastPlayedTime)
+                cursor.getLong(indexLastPlayedTime),
+                cursor.getString(indexLastPlaybackSpeed)
         );
     }
 
@@ -624,15 +628,33 @@ public class FeedMedia extends FeedFile implements Playable {
         return super.equals(o);
     }
 
+    public String getLastPlaybackSpeed() {
+        return lastPlaybackSpeed;
+    }
+
+    public void updateLastPlaybackSpeed(String newSpeed) {
+        lastPlaybackSpeed = newSpeed;
+        DBWriter.setFeedMediaPlaybackInformation(this);
+    }
+
     /**
      *
-     * @return playback speed for this feed, or the global setting if no feed-specific setting
+     * @return the current playback speed for the media, or the feed's configured speed
      */
-    public float getFeedPlaybackSpeed() {
+    public float getMediaPlaybackSpeed() {
+        if (lastPlaybackSpeed != null) {
+            try {
+                return Float.parseFloat(lastPlaybackSpeed);
+            } catch (NumberFormatException e) {
+                lastPlaybackSpeed = null;
+            }
+        }
+
         FeedItem item = getItem();
         if (item != null) {
             return item.getFeedPlaybackSpeed();
         }
+
         return UserPreferences.getPlaybackSpeed();
     }
 }
