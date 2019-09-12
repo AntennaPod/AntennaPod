@@ -128,14 +128,8 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private void updatePlaybackSpeedPreference() {
         ListPreference feedPlaybackSpeedPreference = (ListPreference) findPreference(PREF_FEED_PLAYBACK_SPEED);
 
-        String summary = feedPreferences.getFeedPlaybackSpeed();
-
-        feedPlaybackSpeedPreference.setValue(summary);
-        if (summary.equals("global")) {
-            summary = getString(R.string.feed_auto_download_global);
-        }
-
-        feedPlaybackSpeedPreference.setSummary(summary);
+        String speedValue = feedPreferences.getFeedPlaybackSpeed();
+        feedPlaybackSpeedPreference.setValue(speedValue);
     }
 
     private void updateAutoDeleteSummary() {
