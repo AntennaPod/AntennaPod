@@ -170,7 +170,7 @@ public class PodDBAdapter {
             + KEY_PLAYED_DURATION + " INTEGER,"
             + KEY_HAS_EMBEDDED_PICTURE + " INTEGER,"
             + KEY_LAST_PLAYED_TIME + " INTEGER,"
-            + KEY_MEDIA_LAST_PLAYBACK_SPEED + " REAL)";
+            + KEY_MEDIA_LAST_PLAYBACK_SPEED + " REAL DEFAULT " + LAST_PLAYBACK_SPEED_UNSET + ")";
 
     private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
