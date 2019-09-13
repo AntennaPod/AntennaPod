@@ -606,7 +606,7 @@ public class QueueFragment extends Fragment {
                     playbackSpeed = feed.getPreferences().getCurrentPlaybackSpeed();
                 }
                 if (playbackSpeed == SPEED_USE_GLOBAL) {
-                    playbackSpeed = UserPreferences.getPlaybackSpeed();
+                    playbackSpeed = UserPreferences.getPlaybackSpeed(item.getMedia());
                 }
                 if(item.getMedia() != null) {
                     timeLeft +=

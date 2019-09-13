@@ -80,7 +80,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         float speed = 1.0f;
         if(controller.canSetPlaybackSpeed()) {
-            speed = getPlaybackSpeedForMedia();
+            speed = UserPreferences.getPlaybackSpeed(controller.getMedia());
         }
         String speedStr = new DecimalFormat("0.00x").format(speed);
         butPlaybackSpeed.setText(speedStr);
@@ -107,7 +107,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
 
                     float currentSpeedValue = controller.getCurrentPlaybackSpeedMultiplier();
                     if (currentSpeedValue == -1) {
-                        currentSpeedValue = getPlaybackSpeedForMedia();
+                        currentSpeedValue = UserPreferences.getPlaybackSpeed(controller.getMedia());
                     }
 
                     String currentSpeed = new DecimalFormat("0.00", format).format(currentSpeedValue);
