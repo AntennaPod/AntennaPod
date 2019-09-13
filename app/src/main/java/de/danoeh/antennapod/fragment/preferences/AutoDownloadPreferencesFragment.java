@@ -198,7 +198,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private class PermissionHelper {
-        private static final String requestedPermission = Manifest.permission.ACCESS_COARSE_LOCATION;
+        private static final String requestedPermission = Manifest.permission.ACCESS_FINE_LOCATION;
         private static final int permissionRequestCode = 1;
 
         private static final String PREF_KEY_PERMISSION_REQUEST_PROMPT = "prefAutoDownloadWifiFilterAndroid10PermissionPrompt";
