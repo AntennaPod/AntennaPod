@@ -650,7 +650,10 @@ public class FeedMedia extends FeedFile implements Playable {
         if (playbackSpeed == LAST_PLAYBACK_SPEED_UNSET) {
             FeedItem item = getItem();
             if (item != null) {
-                playbackSpeed = item.getFeedPlaybackSpeed();
+                Feed feed = item.getFeed();
+                if (feed != null) {
+                    playbackSpeed = feed.getPreferences().getCurrentPlaybackSpeed();
+                }
             }
         }
 

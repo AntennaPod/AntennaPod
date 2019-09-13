@@ -486,15 +486,4 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    /**
-     *
-     * @return playback speed for this feed, or the global setting if no feed-specific setting
-     */
-    public float getFeedPlaybackSpeed() {
-        Feed feed = getFeed();
-        if (feed != null) {
-            return feed.getPreferences().getCurrentPlaybackSpeed();
-        }
-        return SPEED_USE_GLOBAL;
-    }
 }

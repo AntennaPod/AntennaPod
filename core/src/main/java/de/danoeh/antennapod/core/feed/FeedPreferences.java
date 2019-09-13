@@ -182,7 +182,7 @@ public class FeedPreferences {
         this.password = password;
     }
 
-    float getCurrentPlaybackSpeed() {
+    public float getCurrentPlaybackSpeed() {
         float speed = 0.0f;
 
         if (!"global".equals(feedPlaybackSpeed)) {
