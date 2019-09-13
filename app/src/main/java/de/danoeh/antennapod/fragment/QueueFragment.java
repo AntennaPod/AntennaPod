@@ -603,7 +603,7 @@ public class QueueFragment extends Fragment {
                 float playbackSpeed = SPEED_USE_GLOBAL;
                 Feed feed = item.getFeed();
                 if (feed != null) {
-                    playbackSpeed = feed.getPreferences().getCurrentPlaybackSpeed();
+                    playbackSpeed = feed.getPreferences().getFeedPlaybackSpeed();
                 }
                 if (playbackSpeed == SPEED_USE_GLOBAL) {
                     playbackSpeed = UserPreferences.getPlaybackSpeed(item.getMedia());

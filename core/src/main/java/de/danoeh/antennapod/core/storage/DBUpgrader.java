@@ -9,6 +9,7 @@ import android.util.Log;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 import static de.danoeh.antennapod.core.feed.FeedMedia.LAST_PLAYBACK_SPEED_UNSET;
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 class DBUpgrader {
     /**
@@ -292,7 +293,7 @@ class DBUpgrader {
         }
         if (oldVersion < 1070400) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_PLAYBACK_SPEED + " TEXT");
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL);
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
                     + " ADD COLUMN " + PodDBAdapter.KEY_MEDIA_LAST_PLAYBACK_SPEED + " REAL DEFAULT " + LAST_PLAYBACK_SPEED_UNSET);
         }

@@ -30,13 +30,13 @@ public class FeedPreferences {
     private AutoDeleteAction auto_delete_action;
     private String username;
     private String password;
-    private String feedPlaybackSpeed;
+    private float feedPlaybackSpeed;
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password) {
-        this(feedID, autoDownload, true, auto_delete_action, username, password, new FeedFilter(), "global");
+        this(feedID, autoDownload, true, auto_delete_action, username, password, new FeedFilter(), SPEED_USE_GLOBAL);
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter, String feedPlaybackSpeed) {
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -67,7 +67,7 @@ public class FeedPreferences {
         String password = cursor.getString(indexPassword);
         String includeFilter = cursor.getString(indexIncludeFilter);
         String excludeFilter = cursor.getString(indexExcludeFilter);
-        String feedPlaybackSpeed = cursor.getString(indexFeedPlaybackSpeed);
+        float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         return new FeedPreferences(feedId, autoDownload, autoRefresh, autoDeleteAction, username, password, new FeedFilter(includeFilter, excludeFilter), feedPlaybackSpeed);
     }
 
@@ -182,30 +182,11 @@ public class FeedPreferences {
         this.password = password;
     }
 
-    public float getCurrentPlaybackSpeed() {
-        float speed = 0.0f;
-
-        if (!"global".equals(feedPlaybackSpeed)) {
-            try {
-                speed = Float.parseFloat(getFeedPlaybackSpeed());
-            } catch (NumberFormatException e) {
-                setFeedPlaybackSpeed("global");
-            }
-        }
-
-        // Either global or error happened
-        if (speed == 0.0f) {
-            speed = SPEED_USE_GLOBAL;
-        }
-
-        return speed;
-    }
-
-    public String getFeedPlaybackSpeed() {
+    public float getFeedPlaybackSpeed() {
         return feedPlaybackSpeed;
     }
 
-    public void setFeedPlaybackSpeed(String playbackSpeed) {
+    public void setFeedPlaybackSpeed(float playbackSpeed) {
         feedPlaybackSpeed = playbackSpeed;
     }
 }

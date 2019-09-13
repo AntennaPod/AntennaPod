@@ -19,6 +19,7 @@ import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.viewmodel.FeedSettingsViewModel;
 
 import static de.danoeh.antennapod.activity.FeedSettingsActivity.EXTRA_FEED_ID;
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
@@ -55,7 +56,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         String[] speeds = UserPreferences.getPlaybackSpeedArray();
 
         String[] values = new String[speeds.length + 1];
-        values[0] = "global";
+        values[0] = Float.toString(SPEED_USE_GLOBAL);
 
         String[] entries = new String[speeds.length + 1];
         entries[0] = getString(R.string.feed_auto_download_global);
@@ -67,7 +68,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         feedPlaybackSpeedPreference.setEntries(entries);
 
         feedPlaybackSpeedPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-            feedPreferences.setFeedPlaybackSpeed((String) newValue);
+            feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) newValue));
             feed.savePreferences();
             updatePlaybackSpeedPreference();
             return false;
@@ -126,8 +127,8 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private void updatePlaybackSpeedPreference() {
         ListPreference feedPlaybackSpeedPreference = (ListPreference) findPreference(PREF_FEED_PLAYBACK_SPEED);
 
-        String speedValue = feedPreferences.getFeedPlaybackSpeed();
-        feedPlaybackSpeedPreference.setValue(speedValue);
+        float speedValue = feedPreferences.getFeedPlaybackSpeed();
+        feedPlaybackSpeedPreference.setValue(Float.toString(speedValue));
     }
 
     private void updateAutoDeleteSummary() {

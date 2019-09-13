@@ -38,6 +38,7 @@ import de.danoeh.antennapod.core.util.LongIntMap;
 import org.greenrobot.eventbus.EventBus;
 
 import static de.danoeh.antennapod.core.feed.FeedMedia.LAST_PLAYBACK_SPEED_UNSET;
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 // TODO Remove media column from feeditem table
 
@@ -148,7 +149,7 @@ public class PodDBAdapter {
             + KEY_HIDE + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
-            + KEY_FEED_PLAYBACK_SPEED + " TEXT)";
+            + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ")";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
