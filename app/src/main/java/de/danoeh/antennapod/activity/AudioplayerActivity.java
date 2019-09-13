@@ -106,10 +106,6 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                     format.setDecimalSeparator('.');
 
                     float currentSpeedValue = controller.getCurrentPlaybackSpeedMultiplier();
-                    if (currentSpeedValue == -1) {
-                        currentSpeedValue = UserPreferences.getPlaybackSpeed(controller.getMedia());
-                    }
-
                     String currentSpeed = new DecimalFormat("0.00", format).format(currentSpeedValue);
 
                     // Provide initial value in case the speed list has changed

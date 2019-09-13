@@ -746,7 +746,7 @@ public class PlaybackController {
         if (playbackService != null && canSetPlaybackSpeed()) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
-            return -1;
+            return UserPreferences.getPlaybackSpeed(getMedia());
         }
     }
 
