@@ -475,17 +475,6 @@ public class PodDBAdapter {
         }
     }
 
-    public void setFeedMediaLastPlaybackSpeed(FeedMedia media) {
-        if (media.getId() != 0) {
-            ContentValues values = new ContentValues();
-            values.put(KEY_MEDIA_LAST_PLAYBACK_SPEED, media.getLastPlaybackSpeed());
-            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
-                    new String[]{String.valueOf(media.getId())});
-        } else {
-            Log.e(TAG, "setFeedMediaLastPlaybackSpeed: ID of media was 0");
-        }
-    }
-
     public void setFeedMediaPlaybackCompletionDate(FeedMedia media) {
         if (media.getId() != 0) {
             ContentValues values = new ContentValues();
