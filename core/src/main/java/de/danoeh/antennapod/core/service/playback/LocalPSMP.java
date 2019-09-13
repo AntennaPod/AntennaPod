@@ -307,17 +307,19 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Audiofocus successfully requested");
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
-                float playbackSpeed;
-                if (media.getMediaType() == MediaType.VIDEO) {
-                    playbackSpeed = UserPreferences.getVideoPlaybackSpeed();
-                } else if (media instanceof FeedMedia) {
+
+                float playbackSpeed = SPEED_USE_GLOBAL;
+                if (media instanceof FeedMedia) {
                     playbackSpeed = ((FeedMedia) media).getMediaPlaybackSpeed();
-                } else {
-                    playbackSpeed = SPEED_USE_GLOBAL;
                 }
                 if (playbackSpeed == SPEED_USE_GLOBAL) {
-                    playbackSpeed = UserPreferences.getPlaybackSpeed();
+                    if (media.getMediaType() == MediaType.VIDEO) {
+                        playbackSpeed = UserPreferences.getVideoPlaybackSpeed();
+                    } else {
+                        playbackSpeed = UserPreferences.getPlaybackSpeed();
+                    }
                 }
+
                 setPlaybackParams(playbackSpeed, UserPreferences.isSkipSilence());
                 setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
