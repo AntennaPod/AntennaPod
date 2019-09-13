@@ -1,24 +1,30 @@
 package de.danoeh.antennapod.fragment.preferences;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
 import android.util.Log;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     private static final String TAG = "AutoDnldPrefFragment";
@@ -175,10 +181,87 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void setSelectedNetworksEnabled(boolean b) {
+        if (permissionHelper.showPermissionRequestPromptOnAndroid10IfNeeded(b)) {
+            return;
+        }
+
         if (selectedNetworks != null) {
             for (Preference p : selectedNetworks) {
                 p.setEnabled(b);
             }
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionHelper.doOnRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private class PermissionHelper {
+        private static final String requestedPermission = Manifest.permission.ACCESS_COARSE_LOCATION;
+        private static final int permissionRequestCode = 1;
+
+        private static final String PREF_KEY_PERMISSION_REQUEST_PROMPT = "prefAutoDownloadWifiFilterAndroid10PermissionPrompt";
+
+        private Preference prefPermissionRequestPromptOnAndroid10 = null;
+
+        void doOnRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            if (requestCode != permissionRequestCode) {
+                return;
+            }
+            if (permissions.length > 0 && permissions[0].equals(requestedPermission) &&
+                    grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                buildAutodownloadSelectedNetworksPreference();
+            }
+        }
+
+        boolean showPermissionRequestPromptOnAndroid10IfNeeded(boolean wifiFilterEnabled) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                return false;
+            }
+
+            // Cases Android 10(Q) or later
+
+            final PreferenceScreen prefScreen = getPreferenceScreen();
+
+            if (prefPermissionRequestPromptOnAndroid10 != null) {
+                prefScreen.removePreference(prefPermissionRequestPromptOnAndroid10);
+                prefPermissionRequestPromptOnAndroid10 = null;
+            }
+
+
+            if (hasLocationPermission()) {
+                return false;
+            }
+
+            // Case location permission not yet granted, permission-specific UI is needed
+
+            if (!wifiFilterEnabled) { // don't show the UI when WiFi filter disabled
+                return true;
+            }
+
+            Preference pref = new Preference(requireActivity());
+            pref.setKey(PREF_KEY_PERMISSION_REQUEST_PROMPT);
+            pref.setTitle(R.string.autodl_wifi_filter_permission_title);
+            pref.setSummary(R.string.autodl_wifi_filter_permission_message);
+            pref.setOnPreferenceClickListener(preference -> {
+                requestLocationPermission();
+                return true;
+            });
+            pref.setPersistent(false);
+            getPreferenceScreen().addPreference(pref);
+            prefPermissionRequestPromptOnAndroid10 = pref;
+
+            return true;
+        }
+
+        private boolean hasLocationPermission() {
+            return ContextCompat.checkSelfPermission(requireContext(), requestedPermission) == PackageManager.PERMISSION_GRANTED;
+        }
+
+        private void requestLocationPermission() {
+            requestPermissions(new String[]{requestedPermission}, permissionRequestCode);
+        }
+    }
+    private final PermissionHelper permissionHelper = new PermissionHelper();
 }

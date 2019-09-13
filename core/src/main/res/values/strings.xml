@@ -394,6 +394,8 @@
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
+    <string name="autodl_wifi_filter_permission_title">Permission required</string>
+    <string name="autodl_wifi_filter_permission_message">Location permission is required for Wi-Fi filter. Tap to grant the permission.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_parallel_downloads_title">Parallel Downloads</string>
