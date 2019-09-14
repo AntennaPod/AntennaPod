@@ -25,7 +25,7 @@
         android:cropToPadding="true"
         android:scaleType="fitXY"
         tools:background="@android:color/holo_green_dark"
-        tools:src="@drawable/ic_stat_antenna_default" />
+        tools:src="@drawable/ic_antenna" />
 
     <LinearLayout
         android:layout_width="match_parent"
