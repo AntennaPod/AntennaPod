@@ -193,10 +193,6 @@ public class DownloadStatus {
         this.cancelled = true;
     }
 
-    public void setCompletionDate(Date completionDate) {
-        this.completionDate = (Date) completionDate.clone();
-    }
-
     public void setId(long id) {
         this.id = id;
     }
