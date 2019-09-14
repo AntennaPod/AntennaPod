@@ -244,6 +244,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
             pref.setKey(PREF_KEY_PERMISSION_REQUEST_PROMPT);
             pref.setTitle(R.string.autodl_wifi_filter_permission_title);
             pref.setSummary(R.string.autodl_wifi_filter_permission_message);
+            pref.setIcon(R.drawable.ic_warning_red);
             pref.setOnPreferenceClickListener(preference -> {
                 requestLocationPermission();
                 return true;
