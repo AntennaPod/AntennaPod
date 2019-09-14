@@ -223,7 +223,7 @@ public class QueueFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_SCROLL_POSITION, firstItem);
         editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
-        editor.commit();
+        editor.apply();
     }
 
     private void restoreScrollPosition() {

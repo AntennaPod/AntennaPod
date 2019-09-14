@@ -240,7 +240,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
-            edit.commit();
+            edit.apply();
         }
     }
 
