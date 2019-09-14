@@ -236,7 +236,10 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
 
             // Case location permission not yet granted, permission-specific UI is needed
 
-            if (!wifiFilterEnabled) { // don't show the UI when WiFi filter disabled
+            if (!wifiFilterEnabled) {
+                // Don't show the UI when WiFi filter disabled.
+                // it still return true, so that the caller knows
+                // it does not have required permission, and will not invoke codes that require so.
                 return true;
             }
 
