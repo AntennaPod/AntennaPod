@@ -516,7 +516,8 @@ public class FeedItemlistFragment extends ListFragment {
 
     private void showFeedInfo() {
         if (feed != null) {
-            ((MainActivity) getActivity()).loadChildFragment(FeedInfoFragment.newInstance(feed));
+            FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
+            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.FLIP);
         }
     }
 
