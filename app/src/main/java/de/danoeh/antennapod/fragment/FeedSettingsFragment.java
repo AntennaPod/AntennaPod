@@ -18,12 +18,17 @@ import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.viewmodel.FeedSettingsViewModel;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import static de.danoeh.antennapod.activity.FeedSettingsActivity.EXTRA_FEED_ID;
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
     private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
     private Feed feed;
     private FeedPreferences feedPreferences;
 
@@ -56,7 +61,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         String[] speeds = UserPreferences.getPlaybackSpeedArray();
 
         String[] values = new String[speeds.length + 1];
-        values[0] = Float.toString(SPEED_USE_GLOBAL);
+        values[0] = decimalFormat.format(SPEED_USE_GLOBAL);
 
         String[] entries = new String[speeds.length + 1];
         entries[0] = getString(R.string.feed_auto_download_global);
@@ -128,7 +133,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         ListPreference feedPlaybackSpeedPreference = (ListPreference) findPreference(PREF_FEED_PLAYBACK_SPEED);
 
         float speedValue = feedPreferences.getFeedPlaybackSpeed();
-        feedPlaybackSpeedPreference.setValue(Float.toString(speedValue));
+        feedPlaybackSpeedPreference.setValue(decimalFormat.format(speedValue));
     }
 
     private void updateAutoDeleteSummary() {
@@ -206,7 +211,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         }
 
         @Override
-        public  void onConfirmButtonPressed(DialogInterface dialog) {
+        public void onConfirmButtonPressed(DialogInterface dialog) {
             DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
         }
     }
