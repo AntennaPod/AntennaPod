@@ -37,7 +37,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
@@ -517,10 +516,7 @@ public class FeedItemlistFragment extends ListFragment {
 
     private void showFeedInfo() {
         if (feed != null) {
-            Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
-            startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
-                    feed.getId());
-            startActivity(startIntent);
+            ((MainActivity) getActivity()).loadChildFragment(FeedInfoFragment.newInstance(feed));
         }
     }
 

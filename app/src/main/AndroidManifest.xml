@@ -106,11 +106,6 @@
         </activity>
 
         <activity
-                android:name=".activity.FeedInfoActivity"
-                android:label="@string/feed_info_label">
-        </activity>
-
-        <activity
                 android:name=".activity.FeedSettingsActivity"
                 android:windowSoftInputMode="stateHidden"
                 android:label="@string/feed_settings_label">
