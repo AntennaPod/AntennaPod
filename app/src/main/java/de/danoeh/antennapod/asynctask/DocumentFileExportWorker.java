@@ -26,12 +26,12 @@ public class DocumentFileExportWorker {
 
     private final @NonNull ExportWriter exportWriter;
     private @NonNull Context context;
-    private @NonNull Uri outputDirectoryUri;
+    private @NonNull Uri outputFileUri;
 
-    public DocumentFileExportWorker(@NonNull ExportWriter exportWriter, @NonNull Context context, @NonNull Uri outputDirectoryUri) {
+    public DocumentFileExportWorker(@NonNull ExportWriter exportWriter, @NonNull Context context, @NonNull Uri outputFileUri) {
         this.exportWriter = exportWriter;
         this.context = context;
-        this.outputDirectoryUri = outputDirectoryUri;
+        this.outputFileUri = outputFileUri;
     }
 
     public Observable<DocumentFile> exportObservable() {
@@ -74,7 +74,7 @@ public class DocumentFileExportWorker {
     }
 
     private DocumentFile createExportFile() {
-        return DocumentFile.fromSingleUri(context, outputDirectoryUri);
+        return DocumentFile.fromSingleUri(context, outputFileUri);
     }
 
 }
