@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.asynctask;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.provider.DocumentFile;
@@ -75,14 +73,8 @@ public class DocumentFileExportWorker {
         });
     }
 
-    @TargetApi(19)
     private DocumentFile createExportFile() {
-        DocumentFile outputFile = DocumentFile.fromSingleUri(context, outputDirectoryUri);
-        context.grantUriPermission(context.getPackageName(), outputDirectoryUri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        context.getContentResolver().takePersistableUriPermission(outputDirectoryUri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        return outputFile;
+        return DocumentFile.fromSingleUri(context, outputDirectoryUri);
     }
 
 }
