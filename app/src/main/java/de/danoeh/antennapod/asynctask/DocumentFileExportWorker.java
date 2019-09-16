@@ -20,10 +20,6 @@ import io.reactivex.Observable;
  */
 public class DocumentFileExportWorker {
 
-    private static final String TAG = "ExportWorker";
-    private static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds";
-    private static final String CONTENT_TYPE = "text/x-opml";
-
     private final @NonNull ExportWriter exportWriter;
     private @NonNull Context context;
     private @NonNull Uri outputFileUri;
@@ -35,7 +31,7 @@ public class DocumentFileExportWorker {
     }
 
     public Observable<DocumentFile> exportObservable() {
-        DocumentFile output = createExportFile();
+        DocumentFile output = DocumentFile.fromSingleUri(context, outputFileUri);
         return Observable.create(subscriber -> {
             OutputStream outputStream = null;
             OutputStreamWriter writer = null;
@@ -71,10 +67,6 @@ public class DocumentFileExportWorker {
                 subscriber.onComplete();
             }
         });
-    }
-
-    private DocumentFile createExportFile() {
-        return DocumentFile.fromSingleUri(context, outputFileUri);
     }
 
 }
