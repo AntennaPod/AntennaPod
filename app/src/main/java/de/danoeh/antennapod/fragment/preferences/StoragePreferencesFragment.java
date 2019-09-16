@@ -50,6 +50,8 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
             Manifest.permission.WRITE_EXTERNAL_STORAGE };
     private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 41;
     private static final int CHOOSE_OPML_EXPORT_PATH = 1;
+    private static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds";
+    private static final String CONTENT_TYPE = "text/x-opml";
     private Disposable disposable;
 
     @Override
@@ -276,8 +278,12 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void openExportPathPicker() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            Intent intentPickAction = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType(CONTENT_TYPE)
+                    .putExtra(Intent.EXTRA_TITLE, DEFAULT_OUTPUT_NAME);
+
             // Creates an implicit intent to launch a file manager which lets
             // the user choose a specific directory to export to.
             try {

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.provider.DocumentFile;
-import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -78,17 +77,12 @@ public class DocumentFileExportWorker {
 
     @TargetApi(19)
     private DocumentFile createExportFile() {
-        DocumentFile outputDirectory = DocumentFile.fromTreeUri(context, outputDirectoryUri);
+        DocumentFile outputFile = DocumentFile.fromSingleUri(context, outputDirectoryUri);
         context.grantUriPermission(context.getPackageName(), outputDirectoryUri,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         context.getContentResolver().takePersistableUriPermission(outputDirectoryUri,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        DocumentFile existingExportFile = outputDirectory.findFile(DEFAULT_OUTPUT_NAME + "." + exportWriter.fileExtension());
-        if (existingExportFile != null) {
-            Log.w(TAG, "Overwriting previously exported file.");
-            existingExportFile.delete();
-        }
-        return outputDirectory.createFile(CONTENT_TYPE, DEFAULT_OUTPUT_NAME + "." + exportWriter.fileExtension());
+        return outputFile;
     }
 
 }
