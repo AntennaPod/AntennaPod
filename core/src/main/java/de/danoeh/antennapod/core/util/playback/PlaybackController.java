@@ -728,6 +728,8 @@ public class PlaybackController {
     public void setPlaybackSpeed(float speed) {
         if (playbackService != null) {
             playbackService.setSpeed(speed);
+        } else {
+            onPlaybackSpeedChange();
         }
     }
     public void setSkipSilence(boolean skipSilence) {
