@@ -45,6 +45,10 @@
             android:title="@string/pref_faq"
             android:icon="?attr/ic_questionmark" />
         <Preference
+            android:key="prefViewMailingList"
+            android:title="@string/view_mailing_list"
+            android:icon="?attr/ic_chat" />
+        <Preference
             android:key="prefSendBugReport"
             android:title="@string/bug_report_title"
             android:icon="?attr/ic_bug" />

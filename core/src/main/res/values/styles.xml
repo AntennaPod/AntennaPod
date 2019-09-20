@@ -69,6 +69,7 @@
         <item name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item name="ic_cellphone_text">@drawable/ic_cellphone_text_grey600_24dp</item>
         <item name="ic_questionmark">@drawable/ic_questionmark_grey600</item>
+        <item name="ic_chat">@drawable/ic_chat_grey600</item>
         <item name="ic_bug">@drawable/ic_bug_grey600_24dp</item>
         <item name="ic_bookmark">@drawable/ic_bookmark_grey600_24dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
@@ -153,6 +154,7 @@
         <item name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item name="ic_cellphone_text">@drawable/ic_cellphone_text_white_24dp</item>
         <item name="ic_questionmark">@drawable/ic_questionmark_white</item>
+        <item name="ic_chat">@drawable/ic_chat_white</item>
         <item name="ic_bug">@drawable/ic_bug_white_24dp</item>
         <item name="ic_bookmark">@drawable/ic_bookmark_white_24dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
