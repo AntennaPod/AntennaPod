@@ -193,11 +193,6 @@ public final class DBTasks {
         }).start();
     }
 
-    public static long getLastRefreshAllFeedsTimeMillis(final Context context) {
-        SharedPreferences prefs = context.getSharedPreferences(DBTasks.PREF_NAME, MODE_PRIVATE);
-        return  prefs.getLong(DBTasks.PREF_LAST_REFRESH, 0);
-    }
-
     /**
      * @param context
      * @param feedList the list of feeds to refresh
