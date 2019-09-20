@@ -459,7 +459,6 @@
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
     <string name="pref_faq">FAQ</string>
-    <string name="pref_known_issues">Known issues</string>
     <string name="pref_no_browser_found">No web browser found.</string>
     <string name="pref_cast_title">Chromecast support</string>
     <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>

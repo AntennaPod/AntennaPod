@@ -44,11 +44,6 @@
             android:key="prefFaq"
             android:title="@string/pref_faq"
             android:icon="?attr/ic_question_answer" />
-
-        <Preference
-            android:key="prefKnownIssues"
-            android:title="@string/pref_known_issues"
-            android:icon="?attr/ic_known_issues" />
         <Preference
             android:key="prefSendCrashReport"
             android:title="@string/crash_report_title"

@@ -24,7 +24,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SCREEN_NETWORK = "prefScreenNetwork";
     private static final String PREF_SCREEN_INTEGRATIONS = "prefScreenIntegrations";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
-    private static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
     private static final String PREF_FAQ = "prefFaq";
     private static final String PREF_SEND_CRASH_REPORT = "prefSendCrashReport";
     private static final String STATISTICS = "statistics";
@@ -71,10 +70,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 }
         );
-        findPreference(PREF_KNOWN_ISSUES).setOnPreferenceClickListener(preference -> {
-            openInBrowser("https://github.com/AntennaPod/AntennaPod/labels/bug");
-            return true;
-        });
         findPreference(PREF_FAQ).setOnPreferenceClickListener(preference -> {
             openInBrowser("https://antennapod.org/faq.html");
             return true;
