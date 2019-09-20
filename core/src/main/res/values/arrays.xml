@@ -156,13 +156,6 @@
         <item>4.00</item>
     </string-array>
 
-    <string-array name="autodl_select_networks_default_entries">
-        <item>N/A</item>
-    </string-array>
-    <string-array name="autodl_select_networks_default_values">
-        <item>0</item>
-    </string-array>
-
     <string-array name="theme_options">
         <item>@string/pref_theme_title_use_system</item>
         <item>@string/pref_theme_title_light</item>

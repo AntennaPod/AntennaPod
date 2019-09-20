@@ -43,10 +43,8 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 1070300) {
-            if (UserPreferences.getMediaPlayer().equals("builtin")) {
-                prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
-                        UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-            }
+            prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
+                    UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();
 
             if (prefs.getBoolean("prefEnableAutoDownloadOnMobile", false)) {
                 UserPreferences.setAllowMobileAutoDownload(true);
@@ -70,6 +68,8 @@ public class PreferenceUpgrader {
             if (theme == R.style.Theme_AntennaPod_Light) {
                 prefs.edit().putString(UserPreferences.PREF_THEME, "system").apply();
             }
+
+            UserPreferences.setQueueLocked(false);
         }
     }
 }
