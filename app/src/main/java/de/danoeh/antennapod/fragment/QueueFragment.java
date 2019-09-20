@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,6 +20,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -91,10 +94,12 @@ public class QueueFragment extends Fragment {
     private static final String PREFS = "QueueFragment";
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
+    private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
 
     private Disposable disposable;
     private LinearLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
+    private SharedPreferences prefs;
 
 
     @Override
@@ -102,6 +107,7 @@ public class QueueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+        prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -219,15 +225,13 @@ public class QueueFragment extends Fragment {
             topOffset = firstItemView.getTop();
         }
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PREF_SCROLL_POSITION, firstItem);
-        editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
-        editor.apply();
+        prefs.edit()
+                .putInt(PREF_SCROLL_POSITION, firstItem)
+                .putFloat(PREF_SCROLL_OFFSET, topOffset)
+                .apply();
     }
 
     private void restoreScrollPosition() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
         float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
         if (position > 0 || offset > 0) {
@@ -299,19 +303,7 @@ public class QueueFragment extends Fragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.queue_lock:
-                    boolean newLockState = !UserPreferences.isQueueLocked();
-                    UserPreferences.setQueueLocked(newLockState);
-                    getActivity().supportInvalidateOptionsMenu();
-                    if (recyclerAdapter != null) {
-                        recyclerAdapter.setLocked(newLockState);
-                    }
-                    if (newLockState) {
-                        Snackbar.make(getActivity().findViewById(R.id.content), R.string
-                                .queue_locked, Snackbar.LENGTH_SHORT).show();
-                    } else {
-                        Snackbar.make(getActivity().findViewById(R.id.content), R.string
-                                .queue_unlocked, Snackbar.LENGTH_SHORT).show();
-                    }
+                    toggleQueueLock();
                     return true;
                 case R.id.refresh_item:
                     List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
@@ -391,6 +383,48 @@ public class QueueFragment extends Fragment {
             }
         } else {
             return true;
+        }
+    }
+
+    private void toggleQueueLock() {
+        boolean isLocked = UserPreferences.isQueueLocked();
+        if (isLocked) {
+            setQueueLocked(false);
+        } else {
+            boolean shouldShowLockWarning = prefs.getBoolean(PREF_SHOW_LOCK_WARNING, true);
+            if (!shouldShowLockWarning) {
+                setQueueLocked(true);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.lock_queue);
+                builder.setMessage(R.string.queue_lock_warning);
+
+                View view = View.inflate(getContext(), R.layout.checkbox_do_not_show_again, null);
+                CheckBox checkDoNotShowAgain = view.findViewById(R.id.checkbox_do_not_show_again);
+                builder.setView(view);
+
+                builder.setPositiveButton(R.string.lock_queue, (dialog, which) -> {
+                    prefs.edit().putBoolean(PREF_SHOW_LOCK_WARNING, !checkDoNotShowAgain.isChecked()).apply();
+                    setQueueLocked(true);
+                });
+                builder.setNegativeButton(R.string.cancel_label, null);
+                builder.show();
+            }
+        }
+    }
+
+    private void setQueueLocked(boolean locked) {
+        UserPreferences.setQueueLocked(locked);
+        getActivity().supportInvalidateOptionsMenu();
+        if (recyclerAdapter != null) {
+            recyclerAdapter.setLocked(locked);
+        }
+        if (locked) {
+            Snackbar.make(getActivity().findViewById(R.id.content), R.string
+                    .queue_locked, Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(getActivity().findViewById(R.id.content), R.string
+                    .queue_unlocked, Snackbar.LENGTH_SHORT).show();
         }
     }
 

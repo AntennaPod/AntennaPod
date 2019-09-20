@@ -62,5 +62,8 @@ public class PreferenceUpgrader {
                     break;
             }
         }
+        if (oldVersion < 1070400) {
+            UserPreferences.setQueueLocked(false);
+        }
     }
 }

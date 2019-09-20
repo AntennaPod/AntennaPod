@@ -275,6 +275,8 @@
     <string name="unlock_queue">Unlock Queue</string>
     <string name="queue_locked">Queue locked</string>
     <string name="queue_unlocked">Queue unlocked</string>
+    <string name="queue_lock_warning">If you lock the queue, you can no longer swipe or reorder episodes.</string>
+    <string name="checkbox_do_not_show_again">Do not show again</string>
     <string name="clear_queue_label">Clear Queue</string>
     <string name="undo">Undo</string>
     <string name="move_to_top_label">Move to top</string>
