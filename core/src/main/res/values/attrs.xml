@@ -9,6 +9,7 @@
     <attr name="av_fast_forward" format="reference"/>
     <attr name="av_pause" format="reference"/>
     <attr name="av_play" format="reference"/>
+    <attr name="av_speed" format="reference"/>
     <attr name="av_rewind" format="reference"/>
     <attr name="content_discard" format="reference"/>
     <attr name="content_new" format="reference"/>
