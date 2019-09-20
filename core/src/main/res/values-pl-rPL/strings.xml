@@ -7,6 +7,7 @@
   <string name="add_feed_label">Dodaj podcast</string>
   <string name="episodes_label">Odcinki</string>
   <string name="all_episodes_short_label">Wszystkie</string>
+  <string name="new_episodes_label">Nowe</string>
   <string name="favorite_episodes_label">Ulubione</string>
   <string name="new_label">Nowy</string>
   <string name="settings_label">Ustawienia</string>
@@ -104,6 +105,7 @@
   <string name="podcastdirectories_label">Znajdź podcast w folderze</string>
   <string name="podcastdirectories_descr">Możesz wyszukiwać nowe podcasty ze względu na nazwę, kategorię lub popularność na gpodder.net, Itunes lub fyyd</string>
   <string name="browse_gpoddernet_label">Przeglądaj gpodder.net</string>
+  <string name="discover_more">więcej »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Oznacz wszystkie jako odtworzone</string>
   <string name="mark_all_read_msg">Wszystkie odcinki zaznaczono jako odtworzone</string>
@@ -134,7 +136,7 @@
   <string name="hide_has_media_label">Ma media</string>
   <string name="filtered_label">Przefiltrowany</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Ostatnie odświerzanie nie powiodło się</string>
-  <string name="open_podcast">Otwarty Podcast</string>
+  <string name="open_podcast">Otwórz Podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Pobierz</string>
   <string name="play_label">Odtwórz</string>
@@ -249,6 +251,8 @@
   <!--Empty list labels-->
   <string name="no_feeds_label">Nie subskrybowałeś jeszcze żadnego podcastu.</string>
   <string name="no_shownotes_label">Ten epizod nie ma notatek.</string>
+  <string name="no_comp_downloads_head_label">Brak pobranych odcinków</string>
+  <string name="no_fav_episodes_head_label">Brak ulubionych odcinków</string>
   <string name="no_chapters_label">Ten odcinek nie ma rozdziałów.</string>
   <!--Preferences-->
   <string name="storage_pref">Pamięć</string>
@@ -258,6 +262,8 @@
   <string name="queue_label">Kolejka</string>
   <string name="download_pref_details">Szczegóły</string>
   <string name="appearance">Wygląd</string>
+  <string name="preference_search_no_results">Brak wyników</string>
+  <string name="preference_search_clear_history">Wyczyść historię</string>
   <string name="pref_episode_cleanup_title">Usuwanie odcinków</string>
   <string name="pref_episode_cleanup_summary">Odcinki niebędące w kolejce i niebędące na liście ulubiobych powinny nadawać się do usunięcia, jeśli Automatyczne Pobieranie potrzebuje miejsca na nowe odcinki.</string>
   <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>
@@ -292,6 +298,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Słuchawki podłączone ponownie</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth podłączony ponownie</string>
   <string name="pref_mobileUpdate_title">Aktualizacje mobilne</string>
+  <string name="pref_mobileUpdate_auto_download">Automatyczne pobieranie</string>
   <string name="refreshing_label">Odświeżanie</string>
   <string name="user_interface_label">Interfejs użytkownika</string>
   <string name="pref_set_theme_title">Wybierz motyw</string>
@@ -374,6 +381,9 @@
   <string name="pref_cast_message_free_flavor">Chromecast wymagadodatkowych bibliotek, które są zablokowane w tej wersji AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Rzeczy z kolejki pobrane</string>
   <string name="pref_enqueue_downloaded_summary">Dodaj pobrane odcinki do kolejki</string>
+  <string name="behavior">Zachowanie</string>
+  <string name="back_button_default">Domyślne</string>
+  <string name="back_button_open_drawer">Otwórz panel nawigacyjny</string>
   <!--Search-->
   <string name="search_hint">Szukaj odcinków</string>
   <string name="found_in_shownotes_label">Znalezione w notatkach dotyczących show</string>
