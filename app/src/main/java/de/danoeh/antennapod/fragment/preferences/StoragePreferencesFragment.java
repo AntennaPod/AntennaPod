@@ -50,8 +50,11 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
             Manifest.permission.WRITE_EXTERNAL_STORAGE };
     private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 41;
     private static final int CHOOSE_OPML_EXPORT_PATH = 1;
-    private static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds";
-    private static final String CONTENT_TYPE = "text/x-opml";
+    private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds.opml";
+    private static final String CONTENT_TYPE_OPML = "text/x-opml";
+    private static final int CHOOSE_HTML_EXPORT_PATH = 2;
+    private static final String DEFAULT_HTML_OUTPUT_NAME = "antennapod-feeds.html";
+    private static final String CONTENT_TYPE_HTML = "text/html";
     private Disposable disposable;
 
     @Override
@@ -85,12 +88,15 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         );
         findPreference(PREF_OPML_EXPORT).setOnPreferenceClickListener(
                 preference -> {
-                    openExportPathPicker();
+                    openOpmlExportPathPicker();
                     return true;
                 }
         );
         findPreference(PREF_HTML_EXPORT).setOnPreferenceClickListener(
-                preference -> export(new HtmlWriter()));
+                preference -> {
+                    openHtmlExportPathPicker();
+                    return true;
+                });
         findPreference(PREF_OPML_IMPORT).setOnPreferenceClickListener(
                 preference -> {
                     activity.startActivity(new Intent(activity, OpmlImportFromPathActivity.class));
@@ -252,6 +258,11 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
             Uri uri = data.getData();
             export(new OpmlWriter(), uri);
         }
+
+        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_HTML_EXPORT_PATH) {
+            Uri uri = data.getData();
+            export(new HtmlWriter(), uri);
+        }
     }
 
     private void setDataFolderText() {
@@ -273,12 +284,12 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         activity.startActivityForResult(intent, DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
     }
 
-    private void openExportPathPicker() {
+    private void openOpmlExportPathPicker() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
             Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
                     .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType(CONTENT_TYPE)
-                    .putExtra(Intent.EXTRA_TITLE, DEFAULT_OUTPUT_NAME);
+                    .setType(CONTENT_TYPE_OPML)
+                    .putExtra(Intent.EXTRA_TITLE, DEFAULT_OPML_OUTPUT_NAME);
 
             // Creates an implicit intent to launch a file manager which lets
             // the user choose a specific directory to export to.
@@ -293,6 +304,28 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         // If we are using a SDK lower than API 21 or the implicit intent failed
         // fallback to the legacy export process
         export(new OpmlWriter());
+    }
+
+    private void openHtmlExportPathPicker() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType(CONTENT_TYPE_HTML)
+                    .putExtra(Intent.EXTRA_TITLE, DEFAULT_HTML_OUTPUT_NAME);
+
+            // Creates an implicit intent to launch a file manager which lets
+            // the user choose a specific directory to export to.
+            try {
+                startActivityForResult(intentPickAction, CHOOSE_HTML_EXPORT_PATH);
+                return;
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "No activity found. Should never happen...");
+            }
+        }
+
+        // If we are using a SDK lower than API 21 or the implicit intent failed
+        // fallback to the legacy export process
+        export(new HtmlWriter());
     }
 
     private void showChooseDataFolderDialog() {
