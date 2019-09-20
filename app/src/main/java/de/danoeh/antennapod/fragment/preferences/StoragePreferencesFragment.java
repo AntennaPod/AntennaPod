@@ -171,7 +171,9 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         return true;
     }
 
-    public void unsubscribeExportSubscription() {
+    @Override
+    public void onStop() {
+        super.onStop();
         if (disposable != null) {
             disposable.dispose();
         }

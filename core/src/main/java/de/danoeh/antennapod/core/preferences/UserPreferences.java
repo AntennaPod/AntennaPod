@@ -891,13 +891,6 @@ public class UserPreferences {
     }
 
     /**
-     * Reads episode cache size as it is saved in the episode_cache_size_values array.
-     */
-    public static int readEpisodeCacheSize(String valueFromPrefs) {
-        return readEpisodeCacheSizeInternal(valueFromPrefs);
-    }
-
-    /**
      * Evaluates whether Cast support (Chromecast, Audio Cast, etc) is enabled on the preferences.
      */
     public static boolean isCastEnabled() {

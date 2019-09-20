@@ -107,6 +107,7 @@
   <string name="podcastdirectories_label">Podcast keresése mappában</string>
   <string name="podcastdirectories_descr">Új podcastokat kereshetsz iTunes-on vagy fyyd-en, vagy a gpodder.net-en név, kategória vagy cím alapján.</string>
   <string name="browse_gpoddernet_label">gpodder.net böngészése</string>
+  <string name="discover">Felfedezés</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Az összes megjelölése lejátszottként</string>
   <string name="mark_all_read_msg">Az összes epizód lejátszottként megjelölve</string>
