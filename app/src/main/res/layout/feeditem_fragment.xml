@@ -37,7 +37,7 @@
                 android:contentDescription="@string/cover_label"
                 android:gravity="center_vertical"
                 android:foreground="?attr/selectableItemBackground"
-                tools:src="@drawable/ic_stat_antenna_default"
+                tools:src="@drawable/ic_antenna"
                 tools:background="@android:color/holo_green_dark" />
 
             <TextView

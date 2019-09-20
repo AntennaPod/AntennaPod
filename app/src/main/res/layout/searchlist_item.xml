@@ -18,7 +18,7 @@
         android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
         android:contentDescription="@string/cover_label"
         android:scaleType="centerCrop"
-        tools:src="@drawable/ic_stat_antenna_default"
+        tools:src="@drawable/ic_antenna"
         tools:background="@android:color/holo_green_dark"/>
 
     <LinearLayout
