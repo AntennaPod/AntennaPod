@@ -43,7 +43,7 @@
         <Preference
             android:key="prefFaq"
             android:title="@string/pref_faq"
-            android:icon="?attr/ic_question_answer" />
+            android:icon="?attr/ic_questionmark" />
         <Preference
             android:key="prefSendBugReport"
             android:title="@string/bug_report_title"
