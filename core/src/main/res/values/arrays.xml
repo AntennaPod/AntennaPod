@@ -157,11 +157,14 @@
     </string-array>
 
     <string-array name="theme_options">
+        <item>@string/pref_theme_title_use_system</item>
         <item>@string/pref_theme_title_light</item>
         <item>@string/pref_theme_title_dark</item>
         <item>@string/pref_theme_title_trueblack</item>
     </string-array>
+
     <string-array name="theme_values">
+        <item>system</item>
         <item>0</item>
         <item>1</item>
         <item>2</item>

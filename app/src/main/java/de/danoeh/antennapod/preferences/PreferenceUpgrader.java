@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
@@ -63,6 +64,11 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 1070400) {
+            int theme = UserPreferences.getTheme();
+            if (theme == R.style.Theme_AntennaPod_Light) {
+                prefs.edit().putString(UserPreferences.PREF_THEME, "system").apply();
+            }
+
             UserPreferences.setQueueLocked(false);
         }
     }
