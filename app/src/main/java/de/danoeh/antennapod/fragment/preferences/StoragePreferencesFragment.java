@@ -170,50 +170,45 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
                     .subscribe(output -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
                                 context.getString(R.string.provider_authority), output);
-                        showExportSuccessDialog(context, context.getString(R.string.export_success_sum, output.toString()), fileUri);
-                    }, error -> {
-                        showExportErrorDialog(context, error);
-                    }, progressDialog::dismiss);
+                        showExportSuccessDialog(context.getString(R.string.export_success_sum, output.toString()), fileUri);
+                    }, this::showExportErrorDialog, progressDialog::dismiss);
         } else {
             Observable<DocumentFile> observable = new DocumentFileExportWorker(exportWriter, context, uri).exportObservable();
             disposable = observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output -> {
-                        showExportSuccessDialog(context, context.getString(R.string.export_success_sum, output.getUri()), output.getUri());
-                    }, error -> {
-                        showExportErrorDialog(context, error);
-                    }, progressDialog::dismiss);
+                        showExportSuccessDialog(context.getString(R.string.export_success_sum, output.getUri()), output.getUri());
+                    }, this::showExportErrorDialog, progressDialog::dismiss);
         }
         return true;
     }
 
-    private void showExportSuccessDialog(final Context context, final String message, final Uri streamUri) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(context)
+    private void showExportSuccessDialog(final String message, final Uri streamUri) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext())
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         alert.setTitle(R.string.export_success_title);
         alert.setMessage(message);
         alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
             Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-                    context.getResources().getText(R.string.opml_export_label));
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label));
             sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
             sendIntent.setType("text/plain");
             sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                List<ResolveInfo> resInfoList = getContext().getPackageManager()
+                        .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
                 for (ResolveInfo resolveInfo : resInfoList) {
                     String packageName = resolveInfo.activityInfo.packageName;
-                    context.grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
             }
-            context.startActivity(Intent.createChooser(sendIntent,
-                    context.getResources().getText(R.string.send_label)));
+            getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
         });
         alert.create().show();
     }
 
-    private void showExportErrorDialog(final Context context, final Throwable error) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(context)
+    private void showExportErrorDialog(final Throwable error) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext())
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
         alert.setTitle(R.string.export_error_label);
         alert.setMessage(error.getMessage());
