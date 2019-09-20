@@ -55,16 +55,10 @@ public class PodDBAdapter {
      */
     private static final int IN_OPERATOR_MAXIMUM = 800;
 
-    /**
-     * Maximum number of entries per search request.
-     */
-    public static final int SEARCH_LIMIT = 30;
-
     // Key-constants
     public static final String KEY_ID = "id";
     public static final String KEY_TITLE = "title";
     public static final String KEY_CUSTOM_TITLE = "custom_title";
-    public static final String KEY_NAME = "name";
     public static final String KEY_LINK = "link";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_FILE_URL = "file_url";
@@ -1399,13 +1393,6 @@ public class PodDBAdapter {
         }
         return db.rawQuery(query, null);
     }
-
-
-    public static final int IDX_FEEDSTATISTICS_FEED = 0;
-    public static final int IDX_FEEDSTATISTICS_NUM_ITEMS = 1;
-    public static final int IDX_FEEDSTATISTICS_NEW_ITEMS = 2;
-    public static final int IDX_FEEDSTATISTICS_LATEST_EPISODE = 3;
-    public static final int IDX_FEEDSTATISTICS_IN_PROGRESS_EPISODES = 4;
 
     /**
      * Select number of items, new items, the date of the latest episode and the number of episodes in progress. The result

@@ -182,7 +182,7 @@ public class ExternalMedia implements Playable {
 		editor.putLong(PREF_LAST_PLAYED_TIME, timestamp);
 		position = newPosition;
 		lastPlayedTime = timestamp;
-		editor.commit();
+		editor.apply();
 	}
 
 	@Override

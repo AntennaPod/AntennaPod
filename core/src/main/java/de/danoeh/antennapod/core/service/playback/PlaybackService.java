@@ -516,6 +516,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
         Intent intentAllowThisTime = new Intent(originalIntent);
+        intentAllowThisTime.setAction(EXTRA_ALLOW_STREAM_THIS_TIME);
         intentAllowThisTime.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
         PendingIntent pendingIntentAllowThisTime;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -525,6 +526,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         Intent intentAlwaysAllow = new Intent(intentAllowThisTime);
+        intentAlwaysAllow.setAction(EXTRA_ALLOW_STREAM_ALWAYS);
         intentAlwaysAllow.putExtra(EXTRA_ALLOW_STREAM_ALWAYS, true);
         PendingIntent pendingIntentAlwaysAllow;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -1084,7 +1086,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         editor.putInt(
                 PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
 
-        editor.commit();
+        editor.apply();
     }
 
     private void writePlayerStatusPlaybackPreferences() {
@@ -1093,11 +1095,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext()).edit();
         int playerStatus = getCurrentPlayerStatusAsInt(mediaPlayer.getPlayerStatus());
-
-        editor.putInt(
-                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
-
-        editor.commit();
+        editor.putInt(PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
+        editor.apply();
     }
 
     private void sendNotificationBroadcast(int type, int code) {

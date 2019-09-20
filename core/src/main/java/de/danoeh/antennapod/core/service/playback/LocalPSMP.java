@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -350,13 +351,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.PAUSED, media, getPosition());
 
                 if (abandonFocus) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                                .setOnAudioFocusChangeListener(audioFocusChangeListener);
-                        audioManager.abandonAudioFocusRequest(builder.build());
-                    } else {
-                        audioManager.abandonAudioFocus(audioFocusChangeListener);
-                    }
+                    abandonAudioFocus();
                     pausedBecauseOfTransientAudiofocusLoss = false;
                 }
                 if (stream && reinit) {
@@ -368,6 +363,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
             playerLock.unlock();
         });
+    }
+
+    private void abandonAudioFocus() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setOnAudioFocusChangeListener(audioFocusChangeListener);
+            audioManager.abandonAudioFocusRequest(builder.build());
+        } else {
+            audioManager.abandonAudioFocus(audioFocusChangeListener);
+        }
     }
 
     /**
@@ -834,6 +839,19 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         @Override
         public void onAudioFocusChange(final int focusChange) {
+            if (!PlaybackService.isRunning) {
+                abandonAudioFocus();
+                Log.d(TAG, "onAudioFocusChange: PlaybackService is no longer running");
+                if (focusChange == AudioManager.AUDIOFOCUS_GAIN && pausedBecauseOfTransientAudiofocusLoss) {
+                    new PlaybackServiceStarter(context, getPlayable())
+                            .startWhenPrepared(true)
+                            .streamIfLastWasStream()
+                            .callEvenIfRunning(false)
+                            .start();
+                }
+                return;
+            }
+
             executor.submit(() -> {
                 playerLock.lock();
 
@@ -907,13 +925,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 mediaPlayer.reset();
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                        .setOnAudioFocusChangeListener(audioFocusChangeListener);
-                audioManager.abandonAudioFocusRequest(builder.build());
-            } else {
-                audioManager.abandonAudioFocus(audioFocusChangeListener);
-            }
+            abandonAudioFocus();
 
             final Playable currentMedia = media;
             Playable nextMedia = null;

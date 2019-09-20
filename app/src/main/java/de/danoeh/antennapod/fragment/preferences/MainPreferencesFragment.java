@@ -83,7 +83,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(PREF_FAQ).setOnPreferenceClickListener(preference -> {
-            openInBrowser("http://antennapod.org/faq.html");
+            openInBrowser("https://antennapod.org/faq.html");
             return true;
         });
         findPreference(PREF_SEND_CRASH_REPORT).setOnPreferenceClickListener(preference -> {

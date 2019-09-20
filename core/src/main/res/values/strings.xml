@@ -27,10 +27,8 @@
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_summary">Synchronize with other devices</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
-    <string name="free_space_label">%1$s free</string>
     <string name="episode_cache_full_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
-    <string name="synchronizing">Synchronizing…</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
@@ -73,7 +71,6 @@
     <string name="author_label">Author(s)</string>
     <string name="language_label">Language</string>
     <string name="url_label">URL</string>
-    <string name="podcast_settings_label">Settings</string>
     <string name="cover_label">Picture</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
@@ -82,14 +79,9 @@
     <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
     <string name="chapters_label">Chapters</string>
     <string name="chapter_duration">Duration: %1$s</string>
-    <string name="shownotes_label">Shownotes</string>
     <string name="description_label">Description</string>
-    <string name="most_recent_prefix">Most recent episode:\u0020</string>
     <string name="episodes_suffix">\u0020episodes</string>
-    <string name="length_prefix">Length:\u0020</string>
-    <string name="size_prefix">Size:\u0020</string>
     <string name="processing_label">Processing</string>
-    <string name="loading_label">Loading&#8230;</string>
     <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
@@ -119,8 +111,6 @@
     <string name="feedurl_label">Feed URL</string>
     <string name="etxtFeedurlHint">www.example.com/feed</string>
     <string name="txtvfeedurl_label">Add Podcast by URL</string>
-    <string name="podcastdirectories_label">Find Podcast in Directory</string>
-    <string name="podcastdirectories_descr">For new podcasts, you can search iTunes or fyyd, or browse gpodder.net by name, category or popularity.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
     <string name="discover">Discover</string>
     <string name="discover_more">more »</string>
@@ -149,7 +139,6 @@
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
-    <string name="hide_episodes_title">Hide Episodes</string>
     <string name="batch_edit">Batch edit</string>
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
@@ -174,9 +163,7 @@
     </plurals>
     <string name="play_label">Play</string>
     <string name="pause_label">Pause</string>
-    <string name="stop_label">Stop</string>
     <string name="stream_label">Stream</string>
-    <string name="remove_label">Remove</string>
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
     <string name="delete_episode_label">Delete Episode</string>
@@ -221,14 +208,12 @@
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
-    <string name="download_failed">failed</string>
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
     <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
     <string name="download_error_insufficient_space">Insufficient Space</string>
-    <string name="download_error_file_error">File Error</string>
     <string name="download_error_http_data_error">HTTP Data Error</string>
     <string name="download_error_error_unknown">Unknown Error</string>
     <string name="download_error_parser_exception">Parser Exception</string>
@@ -238,7 +223,6 @@
     <string name="download_error_unauthorized">Authentication Error</string>
     <string name="download_error_file_type_type">File Type Error</string>
     <string name="download_error_forbidden">Forbidden</string>
-    <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
@@ -257,7 +241,6 @@
     <string name="download_log_title_unknown">Unknown Title</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
-    <string name="download_type_image">Image</string>
     <string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
     <string name="null_value_podcast_error">No podcast was provided that could be shown.</string>
     <string name="authentication_notification_title">Authentication required</string>
@@ -285,7 +268,6 @@
     <string name="position_default_label" translate="false">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
     <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
-    <string name="playbackservice_notification_title">Playing podcast</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
 
     <!-- Queue operations -->
@@ -293,9 +275,10 @@
     <string name="unlock_queue">Unlock Queue</string>
     <string name="queue_locked">Queue locked</string>
     <string name="queue_unlocked">Queue unlocked</string>
+    <string name="queue_lock_warning">If you lock the queue, you can no longer swipe or reorder episodes.</string>
+    <string name="checkbox_do_not_show_again">Do not show again</string>
     <string name="clear_queue_label">Clear Queue</string>
     <string name="undo">Undo</string>
-    <string name="removed_from_queue">Item removed</string>
     <string name="move_to_top_label">Move to top</string>
     <string name="move_to_bottom_label">Move to bottom</string>
     <string name="sort">Sort</string>
@@ -322,7 +305,6 @@
     <!-- Empty list labels -->
     <string name="no_items_header_label">No queued episodes</string>
     <string name="no_items_label">Add an episode by downloading it, or long press an episode and select \"Add to queue\".</string>
-    <string name="no_feeds_label">You haven\'t subscribed to any podcasts yet.</string>
     <string name="no_shownotes_label">This episode has no shownotes.</string>
     <string name="no_run_downloads_head_label">No downloads running</string>
     <string name="no_run_downloads_label">You can download episodes on the podcast details screen.</string>
@@ -344,7 +326,6 @@
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
     <string name="project_pref">Project</string>
-    <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
     <string name="integrations_label">Integrations</string>
@@ -388,9 +369,7 @@
     <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
     <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
     <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
-    <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
     <string name="pref_followQueue_title">Continuous Playback</string>
-    <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones Disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
@@ -401,11 +380,8 @@
     <string name="pref_mobileUpdate_auto_download">Auto download</string>
     <string name="pref_mobileUpdate_episode_download">Episode download</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
-    <string name="refreshing_label">Refreshing</string>
     <string name="user_interface_label">User Interface</string>
     <string name="pref_set_theme_title">Select Theme</string>
-    <string name="pref_nav_drawer_title">Customize Navigation Drawer</string>
-    <string name="pref_nav_drawer_sum">Customize the appearance of the navigation drawer.</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
@@ -417,8 +393,6 @@
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
-    <string name="pref_autodl_allow_on_mobile_title">Download on mobile connection</string>
-    <string name="pref_autodl_allow_on_mobile_sum">Allow automatic download over the mobile data connection.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_parallel_downloads_title">Parallel Downloads</string>
@@ -443,7 +417,6 @@
     <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
     <string name="pref_gpodnet_sync_sum_last_sync_line">Last sync attempt: %1$s (%2$s)</string>
     <string name="pref_gpodnet_sync_started">Sync started</string>
-    <string name="pref_gpodnet_full_sync_started">Full sync started</string>
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_gpodnet_notifications_title">Show sync error notifications</string>
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
@@ -525,21 +498,16 @@
     <string name="no_results_for_query">No results were found for \"%1$s\"</string>
 
     <!-- OPML import and export -->
-    <string name="opml_import_txtv_button_lable">OPML files allow you to move your podcasts from one podcatcher to another.</string>
     <string name="opml_import_option">Option %1$d</string>
     <string name="opml_import_explanation_1">Choose a specific file path from the local filesystem.</string>
-    <string name="opml_import_explanation_2">Use an external applications like Dropbox, Google Drive or your favourite file manager to open an OPML file.</string>
-    <string name="opml_import_explanation_3">Many applications like Google Mail, Dropbox, Google Drive and most file managers can <i>open</i> OPML files <i>with</i> AntennaPod.</string>    <string name="start_import_label">Start import</string>
+    <string name="opml_import_explanation_3">Many applications like Google Mail, Dropbox, Google Drive and most file managers can <i>open</i> OPML files <i>with</i> AntennaPod.</string>
     <string name="opml_import_label">OPML Import</string>
-    <string name="opml_directory_error">ERROR!</string>
     <string name="reading_opml_label">Reading OPML file</string>
     <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
     <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
-    <string name="select_options_label">Select&#8230;</string>
     <string name="choose_file_from_filesystem">From local filesystem</string>
-    <string name="choose_file_from_external_application">Use external application</string>
     <string name="opml_export_label">OPML export</string>
     <string name="html_export_label">HTML export</string>
     <string name="exporting_label">Exporting&#8230;</string>
@@ -638,7 +606,6 @@
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
-    <string name="subscribed_label">Subscribed</string>
     <string name="downloading_label">Downloading&#8230;</string>
 
     <!-- Content descriptions for image buttons -->
@@ -761,7 +728,6 @@
     <string name="cast_failed_setting_volume">Failed to set the volume</string>
     <string name="cast_failed_no_connection">No connection to the cast device is present</string>
     <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
-    <string name="cast_failed_perform_action">Failed to perform the action</string>
     <string name="cast_failed_status_request">Failed to sync up with the cast device</string>
     <string name="cast_failed_seek">Failed to seek to the new position on the cast device</string>
     <string name="cast_failed_receiver_player_error">Receiver player has encountered a severe error</string>

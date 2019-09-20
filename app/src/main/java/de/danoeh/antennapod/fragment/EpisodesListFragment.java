@@ -149,7 +149,7 @@ public abstract class EpisodesListFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_SCROLL_POSITION, firstItem);
         editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
-        editor.commit();
+        editor.apply();
     }
 
     private void restoreScrollPosition() {
@@ -162,7 +162,7 @@ public abstract class EpisodesListFragment extends Fragment {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(PREF_SCROLL_POSITION, 0);
             editor.putFloat(PREF_SCROLL_OFFSET, 0.0f);
-            editor.commit();
+            editor.apply();
         }
     }
 

@@ -251,6 +251,9 @@
   <string name="confirm_mobile_download_dialog_title">Conferma il download su cellulare</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Il download tramite rete mobile è disattivato nelle impostazioni.\n\nÈ possibile scegliere di aggiungere semplicemente l\'episodio alla coda o consentire temporaneamente il download.\n\n<small>La scelta  verrà ricordata per 10 minuti.</small></string>
   <string name="confirm_mobile_download_dialog_message">Il download tramite rete mobile è disattivato nelle impostazioni.\n\nVuoi abilitare temporaneamente il download?\n\n<small>La scelta verrà ricordata per 10 minuti.</small></string>
+  <string name="confirm_mobile_streaming_notification_title">Conferma streaming su rete mobile</string>
+  <string name="confirm_mobile_streaming_notification_message">Lo streaming su rete mobile è disattivato nelle impostazioni. Tocca per avviare comunque.</string>
+  <string name="confirm_mobile_streaming_button_always">Consenti sempre</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Aggiungi alla coda</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Consenti temporaneamente</string>
   <!--Mediaplayer messages-->
@@ -260,6 +263,8 @@
   <string name="player_ready_msg">Pronto</string>
   <string name="player_seeking_msg">Ricerca posizione</string>
   <string name="playback_error_server_died">Server morto</string>
+  <string name="playback_error_unsupported">Tipo media non supportato</string>
+  <string name="playback_error_timeout">Tempo operazione scaduto</string>
   <string name="playback_error_unknown">Errore sconosciuto</string>
   <string name="no_media_playing_label">Nessun elemento multimediale in riproduzione</string>
   <string name="player_buffering_msg">Buffer in corso</string>
@@ -277,6 +282,7 @@
   <string name="move_to_top_label">Sposta all\'inizio</string>
   <string name="move_to_bottom_label">Sposta in fondo</string>
   <string name="sort">Ordina</string>
+  <string name="keep_sorted">Mantieni ordinato</string>
   <string name="date">Per data</string>
   <string name="duration">Per durata</string>
   <string name="episode_title">Titolo dell\'episodio</string>
@@ -330,6 +336,9 @@
   <string name="external_elements">Elementi esterni</string>
   <string name="interruptions">Interruzioni</string>
   <string name="playback_control">Controllo riproduzione</string>
+  <string name="preference_search_hint">Cerca...</string>
+  <string name="preference_search_no_results">Nessun risultato</string>
+  <string name="preference_search_clear_history">Svuota cronologia</string>
   <string name="media_player">Media player</string>
   <string name="pref_episode_cleanup_title">Pulizia episodi</string>
   <string name="pref_episode_cleanup_summary">Gli episodi che non sono in coda e non sono tra i preferiti potrebbero essere rimossi se i Download Automatici richiedono maggiore spazio.</string>
@@ -339,7 +348,7 @@
   <string name="pref_hardwareForwardButtonSkips_title">Il tasto Avanti salta la traccia</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Quando viene premuto il tasto Avanti sul dispositivo bluetooth connesso, passa all\'episodio successivo invece di andare avanti veloce</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Il tasto Indietro riavvia la traccia</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Quando viene premuto un tasto Indietro fisico, viene riavviata la traccia invece di tornare indietro</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Quando viene premuto il tasto fisico Indietro, viene riavviata la traccia invece di tornare indietro</string>
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda quando viene completata la riproduzione</string>
   <string name="pref_auto_delete_sum">Elimina l\'episodio quando viene completata la riproduzione</string>
   <string name="pref_auto_delete_title">Elimina automaticamente</string>
@@ -366,13 +375,19 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Riconnessione cuffie</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Riconnessione Bluetooth</string>
   <string name="pref_mobileUpdate_title">Aggiornamenti su rete mobile</string>
+  <string name="pref_mobileUpdate_sum">Seleziona quali operazioni sono consentite su reti mobili a consumo</string>
+  <string name="pref_mobileUpdate_refresh">Aggiornamento feed</string>
+  <string name="pref_mobileUpdate_images">Copertine</string>
+  <string name="pref_mobileUpdate_auto_download">Download automatici</string>
+  <string name="pref_mobileUpdate_episode_download">Download episodi</string>
+  <string name="pref_mobileUpdate_streaming">Streaming</string>
   <string name="refreshing_label">Aggiornamento</string>
   <string name="user_interface_label">Interfaccia utente</string>
   <string name="pref_set_theme_title">Seleziona un tema</string>
   <string name="pref_nav_drawer_title">Personalizza menù di navigazione</string>
   <string name="pref_nav_drawer_sum">Personalizza l\'aspetto del menù di navigazione</string>
   <string name="pref_nav_drawer_items_title">Seleziona elementi del menù</string>
-  <string name="pref_nav_drawer_items_sum">Aggiunti o rimuovi gli elementi che appaiono nel menù laterale.</string>
+  <string name="pref_nav_drawer_items_sum">Aggiungi o rimuovi gli elementi che appaiono nel menù laterale.</string>
   <string name="pref_nav_drawer_feed_order_title">Imposta l\'ordine delle sottoscrizioni</string>
   <string name="pref_nav_drawer_feed_order_sum">Modifica l\'ordine delle tue sottoscrizioni</string>
   <string name="pref_nav_drawer_feed_counter_title">Contatore delle sottoscrizioni</string>
@@ -414,8 +429,8 @@
   <string name="pref_gpodnet_notifications_sum">Non si applica agli errori di autenticazione.</string>
   <string name="pref_playback_speed_title">Velocità di riproduzione</string>
   <string name="pref_playback_speed_sum">Personalizza le velocità disponibili per la riproduzione audio a velocità variabile</string>
-  <string name="pref_playback_time_respects_speed_title">Adatta informazioni alla velocità di riproduzione.</string>
-  <string name="pref_playback_time_respects_speed_sum">Il completamento e la durata vengono adattate in base alla velocità di riproduzione.</string>
+  <string name="pref_playback_time_respects_speed_title">Adatta info alla velocità di riproduzione</string>
+  <string name="pref_playback_time_respects_speed_sum">La posizione del cursore e la durata si adattano alla velocità di riproduzione scelta.</string>
   <string name="pref_fast_forward">Tempo di salto in avanti</string>
   <string name="pref_fast_forward_sum">Personalizza il numero di secondi da saltare in avanti quando si preme il tasto Avanti veloce</string>
   <string name="pref_rewind">Tempo di salto indietro</string>
@@ -435,7 +450,7 @@
   <string name="pref_showDownloadReport_title">Mostra il rapporto del download</string>
   <string name="pref_showDownloadReport_sum">Se il download fallisce, genera un report che mostra i dettagli dell\'errore.</string>
   <string name="pref_expand_notify_unsupport_toast">Le versioni di Android prima della 4.1 non supportano le notifiche estese.</string>
-  <string name="pref_queueAddToFront_sum">Aggiungi un nuovo episodio in testa alla coda.</string>
+  <string name="pref_queueAddToFront_sum">Aggiungi i nuovi episodi in cima alla coda.</string>
   <string name="pref_queueAddToFront_title">Aggiungi in cima alla coda</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
   <string name="pref_image_cache_size_title">Dimensione cache delle immagini</string>

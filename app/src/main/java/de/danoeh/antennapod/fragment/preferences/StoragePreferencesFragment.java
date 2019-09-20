@@ -69,7 +69,9 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
     @Override
     public void onStop() {
         super.onStop();
-        unsubscribeExportSubscription();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     private void setupStorageScreen() {
@@ -210,12 +212,6 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         alert.setTitle(R.string.export_error_label);
         alert.setMessage(error.getMessage());
         alert.show();
-    }
-
-    public void unsubscribeExportSubscription() {
-        if (disposable != null) {
-            disposable.dispose();
-        }
     }
 
     @SuppressLint("NewApi")

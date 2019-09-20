@@ -36,7 +36,8 @@
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/cover_label"
                 android:gravity="center_vertical"
-                tools:src="@drawable/ic_stat_antenna_default"
+                android:foreground="?attr/selectableItemBackground"
+                tools:src="@drawable/ic_antenna"
                 tools:background="@android:color/holo_green_dark" />
 
             <TextView
@@ -47,6 +48,7 @@
                 android:layout_alignTop="@id/imgvCover"
                 android:layout_toRightOf="@id/imgvCover"
                 android:layout_toEndOf="@id/imgvCover"
+                android:foreground="?attr/selectableItemBackground"
                 tools:text="Podcast title"
                 tools:background="@android:color/holo_green_dark" />
 

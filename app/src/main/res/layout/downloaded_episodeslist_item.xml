@@ -17,7 +17,7 @@
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
         android:contentDescription="@string/cover_label"
         android:scaleType="centerCrop"
-        tools:src="@drawable/ic_stat_antenna_default"
+        tools:src="@drawable/ic_antenna"
         tools:background="@android:color/holo_green_dark"/>
 
 

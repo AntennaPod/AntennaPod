@@ -1,6 +1,7 @@
 package de.test.antennapod;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.StringRes;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.PerformException;
@@ -15,6 +16,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import org.hamcrest.Matcher;
 
 import java.io.File;
@@ -95,6 +97,13 @@ public class EspressoTestUtils {
 
         RatingDialog.init(InstrumentationRegistry.getTargetContext());
         RatingDialog.saveRated();
+    }
+
+    public static void setLastNavFragment(String tag) {
+        InstrumentationRegistry.getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE)
+                .edit()
+                .putString(MainActivity.PREF_LAST_FRAGMENT_TAG, tag)
+                .commit();
     }
 
     public static void clearDatabase() {

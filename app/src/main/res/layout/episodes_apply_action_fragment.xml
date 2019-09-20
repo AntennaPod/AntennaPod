@@ -29,12 +29,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:elevation="@dimen/sd_close_elevation"
-        tools:ignore="UnusedAttribute">
-        <!-- android:elevation:
-             1. Needs to match the speed dial's minimal elevation,
-                or the speed dial can't be clicked at all
-          -->
+        android:elevation="@dimen/sd_open_elevation"
+        tools:ignore="UnusedAttribute" >
+
         <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/fabSD"
             android:layout_width="match_parent"
