@@ -45,9 +45,8 @@
             android:title="@string/pref_faq"
             android:icon="?attr/ic_question_answer" />
         <Preference
-            android:key="prefSendCrashReport"
-            android:title="@string/crash_report_title"
-            android:summary="@string/crash_report_sum"
+            android:key="prefSendBugReport"
+            android:title="@string/bug_report_title"
             android:icon="?attr/ic_bug" />
         <Preference
             android:key="prefAbout"
