@@ -449,8 +449,8 @@
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
-    <string name="crash_report_title">Crash Report</string>
-    <string name="crash_report_sum">View details about last crash</string>
+    <string name="view_mailing_list">View mailing list</string>
+    <string name="bug_report_title">Report bug</string>
     <string name="open_bug_tracker">Open bug tracker</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
@@ -459,8 +459,7 @@
     <string name="pref_current_value">Current value: %1$s</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
-    <string name="pref_faq">FAQ</string>
-    <string name="pref_known_issues">Known issues</string>
+    <string name="pref_faq">Frequently Asked Questions</string>
     <string name="pref_no_browser_found">No web browser found.</string>
     <string name="pref_cast_title">Chromecast support</string>
     <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>

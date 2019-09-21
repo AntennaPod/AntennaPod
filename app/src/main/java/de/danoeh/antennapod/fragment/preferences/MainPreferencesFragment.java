@@ -12,7 +12,7 @@ import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AboutActivity;
-import de.danoeh.antennapod.activity.CrashReportActivity;
+import de.danoeh.antennapod.activity.BugReportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.StatisticsActivity;
 
@@ -24,9 +24,9 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SCREEN_NETWORK = "prefScreenNetwork";
     private static final String PREF_SCREEN_INTEGRATIONS = "prefScreenIntegrations";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
-    private static final String PREF_KNOWN_ISSUES = "prefKnownIssues";
     private static final String PREF_FAQ = "prefFaq";
-    private static final String PREF_SEND_CRASH_REPORT = "prefSendCrashReport";
+    private static final String PREF_VIEW_MAILING_LIST = "prefViewMailingList";
+    private static final String PREF_SEND_BUG_REPORT = "prefSendBugReport";
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
 
@@ -71,16 +71,16 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 }
         );
-        findPreference(PREF_KNOWN_ISSUES).setOnPreferenceClickListener(preference -> {
-            openInBrowser("https://github.com/AntennaPod/AntennaPod/labels/bug");
-            return true;
-        });
         findPreference(PREF_FAQ).setOnPreferenceClickListener(preference -> {
             openInBrowser("https://antennapod.org/faq.html");
             return true;
         });
-        findPreference(PREF_SEND_CRASH_REPORT).setOnPreferenceClickListener(preference -> {
-            startActivity(new Intent(getActivity(), CrashReportActivity.class));
+        findPreference(PREF_VIEW_MAILING_LIST).setOnPreferenceClickListener(preference -> {
+            openInBrowser("https://groups.google.com/forum/#!forum/antennapod");
+            return true;
+        });
+        findPreference(PREF_SEND_BUG_REPORT).setOnPreferenceClickListener(preference -> {
+            startActivity(new Intent(getActivity(), BugReportActivity.class));
             return true;
         });
     }

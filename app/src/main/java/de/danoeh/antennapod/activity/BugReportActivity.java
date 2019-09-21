@@ -24,14 +24,14 @@ import java.nio.charset.Charset;
 /**
  * Displays the 'crash report' screen
  */
-public class CrashReportActivity extends AppCompatActivity {
+public class BugReportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setContentView(R.layout.crash_report);
+        setContentView(R.layout.bug_report);
 
         TextView crashDetailsText = findViewById(R.id.crash_report_logs);
 
@@ -56,7 +56,7 @@ public class CrashReportActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_copy_log).setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(getString(R.string.crash_report_title), crashDetailsText.getText());
+            ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title), crashDetailsText.getText());
             clipboard.setPrimaryClip(clip);
             Snackbar.make(findViewById(android.R.id.content), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
         });

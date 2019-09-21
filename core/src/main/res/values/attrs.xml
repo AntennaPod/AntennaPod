@@ -57,9 +57,9 @@
     <attr name="ic_cast_disconnect" format="reference"/>
     <attr name="ic_swap" format="reference"/>
     <attr name="ic_cellphone_text" format="reference"/>
-    <attr name="ic_question_answer" format="reference" />
+    <attr name="ic_questionmark" format="reference" />
+    <attr name="ic_chat" format="reference"/>
     <attr name="ic_bug" format="reference" />
-    <attr name="ic_known_issues" format="reference" />
     <attr name="master_switch_background" format="color"/>
     <attr name="currently_playing_background" format="color"/>
     <attr name="ic_bookmark" format="reference"/>
