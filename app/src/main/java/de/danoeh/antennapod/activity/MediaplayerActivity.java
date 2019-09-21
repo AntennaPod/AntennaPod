@@ -391,29 +391,24 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return true;
         } else {
             if (media != null) {
+                final FeedItem feedItem = getFeedItem(media); // some options option requires FeedItem
                 switch (item.getItemId()) {
                     case R.id.add_to_favorites_item:
-                        if(media instanceof FeedMedia) {
-                            FeedItem feedItem = ((FeedMedia)media).getItem();
-                            if(feedItem != null) {
-                                DBWriter.addFavoriteItem(feedItem);
-                                isFavorite = true;
-                                invalidateOptionsMenu();
-                                Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
-                                     .show();
-                            }
+                        if(feedItem != null) {
+                            DBWriter.addFavoriteItem(feedItem);
+                            isFavorite = true;
+                            invalidateOptionsMenu();
+                            Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
+                                 .show();
                         }
                         break;
                     case R.id.remove_from_favorites_item:
-                        if(media instanceof FeedMedia) {
-                            FeedItem feedItem = ((FeedMedia)media).getItem();
-                            if(feedItem != null) {
-                                DBWriter.removeFavoriteItem(feedItem);
-                                isFavorite = false;
-                                invalidateOptionsMenu();
-                                Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
-                                     .show();
-                            }
+                        if(feedItem != null) {
+                            DBWriter.removeFavoriteItem(feedItem);
+                            isFavorite = false;
+                            invalidateOptionsMenu();
+                            Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
+                                    .show();
                         }
                         break;
                     case R.id.disable_sleeptimer_item:
@@ -451,12 +446,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         dialog.show(getSupportFragmentManager(), "playback_controls");
                         break;
                     case R.id.open_feed_item:
-                        if(media instanceof FeedMedia) {
-                            FeedItem feedItem = ((FeedMedia)media).getItem();
-                            if (feedItem != null) {
-                                Intent intent = MainActivity.getIntentToOpenFeed(this, feedItem.getFeedId());
-                                startActivity(intent);
-                            }
+                        if (feedItem != null) {
+                            Intent intent = MainActivity.getIntentToOpenFeed(this, feedItem.getFeedId());
+                            startActivity(intent);
                         }
                         break;
                     case R.id.visit_website_item:
@@ -465,22 +457,22 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         break;
                     case R.id.share_link_item:
                         if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemLink(this, ((FeedMedia) media).getItem());
+                            ShareUtils.shareFeedItemLink(this, feedItem);
                         }
                         break;
                     case R.id.share_download_url_item:
                         if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem());
+                            ShareUtils.shareFeedItemDownloadLink(this, feedItem);
                         }
                         break;
                     case R.id.share_link_with_position_item:
                         if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemLink(this, ((FeedMedia) media).getItem(), true);
+                            ShareUtils.shareFeedItemLink(this, feedItem, true);
                         }
                         break;
                     case R.id.share_download_url_with_position_item:
                         if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem(), true);
+                            ShareUtils.shareFeedItemDownloadLink(this, feedItem, true);
                         }
                         break;
                     case R.id.share_file:
@@ -824,11 +816,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     private void checkFavorite() {
-        Playable playable = controller.getMedia();
-        if (!(playable instanceof FeedMedia)) {
-            return;
-        }
-        FeedItem feedItem = ((FeedMedia) playable).getItem();
+        FeedItem feedItem = getFeedItem(controller.getMedia());
         if (feedItem == null) {
             return;
         }
@@ -881,6 +869,15 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Nullable
+    private static FeedItem getFeedItem(@Nullable Playable playable) {
+        if (playable instanceof FeedMedia) {
+            return ((FeedMedia)playable).getItem();
+        } else {
+            return null;
         }
     }
 }
