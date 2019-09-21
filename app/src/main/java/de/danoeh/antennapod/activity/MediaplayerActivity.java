@@ -322,6 +322,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         Playable media = controller.getMedia();
         boolean isFeedMedia = media != null && (media instanceof FeedMedia);
 
+        menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
+
         boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
@@ -447,6 +449,17 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         boolean isPlayingVideo = controller.getMedia().getMediaType() == MediaType.VIDEO;
                         PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance(isPlayingVideo);
                         dialog.show(getSupportFragmentManager(), "playback_controls");
+                        break;
+                    case R.id.open_feed_item:
+                        if(media instanceof FeedMedia) {
+                            FeedItem feedItem = ((FeedMedia)media).getItem();
+                            if (feedItem != null) {
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                intent.putExtra(MainActivity.EXTRA_FEED_ID, feedItem.getFeedId());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        }
                         break;
                     case R.id.visit_website_item:
                         Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
