@@ -454,9 +454,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         if(media instanceof FeedMedia) {
                             FeedItem feedItem = ((FeedMedia)media).getItem();
                             if (feedItem != null) {
-                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                intent.putExtra(MainActivity.EXTRA_FEED_ID, feedItem.getFeedId());
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                Intent intent = MainActivity.getIntentToOpenFeed(this, feedItem.getFeedId());
                                 startActivity(intent);
                             }
                         }
