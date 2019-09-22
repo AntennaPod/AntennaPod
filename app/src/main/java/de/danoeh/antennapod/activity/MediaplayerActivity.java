@@ -391,7 +391,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return true;
         } else {
             if (media != null) {
-                final FeedItem feedItem = getFeedItem(media); // some options option requires FeedItem
+                final @Nullable FeedItem feedItem = getFeedItem(media); // some options option requires FeedItem
                 switch (item.getItemId()) {
                     case R.id.add_to_favorites_item:
                         if (feedItem != null) {
@@ -456,22 +456,22 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));
                         break;
                     case R.id.share_link_item:
-                        if (media instanceof FeedMedia) {
+                        if (feedItem != null) {
                             ShareUtils.shareFeedItemLink(this, feedItem);
                         }
                         break;
                     case R.id.share_download_url_item:
-                        if (media instanceof FeedMedia) {
+                        if (feedItem != null) {
                             ShareUtils.shareFeedItemDownloadLink(this, feedItem);
                         }
                         break;
                     case R.id.share_link_with_position_item:
-                        if (media instanceof FeedMedia) {
+                        if (feedItem != null) {
                             ShareUtils.shareFeedItemLink(this, feedItem, true);
                         }
                         break;
                     case R.id.share_download_url_with_position_item:
-                        if (media instanceof FeedMedia) {
+                        if (feedItem != null) {
                             ShareUtils.shareFeedItemDownloadLink(this, feedItem, true);
                         }
                         break;
