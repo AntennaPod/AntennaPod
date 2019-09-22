@@ -8,6 +8,11 @@
         android:title="@string/skip_episode_label" />
 
     <item
+        android:id="@+id/remove_new_flag_item"
+        android:menuCategory="container"
+        android:title="@string/remove_new_flag_label" />
+
+    <item
         android:id="@+id/mark_read_item"
         android:menuCategory="container"
         android:title="@string/mark_read_label" />

@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,8 +21,16 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.joanzapata.iconify.Iconify;
+
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
@@ -35,19 +41,15 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -55,13 +57,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Shows unread or recently published episodes
@@ -262,17 +257,7 @@ public abstract class EpisodesListFragment extends Fragment {
         }
         FeedItem selectedItem = listAdapter.getSelectedItem();
 
-        // Remove new flag contains UI logic specific to All/New/FavoriteSegments,
-        // e.g., Undo with Snackbar,
-        // and is handled by this class rather than the generic FeedItemMenuHandler
-        // Undo is useful for Remove new flag, given there is no UI to undo it otherwise,
-        // i.e., there is context menu item for Mark as new
-        if (R.id.remove_new_flag_item == item.getItemId()) {
-            removeNewFlagWithUndo(selectedItem);
-            return true;
-        }
-
-        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
     @NonNull
@@ -453,36 +438,4 @@ public abstract class EpisodesListFragment extends Fragment {
 
     @NonNull
     protected abstract List<FeedItem> loadData();
-
-    void removeNewFlagWithUndo(FeedItem item) {
-        if (item == null) {
-            return;
-        }
-
-        Log.d(TAG, "removeNewFlagWithUndo(" + item.getId() + ")");
-        if (disposable != null) {
-            disposable.dispose();
-        }
-        // we're marking it as unplayed since the user didn't actually play it
-        // but they don't want it considered 'NEW' anymore
-        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-
-        final Handler h = new Handler(getActivity().getMainLooper());
-        final Runnable r = () -> {
-            FeedMedia media = item.getMedia();
-            if (media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
-                DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
-            }
-        };
-
-        Snackbar snackbar = Snackbar.make(getView(), getString(R.string.removed_new_flag_label),
-                Snackbar.LENGTH_LONG);
-        snackbar.setAction(getString(R.string.undo), v -> {
-            DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
-            // don't forget to cancel the thing that's going to remove the media
-            h.removeCallbacks(r);
-        });
-        snackbar.show();
-        h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
-    }
 }

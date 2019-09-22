@@ -55,7 +55,6 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -351,7 +350,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 openPodcast();
                 return true;
             default:
-                return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
+                return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
         }
     }
 

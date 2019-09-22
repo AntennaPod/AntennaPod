@@ -278,8 +278,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 }
             };
             FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
-
-            contextMenuInterface.setItemVisibility(R.id.remove_new_flag_item, item.isNew());
         }
 
     }
