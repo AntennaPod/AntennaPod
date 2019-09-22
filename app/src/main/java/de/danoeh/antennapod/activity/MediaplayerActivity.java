@@ -394,7 +394,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                 final FeedItem feedItem = getFeedItem(media); // some options option requires FeedItem
                 switch (item.getItemId()) {
                     case R.id.add_to_favorites_item:
-                        if(feedItem != null) {
+                        if (feedItem != null) {
                             DBWriter.addFavoriteItem(feedItem);
                             isFavorite = true;
                             invalidateOptionsMenu();
@@ -403,7 +403,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         }
                         break;
                     case R.id.remove_from_favorites_item:
-                        if(feedItem != null) {
+                        if (feedItem != null) {
                             DBWriter.removeFavoriteItem(feedItem);
                             isFavorite = false;
                             invalidateOptionsMenu();
@@ -874,7 +874,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Nullable
     private static FeedItem getFeedItem(@Nullable Playable playable) {
-        if (playable instanceof FeedMedia) {
+        if ((playable != null) && (playable instanceof FeedMedia)) {
             return ((FeedMedia)playable).getItem();
         } else {
             return null;
