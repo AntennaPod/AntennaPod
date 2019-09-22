@@ -323,7 +323,7 @@ public class FeedItemlistFragment extends ListFragment {
 
         contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true);
     }
 
     @Override
