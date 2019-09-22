@@ -133,6 +133,7 @@
     <string name="share_link_label">Share Episode URL</string>
     <string name="share_link_with_position_label">Share Episode URL with Position</string>
     <string name="share_file_label">Share File</string>
+    <string name="share_website_url_label">Share Website URL</string>
     <string name="share_feed_url_label">Share Feed URL</string>
     <string name="share_item_url_label">Share Media File URL</string>
     <string name="share_item_url_with_position_label">Share Media File URL with Position</string>
