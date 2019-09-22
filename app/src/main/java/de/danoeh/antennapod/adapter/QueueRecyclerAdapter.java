@@ -168,7 +168,8 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             FeedItem item = itemAccess.getItem(getAdapterPosition());
 
             MenuInflater inflater = mainActivity.get().getMenuInflater();
-            inflater.inflate(R.menu.queue_context, menu);
+            inflater.inflate(R.menu.queue_context, menu); // queue-specific menu items
+            inflater.inflate(R.menu.feeditemlist_context, menu); // generic menu items for item feeds
 
             if (item != null) {
                 menu.setHeaderTitle(item.getTitle());
