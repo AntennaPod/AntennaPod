@@ -262,7 +262,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             FeedItem item = itemAccess.getItem(getAdapterPosition());
 
             MenuInflater inflater = mainActivityRef.get().getMenuInflater();
-            inflater.inflate(R.menu.allepisodes_context, menu);
+            inflater.inflate(R.menu.feeditemlist_context, menu);
 
             if (item != null) {
                 menu.setHeaderTitle(item.getTitle());
@@ -278,8 +278,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 }
             };
             FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
-
-            contextMenuInterface.setItemVisibility(R.id.remove_new_flag_item, item.isNew());
         }
 
     }

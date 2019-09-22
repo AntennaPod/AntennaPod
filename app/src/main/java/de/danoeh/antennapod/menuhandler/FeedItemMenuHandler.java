@@ -3,7 +3,11 @@ package de.danoeh.antennapod.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -104,6 +108,7 @@ public class FeedItemMenuHandler {
         boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
         mi.setItemVisibility(R.id.share_file, fileDownloaded);
 
+        mi.setItemVisibility(R.id.remove_new_flag_item, selectedItem.isNew());
         if (selectedItem.isPlayed()) {
             mi.setItemVisibility(R.id.mark_read_item, false);
         } else {
@@ -153,14 +158,25 @@ public class FeedItemMenuHandler {
         return rc;
     }
 
-    public static boolean onMenuItemClicked(Context context, int menuItemId,
-                                            FeedItem selectedItem) {
+    /**
+     * Default menu handling for the given FeedItem.
+     *
+     * A Fragment instance, (rather than the more generic Context), is needed as a parameter
+     * to support some UI operations, e.g., creating a Snackbar.
+     */
+    public static boolean onMenuItemClicked(@NonNull Fragment fragment, int menuItemId,
+                                            @NonNull FeedItem selectedItem) {
+
+        @NonNull Context context = fragment.requireContext();
         switch (menuItemId) {
             case R.id.skip_episode_item:
                 IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
                 break;
             case R.id.remove_item:
                 DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
+                break;
+            case R.id.remove_new_flag_item:
+                removeNewFlagWithUndo(fragment, selectedItem);
                 break;
             case R.id.mark_read_item:
                 selectedItem.setPlayed(true);
@@ -247,6 +263,41 @@ public class FeedItemMenuHandler {
         // Refresh menu state
 
         return true;
+    }
+
+    /**
+     * Remove new flag with additional UI logic to allow undo with Snackbar.
+     *
+     * Undo is useful for Remove new flag, given there is no UI to undo it otherwise
+     * ,i.e., there is (context) menu item for add new flag
+     */
+    public static void removeNewFlagWithUndo(@NonNull Fragment fragment, FeedItem item) {
+        if (item == null) {
+            return;
+        }
+
+        Log.d(TAG, "removeNewFlagWithUndo(" + item.getId() + ")");
+        // we're marking it as unplayed since the user didn't actually play it
+        // but they don't want it considered 'NEW' anymore
+        DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+
+        final Handler h = new Handler(fragment.requireContext().getMainLooper());
+        final Runnable r = () -> {
+            FeedMedia media = item.getMedia();
+            if (media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                DBWriter.deleteFeedMediaOfItem(fragment.requireContext(), media.getId());
+            }
+        };
+
+        Snackbar snackbar = Snackbar.make(fragment.getView(), fragment.getString(R.string.removed_new_flag_label),
+                Snackbar.LENGTH_LONG);
+        snackbar.setAction(fragment.getString(R.string.undo), v -> {
+            DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
+            // don't forget to cancel the thing that's going to remove the media
+            h.removeCallbacks(r);
+        });
+        snackbar.show();
+        h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
     }
 
 }

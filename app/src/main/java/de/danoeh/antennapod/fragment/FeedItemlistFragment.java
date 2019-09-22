@@ -340,7 +340,7 @@ public class FeedItemlistFragment extends ListFragment {
             return super.onContextItemSelected(item);
         }
 
-        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
     @Override
