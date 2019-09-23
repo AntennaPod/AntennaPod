@@ -103,7 +103,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.reset_position, false);
         }
 
-        if(!UserPreferences.isEnableAutodownload()) {
+        if(!UserPreferences.isEnableAutodownload() || fileDownloaded) {
             mi.setItemVisibility(R.id.activate_auto_download, false);
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
         } else if(selectedItem.getAutoDownload()) {
