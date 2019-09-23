@@ -142,11 +142,11 @@ public class AntennapodHttpClient {
                 });
             }
         }
-        if(16 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT < 21) {
+        if (16 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT < 21) {
             builder.sslSocketFactory(new CustomSslSocketFactory(), trustManager());
         }
 
-        if(Build.VERSION.SDK_INT < 21) {
+        if (Build.VERSION.SDK_INT < 21) {
             // workaround for Android 4.x for certain web sites.
             // see: https://github.com/square/okhttp/issues/4053#issuecomment-402579554
             List<CipherSuite> cipherSuites = new ArrayList<>();
