@@ -29,17 +29,34 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = "CastEnabledActivity";
 
-    protected CastManager castManager;
-    protected SwitchableMediaRouteActionProvider mediaRouteActionProvider;
+    private CastConsumer castConsumer;
+    private CastManager castManager;
+
+    private SwitchableMediaRouteActionProvider mediaRouteActionProvider;
     private final CastButtonVisibilityManager castButtonVisibilityManager = new CastButtonVisibilityManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (!CastManager.isInitialized()) {
+            return;
+        }
+
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).
                 registerOnSharedPreferenceChangeListener(this);
 
+        castConsumer = new DefaultCastConsumer() {
+            @Override
+            public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
+                onCastConnectionChanged(true);
+            }
+
+            @Override
+            public void onDisconnected() {
+                onCastConnectionChanged(false);
+            }
+        };
         castManager = CastManager.getInstance();
         castManager.addCastConsumer(castConsumer);
         castButtonVisibilityManager.setPrefEnabled(UserPreferences.isCastEnabled());
@@ -48,6 +65,10 @@ public abstract class CastEnabledActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
+        if (!CastManager.isInitialized()) {
+            super.onDestroy();
+            return;
+        }
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .unregisterOnSharedPreferenceChangeListener(this);
         castManager.removeCastConsumer(castConsumer);
@@ -58,6 +79,9 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     @CallSuper
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
+        if (!CastManager.isInitialized()) {
+            return true;
+        }
         getMenuInflater().inflate(R.menu.cast_enabled, menu);
         castButtonVisibilityManager.setMenu(menu);
         return true;
@@ -67,6 +91,10 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     @CallSuper
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        if (!CastManager.isInitialized()) {
+            return true;
+        }
+
         MenuItem mediaRouteButton = menu.findItem(R.id.media_route_menu_item);
         if (mediaRouteButton == null) {
             Log.wtf(TAG, "MediaRoute item could not be found on the menu!", new Exception());
@@ -83,14 +111,20 @@ public abstract class CastEnabledActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        if (!CastManager.isInitialized()) {
+            return;
+        }
         castButtonVisibilityManager.setResumed(true);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        castButtonVisibilityManager.setResumed(false);
+        if (!CastManager.isInitialized()) {
+            return;
+        }
     }
+
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
@@ -104,18 +138,6 @@ public abstract class CastEnabledActivity extends AppCompatActivity
             }
         }
     }
-
-    CastConsumer castConsumer = new DefaultCastConsumer() {
-        @Override
-        public void onApplicationConnected(ApplicationMetadata appMetadata, String sessionId, boolean wasLaunched) {
-            onCastConnectionChanged(true);
-        }
-
-        @Override
-        public void onDisconnected() {
-            onCastConnectionChanged(false);
-        }
-    };
 
     private void onCastConnectionChanged(boolean connected) {
         if (connected) {
@@ -133,6 +155,9 @@ public abstract class CastEnabledActivity extends AppCompatActivity
      * @param showAsAction refer to {@link MenuItem#setShowAsAction(int)}
      */
     public final void requestCastButton(int showAsAction) {
+        if (!CastManager.isInitialized()) {
+            return;
+        }
         castButtonVisibilityManager.requestCastButton(showAsAction);
     }
 

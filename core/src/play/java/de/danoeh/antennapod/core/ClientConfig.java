@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core;
 
 import android.content.Context;
+import android.util.Log;
 
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -15,6 +16,8 @@ import de.danoeh.antennapod.core.util.exception.RxJavaErrorHandlerSetup;
  * Apps using the core module of AntennaPod should register implementations of all interfaces here.
  */
 public class ClientConfig {
+    private static final String TAG = "ClientConfig";
+
     private ClientConfig(){}
 
     /**
@@ -44,7 +47,15 @@ public class ClientConfig {
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
         NetworkUtils.init(context);
-        CastManager.init(context);
+        // Don't initialize Cast-related logic unless it is enabled, to avoid the unnecessary
+        // Google Play Service usage.
+        // Down side: when the user decides to enable casting, AntennaPod needs to be restarted
+        // for it to take effect.
+        if (UserPreferences.isCastEnabled()) {
+            CastManager.init(context);
+        } else {
+            Log.v(TAG, "Cast is disabled. All Cast-related initialization will be skipped.");
+        }
         SleepTimerPreferences.init(context);
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
         initialized = true;
