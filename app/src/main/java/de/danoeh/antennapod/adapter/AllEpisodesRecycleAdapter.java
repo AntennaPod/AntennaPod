@@ -277,7 +277,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                     item1.setVisible(visible);
                 }
             };
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true);
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item);
         }
 
     }

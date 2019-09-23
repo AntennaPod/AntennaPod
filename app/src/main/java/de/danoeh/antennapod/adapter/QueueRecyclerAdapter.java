@@ -185,7 +185,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 }
             };
 
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true,
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item,
                     R.id.skip_episode_item); // Skip Episode is not useful in Queue, so hide it.
             // Queue-specific menu preparation
             final boolean keepSorted = UserPreferences.isQueueKeepSorted();

@@ -53,14 +53,10 @@ public class FeedItemMenuHandler {
      * @param mi               An instance of MenuInterface that the method uses to change a
      *                         MenuItem's visibility
      * @param selectedItem     The FeedItem for which the menu is supposed to be prepared
-     * @param showExtendedMenu True if MenuItems that let the user share information about
-     *                         the FeedItem and visit its website should be set visible. This
-     *                         parameter should be set to false if the menu space is limited.
      * @return Returns true if selectedItem is not null.
      */
     public static boolean onPrepareMenu(MenuInterface mi,
-                                        FeedItem selectedItem,
-                                        boolean showExtendedMenu) {
+                                        FeedItem selectedItem) {
         if (selectedItem == null) {
             return false;
         }
@@ -79,12 +75,12 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.add_to_queue_item, false);
         }
 
-        if (!showExtendedMenu || !ShareUtils.hasLinkToShare(selectedItem)) {
+        if (!ShareUtils.hasLinkToShare(selectedItem)) {
             mi.setItemVisibility(R.id.visit_website_item, false);
             mi.setItemVisibility(R.id.share_link_item, false);
             mi.setItemVisibility(R.id.share_link_with_position_item, false);
         }
-        if (!showExtendedMenu || !hasMedia || selectedItem.getMedia().getDownload_url() == null) {
+        if (!hasMedia || selectedItem.getMedia().getDownload_url() == null) {
             mi.setItemVisibility(R.id.share_download_url_item, false);
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
@@ -134,9 +130,8 @@ public class FeedItemMenuHandler {
      */
     public static boolean onPrepareMenu(MenuInterface mi,
                                         FeedItem selectedItem,
-                                        boolean showExtendedMenu,
                                         int... excludeIds) {
-        boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu);
+        boolean rc = onPrepareMenu(mi, selectedItem);
         if (rc && excludeIds != null) {
             for (int id : excludeIds) {
                 mi.setItemVisibility(id, false);

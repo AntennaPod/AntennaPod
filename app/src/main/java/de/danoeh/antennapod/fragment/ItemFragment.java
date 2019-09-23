@@ -335,10 +335,10 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         inflater.inflate(R.menu.feeditem_options, menu);
         popupMenu = menu;
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true);
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item);
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true,
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item,
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }
