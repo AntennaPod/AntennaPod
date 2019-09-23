@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,7 +21,6 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ShareUtils;
 
 /**
@@ -55,35 +53,21 @@ public class FeedItemMenuHandler {
      * @param mi               An instance of MenuInterface that the method uses to change a
      *                         MenuItem's visibility
      * @param selectedItem     The FeedItem for which the menu is supposed to be prepared
-     * @param showExtendedMenu True if MenuItems that let the user share information about
-     *                         the FeedItem and visit its website should be set visible. This
-     *                         parameter should be set to false if the menu space is limited.
-     * @param queueAccess      Used for testing if the queue contains the selected item; only used for
-     *                         move to top/bottom in the queue
      * @return Returns true if selectedItem is not null.
      */
     public static boolean onPrepareMenu(MenuInterface mi,
-                                        FeedItem selectedItem,
-                                        boolean showExtendedMenu,
-                                        @Nullable LongList queueAccess) {
+                                        FeedItem selectedItem) {
         if (selectedItem == null) {
             return false;
         }
         boolean hasMedia = selectedItem.getMedia() != null;
         boolean isPlaying = hasMedia && selectedItem.getState() == FeedItem.State.PLAYING;
-        boolean keepSorted = UserPreferences.isQueueKeepSorted();
 
         if (!isPlaying) {
             mi.setItemVisibility(R.id.skip_episode_item, false);
         }
 
         boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
-        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(0) == selectedItem.getId() || keepSorted) {
-            mi.setItemVisibility(R.id.move_to_top_item, false);
-        }
-        if (queueAccess == null || queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == selectedItem.getId() || keepSorted) {
-            mi.setItemVisibility(R.id.move_to_bottom_item, false);
-        }
         if (!isInQueue) {
             mi.setItemVisibility(R.id.remove_from_queue_item, false);
         }
@@ -91,12 +75,12 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.add_to_queue_item, false);
         }
 
-        if (!showExtendedMenu || !ShareUtils.hasLinkToShare(selectedItem)) {
+        if (!ShareUtils.hasLinkToShare(selectedItem)) {
             mi.setItemVisibility(R.id.visit_website_item, false);
             mi.setItemVisibility(R.id.share_link_item, false);
             mi.setItemVisibility(R.id.share_link_with_position_item, false);
         }
-        if (!showExtendedMenu || !hasMedia || selectedItem.getMedia().getDownload_url() == null) {
+        if (!hasMedia || selectedItem.getMedia().getDownload_url() == null) {
             mi.setItemVisibility(R.id.share_download_url_item, false);
             mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
@@ -119,7 +103,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.reset_position, false);
         }
 
-        if(!UserPreferences.isEnableAutodownload()) {
+        if(!UserPreferences.isEnableAutodownload() || fileDownloaded) {
             mi.setItemVisibility(R.id.activate_auto_download, false);
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
         } else if(selectedItem.getAutoDownload()) {
@@ -146,10 +130,8 @@ public class FeedItemMenuHandler {
      */
     public static boolean onPrepareMenu(MenuInterface mi,
                                         FeedItem selectedItem,
-                                        boolean showExtendedMenu,
-                                        LongList queueAccess,
                                         int... excludeIds) {
-        boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu, queueAccess);
+        boolean rc = onPrepareMenu(mi, selectedItem);
         if (rc && excludeIds != null) {
             for (int id : excludeIds) {
                 mi.setItemVisibility(id, false);
