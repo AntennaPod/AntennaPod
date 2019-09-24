@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.SurfaceHolder;
 
 import com.google.android.exoplayer2.C;
@@ -27,7 +28,6 @@ import com.google.android.exoplayer2.util.Util;
 import org.antennapod.audio.MediaPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 
-
 public class ExoPlayerWrapper implements IPlayer {
     private final Context mContext;
     private SimpleExoPlayer mExoPlayer;
@@ -35,15 +35,35 @@ public class ExoPlayerWrapper implements IPlayer {
     private MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener;
     private MediaPlayer.OnCompletionListener audioCompletionListener;
     private MediaPlayer.OnErrorListener audioErrorListener;
+    private MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener;
+    private boolean shouldCheckBufferingUpdates = true;
+
 
     ExoPlayerWrapper(Context context) {
         mContext = context;
         mExoPlayer = createPlayer();
+
+        Handler handler = new Handler(); // Main thread
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (bufferingUpdateListener != null) {
+                    bufferingUpdateListener.onBufferingUpdate(null, mExoPlayer.getBufferedPercentage());
+                }
+                if (shouldCheckBufferingUpdates) {
+                    handler.postDelayed(this, 2000);
+                }
+            }
+        }, 2000);
     }
 
     private SimpleExoPlayer createPlayer() {
+        DefaultLoadControl.Builder loadControl = new DefaultLoadControl.Builder();
+        loadControl.setBufferDurationsMs(30000, 120000,
+                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext),
-                new DefaultTrackSelector(), new DefaultLoadControl());
+                new DefaultTrackSelector(), loadControl.createDefaultLoadControl());
         p.setSeekParameters(SeekParameters.PREVIOUS_SYNC);
         p.addListener(new Player.EventListener() {
             @Override
@@ -148,12 +168,14 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void release() {
+        shouldCheckBufferingUpdates = false;
         if (mExoPlayer != null) {
             mExoPlayer.release();
         }
         audioSeekCompleteListener = null;
         audioCompletionListener = null;
         audioErrorListener = null;
+        bufferingUpdateListener = null;
     }
 
     @Override
@@ -246,5 +268,9 @@ public class ExoPlayerWrapper implements IPlayer {
             return 0;
         }
         return mExoPlayer.getVideoFormat().height;
+    }
+
+    void setOnBufferingUpdateListener(MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener) {
+        this.bufferingUpdateListener = bufferingUpdateListener;
     }
 }

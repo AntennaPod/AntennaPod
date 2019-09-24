@@ -2,22 +2,16 @@
 <resources>
 
     <color name="white">#FFFFFF</color>
-    <color name="gray">#808080</color>
     <color name="grey600">#757575</color>
     <color name="light_gray">#bfbfbf</color>
     <color name="black">#000000</color>
     <color name="holo_blue_light">#33B5E5</color>
     <color name="holo_blue_dark">#0099CC</color>
-    <color name="ics_gray">#858585</color>
-    <color name="actionbar_gray">#DDDDDD</color>
     <color name="download_success_green">#669900</color>
     <color name="download_failed_red">#CC0000</color>
     <color name="status_progress">#E033B5E5</color>
-    <color name="status_playing">#E0EE5F52</color>
     <color name="overlay_dark">#2C2C2C</color>
     <color name="overlay_light">#FFFFFF</color>
-    <color name="swipe_refresh_secondary_color_light">#EDEDED</color>
-    <color name="swipe_refresh_secondary_color_dark">#060708</color>
     <color name="new_indicator_green">#669900</color>
     <color name="image_readability_tint">#80000000</color>
     <color name="feed_image_bg">#50000000</color>

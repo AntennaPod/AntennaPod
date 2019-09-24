@@ -422,7 +422,7 @@
   <string name="pref_gpodnet_full_sync_title">Jetzt komplett synchronisieren</string>
   <string name="pref_gpodnet_full_sync_sum">Kompletten Abonnement- und Episoden-Status mit gpodder.net synchronisieren.</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">Letzter Synchronisierungsversuch: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synchronisation starten</string>
+  <string name="pref_gpodnet_sync_started">Synchronisation gestartet</string>
   <string name="pref_gpodnet_full_sync_started">Komplette Synchronisierung gestartet</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Eingeloggt als <i>%1$s</i> mit dem Gerät <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Zeige Benachrichtungen bei Synchronisierungsfehlern</string>
@@ -617,7 +617,7 @@
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Nach oben navigieren</string>
-  <string name="status_downloading_label">Episode wird gerade heruntergeladen</string>
+  <string name="status_downloading_label">Episode wird heruntergeladen</string>
   <string name="in_queue_label">Episode befindet sich in der Abspielliste</string>
   <string name="drag_handle_content_description">Ziehe, um die Position dieses Objekts zu verändern</string>
   <string name="load_next_page_label">Nächste Seite laden</string>
@@ -726,7 +726,7 @@
   <!--Notification channels-->
   <string name="notification_channel_user_action">Handlung notwendig</string>
   <string name="notification_channel_user_action_description">Wird gezeigt, wenn deine Handlung notwendig ist, zum Beispiel wenn du ein Passwort eingeben musst.</string>
-  <string name="notification_channel_downloading">Lädt herunter</string>
+  <string name="notification_channel_downloading">Herunterladen</string>
   <string name="notification_channel_downloading_description">Wird gezeigt beim Herunterladen.</string>
   <string name="notification_channel_playing">Jetzt spielt</string>
   <string name="notification_channel_playing_description">Erlaubt es, die Wiedergabe zu steuern. Dies ist die Hauptbenachrichtigung, die du siehst, während ein Podcast abgespielt wird.</string>

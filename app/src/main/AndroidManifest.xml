@@ -36,7 +36,7 @@
         android:usesCleartextTraffic="true"
         android:logo="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.gms.car.notification.SmallIcon"
-                    android:resource="@drawable/ic_notification" />
+                    android:resource="@drawable/ic_antenna" />
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
@@ -203,6 +203,13 @@
         <activity
             android:name=".activity.OpmlFeedChooserActivity"
             android:label="@string/opml_import_label">
+        </activity>
+        <activity
+                android:name=".activity.BugReportActivity"
+                android:label="@string/bug_report_title">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
         <activity

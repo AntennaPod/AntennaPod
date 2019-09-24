@@ -10,7 +10,7 @@
                 android:title="@string/pref_set_theme_title"
                 android:key="prefTheme"
                 android:summary="@string/pref_set_theme_sum"
-                android:defaultValue="0"
+                android:defaultValue="system"
                 app:useStockLayout="true"/>
         <Preference
                 android:key="prefHiddenDrawerItems"

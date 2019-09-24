@@ -35,6 +35,14 @@
     </item>
 
     <item
+        android:id="@+id/open_feed_item"
+        android:icon="?attr/feed"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/open_podcast"
+        android:visible="false">
+    </item>
+
+    <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
         custom:showAsAction="collapseActionView"

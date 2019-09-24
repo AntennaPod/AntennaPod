@@ -322,7 +322,7 @@ public class FeedItemlistFragment extends ListFragment {
 
         contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item);
     }
 
     @Override
@@ -339,7 +339,7 @@ public class FeedItemlistFragment extends ListFragment {
             return super.onContextItemSelected(item);
         }
 
-        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
     @Override
