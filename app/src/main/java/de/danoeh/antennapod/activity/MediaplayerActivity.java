@@ -635,7 +635,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    static public void showSkipPreference(Activity activity, SkipDirection direction) {
+    public static void showSkipPreference(Activity activity, SkipDirection direction) {
         int checked = 0;
         int skipSecs = direction.getPrefSkipSeconds();
         final int[] values = activity.getResources().getIntArray(R.array.seek_delta_values);

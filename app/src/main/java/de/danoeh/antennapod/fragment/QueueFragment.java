@@ -640,7 +640,7 @@ public class QueueFragment extends Fragment {
                                     / playbackSpeed);
                 }
             }
-            info += " \u2022 ";
+            info += " • ";
             info += getString(R.string.time_left_label);
             info += Converter.getDurationStringLocalized(getActivity(), timeLeft);
         }
