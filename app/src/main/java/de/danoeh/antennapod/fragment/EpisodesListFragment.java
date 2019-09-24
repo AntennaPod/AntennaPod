@@ -196,7 +196,7 @@ public abstract class EpisodesListFragment extends Fragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.refresh_item:
-                    AutoUpdateManager.runImmediate();
+                    AutoUpdateManager.runImmediate(requireContext());
                     return true;
                 case R.id.mark_all_read_item:
                     ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),

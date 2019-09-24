@@ -16,7 +16,7 @@ public class FeedUpdateWorker extends Worker {
 
     private static final String TAG = "FeedUpdateWorker";
 
-    public static final String PARAM_RUN_IMMEDIATE = "runImmediate";
+    public static final String PARAM_RUN_ONCE = "runOnce";
 
     public FeedUpdateWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
@@ -25,8 +25,8 @@ public class FeedUpdateWorker extends Worker {
     @Override
     @NonNull
     public Result doWork() {
-        final boolean isImmediate = getInputData().getBoolean(PARAM_RUN_IMMEDIATE, false);
-        Log.d(TAG, "doWork() : isImmediate = " + isImmediate);
+        final boolean isRunOnce = getInputData().getBoolean(PARAM_RUN_ONCE, false);
+        Log.d(TAG, "doWork() : isRunOnce = " + isRunOnce);
         ClientConfig.initialize(getApplicationContext());
 
         if (NetworkUtils.networkAvailable() && NetworkUtils.isFeedRefreshAllowed()) {
@@ -35,7 +35,7 @@ public class FeedUpdateWorker extends Worker {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
         }
 
-        if (!isImmediate && UserPreferences.isAutoUpdateTimeOfDay()) {
+        if (!isRunOnce && UserPreferences.isAutoUpdateTimeOfDay()) {
             // WorkManager does not allow to set specific time for repeated tasks.
             // We repeatedly schedule a OneTimeWorkRequest instead.
             UserPreferences.restartUpdateAlarm();

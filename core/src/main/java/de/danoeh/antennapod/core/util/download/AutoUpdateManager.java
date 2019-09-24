@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.download;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import androidx.work.Constraints;
@@ -16,10 +18,11 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.FeedUpdateWorker;
+import de.danoeh.antennapod.core.storage.DBTasks;
 
 public class AutoUpdateManager {
     private static final String WORK_ID_FEED_UPDATE = "de.danoeh.antennapod.core.service.FeedUpdateWorker";
-    private static final String WORK_ID_FEED_UPDATE_IMMEDIATE = WORK_ID_FEED_UPDATE + "Immediate";
+    private static final String WORK_ID_FEED_UPDATE_ONCE = WORK_ID_FEED_UPDATE + "Once";
     private static final String TAG = "AutoUpdateManager";
 
     private AutoUpdateManager() {
@@ -64,20 +67,39 @@ public class AutoUpdateManager {
         WorkManager.getInstance().enqueueUniqueWork(WORK_ID_FEED_UPDATE, ExistingWorkPolicy.REPLACE, workRequest);
     }
 
-    public static void runImmediate() {
-        Log.d(TAG, "Run auto update immediately.");
+    /**
+     * Run auto feed refresh once in background, as soon as what OS scheduling allows.
+     *
+     * Callers from UI should use {@link #runImmediate(Context)}, as it will guarantee
+     * the refresh be run immediately.
+     */
+    public static void runOnce() {
+        Log.d(TAG, "Run auto update once, as soon as OS allows.");
 
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
                 .setConstraints(getConstraints())
                 .setInitialDelay(0L, TimeUnit.MILLISECONDS)
                 .setInputData(new Data.Builder()
-                        .putBoolean(FeedUpdateWorker.PARAM_RUN_IMMEDIATE, true)
+                        .putBoolean(FeedUpdateWorker.PARAM_RUN_ONCE, true)
                         .build()
                 )
                 .build();
 
-        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_FEED_UPDATE_IMMEDIATE, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_FEED_UPDATE_ONCE, ExistingWorkPolicy.REPLACE, workRequest);
 
+    }
+
+    /**
+     /**
+     * Run auto feed refresh once in background immediately, using its own thread.
+     *
+     * Callers where the additional threads is not suitable should use {@link #runOnce()}
+     */
+    public static void runImmediate(@NonNull Context context) {
+        Log.d(TAG, "Run auto update immediately in background.");
+        new Thread(() -> {
+            DBTasks.refreshAllFeeds(context.getApplicationContext());
+        }, "ManualRefreshAllFeeds").start();
     }
 
     public static void disableAutoUpdate() {

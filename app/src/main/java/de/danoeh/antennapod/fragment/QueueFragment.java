@@ -304,7 +304,7 @@ public class QueueFragment extends Fragment {
                     toggleQueueLock();
                     return true;
                 case R.id.refresh_item:
-                    AutoUpdateManager.runImmediate();
+                    AutoUpdateManager.runImmediate(requireContext());
                     return true;
                 case R.id.clear_queue:
                     // make sure the user really wants to clear the queue
