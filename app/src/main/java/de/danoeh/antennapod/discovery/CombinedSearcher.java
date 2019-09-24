@@ -24,7 +24,7 @@ public class CombinedSearcher implements PodcastSearcher {
     public CombinedSearcher(Context context) {
         addProvider(new FyydPodcastSearcher(), 1.f);
         addProvider(new ItunesPodcastSearcher(context), 1.f);
-        addProvider(new GpodnetPodcastSearcher(), 0.6f);
+        //addProvider(new GpodnetPodcastSearcher(), 0.6f);
     }
 
     private void addProvider(PodcastSearcher provider, float priority) {

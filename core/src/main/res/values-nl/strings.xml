@@ -31,7 +31,7 @@
   <string name="statistics_details_dialog">%1$d van %2$d afleveringen gestart.\n\n%3$s van %4$s afgespeeld.</string>
   <string name="statistics_mode">Rekenmethode</string>
   <string name="statistics_mode_normal">Bereken de daadwerkelijke speeltijd. Tweemaal afspelen wordt twee keer gerekend; gemarkeerd als \'afgespeeld\' wordt niet meegeteld.</string>
-  <string name="statistics_mode_count_all">Duur van de podcasts optellen die gemarkeerd zijn als \'afgespeeld\' zijn</string>
+  <string name="statistics_mode_count_all">Duur van de podcasts optellen die als \'afgespeeld\' gemarkeerd zijn</string>
   <string name="statistics_speed_not_counted">Let op: er wordt geen rekening gehouden met de afspeelsnelheid.</string>
   <!--Main activity-->
   <string name="drawer_open">Menu openen</string>
@@ -282,7 +282,7 @@
   <string name="move_to_top_label">Naar boven verplaatsen</string>
   <string name="move_to_bottom_label">Naar beneden verplaatsen</string>
   <string name="sort">Sorteren</string>
-  <string name="keep_sorted">Sorteren</string>
+  <string name="keep_sorted">Gesorteerd houden</string>
   <string name="date">Datum</string>
   <string name="duration">Duur</string>
   <string name="episode_title">Afleveringstitel</string>

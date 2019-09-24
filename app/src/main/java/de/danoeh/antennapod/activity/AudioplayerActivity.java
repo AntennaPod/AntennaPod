@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -58,11 +60,13 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         if (controller == null) {
             butPlaybackSpeed.setVisibility(View.GONE);
+            txtvPlaybackSpeed.setVisibility(View.GONE);
             return;
         }
         updatePlaybackSpeedButtonText();
         ViewCompat.setAlpha(butPlaybackSpeed, controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
         butPlaybackSpeed.setVisibility(View.VISIBLE);
+        txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -72,14 +76,15 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         if (controller == null) {
             butPlaybackSpeed.setVisibility(View.GONE);
+            txtvPlaybackSpeed.setVisibility(View.GONE);
             return;
         }
         float speed = 1.0f;
         if(controller.canSetPlaybackSpeed()) {
             speed = UserPreferences.getPlaybackSpeed();
         }
-        String speedStr = new DecimalFormat("0.00x").format(speed);
-        butPlaybackSpeed.setText(speedStr);
+        String speedStr = new DecimalFormat("0.00").format(speed);
+        txtvPlaybackSpeed.setText(speedStr);
     }
 
     @Override
@@ -98,7 +103,9 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 }
                 if (controller.canSetPlaybackSpeed()) {
                     String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-                    String currentSpeed = new DecimalFormat("0.00x").format(UserPreferences.getPlaybackSpeed());
+                    DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
+                    format.setDecimalSeparator('.');
+                    String currentSpeed = new DecimalFormat("0.00", format).format(UserPreferences.getPlaybackSpeed());
 
                     // Provide initial value in case the speed list has changed
                     // out from under us
@@ -132,6 +139,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 return true;
             });
             butPlaybackSpeed.setVisibility(View.VISIBLE);
+            txtvPlaybackSpeed.setVisibility(View.VISIBLE);
         }
     }
 }

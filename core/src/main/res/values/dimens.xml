@@ -10,7 +10,6 @@
     <dimen name="text_size_navdrawer">16sp</dimen>
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
-    <dimen name="status_indicator_width">32dp</dimen>
 	<dimen name="thumbnail_length_itemlist">64dp</dimen>
     <dimen name="thumbnail_length_queue_item">64dp</dimen>
     <dimen name="thumbnail_length_downloaded_item">64dp</dimen>
@@ -21,7 +20,6 @@
     <dimen name="drawer_width">280dp</dimen>
     <dimen name="listitem_iconwithtext_height">48dp</dimen>
     <dimen name="listitem_iconwithtext_textleftpadding">16dp</dimen>
-    <dimen name="listitem_iconwithtext_textverticalpadding">16dp</dimen>
 
     <dimen name="listitem_threeline_textleftpadding">16dp</dimen>
     <dimen name="listitem_threeline_textrightpadding">8dp</dimen>
@@ -29,7 +27,6 @@
     <dimen name="listitem_threeline_horizontalpadding">16dp</dimen>
 
     <dimen name="list_vertical_padding">8dp</dimen>
-    <dimen name="minimum_text_margin">8dp</dimen>
     <dimen name="listitem_icon_leftpadding">16dp</dimen>
     <dimen name="listitem_icon_rightpadding">16dp</dimen>
 

@@ -23,7 +23,7 @@
         android:contentDescription="@string/cover_label"
         android:cropToPadding="true"
         android:scaleType="fitXY"
-        tools:src="@drawable/ic_stat_antenna_default"
+        tools:src="@drawable/ic_antenna"
         tools:background="@android:color/holo_green_dark" />
 
     <LinearLayout

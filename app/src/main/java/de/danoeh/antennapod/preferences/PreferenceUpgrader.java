@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
@@ -42,10 +43,8 @@ public class PreferenceUpgrader {
             }
         }
         if (oldVersion < 1070300) {
-            if (UserPreferences.getMediaPlayer().equals("builtin")) {
-                prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
-                        UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-            }
+            prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER,
+                    UserPreferences.PREF_MEDIA_PLAYER_EXOPLAYER).apply();
 
             if (prefs.getBoolean("prefEnableAutoDownloadOnMobile", false)) {
                 UserPreferences.setAllowMobileAutoDownload(true);
@@ -63,6 +62,14 @@ public class PreferenceUpgrader {
                     UserPreferences.setAllowMobileImages(false);
                     break;
             }
+        }
+        if (oldVersion < 1070400) {
+            int theme = UserPreferences.getTheme();
+            if (theme == R.style.Theme_AntennaPod_Light) {
+                prefs.edit().putString(UserPreferences.PREF_THEME, "system").apply();
+            }
+
+            UserPreferences.setQueueLocked(false);
         }
     }
 }
