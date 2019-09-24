@@ -11,6 +11,7 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 public class FeedUpdateWorker extends Worker {
 
@@ -38,7 +39,7 @@ public class FeedUpdateWorker extends Worker {
         if (!isRunOnce && UserPreferences.isAutoUpdateTimeOfDay()) {
             // WorkManager does not allow to set specific time for repeated tasks.
             // We repeatedly schedule a OneTimeWorkRequest instead.
-            UserPreferences.restartUpdateAlarm();
+            AutoUpdateManager.restartUpdateAlarm();
         }
 
         return Result.success();

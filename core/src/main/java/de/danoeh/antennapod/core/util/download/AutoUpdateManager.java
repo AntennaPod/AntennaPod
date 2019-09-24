@@ -13,6 +13,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
@@ -30,9 +31,25 @@ public class AutoUpdateManager {
     }
 
     /**
+     * Start / restart periodic auto feed refresh
+     */
+    public static void restartUpdateAlarm() {
+        if (UserPreferences.isAutoUpdateDisabled()) {
+            disableAutoUpdate();
+        } else if (UserPreferences.isAutoUpdateTimeOfDay()) {
+            int[] timeOfDay = UserPreferences.getUpdateTimeOfDay();
+            Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
+            restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
+        } else {
+            long milliseconds = UserPreferences.getUpdateInterval();
+            restartUpdateIntervalAlarm(milliseconds);
+        }
+    }
+
+    /**
      * Sets the interval in which the feeds are refreshed automatically
      */
-    public static void restartUpdateIntervalAlarm(long intervalMillis) {
+    private static void restartUpdateIntervalAlarm(long intervalMillis) {
         Log.d(TAG, "Restarting update alarm.");
 
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(FeedUpdateWorker.class,
@@ -47,7 +64,7 @@ public class AutoUpdateManager {
     /**
      * Sets time of day the feeds are refreshed automatically
      */
-    public static void restartUpdateTimeOfDayAlarm(int hoursOfDay, int minute) {
+    private static void restartUpdateTimeOfDayAlarm(int hoursOfDay, int minute) {
         Log.d(TAG, "Restarting update alarm.");
 
         Calendar now = Calendar.getInstance();
@@ -116,4 +133,5 @@ public class AutoUpdateManager {
         }
         return constraints.build();
     }
+
 }
