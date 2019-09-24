@@ -1,7 +1,7 @@
 version: 2
 
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/android:api-28
 
@@ -21,11 +21,24 @@ jobs:
             - v1-android-
 
       - run:
-          # To build release, we need to create a temporary keystore that can be used to sign the app
-          command: |
-            keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
-            ./gradlew assembleRelease :core:testPlayReleaseUnitTest :app:assemblePlayDebugAndroidTest -PdisablePreDex
-          no_output_timeout: 1800
+          name: Create temporary release keystore
+          command: keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
+
+      - run:
+          name: Build debug
+          command: ./gradlew assembleDebug -PdisablePreDex
+
+      - run:
+          name: Build release
+          command: ./gradlew assembleRelease -PdisablePreDex
+
+      - run:
+          name: Execute unit tests
+          command: ./gradlew :core:testPlayReleaseUnitTest -PdisablePreDex
+
+      - run:
+          name: Build integration tests
+          command: ./gradlew :app:assemblePlayDebugAndroidTest -PdisablePreDex
       
       - store_artifacts:
           path: app/build/outputs/apk
@@ -37,3 +50,26 @@ jobs:
             - ~/.gradle
             - ~/android
           key: v1-android-{{ checksum "build.gradle" }}
+
+  checkstyle:
+    docker:
+      - image: circleci/android:api-28
+    working_directory: ~/AntennaPod
+
+    steps:
+      - checkout
+
+      - run:
+          name: Checkstyle
+          command: ./gradlew checkstyle
+
+workflows:
+  version: 2
+
+  test:
+    jobs:
+      - test
+
+  checkstyle:
+    jobs:
+      - checkstyle

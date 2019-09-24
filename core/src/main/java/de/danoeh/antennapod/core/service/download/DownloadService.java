@@ -1076,7 +1076,7 @@ public class DownloadService extends Service {
     private static String compileNotificationString(List<Downloader> downloads) {
         List<String> lines = new ArrayList<>(downloads.size());
         for (Downloader downloader : downloads) {
-            StringBuilder line = new StringBuilder("\u2022 ");
+            StringBuilder line = new StringBuilder("• ");
             DownloadRequest request = downloader.getDownloadRequest();
             switch (request.getFeedfileType()) {
                 case Feed.FEEDFILETYPE_FEED:

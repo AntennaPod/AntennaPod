@@ -82,3 +82,14 @@ wrapper {
 def doFreeBuild() {
     return hasProperty("freeBuild")
 }
+
+apply plugin: "checkstyle"
+checkstyle {
+    toolVersion '8.24'
+}
+
+task checkstyle(type: Checkstyle) {
+    classpath = files()
+    source "${project.rootDir}"
+    exclude("**/gen/**")
+}
