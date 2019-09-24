@@ -51,9 +51,25 @@ jobs:
             - ~/android
           key: v1-android-{{ checksum "build.gradle" }}
 
+  checkstyle:
+    docker:
+      - image: circleci/android:api-28
+    working_directory: ~/AntennaPod
+
+    steps:
+      - checkout
+
+      - run:
+          name: Checkstyle
+          command: ./gradlew checkstyle
+
 workflows:
   version: 2
 
   test:
     jobs:
       - test
+
+  checkstyle:
+    jobs:
+      - checkstyle
