@@ -1,49 +1,77 @@
 version: 2
 
 jobs:
-  test:
+  test-debug:
     docker:
       - image: circleci/android:api-28
-
     working_directory: ~/AntennaPod
-
     environment:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
       _JAVA_OPTIONS: "-Xms256m -Xmx1280m"
-
     steps:
       - checkout
-
       - restore_cache:
           keys:
             - v1-android-{{ checksum "build.gradle" }}
-            # fallback to using the latest cache if no exact match is found
             - v1-android-
-
-      - run:
-          name: Create temporary release keystore
-          command: keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
-
       - run:
           name: Build debug
           command: ./gradlew assembleDebug -PdisablePreDex
+      - run:
+          name: Execute debug unit tests
+          command: ./gradlew :core:testPlayDebugUnitTest -PdisablePreDex
+      - save_cache:
+          paths:
+            - ~/.android
+            - ~/.gradle
+            - ~/android
+          key: v1-android-{{ checksum "build.gradle" }}
 
+  test-release:
+    docker:
+      - image: circleci/android:api-28
+    working_directory: ~/AntennaPod
+    environment:
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
+      _JAVA_OPTIONS: "-Xms256m -Xmx1280m"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-android-{{ checksum "build.gradle" }}
+            - v1-android-
+      - run:
+          name: Create temporary release keystore
+          command: keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
       - run:
           name: Build release
           command: ./gradlew assembleRelease -PdisablePreDex
-
       - run:
-          name: Execute unit tests
+          name: Execute release unit tests
           command: ./gradlew :core:testPlayReleaseUnitTest -PdisablePreDex
+      - save_cache:
+          paths:
+            - ~/.android
+            - ~/.gradle
+            - ~/android
+          key: v1-android-{{ checksum "build.gradle" }}
 
+  build-androidtest:
+    docker:
+      - image: circleci/android:api-28
+    working_directory: ~/AntennaPod
+    environment:
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
+      _JAVA_OPTIONS: "-Xms256m -Xmx1280m"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-android-{{ checksum "build.gradle" }}
+            - v1-android-
       - run:
           name: Build integration tests
           command: ./gradlew :app:assemblePlayDebugAndroidTest -PdisablePreDex
-      
-      - store_artifacts:
-          path: app/build/outputs/apk
-          destination: apks
-
       - save_cache:
           paths:
             - ~/.android
@@ -55,10 +83,8 @@ jobs:
     docker:
       - image: circleci/android:api-28
     working_directory: ~/AntennaPod
-
     steps:
       - checkout
-
       - run:
           name: Checkstyle
           command: ./gradlew checkstyle
@@ -66,10 +92,12 @@ jobs:
 workflows:
   version: 2
 
-  test:
+  unit-tests:
     jobs:
-      - test
+      - test-debug
+      - test-release
+      - build-androidtest
 
-  checkstyle:
+  static-analysis:
     jobs:
       - checkstyle
