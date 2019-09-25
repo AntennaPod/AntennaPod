@@ -210,10 +210,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         webvDescription.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                if(IntentUtils.isCallable(getActivity(), intent)) {
-                    startActivity(intent);
-                }
+                IntentUtils.openInBrowser(getContext(), url);
                 return true;
             }
         });
@@ -484,11 +481,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         if (selectedURL != null) {
             switch (item.getItemId()) {
                 case R.id.open_in_browser_item:
-                    Uri uri = Uri.parse(selectedURL);
-                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    if(IntentUtils.isCallable(getActivity(), intent)) {
-                        getActivity().startActivity(intent);
-                    }
+                    IntentUtils.openInBrowser(getContext(), selectedURL);
                     break;
                 case R.id.share_url_item:
                     ShareUtils.shareLink(getActivity(), selectedURL);

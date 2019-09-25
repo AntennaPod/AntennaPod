@@ -15,6 +15,7 @@ import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.BugReportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.StatisticsActivity;
+import de.danoeh.antennapod.core.util.IntentUtils;
 
 public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String TAG = "MainPreferencesFragment";
@@ -72,27 +73,17 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                 }
         );
         findPreference(PREF_FAQ).setOnPreferenceClickListener(preference -> {
-            openInBrowser("https://antennapod.org/faq.html");
+            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/faq.html");
             return true;
         });
         findPreference(PREF_VIEW_MAILING_LIST).setOnPreferenceClickListener(preference -> {
-            openInBrowser("https://groups.google.com/forum/#!forum/antennapod");
+            IntentUtils.openInBrowser(getContext(), "https://groups.google.com/forum/#!forum/antennapod");
             return true;
         });
         findPreference(PREF_SEND_BUG_REPORT).setOnPreferenceClickListener(preference -> {
             startActivity(new Intent(getActivity(), BugReportActivity.class));
             return true;
         });
-    }
-
-    private void openInBrowser(String url) {
-        try {
-            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(myIntent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getActivity(), R.string.pref_no_browser_found, Toast.LENGTH_LONG).show();
-            Log.e(TAG, Log.getStackTraceString(e));
-        }
     }
 
     private void setupSearch() {
