@@ -45,10 +45,14 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -212,6 +216,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private PlaybackServiceTaskManager taskManager;
     private PlaybackServiceFlavorHelper flavorHelper;
     private PlaybackServiceStateManager stateManager;
+
+    private final ScheduledThreadPoolExecutor positionEventDistributorExecutor = new ScheduledThreadPoolExecutor(1);
+    private ScheduledFuture<?> positionEventDistributorFuture;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -734,6 +741,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         // remove notification on pause
                         stateManager.stopForeground(true);
                     }
+                    cancelPositionObserver();
                     writePlayerStatusPlaybackPreferences();
                     break;
 
@@ -745,6 +753,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case PLAYING:
                     writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
+                    setupPositionUpdater();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
@@ -1651,6 +1660,23 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public Pair<Integer, Integer> getVideoSize() {
         return mediaPlayer.getVideoSize();
+    }
+
+    private void setupPositionUpdater() {
+        if (positionEventDistributorFuture == null ||
+                positionEventDistributorFuture.isCancelled() ||
+                positionEventDistributorFuture.isDone()) {
+            Log.d(TAG, "Setting up position observer");
+            positionEventDistributorFuture = positionEventDistributorExecutor.scheduleWithFixedDelay(
+                    () -> EventBus.getDefault().post(new PlaybackPositionEvent()), 1000, 1000, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    private void cancelPositionObserver() {
+        if (positionEventDistributorFuture != null) {
+            boolean result = positionEventDistributorFuture.cancel(true);
+            Log.d(TAG, "PositionObserver cancelled. Result: " + result);
+        }
     }
 
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
