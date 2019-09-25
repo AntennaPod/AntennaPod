@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -70,7 +69,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
@@ -1668,7 +1666,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 positionEventDistributorFuture.isDone()) {
             Log.d(TAG, "Setting up position observer");
             positionEventDistributorFuture = positionEventDistributorExecutor.scheduleWithFixedDelay(
-                    () -> EventBus.getDefault().post(new PlaybackPositionEvent()), 1000, 1000, TimeUnit.MILLISECONDS);
+                    () -> EventBus.getDefault().post(new PlaybackPositionEvent(getCurrentPosition(), getDuration())),
+                    1000, 1000, TimeUnit.MILLISECONDS);
         }
     }
 
