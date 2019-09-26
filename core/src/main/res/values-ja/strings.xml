@@ -244,6 +244,7 @@
   <string name="confirm_mobile_download_dialog_message">モバイルデータ接続でのダウンロードは設定で無効になっています。\n\n一時的に有効にしますか?\n\n<small>選択は 10 分間記憶されます。</small></string>
   <string name="confirm_mobile_streaming_notification_title">モバイルストリーミングの確認</string>
   <string name="confirm_mobile_streaming_notification_message">モバイルデータ接続を介したストリーミングは設定で無効になっています。 タップするととにかくストリーミングします。</string>
+  <string name="confirm_mobile_streaming_button_always">常に許可</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">キューに追加するだけ</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">一時的に有効にする</string>
   <!--Mediaplayer messages-->
@@ -253,6 +254,8 @@
   <string name="player_ready_msg">準備完了</string>
   <string name="player_seeking_msg">シーク中</string>
   <string name="playback_error_server_died">サーバーがダウンしています</string>
+  <string name="playback_error_unsupported">サポートされていないメディアタイプ</string>
+  <string name="playback_error_timeout">操作がタイムアウトしました</string>
   <string name="playback_error_unknown">不明なエラー</string>
   <string name="no_media_playing_label">再生するメディアがありません</string>
   <string name="player_buffering_msg">バッファー中</string>
@@ -324,6 +327,9 @@
   <string name="external_elements">外部要素</string>
   <string name="interruptions">割り込み</string>
   <string name="playback_control">再生コントロール</string>
+  <string name="preference_search_hint">検索…</string>
+  <string name="preference_search_no_results">結果はありません</string>
+  <string name="preference_search_clear_history">履歴をクリア</string>
   <string name="media_player">メディアプレーヤー</string>
   <string name="pref_episode_cleanup_title">エピソード クリーンアップ</string>
   <string name="pref_episode_cleanup_summary">キューに含まれておらず、お気に入りではないエピソードは、自動ダウンロードで新しいエピソードのためにスペースが必要な場合、除去の対象になります</string>

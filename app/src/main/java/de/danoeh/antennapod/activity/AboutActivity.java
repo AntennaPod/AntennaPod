@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
+import de.danoeh.antennapod.core.util.IntentUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -57,8 +58,7 @@ public class AboutActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.startsWith("http")) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(browserIntent);
+                    IntentUtils.openInBrowser(AboutActivity.this, url);
                     return true;
                 } else {
                     url = url.replace("file:///android_asset/", "");

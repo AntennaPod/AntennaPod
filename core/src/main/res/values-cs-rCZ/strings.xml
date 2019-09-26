@@ -102,6 +102,7 @@
   <string name="podcastdirectories_label">Najít podcast v seznamu</string>
   <string name="podcastdirectories_descr">Nové podcasty můžete hledat pomocí iTunes nebo fyyd, nebo hledat na gpodder.net podle jména, kategorie či popularity.</string>
   <string name="browse_gpoddernet_label">Prohledávat gpodder.net</string>
+  <string name="discover_more">více »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Označit vše jako poslechnuté</string>
   <string name="mark_all_read_msg">Všechny epizody označeny jako poslechnuté</string>
@@ -110,6 +111,8 @@
   <string name="rename_feed_label">Přejmenovat podcast</string>
   <string name="remove_feed_label">Odstranit podcast</string>
   <string name="share_label">Sdílet</string>
+  <string name="share_link_label">Sdílet URL epizody</string>
+  <string name="share_file_label">Sdílet soubor</string>
   <string name="share_feed_url_label">Sdílet URL kanálu</string>
   <string name="hide_episodes_title">Skrýt epizody</string>
   <string name="hide_unplayed_episodes_label">Neposlechnuté</string>
@@ -153,6 +156,7 @@
   <string name="download_failed">selhalo</string>
   <string name="download_pending">Čeká na stažení</string>
   <string name="download_running">Probíhá stahování</string>
+  <string name="download_error_details">Detaily</string>
   <string name="download_error_device_not_found">Úložné zařízení nenalezeno</string>
   <string name="download_error_insufficient_space">Nedostatek volného místa</string>
   <string name="download_error_file_error">Souborová chyba</string>
@@ -243,6 +247,8 @@
   <string name="other_pref">Ostatní</string>
   <string name="about_pref">O aplikaci</string>
   <string name="queue_label">Fronta</string>
+  <string name="import_export_pref">Importovat/Exportovat</string>
+  <string name="appearance">Vzhled</string>
   <string name="pref_episode_cleanup_title">Vyčistit epizody</string>
   <string name="pref_episode_cleanup_summary">Epizody, které nejsou ve frontě a nejsou označeny za oblíbené by mělo být možné smazat, pokud bude funkce automatického stahování potřebovat místo pro nové epizody</string>
   <string name="pref_pauseOnDisconnect_sum">Při odpojení sluchátek nebo bluetooth připojení pozastavit přehrávání.</string>
@@ -551,6 +557,8 @@
   <string name="proxy_port_invalid_error">Neplatný port</string>
   <!--Subscriptions fragment-->
   <!--Database import/export-->
+  <string name="label_import">Importovat</string>
+  <string name="label_export">Expotovat</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Přehrát na...</string>
   <string name="cast_disconnect_label">Odpojit sezení vysílání</string>
@@ -568,4 +576,5 @@
   <string name="cast_failed_receiver_player_error">Přijímač zaznamenal závažnou chybu</string>
   <string name="cast_failed_media_error_skipping">Chyba přehrávání médií. Přeskakuji...</string>
   <!--Notification channels-->
+  <string name="notification_channel_downloading">Stahuji</string>
 </resources>

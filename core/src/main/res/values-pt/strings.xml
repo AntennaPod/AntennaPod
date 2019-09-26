@@ -253,6 +253,7 @@
   <string name="confirm_mobile_download_dialog_message">A descarga através de dados móveis está desativada nas definições.\n\nAtivar temporariamente?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Confirmação de reprodução em dados móveis</string>
   <string name="confirm_mobile_streaming_notification_message">A reprodução de podcasts através de dados móveis está desativada nas definições. Toque para, ainda assim, reproduzir o podcast.</string>
+  <string name="confirm_mobile_streaming_button_always">Permitir sempre</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Apenas adicionados à fila</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Ativar temporariamente</string>
   <!--Mediaplayer messages-->
@@ -262,6 +263,8 @@
   <string name="player_ready_msg">Pronto</string>
   <string name="player_seeking_msg">A procurar...</string>
   <string name="playback_error_server_died">Erro de servidor</string>
+  <string name="playback_error_unsupported">Tipo de ficheiro não suportado</string>
+  <string name="playback_error_timeout">Operação expirada</string>
   <string name="playback_error_unknown">Erro desconhecido</string>
   <string name="no_media_playing_label">Nada em reprodução</string>
   <string name="player_buffering_msg">A processar...</string>
@@ -333,6 +336,9 @@
   <string name="external_elements">Elementos externos</string>
   <string name="interruptions">Interrupções</string>
   <string name="playback_control">Controlo de reprodução</string>
+  <string name="preference_search_hint">Pesquisar...</string>
+  <string name="preference_search_no_results">Não existem resultados</string>
+  <string name="preference_search_clear_history">Limpar histórico</string>
   <string name="media_player">Reprodutor multimédia</string>
   <string name="pref_episode_cleanup_title">Limpeza de episódios</string>
   <string name="pref_episode_cleanup_summary">Os episódios que não estejam na fila e não sejam favoritos podem ser elegíveis para serem removidos se a Descarga automática necessitar de espaço para novos episódios.</string>

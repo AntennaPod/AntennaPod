@@ -64,20 +64,9 @@ public class NavigationDrawerTest {
         uiTestUtils = new UITestUtils(InstrumentationRegistry.getTargetContext());
         uiTestUtils.setup();
 
-        EspressoTestUtils.clearAppData();
-
-        Context context = InstrumentationRegistry.getTargetContext();
-        SharedPreferences prefs = context.getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false).commit();
-
-        RatingDialog.init(context);
-        RatingDialog.saveRated();
-
-        PodDBAdapter.init(context);
-        PodDBAdapter.deleteDatabase();
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
+        EspressoTestUtils.clearPreferences();
+        EspressoTestUtils.makeNotFirstRun();
+        EspressoTestUtils.clearDatabase();
     }
 
     @After

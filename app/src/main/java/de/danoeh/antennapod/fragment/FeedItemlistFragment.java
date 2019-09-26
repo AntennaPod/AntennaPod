@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -138,13 +137,6 @@ public class FeedItemlistFragment extends ListFragment {
         Bundle args = getArguments();
         Validate.notNull(args);
         feedID = args.getLong(ARGUMENT_FEED_ID);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        ((ListView) view.findViewById(android.R.id.list)).setFastScrollEnabled(true);
-        return view;
     }
 
     @Override
@@ -331,7 +323,7 @@ public class FeedItemlistFragment extends ListFragment {
 
         contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item);
     }
 
     @Override
@@ -348,7 +340,7 @@ public class FeedItemlistFragment extends ListFragment {
             return super.onContextItemSelected(item);
         }
 
-        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
     @Override

@@ -31,7 +31,7 @@
   <string name="statistics_details_dialog">%1$d van %2$d afleveringen gestart.\n\n%3$s van %4$s afgespeeld.</string>
   <string name="statistics_mode">Rekenmethode</string>
   <string name="statistics_mode_normal">Bereken de daadwerkelijke speeltijd. Tweemaal afspelen wordt twee keer gerekend; gemarkeerd als \'afgespeeld\' wordt niet meegeteld.</string>
-  <string name="statistics_mode_count_all">Duur van de podcasts optellen die gemarkeerd zijn als \'afgespeeld\' zijn</string>
+  <string name="statistics_mode_count_all">Duur van de podcasts optellen die als \'afgespeeld\' gemarkeerd zijn</string>
   <string name="statistics_speed_not_counted">Let op: er wordt geen rekening gehouden met de afspeelsnelheid.</string>
   <!--Main activity-->
   <string name="drawer_open">Menu openen</string>
@@ -253,6 +253,7 @@
   <string name="confirm_mobile_download_dialog_message">Downloaden via mobiel internet is uitgeschakeld in de instellingen.\n\nWil je dit tijdelijk toestaan?\n<small>Je keuze wordt 10 minuten onthouden.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Bevestig streamen via mobiel internet</string>
   <string name="confirm_mobile_streaming_notification_message">Streamen via mobiel internet is uitgeschakeld in de instellingen. Druk om tóch te streamen.</string>
+  <string name="confirm_mobile_streaming_button_always">Altijd toestaan</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Toevoegen aan wachtrij</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Tijdelijk toestaan</string>
   <!--Mediaplayer messages-->
@@ -262,6 +263,8 @@
   <string name="player_ready_msg">Klaar</string>
   <string name="player_seeking_msg">Bezig met zoeken</string>
   <string name="playback_error_server_died">Serververbinding verbroken</string>
+  <string name="playback_error_unsupported">Niet-ondersteund bestandstype</string>
+  <string name="playback_error_timeout">Operatie verlopen</string>
   <string name="playback_error_unknown">Onbekende fout</string>
   <string name="no_media_playing_label">Geen media aan het afspelen</string>
   <string name="player_buffering_msg">Bezig met bufferen</string>
@@ -279,7 +282,7 @@
   <string name="move_to_top_label">Naar boven verplaatsen</string>
   <string name="move_to_bottom_label">Naar beneden verplaatsen</string>
   <string name="sort">Sorteren</string>
-  <string name="keep_sorted">Sorteren</string>
+  <string name="keep_sorted">Gesorteerd houden</string>
   <string name="date">Datum</string>
   <string name="duration">Duur</string>
   <string name="episode_title">Afleveringstitel</string>
@@ -333,6 +336,9 @@
   <string name="external_elements">Externe elementen</string>
   <string name="interruptions">Onderbrekingen</string>
   <string name="playback_control">Afspeelbediening</string>
+  <string name="preference_search_hint">Zoeken...</string>
+  <string name="preference_search_no_results">Geen resultaten</string>
+  <string name="preference_search_clear_history">Geschiedenis wissen</string>
   <string name="media_player">Mediaspeler</string>
   <string name="pref_episode_cleanup_title">Automatisch opschonen</string>
   <string name="pref_episode_cleanup_summary">Afleveringen die niet op de wachtrij staan én geen favoriet zijn, mogen verwijderd worden als Automatisch downloaden ruimte nodig heeft voor nieuwe afleveringen</string>

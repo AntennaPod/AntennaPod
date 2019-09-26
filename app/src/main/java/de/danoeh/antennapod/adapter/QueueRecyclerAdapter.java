@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -169,7 +168,8 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             FeedItem item = itemAccess.getItem(getAdapterPosition());
 
             MenuInflater inflater = mainActivity.get().getMenuInflater();
-            inflater.inflate(R.menu.queue_context, menu);
+            inflater.inflate(R.menu.queue_context, menu); // queue-specific menu items
+            inflater.inflate(R.menu.feeditemlist_context, menu); // generic menu items for item feeds
 
             if (item != null) {
                 menu.setHeaderTitle(item.getTitle());
@@ -184,7 +184,18 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     item1.setVisible(visible);
                 }
             };
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, itemAccess.getQueueIds());
+
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item,
+                    R.id.skip_episode_item); // Skip Episode is not useful in Queue, so hide it.
+            // Queue-specific menu preparation
+            final boolean keepSorted = UserPreferences.isQueueKeepSorted();
+            final LongList queueAccess = itemAccess.getQueueIds();
+            if (queueAccess.size() == 0 || queueAccess.get(0) == item.getId() || keepSorted) {
+                contextMenuInterface.setItemVisibility(R.id.move_to_top_item, false);
+            }
+            if (queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == item.getId() || keepSorted) {
+                contextMenuInterface.setItemVisibility(R.id.move_to_bottom_item, false);
+            }
         }
 
         @Override

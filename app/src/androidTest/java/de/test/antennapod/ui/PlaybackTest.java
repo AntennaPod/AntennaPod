@@ -114,7 +114,7 @@ public class PlaybackTest {
         solo.waitForText(solo.getString(R.string.all_episodes_short_label));
         solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
 
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
@@ -231,7 +231,7 @@ public class PlaybackTest {
         setContinuousPlaybackPreference(followQueue);
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
 
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();

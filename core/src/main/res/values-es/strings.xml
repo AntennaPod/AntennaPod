@@ -253,6 +253,7 @@
   <string name="confirm_mobile_download_dialog_message">Se desactivaron las descargas por red de datos móviles en la configuración.\n\n¿Quiere permitir las descargas temporalmente?\n\n<small>Se recordará su elección durante 10 minutos.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Confirmar streaming por red móvil</string>
   <string name="confirm_mobile_streaming_notification_message">El streaming sobre datos móviles está deshabilitado en los ajustes. Toca para hacer el streaming de todas formas.</string>
+  <string name="confirm_mobile_streaming_button_always">Permitir siempre</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Añadir a la cola</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permitir temporalmente</string>
   <!--Mediaplayer messages-->
@@ -262,6 +263,8 @@
   <string name="player_ready_msg">Listo</string>
   <string name="player_seeking_msg">Buscando</string>
   <string name="playback_error_server_died">El servidor está inactivo</string>
+  <string name="playback_error_unsupported">Tipo de medio no soportado</string>
+  <string name="playback_error_timeout">Tiempo de espera agotado</string>
   <string name="playback_error_unknown">Error desconocido</string>
   <string name="no_media_playing_label">No hay medios en reproducción</string>
   <string name="player_buffering_msg">Almacenando</string>
@@ -333,6 +336,9 @@
   <string name="external_elements">Elementos externos</string>
   <string name="interruptions">Interrupciones</string>
   <string name="playback_control">Control de reproducción</string>
+  <string name="preference_search_hint">Buscar...</string>
+  <string name="preference_search_no_results">Sin resultados</string>
+  <string name="preference_search_clear_history">Borrar historial</string>
   <string name="media_player">Reproductor multimedia</string>
   <string name="pref_episode_cleanup_title">Limpieza de episodios</string>
   <string name="pref_episode_cleanup_summary">Los episodios que no estén en la cola ni en favoritos pueden eliminarse si la descarga automática necesita espacio para nuevos episodios</string>

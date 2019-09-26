@@ -43,16 +43,14 @@
         <Preference
             android:key="prefFaq"
             android:title="@string/pref_faq"
-            android:icon="?attr/ic_question_answer" />
-
+            android:icon="?attr/ic_questionmark" />
         <Preference
-            android:key="prefKnownIssues"
-            android:title="@string/pref_known_issues"
-            android:icon="?attr/ic_known_issues" />
+            android:key="prefViewMailingList"
+            android:title="@string/view_mailing_list"
+            android:icon="?attr/ic_chat" />
         <Preference
-            android:key="prefSendCrashReport"
-            android:title="@string/crash_report_title"
-            android:summary="@string/crash_report_sum"
+            android:key="prefSendBugReport"
+            android:title="@string/bug_report_title"
             android:icon="?attr/ic_bug" />
         <Preference
             android:key="prefAbout"

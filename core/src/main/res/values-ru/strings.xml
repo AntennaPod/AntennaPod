@@ -274,6 +274,7 @@ URL файла:
   <string name="confirm_mobile_download_dialog_message">Загрузка через мобильное соединение отключена в настройках.\n\nВы желаете временно разрешить загрузку?\n\n<small>Настройка сохранится на 10 минут.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Подтвердите трансляцию через мобильное соединение</string>
   <string name="confirm_mobile_streaming_notification_message">Трансляция через мобильное подключение к интернету отключено в настройках. Нажмите, чтобы продолжить.</string>
+  <string name="confirm_mobile_streaming_button_always">Разрешить навсегда</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Добавить в очередь</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Разрешить временно</string>
   <!--Mediaplayer messages-->
@@ -283,6 +284,8 @@ URL файла:
   <string name="player_ready_msg">Готово</string>
   <string name="player_seeking_msg">Перемотка</string>
   <string name="playback_error_server_died">Сервер недоступен</string>
+  <string name="playback_error_unsupported">Не поддерживаемый формат</string>
+  <string name="playback_error_timeout">Не выполнено вовремя</string>
   <string name="playback_error_unknown">Неизвестная ошибка</string>
   <string name="no_media_playing_label">Ничего не воспроизводится</string>
   <string name="player_buffering_msg">Буферизация</string>
@@ -354,6 +357,9 @@ URL файла:
   <string name="external_elements">Внешние органы управления</string>
   <string name="interruptions">Прерывания</string>
   <string name="playback_control">Управление воспроизведением</string>
+  <string name="preference_search_hint">Найти…</string>
+  <string name="preference_search_no_results">Безрезультатно</string>
+  <string name="preference_search_clear_history">Очистить историю</string>
   <string name="media_player">Проигрыватель</string>
   <string name="pref_episode_cleanup_title">Удаление выпусков</string>
   <string name="pref_episode_cleanup_summary">Выпуски, которые не стоят в очереди и не отмечены как избранные могут быть удалены для освобождения места под Автозагрузку.</string>
