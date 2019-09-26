@@ -44,8 +44,6 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
@@ -76,6 +74,9 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -214,9 +215,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private PlaybackServiceTaskManager taskManager;
     private PlaybackServiceFlavorHelper flavorHelper;
     private PlaybackServiceStateManager stateManager;
-
-    private final ScheduledThreadPoolExecutor positionEventDistributorExecutor = new ScheduledThreadPoolExecutor(1);
-    private ScheduledFuture<?> positionEventDistributorFuture;
+    private Disposable positionEventTimer;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -336,8 +335,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
 
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(prefListener);
+        cancelPositionObserver();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(prefListener);
         if (mediaSession != null) {
             mediaSession.release();
         }
@@ -1661,20 +1660,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void setupPositionUpdater() {
-        if (positionEventDistributorFuture == null ||
-                positionEventDistributorFuture.isCancelled() ||
-                positionEventDistributorFuture.isDone()) {
-            Log.d(TAG, "Setting up position observer");
-            positionEventDistributorFuture = positionEventDistributorExecutor.scheduleWithFixedDelay(
-                    () -> EventBus.getDefault().post(new PlaybackPositionEvent(getCurrentPosition(), getDuration())),
-                    1000, 1000, TimeUnit.MILLISECONDS);
+        if (positionEventTimer != null) {
+            positionEventTimer.dispose();
         }
+
+        Log.d(TAG, "Setting up position observer");
+        positionEventTimer = Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong ->
+                        EventBus.getDefault().post(new PlaybackPositionEvent(getCurrentPosition(), getDuration())));
     }
 
     private void cancelPositionObserver() {
-        if (positionEventDistributorFuture != null) {
-            boolean result = positionEventDistributorFuture.cancel(true);
-            Log.d(TAG, "PositionObserver cancelled. Result: " + result);
+        if (positionEventTimer != null) {
+            positionEventTimer.dispose();
         }
     }
 
