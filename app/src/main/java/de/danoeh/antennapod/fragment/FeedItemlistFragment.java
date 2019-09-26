@@ -390,10 +390,10 @@ public class FeedItemlistFragment extends ListFragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (isUpdatingFeed != event.update.feedIds.length > 0) {
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeed)) {
             updateProgressBarVisibility();
         }
-        if(adapter != null && update.mediaIds.length > 0) {
+        if (adapter != null && update.mediaIds.length > 0) {
             adapter.notifyDataSetChanged();
         }
     }

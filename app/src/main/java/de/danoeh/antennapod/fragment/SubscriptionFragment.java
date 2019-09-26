@@ -298,8 +298,7 @@ public class SubscriptionFragment extends Fragment {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        if (isUpdatingFeeds != update.feedIds.length > 0) {
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             getActivity().invalidateOptionsMenu();
         }
     }
