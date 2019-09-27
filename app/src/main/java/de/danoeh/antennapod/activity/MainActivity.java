@@ -389,14 +389,16 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 break;
             case FLIP:
                 transaction.setCustomAnimations(
-                    R.anim.card_flip_right_in,
-                    R.anim.card_flip_right_out,
                     R.anim.card_flip_left_in,
-                    R.anim.card_flip_left_out);
+                    R.anim.card_flip_left_out,
+                    R.anim.card_flip_right_in,
+                    R.anim.card_flip_right_out);
                 break;
         }
 
-        transaction.replace(R.id.main_view, fragment, "main")
+        transaction
+                .hide(getSupportFragmentManager().findFragmentByTag("main"))
+                .add(R.id.main_view, fragment, "main")
                 .addToBackStack(null)
                 .commit();
     }
