@@ -1,19 +1,16 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -45,13 +42,7 @@ public class BugReportActivity extends AppCompatActivity {
         }
 
         findViewById(R.id.btn_open_bug_tracker).setOnClickListener(v -> {
-            try {
-                Intent myIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://github.com/AntennaPod/AntennaPod/issues"));
-                startActivity(myIntent);
-            } catch (ActivityNotFoundException e) {
-                Toast.makeText(this, R.string.pref_no_browser_found, Toast.LENGTH_LONG).show();
-            }
+            IntentUtils.openInBrowser(BugReportActivity.this, "https://github.com/AntennaPod/AntennaPod/issues");
         });
 
         findViewById(R.id.btn_copy_log).setOnClickListener(v -> {

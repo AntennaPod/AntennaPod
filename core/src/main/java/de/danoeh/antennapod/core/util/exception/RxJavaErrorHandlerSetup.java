@@ -1,11 +1,8 @@
 package de.danoeh.antennapod.core.util.exception;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
-
-import java.io.InterruptedIOException;
 
 public class RxJavaErrorHandlerSetup {
 
@@ -14,21 +11,14 @@ public class RxJavaErrorHandlerSetup {
     }
 
     public static void setupRxJavaErrorHandler() {
-        RxJavaPlugins.setErrorHandler(originalCause -> {
-            Throwable e = originalCause;
+        RxJavaPlugins.setErrorHandler(e -> {
             if (e instanceof UndeliverableException) {
-                e = e.getCause();
-            }
-            if (e instanceof GpodnetServiceException) {
-                e = e.getCause();
-            }
-            if (e instanceof InterruptedException || e instanceof InterruptedIOException) {
-                // fine, some blocking code was interrupted by a dispose call
-                Log.d("RxJavaErrorHandler", "Ignored exception: " + Log.getStackTraceString(originalCause));
+                // Probably just disposed because the fragment was left
+                Log.d("RxJavaErrorHandler", "Ignored exception: " + Log.getStackTraceString(e));
                 return;
             }
             Thread.currentThread().getUncaughtExceptionHandler()
-                    .uncaughtException(Thread.currentThread(), originalCause);
+                    .uncaughtException(Thread.currentThread(), e);
         });
     }
 }

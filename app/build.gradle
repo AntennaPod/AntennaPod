@@ -18,8 +18,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 1070395
-        versionName "1.7.3"
+        versionCode 1070396
+        versionName "1.7.3b"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         generatedDensities = []
@@ -173,8 +173,8 @@ dependencies {
 
     implementation 'com.github.mfietz:fyydlin:v0.4.2'
     implementation 'com.github.ByteHamster:SearchPreference:v1.3.0'
-    implementation "org.awaitility:awaitility:$awaitilityVersion"
 
+    androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

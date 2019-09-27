@@ -214,14 +214,7 @@ public class FeedItemMenuHandler {
                 DBWriter.setFeedItemAutoDownload(selectedItem, false);
                 break;
             case R.id.visit_website_item:
-                Uri uri = Uri.parse(FeedItemUtil.getLinkWithFallback(selectedItem));
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                if(IntentUtils.isCallable(context, intent)) {
-                    context.startActivity(intent);
-                } else {
-                    Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
-                            Toast.LENGTH_SHORT).show();
-                }
+                IntentUtils.openInBrowser(context, FeedItemUtil.getLinkWithFallback(selectedItem));
                 break;
             case R.id.share_link_item:
                 ShareUtils.shareFeedItemLink(context, selectedItem);

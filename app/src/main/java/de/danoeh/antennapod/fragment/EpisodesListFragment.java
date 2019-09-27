@@ -39,17 +39,16 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -197,10 +196,7 @@ public abstract class EpisodesListFragment extends Fragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.refresh_item:
-                    List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
-                    if (feeds != null) {
-                        DBTasks.refreshAllFeeds(getActivity(), feeds);
-                    }
+                    AutoUpdateManager.runImmediate(requireContext());
                     return true;
                 case R.id.mark_all_read_item:
                     ConfirmationDialog markAllReadConfirmationDialog = new ConfirmationDialog(getActivity(),
@@ -397,7 +393,7 @@ public abstract class EpisodesListFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
+        if (isMenuInvalidationAllowed && event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             requireActivity().invalidateOptionsMenu();
         }
         if (update.mediaIds.length > 0) {
