@@ -463,8 +463,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         }
                         break;
                     case R.id.visit_website_item:
-                        Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
-                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                        IntentUtils.openInBrowser(MediaplayerActivity.this, getWebsiteLinkWithFallback(media));
                         break;
                     case R.id.share_link_item:
                         if (feedItem != null) {

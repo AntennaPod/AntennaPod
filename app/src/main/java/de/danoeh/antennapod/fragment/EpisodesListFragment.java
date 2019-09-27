@@ -401,7 +401,7 @@ public abstract class EpisodesListFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (isMenuInvalidationAllowed && isUpdatingFeeds != update.feedIds.length > 0) {
+        if (isMenuInvalidationAllowed && event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             requireActivity().invalidateOptionsMenu();
         }
         if (update.mediaIds.length > 0) {

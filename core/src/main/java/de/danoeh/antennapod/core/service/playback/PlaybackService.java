@@ -455,7 +455,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     notificationBuilder.loadIcon(getPlayable());
                 }
             }
-            startForeground(NOTIFICATION_ID, notificationBuilder.build());
+            stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
