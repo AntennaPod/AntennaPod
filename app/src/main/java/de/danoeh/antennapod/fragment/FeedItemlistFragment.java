@@ -139,10 +139,11 @@ public class FeedItemlistFragment extends ListFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
-        updateProgressBarVisibility();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
+        }
     }
 
     @Override
