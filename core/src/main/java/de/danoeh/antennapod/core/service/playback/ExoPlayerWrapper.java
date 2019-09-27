@@ -22,6 +22,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import io.reactivex.Observable;
@@ -201,8 +203,12 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException {
-        DataSource.Factory dataSourceFactory =
-                new DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, mContext.getPackageName()), null);
+        DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
+                Util.getUserAgent(mContext, mContext.getPackageName()), null,
+                DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+                true);
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mContext, null, httpDataSourceFactory);
         ExtractorMediaSource.Factory f = new ExtractorMediaSource.Factory(dataSourceFactory);
         mediaSource = f.createMediaSource(Uri.parse(s));
     }
