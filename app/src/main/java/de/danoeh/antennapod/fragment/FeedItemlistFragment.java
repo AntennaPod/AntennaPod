@@ -139,14 +139,6 @@ public class FeedItemlistFragment extends ListFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
-        loadItems();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
@@ -154,22 +146,25 @@ public class FeedItemlistFragment extends ListFragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
-        EventBus.getDefault().unregister(this);
-        if(disposable != null) {
-            disposable.dispose();
-        }
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        registerForContextMenu(getListView());
+
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
+        loadItems();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        resetViewState();
-    }
 
-    private void resetViewState() {
+        EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
+        if (disposable != null) {
+            disposable.dispose();
+        }
         adapter = null;
         listFooter = null;
     }
@@ -340,13 +335,6 @@ public class FeedItemlistFragment extends ListFragment {
         }
 
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        registerForContextMenu(getListView());
     }
 
     @Override
