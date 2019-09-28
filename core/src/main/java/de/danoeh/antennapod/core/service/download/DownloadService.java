@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -190,10 +191,8 @@ public class DownloadService extends Service {
                                 handleFailedDownload(status, downloader.getDownloadRequest());
 
                                 if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                                    long id = status.getFeedfileId();
-                                    FeedMedia media = DBReader.getFeedMedia(id);
-                                    FeedItem item;
-                                    if (media == null || (item = media.getItem()) == null) {
+                                    FeedItem item = getFeedItemFromId(status.getFeedfileId());
+                                    if (item == null) {
                                         return;
                                     }
                                     boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
@@ -213,9 +212,8 @@ public class DownloadService extends Service {
                             // if FeedMedia download has been canceled, fake FeedItem update
                             // so that lists reload that it
                             if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                                FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
-                                FeedItem item;
-                                if (media == null || (item = media.getItem()) == null) {
+                                FeedItem item = getFeedItemFromId(status.getFeedfileId());
+                                if (item == null) {
                                     return;
                                 }
                                 EventBus.getDefault().post(FeedItemEvent.updated(item));
@@ -386,6 +384,12 @@ public class DownloadService extends Service {
                 Downloader d = getDownloader(url);
                 if (d != null) {
                     d.cancel();
+                    DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
+
+                    FeedItem item = getFeedItemFromId(d.getDownloadRequest().getFeedfileId());
+                    if (item != null) {
+                        EventBus.getDefault().post(FeedItemEvent.updated(item));
+                    }
                 } else {
                     Log.e(TAG, "Could not cancel download with url " + url);
                 }
@@ -576,6 +580,16 @@ public class DownloadService extends Service {
     private void handleFailedDownload(DownloadStatus status, DownloadRequest request) {
         Log.d(TAG, "Handling failed download");
         syncExecutor.execute(new FailedDownloadHandler(status, request));
+    }
+
+    @Nullable
+    private FeedItem getFeedItemFromId(long id) {
+        FeedMedia media = DBReader.getFeedMedia(id);
+        if (media != null) {
+            return media.getItem();
+        } else {
+            return null;
+        }
     }
 
     /**
