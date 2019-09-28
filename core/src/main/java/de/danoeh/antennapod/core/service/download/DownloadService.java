@@ -1058,7 +1058,13 @@ public class DownloadService extends Service {
     private final Runnable postDownloaderTask = new Runnable() {
         @Override
         public void run() {
-            List<Downloader> list = Collections.unmodifiableList(downloads);
+            List<Downloader> runningDownloads = new ArrayList<>();
+            for (Downloader downloader : downloads) {
+                if (!downloader.cancelled) {
+                    runningDownloads.add(downloader);
+                }
+            }
+            List<Downloader> list = Collections.unmodifiableList(runningDownloads);
             EventBus.getDefault().postSticky(DownloadEvent.refresh(list));
             postHandler.postDelayed(postDownloaderTask, 1500);
         }
@@ -1076,6 +1082,9 @@ public class DownloadService extends Service {
     private static String compileNotificationString(List<Downloader> downloads) {
         List<String> lines = new ArrayList<>(downloads.size());
         for (Downloader downloader : downloads) {
+            if (downloader.cancelled) {
+                continue;
+            }
             StringBuilder line = new StringBuilder("• ");
             DownloadRequest request = downloader.getDownloadRequest();
             switch (request.getFeedfileType()) {
