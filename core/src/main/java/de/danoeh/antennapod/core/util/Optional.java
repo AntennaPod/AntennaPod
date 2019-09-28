@@ -77,7 +77,7 @@ public final class Optional<T> {
      * @param <T> Type of the non-existent value
      * @return an empty {@code Optional}
      */
-    public static<T> Optional<T> empty() {
+    public static <T> Optional<T> empty() {
         @SuppressWarnings("unchecked")
         Optional<T> t = (Optional<T>) EMPTY;
         return t;
