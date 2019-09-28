@@ -13,6 +13,11 @@ import android.widget.ListView;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -24,10 +29,6 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
@@ -115,6 +116,11 @@ public class PlaybackTest {
     private void skipEpisode() {
         Intent skipIntent = new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
         context.sendBroadcast(skipIntent);
+    }
+
+    private void pauseEpisode() {
+        Intent pauseIntent = new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+        context.sendBroadcast(pauseIntent);
     }
 
     private void startLocalPlayback() {
@@ -332,6 +338,30 @@ public class PlaybackTest {
         assertThat("Ensure smart mark as play will lead to the item removed from the queue",
                 DBReader.getQueue(), not(hasItems(feedItem)));
         assertThat(DBReader.getFeedItem(feedItem.getId()).isPlayed(), is(true));
+    }
+
+    @Test
+    public void testSmartMarkAsPlayed_Pause_WontAffectItem() throws Exception {
+        setSmartMarkAsPlayedPreference(60);
+
+        uiTestUtils.addLocalFeedData(true);
+
+        final int fiIdx = 0;
+        final FeedItem feedItem = DBReader.getQueue().get(fiIdx);
+
+        gotoQueueScreen();
+        playFromQueue(fiIdx);
+
+        // let playback run a bit then pause
+        Thread.sleep(500);
+        pauseEpisode();
+        Thread.sleep(1000); // ensure the pause is processed
+
+        //  assert item no longer in queue
+        assertThat("Ensure even with smart mark as play, after pause, the item remains in the queue.",
+                DBReader.getQueue(), hasItems(feedItem));
+        assertThat("Ensure even with smart mark as play, after pause, the item played status remains false.",
+                DBReader.getFeedItem(feedItem.getId()).isPlayed(), is(false));
     }
 
 }
