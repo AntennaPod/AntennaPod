@@ -29,9 +29,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     private static final String TAG = "AutoDnldPrefFragment";
 
-    private static final String requestedPermission = Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final int permissionRequestCode = 1;
-    private static final String PREF_KEY_PERMISSION_REQUEST_PROMPT = "prefAutoDownloadWifiFilterAndroid10PermissionPrompt";
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final String PREF_KEY_LOCATION_PERMISSION_REQUEST_PROMPT = "prefAutoDownloadWifiFilterAndroid10PermissionPrompt";
 
     private CheckBoxPreference[] selectedNetworks;
 
@@ -201,10 +200,10 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != permissionRequestCode) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
             return;
         }
-        if (permissions.length > 0 && permissions[0].equals(requestedPermission) &&
+        if (permissions.length > 0 && permissions[0].equals(Manifest.permission.ACCESS_FINE_LOCATION) &&
                 grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             buildAutodownloadSelectedNetworksPreference();
         }
@@ -216,21 +215,17 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         }
 
         // Cases Android 10(Q) or later
-
-        final PreferenceScreen prefScreen = getPreferenceScreen();
-
         if (prefPermissionRequestPromptOnAndroid10 != null) {
-            prefScreen.removePreference(prefPermissionRequestPromptOnAndroid10);
+            getPreferenceScreen().removePreference(prefPermissionRequestPromptOnAndroid10);
             prefPermissionRequestPromptOnAndroid10 = null;
         }
 
-
-        if (hasLocationPermission()) {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
             return false;
         }
 
         // Case location permission not yet granted, permission-specific UI is needed
-
         if (!wifiFilterEnabled) {
             // Don't show the UI when WiFi filter disabled.
             // it still return true, so that the caller knows
@@ -239,26 +234,18 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         }
 
         Preference pref = new Preference(requireActivity());
-        pref.setKey(PREF_KEY_PERMISSION_REQUEST_PROMPT);
+        pref.setKey(PREF_KEY_LOCATION_PERMISSION_REQUEST_PROMPT);
         pref.setTitle(R.string.autodl_wifi_filter_permission_title);
         pref.setSummary(R.string.autodl_wifi_filter_permission_message);
         pref.setIcon(R.drawable.ic_warning_red);
         pref.setOnPreferenceClickListener(preference -> {
-            requestLocationPermission();
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
             return true;
         });
         pref.setPersistent(false);
         getPreferenceScreen().addPreference(pref);
         prefPermissionRequestPromptOnAndroid10 = pref;
-
         return true;
     }
 
-    private boolean hasLocationPermission() {
-        return ContextCompat.checkSelfPermission(requireContext(), requestedPermission) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void requestLocationPermission() {
-        requestPermissions(new String[]{requestedPermission}, permissionRequestCode);
-    }
 }
