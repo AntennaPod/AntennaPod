@@ -123,6 +123,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         if (!CastManager.isInitialized()) {
             return;
         }
+        castButtonVisibilityManager.setResumed(false);
     }
 
 
