@@ -32,7 +32,6 @@ public class PreferenceControllerFlavorHelper {
                     return false;
                 }
             }
-            displayRestartRequiredDialog(ui.requireContext());
             return true;
         });
     }
@@ -42,6 +41,7 @@ public class PreferenceControllerFlavorHelper {
         dialog.setTitle(android.R.string.dialog_alert_title);
         dialog.setMessage(R.string.pref_restart_required);
         dialog.setPositiveButton(android.R.string.ok, null);
+        dialog.setCancelable(false);
         dialog.show();
     }
 }
