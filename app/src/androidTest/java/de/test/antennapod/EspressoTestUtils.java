@@ -113,7 +113,7 @@ public class EspressoTestUtils {
     }
 
     public static void clickPreference(@StringRes int title) {
-        onView(withId(R.id.list)).perform(
+        onView(withId(R.id.recycler_view)).perform(
                 RecyclerViewActions.actionOnItem(hasDescendant(withText(title)),
                         click()));
     }
