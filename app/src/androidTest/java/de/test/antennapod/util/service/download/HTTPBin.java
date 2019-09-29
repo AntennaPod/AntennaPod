@@ -72,20 +72,6 @@ public class HTTPBin extends NanoHTTPD {
         return servedFiles.size() - 1;
     }
 
-    /**
-     * Removes the file with the given ID from the server.
-     *
-     * @return True if a file was removed, false otherwise
-     */
-    public synchronized boolean removeFile(int id) {
-        if (id < 0) throw new IllegalArgumentException("ID < 0");
-        if (id >= servedFiles.size()) {
-            return false;
-        } else {
-            return servedFiles.remove(id) != null;
-        }
-    }
-
     public synchronized File accessFile(int id) {
         if (id < 0 || id >= servedFiles.size()) {
             return null;

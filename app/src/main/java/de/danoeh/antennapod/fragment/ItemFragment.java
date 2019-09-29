@@ -55,7 +55,6 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -211,10 +210,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         webvDescription.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                if(IntentUtils.isCallable(getActivity(), intent)) {
-                    startActivity(intent);
-                }
+                IntentUtils.openInBrowser(getContext(), url);
                 return true;
             }
         });
@@ -336,10 +332,10 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         inflater.inflate(R.menu.feeditem_options, menu);
         popupMenu = menu;
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, null);
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item);
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, null,
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item,
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }
@@ -351,7 +347,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
                 openPodcast();
                 return true;
             default:
-                return FeedItemMenuHandler.onMenuItemClicked(getActivity(), menuItem.getItemId(), item);
+                return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
         }
     }
 
@@ -485,11 +481,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         if (selectedURL != null) {
             switch (item.getItemId()) {
                 case R.id.open_in_browser_item:
-                    Uri uri = Uri.parse(selectedURL);
-                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    if(IntentUtils.isCallable(getActivity(), intent)) {
-                        getActivity().startActivity(intent);
-                    }
+                    IntentUtils.openInBrowser(getContext(), selectedURL);
                     break;
                 case R.id.share_url_item:
                     ShareUtils.shareLink(getActivity(), selectedURL);

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,17 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
                     .replaceAll("\\s+", " ")
                     .trim();
             holder.description.setText(description);
+
+            final int MAX_LINES_COLLAPSED = 3;
+            holder.description.setMaxLines(MAX_LINES_COLLAPSED);
+            holder.description.setOnClickListener(v -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+                        && holder.description.getMaxLines() > MAX_LINES_COLLAPSED) {
+                    holder.description.setMaxLines(MAX_LINES_COLLAPSED);
+                } else {
+                    holder.description.setMaxLines(2000);
+                }
+            });
         }
         return convertView;
     }

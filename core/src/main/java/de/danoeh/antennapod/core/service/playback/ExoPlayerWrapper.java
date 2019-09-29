@@ -26,26 +26,45 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import org.antennapod.audio.MediaPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 
+import java.util.concurrent.TimeUnit;
 
 public class ExoPlayerWrapper implements IPlayer {
     private final Context mContext;
+    private final Disposable bufferingUpdateDisposable;
     private SimpleExoPlayer mExoPlayer;
     private MediaSource mediaSource;
     private MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener;
     private MediaPlayer.OnCompletionListener audioCompletionListener;
     private MediaPlayer.OnErrorListener audioErrorListener;
+    private MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener;
+
 
     ExoPlayerWrapper(Context context) {
         mContext = context;
         mExoPlayer = createPlayer();
+
+        bufferingUpdateDisposable = Observable.interval(2, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong -> {
+                        if (bufferingUpdateListener != null) {
+                            bufferingUpdateListener.onBufferingUpdate(null, mExoPlayer.getBufferedPercentage());
+                        }
+                    });
     }
 
     private SimpleExoPlayer createPlayer() {
+        DefaultLoadControl.Builder loadControl = new DefaultLoadControl.Builder();
+        loadControl.setBufferDurationsMs(30000, 120000,
+                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
+                DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext),
-                new DefaultTrackSelector(), new DefaultLoadControl());
+                new DefaultTrackSelector(), loadControl.createDefaultLoadControl());
         p.setSeekParameters(SeekParameters.PREVIOUS_SYNC);
         p.addListener(new Player.EventListener() {
             @Override
@@ -150,12 +169,14 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void release() {
+        bufferingUpdateDisposable.dispose();
         if (mExoPlayer != null) {
             mExoPlayer.release();
         }
         audioSeekCompleteListener = null;
         audioCompletionListener = null;
         audioErrorListener = null;
+        bufferingUpdateListener = null;
     }
 
     @Override
@@ -252,5 +273,9 @@ public class ExoPlayerWrapper implements IPlayer {
             return 0;
         }
         return mExoPlayer.getVideoFormat().height;
+    }
+
+    void setOnBufferingUpdateListener(MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener) {
+        this.bufferingUpdateListener = bufferingUpdateListener;
     }
 }

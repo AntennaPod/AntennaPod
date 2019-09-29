@@ -163,6 +163,10 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
         return INSTANCE;
     }
 
+    public static boolean isInitialized() {
+        return INSTANCE != null;
+    }
+
     /**
      * Returns the active {@link RemoteMediaPlayer} instance. Since there are a number of media
      * control APIs that this library do not provide a wrapper for, client applications can call

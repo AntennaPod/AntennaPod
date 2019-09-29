@@ -3,8 +3,11 @@ package de.danoeh.antennapod.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+
 import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class PreferenceUpgrader {
@@ -21,7 +24,7 @@ public class PreferenceUpgrader {
 
         if (oldVersion != newVersion) {
             NotificationUtils.createChannels(context);
-            UserPreferences.restartUpdateAlarm();
+            AutoUpdateManager.restartUpdateAlarm();
 
             upgrade(oldVersion);
             upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
@@ -61,6 +64,14 @@ public class PreferenceUpgrader {
                     UserPreferences.setAllowMobileImages(false);
                     break;
             }
+        }
+        if (oldVersion < 1070400) {
+            int theme = UserPreferences.getTheme();
+            if (theme == R.style.Theme_AntennaPod_Light) {
+                prefs.edit().putString(UserPreferences.PREF_THEME, "system").apply();
+            }
+
+            UserPreferences.setQueueLocked(false);
         }
     }
 }

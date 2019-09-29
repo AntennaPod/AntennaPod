@@ -323,7 +323,7 @@ public class FeedItemlistFragment extends ListFragment {
 
         contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, null);
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item);
     }
 
     @Override
@@ -340,7 +340,7 @@ public class FeedItemlistFragment extends ListFragment {
             return super.onContextItemSelected(item);
         }
 
-        return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
     @Override
@@ -390,10 +390,10 @@ public class FeedItemlistFragment extends ListFragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (isUpdatingFeed != event.update.feedIds.length > 0) {
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeed)) {
             updateProgressBarVisibility();
         }
-        if(adapter != null && update.mediaIds.length > 0) {
+        if (adapter != null && update.mediaIds.length > 0) {
             adapter.notifyDataSetChanged();
         }
     }

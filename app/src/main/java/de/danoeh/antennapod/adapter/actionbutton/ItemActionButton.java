@@ -20,12 +20,12 @@ public abstract class ItemActionButton {
     }
 
     @StringRes
-    abstract public int getLabel();
+    public abstract int getLabel();
 
     @AttrRes
-    abstract public int getDrawable();
+    public abstract int getDrawable();
 
-    abstract public void onClick(Context context);
+    public abstract void onClick(Context context);
 
     public int getVisibility() {
         return View.VISIBLE;
