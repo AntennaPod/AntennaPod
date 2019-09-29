@@ -44,8 +44,8 @@ project.ext {
     minSdkVersion = 14
     targetSdkVersion = 28
 
-    supportVersion = "27.1.1"
     workManagerVersion = "1.0.1"
+    espressoVersion = "3.2.0"
     awaitilityVersion = "3.1.2"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
@@ -70,7 +70,7 @@ project.ext {
 
     castCompanionLibVer = "2.9.1"
     playServicesVersion = "8.4.0"
-    wearableSupportVersion = "2.2.0"
+    wearableSupportVersion = "2.4.0"
 }
 
 wrapper {
