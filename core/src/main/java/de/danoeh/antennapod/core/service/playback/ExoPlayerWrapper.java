@@ -63,6 +63,7 @@ public class ExoPlayerWrapper implements IPlayer {
         loadControl.setBufferDurationsMs(30000, 120000,
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
+        loadControl.setBackBuffer(30000, true);
         SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext),
                 new DefaultTrackSelector(), loadControl.createDefaultLoadControl());
         p.setSeekParameters(SeekParameters.PREVIOUS_SYNC);
