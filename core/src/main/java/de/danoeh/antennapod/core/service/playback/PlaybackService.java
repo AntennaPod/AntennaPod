@@ -566,7 +566,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
@@ -590,7 +590,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
                 }
 
                 return true;
