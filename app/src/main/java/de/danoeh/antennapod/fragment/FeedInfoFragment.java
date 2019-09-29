@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.viewmodel.FeedLoaderViewModel;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -102,7 +104,6 @@ public class FeedInfoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.feedinfo, null);
-        long feedId = getArguments().getLong(EXTRA_FEED_ID, -1);
         setHasOptionsMenu(true);
 
         imgvCover = root.findViewById(R.id.imgvCover);
@@ -123,27 +124,19 @@ public class FeedInfoFragment extends Fragment {
         txtvUrl = root.findViewById(R.id.txtvUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
+        postponeEnterTransition();
+        return root;
+    }
 
-        disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
-            Feed feed = DBReader.getFeed(feedId);
-            if (feed != null) {
-                emitter.onSuccess(feed);
-            } else {
-                emitter.onComplete();
-            }
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        long feedId = getArguments().getLong(EXTRA_FEED_ID);
+        ViewModelProviders.of(getActivity()).get(FeedLoaderViewModel.class).getFeed(feedId)
                 .subscribe(result -> {
                     feed = result;
                     showFeed();
-                }, error -> {
-                    Log.d(TAG, Log.getStackTraceString(error));
-                }, () -> {
-                    Log.e(TAG, "Activity was started with invalid arguments");
-                });
-
-        return root;
+                    startPostponedEnterTransition();
+                }).dispose();
     }
 
     private void showFeed() {

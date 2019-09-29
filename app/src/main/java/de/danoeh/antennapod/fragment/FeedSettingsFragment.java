@@ -17,7 +17,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
-import de.danoeh.antennapod.viewmodel.FeedSettingsViewModel;
+import de.danoeh.antennapod.viewmodel.FeedLoaderViewModel;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
@@ -39,7 +39,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
 
         postponeEnterTransition();
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
-        ViewModelProviders.of(getActivity()).get(FeedSettingsViewModel.class).getFeed(feedId)
+        ViewModelProviders.of(getActivity()).get(FeedLoaderViewModel.class).getFeed(feedId)
                 .subscribe(result -> {
                     feed = result;
                     feedPreferences = feed.getPreferences();

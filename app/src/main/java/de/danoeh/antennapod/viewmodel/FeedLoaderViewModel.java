@@ -5,7 +5,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
 import io.reactivex.Maybe;
 
-public class FeedSettingsViewModel extends ViewModel {
+public class FeedLoaderViewModel extends ViewModel {
     private Feed feed;
 
     public Maybe<Feed> getFeed(long feedId) {
