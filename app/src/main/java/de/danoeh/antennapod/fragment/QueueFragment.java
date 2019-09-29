@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -210,6 +211,13 @@ public class QueueFragment extends Fragment {
                     recyclerAdapter.notifyItemChanged(pos);
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (recyclerAdapter != null) {
+            recyclerAdapter.notifyCurrentlyPlayingItemChanged(event);
         }
     }
 

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -381,6 +382,13 @@ public abstract class EpisodesListFragment extends Fragment {
                     listAdapter.notifyItemRemoved(pos);
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (listAdapter != null) {
+            listAdapter.notifyCurrentlyPlayingItemChanged(event);
         }
     }
 

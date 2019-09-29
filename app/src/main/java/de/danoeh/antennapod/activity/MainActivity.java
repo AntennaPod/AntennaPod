@@ -47,7 +47,6 @@ import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -785,25 +784,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             return;
         }
         loadData();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(ProgressEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        switch(event.action) {
-            case START:
-                pd = new ProgressDialog(this);
-                pd.setMessage(event.message);
-                pd.setIndeterminate(true);
-                pd.setCancelable(false);
-                pd.show();
-                break;
-            case END:
-                if(pd != null) {
-                    pd.dismiss();
-                }
-                break;
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

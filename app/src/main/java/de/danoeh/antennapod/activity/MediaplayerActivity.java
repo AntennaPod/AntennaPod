@@ -34,6 +34,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -63,6 +64,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 /**
@@ -194,6 +198,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         };
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        onPositionObserverUpdate();
+    }
+
     private static TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
         return activity.txtvFF;
     }
@@ -274,6 +283,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         controller.init();
         loadMediaInfo();
         onPositionObserverUpdate();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -286,6 +296,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (disposable != null) {
             disposable.dispose();
         }
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 

@@ -29,6 +29,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -395,6 +396,13 @@ public class FeedItemlistFragment extends ListFragment {
         }
         if (adapter != null && update.mediaIds.length > 0) {
             adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (adapter != null) {
+            adapter.notifyCurrentlyPlayingItemChanged(event, getListView());
         }
     }
 

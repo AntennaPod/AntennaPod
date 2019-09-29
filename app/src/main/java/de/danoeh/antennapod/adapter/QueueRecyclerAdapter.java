@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MotionEventCompat;
@@ -24,9 +25,11 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.Iconify;
 
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -57,6 +60,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
     private boolean locked;
 
     private FeedItem selectedItem;
+    private ViewHolder currentlyPlayingItem = null;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
@@ -93,6 +97,18 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         });
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int pos, List<Object> payload) {
+        onBindViewHolder(holder, pos);
+
+        if (holder == currentlyPlayingItem && payload.size() == 1 && payload.get(0) instanceof PlaybackPositionEvent) {
+            PlaybackPositionEvent event = (PlaybackPositionEvent) payload.get(0);
+            holder.progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
+            holder.progressLeft.setText(Converter.getDurationStringLong(event.getPosition()));
+            holder.progressRight.setText(Converter.getDurationStringLong(event.getDuration()));
+        }
+    }
+
     @Nullable
     public FeedItem getSelectedItem() {
         return selectedItem;
@@ -106,6 +122,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     public int getItemCount() {
         return itemAccess.getCount();
+    }
+
+    public void notifyCurrentlyPlayingItemChanged(PlaybackPositionEvent event) {
+        if (currentlyPlayingItem != null && currentlyPlayingItem.getAdapterPosition() != RecyclerView.NO_POSITION) {
+            notifyItemChanged(currentlyPlayingItem.getAdapterPosition(), event);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -287,6 +309,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
                 if(media.isCurrentlyPlaying()) {
                     container.setBackgroundColor(playingBackGroundColor);
+                    currentlyPlayingItem = this;
                 } else {
                     container.setBackgroundColor(normalBackGroundColor);
                 }

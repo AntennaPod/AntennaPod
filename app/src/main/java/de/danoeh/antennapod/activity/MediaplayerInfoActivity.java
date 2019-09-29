@@ -122,7 +122,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             disposable.dispose();
         }
         EventDistributor.getInstance().unregister(contentUpdate);
-        EventBus.getDefault().unregister(this);
         saveCurrentFragment();
     }
 
@@ -175,7 +174,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     protected void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
         loadData();
     }
 

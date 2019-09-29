@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -45,10 +44,12 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -66,7 +67,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
@@ -74,6 +74,9 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -212,6 +215,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private PlaybackServiceTaskManager taskManager;
     private PlaybackServiceFlavorHelper flavorHelper;
     private PlaybackServiceStateManager stateManager;
+    private Disposable positionEventTimer;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -331,8 +335,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
 
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(prefListener);
+        cancelPositionObserver();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(prefListener);
         if (mediaSession != null) {
             mediaSession.release();
         }
@@ -734,6 +738,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         // remove notification on pause
                         stateManager.stopForeground(true);
                     }
+                    cancelPositionObserver();
                     writePlayerStatusPlaybackPreferences();
                     break;
 
@@ -745,6 +750,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case PLAYING:
                     writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
+                    setupPositionUpdater();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
@@ -1651,6 +1657,24 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public Pair<Integer, Integer> getVideoSize() {
         return mediaPlayer.getVideoSize();
+    }
+
+    private void setupPositionUpdater() {
+        if (positionEventTimer != null) {
+            positionEventTimer.dispose();
+        }
+
+        Log.d(TAG, "Setting up position observer");
+        positionEventTimer = Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong ->
+                        EventBus.getDefault().post(new PlaybackPositionEvent(getCurrentPosition(), getDuration())));
+    }
+
+    private void cancelPositionObserver() {
+        if (positionEventTimer != null) {
+            positionEventTimer.dispose();
+        }
     }
 
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
