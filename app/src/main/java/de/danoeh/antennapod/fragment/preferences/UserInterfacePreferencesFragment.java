@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -23,6 +24,12 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_user_interface);
         setupInterfaceScreen();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.user_interface_label);
     }
 
     private void setupInterfaceScreen() {

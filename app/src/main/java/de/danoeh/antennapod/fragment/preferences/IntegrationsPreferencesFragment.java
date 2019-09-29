@@ -14,6 +14,12 @@ public class IntegrationsPreferencesFragment extends PreferenceFragmentCompat {
         setupIntegrationsScreen();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.integrations_label);
+    }
+
     private void setupIntegrationsScreen() {
         findPreference(PREF_SCREEN_GPODDER).setOnPreferenceClickListener(preference -> {
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_gpodder);

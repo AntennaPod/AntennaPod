@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
@@ -44,6 +45,12 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         buildAutodownloadSelectedNetworksPreference();
         setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
         buildEpisodeCleanupPreference();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.auto_download_label);
     }
 
     @Override

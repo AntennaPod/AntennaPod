@@ -151,13 +151,6 @@
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
         <activity
-            android:name=".activity.StatisticsActivity"
-            android:label="@string/statistics_label">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
-        </activity>
-        <activity
                 android:name=".activity.ImportExportActivity"
                 android:label="@string/import_export">
             <meta-data
