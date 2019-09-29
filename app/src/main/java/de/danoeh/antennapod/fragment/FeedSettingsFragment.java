@@ -8,6 +8,7 @@ import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
@@ -18,17 +19,25 @@ import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.viewmodel.FeedSettingsViewModel;
 
-import static de.danoeh.antennapod.activity.FeedSettingsActivity.EXTRA_FEED_ID;
-
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
+    private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private Feed feed;
     private FeedPreferences feedPreferences;
+
+    public static FeedSettingsFragment newInstance(Feed feed) {
+        FeedSettingsFragment fragment = new FeedSettingsFragment();
+        Bundle arguments = new Bundle();
+        arguments.putLong(EXTRA_FEED_ID, feed.getId());
+        fragment.setArguments(arguments);
+        return fragment;
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.feed_settings);
 
+        postponeEnterTransition();
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
         ViewModelProviders.of(getActivity()).get(FeedSettingsViewModel.class).getFeed(feedId)
                 .subscribe(result -> {
@@ -43,7 +52,14 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
 
                     updateAutoDeleteSummary();
                     updateAutoDownloadEnabled();
+                    startPostponedEnterTransition();
                 }).dispose();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.feed_settings_label);
     }
 
     private void setupEpisodeFilterPreference() {

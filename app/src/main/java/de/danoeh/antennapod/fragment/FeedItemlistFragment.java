@@ -37,7 +37,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
@@ -495,10 +494,8 @@ public class FeedItemlistFragment extends ListFragment {
         imgvCover.setOnClickListener(v -> showFeedInfo());
         butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
-                Intent startIntent = new Intent(getActivity(), FeedSettingsActivity.class);
-                startIntent.putExtra(FeedSettingsActivity.EXTRA_FEED_ID,
-                        feed.getId());
-                startActivity(startIntent);
+                FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
+                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.FLIP);
             }
         });
         headerCreated = true;
