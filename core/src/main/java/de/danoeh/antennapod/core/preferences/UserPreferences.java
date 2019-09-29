@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -109,6 +110,7 @@ public class UserPreferences {
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
     public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+    private static final String PREF_VIDEO_PLAYBACK_SPEED = "prefVideoPlaybackSpeed";
     public static final String PREF_PLAYBACK_SKIP_SILENCE = "prefSkipSilence";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
@@ -163,7 +165,7 @@ public class UserPreferences {
      * @return R.style.Theme_AntennaPod_Light or R.style.Theme_AntennaPod_Dark
      */
     public static int getTheme() {
-        return readThemeValue(prefs.getString(PREF_THEME, "0"));
+        return readThemeValue(prefs.getString(PREF_THEME, "system"));
     }
 
     public static int getNoTitleTheme() {
@@ -319,8 +321,24 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static String getPlaybackSpeed() {
-        return prefs.getString(PREF_PLAYBACK_SPEED, "1.00");
+    public static float getPlaybackSpeed() {
+        try {
+            return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            UserPreferences.setPlaybackSpeed("1.00");
+            return 1.0f;
+        }
+    }
+
+    public static float getVideoPlaybackSpeed() {
+        try {
+            return Float.parseFloat(prefs.getString(PREF_VIDEO_PLAYBACK_SPEED, "1.00"));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            UserPreferences.setVideoPlaybackSpeed("1.00");
+            return 1.0f;
+        }
     }
 
     public static boolean isSkipSilence() {
@@ -415,9 +433,9 @@ public class UserPreferences {
         defaultValue.add("images");
         Set<String> allowed = prefs.getStringSet(PREF_MOBILE_UPDATE, defaultValue);
         if (allow) {
-            allowed.remove(type);
-        } else {
             allowed.add(type);
+        } else {
+            allowed.remove(type);
         }
         prefs.edit().putStringSet(PREF_MOBILE_UPDATE, allowed).apply();
     }
@@ -559,6 +577,12 @@ public class UserPreferences {
              .apply();
     }
 
+    public static void setVideoPlaybackSpeed(String speed) {
+        prefs.edit()
+                .putString(PREF_VIDEO_PLAYBACK_SPEED, speed)
+                .apply();
+    }
+
     public static void setSkipSilence(boolean skipSilence) {
         prefs.edit()
                 .putBoolean(PREF_PLAYBACK_SKIP_SILENCE, skipSilence)
@@ -598,7 +622,7 @@ public class UserPreferences {
              .apply();
         // when updating with an interval, we assume the user wants
         // to update *now* and then every 'hours' interval thereafter.
-        restartUpdateAlarm();
+        AutoUpdateManager.restartUpdateAlarm();
     }
 
     /**
@@ -608,7 +632,7 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
              .apply();
-        restartUpdateAlarm();
+        AutoUpdateManager.restartUpdateAlarm();
     }
 
     public static void disableAutoUpdate() {
@@ -649,14 +673,18 @@ public class UserPreferences {
     }
 
     private static int readThemeValue(String valueFromPrefs) {
-        switch (Integer.parseInt(valueFromPrefs)) {
-            case 0:
+        switch (valueFromPrefs) {
+            case "0":
                 return R.style.Theme_AntennaPod_Light;
-            case 1:
+            case "1":
                 return R.style.Theme_AntennaPod_Dark;
-            case 2:
+            case "2":
                 return R.style.Theme_AntennaPod_TrueBlack;
             default:
+                int nightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
+                    return R.style.Theme_AntennaPod_Dark;
+                }
                 return R.style.Theme_AntennaPod_Light;
         }
     }
@@ -852,26 +880,6 @@ public class UserPreferences {
      */
     public static boolean isAutoUpdateTimeOfDay() {
         return getUpdateTimeOfDay().length == 2;
-    }
-
-    public static void restartUpdateAlarm() {
-        if (isAutoUpdateDisabled()) {
-            AutoUpdateManager.disableAutoUpdate();
-        } else if (isAutoUpdateTimeOfDay()) {
-            int[] timeOfDay = getUpdateTimeOfDay();
-            Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
-            AutoUpdateManager.restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
-        } else {
-            long milliseconds = getUpdateInterval();
-            AutoUpdateManager.restartUpdateIntervalAlarm(milliseconds);
-        }
-    }
-
-    /**
-     * Reads episode cache size as it is saved in the episode_cache_size_values array.
-     */
-    public static int readEpisodeCacheSize(String valueFromPrefs) {
-        return readEpisodeCacheSizeInternal(valueFromPrefs);
     }
 
     /**

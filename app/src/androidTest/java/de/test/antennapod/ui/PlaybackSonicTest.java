@@ -52,11 +52,10 @@ public class PlaybackSonicTest {
 
     @Before
     public void setUp() throws Exception {
-        EspressoTestUtils.clearAppData();
+        EspressoTestUtils.clearPreferences();
+        EspressoTestUtils.makeNotFirstRun();
+        EspressoTestUtils.clearDatabase();
         context = InstrumentationRegistry.getTargetContext();
-
-        PodDBAdapter.init(context);
-        PodDBAdapter.deleteDatabase();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
@@ -71,11 +70,6 @@ public class PlaybackSonicTest {
 
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
-
-        // create database
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
     }
 
     @After
@@ -122,7 +116,7 @@ public class PlaybackSonicTest {
         solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
         getInstrumentation().waitForIdleSync();
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
 
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
@@ -241,7 +235,7 @@ public class PlaybackSonicTest {
         setContinuousPlaybackPreference(followQueue);
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
 
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();

@@ -5,8 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.intent.Intents;
-import android.support.test.rule.ActivityTestRule;
+import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
@@ -29,7 +28,6 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.contrib.ActivityResultMatchers.hasResultCode;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
@@ -45,36 +43,20 @@ public class MainActivityTest {
 
     private Solo solo;
     private UITestUtils uiTestUtils;
-    private SharedPreferences prefs;
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class, false, false);
+    public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(MainActivity.class, false, false);
 
     @Before
     public void setUp() throws IOException {
-        // override first launch preference
-        // do this BEFORE calling getActivity()!
-        EspressoTestUtils.clearAppData();
-        prefs = InstrumentationRegistry.getContext()
-                .getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false).commit();
+        EspressoTestUtils.clearPreferences();
+        EspressoTestUtils.makeNotFirstRun();
+        EspressoTestUtils.clearDatabase();
 
         mActivityRule.launchActivity(new Intent());
 
-        Intents.init();
-        Context context = mActivityRule.getActivity();
-        uiTestUtils = new UITestUtils(context);
+        uiTestUtils = new UITestUtils(InstrumentationRegistry.getTargetContext());
         uiTestUtils.setup();
-
-        // create new database
-        PodDBAdapter.init(context);
-        PodDBAdapter.deleteDatabase();
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
-
-        RatingDialog.init(context);
-        RatingDialog.saveRated();
 
         solo = new Solo(getInstrumentation(), mActivityRule.getActivity());
     }
@@ -82,10 +64,7 @@ public class MainActivityTest {
     @After
     public void tearDown() throws Exception {
         uiTestUtils.tearDown();
-        solo.finishOpenedActivities();
-        Intents.release();
         PodDBAdapter.deleteDatabase();
-        prefs.edit().clear().commit();
     }
 
     @Test
@@ -93,13 +72,10 @@ public class MainActivityTest {
         uiTestUtils.addHostedFeedData();
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
         openNavDrawer();
-        solo.clickOnText(solo.getString(R.string.add_feed_label));
+        onView(withText(R.string.add_feed_label)).perform(click());
         solo.enterText(1, feed.getDownload_url());
-        solo.clickOnButton(solo.getString(R.string.confirm_label));
-        solo.waitForActivity(OnlineFeedViewActivity.class);
-        solo.waitForView(R.id.butSubscribe);
-        assertEquals(solo.getString(R.string.subscribe_label), solo.getButton(0).getText().toString());
-        solo.clickOnButton(0);
+        onView(withText(R.string.confirm_label)).perform(click());
+        onView(withText(R.string.subscribe_label)).perform(click());
         assertTrue(solo.waitForText(solo.getString(R.string.open_podcast), 0, Timeout.getLargeTimeout(), false));
     }
 
@@ -119,7 +95,6 @@ public class MainActivityTest {
         onView(withText(R.string.confirm_label)).perform(click());
 
         solo.goBackToActivity(MainActivity.class.getSimpleName());
-        solo.goBack(); // Close nav drawer
         solo.goBack();
         assertEquals(solo.getString(R.string.subscriptions_label), getActionbarTitle());
     }
@@ -132,7 +107,6 @@ public class MainActivityTest {
         clickPreference(R.string.pref_back_button_behavior_title);
         onView(withText(R.string.back_button_open_drawer)).perform(click());
         solo.goBackToActivity(MainActivity.class.getSimpleName());
-        solo.goBack(); // Close nav drawer
         solo.goBack();
         assertTrue(((MainActivity)solo.getCurrentActivity()).isDrawerOpen());
     }
@@ -145,7 +119,6 @@ public class MainActivityTest {
         clickPreference(R.string.pref_back_button_behavior_title);
         onView(withText(R.string.back_button_double_tap)).perform(click());
         solo.goBackToActivity(MainActivity.class.getSimpleName());
-        solo.goBack(); // Close nav drawer
         solo.goBack();
         solo.goBack();
         assertThat(mActivityRule.getActivityResult(), hasResultCode(Activity.RESULT_CANCELED));
@@ -159,7 +132,6 @@ public class MainActivityTest {
         clickPreference(R.string.pref_back_button_behavior_title);
         onView(withText(R.string.back_button_show_prompt)).perform(click());
         solo.goBackToActivity(MainActivity.class.getSimpleName());
-        solo.goBack(); // Close nav drawer
         solo.goBack();
         onView(withText(R.string.yes)).perform(click());
         Thread.sleep(100);
@@ -174,7 +146,6 @@ public class MainActivityTest {
         clickPreference(R.string.pref_back_button_behavior_title);
         onView(withText(R.string.back_button_default)).perform(click());
         solo.goBackToActivity(MainActivity.class.getSimpleName());
-        solo.goBack(); // Close nav drawer
         solo.goBack();
         assertThat(mActivityRule.getActivityResult(), hasResultCode(Activity.RESULT_CANCELED));
     }

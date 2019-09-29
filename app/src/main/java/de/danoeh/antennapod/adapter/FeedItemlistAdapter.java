@@ -13,15 +13,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ThemeUtils;
@@ -34,14 +37,12 @@ public class FeedItemlistAdapter extends BaseAdapter {
     private final ItemAccess itemAccess;
     private final Context context;
     private final boolean showFeedtitle;
-    private final int selectedItemIndex;
     /** true if played items should be made partially transparent */
     private final boolean makePlayedItemsTransparent;
-
-    private static final int SELECTION_NONE = -1;
-
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
+
+    private int currentlyPlayingItem = -1;
 
     public FeedItemlistAdapter(Context context,
                                ItemAccess itemAccess,
@@ -51,7 +52,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
         this.context = context;
         this.itemAccess = itemAccess;
         this.showFeedtitle = showFeedtitle;
-        this.selectedItemIndex = SELECTION_NONE;
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
 
         playingBackGroundColor = ThemeUtils.getColorFromAttr(context, R.attr.currently_playing_background);
@@ -112,12 +112,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
         if (!(getItemViewType(position) == Adapter.IGNORE_ITEM_VIEW_TYPE)) {
             convertView.setVisibility(View.VISIBLE);
-            if (position == selectedItemIndex) {
-                convertView.setBackgroundColor(ContextCompat.getColor(convertView.getContext(),
-                        ThemeUtils.getSelectionBackgroundColor()));
-            } else {
-                convertView.setBackgroundResource(0);
-            }
 
             StringBuilder buffer = new StringBuilder(item.getTitle());
             if (showFeedtitle) {
@@ -187,8 +181,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 }
                 typeDrawables.recycle();
 
-                if(media.isCurrentlyPlaying()) {
+                if (media.isCurrentlyPlaying()) {
                     holder.container.setBackgroundColor(playingBackGroundColor);
+                    currentlyPlayingItem = position;
                 } else {
                     holder.container.setBackgroundColor(normalBackGroundColor);
                 }
@@ -204,6 +199,19 @@ public class FeedItemlistAdapter extends BaseAdapter {
             convertView.setVisibility(View.GONE);
         }
         return convertView;
+    }
+
+    public void notifyCurrentlyPlayingItemChanged(PlaybackPositionEvent event, ListView listView) {
+        if (currentlyPlayingItem != -1 && currentlyPlayingItem < getCount()) {
+            View view = listView.getChildAt(currentlyPlayingItem
+                    - listView.getFirstVisiblePosition() + listView.getHeaderViewsCount());
+            if (view == null) {
+                return;
+            }
+            Holder holder = (Holder) view.getTag();
+            holder.episodeProgress.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
+            holder.lenSize.setText(Converter.getDurationStringLong(event.getDuration() - event.getPosition()));
+        }
     }
 
     static class Holder {

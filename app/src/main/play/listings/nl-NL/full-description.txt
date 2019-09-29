@@ -1,5 +1,5 @@
 Met AntennaPod speel en beheer je al je podcasts en krijg je directe toegang tot duizenden gratis en betaalde podcasts - van onafhankelijke makers tot grote merken zoals BBC, CNN en NPO. Via de iTunes-databank, OPML-bestanden en simpele RSS-linkjes voeg je deze podcasts gemakkelijk toe. Dankzij simpele maar slimme automatische controle van het downloaden en verwijderen van afleveringen bespaar je de accu, hoef je je favoriete podcast niet meer handmatig te volgen en verbruik je geen onnodige mobiele gegevens.<br>
-Maar belangrijker: Met een handige wachtrij, aanpasbare afspeelsnelheden, ondersteuning van hoofdstukken en een slaap timer luister je naar podcasts op de manier die jij prettig vindt. Je kunt zelfs je liefde voor de makers uiten met onze Flattr-integratie. 
+Maar belangrijker: download, stream of voeg afleveringen toe aan de wachtrij en geniet ervan! Je hebt beschikking over afspeelsnelheden, hoofdstukondersteuning en een slaaptimer.
 
 Gemaakt door podcast-enthousiastelingen, AntennaPod is vrij in de breedste zin van het woord: vrij van advertenties, open source en gratis.
 
@@ -15,7 +15,6 @@ DEEL & WAARDEER<br>
 &#8226; Hou het beste van het beste bij door afleveringen als favoriet te markeren<br>
 &#8226; Vindt die ene aflevering terug in de afspeelgeschiedenis of door te zoeken (in titels, shownotes en makers)<br>
 &#8226; Deel podcasts en afleveringen via uitgebreide opties voor sociale media, WhatsApp, email en gPodder.net<br>
-&#8226; Steun makers met Flattr-integratie, inclusief auto-Flattr
 
 HOUD DE CONTROLE
 &#8226; Beheer automatische downloads: kies je podcasts, sluit mobiele netwerken uit, selecteer specifieke WiFi-verbindingen, eis dat de telefoon wordt opgeladen and bepaal tijden of intervals<br>

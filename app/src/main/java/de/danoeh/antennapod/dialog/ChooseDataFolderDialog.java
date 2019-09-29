@@ -9,7 +9,7 @@ import de.danoeh.antennapod.adapter.DataFolderAdapter;
 
 public class ChooseDataFolderDialog {
 
-    public static abstract class RunnableWithString implements Runnable {
+    public abstract static class RunnableWithString implements Runnable {
         public RunnableWithString() {
             super();
         }

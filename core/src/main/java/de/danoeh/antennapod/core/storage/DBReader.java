@@ -418,17 +418,18 @@ public final class DBReader {
     /**
      * Loads a list of FeedItems sorted by pubDate in descending order.
      *
+     * @param offset The first episode that should be loaded.
      * @param limit The maximum number of episodes that should be loaded.
      */
     @NonNull
-    public static List<FeedItem> getRecentlyPublishedEpisodes(int limit) {
-        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "limit = [" + limit + "]");
+    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit) {
+        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "offset = [" + offset + "]" + " limit = [" + limit + "]" );
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor cursor = null;
         try {
-            cursor = adapter.getRecentlyPublishedItemsCursor(limit);
+            cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit);
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
@@ -830,15 +831,14 @@ public final class DBReader {
      * Searches the DB for a FeedMedia of the given id.
      *
      * @param mediaId The id of the object
-     * @return The found object
+     * @return The found object, or null if it does not exist
      */
+    @Nullable
     public static FeedMedia getFeedMedia(final long mediaId) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
-
         adapter.open();
-        Cursor mediaCursor = null;
-        try {
-            mediaCursor = adapter.getSingleFeedMediaCursor(mediaId);
+
+        try (Cursor mediaCursor = adapter.getSingleFeedMediaCursor(mediaId)) {
             if (!mediaCursor.moveToFirst()) {
                 return null;
             }
@@ -846,19 +846,13 @@ public final class DBReader {
             int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
             long itemId = mediaCursor.getLong(indexFeedItem);
             FeedMedia media = FeedMedia.fromCursor(mediaCursor);
-            if (media != null) {
-                FeedItem item = getFeedItem(itemId);
-                if (item != null) {
-                    media.setItem(item);
-                    item.setMedia(media);
-                }
+            FeedItem item = getFeedItem(itemId);
+            if (item != null) {
+                media.setItem(item);
+                item.setMedia(media);
             }
             return media;
-
         } finally {
-            if (mediaCursor != null) {
-                mediaCursor.close();
-            }
             adapter.close();
         }
     }

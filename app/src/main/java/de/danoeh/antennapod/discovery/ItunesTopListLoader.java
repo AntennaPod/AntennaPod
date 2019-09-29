@@ -33,16 +33,12 @@ public class ItunesTopListLoader {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             String feedString;
             try {
-                try {
-                    feedString = getTopListFeed(client, lang, limit);
-                } catch (IOException e) {
-                    feedString = getTopListFeed(client, "us", limit);
-                }
-                List<PodcastSearchResult> podcasts = parseFeed(feedString);
-                emitter.onSuccess(podcasts);
-            } catch (IOException | JSONException e) {
-                emitter.onError(e);
+                feedString = getTopListFeed(client, lang, limit);
+            } catch (IOException e) {
+                feedString = getTopListFeed(client, "us", limit);
             }
+            List<PodcastSearchResult> podcasts = parseFeed(feedString);
+            emitter.onSuccess(podcasts);
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

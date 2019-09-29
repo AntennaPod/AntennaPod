@@ -21,11 +21,10 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -54,7 +53,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * Communicates with the playback service. GUI classes should use this class to
  * control playback instead of communicating with the PlaybackService directly.
  */
-public abstract class PlaybackController {
+public class PlaybackController {
 
     private static final String TAG = "PlaybackController";
 
@@ -68,9 +67,6 @@ public abstract class PlaybackController {
 
     private final ScheduledThreadPoolExecutor schedExecutor;
     private static final int SCHED_EX_POOLSIZE = 1;
-
-    private MediaPositionObserver positionObserver;
-    private ScheduledFuture<?> positionObserverFuture;
 
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
@@ -177,7 +173,6 @@ public abstract class PlaybackController {
         } catch (IllegalArgumentException e) {
             // ignore
         }
-        cancelPositionObserver();
         schedExecutor.shutdownNow();
         media = null;
         released = true;
@@ -210,7 +205,7 @@ public abstract class PlaybackController {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(optionalIntent -> {
                     boolean bound = false;
-                    if (!PlaybackService.started) {
+                    if (!PlaybackService.isRunning) {
                         if (optionalIntent.isPresent()) {
                             Log.d(TAG, "Calling start service");
                             ContextCompat.startForegroundService(activity, optionalIntent.get());
@@ -252,29 +247,6 @@ public abstract class PlaybackController {
                 .startWhenPrepared(false)
                 .shouldStream(lastIsStream || !fileExists)
                 .getIntent());
-    }
-
-
-
-    private void setupPositionObserver() {
-        if (positionObserverFuture == null ||
-                positionObserverFuture.isCancelled() ||
-                positionObserverFuture.isDone()) {
-
-            Log.d(TAG, "Setting up position observer");
-            positionObserver = new MediaPositionObserver();
-            positionObserverFuture = schedExecutor.scheduleWithFixedDelay(
-                    positionObserver, MediaPositionObserver.WAITING_INTERVALL,
-                    MediaPositionObserver.WAITING_INTERVALL,
-                    TimeUnit.MILLISECONDS);
-        }
-    }
-
-    private void cancelPositionObserver() {
-        if (positionObserverFuture != null) {
-            boolean result = positionObserverFuture.cancel(true);
-            Log.d(TAG, "PositionObserver cancelled. Result: " + result);
-        }
     }
 
     private final ServiceConnection mConnection = new ServiceConnection() {
@@ -337,7 +309,6 @@ public abstract class PlaybackController {
                     onBufferUpdate(progress);
                     break;
                 case PlaybackService.NOTIFICATION_TYPE_RELOAD:
-                    cancelPositionObserver();
                     mediaInfoLoaded = false;
                     queryService();
                     onReloadNotification(intent.getIntExtra(
@@ -447,7 +418,6 @@ public abstract class PlaybackController {
             case PAUSED:
                 clearStatusMsg();
                 checkMediaInfoLoaded();
-                cancelPositionObserver();
                 onPositionObserverUpdate();
                 updatePlayButtonAppearance(playResource, playText);
                 if (!PlaybackService.isCasting() &&
@@ -463,7 +433,6 @@ public abstract class PlaybackController {
                     onAwaitingVideoSurface();
                     setScreenOn(true);
                 }
-                setupPositionObserver();
                 updatePlayButtonAppearance(pauseResource, pauseText);
                 break;
             case PREPARING:
@@ -567,7 +536,8 @@ public abstract class PlaybackController {
         if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
-            int position = TimeSpeedConverter.convert((int) (prog * duration));
+            TimeSpeedConverter converter = new TimeSpeedConverter(playbackService.getCurrentPlaybackSpeed());
+            int position = converter.convert((int) (prog * duration));
             txtvPosition.setText(Converter.getDurationStringLong(position));
             return prog;
         }
@@ -580,7 +550,6 @@ public abstract class PlaybackController {
      */
     public void onSeekBarStartTrackingTouch(SeekBar seekBar) {
         // interrupt position Observer, restart later
-        cancelPositionObserver();
     }
 
     /**
@@ -589,7 +558,6 @@ public abstract class PlaybackController {
     public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
         if (playbackService != null && media != null) {
             playbackService.seekTo((int) (prog * media.getDuration()));
-            setupPositionObserver();
         }
     }
 
@@ -719,6 +687,7 @@ public abstract class PlaybackController {
     public boolean canSetPlaybackSpeed() {
         return org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
                 || UserPreferences.useSonic()
+                || UserPreferences.useExoplayer()
                 || Build.VERSION.SDK_INT >= 23
                 || (playbackService != null && playbackService.canSetSpeed());
     }
@@ -726,6 +695,8 @@ public abstract class PlaybackController {
     public void setPlaybackSpeed(float speed) {
         if (playbackService != null) {
             playbackService.setSpeed(speed);
+        } else {
+            onPlaybackSpeedChange();
         }
     }
     public void setSkipSilence(boolean skipSilence) {
@@ -741,7 +712,7 @@ public abstract class PlaybackController {
     }
 
     public float getCurrentPlaybackSpeedMultiplier() {
-        if (canSetPlaybackSpeed()) {
+        if (playbackService != null && canSetPlaybackSpeed()) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
             return -1;
@@ -831,20 +802,5 @@ public abstract class PlaybackController {
                     getPlayButton().setImageResource(R.drawable.ic_av_play_white_80dp);
                 }
             }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    /**
-     * Refreshes the current position of the media file that is playing.
-     */
-    public class MediaPositionObserver implements Runnable {
-
-        static final int WAITING_INTERVALL = 1000;
-
-        @Override
-        public void run() {
-            if (playbackService != null && playbackService.getStatus() == PlayerStatus.PLAYING) {
-                activity.runOnUiThread(PlaybackController.this::onPositionObserverUpdate);
-            }
-        }
     }
 }

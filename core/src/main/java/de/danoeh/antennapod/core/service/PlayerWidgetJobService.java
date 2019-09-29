@@ -23,7 +23,9 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -69,9 +71,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         }
 
         synchronized (waitUsingService) {
-            if (playbackService != null) {
-                updateViews();
-            }
+            updateViews();
         }
 
         if (playbackService != null) {
@@ -145,9 +145,12 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
             String progressString;
             if (playbackService != null) {
-                progressString = getProgressString(playbackService.getCurrentPosition(), playbackService.getDuration());
+                progressString = getProgressString(playbackService.getCurrentPosition(),
+                        playbackService.getDuration(), playbackService.getCurrentPlaybackSpeed());
             } else {
-                progressString = getProgressString(media.getPosition(), media.getDuration());
+                float speed = media.getMediaType() == MediaType.VIDEO ?
+                        UserPreferences.getVideoPlaybackSpeed() : UserPreferences.getPlaybackSpeed();
+                progressString = getProgressString(media.getPosition(), media.getDuration(), speed);
             }
 
             if (progressString != null) {
@@ -211,10 +214,11 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         return PendingIntent.getBroadcast(this, 0, startingIntent, 0);
     }
 
-    private String getProgressString(int position, int duration) {
+    private String getProgressString(int position, int duration, float speed) {
         if (position > 0 && duration > 0) {
-            position = TimeSpeedConverter.convert(position);
-            duration = TimeSpeedConverter.convert(duration);
+            TimeSpeedConverter converter = new TimeSpeedConverter(speed);
+            position = converter.convert(position);
+            duration = converter.convert(duration);
             return Converter.getDurationStringLong(position) + " / "
                     + Converter.getDurationStringLong(duration);
         } else {

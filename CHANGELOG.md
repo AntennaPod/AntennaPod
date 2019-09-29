@@ -1,6 +1,17 @@
 Change Log
 ==========
 
+Version 1.7.3
+-------------
+* Display episode image on widget (by @brad)
+* Added checkbox to keep queue sorted (by @damoasda)
+* New UI for "Add podcast" screen (by @ByteHamster)
+* Added batch editing to the queue (by @ByteHamster)
+* Added option to adapt remaining time to playback speed (by @CedricCabessa)
+* Removed broken Flattr integration (by @ByteHamster)
+* Added filter to "All episodes" list (by @jhunnius)
+* Tons of bug fixes and performance improvements
+
 Version 1.7.2
 -------------
 * Added configurable behavior of the back button

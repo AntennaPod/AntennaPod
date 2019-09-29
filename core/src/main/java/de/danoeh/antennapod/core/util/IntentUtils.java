@@ -1,13 +1,20 @@
 package de.danoeh.antennapod.core.util;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
+import de.danoeh.antennapod.core.R;
 
 import java.util.List;
 
 public class IntentUtils {
+    private static final String TAG = "IntentUtils";
+
     private IntentUtils(){}
 
     /*
@@ -28,4 +35,13 @@ public class IntentUtils {
         context.sendBroadcast(new Intent(action).setPackage(context.getPackageName()));
     }
 
+    public static void openInBrowser(Context context, String url) {
+        try {
+            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            context.startActivity(myIntent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, R.string.pref_no_browser_found, Toast.LENGTH_LONG).show();
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
 }

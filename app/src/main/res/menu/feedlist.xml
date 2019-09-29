@@ -33,7 +33,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="?attr/action_search"
-        custom:showAsAction="always"
+        custom:showAsAction="always|collapseActionView"
         custom:actionViewClass="android.support.v7.widget.SearchView"
         android:title="@string/search_label"/>
 
@@ -49,7 +49,7 @@
         android:id="@+id/share_link_item"
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"
-        android:title="@string/share_link_label">
+        android:title="@string/share_website_url_label">
     </item>
     <item
         android:id="@+id/share_download_url_item"

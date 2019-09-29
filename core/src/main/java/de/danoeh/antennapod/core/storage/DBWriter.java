@@ -108,23 +108,11 @@ public class DBWriter {
             adapter.setMedia(media);
             adapter.close();
 
-            // If media is currently being played, change playback
-            // type to 'stream' and shutdown playback service
-            SharedPreferences prefs = PreferenceManager
-                    .getDefaultSharedPreferences(context);
-            if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
-                if (media.getId() == PlaybackPreferences
-                        .getCurrentlyPlayingFeedMediaId()) {
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean(
-                            PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
-                            true);
-                    editor.commit();
-                }
-                if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId()) {
-                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-                }
+            if (media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId()) {
+                PlaybackPreferences.writeNoMediaPlaying();
+                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
             }
+
             // Gpodder: queue delete action for synchronization
             if(GpodnetPreferences.loggedIn()) {
                 FeedItem item = media.getItem();
@@ -150,23 +138,9 @@ public class DBWriter {
     public static Future<?> deleteFeed(final Context context, final long feedId) {
         return dbExec.submit(() -> {
             DownloadRequester requester = DownloadRequester.getInstance();
-            SharedPreferences prefs = PreferenceManager
-                    .getDefaultSharedPreferences(context
-                            .getApplicationContext());
             final Feed feed = DBReader.getFeed(feedId);
 
             if (feed != null) {
-                if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
-                        && PlaybackPreferences.getLastPlayedFeedId() == feed
-                        .getId()) {
-                    IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putLong(
-                            PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-                            -1);
-                    editor.commit();
-                }
-
                 // delete stored media files and mark them as read
                 List<FeedItem> queue = DBReader.getQueue();
                 List<FeedItem> removed = new ArrayList<>();
@@ -175,19 +149,12 @@ public class DBWriter {
                 }
 
                 for (FeedItem item : feed.getItems()) {
-                    if(queue.remove(item)) {
+                    if (queue.remove(item)) {
                         removed.add(item);
                     }
-                    if (item.getState() == FeedItem.State.PLAYING && PlaybackService.isRunning) {
-                        context.stopService(new Intent(context, PlaybackService.class));
-                    }
-                    if (item.getMedia() != null
-                            && item.getMedia().isDownloaded()) {
-                        File mediaFile = new File(item.getMedia()
-                                .getFile_url());
-                        mediaFile.delete();
-                    } else if (item.getMedia() != null
-                            && requester.isDownloadingFile(item.getMedia())) {
+                    if (item.getMedia() != null && item.getMedia().isDownloaded()) {
+                        deleteFeedMediaSynchronous(context, item.getMedia());
+                    } else if (item.getMedia() != null && requester.isDownloadingFile(item.getMedia())) {
                         requester.cancelDownload(context, item.getMedia());
                     }
                 }

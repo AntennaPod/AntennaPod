@@ -18,7 +18,7 @@
   <string name="subscriptions_label">Sottoscrizioni</string>
   <string name="subscriptions_list_label">Elenco sottoscrizioni</string>
   <string name="cancel_download_label">Annulla\nil Download</string>
-  <string name="playback_history_label">Cronologia delle riproduzioni</string>
+  <string name="playback_history_label">Cronologia riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Sincronizza con altri dispositivi</string>
   <string name="gpodnet_auth_label">Accesso a gpodder.net</string>
@@ -111,14 +111,16 @@
   <string name="podcastdirectories_label">Trova un podcast nella directory</string>
   <string name="podcastdirectories_descr">Per trovare podcasts puoi cercare su iTunes o fyyd, oppure puoi esplorare gpodder.net per nome, categoria oppure popolarità.</string>
   <string name="browse_gpoddernet_label">Esplora gpodder.net</string>
+  <string name="discover">Scopri</string>
+  <string name="discover_more">altro »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Segna tutti come riprodotti</string>
   <string name="mark_all_read_msg">Segnati tutti gli episodi come riprodotti</string>
   <string name="mark_all_read_confirmation_msg">Conferma che desideri segnare tutti gli episodi come riprodotti.</string>
   <string name="mark_all_read_feed_confirmation_msg">Conferma che desideri segnare come riprodotti tutti gli episodi del podcast.</string>
-  <string name="remove_all_new_flags_label">Segna tutti come visti</string>
-  <string name="removed_all_new_flags_msg">Segna tutti gli episodi come visti</string>
-  <string name="remove_all_new_flags_confirmation_msg">Conferma che desideri segnare tutti gli episodi come visti.</string>
+  <string name="remove_all_new_flags_label">Rimuovi tutti i flag \"nuovo\"</string>
+  <string name="removed_all_new_flags_msg">Flag \"nuovo\" rimossi</string>
+  <string name="remove_all_new_flags_confirmation_msg">Conferma di voler rimuovere tutti i flag \"nuovo\" da tutti gli episodi.</string>
   <string name="show_info_label">Informazioni</string>
   <string name="show_feed_settings_label">Mostra impostazioni podcast</string>
   <string name="feed_info_label">Info podcast</string>
@@ -126,12 +128,12 @@
   <string name="rename_feed_label">Rinomina podcast</string>
   <string name="remove_feed_label">Rimuovi podcast</string>
   <string name="share_label">Condividi...</string>
-  <string name="share_link_label">Condividi URL Episodio</string>
+  <string name="share_link_label">Condividi URL episodio</string>
   <string name="share_link_with_position_label">Condividi URL dell\'episodio con la posizione</string>
   <string name="share_file_label">Condividi il file</string>
   <string name="share_feed_url_label">Condividi URL del feed</string>
   <string name="share_item_url_label">Condividi URL del media</string>
-  <string name="share_item_url_with_position_label">Condividi URL del media come la posizione</string>
+  <string name="share_item_url_with_position_label">Condividi URL del media con la posizione</string>
   <string name="feed_delete_confirmation_msg">Conferma di voler eliminare il podcast \"%1$s\" e TUTTI i suoi episodi (compresi quelli scaricati).</string>
   <string name="feed_remover_msg">Rimozione del Feed in corso</string>
   <string name="load_complete_feed">Aggiorna podcast completo</string>
@@ -169,8 +171,8 @@
     <item quantity="one">%d episodio eliminato.</item>
     <item quantity="other">%d episodi eliminati.</item>
   </plurals>
-  <string name="remove_new_flag_label">Segna come visto</string>
-  <string name="removed_new_flag_label">Segna come visto</string>
+  <string name="remove_new_flag_label">Rimuovi flag \"nuovo\"</string>
+  <string name="removed_new_flag_label">Flag \"nuovo\" rimosso</string>
   <string name="mark_read_label">Segna come riprodotto</string>
   <string name="marked_as_read_label">Segnato come riprodotto</string>
   <plurals name="marked_read_batch_label">
@@ -198,10 +200,9 @@
   <string name="remove_from_favorite_label">Rimuovi dai preferiti</string>
   <string name="removed_from_favorites">Rimosso dai Preferiti</string>
   <string name="visit_website_label">Visita il sito</string>
-  <string name="support_label">Carica questo su Flattr</string>
   <string name="skip_episode_label">Salta l\'episodio</string>
-  <string name="activate_auto_download">Attiva il Download Automatico</string>
-  <string name="deactivate_auto_download">Disattiva il Download Automatico</string>
+  <string name="activate_auto_download">Attiva il download automatico</string>
+  <string name="deactivate_auto_download">Disattiva il download automatico</string>
   <string name="reset_position">Azzera la Posizione di Riproduzione</string>
   <string name="removed_item">Elemento rimosso</string>
   <!--Download messages and labels-->
@@ -227,7 +228,7 @@
   <string name="download_canceled_msg">Download annullato</string>
   <string name="download_canceled_autodownload_enabled_msg">Download annullato\n<i>Download Automatico</i> disabilitato per questo elemento</string>
   <string name="download_report_title">Download completato con un errore (o errori)</string>
-  <string name="download_report_content_title">Rapporto del Downoad</string>
+  <string name="download_report_content_title">Rapporto del downoad</string>
   <string name="download_error_malformed_url">URL malformato</string>
   <string name="download_error_io_error">Errore IO</string>
   <string name="download_error_request_error">Errore della richiesta</string>
@@ -250,6 +251,9 @@
   <string name="confirm_mobile_download_dialog_title">Conferma il download su cellulare</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Il download tramite rete mobile è disattivato nelle impostazioni.\n\nÈ possibile scegliere di aggiungere semplicemente l\'episodio alla coda o consentire temporaneamente il download.\n\n<small>La scelta  verrà ricordata per 10 minuti.</small></string>
   <string name="confirm_mobile_download_dialog_message">Il download tramite rete mobile è disattivato nelle impostazioni.\n\nVuoi abilitare temporaneamente il download?\n\n<small>La scelta verrà ricordata per 10 minuti.</small></string>
+  <string name="confirm_mobile_streaming_notification_title">Conferma streaming su rete mobile</string>
+  <string name="confirm_mobile_streaming_notification_message">Lo streaming su rete mobile è disattivato nelle impostazioni. Tocca per avviare comunque.</string>
+  <string name="confirm_mobile_streaming_button_always">Consenti sempre</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Aggiungi alla coda</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Consenti temporaneamente</string>
   <!--Mediaplayer messages-->
@@ -259,6 +263,8 @@
   <string name="player_ready_msg">Pronto</string>
   <string name="player_seeking_msg">Ricerca posizione</string>
   <string name="playback_error_server_died">Server morto</string>
+  <string name="playback_error_unsupported">Tipo media non supportato</string>
+  <string name="playback_error_timeout">Tempo operazione scaduto</string>
   <string name="playback_error_unknown">Errore sconosciuto</string>
   <string name="no_media_playing_label">Nessun elemento multimediale in riproduzione</string>
   <string name="player_buffering_msg">Buffer in corso</string>
@@ -276,6 +282,7 @@
   <string name="move_to_top_label">Sposta all\'inizio</string>
   <string name="move_to_bottom_label">Sposta in fondo</string>
   <string name="sort">Ordina</string>
+  <string name="keep_sorted">Mantieni ordinato</string>
   <string name="date">Per data</string>
   <string name="duration">Per durata</string>
   <string name="episode_title">Titolo dell\'episodio</string>
@@ -285,32 +292,8 @@
   <string name="ascending">In ordine crescente</string>
   <string name="descending">In ordine decrescente</string>
   <string name="clear_queue_confirmation_msg">Per favore conferma che vuoi rimuovere dalla coda TUTTI gli episodi in essa presenti.</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Accesso a Flattr</string>
-  <string name="flattr_auth_explanation">Premi il tasto seguente per iniziare il processo di autenticazione. Sarai trasferito alla pagina di login di flattr sul tuo browser e ti sarà richiesto di garantire ad AntennaPod il permesso di effettuare microdonazioni. Dopo la tua autorizzazione, sarai riportato alla seguente schermata in modo automatico.</string>
-  <string name="authenticate_label">Autenticazione</string>
-  <string name="return_home_label">Ritorna alla pagina iniziale</string>
-  <string name="flattr_auth_success">Autenticazione avvenuta con successo! Adesso puoi microdonare con flattr dall\'interno dell\'app.</string>
-  <string name="no_flattr_token_title">Nessun token flattr trovato</string>
-  <string name="no_flattr_token_notification_msg">Il tuo account di Flattr non sembra essere collegato ad AntennaPod. Premi qui per autenticarti.</string>
-  <string name="no_flattr_token_msg">Il tuo account flattr non sembra essere collegato ad AntennaPod. Potresti collegare il tuo account ad AntennaPod per utilizzare flattr dall\'app oppure puoi visitare il sito per utilizzare flattr direttamente da lì.</string>
-  <string name="authenticate_now_label">Autenticati</string>
-  <string name="action_forbidden_title">Azione proibita</string>
-  <string name="action_forbidden_msg">AntennaPod non ha il permesso di effettuare questa azione. La ragione potrebbe essere che il token di accesso di AntennaPod al tuo account è stato revocato. Puoi eseguire la re-autenticazione o altrimenti visitare il sito web.</string>
-  <string name="access_revoked_title">Accesso revocato</string>
-  <string name="access_revoked_info">Hai revocato l\'accesso di AntennaPod al tuo account. Al fine di completare il processo devi rimuovere l\'app dalla lista delle applicazioni autorizzare nelle impostazioni del tuo account sul sito di flattr.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Caricata una cosa su Flattr!</string>
-  <string name="flattr_click_success_count">Caricate %d cose su Flattr!</string>
-  <string name="flattr_click_success_queue">Caricato su Flattr: %s.</string>
-  <string name="flattr_click_failure_count">È stato fallito il caricamento su Flattr di %d cose!</string>
-  <string name="flattr_click_failure">Non caricato su Flattr: %s.</string>
-  <string name="flattr_click_enqueued">La cosa verrà caricata su Flattr più tardi</string>
-  <string name="flattring_thing">Caricamento su Flattr di %s in corso</string>
-  <string name="flattring_label">AntennaPod sta eseguendo Flattr</string>
-  <string name="flattrd_label">AntennaPod ha caricato su Flattr</string>
-  <string name="flattrd_failed_label">Caricamento su Flattr di AntennaPod fallito</string>
-  <string name="flattr_retrieving_status">Ricezione di cose caricate su Flattr in corso</string>
+  <string name="sort_old_to_new">Dal meno recente</string>
+  <string name="sort_new_to_old">Dal più recente</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Scarica plugin</string>
   <string name="no_playback_plugin_title">Plugin non installato</string>
@@ -319,8 +302,8 @@
   <string name="enable_sonic">Abilita Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Nessun episodio in coda</string>
+  <string name="no_items_label">Aggiungi un episodio scaricandolo o tenendo premuto e selezionando \"Aggiungi alla coda\"</string>
   <string name="no_feeds_label">Non sei ancora abbonato a nessun podcast. </string>
-  <string name="no_chapters_label">Questo episodio non ha capitoli.</string>
   <string name="no_shownotes_label">Questo episodio non ha note.</string>
   <string name="no_run_downloads_head_label">Nessun download in corso</string>
   <string name="no_run_downloads_label">Puoi scaricare gli episodi dalla vista dettagliata del podcast.</string>
@@ -332,10 +315,12 @@
   <string name="no_history_label">Ogni episodio ascoltato apparirà qui.</string>
   <string name="no_all_episodes_head_label">Nessun episodio</string>
   <string name="no_all_episodes_label">Quando aggiungi un podcast, gli episodi vengono mostrati qui.</string>
-  <string name="no_new_episodes_head_label">Nessu nuovo episodio</string>
+  <string name="no_new_episodes_head_label">Nessun nuovo episodio</string>
   <string name="no_new_episodes_label">Quando arrivano nuovi episodi, vengono mostrati qui.</string>
   <string name="no_fav_episodes_head_label">Nessun episodio preferito</string>
   <string name="no_fav_episodes_label">Puoi aggiungere episodi ai preferiti tenendo premuto su di essi.</string>
+  <string name="no_chapters_head_label">Nessun capitolo</string>
+  <string name="no_chapters_label">Questo episodio non ha capitoli.</string>
   <!--Preferences-->
   <string name="storage_pref">Memoria</string>
   <string name="project_pref">Progetto</string>
@@ -343,8 +328,6 @@
   <string name="about_pref">Informazioni</string>
   <string name="queue_label">Coda</string>
   <string name="integrations_label">Integrazioni</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Servizio micropagamenti</string>
   <string name="automation">Automazione</string>
   <string name="download_pref_details">Dettagli</string>
   <string name="import_export_pref">Importa/Esporta</string>
@@ -352,7 +335,10 @@
   <string name="appearance">Aspetto</string>
   <string name="external_elements">Elementi esterni</string>
   <string name="interruptions">Interruzioni</string>
-  <string name="buttons">Pulsanti di controllo riproduzione</string>
+  <string name="playback_control">Controllo riproduzione</string>
+  <string name="preference_search_hint">Cerca...</string>
+  <string name="preference_search_no_results">Nessun risultato</string>
+  <string name="preference_search_clear_history">Svuota cronologia</string>
   <string name="media_player">Media player</string>
   <string name="pref_episode_cleanup_title">Pulizia episodi</string>
   <string name="pref_episode_cleanup_summary">Gli episodi che non sono in coda e non sono tra i preferiti potrebbero essere rimossi se i Download Automatici richiedono maggiore spazio.</string>
@@ -360,14 +346,14 @@
   <string name="pref_unpauseOnHeadsetReconnect_sum">Riprendi la riproduzione quando vengono riconnesse le cuffie</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Riprendi la riproduzione quando il Bluetooth si riconnette</string>
   <string name="pref_hardwareForwardButtonSkips_title">Il tasto Avanti salta la traccia</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Quando premi il pulsante avanti su un dispositivo bluetooth connesso passa all\'episodio successivo invece di andare avanti veloce</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Quando viene premuto il tasto Avanti sul dispositivo bluetooth connesso, passa all\'episodio successivo invece di andare avanti veloce</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Il tasto Indietro riavvia la traccia</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Quando viene premuto un tasto Indietro fisico, viene riavviata la traccia invece di tornare indietro</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Quando viene premuto il tasto fisico Indietro, viene riavviata la traccia invece di tornare indietro</string>
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda quando viene completata la riproduzione</string>
   <string name="pref_auto_delete_sum">Elimina l\'episodio quando viene completata la riproduzione</string>
   <string name="pref_auto_delete_title">Elimina automaticamente</string>
   <string name="pref_smart_mark_as_played_sum">Contrassegna gli episodi come riprodotti anche se rimangono alcuni secondi da riprodurre</string>
-  <string name="pref_smart_mark_as_played_title">Segna come Riprodotto dopo</string>
+  <string name="pref_smart_mark_as_played_title">Marcatura intelligente</string>
   <string name="pref_skip_keeps_episodes_sum">Mantieni in coda gli episodi quando vengono saltati</string>
   <string name="pref_skip_keeps_episodes_title">Manteni gli episodi saltati</string>
   <string name="pref_favorite_keeps_episodes_sum">Mantieni gli episodi quando sono segnati come Preferiti</string>
@@ -383,38 +369,31 @@
   <string name="pref_autoUpdateIntervallOrTime_every">ogni %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">alle %1$s</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Abilita il download dei media solo tramite WiFi</string>
-  <string name="pref_followQueue_title">Riproduzione Continua</string>
+  <string name="pref_followQueue_title">Riproduzione continua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download dei media su WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Disconnessione cuffie</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Riconnessione cuffie</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Riconnessione Bluetooth</string>
-  <string name="pref_mobileUpdate_title">Aggiornamenti su Reti a Consumo</string>
-  <string name="pref_mobileUpdate_sum">Permetti gli aggiornamenti tramite connessione dati mobile</string>
-  <string name="pref_mobileUpdate_nothing">Niente</string>
-  <string name="pref_mobileUpdate_images">Solo immagini</string>
-  <string name="pref_mobileUpdate_everything">Tutto</string>
+  <string name="pref_mobileUpdate_title">Aggiornamenti su rete mobile</string>
+  <string name="pref_mobileUpdate_sum">Seleziona quali operazioni sono consentite su reti mobili a consumo</string>
+  <string name="pref_mobileUpdate_refresh">Aggiornamento feed</string>
+  <string name="pref_mobileUpdate_images">Copertine</string>
+  <string name="pref_mobileUpdate_auto_download">Download automatici</string>
+  <string name="pref_mobileUpdate_episode_download">Download episodi</string>
+  <string name="pref_mobileUpdate_streaming">Streaming</string>
   <string name="refreshing_label">Aggiornamento</string>
-  <string name="flattr_settings_label">Impostazioni Flattr</string>
-  <string name="pref_flattr_auth_title">Flattr sign-in</string>
-  <string name="pref_flattr_auth_sum">Collega il tuo account flattr per utilizzare flattr direttamente dall\'app</string>
-  <string name="pref_flattr_this_app_title">Supporta con flattr questa app</string>
-  <string name="pref_flattr_this_app_sum">Supporta lo sviluppo di AntennaPod tramite flattr. Grazie!</string>
-  <string name="pref_revokeAccess_title">Revoca l\'accesso</string>
-  <string name="pref_revokeAccess_sum">Revoca il permesso, a questa applicazione, di accedere al tuo account flattr.</string>
-  <string name="pref_auto_flattr_title">Flattr automatico</string>
-  <string name="pref_auto_flattr_sum">Configura l\'esecuzione automatica di Flattr</string>
   <string name="user_interface_label">Interfaccia utente</string>
   <string name="pref_set_theme_title">Seleziona un tema</string>
   <string name="pref_nav_drawer_title">Personalizza menù di navigazione</string>
   <string name="pref_nav_drawer_sum">Personalizza l\'aspetto del menù di navigazione</string>
   <string name="pref_nav_drawer_items_title">Seleziona elementi del menù</string>
-  <string name="pref_nav_drawer_items_sum">Aggiunti o rimuovi gli elementi che appaiono nel menù laterale.</string>
+  <string name="pref_nav_drawer_items_sum">Aggiungi o rimuovi gli elementi che appaiono nel menù laterale.</string>
   <string name="pref_nav_drawer_feed_order_title">Imposta l\'ordine delle sottoscrizioni</string>
   <string name="pref_nav_drawer_feed_order_sum">Modifica l\'ordine delle tue sottoscrizioni</string>
   <string name="pref_nav_drawer_feed_counter_title">Contatore delle sottoscrizioni</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Cambia le informazioni mostrate nel contatore delle sottoscrizioni. Influenza anche l\'ordinamento se l\'Ordine delle Sottoscrizioni è su \'Contatore\' </string>
+  <string name="pref_nav_drawer_feed_counter_sum">Cambia il criterio di calcolo del contatore delle sottoscrizioni. Influenza anche l\'ordinamento se l\'ordine delle sottoscrizioni è impostato su \'Contatore\' .</string>
   <string name="pref_set_theme_sum">Cambia l\'aspetto di AntennaPod</string>
-  <string name="pref_automatic_download_title">Download Automatico</string>
+  <string name="pref_automatic_download_title">Download automatico</string>
   <string name="pref_automatic_download_sum">Configura il download automatico degli episodi</string>
   <string name="pref_autodl_wifi_filter_title">Abilita il filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Abilita il download automatico solo per alcune reti Wi-Fi selezionate.</string>
@@ -422,8 +401,9 @@
   <string name="pref_autodl_allow_on_mobile_sum">Abilita il download automatico anche tramite la rete mobile.</string>
   <string name="pref_automatic_download_on_battery_title">Scarica quando la batteria non è in carica</string>
   <string name="pref_automatic_download_on_battery_sum">Permetti il download automatico quando la batteria non è in carica</string>
-  <string name="pref_parallel_downloads_title">Download Contemporanei</string>
-  <string name="pref_episode_cache_title">Cache degli Episodi</string>
+  <string name="pref_parallel_downloads_title">Download simulanei</string>
+  <string name="pref_episode_cache_title">Cache degli episodi</string>
+  <string name="pref_episode_cache_summary">Numero di episodi scaricati memorizzabili sul dispositivo. I download automatici vengono interrotti se si raggiunge questo valore.</string>
   <string name="pref_theme_title_light">Chiaro</string>
   <string name="pref_theme_title_dark">Scuro</string>
   <string name="pref_theme_title_trueblack">Nero (AMOLED ready)</string>
@@ -449,8 +429,10 @@
   <string name="pref_gpodnet_notifications_sum">Non si applica agli errori di autenticazione.</string>
   <string name="pref_playback_speed_title">Velocità di riproduzione</string>
   <string name="pref_playback_speed_sum">Personalizza le velocità disponibili per la riproduzione audio a velocità variabile</string>
+  <string name="pref_playback_time_respects_speed_title">Adatta info alla velocità di riproduzione</string>
+  <string name="pref_playback_time_respects_speed_sum">La posizione del cursore e la durata si adattano alla velocità di riproduzione scelta.</string>
   <string name="pref_fast_forward">Tempo di salto in avanti</string>
-  <string name="pref_fast_forward_sum">Personalizza il numero di secondi da saltare in avanti quando si preme il tasto Avanti Veloce</string>
+  <string name="pref_fast_forward_sum">Personalizza il numero di secondi da saltare in avanti quando si preme il tasto Avanti veloce</string>
   <string name="pref_rewind">Tempo di salto indietro</string>
   <string name="pref_rewind_sum">Personalizza il numero di secondi da saltare indietro quando si preme il tasto Riavvolgi</string>
   <string name="pref_gpodnet_sethostname_title">Imposta l\'hostname</string>
@@ -460,19 +442,19 @@
   <string name="pref_persistNotify_title">Controlli di riproduzione persistenti</string>
   <string name="pref_persistNotify_sum">Mantieni le notifiche e i controlli del blocco dello schermo quando la riproduzione è in pausa.</string>
   <string name="pref_compact_notification_buttons_title">Pulsanti su schermata di blocco</string>
-  <string name="pref_compact_notification_buttons_sum">Modifica i pulsanti di riproduzione sulla schemata di blocco. Play/Pausa è sempre presente.</string>
+  <string name="pref_compact_notification_buttons_sum">Modifica i pulsanti di riproduzione mostrati nella schermata di blocco. Play/Pausa è sempre presente.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Seleziona al massimo %1$d voci</string>
   <string name="pref_compact_notification_buttons_dialog_error">Puoi selezionare al massimo %1$d voci.</string>
   <string name="pref_lockscreen_background_title">Cambia sfondo della schermata di blocco</string>
   <string name="pref_lockscreen_background_sum">Sostituisce l\'immagine della schermata di blocco con quella dell\'episodio in riproduzione. Mostrerà l\'immagine anche in app di terze parti.</string>
-  <string name="pref_showDownloadReport_title">Mostra il Rapporto del Download</string>
+  <string name="pref_showDownloadReport_title">Mostra il rapporto del download</string>
   <string name="pref_showDownloadReport_sum">Se il download fallisce, genera un report che mostra i dettagli dell\'errore.</string>
   <string name="pref_expand_notify_unsupport_toast">Le versioni di Android prima della 4.1 non supportano le notifiche estese.</string>
-  <string name="pref_queueAddToFront_sum">Aggiungi un nuovo episodio in testa alla coda.</string>
+  <string name="pref_queueAddToFront_sum">Aggiungi i nuovi episodi in cima alla coda.</string>
   <string name="pref_queueAddToFront_title">Aggiungi in cima alla coda</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
   <string name="pref_image_cache_size_title">Dimensione cache delle immagini</string>
-  <string name="pref_image_cache_size_sum">Dimensione cache per le immagini</string>
+  <string name="pref_image_cache_size_sum">Spazio su disco usato per la cache delle immagini.</string>
   <string name="crash_report_title">Report dei crash</string>
   <string name="crash_report_sum">Invia il report dell\'ultimo crash via e-mail</string>
   <string name="send_email">Invia e-mail</string>
@@ -491,13 +473,13 @@
   <string name="pref_enqueue_downloaded_summary">Aggiungi gli episodi scaricati alla coda di riproduzione</string>
   <string name="media_player_builtin">Player Android integrato</string>
   <string name="pref_skip_silence_title">Salta il silenzio audio</string>
-  <string name="pref_videoBehavior_title">In uscita dal video</string>
+  <string name="pref_videoBehavior_title">Uscita dal video</string>
   <string name="pref_videoBehavior_sum">Comportamento quando si esce dalla riproduzione video</string>
   <string name="stop_playback">Interrompi riproduzione</string>
   <string name="continue_playback">Continua riproduzione audio</string>
   <string name="behavior">Comportamento</string>
   <string name="pref_back_button_behavior_title">Comportamento tasto indietro</string>
-  <string name="pref_back_button_behavior_sum">Cambia il comportamento del tasto indietro.</string>
+  <string name="pref_back_button_behavior_sum">Cambia il comportamento del tasto indietro</string>
   <string name="back_button_default">Predefinito</string>
   <string name="back_button_open_drawer">Apri menù di navigazione</string>
   <string name="back_button_double_tap">Doppio tap per uscire</string>
@@ -506,13 +488,8 @@
   <string name="double_tap_toast">Premi nuovamente il tasto indietro per uscire</string>
   <string name="back_button_go_to_page">Vai alla pagina...</string>
   <string name="back_button_go_to_page_title">Seleziona pagina</string>
-  <string name="pref_delete_removes_from_queue_title">Elimina rimuove dalla Coda</string>
+  <string name="pref_delete_removes_from_queue_title">Rimuovi dalla coda gli eliminati</string>
   <string name="pref_delete_removes_from_queue_sum">Rimuovi automaticamente un episodio dalla coda quando viene eliminato.</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Abilita l\'esecuzione automatica di Flattr</string>
-  <string name="auto_flattr_after_percent">Carica l\'episodio su Flattr appena è stato riprodotto al %d percento</string>
-  <string name="auto_flattr_ater_beginning">Carica l\'episodio su Flattr appena comincia la riproduzione</string>
-  <string name="auto_flattr_ater_end">Carica l\'episodio su Flattr appena finisce la riproduzione</string>
   <!--Search-->
   <string name="search_hint">Cerca negli episodi</string>
   <string name="found_in_shownotes_label">Trovato nelle note dell\'episodio</string>
@@ -606,12 +583,14 @@
   <string name="gpodnetsync_error_descr">Rilevato un errore in fase di sincronizzazione:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Eseguito</string>
   <string name="gpodnetsync_pref_report_failed">Fallito</string>
+  <string name="gpodnetsync_username_characters_error">Il nome utente può contenere solo lettere, numeri e trattini alti o bassi.</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Seleziona la cartella:</string>
   <string name="create_folder_label">Crea una cartella</string>
-  <string name="choose_data_directory">Scegli la directory per i dati</string>
+  <string name="choose_data_directory">Scegli la cartella per i dati</string>
   <string name="choose_data_directory_message">Scegli la base della tua cartella dati. AntennaPod creerà le sottocartelle appropriate.</string>
   <string name="choose_data_directory_permission_rationale">E\' necessario accedere alla memoria esterna per cambiare la cartella dei dati</string>
+  <string name="choose_data_directory_available_space">%1$s di %2$s liberi</string>
   <string name="create_folder_msg">Crea una nuova directory con nome \"%1$s\"?</string>
   <string name="create_folder_success">Crea una nuova directory</string>
   <string name="create_folder_error_no_write_access">Impossibile scrivere in questa directory</string>
@@ -652,13 +631,18 @@
   <string name="episode_filters_exclude">Escludi</string>
   <string name="episode_filters_hint">Parole singole \n\"Parole multiple\"</string>
   <string name="keep_updated">Mantieni Aggiornato</string>
+  <string name="keep_updated_summary">Includi nell\'(auto-)aggiornamento di tutti i feed</string>
+  <string name="auto_download_disabled_globally">Il download automatico è disabilitato nelle Impostazioni generali.</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Aggiornamento del database</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importazione di sottoscrizioni da applicazioni monouso in corso...</string>
+  <!--Add podcast fragment-->
+  <string name="search_podcast_hint">Cerca podcast...</string>
   <string name="search_itunes_label">Cerca su iTunes</string>
-  <string name="filter">Filtro</string>
   <string name="search_fyyd_label">Cerca su fyyd</string>
+  <string name="advanced_search">Ricerca avanzata</string>
+  <string name="filter">Filtro</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tutto</string>
   <string name="selected_all_label">Seleziona tutti gli Episodi</string>
@@ -714,6 +698,7 @@
   <string name="proxy_host_invalid_error">L\'host non è un IP o un dominio valido</string>
   <string name="proxy_port_invalid_error">Porta non valida</string>
   <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Numero di colonne</string>
   <!--Database import/export-->
   <string name="import_export">Importa/Esporta database</string>
   <string name="import_export_warning">Questa funzione sperimentale può essere usata per trasferire le sottoscrizioni e gli episoti completati ad un altro dispositivo.\n\nIl database potrà essere importato solo se si usa la stessa versione di AntennaPod, altrimenti potrebbero generarsi comportamenti anomali.\n\nDopo l\'importazione, gli episodi potrebbero essere mostrati come scaricati anche se non lo sono. Basta premere Play per farli riconoscere ad AntennaPod.</string>
@@ -747,4 +732,5 @@
   <string name="notification_channel_playing_description">Permette di controllare la riproduzione. Questa è la principale notifica visibile quando un prodcast è in riproduzione.</string>
   <string name="notification_channel_error">Errori</string>
   <string name="notification_channel_error_description">Mostrato se qualcosa è andato storto, per esempio se fallisce il download o la sincronizzazione di gpodder.</string>
+  <string name="import_bad_file">File non valido/corrotto</string>
 </resources>

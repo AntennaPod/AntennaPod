@@ -12,8 +12,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -27,12 +25,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 
 /**
@@ -308,14 +309,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Audiofocus successfully requested");
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
-                float speed = 1.0f;
-                try {
-                    speed = Float.parseFloat(UserPreferences.getPlaybackSpeed());
-                } catch(NumberFormatException e) {
-                    Log.e(TAG, Log.getStackTraceString(e));
-                    UserPreferences.setPlaybackSpeed(String.valueOf(speed));
+                if (media.getMediaType() == MediaType.VIDEO) {
+                    setPlaybackParams(UserPreferences.getVideoPlaybackSpeed(), UserPreferences.isSkipSilence());
+                } else {
+                    setPlaybackParams(UserPreferences.getPlaybackSpeed(), UserPreferences.isSkipSilence());
                 }
-                setPlaybackParams(speed, UserPreferences.isSkipSilence());
 
                 float leftVolume = UserPreferences.getLeftVolume();
                 float rightVolume = UserPreferences.getRightVolume();
@@ -361,13 +359,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.PAUSED, media, getPosition());
 
                 if (abandonFocus) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                                .setOnAudioFocusChangeListener(audioFocusChangeListener);
-                        audioManager.abandonAudioFocusRequest(builder.build());
-                    } else {
-                        audioManager.abandonAudioFocus(audioFocusChangeListener);
-                    }
+                    abandonAudioFocus();
                     pausedBecauseOfTransientAudiofocusLoss = false;
                 }
                 if (stream && reinit) {
@@ -379,6 +371,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
             playerLock.unlock();
         });
+    }
+
+    private void abandonAudioFocus() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setOnAudioFocusChangeListener(audioFocusChangeListener);
+            audioManager.abandonAudioFocusRequest(builder.build());
+        } else {
+            audioManager.abandonAudioFocus(audioFocusChangeListener);
+        }
     }
 
     /**
@@ -609,11 +611,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     @Override
     public boolean canSetSpeed() {
-        boolean retVal = false;
-        if (mediaPlayer != null && media != null && media.getMediaType() == MediaType.AUDIO) {
-            retVal = (mediaPlayer).canSetSpeed();
-        }
-        return retVal;
+        return mediaPlayer != null && mediaPlayer.canSetSpeed();
     }
 
     /**
@@ -622,13 +620,11 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     private void setSpeedSyncAndSkipSilence(float speed, boolean skipSilence) {
         playerLock.lock();
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            if (mediaPlayer.canSetSpeed()) {
-                Log.d(TAG, "Playback speed was set to " + speed);
-                callback.playbackSpeedChanged(speed);
-            }
-            mediaPlayer.setPlaybackParams(speed, skipSilence);
+        if (mediaPlayer.canSetSpeed()) {
+            Log.d(TAG, "Playback speed was set to " + speed);
+            callback.playbackSpeedChanged(speed);
         }
+        mediaPlayer.setPlaybackParams(speed, skipSilence);
         playerLock.unlock();
     }
 
@@ -861,6 +857,19 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
         @Override
         public void onAudioFocusChange(final int focusChange) {
+            if (!PlaybackService.isRunning) {
+                abandonAudioFocus();
+                Log.d(TAG, "onAudioFocusChange: PlaybackService is no longer running");
+                if (focusChange == AudioManager.AUDIOFOCUS_GAIN && pausedBecauseOfTransientAudiofocusLoss) {
+                    new PlaybackServiceStarter(context, getPlayable())
+                            .startWhenPrepared(true)
+                            .streamIfLastWasStream()
+                            .callEvenIfRunning(false)
+                            .start();
+                }
+                return;
+            }
+
             executor.submit(() -> {
                 playerLock.lock();
 
@@ -934,13 +943,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 mediaPlayer.reset();
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                        .setOnAudioFocusChangeListener(audioFocusChangeListener);
-                audioManager.abandonAudioFocusRequest(builder.build());
-            } else {
-                audioManager.abandonAudioFocus(audioFocusChangeListener);
-            }
+            abandonAudioFocus();
 
             final Playable currentMedia = media;
             Playable nextMedia = null;
@@ -1040,6 +1043,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ExoPlayerWrapper ap = (ExoPlayerWrapper) mp;
             ap.setOnCompletionListener(audioCompletionListener);
             ap.setOnSeekCompleteListener(audioSeekCompleteListener);
+            ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
             ap.setOnErrorListener(audioErrorListener);
         } else {
             Log.w(TAG, "Unknown media player: " + mp);

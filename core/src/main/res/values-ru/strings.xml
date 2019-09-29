@@ -95,12 +95,19 @@
   <string name="episode_cleanup_never">Никогда</string>
   <string name="episode_cleanup_queue_removal">Когда не в очереди</string>
   <string name="episode_cleanup_after_listening">После прослушивания</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 час после прослушивания</item>
+    <item quantity="few">%d часов после прослушивания</item>
+    <item quantity="many">%d часов после прослушивания</item>
+    <item quantity="other">%d часов после прослушивания</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">день после прослушивания</item>
     <item quantity="few">%d дня после прослушивания</item>
     <item quantity="many">%d дней после прослушивания</item>
     <item quantity="other">%d дней после прослушивания</item>
   </plurals>
+  <string name="num_selected_label">%d выбран</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL канала</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -108,14 +115,16 @@
   <string name="podcastdirectories_label">Найти подкаст в каталоге</string>
   <string name="podcastdirectories_descr">Вы можете искать новые подкасты в каталогах iTunes, fyyd или gpodder.net по имени, категории или популярности.</string>
   <string name="browse_gpoddernet_label">Просмотр gpodder.net</string>
+  <string name="discover">Найти каналы</string>
+  <string name="discover_more">ещё »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Отметить как прослушанное</string>
   <string name="mark_all_read_msg">Отметить все выпуски как прослушанные</string>
   <string name="mark_all_read_confirmation_msg">Подтвердите, что хотите пометить все эпизоды как прослушанные.</string>
   <string name="mark_all_read_feed_confirmation_msg">Пожалуйста, подтвердите желание отметить все выпуски этого подкаста как прослушанные.</string>
-  <string name="remove_all_new_flags_label">Отметить все как просмотренное</string>
-  <string name="removed_all_new_flags_msg">Все выпуски отмечены как просмотренные</string>
-  <string name="remove_all_new_flags_confirmation_msg">Пожалуйста, подтвердите намерение отметить все выпуски как просмотренные.</string>
+  <string name="remove_all_new_flags_label">Убрать все пометки \"новый\"</string>
+  <string name="removed_all_new_flags_msg">Все пометки \"новый\" убраны</string>
+  <string name="remove_all_new_flags_confirmation_msg">Подтвердите, что хотите убрать пометки \"новый\" со всех выпусков.</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="show_feed_settings_label">Показать настройки подкаста</string>
   <string name="feed_info_label">Сведения о подкасте</string>
@@ -150,6 +159,12 @@
   <string name="open_podcast">Открыть подкаст</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Загрузка %d выпуска</item>
+    <item quantity="few">Загрузка %d выпусков</item>
+    <item quantity="many">Загрузка %d выпусков</item>
+    <item quantity="other">Загрузка %d выпусков.</item>
+  </plurals>
   <string name="play_label">Воспроизвести</string>
   <string name="pause_label">Пауза</string>
   <string name="stop_label">Остановить</string>
@@ -157,20 +172,50 @@
   <string name="remove_label">Удалить</string>
   <string name="delete_label">Удалить</string>
   <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
-  <string name="remove_new_flag_label">Просмотрено</string>
-  <string name="removed_new_flag_label">Отмечено как просмотренное</string>
+  <string name="delete_episode_label">Удалить выпуск</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d выпуск удален</item>
+    <item quantity="few">%d выпусков удаленно</item>
+    <item quantity="many">%d выпусков удаленно</item>
+    <item quantity="other">%d выпусков удаленно</item>
+  </plurals>
+  <string name="remove_new_flag_label">Убрать пометку \"новый\"</string>
+  <string name="removed_new_flag_label">Пометка \"новый\" убрана</string>
   <string name="mark_read_label">Отметить как прослушанное</string>
   <string name="marked_as_read_label">Помечено как прослушанное</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d выпуск отмечен как прослушанный.</item>
+    <item quantity="few">%d выпусков отмечено как прослушанные.</item>
+    <item quantity="many">%d выпусков отмечено как прослушанные.</item>
+    <item quantity="other">%d выпусков отмечено как прослушанные.</item>
+  </plurals>
   <string name="mark_unread_label">Отметить как непрослушанное</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d выпуск отмечен непрослушанный.</item>
+    <item quantity="few">%d выпусков отмечено непрослушанные.</item>
+    <item quantity="many">%d выпусков отмечено непрослушанные.</item>
+    <item quantity="other">%d выпусков отмечено непрослушанные.</item>
+  </plurals>
   <string name="add_to_queue_label">Добавить в очередь</string>
   <string name="added_to_queue_label">Добавлено в очередь</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d выпуск добавлен в очередь.</item>
+    <item quantity="few">%d выпусков добавлено в очередь.</item>
+    <item quantity="many">%d выпусков добавлено в очередь.</item>
+    <item quantity="other">%d выпусков добавлено в очередь.</item>
+  </plurals>
   <string name="remove_from_queue_label">Удалить из очереди</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%d выпуск удален из очереди.</item>
+    <item quantity="few">%d выпусков удалено из очереди.</item>
+    <item quantity="many">%d выпусков удалено из очереди.</item>
+    <item quantity="other">%d выпусков удалено из очереди.</item>
+  </plurals>
   <string name="add_to_favorite_label">Добавить в избранное</string>
   <string name="added_to_favorites">Добавлено в избранное</string>
   <string name="remove_from_favorite_label">Удалить из избранного</string>
   <string name="removed_from_favorites">Удалено из избранного</string>
   <string name="visit_website_label">Посетить сайт</string>
-  <string name="support_label">Поддержать через Flattr</string>
   <string name="skip_episode_label">Пропустить выпуск</string>
   <string name="activate_auto_download">Включить автоматическую загрузку</string>
   <string name="deactivate_auto_download">Отключить автоматическую загрузку</string>
@@ -221,11 +266,15 @@ URL файла:
   <string name="download_type_media">Медиафайл</string>
   <string name="download_type_image">Изображение</string>
   <string name="download_request_error_dialog_message_prefix">Ошибка при загрузке файла:\u0020</string>
+  <string name="null_value_podcast_error">Не предоставлен подкаст, который можно было бы показать.</string>
   <string name="authentication_notification_title">Необходима авторизация</string>
   <string name="authentication_notification_msg">Для доступа к ресурсу необходимо ввести имя пользователя и пароль</string>
   <string name="confirm_mobile_download_dialog_title">Подтвердите загрузку через мобильное соединение</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Загрузка через мобильное соединение отключена в настройках.\n\nВы можете добавить выпуск в очередь или временно разрешить загрузку.\n\n<small>Настройка сохранится на 10 минут.</small></string>
   <string name="confirm_mobile_download_dialog_message">Загрузка через мобильное соединение отключена в настройках.\n\nВы желаете временно разрешить загрузку?\n\n<small>Настройка сохранится на 10 минут.</small></string>
+  <string name="confirm_mobile_streaming_notification_title">Подтвердите трансляцию через мобильное соединение</string>
+  <string name="confirm_mobile_streaming_notification_message">Трансляция через мобильное подключение к интернету отключено в настройках. Нажмите, чтобы продолжить.</string>
+  <string name="confirm_mobile_streaming_button_always">Разрешить навсегда</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Добавить в очередь</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Разрешить временно</string>
   <!--Mediaplayer messages-->
@@ -235,6 +284,8 @@ URL файла:
   <string name="player_ready_msg">Готово</string>
   <string name="player_seeking_msg">Перемотка</string>
   <string name="playback_error_server_died">Сервер недоступен</string>
+  <string name="playback_error_unsupported">Не поддерживаемый формат</string>
+  <string name="playback_error_timeout">Не выполнено вовремя</string>
   <string name="playback_error_unknown">Неизвестная ошибка</string>
   <string name="no_media_playing_label">Ничего не воспроизводится</string>
   <string name="player_buffering_msg">Буферизация</string>
@@ -252,6 +303,7 @@ URL файла:
   <string name="move_to_top_label">Переместить вверх</string>
   <string name="move_to_bottom_label">Переместить вниз</string>
   <string name="sort">Сортировать</string>
+  <string name="keep_sorted">Сохранять сортировку</string>
   <string name="date">По дате</string>
   <string name="duration">По продолжительности</string>
   <string name="episode_title">Название выпуска</string>
@@ -261,32 +313,8 @@ URL файла:
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>
   <string name="clear_queue_confirmation_msg">Подтвердите, что хотите очистить очередь от ВСЕХ эпизодов.</string>
-  <!--Flattr-->
-  <string name="flattr_auth_label">Авторизоваться в Flattr</string>
-  <string name="flattr_auth_explanation">Нажмите кнопку, чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr, где нужно будет разрешить AntennaPod использовать ваш аккаунт. После этого вы автоматически будете перенаправлены обратно.</string>
-  <string name="authenticate_label">Авторизовать</string>
-  <string name="return_home_label">Вернуться к началу</string>
-  <string name="flattr_auth_success">Успешная авторизация. Теперь можно использовать Flattr прямо из приложения.</string>
-  <string name="no_flattr_token_title">Токен Flattr не найден</string>
-  <string name="no_flattr_token_notification_msg">Ваша учетная запись Flattr не подключена к AntennaPod. Нажмите здесь, чтобы войти.</string>
-  <string name="no_flattr_token_msg">Кажется, ваш аккаунт Flattr не подключен к AntennaPod. Можно подключить аккаунт к AntennaPod или посетить сайт канала, чтобы пожертвовать через Flattr прямо на сайте.</string>
-  <string name="authenticate_now_label">Авторизоваться</string>
-  <string name="action_forbidden_title">Действие запрещено</string>
-  <string name="action_forbidden_msg">AntennaPod не имеет прав для выполнения этого действия. Возможно, доступ к вашему аккаунту был отозван. Можно авторизоваться заново или посетить сайт, которому вы пожертвовали через Flattr.</string>
-  <string name="access_revoked_title">Доступ отозван</string>
-  <string name="access_revoked_info">Вы успешно отключили AntennaPod от аккаунта в Flattr. Чтобы завершить этот процесс  нужно удалить AntennaPod из списка приложений подключенных к аккаунту на сайте Flattr.</string>
-  <!--Flattr-->
-  <string name="flattr_click_success">Один поддержан через Flattr!</string>
-  <string name="flattr_click_success_count">Поддержано через Flattr:  %d.</string>
-  <string name="flattr_click_success_queue">Поддержано через Flattr:  %s.</string>
-  <string name="flattr_click_failure_count">Не удалось поддержать через Flattr: %d!</string>
-  <string name="flattr_click_failure">Не поддержано через Flattr:  %s.</string>
-  <string name="flattr_click_enqueued">Будет поддержано через Flattr потом</string>
-  <string name="flattring_thing">%s поддерживается через Flattr</string>
-  <string name="flattring_label">AntennaPod поддерживается через Flattr</string>
-  <string name="flattrd_label">Вы поддержали AntennaPod через Flattr</string>
-  <string name="flattrd_failed_label">Ошибка</string>
-  <string name="flattr_retrieving_status">Получение списка поддержаного через Flattr</string>
+  <string name="sort_old_to_new">От старых к новым</string>
+  <string name="sort_new_to_old">От новых к старым</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
@@ -294,9 +322,26 @@ URL файла:
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <string name="enable_sonic">Включить Sonic</string>
   <!--Empty list labels-->
+  <string name="no_items_header_label">Нет эпизодов в очереди</string>
+  <string name="no_items_label">Добавьте выпуск, загрузив его, или долго удерживайте выпуск и выберите «Добавить в очередь».</string>
   <string name="no_feeds_label">Вы ещё не подписаны ни на один подкаст.</string>
-  <string name="no_chapters_label">Этот выпуск не содержит оглавления.</string>
   <string name="no_shownotes_label">Этот выпуск не содержит примечаний.</string>
+  <string name="no_run_downloads_head_label">Нет запущенных загрузок</string>
+  <string name="no_run_downloads_label">Вы можете загрузить выпуски на экране сведений о подкасте.</string>
+  <string name="no_comp_downloads_head_label">Нет загруженных выпусков</string>
+  <string name="no_comp_downloads_label">Вы можете загрузить выпуски на экране сведений подкаста.</string>
+  <string name="no_log_downloads_head_label">Нет журнала загрузки</string>
+  <string name="no_log_downloads_label">Журналы загрузок появятся здесь, когда они будут доступны.</string>
+  <string name="no_history_head_label">Нет истории</string>
+  <string name="no_history_label">После того, как вы прослушаете выпуск, он появится здесь.</string>
+  <string name="no_all_episodes_head_label">Нет выпусков</string>
+  <string name="no_all_episodes_label">Когда вы добавите подкаст, выпуски будут показаны здесь.</string>
+  <string name="no_new_episodes_head_label">Нет новых выпусков</string>
+  <string name="no_new_episodes_label">Когда появятся новые выпуски, они будут показаны здесь.</string>
+  <string name="no_fav_episodes_head_label">Нет избранных выпусков</string>
+  <string name="no_fav_episodes_label">Вы можете добавить выпуски в избранное долгим нажатием на них.</string>
+  <string name="no_chapters_head_label">Нет оглавления</string>
+  <string name="no_chapters_label">Этот выпуск не содержит оглавления.</string>
   <!--Preferences-->
   <string name="storage_pref">Хранилище</string>
   <string name="project_pref">Проект</string>
@@ -304,15 +349,17 @@ URL файла:
   <string name="about_pref">О программе</string>
   <string name="queue_label">Очередь</string>
   <string name="integrations_label">Интеграция</string>
-  <string name="flattr_label">Flattr</string>
-  <string name="flattr_summary">Сервис микроплатежей</string>
   <string name="automation">Автоматизация</string>
   <string name="download_pref_details">Подробнее</string>
   <string name="import_export_pref">Импорт/экспорт</string>
+  <string name="import_export_search_keywords">резервирование, восстановление</string>
   <string name="appearance">Внешний вид</string>
   <string name="external_elements">Внешние органы управления</string>
   <string name="interruptions">Прерывания</string>
-  <string name="buttons">Кнопки управления воспроизведением</string>
+  <string name="playback_control">Управление воспроизведением</string>
+  <string name="preference_search_hint">Найти…</string>
+  <string name="preference_search_no_results">Безрезультатно</string>
+  <string name="preference_search_clear_history">Очистить историю</string>
   <string name="media_player">Проигрыватель</string>
   <string name="pref_episode_cleanup_title">Удаление выпусков</string>
   <string name="pref_episode_cleanup_summary">Выпуски, которые не стоят в очереди и не отмечены как избранные могут быть удалены для освобождения места под Автозагрузку.</string>
@@ -349,17 +396,13 @@ URL файла:
   <string name="pref_unpauseOnHeadsetReconnect_title">Наушники подключены обратно</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth-соединение восстановлено</string>
   <string name="pref_mobileUpdate_title">Мобильные обновления</string>
-  <string name="pref_mobileUpdate_sum">Позволить обновления через мобильное интернет-подключение</string>
+  <string name="pref_mobileUpdate_sum">Выберите что допускается загружать при мобильном интернет-подключении</string>
+  <string name="pref_mobileUpdate_refresh">Обновления каналов</string>
+  <string name="pref_mobileUpdate_images">Обложки</string>
+  <string name="pref_mobileUpdate_auto_download">Автозагрузка</string>
+  <string name="pref_mobileUpdate_episode_download">Загрузка выпусков</string>
+  <string name="pref_mobileUpdate_streaming">Трансляции по сети</string>
   <string name="refreshing_label">Обновление</string>
-  <string name="flattr_settings_label">Настройки Flattr</string>
-  <string name="pref_flattr_auth_title">Авторизация Flattr</string>
-  <string name="pref_flattr_auth_sum">Авторизуйтесь во Flattr чтобы поддерживать каналы прямо из приложения</string>
-  <string name="pref_flattr_this_app_title">Поддержать это приложение в Flattr</string>
-  <string name="pref_flattr_this_app_sum">Поддержите разработку AntennaPod через Flattr. Спасибо!</string>
-  <string name="pref_revokeAccess_title">Отозвать доступ</string>
-  <string name="pref_revokeAccess_sum">Отменить доступ этого приложения к вашему аккаунту Flattr.</string>
-  <string name="pref_auto_flattr_title">Автоматически поддерживать через Flattr</string>
-  <string name="pref_auto_flattr_sum">Настройка автоматической поддержки через Flattr</string>
   <string name="user_interface_label">Интерфейс</string>
   <string name="pref_set_theme_title">Выбор темы</string>
   <string name="pref_nav_drawer_title">Настроить боковую панель</string>
@@ -381,6 +424,7 @@ URL файла:
   <string name="pref_automatic_download_on_battery_sum">Разрешать автоматическую загрузку когда батарея не заряжается</string>
   <string name="pref_parallel_downloads_title">Одновременные загрузки</string>
   <string name="pref_episode_cache_title">Кэш выпусков</string>
+  <string name="pref_episode_cache_summary">Общее количество загруженных в кэш выпусков. Автоматическая загрузка будет приостановлена, если это количество будет достигнуто.</string>
   <string name="pref_theme_title_light">Светлая</string>
   <string name="pref_theme_title_dark">Тёмная</string>
   <string name="pref_theme_title_trueblack">Чёрная (для AMOLED)</string>
@@ -406,6 +450,8 @@ URL файла:
   <string name="pref_gpodnet_notifications_sum">Не затрагивает ошибки авторизации.</string>
   <string name="pref_playback_speed_title">Скорость воспроизведения</string>
   <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
+  <string name="pref_playback_time_respects_speed_title">Корректировка информации о медиа файлов с учетом скорости воспроизведения</string>
+  <string name="pref_playback_time_respects_speed_sum">Отображаемые позиция и длительность адаптированы к скорости воспроизведения</string>
   <string name="pref_fast_forward">Интервал быстрой перемотки вперед</string>
   <string name="pref_fast_forward_sum">Настройте длину шага в секундах при нажатии кнопки перемотки вперёд</string>
   <string name="pref_rewind">Интервал быстрой перемотки назад</string>
@@ -447,6 +493,7 @@ URL файла:
   <string name="pref_enqueue_downloaded_title">Добавлять загруженные в очередь</string>
   <string name="pref_enqueue_downloaded_summary">Добавлять загруженные выпуски в очередь</string>
   <string name="media_player_builtin">Встроенный в Android проигрыватель</string>
+  <string name="pref_skip_silence_title">Пропускать тишину в выпуске</string>
   <string name="pref_videoBehavior_title">При завершении видео</string>
   <string name="pref_videoBehavior_sum">При сворачивании проигрывателя видео</string>
   <string name="stop_playback">Остановить воспроизведение</string>
@@ -462,11 +509,8 @@ URL файла:
   <string name="double_tap_toast">Коснитесь кнопки \"Назад\" ещё раз, чтобы выйти</string>
   <string name="back_button_go_to_page">Загрузить страницу…</string>
   <string name="back_button_go_to_page_title">Выбрать страницу</string>
-  <!--Auto-Flattr dialog-->
-  <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
-  <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>
-  <string name="auto_flattr_ater_beginning">Поддерживать эпизод через Flattr в начале воспроизведения</string>
-  <string name="auto_flattr_ater_end">Поддерживать эпизод через Flattr в конце воспроизведения</string>
+  <string name="pref_delete_removes_from_queue_title">Убирать удаленные из очереди</string>
+  <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении.</string>
   <!--Search-->
   <string name="search_hint">Найти выпуски</string>
   <string name="found_in_shownotes_label">Найдено в примечаниях к выпуску</string>
@@ -568,12 +612,14 @@ URL файла:
   <string name="gpodnetsync_error_descr">Произошла ошибка во время синхронизации:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Успешно</string>
   <string name="gpodnetsync_pref_report_failed">Неудачно</string>
+  <string name="gpodnetsync_username_characters_error">Имя пользователя может содержать только буквы, цифры, дефисы и символы подчеркивания.</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Выбранная папка:</string>
   <string name="create_folder_label">Создать папку</string>
   <string name="choose_data_directory">Выбрать папку для хранения данных</string>
   <string name="choose_data_directory_message">Укажите корневую папку для хранения данных. AntennaPod создаст необходимые подкаталоги.</string>
   <string name="choose_data_directory_permission_rationale">Для смены папки хранения данных необходим доступ к внешнему хранилищу</string>
+  <string name="choose_data_directory_available_space">%1$s из %2$s свободно</string>
   <string name="create_folder_msg">Создать папку \"%1$s\"?</string>
   <string name="create_folder_success">Новая папка создана</string>
   <string name="create_folder_error_no_write_access">Запись в эту папку невозможна</string>
@@ -614,13 +660,18 @@ URL файла:
   <string name="episode_filters_exclude">Исключить</string>
   <string name="episode_filters_hint">По одному слову \n\"По фразе\"</string>
   <string name="keep_updated">Постоянно обновлять</string>
+  <string name="keep_updated_summary">Обновлять этот канал при (авто-)обновлении всех каналов</string>
+  <string name="auto_download_disabled_globally">Автоматическая загрузка отключена в основных настройках AntennaPod</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Обновление базы данных</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из одноцелевых приложений…</string>
+  <!--Add podcast fragment-->
+  <string name="search_podcast_hint">Искать подкаст...</string>
   <string name="search_itunes_label">Поиск в iTunes</string>
-  <string name="filter">Фильтровать</string>
   <string name="search_fyyd_label">Поиск в fyyd</string>
+  <string name="advanced_search">Расширенный поиск</string>
+  <string name="filter">Фильтровать</string>
   <!--Episodes apply actions-->
   <string name="all_label">Все</string>
   <string name="selected_all_label">Отмечены все выпуски</string>
@@ -662,6 +713,7 @@ URL файла:
   <string name="audio_effects">Звуковые эффекты</string>
   <string name="stereo_to_mono">Низвести стерео до моно</string>
   <string name="sonic_only">Только для Sonic</string>
+  <string name="exoplayer_only">Только ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Тип</string>
   <string name="host_label">Хост</string>
@@ -675,6 +727,7 @@ URL файла:
   <string name="proxy_host_invalid_error">Неверный адрес или домен хоста</string>
   <string name="proxy_port_invalid_error">Неверный порт</string>
   <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Количество колонок</string>
   <!--Database import/export-->
   <string name="import_export">Импорт/экспорт базы данных</string>
   <string name="import_export_warning">Данная опытная функция поможет перенести Ваши подписки и прослушанные выпуски на другое устройство.\n\nЭкспортированные базы данных можно импортировать только в ту же версию AntennaPod. В противном случае может произойти непредвиденное.\n\nПосле импорта выпуски могут быть помечены как загруженные, хотя это и не так. Простого нажатия на кнопку воспроизведения достаточно, чтобы AntennaPod распознала такой случай.</string>
@@ -708,4 +761,5 @@ URL файла:
   <string name="notification_channel_playing_description">Позволяет управлять воспроизведением. Основное уведомление, показывается при воспроизведении подкаста.</string>
   <string name="notification_channel_error">Ошибки</string>
   <string name="notification_channel_error_description">Показывается если что-то пошло не так, к примеру, неудавшаяся загрузка или синхронизация с gpodder.</string>
+  <string name="import_bad_file">Недопустимый или поврежденный файл</string>
 </resources>

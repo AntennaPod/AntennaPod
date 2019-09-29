@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.5.0'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
     }
 }
@@ -57,8 +57,8 @@ project.ext {
     iconifyVersion = "2.2.2"
     jsoupVersion = "1.11.2"
     materialDialogsVersion = "0.9.0.2"
-    okhttpVersion = "3.9.0"
-    okioVersion = "1.14.0"
+    okhttpVersion = "3.12.5"
+    okioVersion = "1.17.4"
     recyclerviewFlexibledividerVersion = "1.4.0"
     robotiumSoloVersion = "5.6.3"
     rxAndroidVersion = "2.1.0"
@@ -81,4 +81,15 @@ wrapper {
 // free build hack: common functions
 def doFreeBuild() {
     return hasProperty("freeBuild")
+}
+
+apply plugin: "checkstyle"
+checkstyle {
+    toolVersion '8.24'
+}
+
+task checkstyle(type: Checkstyle) {
+    classpath = files()
+    source "${project.rootDir}"
+    exclude("**/gen/**")
 }

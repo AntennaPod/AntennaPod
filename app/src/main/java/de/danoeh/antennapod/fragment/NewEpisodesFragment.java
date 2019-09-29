@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,12 +15,13 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-public class NewEpisodesFragment extends AllEpisodesFragment {
+public class NewEpisodesFragment extends EpisodesListFragment {
 
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
@@ -39,6 +41,12 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         return item.isNew();
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(!episodes.isEmpty());
+    }
+
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +63,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
-                removeNewFlagWithUndo(holder.getFeedItem());
+                FeedItemMenuHandler.removeNewFlagWithUndo(NewEpisodesFragment.this, holder.getFeedItem());
             }
 
             @Override

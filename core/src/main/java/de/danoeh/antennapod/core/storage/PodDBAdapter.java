@@ -28,8 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -38,7 +36,6 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
-import org.greenrobot.eventbus.EventBus;
 
 // TODO Remove media column from feeditem table
 
@@ -55,16 +52,10 @@ public class PodDBAdapter {
      */
     private static final int IN_OPERATOR_MAXIMUM = 800;
 
-    /**
-     * Maximum number of entries per search request.
-     */
-    public static final int SEARCH_LIMIT = 30;
-
     // Key-constants
     public static final String KEY_ID = "id";
     public static final String KEY_TITLE = "title";
     public static final String KEY_CUSTOM_TITLE = "custom_title";
-    public static final String KEY_NAME = "name";
     public static final String KEY_LINK = "link";
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_FILE_URL = "file_url";
@@ -1024,8 +1015,8 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getRecentlyPublishedItemsCursor(int limit) {
-        return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, null, null, null, null, KEY_PUBDATE + " DESC LIMIT " + limit);
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit) {
+        return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, null, null, null, null, KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit);
     }
 
     public Cursor getDownloadedItemsCursor() {
@@ -1404,13 +1395,6 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-
-    public static final int IDX_FEEDSTATISTICS_FEED = 0;
-    public static final int IDX_FEEDSTATISTICS_NUM_ITEMS = 1;
-    public static final int IDX_FEEDSTATISTICS_NEW_ITEMS = 2;
-    public static final int IDX_FEEDSTATISTICS_LATEST_EPISODE = 3;
-    public static final int IDX_FEEDSTATISTICS_IN_PROGRESS_EPISODES = 4;
-
     /**
      * Select number of items, new items, the date of the latest episode and the number of episodes in progress. The result
      * is sorted by the title of the feed.
@@ -1495,11 +1479,9 @@ public class PodDBAdapter {
         @Override
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
                               final int newVersion) {
-            EventBus.getDefault().post(ProgressEvent.start(context.getString(R.string.progress_upgrading_database)));
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
                     + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
-            EventBus.getDefault().post(ProgressEvent.end());
         }
     }
 }

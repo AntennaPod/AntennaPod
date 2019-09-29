@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,7 +26,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
  * Like 'EpisodesFragment' except that it only shows favorite episodes and
  * supports swiping to remove from favorites.
  */
-public class FavoriteEpisodesFragment extends AllEpisodesFragment {
+public class FavoriteEpisodesFragment extends EpisodesListFragment {
 
     private static final String TAG = "FavoriteEpisodesFrag";
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";

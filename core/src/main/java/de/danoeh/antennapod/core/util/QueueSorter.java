@@ -164,7 +164,7 @@ public class QueueSorter {
             Collections.sort(feedItems, itemComparator);
             if (spread == 0) {
                 spread = feedItems.size();
-            } else if (feedItems.size() % spread != 0){
+            } else if (spread % feedItems.size() != 0){
                 spread *= feedItems.size();
             }
         }
@@ -180,6 +180,9 @@ public class QueueSorter {
         Map<Long, List<FeedItem>> spreadItems = new HashMap<>();
         for (List<FeedItem> feedItems : feeds) {
             long thisSpread = spread / feedItems.size();
+            if (thisSpread == 0) {
+                thisSpread = 1;
+            }
             // Starting from 0 ensures we front-load, so the queue starts with one episode from
             // each feed in the queue
             long itemSpread = 0;

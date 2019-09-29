@@ -32,8 +32,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
-import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -55,7 +53,9 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -443,11 +443,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         subscribeButton.setOnClickListener(v -> {
             if(feedInFeedlist(feed)) {
-                Intent intent = new Intent(OnlineFeedViewActivity.this, MainActivity.class);
                 // feed.getId() is always 0, we have to retrieve the id from the feed list from
                 // the database
-                intent.putExtra(MainActivity.EXTRA_FEED_ID, getFeedId(feed));
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent intent = MainActivity.getIntentToOpenFeed(this, getFeedId(feed));
                 startActivity(intent);
             } else {
                 Feed f = new Feed(selectedDownloadUrl, null, feed.getTitle());

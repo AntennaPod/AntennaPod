@@ -4,4 +4,5 @@
 - Added batch editing to the queue (by @ByteHamster)
 - Added option to adapt remaining time to playback speed (by @CedricCabessa)
 - Removed broken Flattr integration (by @ByteHamster)
-- Tons of bug fixes and performance improvements (by @andersonvom, @archibishop, @ByteHamster, @gaul, @jas14)
+- Added filter to "All episodes" list (by @jhunnius)
+- Tons of bug fixes and performance improvements
