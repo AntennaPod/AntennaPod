@@ -409,8 +409,9 @@ public class FeedItemlistFragment extends ListFragment {
 
     }
 
-    private void onFragmentLoaded() {
-        if(!isVisible()) {
+    private void displayList() {
+        if (getView() == null) {
+            Log.e(TAG, "Required root view is not yet created. Stop binding data to UI.");
             return;
         }
         if (adapter == null) {
@@ -612,7 +613,7 @@ public class FeedItemlistFragment extends ListFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result.orElse(null);
-                    onFragmentLoaded();
+                    displayList();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
