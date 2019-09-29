@@ -63,6 +63,8 @@ public class PodcastApp extends Application {
 		EventBus.builder()
 				.addIndex(new ApEventBusIndex())
 				.addIndex(new ApCoreEventBusIndex())
+				.logNoSubscriberMessages(false)
+				.sendNoSubscriberEvent(false)
 				.installDefaultEventBus();
     }
 
