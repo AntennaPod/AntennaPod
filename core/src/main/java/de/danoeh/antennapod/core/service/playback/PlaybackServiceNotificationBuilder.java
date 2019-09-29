@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.KeyEvent;
-import androidx.media.app.NotificationCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -195,7 +194,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
 
         PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_STOP, numActions);
-        setStyle(new NotificationCompat.MediaStyle()
+        setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                 .setMediaSession(mediaSessionToken)
                 .setShowActionsInCompactView(compactActionList.toArray())
                 .setShowCancelButton(true)
