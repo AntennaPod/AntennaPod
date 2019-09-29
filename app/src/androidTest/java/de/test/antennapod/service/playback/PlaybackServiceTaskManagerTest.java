@@ -151,8 +151,8 @@ public class PlaybackServiceTaskManagerTest {
             item.getMedia().setDownloaded(true);
             item.getMedia().setFile_url("file://123");
             item.setAutoDownload(false);
-            DBWriter.setFeedItem(item).get();
             DBWriter.setFeedMedia(item.getMedia()).get();
+            DBWriter.setFeedItem(item).get();
         }
 
         // an approximation to ensure the item update event has been posted and processed.
