@@ -29,6 +29,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import io.reactivex.functions.Consumer;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -149,28 +150,40 @@ public class PlaybackServiceTaskManagerTest {
         assertThat("The item is not yet downloaded",
                 testItem.getMedia().isDownloaded(), is(false));
 
-        FeedItemEventListener feedItemEventListener = new FeedItemEventListener();
-        EventBus.getDefault().register(feedItemEventListener);
-
-        { // simulate download complete (in DownloadService.MediaHandlerThread)
+        withFeedItemEventListener( feedItemEventListener -> {
+            // simulate download complete (in DownloadService.MediaHandlerThread)
             FeedItem item = DBReader.getFeedItem(testItem.getId());
             item.getMedia().setDownloaded(true);
             item.getMedia().setFile_url("file://123");
             item.setAutoDownload(false);
             DBWriter.setFeedMedia(item.getMedia()).get();
             DBWriter.setFeedItem(item).get();
-        }
 
-        Awaitility.await()
-                .atMost(1000, TimeUnit.MILLISECONDS)
-                .until(() -> feedItemEventListener.getEvents().size() > 0);
+            Awaitility.await()
+                    .atMost(1000, TimeUnit.MILLISECONDS)
+                    .until(() -> feedItemEventListener.getEvents().size() > 0);
 
-        final FeedItem itemUpdated = pstm.getQueue().get(0);
-        assertThat("The queue in PlaybackService has been updated item after download is completed",
-                itemUpdated.getMedia().isDownloaded(), is(true));
+            final FeedItem itemUpdated = pstm.getQueue().get(0);
+            assertThat("The queue in PlaybackService has been updated item after download is completed",
+                    itemUpdated.getMedia().isDownloaded(), is(true));
+        });
 
-        EventBus.getDefault().unregister(feedItemEventListener);
         pstm.shutdown();
+    }
+
+    /**
+     * Provides an listener subscribing to {@link FeedItemEvent} that the callers can use
+     *
+     * Note: it uses RxJava's version of {@link Consumer} because it allows exceptions to be thrown.
+     */
+    private static void withFeedItemEventListener(Consumer<FeedItemEventListener> consumer) throws Exception {
+        FeedItemEventListener feedItemEventListener = new FeedItemEventListener();
+        try {
+            EventBus.getDefault().register(feedItemEventListener);
+            consumer.accept(feedItemEventListener);
+        } finally {
+            EventBus.getDefault().unregister(feedItemEventListener);
+        }
     }
 
     private static class FeedItemEventListener {
