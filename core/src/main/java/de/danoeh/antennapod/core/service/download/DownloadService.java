@@ -997,13 +997,16 @@ public class DownloadService extends Service {
             final FeedItem item = media.getItem();
 
             try {
+                DBWriter.setFeedMedia(media).get();
+
                 // we've received the media, we don't want to autodownload it again
                 if (item != null) {
                     item.setAutoDownload(false);
+                    // setFeedItem() signals (via EventBus) that the item has been updated,
+                    // so we do it after the enclosing media has been updated above,
+                    // to ensure subscribers will get the updated FeedMedia as well
                     DBWriter.setFeedItem(item).get();
                 }
-
-                DBWriter.setFeedMedia(media).get();
 
                 if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
                         !DBTasks.isInQueue(DownloadService.this, item.getId())) {

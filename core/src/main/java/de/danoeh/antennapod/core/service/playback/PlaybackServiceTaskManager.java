@@ -7,6 +7,9 @@ import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -14,13 +17,12 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -100,6 +102,34 @@ public class PlaybackServiceTaskManager {
         if (!isQueueLoaderActive()) {
             queueFuture = schedExecutor.submit(DBReader::getQueue);
         }
+    }
+
+    @Subscribe
+    public void onEvent(FeedItemEvent event) {
+        // Use case: when an item in the queue has been downloaded,
+        // listening to the event to ensure the downloaded item will be used.
+        Log.d(TAG, "onEvent(FeedItemEvent " + event + ")");
+
+        for (FeedItem item : event.items) {
+            if (isItemInQueue(item.getId())) {
+                Log.d(TAG, "onEvent(FeedItemEvent) - some item (" + item.getId() + ") in the queue has been updated (usually downloaded). Refresh the queue.");
+                cancelQueueLoader();
+                loadQueue();
+                return;
+            }
+        }
+    }
+
+    private boolean isItemInQueue(long itemId) {
+        List<FeedItem> queue = getQueueIfLoaded();
+        if (queue != null) {
+            for (FeedItem item : queue) {
+                if (item.getId() == itemId) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
