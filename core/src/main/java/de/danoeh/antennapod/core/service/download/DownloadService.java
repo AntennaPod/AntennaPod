@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -434,12 +435,40 @@ public class DownloadService extends Service {
         queryDownloads();
     }
 
-    private Downloader getDownloader(DownloadRequest request) {
-        if (!URLUtil.isHttpUrl(request.getSource()) && !URLUtil.isHttpsUrl(request.getSource())) {
-            Log.e(TAG, "Could not find appropriate downloader for " + request.getSource());
-            return null;
+    @VisibleForTesting
+    public interface DownloaderFactory {
+        @Nullable
+        Downloader create(@NonNull DownloadRequest request);
+    }
+
+    private static class DefaultDownloaderFactory implements DownloaderFactory {
+        @Nullable
+        @Override
+        public Downloader create(@NonNull DownloadRequest request) {
+            if (!URLUtil.isHttpUrl(request.getSource()) && !URLUtil.isHttpsUrl(request.getSource())) {
+                Log.e(TAG, "Could not find appropriate downloader for " + request.getSource());
+                return null;
+            }
+            return new HttpDownloader(request);
         }
-        return new HttpDownloader(request);
+    }
+
+    private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
+
+    @VisibleForTesting
+    public static DownloaderFactory getDownloaderFactory() {
+        return downloaderFactory;
+    }
+
+    // public scope rather than package private,
+    // because androidTest put classes in the non-standard de.test.antennapod hierarchy
+    @VisibleForTesting
+    public static void setDownloaderFactory(DownloaderFactory downloaderFactory) {
+        DownloadService.downloaderFactory = downloaderFactory;
+    }
+
+    private Downloader getDownloader(@NonNull DownloadRequest request) {
+        return downloaderFactory.create(request);
     }
 
     /**
