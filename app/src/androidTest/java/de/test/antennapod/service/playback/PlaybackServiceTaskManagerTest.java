@@ -5,7 +5,9 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.annotation.UiThreadTest;
 import android.support.test.filters.LargeTest;
 
+import org.awaitility.Awaitility;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -146,6 +149,9 @@ public class PlaybackServiceTaskManagerTest {
         assertThat("The item is not yet downloaded",
                 testItem.getMedia().isDownloaded(), is(false));
 
+        FeedItemEventListener feedItemEventListener = new FeedItemEventListener();
+        EventBus.getDefault().register(feedItemEventListener);
+
         { // simulate download complete (in DownloadService.MediaHandlerThread)
             FeedItem item = DBReader.getFeedItem(testItem.getId());
             item.getMedia().setDownloaded(true);
@@ -155,14 +161,30 @@ public class PlaybackServiceTaskManagerTest {
             DBWriter.setFeedItem(item).get();
         }
 
-        // an approximation to ensure the item update event has been posted and processed.
-        Thread.sleep(10);
+        Awaitility.await()
+                .atMost(1000, TimeUnit.MILLISECONDS)
+                .until(() -> feedItemEventListener.getEvents().size() > 0);
 
         final FeedItem itemUpdated = pstm.getQueue().get(0);
         assertThat("The queue in PlaybackService has been updated item after download is completed",
                 itemUpdated.getMedia().isDownloaded(), is(true));
 
+        EventBus.getDefault().unregister(feedItemEventListener);
         pstm.shutdown();
+    }
+
+    private static class FeedItemEventListener {
+
+        private final List<FeedItemEvent> events = new ArrayList<>();
+
+        @Subscribe
+        public void onEvent(FeedItemEvent event) {
+            events.add(event);
+        }
+
+        List<? extends FeedItemEvent> getEvents() {
+            return events;
+        }
     }
 
     @Test
