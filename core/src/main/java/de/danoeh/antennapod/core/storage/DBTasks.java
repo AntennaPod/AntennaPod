@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -440,10 +441,9 @@ public final class DBTasks {
     /**
      * Get a FeedItem by its identifying value.
      */
-    private static FeedItem searchFeedItemByIdentifyingValue(Feed feed,
-                                                             String identifier) {
+    private static FeedItem searchFeedItemByIdentifyingValue(Feed feed, String identifier) {
         for (FeedItem item : feed.getItems()) {
-            if (item.getIdentifyingValue().equals(identifier)) {
+            if (TextUtils.equals(item.getIdentifyingValue(), identifier)) {
                 return item;
             }
         }
