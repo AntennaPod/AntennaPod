@@ -7,7 +7,6 @@ import android.support.test.filters.LargeTest;
 
 import org.awaitility.Awaitility;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -29,8 +27,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import io.reactivex.functions.Consumer;
 
+import static de.test.antennapod.util.feed.FeedItemEventListener.withFeedItemEventListener;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -166,35 +164,6 @@ public class PlaybackServiceTaskManagerTest {
         });
 
         pstm.shutdown();
-    }
-
-    /**
-     * Provides an listener subscribing to {@link FeedItemEvent} that the callers can use
-     *
-     * Note: it uses RxJava's version of {@link Consumer} because it allows exceptions to be thrown.
-     */
-    private static void withFeedItemEventListener(Consumer<FeedItemEventListener> consumer) throws Exception {
-        FeedItemEventListener feedItemEventListener = new FeedItemEventListener();
-        try {
-            EventBus.getDefault().register(feedItemEventListener);
-            consumer.accept(feedItemEventListener);
-        } finally {
-            EventBus.getDefault().unregister(feedItemEventListener);
-        }
-    }
-
-    private static class FeedItemEventListener {
-
-        private final List<FeedItemEvent> events = new ArrayList<>();
-
-        @Subscribe
-        public void onEvent(FeedItemEvent event) {
-            events.add(event);
-        }
-
-        List<? extends FeedItemEvent> getEvents() {
-            return events;
-        }
     }
 
     @Test

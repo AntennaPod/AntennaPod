@@ -7,8 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +18,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -34,6 +31,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Consumer;
 
+import static de.test.antennapod.util.feed.FeedItemEventListener.withFeedItemEventListener;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -106,35 +104,6 @@ public class DownloadServiceTest {
                         + cte.getMessage());
             }
         });
-    }
-
-    /**
-     * Provides an listener subscribing to {@link FeedItemEvent} that the callers can use
-     *
-     * Note: it uses RxJava's version of {@link io.reactivex.functions.Consumer} because it allows exceptions to be thrown.
-     */
-    private static void withFeedItemEventListener(io.reactivex.functions.Consumer<FeedItemEventListener> consumer) throws Exception {
-        FeedItemEventListener feedItemEventListener = new FeedItemEventListener();
-        try {
-            EventBus.getDefault().register(feedItemEventListener);
-            consumer.accept(feedItemEventListener);
-        } finally {
-            EventBus.getDefault().unregister(feedItemEventListener);
-        }
-    }
-
-    private static class FeedItemEventListener {
-
-        private final List<FeedItemEvent> events = new ArrayList<>();
-
-        @Subscribe
-        public void onEvent(FeedItemEvent event) {
-            events.add(event);
-        }
-
-        List<? extends FeedItemEvent> getEvents() {
-            return events;
-        }
     }
 
     private static class StubDownloaderFactory implements DownloadService.DownloaderFactory {
