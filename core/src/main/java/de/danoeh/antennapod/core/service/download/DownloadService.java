@@ -668,6 +668,7 @@ public class DownloadService extends Service {
                     Log.e(TAG, "FeedSyncThread was interrupted");
                 } catch (ExecutionException e) {
                     Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 
@@ -702,6 +703,7 @@ public class DownloadService extends Service {
                         Log.e(TAG, "FeedSyncThread was interrupted");
                     } catch (ExecutionException e) {
                         Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
+                        e.printStackTrace();
                     }
                 }
 
