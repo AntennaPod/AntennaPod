@@ -31,6 +31,12 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.network_pref);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         setUpdateIntervalText();
