@@ -45,7 +45,6 @@ project.ext {
     targetSdkVersion = 28
 
     supportVersion = "27.1.1"
-    lifecycle_version = "1.1.1"
     workManagerVersion = "1.0.1"
     awaitilityVersion = "3.1.2"
     commonsioVersion = "2.5"

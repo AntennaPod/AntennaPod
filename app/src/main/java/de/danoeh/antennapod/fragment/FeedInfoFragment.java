@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -21,18 +20,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
-
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.viewmodel.FeedLoaderViewModel;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -48,6 +40,9 @@ import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 /**
  * Displays information about a feed.
@@ -56,8 +51,9 @@ public class FeedInfoFragment extends Fragment {
 
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedInfoActivity";
-    private Feed feed;
 
+    private Feed feed;
+    private Disposable disposable;
     private ImageView imgvCover;
     private TextView txtvTitle;
     private TextView txtvDescription;
@@ -68,8 +64,6 @@ public class FeedInfoFragment extends Fragment {
     private TextView txtvUrl;
     private TextView txtvAuthorHeader;
     private ImageView imgvBackground;
-
-    private Disposable disposable;
 
     public static FeedInfoFragment newInstance(Feed feed) {
         FeedInfoFragment fragment = new FeedInfoFragment();
@@ -131,12 +125,21 @@ public class FeedInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
-        ViewModelProviders.of(getActivity()).get(FeedLoaderViewModel.class).getFeed(feedId)
+        disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
+            Feed feed = DBReader.getFeed(feedId);
+            if (feed != null) {
+                emitter.onSuccess(feed);
+            } else {
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    feed = result;
-                    showFeed();
-                    startPostponedEnterTransition();
-                }).dispose();
+                            feed = result;
+                            showFeed();
+                        }, error -> Log.d(TAG, Log.getStackTraceString(error)),
+                        this::startPostponedEnterTransition);
     }
 
     private void showFeed() {

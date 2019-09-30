@@ -1,12 +1,12 @@
 package de.danoeh.antennapod.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -14,15 +14,23 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
-import de.danoeh.antennapod.viewmodel.FeedLoaderViewModel;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
+    private static final String TAG = "FeedSettingsFragment";
+
     private Feed feed;
+    private Disposable disposable;
     private FeedPreferences feedPreferences;
 
     public static FeedSettingsFragment newInstance(Feed feed) {
@@ -39,7 +47,16 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
 
         postponeEnterTransition();
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
-        ViewModelProviders.of(getActivity()).get(FeedLoaderViewModel.class).getFeed(feedId)
+        disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
+            Feed feed = DBReader.getFeed(feedId);
+            if (feed != null) {
+                emitter.onSuccess(feed);
+            } else {
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result;
                     feedPreferences = feed.getPreferences();
@@ -52,14 +69,22 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
 
                     updateAutoDeleteSummary();
                     updateAutoDownloadEnabled();
-                    startPostponedEnterTransition();
-                }).dispose();
+                }, error -> Log.d(TAG, Log.getStackTraceString(error)),
+                this::startPostponedEnterTransition);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.feed_settings_label);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     private void setupEpisodeFilterPreference() {
