@@ -135,7 +135,7 @@ public class PlaybackServiceTaskManagerTest {
         { // Setup test data
             List<FeedItem> queue = writeTestQueue("a");
             FeedItem item = DBReader.getFeedItem(queue.get(0).getId());
-            FeedMedia media = new FeedMedia(item, "http://abc.test/acme.mp3", 12345, "audio/mp3");
+            FeedMedia media = new FeedMedia(item, "http://example.com/episode.mp3", 12345, "audio/mp3");
             item.setMedia(media);
             DBWriter.setFeedMedia(media).get();
             DBWriter.setFeedItem(item).get();
