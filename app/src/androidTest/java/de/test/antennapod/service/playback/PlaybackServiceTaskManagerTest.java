@@ -31,8 +31,6 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import io.reactivex.functions.Consumer;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -147,8 +145,7 @@ public class PlaybackServiceTaskManagerTest {
 
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
         final FeedItem testItem = pstm.getQueue().get(0);
-        assertThat("The item is not yet downloaded",
-                testItem.getMedia().isDownloaded(), is(false));
+        assertFalse("The item should not yet be downloaded", testItem.getMedia().isDownloaded());
 
         withFeedItemEventListener( feedItemEventListener -> {
             // simulate download complete (in DownloadService.MediaHandlerThread)
@@ -164,8 +161,8 @@ public class PlaybackServiceTaskManagerTest {
                     .until(() -> feedItemEventListener.getEvents().size() > 0);
 
             final FeedItem itemUpdated = pstm.getQueue().get(0);
-            assertThat("The queue in PlaybackService has been updated item after download is completed",
-                    itemUpdated.getMedia().isDownloaded(), is(true));
+            assertTrue("media.isDownloaded() should be true - The queue in PlaybackService should be updated after download is completed",
+                    itemUpdated.getMedia().isDownloaded());
         });
 
         pstm.shutdown();
