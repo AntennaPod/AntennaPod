@@ -31,7 +31,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Consumer;
 
-import static de.test.antennapod.util.feed.FeedItemEventListener.withFeedItemEventListener;
+import static de.test.antennapod.util.event.FeedItemEventListener.withFeedItemEventListener;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

@@ -28,7 +28,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
-import static de.test.antennapod.util.feed.FeedItemEventListener.withFeedItemEventListener;
+import static de.test.antennapod.util.event.FeedItemEventListener.withFeedItemEventListener;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

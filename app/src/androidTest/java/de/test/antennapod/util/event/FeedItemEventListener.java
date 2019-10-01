@@ -1,4 +1,4 @@
-package de.test.antennapod.util.feed;
+package de.test.antennapod.util.event;
 
 import android.support.annotation.NonNull;
 
