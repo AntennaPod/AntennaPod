@@ -38,8 +38,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.FeedInfoActivity;
-import de.danoeh.antennapod.activity.FeedSettingsActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
@@ -141,37 +139,33 @@ public class FeedItemlistFragment extends ListFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && getActivity() != null) {
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
+        }
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        registerForContextMenu(getListView());
+
         EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadItems();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
-        updateProgressBarVisibility();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
-        EventBus.getDefault().unregister(this);
-        if(disposable != null) {
-            disposable.dispose();
-        }
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        resetViewState();
-    }
 
-    private void resetViewState() {
+        EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
+        if (disposable != null) {
+            disposable.dispose();
+        }
         adapter = null;
         listFooter = null;
     }
@@ -345,13 +339,6 @@ public class FeedItemlistFragment extends ListFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        registerForContextMenu(getListView());
-    }
-
-    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         if(adapter == null) {
             return;
@@ -429,8 +416,9 @@ public class FeedItemlistFragment extends ListFragment {
 
     }
 
-    private void onFragmentLoaded() {
-        if(!isVisible()) {
+    private void displayList() {
+        if (getView() == null) {
+            Log.e(TAG, "Required root view is not yet created. Stop binding data to UI.");
             return;
         }
         if (adapter == null) {
@@ -514,10 +502,8 @@ public class FeedItemlistFragment extends ListFragment {
         imgvCover.setOnClickListener(v -> showFeedInfo());
         butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
-                Intent startIntent = new Intent(getActivity(), FeedSettingsActivity.class);
-                startIntent.putExtra(FeedSettingsActivity.EXTRA_FEED_ID,
-                        feed.getId());
-                startActivity(startIntent);
+                FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
+                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.FLIP);
             }
         });
         headerCreated = true;
@@ -525,10 +511,8 @@ public class FeedItemlistFragment extends ListFragment {
 
     private void showFeedInfo() {
         if (feed != null) {
-            Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
-            startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
-                    feed.getId());
-            startActivity(startIntent);
+            FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
+            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.FLIP);
         }
     }
 
@@ -634,7 +618,7 @@ public class FeedItemlistFragment extends ListFragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result.orElse(null);
-                    onFragmentLoaded();
+                    displayList();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

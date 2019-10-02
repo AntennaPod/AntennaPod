@@ -92,11 +92,9 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     @Nullable
     @Override
     public LoadData<InputStream> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
-        Log.d(TAG, "buildLoadData() called with: " + "model = [" + model + "], width = ["
-                + width + "], height = [" + height + "]");
-        if(TextUtils.isEmpty(model)) {
+        if (TextUtils.isEmpty(model)) {
             return null;
-        } else if(model.startsWith("/")) {
+        } else if (model.startsWith("/")) {
             return new LoadData<>(new ObjectKey(model), new AudioCoverFetcher(model));
         } else {
             GlideUrl url = new GlideUrl(model);

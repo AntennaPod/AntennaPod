@@ -1,20 +1,15 @@
 package de.danoeh.antennapod.fragment.preferences;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.util.Log;
-import android.widget.Toast;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.BugReportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.StatisticsActivity;
 import de.danoeh.antennapod.core.util.IntentUtils;
 
 public class MainPreferencesFragment extends PreferenceFragmentCompat {
@@ -36,6 +31,12 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences);
         setupMainScreen();
         setupSearch();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.settings_label);
     }
 
     private void setupMainScreen() {
@@ -68,7 +69,8 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         );
         findPreference(STATISTICS).setOnPreferenceClickListener(
                 preference -> {
-                    startActivity(new Intent(getActivity(), StatisticsActivity.class));
+                    getFragmentManager().beginTransaction().replace(R.id.content, new StatisticsFragment())
+                            .addToBackStack(getString(R.string.statistics_label)).commit();
                     return true;
                 }
         );

@@ -218,6 +218,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
             return itemIdentifier;
         } else if (title != null && !title.isEmpty()) {
             return title;
+        } else if (hasMedia() && media.getDownload_url() != null) {
+            return media.getDownload_url();
         } else {
             return link;
         }

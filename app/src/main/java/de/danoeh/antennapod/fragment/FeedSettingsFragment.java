@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,7 +7,9 @@ import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
@@ -16,27 +17,53 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
-import de.danoeh.antennapod.viewmodel.FeedSettingsViewModel;
-
-import static de.danoeh.antennapod.activity.FeedSettingsActivity.EXTRA_FEED_ID;
+import io.reactivex.Maybe;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
+    private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
+    private static final String TAG = "FeedSettingsFragment";
+
     private Feed feed;
+    private Disposable disposable;
     private FeedPreferences feedPreferences;
+
+    public static FeedSettingsFragment newInstance(Feed feed) {
+        FeedSettingsFragment fragment = new FeedSettingsFragment();
+        Bundle arguments = new Bundle();
+        arguments.putLong(EXTRA_FEED_ID, feed.getId());
+        fragment.setArguments(arguments);
+        return fragment;
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.feed_settings);
 
+        postponeEnterTransition();
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
-        ViewModelProviders.of(getActivity()).get(FeedSettingsViewModel.class).getFeed(feedId)
+        disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
+            Feed feed = DBReader.getFeed(feedId);
+            if (feed != null) {
+                emitter.onSuccess(feed);
+            } else {
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result;
                     feedPreferences = feed.getPreferences();
+                    ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(feed.getTitle());
 
                     setupAutoDownloadPreference();
                     setupKeepUpdatedPreference();
@@ -48,7 +75,31 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     updateAutoDeleteSummary();
                     updateVolumeReductionValue();
                     updateAutoDownloadEnabled();
-                }).dispose();
+                }, error -> Log.d(TAG, Log.getStackTraceString(error)),
+                this::startPostponedEnterTransition);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.feed_settings_label);
+        if (feed != null) {
+            ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(feed.getTitle());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     private void setupEpisodeFilterPreference() {

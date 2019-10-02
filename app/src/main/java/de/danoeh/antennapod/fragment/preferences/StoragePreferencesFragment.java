@@ -23,6 +23,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.asynctask.DocumentFileExportWorker;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
@@ -61,6 +62,12 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_storage);
         setupStorageScreen();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.storage_pref);
     }
 
     @Override

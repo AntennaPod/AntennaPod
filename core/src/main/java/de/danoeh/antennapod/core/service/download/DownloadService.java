@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -435,12 +436,40 @@ public class DownloadService extends Service {
         queryDownloads();
     }
 
-    private Downloader getDownloader(DownloadRequest request) {
-        if (!URLUtil.isHttpUrl(request.getSource()) && !URLUtil.isHttpsUrl(request.getSource())) {
-            Log.e(TAG, "Could not find appropriate downloader for " + request.getSource());
-            return null;
+    @VisibleForTesting
+    public interface DownloaderFactory {
+        @Nullable
+        Downloader create(@NonNull DownloadRequest request);
+    }
+
+    private static class DefaultDownloaderFactory implements DownloaderFactory {
+        @Nullable
+        @Override
+        public Downloader create(@NonNull DownloadRequest request) {
+            if (!URLUtil.isHttpUrl(request.getSource()) && !URLUtil.isHttpsUrl(request.getSource())) {
+                Log.e(TAG, "Could not find appropriate downloader for " + request.getSource());
+                return null;
+            }
+            return new HttpDownloader(request);
         }
-        return new HttpDownloader(request);
+    }
+
+    private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
+
+    @VisibleForTesting
+    public static DownloaderFactory getDownloaderFactory() {
+        return downloaderFactory;
+    }
+
+    // public scope rather than package private,
+    // because androidTest put classes in the non-standard de.test.antennapod hierarchy
+    @VisibleForTesting
+    public static void setDownloaderFactory(DownloaderFactory downloaderFactory) {
+        DownloadService.downloaderFactory = downloaderFactory;
+    }
+
+    private Downloader getDownloader(@NonNull DownloadRequest request) {
+        return downloaderFactory.create(request);
     }
 
     /**
@@ -669,6 +698,7 @@ public class DownloadService extends Service {
                     Log.e(TAG, "FeedSyncThread was interrupted");
                 } catch (ExecutionException e) {
                     Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 
@@ -703,6 +733,7 @@ public class DownloadService extends Service {
                         Log.e(TAG, "FeedSyncThread was interrupted");
                     } catch (ExecutionException e) {
                         Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
+                        e.printStackTrace();
                     }
                 }
 
@@ -998,13 +1029,16 @@ public class DownloadService extends Service {
             final FeedItem item = media.getItem();
 
             try {
+                DBWriter.setFeedMedia(media).get();
+
                 // we've received the media, we don't want to autodownload it again
                 if (item != null) {
                     item.setAutoDownload(false);
+                    // setFeedItem() signals (via EventBus) that the item has been updated,
+                    // so we do it after the enclosing media has been updated above,
+                    // to ensure subscribers will get the updated FeedMedia as well
                     DBWriter.setFeedItem(item).get();
                 }
-
-                DBWriter.setFeedMedia(media).get();
 
                 if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
                         !DBTasks.isInQueue(DownloadService.this, item.getId())) {

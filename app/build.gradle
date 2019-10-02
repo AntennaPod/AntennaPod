@@ -139,10 +139,6 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$supportVersion"
     compileOnly 'com.google.android.wearable:wearable:2.2.0'
 
-    // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
-
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"

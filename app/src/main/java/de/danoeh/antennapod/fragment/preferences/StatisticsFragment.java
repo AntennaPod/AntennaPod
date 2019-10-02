@@ -1,23 +1,27 @@
-package de.danoeh.antennapod.activity;
+package de.danoeh.antennapod.fragment.preferences;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.StatisticsListAdapter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import io.reactivex.Observable;
@@ -28,10 +32,8 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Displays the 'statistics' screen
  */
-public class StatisticsActivity extends AppCompatActivity
-        implements AdapterView.OnItemClickListener {
-
-    private static final String TAG = StatisticsActivity.class.getSimpleName();
+public class StatisticsFragment extends Fragment implements AdapterView.OnItemClickListener {
+    private static final String TAG = StatisticsFragment.class.getSimpleName();
     private static final String PREF_NAME = "StatisticsActivityPrefs";
     private static final String PREF_COUNT_ALL = "countAll";
 
@@ -44,54 +46,51 @@ public class StatisticsActivity extends AppCompatActivity
     private SharedPreferences prefs;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setContentView(R.layout.statistics_activity);
-
-        prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         countAll = prefs.getBoolean(PREF_COUNT_ALL, false);
+        setHasOptionsMenu(true);
+    }
 
-        totalTimeTextView = findViewById(R.id.total_time);
-        feedStatisticsList = findViewById(R.id.statistics_list);
-        progressBar = findViewById(R.id.progressBar);
-        listAdapter = new StatisticsListAdapter(this);
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.statistics_activity, container, false);
+        totalTimeTextView = root.findViewById(R.id.total_time);
+        feedStatisticsList = root.findViewById(R.id.statistics_list);
+        progressBar = root.findViewById(R.id.progressBar);
+        listAdapter = new StatisticsListAdapter(getContext());
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setAdapter(listAdapter);
         feedStatisticsList.setOnItemClickListener(this);
+        return root;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
         refreshStatistics();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.statistics, menu);
-        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        } else if (item.getItemId() == R.id.statistics_mode) {
+        if (item.getItemId() == R.id.statistics_mode) {
             selectStatisticsMode();
             return true;
-        } else {
-            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void selectStatisticsMode() {
-        View contentView = View.inflate(this, R.layout.statistics_mode_select_dialog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View contentView = View.inflate(getContext(), R.layout.statistics_mode_select_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setView(contentView);
         builder.setTitle(R.string.statistics_mode);
 
@@ -126,8 +125,8 @@ public class StatisticsActivity extends AppCompatActivity
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    totalTimeTextView.setText(Converter
-                            .shortLocalizedDuration(this, countAll ? result.totalTimeCountAll : result.totalTime));
+                    totalTimeTextView.setText(Converter.shortLocalizedDuration(getContext(),
+                            countAll ? result.totalTimeCountAll : result.totalTime));
                     listAdapter.update(result.feedTime);
                     progressBar.setVisibility(View.GONE);
                     totalTimeTextView.setVisibility(View.VISIBLE);
@@ -139,14 +138,13 @@ public class StatisticsActivity extends AppCompatActivity
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DBReader.StatisticsItem stats = listAdapter.getItem(position);
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setTitle(stats.feed.getTitle());
         dialog.setMessage(getString(R.string.statistics_details_dialog,
                 countAll ? stats.episodesStartedIncludingMarked : stats.episodesStarted,
-                stats.episodes,
-                Converter.shortLocalizedDuration(this, countAll ?
-                        stats.timePlayedCountAll : stats.timePlayed),
-                Converter.shortLocalizedDuration(this, stats.time)));
+                stats.episodes, Converter.shortLocalizedDuration(getContext(),
+                        countAll ? stats.timePlayedCountAll : stats.timePlayed),
+                Converter.shortLocalizedDuration(getContext(), stats.time)));
         dialog.setPositiveButton(android.R.string.ok, null);
         dialog.show();
     }

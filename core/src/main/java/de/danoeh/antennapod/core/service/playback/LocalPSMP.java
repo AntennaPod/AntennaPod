@@ -592,7 +592,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         }
 
         playerLock.unlock();
-        Log.d(TAG, "getPosition() -> " + retVal);
         return retVal;
     }
 

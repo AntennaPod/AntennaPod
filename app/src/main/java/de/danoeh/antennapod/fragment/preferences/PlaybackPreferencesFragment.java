@@ -8,6 +8,7 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
@@ -25,6 +26,12 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         setupPlaybackScreen();
         PreferenceControllerFlavorHelper.setupFlavoredUI(this);
         buildSmartMarkAsPlayedPreference();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.playback_pref);
     }
 
     @Override
