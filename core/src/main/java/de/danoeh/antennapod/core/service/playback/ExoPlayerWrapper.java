@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.google.android.exoplayer2.C;
@@ -35,6 +36,7 @@ import de.danoeh.antennapod.core.util.playback.IPlayer;
 import java.util.concurrent.TimeUnit;
 
 public class ExoPlayerWrapper implements IPlayer {
+    private static final String TAG = "ExoPlayerWrapper";
     private final Context mContext;
     private final Disposable bufferingUpdateDisposable;
     private SimpleExoPlayer mExoPlayer;
@@ -204,6 +206,7 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException {
+        Log.d(TAG, "setDataSource: " + s);
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
                 Util.getUserAgent(mContext, mContext.getPackageName()), null,
                 DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
