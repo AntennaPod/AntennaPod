@@ -105,17 +105,6 @@
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
 
-        <activity
-                android:name=".activity.FeedInfoActivity"
-                android:label="@string/feed_info_label">
-        </activity>
-
-        <activity
-                android:name=".activity.FeedSettingsActivity"
-                android:windowSoftInputMode="stateHidden"
-                android:label="@string/feed_settings_label">
-        </activity>
-
         <service
             android:name=".core.service.PlayerWidgetJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
