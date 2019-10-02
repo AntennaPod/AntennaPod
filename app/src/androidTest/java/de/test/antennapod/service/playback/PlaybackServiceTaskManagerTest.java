@@ -5,6 +5,12 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.annotation.UiThreadTest;
 import android.support.test.filters.LargeTest;
 
+import org.awaitility.Awaitility;
+import org.greenrobot.eventbus.EventBus;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,14 +21,14 @@ import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import org.greenrobot.eventbus.EventBus;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
+import static de.test.antennapod.util.event.FeedItemEventListener.withFeedItemEventListener;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -120,6 +126,43 @@ public class PlaybackServiceTaskManagerTest {
         for (int i = 0; i < queue.size(); i++) {
             assertTrue(queue.get(i).getId() == testQueue.get(i).getId());
         }
+        pstm.shutdown();
+    }
+
+    @Test
+    public void testQueueUpdatedUponDownloadComplete() throws Exception {
+        final Context c = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        { // Setup test data
+            List<FeedItem> queue = writeTestQueue("a");
+            FeedItem item = DBReader.getFeedItem(queue.get(0).getId());
+            FeedMedia media = new FeedMedia(item, "http://example.com/episode.mp3", 12345, "audio/mp3");
+            item.setMedia(media);
+            DBWriter.setFeedMedia(media).get();
+            DBWriter.setFeedItem(item).get();
+        }
+
+        PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
+        final FeedItem testItem = pstm.getQueue().get(0);
+        assertFalse("The item should not yet be downloaded", testItem.getMedia().isDownloaded());
+
+        withFeedItemEventListener( feedItemEventListener -> {
+            // simulate download complete (in DownloadService.MediaHandlerThread)
+            FeedItem item = DBReader.getFeedItem(testItem.getId());
+            item.getMedia().setDownloaded(true);
+            item.getMedia().setFile_url("file://123");
+            item.setAutoDownload(false);
+            DBWriter.setFeedMedia(item.getMedia()).get();
+            DBWriter.setFeedItem(item).get();
+
+            Awaitility.await()
+                    .atMost(1000, TimeUnit.MILLISECONDS)
+                    .until(() -> feedItemEventListener.getEvents().size() > 0);
+
+            final FeedItem itemUpdated = pstm.getQueue().get(0);
+            assertTrue("media.isDownloaded() should be true - The queue in PlaybackService should be updated after download is completed",
+                    itemUpdated.getMedia().isDownloaded());
+        });
+
         pstm.shutdown();
     }
 

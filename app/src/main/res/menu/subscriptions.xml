@@ -3,6 +3,13 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
+            android:id="@+id/refresh_item"
+            android:title="@string/refresh_label"
+            android:menuCategory="container"
+            custom:showAsAction="always"
+            android:icon="?attr/navigation_refresh"/>
+
+    <item
             android:id="@+id/subscription_num_columns"
             android:title="@string/subscription_num_columns"
             custom:showAsAction="never">

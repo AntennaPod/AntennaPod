@@ -96,13 +96,7 @@ public class ItemDescriptionFragment extends Fragment {
                 if (Timeline.isTimecodeLink(url)) {
                     onTimecodeLinkSelected(url);
                 } else {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    try {
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        e.printStackTrace();
-                        return true;
-                    }
+                    IntentUtils.openInBrowser(getContext(), url);
                 }
                 return true;
             }
@@ -159,11 +153,7 @@ public class ItemDescriptionFragment extends Fragment {
         if (selectedURL != null) {
             switch (item.getItemId()) {
                 case R.id.open_in_browser_item:
-                    Uri uri = Uri.parse(selectedURL);
-                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    if(IntentUtils.isCallable(getActivity(), intent)) {
-                        getActivity().startActivity(intent);
-                    }
+                    IntentUtils.openInBrowser(getContext(), selectedURL);
                     break;
                 case R.id.share_url_item:
                     ShareUtils.shareLink(getActivity(), selectedURL);

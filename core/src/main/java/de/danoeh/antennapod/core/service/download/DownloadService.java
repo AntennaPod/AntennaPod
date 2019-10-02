@@ -13,6 +13,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -190,10 +192,8 @@ public class DownloadService extends Service {
                                 handleFailedDownload(status, downloader.getDownloadRequest());
 
                                 if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                                    long id = status.getFeedfileId();
-                                    FeedMedia media = DBReader.getFeedMedia(id);
-                                    FeedItem item;
-                                    if (media == null || (item = media.getItem()) == null) {
+                                    FeedItem item = getFeedItemFromId(status.getFeedfileId());
+                                    if (item == null) {
                                         return;
                                     }
                                     boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
@@ -213,9 +213,8 @@ public class DownloadService extends Service {
                             // if FeedMedia download has been canceled, fake FeedItem update
                             // so that lists reload that it
                             if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                                FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
-                                FeedItem item;
-                                if (media == null || (item = media.getItem()) == null) {
+                                FeedItem item = getFeedItemFromId(status.getFeedfileId());
+                                if (item == null) {
                                     return;
                                 }
                                 EventBus.getDefault().post(FeedItemEvent.updated(item));
@@ -386,6 +385,12 @@ public class DownloadService extends Service {
                 Downloader d = getDownloader(url);
                 if (d != null) {
                     d.cancel();
+                    DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
+
+                    FeedItem item = getFeedItemFromId(d.getDownloadRequest().getFeedfileId());
+                    if (item != null) {
+                        EventBus.getDefault().post(FeedItemEvent.updated(item));
+                    }
                 } else {
                     Log.e(TAG, "Could not cancel download with url " + url);
                 }
@@ -430,12 +435,40 @@ public class DownloadService extends Service {
         queryDownloads();
     }
 
-    private Downloader getDownloader(DownloadRequest request) {
-        if (!URLUtil.isHttpUrl(request.getSource()) && !URLUtil.isHttpsUrl(request.getSource())) {
-            Log.e(TAG, "Could not find appropriate downloader for " + request.getSource());
-            return null;
+    @VisibleForTesting
+    public interface DownloaderFactory {
+        @Nullable
+        Downloader create(@NonNull DownloadRequest request);
+    }
+
+    private static class DefaultDownloaderFactory implements DownloaderFactory {
+        @Nullable
+        @Override
+        public Downloader create(@NonNull DownloadRequest request) {
+            if (!URLUtil.isHttpUrl(request.getSource()) && !URLUtil.isHttpsUrl(request.getSource())) {
+                Log.e(TAG, "Could not find appropriate downloader for " + request.getSource());
+                return null;
+            }
+            return new HttpDownloader(request);
         }
-        return new HttpDownloader(request);
+    }
+
+    private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
+
+    @VisibleForTesting
+    public static DownloaderFactory getDownloaderFactory() {
+        return downloaderFactory;
+    }
+
+    // public scope rather than package private,
+    // because androidTest put classes in the non-standard de.test.antennapod hierarchy
+    @VisibleForTesting
+    public static void setDownloaderFactory(DownloaderFactory downloaderFactory) {
+        DownloadService.downloaderFactory = downloaderFactory;
+    }
+
+    private Downloader getDownloader(@NonNull DownloadRequest request) {
+        return downloaderFactory.create(request);
     }
 
     /**
@@ -578,6 +611,16 @@ public class DownloadService extends Service {
         syncExecutor.execute(new FailedDownloadHandler(status, request));
     }
 
+    @Nullable
+    private FeedItem getFeedItemFromId(long id) {
+        FeedMedia media = DBReader.getFeedMedia(id);
+        if (media != null) {
+            return media.getItem();
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Takes a single Feed, parses the corresponding file and refreshes
      * information in the manager
@@ -654,6 +697,7 @@ public class DownloadService extends Service {
                     Log.e(TAG, "FeedSyncThread was interrupted");
                 } catch (ExecutionException e) {
                     Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 
@@ -688,6 +732,7 @@ public class DownloadService extends Service {
                         Log.e(TAG, "FeedSyncThread was interrupted");
                     } catch (ExecutionException e) {
                         Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
+                        e.printStackTrace();
                     }
                 }
 
@@ -983,13 +1028,16 @@ public class DownloadService extends Service {
             final FeedItem item = media.getItem();
 
             try {
+                DBWriter.setFeedMedia(media).get();
+
                 // we've received the media, we don't want to autodownload it again
                 if (item != null) {
                     item.setAutoDownload(false);
+                    // setFeedItem() signals (via EventBus) that the item has been updated,
+                    // so we do it after the enclosing media has been updated above,
+                    // to ensure subscribers will get the updated FeedMedia as well
                     DBWriter.setFeedItem(item).get();
                 }
-
-                DBWriter.setFeedMedia(media).get();
 
                 if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
                         !DBTasks.isInQueue(DownloadService.this, item.getId())) {
@@ -1058,7 +1106,13 @@ public class DownloadService extends Service {
     private final Runnable postDownloaderTask = new Runnable() {
         @Override
         public void run() {
-            List<Downloader> list = Collections.unmodifiableList(downloads);
+            List<Downloader> runningDownloads = new ArrayList<>();
+            for (Downloader downloader : downloads) {
+                if (!downloader.cancelled) {
+                    runningDownloads.add(downloader);
+                }
+            }
+            List<Downloader> list = Collections.unmodifiableList(runningDownloads);
             EventBus.getDefault().postSticky(DownloadEvent.refresh(list));
             postHandler.postDelayed(postDownloaderTask, 1500);
         }
@@ -1076,6 +1130,9 @@ public class DownloadService extends Service {
     private static String compileNotificationString(List<Downloader> downloads) {
         List<String> lines = new ArrayList<>(downloads.size());
         for (Downloader downloader : downloads) {
+            if (downloader.cancelled) {
+                continue;
+            }
             StringBuilder line = new StringBuilder("• ");
             DownloadRequest request = downloader.getDownloadRequest();
             switch (request.getFeedfileType()) {

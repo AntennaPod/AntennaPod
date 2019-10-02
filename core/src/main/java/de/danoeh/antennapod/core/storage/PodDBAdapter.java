@@ -28,8 +28,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -38,7 +36,6 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
-import org.greenrobot.eventbus.EventBus;
 
 // TODO Remove media column from feeditem table
 
@@ -1478,11 +1475,9 @@ public class PodDBAdapter {
         @Override
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
                               final int newVersion) {
-            EventBus.getDefault().post(ProgressEvent.start(context.getString(R.string.progress_upgrading_database)));
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
                     + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
-            EventBus.getDefault().post(ProgressEvent.end());
         }
     }
 }

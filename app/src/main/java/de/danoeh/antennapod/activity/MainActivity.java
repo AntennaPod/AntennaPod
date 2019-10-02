@@ -47,7 +47,6 @@ import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -70,6 +69,7 @@ import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
 import io.reactivex.Observable;
@@ -378,13 +378,32 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         }
     }
 
-    public void loadChildFragment(Fragment fragment) {
+    public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
         Validate.notNull(fragment);
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction()
-                .replace(R.id.main_view, fragment, "main")
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        switch (transition) {
+            case FADE:
+                transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+                break;
+            case FLIP:
+                transaction.setCustomAnimations(
+                    R.anim.card_flip_left_in,
+                    R.anim.card_flip_left_out,
+                    R.anim.card_flip_right_in,
+                    R.anim.card_flip_right_out);
+                break;
+        }
+
+        transaction
+                .hide(getSupportFragmentManager().findFragmentByTag("main"))
+                .add(R.id.main_view, fragment, "main")
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void loadChildFragment(Fragment fragment) {
+        loadChildFragment(fragment, TransitionEffect.NONE);
     }
 
     public void dismissChildFragment() {
@@ -785,25 +804,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             return;
         }
         loadData();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(ProgressEvent event) {
-        Log.d(TAG, "onEvent(" + event + ")");
-        switch(event.action) {
-            case START:
-                pd = new ProgressDialog(this);
-                pd.setMessage(event.message);
-                pd.setIndeterminate(true);
-                pd.setCancelable(false);
-                pd.show();
-                break;
-            case END:
-                if(pd != null) {
-                    pd.dismiss();
-                }
-                break;
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

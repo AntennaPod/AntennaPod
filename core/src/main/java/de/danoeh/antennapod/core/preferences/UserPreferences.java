@@ -622,7 +622,7 @@ public class UserPreferences {
              .apply();
         // when updating with an interval, we assume the user wants
         // to update *now* and then every 'hours' interval thereafter.
-        restartUpdateAlarm();
+        AutoUpdateManager.restartUpdateAlarm();
     }
 
     /**
@@ -632,7 +632,7 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
              .apply();
-        restartUpdateAlarm();
+        AutoUpdateManager.restartUpdateAlarm();
     }
 
     public static void disableAutoUpdate() {
@@ -880,19 +880,6 @@ public class UserPreferences {
      */
     public static boolean isAutoUpdateTimeOfDay() {
         return getUpdateTimeOfDay().length == 2;
-    }
-
-    public static void restartUpdateAlarm() {
-        if (isAutoUpdateDisabled()) {
-            AutoUpdateManager.disableAutoUpdate();
-        } else if (isAutoUpdateTimeOfDay()) {
-            int[] timeOfDay = getUpdateTimeOfDay();
-            Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
-            AutoUpdateManager.restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
-        } else {
-            long milliseconds = getUpdateInterval();
-            AutoUpdateManager.restartUpdateIntervalAlarm(milliseconds);
-        }
     }
 
     /**

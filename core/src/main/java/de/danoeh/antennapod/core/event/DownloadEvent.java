@@ -25,4 +25,8 @@ public class DownloadEvent {
                 "update=" + update +
                 '}';
     }
+
+    public boolean hasChangedFeedUpdateStatus(boolean oldStatus) {
+        return oldStatus != update.feedIds.length > 0;
+    }
 }

@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -41,14 +42,12 @@ import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
@@ -56,6 +55,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -201,8 +201,8 @@ public class QueueFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (isUpdatingFeeds != update.feedIds.length > 0) {
-            getActivity().supportInvalidateOptionsMenu();
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+            getActivity().invalidateOptionsMenu();
         }
         if (recyclerAdapter != null && update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
@@ -211,6 +211,13 @@ public class QueueFragment extends Fragment {
                     recyclerAdapter.notifyItemChanged(pos);
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (recyclerAdapter != null) {
+            recyclerAdapter.notifyCurrentlyPlayingItemChanged(event);
         }
     }
 
@@ -305,10 +312,7 @@ public class QueueFragment extends Fragment {
                     toggleQueueLock();
                     return true;
                 case R.id.refresh_item:
-                    List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
-                    if (feeds != null) {
-                        DBTasks.refreshAllFeeds(getActivity(), feeds);
-                    }
+                    AutoUpdateManager.runImmediate(requireContext());
                     return true;
                 case R.id.clear_queue:
                     // make sure the user really wants to clear the queue
