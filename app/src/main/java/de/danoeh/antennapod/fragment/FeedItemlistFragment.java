@@ -140,8 +140,8 @@ public class FeedItemlistFragment extends ListFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) {
-            ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
+        if (!hidden && getActivity() != null) {
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
         }
     }
 

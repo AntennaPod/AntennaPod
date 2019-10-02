@@ -60,6 +60,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                 .subscribe(result -> {
                     feed = result;
                     feedPreferences = feed.getPreferences();
+                    ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(feed.getTitle());
 
                     setupAutoDownloadPreference();
                     setupKeepUpdatedPreference();
@@ -77,6 +78,15 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     public void onResume() {
         super.onResume();
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.feed_settings_label);
+        if (feed != null) {
+            ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(feed.getTitle());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(null);
     }
 
     @Override
