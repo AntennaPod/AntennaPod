@@ -60,20 +60,20 @@ public class PieChartView extends AppCompatImageView {
         private static final float MIN_DEGREES = 10f;
         private static final float PADDING_DEGREES = 3f;
         private static final float STROKE_SIZE = 15f;
-        private static final int[] COLOR_VALUES = {0xFF3775E6,0xffe51c23,0xffff9800,0xff259b24,0xff9c27b0,
-                        0xff0099c6,0xffdd4477,0xff66aa00,0xffb82e2e,0xff316395,
-                        0xff994499,0xff22aa99,0xffaaaa11,0xff6633cc,0xff0073e6};
+        private static final int[] COLOR_VALUES = new int[]{0xFF3775E6, 0xffe51c23, 0xffff9800, 0xff259b24, 0xff9c27b0,
+                0xff0099c6, 0xffdd4477, 0xff66aa00, 0xffb82e2e, 0xff316395,
+                0xff994499, 0xff22aa99, 0xffaaaa11, 0xff6633cc, 0xff0073e6};
         private float[] dataValues;
         private float valueSum;
-        private final Paint linePaint;
+        private final Paint paint;
 
         private PieChartDrawable() {
-            linePaint = new Paint();
-            linePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-            linePaint.setStyle(Paint.Style.STROKE);
-            linePaint.setStrokeJoin(Paint.Join.ROUND);
-            linePaint.setStrokeCap(Paint.Cap.ROUND);
-            linePaint.setStrokeWidth(STROKE_SIZE);
+            paint = new Paint();
+            paint.setFlags(Paint.ANTI_ALIAS_FLAG);
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeJoin(Paint.Join.ROUND);
+            paint.setStrokeCap(Paint.Cap.ROUND);
+            paint.setStrokeWidth(STROKE_SIZE);
         }
 
         @Override
@@ -83,7 +83,7 @@ public class PieChartView extends AppCompatImageView {
             }
             float radius = getBounds().height() - STROKE_SIZE;
             float center = getBounds().width() / 2.f;
-            RectF arc_bounds = new RectF(center - radius, STROKE_SIZE, center + radius, STROKE_SIZE + radius * 2);
+            RectF arcBounds = new RectF(center - radius, STROKE_SIZE, center + radius, STROKE_SIZE + radius * 2);
 
             float startAngle = 180;
             for (int i = 0; i < dataValues.length; i++) {
@@ -92,16 +92,16 @@ public class PieChartView extends AppCompatImageView {
                 if (sweepAngle < MIN_DEGREES) {
                     break;
                 }
-                linePaint.setColor(COLOR_VALUES[i % COLOR_VALUES.length]);
+                paint.setColor(COLOR_VALUES[i % COLOR_VALUES.length]);
                 float padding = i == 0 ? PADDING_DEGREES / 2 : PADDING_DEGREES;
-                canvas.drawArc(arc_bounds, startAngle + padding, sweepAngle - padding, false, linePaint);
+                canvas.drawArc(arcBounds, startAngle + padding, sweepAngle - padding, false, paint);
                 startAngle = startAngle + sweepAngle;
             }
 
-            linePaint.setColor(Color.GRAY);
+            paint.setColor(Color.GRAY);
             float sweepAngle = 360 - startAngle - PADDING_DEGREES / 2;
             if (sweepAngle > PADDING_DEGREES) {
-                canvas.drawArc(arc_bounds, startAngle + PADDING_DEGREES, sweepAngle - PADDING_DEGREES, false, linePaint);
+                canvas.drawArc(arcBounds, startAngle + PADDING_DEGREES, sweepAngle - PADDING_DEGREES, false, paint);
             }
         }
 
