@@ -15,6 +15,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.view.PieChartView;
 
 /**
  * Adapter for the statistics list
@@ -67,6 +68,12 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             HeaderHolder holder = (HeaderHolder) h;
             long time = countAll ? statisticsData.totalTimeCountAll : statisticsData.totalTime;
             holder.totalTime.setText(Converter.shortLocalizedDuration(context, time));
+            float[] dataValues = new float[statisticsData.feedTime.size()];
+            for (int i = 0; i < statisticsData.feedTime.size(); i++) {
+                DBReader.StatisticsItem item = statisticsData.feedTime.get(i);
+                dataValues[i] = countAll ? item.timePlayedCountAll : item.timePlayed;
+            }
+            holder.pieChart.setData(dataValues);
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
             DBReader.StatisticsItem statsItem = statisticsData.feedTime.get(position - 1);
@@ -105,10 +112,12 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     static class HeaderHolder extends RecyclerView.ViewHolder {
         TextView totalTime;
+        PieChartView pieChart;
 
         HeaderHolder(View itemView) {
             super(itemView);
             totalTime = itemView.findViewById(R.id.total_time);
+            pieChart = itemView.findViewById(R.id.pie_chart);
         }
     }
 
