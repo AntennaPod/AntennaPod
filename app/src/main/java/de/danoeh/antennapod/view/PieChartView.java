@@ -69,6 +69,7 @@ public class PieChartView extends AppCompatImageView {
 
         private PieChartDrawable() {
             linePaint = new Paint();
+            linePaint.setFlags(Paint.ANTI_ALIAS_FLAG);
             linePaint.setStyle(Paint.Style.STROKE);
             linePaint.setStrokeJoin(Paint.Join.ROUND);
             linePaint.setStrokeCap(Paint.Cap.ROUND);
