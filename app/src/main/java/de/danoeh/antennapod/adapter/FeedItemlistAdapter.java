@@ -209,6 +209,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 return;
             }
             Holder holder = (Holder) view.getTag();
+            holder.episodeProgress.setVisibility(View.VISIBLE);
             holder.episodeProgress.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
             holder.lenSize.setText(Converter.getDurationStringLong(event.getDuration() - event.getPosition()));
         }
