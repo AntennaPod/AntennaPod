@@ -195,6 +195,7 @@ task filterAbout {
     inputs.files files(["src/main/templates/about.html",
                         "src/main/AndroidManifest.xml"])
     outputs.file "src/main/assets/about.html"
+    outputs.upToDateWhen { false }
 } doLast {
     copy {
         from "src/main/templates/about.html"
@@ -212,6 +213,7 @@ task copyTextFiles(type: Copy) {
     rename { String fileName ->
         fileName + ".txt"
     }
+    outputs.upToDateWhen { false }
 }
 
 preBuild.dependsOn filterAbout, copyTextFiles
