@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.config;
 
-import android.support.annotation.NonNull;
-import android.support.v7.app.MediaRouteControllerDialogFragment;
-import android.support.v7.app.MediaRouteDialogFactory;
+import androidx.annotation.NonNull;
+import androidx.mediarouter.app.MediaRouteControllerDialogFragment;
+import androidx.mediarouter.app.MediaRouteDialogFactory;
 
 import de.danoeh.antennapod.core.CastCallbacks;
 import de.danoeh.antennapod.fragment.CustomMRControllerDialogFragment;

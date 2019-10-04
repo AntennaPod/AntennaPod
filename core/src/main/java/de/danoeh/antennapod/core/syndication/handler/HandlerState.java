@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import java.util.ArrayList;
 import java.util.Map;

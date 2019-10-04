@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class GpodnetPodcast {
     private final String url;

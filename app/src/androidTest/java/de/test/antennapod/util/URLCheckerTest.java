@@ -1,6 +1,6 @@
 package de.test.antennapod.util;
 
-import android.support.test.filters.SmallTest;
+import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.util.URLChecker;
 import org.junit.Test;
 

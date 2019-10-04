@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import java.nio.charset.Charset;
 

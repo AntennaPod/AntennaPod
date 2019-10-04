@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.GridLayout
+            <androidx.gridlayout.widget.GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -107,7 +107,7 @@
                     tools:text="http://www.example.com/feed"
                     tools:background="@android:color/holo_green_dark"/>
 
-            </android.support.v7.widget.GridLayout>
+            </androidx.gridlayout.widget.GridLayout>
 
             <TextView
                 style="@style/AntennaPod.TextView.Heading"

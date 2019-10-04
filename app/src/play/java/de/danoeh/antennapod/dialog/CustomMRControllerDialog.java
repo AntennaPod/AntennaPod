@@ -8,19 +8,19 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v4.util.Pair;
-import android.support.v4.view.MarginLayoutParamsCompat;
-import android.support.v4.view.accessibility.AccessibilityEventCompat;
-import android.support.v7.app.MediaRouteControllerDialog;
-import android.support.v7.graphics.Palette;
-import android.support.v7.media.MediaRouter;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.core.util.Pair;
+import androidx.core.view.MarginLayoutParamsCompat;
+import androidx.core.view.accessibility.AccessibilityEventCompat;
+import androidx.mediarouter.app.MediaRouteControllerDialog;
+import androidx.palette.graphics.Palette;
+import androidx.mediarouter.media.MediaRouter;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -312,8 +312,8 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
                     event.setPackageName(getContext().getPackageName());
                     event.setClassName(getClass().getName());
                     int resId = isPlaying ?
-                            android.support.v7.mediarouter.R.string.mr_controller_pause :
-                            android.support.v7.mediarouter.R.string.mr_controller_play;
+                            androidx.appcompat.mediarouter.R.string.mr_controller_pause :
+                            androidx.appcompat.mediarouter.R.string.mr_controller_play;
                     event.getText().add(getContext().getString(resId));
                     accessibilityManager.sendAccessibilityEvent(event);
                 }
@@ -359,17 +359,17 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         if (route.getPresentationDisplay() != null &&
                 route.getPresentationDisplay().getDisplayId() != MediaRouter.RouteInfo.PRESENTATION_DISPLAY_ID_NONE) {
             // The user is currently casting screen.
-            titleView.setText(android.support.v7.mediarouter.R.string.mr_controller_casting_screen);
+            titleView.setText(androidx.appcompat.mediarouter.R.string.mr_controller_casting_screen);
             showTitle = true;
         } else if (state == null || state.getState() == PlaybackStateCompat.STATE_NONE) {
             // Show "No media selected" as we don't yet know the playback state.
             // (Only exception is bluetooth where we don't show anything.)
             if (!route.isBluetooth()) {
-                titleView.setText(android.support.v7.mediarouter.R.string.mr_controller_no_media_selected);
+                titleView.setText(androidx.appcompat.mediarouter.R.string.mr_controller_no_media_selected);
                 showTitle = true;
             }
         } else if (!hasTitle && !hasSubtitle) {
-            titleView.setText(android.support.v7.mediarouter.R.string.mr_controller_no_info_available);
+            titleView.setText(androidx.appcompat.mediarouter.R.string.mr_controller_no_info_available);
             showTitle = true;
         } else {
             if (hasTitle) {
@@ -436,15 +436,15 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         if (isPlaying && supportsPause) {
             playPauseButton.setVisibility(View.VISIBLE);
             playPauseButton.setImageResource(getThemeResource(getContext(),
-                    android.support.v7.mediarouter.R.attr.mediaRoutePauseDrawable));
+                    androidx.appcompat.mediarouter.R.attr.mediaRoutePauseDrawable));
             playPauseButton.setContentDescription(getContext().getResources()
-                    .getText(android.support.v7.mediarouter.R.string.mr_controller_pause));
+                    .getText(androidx.appcompat.mediarouter.R.string.mr_controller_pause));
         } else if (!isPlaying && supportsPlay) {
             playPauseButton.setVisibility(View.VISIBLE);
             playPauseButton.setImageResource(getThemeResource(getContext(),
-                    android.support.v7.mediarouter.R.attr.mediaRoutePlayDrawable));
+                    androidx.appcompat.mediarouter.R.attr.mediaRoutePlayDrawable));
             playPauseButton.setContentDescription(getContext().getResources()
-                    .getText(android.support.v7.mediarouter.R.string.mr_controller_play));
+                    .getText(androidx.appcompat.mediarouter.R.string.mr_controller_play));
         } else {
             playPauseButton.setVisibility(View.GONE);
         }

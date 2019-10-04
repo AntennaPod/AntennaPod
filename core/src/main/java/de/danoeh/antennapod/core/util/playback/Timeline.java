@@ -3,11 +3,10 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 import android.util.TypedValue;
 
 import org.jsoup.Jsoup;
@@ -15,7 +14,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

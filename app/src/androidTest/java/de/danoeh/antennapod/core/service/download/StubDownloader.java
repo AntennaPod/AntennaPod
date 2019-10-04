@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.core.util.Consumer;
 

@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.filters.LargeTest;
-import android.support.test.filters.SmallTest;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import org.junit.After;

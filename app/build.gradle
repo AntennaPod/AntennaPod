@@ -21,7 +21,7 @@ android {
         versionCode 1070396
         versionName "1.7.3b"
         testApplicationId "de.test.antennapod"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         generatedDensities = []
 
         javaCompileOptions {
@@ -131,12 +131,12 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:design:$supportVersion"
-    implementation "com.android.support:preference-v14:$supportVersion"
-    implementation "com.android.support:gridlayout-v7:$supportVersion"
-    implementation "com.android.support:recyclerview-v7:$supportVersion"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0-beta01"
+    implementation "androidx.appcompat:appcompat:1.0.0-beta01"
+    implementation "com.google.android.material:material:1.0.0-beta01"
+    implementation "androidx.legacy:legacy-preference-v14:1.0.0-beta01"
+    implementation "androidx.gridlayout:gridlayout:1.0.0-beta01"
+    implementation "androidx.recyclerview:recyclerview:1.0.0-beta01"
     compileOnly 'com.google.android.wearable:wearable:2.2.0'
 
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
@@ -173,11 +173,11 @@ dependencies {
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0-alpha4'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test:rules:1.1.0-alpha4'
 }
 
 if (project.hasProperty("antennaPodServiceAccountEmail")) {

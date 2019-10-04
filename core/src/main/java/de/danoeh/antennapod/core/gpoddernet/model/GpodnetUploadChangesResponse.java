@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.gpoddernet.model;
 
-import android.support.v4.util.ArrayMap;
+import androidx.collection.ArrayMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;

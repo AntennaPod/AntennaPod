@@ -12,11 +12,11 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v4.provider.DocumentFile;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.documentfile.provider.DocumentFile;
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.PreferenceFragmentCompat;
 import android.util.Log;
 
 import de.danoeh.antennapod.R;
