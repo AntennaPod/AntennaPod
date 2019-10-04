@@ -2,9 +2,9 @@ package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.AttrRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -20,12 +20,12 @@ public abstract class ItemActionButton {
     }
 
     @StringRes
-    abstract public int getLabel();
+    public abstract int getLabel();
 
     @AttrRes
-    abstract public int getDrawable();
+    public abstract int getDrawable();
 
-    abstract public void onClick(Context context);
+    public abstract void onClick(Context context);
 
     public int getVisibility() {
         return View.VISIBLE;

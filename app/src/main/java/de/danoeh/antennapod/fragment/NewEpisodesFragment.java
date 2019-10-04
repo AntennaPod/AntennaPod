@@ -1,12 +1,11 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -16,6 +15,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
@@ -63,7 +63,7 @@ public class NewEpisodesFragment extends EpisodesListFragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
-                removeNewFlagWithUndo(holder.getFeedItem());
+                FeedItemMenuHandler.removeNewFlagWithUndo(NewEpisodesFragment.this, holder.getFeedItem());
             }
 
             @Override

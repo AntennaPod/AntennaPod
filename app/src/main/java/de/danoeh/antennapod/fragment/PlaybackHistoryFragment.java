@@ -2,9 +2,9 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ListFragment;
-import android.support.v4.view.MenuItemCompat;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.ListFragment;
+import androidx.core.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;

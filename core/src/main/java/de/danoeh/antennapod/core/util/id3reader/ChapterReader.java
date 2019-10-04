@@ -72,7 +72,7 @@ public class ChapterReader extends ID3Reader {
 						String decodedLink = URLDecoder.decode(link.toString(), "UTF-8");
 						currentChapter.setLink(decodedLink);
 						Log.d(TAG, "Found link: " + currentChapter.getLink());
-					} catch (IllegalArgumentException _iae) {
+					} catch (IllegalArgumentException iae) {
 						Log.w(TAG, "Bad URL found in ID3 data");
 					}
 

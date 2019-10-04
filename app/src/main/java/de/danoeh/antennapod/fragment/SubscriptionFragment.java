@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -25,19 +25,27 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -56,6 +64,7 @@ public class SubscriptionFragment extends Fragment {
     private SubscriptionsAdapter subscriptionAdapter;
 
     private int mPosition = -1;
+    private boolean isUpdatingFeeds = false;
 
     private Disposable disposable;
     private SharedPreferences prefs;
@@ -89,6 +98,8 @@ public class SubscriptionFragment extends Fragment {
         menu.findItem(R.id.subscription_num_columns_3).setChecked(columns == 3);
         menu.findItem(R.id.subscription_num_columns_4).setChecked(columns == 4);
         menu.findItem(R.id.subscription_num_columns_5).setChecked(columns == 5);
+
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Override
@@ -97,6 +108,9 @@ public class SubscriptionFragment extends Fragment {
             return true;
         }
         switch (item.getItemId()) {
+            case R.id.refresh_item:
+                AutoUpdateManager.runImmediate(requireContext());
+                return true;
             case R.id.subscription_num_columns_2:
                 setColumnNumber(2);
                 return true;
@@ -136,6 +150,7 @@ public class SubscriptionFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         loadSubscriptions();
     }
 
@@ -143,6 +158,7 @@ public class SubscriptionFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         if(disposable != null) {
             disposable.dispose();
         }
@@ -277,6 +293,17 @@ public class SubscriptionFragment extends Fragment {
             }
         }
     };
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+            getActivity().invalidateOptionsMenu();
+        }
+    }
+
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
+            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     private final SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
         @Override

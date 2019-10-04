@@ -51,7 +51,7 @@
             android:layout_height="@dimen/thumbnail_length_queue_item"
             android:layout_centerVertical="true"
             android:contentDescription="@string/cover_label"
-            tools:src="@drawable/ic_stat_antenna_default"
+            tools:src="@drawable/ic_antenna"
             tools:background="@android:color/holo_green_dark"/>
     </RelativeLayout>
 

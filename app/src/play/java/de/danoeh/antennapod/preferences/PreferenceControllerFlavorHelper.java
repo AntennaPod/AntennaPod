@@ -1,8 +1,13 @@
 package de.danoeh.antennapod.preferences;
 
+import android.content.Context;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.preferences.PlaybackPreferencesFragment;
 
@@ -18,6 +23,7 @@ public class PreferenceControllerFlavorHelper {
                 final int googlePlayServicesCheck = GoogleApiAvailability.getInstance()
                         .isGooglePlayServicesAvailable(ui.getActivity());
                 if (googlePlayServicesCheck == ConnectionResult.SUCCESS) {
+                    displayRestartRequiredDialog(ui.requireContext());
                     return true;
                 } else {
                     GoogleApiAvailability.getInstance()
@@ -28,5 +34,14 @@ public class PreferenceControllerFlavorHelper {
             }
             return true;
         });
+    }
+
+    private static void displayRestartRequiredDialog(@NonNull Context context) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        dialog.setTitle(android.R.string.dialog_alert_title);
+        dialog.setMessage(R.string.pref_restart_required);
+        dialog.setPositiveButton(android.R.string.ok, null);
+        dialog.setCancelable(false);
+        dialog.show();
     }
 }

@@ -1,46 +1,73 @@
 package de.danoeh.antennapod.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v14.preference.SwitchPreference;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.PreferenceFragmentCompat;
+import android.util.Log;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
-import de.danoeh.antennapod.viewmodel.FeedSettingsViewModel;
-
+import io.reactivex.Maybe;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import static de.danoeh.antennapod.activity.FeedSettingsActivity.EXTRA_FEED_ID;
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
     private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
     private static final DecimalFormat decimalFormat = new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
+    private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
+    private static final String TAG = "FeedSettingsFragment";
+
     private Feed feed;
+    private Disposable disposable;
     private FeedPreferences feedPreferences;
+
+    public static FeedSettingsFragment newInstance(Feed feed) {
+        FeedSettingsFragment fragment = new FeedSettingsFragment();
+        Bundle arguments = new Bundle();
+        arguments.putLong(EXTRA_FEED_ID, feed.getId());
+        fragment.setArguments(arguments);
+        return fragment;
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.feed_settings);
 
+        postponeEnterTransition();
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
-        ViewModelProviders.of(getActivity()).get(FeedSettingsViewModel.class).getFeed(feedId)
+        disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
+            Feed feed = DBReader.getFeed(feedId);
+            if (feed != null) {
+                emitter.onSuccess(feed);
+            } else {
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result;
                     feedPreferences = feed.getPreferences();
+                    ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(feed.getTitle());
 
                     setupAutoDownloadPreference();
                     setupKeepUpdatedPreference();
@@ -52,11 +79,35 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     updateAutoDeleteSummary();
                     updateAutoDownloadEnabled();
                     updatePlaybackSpeedPreference();
-                }).dispose();
+                }, error -> Log.d(TAG, Log.getStackTraceString(error)),
+                this::startPostponedEnterTransition);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.feed_settings_label);
+        if (feed != null) {
+            ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(feed.getTitle());
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((MainActivity) getActivity()).getSupportActionBar().setSubtitle(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     private void setupPlaybackSpeedPreference() {
-        ListPreference feedPlaybackSpeedPreference = (ListPreference) findPreference(PREF_FEED_PLAYBACK_SPEED);
+        ListPreference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
 
         String[] speeds = UserPreferences.getPlaybackSpeedArray();
 
@@ -130,14 +181,14 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void updatePlaybackSpeedPreference() {
-        ListPreference feedPlaybackSpeedPreference = (ListPreference) findPreference(PREF_FEED_PLAYBACK_SPEED);
+        ListPreference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
 
         float speedValue = feedPreferences.getFeedPlaybackSpeed();
         feedPlaybackSpeedPreference.setValue(decimalFormat.format(speedValue));
     }
 
     private void updateAutoDeleteSummary() {
-        ListPreference autoDeletePreference = (ListPreference) findPreference("autoDelete");
+        ListPreference autoDeletePreference = findPreference("autoDelete");
 
         switch (feedPreferences.getAutoDeleteAction()) {
             case GLOBAL:

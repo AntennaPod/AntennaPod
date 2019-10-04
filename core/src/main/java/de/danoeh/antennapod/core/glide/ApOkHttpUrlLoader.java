@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.glide;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,8 +21,12 @@ import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import okhttp3.*;
-import okhttp3.internal.http.RealResponseBody;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * @see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
@@ -88,11 +92,9 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     @Nullable
     @Override
     public LoadData<InputStream> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
-        Log.d(TAG, "buildLoadData() called with: " + "model = [" + model + "], width = ["
-                + width + "], height = [" + height + "]");
-        if(TextUtils.isEmpty(model)) {
+        if (TextUtils.isEmpty(model)) {
             return null;
-        } else if(model.startsWith("/")) {
+        } else if (model.startsWith("/")) {
             return new LoadData<>(new ObjectKey(model), new AudioCoverFetcher(model));
         } else {
             GlideUrl url = new GlideUrl(model);

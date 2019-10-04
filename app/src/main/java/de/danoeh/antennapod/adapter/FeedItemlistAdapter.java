@@ -3,7 +3,7 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,15 +13,18 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.ThemeUtils;
@@ -38,6 +41,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
     private final boolean makePlayedItemsTransparent;
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
+
+    private int currentlyPlayingItem = -1;
 
     public FeedItemlistAdapter(Context context,
                                ItemAccess itemAccess,
@@ -176,8 +181,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 }
                 typeDrawables.recycle();
 
-                if(media.isCurrentlyPlaying()) {
+                if (media.isCurrentlyPlaying()) {
                     holder.container.setBackgroundColor(playingBackGroundColor);
+                    currentlyPlayingItem = position;
                 } else {
                     holder.container.setBackgroundColor(normalBackGroundColor);
                 }
@@ -193,6 +199,20 @@ public class FeedItemlistAdapter extends BaseAdapter {
             convertView.setVisibility(View.GONE);
         }
         return convertView;
+    }
+
+    public void notifyCurrentlyPlayingItemChanged(PlaybackPositionEvent event, ListView listView) {
+        if (currentlyPlayingItem != -1 && currentlyPlayingItem < getCount()) {
+            View view = listView.getChildAt(currentlyPlayingItem
+                    - listView.getFirstVisiblePosition() + listView.getHeaderViewsCount());
+            if (view == null) {
+                return;
+            }
+            Holder holder = (Holder) view.getTag();
+            holder.episodeProgress.setVisibility(View.VISIBLE);
+            holder.episodeProgress.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
+            holder.lenSize.setText(Converter.getDurationStringLong(event.getDuration() - event.getPosition()));
+        }
     }
 
     static class Holder {

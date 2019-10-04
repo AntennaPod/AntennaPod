@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -221,6 +221,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
             return itemIdentifier;
         } else if (title != null && !title.isEmpty()) {
             return title;
+        } else if (hasMedia() && media.getDownload_url() != null) {
+            return media.getDownload_url();
         } else {
             return link;
         }

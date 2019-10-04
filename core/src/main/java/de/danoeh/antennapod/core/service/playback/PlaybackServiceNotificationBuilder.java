@@ -1,13 +1,18 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -99,10 +104,30 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
 
     public void loadDefaultIcon() {
         if (defaultIcon == null) {
-            defaultIcon = BitmapFactory.decodeResource(context.getResources(),
-                    ClientConfig.playbackServiceCallbacks.getNotificationIconResource(context));
+            defaultIcon = getBitmap(context, R.drawable.notification_default_large_icon);
         }
         setLargeIcon(defaultIcon);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private static Bitmap getBitmap(VectorDrawable vectorDrawable) {
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
+                vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        vectorDrawable.draw(canvas);
+        return bitmap;
+    }
+
+    private static Bitmap getBitmap(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && drawable instanceof VectorDrawable) {
+            return getBitmap((VectorDrawable) drawable);
+        } else {
+            return null;
+        }
     }
 
     private void addActions(MediaSessionCompat.Token mediaSessionToken, PlayerStatus playerStatus, boolean isCasting) {
@@ -115,7 +140,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
             stopCastingIntent.putExtra(PlaybackService.EXTRA_CAST_DISCONNECT, true);
             PendingIntent stopCastingPendingIntent = PendingIntent.getService(context,
                     numActions, stopCastingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            addAction(R.drawable.ic_media_cast_disconnect,
+            addAction(R.drawable.ic_notification_cast_off,
                     context.getString(R.string.cast_disconnect_label),
                     stopCastingPendingIntent);
             numActions++;
@@ -124,7 +149,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         // always let them rewind
         PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
-        addAction(android.R.drawable.ic_media_rew, context.getString(R.string.rewind_label), rewindButtonPendingIntent);
+        addAction(R.drawable.ic_notification_fast_rewind, context.getString(R.string.rewind_label), rewindButtonPendingIntent);
         if (UserPreferences.showRewindOnCompactNotification()) {
             compactActionList.add(numActions);
         }
@@ -133,14 +158,14 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         if (playerStatus == PlayerStatus.PLAYING) {
             PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
                     KeyEvent.KEYCODE_MEDIA_PAUSE, numActions);
-            addAction(android.R.drawable.ic_media_pause, //pause action
+            addAction(R.drawable.ic_notification_pause, //pause action
                     context.getString(R.string.pause_label),
                     pauseButtonPendingIntent);
             compactActionList.add(numActions++);
         } else {
             PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
                     KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
-            addAction(android.R.drawable.ic_media_play, //play action
+            addAction(R.drawable.ic_notification_play, //play action
                     context.getString(R.string.play_label),
                     playButtonPendingIntent);
             compactActionList.add(numActions++);
@@ -149,7 +174,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         // ff follows play, then we have skip (if it's present)
         PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
-        addAction(android.R.drawable.ic_media_ff, context.getString(R.string.fast_forward_label), ffButtonPendingIntent);
+        addAction(R.drawable.ic_notification_fast_forward, context.getString(R.string.fast_forward_label), ffButtonPendingIntent);
         if (UserPreferences.showFastForwardOnCompactNotification()) {
             compactActionList.add(numActions);
         }
@@ -158,7 +183,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         if (UserPreferences.isFollowQueue()) {
             PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
                     KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
-            addAction(android.R.drawable.ic_media_next,
+            addAction(R.drawable.ic_notification_skip,
                     context.getString(R.string.skip_episode_label),
                     skipButtonPendingIntent);
             if (UserPreferences.showSkipOnCompactNotification()) {
@@ -169,7 +194,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
 
         PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_STOP, numActions);
-        setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+        setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                 .setMediaSession(mediaSessionToken)
                 .setShowActionsInCompactView(compactActionList.toArray())
                 .setShowCancelButton(true)

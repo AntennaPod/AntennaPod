@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.glide;
 
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;

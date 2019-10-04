@@ -3,12 +3,13 @@ package de.danoeh.antennapod.fragment.preferences;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.widget.Toast;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
@@ -27,6 +28,12 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences_gpodder);
         setupGpodderScreen();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.gpodnet_main_label);
     }
 
     @Override

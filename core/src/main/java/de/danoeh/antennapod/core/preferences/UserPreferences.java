@@ -2,10 +2,11 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -169,7 +170,7 @@ public class UserPreferences {
      * @return R.style.Theme_AntennaPod_Light or R.style.Theme_AntennaPod_Dark
      */
     public static int getTheme() {
-        return readThemeValue(prefs.getString(PREF_THEME, "0"));
+        return readThemeValue(prefs.getString(PREF_THEME, "system"));
     }
 
     public static int getNoTitleTheme() {
@@ -645,7 +646,7 @@ public class UserPreferences {
              .apply();
         // when updating with an interval, we assume the user wants
         // to update *now* and then every 'hours' interval thereafter.
-        restartUpdateAlarm();
+        AutoUpdateManager.restartUpdateAlarm();
     }
 
     /**
@@ -655,7 +656,7 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
              .apply();
-        restartUpdateAlarm();
+        AutoUpdateManager.restartUpdateAlarm();
     }
 
     public static void disableAutoUpdate() {
@@ -696,14 +697,18 @@ public class UserPreferences {
     }
 
     private static int readThemeValue(String valueFromPrefs) {
-        switch (Integer.parseInt(valueFromPrefs)) {
-            case 0:
+        switch (valueFromPrefs) {
+            case "0":
                 return R.style.Theme_AntennaPod_Light;
-            case 1:
+            case "1":
                 return R.style.Theme_AntennaPod_Dark;
-            case 2:
+            case "2":
                 return R.style.Theme_AntennaPod_TrueBlack;
             default:
+                int nightMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
+                    return R.style.Theme_AntennaPod_Dark;
+                }
                 return R.style.Theme_AntennaPod_Light;
         }
     }
@@ -899,26 +904,6 @@ public class UserPreferences {
      */
     public static boolean isAutoUpdateTimeOfDay() {
         return getUpdateTimeOfDay().length == 2;
-    }
-
-    public static void restartUpdateAlarm() {
-        if (isAutoUpdateDisabled()) {
-            AutoUpdateManager.disableAutoUpdate();
-        } else if (isAutoUpdateTimeOfDay()) {
-            int[] timeOfDay = getUpdateTimeOfDay();
-            Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
-            AutoUpdateManager.restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
-        } else {
-            long milliseconds = getUpdateInterval();
-            AutoUpdateManager.restartUpdateIntervalAlarm(milliseconds);
-        }
-    }
-
-    /**
-     * Reads episode cache size as it is saved in the episode_cache_size_values array.
-     */
-    public static int readEpisodeCacheSize(String valueFromPrefs) {
-        return readEpisodeCacheSizeInternal(valueFromPrefs);
     }
 
     /**

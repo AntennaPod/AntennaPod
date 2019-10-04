@@ -2,7 +2,6 @@ package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +11,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -96,13 +95,7 @@ public class ItemDescriptionFragment extends Fragment {
                 if (Timeline.isTimecodeLink(url)) {
                     onTimecodeLinkSelected(url);
                 } else {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    try {
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        e.printStackTrace();
-                        return true;
-                    }
+                    IntentUtils.openInBrowser(getContext(), url);
                 }
                 return true;
             }
@@ -159,11 +152,7 @@ public class ItemDescriptionFragment extends Fragment {
         if (selectedURL != null) {
             switch (item.getItemId()) {
                 case R.id.open_in_browser_item:
-                    Uri uri = Uri.parse(selectedURL);
-                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    if(IntentUtils.isCallable(getActivity(), intent)) {
-                        getActivity().startActivity(intent);
-                    }
+                    IntentUtils.openInBrowser(getContext(), selectedURL);
                     break;
                 case R.id.share_url_item:
                     ShareUtils.shareLink(getActivity(), selectedURL);

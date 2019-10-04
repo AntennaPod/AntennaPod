@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -62,11 +62,13 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         if (controller == null) {
             butPlaybackSpeed.setVisibility(View.GONE);
+            txtvPlaybackSpeed.setVisibility(View.GONE);
             return;
         }
         updatePlaybackSpeedButtonText();
         ViewCompat.setAlpha(butPlaybackSpeed, controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
         butPlaybackSpeed.setVisibility(View.VISIBLE);
+        txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -76,14 +78,15 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         if (controller == null) {
             butPlaybackSpeed.setVisibility(View.GONE);
+            txtvPlaybackSpeed.setVisibility(View.GONE);
             return;
         }
         float speed = 1.0f;
         if(controller.canSetPlaybackSpeed()) {
             speed = UserPreferences.getPlaybackSpeed(controller.getMedia());
         }
-        String speedStr = new DecimalFormat("0.00x").format(speed);
-        butPlaybackSpeed.setText(speedStr);
+        String speedStr = new DecimalFormat("0.00").format(speed);
+        txtvPlaybackSpeed.setText(speedStr);
     }
 
     @Override
@@ -142,6 +145,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                 return true;
             });
             butPlaybackSpeed.setVisibility(View.VISIBLE);
+            txtvPlaybackSpeed.setVisibility(View.VISIBLE);
         }
     }
 

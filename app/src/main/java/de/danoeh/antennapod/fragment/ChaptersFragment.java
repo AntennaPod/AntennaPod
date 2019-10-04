@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import androidx.fragment.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -87,11 +87,10 @@ public class ChaptersFragment extends ListFragment {
         controller = null;
     }
 
-    private void scrollTo(int position) {
-        getListView().setSelection(position);
-    }
-
     private int getCurrentChapter(Playable media) {
+        if (media == null || media.getChapters() == null || media.getChapters().size() == 0 || controller == null) {
+            return -1;
+        }
         int currentPosition = controller.getPosition();
 
         List<Chapter> chapters = media.getChapters();
@@ -126,8 +125,10 @@ public class ChaptersFragment extends ListFragment {
         if (adapter != null) {
             adapter.setMedia(media);
             adapter.notifyDataSetChanged();
-            if (media != null && media.getChapters() != null && media.getChapters().size() != 0) {
-                scrollTo(getCurrentChapter(media));
+
+            int positionOfCurrentChapter = getCurrentChapter(media);
+            if (positionOfCurrentChapter != -1) {
+                getListView().setSelection(positionOfCurrentChapter);
             }
         }
     }

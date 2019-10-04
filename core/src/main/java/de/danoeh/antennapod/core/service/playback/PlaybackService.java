@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -22,12 +21,12 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.MediaBrowserServiceCompat;
+import androidx.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -45,10 +44,12 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -66,7 +67,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
@@ -74,6 +74,9 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -212,6 +215,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private PlaybackServiceTaskManager taskManager;
     private PlaybackServiceFlavorHelper flavorHelper;
     private PlaybackServiceStateManager stateManager;
+    private Disposable positionEventTimer;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -331,8 +335,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
 
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .unregisterOnSharedPreferenceChangeListener(prefListener);
+        cancelPositionObserver();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(prefListener);
         if (mediaSession != null) {
             mediaSession.release();
         }
@@ -451,7 +455,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     notificationBuilder.loadIcon(getPlayable());
                 }
             }
-            startForeground(NOTIFICATION_ID, notificationBuilder.build());
+            stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -566,7 +570,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
@@ -590,7 +594,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
                 }
 
                 return true;
@@ -717,7 +721,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             updateMediaSession(newInfo.playerStatus);
             switch (newInfo.playerStatus) {
                 case INITIALIZED:
-                    writePlaybackPreferences();
+                    PlaybackPreferences.writeMediaPlaying(mediaPlayer.getPSMPInfo().playable,
+                            mediaPlayer.getPSMPInfo().playerStatus, mediaPlayer.isStreaming());
                     break;
 
                 case PREPARED:
@@ -734,7 +739,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         // remove notification on pause
                         stateManager.stopForeground(true);
                     }
-                    writePlayerStatusPlaybackPreferences();
+                    cancelPositionObserver();
+                    PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     break;
 
                 case STOPPED:
@@ -743,8 +749,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     break;
 
                 case PLAYING:
-                    writePlayerStatusPlaybackPreferences();
+                    PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     setupNotification(newInfo);
+                    setupPositionUpdater();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
@@ -1021,85 +1028,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         taskManager.disableSleepTimer();
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_disabled_label)));
-    }
-
-    private int getCurrentPlayerStatusAsInt(PlayerStatus playerStatus) {
-        int playerStatusAsInt;
-        switch (playerStatus) {
-            case PLAYING:
-                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_PLAYING;
-                break;
-            case PAUSED:
-                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_PAUSED;
-                break;
-            default:
-                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_OTHER;
-        }
-        return playerStatusAsInt;
-    }
-
-    private void writePlaybackPreferences() {
-        Log.d(TAG, "Writing playback preferences");
-
-        SharedPreferences.Editor editor = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext()).edit();
-        PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
-        MediaType mediaType = mediaPlayer.getCurrentMediaType();
-        boolean stream = mediaPlayer.isStreaming();
-        int playerStatus = getCurrentPlayerStatusAsInt(info.playerStatus);
-
-        if (info.playable != null) {
-            editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
-                    info.playable.getPlayableType());
-            editor.putBoolean(
-                    PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
-                    stream);
-            editor.putBoolean(
-                    PlaybackPreferences.PREF_CURRENT_EPISODE_IS_VIDEO,
-                    mediaType == MediaType.VIDEO);
-            if (info.playable instanceof FeedMedia) {
-                FeedMedia fMedia = (FeedMedia) info.playable;
-                editor.putLong(
-                        PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-                        fMedia.getItem().getFeed().getId());
-                editor.putLong(
-                        PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
-                        fMedia.getId());
-            } else {
-                editor.putLong(
-                        PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-                        PlaybackPreferences.NO_MEDIA_PLAYING);
-                editor.putLong(
-                        PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
-                        PlaybackPreferences.NO_MEDIA_PLAYING);
-            }
-            info.playable.writeToPreferences(editor);
-        } else {
-            editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
-                    PlaybackPreferences.NO_MEDIA_PLAYING);
-            editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-                    PlaybackPreferences.NO_MEDIA_PLAYING);
-            editor.putLong(
-                    PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
-                    PlaybackPreferences.NO_MEDIA_PLAYING);
-        }
-        editor.putInt(
-                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
-
-        editor.commit();
-    }
-
-    private void writePlayerStatusPlaybackPreferences() {
-        Log.d(TAG, "Writing player status playback preferences");
-
-        SharedPreferences.Editor editor = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext()).edit();
-        int playerStatus = getCurrentPlayerStatusAsInt(mediaPlayer.getPlayerStatus());
-
-        editor.putInt(
-                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
-
-        editor.commit();
     }
 
     private void sendNotificationBroadcast(int type, int code) {
@@ -1654,6 +1582,24 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public Pair<Integer, Integer> getVideoSize() {
         return mediaPlayer.getVideoSize();
+    }
+
+    private void setupPositionUpdater() {
+        if (positionEventTimer != null) {
+            positionEventTimer.dispose();
+        }
+
+        Log.d(TAG, "Setting up position observer");
+        positionEventTimer = Observable.interval(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aLong ->
+                        EventBus.getDefault().post(new PlaybackPositionEvent(getCurrentPosition(), getDuration())));
+    }
+
+    private void cancelPositionObserver() {
+        if (positionEventTimer != null) {
+            positionEventTimer.dispose();
+        }
     }
 
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {

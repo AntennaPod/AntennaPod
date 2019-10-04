@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.service.download;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Date;
 
@@ -191,10 +191,6 @@ public class DownloadStatus {
         this.reason = DownloadError.ERROR_DOWNLOAD_CANCELLED;
         this.done = true;
         this.cancelled = true;
-    }
-
-    public void setCompletionDate(Date completionDate) {
-        this.completionDate = (Date) completionDate.clone();
     }
 
     public void setId(long id) {

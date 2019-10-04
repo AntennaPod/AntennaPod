@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,15 +12,19 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.PreferenceFragmentCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
+import androidx.documentfile.provider.DocumentFile;
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.PreferenceFragmentCompat;
 import android.util.Log;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
 import de.danoeh.antennapod.activity.ImportExportActivity;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.asynctask.DocumentFileExportWorker;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
@@ -45,6 +50,12 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE };
     private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 41;
+    private static final int CHOOSE_OPML_EXPORT_PATH = 1;
+    private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds.opml";
+    private static final String CONTENT_TYPE_OPML = "text/x-opml";
+    private static final int CHOOSE_HTML_EXPORT_PATH = 2;
+    private static final String DEFAULT_HTML_OUTPUT_NAME = "antennapod-feeds.html";
+    private static final String CONTENT_TYPE_HTML = "text/html";
     private Disposable disposable;
 
     @Override
@@ -54,9 +65,23 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.storage_pref);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         setDataFolderText();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     private void setupStorageScreen() {
@@ -69,9 +94,16 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
                 }
         );
         findPreference(PREF_OPML_EXPORT).setOnPreferenceClickListener(
-                preference -> export(new OpmlWriter()));
+                preference -> {
+                    openOpmlExportPathPicker();
+                    return true;
+                }
+        );
         findPreference(PREF_HTML_EXPORT).setOnPreferenceClickListener(
-                preference -> export(new HtmlWriter()));
+                preference -> {
+                    openHtmlExportPathPicker();
+                    return true;
+                });
         findPreference(PREF_OPML_IMPORT).setOnPreferenceClickListener(
                 preference -> {
                     activity.startActivity(new Intent(activity, OpmlImportFromPathActivity.class));
@@ -129,52 +161,65 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private boolean export(ExportWriter exportWriter) {
+        return export(exportWriter, null);
+    }
+
+    private boolean export(ExportWriter exportWriter, final Uri uri) {
         Context context = getActivity();
         final ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setMessage(context.getString(R.string.exporting_label));
         progressDialog.setIndeterminate(true);
         progressDialog.show();
-        final AlertDialog.Builder alert = new AlertDialog.Builder(context)
-                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-        Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
-        disposable = observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(output -> {
-                    alert.setTitle(R.string.export_success_title);
-                    String message = context.getString(R.string.export_success_sum, output.toString());
-                    alert.setMessage(message);
-                    alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
+        if (uri == null) {
+            Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
+            disposable = observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(output -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
                                 context.getString(R.string.provider_authority), output);
-                        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_SUBJECT,
-                                context.getResources().getText(R.string.opml_export_label));
-                        sendIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
-                        sendIntent.setType("text/plain");
-                        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                            List<ResolveInfo> resInfoList = context.getPackageManager().queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                            for (ResolveInfo resolveInfo : resInfoList) {
-                                String packageName = resolveInfo.activityInfo.packageName;
-                                context.grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            }
-                        }
-                        context.startActivity(Intent.createChooser(sendIntent,
-                                context.getResources().getText(R.string.send_label)));
-                    });
-                    alert.create().show();
-                }, error -> {
-                    alert.setTitle(R.string.export_error_label);
-                    alert.setMessage(error.getMessage());
-                    alert.show();
-                }, progressDialog::dismiss);
+                        showExportSuccessDialog(context.getString(R.string.export_success_sum, output.toString()), fileUri);
+                    }, this::showExportErrorDialog, progressDialog::dismiss);
+        } else {
+            Observable<DocumentFile> observable = new DocumentFileExportWorker(exportWriter, context, uri).exportObservable();
+            disposable = observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(output -> {
+                        showExportSuccessDialog(context.getString(R.string.export_success_sum, output.getUri()), output.getUri());
+                    }, this::showExportErrorDialog, progressDialog::dismiss);
+        }
         return true;
     }
 
-    public void unsubscribeExportSubscription() {
-        if (disposable != null) {
-            disposable.dispose();
-        }
+    private void showExportSuccessDialog(final String message, final Uri streamUri) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext())
+                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        alert.setTitle(R.string.export_success_title);
+        alert.setMessage(message);
+        alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label));
+            sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
+            sendIntent.setType("text/plain");
+            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                List<ResolveInfo> resInfoList = getContext().getPackageManager()
+                        .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+            }
+            getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
+        });
+        alert.create().show();
+    }
+
+    private void showExportErrorDialog(final Throwable error) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext())
+                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        alert.setTitle(R.string.export_error_label);
+        alert.setMessage(error.getMessage());
+        alert.show();
     }
 
     @SuppressLint("NewApi")
@@ -184,22 +229,22 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
             String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
 
             File path;
-            if(dir != null) {
+            if (dir != null) {
                 path = new File(dir);
             } else {
                 path = getActivity().getExternalFilesDir(null);
             }
             String message = null;
-            final Context context= getActivity().getApplicationContext();
-            if(!path.exists()) {
+            final Context context = getActivity().getApplicationContext();
+            if (!path.exists()) {
                 message = String.format(context.getString(R.string.folder_does_not_exist_error), dir);
-            } else if(!path.canRead()) {
+            } else if (!path.canRead()) {
                 message = String.format(context.getString(R.string.folder_not_readable_error), dir);
-            } else if(!path.canWrite()) {
+            } else if (!path.canWrite()) {
                 message = String.format(context.getString(R.string.folder_not_writable_error), dir);
             }
 
-            if(message == null) {
+            if (message == null) {
                 Log.d(TAG, "Setting data folder: " + dir);
                 UserPreferences.setDataFolder(dir);
                 setDataFolderText();
@@ -209,6 +254,16 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
                 ab.setPositiveButton(android.R.string.ok, null);
                 ab.show();
             }
+        }
+
+        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_OPML_EXPORT_PATH) {
+            Uri uri = data.getData();
+            export(new OpmlWriter(), uri);
+        }
+
+        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_HTML_EXPORT_PATH) {
+            Uri uri = data.getData();
+            export(new HtmlWriter(), uri);
         }
     }
 
@@ -229,6 +284,50 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         Activity activity = getActivity();
         Intent intent = new Intent(activity, DirectoryChooserActivity.class);
         activity.startActivityForResult(intent, DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
+    }
+
+    private void openOpmlExportPathPicker() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType(CONTENT_TYPE_OPML)
+                    .putExtra(Intent.EXTRA_TITLE, DEFAULT_OPML_OUTPUT_NAME);
+
+            // Creates an implicit intent to launch a file manager which lets
+            // the user choose a specific directory to export to.
+            try {
+                startActivityForResult(intentPickAction, CHOOSE_OPML_EXPORT_PATH);
+                return;
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "No activity found. Should never happen...");
+            }
+        }
+
+        // If we are using a SDK lower than API 21 or the implicit intent failed
+        // fallback to the legacy export process
+        export(new OpmlWriter());
+    }
+
+    private void openHtmlExportPathPicker() {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                    .addCategory(Intent.CATEGORY_OPENABLE)
+                    .setType(CONTENT_TYPE_HTML)
+                    .putExtra(Intent.EXTRA_TITLE, DEFAULT_HTML_OUTPUT_NAME);
+
+            // Creates an implicit intent to launch a file manager which lets
+            // the user choose a specific directory to export to.
+            try {
+                startActivityForResult(intentPickAction, CHOOSE_HTML_EXPORT_PATH);
+                return;
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "No activity found. Should never happen...");
+            }
+        }
+
+        // If we are using a SDK lower than API 21 or the implicit intent failed
+        // fallback to the legacy export process
+        export(new HtmlWriter());
     }
 
     private void showChooseDataFolderDialog() {

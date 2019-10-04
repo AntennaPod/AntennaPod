@@ -6,7 +6,7 @@ import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
@@ -585,7 +585,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         }
 
         playerLock.unlock();
-        Log.d(TAG, "getPosition() -> " + retVal);
         return retVal;
     }
 
@@ -1026,6 +1025,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             ExoPlayerWrapper ap = (ExoPlayerWrapper) mp;
             ap.setOnCompletionListener(audioCompletionListener);
             ap.setOnSeekCompleteListener(audioSeekCompleteListener);
+            ap.setOnBufferingUpdateListener(audioBufferingUpdateListener);
             ap.setOnErrorListener(audioErrorListener);
         } else {
             Log.w(TAG, "Unknown media player: " + mp);

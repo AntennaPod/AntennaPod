@@ -2,11 +2,9 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -15,6 +13,7 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.util.IntentUtils;
 
 public class RatingDialog {
 
@@ -59,14 +58,10 @@ public class RatingDialog {
 
     private static void rateNow() {
         Context context = mContext.get();
-        if(context == null) {
+        if (context == null) {
             return;
         }
-        final String appPackage = "de.danoeh.antennapod";
-        final Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + appPackage);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        IntentUtils.openInBrowser(context, "https://play.google.com/store/apps/details?id=de.danoeh.antennapod");
         saveRated();
     }
 

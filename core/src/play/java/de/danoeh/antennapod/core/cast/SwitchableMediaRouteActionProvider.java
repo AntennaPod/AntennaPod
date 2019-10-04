@@ -3,12 +3,12 @@ package de.danoeh.antennapod.core.cast;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.MediaRouteActionProvider;
-import android.support.v7.app.MediaRouteChooserDialogFragment;
-import android.support.v7.app.MediaRouteControllerDialogFragment;
-import android.support.v7.media.MediaRouter;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.mediarouter.app.MediaRouteActionProvider;
+import androidx.mediarouter.app.MediaRouteChooserDialogFragment;
+import androidx.mediarouter.app.MediaRouteControllerDialogFragment;
+import androidx.mediarouter.media.MediaRouter;
 import android.util.Log;
 
 /**

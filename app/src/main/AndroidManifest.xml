@@ -36,7 +36,7 @@
         android:usesCleartextTraffic="true"
         android:logo="@mipmap/ic_launcher">
         <meta-data android:name="com.google.android.gms.car.notification.SmallIcon"
-                    android:resource="@drawable/ic_notification" />
+                    android:resource="@drawable/ic_antenna" />
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
@@ -105,17 +105,6 @@
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
 
-        <activity
-                android:name=".activity.FeedInfoActivity"
-                android:label="@string/feed_info_label">
-        </activity>
-
-        <activity
-                android:name=".activity.FeedSettingsActivity"
-                android:windowSoftInputMode="stateHidden"
-                android:label="@string/feed_settings_label">
-        </activity>
-
         <service
             android:name=".core.service.PlayerWidgetJobService"
             android:permission="android.permission.BIND_JOB_SERVICE"
@@ -146,13 +135,6 @@
             android:name=".activity.AboutActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/about_pref">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
-        </activity>
-        <activity
-            android:name=".activity.StatisticsActivity"
-            android:label="@string/statistics_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
@@ -208,6 +190,13 @@
         <activity
             android:name=".activity.OpmlFeedChooserActivity"
             android:label="@string/opml_import_label">
+        </activity>
+        <activity
+                android:name=".activity.BugReportActivity"
+                android:label="@string/bug_report_title">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
         <activity
@@ -350,7 +339,7 @@
         
         <provider
             android:authorities="@string/provider_authority"
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

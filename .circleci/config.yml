@@ -1,39 +1,74 @@
-version: 2
+version: 2.1
 
 jobs:
   build:
+    parameters:
+      build-steps:
+        description: "Steps that will be executed for this build"
+        type: steps
+        default: []
     docker:
       - image: circleci/android:api-28
-
     working_directory: ~/AntennaPod
-
     environment:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
       _JAVA_OPTIONS: "-Xms256m -Xmx1280m"
-
     steps:
       - checkout
-
       - restore_cache:
           keys:
             - v1-android-{{ checksum "build.gradle" }}
-            # fallback to using the latest cache if no exact match is found
             - v1-android-
-
       - run:
-          # To build release, we need to create a temporary keystore that can be used to sign the app
-          command: |
-            keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
-            ./gradlew assembleRelease :core:testPlayReleaseUnitTest :app:assemblePlayDebugAndroidTest -PdisablePreDex
-          no_output_timeout: 1800
-      
-      - store_artifacts:
-          path: app/build/outputs/apk
-          destination: apks
-
+          name: Create temporary release keystore
+          command: keytool -noprompt -genkey -v -keystore "app/keystore" -alias alias -storepass password -keypass password -keyalg RSA -validity 10 -dname "CN=antennapod.org, OU=dummy, O=dummy, L=dummy, S=dummy, C=US"
+      - steps: << parameters.build-steps >>
       - save_cache:
           paths:
             - ~/.android
             - ~/.gradle
             - ~/android
           key: v1-android-{{ checksum "build.gradle" }}
+
+workflows:
+  unit-tests:
+    jobs:
+      - build:
+          name: Build debug
+          build-steps:
+            - run:
+                name: Build debug
+                command: ./gradlew assembleDebug -PdisablePreDex
+            - run:
+                name: Execute debug unit tests
+                command: ./gradlew :core:testPlayDebugUnitTest -PdisablePreDex
+      - build:
+          name: Build release
+          build-steps:
+            - run:
+                name: Build release
+                command: ./gradlew assembleRelease -PdisablePreDex
+            - run:
+                name: Execute release unit tests
+                command: ./gradlew :core:testPlayReleaseUnitTest -PdisablePreDex
+      - build:
+          name: Build integration tests
+          build-steps:
+            - run:
+                name: Build integration tests
+                command: ./gradlew :app:assemblePlayDebugAndroidTest -PdisablePreDex
+      - build:
+          name: Build free
+          build-steps:
+            - run:
+                name: Build free (for F-Droid)
+                command: ./gradlew assembleFreeRelease -PdisablePreDex -PfreeBuild
+
+  static-analysis:
+    jobs:
+      - build:
+          name: Checkstyle
+          build-steps:
+            - run:
+                name: Checkstyle
+                command: ./gradlew checkstyle

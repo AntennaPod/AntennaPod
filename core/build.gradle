@@ -10,7 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testApplicationId "de.danoeh.antennapod.core.tests"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -56,11 +56,11 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:preference-v14:$supportVersion"
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.preference:preference:1.1.0"
+    annotationProcessor "androidx.annotation:annotation:1.1.0"
     implementation "android.arch.work:work-runtime:$workManagerVersion"
-    
+    implementation "androidx.media:media:1.1.0"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "org.apache.commons:commons-text:$commonstextVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
@@ -76,7 +76,6 @@ dependencies {
     annotationProcessor "org.greenrobot:eventbus-annotation-processor:$eventbusVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    implementation "org.awaitility:awaitility:$awaitilityVersion"
 
     implementation "com.google.android.exoplayer:exoplayer:$exoPlayerVersion"
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
@@ -85,18 +84,19 @@ dependencies {
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
         playApi "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-        api "com.android.support:mediarouter-v7:$supportVersion"
+        api "androidx.mediarouter:mediarouter:1.0.0"
         playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
         api "com.google.android.support:wearable:$wearableSupportVersion"
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
     }
 
+    testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
 
 }
 

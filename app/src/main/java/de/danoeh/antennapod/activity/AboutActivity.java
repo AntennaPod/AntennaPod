@@ -1,12 +1,10 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +13,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
+import de.danoeh.antennapod.core.util.IntentUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -57,8 +56,7 @@ public class AboutActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (url.startsWith("http")) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(browserIntent);
+                    IntentUtils.openInBrowser(AboutActivity.this, url);
                     return true;
                 } else {
                     url = url.replace("file:///android_asset/", "");

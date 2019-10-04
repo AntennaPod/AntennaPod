@@ -3,8 +3,8 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
@@ -34,7 +34,6 @@ import de.danoeh.antennapod.core.util.URLChecker;
 public class DownloadRequester {
     private static final String TAG = "DownloadRequester";
 
-    public static final String IMAGE_DOWNLOADPATH = "images/";
     private static final String FEED_DOWNLOADPATH = "cache/";
     private static final String MEDIA_DOWNLOADPATH = "media/";
 
@@ -272,10 +271,6 @@ public class DownloadRequester {
      */
     public synchronized boolean isDownloadingFile(FeedFile item) {
         return item.getDownload_url() != null && downloads.containsKey(item.getDownload_url());
-    }
-
-    public synchronized DownloadRequest getDownload(String downloadUrl) {
-        return downloads.get(downloadUrl);
     }
 
     /**

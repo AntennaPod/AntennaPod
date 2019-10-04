@@ -44,9 +44,8 @@ project.ext {
     minSdkVersion = 14
     targetSdkVersion = 28
 
-    supportVersion = "27.1.1"
-    lifecycle_version = "1.1.1"
     workManagerVersion = "1.0.1"
+    espressoVersion = "3.2.0"
     awaitilityVersion = "3.1.2"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
@@ -57,8 +56,8 @@ project.ext {
     iconifyVersion = "2.2.2"
     jsoupVersion = "1.11.2"
     materialDialogsVersion = "0.9.0.2"
-    okhttpVersion = "3.9.0"
-    okioVersion = "1.14.0"
+    okhttpVersion = "3.12.5"
+    okioVersion = "1.17.4"
     recyclerviewFlexibledividerVersion = "1.4.0"
     robotiumSoloVersion = "5.6.3"
     rxAndroidVersion = "2.1.0"
@@ -71,7 +70,7 @@ project.ext {
 
     castCompanionLibVer = "2.9.1"
     playServicesVersion = "8.4.0"
-    wearableSupportVersion = "2.2.0"
+    wearableSupportVersion = "2.4.0"
 }
 
 wrapper {
@@ -81,4 +80,15 @@ wrapper {
 // free build hack: common functions
 def doFreeBuild() {
     return hasProperty("freeBuild")
+}
+
+apply plugin: "checkstyle"
+checkstyle {
+    toolVersion '8.24'
+}
+
+task checkstyle(type: Checkstyle) {
+    classpath = files()
+    source "${project.rootDir}"
+    exclude("**/gen/**")
 }

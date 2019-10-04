@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.SimpleItemAnimator;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,10 +20,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -42,7 +49,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
@@ -50,18 +56,15 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
@@ -92,10 +95,12 @@ public class QueueFragment extends Fragment {
     private static final String PREFS = "QueueFragment";
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
+    private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
 
     private Disposable disposable;
     private LinearLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
+    private SharedPreferences prefs;
 
 
     @Override
@@ -103,6 +108,7 @@ public class QueueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+        prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -197,8 +203,8 @@ public class QueueFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if (isUpdatingFeeds != update.feedIds.length > 0) {
-            getActivity().supportInvalidateOptionsMenu();
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+            getActivity().invalidateOptionsMenu();
         }
         if (recyclerAdapter != null && update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
@@ -207,6 +213,13 @@ public class QueueFragment extends Fragment {
                     recyclerAdapter.notifyItemChanged(pos);
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (recyclerAdapter != null) {
+            recyclerAdapter.notifyCurrentlyPlayingItemChanged(event);
         }
     }
 
@@ -220,15 +233,13 @@ public class QueueFragment extends Fragment {
             topOffset = firstItemView.getTop();
         }
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PREF_SCROLL_POSITION, firstItem);
-        editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
-        editor.commit();
+        prefs.edit()
+                .putInt(PREF_SCROLL_POSITION, firstItem)
+                .putFloat(PREF_SCROLL_OFFSET, topOffset)
+                .apply();
     }
 
     private void restoreScrollPosition() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
         float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
         if (position > 0 || offset > 0) {
@@ -300,25 +311,10 @@ public class QueueFragment extends Fragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.queue_lock:
-                    boolean newLockState = !UserPreferences.isQueueLocked();
-                    UserPreferences.setQueueLocked(newLockState);
-                    getActivity().supportInvalidateOptionsMenu();
-                    if (recyclerAdapter != null) {
-                        recyclerAdapter.setLocked(newLockState);
-                    }
-                    if (newLockState) {
-                        Snackbar.make(getActivity().findViewById(R.id.content), R.string
-                                .queue_locked, Snackbar.LENGTH_SHORT).show();
-                    } else {
-                        Snackbar.make(getActivity().findViewById(R.id.content), R.string
-                                .queue_unlocked, Snackbar.LENGTH_SHORT).show();
-                    }
+                    toggleQueueLock();
                     return true;
                 case R.id.refresh_item:
-                    List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
-                    if (feeds != null) {
-                        DBTasks.refreshAllFeeds(getActivity(), feeds);
-                    }
+                    AutoUpdateManager.runImmediate(requireContext());
                     return true;
                 case R.id.clear_queue:
                     // make sure the user really wants to clear the queue
@@ -395,6 +391,48 @@ public class QueueFragment extends Fragment {
         }
     }
 
+    private void toggleQueueLock() {
+        boolean isLocked = UserPreferences.isQueueLocked();
+        if (isLocked) {
+            setQueueLocked(false);
+        } else {
+            boolean shouldShowLockWarning = prefs.getBoolean(PREF_SHOW_LOCK_WARNING, true);
+            if (!shouldShowLockWarning) {
+                setQueueLocked(true);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(R.string.lock_queue);
+                builder.setMessage(R.string.queue_lock_warning);
+
+                View view = View.inflate(getContext(), R.layout.checkbox_do_not_show_again, null);
+                CheckBox checkDoNotShowAgain = view.findViewById(R.id.checkbox_do_not_show_again);
+                builder.setView(view);
+
+                builder.setPositiveButton(R.string.lock_queue, (dialog, which) -> {
+                    prefs.edit().putBoolean(PREF_SHOW_LOCK_WARNING, !checkDoNotShowAgain.isChecked()).apply();
+                    setQueueLocked(true);
+                });
+                builder.setNegativeButton(R.string.cancel_label, null);
+                builder.show();
+            }
+        }
+    }
+
+    private void setQueueLocked(boolean locked) {
+        UserPreferences.setQueueLocked(locked);
+        getActivity().supportInvalidateOptionsMenu();
+        if (recyclerAdapter != null) {
+            recyclerAdapter.setLocked(locked);
+        }
+        if (locked) {
+            Snackbar.make(getActivity().findViewById(R.id.content), R.string
+                    .queue_locked, Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(getActivity().findViewById(R.id.content), R.string
+                    .queue_unlocked, Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
     /**
      * This method is called if the user clicks on a sort order menu item.
      *
@@ -431,7 +469,7 @@ public class QueueFragment extends Fragment {
                 DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
                 return true;
             default:
-                return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+                return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
         }
     }
 
@@ -614,7 +652,7 @@ public class QueueFragment extends Fragment {
                                     / playbackSpeed);
                 }
             }
-            info += " \u2022 ";
+            info += " • ";
             info += getString(R.string.time_left_label);
             info += Converter.getDurationStringLocalized(getActivity(), timeLeft);
         }

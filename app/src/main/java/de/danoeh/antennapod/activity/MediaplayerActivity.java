@@ -9,14 +9,13 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +33,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -63,6 +63,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
@@ -196,6 +199,11 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         };
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        onPositionObserverUpdate();
+    }
+
     private static TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
         return activity.txtvFF;
     }
@@ -276,6 +284,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         controller.init();
         loadMediaInfo();
         onPositionObserverUpdate();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -288,6 +297,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (disposable != null) {
             disposable.dispose();
         }
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 
@@ -323,6 +333,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
         Playable media = controller.getMedia();
         boolean isFeedMedia = media != null && (media instanceof FeedMedia);
+
+        menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
 
         boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
@@ -391,29 +403,24 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return true;
         } else {
             if (media != null) {
+                final @Nullable FeedItem feedItem = getFeedItem(media); // some options option requires FeedItem
                 switch (item.getItemId()) {
                     case R.id.add_to_favorites_item:
-                        if(media instanceof FeedMedia) {
-                            FeedItem feedItem = ((FeedMedia)media).getItem();
-                            if(feedItem != null) {
-                                DBWriter.addFavoriteItem(feedItem);
-                                isFavorite = true;
-                                invalidateOptionsMenu();
-                                Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
-                                     .show();
-                            }
+                        if (feedItem != null) {
+                            DBWriter.addFavoriteItem(feedItem);
+                            isFavorite = true;
+                            invalidateOptionsMenu();
+                            Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
+                                 .show();
                         }
                         break;
                     case R.id.remove_from_favorites_item:
-                        if(media instanceof FeedMedia) {
-                            FeedItem feedItem = ((FeedMedia)media).getItem();
-                            if(feedItem != null) {
-                                DBWriter.removeFavoriteItem(feedItem);
-                                isFavorite = false;
-                                invalidateOptionsMenu();
-                                Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
-                                     .show();
-                            }
+                        if (feedItem != null) {
+                            DBWriter.removeFavoriteItem(feedItem);
+                            isFavorite = false;
+                            invalidateOptionsMenu();
+                            Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
+                                    .show();
                         }
                         break;
                     case R.id.disable_sleeptimer_item:
@@ -450,28 +457,33 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance(isPlayingVideo);
                         dialog.show(getSupportFragmentManager(), "playback_controls");
                         break;
+                    case R.id.open_feed_item:
+                        if (feedItem != null) {
+                            Intent intent = MainActivity.getIntentToOpenFeed(this, feedItem.getFeedId());
+                            startActivity(intent);
+                        }
+                        break;
                     case R.id.visit_website_item:
-                        Uri uri = Uri.parse(getWebsiteLinkWithFallback(media));
-                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                        IntentUtils.openInBrowser(MediaplayerActivity.this, getWebsiteLinkWithFallback(media));
                         break;
                     case R.id.share_link_item:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemLink(this, ((FeedMedia) media).getItem());
+                        if (feedItem != null) {
+                            ShareUtils.shareFeedItemLink(this, feedItem);
                         }
                         break;
                     case R.id.share_download_url_item:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem());
+                        if (feedItem != null) {
+                            ShareUtils.shareFeedItemDownloadLink(this, feedItem);
                         }
                         break;
                     case R.id.share_link_with_position_item:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemLink(this, ((FeedMedia) media).getItem(), true);
+                        if (feedItem != null) {
+                            ShareUtils.shareFeedItemLink(this, feedItem, true);
                         }
                         break;
                     case R.id.share_download_url_with_position_item:
-                        if (media instanceof FeedMedia) {
-                            ShareUtils.shareFeedItemDownloadLink(this, ((FeedMedia) media).getItem(), true);
+                        if (feedItem != null) {
+                            ShareUtils.shareFeedItemDownloadLink(this, feedItem, true);
                         }
                         break;
                     case R.id.share_file:
@@ -637,7 +649,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
     }
 
-    static public void showSkipPreference(Activity activity, SkipDirection direction) {
+    public static void showSkipPreference(Activity activity, SkipDirection direction) {
         int checked = 0;
         int skipSecs = direction.getPrefSkipSeconds();
         final int[] values = activity.getResources().getIntArray(R.array.seek_delta_values);
@@ -815,11 +827,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     private void checkFavorite() {
-        Playable playable = controller.getMedia();
-        if (!(playable instanceof FeedMedia)) {
-            return;
-        }
-        FeedItem feedItem = ((FeedMedia) playable).getItem();
+        FeedItem feedItem = getFeedItem(controller.getMedia());
         if (feedItem == null) {
             return;
         }
@@ -872,6 +880,15 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Nullable
+    private static FeedItem getFeedItem(@Nullable Playable playable) {
+        if ((playable != null) && (playable instanceof FeedMedia)) {
+            return ((FeedMedia)playable).getItem();
+        } else {
+            return null;
         }
     }
 }

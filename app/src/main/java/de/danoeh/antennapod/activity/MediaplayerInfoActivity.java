@@ -7,15 +7,15 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -23,9 +23,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.viewpagerindicator.CirclePageIndicator;
@@ -63,7 +63,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -92,7 +91,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
-    Button butPlaybackSpeed;
+    ImageButton butPlaybackSpeed;
+    TextView txtvPlaybackSpeed;
     ImageButton butCastDisconnect;
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
@@ -120,7 +120,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             disposable.dispose();
         }
         EventDistributor.getInstance().unregister(contentUpdate);
-        EventBus.getDefault().unregister(this);
         saveCurrentFragment();
     }
 
@@ -173,7 +172,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     protected void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
-        EventBus.getDefault().register(this);
         loadData();
     }
 
@@ -258,6 +256,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         });
 
         butPlaybackSpeed = findViewById(R.id.butPlaybackSpeed);
+        txtvPlaybackSpeed = findViewById(R.id.txtvPlaybackSpeed);
         butCastDisconnect = findViewById(R.id.butCastDisconnect);
 
         pager = findViewById(R.id.pager);

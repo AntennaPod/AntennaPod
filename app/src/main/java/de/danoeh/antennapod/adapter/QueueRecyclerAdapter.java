@@ -1,12 +1,12 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
 import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MotionEventCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,9 +25,11 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.Iconify;
 
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -58,6 +60,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
     private boolean locked;
 
     private FeedItem selectedItem;
+    private ViewHolder currentlyPlayingItem = null;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
@@ -94,6 +97,18 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         });
     }
 
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int pos, List<Object> payload) {
+        onBindViewHolder(holder, pos);
+
+        if (holder == currentlyPlayingItem && payload.size() == 1 && payload.get(0) instanceof PlaybackPositionEvent) {
+            PlaybackPositionEvent event = (PlaybackPositionEvent) payload.get(0);
+            holder.progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
+            holder.progressLeft.setText(Converter.getDurationStringLong(event.getPosition()));
+            holder.progressRight.setText(Converter.getDurationStringLong(event.getDuration()));
+        }
+    }
+
     @Nullable
     public FeedItem getSelectedItem() {
         return selectedItem;
@@ -107,6 +122,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     public int getItemCount() {
         return itemAccess.getCount();
+    }
+
+    public void notifyCurrentlyPlayingItemChanged(PlaybackPositionEvent event) {
+        if (currentlyPlayingItem != null && currentlyPlayingItem.getAdapterPosition() != RecyclerView.NO_POSITION) {
+            notifyItemChanged(currentlyPlayingItem.getAdapterPosition(), event);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -169,7 +190,8 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             FeedItem item = itemAccess.getItem(getAdapterPosition());
 
             MenuInflater inflater = mainActivity.get().getMenuInflater();
-            inflater.inflate(R.menu.queue_context, menu);
+            inflater.inflate(R.menu.queue_context, menu); // queue-specific menu items
+            inflater.inflate(R.menu.feeditemlist_context, menu); // generic menu items for item feeds
 
             if (item != null) {
                 menu.setHeaderTitle(item.getTitle());
@@ -184,7 +206,18 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     item1.setVisible(visible);
                 }
             };
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, itemAccess.getQueueIds());
+
+            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item,
+                    R.id.skip_episode_item); // Skip Episode is not useful in Queue, so hide it.
+            // Queue-specific menu preparation
+            final boolean keepSorted = UserPreferences.isQueueKeepSorted();
+            final LongList queueAccess = itemAccess.getQueueIds();
+            if (queueAccess.size() == 0 || queueAccess.get(0) == item.getId() || keepSorted) {
+                contextMenuInterface.setItemVisibility(R.id.move_to_top_item, false);
+            }
+            if (queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == item.getId() || keepSorted) {
+                contextMenuInterface.setItemVisibility(R.id.move_to_bottom_item, false);
+            }
         }
 
         @Override
@@ -276,6 +309,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
                 if(media.isCurrentlyPlaying()) {
                     container.setBackgroundColor(playingBackGroundColor);
+                    currentlyPlayingItem = this;
                 } else {
                     container.setBackgroundColor(normalBackGroundColor);
                 }

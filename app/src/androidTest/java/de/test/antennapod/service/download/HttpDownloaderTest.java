@@ -1,7 +1,7 @@
 package de.test.antennapod.service.download;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.filters.LargeTest;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.LargeTest;
 import android.util.Log;
 
 import java.io.File;
