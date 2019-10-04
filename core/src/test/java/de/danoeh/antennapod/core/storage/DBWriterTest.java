@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.storage;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
