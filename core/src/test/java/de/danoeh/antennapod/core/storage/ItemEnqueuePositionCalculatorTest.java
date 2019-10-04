@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.core.storage;
 
-import androidx.annotation.NonNull;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -12,18 +10,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import de.danoeh.antennapod.core.feed.FeedFile;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
 import de.danoeh.antennapod.core.storage.ItemEnqueuePositionCalculator.Options;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.stub;
 
 public class ItemEnqueuePositionCalculatorTest {
 
@@ -185,8 +183,9 @@ public class ItemEnqueuePositionCalculatorTest {
             // Setup class under test
             //
             ItemEnqueuePositionCalculator calculator = new ItemEnqueuePositionCalculator(options);
-            MockDownloadRequester mockDownloadRequester = new MockDownloadRequester();
-            calculator.downloadStateProvider = mockDownloadRequester;
+            DownloadStateProvider stubDownloadStateProvider = mock(DownloadStateProvider.class);
+            stub(stubDownloadStateProvider.isDownloadingFile(any(FeedMedia.class))).toReturn(false);
+            calculator.downloadStateProvider = stubDownloadStateProvider;
 
             // Setup initial data
             // A shallow copy, as the test code will manipulate the queue
@@ -196,25 +195,25 @@ public class ItemEnqueuePositionCalculatorTest {
             // Test body
 
             // User clicks download on feed item 101
-            FeedItem tFI101 = tFI_isDownloading(101, mockDownloadRequester);
+            FeedItem tFI101 = tFI_isDownloading(101, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (1st download)",
                     calculator, 0, tFI101, queue,
                     idsExpectedAfter101);
 
             // Then user clicks download on feed item 102
-            FeedItem tFI102 = tFI_isDownloading(102, mockDownloadRequester);
+            FeedItem tFI102 = tFI_isDownloading(102, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
                     calculator, 0, tFI102, queue,
                     idsExpectedAfter102);
 
             // Items 201 and 202 are added as part of a single DBWriter.addQueueItem() calls
 
-            FeedItem tFI201 = tFI_isDownloading(201, mockDownloadRequester);
+            FeedItem tFI201 = tFI_isDownloading(201, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (bulk insertion, 1st item)",
                     calculator, 0, tFI201, queue,
                     idsExpectedAfter201);
 
-            FeedItem tFI202 = tFI_isDownloading(202, mockDownloadRequester);
+            FeedItem tFI202 = tFI_isDownloading(202, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (bulk insertion, 2nd item)",
                     calculator, 1, tFI202, queue,
                     idsExpectedAfter202);
@@ -223,7 +222,7 @@ public class ItemEnqueuePositionCalculatorTest {
         }
 
 
-        private static FeedItem tFI_isDownloading(int id, MockDownloadRequester requester) {
+        private static FeedItem tFI_isDownloading(int id, DownloadStateProvider stubDownloadStateProvider) {
             FeedItem item = tFI(id);
             FeedMedia media =
                     new FeedMedia(item, "http://download.url.net/" + id
@@ -231,25 +230,9 @@ public class ItemEnqueuePositionCalculatorTest {
             media.setId(item.getId());
             item.setMedia(media);
 
-            requester.mockDownloadingFile(media, true);
+            stub(stubDownloadStateProvider.isDownloadingFile(media)).toReturn(true);
 
             return item;
-        }
-
-        private static class MockDownloadRequester implements DownloadStateProvider {
-
-            private Map<Long, Boolean> downloadingByIds = new HashMap<>();
-
-            @Override
-            public synchronized boolean isDownloadingFile(@NonNull FeedFile item) {
-                return downloadingByIds.getOrDefault(item.getId(), false);
-            }
-
-            // All other parent methods should not be called
-
-            public void mockDownloadingFile(FeedFile item, boolean isDownloading) {
-                downloadingByIds.put(item.getId(), isDownloading);
-            }
         }
     }
 
