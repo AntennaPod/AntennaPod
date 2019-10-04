@@ -97,11 +97,11 @@
                 android:summary="@string/pref_queueAddToFront_sum"
                 android:title="@string/pref_queueAddToFront_title"/>
         <SwitchPreference
-            android:defaultValue="false"
-            android:enabled="false"
-            android:key="prefQueueKeepInProgressAtFront"
-            android:summary="@string/pref_queueKeepInProgressAtFront_sum"
-            android:title="@string/pref_queueKeepInProgressAtFront_title"/>
+                android:defaultValue="false"
+                android:enabled="false"
+                android:key="prefQueueKeepInProgressAtFront"
+                android:summary="@string/pref_queueKeepInProgressAtFront_sum"
+                android:title="@string/pref_queueKeepInProgressAtFront_title"/>
         <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"

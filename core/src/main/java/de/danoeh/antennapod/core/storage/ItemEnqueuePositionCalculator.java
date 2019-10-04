@@ -38,8 +38,8 @@ class ItemEnqueuePositionCalculator {
         }
     }
 
-    private final @NonNull
-    Options options;
+    @NonNull
+    private final Options options;
 
     @VisibleForTesting
     DownloadStateProvider downloadStateProvider = DownloadRequester.getInstance();
@@ -66,18 +66,18 @@ class ItemEnqueuePositionCalculator {
                     curQueue.get(0).getMedia() != null &&
                     curQueue.get(0).getMedia().isInProgress()) {
                 // leave the front in progress item at the front
-                return getPositionOf1stNonDownloadingItem(positionAmongToAdd + 1, curQueue);
+                return getPositionOfFirstNonDownloadingItem(positionAmongToAdd + 1, curQueue);
             } else { // typical case
                 // return NOT 0, so that when a list of items are inserted, the items inserted
                 // keep the same order. Returning 0 will reverse the order
-                return getPositionOf1stNonDownloadingItem(positionAmongToAdd, curQueue);
+                return getPositionOfFirstNonDownloadingItem(positionAmongToAdd, curQueue);
             }
         } else {
             return curQueue.size();
         }
     }
 
-    private int getPositionOf1stNonDownloadingItem(int startPosition, List<FeedItem> curQueue) {
+    private int getPositionOfFirstNonDownloadingItem(int startPosition, List<FeedItem> curQueue) {
         final int curQueueSize = curQueue.size();
         for (int i = startPosition; i < curQueueSize; i++) {
             if (!isItemAtPositionDownloading(i, curQueue)) {
@@ -95,9 +95,9 @@ class ItemEnqueuePositionCalculator {
             curItem = null;
         }
 
-        if (curItem != null &&
-                curItem.getMedia() != null &&
-                downloadStateProvider.isDownloadingFile(curItem.getMedia())) {
+        if (curItem != null
+                && curItem.getMedia() != null
+                && downloadStateProvider.isDownloadingFile(curItem.getMedia())) {
             return true;
         } else {
             return false;

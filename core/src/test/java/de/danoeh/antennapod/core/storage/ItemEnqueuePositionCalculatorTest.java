@@ -26,7 +26,7 @@ import static org.mockito.Mockito.stub;
 public class ItemEnqueuePositionCalculatorTest {
 
     @RunWith(Parameterized.class)
-    public static class IEPCBasicTest {
+    public static class BasicTest {
         @Parameters(name = "{index}: case<{0}>, expected:{1}")
         public static Iterable<Object[]> data() {
             Options optDefault = new Options();
@@ -90,7 +90,7 @@ public class ItemEnqueuePositionCalculatorTest {
     }
 
     @RunWith(Parameterized.class)
-    public static class IEPCKeepInProgressAtFrontTest extends IEPCBasicTest {
+    public static class KeepInProgressAtFrontTest extends BasicTest {
         @Parameters(name = "{index}: case<{0}>, expected:{1}")
         public static Iterable<Object[]> data() {
             Options optKeepInProgressAtFront =
