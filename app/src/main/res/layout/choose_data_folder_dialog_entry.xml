@@ -5,7 +5,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/diag_content_side_padding"
+    android:layout_margin="16dp"
     android:background="?attr/selectableItemBackground">
 
     <RadioButton
