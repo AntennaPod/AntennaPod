@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,14 +34,13 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Displays the 'statistics' screen
  */
-public class StatisticsFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class StatisticsFragment extends Fragment {
     private static final String TAG = StatisticsFragment.class.getSimpleName();
     private static final String PREF_NAME = "StatisticsActivityPrefs";
     private static final String PREF_COUNT_ALL = "countAll";
 
     private Disposable disposable;
-    private TextView totalTimeTextView;
-    private ListView feedStatisticsList;
+    private RecyclerView feedStatisticsList;
     private ProgressBar progressBar;
     private StatisticsListAdapter listAdapter;
     private boolean countAll = false;
@@ -57,13 +58,12 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.statistics_activity, container, false);
-        totalTimeTextView = root.findViewById(R.id.total_time);
         feedStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
         listAdapter = new StatisticsListAdapter(getContext());
         listAdapter.setCountAll(countAll);
+        feedStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
         feedStatisticsList.setAdapter(listAdapter);
-        feedStatisticsList.setOnItemClickListener(this);
         return root;
     }
 
@@ -112,7 +112,6 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
 
     private void refreshStatistics() {
         progressBar.setVisibility(View.VISIBLE);
-        totalTimeTextView.setVisibility(View.GONE);
         feedStatisticsList.setVisibility(View.GONE);
         loadStatistics();
     }
@@ -125,27 +124,9 @@ public class StatisticsFragment extends Fragment implements AdapterView.OnItemCl
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    totalTimeTextView.setText(Converter.shortLocalizedDuration(getContext(),
-                            countAll ? result.totalTimeCountAll : result.totalTime));
-                    listAdapter.update(result.feedTime);
+                    listAdapter.update(result);
                     progressBar.setVisibility(View.GONE);
-                    totalTimeTextView.setVisibility(View.VISIBLE);
                     feedStatisticsList.setVisibility(View.VISIBLE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        DBReader.StatisticsItem stats = listAdapter.getItem(position);
-
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        dialog.setTitle(stats.feed.getTitle());
-        dialog.setMessage(getString(R.string.statistics_details_dialog,
-                countAll ? stats.episodesStartedIncludingMarked : stats.episodesStarted,
-                stats.episodes, Converter.shortLocalizedDuration(getContext(),
-                        countAll ? stats.timePlayedCountAll : stats.timePlayed),
-                Converter.shortLocalizedDuration(getContext(), stats.time)));
-        dialog.setPositiveButton(android.R.string.ok, null);
-        dialog.show();
     }
 }
