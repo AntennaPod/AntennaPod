@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;

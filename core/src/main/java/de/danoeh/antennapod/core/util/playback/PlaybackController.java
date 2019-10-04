@@ -11,8 +11,8 @@ import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -24,7 +24,6 @@ import android.widget.TextView;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;

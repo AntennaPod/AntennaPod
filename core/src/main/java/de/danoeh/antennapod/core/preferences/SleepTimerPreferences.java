@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import java.util.concurrent.TimeUnit;

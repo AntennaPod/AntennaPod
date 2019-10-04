@@ -5,15 +5,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -195,7 +194,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
 
         PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_STOP, numActions);
-        setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
+        setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                 .setMediaSession(mediaSessionToken)
                 .setShowActionsInCompactView(compactActionList.toArray())
                 .setShowCancelButton(true)

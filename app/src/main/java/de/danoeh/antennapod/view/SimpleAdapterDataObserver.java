@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.view;
 
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * AdapterDataObserver that relays all events to the method anythingChanged().

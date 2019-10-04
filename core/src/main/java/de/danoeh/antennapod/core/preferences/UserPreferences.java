@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 

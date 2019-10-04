@@ -3,7 +3,7 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;

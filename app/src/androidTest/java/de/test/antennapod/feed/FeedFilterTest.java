@@ -1,6 +1,6 @@
 package de.test.antennapod.feed;
 
-import android.support.test.filters.SmallTest;
+import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import org.junit.Test;

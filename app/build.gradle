@@ -21,7 +21,7 @@ android {
         versionCode 1070396
         versionName "1.7.3b"
         testApplicationId "de.test.antennapod"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         generatedDensities = []
 
         javaCompileOptions {
@@ -131,14 +131,13 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
-    implementation "com.android.support:support-v4:$supportVersion"
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:design:$supportVersion"
-    implementation "com.android.support:preference-v14:$supportVersion"
-    implementation "com.android.support:gridlayout-v7:$supportVersion"
-    implementation "com.android.support:recyclerview-v7:$supportVersion"
-    compileOnly 'com.google.android.wearable:wearable:2.2.0'
-
+    implementation "androidx.appcompat:appcompat:1.1.0"
+    implementation "androidx.preference:preference:1.1.0"
+    implementation "androidx.gridlayout:gridlayout:1.0.0"
+    implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "com.google.android.material:material:1.0.0"
+    annotationProcessor "androidx.annotation:annotation:1.1.0"
+    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
@@ -158,26 +157,21 @@ dependencies {
         transitive = true
     }
     implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
-    implementation("com.githang:viewpagerindicator:2.5.1@aar") {
-        exclude module: "support-v4"
-    }
-
+    implementation "com.githang:viewpagerindicator:2.5.1@aar"
     implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
-    implementation 'com.leinardi.android:speed-dial:1.0.2' // 1.0.2 uses support 27.1.1 ; newer versions use 28.0.0;
-
+    implementation 'com.leinardi.android:speed-dial:3.0.0'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
-
     implementation 'com.github.mfietz:fyydlin:v0.4.2'
     implementation 'com.github.ByteHamster:SearchPreference:v1.3.0'
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
 }
 
 if (project.hasProperty("antennaPodServiceAccountEmail")) {

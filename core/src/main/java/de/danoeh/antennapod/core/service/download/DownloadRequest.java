@@ -3,8 +3,8 @@ package de.danoeh.antennapod.core.service.download;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import de.danoeh.antennapod.core.feed.FeedFile;
 import de.danoeh.antennapod.core.util.URLChecker;

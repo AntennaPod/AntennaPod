@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.gpoddernet.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class GpodnetTag implements Parcelable  {
 

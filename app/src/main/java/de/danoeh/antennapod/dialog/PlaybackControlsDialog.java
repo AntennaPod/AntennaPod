@@ -2,8 +2,8 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;

@@ -2,8 +2,8 @@ package de.test.antennapod.util.playback;
 
 import android.content.Context;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.filters.SmallTest;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.SmallTest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

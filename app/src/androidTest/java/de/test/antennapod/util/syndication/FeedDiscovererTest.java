@@ -1,12 +1,11 @@
 package de.test.antennapod.util.syndication;
 
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.nio.file.Files;
 import java.util.Map;
 
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;

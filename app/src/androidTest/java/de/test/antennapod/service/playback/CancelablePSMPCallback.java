@@ -1,6 +1,6 @@
 package de.test.antennapod.service.playback;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.util.playback.Playable;

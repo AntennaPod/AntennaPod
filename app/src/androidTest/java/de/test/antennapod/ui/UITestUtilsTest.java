@@ -5,9 +5,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.filters.LargeTest;
-import android.support.test.filters.MediumTest;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.MediumTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import org.junit.After;
