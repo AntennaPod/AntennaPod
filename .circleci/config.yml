@@ -34,6 +34,7 @@ workflows:
   unit-tests:
     jobs:
       - build:
+          name: Build debug
           build-steps:
             - run:
                 name: Build debug
@@ -42,6 +43,7 @@ workflows:
                 name: Execute debug unit tests
                 command: ./gradlew :core:testPlayDebugUnitTest -PdisablePreDex
       - build:
+          name: Build release
           build-steps:
             - run:
                 name: Build release
@@ -50,11 +52,13 @@ workflows:
                 name: Execute release unit tests
                 command: ./gradlew :core:testPlayReleaseUnitTest -PdisablePreDex
       - build:
+          name: Build integration tests
           build-steps:
             - run:
                 name: Build integration tests
                 command: ./gradlew :app:assemblePlayDebugAndroidTest -PdisablePreDex
       - build:
+          name: Build free
           build-steps:
             - run:
                 name: Build free (for F-Droid)
@@ -63,6 +67,7 @@ workflows:
   static-analysis:
     jobs:
       - build:
+          name: Checkstyle
           build-steps:
             - run:
                 name: Checkstyle
