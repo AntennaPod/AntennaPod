@@ -41,11 +41,8 @@ class ItemEnqueuePositionCalculator {
     private final @NonNull
     Options options;
 
-    /**
-     * The logic needs to use {@link DownloadRequester#isDownloadingFile(FeedFile)} method only
-     */
     @VisibleForTesting
-    FeedFileDownloadStatusRequesterInterface requester = DownloadRequester.getInstance();
+    DownloadStateProvider downloadStateProvider = DownloadRequester.getInstance();
 
     public ItemEnqueuePositionCalculator(@NonNull Options options) {
         this.options = options;
@@ -100,7 +97,7 @@ class ItemEnqueuePositionCalculator {
 
         if (curItem != null &&
                 curItem.getMedia() != null &&
-                requester.isDownloadingFile(curItem.getMedia())) {
+                downloadStateProvider.isDownloadingFile(curItem.getMedia())) {
             return true;
         } else {
             return false;

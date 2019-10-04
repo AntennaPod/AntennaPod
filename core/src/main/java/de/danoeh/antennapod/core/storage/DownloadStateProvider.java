@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.core.feed.FeedFile;
 
-public interface FeedFileDownloadStatusRequesterInterface {
+/**
+ * Allow callers to query the states of downloads, but not affect them.
+ */
+public interface DownloadStateProvider {
     /**
      * @return {@code true} if the named feedfile is in the downloads list
      */

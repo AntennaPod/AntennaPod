@@ -3,11 +3,12 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.URLUtil;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import org.apache.commons.io.FilenameUtils;
 
@@ -31,7 +32,7 @@ import de.danoeh.antennapod.core.util.URLChecker;
  * Sends download requests to the DownloadService. This class should always be used for starting downloads,
  * otherwise they won't work correctly.
  */
-public class DownloadRequester implements FeedFileDownloadStatusRequesterInterface {
+public class DownloadRequester implements DownloadStateProvider {
     private static final String TAG = "DownloadRequester";
 
     private static final String FEED_DOWNLOADPATH = "cache/";
