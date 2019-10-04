@@ -9,9 +9,9 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import io.reactivex.annotations.Nullable;
 
 public class PieChartView extends AppCompatImageView {
