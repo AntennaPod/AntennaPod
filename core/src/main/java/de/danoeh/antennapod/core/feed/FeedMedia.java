@@ -26,12 +26,8 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
-
 public class FeedMedia extends FeedFile implements Playable {
     private static final String TAG = "FeedMedia";
-
-    public static final float LAST_PLAYBACK_SPEED_UNSET = SPEED_USE_GLOBAL;
 
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;

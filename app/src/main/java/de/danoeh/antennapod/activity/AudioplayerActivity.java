@@ -16,7 +16,6 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 
 /**

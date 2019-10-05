@@ -8,11 +8,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import com.afollestad.materialdialogs.MaterialDialog;
-
 import java.util.Locale;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
