@@ -14,13 +14,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.Locale;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 public class PlaybackControlsDialog extends DialogFragment {
     private static final float PLAYBACK_SPEED_STEP = 0.05f;
@@ -217,6 +215,6 @@ public class PlaybackControlsDialog extends DialogFragment {
             media = controller.getMedia();
         }
 
-        return UserPreferences.getPlaybackSpeed(media);
+        return PlaybackSpeedHelper.getCurrentPlaybackSpeed(media);
     }
 }

@@ -294,8 +294,6 @@ class DBUpgrader {
         if (oldVersion < 1070400) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL);
-            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
-                    + " ADD COLUMN " + PodDBAdapter.KEY_MEDIA_LAST_PLAYBACK_SPEED + " REAL DEFAULT " + LAST_PLAYBACK_SPEED_UNSET);
         }
     }
 

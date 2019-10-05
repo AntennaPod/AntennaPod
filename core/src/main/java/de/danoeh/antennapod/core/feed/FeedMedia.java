@@ -58,7 +58,6 @@ public class FeedMedia extends FeedFile implements Playable {
     private Date playbackCompletionDate;
     private int startPosition = -1;
     private int playedDurationWhenStarted;
-    private float lastPlaybackSpeed = LAST_PLAYBACK_SPEED_UNSET;
 
     // if null: unknown, will be checked
     private Boolean hasEmbeddedPicture;
@@ -95,11 +94,10 @@ public class FeedMedia extends FeedFile implements Playable {
     private FeedMedia(long id, FeedItem item, int duration, int position,
                       long size, String mime_type, String file_url, String download_url,
                       boolean downloaded, Date playbackCompletionDate, int played_duration,
-                      Boolean hasEmbeddedPicture, long lastPlayedTime, float lastPlaybackSpeed) {
+                      Boolean hasEmbeddedPicture, long lastPlayedTime) {
         this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
                 playbackCompletionDate, played_duration, lastPlayedTime);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
-        this.lastPlaybackSpeed = lastPlaybackSpeed;
     }
 
     public static FeedMedia fromCursor(Cursor cursor) {
@@ -114,7 +112,6 @@ public class FeedMedia extends FeedFile implements Playable {
         int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
         int indexPlayedDuration = cursor.getColumnIndex(PodDBAdapter.KEY_PLAYED_DURATION);
         int indexLastPlayedTime = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_PLAYED_TIME);
-        int indexLastPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_MEDIA_LAST_PLAYBACK_SPEED);
 
         long mediaId = cursor.getLong(indexId);
         Date playbackCompletionDate = null;
@@ -149,8 +146,7 @@ public class FeedMedia extends FeedFile implements Playable {
                 playbackCompletionDate,
                 cursor.getInt(indexPlayedDuration),
                 hasEmbeddedPicture,
-                cursor.getLong(indexLastPlayedTime),
-                cursor.getFloat(indexLastPlaybackSpeed)
+                cursor.getLong(indexLastPlayedTime)
         );
     }
 
@@ -629,34 +625,5 @@ public class FeedMedia extends FeedFile implements Playable {
             return o.equals(this);
         }
         return super.equals(o);
-    }
-
-    public float getLastPlaybackSpeed() {
-        return lastPlaybackSpeed;
-    }
-
-    public void updateLastPlaybackSpeed(float newSpeed) {
-        lastPlaybackSpeed = newSpeed;
-        DBWriter.setFeedMediaPlaybackInformation(this);
-    }
-
-    /**
-     *
-     * @return the current playback speed for the media, or the feed's configured speed
-     */
-    public float getMediaPlaybackSpeed() {
-        float playbackSpeed = lastPlaybackSpeed;
-
-        if (playbackSpeed == LAST_PLAYBACK_SPEED_UNSET) {
-            FeedItem item = getItem();
-            if (item != null) {
-                Feed feed = item.getFeed();
-                if (feed != null) {
-                    playbackSpeed = feed.getPreferences().getFeedPlaybackSpeed();
-                }
-            }
-        }
-
-        return playbackSpeed;
     }
 }

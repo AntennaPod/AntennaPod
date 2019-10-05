@@ -11,8 +11,9 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -83,7 +84,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         float speed = 1.0f;
         if(controller.canSetPlaybackSpeed()) {
-            speed = UserPreferences.getPlaybackSpeed(controller.getMedia());
+            speed = PlaybackSpeedHelper.getCurrentPlaybackSpeed(controller.getMedia());
         }
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
@@ -132,7 +133,11 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                         }
                     }
 
-                    storeNewMediaPlaybackSpeed(newSpeed);
+                    try {
+                        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(Float.parseFloat(newSpeed));
+                    } catch (NumberFormatException e) {
+                        // Well this was awkward...
+                    }
                     UserPreferences.setPlaybackSpeed(newSpeed);
                     controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
                     onPositionObserverUpdate();
@@ -146,17 +151,6 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             });
             butPlaybackSpeed.setVisibility(View.VISIBLE);
             txtvPlaybackSpeed.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void storeNewMediaPlaybackSpeed(String speed) {
-        Playable media = controller.getMedia();
-        if (media instanceof FeedMedia) {
-            try {
-                ((FeedMedia) media).updateLastPlaybackSpeed(Float.parseFloat(speed));
-            } catch (NumberFormatException e) {
-                // Well this was awkward...
-            }
         }
     }
 }

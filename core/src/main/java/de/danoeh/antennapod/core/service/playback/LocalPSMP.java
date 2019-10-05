@@ -26,16 +26,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.VideoPlayer;
-
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 /**
  * Manages the MediaPlayer object of the PlaybackService.
@@ -245,7 +243,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         try {
             media.loadMetadata();
             callback.onMediaChanged(false);
-            setPlaybackParams(UserPreferences.getPlaybackSpeed(media), UserPreferences.isSkipSilence());
+            setPlaybackParams(PlaybackSpeedHelper.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
             } else if (media.getLocalMediaUrl() != null && new File(media.getLocalMediaUrl()).canRead()) {
@@ -309,7 +307,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
 
-                setPlaybackParams(UserPreferences.getPlaybackSpeed(media), UserPreferences.isSkipSilence());
+                setPlaybackParams(PlaybackSpeedHelper.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
                 setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {

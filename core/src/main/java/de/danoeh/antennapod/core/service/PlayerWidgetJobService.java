@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -147,7 +147,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 progressString = getProgressString(playbackService.getCurrentPosition(),
                         playbackService.getDuration(), playbackService.getCurrentPlaybackSpeed());
             } else {
-                progressString = getProgressString(media.getPosition(), media.getDuration(), UserPreferences.getPlaybackSpeed(media));
+                progressString = getProgressString(media.getPosition(), media.getDuration(), PlaybackSpeedHelper.getCurrentPlaybackSpeed(media));
             }
 
             if (progressString != null) {

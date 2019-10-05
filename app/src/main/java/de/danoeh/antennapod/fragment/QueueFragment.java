@@ -42,9 +42,9 @@ import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -66,7 +66,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REMOVE_FROM_QUEUE;
 
@@ -638,14 +637,7 @@ public class QueueFragment extends Fragment {
         if(queue.size() > 0) {
             long timeLeft = 0;
             for(FeedItem item : queue) {
-                float playbackSpeed = SPEED_USE_GLOBAL;
-                Feed feed = item.getFeed();
-                if (feed != null) {
-                    playbackSpeed = feed.getPreferences().getFeedPlaybackSpeed();
-                }
-                if (playbackSpeed == SPEED_USE_GLOBAL) {
-                    playbackSpeed = UserPreferences.getPlaybackSpeed(item.getMedia());
-                }
+                float playbackSpeed = PlaybackSpeedHelper.getCurrentPlaybackSpeed(item.getMedia());
                 if(item.getMedia() != null) {
                     timeLeft +=
                             (long) ((item.getMedia().getDuration() - item.getMedia().getPosition())

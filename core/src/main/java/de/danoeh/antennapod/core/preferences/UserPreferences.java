@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
@@ -32,11 +31,8 @@ import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-
-import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -326,23 +322,12 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static float getPlaybackSpeed(Playable media) {
-        float playbackSpeed = SPEED_USE_GLOBAL;
-        if (media != null) {
-            if (media instanceof FeedMedia) {
-                playbackSpeed = ((FeedMedia) media).getMediaPlaybackSpeed();
-            }
-
-            if (playbackSpeed == SPEED_USE_GLOBAL && media.getMediaType() == MediaType.VIDEO) {
-                playbackSpeed = getVideoPlaybackSpeed();
-            }
+    public static float getPlaybackSpeed(MediaType mediaType) {
+        if (mediaType == MediaType.VIDEO) {
+            return getVideoPlaybackSpeed();
+        } else {
+            return getAudioPlaybackSpeed();
         }
-
-        if (playbackSpeed == SPEED_USE_GLOBAL) {
-            playbackSpeed = getAudioPlaybackSpeed();
-        }
-
-        return playbackSpeed;
     }
 
     private static float getAudioPlaybackSpeed() {
