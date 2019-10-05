@@ -706,7 +706,7 @@ public class UserPreferences {
         String[] selectedSpeeds = null;
         // If this preference hasn't been set yet, return the default options
         if (valueFromPrefs == null) {
-            selectedSpeeds = new String[] { "1.00", "1.25", "1.50", "1.75", "2.00" };
+            selectedSpeeds = new String[] { "0.75", "1.00", "1.25", "1.50", "1.75", "2.00" };
         } else {
             try {
                 JSONArray jsonArray = new JSONArray(valueFromPrefs);
