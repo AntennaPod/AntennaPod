@@ -11,6 +11,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import java.util.List;
 import java.util.concurrent.Callable;
+import org.apache.commons.io.FilenameUtils;
 
 /** Represents a media file that is stored on the local storage device. */
 public class ExternalMedia implements Playable {
@@ -88,6 +89,9 @@ public class ExternalMedia implements Playable {
             throw new PlayableException("RuntimeException when setting up MediaMetadataRetriever");
         }
         episodeTitle = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+        if (episodeTitle == null) {
+            episodeTitle = FilenameUtils.getName(source);
+        }
         feedTitle = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
         try {
             duration = Integer.parseInt(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
