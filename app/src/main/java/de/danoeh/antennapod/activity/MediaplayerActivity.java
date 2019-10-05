@@ -855,10 +855,10 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CODE_STORAGE);
             }
+
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_CODE_STORAGE);
             return;
         }
 
@@ -875,7 +875,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_CODE_STORAGE) {
-            if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                playExternalMedia(getIntent(), MediaType.UNKNOWN);
+            } else {
                 Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
             }
         }
