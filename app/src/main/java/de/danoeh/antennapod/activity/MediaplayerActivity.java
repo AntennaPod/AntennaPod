@@ -866,6 +866,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         ExternalMedia media = new ExternalMedia(intent.getData().getPath(), type);
 
         new PlaybackServiceStarter(this, media)
+                .callEvenIfRunning(true)
                 .startWhenPrepared(true)
                 .shouldStream(false)
                 .prepareImmediately(true)
