@@ -216,6 +216,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private PlaybackServiceFlavorHelper flavorHelper;
     private PlaybackServiceStateManager stateManager;
     private Disposable positionEventTimer;
+    private PlaybackServiceNotificationBuilder notificationBuilder;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -271,7 +272,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         isRunning = true;
 
         stateManager = new PlaybackServiceStateManager(this);
-        PlaybackServiceNotificationBuilder notificationBuilder = new PlaybackServiceNotificationBuilder(this);
+        notificationBuilder = new PlaybackServiceNotificationBuilder(this);
         stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
 
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
@@ -444,20 +445,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-
         Log.d(TAG, "OnStartCommand called");
 
-        if (!stateManager.isInForeground()) {
-            PlaybackServiceNotificationBuilder notificationBuilder = new PlaybackServiceNotificationBuilder(this);
-            if (mediaPlayer != null && getPlayable() != null) {
-                notificationBuilder.addMetadata(getPlayable(), mediaSession.getSessionToken(), getStatus(), isCasting);
-                if (notificationBuilder.isIconCached(getPlayable())) {
-                    notificationBuilder.loadIcon(getPlayable());
-                }
-            }
-            stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
-        }
-
+        stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.cancel(NOTIFICATION_ID_STREAMING);
 
@@ -1217,9 +1207,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return;
                 }
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-                PlaybackServiceNotificationBuilder notificationBuilder =
-                        new PlaybackServiceNotificationBuilder(PlaybackService.this);
-                notificationBuilder.addMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
+                notificationBuilder = new PlaybackServiceNotificationBuilder(PlaybackService.this);
+                notificationBuilder.setMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
+
+                if (Build.VERSION.SDK_INT < 29) {
+                    notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
+                }
 
                 if (!notificationBuilder.isIconCached(playable)) {
                     // To make sure that the notification is shown instantly
@@ -1592,8 +1585,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Setting up position observer");
         positionEventTimer = Observable.interval(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong ->
-                        EventBus.getDefault().post(new PlaybackPositionEvent(getCurrentPosition(), getDuration())));
+                .subscribe(number -> {
+                    EventBus.getDefault().post(new PlaybackPositionEvent(getCurrentPosition(), getDuration()));
+                    if (Build.VERSION.SDK_INT < 29) {
+                        notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
+                        NotificationManager notificationManager = (NotificationManager)
+                                getSystemService(NOTIFICATION_SERVICE);
+                        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                    }
+                });
     }
 
     private void cancelPositionObserver() {

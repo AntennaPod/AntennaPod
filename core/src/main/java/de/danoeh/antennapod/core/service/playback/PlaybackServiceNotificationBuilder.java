@@ -10,12 +10,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.KeyEvent;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -23,7 +23,9 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntList;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -32,6 +34,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
     private static Bitmap defaultIcon = null;
 
     private Context context;
+    private boolean actionsInitialized = false;
 
     public PlaybackServiceNotificationBuilder(@NonNull Context context) {
         super(context, NotificationUtils.CHANNEL_ID_PLAYING);
@@ -50,9 +53,10 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         setWhen(0); // we don't need the time
         setSmallIcon(smallIcon);
         setPriority(NotificationCompat.PRIORITY_MIN);
+        setOnlyAlertOnce(true);
     }
 
-    public void addMetadata(Playable playable, MediaSessionCompat.Token mediaSessionToken, PlayerStatus playerStatus, boolean isCasting) {
+    public void setMetadata(Playable playable, MediaSessionCompat.Token mediaSessionToken, PlayerStatus playerStatus, boolean isCasting) {
         Log.v(TAG, "notificationSetupTask: playerStatus=" + playerStatus);
         setContentTitle(playable.getFeedTitle());
         setContentText(playable.getEpisodeTitle());
@@ -60,6 +64,11 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         addActions(mediaSessionToken, playerStatus, isCasting);
         setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         setColor(NotificationCompat.COLOR_DEFAULT);
+    }
+
+    public void updatePosition(int position,float speed) {
+        TimeSpeedConverter converter = new TimeSpeedConverter(speed);
+        setSubText(Converter.getDurationStringLong(converter.convert(position)));
     }
 
     public boolean isIconCached(Playable playable) {
@@ -131,6 +140,10 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
     }
 
     private void addActions(MediaSessionCompat.Token mediaSessionToken, PlayerStatus playerStatus, boolean isCasting) {
+        if (actionsInitialized) {
+            throw new IllegalStateException("Notification actions must not be added multiple times");
+        }
+        actionsInitialized = true;
         IntList compactActionList = new IntList();
 
         int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
