@@ -502,16 +502,6 @@ public class PlaybackController {
             PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
             status = info.playerStatus;
             media = info.playable;
-            /*
-            if (media == null) {
-                Log.w(TAG,
-                        "PlaybackService has no media object. Trying to restore last played media.");
-                Intent serviceIntent = getPlayLastPlayedMediaIntent();
-                if (serviceIntent != null) {
-			        ContextCompat.startForegroundService(activity, serviceIntent);
-                }
-            }
-            */
             onServiceQueried();
 
             setupGUI();
@@ -719,7 +709,8 @@ public class PlaybackController {
     }
 
     public boolean canDownmix() {
-        return playbackService != null && playbackService.canDownmix();
+        return (playbackService != null && playbackService.canDownmix())
+                || UserPreferences.useSonic();
     }
 
     public void setDownmix(boolean enable) {
