@@ -3,6 +3,9 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +23,42 @@ import de.danoeh.antennapod.core.util.PowerUtils;
  */
 public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     private static final String TAG = "APDownloadAlgorithm";
+
+    // Subset of DBReader static methods, for ease of stubbing in tests
+    interface ItemProvider {
+        int getNumberOfDownloadedEpisodes();
+        List<? extends FeedItem> getQueue();
+        List<? extends FeedItem> getNewItemsList();
+    }
+
+    // Subset of UserPreferences static methods, for ease of stubbing in tests
+    interface DownloadPreferences {
+        int getEpisodeCacheSize();
+        boolean isCacheUnlimited();
+    }
+
+    @NonNull
+    private final ItemProvider itemProvider;
+    @NonNull
+    private final EpisodeCleanupAlgorithm cleanupAlgorithm;
+    @NonNull
+    private final DownloadPreferences downloadPreferences;
+
+
+    @VisibleForTesting
+    APDownloadAlgorithm(@NonNull ItemProvider itemProvider,
+                               @NonNull EpisodeCleanupAlgorithm cleanupAlgorithm,
+                               @NonNull DownloadPreferences downloadPreferences) {
+        this.itemProvider = itemProvider;
+        this.cleanupAlgorithm = cleanupAlgorithm;
+        this.downloadPreferences = downloadPreferences;
+    }
+
+    public APDownloadAlgorithm() {
+        this.itemProvider = new ItemProviderDefaultImpl();
+        this.cleanupAlgorithm = UserPreferences.getEpisodeCleanupAlgorithm();
+        this.downloadPreferences = new DownloadPreferencesDefaultImpl();
+    }
 
     /**
      * Looks for undownloaded episodes in the queue or list of new items and request a download if
@@ -48,46 +87,10 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
 
                 Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 
-                List<FeedItem> candidates;
-                final List<FeedItem> queue = DBReader.getQueue();
-                final List<FeedItem> newItems = DBReader.getNewItemsList();
-                candidates = new ArrayList<>(queue.size() + newItems.size());
-                candidates.addAll(queue);
-                for(FeedItem newItem : newItems) {
-                    FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
-                    FeedFilter feedFilter = feedPrefs.getFilter();
-                    if(!candidates.contains(newItem) && feedFilter.shouldAutoDownload(newItem)) {
-                        candidates.add(newItem);
-                    }
-                }
+                List<? extends FeedItem> itemsToDownloadList = getItemsToDownload(context);
 
-                // filter items that are not auto downloadable
-                Iterator<FeedItem> it = candidates.iterator();
-                while(it.hasNext()) {
-                    FeedItem item = it.next();
-                    if(!item.isAutoDownloadable()) {
-                        it.remove();
-                    }
-                }
-
-                int autoDownloadableEpisodes = candidates.size();
-                int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
-                int deletedEpisodes = UserPreferences.getEpisodeCleanupAlgorithm()
-                        .makeRoomForEpisodes(context, autoDownloadableEpisodes);
-                boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
-                        .getEpisodeCacheSizeUnlimited();
-                int episodeCacheSize = UserPreferences.getEpisodeCacheSize();
-
-                int episodeSpaceLeft;
-                if (cacheIsUnlimited ||
-                        episodeCacheSize >= downloadedEpisodes + autoDownloadableEpisodes) {
-                    episodeSpaceLeft = autoDownloadableEpisodes;
-                } else {
-                    episodeSpaceLeft = episodeCacheSize - (downloadedEpisodes - deletedEpisodes);
-                }
-
-                FeedItem[] itemsToDownload = candidates.subList(0, episodeSpaceLeft)
-                        .toArray(new FeedItem[episodeSpaceLeft]);
+                FeedItem[] itemsToDownload = itemsToDownloadList
+                        .toArray(new FeedItem[itemsToDownloadList.size()]);
 
                 Log.d(TAG, "Enqueueing " + itemsToDownload.length + " items for download");
 
@@ -99,5 +102,78 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
 
             }
         };
+    }
+
+    @VisibleForTesting
+    @NonNull
+    List<? extends FeedItem> getItemsToDownload(@NonNull Context context) {
+        List<FeedItem> candidates;
+        final List<? extends FeedItem> queue = itemProvider.getQueue();
+        final List<? extends FeedItem> newItems = itemProvider.getNewItemsList();
+        candidates = new ArrayList<>(queue.size() + newItems.size());
+        candidates.addAll(queue);
+        for(FeedItem newItem : newItems) {
+            FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
+            FeedFilter feedFilter = feedPrefs.getFilter();
+            if(!candidates.contains(newItem) && feedFilter.shouldAutoDownload(newItem)) {
+                candidates.add(newItem);
+            }
+        }
+
+        // filter items that are not auto downloadable
+        Iterator<FeedItem> it = candidates.iterator();
+        while(it.hasNext()) {
+            FeedItem item = it.next();
+            if(!item.isAutoDownloadable()) {
+                it.remove();
+            }
+        }
+
+        int autoDownloadableEpisodes = candidates.size();
+        int downloadedEpisodes = itemProvider.getNumberOfDownloadedEpisodes();
+        int deletedEpisodes = cleanupAlgorithm
+                .makeRoomForEpisodes(context, autoDownloadableEpisodes);
+        boolean cacheIsUnlimited = downloadPreferences.isCacheUnlimited();
+        int episodeCacheSize = downloadPreferences.getEpisodeCacheSize();
+
+        int episodeSpaceLeft;
+        if (cacheIsUnlimited ||
+                episodeCacheSize >= downloadedEpisodes + autoDownloadableEpisodes) {
+            episodeSpaceLeft = autoDownloadableEpisodes;
+        } else {
+            episodeSpaceLeft = episodeCacheSize - (downloadedEpisodes - deletedEpisodes);
+        }
+
+        return candidates.subList(0, episodeSpaceLeft);
+    }
+
+    private static class ItemProviderDefaultImpl implements ItemProvider {
+        @Override
+        public int getNumberOfDownloadedEpisodes() {
+            return DBReader.getNumberOfDownloadedEpisodes();
+        }
+
+        @Override
+        public List<? extends FeedItem> getQueue() {
+            return DBReader.getQueue();
+        }
+
+        @Override
+        public List<? extends FeedItem> getNewItemsList() {
+            return DBReader.getNewItemsList();
+        }
+    }
+
+    private static class DownloadPreferencesDefaultImpl implements DownloadPreferences {
+        @Override
+        public int getEpisodeCacheSize() {
+            return UserPreferences.getEpisodeCacheSize();
+        }
+
+        @Override
+        public boolean isCacheUnlimited() {
+            return UserPreferences.getEpisodeCacheSize() == UserPreferences
+                    .getEpisodeCacheSizeUnlimited();
+        }
     }
 }
