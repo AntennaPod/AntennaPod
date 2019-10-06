@@ -12,6 +12,8 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
@@ -81,7 +83,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         float speed = 1.0f;
         if(controller.canSetPlaybackSpeed()) {
-            speed = UserPreferences.getPlaybackSpeed();
+            speed = PlaybackSpeedHelper.getCurrentPlaybackSpeed(controller.getMedia());
         }
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
@@ -105,7 +107,9 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                     String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
                     DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
                     format.setDecimalSeparator('.');
-                    String currentSpeed = new DecimalFormat("0.00", format).format(UserPreferences.getPlaybackSpeed());
+
+                    float currentSpeedValue = controller.getCurrentPlaybackSpeedMultiplier();
+                    String currentSpeed = new DecimalFormat("0.00", format).format(currentSpeedValue);
 
                     // Provide initial value in case the speed list has changed
                     // out from under us
@@ -126,6 +130,12 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                             }
                             break;
                         }
+                    }
+
+                    try {
+                        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(Float.parseFloat(newSpeed));
+                    } catch (NumberFormatException e) {
+                        // Well this was awkward...
                     }
                     UserPreferences.setPlaybackSpeed(newSpeed);
                     controller.setPlaybackSpeed(Float.parseFloat(newSpeed));

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
@@ -321,7 +322,15 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static float getPlaybackSpeed() {
+    public static float getPlaybackSpeed(MediaType mediaType) {
+        if (mediaType == MediaType.VIDEO) {
+            return getVideoPlaybackSpeed();
+        } else {
+            return getAudioPlaybackSpeed();
+        }
+    }
+
+    private static float getAudioPlaybackSpeed() {
         try {
             return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
@@ -331,7 +340,7 @@ public class UserPreferences {
         }
     }
 
-    public static float getVideoPlaybackSpeed() {
+    private static float getVideoPlaybackSpeed() {
         try {
             return Float.parseFloat(prefs.getString(PREF_VIDEO_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {

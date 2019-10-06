@@ -9,12 +9,13 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
+import java.util.Locale;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-
-import java.util.Locale;
 
 public class PlaybackControlsDialog extends DialogFragment {
     private static final float PLAYBACK_SPEED_STEP = 0.05f;
@@ -206,9 +207,11 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
 
     private float getCurrentSpeed() {
-        if (isPlayingVideo) {
-            return UserPreferences.getVideoPlaybackSpeed();
+        Playable media = null;
+        if (controller != null) {
+            media = controller.getMedia();
         }
-        return UserPreferences.getPlaybackSpeed();
+
+        return PlaybackSpeedHelper.getCurrentPlaybackSpeed(media);
     }
 }

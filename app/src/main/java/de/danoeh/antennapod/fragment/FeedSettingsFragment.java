@@ -23,9 +23,16 @@ import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
+    private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedSettingsFragment";
 
@@ -67,9 +74,11 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     setupAutoDeletePreference();
                     setupAuthentificationPreference();
                     setupEpisodeFilterPreference();
+                    setupPlaybackSpeedPreference();
 
                     updateAutoDeleteSummary();
                     updateAutoDownloadEnabled();
+                    updatePlaybackSpeedPreference();
                 }, error -> Log.d(TAG, Log.getStackTraceString(error)),
                 this::startPostponedEnterTransition);
     }
@@ -95,6 +104,31 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         if (disposable != null) {
             disposable.dispose();
         }
+    }
+
+    private void setupPlaybackSpeedPreference() {
+        ListPreference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
+
+        String[] speeds = UserPreferences.getPlaybackSpeedArray();
+
+        String[] values = new String[speeds.length + 1];
+        values[0] = decimalFormat.format(SPEED_USE_GLOBAL);
+
+        String[] entries = new String[speeds.length + 1];
+        entries[0] = getString(R.string.feed_auto_download_global);
+
+        System.arraycopy(speeds, 0, values, 1, speeds.length);
+        System.arraycopy(speeds, 0, entries, 1, speeds.length);
+
+        feedPlaybackSpeedPreference.setEntryValues(values);
+        feedPlaybackSpeedPreference.setEntries(entries);
+
+        feedPlaybackSpeedPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) newValue));
+            feed.savePreferences();
+            updatePlaybackSpeedPreference();
+            return false;
+        });
     }
 
     private void setupEpisodeFilterPreference() {
@@ -146,8 +180,15 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         });
     }
 
+    private void updatePlaybackSpeedPreference() {
+        ListPreference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
+
+        float speedValue = feedPreferences.getFeedPlaybackSpeed();
+        feedPlaybackSpeedPreference.setValue(decimalFormat.format(speedValue));
+    }
+
     private void updateAutoDeleteSummary() {
-        ListPreference autoDeletePreference = (ListPreference) findPreference("autoDelete");
+        ListPreference autoDeletePreference = findPreference("autoDelete");
 
         switch (feedPreferences.getAutoDeleteAction()) {
             case GLOBAL:
@@ -221,7 +262,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         }
 
         @Override
-        public  void onConfirmButtonPressed(DialogInterface dialog) {
+        public void onConfirmButtonPressed(DialogInterface dialog) {
             DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
         }
     }

@@ -426,6 +426,7 @@
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
+    <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this feed</string>
     <string name="pref_playback_time_respects_speed_title">Adjust media info to playback speed</string>
     <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
     <string name="pref_fast_forward">Fast Forward Skip Time</string>
