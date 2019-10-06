@@ -1187,59 +1187,52 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
-        if (playable == null) {
-            Log.d(TAG, "setupNotification: playable is null" + Log.getStackTraceString(new Exception()));
+        if (playable == null || mediaPlayer == null) {
+            Log.d(TAG, "setupNotification: playable=" + playable);
+            Log.d(TAG, "setupNotification: mediaPlayer=" + mediaPlayer);
             if (!stateManager.hasReceivedValidStartCommand()) {
                 stateManager.stopService();
             }
             return;
         }
-        Runnable notificationSetupTask = new Runnable() {
-            @Override
-            public void run() {
-                Log.d(TAG, "Starting background work");
 
-                if (mediaPlayer == null) {
-                    Log.d(TAG, "notificationSetupTask: mediaPlayer is null");
-                    if (!stateManager.hasReceivedValidStartCommand()) {
-                        stateManager.stopService();
-                    }
-                    return;
-                }
-                PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-                notificationBuilder = new PlaybackServiceNotificationBuilder(PlaybackService.this);
-                notificationBuilder.setMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
+        PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
+        notificationBuilder = new PlaybackServiceNotificationBuilder(PlaybackService.this);
+        notificationBuilder.setMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
+        if (Build.VERSION.SDK_INT < 29) {
+            notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
+        }
 
-                if (Build.VERSION.SDK_INT < 29) {
-                    notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
-                }
+        if (notificationBuilder.isIconCached(playable)) {
+            notificationBuilder.loadIcon(playable);
+            startForegroundIfPlaying(playerStatus);
+        } else {
+            // To make sure that the notification is shown instantly
+            notificationBuilder.loadDefaultIcon();
+            stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
 
-                if (!notificationBuilder.isIconCached(playable)) {
-                    // To make sure that the notification is shown instantly
-                    notificationBuilder.loadDefaultIcon();
-                    stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
-                }
+            notificationSetupThread = new Thread(() -> {
+                Log.d(TAG, "Loading notification icon");
                 notificationBuilder.loadIcon(playable);
-
-                if (!Thread.currentThread().isInterrupted() && stateManager.hasReceivedValidStartCommand()) {
-                    Notification notification = notificationBuilder.build();
-
-                    if (playerStatus == PlayerStatus.PLAYING ||
-                            playerStatus == PlayerStatus.PREPARING ||
-                            playerStatus == PlayerStatus.SEEKING ||
-                            isCasting) {
-                        stateManager.startForeground(NOTIFICATION_ID, notification);
-                    } else {
-                        stateManager.stopForeground(false);
-                        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                        mNotificationManager.notify(NOTIFICATION_ID, notification);
-                    }
-                    Log.d(TAG, "Notification set up");
+                if (!Thread.currentThread().isInterrupted()) {
+                    startForegroundIfPlaying(playerStatus);
                 }
+            });
+            notificationSetupThread.start();
+        }
+    }
+
+    private void startForegroundIfPlaying(@NonNull PlayerStatus status) {
+        if (stateManager.hasReceivedValidStartCommand()) {
+            if (isCasting || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
+                    || status == PlayerStatus.SEEKING) {
+                stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
+            } else {
+                stateManager.stopForeground(false);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
             }
-        };
-        notificationSetupThread = new Thread(notificationSetupTask);
-        notificationSetupThread.start();
+        }
     }
 
     /**
