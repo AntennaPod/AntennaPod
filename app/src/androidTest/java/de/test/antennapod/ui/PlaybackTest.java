@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
+import org.awaitility.Awaitility;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,6 +31,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -332,11 +334,14 @@ public class PlaybackTest {
         playFromQueue(fiIdx);
 
         skipEpisode();
-        Thread.sleep(1000); // ensure the skip is processed
 
-        //  assert item no longer in queue
-        assertThat("Ensure smart mark as play will lead to the item removed from the queue",
-                DBReader.getQueue(), not(hasItems(feedItem)));
+        //  assert item no longer in queue (needs to wait till skip is asynchronously processed)
+        Awaitility.await()
+                .atMost(1000, MILLISECONDS)
+                .untilAsserted(() -> {
+                    assertThat("Ensure smart mark as play will lead to the item removed from the queue",
+                            DBReader.getQueue(), not(hasItems(feedItem)));
+                });
         assertThat(DBReader.getFeedItem(feedItem.getId()).isPlayed(), is(true));
     }
 
@@ -353,11 +358,14 @@ public class PlaybackTest {
         playFromQueue(fiIdx);
 
         // let playback run a bit then pause
-        Thread.sleep(500);
+        Awaitility.await()
+                .atMost(1000, MILLISECONDS)
+                .until(() -> PlayerStatus.PLAYING == uiTestUtils.getPlaybackController(getActivity()).getStatus());
         pauseEpisode();
-        Thread.sleep(1000); // ensure the pause is processed
+        Awaitility.await()
+                .atMost(1000, MILLISECONDS)
+                .until(() -> PlayerStatus.PAUSED == uiTestUtils.getPlaybackController(getActivity()).getStatus());
 
-        //  assert item no longer in queue
         assertThat("Ensure even with smart mark as play, after pause, the item remains in the queue.",
                 DBReader.getQueue(), hasItems(feedItem));
         assertThat("Ensure even with smart mark as play, after pause, the item played status remains false.",
