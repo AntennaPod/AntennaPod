@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
@@ -76,7 +77,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static final String TAG = "MediaplayerActivity";
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
-    private static final int REQUEST_CODE_STORAGE = 42;
+    private static final int REQUEST_CODE_STORAGE_PLAY_VIDEO = 42;
+    private static final int REQUEST_CODE_STORAGE_PLAY_AUDIO = 43;
 
     PlaybackController controller;
 
@@ -855,10 +857,13 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_CODE_STORAGE);
             }
+
+            int code = REQUEST_CODE_STORAGE_PLAY_AUDIO;
+            if (type == MediaType.VIDEO) {
+                code = REQUEST_CODE_STORAGE_PLAY_VIDEO;
+            }
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, code);
             return;
         }
 
@@ -866,6 +871,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         ExternalMedia media = new ExternalMedia(intent.getData().getPath(), type);
 
         new PlaybackServiceStarter(this, media)
+                .callEvenIfRunning(true)
                 .startWhenPrepared(true)
                 .shouldStream(false)
                 .prepareImmediately(true)
@@ -873,18 +879,22 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == REQUEST_CODE_STORAGE) {
-            if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (requestCode == REQUEST_CODE_STORAGE_PLAY_AUDIO) {
+                playExternalMedia(getIntent(), MediaType.AUDIO);
+            } else if (requestCode == REQUEST_CODE_STORAGE_PLAY_VIDEO) {
+                playExternalMedia(getIntent(), MediaType.VIDEO);
             }
+        } else {
+            Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
         }
     }
 
     @Nullable
     private static FeedItem getFeedItem(@Nullable Playable playable) {
-        if ((playable != null) && (playable instanceof FeedMedia)) {
-            return ((FeedMedia)playable).getItem();
+        if (playable instanceof FeedMedia) {
+            return ((FeedMedia) playable).getItem();
         } else {
             return null;
         }
