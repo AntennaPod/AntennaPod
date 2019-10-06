@@ -6,13 +6,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.PowerUtils;
@@ -44,11 +40,10 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     @NonNull
     private final DownloadPreferences downloadPreferences;
 
-
     @VisibleForTesting
     APDownloadAlgorithm(@NonNull ItemProvider itemProvider,
-                               @NonNull EpisodeCleanupAlgorithm cleanupAlgorithm,
-                               @NonNull DownloadPreferences downloadPreferences) {
+                        @NonNull EpisodeCleanupAlgorithm cleanupAlgorithm,
+                        @NonNull DownloadPreferences downloadPreferences) {
         this.itemProvider = itemProvider;
         this.cleanupAlgorithm = cleanupAlgorithm;
         this.downloadPreferences = downloadPreferences;
@@ -107,32 +102,14 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     @VisibleForTesting
     @NonNull
     List<? extends FeedItem> getItemsToDownload(@NonNull Context context) {
-        List<FeedItem> candidates;
-        final List<? extends FeedItem> queue = itemProvider.getQueue();
-        final List<? extends FeedItem> newItems = itemProvider.getNewItemsList();
-        candidates = new ArrayList<>(queue.size() + newItems.size());
-        candidates.addAll(queue);
-        for(FeedItem newItem : newItems) {
-            FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
-            FeedFilter feedFilter = feedPrefs.getFilter();
-            if(!candidates.contains(newItem) && feedFilter.shouldAutoDownload(newItem)) {
-                candidates.add(newItem);
-            }
-        }
+        DownloadItemSelector selector = new DownloadItemSelectorEpisodicImpl();
 
-        // filter items that are not auto downloadable
-        Iterator<FeedItem> it = candidates.iterator();
-        while(it.hasNext()) {
-            FeedItem item = it.next();
-            if(!item.isAutoDownloadable()) {
-                it.remove();
-            }
-        }
+        List<? extends FeedItem> candidates =
+                selector.getAutoDownloadableEpisodes(itemProvider);
 
         int autoDownloadableEpisodes = candidates.size();
         int downloadedEpisodes = itemProvider.getNumberOfDownloadedEpisodes();
-        int deletedEpisodes = cleanupAlgorithm
-                .makeRoomForEpisodes(context, autoDownloadableEpisodes);
+        int deletedEpisodes = cleanupAlgorithm.makeRoomForEpisodes(context, autoDownloadableEpisodes);
         boolean cacheIsUnlimited = downloadPreferences.isCacheUnlimited();
         int episodeCacheSize = downloadPreferences.getEpisodeCacheSize();
 
@@ -143,7 +120,6 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         } else {
             episodeSpaceLeft = episodeCacheSize - (downloadedEpisodes - deletedEpisodes);
         }
-
         return candidates.subList(0, episodeSpaceLeft);
     }
 
