@@ -1197,23 +1197,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-        notificationBuilder = new PlaybackServiceNotificationBuilder(PlaybackService.this);
         notificationBuilder.setMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
-        if (Build.VERSION.SDK_INT < 29) {
-            notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
-        }
+        notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
-        if (notificationBuilder.isIconCached(playable)) {
-            notificationBuilder.loadIcon(playable);
-            startForegroundIfPlaying(playerStatus);
-        } else {
-            // To make sure that the notification is shown instantly
-            notificationBuilder.loadDefaultIcon();
-            stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        startForegroundIfPlaying(playerStatus);
 
+        if (!notificationBuilder.isIconCached()) {
             notificationSetupThread = new Thread(() -> {
                 Log.d(TAG, "Loading notification icon");
-                notificationBuilder.loadIcon(playable);
+                notificationBuilder.loadIcon();
                 if (!Thread.currentThread().isInterrupted()) {
                     startForegroundIfPlaying(playerStatus);
                 }

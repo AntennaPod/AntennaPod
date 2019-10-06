@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +19,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -29,68 +29,49 @@ import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
-public class PlaybackServiceNotificationBuilder extends NotificationCompat.Builder {
+public class PlaybackServiceNotificationBuilder {
     private static final String TAG = "PlaybackSrvNotification";
     private static Bitmap defaultIcon = null;
 
     private Context context;
-    private boolean actionsInitialized = false;
+    private Playable playable;
+    private MediaSessionCompat.Token mediaSessionToken;
+    private PlayerStatus playerStatus;
+    private boolean isCasting;
+    private Bitmap icon;
+    private String position;
 
     public PlaybackServiceNotificationBuilder(@NonNull Context context) {
-        super(context, NotificationUtils.CHANNEL_ID_PLAYING);
         this.context = context;
-
-        final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(context);
-
-        final PendingIntent pIntent = PendingIntent.getActivity(context, 0,
-                PlaybackService.getPlayerActivityIntent(context),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        setContentTitle(context.getString(R.string.app_name));
-        setContentText("Service is running"); // Just in case the notification is not updated (should not occur)
-        setOngoing(false);
-        setContentIntent(pIntent);
-        setWhen(0); // we don't need the time
-        setSmallIcon(smallIcon);
-        setPriority(NotificationCompat.PRIORITY_MIN);
-        setOnlyAlertOnce(true);
     }
 
-    public void setMetadata(Playable playable, MediaSessionCompat.Token mediaSessionToken, PlayerStatus playerStatus, boolean isCasting) {
-        Log.v(TAG, "notificationSetupTask: playerStatus=" + playerStatus);
-        setContentTitle(playable.getFeedTitle());
-        setContentText(playable.getEpisodeTitle());
-        setPriority(UserPreferences.getNotifyPriority());
-        addActions(mediaSessionToken, playerStatus, isCasting);
-        setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        setColor(NotificationCompat.COLOR_DEFAULT);
+    public void setMetadata(Playable playable, MediaSessionCompat.Token mediaSessionToken,
+                            PlayerStatus playerStatus, boolean isCasting) {
+
+        if (playable != this.playable) {
+            clearCache();
+        }
+        this.playable = playable;
+        this.mediaSessionToken = mediaSessionToken;
+        this.playerStatus = playerStatus;
+        this.isCasting = isCasting;
+    }
+
+    private void clearCache() {
+        this.icon = null;
+        this.position = null;
     }
 
     public void updatePosition(int position,float speed) {
         TimeSpeedConverter converter = new TimeSpeedConverter(speed);
-        setSubText(Converter.getDurationStringLong(converter.convert(position)));
+        this.position = Converter.getDurationStringLong(converter.convert(position));
     }
 
-    public boolean isIconCached(Playable playable) {
-        int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
-        try {
-            Bitmap icon = Glide.with(context)
-                    .asBitmap()
-                    .load(playable.getImageLocation())
-                    .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .onlyRetrieveFromCache(true))
-                    .submit(iconSize, iconSize)
-                    .get();
-            return icon != null;
-        } catch (Throwable tr) {
-            return false;
-        }
+    public boolean isIconCached() {
+        return icon != null;
     }
 
-    public void loadIcon(Playable playable) {
-        Bitmap icon = null;
+    public void loadIcon() {
         int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
         try {
             icon = Glide.with(context)
@@ -103,19 +84,13 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         } catch (Throwable tr) {
             Log.e(TAG, "Error loading the media icon for the notification", tr);
         }
-
-        if (icon == null) {
-            loadDefaultIcon();
-        } else {
-            setLargeIcon(icon);
-        }
     }
 
-    public void loadDefaultIcon() {
+    private Bitmap getDefaultIcon() {
         if (defaultIcon == null) {
             defaultIcon = getBitmap(context, R.drawable.notification_default_large_icon);
         }
-        setLargeIcon(defaultIcon);
+        return defaultIcon;
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -139,11 +114,47 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         }
     }
 
-    private void addActions(MediaSessionCompat.Token mediaSessionToken, PlayerStatus playerStatus, boolean isCasting) {
-        if (actionsInitialized) {
-            throw new IllegalStateException("Notification actions must not be added multiple times");
+    public Notification build() {
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(context,
+                NotificationUtils.CHANNEL_ID_PLAYING);
+
+        if (playable != null) {
+            notification.setContentTitle(playable.getFeedTitle());
+            notification.setContentText(playable.getEpisodeTitle());
+            addActions(notification, mediaSessionToken, playerStatus, isCasting);
+
+            if (icon != null) {
+                notification.setLargeIcon(icon);
+            } else {
+                notification.setLargeIcon(getDefaultIcon());
+            }
+
+            if (Build.VERSION.SDK_INT < 29) {
+                notification.setSubText(position);
+            }
+        } else {
+            notification.setContentTitle(context.getString(R.string.app_name));
+            notification.setContentText("Service is running");
         }
-        actionsInitialized = true;
+
+        notification.setContentIntent(getPlayerActivityPendingIntent());
+        notification.setWhen(0);
+        notification.setSmallIcon(R.drawable.ic_antenna);
+        notification.setOngoing(false);
+        notification.setOnlyAlertOnce(true);
+        notification.setPriority(UserPreferences.getNotifyPriority());
+        notification.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        notification.setColor(NotificationCompat.COLOR_DEFAULT);
+        return notification.build();
+    }
+
+    private PendingIntent getPlayerActivityPendingIntent() {
+        return PendingIntent.getActivity(context, 0, PlaybackService.getPlayerActivityIntent(context),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void addActions(NotificationCompat.Builder notification, MediaSessionCompat.Token mediaSessionToken,
+                            PlayerStatus playerStatus, boolean isCasting) {
         IntList compactActionList = new IntList();
 
         int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
@@ -153,7 +164,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
             stopCastingIntent.putExtra(PlaybackService.EXTRA_CAST_DISCONNECT, true);
             PendingIntent stopCastingPendingIntent = PendingIntent.getService(context,
                     numActions, stopCastingIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            addAction(R.drawable.ic_notification_cast_off,
+            notification.addAction(R.drawable.ic_notification_cast_off,
                     context.getString(R.string.cast_disconnect_label),
                     stopCastingPendingIntent);
             numActions++;
@@ -162,7 +173,8 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         // always let them rewind
         PendingIntent rewindButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_REWIND, numActions);
-        addAction(R.drawable.ic_notification_fast_rewind, context.getString(R.string.rewind_label), rewindButtonPendingIntent);
+        notification.addAction(R.drawable.ic_notification_fast_rewind, context.getString(R.string.rewind_label),
+                rewindButtonPendingIntent);
         if (UserPreferences.showRewindOnCompactNotification()) {
             compactActionList.add(numActions);
         }
@@ -171,14 +183,14 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         if (playerStatus == PlayerStatus.PLAYING) {
             PendingIntent pauseButtonPendingIntent = getPendingIntentForMediaAction(
                     KeyEvent.KEYCODE_MEDIA_PAUSE, numActions);
-            addAction(R.drawable.ic_notification_pause, //pause action
+            notification.addAction(R.drawable.ic_notification_pause, //pause action
                     context.getString(R.string.pause_label),
                     pauseButtonPendingIntent);
             compactActionList.add(numActions++);
         } else {
             PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
                     KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
-            addAction(R.drawable.ic_notification_play, //play action
+            notification.addAction(R.drawable.ic_notification_play, //play action
                     context.getString(R.string.play_label),
                     playButtonPendingIntent);
             compactActionList.add(numActions++);
@@ -187,7 +199,8 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         // ff follows play, then we have skip (if it's present)
         PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, numActions);
-        addAction(R.drawable.ic_notification_fast_forward, context.getString(R.string.fast_forward_label), ffButtonPendingIntent);
+        notification.addAction(R.drawable.ic_notification_fast_forward, context.getString(R.string.fast_forward_label),
+                ffButtonPendingIntent);
         if (UserPreferences.showFastForwardOnCompactNotification()) {
             compactActionList.add(numActions);
         }
@@ -196,7 +209,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
         if (UserPreferences.isFollowQueue()) {
             PendingIntent skipButtonPendingIntent = getPendingIntentForMediaAction(
                     KeyEvent.KEYCODE_MEDIA_NEXT, numActions);
-            addAction(R.drawable.ic_notification_skip,
+            notification.addAction(R.drawable.ic_notification_skip,
                     context.getString(R.string.skip_episode_label),
                     skipButtonPendingIntent);
             if (UserPreferences.showSkipOnCompactNotification()) {
@@ -207,7 +220,7 @@ public class PlaybackServiceNotificationBuilder extends NotificationCompat.Build
 
         PendingIntent stopButtonPendingIntent = getPendingIntentForMediaAction(
                 KeyEvent.KEYCODE_MEDIA_STOP, numActions);
-        setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+        notification.setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                 .setMediaSession(mediaSessionToken)
                 .setShowActionsInCompactView(compactActionList.toArray())
                 .setShowCancelButton(true)
