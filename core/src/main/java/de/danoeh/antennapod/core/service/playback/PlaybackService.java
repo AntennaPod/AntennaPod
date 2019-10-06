@@ -1184,6 +1184,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private synchronized void setupNotification(final Playable playable) {
+        Log.d(TAG, "setupNotification");
         if (notificationSetupThread != null) {
             notificationSetupThread.interrupt();
         }
@@ -1200,6 +1201,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.setMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
+        Log.d(TAG, "setupNotification: startForeground" + playerStatus);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
         startForegroundIfPlaying(playerStatus);
 
         if (!notificationBuilder.isIconCached()) {
@@ -1207,7 +1211,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Log.d(TAG, "Loading notification icon");
                 notificationBuilder.loadIcon();
                 if (!Thread.currentThread().isInterrupted()) {
-                    startForegroundIfPlaying(playerStatus);
+                    notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
                 }
             });
             notificationSetupThread.start();
