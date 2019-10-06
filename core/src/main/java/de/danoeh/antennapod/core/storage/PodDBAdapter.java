@@ -469,7 +469,6 @@ public class PodDBAdapter {
             ContentValues values = new ContentValues();
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
             values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
-            // Also reset stored playback speed for media
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
