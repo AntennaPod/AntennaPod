@@ -57,51 +57,55 @@ public class APDownloadAlgorithmTest {
 
     @Test
     public void episodic_Average_AllAutoDownloadable() {
-        stubs(CACHE_SIZE_DEFAULT,
-                fis(fi1_3, fi2_1, fi2_2), // queue
-                fis(fi1_1, fi1_2), // played and downloaded
-                fis(fi3_1, fi2_3, fi3_2, fi3_3) // new list
+        withStubs(CACHE_SIZE_DEFAULT,
+                fis(fi1_3, fi2_1, fi2_2), // queue, average
+                fis(fi1_1, fi1_2), // played and downloaded, average
+                fis(fi3_1, fi2_3, fi3_2, fi3_3) // new list, average
         );
-        expecting(fis(fi3_1, fi2_3));
+        doTest("Average case - download some from new list",
+                fis(fi3_1, fi2_3));
     }
 
     @Test
     public void episodic_Average_SomeNotAutoDownloadable() {
-        stubs(CACHE_SIZE_DEFAULT,
-                fis(fi1_3, fi2_1, fi2_2), // queue
-                fis(fi1_1, fi1_2), // played and downloaded
-                fis(fi3_1, fiNotADl_1, fi2_3, fi3_2, fi3_3) // new list
+        withStubs(CACHE_SIZE_DEFAULT,
+                fis(fi1_3, fi2_1, fi2_2), // queue, average
+                fis(fi1_1, fi1_2), // played and downloaded, average
+                fis(fi3_1, fiNotADl_1, fi2_3, fi3_2, fi3_3) // new list, with item not downloadable
         );
-        expecting(fis(fi3_1, fi2_3));
+        doTest("Average case - some in new list not auto downloadable",
+                fis(fi3_1, fi2_3));
     }
 
     @Test
     public void episodic_CacheUnlimited() {
-        stubs(CACHE_SIZE_UNLIMITED,
-                fis(fi1_3, fi2_1, fi2_2), // queue
-                fis(fi1_1, fi1_2), // played and downloaded
-                fis(fi3_1, fi2_3, fi3_2, fi3_3) // new list
+        withStubs(CACHE_SIZE_UNLIMITED,
+                fis(fi1_3, fi2_1, fi2_2), // queue, average
+                fis(fi1_1, fi1_2), // played and downloaded, average
+                fis(fi3_1, fi2_3, fi3_2, fi3_3) // new list, average
         );
-        expecting(fis(fi3_1, fi2_3, fi3_2, fi3_3));
+        doTest("Case unlimited cache - download all from new list",
+                fis(fi3_1, fi2_3, fi3_2, fi3_3));
     }
 
     @Test
     public void episodic_NotEnoughInNewList() {
-        stubs(CACHE_SIZE_UNLIMITED,
+        withStubs(CACHE_SIZE_UNLIMITED,
                 fis(fi1_3, fi2_1, fi2_2), // queue
                 fis(fi1_1, fi1_2), // played and downloaded
                 fis(fi3_1) // new list
         );
-        expecting(fis(fi3_1));
+        doTest("Case new list is not enough to fill the queue",
+                fis(fi3_1));
     }
 
     // Run actual test, and comparing the result with the named expected.
-    private void expecting(List<? extends FeedItem> expected) {
+    private void doTest(String msg, List<? extends FeedItem> expected) {
         APDownloadAlgorithm algorithm = new APDownloadAlgorithm(
                 stubItemProvider, stubCleanupAlgorithm, stubDownloadPreferences);
         List<? extends FeedItem> actual = algorithm.getItemsToDownload(mock(Context.class));
 
-        assertEquals(expected, actual);
+        assertEquals(msg, expected, actual);
     }
 
 
@@ -109,10 +113,10 @@ public class APDownloadAlgorithmTest {
     // test data generation helpers
     //
 
-    private void stubs(int cacheSize,
-                       List<? extends FeedItem> itemsInQueue,
-                       List<? extends FeedItem> itemsDownloadedAndPlayed,
-                       List<? extends FeedItem> itemsInNewList
+    private void withStubs(int cacheSize,
+                           List<? extends FeedItem> itemsInQueue,
+                           List<? extends FeedItem> itemsDownloadedAndPlayed,
+                           List<? extends FeedItem> itemsInNewList
     ) {
         // In the test cases, we assume all items in the queue has been downloaded (the typical case)
         for (FeedItem item : itemsInQueue) {
