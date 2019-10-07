@@ -8,7 +8,9 @@ import org.mockito.stubbing.Answer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
@@ -31,72 +33,65 @@ public class APDownloadAlgorithmTest {
     private static final int CACHE_SIZE_UNLIMITED = -1;
     private static final int CACHE_SIZE_DEFAULT = 5;
 
+    private static final long NotAdl1 = 9; // the constant is not all cap to make test codes look more natural.
+
     private APDownloadAlgorithm.ItemProvider stubItemProvider;
     private EpisodeCleanupAlgorithm stubCleanupAlgorithm;
     private APDownloadAlgorithm.DownloadPreferences stubDownloadPreferences;
 
-    // Setup test data
-    private Feed f1 = feed(1, IN_AUTO_DL);
-    private Feed f2 = feed(2, IN_AUTO_DL);
-    private Feed f3 = feed(3, IN_AUTO_DL);
-    private Feed fNotAdl = feed(1, NOT_AUTO_DL);
+    private Map<Long, Feed> _feeds; // test logic would access with fi() convenience method
 
-    private FeedItem fi1_1 = feedItem(f1, 11);
-    private FeedItem fi1_2 = feedItem(f1, 12);
-    private FeedItem fi1_3 = feedItem(f1, 13);
+    public APDownloadAlgorithmTest() {
+        _feeds = createTestFeeds();
+    }
 
-    private FeedItem fi2_1 = feedItem(f2, 21);
-    private FeedItem fi2_2 = feedItem(f2, 22);
-    private FeedItem fi2_3 = feedItem(f2, 23);
-
-    private FeedItem fi3_1 = feedItem(f3, 31);
-    private FeedItem fi3_2 = feedItem(f3, 32);
-    private FeedItem fi3_3 = feedItem(f3, 33);
-
-    private FeedItem fiNotADl_1 = feedItem(fNotAdl, 91);
+    // Convenience method to access test feed items
+    private FeedItem fi(long feedId, int itemOffset) {
+        return _feeds.get(feedId).getItems().get(itemOffset - 1);
+    }
 
     @Test
     public void episodic_Average_AllAutoDownloadable() {
         withStubs(CACHE_SIZE_DEFAULT,
-                fis(fi1_3, fi2_1, fi2_2), // queue, average
-                fis(fi1_1, fi1_2), // played and downloaded, average
-                fis(fi3_1, fi2_3, fi3_2, fi3_3) // new list, average
+                fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
+                fis(fi(1,1), fi(1,2)), // played and downloaded, average
+                fis(fi(3,1), fi(2,3), fi(3,2), fi(3,3)) // new list, average
         );
         doTest("Average case - download some from new list",
-                fis(fi3_1, fi2_3));
+                fis(fi(3,1), fi(2,3)));
     }
 
     @Test
     public void episodic_Average_SomeNotAutoDownloadable() {
         withStubs(CACHE_SIZE_DEFAULT,
-                fis(fi1_3, fi2_1, fi2_2), // queue, average
-                fis(fi1_1, fi1_2), // played and downloaded, average
-                fis(fi3_1, fiNotADl_1, fi2_3, fi3_2, fi3_3) // new list, with item not downloadable
+                fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
+                fis(fi(1,1), fi(1,2)), // played and downloaded, average
+                fis(fi(3,1), fi(NotAdl1,1), fi(2,3), fi(3,2), fi(3,3)) // new list, with item not downloadable
         );
         doTest("Average case - some in new list not auto downloadable",
-                fis(fi3_1, fi2_3));
+                fis(fi(3,1), fi(2,3)));
     }
 
     @Test
     public void episodic_CacheUnlimited() {
         withStubs(CACHE_SIZE_UNLIMITED,
-                fis(fi1_3, fi2_1, fi2_2), // queue, average
-                fis(fi1_1, fi1_2), // played and downloaded, average
-                fis(fi3_1, fi2_3, fi3_2, fi3_3) // new list, average
+                fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
+                fis(fi(1,1), fi(1,2)), // played and downloaded, average
+                fis(fi(3,1), fi(2,3), fi(3,2), fi(3,3)) // new list, average
         );
         doTest("Case unlimited cache - download all from new list",
-                fis(fi3_1, fi2_3, fi3_2, fi3_3));
+                fis(fi(3,1), fi(2,3), fi(3,2), fi(3,3)));
     }
 
     @Test
     public void episodic_NotEnoughInNewList() {
         withStubs(CACHE_SIZE_UNLIMITED,
-                fis(fi1_3, fi2_1, fi2_2), // queue
-                fis(fi1_1, fi1_2), // played and downloaded
-                fis(fi3_1) // new list
+                fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
+                fis(fi(1,1), fi(1,2)), // played and downloaded, average
+                fis(fi(3,1)) // new list, too few to fill the queue
         );
-        doTest("Case new list is not enough to fill the queue",
-                fis(fi3_1));
+        doTest("Case new list is not enough to fill the queue - use only all of the new list",
+                fis(fi(3,1)));
     }
 
     // Run actual test, and comparing the result with the named expected.
@@ -108,10 +103,6 @@ public class APDownloadAlgorithmTest {
         assertEquals(msg, expected, actual);
     }
 
-
-    //
-    // test data generation helpers
-    //
 
     private void withStubs(int cacheSize,
                            List<? extends FeedItem> itemsInQueue,
@@ -164,6 +155,37 @@ public class APDownloadAlgorithmTest {
         when(stubDownloadPreferences.isCacheUnlimited()).thenReturn(cacheSize < 0);
     }
 
+    private static Answer<List<? extends FeedItem>> answer(List<? extends FeedItem> result) {
+        return invocation -> result;
+    }
+
+    private static List<? extends FeedItem> fis(FeedItem... feedItems) {
+        return Arrays.asList(feedItems);
+    }
+
+    //
+    // test feeds generation helpers
+    //
+
+    private static Map<Long, Feed> createTestFeeds() {
+        final int numFeedItemsPerFeed = 3;
+
+        Map<Long, Feed> feeds = new HashMap<>();
+        feeds.put(1L, feedWithItems(1, IN_AUTO_DL, numFeedItemsPerFeed));
+        feeds.put(2L, feedWithItems(2, IN_AUTO_DL, numFeedItemsPerFeed));
+        feeds.put(3L, feedWithItems(3, IN_AUTO_DL, numFeedItemsPerFeed));
+        feeds.put(NotAdl1, feedWithItems(NotAdl1, NOT_AUTO_DL, numFeedItemsPerFeed));
+
+        return feeds;
+
+    }
+    private static Feed feedWithItems(long id, boolean isAutoDownload, int numFeedItems) {
+        Feed feed = feed(id, isAutoDownload);
+        for(int i = 1; i <= numFeedItems; i++) {
+            feedItem(feed, 10 * id + i);
+        }
+        return feed;
+    }
 
     private static Feed feed(long id, boolean isAutoDownload) {
         FeedFilter filter = new FeedFilter("", "");
@@ -190,16 +212,9 @@ public class APDownloadAlgorithmTest {
         };
         media.setItem(item);
         item.setMedia(media);
+
+        feed.getItems().add(item);
+
         return item;
     }
-
-    private static Answer<List<? extends FeedItem>> answer(List<? extends FeedItem> result) {
-        return invocation -> result;
-    }
-
-    private static List<? extends FeedItem> fis(FeedItem... feedItems) {
-        return Arrays.asList(feedItems);
-    }
-
 }
-
