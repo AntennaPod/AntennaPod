@@ -10,19 +10,22 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.APDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadItemSelectorEpisodicImpl;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import static de.danoeh.antennapod.core.feed.FeedItem.NEW;
+import static de.danoeh.antennapod.core.feed.FeedItem.PLAYED;
+import static de.danoeh.antennapod.core.feed.FeedItem.UNPLAYED;
 import static org.junit.Assert.assertEquals;
 
 public class DownloadItemSelectorEpisodicImplTest {
@@ -30,6 +33,11 @@ public class DownloadItemSelectorEpisodicImplTest {
     private static final String TAG = "DlItemSlctrEpisodicTest";
 
     private static final boolean DEBUG = false;
+
+    private static final boolean AUTO_DL_TRUE = true;
+    private static final boolean AUTO_DL_FALSE = false;
+    private static final boolean KEEP_UPDATED_TRUE = true;
+    private static final boolean KEEP_UPDATED_FALSE = false;
 
     @After
     public void tearDown() throws Exception {
@@ -52,104 +60,48 @@ public class DownloadItemSelectorEpisodicImplTest {
     @Test
     public void testGetAutoDownloadableEpisodes() throws Exception {
         // Setup test data and expectation
-        List<Long> expectedItemIds = new ArrayList<>();
-        {
-            List<Feed> feeds = DBTestUtils.saveFeedlist(4, 3, true);
-            {
-                Feed fAutoDl = feeds.get(0);
+        List<Long> expectedNewItemIds = new ArrayList<>();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        try {
+            adapter.open();
 
-                FeedItem fi0_in = fAutoDl.getItemAtIndex(0);
-                fi0_in.setNew();
-                DBWriter.setFeedItem(fi0_in).get();
-                expectedItemIds.add(fi0_in.getId());
+            // typical auto-downloadable feed
+            Feed f0 = createFeed(0, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                    cFI(NEW), cFI(UNPLAYED), cFI(PLAYED));
 
-                FeedItem fi0_outUnplayed = fAutoDl.getItemAtIndex(1);
-                fi0_outUnplayed.setPlayed(false);
-                DBWriter.setFeedItem(fi0_outUnplayed).get();
+            // have an include filter "1" that will accept "item 1" only
+            Feed f1 = createFeed(1, AUTO_DL_TRUE, "1", KEEP_UPDATED_TRUE,
+                    cFI(NEW), cFI(NEW), cFI(NEW));
 
-                FeedItem fi0_outPlayed = fAutoDl.getItemAtIndex(1);
-                fi0_outPlayed.setPlayed(true);
-                DBWriter.setFeedItem(fi0_outPlayed).get();
+            // non auto-downloadable feed
+            Feed f2 = createFeed(2, AUTO_DL_FALSE, "", KEEP_UPDATED_TRUE,
+                    cFI(NEW), cFI(UNPLAYED), cFI(PLAYED));
 
-                // set feed download preferences
-                // Do it after updating feedItems, before some feedItem operations
-                // could overwrite the settings,
-                fAutoDl.getPreferences().setAutoDownload(true);
-                DBWriter.setFeedPreferences(fAutoDl.getPreferences()).get();
-                DBWriter.setFeedsItemsAutoDownload(fAutoDl, true).get();
-            }
+            // feed not keep updated, which trumps auto-download settings
+            Feed f3 = createFeed(3, AUTO_DL_TRUE, "", KEEP_UPDATED_FALSE,
+                    cFI(NEW), cFI(UNPLAYED), cFI(PLAYED));
 
-            {
-                Feed fAutoDlSome = feeds.get(1);
+            adapter.setCompleteFeed(f0, f1, f2, f3);
 
-                // title "item 0" is not in the include filter below
-                FeedItem fi1_outByFilter = fAutoDlSome.getItemAtIndex(0);
-                fi1_outByFilter.setNew();
-                DBWriter.setFeedItem(fi1_outByFilter).get();
-                FeedItem fi1_in = fAutoDlSome.getItemAtIndex(1);
-                fi1_in.setNew();
-                DBWriter.setFeedItem(fi1_in).get();
-                expectedItemIds.add(fi1_in.getId());
+            expectedNewItemIds.add((f0.getItemAtIndex(0).getId()));
+            expectedNewItemIds.add((f1.getItemAtIndex(1).getId()));
 
-                // Find the item number to be set as the include filter
-                Matcher matcher = Pattern.compile("item (\\d+)").matcher(fi1_in.getTitle());
-                matcher.matches();
-                String inFilterStr = matcher.group(1);
-                debug("include filter for feed " + fAutoDlSome.getId() + " : " + inFilterStr);
-
-                fAutoDlSome.getPreferences().setAutoDownload(true);
-                DBWriter.setFeedsItemsAutoDownload(fAutoDlSome, true).get();
-                fAutoDlSome.getPreferences().setFilter(new FeedFilter(inFilterStr, ""));
-                DBWriter.setFeedPreferences(fAutoDlSome.getPreferences()).get();
-            }
-
-            {
-                Feed fNotAutoDl = feeds.get(2);
-
-                FeedItem fi2_out = fNotAutoDl.getItemAtIndex(0);
-                fi2_out.setNew();
-                DBWriter.setFeedItem(fi2_out).get();
-
-                fNotAutoDl.getPreferences().setAutoDownload(false);
-                DBWriter.setFeedPreferences(fNotAutoDl.getPreferences()).get();
-                DBWriter.setFeedsItemsAutoDownload(fNotAutoDl, false).get();
-            }
-
-            {
-                Feed fNotKeepUpdate = feeds.get(3);
-
-                FeedItem fi3_out = fNotKeepUpdate.getItemAtIndex(0);
-                fi3_out.setNew();
-                DBWriter.setFeedItem(fi3_out).get();
-
-                fNotKeepUpdate.getPreferences().setAutoDownload(true);
-                DBWriter.setFeedsItemsAutoDownload(fNotKeepUpdate, true).get();
-                fNotKeepUpdate.getPreferences().setKeepUpdated(false); // keep updated false make it gone
-                DBWriter.setFeedPreferences(fNotKeepUpdate.getPreferences()).get();
-            }
-
-            if (DEBUG) {
-                // verbose output of the feeds saved, in case the test fails
-                // it re-reads from DB to ensure they are up-to-date.
-                for (Feed f : DBReader.getFeedList()) {
-                    debug("feed " + f.getId() + " , " + f.getTitle() + " , autodownload=" + f.getPreferences().getAutoDownload());
-                    for (FeedItem fi : DBReader.getFeedItemList(f)) {
-                        debug("  fi " + fi.getId() + " , " + fi.getTitle() + ", pubDate=" + fi.getPubDate()
-                                + ", autodownload=" + fi.getAutoDownload() + ", new=" + fi.isNew());
-                    }
-                }
-            }
-
-            Collections.reverse(expectedItemIds); // the result is ordered by pubDate descending, thus reversing them
+            // the result is ordered by pubDate descending, thus reversing them
+            Collections.reverse(expectedNewItemIds);
+        } finally {
+            adapter.close();
         }
 
-        // Now create the selector under test
+        debugAllFeeds();
+
+        // Now create the selector under test and exercise it
         DownloadItemSelectorEpisodicImpl selector = new DownloadItemSelectorEpisodicImpl();
 
-        List<? extends FeedItem> fiAutoDlActual = selector.getAutoDownloadableEpisodes(new APDownloadAlgorithm.ItemProviderDefaultImpl());
+        List<? extends FeedItem> fiAutoDlActual =
+                selector.getAutoDownloadableEpisodes(new APDownloadAlgorithm.ItemProviderDefaultImpl());
 
-        assertEquals("Results should include only auto-downlodable new items. It actually returns: " + fiAutoDlActual,
-                expectedItemIds, toItemIds(fiAutoDlActual));
+        assertEquals("Results should include only auto-downloadable new items. It returns: " + fiAutoDlActual,
+                expectedNewItemIds, toItemIds(fiAutoDlActual));
     }
 
     private List<Long> toItemIds(List<? extends FeedItem> feedItems) {
@@ -160,8 +112,79 @@ public class DownloadItemSelectorEpisodicImplTest {
         return result;
     }
 
+    //
+    // Helpers to populate test data
+    //
+
+    private static long curPubDateMillis = System.currentTimeMillis() - 100000;
+
+    private static Feed createFeed(int titleId, boolean isAutoDownload, String includeFilter, boolean isKeepUpdated,
+                                   FeedItem... feedItems) {
+        Feed f = new Feed(0, null, "feed " + titleId, null, "link" + titleId, "descr", null, null,
+                null, null, "id" + titleId, null, null, "url" + titleId, false, false, null, null, false);
+
+        FeedPreferences fPrefs =
+                new FeedPreferences(0, isAutoDownload, FeedPreferences.AutoDeleteAction.GLOBAL, null, null);
+        fPrefs.setKeepUpdated(isKeepUpdated);
+        fPrefs.setFilter(new FeedFilter(includeFilter, ""));
+        f.setPreferences(fPrefs);
+
+        for (int j = 0; j < feedItems.length; j++) {
+            FeedItem fi = feedItems[j];
+            fi.setFeed(f);
+            curPubDateMillis += 1000; // ensure p
+            fi.setPubDate(new Date(curPubDateMillis));
+            fi.setAutoDownload(isAutoDownload);
+            fi.setTitle("item " + j);
+
+            f.getItems().add(fi);
+        }
+
+        return f;
+    }
+
+    /**
+     * @return a skeleton (incomplete) FeedItem of the specified state, createFeed() will fill in the details.
+     */
+    private static FeedItem cFI(int playState) {
+        FeedItem item = new FeedItem();
+        switch (playState) {
+            case NEW:
+                item.setNew();
+                break;
+            case UNPLAYED:
+                item.setPlayed(false);
+                break;
+            case PLAYED:
+                item.setPlayed(true);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid playState: " + playState);
+        }
+
+        FeedMedia media = new FeedMedia(item, "url", 1, "audio/mp3");
+        item.setMedia(media);
+
+        return item;
+    }
+
+
+    private void debugAllFeeds() {
+        if (DEBUG) {
+            // verbose output of the feeds saved, in case the test fails
+            // it re-reads from DB to ensure they are up-to-date.
+            for (Feed f : DBReader.getFeedList()) {
+                debug("feed " + f.getId() + " , " + f.getTitle()
+                        + " , autodownload=" + f.getPreferences().getAutoDownload());
+                for (FeedItem fi : DBReader.getFeedItemList(f)) {
+                    debug("  fi " + fi.getId() + " , " + fi.getTitle() + ", pubDate=" + fi.getPubDate()
+                            + ", autodownload=" + fi.getAutoDownload() + ", new=" + fi.isNew());
+                }
+            }
+        }
+    }
+
     private void debug(String msg) {
         if (DEBUG) Log.d(TAG, msg);
     }
-
 }
