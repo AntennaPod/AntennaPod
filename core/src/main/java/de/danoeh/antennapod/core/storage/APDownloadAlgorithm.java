@@ -123,7 +123,8 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         return candidates.subList(0, episodeSpaceLeft);
     }
 
-    private static class ItemProviderDefaultImpl implements ItemProvider {
+    @VisibleForTesting
+    public static class ItemProviderDefaultImpl implements ItemProvider {
         @Override
         public int getNumberOfDownloadedEpisodes() {
             return DBReader.getNumberOfDownloadedEpisodes();

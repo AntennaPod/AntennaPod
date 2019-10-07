@@ -9,6 +9,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -46,6 +47,7 @@ class DBTestUtils {
         for (int i = 0; i < numFeeds; i++) {
             Feed f = new Feed(0, null, "feed " + i, null, "link" + i, "descr", null, null,
                     null, null, "id" + i, null, null, "url" + i, false, false, null, null, false);
+            f.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, null, null));
             f.setItems(new ArrayList<>());
             for (int j = 0; j < numItems; j++) {
                 FeedItem item = new FeedItem(0, "item " + j, "id" + j, "link" + j, new Date(),

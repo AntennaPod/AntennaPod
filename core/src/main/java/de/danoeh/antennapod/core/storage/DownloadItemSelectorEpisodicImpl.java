@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,7 +12,8 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.APDownloadAlgorithm.ItemProvider;
 
-class DownloadItemSelectorEpisodicImpl implements DownloadItemSelector {
+@VisibleForTesting
+public class DownloadItemSelectorEpisodicImpl implements DownloadItemSelector {
     private static final String TAG = "DlItemSelectorEpisodic";
 
     @Override
