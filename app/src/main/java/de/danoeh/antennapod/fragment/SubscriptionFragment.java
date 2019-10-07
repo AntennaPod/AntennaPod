@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.R;
@@ -62,6 +64,7 @@ public class SubscriptionFragment extends Fragment {
     private GridView subscriptionGridLayout;
     private DBReader.NavDrawerData navDrawerData;
     private SubscriptionsAdapter subscriptionAdapter;
+    private FloatingActionButton subscriptionAddButton;
 
     private int mPosition = -1;
     private boolean isUpdatingFeeds = false;
@@ -85,6 +88,7 @@ public class SubscriptionFragment extends Fragment {
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
         subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, 3));
         registerForContextMenu(subscriptionGridLayout);
+        subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         return root;
     }
 
@@ -137,9 +141,15 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        subscriptionAdapter = new SubscriptionsAdapter((MainActivity)getActivity(), itemAccess);
+        subscriptionAdapter = new SubscriptionsAdapter((MainActivity) getActivity(), itemAccess);
         subscriptionGridLayout.setAdapter(subscriptionAdapter);
         subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
+
+        subscriptionAddButton.setOnClickListener(view -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).loadChildFragment(new AddFeedFragment());
+            }
+        });
 
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.subscriptions_label);
