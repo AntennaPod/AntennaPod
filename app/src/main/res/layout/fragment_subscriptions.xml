@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,6 +11,18 @@
       android:horizontalSpacing="2dp"
       android:verticalSpacing="2dp"
       android:layout_height="match_parent"
-      android:layout_gravity="center_horizontal">
+      android:layout_gravity="center_horizontal"
+      android:paddingBottom="88dp"
+      android:clipToPadding="false">
   </GridView>
-</LinearLayout>
+    
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/subscriptions_add"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="16dp"
+            android:layout_gravity="bottom|end"
+            android:contentDescription="@string/add_feed_label"
+            android:src="@drawable/ic_add_white_24dp"
+        />
+</FrameLayout>
