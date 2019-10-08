@@ -24,7 +24,6 @@ import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.event.StatisticsEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
@@ -969,7 +968,6 @@ public class DBWriter {
                 }
             }
             adapter.close();
-            EventBus.getDefault().post(new StatisticsEvent(StatisticsEvent.Action.STATISTICS_UPDATED));
         });
     }
 }

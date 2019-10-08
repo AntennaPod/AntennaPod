@@ -20,15 +20,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.StatisticsListAdapter;
-import de.danoeh.antennapod.core.event.StatisticsEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -72,11 +69,6 @@ public class StatisticsFragment extends Fragment {
         return root;
     }
 
-    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        EventBus.getDefault().register(this);
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -86,7 +78,6 @@ public class StatisticsFragment extends Fragment {
 
     @Override public void onDestroyView() {
         super.onDestroyView();
-        EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
         }
@@ -110,12 +101,6 @@ public class StatisticsFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    @Subscribe
-    public void onEvent(StatisticsEvent event) {
-        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
-        refreshStatistics();
-    }
-
     private void selectStatisticsMode() {
         View contentView = View.inflate(getContext(), R.layout.statistics_mode_select_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -133,15 +118,25 @@ public class StatisticsFragment extends Fragment {
             listAdapter.setCountAll(countAll);
             prefs.edit().putBoolean(PREF_COUNT_ALL, countAll).apply();
             refreshStatistics();
+            getActivity().invalidateOptionsMenu();
         });
 
         builder.show();
     }
 
     private void resetStatistics() {
-        progressBar.setVisibility(View.VISIBLE);
-        feedStatisticsList.setVisibility(View.GONE);
-        DBWriter.resetStatistics();
+        if (!countAll) {
+            progressBar.setVisibility(View.VISIBLE);
+            feedStatisticsList.setVisibility(View.GONE);
+            if (disposable != null) {
+                disposable.dispose();
+            }
+
+            disposable = Completable.fromFuture(DBWriter.resetStatistics())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(this::refreshStatistics, error -> Log.e(TAG, Log.getStackTraceString(error)));
+        }
     }
 
     private void refreshStatistics() {
