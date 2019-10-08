@@ -953,20 +953,7 @@ public class DBWriter {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-
-            List<Feed> feeds = DBReader.getFeedList();
-            for (Feed feed : feeds) {
-                List<FeedItem> items = DBReader.getFeed(feed.getId()).getItems();
-                for (FeedItem item : items) {
-                    FeedMedia media = item.getMedia();
-                    if (media == null) {
-                        continue;
-                    }
-
-                    media.setPlayedDuration(0);
-                    adapter.setFeedMediaPlaybackInformation(media);
-                }
-            }
+            adapter.resetAllMediaPlayedDuration();
             adapter.close();
         });
     }

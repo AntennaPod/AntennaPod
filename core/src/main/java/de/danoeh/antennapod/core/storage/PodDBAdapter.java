@@ -476,6 +476,20 @@ public class PodDBAdapter {
         }
     }
 
+    public void resetAllMediaPlayedDuration() {
+        try {
+            db.beginTransactionNonExclusive();
+            ContentValues values = new ContentValues();
+            values.put(KEY_PLAYED_DURATION, 0);
+            db.update(TABLE_NAME_FEED_MEDIA, values, null, new String[0]);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     /**
      * Insert all FeedItems of a feed and the feed object itself in a single
      * transaction
