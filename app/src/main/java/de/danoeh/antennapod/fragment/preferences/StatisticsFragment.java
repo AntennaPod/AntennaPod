@@ -86,6 +86,7 @@ public class StatisticsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.statistics, menu);
+        menu.findItem(R.id.statistics_reset).setEnabled(!countAll);
     }
 
     @Override
