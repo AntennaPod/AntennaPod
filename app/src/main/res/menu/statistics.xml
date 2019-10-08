@@ -4,9 +4,8 @@
 
     <item
         android:id="@+id/statistics_reset"
-        android:icon="@drawable/ic_reset_stats"
         android:title="@string/statistics_reset_data"
-        custom:showAsAction="ifRoom"
+        custom:showAsAction="never"
         />
 
     <item

@@ -37,7 +37,7 @@
     <string name="statistics_mode_normal">Calculate duration that was actually played. Playing twice is counted twice, while marking as played is not counted</string>
     <string name="statistics_mode_count_all">Sum up all podcasts marked as played</string>
     <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
-    <string name="statistics_reset_data">Reset statistics data.</string>
+    <string name="statistics_reset_data">Reset statistics data</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
