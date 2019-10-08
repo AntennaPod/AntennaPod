@@ -3,12 +3,6 @@ package de.danoeh.antennapod.fragment.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,10 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.StatisticsListAdapter;
+import de.danoeh.antennapod.core.event.StatisticsEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -52,7 +59,9 @@ public class StatisticsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.statistics_activity, container, false);
         feedStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
@@ -63,11 +72,24 @@ public class StatisticsFragment extends Fragment {
         return root;
     }
 
+    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
         refreshStatistics();
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     @Override
@@ -81,7 +103,17 @@ public class StatisticsFragment extends Fragment {
             selectStatisticsMode();
             return true;
         }
+        if (item.getItemId() == R.id.statistics_reset) {
+            resetStatistics();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Subscribe
+    public void onEvent(StatisticsEvent event) {
+        Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
+        refreshStatistics();
     }
 
     private void selectStatisticsMode() {
@@ -104,6 +136,12 @@ public class StatisticsFragment extends Fragment {
         });
 
         builder.show();
+    }
+
+    private void resetStatistics() {
+        progressBar.setVisibility(View.VISIBLE);
+        feedStatisticsList.setVisibility(View.GONE);
+        DBWriter.resetStatistics();
     }
 
     private void refreshStatistics() {

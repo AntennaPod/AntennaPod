@@ -3,6 +3,13 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/statistics_reset"
+        android:icon="@drawable/ic_reset_stats"
+        android:title="@string/statistics_reset_data"
+        custom:showAsAction="ifRoom"
+        />
+
+    <item
         android:id="@+id/statistics_mode"
         android:icon="?attr/ic_filter"
         android:title="@string/statistics_mode"
