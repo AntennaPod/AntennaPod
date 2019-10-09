@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.StatisticsListAdapter;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import io.reactivex.Completable;
@@ -76,7 +78,8 @@ public class StatisticsFragment extends Fragment {
         refreshStatistics();
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         if (disposable != null) {
             disposable.dispose();
@@ -96,7 +99,7 @@ public class StatisticsFragment extends Fragment {
             return true;
         }
         if (item.getItemId() == R.id.statistics_reset) {
-            resetStatistics();
+            confirmResetStatistics();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -125,19 +128,35 @@ public class StatisticsFragment extends Fragment {
         builder.show();
     }
 
-    private void resetStatistics() {
+    private void confirmResetStatistics() {
         if (!countAll) {
-            progressBar.setVisibility(View.VISIBLE);
-            feedStatisticsList.setVisibility(View.GONE);
-            if (disposable != null) {
-                disposable.dispose();
-            }
+            ConfirmationDialog conDialog = new ConfirmationDialog(
+                    getActivity(),
+                    R.string.statistics_reset_data_title,
+                    R.string.statistics_reset_data_msg) {
 
-            disposable = Completable.fromFuture(DBWriter.resetStatistics())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::refreshStatistics, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                @Override
+                public void onConfirmButtonPressed(
+                        DialogInterface dialog) {
+                    dialog.dismiss();
+                    doResetStatistics();
+                }
+            };
+            conDialog.createNewDialog().show();
         }
+    }
+
+    private void doResetStatistics() {
+        progressBar.setVisibility(View.VISIBLE);
+        feedStatisticsList.setVisibility(View.GONE);
+        if (disposable != null) {
+            disposable.dispose();
+        }
+
+        disposable = Completable.fromFuture(DBWriter.resetStatistics())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::refreshStatistics, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void refreshStatistics() {
