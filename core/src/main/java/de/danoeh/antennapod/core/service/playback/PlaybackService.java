@@ -838,6 +838,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onPlaybackPause(Playable playable, int position) {
             taskManager.cancelPositionSaver();
+            cancelPositionObserver();
             saveCurrentPosition(position == PlaybackServiceMediaPlayer.INVALID_TIME || playable == null,
                     playable, position);
             taskManager.cancelWidgetUpdater();
@@ -914,6 +915,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "Playback ended");
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
+            cancelPositionObserver();
             PlaybackPreferences.writeNoMediaPlaying();
             if (!isCasting) {
                 stateManager.stopForeground(true);
