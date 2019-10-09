@@ -136,8 +136,7 @@ public class StatisticsFragment extends Fragment {
                     R.string.statistics_reset_data_msg) {
 
                 @Override
-                public void onConfirmButtonPressed(
-                        DialogInterface dialog) {
+                public void onConfirmButtonPressed(DialogInterface dialog) {
                     dialog.dismiss();
                     doResetStatistics();
                 }
