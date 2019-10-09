@@ -32,6 +32,13 @@
                 android:summary="@string/pref_nav_drawer_feed_counter_sum"
                 android:defaultValue="0"
                 app:useStockLayout="true"/>
+        <SwitchPreference
+                android:title="@string/pref_episode_cover_title"
+                android:key="prefEpisodeCover"
+                android:summary="@string/pref_episode_cover_summary"
+                android:defaultValue="true"
+                android:enabled="true"
+                app:useStockLayout="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreference

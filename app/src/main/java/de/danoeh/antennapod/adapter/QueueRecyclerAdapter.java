@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
@@ -322,7 +323,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             butSecondary.setTag(item);
 
             new CoverLoader(mainActivity.get())
-                    .withUri(item.getImageLocation())
+                    .withUri(ImageResourceUtils.getImageLocation(item))
                     .withFallbackUri(item.getFeed().getImageLocation())
                     .withPlaceholderView(placeholder)
                     .withCoverView(cover)

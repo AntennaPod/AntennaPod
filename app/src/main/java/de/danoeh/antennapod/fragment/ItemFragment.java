@@ -62,6 +62,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.Flavors;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
@@ -384,7 +385,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
 
         Glide.with(getActivity())
-                .load(item.getImageLocation())
+                .load(ImageResourceUtils.getImageLocation(item))
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)

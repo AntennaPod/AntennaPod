@@ -403,6 +403,8 @@
     <string name="pref_parallel_downloads_title">Parallel Downloads</string>
     <string name="pref_episode_cache_title">Episode Cache</string>
     <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
+    <string name="pref_episode_cover_title">Use Episode Cover</string>
+    <string name="pref_episode_cover_summary">Use the episode specific cover whenever available. If unchecked, the app will always use the podcast cover image.</string>
     <string name="pref_theme_title_use_system">Use system theme</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>

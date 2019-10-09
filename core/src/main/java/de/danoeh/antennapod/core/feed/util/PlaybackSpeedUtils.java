@@ -1,14 +1,22 @@
-package de.danoeh.antennapod.core.preferences;
+package de.danoeh.antennapod.core.feed.util;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
-public class PlaybackSpeedHelper {
+/**
+ * Utility class to use the appropriate playback speed based on {@link PlaybackPreferences}
+ */
+public final class PlaybackSpeedUtils {
+
+    private PlaybackSpeedUtils() {
+    }
 
     /**
      * Returns the currently configured playback speed for the specified media.

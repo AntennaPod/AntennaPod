@@ -53,6 +53,7 @@ public class UserPreferences {
     private static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     private static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
+    public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
@@ -229,6 +230,13 @@ public class UserPreferences {
     public static int getFeedCounterSetting() {
         String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "0");
         return Integer.parseInt(value);
+    }
+
+    /**
+     * @return {@code true} if episodes should use their own cover, {@code false}  otherwise
+     */
+    public static boolean getUseEpisodeCoverSetting() {
+        return prefs.getBoolean(PREF_USE_EPISODE_COVER, true);
     }
 
     /**

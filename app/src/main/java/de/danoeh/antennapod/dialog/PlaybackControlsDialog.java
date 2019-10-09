@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.Locale;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
+import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -212,6 +212,6 @@ public class PlaybackControlsDialog extends DialogFragment {
             media = controller.getMedia();
         }
 
-        return PlaybackSpeedHelper.getCurrentPlaybackSpeed(media);
+        return PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
     }
 }

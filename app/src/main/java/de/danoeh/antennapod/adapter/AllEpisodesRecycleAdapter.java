@@ -35,6 +35,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
@@ -194,7 +195,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.butSecondary.setTag(item);
 
         new CoverLoader(mainActivityRef.get())
-                .withUri(item.getImageLocation())
+                .withUri(ImageResourceUtils.getImageLocation(item))
                 .withFallbackUri(item.getFeed().getImageLocation())
                 .withPlaceholderView(holder.placeholder)
                 .withCoverView(holder.cover)
