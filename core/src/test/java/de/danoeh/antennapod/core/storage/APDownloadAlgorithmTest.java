@@ -31,7 +31,7 @@ public class APDownloadAlgorithmTest {
     private static final boolean IN_AUTO_DL = true;
     private static final boolean NOT_AUTO_DL = false;
     private static final int CACHE_SIZE_UNLIMITED = -1;
-    private static final int CACHE_SIZE_DEFAULT = 5;
+    private static final int CACHE_SIZE_5 = 5;
 
     private static final long NotAdl1 = 9; // the constant is not all cap to make test codes look more natural.
 
@@ -52,7 +52,7 @@ public class APDownloadAlgorithmTest {
 
     @Test
     public void episodic_Average_AllAutoDownloadable() {
-        withStubs(CACHE_SIZE_DEFAULT,
+        withStubs(CACHE_SIZE_5,
                 fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
                 fis(fi(1,1), fi(1,2)), // played and downloaded, average
                 fis(fi(3,1), fi(2,3), fi(3,2), fi(3,3)) // new list, average
@@ -63,7 +63,7 @@ public class APDownloadAlgorithmTest {
 
     @Test
     public void episodic_Average_SomeNotAutoDownloadable() {
-        withStubs(CACHE_SIZE_DEFAULT,
+        withStubs(CACHE_SIZE_5,
                 fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
                 fis(fi(1,1), fi(1,2)), // played and downloaded, average
                 fis(fi(3,1), fi(NotAdl1,1), fi(2,3), fi(3,2), fi(3,3)) // new list, with item not downloadable
