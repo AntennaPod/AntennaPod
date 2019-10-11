@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.app.NotificationCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -285,8 +287,22 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_ENQUEUE_DOWNLOADED, true);
     }
 
+    @VisibleForTesting
+    public static void setEnqueueDownloadedEpisodes(boolean enqueueDownloadedEpisodes) {
+        prefs.edit()
+                .putBoolean(PREF_ENQUEUE_DOWNLOADED, enqueueDownloadedEpisodes)
+                .apply();
+    }
+
     public static boolean enqueueAtFront() {
         return prefs.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
+    }
+
+    @VisibleForTesting
+    public static void setEnqueueAtFront(boolean enqueueAtFront) {
+        prefs.edit()
+                .putBoolean(PREF_QUEUE_ADD_TO_FRONT, enqueueAtFront)
+                .apply();
     }
 
     /**

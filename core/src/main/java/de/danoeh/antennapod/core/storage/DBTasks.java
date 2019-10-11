@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -26,6 +28,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -331,7 +334,12 @@ public final class DBTasks {
         }
         // #2448: First, add to-download items to the queue before actual download
         // so that the resulting queue order is the same as when download is clicked
-        DBWriter.addQueueItem(context, items);
+        try {
+            enqueueFeedItemsToDownload(context, items);
+        } catch (Throwable t) {
+            throw new DownloadRequestException("Unexpected exception during enqueue before downloads", t);
+        }
+
         // Then, download them
         for (FeedItem item : items) {
             if (item.getMedia() != null
@@ -356,6 +364,25 @@ public final class DBTasks {
                 }
             }
         }
+    }
+
+    @VisibleForTesting
+    public static List<? extends FeedItem> enqueueFeedItemsToDownload(final Context context,
+                                                                      FeedItem... items)
+            throws InterruptedException, ExecutionException {
+        List<FeedItem> itemsToEnqueue = new ArrayList<>();
+        if (UserPreferences.enqueueDownloadedEpisodes()) {
+            LongList queueIDList = DBReader.getQueueIDList();
+            for (FeedItem item : items) {
+                if (!queueIDList.contains(item.getId())) {
+                    itemsToEnqueue.add(item);
+                }
+            }
+            DBWriter.addQueueItem(context,
+                    itemsToEnqueue.toArray(new FeedItem[0]))
+                    .get();
+        }
+        return itemsToEnqueue;
     }
 
     /**
