@@ -102,10 +102,10 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     @VisibleForTesting
     @NonNull
     List<? extends FeedItem> getItemsToDownload(@NonNull Context context) {
-        DownloadItemSelector selector = new DownloadItemSelectorEpisodicImpl();
+        DownloadItemSelector selector = new DownloadItemSelectorEpisodicImpl(itemProvider);
 
         List<? extends FeedItem> candidates =
-                selector.getAutoDownloadableEpisodes(itemProvider);
+                selector.getAutoDownloadableEpisodes();
 
         int autoDownloadableEpisodes = candidates.size();
         int downloadedEpisodes = itemProvider.getNumberOfDownloadedEpisodes();

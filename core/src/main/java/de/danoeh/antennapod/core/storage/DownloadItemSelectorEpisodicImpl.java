@@ -16,9 +16,16 @@ import de.danoeh.antennapod.core.storage.APDownloadAlgorithm.ItemProvider;
 public class DownloadItemSelectorEpisodicImpl implements DownloadItemSelector {
     private static final String TAG = "DlItemSelectorEpisodic";
 
+    @NonNull
+    private final ItemProvider itemProvider;
+
+    public DownloadItemSelectorEpisodicImpl(@NonNull ItemProvider itemProvider) {
+        this.itemProvider = itemProvider;
+    }
+
     @Override
     @NonNull
-    public List<? extends FeedItem> getAutoDownloadableEpisodes(@NonNull ItemProvider itemProvider) {
+    public List<? extends FeedItem> getAutoDownloadableEpisodes() {
         List<FeedItem> candidates;
         final List<? extends FeedItem> queue = itemProvider.getQueue();
         final List<? extends FeedItem> newItems = itemProvider.getNewItemsList();

@@ -95,10 +95,11 @@ public class DownloadItemSelectorEpisodicImplTest {
         debugAllFeeds();
 
         // Now create the selector under test and exercise it
-        DownloadItemSelectorEpisodicImpl selector = new DownloadItemSelectorEpisodicImpl();
+        DownloadItemSelectorEpisodicImpl selector =
+                new DownloadItemSelectorEpisodicImpl(new APDownloadAlgorithm.ItemProviderDefaultImpl());
 
         List<? extends FeedItem> fiAutoDlActual =
-                selector.getAutoDownloadableEpisodes(new APDownloadAlgorithm.ItemProviderDefaultImpl());
+                selector.getAutoDownloadableEpisodes();
 
         assertEquals("Results should include only auto-downloadable new items. It returns: " + fiAutoDlActual,
                 expectedNewItemIds, toItemIds(fiAutoDlActual));
