@@ -23,8 +23,8 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     // Subset of DBReader static methods, for ease of stubbing in tests
     interface ItemProvider {
         int getNumberOfDownloadedEpisodes();
-        List<? extends FeedItem> getQueue();
-        List<? extends FeedItem> getNewItemsList();
+        @NonNull List<? extends FeedItem> getQueue();
+        @NonNull List<? extends FeedItem> getNewItemsList();
     }
 
     // Subset of UserPreferences static methods, for ease of stubbing in tests
@@ -130,11 +130,13 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
             return DBReader.getNumberOfDownloadedEpisodes();
         }
 
+        @NonNull
         @Override
         public List<? extends FeedItem> getQueue() {
             return DBReader.getQueue();
         }
 
+        @NonNull
         @Override
         public List<? extends FeedItem> getNewItemsList() {
             return DBReader.getNewItemsList();
