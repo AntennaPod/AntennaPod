@@ -88,7 +88,7 @@ public class PieChartView extends AppCompatImageView {
             float startAngle = 180;
             for (int i = 0; i < dataValues.length; i++) {
                 float datum = dataValues[i];
-                float sweepAngle = 180 * datum / valueSum;
+                float sweepAngle = (180f - PADDING_DEGREES) * (datum / valueSum);
                 if (sweepAngle < MIN_DEGREES) {
                     break;
                 }
