@@ -21,10 +21,8 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     private static final String TAG = "APDownloadAlgorithm";
 
     // Subset of DBReader static methods, for ease of stubbing in tests
-    interface ItemProvider {
+    interface DBAccess {
         int getNumberOfDownloadedEpisodes();
-        @NonNull List<? extends FeedItem> getQueue();
-        @NonNull List<? extends FeedItem> getNewItemsList();
     }
 
     // Subset of UserPreferences static methods, for ease of stubbing in tests
@@ -34,25 +32,32 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     }
 
     @NonNull
-    private final ItemProvider itemProvider;
+    private final DBAccess dbAccess;
+
+    @NonNull
+    private final DownloadItemSelector selectorEpisodic;
+
     @NonNull
     private final EpisodeCleanupAlgorithm cleanupAlgorithm;
     @NonNull
     private final DownloadPreferences downloadPreferences;
 
     @VisibleForTesting
-    APDownloadAlgorithm(@NonNull ItemProvider itemProvider,
+    APDownloadAlgorithm(@NonNull DBAccess dbAccess,
+                        @NonNull DownloadItemSelector selectorEpisodic,
                         @NonNull EpisodeCleanupAlgorithm cleanupAlgorithm,
                         @NonNull DownloadPreferences downloadPreferences) {
-        this.itemProvider = itemProvider;
+        this.dbAccess = dbAccess;
+        this.selectorEpisodic = selectorEpisodic;
         this.cleanupAlgorithm = cleanupAlgorithm;
         this.downloadPreferences = downloadPreferences;
     }
 
     public APDownloadAlgorithm() {
-        this.itemProvider = new ItemProviderDefaultImpl();
-        this.cleanupAlgorithm = UserPreferences.getEpisodeCleanupAlgorithm();
-        this.downloadPreferences = new DownloadPreferencesDefaultImpl();
+        this(new DBAccessDefaultImpl()
+                , new DownloadItemSelectorEpisodicImpl()
+                , UserPreferences.getEpisodeCleanupAlgorithm()
+                , new DownloadPreferencesDefaultImpl());
     }
 
     /**
@@ -102,13 +107,12 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     @VisibleForTesting
     @NonNull
     List<? extends FeedItem> getItemsToDownload(@NonNull Context context) {
-        DownloadItemSelector selector = new DownloadItemSelectorEpisodicImpl(itemProvider);
 
         List<? extends FeedItem> candidates =
-                selector.getAutoDownloadableEpisodes();
+                selectorEpisodic.getAutoDownloadableEpisodes();
 
         int autoDownloadableEpisodes = candidates.size();
-        int downloadedEpisodes = itemProvider.getNumberOfDownloadedEpisodes();
+        int downloadedEpisodes = dbAccess.getNumberOfDownloadedEpisodes();
         int deletedEpisodes = cleanupAlgorithm.makeRoomForEpisodes(context, autoDownloadableEpisodes);
         boolean cacheIsUnlimited = downloadPreferences.isCacheUnlimited();
         int episodeCacheSize = downloadPreferences.getEpisodeCacheSize();
@@ -124,22 +128,10 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     }
 
     @VisibleForTesting
-    public static class ItemProviderDefaultImpl implements ItemProvider {
+    public static class DBAccessDefaultImpl implements DBAccess {
         @Override
         public int getNumberOfDownloadedEpisodes() {
             return DBReader.getNumberOfDownloadedEpisodes();
-        }
-
-        @NonNull
-        @Override
-        public List<? extends FeedItem> getQueue() {
-            return DBReader.getQueue();
-        }
-
-        @NonNull
-        @Override
-        public List<? extends FeedItem> getNewItemsList() {
-            return DBReader.getNewItemsList();
         }
     }
 

@@ -35,7 +35,8 @@ public class APDownloadAlgorithmTest {
 
     private static final long NotAdl1 = 9; // the constant is not all cap to make test codes look more natural.
 
-    private APDownloadAlgorithm.ItemProvider stubItemProvider;
+    private APDownloadAlgorithm.DBAccess stubDBAccess;
+    private DownloadItemSelector stubSelectorEpisodic;
     private EpisodeCleanupAlgorithm stubCleanupAlgorithm;
     private APDownloadAlgorithm.DownloadPreferences stubDownloadPreferences;
 
@@ -97,7 +98,7 @@ public class APDownloadAlgorithmTest {
     // Run actual test, and comparing the result with the named expected.
     private void doTest(String msg, List<? extends FeedItem> expected) {
         APDownloadAlgorithm algorithm = new APDownloadAlgorithm(
-                stubItemProvider, stubCleanupAlgorithm, stubDownloadPreferences);
+                stubDBAccess, stubSelectorEpisodic, stubCleanupAlgorithm, stubDownloadPreferences);
         List<? extends FeedItem> actual = algorithm.getItemsToDownload(mock(Context.class));
 
         assertEquals(msg, expected, actual);
@@ -131,11 +132,18 @@ public class APDownloadAlgorithmTest {
         downloaded.addAll(itemsDownloadedAndPlayed);
         downloaded.addAll(itemsInQueue);
 
-        stubItemProvider = mock(APDownloadAlgorithm.ItemProvider.class);
-        when(stubItemProvider.getQueue()).then(answer(itemsInQueue));
-        when(stubItemProvider.getNumberOfDownloadedEpisodes()).thenReturn(downloaded.size());
-        when(stubItemProvider.getNewItemsList()).then(answer(itemsInNewList));
+        stubDBAccess = mock(APDownloadAlgorithm.DBAccess.class);
+        when(stubDBAccess.getNumberOfDownloadedEpisodes()).thenReturn(downloaded.size());
 
+        stubSelectorEpisodic = mock(DownloadItemSelector.class);
+
+        List<FeedItem> itemsInNewListAutoDownloadable = new ArrayList<>();
+        for (FeedItem item : itemsInNewList) {
+            if (item.getFeed().getPreferences().getAutoDownload()) {
+                itemsInNewListAutoDownloadable.add(item);
+            }
+        }
+        when(stubSelectorEpisodic.getAutoDownloadableEpisodes()).then(answer(itemsInNewListAutoDownloadable));
         stubCleanupAlgorithm = mock(EpisodeCleanupAlgorithm.class);
         when(stubCleanupAlgorithm.makeRoomForEpisodes(any(Context.class), anyInt()))
                 .then(invocation -> {
@@ -153,6 +161,7 @@ public class APDownloadAlgorithmTest {
         stubDownloadPreferences = mock(APDownloadAlgorithm.DownloadPreferences.class);
         when(stubDownloadPreferences.getEpisodeCacheSize()).thenReturn(cacheSize);
         when(stubDownloadPreferences.isCacheUnlimited()).thenReturn(cacheSize < 0);
+
     }
 
     private static Answer<List<? extends FeedItem>> answer(List<? extends FeedItem> result) {

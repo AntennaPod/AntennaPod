@@ -18,7 +18,6 @@ import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.storage.APDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadItemSelectorEpisodicImpl;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -96,7 +95,7 @@ public class DownloadItemSelectorEpisodicImplTest {
 
         // Now create the selector under test and exercise it
         DownloadItemSelectorEpisodicImpl selector =
-                new DownloadItemSelectorEpisodicImpl(new APDownloadAlgorithm.ItemProviderDefaultImpl());
+                new DownloadItemSelectorEpisodicImpl();
 
         List<? extends FeedItem> fiAutoDlActual =
                 selector.getAutoDownloadableEpisodes();

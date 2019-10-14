@@ -10,25 +10,19 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.storage.APDownloadAlgorithm.ItemProvider;
 
-@VisibleForTesting
+@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
 public class DownloadItemSelectorEpisodicImpl implements DownloadItemSelector {
     private static final String TAG = "DlItemSelectorEpisodic";
 
-    @NonNull
-    private final ItemProvider itemProvider;
-
-    public DownloadItemSelectorEpisodicImpl(@NonNull ItemProvider itemProvider) {
-        this.itemProvider = itemProvider;
-    }
+    public DownloadItemSelectorEpisodicImpl() { }
 
     @Override
     @NonNull
     public List<? extends FeedItem> getAutoDownloadableEpisodes() {
         List<FeedItem> candidates;
-        final List<? extends FeedItem> queue = itemProvider.getQueue();
-        final List<? extends FeedItem> newItems = itemProvider.getNewItemsList();
+        final List<? extends FeedItem> queue = DBReader.getQueue();
+        final List<? extends FeedItem> newItems = DBReader.getNewItemsList();
         candidates = new ArrayList<>(queue.size() + newItems.size());
         candidates.addAll(queue);
         for(FeedItem newItem : newItems) {
