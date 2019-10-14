@@ -249,6 +249,16 @@ public class PlaybackServiceTaskManager {
     }
 
     /**
+     * Restarts the sleep timer. If the sleep timer is not active, nothing will happen.
+     */
+    public synchronized void restartSleepTimer() {
+        if (isSleepTimerActive()) {
+            Log.d(TAG, "Restarting sleep timer");
+            sleepTimer.restart();
+        }
+    }
+
+    /**
      * Returns the current sleep timer time or 0 if the sleep timer is not active.
      */
     public synchronized long getSleepTimerTimeLeft() {
@@ -428,13 +438,15 @@ public class PlaybackServiceTaskManager {
             return timeLeft;
         }
 
-        public void onShake() {
+        public void restart() {
             postCallback(() -> {
                 setSleepTimer(waitingTime, shakeToReset, vibrate);
                 callback.onSleepTimerReset();
             });
-            shakeListener.pause();
-            shakeListener = null;
+            if (shakeListener != null) {
+                shakeListener.pause();
+                shakeListener = null;
+            }
         }
 
     }
