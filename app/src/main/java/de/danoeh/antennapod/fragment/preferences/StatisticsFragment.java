@@ -1,14 +1,9 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,10 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.StatisticsListAdapter;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -52,7 +58,9 @@ public class StatisticsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.statistics_activity, container, false);
         feedStatisticsList = root.findViewById(R.id.statistics_list);
         progressBar = root.findViewById(R.id.progressBar);
@@ -71,14 +79,27 @@ public class StatisticsFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.statistics, menu);
+        menu.findItem(R.id.statistics_reset).setEnabled(!countAll);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.statistics_mode) {
             selectStatisticsMode();
+            return true;
+        }
+        if (item.getItemId() == R.id.statistics_reset) {
+            confirmResetStatistics();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -101,9 +122,40 @@ public class StatisticsFragment extends Fragment {
             listAdapter.setCountAll(countAll);
             prefs.edit().putBoolean(PREF_COUNT_ALL, countAll).apply();
             refreshStatistics();
+            getActivity().invalidateOptionsMenu();
         });
 
         builder.show();
+    }
+
+    private void confirmResetStatistics() {
+        if (!countAll) {
+            ConfirmationDialog conDialog = new ConfirmationDialog(
+                    getActivity(),
+                    R.string.statistics_reset_data,
+                    R.string.statistics_reset_data_msg) {
+
+                @Override
+                public void onConfirmButtonPressed(DialogInterface dialog) {
+                    dialog.dismiss();
+                    doResetStatistics();
+                }
+            };
+            conDialog.createNewDialog().show();
+        }
+    }
+
+    private void doResetStatistics() {
+        progressBar.setVisibility(View.VISIBLE);
+        feedStatisticsList.setVisibility(View.GONE);
+        if (disposable != null) {
+            disposable.dispose();
+        }
+
+        disposable = Completable.fromFuture(DBWriter.resetStatistics())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::refreshStatistics, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void refreshStatistics() {
