@@ -38,7 +38,6 @@
     <string name="statistics_mode_count_all">Sum up all podcasts marked as played</string>
     <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
     <string name="statistics_reset_data">Reset statistics data</string>
-    <string name="statistics_reset_data_title">Reset statistics data</string>
     <string name="statistics_reset_data_msg">This will erase the history of duration played for all episodes. Are you sure you want to proceed?</string>
 
     <!-- Main activity -->

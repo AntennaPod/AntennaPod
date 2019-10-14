@@ -132,7 +132,7 @@ public class StatisticsFragment extends Fragment {
         if (!countAll) {
             ConfirmationDialog conDialog = new ConfirmationDialog(
                     getActivity(),
-                    R.string.statistics_reset_data_title,
+                    R.string.statistics_reset_data,
                     R.string.statistics_reset_data_msg) {
 
                 @Override
