@@ -122,7 +122,7 @@ public class APDownloadAlgorithmTest {
             item.getMedia().setFile_url("file://path/media-" + item.getId());
         }
 
-        for (FeedItem item : itemsDownloadedAndPlayed) {
+        for (FeedItem item : itemsInNewList) {
             item.setNew();
             item.getMedia().setDownloaded(false);
         }
