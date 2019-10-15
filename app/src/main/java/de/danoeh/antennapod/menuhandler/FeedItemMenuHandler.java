@@ -159,7 +159,7 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.mark_read_item:
                 selectedItem.setPlayed(true);
-                DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, false);
+                DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
                 if(GpodnetPreferences.loggedIn()) {
                     FeedMedia media = selectedItem.getMedia();
                     // not all items have media, Gpodder only cares about those that do
