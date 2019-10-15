@@ -2,15 +2,19 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 
+import androidx.collection.ArraySet;
+
 import org.junit.Test;
 import org.mockito.stubbing.Answer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
@@ -19,6 +23,8 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.FeedPreferences.AutoDeleteAction;
+import de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType;
+import de.danoeh.antennapod.core.storage.APDownloadAlgorithm.EpisodicSerialPair;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -33,10 +39,9 @@ public class APDownloadAlgorithmTest {
     private static final int CACHE_SIZE_UNLIMITED = -1;
     private static final int CACHE_SIZE_5 = 5;
 
-    private static final long NotAdl1 = 9; // the constant is not all cap to make test codes look more natural.
-
     private APDownloadAlgorithm.DBAccess stubDBAccess;
     private DownloadItemSelector stubSelectorEpisodic;
+    private DownloadItemSelector stubSelectorSerial;
     private EpisodeCleanupAlgorithm stubCleanupAlgorithm;
     private APDownloadAlgorithm.DownloadPreferences stubDownloadPreferences;
 
@@ -52,7 +57,7 @@ public class APDownloadAlgorithmTest {
     }
 
     @Test
-    public void episodic_Average_AllAutoDownloadable() {
+    public void episodic_Average() {
         withStubs(CACHE_SIZE_5,
                 fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
                 fis(fi(1,1), fi(1,2)), // played and downloaded, average
@@ -62,16 +67,6 @@ public class APDownloadAlgorithmTest {
                 fis(fi(3,1), fi(2,3)));
     }
 
-    @Test
-    public void episodic_Average_SomeNotAutoDownloadable() {
-        withStubs(CACHE_SIZE_5,
-                fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
-                fis(fi(1,1), fi(1,2)), // played and downloaded, average
-                fis(fi(3,1), fi(NotAdl1,1), fi(2,3), fi(3,2), fi(3,3)) // new list, with item not downloadable
-        );
-        doTest("Average case - some in new list not auto downloadable",
-                fis(fi(3,1), fi(2,3)));
-    }
 
     @Test
     public void episodic_CacheUnlimited() {
@@ -95,10 +90,112 @@ public class APDownloadAlgorithmTest {
                 fis(fi(3,1)));
     }
 
+    @Test
+    public void mixed_Average_1SerialFeed() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
+                fis(fi(1,1), fi(1,2)), // played and downloaded, average
+                fis(fi(3,1), fi(2,3), fi(3,2), fi(100,2), fi(3,3), fi(100,1)) // auto-Dl items (episodic and serial)
+        );
+        // episodic to serial feed ratio = 3:1, thus episode cache allocation is 4:1
+        // the serial item fi(100,1) has older pubDate, so it is ahead in the to download list
+        doTest("Mixed Average case - 1 serial feed - download both episodic and serial ones",
+                fis(fi(3,1), fi(100,1)));
+    }
+
+    @Test
+    public void mixed_Average_MultipleSerialFeeds() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3), fi(2,1)), // queue, average
+                fis(fi(1,1), fi(100,1), fi(2,2)), // played and downloaded, average
+                fis(fi(3,1), fi(2,3), fi(100,2), fi(3,3), fi(200,1), fi(1,2), fi(300,1)) // auto-Dl items (episodic and serial)
+        );
+        // episodic to serial feed ratio = 3:3, thus episode cache allocation is 3:2 (tiebreak to episodic)
+        // output:
+        // 1. choose the oldest ones (thus fi(100,2 is cut)
+        // 2. but they are sorted with pubDate descending
+        doTest("Mixed Average case - 3 serial feeds - download serial ones; no space left for episodic",
+                fis(fi(3,1), fi(200,1), fi(300,1)));
+    }
+
+    @Test
+    public void mixed_Average_CacheUnlimited() {
+        withStubs(CACHE_SIZE_UNLIMITED,
+                fis(fi(1,3), fi(2,1)), // queue, average
+                fis(fi(1,1), fi(100,1), fi(2,2)), // played and downloaded, average
+                fis(fi(3,1), fi(2,3), fi(100,2), fi(3,3), fi(200,1), fi(1,2), fi(300,1)) // auto-Dl items (episodic and serial)
+        );
+        // episodic to serial feed ratio = 3:3, thus episode cache allocation is 3:2 (tiebreak to episodic)
+        // output:
+        // 1. choose the oldest ones (thus fi(100,2 is cut)
+        // 2. but they are sorted with pubDate descending
+        doTest("Mixed , unlimited cache - download all",
+                fis(fi(3,1), fi(2,3), fi(100,2), fi(3,3), fi(200,1), fi(1,2), fi(300,1)));
+    }
+
+    @Test
+    public void mixed_Boundary_StillDownloadSerialFeed_RatioNearZero() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3), fi(2,1)), // queue, average
+                fis(fi(1,1), fi(100,1), fi(2,2)), // played and downloaded, average
+                fis(fi(3,1), fi(2,3), fi(100,3), fi(4,1), fi(5,1), fi(6,1), fi(7,1), fi(8,1),
+                        fi(9,1), fi(10,1), fi(11,1), fi(100,2)) // auto-Dl items (episodic and serial)
+        );
+        // episodic to serial feed ratio = 11:1, thus episode cache allocation is 4:1
+        // (simple rounded would make the allocation be 5:0, but we won't do it)
+        // output:
+        // 1. choose the oldest ones (thus fi(100,2 is cut)
+        // 2. but they are sorted with pubDate descending
+        doTest("Mixed Boundary case - still allocate 1 slot for serial when simple rounded ratio would make it 0",
+                fis(fi(3,1), fi(2,3), fi(100,2)));
+    }
+
+    @Test
+    public void mixed_Boundary_NotEnoughSerial() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3), fi(2,1)), // queue, average
+                fis(fi(1,1), fi(100,1), fi(2,2)), // played and downloaded, average
+                fis(fi(3,1), fi(2,3), fi(200,1), fi(3,3), fi(1,2)) // auto-Dl items (episodic and serial)
+        );
+        // episodic to serial feed ratio = 3:2,
+        // thus episode cache allocation is 3:2, space left should be 1:2
+        // but there is only 1 serial feedItem auto-downloadable
+        doTest("Mixed Boundary case - not enough serial items to download, extra space used by episodic",
+                fis(fi(3,1), fi(2,3), fi(200,1)));
+    }
+
+    @Test
+    public void mixed_Boundary_NotEnoughEpisodic() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3), fi(100,2)), // queue, average
+                fis(fi(1,1), fi(100,1), fi(2,2)), // played and downloaded, average
+                fis(fi(200,3), fi(200,2), fi(3,1), fi(200,1)) // auto-Dl items (episodic and serial)
+        );
+        // episodic to serial feed ratio = 3:2,
+        // thus episode cache allocation is 3:2, space left should be 2:1
+        // but there is only 1 episodic feedItem auto-downloadable
+        doTest("Mixed Boundary case - not enough episodic items to download, extra space used by serial",
+                fis(fi(200,2), fi(3,1), fi(200,1)));
+    }
+
+    @Test
+    public void mixed_Boundary_NotEnoughBoth() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3)), // queue, average
+                fis(fi(1,1), fi(100,1), fi(100,2), fi(2,2)), // played and downloaded, average
+                fis(fi(3,1), fi(200,1)) // auto-Dl items (episodic and serial)
+        );
+        // episodic to serial feed ratio = 3:2,
+        // thus episode cache allocation is 3:2, space left should be 2:2
+        // but there is only 1 feedItem for episodic and serial respectively
+        doTest("Mixed Boundary case - not enough items to download, extra space left unused",
+                fis(fi(3,1), fi(200,1)));
+    }
+
     // Run actual test, and comparing the result with the named expected.
     private void doTest(String msg, List<? extends FeedItem> expected) {
         APDownloadAlgorithm algorithm = new APDownloadAlgorithm(
-                stubDBAccess, stubSelectorEpisodic, stubCleanupAlgorithm, stubDownloadPreferences);
+                stubDBAccess, stubSelectorEpisodic, stubSelectorSerial, stubCleanupAlgorithm, stubDownloadPreferences);
         List<? extends FeedItem> actual = algorithm.getItemsToDownload(mock(Context.class));
 
         assertEquals(msg, expected, actual);
@@ -108,24 +205,52 @@ public class APDownloadAlgorithmTest {
     private void withStubs(int cacheSize,
                            List<? extends FeedItem> itemsInQueue,
                            List<? extends FeedItem> itemsDownloadedAndPlayed,
-                           List<? extends FeedItem> itemsInNewList
+                           List<? extends FeedItem> itemsAutoDownloadablePubDateDesc
     ) {
+        Set<Feed> feedSet = new ArraySet<>();
+
         // In the test cases, we assume all items in the queue has been downloaded (the typical case)
         for (FeedItem item : itemsInQueue) {
             item.setPlayed(false);
             item.getMedia().setDownloaded(true);
             item.getMedia().setFile_url("file://path/media-" + item.getId());
+            feedSet.add(item.getFeed());
         }
 
         for (FeedItem item : itemsDownloadedAndPlayed) {
             item.setPlayed(true);
             item.getMedia().setDownloaded(true);
             item.getMedia().setFile_url("file://path/media-" + item.getId());
+            feedSet.add(item.getFeed());
         }
 
-        for (FeedItem item : itemsInNewList) {
-            item.setNew();
+        List<FeedItem> itemsAutoDownloadableEpisodic = new ArrayList<>();
+        List<FeedItem> itemsAutoDownloadableSerial = new ArrayList<>();
+        final long pubDateBase = System.currentTimeMillis();
+        for (int i = 0; i < itemsAutoDownloadablePubDateDesc.size(); i++) {
+            final FeedItem item = itemsAutoDownloadablePubDateDesc.get(i);
             item.getMedia().setDownloaded(false);
+            item.setPubDate(new Date(pubDateBase - i * 1000)); // descending pubDate in the list
+            if (SemanticType.EPISODIC == item.getFeed().getPreferences().getSemanticType()) {
+                item.setNew();
+                itemsAutoDownloadableEpisodic.add(item);
+            } else {
+                item.setPlayed(false); // set to new is okay too
+                itemsAutoDownloadableSerial.add(item);
+            }
+            feedSet.add(item.getFeed());
+        }
+        Collections.reverse(itemsAutoDownloadableSerial); // for serial, oldest ones come first
+
+        EpisodicSerialPair episodicSerialFeedRatio;
+        {
+            int numEpisodic = 0;
+            for (Feed feed : feedSet) {
+                if (SemanticType.EPISODIC == feed.getPreferences().getSemanticType()) {
+                    numEpisodic++;
+                }
+            }
+            episodicSerialFeedRatio = new EpisodicSerialPair(numEpisodic, feedSet.size() - numEpisodic);
         }
 
         List<FeedItem> downloaded = new ArrayList<>();
@@ -134,16 +259,16 @@ public class APDownloadAlgorithmTest {
 
         stubDBAccess = mock(APDownloadAlgorithm.DBAccess.class);
         when(stubDBAccess.getNumberOfDownloadedEpisodes()).thenReturn(downloaded.size());
+        when(stubDBAccess.getDownloadedItems()).then(answer(downloaded));
+        when(stubDBAccess.getEpisodicToSerialRatio()).thenReturn(episodicSerialFeedRatio);
 
         stubSelectorEpisodic = mock(DownloadItemSelector.class);
 
-        List<FeedItem> itemsInNewListAutoDownloadable = new ArrayList<>();
-        for (FeedItem item : itemsInNewList) {
-            if (item.getFeed().getPreferences().getAutoDownload()) {
-                itemsInNewListAutoDownloadable.add(item);
-            }
-        }
-        when(stubSelectorEpisodic.getAutoDownloadableEpisodes()).then(answer(itemsInNewListAutoDownloadable));
+        when(stubSelectorEpisodic.getAutoDownloadableEpisodes()).then(answer(itemsAutoDownloadableEpisodic));
+
+        stubSelectorSerial = mock(DownloadItemSelector.class);
+        when(stubSelectorSerial.getAutoDownloadableEpisodes()).then(answer(itemsAutoDownloadableSerial));
+
         stubCleanupAlgorithm = mock(EpisodeCleanupAlgorithm.class);
         when(stubCleanupAlgorithm.makeRoomForEpisodes(any(Context.class), anyInt()))
                 .then(invocation -> {
@@ -180,26 +305,32 @@ public class APDownloadAlgorithmTest {
         final int numFeedItemsPerFeed = 3;
 
         Map<Long, Feed> feeds = new HashMap<>();
-        feeds.put(1L, feedWithItems(1, IN_AUTO_DL, numFeedItemsPerFeed));
-        feeds.put(2L, feedWithItems(2, IN_AUTO_DL, numFeedItemsPerFeed));
-        feeds.put(3L, feedWithItems(3, IN_AUTO_DL, numFeedItemsPerFeed));
-        feeds.put(NotAdl1, feedWithItems(NotAdl1, NOT_AUTO_DL, numFeedItemsPerFeed));
+        for(int i = 1; i <= 11; i++) {
+            feeds.put((long)i, feedWithItems(i, SemanticType.EPISODIC, IN_AUTO_DL, numFeedItemsPerFeed));
+        }
+
+        // convention: feed ids of 100, 200, etc. are serial feeds
+        for(int i = 1; i <= 11; i++) {
+            int feedId = i * 100;
+            feeds.put((long)feedId, feedWithItems(feedId, SemanticType.SERIAL, IN_AUTO_DL, numFeedItemsPerFeed));
+        }
 
         return feeds;
-
     }
-    private static Feed feedWithItems(long id, boolean isAutoDownload, int numFeedItems) {
-        Feed feed = feed(id, isAutoDownload);
+
+    private static Feed feedWithItems(long id, SemanticType semanticType, boolean isAutoDownload, int numFeedItems) {
+        Feed feed = feed(id, semanticType, isAutoDownload);
         for(int i = 1; i <= numFeedItems; i++) {
             feedItem(feed, 10 * id + i);
         }
         return feed;
     }
 
-    private static Feed feed(long id, boolean isAutoDownload) {
+    private static Feed feed(long id, SemanticType semanticType, boolean isAutoDownload) {
         FeedFilter filter = new FeedFilter("", "");
         FeedPreferences fPrefs = new FeedPreferences(id, isAutoDownload, AutoDeleteAction.GLOBAL, "", "");
         fPrefs.setFilter(filter);
+        fPrefs.setSemanticType(semanticType);
 
         Feed feed = FeedMother.anyFeed();
         feed.setId(id);

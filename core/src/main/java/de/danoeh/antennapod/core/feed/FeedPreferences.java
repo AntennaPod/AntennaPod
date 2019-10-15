@@ -2,8 +2,9 @@ package de.danoeh.antennapod.core.feed;
 
 import android.content.Context;
 import android.database.Cursor;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -17,6 +18,28 @@ public class FeedPreferences {
     @NonNull
     private FeedFilter filter;
     private long feedID;
+
+    /**
+     * It mirrors <code><itunes:type></code> tag to specify the nature of the feed.
+     *
+     * @see https://blog.podbean.com/2017/07/02/get-your-podcast-ready-for-ios11/
+     */
+    public enum SemanticType {
+        EPISODIC(0),
+        SERIAL(1);
+
+        public final int code;
+
+        SemanticType(int code) {
+            this.code = code;
+        }
+    }
+
+    /**
+     * The nature of the feed. Unlike Feed.type, which is the format of the feed (rss , atom, etc.)
+     */
+    private SemanticType semanticType = SemanticType.EPISODIC;
+
     private boolean autoDownload;
     private boolean keepUpdated;
 
@@ -74,6 +97,14 @@ public class FeedPreferences {
 
     public void setFilter(@NonNull FeedFilter filter) {
         this.filter = filter;
+    }
+
+    public SemanticType getSemanticType() {
+        return semanticType;
+    }
+
+    public void setSemanticType(SemanticType semanticType) {
+        this.semanticType = semanticType;
     }
 
     /**
