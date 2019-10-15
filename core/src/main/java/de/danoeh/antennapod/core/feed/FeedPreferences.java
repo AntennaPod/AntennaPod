@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.FeedSemanticTypeStorage;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 /**
@@ -33,12 +34,24 @@ public class FeedPreferences {
         SemanticType(int code) {
             this.code = code;
         }
+
+        public static SemanticType valueOf(int code) {
+            switch (code) {
+                case 0:
+                    return SemanticType.EPISODIC;
+                case 1:
+                    return SemanticType.SERIAL;
+                default:
+                    throw new IllegalArgumentException("SemanticType.valueOf(int) - Invalid code: " + code);
+            }
+        }
     }
 
     /**
      * The nature of the feed. Unlike Feed.type, which is the format of the feed (rss , atom, etc.)
      */
-    private SemanticType semanticType = SemanticType.EPISODIC;
+    @NonNull
+    private SemanticType semanticType;
 
     private boolean autoDownload;
     private boolean keepUpdated;
@@ -53,10 +66,11 @@ public class FeedPreferences {
     private String password;
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password) {
-        this(feedID, autoDownload, true, auto_delete_action, username, password, new FeedFilter());
+        this(feedID, autoDownload, true, auto_delete_action, username, password, new FeedFilter(), SemanticType.EPISODIC);
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter) {
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, String username, String password, @NonNull FeedFilter filter,
+                            @NonNull SemanticType semanticType) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -64,6 +78,7 @@ public class FeedPreferences {
         this.username = username;
         this.password = password;
         this.filter = filter;
+        this.semanticType = semanticType;
     }
 
     public static FeedPreferences fromCursor(Cursor cursor) {
@@ -85,7 +100,9 @@ public class FeedPreferences {
         String password = cursor.getString(indexPassword);
         String includeFilter = cursor.getString(indexIncludeFilter);
         String excludeFilter = cursor.getString(indexExcludeFilter);
-        return new FeedPreferences(feedId, autoDownload, autoRefresh, autoDeleteAction, username, password, new FeedFilter(includeFilter, excludeFilter));
+        SemanticType semanticType = FeedSemanticTypeStorage.getSemanticType(feedId);
+        return new FeedPreferences(feedId, autoDownload, autoRefresh, autoDeleteAction, username, password, new FeedFilter(includeFilter, excludeFilter),
+                semanticType);
     }
 
     /**

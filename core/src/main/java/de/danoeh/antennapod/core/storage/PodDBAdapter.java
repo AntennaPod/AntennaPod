@@ -13,8 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -290,6 +288,7 @@ public class PodDBAdapter {
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
+        FeedSemanticTypeStorage.init(context);
     }
 
     // Bill Pugh Singleton Implementation
@@ -338,6 +337,7 @@ public class PodDBAdapter {
             for (String tableName : ALL_TABLES) {
                 db.delete(tableName, "1", null);
             }
+            FeedSemanticTypeStorage.clearAll();
             return true;
         } finally {
             adapter.close();
@@ -399,6 +399,7 @@ public class PodDBAdapter {
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
+        FeedSemanticTypeStorage.setSemanticType(prefs.getFeedID(), prefs.getSemanticType());
     }
 
     public void setFeedItemFilter(long feedId, Set<String> filterValues) {
