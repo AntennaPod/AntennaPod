@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.database.Cursor;
+import android.text.TextUtils;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
-import android.text.TextUtils;
-import android.util.Log;
+import androidx.core.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -857,6 +859,26 @@ public final class DBReader {
         }
     }
 
+    /**
+     * Return the ratio of the number of episodic feeds to serial feeds
+     */
+    public static Pair<Integer, Integer> getFeedEpisodicToSerialRatio() {
+        int numEpisodic = 0;
+        int numSerial = 0;
+        for (Feed feed : getFeedList()) {
+            FeedPreferences fPrefs = feed.getPreferences();
+            if (!fPrefs.getAutoDownload() || !fPrefs.getKeepUpdated()) {
+                continue;
+            }
+            if (FeedPreferences.SemanticType.SERIAL == fPrefs.getSemanticType()) {
+                numSerial++;
+            } else {
+                numEpisodic++;
+            }
+        }
+        return new Pair<>(numEpisodic, numSerial);
+    }
+    
     /**
      * Searches the DB for statistics
      *

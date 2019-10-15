@@ -1,5 +1,7 @@
 package de.test.antennapod.storage;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -12,6 +14,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.Consumer;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 
 import static org.junit.Assert.assertTrue;
@@ -34,6 +37,16 @@ class DBTestUtils {
      */
     public static List<Feed> saveFeedlist(int numFeeds, int numItems, boolean withMedia,
                                           boolean withChapters, int numChapters) {
+        return saveFeedlist(numFeeds, numItems, withMedia, withChapters, numChapters, null);
+
+    }
+
+    /**
+     * Use this method when test require specific Feed Preferences
+     */
+    public static List<Feed> saveFeedlist(int numFeeds, int numItems, boolean withMedia,
+                                          boolean withChapters, int numChapters,
+                                          @Nullable Consumer<FeedPreferences> feedPreferenceCustomizer) {
         if (numFeeds <= 0) {
             throw new IllegalArgumentException("numFeeds<=0");
         }
@@ -47,7 +60,11 @@ class DBTestUtils {
         for (int i = 0; i < numFeeds; i++) {
             Feed f = new Feed(0, null, "feed " + i, null, "link" + i, "descr", null, null,
                     null, null, "id" + i, null, null, "url" + i, false, false, null, null, false);
-            f.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, null, null));
+            FeedPreferences fPrefs = new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, null, null);
+            if (feedPreferenceCustomizer != null) {
+                feedPreferenceCustomizer.accept(fPrefs);
+            }
+            f.setPreferences(fPrefs);
             f.setItems(new ArrayList<>());
             for (int j = 0; j < numItems; j++) {
                 FeedItem item = new FeedItem(0, "item " + j, "id" + j, "link" + j, new Date(),

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.util.Pair;
 
 import java.util.Collections;
 import java.util.List;
@@ -254,7 +255,8 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         @NonNull
         @Override
         public EpisodicSerialPair getEpisodicToSerialRatio() {
-            return new EpisodicSerialPair(1, 0); // TODO-1077: a new method at DB layer
+            Pair<Integer, Integer> result = DBReader.getFeedEpisodicToSerialRatio();
+            return new EpisodicSerialPair(result.first, result.second);
         }
     }
 

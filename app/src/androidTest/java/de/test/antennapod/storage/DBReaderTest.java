@@ -2,24 +2,29 @@ package de.test.antennapod.storage;
 
 import android.content.Context;
 
+import androidx.core.util.Pair;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.SmallTest;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import androidx.test.InstrumentationRegistry;
-import androidx.test.filters.LargeTest;
-import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedItemStatistics;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.Consumer;
 import de.danoeh.antennapod.core.util.LongList;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 import static org.junit.Assert.assertEquals;
@@ -311,6 +316,101 @@ public class DBReaderTest {
             assertNotNull(item.getMedia().getPlaybackCompletionDate());
             assertEquals("Wrong sort order: ", item.getId(), ids[i]);
         }
+    }
+
+    @Test
+    public void testFeedEpisodicToSerialRatio_Basic() throws Exception {
+        // setup test data
+        final int numEpisodic = 7;
+        final int numSerial = 3;
+        List<Feed> feeds = saveFeedlist(numEpisodic + numSerial, 3, true, false, 0, feedPreferences -> {
+            feedPreferences.setKeepUpdated(true);
+            feedPreferences.setAutoDownload(true);
+        });
+
+        for(int i = 0; i < numSerial; i++) {
+            updateFeedPreferences(feeds.get(i), feedPreferences -> {
+                feedPreferences.setSemanticType(FeedPreferences.SemanticType.SERIAL);
+            });
+        }
+
+        // actual test
+        Pair<Integer, Integer> actual =  DBReader.getFeedEpisodicToSerialRatio();
+        assertEquals(new Pair<>(numEpisodic, numSerial), actual);
+    }
+
+    @Test
+    public void testFeedEpisodicToSerialRatio_Boundary_AllEpisodic() throws Exception {
+        // setup test data
+        final int numEpisodic = 4;
+        final int numSerial = 0;
+        List<Feed> feeds = saveFeedlist(numEpisodic + numSerial, 3, true, false, 0, feedPreferences -> {
+            feedPreferences.setKeepUpdated(true);
+            feedPreferences.setAutoDownload(true);
+        });
+
+        // actual test
+        Pair<Integer, Integer> actual =  DBReader.getFeedEpisodicToSerialRatio();
+        assertEquals(new Pair<>(numEpisodic, numSerial), actual);
+    }
+
+    @Test
+    public void testFeedEpisodicToSerialRatio_Exclude_NonAutoDownloads() throws Exception {
+        // setup test data
+        final int numEpisodic = 7;
+        final int numSerial = 3;
+        List<Feed> feeds = saveFeedlist(numEpisodic + numSerial, 3, true, false, 0, feedPreferences -> {
+            feedPreferences.setKeepUpdated(true);
+            feedPreferences.setAutoDownload(true);
+        });
+
+        updateFeedPreferences(feeds.get(0), feedPreferences -> {
+            feedPreferences.setSemanticType(FeedPreferences.SemanticType.SERIAL);
+        });
+        updateFeedPreferences(feeds.get(2), feedPreferences -> {
+            feedPreferences.setSemanticType(FeedPreferences.SemanticType.SERIAL);
+            feedPreferences.setAutoDownload(false);
+        });
+        updateFeedPreferences(feeds.get(4), feedPreferences -> {
+            feedPreferences.setSemanticType(FeedPreferences.SemanticType.SERIAL);
+            feedPreferences.setKeepUpdated(false);
+        });
+        updateFeedPreferences(feeds.get(5), feedPreferences -> {
+            feedPreferences.setSemanticType(FeedPreferences.SemanticType.EPISODIC);
+            feedPreferences.setAutoDownload(false);
+        });
+        updateFeedPreferences(feeds.get(7), feedPreferences -> {
+            feedPreferences.setSemanticType(FeedPreferences.SemanticType.EPISODIC);
+            feedPreferences.setAutoDownload(false);
+        });
+        updateFeedPreferences(feeds.get(9), feedPreferences -> {
+            feedPreferences.setSemanticType(FeedPreferences.SemanticType.EPISODIC);
+            feedPreferences.setKeepUpdated(false);
+            feedPreferences.setAutoDownload(false);
+        });
+
+        // actual test
+        Pair<Integer, Integer> actual =  DBReader.getFeedEpisodicToSerialRatio();
+
+        assertEquals(new Pair<>(numEpisodic - 3, // 3 of episodic ones set as non auto-download
+                        numSerial - 2 // 2 of serial ones set as non auto-download
+                )
+                , actual);
+    }
+
+    // TODO-1077: do we ignore inactive feeds, i.e., old and of which the user have been listened to all?
+    // E.g., a feed A that has not been updated for a year; all episodes have been played.
+    // such feeds should be discounted in calculating the ratio.
+    //
+    // If we do ignore them, we need to differentiate them from the ongoing ones, e.g.,
+    // a feed B that has last 4 days ago; all episodes have been played.
+    // new episodes are probably coming in the (near future)
+    // we do not want to exclude such feeds
+
+    private static void updateFeedPreferences(Feed feed, Consumer<FeedPreferences> updateFunc) throws Exception {
+        FeedPreferences fPrefs = feed.getPreferences();
+        updateFunc.accept(fPrefs);
+        DBWriter.setFeedPreferences(fPrefs).get();
     }
 
     @Test
