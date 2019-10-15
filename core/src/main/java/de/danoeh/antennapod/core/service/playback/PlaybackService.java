@@ -827,6 +827,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlaybackStart(@NonNull Playable playable, int position) {
+            if (taskManager.isSleepTimerActive()) {
+                taskManager.restartSleepTimer();
+            }
             taskManager.startWidgetUpdater();
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
