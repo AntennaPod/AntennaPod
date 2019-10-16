@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.core.app.NavUtils;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -165,7 +167,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             Log.e(TAG, "feedUrl is null.");
             new AlertDialog.Builder(OnlineFeedViewActivity.this).
                     setNeutralButton(android.R.string.ok,
-                    (dialog, which) -> finish()).
+                            (dialog, which) -> finish()).
                     setTitle(R.string.error_label).
                     setMessage(R.string.null_value_podcast_error).create().show();
         } else {
@@ -215,7 +217,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
         }
-        if(dialog != null && dialog.isShowing()) {
+        if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
     }
@@ -223,13 +225,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(updater != null) {
+        if (updater != null) {
             updater.dispose();
         }
-        if(download != null) {
+        if (download != null) {
             download.dispose();
         }
-        if(parser != null) {
+        if (parser != null) {
             parser.dispose();
         }
     }
@@ -280,11 +282,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 true, null);
 
         download = Observable.fromCallable(() -> {
-                    feeds = DBReader.getFeedList();
-                    downloader = new HttpDownloader(request);
-                    downloader.call();
-                    return downloader.getResult();
-                })
+            feeds = DBReader.getFeedList();
+            downloader = new HttpDownloader(request);
+            downloader.call();
+            return downloader.getResult();
+        })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::checkDownloadResult,
@@ -322,7 +324,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(optionalResult -> {
-                    if(optionalResult.isPresent()) {
+                    if (optionalResult.isPresent()) {
                         FeedHandlerResult result = optionalResult.get();
                         beforeShowFeedInformation(result.feed);
                         showFeedInformation(result.feed, result.alternateFeedUrls);
@@ -368,7 +370,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      */
     private void beforeShowFeedInformation(Feed feed) {
         final HtmlToPlainText formatter = new HtmlToPlainText();
-        if(Feed.TYPE_ATOM1.equals(feed.getType()) && feed.getDescription() != null) {
+        if (Feed.TYPE_ATOM1.equals(feed.getType()) && feed.getDescription() != null) {
             // remove HTML tags from descriptions
             Log.d(TAG, "Removing HTML from feed description");
             Document feedDescription = Jsoup.parse(feed.getDescription());
@@ -419,11 +421,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(feed.getImageUrl())
                     .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .error(R.color.light_gray)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate())
+                            .placeholder(R.color.light_gray)
+                            .error(R.color.light_gray)
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .fitCenter()
+                            .dontAnimate())
                     .into(cover);
             Glide.with(this)
                     .load(feed.getImageUrl())
@@ -441,7 +443,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         description.setText(feed.getDescription());
 
         subscribeButton.setOnClickListener(v -> {
-            if(feedInFeedlist(feed)) {
+            if (feedInFeedlist(feed)) {
                 // feed.getId() is always 0, we have to retrieve the id from the feed list from
                 // the database
                 Intent intent = MainActivity.getIntentToOpenFeed(this, getFeedId(feed));
@@ -561,7 +563,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 setResult(RESULT_ERROR);
                 finish();
             });
-            if(dialog != null && dialog.isShowing()) {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = builder.show();
@@ -569,7 +571,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @return true if a FeedDiscoveryDialog is shown, false otherwise (e.g., due to no feed found).
      */
     private boolean showFeedDiscoveryDialog(File feedFile, String baseUrl) {
@@ -603,7 +604,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             dialog.dismiss();
             resetIntent(selectedUrl, titles.get(which));
             FeedPreferences prefs = feed.getPreferences();
-            if(prefs != null) {
+            if (prefs != null) {
                 startFeedDownload(selectedUrl, prefs.getUsername(), prefs.getPassword());
             } else {
                 startFeedDownload(selectedUrl, null, null);
@@ -617,7 +618,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .setAdapter(adapter, onClickListener);
 
         runOnUiThread(() -> {
-            if(dialog != null && dialog.isShowing()) {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = ab.show();

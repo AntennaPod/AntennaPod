@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+
 import androidx.core.view.ViewCompat;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -57,7 +59,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
 
     @Override
     protected void updatePlaybackSpeedButton() {
-        if(butPlaybackSpeed == null) {
+        if (butPlaybackSpeed == null) {
             return;
         }
         if (controller == null) {
@@ -73,7 +75,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
 
     @Override
     protected void updatePlaybackSpeedButtonText() {
-        if(butPlaybackSpeed == null) {
+        if (butPlaybackSpeed == null) {
             return;
         }
         if (controller == null) {
@@ -82,7 +84,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             return;
         }
         float speed = 1.0f;
-        if(controller.canSetPlaybackSpeed()) {
+        if (controller.canSetPlaybackSpeed()) {
             speed = PlaybackSpeedHelper.getCurrentPlaybackSpeed(controller.getMedia());
         }
         String speedStr = new DecimalFormat("0.00").format(speed);
@@ -91,14 +93,14 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
 
     @Override
     protected void setupGUI() {
-        if(isSetup.getAndSet(true)) {
+        if (isSetup.getAndSet(true)) {
             return;
         }
         super.setupGUI();
-        if(butCastDisconnect != null) {
+        if (butCastDisconnect != null) {
             butCastDisconnect.setVisibility(View.GONE);
         }
-        if(butPlaybackSpeed != null) {
+        if (butPlaybackSpeed != null) {
             butPlaybackSpeed.setOnClickListener(v -> {
                 if (controller == null) {
                     return;

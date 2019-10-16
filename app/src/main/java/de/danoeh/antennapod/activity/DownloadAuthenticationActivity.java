@@ -3,8 +3,10 @@ package de.danoeh.antennapod.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;

@@ -94,14 +94,14 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
     }
 
     /**
-      * Gets the path of the file chosen with chooseFileToImport()
-      */
+     * Gets the path of the file chosen with chooseFileToImport()
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == CHOOSE_OPML_FILE) {
             Uri uri = data.getData();
-            if(uri != null && uri.toString().startsWith("/")) {
+            if (uri != null && uri.toString().startsWith("/")) {
                 uri = Uri.parse("file://" + uri.toString());
             }
             importUri(uri);

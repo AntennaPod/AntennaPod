@@ -11,12 +11,14 @@ import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,6 +66,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -207,6 +210,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
         return activity.txtvFF;
     }
+
     private static TextView getTxtvRevFromActivity(MediaplayerActivity activity) {
         return activity.txtvRev;
     }
@@ -336,7 +340,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
         menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
 
-        boolean hasWebsiteLink = ( getWebsiteLinkWithFallback(media) != null );
+        boolean hasWebsiteLink = (getWebsiteLinkWithFallback(media) != null);
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
         boolean isItemAndHasLink = isFeedMedia &&
@@ -394,7 +398,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             if (cover != null && Build.VERSION.SDK_INT >= 16) {
                 ActivityOptionsCompat options = ActivityOptionsCompat.
                         makeSceneTransitionAnimation(MediaplayerActivity.this,
-                        cover, "coverTransition");
+                                cover, "coverTransition");
                 startActivity(intent, options.toBundle());
             } else {
                 startActivity(intent);
@@ -411,7 +415,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             isFavorite = true;
                             invalidateOptionsMenu();
                             Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
-                                 .show();
+                                    .show();
                         }
                         break;
                     case R.id.remove_from_favorites_item:
@@ -507,7 +511,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         } else if (media.getWebsiteLink() != null) {
             return media.getWebsiteLink();
         } else if (media instanceof FeedMedia) {
-            return FeedItemUtil.getLinkWithFallback(((FeedMedia)media).getItem());
+            return FeedItemUtil.getLinkWithFallback(((FeedMedia) media).getItem());
         }
         return null;
     }
@@ -556,7 +560,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     private void updateProgressbarPosition(int position, int duration) {
         Log.d(TAG, "updateProgressbarPosition(" + position + ", " + duration + ")");
-        if(sbPosition == null) {
+        if (sbPosition == null) {
             return;
         }
         float progress = ((float) position) / duration;
@@ -571,7 +575,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      */
     boolean loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
-        if(controller == null || controller.getMedia() == null) {
+        if (controller == null || controller.getMedia() == null) {
             return false;
         }
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
@@ -610,12 +614,12 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         private final int titleResourceID;
 
         /**
-         *  Constructor for skip direction enum.  Stores references to  utility functions and resource
-         *  id's that vary dependending on the direction.
+         * Constructor for skip direction enum.  Stores references to  utility functions and resource
+         * id's that vary dependending on the direction.
          *
-         * @param getPrefSecsFn Handle to function that retrieves current seconds of the skip delta
-         * @param getTextViewFn Handle to function that gets the TextView which displays the current skip delta value
-         * @param setPrefSecsFn Handle to function that sets the preference (setting) for the skip delta value (and optionally updates the button label with the current values)
+         * @param getPrefSecsFn   Handle to function that retrieves current seconds of the skip delta
+         * @param getTextViewFn   Handle to function that gets the TextView which displays the current skip delta value
+         * @param setPrefSecsFn   Handle to function that sets the preference (setting) for the skip delta value (and optionally updates the button label with the current values)
          * @param titleResourceID ID of the resource string with the title for a view
          */
         SkipDirection(Supplier<Integer> getPrefSecsFn, Function<MediaplayerActivity, TextView> getTextViewFn, Consumer<Integer> setPrefSecsFn, int titleResourceID) {
@@ -627,23 +631,24 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
 
         public int getPrefSkipSeconds() {
-            return(getPrefSecsFn.get());
+            return (getPrefSecsFn.get());
         }
 
         /**
          * Updates preferences for a forward or backward skip depending on the direction of the instance, optionally updating the UI.
          *
-         * @param seconds Number of seconds to set the preference associated with the direction of the instance.
+         * @param seconds  Number of seconds to set the preference associated with the direction of the instance.
          * @param activity MediaplyerActivity that contains textview to update the display of the skip delta setting (or null if nothing to update)
          */
         public void setPrefSkipSeconds(int seconds, @Nullable Activity activity) {
             setPrefSecsFn.accept(seconds);
 
-            if (activity != null && activity instanceof  MediaplayerActivity)  {
-                TextView tv = getTextViewFn.apply((MediaplayerActivity)activity);
+            if (activity != null && activity instanceof MediaplayerActivity) {
+                TextView tv = getTextViewFn.apply((MediaplayerActivity) activity);
                 if (tv != null) tv.setText(String.valueOf(seconds));
             }
         }
+
         public int getTitleResourceID() {
             return titleResourceID;
         }
@@ -666,7 +671,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         builder.setSingleChoiceItems(choices, checked, null);
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            int choice = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+            int choice = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
             if (choice < 0 || choice >= values.length) {
                 System.err.printf("Choice in showSkipPreference is out of bounds %d", choice);
             } else {
@@ -765,7 +770,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     void onPlayPause() {
-        if(controller == null) {
+        if (controller == null) {
             return;
         }
         controller.init();
@@ -798,7 +803,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private float prog;
 
     @Override
-    public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser) {
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (controller == null || txtvLength == null) {
             return;
         }
@@ -835,16 +840,16 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                item -> {
-                    boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
-                    if (isFavorite != isFav) {
-                        isFavorite = isFav;
-                        invalidateOptionsMenu();
-                    }
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        item -> {
+                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if (isFavorite != isFav) {
+                                isFavorite = isFav;
+                                invalidateOptionsMenu();
+                            }
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     void playExternalMedia(Intent intent, MediaType type) {

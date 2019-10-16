@@ -9,9 +9,11 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -25,25 +27,27 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
 
-/** Is show if there is now external storage available. */
+/**
+ * Is show if there is now external storage available.
+ */
 public class StorageErrorActivity extends AppCompatActivity {
 
-	private static final String TAG = "StorageErrorActivity";
+    private static final String TAG = "StorageErrorActivity";
 
     private static final String[] EXTERNAL_STORAGE_PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE };
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 42;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(UserPreferences.getTheme());
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setTheme(UserPreferences.getTheme());
+        super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.storage_error);
+        setContentView(R.layout.storage_error);
 
-		Button btnChooseDataFolder = findViewById(R.id.btnChooseDataFolder);
-		btnChooseDataFolder.setOnClickListener(v -> {
+        Button btnChooseDataFolder = findViewById(R.id.btnChooseDataFolder);
+        btnChooseDataFolder.setOnClickListener(v -> {
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT &&
                     Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 showChooseDataFolderDialog();
@@ -101,15 +105,15 @@ public class StorageErrorActivity extends AppCompatActivity {
         }
     }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		try {
-			unregisterReceiver(mediaUpdate);
-		} catch (IllegalArgumentException e) {
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(mediaUpdate);
+        } catch (IllegalArgumentException e) {
             Log.e(TAG, Log.getStackTraceString(e));
-		}
-	}
+        }
+    }
 
     // see PreferenceController.showChooseDataFolderDialog()
     private void showChooseDataFolderDialog() {
@@ -123,9 +127,9 @@ public class StorageErrorActivity extends AppCompatActivity {
                 });
     }
 
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode == Activity.RESULT_OK &&
-				requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK &&
+                requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
             String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
 
             File path;
@@ -134,50 +138,50 @@ public class StorageErrorActivity extends AppCompatActivity {
             } else {
                 path = getExternalFilesDir(null);
             }
-            if(path == null) {
+            if (path == null) {
                 return;
             }
             String message = null;
-			if(!path.exists()) {
-				message = String.format(getString(R.string.folder_does_not_exist_error), dir);
-			} else if(!path.canRead()) {
-				message = String.format(getString(R.string.folder_not_readable_error), dir);
-			} else if(!path.canWrite()) {
-				message = String.format(getString(R.string.folder_not_writable_error), dir);
-			}
+            if (!path.exists()) {
+                message = String.format(getString(R.string.folder_does_not_exist_error), dir);
+            } else if (!path.canRead()) {
+                message = String.format(getString(R.string.folder_not_readable_error), dir);
+            } else if (!path.canWrite()) {
+                message = String.format(getString(R.string.folder_not_writable_error), dir);
+            }
 
-			if(message == null) {
-				Log.d(TAG, "Setting data folder: " + dir);
-				UserPreferences.setDataFolder(dir);
-				leaveErrorState();
-			} else {
-				AlertDialog.Builder ab = new AlertDialog.Builder(this);
-				ab.setMessage(message);
-				ab.setPositiveButton(android.R.string.ok, null);
-				ab.show();
-			}
-		}
-	}
+            if (message == null) {
+                Log.d(TAG, "Setting data folder: " + dir);
+                UserPreferences.setDataFolder(dir);
+                leaveErrorState();
+            } else {
+                AlertDialog.Builder ab = new AlertDialog.Builder(this);
+                ab.setMessage(message);
+                ab.setPositiveButton(android.R.string.ok, null);
+                ab.show();
+            }
+        }
+    }
 
-	private void leaveErrorState() {
-		finish();
-		startActivity(new Intent(this, MainActivity.class));
-	}
+    private void leaveErrorState() {
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
+    }
 
-	private final BroadcastReceiver mediaUpdate = new BroadcastReceiver() {
+    private final BroadcastReceiver mediaUpdate = new BroadcastReceiver() {
 
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (TextUtils.equals(intent.getAction(), Intent.ACTION_MEDIA_MOUNTED)) {
-				if (intent.getBooleanExtra("read-only", true)) {
-					Log.d(TAG, "Media was mounted; Finishing activity");
-					leaveErrorState();
-				} else {
-					Log.d(TAG, "Media seemed to have been mounted read only");
-				}
-			}
-		}
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (TextUtils.equals(intent.getAction(), Intent.ACTION_MEDIA_MOUNTED)) {
+                if (intent.getBooleanExtra("read-only", true)) {
+                    Log.d(TAG, "Media was mounted; Finishing activity");
+                    leaveErrorState();
+                } else {
+                    Log.d(TAG, "Media seemed to have been mounted read only");
+                }
+            }
+        }
 
-	};
+    };
 
 }

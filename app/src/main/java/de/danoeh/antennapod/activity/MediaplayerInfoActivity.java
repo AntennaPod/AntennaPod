@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -16,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -63,6 +66,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -143,7 +147,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     }
 
     void saveCurrentFragment() {
-        if(pager == null) {
+        if (pager == null) {
             return;
         }
         Log.d(TAG, "Saving preferences");
@@ -156,7 +160,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if(drawerToggle != null) {
+        if (drawerToggle != null) {
             drawerToggle.onConfigurationChanged(newConfig);
         }
     }
@@ -314,12 +318,12 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if(v.getId() != R.id.nav_list) {
+        if (v.getId() != R.id.nav_list) {
             return;
         }
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int position = adapterInfo.position;
-        if(position < navAdapter.getSubscriptionOffset()) {
+        if (position < navAdapter.getSubscriptionOffset()) {
             return;
         }
         MenuInflater inflater = getMenuInflater();
@@ -333,11 +337,11 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     public boolean onContextItemSelected(MenuItem item) {
         final int position = mPosition;
         mPosition = -1; // reset
-        if(position < 0) {
+        if (position < 0) {
             return false;
         }
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.remove_all_new_flags_item:
                 DBWriter.removeFeedNewFlag(feed.getId());
                 return true;
@@ -364,7 +368,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
                                         media.getItem().getFeed().getId() == feed.getId()) {
                                     Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
                                     remover.skipOnCompletion = true;
-                                    if(controller.getStatus() == PlayerStatus.PLAYING) {
+                                    if (controller.getStatus() == PlayerStatus.PLAYING) {
                                         IntentUtils.sendLocalBroadcast(MediaplayerInfoActivity.this, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
                                     }
                                 }
@@ -382,7 +386,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     @Override
     public void onBackPressed() {
-        if(isDrawerOpen()) {
+        if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
         } else if (pager == null || pager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
@@ -507,11 +511,11 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         @Override
         public int getFeedCounterSum() {
-            if(navDrawerData == null) {
+            if (navDrawerData == null) {
                 return 0;
             }
             int sum = 0;
-            for(int counter : navDrawerData.feedCounters.values()) {
+            for (int counter : navDrawerData.feedCounters.values()) {
                 sum += counter;
             }
             return sum;

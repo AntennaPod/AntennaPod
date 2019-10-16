@@ -11,9 +11,12 @@ import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,6 +24,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -41,6 +45,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
@@ -151,7 +156,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             findViewById(R.id.shadow).setVisibility(View.GONE);
             int elevation = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
                     getResources().getDisplayMetrics());
-            getSupportActionBar().setElevation(elevation);
+            Objects.requireNonNull(getSupportActionBar()).setElevation(elevation);
         }
 
         currentTitle = getTitle();
@@ -170,8 +175,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         final FragmentManager fm = getSupportFragmentManager();
 
         fm.addOnBackStackChangedListener(() -> drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0));
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navAdapter = new NavListAdapter(itemAccess, this);
@@ -221,10 +225,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     }
 
     private void saveLastNavFragment(String tag) {
-        Log.d(TAG, "saveLastNavFragment(tag: " + tag +")");
+        Log.d(TAG, "saveLastNavFragment(tag: " + tag + ")");
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
-        if(tag != null) {
+        if (tag != null) {
             edit.putString(PREF_LAST_FRAGMENT_TAG, tag);
         } else {
             edit.remove(PREF_LAST_FRAGMENT_TAG);
@@ -339,7 +343,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     }
 
     private void loadFeedFragmentByPosition(int relPos, Bundle args) {
-        if(relPos < 0) {
+        if (relPos < 0) {
             return;
         }
         Feed feed = itemAccess.getItem(relPos);
@@ -348,7 +352,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     public void loadFeedFragmentById(long feedId, Bundle args) {
         Fragment fragment = FeedItemlistFragment.newInstance(feedId);
-        if(args != null) {
+        if (args != null) {
             fragment.setArguments(args);
         }
         saveLastNavFragment(String.valueOf(feedId));
@@ -388,10 +392,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 break;
             case FLIP:
                 transaction.setCustomAnimations(
-                    R.anim.card_flip_left_in,
-                    R.anim.card_flip_left_out,
-                    R.anim.card_flip_right_in,
-                    R.anim.card_flip_right_out);
+                        R.anim.card_flip_left_in,
+                        R.anim.card_flip_left_out,
+                        R.anim.card_flip_right_in,
+                        R.anim.card_flip_right_out);
                 break;
         }
 
@@ -412,14 +416,14 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     private int getSelectedNavListIndex() {
         String currentFragment = getLastNavFragment();
-        if(currentFragment == null) {
+        if (currentFragment == null) {
             // should not happen, but better safe than sorry
             return -1;
         }
         int tagIndex = navAdapter.getTags().indexOf(currentFragment);
-        if(tagIndex >= 0) {
+        if (tagIndex >= 0) {
             return tagIndex;
-        } else if(ArrayUtils.contains(NAV_DRAWER_TAGS, currentFragment)) {
+        } else if (ArrayUtils.contains(NAV_DRAWER_TAGS, currentFragment)) {
             // the fragment was just hidden
             return -1;
         } else { // last fragment was not a list, but a feed
@@ -450,7 +454,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private final AdapterView.OnItemLongClickListener newListLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-            if(position < navAdapter.getTags().size()) {
+            if (position < navAdapter.getTags().size()) {
                 showDrawerPreferencesDialog();
                 return true;
             } else {
@@ -523,7 +527,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         if (disposable != null) {
             disposable.dispose();
         }
-        if(pd != null) {
+        if (pd != null) {
             pd.dismiss();
         }
     }
@@ -583,12 +587,12 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if(v.getId() != R.id.nav_list) {
+        if (v.getId() != R.id.nav_list) {
             return;
         }
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         int position = adapterInfo.position;
-        if(position < navAdapter.getSubscriptionOffset()) {
+        if (position < navAdapter.getSubscriptionOffset()) {
             return;
         }
         MenuInflater inflater = getMenuInflater();
@@ -603,11 +607,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public boolean onContextItemSelected(MenuItem item) {
         final int position = mPosition;
         mPosition = -1; // reset
-        if(position < 0) {
+        if (position < 0) {
             return false;
         }
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.remove_all_new_flags_item:
                 ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(this,
                         R.string.remove_all_new_flags_label,
@@ -641,7 +645,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                     @Override
                     protected void onPostExecute(Void result) {
                         super.onPostExecute(result);
-                        if(getSelectedNavListIndex() == position) {
+                        if (getSelectedNavListIndex() == position) {
                             loadFragment(EpisodesFragment.TAG, null);
                         }
                     }
@@ -659,7 +663,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                             Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
                             remover.skipOnCompletion = true;
                             int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
-                            if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
+                            if (playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                                 IntentUtils.sendLocalBroadcast(MainActivity.this, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
                             }
                         }
@@ -686,11 +690,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                     break;
                 case SHOW_PROMPT:
                     new AlertDialog.Builder(this)
-                        .setMessage(R.string.close_prompt)
-                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> MainActivity.super.onBackPressed())
-                        .setNegativeButton(R.string.no, null)
-                        .setCancelable(false)
-                        .show();
+                            .setMessage(R.string.close_prompt)
+                            .setPositiveButton(R.string.yes, (dialogInterface, i) -> MainActivity.super.onBackPressed())
+                            .setNegativeButton(R.string.no, null)
+                            .setCancelable(false)
+                            .show();
                     break;
                 case DOUBLE_TAP:
                     if (lastBackButtonPressTime < System.currentTimeMillis() - 2000) {
@@ -707,7 +711,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                         loadFragment(UserPreferences.getBackButtonGoToPage(), null);
                     }
                     break;
-                default: super.onBackPressed();
+                default:
+                    super.onBackPressed();
             }
         }
     }
@@ -766,11 +771,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         @Override
         public int getFeedCounterSum() {
-            if(navDrawerData == null) {
+            if (navDrawerData == null) {
                 return 0;
             }
             int sum = 0;
-            for(int counter : navDrawerData.feedCounters.values()) {
+            for (int counter : navDrawerData.feedCounters.values()) {
                 sum += counter;
             }
             return sum;
@@ -798,7 +803,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         // we are only interested in the number of queue items, not download status or position
-        if(event.action == QueueEvent.Action.DELETED_MEDIA ||
+        if (event.action == QueueEvent.Action.DELETED_MEDIA ||
                 event.action == QueueEvent.Action.SORTED ||
                 event.action == QueueEvent.Action.MOVED) {
             return;
@@ -811,7 +816,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         Log.d(TAG, "onEvent(" + event + ")");
         View parentLayout = findViewById(R.id.drawer_layout);
         Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
-        if(event.action != null) {
+        if (event.action != null) {
             snackbar.setAction(getString(R.string.undo), v -> event.action.run());
         }
         snackbar.show();
@@ -842,7 +847,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 loadFragment(index, args);
             } else if (tag != null) {
                 loadFragment(tag, args);
-            } else if(feedId > 0) {
+            } else if (feedId > 0) {
                 loadFeedFragmentById(feedId, args);
             }
         }

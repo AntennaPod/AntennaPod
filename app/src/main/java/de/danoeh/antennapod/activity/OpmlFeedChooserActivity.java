@@ -2,7 +2,9 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,7 +59,7 @@ public class OpmlFeedChooserActivity extends AppCompatActivity {
                     checkedCount++;
                 }
             }
-            if(checkedCount == listAdapter.getCount()) {
+            if (checkedCount == listAdapter.getCount()) {
                 selectAll.setVisible(false);
                 deselectAll.setVisible(true);
             } else {

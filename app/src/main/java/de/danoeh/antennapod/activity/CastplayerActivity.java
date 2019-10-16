@@ -43,7 +43,7 @@ public class CastplayerActivity extends MediaplayerInfoActivity {
 
     @Override
     protected void setupGUI() {
-        if(isSetup.getAndSet(true)) {
+        if (isSetup.getAndSet(true)) {
             return;
         }
         super.setupGUI();

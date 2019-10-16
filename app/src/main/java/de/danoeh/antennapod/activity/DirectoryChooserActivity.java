@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileObserver;
+
 import androidx.core.app.NavUtils;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,7 +53,9 @@ public class DirectoryChooserActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> listDirectoriesAdapter;
     private ArrayList<String> filenames;
-    /** The directory that is currently being shown. */
+    /**
+     * The directory that is currently being shown.
+     */
     private File selectedDir;
     private File[] filesInDir;
 
@@ -169,9 +173,8 @@ public class DirectoryChooserActivity extends AppCompatActivity {
 
     /**
      * Change the directory that is currently being displayed.
-     * 
-     * @param dir
-     *            The file the activity should switch to. This File must be
+     *
+     * @param dir The file the activity should switch to. This File must be
      *            non-null and a directory, otherwise the displayed directory
      *            will not be changed
      */
@@ -226,14 +229,18 @@ public class DirectoryChooserActivity extends AppCompatActivity {
         }
     }
 
-    /** Refresh the contents of the directory that is currently shown. */
+    /**
+     * Refresh the contents of the directory that is currently shown.
+     */
     private void refreshDirectory() {
         if (selectedDir != null) {
             changeDirectory(selectedDir);
         }
     }
 
-    /** Sets up a FileObserver to watch the current directory. */
+    /**
+     * Sets up a FileObserver to watch the current directory.
+     */
     private FileObserver createFileObserver(String path) {
         return new FileObserver(path, FileObserver.CREATE | FileObserver.DELETE
                 | FileObserver.MOVED_FROM | FileObserver.MOVED_TO) {
@@ -264,18 +271,18 @@ public class DirectoryChooserActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        case R.id.new_folder_item:
-            openNewFolderDialog();
-            return true;
-        case R.id.set_to_default_folder_item:
-            selectedDir = null;
-            returnSelectedFolder();
-            return true;
-        default:
-            return false;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            case R.id.new_folder_item:
+                openNewFolderDialog();
+                return true;
+            case R.id.set_to_default_folder_item:
+                selectedDir = null;
+                returnSelectedFolder();
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -325,7 +332,9 @@ public class DirectoryChooserActivity extends AppCompatActivity {
         }
     }
 
-    /** Returns true if the selected file or directory would be valid selection. */
+    /**
+     * Returns true if the selected file or directory would be valid selection.
+     */
     private boolean isValidFile(File file) {
         return file != null && file.isDirectory() && file.canRead() && file.canWrite();
     }

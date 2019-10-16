@@ -6,8 +6,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.core.view.WindowCompat;
 import androidx.appcompat.app.ActionBar;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -98,7 +100,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    public void onUserLeaveHint () {
+    public void onUserLeaveHint() {
         if (!PictureInPictureUtil.isInPictureInPictureMode(this) && UserPreferences.getVideoBackgroundBehavior()
                 == UserPreferences.VideoBackgroundBehavior.PICTURE_IN_PICTURE) {
             compatEnterPictureInPicture();

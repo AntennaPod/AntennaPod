@@ -7,10 +7,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -130,6 +133,7 @@ public class ImportExportActivity extends AppCompatActivity {
     }
 
     private static final byte[] SQLITE3_MAGIC = "SQLite format 3\0".getBytes();
+
     private boolean validateDB(Uri inputUri) throws IOException {
         try (InputStream inputStream = getContentResolver().openInputStream(inputUri)) {
             byte[] magicBuf = new byte[SQLITE3_MAGIC.length];

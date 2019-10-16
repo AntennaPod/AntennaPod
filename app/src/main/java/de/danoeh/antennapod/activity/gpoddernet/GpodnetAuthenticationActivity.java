@@ -95,10 +95,9 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -381,7 +380,7 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
                 } else {
                     setupDeviceView(view);
                 }
-            } else if (currentStep == STEP_DEVICE) {
+            } else {
                 if (selectedDevice == null) {
                     throw new IllegalStateException("Device must not be null here");
                 } else {

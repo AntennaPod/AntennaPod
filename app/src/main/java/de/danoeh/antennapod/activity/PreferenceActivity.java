@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.activity;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceFragmentCompat;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;

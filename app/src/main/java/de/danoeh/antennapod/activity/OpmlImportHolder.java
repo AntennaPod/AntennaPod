@@ -14,7 +14,8 @@ import de.danoeh.antennapod.core.export.opml.OpmlElement;
  */
 public class OpmlImportHolder {
 
-    private OpmlImportHolder(){}
+    private OpmlImportHolder() {
+    }
 
     private static ArrayList<OpmlElement> readElements;
 

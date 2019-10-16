@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 /**
  * Displays the 'crash report' screen
@@ -27,7 +28,7 @@ public class BugReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         setContentView(R.layout.bug_report);
 
         TextView crashDetailsText = findViewById(R.id.crash_report_logs);

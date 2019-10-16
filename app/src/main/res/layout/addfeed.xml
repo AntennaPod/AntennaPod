@@ -92,7 +92,8 @@
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:hint="@string/etxtFeedurlHint"
-                        android:inputType="textUri"/>
+                        android:inputType="textUri"
+                        />
 
                 <Button
                         android:id="@+id/butConfirm"
