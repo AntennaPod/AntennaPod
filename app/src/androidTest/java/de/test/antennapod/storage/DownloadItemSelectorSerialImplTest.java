@@ -150,10 +150,7 @@ public class DownloadItemSelectorSerialImplTest {
                 cFI(UNPLAYED)); // in-progress, to be set later
         FeedsAccessor a = saveFeeds(f0, f1, f2, f3, f4, f5, f6);
         { // mark fi(1,0) as downloaded, so the feed will be pushed to the end
-            FeedMedia fmDownloaded =  a.fi(1, 0).getMedia();
-            fmDownloaded.setFile_url("file://downloaded.mp3"); // MUST set, or setDownloaded will be useless
-            fmDownloaded.setDownloaded(true);
-            DBWriter.setFeedMedia(fmDownloaded).get();
+            setDownloaded(a.fi(1,0));
         }
         { // ensure fi(3,2) is the ongoing one (with the most recent played timestamp)
             // also set the last playback time for some media to be more realistic
@@ -263,13 +260,22 @@ public class DownloadItemSelectorSerialImplTest {
     private void setLastPlaybackTimeDescending(FeedItem... feedItems) throws Exception {
         final long lastPlaybackTimeBase = System.currentTimeMillis() + 1000 * feedItems.length;
 
-        for (int i =0; i < feedItems.length; i++) {
+        for (int i = 0; i < feedItems.length; i++) {
             FeedItem item = feedItems[i];
             FeedMedia media = item.getMedia();
             media.setLastPlayedTime(lastPlaybackTimeBase - i * 1000);
             if (item.isPlayed()) {
                 media.setPlaybackCompletionDate(new Date(lastPlaybackTimeBase - i * 1000));
             }
+            DBWriter.setFeedMedia(media).get();
+        }
+    }
+
+    private void setDownloaded(FeedItem... feedItems) throws Exception {
+        for (FeedItem feedItem : feedItems) {
+            FeedMedia media = feedItem.getMedia();
+            media.setFile_url("file://downloaded.mp3"); // MUST set, or setDownloaded will be useless
+            media.setDownloaded(true);
             DBWriter.setFeedMedia(media).get();
         }
     }

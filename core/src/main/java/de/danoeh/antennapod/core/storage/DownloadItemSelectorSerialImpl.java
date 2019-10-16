@@ -42,7 +42,7 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
                 excludeNonAutoDownloadables(getSerialFeedsOrderedByDownloadOrder());
 
         Set<Long> feedIdsWithDownloadedMedia = new ArraySet<>();
-        for(FeedItem item : DBReader.getDownloadedItems()) {
+        for (FeedItem item : DBReader.getDownloadedItems()) {
             feedIdsWithDownloadedMedia.add(item.getFeedId());
         }
 
@@ -141,7 +141,7 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
         }
 
         int idxLatestPlayedOrInProgress = -1;
-        for(int i = feedItems.size() - 1; i >= 0; i--) {
+        for (int i = feedItems.size() - 1; i >= 0; i--) {
             FeedItem item = feedItems.get(i);
             FeedMedia media = item.getMedia();
             if (item.isPlayed() ||
@@ -164,7 +164,7 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
 
     @Nullable
     private static FeedItem firstNonDownloadedItem(List<? extends FeedItem> feedItems, int startIdx) {
-        for(int i = startIdx; i < feedItems.size(); i++) {
+        for (int i = startIdx; i < feedItems.size(); i++) {
             FeedItem fi = feedItems.get(i);
             FeedMedia media = fi.getMedia();
             if (media != null && !media.isDownloaded()) {

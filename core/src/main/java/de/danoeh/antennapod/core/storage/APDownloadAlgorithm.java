@@ -103,7 +103,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                 List<? extends FeedItem> itemsToDownloadList = getItemsToDownload(context);
 
                 FeedItem[] itemsToDownload = itemsToDownloadList
-                        .toArray(new FeedItem[itemsToDownloadList.size()]);
+                        .toArray(new FeedItem[0]);
 
                 Log.d(TAG, "Enqueueing " + itemsToDownload.length + " items for download");
 
@@ -253,6 +253,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     Math.min(this.serial, other.serial));
         }
 
+        @NonNull
         @Override
         public String toString() {
             return toString(episodic, serial);

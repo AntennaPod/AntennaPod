@@ -909,6 +909,7 @@ public final class DBReader {
     /**
      * Return the ratio of the number of episodic feeds to serial feeds
      */
+    @NonNull
     public static Pair<Integer, Integer> getFeedEpisodicToSerialRatio() {
         int numEpisodic = 0;
         int numSerial = 0;

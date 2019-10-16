@@ -328,7 +328,7 @@ public class DBReaderTest {
             feedPreferences.setAutoDownload(true);
         });
 
-        for(int i = 0; i < numSerial; i++) {
+        for (int i = 0; i < numSerial; i++) {
             updateFeedPreferences(feeds.get(i), feedPreferences -> {
                 feedPreferences.setSemanticType(FeedPreferences.SemanticType.SERIAL);
             });

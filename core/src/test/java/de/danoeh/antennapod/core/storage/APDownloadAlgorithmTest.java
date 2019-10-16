@@ -314,7 +314,7 @@ public class APDownloadAlgorithmTest {
                     int amountOfRoomNeeded = invocation.getArgumentAt(1, Integer.class);
                     int numItemsToDelete = Math.min(maxNumToCleanup,
                             Math.min(amountOfRoomNeeded, itemsDownloadedAndPlayed.size()));
-                    for(int i = 0; i < numItemsToDelete; i++) {
+                    for (int i = 0; i < numItemsToDelete; i++) {
                         // here we assume that in the downloaded list
                         // the items played are at the head of the list, that can be cleaned-up
                         downloaded.remove(0);
@@ -345,12 +345,12 @@ public class APDownloadAlgorithmTest {
         final int numFeedItemsPerFeed = 3;
 
         Map<Long, Feed> feeds = new HashMap<>();
-        for(int i = 1; i <= 11; i++) {
+        for (int i = 1; i <= 11; i++) {
             feeds.put((long)i, feedWithItems(i, SemanticType.EPISODIC, IN_AUTO_DL, numFeedItemsPerFeed));
         }
 
         // convention: feed ids of 100, 200, etc. are serial feeds
-        for(int i = 1; i <= 11; i++) {
+        for (int i = 1; i <= 11; i++) {
             int feedId = i * 100;
             feeds.put((long)feedId, feedWithItems(feedId, SemanticType.SERIAL, IN_AUTO_DL, numFeedItemsPerFeed));
         }
@@ -360,7 +360,7 @@ public class APDownloadAlgorithmTest {
 
     private static Feed feedWithItems(long id, SemanticType semanticType, boolean isAutoDownload, int numFeedItems) {
         Feed feed = feed(id, semanticType, isAutoDownload);
-        for(int i = 1; i <= numFeedItems; i++) {
+        for (int i = 1; i <= numFeedItems; i++) {
             feedItem(feed, 10 * id + i);
         }
         return feed;
