@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.Feed;
@@ -52,12 +53,6 @@ public class DownloadItemSelectorSerialImplTest {
 
     }
 
-    /*
-    Test cases: TODO-1077a:
-    - no serial feeds
-    - no serial feeds with anything available
-     */
-    
     @Test
     public void basic_Initial() throws Exception {
         // - 3 serial ones, 3 items each, all unplayed
@@ -78,7 +73,7 @@ public class DownloadItemSelectorSerialImplTest {
         FeedsAccessor a = saveFeeds(f0, f1, f2, f3, f4);
 
         List<Long> expected = toIds(a.fi(1, 0), a.fi(2, 0), a.fi(3, 0));
-        
+
         // Run actual test
 
         // Now create the selector under test and exercise it
@@ -191,5 +186,43 @@ public class DownloadItemSelectorSerialImplTest {
         List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
         assertEquals("Basic, ongoing case -  It returns: " + fiActual,
                 expected, toIds(fiActual));
+    }
+
+    @Test
+    public void boundary_noSerialFeed() throws Exception {
+        Feed f0 = createFeed(0, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED));
+        Feed f1 = createFeed(1, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED));
+        FeedsAccessor a = saveFeeds(f0, f1);
+
+        // Now create the selector under test and exercise it
+        DownloadItemSelectorSerialImpl selector = new DownloadItemSelectorSerialImpl();
+        List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
+        assertEquals("Basic, no serial feed -  It returns: " + fiActual,
+                Collections.emptyList(), toIds(fiActual));
+
+    }
+
+    @Test
+    public void boundary_noSerialFeedWithDownloadables() throws Exception {
+        Feed f0 = createFeed(0, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED));
+        Feed f1 = createFeed(1, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED), // but downloaded (to be set later)
+                cFI(PLAYED));
+        FeedsAccessor a = saveFeeds(f0, f1);
+        { // mark fi(1,0) as downloaded, so the feed will be pushed to the end
+            FeedMedia fmDownloaded =  a.fi(1, 0).getMedia();
+            fmDownloaded.setFile_url("file://downloaded.mp3"); // MUST set, or setDownloaded will be useless
+            fmDownloaded.setDownloaded(true);
+            DBWriter.setFeedMedia(fmDownloaded).get();
+        }
+
+        // Now create the selector under test and exercise it
+        DownloadItemSelectorSerialImpl selector = new DownloadItemSelectorSerialImpl();
+        List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
+        assertEquals("Basic, no serial feed with downloadables -  It returns: " + fiActual,
+                Collections.emptyList(), toIds(fiActual));
     }
 }
