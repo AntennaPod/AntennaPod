@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.Feed;
@@ -139,8 +140,10 @@ public class DownloadItemSelectorSerialImplTest {
         Feed f4 = createFeed(4, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
                 cFI(UNPLAYED), cFI(UNPLAYED), cFI(UNPLAYED));
         Feed f5 = createFeed(5, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
-                cFI(UNPLAYED));
-        FeedsAccessor a = saveFeeds(f0, f1, f2, f3, f4, f5);
+                cFI(PLAYED), cFI(PLAYED)); // played time to be set later
+        Feed f6 = createFeed(6, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED)); // in-progress, to be set later
+        FeedsAccessor a = saveFeeds(f0, f1, f2, f3, f4, f5, f6);
         { // mark fi(1,0) as downloaded, so the feed will be pushed to the end
             FeedMedia fmDownloaded =  a.fi(1, 0).getMedia();
             fmDownloaded.setFile_url("file://downloaded.mp3"); // MUST set, or setDownloaded will be useless
@@ -148,9 +151,8 @@ public class DownloadItemSelectorSerialImplTest {
             DBWriter.setFeedMedia(fmDownloaded).get();
         }
         { // ensure fi(3,2) is the ongoing one (with the most recent played timestamp)
-            FeedMedia fmOngoing = a.fi(3, 2).getMedia();
-            fmOngoing .setLastPlayedTime(System.currentTimeMillis() + 100);
-            DBWriter.setFeedMedia(fmOngoing).get();
+            // also set the last playback time for some media to be more realistic
+            setLastPlaybackTimeDescending(a.fi(5,1), a.fi(6,0), a.fi(5,0), a.fi(3,2), a.fi(0,0));
         }
 
         List<Long> expected = toIds(a.fi(4, 0), a.fi(2, 0), a.fi(3, 3), a.fi(1,1));
@@ -224,5 +226,19 @@ public class DownloadItemSelectorSerialImplTest {
         List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
         assertEquals("Basic, no serial feed with downloadables -  It returns: " + fiActual,
                 Collections.emptyList(), toIds(fiActual));
+    }
+
+    private void setLastPlaybackTimeDescending(FeedItem... feedItems) throws Exception {
+        final long lastPlaybackTimeBase = System.currentTimeMillis() + 1000 * feedItems.length;
+
+        for (int i =0; i < feedItems.length; i++) {
+            FeedItem item = feedItems[i];
+            FeedMedia media = item.getMedia();
+            media.setLastPlayedTime(lastPlaybackTimeBase - i * 1000);
+            if (item.isPlayed()) {
+                media.setPlaybackCompletionDate(new Date(lastPlaybackTimeBase - i * 1000));
+            }
+            DBWriter.setFeedMedia(media).get();
+        }
     }
 }

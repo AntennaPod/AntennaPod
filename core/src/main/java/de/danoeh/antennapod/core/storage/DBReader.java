@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
+import androidx.collection.ArraySet;
 import androidx.core.util.Pair;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -493,17 +495,23 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
+        Set<Long> episodicFeedIdsSeen = new ArraySet<>();
         Cursor itemIdFeedIdCursor = null;
         try {
             itemIdFeedIdCursor = adapter.getItemIdFeedIdCursorByLastPlayedDescending();
             while(itemIdFeedIdCursor.moveToNext()) {
                 long itemId = itemIdFeedIdCursor.getLong(0);
                 long feedId = itemIdFeedIdCursor.getLong(1);
-                // TODO-1077a: avoid multiple reads of feed by caching
+
+                if (episodicFeedIdsSeen.contains(feedId)) {
+                    continue; // already know it is an episodic one, ignore it.
+                }
                 Feed feed = getFeed(feedId, adapter);
                 if (SemanticType.SERIAL == feed.getPreferences().getSemanticType()) {
                     result = getFeedItem(itemId, adapter);
                     break;
+                } else {
+                    episodicFeedIdsSeen.add(feedId);
                 }
             }
         } finally {
