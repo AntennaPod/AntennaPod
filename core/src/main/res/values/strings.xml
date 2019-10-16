@@ -376,6 +376,8 @@
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones Disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
+    <string name="pref_stream_over_download_title">Prefer Streaming</string>
+    <string name="pref_stream_over_download_sum">Display stream button instead of download button in lists.</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Select what should be allowed over the mobile data connection</string>
     <string name="pref_mobileUpdate_refresh">Feed refresh</string>
