@@ -498,6 +498,8 @@ public final class DBReader {
         Set<Long> episodicFeedIdsSeen = new ArraySet<>();
         Cursor itemIdFeedIdCursor = null;
         try {
+            // TODO-1077: once serial settings is saved in db, consider to
+            // use it to filter directly with SQL to avoid getFeed() calls
             itemIdFeedIdCursor = adapter.getItemIdFeedIdCursorByLastPlayedDescending();
             while(itemIdFeedIdCursor.moveToNext()) {
                 long itemId = itemIdFeedIdCursor.getLong(0);

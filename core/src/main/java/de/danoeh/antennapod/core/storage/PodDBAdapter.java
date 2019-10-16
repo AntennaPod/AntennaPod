@@ -1043,16 +1043,17 @@ public class PodDBAdapter {
     }
 
     /**
-     * Returns a cursor of feed media objects ordered by last played time descending
+     * Returns a cursor of (itemId, feedId) ordered by last played time descending
      */
     public final Cursor getItemIdFeedIdCursorByLastPlayedDescending() {
         return db.rawQuery(
-                "SELECT fi.id, fi.feed\n" +
-                "  FROM FeedItems fi INNER JOIN FeedMedia fm ON fi.id = fm.feedItem\n" +
-                " WHERE fm.last_played_time > 0\n" +
-                " ORDER BY fm.last_played_time DESC",
+                "SELECT fi." + KEY_ID + ", fi." + KEY_FEED +"\n" +
+                "  FROM " + TABLE_NAME_FEED_ITEMS + " fi INNER JOIN " + TABLE_NAME_FEED_MEDIA + " fm\n" +
+                "    ON fi." + KEY_ID + " = fm." + KEY_FEEDITEM + "\n" +
+                " WHERE fm." + KEY_LAST_PLAYED_TIME + " > 0\n" +
+                " ORDER BY fm." + KEY_LAST_PLAYED_TIME + " DESC",
                 null
-        ); // TODO-1077a: use constants
+        );
     }
 
     public final Cursor getSingleFeedMediaCursor(long id) {
