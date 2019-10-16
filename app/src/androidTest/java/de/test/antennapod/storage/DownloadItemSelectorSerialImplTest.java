@@ -140,7 +140,10 @@ public class DownloadItemSelectorSerialImplTest {
                 cFI(NEW) // the one to be picked, new flag
         );
         Feed f4 = createFeed(4, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
-                cFI(UNPLAYED), cFI(UNPLAYED), cFI(UNPLAYED));
+                cFI(UNPLAYED),
+                cFI(PLAYED), // marked as played, but not really played
+                cFI(UNPLAYED) // next to download should be this one, after the marked as played
+        );
         Feed f5 = createFeed(5, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
                 cFI(PLAYED), cFI(PLAYED)); // played time to be set later
         Feed f6 = createFeed(6, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
@@ -157,7 +160,7 @@ public class DownloadItemSelectorSerialImplTest {
             setLastPlaybackTimeDescending(a.fi(5,1), a.fi(6,0), a.fi(5,0), a.fi(3,2), a.fi(0,0));
         }
 
-        List<Long> expected = toIds(a.fi(4, 0), a.fi(2, 0), a.fi(3, 3), a.fi(1,1));
+        List<Long> expected = toIds(a.fi(4, 2), a.fi(2, 0), a.fi(3, 3), a.fi(1,1));
 
         // Run actual test
 
@@ -184,6 +187,11 @@ public class DownloadItemSelectorSerialImplTest {
             FeedItem nextToDownload = selector.getNextItemToDownloadForSerial(f1);
             assertEquals("getNextItemToDownloadForSerial() - skip downloaded",
                     a.fi(1,1), nextToDownload);
+        }
+        {
+            FeedItem nextToDownload = selector.getNextItemToDownloadForSerial(f4);
+            assertEquals("getNextItemToDownloadForSerial() - the one after the marked as played one",
+                    a.fi(4,2), nextToDownload);
         }
 
         // Test overall
