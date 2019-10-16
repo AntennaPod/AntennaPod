@@ -3,16 +3,19 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.preference.SwitchPreference;
+import android.util.Log;
+
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
-import android.util.Log;
+import androidx.preference.SwitchPreference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -67,6 +70,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     setupAutoDeletePreference();
                     setupAuthentificationPreference();
                     setupEpisodeFilterPreference();
+                    setupSemanticTypePreference();
 
                     updateAutoDeleteSummary();
                     updateAutoDownloadEnabled();
@@ -172,6 +176,19 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             boolean checked = newValue == Boolean.TRUE;
             feedPreferences.setKeepUpdated(checked);
+            feed.savePreferences();
+            pref.setChecked(checked);
+            return false;
+        });
+    }
+
+    private void setupSemanticTypePreference() {
+        SwitchPreference pref = (SwitchPreference) findPreference("semanticType");
+
+        pref.setChecked(SemanticType.SERIAL == feedPreferences.getSemanticType());
+        pref.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean checked = newValue == Boolean.TRUE;
+            feedPreferences.setSemanticType(checked ? SemanticType.SERIAL : SemanticType.EPISODIC);
             feed.savePreferences();
             pref.setChecked(checked);
             return false;

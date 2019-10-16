@@ -7,6 +7,11 @@
             android:title="@string/keep_updated"
             android:summary="@string/keep_updated_summary"/>
 
+    <SwitchPreference
+        android:key="semanticType"
+        android:title="@string/semantic_type_serial_label"
+        android:summary="@string/semantic_type_serial_summary"/>
+
     <Preference
             android:key="authentication"
             android:title="@string/authentication_label"
