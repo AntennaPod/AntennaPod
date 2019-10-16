@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.util.Pair;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -121,9 +122,10 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     List<? extends FeedItem> getItemsToDownload(@NonNull Context context) {
         List<? extends FeedItem> candidatesEpisodic =
                 selectorEpisodic.getAutoDownloadableEpisodes();
-
+        Log.v(TAG, "num. of episodic candidates: " + candidatesEpisodic.size());
         List<? extends FeedItem> candidatesSerial =
                 selectorSerial.getAutoDownloadableEpisodes();
+        Log.v(TAG, "num. of serial candidates: " + candidatesSerial.size());
 
         int autoDownloadableEpisodes = candidatesEpisodic.size() + candidatesSerial.size();
         int downloadedEpisodes = dbAccess.getNumberOfDownloadedEpisodes();
@@ -134,15 +136,16 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         List<FeedItem> candidates;
         if (cacheIsUnlimited ||
                 episodeCacheSize >= downloadedEpisodes + autoDownloadableEpisodes) {
-            candidates = new java.util.ArrayList<>(autoDownloadableEpisodes);
+            candidates = new ArrayList<>(autoDownloadableEpisodes);
             candidates.addAll(candidatesEpisodic);
             candidates.addAll(candidatesSerial);
         } else {
             // determine the space allocated for episodic and serial feeds
             EpisodicSerialPair episodeSpaceLeft =
                     calcEpisodeSpaceLeftEpisodicAndSerial(candidatesEpisodic.size(), candidatesSerial.size());
+            Log.v(TAG, "num. items to download: " + episodeSpaceLeft);
 
-            candidates = new java.util.ArrayList<>(episodeSpaceLeft.episodic + episodeSpaceLeft.serial);
+            candidates = new ArrayList<>(episodeSpaceLeft.episodic + episodeSpaceLeft.serial);
             candidates.addAll(candidatesEpisodic.subList(0, episodeSpaceLeft.episodic));
             candidates.addAll(candidatesSerial.subList(0, episodeSpaceLeft.serial));
         }
@@ -162,6 +165,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     private EpisodicSerialPair calcEpisodeSpaceLeftEpisodicAndSerial(int numDownloadablesEpisodic, int numDownloadablesSerial) {
         EpisodicSerialPair episodicToSerialTarget = dbAccess.getEpisodicToSerialRatio()
                 .times(downloadPreferences.getEpisodeCacheSize());
+        Log.v(TAG, "Episodic to Serial Target: " + episodicToSerialTarget);
 
         EpisodicSerialPair episodicToSerialDownloaded;
         {
@@ -237,6 +241,13 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         public EpisodicSerialPair min(EpisodicSerialPair other) {
             return new EpisodicSerialPair(Math.min(this.episodic, other.episodic),
                     Math.min(this.serial, other.serial));
+        }
+
+        @Override
+        public String toString() {
+            return "{episodic=" + episodic +
+                    ", serial=" + serial +
+                    '}';
         }
     }
 
