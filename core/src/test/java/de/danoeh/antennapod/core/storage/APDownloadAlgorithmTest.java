@@ -221,6 +221,38 @@ public class APDownloadAlgorithmTest {
                 fis());
     }
 
+    @Test
+    public void mixed_Boundary_FillSerialTargetWillExceedCacheSize() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3)), // queue, average
+                fis(fi(1,1), fi(100,1), fi(1,2), fi(2,2)), // played and downloaded, average
+                fis(fi(3,1), fi(200,1)), // auto-Dl items (episodic and serial)
+                0 // don't cleanup any of the downloaded
+        );
+        // episodic to serial feed ratio = 3:2, episode cache target allocation is 3:2,
+        // with download items at 4:1, 1 serial item, fi(200,1), could have been downloaded
+        // to reach serial target
+        // but total space left is 0, so none will be downloaded.
+        doTest("Mixed Boundary case - filling serial target would exceed cache size",
+                fis());
+    }
+
+    @Test
+    public void mixed_Boundary_FillEpisodicTargetWillExceedCacheSize() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3)), // queue, average
+                fis(fi(2,1), fi(100,1), fi(100,2), fi(100,3)), // played and downloaded, average
+                fis(fi(3,1), fi(200,1)), // auto-Dl items (episodic and serial)
+                0 // don't cleanup any of the downloaded
+        );
+        // episodic to serial feed ratio = 3:2, episode cache target allocation is 3:2,
+        // with download items at 2:3, 1 episodic item, fi(3,1), could have been downloaded
+        // to reach episodic target
+        // but total space left is 0, so none will be downloaded.
+        doTest("Mixed Boundary case - filling episodic target would exceed cache size",
+                fis());
+    }
+
     // Run actual test, and comparing the result with the named expected.
     private void doTest(String msg, List<? extends FeedItem> expected) {
         APDownloadAlgorithm algorithm = new APDownloadAlgorithm(
