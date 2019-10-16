@@ -67,6 +67,11 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
         // - get list of all serial feeds grouped ordered by ID
         List<? extends Feed> serialFeedsById = getSerialFeedsOrderedById();
         int numFeeds = serialFeedsById.size();
+        Log.v(TAG, "num. of autodownlodable serial feeds: " + numFeeds);
+        if (numFeeds < 1) {
+            // optimization - skip the rest if there is no serial feeds
+            return Collections.emptyList();
+        }
         // - find out serial feed id with of which item is the last completely played or in-playback
         FeedItem lastPlayedSerialItem = getLastPlayedSerialFeedItem();
 
