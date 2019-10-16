@@ -5,10 +5,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import androidx.collection.ArraySet;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -37,7 +39,10 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
 
         List<Feed> serialFeedsByDownloadOrder = getSerialFeedsOrderedByDownloadOrder();
 
-        List<? extends FeedItem> downloaded = DBReader.getDownloadedItems();
+        Set<Long> feedIdsWithDownloadedMedia = new ArraySet<>();
+        for(FeedItem item : DBReader.getDownloadedItems()) {
+            feedIdsWithDownloadedMedia.add(item.getFeedId());
+        }
 
         List<FeedItem> candidatesLater = new ArrayList<>();
         List<FeedItem> candidates = new ArrayList<>(serialFeedsByDownloadOrder .size());
@@ -45,9 +50,15 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
         for (Feed feed : serialFeedsByDownloadOrder) {
             FeedItem item = getNextItemToDownloadForSerial(feed);
             if (item != null) {
-                candidates.add(item);
+                if (feedIdsWithDownloadedMedia.contains(item.getFeedId())) {
+                    candidatesLater.add(item);
+                } else {
+                    candidates.add(item);
+                }
             }
         }
+        // push items whose feed already has something downloaded to the end
+        candidates.addAll(candidatesLater);
         return candidates;
     }
 

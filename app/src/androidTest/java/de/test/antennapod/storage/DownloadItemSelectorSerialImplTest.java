@@ -117,7 +117,7 @@ public class DownloadItemSelectorSerialImplTest {
     public void basic_Ongoing() throws Exception {
         // - 3 serial ones, 3 items each
         // - feed 0: all played
-        // - feed 1: all unplayed
+        // - feed 1: all unplayed, but 1 downloaded
         // - feed 2: all unplayed
         // - feed 3: 1 played, 1 ongoing
         // - feed 4: all unplayed
@@ -125,12 +125,13 @@ public class DownloadItemSelectorSerialImplTest {
         // - expectation: feed4, feed2, feed3, feed1
         // Also test:
         // - new flag does not matter (treated it the same as unplayed)
+        // - feed with downloaded item are pushed to the end
 
         // Setup test data
         Feed f0 = createFeed(0, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
                 cFI(PLAYED), cFI(PLAYED), cFI(PLAYED));
         Feed f1 = createFeed("T Feed 1", SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
-                cFI(UNPLAYED),
+                cFI(UNPLAYED), // but downloaded (to be set later)
                 cFI(UNPLAYED));
         Feed f2 = createFeed("A Feed 2", SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
                 cFI(UNPLAYED), cFI(UNPLAYED), cFI(UNPLAYED));
@@ -145,13 +146,19 @@ public class DownloadItemSelectorSerialImplTest {
         Feed f5 = createFeed(5, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
                 cFI(UNPLAYED));
         FeedsAccessor a = saveFeeds(f0, f1, f2, f3, f4, f5);
+        { // mark fi(1,0) as downloaded, so the feed will be pushed to the end
+            FeedMedia fmDownloaded =  a.fi(1, 0).getMedia();
+            fmDownloaded.setFile_url("file://downloaded.mp3"); // MUST set, or setDownloaded will be useless
+            fmDownloaded.setDownloaded(true);
+            DBWriter.setFeedMedia(fmDownloaded).get();
+        }
         { // ensure fi(3,2) is the ongoing one (with the most recent played timestamp)
             FeedMedia fmOngoing = a.fi(3, 2).getMedia();
             fmOngoing .setLastPlayedTime(System.currentTimeMillis() + 100);
             DBWriter.setFeedMedia(fmOngoing).get();
         }
 
-        List<Long> expected = toIds(a.fi(4, 0), a.fi(1,0), a.fi(2, 0), a.fi(3, 3));
+        List<Long> expected = toIds(a.fi(4, 0), a.fi(2, 0), a.fi(3, 3), a.fi(1,1));
 
         // Run actual test
 
@@ -173,6 +180,11 @@ public class DownloadItemSelectorSerialImplTest {
             FeedItem nextToDownload = selector.getNextItemToDownloadForSerial(f3);
             assertEquals("getNextItemToDownloadForSerial() - the one after the ongoing",
                     a.fi(3,3), nextToDownload);
+        }
+        {
+            FeedItem nextToDownload = selector.getNextItemToDownloadForSerial(f1);
+            assertEquals("getNextItemToDownloadForSerial() - skip downloaded",
+                    a.fi(1,1), nextToDownload);
         }
 
         // Test overall
