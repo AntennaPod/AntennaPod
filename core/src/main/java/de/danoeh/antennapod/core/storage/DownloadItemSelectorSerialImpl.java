@@ -15,6 +15,7 @@ import java.util.Set;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 
@@ -37,7 +38,8 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
         //   - then use the next feed
         // - return the result
 
-        List<Feed> serialFeedsByDownloadOrder = getSerialFeedsOrderedByDownloadOrder();
+        List<? extends Feed> serialFeedsByDownloadOrder =
+                excludeNonAutoDownloadables(getSerialFeedsOrderedByDownloadOrder());
 
         Set<Long> feedIdsWithDownloadedMedia = new ArraySet<>();
         for(FeedItem item : DBReader.getDownloadedItems()) {
@@ -161,7 +163,7 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
     }
 
     @Nullable
-    private FeedItem firstNonDownloadedItem(List<? extends FeedItem> feedItems, int startIdx) {
+    private static FeedItem firstNonDownloadedItem(List<? extends FeedItem> feedItems, int startIdx) {
         for(int i = startIdx; i < feedItems.size(); i++) {
             FeedItem fi = feedItems.get(i);
             FeedMedia media = fi.getMedia();
@@ -170,5 +172,17 @@ public class DownloadItemSelectorSerialImpl implements DownloadItemSelector {
             }
         }
         return null;
+    }
+
+    @NonNull
+    private static List<? extends Feed> excludeNonAutoDownloadables(@NonNull List<? extends Feed> feeds) {
+        List<Feed> result = new ArrayList<>(feeds.size());
+        for (Feed f : feeds) {
+            FeedPreferences fPrefs = f.getPreferences();
+            if (fPrefs.getAutoDownload() && fPrefs.getKeepUpdated()) {
+                result.add(f);
+            }
+        }
+        return result;
     }
 }

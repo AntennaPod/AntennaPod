@@ -23,7 +23,9 @@ import static de.danoeh.antennapod.core.feed.FeedItem.PLAYED;
 import static de.danoeh.antennapod.core.feed.FeedItem.UNPLAYED;
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType.EPISODIC;
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType.SERIAL;
+import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.AUTO_DL_FALSE;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.AUTO_DL_TRUE;
+import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.KEEP_UPDATED_FALSE;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.KEEP_UPDATED_TRUE;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.cFI;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.createFeed;
@@ -187,6 +189,28 @@ public class DownloadItemSelectorSerialImplTest {
         // Test overall
         List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
         assertEquals("Basic, ongoing case -  It returns: " + fiActual,
+                expected, toIds(fiActual));
+    }
+
+    @Test
+    public void boundary_ignoreNonAutoDownlodableFeeds() throws Exception {
+        // Setup test data
+        Feed f0 = createFeed(0, SERIAL, AUTO_DL_FALSE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED));
+        Feed f1 = createFeed(1, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_FALSE,
+                cFI(UNPLAYED));
+        Feed f2 = createFeed(2, SERIAL, AUTO_DL_FALSE, "", KEEP_UPDATED_FALSE,
+                cFI(UNPLAYED));
+        Feed f3 = createFeed(3, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED));
+        FeedsAccessor a = saveFeeds(f0, f1, f2, f3);
+
+        List<Long> expected = toIds(a.fi(3, 0));
+
+        // Now create the selector under test and exercise it
+        DownloadItemSelectorSerialImpl selector = new DownloadItemSelectorSerialImpl();
+        List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
+        assertEquals("Boundary, ignore non-autodownloadable feeds -  It returns: " + fiActual,
                 expected, toIds(fiActual));
     }
 
