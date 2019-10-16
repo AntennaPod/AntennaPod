@@ -22,6 +22,7 @@ import static de.danoeh.antennapod.core.feed.FeedItem.NEW;
 import static de.danoeh.antennapod.core.feed.FeedItem.PLAYED;
 import static de.danoeh.antennapod.core.feed.FeedItem.UNPLAYED;
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType.EPISODIC;
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType.SERIAL;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.AUTO_DL_FALSE;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.AUTO_DL_TRUE;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.KEEP_UPDATED_FALSE;
@@ -94,6 +95,38 @@ public class DownloadItemSelectorEpisodicImplTest {
                 selector.getAutoDownloadableEpisodes();
 
         assertEquals("Results should include only auto-downloadable new items. It returns: " + fiAutoDlActual,
+                expectedNewItemIds, toIds(fiAutoDlActual));
+    }
+
+    @Test
+    public void excludeSerials() {
+        // Setup test data and expectation
+
+        // serial feeds - to be ignored
+        Feed f0 = createFeed(0, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(NEW), cFI(UNPLAYED), cFI(PLAYED));
+
+        // typical auto-downloadable feed
+        Feed f1 = createFeed(1, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(NEW), cFI(UNPLAYED), cFI(PLAYED));
+
+        // typical auto-downloadable feed
+        Feed f2 = createFeed(2, EPISODIC, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(PLAYED), cFI(UNPLAYED), cFI(NEW));
+
+        FeedsAccessor a =  saveFeeds(f0, f1, f2);
+
+        // serial feed, f0, is ignored
+        List<Long> expectedNewItemIds = Arrays.asList(a.fiId(2, 2), a.fiId(1, 0));
+
+        // Now create the selector under test and exercise it
+        DownloadItemSelectorEpisodicImpl selector =
+                new DownloadItemSelectorEpisodicImpl();
+
+        List<? extends FeedItem> fiAutoDlActual =
+                selector.getAutoDownloadableEpisodes();
+
+        assertEquals("Results should include episodic feed items. It returns: " + fiAutoDlActual,
                 expectedNewItemIds, toIds(fiAutoDlActual));
     }
 

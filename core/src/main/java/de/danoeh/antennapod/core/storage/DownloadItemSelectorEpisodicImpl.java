@@ -10,6 +10,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType;
 
 @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
 public class DownloadItemSelectorEpisodicImpl implements DownloadItemSelector {
@@ -28,6 +29,9 @@ public class DownloadItemSelectorEpisodicImpl implements DownloadItemSelector {
         for(FeedItem newItem : newItems) {
             FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
             FeedFilter feedFilter = feedPrefs.getFilter();
+            if (SemanticType.EPISODIC != feedPrefs.getSemanticType()) {
+                continue;
+            }
             if(!candidates.contains(newItem) && feedFilter.shouldAutoDownload(newItem)) {
                 candidates.add(newItem);
             }
