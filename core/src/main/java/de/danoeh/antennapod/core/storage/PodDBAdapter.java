@@ -1042,6 +1042,19 @@ public class PodDBAdapter {
                 null, String.format("%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
     }
 
+    /**
+     * Returns a cursor of feed media objects ordered by last played time descending
+     */
+    public final Cursor getItemIdFeedIdCursorByLastPlayedDescending() {
+        return db.rawQuery(
+                "SELECT fi.id, fi.feed\n" +
+                "  FROM FeedItems fi INNER JOIN FeedMedia fm ON fi.id = fm.feedItem\n" +
+                " WHERE fm.last_played_time > 0\n" +
+                " ORDER BY fm.last_played_time DESC",
+                null
+        ); // TODO-1077a: use constants
+    }
+
     public final Cursor getSingleFeedMediaCursor(long id) {
         return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null);
     }

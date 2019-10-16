@@ -29,8 +29,16 @@ class DownloadItemSelectorTestUtil {
     static Feed createFeed(int titleId, @NonNull SemanticType semanticType,
                            boolean isAutoDownload, String includeFilter, boolean isKeepUpdated,
                            FeedItem... feedItems) {
+        return createFeed(FeedTestUtil.defaultFeedTitle(titleId), semanticType,
+                isAutoDownload, includeFilter, isKeepUpdated, feedItems);
+    }
 
-        return FeedTestUtil.createFeed(titleId, feedPreferences -> {
+    @NonNull
+    static Feed createFeed(String title, @NonNull SemanticType semanticType,
+                           boolean isAutoDownload, String includeFilter, boolean isKeepUpdated,
+                           FeedItem... feedItems) {
+
+        return FeedTestUtil.createFeed(title, feedPreferences -> {
             feedPreferences.setSemanticType(semanticType);
             feedPreferences.setKeepUpdated(isKeepUpdated);
             feedPreferences.setAutoDownload(isAutoDownload);

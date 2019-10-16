@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
@@ -482,6 +483,42 @@ public final class DBReader {
         }
     }
 
+    @Nullable
+    public static FeedItem getLatestSerialPlaybackItem() {
+        Log.d(TAG, "getLatestSerialPlaybackItem() called");
+        final long tStart = System.currentTimeMillis();
+
+        FeedItem result = null;
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        Cursor itemIdFeedIdCursor = null;
+        try {
+            itemIdFeedIdCursor = adapter.getItemIdFeedIdCursorByLastPlayedDescending();
+            while(itemIdFeedIdCursor.moveToNext()) {
+                long itemId = itemIdFeedIdCursor.getLong(0);
+                long feedId = itemIdFeedIdCursor.getLong(1);
+                // TODO-1077a: avoid multiple reads of feed by caching
+                Feed feed = getFeed(feedId, adapter);
+                if (SemanticType.SERIAL == feed.getPreferences().getSemanticType()) {
+                    result = getFeedItem(itemId, adapter);
+                    break;
+                }
+            }
+        } finally {
+            if (itemIdFeedIdCursor != null) {
+                itemIdFeedIdCursor.close();
+            }
+            adapter.close();
+        }
+
+        final long tEnd= System.currentTimeMillis();
+        Log.v(TAG, "getLatestSerialPlaybackItem() - elapsed time: " + (tEnd - tStart));
+
+        return result;
+    }
+
     /**
      * Loads the download log from the database.
      *
@@ -870,7 +907,7 @@ public final class DBReader {
             if (!fPrefs.getAutoDownload() || !fPrefs.getKeepUpdated()) {
                 continue;
             }
-            if (FeedPreferences.SemanticType.SERIAL == fPrefs.getSemanticType()) {
+            if (SemanticType.SERIAL == fPrefs.getSemanticType()) {
                 numSerial++;
             } else {
                 numEpisodic++;
