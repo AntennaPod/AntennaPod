@@ -10,6 +10,7 @@ import de.danoeh.antennapod.core.feed.FeedPreferences.SemanticType;
 import static de.danoeh.antennapod.core.feed.FeedItem.NEW;
 import static de.danoeh.antennapod.core.feed.FeedItem.PLAYED;
 import static de.danoeh.antennapod.core.feed.FeedItem.UNPLAYED;
+import static de.test.antennapod.storage.FeedTestUtil.HAS_MEIDA;
 
 class DownloadItemSelectorTestUtil {
     private DownloadItemSelectorTestUtil() { }
@@ -46,12 +47,17 @@ class DownloadItemSelectorTestUtil {
         }, feedItems);
     }
 
+    @NonNull
+    static FeedItem cFI(int playState) {
+        return cFI(playState, HAS_MEIDA);
+    }
+
     /**
      * @return a skeleton (incomplete) FeedItem of the specified state, createFeed() will fill in the details.
      */
     @NonNull
-    static FeedItem cFI(int playState) {
-        FeedItem item = FeedTestUtil.createFeedItemWithMedia();
+    static FeedItem cFI(int playState, boolean hasMedia) {
+        FeedItem item = FeedTestUtil.createFeedItem(hasMedia);
         switch (playState) {
             case NEW:
                 item.setNew();

@@ -21,6 +21,9 @@ import de.danoeh.antennapod.core.util.Consumer;
 class FeedTestUtil {
     private FeedTestUtil() { }
 
+    static final boolean HAS_MEIDA = true;
+    static final boolean NO_MEDIA = false;
+
     @NonNull
     static Feed createFeed(int titleId,
                            @Nullable Consumer<FeedPreferences> feedPreferencesCustomizer,
@@ -74,12 +77,12 @@ class FeedTestUtil {
     }
 
     @NonNull
-    static FeedItem createFeedItemWithMedia() {
+    static FeedItem createFeedItem(boolean hasMedia) {
         FeedItem item = new FeedItem();
-
-        FeedMedia media = new FeedMedia(item, "url", 1, "audio/mp3");
-        item.setMedia(media);
-
+        if (hasMedia) {
+            FeedMedia media = new FeedMedia(item, "url", 1, "audio/mp3");
+            item.setMedia(media);
+        }
         return item;
     }
 

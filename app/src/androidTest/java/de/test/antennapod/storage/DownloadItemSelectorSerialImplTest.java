@@ -29,6 +29,8 @@ import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.KEEP_UPDAT
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.KEEP_UPDATED_TRUE;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.cFI;
 import static de.test.antennapod.storage.DownloadItemSelectorTestUtil.createFeed;
+import static de.test.antennapod.storage.FeedTestUtil.HAS_MEIDA;
+import static de.test.antennapod.storage.FeedTestUtil.NO_MEDIA;
 import static de.test.antennapod.storage.FeedTestUtil.saveFeeds;
 import static de.test.antennapod.storage.FeedTestUtil.toIds;
 import static org.junit.Assert.assertEquals;
@@ -216,6 +218,44 @@ public class DownloadItemSelectorSerialImplTest {
         DownloadItemSelectorSerialImpl selector = new DownloadItemSelectorSerialImpl();
         List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
         assertEquals("Boundary, ignore non-autodownloadable feeds -  It returns: " + fiActual,
+                expected, toIds(fiActual));
+    }
+
+    @Test
+    public void boundary_ignoreItemsWithNoMedia() throws Exception {
+        // Setup test data
+        Feed f0 = createFeed(0, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED, NO_MEDIA), cFI(UNPLAYED, HAS_MEIDA));
+        FeedsAccessor a = saveFeeds(f0);
+
+        List<Long> expected = toIds(a.fi(0, 1));
+
+        // Now create the selector under test and exercise it
+        DownloadItemSelectorSerialImpl selector = new DownloadItemSelectorSerialImpl();
+        List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
+        assertEquals("Boundary, ignore items with no media -  It returns: " + fiActual,
+                expected, toIds(fiActual));
+    }
+
+    @Test
+    public void boundary_ignoreNonAutoDownloadableItems() throws Exception {
+        // Setup test data
+        Feed f0 = createFeed(0, SERIAL, AUTO_DL_TRUE, "", KEEP_UPDATED_TRUE,
+                cFI(UNPLAYED), // to be individually set as non autodownloadable
+                cFI(UNPLAYED));
+        FeedsAccessor a = saveFeeds(f0);
+        { // make fi(0,0) to be not autodownloadable
+            FeedItem item = a.fi(0,0);
+            item.setAutoDownload(false);
+            DBWriter.setFeedItem(item).get();
+        }
+
+        List<Long> expected = toIds(a.fi(0, 1));
+
+        // Now create the selector under test and exercise it
+        DownloadItemSelectorSerialImpl selector = new DownloadItemSelectorSerialImpl();
+        List<? extends FeedItem> fiActual = selector.getAutoDownloadableEpisodes();
+        assertEquals("Boundary, ignore items not autodownloadable -  It returns: " + fiActual,
                 expected, toIds(fiActual));
     }
 
