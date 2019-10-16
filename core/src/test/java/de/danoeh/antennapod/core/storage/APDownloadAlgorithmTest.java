@@ -91,6 +91,18 @@ public class APDownloadAlgorithmTest {
     }
 
     @Test
+    public void episodic_Boundary_DownloadedMoreThanTarget() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
+                fis(fi(1,1), fi(1,2), fi(3,1)), // played and downloaded, average
+                fis(fi(2,3), fi(3,2)),  // new list, average
+                0 // don't cleanup any of the downloaded
+        );
+        doTest("Case num. of downloaded (6) is more than the target(5)",
+                fis());
+    }
+
+    @Test
     public void mixed_Average_1SerialFeed() {
         withStubs(CACHE_SIZE_5,
                 fis(fi(1,3), fi(2,1), fi(2,2)), // queue, average
@@ -192,6 +204,23 @@ public class APDownloadAlgorithmTest {
                 fis(fi(3,1), fi(200,1)));
     }
 
+    @Test
+    public void mixed_Boundary_DownloadedMoreThanTarget_Both() {
+        withStubs(CACHE_SIZE_5,
+                fis(fi(1,3)), // queue, average
+                fis(fi(1,1), fi(100,1), fi(100,2), fi(100,3), fi(1,2), fi(2,2)), // played and downloaded, average
+                fis(fi(3,1), fi(200,1)), // auto-Dl items (episodic and serial)
+                0 // don't cleanup any of the downloaded
+        );
+        // episodic to serial feed ratio = 3:2, episode cache target allocation is 3:2,
+        // space left is 0 however.
+        // ensure the calculation does not become negative
+        // - episodic (target is 3, but 4 have been downloaded)
+        // - serial (target is 2, but 3 have been downloaded)
+        doTest("Mixed Boundary case - more downloaded than target - both",
+                fis());
+    }
+
     // Run actual test, and comparing the result with the named expected.
     private void doTest(String msg, List<? extends FeedItem> expected) {
         APDownloadAlgorithm algorithm = new APDownloadAlgorithm(
@@ -206,6 +235,16 @@ public class APDownloadAlgorithmTest {
                            List<? extends FeedItem> itemsInQueue,
                            List<? extends FeedItem> itemsDownloadedAndPlayed,
                            List<? extends FeedItem> itemsAutoDownloadablePubDateDesc
+    ) {
+        withStubs(cacheSize, itemsInQueue, itemsDownloadedAndPlayed, itemsAutoDownloadablePubDateDesc,
+                Integer.MAX_VALUE);
+    }
+
+    private void withStubs(int cacheSize,
+                           List<? extends FeedItem> itemsInQueue,
+                           List<? extends FeedItem> itemsDownloadedAndPlayed,
+                           List<? extends FeedItem> itemsAutoDownloadablePubDateDesc,
+                           int maxNumToCleanup
     ) {
         Set<Feed> feedSet = new ArraySet<>();
 
@@ -273,7 +312,8 @@ public class APDownloadAlgorithmTest {
         when(stubCleanupAlgorithm.makeRoomForEpisodes(any(Context.class), anyInt()))
                 .then(invocation -> {
                     int amountOfRoomNeeded = invocation.getArgumentAt(1, Integer.class);
-                    int numItemsToDelete = Math.min(amountOfRoomNeeded, itemsDownloadedAndPlayed.size());
+                    int numItemsToDelete = Math.min(maxNumToCleanup,
+                            Math.min(amountOfRoomNeeded, itemsDownloadedAndPlayed.size()));
                     for(int i = 0; i < numItemsToDelete; i++) {
                         // here we assume that in the downloaded list
                         // the items played are at the head of the list, that can be cleaned-up

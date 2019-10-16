@@ -182,7 +182,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         EpisodicSerialPair episodeSpaceLeftInitial = episodicToSerialTarget.minus(episodicToSerialDownloaded);
 
         // if there aren't enough downloadables, reduce the spaceLeft.
-        EpisodicSerialPair episodeSpaceLeft  = episodeSpaceLeftInitial.min(
+        EpisodicSerialPair episodeSpaceLeft = episodeSpaceLeftInitial.min(
                 new EpisodicSerialPair(numDownloadablesEpisodic, numDownloadablesSerial));
 
         // after the above reduction (if any),
@@ -209,18 +209,28 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         public final int serial;
 
         public EpisodicSerialPair(int episodic, int serial) {
+            if (episodic < 0 || serial < 0) {
+                throw new IllegalArgumentException("EpisodicSerialPair() the numbers must be >= 0. Arguments: "
+                        + toString(episodic, serial));
+            }
             this.episodic = episodic;
             this.serial = serial;
         }
 
         public EpisodicSerialPair minus(@NonNull EpisodicSerialPair other) {
-            return new EpisodicSerialPair(this.episodic - other.episodic, this.serial - other.serial);
+            return new EpisodicSerialPair(
+                    Math.max(0, this.episodic - other.episodic),
+                    Math.max(0, this.serial - other.serial)
+            );
         }
 
         /**
          * Break the supplied number according to the episodic : serial ratio.
          */
         public EpisodicSerialPair times(int number) {
+            if (number < 0) {
+                throw new IllegalArgumentException("Argument number must be >= 0. Actual: " + number);
+            }
             int total = episodic + serial;
 
             int newEpisodic = Math.round((number * this.episodic + 0f) / total);
@@ -245,6 +255,11 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
 
         @Override
         public String toString() {
+            return toString(episodic, serial);
+        }
+
+        @NonNull
+        private static String toString(int episodic, int serial) {
             return "{episodic=" + episodic +
                     ", serial=" + serial +
                     '}';
