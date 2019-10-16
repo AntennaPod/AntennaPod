@@ -152,7 +152,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
 
         // sort them by pubDate descending, to avoid the serial ones being at the back of the download
         // all the time (they are most likely still at the back though, as they tend to have older pubDates)
-        Collections.sort(candidates, new FeedItemPubdateComparator());
+        Collections.sort(candidates, FeedItemPubdateComparator.descending);
 
         return candidates;
     }
@@ -163,11 +163,12 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
      * - maintain the ratio among all the downloaded
      */
     private EpisodicSerialPair calcEpisodeSpaceLeftEpisodicAndSerial(int numDownloadablesEpisodic, int numDownloadablesSerial) {
-        EpisodicSerialPair episodicToSerialTarget = dbAccess.getEpisodicToSerialRatio()
-                .times(downloadPreferences.getEpisodeCacheSize());
-        Log.v(TAG, "Episodic to Serial Target: " + episodicToSerialTarget);
+        final int cacheSize = downloadPreferences.getEpisodeCacheSize();
+        final EpisodicSerialPair spaceTarget = dbAccess.getEpisodicToSerialRatio()
+                .times(cacheSize);
+        Log.v(TAG, "Episodic to Serial Target: " + spaceTarget);
 
-        EpisodicSerialPair episodicToSerialDownloaded;
+        EpisodicSerialPair spaceDownloaded;
         {
             List<? extends FeedItem> downloaded = dbAccess.getDownloadedItems();
             int numEpisodic = 0;
@@ -176,54 +177,53 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     numEpisodic++;
                 }
             }
-            episodicToSerialDownloaded = new EpisodicSerialPair(numEpisodic, downloaded.size() - numEpisodic);
+            spaceDownloaded = new EpisodicSerialPair(numEpisodic, downloaded.size() - numEpisodic);
         }
 
-        final EpisodicSerialPair episodeSpaceLeftInitial = episodicToSerialTarget.minus(episodicToSerialDownloaded);
+        final EpisodicSerialPair spaceLeftInitial = spaceTarget.minus(spaceDownloaded);
 
         // if there aren't enough downloadables, reduce the spaceLeft.
-        EpisodicSerialPair episodeSpaceLeft = episodeSpaceLeftInitial.min(
+        EpisodicSerialPair spaceLeft = spaceLeftInitial.min(
                 new EpisodicSerialPair(numDownloadablesEpisodic, numDownloadablesSerial));
 
-        // downloading episodeSpaceLeft might exceed quota in boundary cases,
+        // downloading spaceLeft might exceed quota in boundary cases,
         // further reduce in such cases
-        int spaceExceeded = episodeSpaceLeft.total() + episodicToSerialDownloaded.total() -
-                downloadPreferences.getEpisodeCacheSize();
-        if (spaceExceeded > 0) {
-            if (episodicToSerialDownloaded.episodic > episodicToSerialTarget.episodic) {
+        final int numExceeded = spaceLeft.total() + spaceDownloaded.total() - cacheSize;
+        if (numExceeded > 0) {
+            if (spaceDownloaded.episodic > spaceTarget.episodic) {
                 // downloaded episodic have used too much space. cut down serial for now
-                episodeSpaceLeft = new EpisodicSerialPair(0, Math.max(episodeSpaceLeft.serial - spaceExceeded, 0));
-            } else if (episodicToSerialDownloaded.serial > episodicToSerialTarget.serial) {
+                spaceLeft = new EpisodicSerialPair(0, Math.max(spaceLeft.serial - numExceeded, 0));
+            } else if (spaceDownloaded.serial > spaceTarget.serial) {
                 // the parallel case for serial
-                episodeSpaceLeft = new EpisodicSerialPair(Math.max(episodeSpaceLeft.episodic - spaceExceeded, 0), 0);
+                spaceLeft = new EpisodicSerialPair(Math.max(spaceLeft.episodic - numExceeded, 0), 0);
             } else {
                 // Should never reach here, but just in case
-                Log.e(TAG, "calculated spaceLeft unexpectedly will make download exceed cache size by " + spaceExceeded
-                        + ". cacheSize=" + downloadPreferences.getEpisodeCacheSize()
-                        + ", target=" + episodicToSerialTarget
-                        + ", downloaded=" + episodicToSerialDownloaded
-                        + ", calculated spaceLeft=" + episodeSpaceLeft);
+                Log.e(TAG, "calculated spaceLeft unexpectedly will make download exceed cache size by " + numExceeded
+                        + ". cacheSize=" + cacheSize
+                        + ", target=" + spaceTarget
+                        + ", downloaded=" + spaceDownloaded
+                        + ", calculated spaceLeft=" + spaceLeft);
             }
         }
 
         // after the above reduction (if any),
         // allocate the freed space in, say, serial to episodic (and vice versa) to fill up the cache
-        if (episodeSpaceLeft.total() + episodicToSerialDownloaded.total() < downloadPreferences.getEpisodeCacheSize()) {
-            if (episodeSpaceLeft.serial < episodeSpaceLeftInitial.serial) {
-                int freeSpace = episodeSpaceLeftInitial.serial - episodeSpaceLeft.serial;
-                int newSpaceLeftForEpisodic = Math.min(episodeSpaceLeft.episodic + freeSpace,
+        if (spaceLeft.total() + spaceDownloaded.total() < cacheSize) {
+            if (spaceLeft.serial < spaceLeftInitial.serial) {
+                int freeSpace = spaceLeftInitial.serial - spaceLeft.serial;
+                int newSpaceLeftForEpisodic = Math.min(spaceLeft.episodic + freeSpace,
                         numDownloadablesEpisodic);
-                episodeSpaceLeft = new EpisodicSerialPair(newSpaceLeftForEpisodic, episodeSpaceLeft.serial);
+                spaceLeft = new EpisodicSerialPair(newSpaceLeftForEpisodic, spaceLeft.serial);
             }
-            if (episodeSpaceLeft.episodic < episodeSpaceLeftInitial.episodic) {
-                int freeSpace = episodeSpaceLeftInitial.episodic - episodeSpaceLeft.episodic;
-                int newSpaceLeftForSerial = Math.min(episodeSpaceLeft.serial + freeSpace,
+            if (spaceLeft.episodic < spaceLeftInitial.episodic) {
+                int freeSpace = spaceLeftInitial.episodic - spaceLeft.episodic;
+                int newSpaceLeftForSerial = Math.min(spaceLeft.serial + freeSpace,
                         numDownloadablesSerial);
-                episodeSpaceLeft = new EpisodicSerialPair(episodeSpaceLeft.episodic, newSpaceLeftForSerial);
+                spaceLeft = new EpisodicSerialPair(spaceLeft.episodic, newSpaceLeftForSerial);
             }
         }
 
-        return episodeSpaceLeft;
+        return spaceLeft;
     }
 
     @VisibleForTesting
@@ -231,7 +231,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         public final int episodic;
         public final int serial;
 
-        public EpisodicSerialPair(int episodic, int serial) {
+        EpisodicSerialPair(int episodic, int serial) {
             if (episodic < 0 || serial < 0) {
                 throw new IllegalArgumentException("EpisodicSerialPair() the numbers must be >= 0. Arguments: "
                         + toString(episodic, serial));
@@ -240,11 +240,11 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
             this.serial = serial;
         }
 
-        public int total() {
+        int total() {
             return episodic + serial;
         }
 
-        public EpisodicSerialPair minus(@NonNull EpisodicSerialPair other) {
+        EpisodicSerialPair minus(@NonNull EpisodicSerialPair other) {
             return new EpisodicSerialPair(
                     Math.max(0, this.episodic - other.episodic),
                     Math.max(0, this.serial - other.serial)
@@ -254,7 +254,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
         /**
          * Break the supplied number according to the episodic : serial ratio.
          */
-        public EpisodicSerialPair times(int number) {
+        EpisodicSerialPair times(int number) {
             if (number < 0) {
                 throw new IllegalArgumentException("Argument number must be >= 0. Actual: " + number);
             }
@@ -263,7 +263,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
             int newEpisodic = Math.round((number * this.episodic + 0f) / total);
 
             // boundary case handling
-            // - #serial rounded to 0: make it 1
+            // - #serial rounded to 0 (i.e, newEpisodic == number): make it 1
             if (newEpisodic == number && serial > 0) {
                 newEpisodic = number - 1;
             }
@@ -275,7 +275,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
             return new EpisodicSerialPair(newEpisodic, number - newEpisodic);
         }
 
-        public EpisodicSerialPair min(EpisodicSerialPair other) {
+        EpisodicSerialPair min(EpisodicSerialPair other) {
             return new EpisodicSerialPair(Math.min(this.episodic, other.episodic),
                     Math.min(this.serial, other.serial));
         }
