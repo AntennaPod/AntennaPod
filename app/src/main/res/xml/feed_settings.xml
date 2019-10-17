@@ -21,7 +21,7 @@
     <ListPreference
             android:entries="@array/spnVolumeReductionItems"
             android:entryValues="@array/spnVolumeReductionValues"
-            android:summary="Turn down volume for episodes of this feed:  \%s"
+            android:summary="@string/feed_volume_reduction_summary"
             android:title="@string/feed_volume_reduction"
             android:defaultValue="off"
             android:key="volumeReduction"/>
