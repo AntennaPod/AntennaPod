@@ -1,11 +1,12 @@
 package de.danoeh.antennapod.core.feed;
 
-
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class VolumeReductionSettingTest {
 
@@ -44,5 +45,20 @@ public class VolumeReductionSettingTest {
     @Test(expected =  IllegalArgumentException.class)
     public void cannotMapValuesOutOfRange() {
         VolumeReductionSetting.fromInteger(3);
+    }
+
+    @Test
+    public void noReductionIfTurnedOff() {
+        float reductionFactor = VolumeReductionSetting.OFF.getReductionFactor();
+        assertEquals(1.0f, reductionFactor, 0.01f);
+    }
+
+    @Test
+    public void lightReductionYieldsHigherValueThanHeavyReduction() {
+        float lightReductionFactor = VolumeReductionSetting.LIGHT.getReductionFactor();
+
+        float heavyReductionFactor = VolumeReductionSetting.HEAVY.getReductionFactor();
+
+        assertTrue("Light reduction must have higher factor than heavy reduction", lightReductionFactor > heavyReductionFactor);
     }
 }

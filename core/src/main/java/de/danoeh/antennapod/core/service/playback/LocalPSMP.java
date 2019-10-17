@@ -29,6 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
@@ -54,8 +55,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final AtomicBoolean startWhenPrepared;
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
     private volatile Pair<Integer, Integer> videoSize;
-
-    private final FeedVolumeReduction feedVolumeReduction;
 
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
@@ -142,7 +141,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         super(context, callback);
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new PlayerLock();
-        this.feedVolumeReduction = new FeedVolumeReduction();
         this.startWhenPrepared = new AtomicBoolean(false);
 
         executor = new PlayerExecutor();
@@ -676,7 +674,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (playable instanceof FeedMedia) {
                 FeedMedia feedMedia = (FeedMedia) playable;
                 FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
-                float reductionFactor = feedVolumeReduction.getReductionFactor(preferences);
+                VolumeReductionSetting volumeReductionSetting = preferences.getVolumeReductionSetting();
+                float reductionFactor = volumeReductionSetting.getReductionFactor();
                 volumeLeft *= reductionFactor;
                 volumeRight *= reductionFactor;
             }
