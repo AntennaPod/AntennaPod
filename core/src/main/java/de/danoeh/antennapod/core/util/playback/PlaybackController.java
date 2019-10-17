@@ -11,8 +11,8 @@ import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -24,12 +24,12 @@ import android.widget.TextView;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
@@ -503,16 +503,6 @@ public class PlaybackController {
             PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
             status = info.playerStatus;
             media = info.playable;
-            /*
-            if (media == null) {
-                Log.w(TAG,
-                        "PlaybackService has no media object. Trying to restore last played media.");
-                Intent serviceIntent = getPlayLastPlayedMediaIntent();
-                if (serviceIntent != null) {
-			        ContextCompat.startForegroundService(activity, serviceIntent);
-                }
-            }
-            */
             onServiceQueried();
 
             setupGUI();
@@ -715,12 +705,13 @@ public class PlaybackController {
         if (playbackService != null && canSetPlaybackSpeed()) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
-            return -1;
+            return PlaybackSpeedHelper.getCurrentPlaybackSpeed(getMedia());
         }
     }
 
     public boolean canDownmix() {
-        return playbackService != null && playbackService.canDownmix();
+        return (playbackService != null && playbackService.canDownmix())
+                || UserPreferences.useSonic();
     }
 
     public void setDownmix(boolean enable) {

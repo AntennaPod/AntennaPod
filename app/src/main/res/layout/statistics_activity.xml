@@ -1,58 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <LinearLayout
-            android:layout_width="match_parent"
+    <ProgressBar
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:id="@+id/progressBar"
+            android:layout_gravity="center"/>
 
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="@string/total_time_listened_to_podcasts"
-                android:gravity="center_horizontal"/>
-
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/total_time"
-                android:textColor="?android:attr/textColorPrimary"
-                android:gravity="center_horizontal"
-                android:textSize="28sp"
-                tools:text="10.0 hours"/>
-
-        <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressBar"
-                android:layout_gravity="center_horizontal"
-                style="?android:attr/progressBarStyleSmall"/>
-    </LinearLayout>
-
-    <View
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/dividerVertical"/>
-
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/statistics_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:choiceMode="singleChoice"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
             android:paddingBottom="@dimen/list_vertical_padding"
             android:paddingTop="@dimen/list_vertical_padding"
             android:scrollbarStyle="outsideOverlay"
             tools:listitem="@layout/statistics_listitem"/>
 
-</LinearLayout>
+</FrameLayout>

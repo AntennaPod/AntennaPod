@@ -8,6 +8,8 @@ import android.util.Log;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+
 class DBUpgrader {
     /**
      * Upgrades the given database to a new schema version
@@ -288,7 +290,10 @@ class DBUpgrader {
 
             db.execSQL("DROP TABLE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES);
         }
-        if (oldVersion < 1070296) {
+        if (oldVersion < 1070400) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL);
+
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_FEED_VOLUME_REDUCTION + " INTEGER DEFAULT 0");
         }

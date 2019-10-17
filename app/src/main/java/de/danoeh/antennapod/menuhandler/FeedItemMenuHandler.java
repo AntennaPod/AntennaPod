@@ -1,14 +1,11 @@
 package de.danoeh.antennapod.menuhandler;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
-import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -162,7 +159,7 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.mark_read_item:
                 selectedItem.setPlayed(true);
-                DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, false);
+                DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, true);
                 if(GpodnetPreferences.loggedIn()) {
                     FeedMedia media = selectedItem.getMedia();
                     // not all items have media, Gpodder only cares about those that do

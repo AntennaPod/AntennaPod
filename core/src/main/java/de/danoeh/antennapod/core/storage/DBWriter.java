@@ -2,11 +2,9 @@ package de.danoeh.antennapod.core.storage;
 
 import android.app.backup.BackupManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -89,7 +87,8 @@ public class DBWriter {
         });
     }
 
-    private static boolean deleteFeedMediaSynchronous(@NonNull Context context, @NonNull FeedMedia media) {
+    private static boolean deleteFeedMediaSynchronous(
+            @NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format("Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
                 media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
         if (media.isDownloaded()) {
@@ -114,7 +113,7 @@ public class DBWriter {
             }
 
             // Gpodder: queue delete action for synchronization
-            if(GpodnetPreferences.loggedIn()) {
+            if (GpodnetPreferences.loggedIn()) {
                 FeedItem item = media.getItem();
                 GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DELETE)
                         .currentDeviceId()
@@ -162,7 +161,7 @@ public class DBWriter {
                 adapter.open();
                 if (removed.size() > 0) {
                     adapter.setQueue(queue);
-                    for(FeedItem item : removed) {
+                    for (FeedItem item : removed) {
                         EventBus.getDefault().post(QueueEvent.irreversibleRemoved(item));
                     }
                 }
@@ -187,7 +186,6 @@ public class DBWriter {
 
     /**
      * Deletes the entire playback history.
-     *
      */
     public static Future<?> clearPlaybackHistory() {
         return dbExec.submit(() -> {
@@ -218,7 +216,7 @@ public class DBWriter {
      * its playback completion date is set to a non-null value. This method will set the playback completion date to the
      * current date regardless of the current value.
      *
-     * @param media   FeedMedia that should be added to the playback history.
+     * @param media FeedMedia that should be added to the playback history.
      */
     public static Future<?> addItemToPlaybackHistory(final FeedMedia media) {
         return dbExec.submit(() -> {
@@ -237,7 +235,7 @@ public class DBWriter {
     /**
      * Adds a Download status object to the download log.
      *
-     * @param status  The DownloadStatus object.
+     * @param status The DownloadStatus object.
      */
     public static Future<?> addDownloadStatus(final DownloadStatus status) {
         return dbExec.submit(() -> {
@@ -307,9 +305,9 @@ public class DBWriter {
      * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
      * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
      *
-     * @param context A context that is used for opening a database connection.
+     * @param context             A context that is used for opening a database connection.
      * @param performAutoDownload true if an auto-download process should be started after the operation.
-     * @param itemIds IDs of the FeedItem objects that should be added to the queue.
+     * @param itemIds             IDs of the FeedItem objects that should be added to the queue.
      */
     public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
                                          final long... itemIds) {
@@ -397,7 +395,6 @@ public class DBWriter {
 
     /**
      * Removes all FeedItem objects from the queue.
-     *
      */
     public static Future<?> clearQueue() {
         return dbExec.submit(() -> {
@@ -412,7 +409,8 @@ public class DBWriter {
 
     /**
      * Removes a FeedItem object from the queue.
-     *  @param context             A context that is used for opening a database connection.
+     *
+     * @param context             A context that is used for opening a database connection.
      * @param performAutoDownload true if an auto-download process should be started after the operation.
      * @param item                FeedItem that should be removed.
      */
@@ -500,14 +498,15 @@ public class DBWriter {
 
     /**
      * Moves the specified item to the top of the queue.
-     *  @param itemId          The item to move to the top of the queue
+     *
+     * @param itemId          The item to move to the top of the queue
      * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
      */
     public static Future<?> moveQueueItemToTop(final long itemId, final boolean broadcastUpdate) {
         return dbExec.submit(() -> {
             LongList queueIdList = DBReader.getQueueIDList();
             int index = queueIdList.indexOf(itemId);
-            if (index >=0) {
+            if (index >= 0) {
                 moveQueueItemHelper(index, 0, broadcastUpdate);
             } else {
                 Log.e(TAG, "moveQueueItemToTop: item not found");
@@ -517,7 +516,8 @@ public class DBWriter {
 
     /**
      * Moves the specified item to the bottom of the queue.
-     *  @param itemId          The item to move to the bottom of the queue
+     *
+     * @param itemId          The item to move to the bottom of the queue
      * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
      */
     public static Future<?> moveQueueItemToBottom(final long itemId,
@@ -527,7 +527,7 @@ public class DBWriter {
             int index = queueIdList.indexOf(itemId);
             if (index >= 0) {
                 moveQueueItemHelper(index, queueIdList.size() - 1,
-                    broadcastUpdate);
+                        broadcastUpdate);
             } else {
                 Log.e(TAG, "moveQueueItemToBottom: item not found");
             }
@@ -608,7 +608,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemRead(played, itemIds);
             adapter.close();
-            if(broadcastUpdate) {
+            if (broadcastUpdate) {
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
@@ -617,7 +617,8 @@ public class DBWriter {
 
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.
-     *  @param item               The FeedItem object
+     *
+     * @param item               The FeedItem object
      * @param played             New value of the 'read'-attribute one of FeedItem.PLAYED,
      *                           FeedItem.NEW, FeedItem.UNPLAYED
      * @param resetMediaPosition true if this method should also reset the position of the FeedItem's FeedMedia object.
@@ -647,7 +648,7 @@ public class DBWriter {
     /**
      * Sets the 'read'-attribute of all NEW FeedItems of a specific Feed to UNPLAYED.
      *
-     * @param feedId  ID of the Feed.
+     * @param feedId ID of the Feed.
      */
     public static Future<?> removeFeedNewFlag(final long feedId) {
         return dbExec.submit(() -> {
@@ -663,7 +664,7 @@ public class DBWriter {
     /**
      * Sets the 'read'-attribute of all FeedItems of a specific Feed to PLAYED.
      *
-     * @param feedId  ID of the Feed.
+     * @param feedId ID of the Feed.
      */
     public static Future<?> markFeedRead(final long feedId) {
         return dbExec.submit(() -> {
@@ -735,7 +736,7 @@ public class DBWriter {
      * Saves a FeedMedia object in the database. This method will save all attributes of the FeedMedia object. The
      * contents of FeedComponent-attributes (e.g. the FeedMedia's 'item'-attribute) will not be saved.
      *
-     * @param media   The FeedMedia object.
+     * @param media The FeedMedia object.
      */
     public static Future<?> setFeedMedia(final FeedMedia media) {
         return dbExec.submit(() -> {
@@ -749,7 +750,7 @@ public class DBWriter {
     /**
      * Saves the 'position', 'duration' and 'last played time' attributes of a FeedMedia object
      *
-     * @param media   The FeedMedia object.
+     * @param media The FeedMedia object.
      */
     public static Future<?> setFeedMediaPlaybackInformation(final FeedMedia media) {
         return dbExec.submit(() -> {
@@ -764,7 +765,7 @@ public class DBWriter {
      * Saves a FeedItem object in the database. This method will save all attributes of the FeedItem object including
      * the content of FeedComponent-attributes.
      *
-     * @param item    The FeedItem object.
+     * @param item The FeedItem object.
      */
     public static Future<?> setFeedItem(final FeedItem item) {
         return dbExec.submit(() -> {
@@ -780,7 +781,7 @@ public class DBWriter {
      * Updates download URL of a feed
      */
     public static Future<?> updateFeedDownloadURL(final String original, final String updated) {
-        Log.d(TAG, "updateFeedDownloadURL(original: " + original + ", updated: " + updated +")");
+        Log.d(TAG, "updateFeedDownloadURL(original: " + original + ", updated: " + updated + ")");
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -805,11 +806,11 @@ public class DBWriter {
     }
 
     private static boolean itemListContains(List<FeedItem> items, long itemId) {
-        return  indexInItemList(items, itemId) >= 0;
+        return indexInItemList(items, itemId) >= 0;
     }
 
     private static int indexInItemList(List<FeedItem> items, long itemId) {
-        for (int i = 0; i < items.size(); i ++) {
+        for (int i = 0; i < items.size(); i++) {
             FeedItem item = items.get(i);
             if (item.getId() == itemId) {
                 return i;
@@ -873,7 +874,7 @@ public class DBWriter {
     /**
      * Sets the 'auto_download'-attribute of specific FeedItem.
      *
-     * @param feedItem  FeedItem.
+     * @param feedItem     FeedItem.
      * @param autoDownload true enables auto download, false disables it
      */
     public static Future<?> setFeedItemAutoDownload(final FeedItem feedItem,
@@ -891,7 +892,7 @@ public class DBWriter {
         return dbExec.submit(() -> {
             int failedAttempts = feedItem.getFailedAutoDownloadAttempts() + 1;
             long autoDownload;
-            if(!feedItem.getAutoDownload() || failedAttempts >= 10) {
+            if (!feedItem.getAutoDownload() || failedAttempts >= 10) {
                 autoDownload = 0; // giving up, disable auto download
                 feedItem.setAutoDownload(false);
             } else {
@@ -927,7 +928,8 @@ public class DBWriter {
 
     /**
      * Set filter of the feed
-     *  @param feedId  The feed's ID
+     *
+     * @param feedId       The feed's ID
      * @param filterValues Values that represent properties to filter by
      */
     public static Future<?> setFeedItemsFilter(final long feedId,
@@ -942,4 +944,17 @@ public class DBWriter {
         });
     }
 
+
+    /**
+     * Reset the statistics in DB
+     */
+    @NonNull
+    public static Future<?> resetStatistics() {
+        return dbExec.submit(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.resetAllMediaPlayedDuration();
+            adapter.close();
+        });
+    }
 }

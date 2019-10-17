@@ -3,7 +3,7 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -209,6 +209,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 return;
             }
             Holder holder = (Holder) view.getTag();
+            holder.episodeProgress.setVisibility(View.VISIBLE);
             holder.episodeProgress.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
             holder.lenSize.setText(Converter.getDurationStringLong(event.getDuration() - event.getPosition()));
         }

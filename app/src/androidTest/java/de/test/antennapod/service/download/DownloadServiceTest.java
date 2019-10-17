@@ -1,9 +1,9 @@
 package de.test.antennapod.service.download;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;

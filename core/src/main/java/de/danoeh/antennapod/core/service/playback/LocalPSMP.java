@@ -6,7 +6,7 @@ import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
@@ -29,6 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
 import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
@@ -246,6 +247,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         try {
             media.loadMetadata();
             callback.onMediaChanged(false);
+            setPlaybackParams(PlaybackSpeedHelper.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
             } else if (media.getLocalMediaUrl() != null && new File(media.getLocalMediaUrl()).canRead()) {
@@ -308,11 +310,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 Log.d(TAG, "Audiofocus successfully requested");
                 Log.d(TAG, "Resuming/Starting playback");
                 acquireWifiLockIfNecessary();
-                if (media.getMediaType() == MediaType.VIDEO) {
-                    setPlaybackParams(UserPreferences.getVideoPlaybackSpeed(), UserPreferences.isSkipSilence());
-                } else {
-                    setPlaybackParams(UserPreferences.getPlaybackSpeed(), UserPreferences.isSkipSilence());
-                }
+
+                setPlaybackParams(PlaybackSpeedHelper.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
 
                 float leftVolume = UserPreferences.getLeftVolume();
                 float rightVolume = UserPreferences.getRightVolume();

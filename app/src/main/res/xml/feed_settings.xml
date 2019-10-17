@@ -13,6 +13,11 @@
             android:summary="@string/authentication_descr"/>
 
     <ListPreference
+            android:key="feedPlaybackSpeed"
+            android:title="@string/playback_speed"
+            android:summary="@string/pref_feed_playback_speed_sum"/>
+
+    <ListPreference
             android:entries="@array/spnAutoDeleteItems"
             android:entryValues="@array/spnAutoDeleteValues"
             android:title="@string/auto_delete_label"

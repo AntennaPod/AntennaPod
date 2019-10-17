@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.concurrent.Callable;
 

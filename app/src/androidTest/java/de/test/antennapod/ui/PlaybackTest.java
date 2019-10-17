@@ -4,14 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.filters.LargeTest;
-import android.support.test.rule.ActivityTestRule;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 import android.view.View;
 import android.widget.ListView;
 
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
+
+import org.awaitility.Awaitility;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -24,12 +30,13 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -96,9 +103,26 @@ public class PlaybackTest {
         prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).commit();
     }
 
+    private void setSkipKeepsEpisodePreference(boolean value) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putBoolean(UserPreferences.PREF_SKIP_KEEPS_EPISODE, value).commit();
+    }
+
+    private void setSmartMarkAsPlayedPreference(int smartMarkAsPlayedSecs) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putString(UserPreferences.PREF_SMART_MARK_AS_PLAYED_SECS,
+                Integer.toString(smartMarkAsPlayedSecs, 10))
+                .commit();
+    }
+
     private void skipEpisode() {
         Intent skipIntent = new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
         context.sendBroadcast(skipIntent);
+    }
+
+    private void pauseEpisode() {
+        Intent pauseIntent = new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+        context.sendBroadcast(pauseIntent);
     }
 
     private void startLocalPlayback() {
@@ -130,6 +154,11 @@ public class PlaybackTest {
     }
 
     private void startLocalPlaybackFromQueue() {
+        gotoQueueScreen();
+        playFromQueue(0);
+    }
+
+    private void gotoQueueScreen() {
         openNavDrawer();
         // if we try to just click on plain old text then
         // we might wind up clicking on the fragment title and not
@@ -140,11 +169,17 @@ public class PlaybackTest {
         solo.waitForView(targetView);
         solo.clickOnView(targetView);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
+    }
 
+    /**
+     *
+     * @param itemIdx The 0-based index of the episode to be played in the queue.
+     */
+    private void playFromQueue(int itemIdx) {
         final List<FeedItem> queue = DBReader.getQueue();
-        solo.clickOnImageButton(1);
+        solo.clickOnImageButton(itemIdx + 1);
         assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
-        long mediaId = queue.get(0).getMedia().getId();
+        long mediaId = queue.get(itemIdx).getMedia().getId();
         boolean playing = solo.waitForCondition(() -> {
             if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
                 return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
@@ -269,4 +304,72 @@ public class PlaybackTest {
     public void testReplayEpisodeContinuousPlaybackOff() throws Exception {
         replayEpisodeCheck(false);
     }
+
+    @Test
+    public void testSmartMarkAsPlayed_Skip_Average() throws Exception {
+        doTestSmartMarkAsPlayed_Skip_ForEpisode(0);
+    }
+
+    @Test
+    public void testSmartMarkAsPlayed_Skip_LastEpisodeInQueue() throws Exception {
+        doTestSmartMarkAsPlayed_Skip_ForEpisode(-1);
+    }
+
+    private void doTestSmartMarkAsPlayed_Skip_ForEpisode(int itemIdxNegAllowed) throws Exception {
+        setSmartMarkAsPlayedPreference(60);
+        // ensure when an episode is skipped, it is removed due to smart as played
+        setSkipKeepsEpisodePreference(false);
+
+        uiTestUtils.addLocalFeedData(true);
+
+        int fiIdx;
+        if (itemIdxNegAllowed >= 0) {
+            fiIdx = itemIdxNegAllowed;
+        } else { // negative index: count from the end, with -1 being the last one, etc.
+            fiIdx = DBReader.getQueue().size() + itemIdxNegAllowed;
+        }
+        final FeedItem feedItem = DBReader.getQueue().get(fiIdx);
+
+        gotoQueueScreen();
+        playFromQueue(fiIdx);
+
+        skipEpisode();
+
+        //  assert item no longer in queue (needs to wait till skip is asynchronously processed)
+        Awaitility.await()
+                .atMost(1000, MILLISECONDS)
+                .untilAsserted(() -> {
+                    assertThat("Ensure smart mark as play will lead to the item removed from the queue",
+                            DBReader.getQueue(), not(hasItems(feedItem)));
+                });
+        assertThat(DBReader.getFeedItem(feedItem.getId()).isPlayed(), is(true));
+    }
+
+    @Test
+    public void testSmartMarkAsPlayed_Pause_WontAffectItem() throws Exception {
+        setSmartMarkAsPlayedPreference(60);
+
+        uiTestUtils.addLocalFeedData(true);
+
+        final int fiIdx = 0;
+        final FeedItem feedItem = DBReader.getQueue().get(fiIdx);
+
+        gotoQueueScreen();
+        playFromQueue(fiIdx);
+
+        // let playback run a bit then pause
+        Awaitility.await()
+                .atMost(1000, MILLISECONDS)
+                .until(() -> PlayerStatus.PLAYING == uiTestUtils.getPlaybackController(getActivity()).getStatus());
+        pauseEpisode();
+        Awaitility.await()
+                .atMost(1000, MILLISECONDS)
+                .until(() -> PlayerStatus.PAUSED == uiTestUtils.getPlaybackController(getActivity()).getStatus());
+
+        assertThat("Ensure even with smart mark as play, after pause, the item remains in the queue.",
+                DBReader.getQueue(), hasItems(feedItem));
+        assertThat("Ensure even with smart mark as play, after pause, the item played status remains false.",
+                DBReader.getFeedItem(feedItem.getId()).isPlayed(), is(false));
+    }
+
 }

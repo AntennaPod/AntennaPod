@@ -2,8 +2,8 @@ package de.danoeh.antennapod.asynctask;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v4.provider.DocumentFile;
+import androidx.annotation.NonNull;
+import androidx.documentfile.provider.DocumentFile;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

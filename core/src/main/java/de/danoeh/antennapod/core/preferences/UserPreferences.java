@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
@@ -71,7 +72,7 @@ public class UserPreferences {
     private static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
     private static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
-    private static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
+    public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
     private static final String PREF_AUTO_DELETE = "prefAutoDelete";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
@@ -321,7 +322,15 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_DELETE_REMOVES_FROM_QUEUE, false);
     }
 
-    public static float getPlaybackSpeed() {
+    public static float getPlaybackSpeed(MediaType mediaType) {
+        if (mediaType == MediaType.VIDEO) {
+            return getVideoPlaybackSpeed();
+        } else {
+            return getAudioPlaybackSpeed();
+        }
+    }
+
+    private static float getAudioPlaybackSpeed() {
         try {
             return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
@@ -331,7 +340,7 @@ public class UserPreferences {
         }
     }
 
-    public static float getVideoPlaybackSpeed() {
+    private static float getVideoPlaybackSpeed() {
         try {
             return Float.parseFloat(prefs.getString(PREF_VIDEO_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
@@ -706,7 +715,7 @@ public class UserPreferences {
         String[] selectedSpeeds = null;
         // If this preference hasn't been set yet, return the default options
         if (valueFromPrefs == null) {
-            selectedSpeeds = new String[] { "1.00", "1.25", "1.50", "1.75", "2.00" };
+            selectedSpeeds = new String[] { "0.75", "1.00", "1.25", "1.50", "1.75", "2.00" };
         } else {
             try {
                 JSONArray jsonArray = new JSONArray(valueFromPrefs);

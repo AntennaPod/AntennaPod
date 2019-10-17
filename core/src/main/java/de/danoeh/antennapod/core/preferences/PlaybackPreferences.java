@@ -11,6 +11,8 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+
 /**
  * Provides access to preferences set by the playback service. A private
  * instance of this class must first be instantiated via createInstance() or
@@ -53,6 +55,13 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
      * The current player status as int.
      */
     private static final String PREF_CURRENT_PLAYER_STATUS = "de.danoeh.antennapod.preferences.currentPlayerStatus";
+
+    /**
+     * A temporary playback speed which overrides the per-feed playback speed for the currently playing
+     * media. Considered unset if set to SPEED_USE_GLOBAL;
+     */
+    private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED = "de.danoeh.antennapod.preferences.temporaryPlaybackSpeed";
+
 
     /**
      * Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing.
@@ -112,6 +121,10 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         return prefs.getInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
     }
 
+    public static float getCurrentlyPlayingTemporaryPlaybackSpeed() {
+        return prefs.getFloat(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED, SPEED_USE_GLOBAL);
+    }
+
     public static void writeNoMediaPlaying() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA, NO_MEDIA_PLAYING);
@@ -151,6 +164,18 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_CURRENT_PLAYER_STATUS, getCurrentPlayerStatusAsInt(playerStatus));
+        editor.apply();
+    }
+
+    public static void setCurrentlyPlayingTemporaryPlaybackSpeed(float speed) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putFloat(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED, speed);
+        editor.apply();
+    }
+
+    public static void clearCurrentlyPlayingTemporaryPlaybackSpeed() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED);
         editor.apply();
     }
 

@@ -12,10 +12,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.media.MediaMetadataRetriever;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -36,6 +35,8 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
+
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 // TODO Remove media column from feeditem table
 
@@ -106,6 +107,7 @@ public class PodDBAdapter {
     public static final String KEY_LAST_PLAYED_TIME = "last_played_time";
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
+    public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
 
     // Table names
     static final String TABLE_NAME_FEEDS = "Feeds";
@@ -139,6 +141,7 @@ public class PodDBAdapter {
             + KEY_HIDE + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
+            + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
             + KEY_FEED_VOLUME_REDUCTION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
@@ -160,7 +163,7 @@ public class PodDBAdapter {
             + KEY_FEEDITEM + " INTEGER,"
             + KEY_PLAYED_DURATION + " INTEGER,"
             + KEY_HAS_EMBEDDED_PICTURE + " INTEGER,"
-            + KEY_LAST_PLAYED_TIME + " INTEGER)";
+            + KEY_LAST_PLAYED_TIME + " INTEGER" + ")";
 
     private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -237,7 +240,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
             TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_REDUCTION,
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
-            TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER
+            TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED
     };
 
     /**
@@ -403,6 +407,7 @@ public class PodDBAdapter {
         values.put(KEY_PASSWORD, prefs.getPassword());
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
+        values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -472,6 +477,20 @@ public class PodDBAdapter {
                     new String[]{String.valueOf(media.getId())});
         } else {
             Log.e(TAG, "setFeedMediaPlaybackCompletionDate: ID of media was 0");
+        }
+    }
+
+    public void resetAllMediaPlayedDuration() {
+        try {
+            db.beginTransactionNonExclusive();
+            ContentValues values = new ContentValues();
+            values.put(KEY_PLAYED_DURATION, 0);
+            db.update(TABLE_NAME_FEED_MEDIA, values, null, new String[0]);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
         }
     }
 
@@ -1440,7 +1459,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private static final int VERSION = 1070296;
+        private static final int VERSION = 1070400;
 
         private final Context context;
 

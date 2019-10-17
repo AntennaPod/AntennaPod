@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.discovery;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import de.mfietz.fyydlin.SearchHit;
 import org.json.JSONArray;
