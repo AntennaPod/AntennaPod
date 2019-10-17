@@ -16,6 +16,7 @@ import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
@@ -670,7 +671,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     private void setVolumeSync(float volumeLeft, float volumeRight) {
         playerLock.lock();
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
+        if (media != null && EnumSet.of(MediaType.AUDIO, MediaType.VIDEO).contains(media.getMediaType())) {
             Playable playable = getPlayable();
             if (playable instanceof FeedMedia) {
                 FeedMedia feedMedia = (FeedMedia) playable;
