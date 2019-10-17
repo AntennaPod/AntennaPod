@@ -5,25 +5,25 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
-class PlaybackVolumeAdaptor {
+class PlaybackVolumeUpdater {
 
-    public void adaptVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeReductionSetting volumeReductionSetting) {
+    public void updateVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeReductionSetting volumeReductionSetting) {
         Playable playable = mediaPlayer.getPlayable();
         boolean isFeedMedia = playable instanceof FeedMedia;
         boolean isPlayableLoaded = isPlayableLoaded(mediaPlayer.getPlayerStatus());
 
-        if (isPlayableLoaded && isFeedMedia) {
-            adaptFeedMediaVolumeIfNecessary(mediaPlayer, affectedFeedIdentifier, volumeReductionSetting, (FeedMedia) playable);
+        if (isFeedMedia && isPlayableLoaded) {
+            updateFeedMediaVolumeIfNecessary(mediaPlayer, affectedFeedIdentifier, volumeReductionSetting, (FeedMedia) playable);
         }
     }
 
-    private void adaptFeedMediaVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeReductionSetting volumeReductionSetting, FeedMedia feedMedia) {
+    private void updateFeedMediaVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeReductionSetting volumeReductionSetting, FeedMedia feedMedia) {
         if (mediaBelongsToAffectedFeed(feedMedia, affectedFeedIdentifier)) {
             FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
             preferences.setVolumeReductionSetting(volumeReductionSetting);
 
             if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
-                forceAdaptVolume(mediaPlayer);
+                forceUpdateVolume(mediaPlayer);
             }
         }
     }
@@ -42,7 +42,7 @@ class PlaybackVolumeAdaptor {
                 && affectedFeedIdentifier.equals(feedMedia.getItem().getFeed().getIdentifyingValue());
     }
 
-    private static void forceAdaptVolume(PlaybackServiceMediaPlayer mediaPlayer) {
+    private void forceUpdateVolume(PlaybackServiceMediaPlayer mediaPlayer) {
         mediaPlayer.pause(false, false);
         mediaPlayer.resume();
     }

@@ -1482,8 +1482,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Serializable volumeReductionExtra = intent.getSerializableExtra(EXTRA_VOLUME_REDUCTION_SETTING);
                 VolumeReductionSetting volumeReductionSetting = (VolumeReductionSetting) volumeReductionExtra;
 
-                PlaybackVolumeAdaptor playbackVolumeAdaptor = new PlaybackVolumeAdaptor();
-                playbackVolumeAdaptor.adaptVolumeIfNecessary(mediaPlayer, affectedFeed, volumeReductionSetting);
+                PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
+                playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, affectedFeed, volumeReductionSetting);
             }
         }
     };
