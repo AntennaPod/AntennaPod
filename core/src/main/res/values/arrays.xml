@@ -254,6 +254,25 @@
         <item>is_favorite</item>
     </string-array>
 
+    <!-- sort for podcast screen, not for queue -->
+    <string-array name="feed_episodes_sort_options">
+        <item>@string/sort_date_new_old</item>
+        <item>@string/sort_date_old_new</item>
+        <item>@string/sort_title_a_z</item>
+        <item>@string/sort_title_z_a</item>
+        <item>@string/sort_duration_short_long</item>
+        <item>@string/sort_duration_long_short</item>
+    </string-array>
+
+    <string-array name="feed_episodes_sort_values">
+        <item>DATE_NEW_OLD</item>
+        <item>DATE_OLD_NEW</item>
+        <item>EPISODE_TITLE_A_Z</item>
+        <item>EPISODE_TITLE_Z_A</item>
+        <item>DURATION_SHORT_LONG</item>
+        <item>DURATION_LONG_SHORT</item>
+    </string-array>
+
     <string-array name="image_cache_size_options">
         <item>20 MiB</item>
         <item>50 MiB</item>

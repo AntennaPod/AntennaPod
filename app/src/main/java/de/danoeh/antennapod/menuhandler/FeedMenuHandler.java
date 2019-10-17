@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
@@ -14,12 +16,14 @@ import java.util.Set;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.IntraFeedSortOrder;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.dialog.FilterDialog;
+import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -65,6 +69,9 @@ public class FeedMenuHandler {
             case R.id.refresh_complete_item:
                 DBTasks.forceRefreshCompleteFeed(context, selectedFeed);
                 break;
+            case R.id.sort_items:
+                showSortDialog(context, selectedFeed);
+                break;
             case R.id.filter_items:
                 showFilterDialog(context, selectedFeed);
                 break;
@@ -108,4 +115,17 @@ public class FeedMenuHandler {
 
         filterDialog.openDialog();
     }
+
+
+    private static void showSortDialog(Context context, Feed selectedFeed) {
+        IntraFeedSortDialog sortDialog = new IntraFeedSortDialog(context, selectedFeed.getSortOrder()) {
+            @Override
+            protected void updateSort(@NonNull IntraFeedSortOrder sortOrder) {
+                selectedFeed.setSortOrder(sortOrder);
+                // TODO-2524: update in db
+            }
+        };
+        sortDialog.openDialog();
+    }
+
 }

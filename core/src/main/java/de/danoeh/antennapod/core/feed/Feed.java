@@ -1,8 +1,9 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,6 +88,8 @@ public class Feed extends FeedFile implements ImageResource {
      * Contains property strings. If such a property applies to a feed item, it is not shown in the feed list
      */
     private FeedItemFilter itemfilter;
+    @Nullable
+    private IntraFeedSortOrder sortOrder;
 
     /**
      * This constructor is used for restoring a feed from the database.
@@ -521,6 +524,15 @@ public class Feed extends FeedFile implements ImageResource {
         if (properties != null) {
             this.itemfilter = new FeedItemFilter(properties);
         }
+    }
+
+    @Nullable
+    public IntraFeedSortOrder getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(@Nullable IntraFeedSortOrder sortOrder) {
+        this.sortOrder = sortOrder;
     }
 
     public boolean hasLastUpdateFailed() {

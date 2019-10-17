@@ -3,6 +3,13 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/sort_items"
+        android:icon="?attr/ic_sort"
+        android:menuCategory="container"
+        android:title="@string/sort"
+        custom:showAsAction="always">
+    </item>
+    <item
         android:id="@+id/filter_items"
         android:icon="?attr/ic_filter"
         android:menuCategory="container"
