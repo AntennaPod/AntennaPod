@@ -954,7 +954,7 @@ public class DBWriter {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
-            // adapter.setFeedItemSortOrder(feedId, sortOrder);
+            adapter.setFeedItemSortOrder(feedId, sortOrder);
             adapter.close();
             EventBus.getDefault().post(new FeedEvent(FeedEvent.Action.SORT_ORDER_CHANGED, feedId));
         });

@@ -12,6 +12,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+
 /**
  * Data Object for a whole feed
  *
@@ -97,7 +98,7 @@ public class Feed extends FeedFile implements ImageResource {
     public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
-                String filter, boolean lastUpdateFailed) {
+                String filter, @Nullable IntraFeedSortOrder sortOrder, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
         this.id = id;
         this.feedTitle = title;
@@ -119,6 +120,7 @@ public class Feed extends FeedFile implements ImageResource {
         } else {
             this.itemfilter = new FeedItemFilter(new String[0]);
         }
+        this.sortOrder = sortOrder;
         this.lastUpdateFailed = lastUpdateFailed;
     }
 
@@ -129,7 +131,7 @@ public class Feed extends FeedFile implements ImageResource {
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
         this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, imageUrl,
-                fileUrl, downloadUrl, downloaded, false, null, null, false);
+                fileUrl, downloadUrl, downloaded, false, null, null, null, false);
     }
 
     /**
@@ -184,6 +186,7 @@ public class Feed extends FeedFile implements ImageResource {
         int indexIsPaged = cursor.getColumnIndex(PodDBAdapter.KEY_IS_PAGED);
         int indexNextPageLink = cursor.getColumnIndex(PodDBAdapter.KEY_NEXT_PAGE_LINK);
         int indexHide = cursor.getColumnIndex(PodDBAdapter.KEY_HIDE);
+        int indexSortOrder = cursor.getColumnIndex(PodDBAdapter.KEY_SORT_ORDER);
         int indexLastUpdateFailed = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED);
         int indexImageUrl = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
 
@@ -206,6 +209,7 @@ public class Feed extends FeedFile implements ImageResource {
                 cursor.getInt(indexIsPaged) > 0,
                 cursor.getString(indexNextPageLink),
                 cursor.getString(indexHide),
+                IntraFeedSortOrder.fromCode(cursor.getInt(indexSortOrder)),
                 cursor.getInt(indexLastUpdateFailed) > 0
         );
 

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
+import androidx.annotation.Nullable;
+
 /**
  * Provides sort orders to sort a list of episodes within a feed.
  */
@@ -10,6 +12,9 @@ public enum IntraFeedSortOrder {
     EPISODE_TITLE_Z_A(4),
     DURATION_SHORT_LONG(5),
     DURATION_LONG_SHORT(6);
+
+    // The constant SHOULD NEVER be changed, as it is used in db DDLs
+    public static final int CODE_UNSPECIFIED = 0;
 
     public final int code;
 
@@ -28,4 +33,22 @@ public enum IntraFeedSortOrder {
             return defaultValue;
         }
     }
+
+    @Nullable
+    public static IntraFeedSortOrder fromCode(int code) {
+        if (code == CODE_UNSPECIFIED) { // sort order not specified
+            return null;
+        }
+        for (IntraFeedSortOrder sortOrder : values()) {
+            if (sortOrder.code == code) {
+                return sortOrder;
+            }
+        }
+        throw new IllegalArgumentException("Unsupported code: " + code);
+    }
+
+    public static int toCode(@Nullable IntraFeedSortOrder sortOrder) {
+        return sortOrder != null ? sortOrder.code : CODE_UNSPECIFIED;
+    }
+
 }
