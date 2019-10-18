@@ -17,13 +17,6 @@
         custom:showAsAction="always">
     </item>
     <item
-        android:id="@+id/episode_actions"
-        android:menuCategory="container"
-        android:icon="?attr/checkbox_multiple"
-        android:title="@string/batch_edit"
-        custom:showAsAction="always">
-    </item>
-    <item
         android:id="@+id/refresh_item"
         android:icon="?attr/navigation_refresh"
         android:menuCategory="container"
@@ -44,6 +37,13 @@
         custom:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/search_label"/>
 
+    <item
+        android:id="@+id/episode_actions"
+        android:menuCategory="container"
+        android:icon="?attr/checkbox_multiple"
+        android:title="@string/batch_edit"
+        custom:showAsAction="collapseActionView">
+    </item>
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
