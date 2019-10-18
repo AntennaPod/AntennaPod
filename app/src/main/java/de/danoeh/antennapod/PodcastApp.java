@@ -4,6 +4,8 @@ import android.app.Application;
 import android.os.Build;
 import android.os.StrictMode;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.joanzapata.iconify.fonts.MaterialModule;
@@ -15,7 +17,7 @@ import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 
 /** Main application class. */
-public class PodcastApp extends Application {
+public class PodcastApp extends MultiDexApplication {
 
     // make sure that ClientConfigurator executes its static code
     static {
