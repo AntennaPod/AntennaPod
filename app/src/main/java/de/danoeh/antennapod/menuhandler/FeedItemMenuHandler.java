@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.menuhandler;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
@@ -190,7 +192,17 @@ public class FeedItemMenuHandler {
                 DBWriter.addQueueItem(context, selectedItem);
                 break;
             case R.id.remove_from_queue_item:
-                DBWriter.removeQueueItem(context, true, selectedItem);
+                ConfirmationDialog removeFromQueueConfirmationDialog = new ConfirmationDialog(context,
+                        R.string.remove_from_queue_label,
+                        R.string.remove_from_queue_label_confirmation_msg) {
+                    @Override
+                    public void onConfirmButtonPressed(DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.removeQueueItem(context, true, selectedItem);
+                    }
+                };
+                removeFromQueueConfirmationDialog.createNewDialog().show();
+
                 break;
             case R.id.add_to_favorites_item:
                 DBWriter.addFavoriteItem(selectedItem);

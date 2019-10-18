@@ -198,6 +198,11 @@
         <item quantity="one">%d episode removed from queue.</item>
         <item quantity="other">%d episodes removed from queue.</item>
     </plurals>
+    <string name="remove_from_queue_label_confirmation_msg">Please confirm that you want to remove the episode from queue.</string>
+    <plurals name="remove_from_queue_batch_label_confirmation_msg">
+        <item quantity="one">Please confirm that you want to remove %d episode from queue.</item>
+        <item quantity="other">Please confirm that you want to remove %d episodes from queue.</item>
+    </plurals>
     <string name="add_to_favorite_label">Add to Favorites</string>
     <string name="added_to_favorites">Added to Favorites</string>
     <string name="remove_from_favorite_label">Remove from Favorites</string>

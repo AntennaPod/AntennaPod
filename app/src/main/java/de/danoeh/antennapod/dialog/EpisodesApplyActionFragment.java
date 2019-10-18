@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.dialog;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -502,8 +504,19 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void removeFromQueueChecked() {
-        DBWriter.removeQueueItem(getActivity(), true, checkedIds.toArray());
-        close(R.plurals.removed_from_queue_batch_label, checkedIds.size());
+        ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
+                R.string.mark_all_read_label,
+                getResources().getQuantityString(R.plurals.remove_from_queue_batch_label_confirmation_msg, checkedIds.size(), checkedIds.size())) {
+
+            @Override
+            public void onConfirmButtonPressed(
+                    DialogInterface dialog) {
+                DBWriter.removeQueueItem(getActivity(), true, checkedIds.toArray());
+                close(R.plurals.removed_from_queue_batch_label, checkedIds.size());
+            }
+        };
+        conDialog.createNewDialog().show();
+
     }
 
     private void markedCheckedPlayed() {
