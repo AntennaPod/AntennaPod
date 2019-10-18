@@ -2,11 +2,12 @@ package de.danoeh.antennapod.menuhandler;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
 
@@ -42,6 +43,10 @@ public class FeedMenuHandler {
         Log.d(TAG, "Preparing options menu");
 
         menu.findItem(R.id.refresh_complete_item).setVisible(selectedFeed.isPaged());
+        if (StringUtils.isBlank(selectedFeed.getLink())) {
+            menu.findItem(R.id.visit_website_item).setVisible(false);
+            menu.findItem(R.id.share_link_item).setVisible(false);
+        }
 
         return true;
     }
