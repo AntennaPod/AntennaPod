@@ -136,7 +136,6 @@ dependencies {
     implementation "androidx.gridlayout:gridlayout:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.0.0"
     implementation "androidx.media:media:1.1.0"
-    implementation "androidx.multidex:multidex:2.0.1"
     implementation "com.google.android.material:material:1.0.0"
     annotationProcessor "androidx.annotation:annotation:1.1.0"
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
@@ -165,6 +164,8 @@ dependencies {
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.4.2'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
+
+    debugImplementation "androidx.multidex:multidex:2.0.1"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
