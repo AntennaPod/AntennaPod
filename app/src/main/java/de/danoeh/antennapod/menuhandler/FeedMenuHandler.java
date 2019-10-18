@@ -122,7 +122,7 @@ public class FeedMenuHandler {
             @Override
             protected void updateSort(@NonNull IntraFeedSortOrder sortOrder) {
                 selectedFeed.setSortOrder(sortOrder);
-                // TODO-2524: update in db
+                DBWriter.setFeedItemSortOrder(selectedFeed.getId(), sortOrder);
             }
         };
         sortDialog.openDialog();
