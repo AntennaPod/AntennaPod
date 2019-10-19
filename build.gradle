@@ -41,7 +41,7 @@ subprojects {
 
 project.ext {
     compileSdkVersion = 28
-    minSdkVersion = 14
+    minSdkVersion = 16
     targetSdkVersion = 28
 
     workManagerVersion = "1.0.1"
