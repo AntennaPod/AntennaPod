@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.MediaAction;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -72,6 +73,33 @@ public class PreferenceUpgrader {
             }
 
             UserPreferences.setQueueLocked(false);
+
+            // Migrate hardware button preferences to new system that supports repeat actions
+            boolean nextButtonSkips =
+                prefs.getBoolean(UserPreferences.PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
+            boolean previousButtonRestarts =
+                prefs.getBoolean(UserPreferences.PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
+
+            SharedPreferences.Editor editor = prefs.edit();
+            if (nextButtonSkips) {
+                editor.putString(UserPreferences.PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION,
+                    MediaAction.SKIP_FORWARD.name());
+            } else {
+                editor.putString(UserPreferences.PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION,
+                    MediaAction.SEEK_FORWARD.name());
+            }
+
+            if (previousButtonRestarts) {
+                editor.putString(UserPreferences.PREF_HARDWARE_BACK_SINGLE_TAP_ACTION,
+                    MediaAction.RESTART.name());
+            } else {
+                editor.putString(UserPreferences.PREF_HARDWARE_BACK_SINGLE_TAP_ACTION,
+                    MediaAction.SKIP_BACKWARD.name());
+            }
+
+            editor.remove(UserPreferences.PREF_HARDWARE_FOWARD_BUTTON_SKIPS);
+            editor.remove(UserPreferences.PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS);
+            editor.apply();
         }
     }
 }

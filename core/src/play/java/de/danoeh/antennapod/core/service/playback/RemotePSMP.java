@@ -126,7 +126,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             if (playbackEnded) {
                 // This is an unconventional thing to occur...
                 Log.w(TAG, "Somehow, Chromecast went from playing directly to standby mode");
-                endPlayback(false, false, true, true);
+                endPlayback(false, SkipRequest.NONE, true, true);
             }
         }
 
@@ -264,13 +264,13 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
                         if (mediaChanged && currentMedia != null) {
                             media = currentMedia;
                         }
-                        endPlayback(true, false, true, true);
+                        endPlayback(true, SkipRequest.NONE, true, true);
                         return;
                     case MediaStatus.IDLE_REASON_ERROR:
                         Log.w(TAG, "Got an error status from the Chromecast. Skipping, if possible, to the next episode...");
                         callback.onMediaPlayerInfo(CAST_ERROR_PRIORITY_HIGH,
                                 R.string.cast_failed_media_error_skipping);
-                        endPlayback(false, false, true, true);
+                        endPlayback(false, SkipRequest.NONE, true, true);
                         return;
                 }
                 break;
@@ -602,13 +602,15 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
     }
 
     @Override
-    protected Future<?> endPlayback(boolean hasEnded, boolean wasSkipped, boolean shouldContinue,
+    protected Future<?> endPlayback(boolean hasEnded, SkipRequest skipRequest, boolean shouldContinue,
                                     boolean toStoppedState) {
         Log.d(TAG, "endPlayback() called");
         boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
         if (playerStatus != PlayerStatus.INDETERMINATE) {
             setPlayerStatus(PlayerStatus.INDETERMINATE, media);
         }
+
+        boolean wasSkipped = skipRequest != SkipRequest.NONE;
         if (media != null && wasSkipped) {
             // current position only really matters when we skip
             int position = getPosition();
@@ -619,7 +621,11 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         final Playable currentMedia = media;
         Playable nextMedia = null;
         if (shouldContinue) {
-            nextMedia = callback.getNextInQueue(currentMedia);
+            if (skipRequest == SkipRequest.PREVIOUS) {
+                nextMedia = callback.getPreviousInQueue(currentMedia);
+            } else {
+                nextMedia = callback.getNextInQueue(currentMedia);
+            }
 
             boolean playNextEpisode = isPlaying && nextMedia != null && UserPreferences.isFollowQueue();
             if (playNextEpisode) {

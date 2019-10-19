@@ -104,41 +104,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
                     return;
                 }
                 if (controller.canSetPlaybackSpeed()) {
-                    String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-                    DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
-                    format.setDecimalSeparator('.');
-
-                    float currentSpeedValue = controller.getCurrentPlaybackSpeedMultiplier();
-                    String currentSpeed = new DecimalFormat("0.00", format).format(currentSpeedValue);
-
-                    // Provide initial value in case the speed list has changed
-                    // out from under us
-                    // and our current speed isn't in the new list
-                    String newSpeed;
-                    if (availableSpeeds.length > 0) {
-                        newSpeed = availableSpeeds[0];
-                    } else {
-                        newSpeed = "1.00";
-                    }
-
-                    for (int i = 0; i < availableSpeeds.length; i++) {
-                        if (availableSpeeds[i].equals(currentSpeed)) {
-                            if (i == availableSpeeds.length - 1) {
-                                newSpeed = availableSpeeds[0];
-                            } else {
-                                newSpeed = availableSpeeds[i + 1];
-                            }
-                            break;
-                        }
-                    }
-
-                    try {
-                        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(Float.parseFloat(newSpeed));
-                    } catch (NumberFormatException e) {
-                        // Well this was awkward...
-                    }
-                    UserPreferences.setPlaybackSpeed(newSpeed);
-                    controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
+                    controller.increasePlaybackSpeed();
                     onPositionObserverUpdate();
                 } else {
                     VariableSpeedDialog.showGetPluginDialog(this);

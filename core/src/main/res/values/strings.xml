@@ -343,16 +343,38 @@
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
+    <string name="hardware_control">Hardware control</string>
     <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
     <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
-    <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
-    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a forward button on a bluetooth-connected device skip to the next episode instead of fast-forwarding</string>
-    <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
-    <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
+
+    <string name="pref_hardwareMediaAction_none">None</string>
+    <string name="pref_hardwareMediaAction_skipForward">Play Next Episode</string>
+    <string name="pref_hardwareMediaAction_skipBackward">Play Previous Episode</string>
+    <string name="pref_hardwareMediaAction_seekForward">Fast Forward</string>
+    <string name="pref_hardwareMediaAction_seekBackward">Rewind</string>
+    <string name="pref_hardwareMediaAction_increaseSpeed">Increase Speed</string>
+    <string name="pref_hardwareMediaAction_decreaseSpeed">Decrease Speed</string>
+    <string name="pref_hardwareMediaAction_restart">Restart Playback</string>
+
+    <string name="pref_hardwareForwardSingleTapAction_title">Forward Button</string>
+    <string name="pref_hardwareForwardSingleTapAction_sum">Customize the forward button behavior</string>
+    <string name="pref_hardwareForwardDoubleTapAction_title">Forward Double Tap</string>
+    <string name="pref_hardwareForwardDoubleTapAction_sum">Choose a different behavior if the forward button is double tapped</string>
+    <string name="pref_hardwareBackSingleTapAction_title">Back Button</string>
+    <string name="pref_hardwareBackSingleTapAction_sum">Customize the back button behavior</string>
+    <string name="pref_hardwareBackDoubleTapAction_title">Back Double Tap</string>
+    <string name="pref_hardwareBackDoubleTapAction_sum">Choose a different behavior if the back button is double tapped</string>
+    <string name="pref_hardwarePlayPauseDoubleTapAction_title">Headset Double Tap</string>
+    <string name="pref_hardwarePlayPauseDoubleTapAction_sum">Choose a different behavior if the headset button is double tapped</string>
+    <string name="pref_hardwarePlayPauseTripleTapAction_title">Headset Triple Tap</string>
+    <string name="pref_hardwarePlayPauseTripleTapAction_sum">Choose a different behavior if the headset button is triple tapped</string>
+    <string name="pref_advancedHardwareActions_title">Enable Advanced Controls</string>
+    <string name="pref_advancedHardwareActions_sum">Warning: Some hardware devices may override the following actions</string>
+
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>

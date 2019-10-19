@@ -411,6 +411,34 @@ public final class DBTasks {
     }
 
     /**
+     * Returns the predecessor of a FeedItem in the queue.
+     *
+     * @param itemId  ID of the FeedItem
+     * @param queue   Used for determining the predecessor of the item. If this parameter is null, the method will load
+     *                the queue from the database in the same thread.
+     * @return Predecessor of the FeedItem or null if the FeedItem is not in the queue or has no predecessor.
+     */
+    public static FeedItem getQueuePredecessorOfItem(final long itemId, List<FeedItem> queue) {
+        FeedItem result = null;
+        if (queue == null) {
+            queue = DBReader.getQueue();
+        }
+        if (queue != null) {
+            Iterator<FeedItem> iterator = queue.iterator();
+            FeedItem previous = null;
+            while (iterator.hasNext()) {
+                FeedItem item = iterator.next();
+                if (item.getId() == itemId) {
+                    result = previous;
+                    break;
+                }
+                previous = item;
+            }
+        }
+        return result;
+    }
+
+    /**
      * Loads the queue from the database and checks if the specified FeedItem is in the queue.
      * This method should NOT be executed in the GUI thread.
      *

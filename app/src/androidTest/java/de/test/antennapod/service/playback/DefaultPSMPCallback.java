@@ -68,6 +68,11 @@ public class DefaultPSMPCallback implements PlaybackServiceMediaPlayer.PSMPCallb
         }
 
         @Override
+        public Playable getPreviousInQueue(Playable currentMedia) {
+            return null;
+        }
+
+        @Override
         public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
 
         }

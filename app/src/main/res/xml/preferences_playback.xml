@@ -47,18 +47,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_control">
-        <SwitchPreference
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefHardwareForwardButtonSkips"
-                android:summary="@string/pref_hardwareForwardButtonSkips_sum"
-                android:title="@string/pref_hardwareForwardButtonSkips_title"/>
-        <SwitchPreference
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefHardwarePreviousButtonRestarts"
-                android:summary="@string/pref_hardwarePreviousButtonRestarts_sum"
-                android:title="@string/pref_hardwarePreviousButtonRestarts_title"/>
         <Preference
                 android:key="prefPlaybackFastForwardDeltaLauncher"
                 android:summary="@string/pref_fast_forward_sum"
@@ -76,6 +64,67 @@
                 android:key="prefPlaybackTimeRespectsSpeed"
                 android:summary="@string/pref_playback_time_respects_speed_sum"
                 android:title="@string/pref_playback_time_respects_speed_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/hardware_control">
+        <ListPreference
+            android:entryValues="@array/hardware_forward_single_tap_action_values"
+            android:entries="@array/hardware_forward_single_tap_action_options"
+            android:title="@string/pref_hardwareForwardSingleTapAction_title"
+            android:key="prefHardwareForwardAction0"
+            android:summary="@string/pref_hardwareForwardSingleTapAction_sum"
+            android:defaultValue="SEEK_FORWARD"
+            app:useStockLayout="true"/>
+        <ListPreference
+            android:entryValues="@array/hardware_back_single_tap_action_values"
+            android:entries="@array/hardware_back_single_tap_action_options"
+            android:title="@string/pref_hardwareBackSingleTapAction_title"
+            android:key="prefHardwareBackAction0"
+            android:summary="@string/pref_hardwareBackSingleTapAction_sum"
+            android:defaultValue="SEEK_BACKWARD"
+            app:useStockLayout="true"/>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefAdvancedHardwareActions"
+            android:summary="@string/pref_advancedHardwareActions_sum"
+            android:title="@string/pref_advancedHardwareActions_title"/>
+        <ListPreference
+            android:entryValues="@array/hardware_forward_double_tap_action_values"
+            android:entries="@array/hardware_forward_double_tap_action_options"
+            android:title="@string/pref_hardwareForwardDoubleTapAction_title"
+            android:key="prefHardwareForwardAction1"
+            android:summary="@string/pref_hardwareForwardDoubleTapAction_sum"
+            android:defaultValue="NONE"
+            android:dependency="prefAdvancedHardwareActions"
+            app:useStockLayout="true"/>
+        <ListPreference
+            android:entryValues="@array/hardware_back_double_tap_action_values"
+            android:entries="@array/hardware_back_double_tap_action_options"
+            android:title="@string/pref_hardwareBackDoubleTapAction_title"
+            android:key="prefHardwareKeyBackAction1"
+            android:summary="@string/pref_hardwareBackDoubleTapAction_sum"
+            android:defaultValue="NONE"
+            android:dependency="prefAdvancedHardwareActions"
+            app:useStockLayout="true"/>
+        <ListPreference
+            android:entryValues="@array/hardware_play_pause_double_tap_action_values"
+            android:entries="@array/hardware_play_pause_double_tap_action_options"
+            android:title="@string/pref_hardwarePlayPauseDoubleTapAction_title"
+            android:key="prefHardwarePlayPauseAction1"
+            android:summary="@string/pref_hardwarePlayPauseDoubleTapAction_sum"
+            android:defaultValue="NONE"
+            android:dependency="prefAdvancedHardwareActions"
+            app:useStockLayout="true"/>
+        <ListPreference
+            android:entryValues="@array/hardware_play_pause_triple_tap_action_values"
+            android:entries="@array/hardware_play_pause_triple_tap_action_options"
+            android:title="@string/pref_hardwarePlayPauseTripleTapAction_title"
+            android:key="prefHardwarePlayPauseAction2"
+            android:summary="@string/pref_hardwarePlayPauseTripleTapAction_sum"
+            android:defaultValue="NONE"
+            android:dependency="prefAdvancedHardwareActions"
+            app:useStockLayout="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">

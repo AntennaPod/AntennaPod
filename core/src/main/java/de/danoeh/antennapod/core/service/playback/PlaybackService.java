@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -42,8 +41,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
@@ -58,6 +60,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.preferences.MediaAction;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -226,6 +229,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private static volatile MediaType currentMediaType = MediaType.UNKNOWN;
 
     private final IBinder mBinder = new LocalBinder();
+
+    private final RepeatTapActionHandler repeatTapActionHandler = new RepeatTapActionHandler();
+
+    private final Map<MediaAction, Runnable> playbackActions = createPlaybackActions();
 
     public class LocalBinder extends Binder {
         public PlaybackService getService() {
@@ -466,7 +473,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         } else {
             if (keycode != -1) {
                 Log.d(TAG, "Received media button event");
-                boolean handled = handleKeycode(keycode, true);
+                MediaButtonReceiver.Source source = MediaButtonReceiver.Source.fromIntent(intent);
+                boolean mediaButton = source == MediaButtonReceiver.Source.MEDIA_BUTTON;
+                boolean handled = handleKeycode(keycode, mediaButton);
                 if (!handled && !stateManager.hasReceivedValidStartCommand()) {
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
@@ -552,68 +561,32 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * Handles media button events
      * return: keycode was handled
      */
-    private boolean handleKeycode(int keycode, boolean notificationButton) {
+    private boolean handleKeycode(int keycode, boolean mediaButton) {
         Log.d(TAG, "Handling keycode: " + keycode);
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         final PlayerStatus status = info.playerStatus;
         switch (keycode) {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
-                } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
-                    mediaPlayer.resume();
-                } else if (status == PlayerStatus.PREPARING) {
-                    mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
-                } else if (status == PlayerStatus.INITIALIZED) {
-                    mediaPlayer.setStartWhenPrepared(true);
-                    mediaPlayer.prepare();
-                } else if (mediaPlayer.getPlayable() == null) {
-                    startPlayingFromPreferences();
-                }
+                handleKeyAction(keycode, mediaButton, MediaAction.TOGGLE_PLAYBACK);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
-                if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
-                    mediaPlayer.resume();
-                } else if (status == PlayerStatus.INITIALIZED) {
-                    mediaPlayer.setStartWhenPrepared(true);
-                    mediaPlayer.prepare();
-                } else if (mediaPlayer.getPlayable() == null) {
-                    startPlayingFromPreferences();
-                }
+                handleKeyAction(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mediaButton, MediaAction.PLAY);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
-                if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
-                }
-
+                handleKeyAction(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mediaButton, MediaAction.PAUSE);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (notificationButton ||
-                        UserPreferences.shouldHardwareButtonSkip()) {
-                    // assume the skip command comes from a notification or the lockscreen
-                    // a >| skip button should actually skip
-                    mediaPlayer.skip();
-                } else {
-                    // assume skip command comes from a (bluetooth) media button
-                    // user actually wants to fast-forward
-                    seekDelta(UserPreferences.getFastForwardSecs() * 1000);
-                }
+                handleKeyAction(keycode, mediaButton, MediaAction.SKIP_FORWARD);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-                mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
+                fastForward();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                if (UserPreferences.shouldHardwarePreviousButtonRestart()) {
-                    // user wants to restart current episode
-                    mediaPlayer.seekTo(0);
-                } else {
-                    //  user wants to rewind current episode
-                    mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
-                }
+                handleKeyAction(keycode, mediaButton, MediaAction.SKIP_BACKWARD);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
-                mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                rewind();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
@@ -630,6 +603,50 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
         }
         return false;
+    }
+
+    /**
+     * Chooses and runs the appropriate action based on which key was pressed,
+     * user preferences for different behaviors, and whether or not the event
+     * was form a media button or other external source like a notification.
+     *
+     * @param keyCode Key that was pressed
+     * @param mediaButton If the key was from an external media button
+     *                    (headset, bluetooth device)
+     * @param defaultAction Default action to take in the event the key did not
+     *                      come from a media button or there is no user
+     *                      preference for that key.
+     */
+    private void handleKeyAction(int keyCode, boolean mediaButton, MediaAction defaultAction) {
+        List<MediaAction> actions = new ArrayList<>();
+        if (!mediaButton) {
+            actions.add(defaultAction);
+        } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PREVIOUS || keyCode == KeyEvent.KEYCODE_MEDIA_NEXT) {
+            // Always override the action based on user preferences for previous/next keys
+            actions.addAll(UserPreferences.getMediaActions(keyCode, null));
+        } else {
+            // For all other keys, execute the default action first but also add in double/triple
+            // tap actions if the user has them enabled
+            actions.addAll(UserPreferences.getMediaActions(keyCode, defaultAction));
+        }
+        repeatTapActionHandler.event(keyCode, convertToPlaybackActions(actions));
+    }
+
+    /**
+     * Convert user media actions into actual runnables to execute the requests.
+     * @return The actions to call when handling the requests.
+     */
+    private List<Runnable> convertToPlaybackActions(List<MediaAction> mediaActions) {
+        List<Runnable> actions = new ArrayList<>();
+        Runnable lastAction = () -> {};
+        for (MediaAction action : mediaActions) {
+            Runnable playbackAction =
+                playbackActions.containsKey(action) ? playbackActions.get(action) : lastAction;
+            actions.add(playbackAction);
+
+            lastAction = playbackAction;
+        }
+        return actions;
     }
 
     private void startPlayingFromPreferences() {
@@ -856,21 +873,35 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
+        public Playable getPreviousInQueue(Playable currentMedia) {
+            return PlaybackService.this.getPreviousInQueue(currentMedia);
+        }
+
+        @Override
         public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
     };
 
-    private Playable getNextInQueue(final Playable currentMedia) {
+    /**
+     * Get the next media item in the user's queue.
+     *
+     * @param currentMedia The current media item that is being played.
+     * @param previous     If {@code true}, the media item before the current one will be returned.
+     *                     If {@code false}, the next item will be returned.
+     * @return The next playable item, if it exists. If there is no queue or if there is no next
+     *         item, then null is returned.
+     */
+    private Playable getAdjacentInQueue(final Playable currentMedia, boolean previous) {
         if (!(currentMedia instanceof FeedMedia)) {
-            Log.d(TAG, "getNextInQueue(), but playable not an instance of FeedMedia, so not proceeding");
+            Log.d(TAG, "getAdjacentInQueue(), but playable not an instance of FeedMedia, so not proceeding");
             return null;
         }
         if (!ClientConfig.playbackServiceCallbacks.useQueue()) {
-            Log.d(TAG, "getNextInQueue(), but queue not in use by this app");
+            Log.d(TAG, "getAdjacentInQueue(), but queue not in use by this app");
             return null;
         }
-        Log.d(TAG, "getNextInQueue()");
+        Log.d(TAG, "getAdjacentInQueue()");
         FeedMedia media = (FeedMedia) currentMedia;
         try {
             media.loadMetadata();
@@ -880,13 +911,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         FeedItem item = media.getItem();
         if (item == null) {
-            Log.w(TAG, "getNextInQueue() with FeedMedia object whose FeedItem is null");
+            Log.w(TAG, "getAdjacentInQueue() with FeedMedia object whose FeedItem is null");
             return null;
         }
         FeedItem nextItem;
         try {
             final List<FeedItem> queue = taskManager.getQueue();
-            nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+            if (previous) {
+                nextItem = DBTasks.getQueuePredecessorOfItem(item.getId(), queue);
+            } else {
+                nextItem = DBTasks.getQueueSuccessorOfItem(item.getId(), queue);
+            }
         } catch (InterruptedException e) {
             Log.e(TAG, "Error handling the queue in order to retrieve the next item", e);
             return null;
@@ -908,7 +943,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return null;
         }
         return nextItem.getMedia();
+    }
 
+    private Playable getNextInQueue(final Playable currentMedia) {
+        return getAdjacentInQueue(currentMedia, false);
+    }
+
+    private Playable getPreviousInQueue(final Playable currentMedia) {
+        return getAdjacentInQueue(currentMedia, true);
     }
 
     /**
@@ -1466,6 +1508,40 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         mediaPlayer.prepare();
     }
 
+    private void pause() {
+        final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+        final PlayerStatus status = info.playerStatus;
+        if (status == PlayerStatus.PLAYING) {
+            mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+        }
+    }
+
+    private void play() {
+        final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+        final PlayerStatus status = info.playerStatus;
+
+        if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
+            mediaPlayer.resume();
+        } else if (status == PlayerStatus.PREPARING) {
+            mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
+        } else if (status == PlayerStatus.INITIALIZED) {
+            mediaPlayer.setStartWhenPrepared(true);
+            mediaPlayer.prepare();
+        } else if (mediaPlayer.getPlayable() == null) {
+            startPlayingFromPreferences();
+        }
+    }
+
+    private void togglePlayback() {
+        final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+        final PlayerStatus status = info.playerStatus;
+        if (status == PlayerStatus.PLAYING) {
+            pause();
+        } else {
+            play();
+        }
+    }
+
     public void pause(boolean abandonAudioFocus, boolean reinit) {
         mediaPlayer.pause(abandonAudioFocus, reinit);
     }
@@ -1490,7 +1566,50 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return mediaPlayer.canSetSpeed();
     }
 
+    public void increaseSpeed() {
+        changeSpeed(1);
+    }
+
+    public void decreaseSpeed() {
+        changeSpeed(-1);
+    }
+
+    private void changeSpeed(int offset) {
+        if(canSetSpeed()) {
+            String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+            String currentSpeed = new DecimalFormat("0.00").format(getCurrentPlaybackSpeed());
+
+            // Provide initial value in case the speed list has changed
+            // out from under us and our current speed isn't in the new list
+            String newSpeed;
+            if (availableSpeeds.length > 0) {
+                newSpeed = availableSpeeds[0];
+            } else {
+                newSpeed = "1.00";
+            }
+
+            for (int i = 0; i < availableSpeeds.length; i++) {
+                if (availableSpeeds[i].equals(currentSpeed)) {
+                    int pos = (i + offset) % availableSpeeds.length;
+                    if(pos < 0) {
+                        pos = availableSpeeds.length + pos;
+                    }
+                    newSpeed = availableSpeeds[pos];
+                    break;
+                }
+            }
+
+            UserPreferences.setPlaybackSpeed(newSpeed);
+            try {
+                setSpeed(Float.parseFloat(newSpeed));
+            } catch (NumberFormatException e) {
+                // Well this was awkward...
+            }
+        }
+    }
+
     public void setSpeed(float speed) {
+        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(speed);
         mediaPlayer.setPlaybackParams(speed, UserPreferences.isSkipSilence());
     }
 
@@ -1533,6 +1652,41 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void seekDelta(final int d) {
         mediaPlayer.seekDelta(d);
+    }
+
+    public void fastForward() {
+        seekDelta(UserPreferences.getFastForwardSecs() * 1000);
+    }
+
+    public void skip() {
+        mediaPlayer.skip();
+    }
+
+    public void skipPrevious() {
+        mediaPlayer.skipPrevious();
+    }
+
+    public void rewind() {
+        seekDelta(-UserPreferences.getRewindSecs() * 1000);
+    }
+
+    public void restartPlayback() {
+        seekTo(0);
+    }
+
+    private Map<MediaAction, Runnable> createPlaybackActions() {
+        Map<MediaAction, Runnable> actions = new HashMap<>();
+        actions.put(MediaAction.PLAY, this::play);
+        actions.put(MediaAction.PAUSE, this::pause);
+        actions.put(MediaAction.TOGGLE_PLAYBACK, this::togglePlayback);
+        actions.put(MediaAction.SKIP_BACKWARD, this::skipPrevious);
+        actions.put(MediaAction.SKIP_FORWARD, this::skip);
+        actions.put(MediaAction.SEEK_BACKWARD, this::rewind);
+        actions.put(MediaAction.SEEK_FORWARD, this::fastForward);
+        actions.put(MediaAction.SPEED_DECREASE, this::decreaseSpeed);
+        actions.put(MediaAction.SPEED_INCREASE, this::increaseSpeed);
+        actions.put(MediaAction.RESTART, this::restartPlayback);
+        return actions;
     }
 
     /**
@@ -1658,7 +1812,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSkipToPrevious() {
             Log.d(TAG, "onSkipToPrevious()");
-            seekDelta(-UserPreferences.getRewindSecs() * 1000);
+            skipPrevious();
         }
 
         @Override
@@ -1676,11 +1830,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSkipToNext() {
             Log.d(TAG, "onSkipToNext()");
-            if (UserPreferences.shouldHardwareButtonSkip()) {
-                mediaPlayer.skip();
-            } else {
-                seekDelta(UserPreferences.getFastForwardSecs() * 1000);
-            }
+            skip();
         }
 
 
@@ -1698,7 +1848,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (keyEvent != null &&
                         keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
                         keyEvent.getRepeatCount() == 0) {
-                    return handleKeycode(keyEvent.getKeyCode(), false);
+                    return handleKeycode(keyEvent.getKeyCode(), true);
                 }
             }
             return false;

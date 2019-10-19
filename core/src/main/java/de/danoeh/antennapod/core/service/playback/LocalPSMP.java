@@ -899,7 +899,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
 
     @Override
-    protected Future<?> endPlayback(final boolean hasEnded, final boolean wasSkipped,
+    protected Future<?> endPlayback(final boolean hasEnded, final SkipRequest skipRequest,
                                     final boolean shouldContinue, final boolean toStoppedState) {
         useCallerThread = UserPreferences.useExoplayer();
         return executor.submit(() -> {
@@ -929,11 +929,15 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             Playable nextMedia = null;
 
             if (shouldContinue) {
-                // Load next episode if previous episode was in the queue and if there
+                // Load a new episode if current episode was in the queue and if there
                 // is an episode in the queue left.
-                // Start playback immediately if continuous playback is enabled
-                nextMedia = callback.getNextInQueue(currentMedia);
+                if (skipRequest == SkipRequest.PREVIOUS) {
+                    nextMedia = callback.getPreviousInQueue(currentMedia);
+                } else {
+                    nextMedia = callback.getNextInQueue(currentMedia);
+                }
 
+                // Start playback immediately if continuous playback is enabled
                 boolean playNextEpisode = isPlaying &&
                         nextMedia != null &&
                         UserPreferences.isFollowQueue();
@@ -960,7 +964,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 }
                 final boolean hasNext = nextMedia != null;
 
-                executor.submit(() -> callback.onPostPlayback(currentMedia, hasEnded, wasSkipped, hasNext));
+                executor.submit(() -> callback.onPostPlayback(currentMedia, hasEnded, skipRequest != SkipRequest.NONE, hasNext));
             } else if (isPlaying) {
                 callback.onPlaybackPause(currentMedia, currentMedia.getPosition());
             }
@@ -1038,7 +1042,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             mp -> genericOnCompletion();
 
     private void genericOnCompletion() {
-        endPlayback(true, false, true, true);
+        endPlayback(true, SkipRequest.NONE, true, true);
     }
 
     private final MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener =

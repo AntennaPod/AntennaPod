@@ -115,6 +115,14 @@ public class CancelablePSMPCallback implements PlaybackServiceMediaPlayer.PSMPCa
     }
 
     @Override
+    public Playable getPreviousInQueue(Playable currentMedia) {
+        if (isCancelled) {
+            return null;
+        }
+        return originalCallback.getPreviousInQueue(currentMedia);
+    }
+
+    @Override
     public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
         if (isCancelled) {
             return;

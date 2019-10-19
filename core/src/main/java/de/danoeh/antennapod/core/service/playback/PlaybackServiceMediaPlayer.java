@@ -231,17 +231,21 @@ public abstract class PlaybackServiceMediaPlayer {
     protected abstract void setPlayable(Playable playable);
 
     public void skip() {
-        endPlayback(false, true, true, true);
+        endPlayback(false, SkipRequest.NEXT, true, true);
+    }
+
+    public void skipPrevious() {
+        endPlayback(false, SkipRequest.PREVIOUS, true, true);
     }
 
     /**
      * Ends playback of current media (if any) and moves into INDETERMINATE state, unless
      * {@param toStoppedState} is set to true, in which case it moves into STOPPED state.
      *
-     * @see #endPlayback(boolean, boolean, boolean, boolean)
+     * @see #endPlayback(boolean, SkipRequest, boolean, boolean)
      */
     public Future<?> stopPlayback(boolean toStoppedState) {
-        return endPlayback(false, false, false, toStoppedState);
+        return endPlayback(false, SkipRequest.NONE, false, toStoppedState);
     }
 
     /**
@@ -258,8 +262,8 @@ public abstract class PlaybackServiceMediaPlayer {
      *
      * @param hasEnded         If true, we assume the current media's playback has ended, for
      *                         purposes of post playback processing.
-     * @param wasSkipped       Whether the user chose to skip the episode (by pressing the skip
-     *                         button).
+     * @param skipRequest      What direction the user chose to skip the episode (by pressing the
+     *                         skip button), if any.
      * @param shouldContinue   If true, the media player should try to load, and possibly play,
      *                         the next item, based on the user preferences and whether such item
      *                         exists.
@@ -270,7 +274,7 @@ public abstract class PlaybackServiceMediaPlayer {
      *
      * @return a Future, just for the purpose of tracking its execution.
      */
-    protected abstract Future<?> endPlayback(boolean hasEnded, boolean wasSkipped,
+    protected abstract Future<?> endPlayback(boolean hasEnded, SkipRequest skipRequest,
                                              boolean shouldContinue, boolean toStoppedState);
 
     /**
@@ -360,6 +364,8 @@ public abstract class PlaybackServiceMediaPlayer {
 
         Playable getNextInQueue(Playable currentMedia);
 
+        Playable getPreviousInQueue(Playable currentMedia);
+
         void onPlaybackEnded(MediaType mediaType, boolean stopPlaying);
     }
 
@@ -376,5 +382,14 @@ public abstract class PlaybackServiceMediaPlayer {
             this.playerStatus = playerStatus;
             this.playable = playable;
         }
+    }
+
+    /**
+     * Denotes which direction the user would like skip episodes.
+     */
+    public enum SkipRequest {
+        NONE,
+        NEXT,
+        PREVIOUS
     }
 }

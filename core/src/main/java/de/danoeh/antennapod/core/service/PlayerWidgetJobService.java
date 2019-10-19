@@ -207,6 +207,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         Intent startingIntent = new Intent(getBaseContext(), MediaButtonReceiver.class);
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
+        startingIntent.putExtra(MediaButtonReceiver.EXTRA_KEY_SOURCE, MediaButtonReceiver.Source.WIDGET);
 
         return PendingIntent.getBroadcast(this, 0, startingIntent, 0);
     }

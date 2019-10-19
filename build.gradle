@@ -55,7 +55,9 @@ project.ext {
     glideOkhttpIntegrationVersion = "4.8.0"
     iconifyVersion = "2.2.2"
     jsoupVersion = "1.11.2"
+    junitVersion = '4.12'
     materialDialogsVersion = "0.9.0.2"
+    mockitoVersion = '1.10.19'
     okhttpVersion = "3.12.5"
     okioVersion = "1.17.4"
     recyclerviewFlexibledividerVersion = "1.4.0"

@@ -22,6 +22,85 @@
         <item>300</item>
     </string-array>
 
+    <string-array name="hardware_forward_single_tap_action_options">
+        <item>@string/pref_hardwareMediaAction_skipForward</item>
+        <item>@string/pref_hardwareMediaAction_seekForward</item>
+        <item>@string/pref_hardwareMediaAction_increaseSpeed</item>
+    </string-array>
+    <string-array name="hardware_forward_single_tap_action_values">
+        <item>SKIP_FORWARD</item>
+        <item>SEEK_FORWARD</item>
+        <item>SPEED_INCREASE</item>
+    </string-array>
+
+    <string-array name="hardware_forward_double_tap_action_options">
+        <item>@string/pref_hardwareMediaAction_none</item>
+        <item>@string/pref_hardwareMediaAction_skipForward</item>
+        <item>@string/pref_hardwareMediaAction_seekForward</item>
+        <item>@string/pref_hardwareMediaAction_increaseSpeed</item>
+    </string-array>
+    <string-array name="hardware_forward_double_tap_action_values">
+        <item>NONE</item>
+        <item>SKIP_FORWARD</item>
+        <item>SEEK_FORWARD</item>
+        <item>SPEED_INCREASE</item>
+    </string-array>
+
+    <string-array name="hardware_back_single_tap_action_options">
+        <item>@string/pref_hardwareMediaAction_skipBackward</item>
+        <item>@string/pref_hardwareMediaAction_seekBackward</item>
+        <item>@string/pref_hardwareMediaAction_decreaseSpeed</item>
+        <item>@string/pref_hardwareMediaAction_restart</item>
+    </string-array>
+    <string-array name="hardware_back_single_tap_action_values">
+        <item>SKIP_BACKWARD</item>
+        <item>SEEK_BACKWARD</item>
+        <item>SPEED_DECREASE</item>
+        <item>RESTART</item>
+    </string-array>
+
+    <string-array name="hardware_back_double_tap_action_options">
+        <item>@string/pref_hardwareMediaAction_none</item>
+        <item>@string/pref_hardwareMediaAction_skipBackward</item>
+        <item>@string/pref_hardwareMediaAction_seekBackward</item>
+        <item>@string/pref_hardwareMediaAction_decreaseSpeed</item>
+        <item>@string/pref_hardwareMediaAction_restart</item>
+    </string-array>
+    <string-array name="hardware_back_double_tap_action_values">
+        <item>NONE</item>
+        <item>SKIP_BACKWARD</item>
+        <item>SEEK_BACKWARD</item>
+        <item>SPEED_DECREASE</item>
+        <item>RESTART</item>
+    </string-array>
+
+    <string-array name="hardware_play_pause_double_tap_action_options">
+        <item>@string/pref_hardwareMediaAction_none</item>
+        <item>@string/pref_hardwareMediaAction_skipForward</item>
+        <item>@string/pref_hardwareMediaAction_seekForward</item>
+        <item>@string/pref_hardwareMediaAction_increaseSpeed</item>
+    </string-array>
+    <string-array name="hardware_play_pause_double_tap_action_values">
+        <item>NONE</item>
+        <item>SKIP_FORWARD</item>
+        <item>SEEK_FORWARD</item>
+        <item>SPEED_INCREASE</item>
+    </string-array>
+
+    <string-array name="hardware_play_pause_triple_tap_action_options">
+        <item>@string/pref_hardwareMediaAction_none</item>
+        <item>@string/pref_hardwareMediaAction_skipBackward</item>
+        <item>@string/pref_hardwareMediaAction_seekBackward</item>
+        <item>@string/pref_hardwareMediaAction_decreaseSpeed</item>
+        <item>@string/pref_hardwareMediaAction_restart</item>
+    </string-array>
+    <string-array name="hardware_play_pause_triple_tap_action_values">
+        <item>NONE</item>
+        <item>SKIP_BACKWARD</item>
+        <item>SEEK_BACKWARD</item>
+        <item>SPEED_DECREASE</item>
+        <item>RESTART</item>
+    </string-array>
 
     <integer-array name="seek_delta_values">
         <item>5</item>

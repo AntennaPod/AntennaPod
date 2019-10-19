@@ -231,6 +231,7 @@ public class PlaybackServiceNotificationBuilder {
         Intent intent = new Intent(context, PlaybackService.class);
         intent.setAction("MediaCode" + keycodeValue);
         intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, keycodeValue);
+        intent.putExtra(MediaButtonReceiver.EXTRA_KEY_SOURCE, MediaButtonReceiver.Source.NOTIFICATION);
 
         if (Build.VERSION.SDK_INT >= 26) {
             return PendingIntent.getForegroundService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);

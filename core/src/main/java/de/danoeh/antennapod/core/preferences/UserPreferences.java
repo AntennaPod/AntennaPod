@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +20,7 @@ import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -69,8 +71,12 @@ public class UserPreferences {
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     private static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
-    private static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
-    private static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
+    public static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
+    public static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
+    public static final String PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION = "prefHardwareForwardAction0";
+    public static final String PREF_HARDWARE_BACK_SINGLE_TAP_ACTION = "prefHardwareBackAction0";
+    private static final String PREF_ADVANCED_HARDWARE_ACTIONS = "prefAdvancedHardwareActions";
+    private static final int MAX_HARDWARE_REPEAT_COUNT = 3;
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
@@ -291,14 +297,50 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT, false);
     }
 
-    public static boolean shouldHardwareButtonSkip() {
-        return prefs.getBoolean(PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
-    }
+    /**
+     * Gets the set of media actions to take when the given key is entered.
+     * <p>
+     * The returned list will have multiple elements if different actions should
+     * be taken when the key is entered multiple times in a row. For instance,
+     * if a key is repeated once then the second element should be used.
+     *
+     * @param keyCode The key that was entered. Only play/pause, previous, and
+     *                next are currently supported.
+     * @param defaultAction Optional default action to override the single-tap
+     *                      preference of the user. Can be null if the user
+     *                      preference should always be used.
+     * @return The list of actions to take. Never null.
+     */
+    public static List<MediaAction> getMediaActions(int keyCode, MediaAction defaultAction) {
 
-    public static boolean shouldHardwarePreviousButtonRestart() {
-        return prefs.getBoolean(PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
-    }
+        String type;
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                type = "PlayPause";
+                break;
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                type = "Back";
+                break;
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+                type = "Forward";
+                break;
+            default:
+                return Collections.emptyList();
+        }
 
+        boolean advancedControlsEnabled = prefs.getBoolean(PREF_ADVANCED_HARDWARE_ACTIONS, false);
+
+        List<MediaAction> actions = new ArrayList<>();
+        for (int count = 0; count <= MAX_HARDWARE_REPEAT_COUNT; count++) {
+            if (count == 0 && defaultAction != null) {
+                actions.add(defaultAction);
+            } else if (count == 0 || advancedControlsEnabled) {
+                String preference = "prefHardware" + type + "Action" + count;
+                actions.add(MediaAction.fromString(prefs.getString(preference, null)));
+            }
+        }
+        return actions;
+    }
 
     public static boolean isFollowQueue() {
         return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
