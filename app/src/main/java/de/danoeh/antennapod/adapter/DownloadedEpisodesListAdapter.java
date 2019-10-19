@@ -17,9 +17,9 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 
 /**
  * Shows a list of downloaded episodes
@@ -79,7 +79,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         }
 
         Glide.with(context)
-                .load(item.getImageLocation())
+                .load(ImageResourceUtils.getImageLocation(item))
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)

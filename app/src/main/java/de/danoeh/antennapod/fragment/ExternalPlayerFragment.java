@@ -22,6 +22,7 @@ import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
@@ -227,7 +228,7 @@ public class ExternalPlayerFragment extends Fragment {
             onPositionObserverUpdate();
 
             Glide.with(getActivity())
-                    .load(media.getImageLocation())
+                    .load(ImageResourceUtils.getImageLocation(media))
                     .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)

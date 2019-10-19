@@ -44,7 +44,7 @@ import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
+import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -637,7 +637,7 @@ public class QueueFragment extends Fragment {
         if(queue.size() > 0) {
             long timeLeft = 0;
             for(FeedItem item : queue) {
-                float playbackSpeed = PlaybackSpeedHelper.getCurrentPlaybackSpeed(item.getMedia());
+                float playbackSpeed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(item.getMedia());
                 if(item.getMedia() != null) {
                     timeLeft +=
                             (long) ((item.getMedia().getDuration() - item.getMedia().getPosition())
