@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 public abstract class ItemActionButton {
@@ -43,6 +44,8 @@ public abstract class ItemActionButton {
             return new PlayActionButton(item);
         } else if (isDownloadingMedia) {
             return new CancelDownloadActionButton(item);
+        } else if (UserPreferences.streamOverDownload()) {
+            return new StreamActionButton(item);
         } else if (MobileDownloadHelper.userAllowedMobileDownloads() || !MobileDownloadHelper.userChoseAddToQueue() || isInQueue) {
             return new DownloadActionButton(item, isInQueue);
         } else {
