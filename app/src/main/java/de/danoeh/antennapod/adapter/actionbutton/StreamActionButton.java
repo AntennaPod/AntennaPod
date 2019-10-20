@@ -10,13 +10,13 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
 import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE;
 
-public class StreamActionButton extends ItemActionButton{
+public class StreamActionButton extends ItemActionButton {
+
     StreamActionButton(FeedItem item) {
         super(item);
     }
@@ -57,7 +57,8 @@ public class StreamActionButton extends ItemActionButton{
                 .shouldStream(true)
                 .start();
 
-        String pauseOrResume = media.isCurrentlyPlaying() ? ACTION_PAUSE_PLAY_CURRENT_EPISODE : ACTION_RESUME_PLAY_CURRENT_EPISODE;
+        String pauseOrResume = media.isCurrentlyPlaying()
+                ? ACTION_PAUSE_PLAY_CURRENT_EPISODE : ACTION_RESUME_PLAY_CURRENT_EPISODE;
         IntentUtils.sendLocalBroadcast(context, pauseOrResume);
     }
 }
