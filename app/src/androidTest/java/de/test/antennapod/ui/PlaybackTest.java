@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import android.view.View;
-import android.widget.ListView;
 
-import com.robotium.solo.Solo;
-import com.robotium.solo.Timeout;
-
+import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.junit.After;
 import org.junit.Before;
@@ -20,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -29,59 +26,50 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
+import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
+import static de.test.antennapod.EspressoTestUtils.waitForView;
+import static de.test.antennapod.NthMatcher.first;
+import static de.test.antennapod.NthMatcher.nth;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 /**
  * test cases for starting and ending playback from the MainActivity and AudioPlayerActivity
  */
 @LargeTest
 public class PlaybackTest {
-    private static final int EPISODES_DRAWER_LIST_INDEX = 1;
-    private static final int QUEUE_DRAWER_LIST_INDEX = 0;
 
     @Rule
-    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, false, false);
 
-    private Solo solo;
     private UITestUtils uiTestUtils;
     private Context context;
 
     @Before
     public void setUp() throws Exception {
-        context = InstrumentationRegistry.getTargetContext();
-
-        PodDBAdapter.init(context);
-        PodDBAdapter.deleteDatabase();
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.edit()
-                .clear()
-                .putBoolean(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT, false)
-                .putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false)
-                .commit();
-
-        solo = new Solo(InstrumentationRegistry.getInstrumentation(), getActivity());
+        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        EspressoTestUtils.clearPreferences();
+        EspressoTestUtils.clearDatabase();
+        EspressoTestUtils.makeNotFirstRun();
 
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
-
-        // create database
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
     }
 
     @After
     public void tearDown() throws Exception {
-        solo.finishOpenedActivities();
         uiTestUtils.tearDown();
 
         // shut down playback service
@@ -91,11 +79,6 @@ public class PlaybackTest {
 
     private MainActivity getActivity() {
         return activityTestRule.getActivity();
-    }
-
-    private void openNavDrawer() {
-        solo.clickOnImageButton(0);
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     }
 
     private void setContinuousPlaybackPreference(boolean value) {
@@ -127,48 +110,22 @@ public class PlaybackTest {
 
     private void startLocalPlayback() {
         openNavDrawer();
-        // if we try to just click on plain old text then
-        // we might wind up clicking on the fragment title and not
-        // the drawer element like we want.
-        ListView drawerView = (ListView)solo.getView(R.id.nav_list);
-        // this should be 'Episodes'
-        View targetView = drawerView.getChildAt(EPISODES_DRAWER_LIST_INDEX);
-        solo.waitForView(targetView);
-        solo.clickOnView(targetView);
-        solo.waitForText(solo.getString(R.string.all_episodes_short_label));
-        solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
+        onDrawerItem(withText(R.string.episodes_label)).perform(click());
+        onView(isRoot()).perform(waitForView(withId(R.id.emptyViewTitle), 1000));
+        onView(withText(R.string.all_episodes_short_label)).perform(click());
 
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
-        assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
+        onView(isRoot()).perform(waitForView(withId(R.id.butSecondaryAction), 1000));
 
-        solo.clickOnView(solo.getView(R.id.butSecondaryAction));
+        onView(first(withId(R.id.butSecondaryAction))).perform(click());
         long mediaId = episodes.get(0).getMedia().getId();
-        boolean playing = solo.waitForCondition(() -> {
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
             if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
                 return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
-        }, Timeout.getSmallTimeout());
-        assertTrue(playing);
-    }
-
-    private void startLocalPlaybackFromQueue() {
-        gotoQueueScreen();
-        playFromQueue(0);
-    }
-
-    private void gotoQueueScreen() {
-        openNavDrawer();
-        // if we try to just click on plain old text then
-        // we might wind up clicking on the fragment title and not
-        // the drawer element like we want.
-        ListView drawerView = (ListView)solo.getView(R.id.nav_list);
-        // this should be 'Queue'
-        View targetView = drawerView.getChildAt(QUEUE_DRAWER_LIST_INDEX);
-        solo.waitForView(targetView);
-        solo.clickOnView(targetView);
-        assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
+        });
     }
 
     /**
@@ -177,23 +134,23 @@ public class PlaybackTest {
      */
     private void playFromQueue(int itemIdx) {
         final List<FeedItem> queue = DBReader.getQueue();
-        solo.clickOnImageButton(itemIdx + 1);
-        assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
+
+        onView(nth(withId(R.id.butSecondaryAction), itemIdx + 1)).perform(click());
+        onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
         long mediaId = queue.get(itemIdx).getMedia().getId();
-        boolean playing = solo.waitForCondition(() -> {
-            if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
                 return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
-        }, Timeout.getSmallTimeout());
-
-        assertTrue(playing);
+        });
     }
 
     @Test
     public void testStartLocal() throws Exception {
         uiTestUtils.addLocalFeedData(true);
+        activityTestRule.launchActivity(new Intent());
         DBWriter.clearQueue().get();
         startLocalPlayback();
     }
@@ -202,6 +159,7 @@ public class PlaybackTest {
     public void testContinousPlaybackOffSingleEpisode() throws Exception {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
+        activityTestRule.launchActivity(new Intent());
         DBWriter.clearQueue().get();
         startLocalPlayback();
     }
@@ -210,10 +168,11 @@ public class PlaybackTest {
     public void testContinousPlaybackOffMultipleEpisodes() throws Exception {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
+        activityTestRule.launchActivity(new Intent());
         List<FeedItem> queue = DBReader.getQueue();
         final FeedItem first = queue.get(0);
-        startLocalPlaybackFromQueue();
-        boolean stopped = solo.waitForCondition(() -> {
+        playFromQueue(0);
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(() -> {
             if (uiTestUtils.getPlaybackController(getActivity()).getStatus()
                     != PlayerStatus.PLAYING) {
                 return true;
@@ -223,40 +182,39 @@ public class PlaybackTest {
             } else {
                 return true;
             }
-        }, Timeout.getSmallTimeout());
-        assertTrue(stopped);
+        });
+
         Thread.sleep(1000);
-        PlayerStatus status = uiTestUtils.getPlaybackController(getActivity()).getStatus();
-        assertFalse(status.equals(PlayerStatus.PLAYING));
+        assertNotEquals(PlayerStatus.PLAYING, uiTestUtils.getPlaybackController(getActivity()).getStatus());
     }
 
     @Test
     public void testContinuousPlaybackOnMultipleEpisodes() throws Exception {
         setContinuousPlaybackPreference(true);
         uiTestUtils.addLocalFeedData(true);
+        activityTestRule.launchActivity(new Intent());
+
         List<FeedItem> queue = DBReader.getQueue();
         final FeedItem first = queue.get(0);
         final FeedItem second = queue.get(1);
 
-        startLocalPlaybackFromQueue();
-        boolean firstPlaying = solo.waitForCondition(() -> {
+        playFromQueue(0);
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
             if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
                 return uiTestUtils.getCurrentMedia(getActivity()).getId()
                         == first.getMedia().getId();
             } else {
                 return false;
             }
-        }, Timeout.getSmallTimeout());
-        assertTrue(firstPlaying);
-        boolean secondPlaying = solo.waitForCondition(() -> {
+        });
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(() -> {
             if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
                 return uiTestUtils.getCurrentMedia(getActivity()).getId()
                         == second.getMedia().getId();
             } else {
                 return false;
             }
-        }, Timeout.getLargeTimeout());
-        assertTrue(secondPlaying);
+        });
     }
 
     /**
@@ -266,33 +224,31 @@ public class PlaybackTest {
         setContinuousPlaybackPreference(followQueue);
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
+        activityTestRule.launchActivity(new Intent());
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
 
         startLocalPlayback();
         long mediaId = episodes.get(0).getMedia().getId();
-        boolean startedPlaying = solo.waitForCondition(() -> {
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
             if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
                 return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
-        }, Timeout.getSmallTimeout());
-        assertTrue(startedPlaying);
+        });
 
-        boolean stoppedPlaying = solo.waitForCondition(() ->
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(() ->
                 uiTestUtils.getCurrentMedia(getActivity()) == null
-                || uiTestUtils.getCurrentMedia(getActivity()).getId() != mediaId, Timeout.getLargeTimeout());
-        assertTrue(stoppedPlaying);
+                || uiTestUtils.getCurrentMedia(getActivity()).getId() != mediaId);
 
         startLocalPlayback();
-        boolean startedReplay = solo.waitForCondition(() -> {
-            if(uiTestUtils.getCurrentMedia(getActivity()) != null) {
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
+            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
                 return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
             } else {
                 return false;
             }
-        }, Timeout.getLargeTimeout());
-        assertTrue(startedReplay);
+        });
     }
 
     @Test
@@ -319,7 +275,6 @@ public class PlaybackTest {
         setSmartMarkAsPlayedPreference(60);
         // ensure when an episode is skipped, it is removed due to smart as played
         setSkipKeepsEpisodePreference(false);
-
         uiTestUtils.addLocalFeedData(true);
 
         int fiIdx;
@@ -330,7 +285,7 @@ public class PlaybackTest {
         }
         final FeedItem feedItem = DBReader.getQueue().get(fiIdx);
 
-        gotoQueueScreen();
+        activityTestRule.launchActivity(new Intent());
         playFromQueue(fiIdx);
 
         skipEpisode();
@@ -350,11 +305,11 @@ public class PlaybackTest {
         setSmartMarkAsPlayedPreference(60);
 
         uiTestUtils.addLocalFeedData(true);
+        activityTestRule.launchActivity(new Intent());
 
         final int fiIdx = 0;
         final FeedItem feedItem = DBReader.getQueue().get(fiIdx);
 
-        gotoQueueScreen();
         playFromQueue(fiIdx);
 
         // let playback run a bit then pause
