@@ -741,7 +741,8 @@ public class UserPreferences {
     }
 
     public static String getMediaPlayer() {
-        return prefs.getString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER);
+        String s =  prefs.getString(PREF_MEDIA_PLAYER, "blaah");
+        return s;
     }
 
     public static boolean useSonic() {
@@ -754,6 +755,14 @@ public class UserPreferences {
 
     public static void enableSonic() {
         prefs.edit().putString(PREF_MEDIA_PLAYER, "sonic").apply();
+    }
+
+    public static void enableExoplayer() {
+        prefs.edit().putString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER).apply();
+    }
+
+    public static void enableBuiltin() {
+        prefs.edit().putString(PREF_MEDIA_PLAYER, "builtin").apply();
     }
 
     public static boolean stereoToMono() {
