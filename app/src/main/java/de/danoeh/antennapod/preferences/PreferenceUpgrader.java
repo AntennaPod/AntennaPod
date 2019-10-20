@@ -32,6 +32,9 @@ public class PreferenceUpgrader {
     }
 
     private static void upgrade(int oldVersion) {
+        if (oldVersion == -1) {
+            return;
+        }
         if (oldVersion < 1070196) {
             // migrate episode cleanup value (unit changed from days to hours)
             int oldValueInDays = UserPreferences.getEpisodeCleanupValue();
