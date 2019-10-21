@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +44,9 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     private PlaybackService playbackService;
     private final Object waitForService = new Object();
     private final Object waitUsingService = new Object();
+
+    private static final String WIDGET_PREFS = "widget_preferences";
+    private static final String WIDGET_COLOR = "widget_color";
 
     private static final int JOB_ID = -17001;
 
@@ -192,6 +196,9 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 } else {
                     views.setViewVisibility(R.id.layout_center, View.VISIBLE);
                 }
+                SharedPreferences prefs = getSharedPreferences(WIDGET_PREFS, Context.MODE_PRIVATE);
+                int backgroundColor = prefs.getInt(WIDGET_COLOR + id, 0x262C31);
+                views.setInt(R.id.widgetLayout,"setBackgroundColor", backgroundColor);
                 manager.updateAppWidget(id, views);
             }
         } else {
@@ -241,6 +248,5 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             }
             Log.d(TAG, "Disconnected from service");
         }
-
     };
 }

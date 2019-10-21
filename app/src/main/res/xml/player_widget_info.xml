@@ -6,6 +6,7 @@
                     android:previewImage="@drawable/ic_widget_preview"
                     android:minHeight="40dp"
                     android:minWidth="250dp"
-                    android:minResizeWidth="40dp">
+                    android:minResizeWidth="40dp"
+                    android:configure="de.danoeh.antennapod.activity.WidgetConfigActivity">
 
 </appwidget-provider>

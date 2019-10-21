@@ -35,6 +35,15 @@
         android:restoreAnyVersion="true"
         android:usesCleartextTraffic="true"
         android:logo="@mipmap/ic_launcher">
+
+        <activity
+            android:name=".activity.WidgetConfigActivity"
+            android:label="Widget settings">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGUR"/>
+            </intent-filter>
+        </activity>
+
         <meta-data android:name="com.google.android.gms.car.notification.SmallIcon"
                     android:resource="@drawable/ic_antenna" />
         <meta-data
@@ -336,7 +345,7 @@
                 <action android:name="de.danoeh.antennapdsp.intent.SP_APPS_QUERY_FEEDS_RESPONSE"/>
             </intent-filter>
         </receiver>
-        
+
         <provider
             android:authorities="@string/provider_authority"
             android:name="androidx.core.content.FileProvider"
