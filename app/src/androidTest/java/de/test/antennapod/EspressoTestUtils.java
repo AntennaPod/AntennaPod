@@ -6,6 +6,7 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.PerformException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.util.HumanReadables;
@@ -26,6 +27,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.allOf;
 
 public class EspressoTestUtils {
     /**
@@ -126,5 +128,9 @@ public class EspressoTestUtils {
     public static void closeNavDrawer() {
         onView(isRoot()).perform(waitForView(withId(R.id.drawer_layout), 1000));
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.close());
+    }
+
+    public static ViewInteraction onDrawerItem(Matcher<View> viewMatcher) {
+        return onView(allOf(viewMatcher, withId(R.id.txtvTitle)));
     }
 }

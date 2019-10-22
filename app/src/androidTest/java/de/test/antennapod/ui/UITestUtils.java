@@ -34,7 +34,7 @@ import org.junit.Assert;
  * Utility methods for UI tests.
  * Starts a web server that hosts feeds, episodes and images.
  */
-class UITestUtils {
+public class UITestUtils {
 
     private static final String TAG = UITestUtils.class.getSimpleName();
 
