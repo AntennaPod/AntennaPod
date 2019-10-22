@@ -91,4 +91,5 @@ task checkstyle(type: Checkstyle) {
     classpath = files()
     source "${project.rootDir}"
     exclude("**/gen/**")
+    exclude("**/generated/**")
 }

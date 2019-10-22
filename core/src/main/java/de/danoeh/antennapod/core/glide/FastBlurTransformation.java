@@ -83,7 +83,16 @@ public class FastBlurTransformation extends BitmapTransformation {
         int r[] = new int[wh];
         int g[] = new int[wh];
         int b[] = new int[wh];
-        int rsum, gsum, bsum, x, y, i, p, yp, yi, yw;
+        int rsum;
+        int gsum;
+        int bsum;
+        int x;
+        int y;
+        int i;
+        int p;
+        int yp;
+        int yi;
+        int yw;
         int vmin[] = new int[Math.max(w, h)];
 
         int divsum = (div + 1) >> 1;
@@ -101,8 +110,12 @@ public class FastBlurTransformation extends BitmapTransformation {
         int[] sir;
         int rbs;
         int r1 = radius + 1;
-        int routsum, goutsum, boutsum;
-        int rinsum, ginsum, binsum;
+        int routsum;
+        int goutsum;
+        int boutsum;
+        int rinsum;
+        int ginsum;
+        int binsum;
 
         for (y = 0; y < h; y++) {
             rinsum = ginsum = binsum = routsum = goutsum = boutsum = rsum = gsum = bsum = 0;
