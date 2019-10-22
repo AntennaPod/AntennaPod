@@ -331,7 +331,7 @@ public class QueueFragment extends Fragment {
                     conDialog.createNewDialog().show();
                     return true;
                 case R.id.episode_actions:
-                    ((MainActivity) requireActivity()) .loadChildFragment(
+                    ((MainActivity) requireActivity()).loadChildFragment(
                             EpisodesApplyActionFragment.newInstance(queue, ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE));
                     return true;
                 case R.id.queue_sort_episode_title_asc:
