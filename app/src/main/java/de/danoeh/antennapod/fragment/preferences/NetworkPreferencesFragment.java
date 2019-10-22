@@ -134,7 +134,8 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
             builder1.show();
         });
         builder.onNegative((dialog, which) -> {
-            int hourOfDay = 7, minute = 0;
+            int hourOfDay = 7;
+            int minute = 0;
             int[] updateTime = UserPreferences.getUpdateTimeOfDay();
             if (updateTime.length == 2) {
                 hourOfDay = updateTime[0];

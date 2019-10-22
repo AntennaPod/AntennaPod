@@ -206,7 +206,8 @@ public class ID3Reader {
 	private int readUnicodeString(StringBuilder strBuffer, InputStream input, int max, Charset charset)
 			throws IOException, ID3ReaderException {
 		byte[] buffer = new byte[max];
-        int c, cZero = -1;
+        int c;
+        int cZero = -1;
         int i = 0;
         for (; i < max; i++) {
             c = input.read();
