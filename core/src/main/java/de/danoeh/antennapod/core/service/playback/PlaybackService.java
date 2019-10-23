@@ -136,12 +136,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
 
-
-    /**
-     * If the PlaybackService receives this action, it will resume playback.
-     */
-    public static final String ACTION_RESUME_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.resumePlayCurrentEpisode";
-
     /**
      * Custom action used by Android Wear
      */
@@ -283,7 +277,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
         registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-        registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
         flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
@@ -349,7 +342,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
-        unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
         flavorHelper.removeCastConsumer();
         flavorHelper.unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
@@ -1427,16 +1419,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.skip();
-            }
-        }
-    };
-
-    private final BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
-                Log.d(TAG, "Received RESUME_PLAY_CURRENT_EPISODE intent");
-                mediaPlayer.resume();
             }
         }
     };
