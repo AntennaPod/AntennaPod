@@ -5,9 +5,8 @@ import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.appwidget.AppWidgetManager;
@@ -16,7 +15,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.RemoteViews;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -24,11 +22,9 @@ import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
+import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 
 public class WidgetConfigActivity extends AppCompatActivity {
-
-    private static final String TAG = "WidgetConfigActivity";
-    private final int DEFAULT_COLOR = 0x00262C31;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
     private SeekBar opacitySeekBar;
@@ -49,8 +45,8 @@ public class WidgetConfigActivity extends AppCompatActivity {
         }
 
         Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
-        setResult(RESULT_CANCELED,resultValue);
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        setResult(RESULT_CANCELED, resultValue);
         if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
@@ -59,12 +55,14 @@ public class WidgetConfigActivity extends AppCompatActivity {
         opacityTextView = findViewById(R.id.widget_opacity_textView);
         opacitySeekBar = findViewById(R.id.widget_opacity_seekBar);
         widgetPreview = findViewById(R.id.widgetLayout);
+        findViewById(R.id.butConfirm).setOnClickListener(this::confirmCreateWidget);
         opacitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 opacityTextView.setText(seekBar.getProgress() + "%");
-                widgetPreview.setBackgroundColor(getColorWithAlpha(DEFAULT_COLOR,opacitySeekBar.getProgress()));
+                int color = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
+                widgetPreview.setBackgroundColor(color);
             }
 
             @Override
@@ -88,29 +86,22 @@ public class WidgetConfigActivity extends AppCompatActivity {
         }
     }
 
-    public void confirmCreateWidget(View v) {
-        int backgroundColor = getColorWithAlpha(DEFAULT_COLOR,opacitySeekBar.getProgress());
+    private void confirmCreateWidget(View v) {
+        int backgroundColor = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
 
-        RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.player_widget);
-        views.setInt(R.id.widgetLayout,"setBackgroundColor",backgroundColor);
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        appWidgetManager.updateAppWidget(appWidgetId,views);
-
-        SharedPreferences prefs = getSharedPreferences(PlayerWidget.WIDGET_PREFS, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PlayerWidget.WIDGET_COLOR + appWidgetId,backgroundColor);
+        editor.putInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, backgroundColor);
         editor.apply();
 
         Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
-        setResult(RESULT_OK,resultValue);
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        setResult(RESULT_OK, resultValue);
         finish();
+        PlayerWidgetJobService.updateWidget(this);
     }
 
-    public int getColorWithAlpha(int color,int opacity) {
-        Log.d(TAG,"Widget background color : " + ((int)Math.round(0xFF * (0.01 * opacity)) << 24 | color));
-      return  (int)Math.round(0xFF * (0.01 * opacity)) * 0x1000000 + color ;
+    private int getColorWithAlpha(int color, int opacity) {
+        return (int) Math.round(0xFF * (0.01 * opacity)) * 0x1000000 + color;
     }
-
 }

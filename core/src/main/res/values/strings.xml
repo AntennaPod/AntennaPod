@@ -754,5 +754,5 @@
 
     <!-- Widget settings -->
     <string name="widget_create_button">Create widget</string>
-    <string name="widget_opacity">Widget opacity</string>
+    <string name="widget_opacity">Opacity</string>
 </resources>

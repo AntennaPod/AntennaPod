@@ -13,11 +13,10 @@ import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 
 public class PlayerWidget extends AppWidgetProvider {
     private static final String TAG = "PlayerWidget";
-    private static final String PREFS_NAME = "PlayerWidgetPrefs";
+    public static final String PREFS_NAME = "PlayerWidgetPrefs";
     private static final String KEY_ENABLED = "WidgetEnabled";
-
-    public static final String WIDGET_PREFS = "widget_preferences";
-    public static final String WIDGET_COLOR = "widget_color";
+    public static final String KEY_WIDGET_COLOR = "widget_color";
+    public static final int DEFAULT_COLOR = 0x00262C31;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -49,12 +48,10 @@ public class PlayerWidget extends AppWidgetProvider {
 
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
-        Log.d(TAG,"OnDeleted");
+        Log.d(TAG, "OnDeleted");
         for (int appWidgetId : appWidgetIds) {
-            SharedPreferences prefs = context.getSharedPreferences(WIDGET_PREFS, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.remove(WIDGET_COLOR + appWidgetId);
-            Log.d(TAG, "Widget deleted ID " + appWidgetId);
+            SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            prefs.edit().remove(KEY_WIDGET_COLOR + appWidgetId).apply();
         }
         super.onDeleted(context, appWidgetIds);
     }

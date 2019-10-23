@@ -45,9 +45,6 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     private final Object waitForService = new Object();
     private final Object waitUsingService = new Object();
 
-    private static final String WIDGET_PREFS = "widget_preferences";
-    private static final String WIDGET_COLOR = "widget_color";
-
     private static final int JOB_ID = -17001;
 
     public static void updateWidget(Context context) {
@@ -196,9 +193,11 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 } else {
                     views.setViewVisibility(R.id.layout_center, View.VISIBLE);
                 }
-                SharedPreferences prefs = getSharedPreferences(WIDGET_PREFS, Context.MODE_PRIVATE);
-                int backgroundColor = prefs.getInt(WIDGET_COLOR + id, 0x262C31);
-                views.setInt(R.id.widgetLayout,"setBackgroundColor", backgroundColor);
+
+                SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
+                int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
+                views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
+
                 manager.updateAppWidget(id, views);
             }
         } else {
