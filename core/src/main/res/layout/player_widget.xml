@@ -38,6 +38,7 @@
                 android:id="@+id/imgvCover"
                 android:layout_width="@android:dimen/app_icon_size"
                 android:layout_height="match_parent"
+                android:src="@drawable/ic_antenna"
                 android:layout_margin="12dp" />
 
             <LinearLayout
