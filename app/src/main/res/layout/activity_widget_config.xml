@@ -10,16 +10,22 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_gravity="center"
-        android:background="@drawable/bg_splash"
-        android:padding="16dp">
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/widget_config_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_splash"
+            android:scaleType="centerCrop" />
 
         <include
             android:id="@+id/widget_config_preview"
             layout="@layout/player_widget"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_margin="16dp" />
     </FrameLayout>
 
     <LinearLayout
