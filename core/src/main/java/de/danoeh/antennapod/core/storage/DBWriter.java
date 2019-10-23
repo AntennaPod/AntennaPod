@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
+import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -194,7 +195,7 @@ public class DBWriter {
             adapter.open();
             adapter.clearPlaybackHistory();
             adapter.close();
-            EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
+            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
         });
     }
 
@@ -228,7 +229,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedMediaPlaybackCompletionDate(media);
             adapter.close();
-            EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
+            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
 
         });
     }

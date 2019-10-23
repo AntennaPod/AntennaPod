@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -42,8 +43,7 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     public static final String TAG = "PlaybackHistoryFragment";
 
-    private static final int EVENTS = EventDistributor.PLAYBACK_HISTORY_UPDATE |
-            EventDistributor.PLAYER_STATUS_UPDATE;
+    private static final int EVENTS = EventDistributor.PLAYER_STATUS_UPDATE;
 
     private List<FeedItem> playbackHistory;
     private FeedItemlistAdapter adapter;
@@ -164,6 +164,12 @@ public class PlaybackHistoryFragment extends ListFragment {
                 return;
             }
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHistoryUpdated(PlaybackHistoryEvent event) {
+        loadItems();
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
