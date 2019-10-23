@@ -188,6 +188,7 @@
         <module name="OverloadMethodsDeclarationOrder"/>
         <module name="VariableDeclarationUsageDistance"/>
         <module name="MethodParamPad"/>
+        <module name="WhitespaceAfter"/>
         <module name="NoWhitespaceBefore">
             <property name="tokens"
              value="COMMA, SEMI, POST_INC, POST_DEC, DOT, ELLIPSIS, METHOD_REF"/>
