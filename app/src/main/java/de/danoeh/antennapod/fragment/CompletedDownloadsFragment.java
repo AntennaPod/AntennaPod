@@ -41,8 +41,6 @@ public class CompletedDownloadsFragment extends ListFragment {
 
     private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
 
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.UNREAD_ITEMS_UPDATE;
-
     private List<FeedItem> items = new ArrayList<>();
     private DownloadedEpisodesListAdapter listAdapter;
     private Disposable disposable;
@@ -146,7 +144,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
+            if ((arg & EventDistributor.UNREAD_ITEMS_UPDATE) != 0) {
                 loadItems();
             }
         }
