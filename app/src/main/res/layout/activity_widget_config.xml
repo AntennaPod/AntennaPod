@@ -15,7 +15,7 @@
             android:id="@+id/widget_config_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/bg_splash"
+            android:src="@drawable/teaser"
             android:scaleType="centerCrop" />
 
         <include
