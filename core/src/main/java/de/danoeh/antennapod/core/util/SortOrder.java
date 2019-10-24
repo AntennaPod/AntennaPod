@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -26,9 +28,6 @@ public enum SortOrder {
         INTRA_FEED, INTER_FEED;
     }
 
-    // The constant SHOULD NEVER be changed, as it is used in db DDLs
-    public static final int CODE_UNSPECIFIED = 0;
-
     public final int code;
 
     @NonNull
@@ -52,10 +51,11 @@ public enum SortOrder {
     }
 
     @Nullable
-    public static SortOrder fromCode(int code) {
-        if (code == CODE_UNSPECIFIED) {
+    public static SortOrder fromCodeString(@Nullable String codeStr) {
+        if (TextUtils.isEmpty(codeStr)) {
             return null;
         }
+        int code = Integer.parseInt(codeStr);
         for (SortOrder sortOrder : values()) {
             if (sortOrder.code == code) {
                 return sortOrder;
@@ -64,7 +64,8 @@ public enum SortOrder {
         throw new IllegalArgumentException("Unsupported code: " + code);
     }
 
-    public static int toCode(@Nullable SortOrder sortOrder) {
-        return sortOrder != null ? sortOrder.code : CODE_UNSPECIFIED;
+    @Nullable
+    public static String toCodeString(@Nullable SortOrder sortOrder) {
+        return sortOrder != null ? Integer.toString(sortOrder.code) : null;
     }
 }

@@ -38,7 +38,7 @@ import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.SortOrder;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
-import static de.danoeh.antennapod.core.util.SortOrder.toCode;
+import static de.danoeh.antennapod.core.util.SortOrder.toCodeString;
 
 // TODO Remove media column from feeditem table
 
@@ -141,7 +141,7 @@ public class PodDBAdapter {
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
-            + KEY_SORT_ORDER + " INTEGER DEFAULT " + SortOrder.CODE_UNSPECIFIED + ","
+            + KEY_SORT_ORDER + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ")";
@@ -383,7 +383,7 @@ public class PodDBAdapter {
         } else {
             values.put(KEY_HIDE, "");
         }
-        values.put(KEY_SORT_ORDER, toCode(feed.getSortOrder()));
+        values.put(KEY_SORT_ORDER, toCodeString(feed.getSortOrder()));
         values.put(KEY_LAST_UPDATE_FAILED, feed.hasLastUpdateFailed());
         if (feed.getId() == 0) {
             // Create new entry
@@ -424,7 +424,7 @@ public class PodDBAdapter {
 
     public void setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
         ContentValues values = new ContentValues();
-        values.put(KEY_SORT_ORDER, toCode(sortOrder));
+        values.put(KEY_SORT_ORDER, toCodeString(sortOrder));
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 

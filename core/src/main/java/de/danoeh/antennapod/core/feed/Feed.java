@@ -215,7 +215,7 @@ public class Feed extends FeedFile implements ImageResource {
                 cursor.getInt(indexIsPaged) > 0,
                 cursor.getString(indexNextPageLink),
                 cursor.getString(indexHide),
-                SortOrder.fromCode(cursor.getInt(indexSortOrder)),
+                SortOrder.fromCodeString(cursor.getString(indexSortOrder)),
                 cursor.getInt(indexLastUpdateFailed) > 0
         );
 
