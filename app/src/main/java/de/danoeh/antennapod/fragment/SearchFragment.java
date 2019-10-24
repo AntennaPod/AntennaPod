@@ -148,8 +148,7 @@ public class SearchFragment extends ListFragment {
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & (EventDistributor.UNREAD_ITEMS_UPDATE
-                    | EventDistributor.DOWNLOAD_HANDLED)) != 0) {
+            if ((arg & EventDistributor.UNREAD_ITEMS_UPDATE) != 0) {
                 search();
             }
         }

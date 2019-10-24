@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import de.danoeh.antennapod.core.event.DownloadLogEvent;
+import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -176,7 +178,7 @@ public class DBWriter {
                 // we assume we also removed download log entries for the feed or its media files.
                 // especially important if download or refresh failed, as the user should not be able
                 // to retry these
-                EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
+                EventBus.getDefault().post(DownloadLogEvent.listUpdated());
 
                 BackupManager backupManager = new BackupManager(context);
                 backupManager.dataChanged();
@@ -193,7 +195,7 @@ public class DBWriter {
             adapter.open();
             adapter.clearPlaybackHistory();
             adapter.close();
-            EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
+            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
         });
     }
 
@@ -206,7 +208,7 @@ public class DBWriter {
             adapter.open();
             adapter.clearDownloadLog();
             adapter.close();
-            EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
+            EventBus.getDefault().post(DownloadLogEvent.listUpdated());
         });
     }
 
@@ -227,7 +229,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedMediaPlaybackCompletionDate(media);
             adapter.close();
-            EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
+            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
 
         });
     }
@@ -243,7 +245,7 @@ public class DBWriter {
             adapter.open();
             adapter.setDownloadStatus(status);
             adapter.close();
-            EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
+            EventBus.getDefault().post(DownloadLogEvent.listUpdated());
         });
 
     }

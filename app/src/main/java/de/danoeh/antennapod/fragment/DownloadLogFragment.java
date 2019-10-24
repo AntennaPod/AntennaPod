@@ -19,6 +19,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
+import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -30,6 +31,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Shows the download log
@@ -45,14 +48,12 @@ public class DownloadLogFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         loadItems();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
         if (disposable != null) {
             disposable.dispose();
         }
@@ -77,6 +78,13 @@ public class DownloadLogFragment extends ListFragment {
 
         adapter = new DownloadLogAdapter(getActivity(), itemAccess);
         setListAdapter(adapter);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
     }
 
     private void onFragmentLoaded() {
@@ -133,15 +141,10 @@ public class DownloadLogFragment extends ListFragment {
         }
     };
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EventDistributor.DOWNLOADLOG_UPDATE) != 0) {
-                loadItems();
-            }
-        }
-    };
+    @Subscribe
+    public void onDownloadLogChanged(DownloadLogEvent event) {
+        loadItems();
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

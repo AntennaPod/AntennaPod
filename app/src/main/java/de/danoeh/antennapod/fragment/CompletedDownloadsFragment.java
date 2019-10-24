@@ -16,6 +16,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
+import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -27,6 +28,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_ADD_TO_QUEUE;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
@@ -37,10 +40,6 @@ import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DEL
 public class CompletedDownloadsFragment extends ListFragment {
 
     private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
-
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
-            EventDistributor.DOWNLOADLOG_UPDATE |
-            EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private List<FeedItem> items = new ArrayList<>();
     private DownloadedEpisodesListAdapter listAdapter;
@@ -56,6 +55,13 @@ public class CompletedDownloadsFragment extends ListFragment {
         listAdapter = new DownloadedEpisodesListAdapter(getActivity(), itemAccess);
         setListAdapter(listAdapter);
         setListShown(false);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
     }
 
     @Override
@@ -138,11 +144,16 @@ public class CompletedDownloadsFragment extends ListFragment {
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
+            if ((arg & EventDistributor.UNREAD_ITEMS_UPDATE) != 0) {
                 loadItems();
             }
         }
     };
+
+    @Subscribe
+    public void onDownloadLogChanged(DownloadLogEvent event) {
+        loadItems();
+    }
 
     private void loadItems() {
         if (disposable != null) {

@@ -76,9 +76,8 @@ public class QueueFragment extends Fragment {
 
     public static final String TAG = "QueueFragment";
 
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
-            EventDistributor.UNREAD_ITEMS_UPDATE | // sent when playback position is reset
-            EventDistributor.PLAYER_STATUS_UPDATE;
+    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE // sent when playback position is reset
+            | EventDistributor.PLAYER_STATUS_UPDATE;
 
     private TextView infoBar;
     private RecyclerView recyclerView;
