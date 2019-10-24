@@ -568,7 +568,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         switch (keycode) {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
-                handleKeyAction(keycode, mediaButton, MediaAction.TOGGLE_PLAYBACK);
+                handleKeyAction(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mediaButton, MediaAction.TOGGLE_PLAYBACK);
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 handleKeyAction(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, mediaButton, MediaAction.PLAY);
