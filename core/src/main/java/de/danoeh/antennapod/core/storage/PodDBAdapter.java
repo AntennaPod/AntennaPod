@@ -38,7 +38,6 @@ import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.SortOrder;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
-import static de.danoeh.antennapod.core.util.SortOrder.CODE_UNSPECIFIED;
 import static de.danoeh.antennapod.core.util.SortOrder.toCode;
 
 // TODO Remove media column from feeditem table
@@ -142,7 +141,7 @@ public class PodDBAdapter {
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
-            + KEY_SORT_ORDER + " INTEGER DEFAULT " + CODE_UNSPECIFIED + ","
+            + KEY_SORT_ORDER + " INTEGER DEFAULT " + SortOrder.CODE_UNSPECIFIED + ","
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ")";

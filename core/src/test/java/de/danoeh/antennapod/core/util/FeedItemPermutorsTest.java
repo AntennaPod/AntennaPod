@@ -20,7 +20,7 @@ public class FeedItemPermutorsTest {
 
     @Test
     public void testEnsureNonNullPermutors() {
-        for(SortOrder sortOrder : SortOrder.values()) {
+        for (SortOrder sortOrder : SortOrder.values()) {
             assertNotNull("The permutor for SortOrder " + sortOrder + " is unexpectedly null",
                     FeedItemPermutors.getPermutor(sortOrder));
         }
