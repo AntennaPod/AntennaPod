@@ -3,10 +3,13 @@ package de.danoeh.antennapod.core.feed;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.danoeh.antennapod.core.util.SortOrder;
+
 import static de.danoeh.antennapod.core.feed.FeedMother.anyFeed;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class FeedTest {
 
@@ -57,6 +60,27 @@ public class FeedTest {
         setNewFeedImageDownloadUrl();
         original.updateFromOther(changedFeed);
         feedImageWasUpdated();
+    }
+
+    @Test
+    public void testSetSortOrder_OnlyIntraFeedSortAllowed() throws Exception {
+        for (SortOrder sortOrder : SortOrder.values()) {
+            if (sortOrder.scope == SortOrder.Scope.INTRA_FEED) {
+                original.setSortOrder(sortOrder); // should be okay
+            } else {
+                try {
+                    original.setSortOrder(sortOrder);
+                    fail("SortOrder " + sortOrder + " should not be allowed on a feed");
+                } catch (IllegalArgumentException iae) {
+                    // expected exception
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testSetSortOrder_NullAllowed() throws Exception {
+        original.setSortOrder(null); // should be okay
     }
 
     private void feedHasNotChanged() {
