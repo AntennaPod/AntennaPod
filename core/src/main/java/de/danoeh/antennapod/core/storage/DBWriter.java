@@ -37,10 +37,10 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
-import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.SortOrder;
 
 /**
@@ -386,7 +386,7 @@ public class DBWriter {
             // do not shuffle the list on every change
             return;
         }
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortOrder);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         permutor.reorder(queue);
 
         // Replace ADDED events by a single SORTED event
@@ -846,14 +846,18 @@ public class DBWriter {
     }
 
     /**
-     * Sort the FeedItems in the queue with the given Permutor.
+     * Sort the FeedItems in the queue with the given the named sort order.
      *
-     * @param permutor        Encapsulates whole-Queue reordering logic.
      * @param broadcastUpdate <code>true</code> if this operation should trigger a
      *                        QueueUpdateBroadcast. This option should be set to <code>false</code>
      *                        if the caller wants to avoid unexpected updates of the GUI.
      */
-    public static Future<?> reorderQueue(final Permutor<FeedItem> permutor, final boolean broadcastUpdate) {
+    public static Future<?> reorderQueue(@Nullable SortOrder sortOrder, final boolean broadcastUpdate) {
+        if (sortOrder == null) {
+            Log.w(TAG, "reorderQueue() - sortOrder is null. Do nothing.");
+            return dbExec.submit(() -> { });
+        }
+        final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();

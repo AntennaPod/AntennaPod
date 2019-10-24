@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,36 +11,19 @@ import java.util.Map;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.DBWriter;
 
 /**
- * Provides method for sorting the queue according to rules.
+ * Provides method for sorting the a list of {@link FeedItem} according to rules.
  */
-public class QueueSorter {
-
-    /**
-     * Sorts the queue by the given sort order and sends a broadcast update.
-     *
-     * @param sortOrder Sort order.
-     * @param broadcastUpdate Send broadcast update?
-     */
-    public static void sort(SortOrder sortOrder, boolean broadcastUpdate) {
-        Permutor<FeedItem> permutor = getPermutor(sortOrder);
-        if (permutor != null) {
-            DBWriter.reorderQueue(permutor, broadcastUpdate);
-        }
-    }
+public class FeedItemPermutors {
 
     /**
      * Returns a Permutor that sorts a list appropriate to the given sort order.
      *
-     * @param sortOrder Sort order.
-     * @return Permutor that sorts a list appropriate to the given sort order. <code>null</code> if the order is unknown or <code>null</code>.
+     * @return Permutor that sorts a list appropriate to the given sort order.
      */
-    public static Permutor<FeedItem> getPermutor(SortOrder sortOrder) {
-        if (sortOrder == null) {
-            return null;
-        }
+    @NonNull
+    public static Permutor<FeedItem> getPermutor(@NonNull SortOrder sortOrder) {
 
         Comparator<FeedItem> comparator = null;
         Permutor<FeedItem> permutor = null;

@@ -60,10 +60,10 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Optional;
-import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -634,7 +634,7 @@ public class FeedItemlistFragment extends ListFragment {
         }
         if (feed != null && feed.getSortOrder() != null) {
             List<FeedItem> feedItems = feed.getItems();
-            QueueSorter.getPermutor(feed.getSortOrder()).reorder(feedItems);
+            FeedItemPermutors.getPermutor(feed.getSortOrder()).reorder(feedItems);
             feed.setItems(feedItems);
         }
         return Optional.ofNullable(feed);
