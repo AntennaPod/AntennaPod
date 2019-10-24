@@ -16,12 +16,12 @@ import java.util.Set;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.IntraFeedSortOrder;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
 
@@ -120,7 +120,7 @@ public class FeedMenuHandler {
     private static void showSortDialog(Context context, Feed selectedFeed) {
         IntraFeedSortDialog sortDialog = new IntraFeedSortDialog(context, selectedFeed.getSortOrder()) {
             @Override
-            protected void updateSort(@NonNull IntraFeedSortOrder sortOrder) {
+            protected void updateSort(@NonNull SortOrder sortOrder) {
                 selectedFeed.setSortOrder(sortOrder);
                 DBWriter.setFeedItemSortOrder(selectedFeed.getId(), sortOrder);
             }

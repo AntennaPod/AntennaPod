@@ -34,7 +34,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -53,7 +52,6 @@ import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.IntraFeedSortOrder;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -65,7 +63,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Optional;
-import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
@@ -634,19 +632,10 @@ public class FeedItemlistFragment extends ListFragment {
             FeedItemFilter filter = feed.getItemFilter();
             feed.setItems(filter.filter(feed.getItems()));
         }
-        IntraFeedSortOrder sortOrder = feed.getSortOrder();
-        if (sortOrder != null) {
-            long tS = System.currentTimeMillis(); // TODO-2524:
-            if (sortOrder == IntraFeedSortOrder.DATE_OLD_NEW) {
-                List<FeedItem> feedItems = feed.getItems();
-                Collections.sort(feedItems, FeedItemPubdateComparator.ascending);
-                feed.setItems(feedItems);
-            } else {
-                System.err.println("DBG - to-implement: " + sortOrder); // TODO-2524:
-            }
-            long tE = System.currentTimeMillis();
-            System.err.println("DBG - sort elapsed time: " + (tE -tS) +
-                    "ms ; " + "num items: " + feed.getItems().size() + ", order: " + sortOrder); // TODO: 2524
+        if (feed != null && feed.getSortOrder() != null) {
+            List<FeedItem> feedItems = feed.getItems();
+            QueueSorter.getPermutor(feed.getSortOrder()).reorder(feedItems);
+            feed.setItems(feedItems);
         }
         return Optional.ofNullable(feed);
     }

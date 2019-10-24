@@ -7,16 +7,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.IntraFeedSortOrder;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 public abstract class IntraFeedSortDialog {
 
     @Nullable
-    protected IntraFeedSortOrder currentSortOrder;
+    protected SortOrder currentSortOrder;
     @NonNull
     protected Context context;
 
-    public IntraFeedSortDialog(@NonNull Context context, @Nullable IntraFeedSortOrder sortOrder) {
+    public IntraFeedSortDialog(@NonNull Context context, @Nullable SortOrder sortOrder) {
         this.context = context;
         this.currentSortOrder = sortOrder;
     }
@@ -24,9 +24,9 @@ public abstract class IntraFeedSortDialog {
     public void openDialog() {
         final String[] items = context.getResources().getStringArray(R.array.feed_episodes_sort_options);
         final String[] valueStrs = context.getResources().getStringArray(R.array.feed_episodes_sort_values);
-        final IntraFeedSortOrder[] values = new IntraFeedSortOrder[valueStrs.length];
+        final SortOrder[] values = new SortOrder[valueStrs.length];
         for (int i = 0; i < valueStrs.length; i++) {
-            values[i] = IntraFeedSortOrder.valueOf(valueStrs[i]);
+            values[i] = SortOrder.valueOf(valueStrs[i]);
         }
 
         int idxCurrentSort = -1;
@@ -47,5 +47,5 @@ public abstract class IntraFeedSortDialog {
         builder.create().show();
     }
 
-    protected abstract void updateSort(@NonNull IntraFeedSortOrder sortOrder);
+    protected abstract void updateSort(@NonNull SortOrder sortOrder);
 }

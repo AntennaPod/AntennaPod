@@ -31,7 +31,6 @@ import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.IntraFeedSortOrder;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -950,7 +949,7 @@ public class DBWriter {
      * Set item sort order of the feed
      *
      */
-    public static Future<?> setFeedItemSortOrder(long feedId, @Nullable IntraFeedSortOrder sortOrder) {
+    public static Future<?> setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
         return dbExec.submit(() -> {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();

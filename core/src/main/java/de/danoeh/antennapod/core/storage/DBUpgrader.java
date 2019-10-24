@@ -9,7 +9,7 @@ import android.util.Log;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
-import static de.danoeh.antennapod.core.feed.IntraFeedSortOrder.CODE_UNSPECIFIED;
+import static de.danoeh.antennapod.core.util.SortOrder.CODE_UNSPECIFIED;
 
 class DBUpgrader {
     /**

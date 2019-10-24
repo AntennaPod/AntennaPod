@@ -12,6 +12,7 @@ import java.util.List;
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 /**
  * Data Object for a whole feed
@@ -89,8 +90,13 @@ public class Feed extends FeedFile implements ImageResource {
      * Contains property strings. If such a property applies to a feed item, it is not shown in the feed list
      */
     private FeedItemFilter itemfilter;
+
+    /**
+     * User-preferred sortOrder for display.
+     * Only those of scope {@link SortOrder.Scope#INTRA_FEED} is allowed.
+     */
     @Nullable
-    private IntraFeedSortOrder sortOrder;
+    private SortOrder sortOrder;
 
     /**
      * This constructor is used for restoring a feed from the database.
@@ -98,7 +104,7 @@ public class Feed extends FeedFile implements ImageResource {
     public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
-                String filter, @Nullable IntraFeedSortOrder sortOrder, boolean lastUpdateFailed) {
+                String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
         this.id = id;
         this.feedTitle = title;
@@ -120,7 +126,7 @@ public class Feed extends FeedFile implements ImageResource {
         } else {
             this.itemfilter = new FeedItemFilter(new String[0]);
         }
-        this.sortOrder = sortOrder;
+        setSortOrder(sortOrder);
         this.lastUpdateFailed = lastUpdateFailed;
     }
 
@@ -209,7 +215,7 @@ public class Feed extends FeedFile implements ImageResource {
                 cursor.getInt(indexIsPaged) > 0,
                 cursor.getString(indexNextPageLink),
                 cursor.getString(indexHide),
-                IntraFeedSortOrder.fromCode(cursor.getInt(indexSortOrder)),
+                SortOrder.fromCode(cursor.getInt(indexSortOrder)),
                 cursor.getInt(indexLastUpdateFailed) > 0
         );
 
@@ -531,11 +537,15 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     @Nullable
-    public IntraFeedSortOrder getSortOrder() {
+    public SortOrder getSortOrder() {
         return sortOrder;
     }
 
-    public void setSortOrder(@Nullable IntraFeedSortOrder sortOrder) {
+    public void setSortOrder(@Nullable SortOrder sortOrder) {
+        if (sortOrder != null && sortOrder.scope != SortOrder.Scope.INTRA_FEED) {
+            throw new IllegalArgumentException("The specified sortOrder " + sortOrder
+                    + " is invalid. Only those with INTRA_FEED scope are allowed.");
+        }
         this.sortOrder = sortOrder;
     }
 

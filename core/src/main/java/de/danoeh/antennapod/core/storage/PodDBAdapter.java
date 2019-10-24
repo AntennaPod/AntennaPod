@@ -32,14 +32,14 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.IntraFeedSortOrder;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
-import static de.danoeh.antennapod.core.feed.IntraFeedSortOrder.CODE_UNSPECIFIED;
-import static de.danoeh.antennapod.core.feed.IntraFeedSortOrder.toCode;
+import static de.danoeh.antennapod.core.util.SortOrder.CODE_UNSPECIFIED;
+import static de.danoeh.antennapod.core.util.SortOrder.toCode;
 
 // TODO Remove media column from feeditem table
 
@@ -423,7 +423,7 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
-    public void setFeedItemSortOrder(long feedId, @Nullable IntraFeedSortOrder sortOrder) {
+    public void setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
         ContentValues values = new ContentValues();
         values.put(KEY_SORT_ORDER, toCode(sortOrder));
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
