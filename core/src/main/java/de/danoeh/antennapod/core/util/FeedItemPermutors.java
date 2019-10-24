@@ -1,16 +1,17 @@
 package de.danoeh.antennapod.core.util;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 
 /**
  * Provides method for sorting the a list of {@link FeedItem} according to rules.
@@ -30,45 +31,28 @@ public class FeedItemPermutors {
 
         switch (sortOrder) {
             case EPISODE_TITLE_A_Z:
-                comparator = (f1, f2) -> f1.getTitle().compareTo(f2.getTitle());
+                comparator = (f1, f2) -> itemTitle(f1).compareTo(itemTitle(f2));
                 break;
             case EPISODE_TITLE_Z_A:
-                comparator = (f1, f2) -> f2.getTitle().compareTo(f1.getTitle());
+                comparator = (f1, f2) -> itemTitle(f2).compareTo(itemTitle(f1));
                 break;
             case DATE_OLD_NEW:
-                comparator = (f1, f2) -> f1.getPubDate().compareTo(f2.getPubDate());
+                comparator = (f1, f2) -> pubDate(f1).compareTo(pubDate(f2));
                 break;
             case DATE_NEW_OLD:
-                comparator = (f1, f2) -> f2.getPubDate().compareTo(f1.getPubDate());
+                comparator = (f1, f2) -> pubDate(f2).compareTo(pubDate(f1));
                 break;
             case DURATION_SHORT_LONG:
-                comparator = (f1, f2) -> {
-                    FeedMedia f1Media = f1.getMedia();
-                    FeedMedia f2Media = f2.getMedia();
-                    int duration1 = f1Media != null ? f1Media.getDuration() : -1;
-                    int duration2 = f2Media != null ? f2Media.getDuration() : -1;
-
-                    if (duration1 == -1 || duration2 == -1)
-                        return duration2 - duration1;
-                    else
-                        return duration1 - duration2;
-                };
+                comparator = (f1, f2) -> Integer.compare(duration(f1), duration(f2));
                 break;
             case DURATION_LONG_SHORT:
-                comparator = (f1, f2) -> {
-                    FeedMedia f1Media = f1.getMedia();
-                    FeedMedia f2Media = f2.getMedia();
-                    int duration1 = f1Media != null ? f1Media.getDuration() : -1;
-                    int duration2 = f2Media != null ? f2Media.getDuration() : -1;
-
-                    return -1 * (duration1 - duration2);
-                };
+                comparator = (f1, f2) -> Integer.compare(duration(f2), duration(f1));
                 break;
             case FEED_TITLE_A_Z:
-                comparator = (f1, f2) -> f1.getFeed().getTitle().compareTo(f2.getFeed().getTitle());
+                comparator = (f1, f2) -> feedTitle(f1).compareTo(feedTitle(f2));
                 break;
             case FEED_TITLE_Z_A:
-                comparator = (f1, f2) -> f2.getFeed().getTitle().compareTo(f1.getFeed().getTitle());
+                comparator = (f1, f2) -> feedTitle(f2).compareTo(feedTitle(f1));
                 break;
             case RANDOM:
                 permutor = Collections::shuffle;
@@ -86,6 +70,31 @@ public class FeedItemPermutors {
             permutor = (queue) -> Collections.sort(queue, comparator2);
         }
         return permutor;
+    }
+
+    // Null-safe accessors
+
+    @NonNull
+    private static Date pubDate(@Nullable FeedItem item) {
+        return (item != null && item.getPubDate() != null) ?
+                item.getPubDate() : new Date(0);
+    }
+
+    @NonNull
+    private static String itemTitle(@Nullable FeedItem item) {
+        return (item != null && item.getTitle() != null) ?
+                item.getTitle() : "";
+    }
+
+    private static int duration(@Nullable FeedItem item) {
+        return (item != null && item.getMedia() != null) ?
+                item.getMedia().getDuration() : 0;
+    }
+
+    @NonNull
+    private static String feedTitle(@Nullable FeedItem item) {
+        return (item != null && item.getFeed() != null && item.getFeed().getTitle() != null) ?
+                item.getFeed().getTitle() : "";
     }
 
     /**
