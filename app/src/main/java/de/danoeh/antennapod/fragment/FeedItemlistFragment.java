@@ -30,6 +30,7 @@ import com.joanzapata.iconify.widget.IconTextView;
 
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -81,8 +82,7 @@ import io.reactivex.schedulers.Schedulers;
 public class FeedItemlistFragment extends ListFragment {
     private static final String TAG = "ItemlistFragment";
 
-    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE
-            | EventDistributor.FEED_LIST_UPDATE;
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
 
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
@@ -391,11 +391,20 @@ public class FeedItemlistFragment extends ListFragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+    private void updateUi() {
         refreshHeaderView();
         loadItems();
         updateProgressBarVisibility();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateUi();
     }
 
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

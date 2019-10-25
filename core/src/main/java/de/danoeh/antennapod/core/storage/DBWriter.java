@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -125,7 +126,7 @@ public class DBWriter {
             }
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
-        EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
 
         return true;
     }
@@ -611,7 +612,7 @@ public class DBWriter {
             adapter.setFeedItemRead(played, itemIds);
             adapter.close();
             if (broadcastUpdate) {
-                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+                EventBus.getDefault().post(new UnreadItemsUpdateEvent());
             }
         });
     }
@@ -643,7 +644,7 @@ public class DBWriter {
                     resetMediaPosition);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -659,7 +660,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED, feedId);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -675,7 +676,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.PLAYED, feedId);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -689,7 +690,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.PLAYED);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -703,7 +704,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -886,7 +887,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemAutoDownload(feedItem, autoDownload ? 1 : 0);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -905,7 +906,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemAutoDownload(feedItem, autoDownload);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -923,7 +924,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedsItemsAutoDownload(feed, autoDownload);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 

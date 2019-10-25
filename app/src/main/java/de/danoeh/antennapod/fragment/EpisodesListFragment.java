@@ -24,8 +24,10 @@ import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -66,8 +68,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
     public static final String TAG = "EpisodesListFragment";
 
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE |
-            EventDistributor.UNREAD_ITEMS_UPDATE;
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
 
     private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_SCROLL_POSITION = "scroll_position";
@@ -414,12 +415,21 @@ public abstract class EpisodesListFragment extends Fragment {
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+    private void updateUi() {
         loadItems();
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
             requireActivity().invalidateOptionsMenu();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        updateUi();
+    }
+
+    @Subscribe
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateUi();
     }
 
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

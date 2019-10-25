@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
@@ -84,8 +85,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     private static final String TAG = "MainActivity";
 
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.UNREAD_ITEMS_UPDATE;
+    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
@@ -815,6 +815,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             snackbar.setAction(getString(R.string.undo), v -> event.action.run());
         }
         snackbar.show();
+    }
+
+    @Subscribe
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        loadData();
     }
 
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

@@ -17,7 +17,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -67,14 +66,12 @@ public class CompletedDownloadsFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         loadItems();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
         if (disposable != null) {
             disposable.dispose();
         }
@@ -138,15 +135,6 @@ public class CompletedDownloadsFragment extends ListFragment {
         @Override
         public void onFeedItemSecondaryAction(FeedItem item) {
             DBWriter.deleteFeedMediaOfItem(requireActivity(), item.getMedia().getId());
-        }
-    };
-
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EventDistributor.UNREAD_ITEMS_UPDATE) != 0) {
-                loadItems();
-            }
         }
     };
 

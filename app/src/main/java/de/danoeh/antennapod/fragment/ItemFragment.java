@@ -35,6 +35,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -81,9 +82,6 @@ import io.reactivex.schedulers.Schedulers;
 public class ItemFragment extends Fragment implements OnSwipeGesture {
 
     private static final String TAG = "ItemFragment";
-
-    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE;
-
     private static final String ARG_FEEDITEMS = "feeditems";
     private static final String ARG_FEEDITEM_POS = "feeditem_pos";
 
@@ -268,7 +266,6 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         load();
     }
@@ -285,7 +282,6 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
     @Override
     public void onStop() {
         super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
     }
 
@@ -558,15 +554,10 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
         }
     }
 
-
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
-                load();
-            }
-        }
-    };
+    @Subscribe
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        load();
+    }
 
     private void load() {
         if(disposable != null) {

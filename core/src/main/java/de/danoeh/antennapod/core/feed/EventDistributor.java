@@ -21,7 +21,6 @@ public class EventDistributor extends Observable {
 	private static final String TAG = "EventDistributor";
 
 	public static final int FEED_LIST_UPDATE = 1;
-	public static final int UNREAD_ITEMS_UPDATE = 2;
 
 	private final Handler handler;
 	private final AbstractQueue<Integer> events;
@@ -72,10 +71,6 @@ public class EventDistributor extends Observable {
 	@Override
 	public void addObserver(Observer observer) {
 		super.addObserver(observer);
-	}
-
-	public void sendUnreadItemsUpdateBroadcast() {
-		addEvent(UNREAD_ITEMS_UPDATE);
 	}
 
 	public void sendFeedUpdateBroadcast() {
