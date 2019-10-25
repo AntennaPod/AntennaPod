@@ -4,15 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,11 +15,18 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -42,6 +40,9 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -55,7 +56,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
@@ -384,7 +384,7 @@ public class QueueFragment extends Fragment {
                     UserPreferences.setQueueKeepSorted(keepSortedNew);
                     if (keepSortedNew) {
                         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
-                        QueueSorter.sort(sortOrder, true);
+                        DBWriter.reorderQueue(sortOrder, true);
                         if (recyclerAdapter != null) {
                             recyclerAdapter.setLocked(true);
                         }
@@ -450,7 +450,7 @@ public class QueueFragment extends Fragment {
      */
     private void setSortOrder(SortOrder sortOrder) {
         UserPreferences.setQueueKeepSortedOrder(sortOrder);
-        QueueSorter.sort(sortOrder, true);
+        DBWriter.reorderQueue(sortOrder, true);
     }
 
     @Override

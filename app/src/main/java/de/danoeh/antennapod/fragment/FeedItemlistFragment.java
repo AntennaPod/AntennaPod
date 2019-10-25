@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.ListFragment;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -23,15 +19,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.ListFragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -48,6 +45,12 @@ import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -61,6 +64,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Optional;
@@ -186,6 +190,7 @@ public class FeedItemlistFragment extends ListFragment {
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
              @Override
              public boolean onMenuItemActionExpand(MenuItem item) {
+                 menu.findItem(R.id.sort_items).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                  menu.findItem(R.id.filter_items).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                  menu.findItem(R.id.episode_actions).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                  menu.findItem(R.id.refresh_item).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
@@ -630,6 +635,11 @@ public class FeedItemlistFragment extends ListFragment {
             DBReader.loadAdditionalFeedItemListData(feed.getItems());
             FeedItemFilter filter = feed.getItemFilter();
             feed.setItems(filter.filter(feed.getItems()));
+        }
+        if (feed != null && feed.getSortOrder() != null) {
+            List<FeedItem> feedItems = feed.getItems();
+            FeedItemPermutors.getPermutor(feed.getSortOrder()).reorder(feedItems);
+            feed.setItems(feedItems);
         }
         return Optional.ofNullable(feed);
     }
