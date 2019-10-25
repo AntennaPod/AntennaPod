@@ -116,7 +116,9 @@ public class EspressoTestUtils {
 
     public static void clickPreference(@StringRes int title) {
         onView(withId(R.id.recycler_view)).perform(
-                RecyclerViewActions.actionOnItem(hasDescendant(withText(title)),
+                RecyclerViewActions.actionOnItem(
+                        allOf(hasDescendant(withText(title)),
+                                hasDescendant(withId(android.R.id.widget_frame))),
                         click()));
     }
 
