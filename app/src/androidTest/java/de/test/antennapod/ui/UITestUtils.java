@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -201,7 +202,7 @@ public class UITestUtils {
         adapter.setCompleteFeed(hostedFeeds.toArray(new Feed[hostedFeeds.size()]));
         adapter.setQueue(queue);
         adapter.close();
-        EventDistributor.getInstance().sendFeedUpdateBroadcast();
+        EventBus.getDefault().post(new FeedListUpdateEvent());
         EventBus.getDefault().post(QueueEvent.setQueue(queue));
     }
 

@@ -21,6 +21,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -35,6 +36,7 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import org.greenrobot.eventbus.EventBus;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -298,7 +300,7 @@ public final class DBTasks {
         media.setDownloaded(false);
         media.setFile_url(null);
         DBWriter.setFeedMedia(media);
-        EventDistributor.getInstance().sendFeedUpdateBroadcast();
+        EventBus.getDefault().post(new FeedListUpdateEvent());
     }
 
     /**
@@ -563,7 +565,7 @@ public final class DBTasks {
             e.printStackTrace();
         }
 
-        EventDistributor.getInstance().sendFeedUpdateBroadcast();
+        EventBus.getDefault().post(new FeedListUpdateEvent());
 
         return resultFeeds;
     }

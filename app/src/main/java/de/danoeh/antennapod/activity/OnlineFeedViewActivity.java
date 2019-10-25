@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -94,7 +95,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     public static final String ARG_TITLE = "title";
     private static final int RESULT_ERROR = 2;
     private static final String TAG = "OnlineFeedViewActivity";
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
     private volatile List<Feed> feeds;
     private Feed feed;
     private String selectedDownloadUrl;
@@ -109,30 +109,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Disposable download;
     private Disposable parser;
     private Disposable updater;
-    private final EventDistributor.EventListener listener = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
-                updater = Observable.fromCallable(DBReader::getFeedList)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                feeds -> {
-                                    OnlineFeedViewActivity.this.feeds = feeds;
-                                    setSubscribeButtonState(feed);
-                                }, error -> Log.e(TAG, Log.getStackTraceString(error))
-                        );
-            } else if ((arg & EVENTS) != 0) {
-                setSubscribeButtonState(feed);
-            }
-        }
-    };
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        setSubscribeButtonState(feed);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,7 +178,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         isPaused = false;
-        EventDistributor.getInstance().register(listener);
         EventBus.getDefault().register(this);
     }
 
@@ -210,7 +185,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         isPaused = true;
-        EventDistributor.getInstance().unregister(listener);
         EventBus.getDefault().unregister(this);
         if (downloader != null && !downloader.isFinished()) {
             downloader.cancel();
@@ -312,6 +286,25 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
+    @Subscribe
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        updater = Observable.fromCallable(DBReader::getFeedList)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        feeds -> {
+                            OnlineFeedViewActivity.this.feeds = feeds;
+                            setSubscribeButtonState(feed);
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error))
+                );
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        setSubscribeButtonState(feed);
+    }
+
     private void parseFeed() {
         if (feed == null || (feed.getFile_url() == null && feed.isDownloaded())) {
             throw new IllegalStateException("feed must be non-null and downloaded when parseFeed is called");
@@ -388,7 +381,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
-        EventDistributor.getInstance().register(listener);
         ListView listView = findViewById(R.id.listview);
         listView.setSelector(android.R.color.transparent);
         LayoutInflater inflater = LayoutInflater.from(this);

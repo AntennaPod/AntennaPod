@@ -20,8 +20,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class EventDistributor extends Observable {
 	private static final String TAG = "EventDistributor";
 
-	public static final int FEED_LIST_UPDATE = 1;
-
 	private final Handler handler;
 	private final AbstractQueue<Integer> events;
 
@@ -71,10 +69,6 @@ public class EventDistributor extends Observable {
 	@Override
 	public void addObserver(Observer observer) {
 		super.addObserver(observer);
-	}
-
-	public void sendFeedUpdateBroadcast() {
-		addEvent(FEED_LIST_UPDATE);
 	}
 
 	public abstract static class EventListener implements Observer {

@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -174,7 +175,7 @@ public class DBWriter {
                 if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                     GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
                 }
-                EventDistributor.getInstance().sendFeedUpdateBroadcast();
+                EventBus.getDefault().post(new FeedListUpdateEvent());
 
                 // we assume we also removed download log entries for the feed or its media files.
                 // especially important if download or refresh failed, as the user should not be able
@@ -804,7 +805,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedPreferences(preferences);
             adapter.close();
-            EventDistributor.getInstance().sendFeedUpdateBroadcast();
+            EventBus.getDefault().post(new FeedListUpdateEvent());
         });
     }
 
@@ -843,7 +844,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedCustomTitle(feed.getId(), feed.getCustomTitle());
             adapter.close();
-            EventDistributor.getInstance().sendFeedUpdateBroadcast();
+            EventBus.getDefault().post(new FeedListUpdateEvent());
         });
     }
 

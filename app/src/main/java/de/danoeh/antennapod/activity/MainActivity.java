@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -84,8 +85,6 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends CastEnabledActivity implements NavDrawerActivity {
 
     private static final String TAG = "MainActivity";
-
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE;
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
@@ -490,7 +489,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         RatingDialog.init(this);
     }
@@ -518,7 +516,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     @Override
     protected void onStop() {
         super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
@@ -822,16 +819,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         loadData();
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EVENTS & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent.");
-                loadData();
-            }
-        }
-    };
+    @Subscribe
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        loadData();
+    }
 
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
