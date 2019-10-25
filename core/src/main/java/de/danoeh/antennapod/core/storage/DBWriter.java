@@ -8,7 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -27,7 +29,6 @@ import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -50,8 +51,6 @@ import de.danoeh.antennapod.core.util.SortOrder;
  * In general, DBWriter-methods will be executed on an internal ExecutorService.
  * Some methods return a Future-object which the caller can use for waiting for the method's completion. The returned Future's
  * will NOT contain any results.
- * The caller can also use the {@link EventDistributor} in order to be notified about the method's completion asynchronously.
- * This class will use the {@link EventDistributor} to notify listeners about changes in the database.
  */
 public class DBWriter {
 
@@ -126,7 +125,7 @@ public class DBWriter {
             }
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
-        EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
 
         return true;
     }
@@ -174,7 +173,7 @@ public class DBWriter {
                 if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                     GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
                 }
-                EventDistributor.getInstance().sendFeedUpdateBroadcast();
+                EventBus.getDefault().post(new FeedListUpdateEvent());
 
                 // we assume we also removed download log entries for the feed or its media files.
                 // especially important if download or refresh failed, as the user should not be able
@@ -612,7 +611,7 @@ public class DBWriter {
             adapter.setFeedItemRead(played, itemIds);
             adapter.close();
             if (broadcastUpdate) {
-                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+                EventBus.getDefault().post(new UnreadItemsUpdateEvent());
             }
         });
     }
@@ -644,7 +643,7 @@ public class DBWriter {
                     resetMediaPosition);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -660,7 +659,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED, feedId);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -676,7 +675,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.PLAYED, feedId);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -690,7 +689,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.PLAYED);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -704,7 +703,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -804,7 +803,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedPreferences(preferences);
             adapter.close();
-            EventDistributor.getInstance().sendFeedUpdateBroadcast();
+            EventBus.getDefault().post(new FeedListUpdateEvent());
         });
     }
 
@@ -843,7 +842,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedCustomTitle(feed.getId(), feed.getCustomTitle());
             adapter.close();
-            EventDistributor.getInstance().sendFeedUpdateBroadcast();
+            EventBus.getDefault().post(new FeedListUpdateEvent());
         });
     }
 
@@ -891,7 +890,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemAutoDownload(feedItem, autoDownload ? 1 : 0);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -910,7 +909,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemAutoDownload(feedItem, autoDownload);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -928,7 +927,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedsItemsAutoDownload(feed, autoDownload);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 

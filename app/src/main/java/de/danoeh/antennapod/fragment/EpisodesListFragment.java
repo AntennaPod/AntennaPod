@@ -24,7 +24,10 @@ import android.widget.Toast;
 
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -39,7 +42,6 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
@@ -64,11 +66,6 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class EpisodesListFragment extends Fragment {
 
     public static final String TAG = "EpisodesListFragment";
-
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE |
-            EventDistributor.UNREAD_ITEMS_UPDATE |
-            EventDistributor.PLAYER_STATUS_UPDATE;
-
     private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
@@ -102,7 +99,6 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onStart() {
         super.onStart();
         setHasOptionsMenu(true);
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadItems();
     }
@@ -124,7 +120,6 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        EventDistributor.getInstance().unregister(contentUpdate);
         if (disposable != null) {
             disposable.dispose();
         }
@@ -414,17 +409,27 @@ public abstract class EpisodesListFragment extends Fragment {
         }
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
-                loadItems();
-                if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-                    requireActivity().invalidateOptionsMenu();
-                }
-            }
+    private void updateUi() {
+        loadItems();
+        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+            requireActivity().invalidateOptionsMenu();
         }
-    };
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        updateUi();
+    }
 
     void loadItems() {
         if (disposable != null) {

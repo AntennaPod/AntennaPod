@@ -36,8 +36,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -119,7 +119,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         if (disposable != null) {
             disposable.dispose();
         }
-        EventDistributor.getInstance().unregister(contentUpdate);
         saveCurrentFragment();
     }
 
@@ -171,7 +170,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     @Override
     protected void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         loadData();
     }
 
@@ -445,16 +443,10 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         snackbar.show();
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EventDistributor.FEED_LIST_UPDATE & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent.");
-                loadData();
-            }
-        }
-    };
+    @Subscribe
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        loadData();
+    }
 
     private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override

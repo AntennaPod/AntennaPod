@@ -31,7 +31,6 @@ import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparato
  * Provides methods for reading data from the AntennaPod database.
  * In general, all database calls in DBReader-methods are executed on the caller's thread.
  * This means that the caller should make sure that DBReader-methods are not executed on the GUI-thread.
- * This class will use the {@link de.danoeh.antennapod.core.feed.EventDistributor} to notify listeners about changes in the database.
  */
 public final class DBReader {
 

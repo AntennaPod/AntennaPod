@@ -20,7 +20,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SearchlistAdapter;
-import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -30,6 +30,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -76,7 +78,6 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         search();
     }
 
@@ -86,7 +87,6 @@ public class SearchFragment extends ListFragment {
         if(disposable != null) {
             disposable.dispose();
         }
-        EventDistributor.getInstance().unregister(contentUpdate);
     }
 
     @Override
@@ -103,6 +103,13 @@ public class SearchFragment extends ListFragment {
 
         searchAdapter = new SearchlistAdapter(getActivity(), itemAccess);
         setListAdapter(searchAdapter);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -145,14 +152,10 @@ public class SearchFragment extends ListFragment {
         MenuItemCompat.setActionView(item, sv);
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EventDistributor.UNREAD_ITEMS_UPDATE) != 0) {
-                search();
-            }
-        }
-    };
+    @Subscribe
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        search();
+    }
 
     private void onSearchResults(List<SearchResult> results) {
         searchResults = results;

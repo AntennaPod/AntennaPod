@@ -41,8 +41,9 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -73,11 +74,7 @@ import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REM
  * Shows all items in the queue
  */
 public class QueueFragment extends Fragment {
-
     public static final String TAG = "QueueFragment";
-
-    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE // sent when playback position is reset
-            | EventDistributor.PLAYER_STATUS_UPDATE;
 
     private TextView infoBar;
     private RecyclerView recyclerView;
@@ -116,7 +113,6 @@ public class QueueFragment extends Fragment {
             onFragmentLoaded(true);
         }
         loadItems(true);
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
     }
 
@@ -129,9 +125,8 @@ public class QueueFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
@@ -218,6 +213,23 @@ public class QueueFragment extends Fragment {
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (recyclerAdapter != null) {
             recyclerAdapter.notifyCurrentlyPlayingItemChanged(event);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        loadItems(false);
+        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+            getActivity().supportInvalidateOptionsMenu();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        // Sent when playback position is reset
+        loadItems(false);
+        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+            getActivity().supportInvalidateOptionsMenu();
         }
     }
 
@@ -707,19 +719,6 @@ public class QueueFragment extends Fragment {
         @Override
         public LongList getQueueIds() {
             return queue != null ? LongList.of(FeedItemUtil.getIds(queue)) : new LongList(0);
-        }
-    };
-
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
-                Log.d(TAG, "arg: " + arg);
-                loadItems(false);
-                if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-                    getActivity().supportInvalidateOptionsMenu();
-                }
-            }
         }
     };
 

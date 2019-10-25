@@ -45,8 +45,12 @@ import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -81,12 +85,6 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressLint("ValidFragment")
 public class FeedItemlistFragment extends ListFragment {
     private static final String TAG = "ItemlistFragment";
-
-    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE
-            | EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.PLAYER_STATUS_UPDATE;
-
-    public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     private FeedItemlistAdapter adapter;
@@ -153,7 +151,6 @@ public class FeedItemlistFragment extends ListFragment {
 
         registerForContextMenu(getListView());
 
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadItems();
     }
@@ -162,7 +159,6 @@ public class FeedItemlistFragment extends ListFragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
@@ -395,18 +391,26 @@ public class FeedItemlistFragment extends ListFragment {
         }
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private void updateUi() {
+        refreshHeaderView();
+        loadItems();
+        updateProgressBarVisibility();
+    }
 
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EVENTS & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent. arg " + arg);
-                refreshHeaderView();
-                loadItems();
-                updateProgressBarVisibility();
-            }
-        }
-    };
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        updateUi();
+    }
 
     private void updateProgressBarVisibility() {
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {

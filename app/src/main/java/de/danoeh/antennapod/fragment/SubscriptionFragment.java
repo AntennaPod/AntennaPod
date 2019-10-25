@@ -28,7 +28,8 @@ import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -55,9 +56,6 @@ import org.greenrobot.eventbus.ThreadMode;
 public class SubscriptionFragment extends Fragment {
 
     public static final String TAG = "SubscriptionFragment";
-
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.UNREAD_ITEMS_UPDATE;
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
 
@@ -159,7 +157,6 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadSubscriptions();
     }
@@ -167,7 +164,6 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         if(disposable != null) {
             disposable.dispose();
@@ -294,15 +290,15 @@ public class SubscriptionFragment extends Fragment {
         dialog.createNewDialog().show();
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EVENTS & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent.");
-                loadSubscriptions();
-            }
-        }
-    };
+    @Subscribe
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        loadSubscriptions();
+    }
+
+    @Subscribe
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        loadSubscriptions();
+    }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
