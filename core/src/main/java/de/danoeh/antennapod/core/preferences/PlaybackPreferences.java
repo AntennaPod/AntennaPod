@@ -5,11 +5,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import android.util.Log;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import org.greenrobot.eventbus.EventBus;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
@@ -97,7 +99,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(PREF_CURRENT_PLAYER_STATUS)) {
-            EventDistributor.getInstance().sendPlayerStatusUpdateBroadcast();
+            EventBus.getDefault().post(new PlayerStatusEvent());
         }
     }
 

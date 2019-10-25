@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -76,8 +77,7 @@ public class QueueFragment extends Fragment {
 
     public static final String TAG = "QueueFragment";
 
-    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE // sent when playback position is reset
-            | EventDistributor.PLAYER_STATUS_UPDATE;
+    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE; // sent when playback position is reset
 
     private TextView infoBar;
     private RecyclerView recyclerView;
@@ -218,6 +218,14 @@ public class QueueFragment extends Fragment {
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (recyclerAdapter != null) {
             recyclerAdapter.notifyCurrentlyPlayingItemChanged(event);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        loadItems(false);
+        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+            getActivity().supportInvalidateOptionsMenu();
         }
     }
 

@@ -29,6 +29,7 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -81,10 +82,8 @@ public class FeedItemlistFragment extends ListFragment {
     private static final String TAG = "ItemlistFragment";
 
     private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE
-            | EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.PLAYER_STATUS_UPDATE;
+            | EventDistributor.FEED_LIST_UPDATE;
 
-    public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     private FeedItemlistAdapter adapter;
@@ -390,6 +389,13 @@ public class FeedItemlistFragment extends ListFragment {
         if (adapter != null) {
             adapter.notifyCurrentlyPlayingItemChanged(event, getListView());
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        refreshHeaderView();
+        loadItems();
+        updateProgressBarVisibility();
     }
 
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

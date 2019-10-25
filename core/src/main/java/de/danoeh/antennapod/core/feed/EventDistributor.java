@@ -22,7 +22,6 @@ public class EventDistributor extends Observable {
 
 	public static final int FEED_LIST_UPDATE = 1;
 	public static final int UNREAD_ITEMS_UPDATE = 2;
-    public static final int PLAYER_STATUS_UPDATE = 128;
 
 	private final Handler handler;
 	private final AbstractQueue<Integer> events;
@@ -82,8 +81,6 @@ public class EventDistributor extends Observable {
 	public void sendFeedUpdateBroadcast() {
 		addEvent(FEED_LIST_UPDATE);
 	}
-
-    public void sendPlayerStatusUpdateBroadcast() { addEvent(PLAYER_STATUS_UPDATE); }
 
 	public abstract static class EventListener implements Observer {
 

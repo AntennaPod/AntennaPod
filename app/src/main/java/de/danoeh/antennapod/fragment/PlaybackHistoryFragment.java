@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -40,10 +41,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PlaybackHistoryFragment extends ListFragment {
-
     public static final String TAG = "PlaybackHistoryFragment";
-
-    private static final int EVENTS = EventDistributor.PLAYER_STATUS_UPDATE;
 
     private List<FeedItem> playbackHistory;
     private FeedItemlistAdapter adapter;
@@ -83,7 +81,6 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadItems();
     }
@@ -92,7 +89,6 @@ public class PlaybackHistoryFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        EventDistributor.getInstance().unregister(contentUpdate);
         if (disposable != null) {
             disposable.dispose();
         }
@@ -172,16 +168,11 @@ public class PlaybackHistoryFragment extends ListFragment {
         getActivity().supportInvalidateOptionsMenu();
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
-                loadItems();
-                getActivity().supportInvalidateOptionsMenu();
-            }
-        }
-    };
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        loadItems();
+        getActivity().supportInvalidateOptionsMenu();
+    }
 
     private void onFragmentLoaded() {
         adapter.notifyDataSetChanged();
