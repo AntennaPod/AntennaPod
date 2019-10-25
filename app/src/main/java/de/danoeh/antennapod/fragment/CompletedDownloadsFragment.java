@@ -17,6 +17,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -140,6 +141,11 @@ public class CompletedDownloadsFragment extends ListFragment {
 
     @Subscribe
     public void onDownloadLogChanged(DownloadLogEvent event) {
+        loadItems();
+    }
+
+    @Subscribe
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         loadItems();
     }
 
