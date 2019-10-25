@@ -49,6 +49,7 @@ public class PreferencesTest {
 
     @Before
     public void setUp() {
+        EspressoTestUtils.clearDatabase();
         EspressoTestUtils.clearPreferences();
         mActivityRule.launchActivity(new Intent());
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
@@ -103,10 +104,9 @@ public class PreferencesTest {
 
     @Test
     public void testSetLockscreenButtons() {
-        onView(withText(R.string.user_interface_label)).perform(click());
-        solo.scrollDown();
+        clickPreference(R.string.user_interface_label);
         String[] buttons = res.getStringArray(R.array.compact_notification_buttons_options);
-        onView(withText(R.string.pref_compact_notification_buttons_title)).perform(click());
+        clickPreference(R.string.pref_compact_notification_buttons_title);
         solo.waitForDialogToOpen(1000);
         // First uncheck checkbox
         onView(withText(buttons[2])).perform(click());
@@ -127,13 +127,11 @@ public class PreferencesTest {
 
     @Test
     public void testEnqueueAtFront() {
-        onView(withText(R.string.playback_pref)).perform(click());
+        clickPreference(R.string.playback_pref);
         final boolean enqueueAtFront = UserPreferences.enqueueAtFront();
-        solo.scrollDown();
-        solo.scrollDown();
-        onView(withText(R.string.pref_queueAddToFront_title)).perform(click());
+        clickPreference(R.string.pref_queueAddToFront_title);
         assertTrue(solo.waitForCondition(() -> enqueueAtFront != UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
-        onView(withText(R.string.pref_queueAddToFront_title)).perform(click());
+        clickPreference(R.string.pref_queueAddToFront_title);
         assertTrue(solo.waitForCondition(() -> enqueueAtFront == UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
     }
 
@@ -177,13 +175,11 @@ public class PreferencesTest {
 
     @Test
     public void testContinuousPlayback() {
-        onView(withText(R.string.playback_pref)).perform(click());
+        clickPreference(R.string.playback_pref);
         final boolean continuousPlayback = UserPreferences.isFollowQueue();
-        solo.scrollDown();
-        solo.scrollDown();
-        onView(withText(R.string.pref_followQueue_title)).perform(click());
+        clickPreference(R.string.pref_followQueue_title);
         assertTrue(solo.waitForCondition(() -> continuousPlayback != UserPreferences.isFollowQueue(), Timeout.getLargeTimeout()));
-        onView(withText(R.string.pref_followQueue_title)).perform(click());
+        clickPreference(R.string.pref_followQueue_title);
         assertTrue(solo.waitForCondition(() -> continuousPlayback == UserPreferences.isFollowQueue(), Timeout.getLargeTimeout()));
     }
 

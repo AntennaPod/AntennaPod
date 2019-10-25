@@ -35,6 +35,8 @@ out
 #transifex downloads
 contributers.py
 
+# View hierarchy captures
+captures
 # other
 *.odg#
 proguard

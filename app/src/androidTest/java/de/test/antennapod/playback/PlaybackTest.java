@@ -69,8 +69,8 @@ public abstract class PlaybackTest {
         uiTestUtils.tearDown();
 
         // shut down playback service
-        skipEpisode();
         context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        Awaitility.await().until(() -> !PlaybackService.isRunning);
     }
 
     @Test
