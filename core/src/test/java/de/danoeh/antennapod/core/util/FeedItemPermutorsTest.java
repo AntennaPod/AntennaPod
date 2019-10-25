@@ -10,22 +10,25 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
 
 /**
- * Test class for QueueSorter.
+ * Test class for FeedItemPermutors.
  */
-public class QueueSorterTest {
+public class FeedItemPermutorsTest {
 
     @Test
-    public void testPermutorForRule_null() {
-        assertNull(QueueSorter.getPermutor(null));
+    public void testEnsureNonNullPermutors() {
+        for (SortOrder sortOrder : SortOrder.values()) {
+            assertNotNull("The permutor for SortOrder " + sortOrder + " is unexpectedly null",
+                    FeedItemPermutors.getPermutor(sortOrder));
+        }
     }
 
     @Test
     public void testPermutorForRule_EPISODE_TITLE_ASC() {
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(SortOrder.EPISODE_TITLE_A_Z);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.EPISODE_TITLE_A_Z);
 
         List<FeedItem> itemList = getTestList();
         assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
@@ -34,8 +37,21 @@ public class QueueSorterTest {
     }
 
     @Test
+    public void testPermutorForRule_EPISODE_TITLE_ASC_NullTitle() {
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.EPISODE_TITLE_A_Z);
+
+        List<FeedItem> itemList = getTestList();
+        itemList.get(2) // itemId 2
+                .setTitle(null);
+        assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
+        permutor.reorder(itemList);
+        assertTrue(checkIdOrder(itemList, 2, 1, 3)); // after sorting
+    }
+
+
+    @Test
     public void testPermutorForRule_EPISODE_TITLE_DESC() {
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(SortOrder.EPISODE_TITLE_Z_A);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.EPISODE_TITLE_Z_A);
 
         List<FeedItem> itemList = getTestList();
         assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
@@ -45,7 +61,7 @@ public class QueueSorterTest {
 
     @Test
     public void testPermutorForRule_DATE_ASC() {
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(SortOrder.DATE_OLD_NEW);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.DATE_OLD_NEW);
 
         List<FeedItem> itemList = getTestList();
         assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
@@ -54,8 +70,20 @@ public class QueueSorterTest {
     }
 
     @Test
+    public void testPermutorForRule_DATE_ASC_NulPubDatel() {
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.DATE_OLD_NEW);
+
+        List<FeedItem> itemList = getTestList();
+        itemList.get(2) // itemId 2
+                .setPubDate(null);
+        assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
+        permutor.reorder(itemList);
+        assertTrue(checkIdOrder(itemList, 2, 1, 3)); // after sorting
+    }
+
+    @Test
     public void testPermutorForRule_DATE_DESC() {
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(SortOrder.DATE_NEW_OLD);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.DATE_NEW_OLD);
 
         List<FeedItem> itemList = getTestList();
         assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
@@ -65,7 +93,7 @@ public class QueueSorterTest {
 
     @Test
     public void testPermutorForRule_DURATION_ASC() {
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(SortOrder.DURATION_SHORT_LONG);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.DURATION_SHORT_LONG);
 
         List<FeedItem> itemList = getTestList();
         assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
@@ -75,7 +103,7 @@ public class QueueSorterTest {
 
     @Test
     public void testPermutorForRule_DURATION_DESC() {
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(SortOrder.DURATION_LONG_SHORT);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.DURATION_LONG_SHORT);
 
         List<FeedItem> itemList = getTestList();
         assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
@@ -84,8 +112,20 @@ public class QueueSorterTest {
     }
 
     @Test
+    public void testPermutorForRule_DURATION_DESC_NullMedia() {
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.DURATION_LONG_SHORT);
+
+        List<FeedItem> itemList = getTestList();
+        itemList.get(1) // itemId 3
+                .setMedia(null);
+        assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
+        permutor.reorder(itemList);
+        assertTrue(checkIdOrder(itemList, 2, 1, 3)); // after sorting
+    }
+
+    @Test
     public void testPermutorForRule_FEED_TITLE_ASC() {
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(SortOrder.FEED_TITLE_A_Z);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.FEED_TITLE_A_Z);
 
         List<FeedItem> itemList = getTestList();
         assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
@@ -95,12 +135,24 @@ public class QueueSorterTest {
 
     @Test
     public void testPermutorForRule_FEED_TITLE_DESC() {
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(SortOrder.FEED_TITLE_Z_A);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.FEED_TITLE_Z_A);
 
         List<FeedItem> itemList = getTestList();
         assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
         permutor.reorder(itemList);
         assertTrue(checkIdOrder(itemList, 3, 2, 1)); // after sorting
+    }
+
+    @Test
+    public void testPermutorForRule_FEED_TITLE_DESC_NullTitle() {
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(SortOrder.FEED_TITLE_Z_A);
+
+        List<FeedItem> itemList = getTestList();
+        itemList.get(1) // itemId 3
+            .getFeed().setTitle(null);
+        assertTrue(checkIdOrder(itemList, 1, 3, 2)); // before sorting
+        permutor.reorder(itemList);
+        assertTrue(checkIdOrder(itemList, 2, 1, 3)); // after sorting
     }
 
     /**
