@@ -367,20 +367,14 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      * This method is executed on a background thread
      */
     private void beforeShowFeedInformation(Feed feed) {
-        final HtmlToPlainText formatter = new HtmlToPlainText();
-        if(Feed.TYPE_ATOM1.equals(feed.getType()) && feed.getDescription() != null) {
-            // remove HTML tags from descriptions
-            Log.d(TAG, "Removing HTML from feed description");
-            Document feedDescription = Jsoup.parse(feed.getDescription());
-            feed.setDescription(StringUtils.trim(formatter.getPlainText(feedDescription)));
-        }
+        Log.d(TAG, "Removing HTML from feed description");
+
+        feed.setDescription(HtmlToPlainText.getPlainText(feed.getDescription()));
+
         Log.d(TAG, "Removing HTML from shownotes");
         if (feed.getItems() != null) {
             for (FeedItem item : feed.getItems()) {
-                if (item.getDescription() != null) {
-                    Document itemDescription = Jsoup.parse(item.getDescription());
-                    item.setDescription(StringUtils.trim(formatter.getPlainText(itemDescription)));
-                }
+                item.setDescription(HtmlToPlainText.getPlainText(item.getDescription()));
             }
         }
     }
