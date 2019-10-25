@@ -20,7 +20,6 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;

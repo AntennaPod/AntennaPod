@@ -10,7 +10,6 @@ import com.joanzapata.iconify.fonts.MaterialModule;
 
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 
@@ -55,7 +54,6 @@ public class PodcastApp extends Application {
 
 		ClientConfig.initialize(this);
 
-		EventDistributor.getInstance();
 		Iconify.with(new FontAwesomeModule());
 		Iconify.with(new MaterialModule());
 

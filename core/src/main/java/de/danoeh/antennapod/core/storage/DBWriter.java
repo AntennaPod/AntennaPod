@@ -28,7 +28,6 @@ import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -51,8 +50,6 @@ import de.danoeh.antennapod.core.util.SortOrder;
  * In general, DBWriter-methods will be executed on an internal ExecutorService.
  * Some methods return a Future-object which the caller can use for waiting for the method's completion. The returned Future's
  * will NOT contain any results.
- * The caller can also use the {@link EventDistributor} in order to be notified about the method's completion asynchronously.
- * This class will use the {@link EventDistributor} to notify listeners about changes in the database.
  */
 public class DBWriter {
 
