@@ -3,6 +3,8 @@ package de.danoeh.antennapod.core.service.download;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -74,17 +76,9 @@ public class DownloadRequest implements Parcelable {
         feedfileType = in.readInt();
         lastModified = in.readString();
         deleteOnFailure = (in.readByte() > 0);
+        username = nullIfEmpty(in.readString());
+        password = nullIfEmpty(in.readString());
         arguments = in.readBundle();
-        if (in.dataAvail() > 0) {
-            username = in.readString();
-        } else {
-            username = null;
-        }
-        if (in.dataAvail() > 0) {
-            password = in.readString();
-        } else {
-            password = null;
-        }
     }
 
     @Override
@@ -101,13 +95,22 @@ public class DownloadRequest implements Parcelable {
         dest.writeInt(feedfileType);
         dest.writeString(lastModified);
         dest.writeByte((deleteOnFailure) ? (byte) 1 : 0);
+        // in case of null username/password, still write an empty string
+        // (rather than skipping it). Otherwise, unmarshalling  a collection
+        // of them from a Parcel (from an Intent extra to submit a request to DownloadService) will fail.
+        //
+        // see: https://stackoverflow.com/a/22926342
+        dest.writeString(nonNullString(username));
+        dest.writeString(nonNullString(password));
         dest.writeBundle(arguments);
-        if (username != null) {
-            dest.writeString(username);
-        }
-        if (password != null) {
-            dest.writeString(password);
-        }
+    }
+
+    private static String nonNullString(String str) {
+        return str != null ? str : "";
+    }
+
+    private static String nullIfEmpty(String str) {
+        return TextUtils.isEmpty(str) ? null : str;
     }
 
     public static final Parcelable.Creator<DownloadRequest> CREATOR = new Parcelable.Creator<DownloadRequest>() {
