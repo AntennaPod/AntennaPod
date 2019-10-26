@@ -93,9 +93,8 @@ public class DownloadServiceTest {
                 assertFalse("The media in test should not yet been downloaded",
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
 
-                DownloadRequester.getInstance().downloadMedia(InstrumentationRegistry.getTargetContext(),
-                        testMedia11);
-                Awaitility.await()
+                DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry.getTargetContext(),
+                        testMedia11.getItem());Awaitility.await()
                         .atMost(1000, TimeUnit.MILLISECONDS)
                         .until(() -> feedItemEventListener.getEvents().size() > 0);
                 assertTrue("After media download has completed, FeedMedia object in db should indicate so.",
