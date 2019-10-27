@@ -17,6 +17,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
 import de.danoeh.antennapod.core.storage.ItemEnqueuePositionCalculator.Options;
+import de.danoeh.antennapod.core.util.CollectionTestUtil;
 
 import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
 import static org.junit.Assert.assertEquals;
@@ -35,22 +36,22 @@ public class ItemEnqueuePositionCalculatorTest {
 
             return Arrays.asList(new Object[][]{
                     {"case default, i.e., add to the end",
-                            concat(QUEUE_DEFAULT_IDS, TFI_ID),
+                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, TFI_ID),
                             optDefault, 0, QUEUE_DEFAULT},
                     {"case default (2nd item)",
-                            concat(QUEUE_DEFAULT_IDS, TFI_ID),
+                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, TFI_ID),
                             optDefault, 1, QUEUE_DEFAULT},
                     {"case option enqueue at front",
-                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
+                            CollectionTestUtil.concat(TFI_ID, QUEUE_DEFAULT_IDS),
                             optEnqAtFront, 0, QUEUE_DEFAULT},
                     {"case option enqueue at front (2nd item)",
-                            list(11L, TFI_ID, 12L, 13L, 14L),
+                            CollectionTestUtil.list(11L, TFI_ID, 12L, 13L, 14L),
                             optEnqAtFront, 1, QUEUE_DEFAULT},
                     {"case empty queue, option default",
-                            list(TFI_ID),
+                            CollectionTestUtil.list(TFI_ID),
                             optDefault, 0, QUEUE_EMPTY},
                     {"case empty queue, option enqueue at front",
-                            list(TFI_ID),
+                            CollectionTestUtil.list(TFI_ID),
                             optEnqAtFront, 0, QUEUE_EMPTY},
             });
         }
@@ -102,22 +103,22 @@ public class ItemEnqueuePositionCalculatorTest {
 
             return Arrays.asList(new Object[][]{
                     {"case option keep in progress at front",
-                            list(11L, TFI_ID, 12L, 13L),
+                            CollectionTestUtil.list(11L, TFI_ID, 12L, 13L),
                             optKeepInProgressAtFront, 0, QUEUE_FRONT_IN_PROGRESS},
                     {"case option keep in progress at front (2nd item)",
-                            list(11L, 12L, TFI_ID, 13L),
+                            CollectionTestUtil.list(11L, 12L, TFI_ID, 13L),
                             optKeepInProgressAtFront, 1, QUEUE_FRONT_IN_PROGRESS},
                     {"case option keep in progress at front, front item not in progress",
-                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
+                            CollectionTestUtil.concat(TFI_ID, QUEUE_DEFAULT_IDS),
                             optKeepInProgressAtFront, 0, QUEUE_DEFAULT},
                     {"case option keep in progress at front, front item no media at all",
-                            concat(TFI_ID, QUEUE_FRONT_NO_MEDIA_IDS),
+                            CollectionTestUtil.concat(TFI_ID, QUEUE_FRONT_NO_MEDIA_IDS),
                             optKeepInProgressAtFront, 0, QUEUE_FRONT_NO_MEDIA}, // No media should not cause any exception
                     {"case option keep in progress at front, but enqueue at front is disabled",
-                            concat(QUEUE_FRONT_IN_PROGRESS_IDS, TFI_ID),
+                            CollectionTestUtil.concat(QUEUE_FRONT_IN_PROGRESS_IDS, TFI_ID),
                             optKeepInProgressAtFrontWithNoEnqueueAtFront, 0, QUEUE_FRONT_IN_PROGRESS},
                     {"case empty queue, option keep in progress at front",
-                            list(TFI_ID),
+                            CollectionTestUtil.list(TFI_ID),
                             optKeepInProgressAtFront, 0, QUEUE_EMPTY},
             });
         }
@@ -142,16 +143,16 @@ public class ItemEnqueuePositionCalculatorTest {
             // (rather than the expected positions)
             return Arrays.asList(new Object[][] {
                     {"download order test, enqueue default",
-                            concat(QUEUE_DEFAULT_IDS, 101L),
-                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L)),
-                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 201L)),
-                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 201L, 202L)),
+                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, 101L),
+                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, CollectionTestUtil.list(101L, 102L)),
+                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, CollectionTestUtil.list(101L, 102L, 201L)),
+                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, CollectionTestUtil.list(101L, 102L, 201L, 202L)),
                             optDefault, QUEUE_DEFAULT},
                     {"download order test, enqueue at front",
-                            concat(101L, QUEUE_DEFAULT_IDS),
-                            concat(list(101L, 102L), QUEUE_DEFAULT_IDS),
-                            concat(list(101L, 102L, 201L), QUEUE_DEFAULT_IDS),
-                            concat(list(101L, 102L, 201L, 202L), QUEUE_DEFAULT_IDS),
+                            CollectionTestUtil.concat(101L, QUEUE_DEFAULT_IDS),
+                            CollectionTestUtil.concat(CollectionTestUtil.list(101L, 102L), QUEUE_DEFAULT_IDS),
+                            CollectionTestUtil.concat(CollectionTestUtil.list(101L, 102L, 201L), QUEUE_DEFAULT_IDS),
+                            CollectionTestUtil.concat(CollectionTestUtil.list(101L, 102L, 201L, 202L), QUEUE_DEFAULT_IDS),
                             optEnqAtFront, QUEUE_DEFAULT},
             });
         }
@@ -281,30 +282,5 @@ public class ItemEnqueuePositionCalculatorTest {
                 new Date(), FeedItem.PLAYED, FeedMother.anyFeed());
         return item;
     }
-
-    // Collections helpers
-
-    static <T> List<? extends T> concat(T item, List<? extends T> list) {
-        List<T> res = new ArrayList<>(list);
-        res.add(0, item);
-        return res;
-    }
-
-    static <T> List<? extends T> concat(List<? extends T> list, T item) {
-        List<T> res = new ArrayList<>(list);
-        res.add(item);
-        return res;
-    }
-
-    static <T> List<? extends T> concat(List<? extends T> list1, List<? extends T> list2) {
-        List<T> res = new ArrayList<>(list1);
-        res.addAll(list2);
-        return res;
-    }
-
-    static <T> List<T> list(T... a) {
-        return Arrays.asList(a);
-    }
-
 
 }
