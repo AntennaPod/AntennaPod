@@ -18,6 +18,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
 import de.danoeh.antennapod.core.storage.ItemEnqueuePositionCalculator.Options;
 
+import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -122,10 +123,10 @@ public class ItemEnqueuePositionCalculatorTest {
         }
 
         private static final List<FeedItem> QUEUE_FRONT_IN_PROGRESS = Arrays.asList(tFI(11, 60000), tFI(12), tFI(13));
-        private static final List<Long> QUEUE_FRONT_IN_PROGRESS_IDS = toIDs(QUEUE_FRONT_IN_PROGRESS);
+        private static final List<Long> QUEUE_FRONT_IN_PROGRESS_IDS = getIdList(QUEUE_FRONT_IN_PROGRESS);
 
         private static final List<FeedItem> QUEUE_FRONT_NO_MEDIA = Arrays.asList(tFINoMedia(11), tFI(12), tFI(13));
-        private static final List<Long> QUEUE_FRONT_NO_MEDIA_IDS = toIDs(QUEUE_FRONT_NO_MEDIA);
+        private static final List<Long> QUEUE_FRONT_NO_MEDIA_IDS = getIdList(QUEUE_FRONT_NO_MEDIA);
 
     }
 
@@ -249,7 +250,7 @@ public class ItemEnqueuePositionCalculatorTest {
                                             List<Long> idsExpected) {
         int posActual = calculator.calcPosition(positionAmongAdd, itemToAdd, queue);
         queue.add(posActual, itemToAdd);
-        assertEquals(message, idsExpected, toIDs(queue));
+        assertEquals(message, idsExpected, getIdList(queue));
     }
 
     static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(Arrays.asList());
@@ -305,9 +306,5 @@ public class ItemEnqueuePositionCalculatorTest {
         return Arrays.asList(a);
     }
 
-
-    static List<Long> toIDs(List<FeedItem> items) {
-        return items.stream().map(i->i.getId()).collect(Collectors.toList());
-    }
 
 }

@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -25,6 +24,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -237,13 +237,9 @@ public class DBTasksTest {
 
     private void assertEqualsByIds(String msg, List<? extends FeedItem> expected, List<? extends FeedItem> actual) {
         // assert only the IDs, so that any differences are easily to spot.
-        List<Long> expectedIds = toIds(expected);
-        List<Long> actualIds = toIds(actual);
+        List<Long> expectedIds = getIdList(expected);
+        List<Long> actualIds = getIdList(actual);
         assertEquals(msg, expectedIds, actualIds);
-    }
-
-    private static List<Long> toIds(List<? extends FeedItem> items) {
-        return items.stream().map(FeedItem::getId).collect(Collectors.toList());
     }
 
     private Feed createSavedFeed(String title, int numFeedItems) {
