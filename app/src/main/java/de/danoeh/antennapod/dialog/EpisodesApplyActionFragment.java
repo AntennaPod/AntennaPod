@@ -4,16 +4,6 @@ import android.app.AlertDialog;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.PluralsRes;
-import androidx.annotation.StringRes;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.collection.ArrayMap;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +14,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.PluralsRes;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArrayMap;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
@@ -38,7 +39,9 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 public class EpisodesApplyActionFragment extends Fragment {
 
@@ -263,6 +266,18 @@ public class EpisodesApplyActionFragment extends Fragment {
         mSelectToggle.setTitle(titleResId);
     }
 
+    private static final Map<Integer, SortOrder> menuItemIdToSortOrder;
+    static {
+        Map<Integer, SortOrder> map = new ArrayMap<>();
+        map.put(R.id.sort_title_a_z, SortOrder.EPISODE_TITLE_A_Z);
+        map.put(R.id.sort_title_z_a, SortOrder.EPISODE_TITLE_Z_A);
+        map.put(R.id.sort_date_new_old, SortOrder.DATE_NEW_OLD);
+        map.put(R.id.sort_date_old_new, SortOrder.DATE_OLD_NEW);
+        map.put(R.id.sort_duration_long_short, SortOrder.DURATION_LONG_SHORT);
+        map.put(R.id.sort_duration_short_long, SortOrder.DURATION_SHORT_LONG);
+        menuItemIdToSortOrder = Collections.unmodifiableMap(map);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         @StringRes int resId = 0;
@@ -305,24 +320,12 @@ public class EpisodesApplyActionFragment extends Fragment {
                 checkWithMedia();
                 resId = R.string.selected_has_media_label;
                 break;
-            case R.id.sort_title_a_z:
-                sortByTitle(false);
-                return true;
-            case R.id.sort_title_z_a:
-                sortByTitle(true);
-                return true;
-            case R.id.sort_date_new_old:
-                sortByDate(true);
-                return true;
-            case R.id.sort_date_old_new:
-                sortByDate(false);
-                return true;
-            case R.id.sort_duration_long_short:
-                sortByDuration(true);
-                return true;
-            case R.id.sort_duration_short_long:
-                sortByDuration(false);
-                return true;
+            default: // handle various sort options
+                SortOrder sortOrder = menuItemIdToSortOrder.get(item.getItemId());
+                if (sortOrder != null) {
+                    sort(sortOrder);
+                    return true;
+                }
         }
         if(resId != 0) {
             Snackbar.make(getActivity().findViewById(R.id.content), resId, Snackbar.LENGTH_SHORT)
@@ -333,52 +336,9 @@ public class EpisodesApplyActionFragment extends Fragment {
         }
     }
 
-    private void sortByTitle(final boolean reverse) {
-        Collections.sort(episodes, (lhs, rhs) -> {
-            if (reverse) {
-                return -1 * lhs.getTitle().compareTo(rhs.getTitle());
-            } else {
-                return lhs.getTitle().compareTo(rhs.getTitle());
-            }
-        });
-        refreshTitles();
-        refreshCheckboxes();
-    }
-
-    private void sortByDate(final boolean reverse) {
-        Collections.sort(episodes, (lhs, rhs) -> {
-            if (lhs.getPubDate() == null) {
-                return -1;
-            } else if (rhs.getPubDate() == null) {
-                return 1;
-            }
-            int code = lhs.getPubDate().compareTo(rhs.getPubDate());
-            if (reverse) {
-                return -1 * code;
-            } else {
-                return code;
-            }
-        });
-        refreshTitles();
-        refreshCheckboxes();
-    }
-
-    private void sortByDuration(final boolean reverse) {
-        Collections.sort(episodes, (lhs, rhs) -> {
-            int ordering;
-            if (!lhs.hasMedia()) {
-                ordering = 1;
-            } else if (!rhs.hasMedia()) {
-                ordering = -1;
-            } else {
-                ordering = lhs.getMedia().getDuration() - rhs.getMedia().getDuration();
-            }
-        if(reverse) {
-            return -1 * ordering;
-        } else {
-            return ordering;
-        }
-    });
+    private void sort(@NonNull SortOrder sortOrder) {
+        FeedItemPermutors.getPermutor(sortOrder)
+                .reorder(episodes);
         refreshTitles();
         refreshCheckboxes();
     }
