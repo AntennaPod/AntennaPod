@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -77,16 +78,29 @@ public class DownloadServiceTest {
     }
 
     @Test
-    public void testEventsGeneratedCaseMediaDownloadSuccess() throws Exception {
+    public void testEventsGeneratedCaseMediaDownloadSuccess_noEnqueue() throws Exception {
+        doTestEventsGeneratedCaseMediaDownloadSuccess(false, 1);
+    }
+
+    @Test
+    public void testEventsGeneratedCaseMediaDownloadSuccess_withEnqueue() throws Exception {
+        // enqueue itself generates additional FeedItem event
+        doTestEventsGeneratedCaseMediaDownloadSuccess(true, 2);
+    }
+
+    private void doTestEventsGeneratedCaseMediaDownloadSuccess(boolean enqueueDownloaded,
+                                                               int numEventsExpected)
+            throws Exception {
         // create a stub download that returns successful
         //
         // OPEN: Ideally, I'd like the download time long enough so that multiple in-progress DownloadEvents
         // are generated (to simulate typical download), but it'll make download time quite long (1-2 seconds)
         // to do so
         DownloadService.setDownloaderFactory(new StubDownloaderFactory(50, downloadStatus -> {
-           downloadStatus.setSuccessful();
+            downloadStatus.setSuccessful();
         }));
 
+        UserPreferences.setEnqueueDownloadedEpisodes(enqueueDownloaded);
         withFeedItemEventListener(feedItemEventListener -> {
             try {
                 assertEquals(0, feedItemEventListener.getEvents().size());
@@ -96,9 +110,12 @@ public class DownloadServiceTest {
                 DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry.getTargetContext(),
                         testMedia11.getItem());Awaitility.await()
                         .atMost(1000, TimeUnit.MILLISECONDS)
-                        .until(() -> feedItemEventListener.getEvents().size() > 0);
+                        .until(() -> feedItemEventListener.getEvents().size() >= numEventsExpected);
                 assertTrue("After media download has completed, FeedMedia object in db should indicate so.",
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
+                assertEquals("The FeedItem should have been " + (enqueueDownloaded ? "" : "not ") +  "enqueued",
+                        enqueueDownloaded,
+                        DBReader.getQueueIDList().contains(testMedia11.getItem().getId()));
             } catch (ConditionTimeoutException cte) {
                 fail("The expected FeedItemEvent (for media download complete) has not been posted. "
                         + cte.getMessage());

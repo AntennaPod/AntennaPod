@@ -206,7 +206,7 @@ public class DBTasksTest {
 
         // Run actual test and assert results
         List<? extends FeedItem> actualEnqueued =
-                DBTasks.enqueueFeedItemsToDownload(context, itemsToDownload);
+                DBTasks.enqueueFeedItemsToDownload(context, Arrays.asList(itemsToDownload));
 
         assertEqualsByIds("Only items not in the queue are enqueued", expectedEnqueued, actualEnqueued);
         assertEqualsByIds("Queue has new items appended", expectedQueue, DBReader.getQueue());
@@ -229,7 +229,7 @@ public class DBTasksTest {
 
         // Run actual test and assert results
         List<? extends FeedItem> actualEnqueued =
-                DBTasks.enqueueFeedItemsToDownload(context, itemsToDownload);
+                DBTasks.enqueueFeedItemsToDownload(context, Arrays.asList(itemsToDownload));
 
         assertEqualsByIds("No item is enqueued", expectedEnqueued, actualEnqueued);
         assertEqualsByIds("Queue is unchanged", expectedQueue, DBReader.getQueue());

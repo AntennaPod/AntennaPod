@@ -308,7 +308,7 @@ public final class DBTasks {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public static List<? extends FeedItem> enqueueFeedItemsToDownload(final Context context,
-                                                                      FeedItem... items)
+                                                                      List<? extends FeedItem> items)
             throws InterruptedException, ExecutionException {
         List<FeedItem> itemsToEnqueue = new ArrayList<>();
         if (UserPreferences.enqueueDownloadedEpisodes()) {

@@ -12,8 +12,30 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+
+import org.apache.commons.io.FileUtils;
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
@@ -32,27 +54,10 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.DownloadError;
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.commons.io.FileUtils;
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued via the startService intent.
- * The argument of the intent is an instance of DownloadRequest in the EXTRA_REQUEST field of
+ * The argument of the intent is an instance of DownloadRequest in the EXTRA_REQUESTS field of
  * the intent.
  * After the downloads have finished, the downloaded object will be passed on to a specific handler, depending on the
  * type of the feedfile.
@@ -79,7 +84,9 @@ public class DownloadService extends Service {
     /**
      * Extra for ACTION_ENQUEUE_DOWNLOAD intent.
      */
-    public static final String EXTRA_REQUEST = "request";
+    public static final String EXTRA_REQUESTS = "downloadRequests";
+
+    public static final String EXTRA_CLEANUP_MEDIA = "cleanupMedia";
 
     public static final int NOTIFICATION_ID = 2;
 
@@ -156,7 +163,8 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
+        if (intent != null &&
+                intent.getParcelableArrayListExtra(EXTRA_REQUESTS) != null) {
             onDownloadQueued(intent);
         } else if (numberOfDownloads.get() == 0) {
             stopSelf();
@@ -387,13 +395,55 @@ public class DownloadService extends Service {
     };
 
     private void onDownloadQueued(Intent intent) {
-        Log.d(TAG, "Received enqueue request");
-        DownloadRequest request = intent.getParcelableExtra(EXTRA_REQUEST);
-        if (request == null) {
+        List<DownloadRequest> requests = intent.getParcelableArrayListExtra(EXTRA_REQUESTS);
+        if (requests == null) {
             throw new IllegalArgumentException(
                     "ACTION_ENQUEUE_DOWNLOAD intent needs request extra");
         }
+        boolean cleanupMedia = intent.getBooleanExtra(EXTRA_CLEANUP_MEDIA, false);
+        Log.d(TAG, "Received enqueue request. #requests=" + requests.size()
+                + ", cleanupMedia=" + cleanupMedia);
 
+        if (cleanupMedia) {
+            ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
+                    .makeRoomForEpisodes(getApplicationContext(), requests.size());
+        }
+
+        // #2448: First, add to-download items to the queue before actual download
+        // so that the resulting queue order is the same as when download is clicked
+        List<? extends FeedItem> itemsEnqueued;
+        try {
+            itemsEnqueued = enqueueFeedItems(requests);
+        } catch (Exception e) {
+            Log.e(TAG, "Unexpected exception during enqueue before downloads. Abort download", e);
+            return;
+        }
+        // TODO-2448: use itemsEnqueued to handle cancel download
+
+        for (DownloadRequest request : requests) {
+            onDownloadQueued(request);
+        }
+    }
+
+    private List<? extends FeedItem> enqueueFeedItems(@NonNull List<? extends DownloadRequest> requests)
+        throws Exception {
+        List<FeedItem> feedItems = new ArrayList<>();
+        for (DownloadRequest request : requests) {
+            if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                long mediaId = request.getFeedfileId();
+                FeedMedia media = DBReader.getFeedMedia(mediaId);
+                if (media == null) {
+                    Log.w(TAG, "enqueueFeedItems() : FeedFile Id " + mediaId + " is not found. ignore it.");
+                    continue;
+                }
+                feedItems.add(media.getItem());
+            }
+        }
+
+        return DBTasks.enqueueFeedItemsToDownload(getApplicationContext(), feedItems);
+    }
+
+    private void onDownloadQueued(@NonNull DownloadRequest request) {
         writeFileUrl(request);
 
         Downloader downloader = downloaderFactory.create(request);

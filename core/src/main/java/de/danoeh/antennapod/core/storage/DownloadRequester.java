@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFile;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -77,14 +76,20 @@ public class DownloadRequester implements DownloadStateProvider {
      * ensure that the data is valid. Use downloadFeed(), downloadImage() or downloadMedia() instead.
      *
      * @param context Context object for starting the DownloadService
-     * @param requests The list of DownloadRequest objects. If another DownloadRequest with the same source URL is already stored,
-     *                 this one will be skipped.
-     * @return True if the  any of the download request was accepted, false otherwise.
+     * @param requests The list of DownloadRequest objects. If another DownloadRequest
+     *                 with the same source URL is already stored, this one will be skipped.
+     * @return True if any of the download request was accepted, false otherwise.
      */
     public synchronized boolean download(@NonNull Context context,
                                          DownloadRequest... requests) {
+        return download(context, false, requests);
+    }
+
+    private boolean download(@NonNull Context context, boolean cleanupMedia,
+                             DownloadRequest... requests) {
         boolean result = false;
-        // TODO-2448: send the requests as a batch to the service in one intent
+
+        ArrayList<DownloadRequest> requestsToSend = new ArrayList<>(requests.length);
         for (DownloadRequest request : requests) {
             if (downloads.containsKey(request.getSource())) {
                 if (BuildConfig.DEBUG) Log.i(TAG, "DownloadRequest is already stored.");
@@ -92,11 +97,15 @@ public class DownloadRequester implements DownloadStateProvider {
             }
             downloads.put(request.getSource(), request);
 
-            Intent launchIntent = new Intent(context, DownloadService.class);
-            launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
-            ContextCompat.startForegroundService(context, launchIntent);
+            requestsToSend.add(request);
             result = true;
         }
+        Intent launchIntent = new Intent(context, DownloadService.class);
+        launchIntent.putParcelableArrayListExtra(DownloadService.EXTRA_REQUESTS, requestsToSend);
+        if (cleanupMedia) {
+            launchIntent.putExtra(DownloadService.EXTRA_CLEANUP_MEDIA, cleanupMedia);
+        }
+        ContextCompat.startForegroundService(context, launchIntent);
 
         return result;
     }
@@ -213,27 +222,6 @@ public class DownloadRequester implements DownloadStateProvider {
             throws DownloadRequestException {
         Log.d(TAG, "downloadMedia() called with: performAutoCleanup = [" + performAutoCleanup
                 + "], #items = [" + items.length + "]");
-        // TODO-2448: OPEN: move to DownloadService as well?!
-        if (performAutoCleanup) {
-            new Thread() {
-
-                @Override
-                public void run() {
-                    ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
-                            .makeRoomForEpisodes(context, items.length);
-                }
-
-            }.start();
-        }
-
-        // TODO-2448: move to DownloadService
-        // #2448: First, add to-download items to the queue before actual download
-        // so that the resulting queue order is the same as when download is clicked
-//        try {
-//            DBTasks.enqueueFeedItemsToDownload(context, items);
-//        } catch (Throwable t) {
-//            throw new DownloadRequestException("Unexpected exception during enqueue before downloads", t);
-//        }
 
         List<DownloadRequest> requests = new ArrayList<>(items.length);
         for (FeedItem item : items) {
@@ -260,7 +248,7 @@ public class DownloadRequester implements DownloadStateProvider {
                 }
             }
         }
-        download(context, requests.toArray(new DownloadRequest[0]));
+        download(context, performAutoCleanup, requests.toArray(new DownloadRequest[0]));
     }
 
     @Nullable
