@@ -371,10 +371,20 @@ public class DownloadService extends Service {
                 Downloader d = getDownloader(url);
                 if (d != null) {
                     d.cancel();
-                    DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
+                    DownloadRequest request = d.getDownloadRequest();
+                    DownloadRequester.getInstance().removeDownload(request);
 
-                    FeedItem item = getFeedItemFromId(d.getDownloadRequest().getFeedfileId());
+                    FeedItem item = getFeedItemFromId(request.getFeedfileId());
                     if (item != null) {
+                        // undo enqueue upon cancel
+                        if (request.isMediaEnqueued()) {
+                            Log.v(TAG, "Undoing enqueue upon cancelling download");
+                            try {
+                                DBWriter.removeQueueItem(getApplicationContext(), false, item).get();
+                            } catch (Throwable t) {
+                                Log.e(TAG, "Unexpected exception during undoing enqueue upon cancel", t);
+                            }
+                        }
                         EventBus.getDefault().post(FeedItemEvent.updated(item));
                     }
                 } else {
@@ -418,10 +428,9 @@ public class DownloadService extends Service {
             Log.e(TAG, "Unexpected exception during enqueue before downloads. Abort download", e);
             return;
         }
-        // TODO-2448: use itemsEnqueued to handle cancel download
 
         for (DownloadRequest request : requests) {
-            onDownloadQueued(request);
+            onDownloadQueued(request, itemsEnqueued);
         }
     }
 
@@ -443,7 +452,8 @@ public class DownloadService extends Service {
         return DBTasks.enqueueFeedItemsToDownload(getApplicationContext(), feedItems);
     }
 
-    private void onDownloadQueued(@NonNull DownloadRequest request) {
+    private void onDownloadQueued(@NonNull DownloadRequest request,
+                                  @NonNull List<? extends FeedItem> itemsEnqueued) {
         writeFileUrl(request);
 
         Downloader downloader = downloaderFactory.create(request);
@@ -453,6 +463,9 @@ public class DownloadService extends Service {
             if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
                 downloads.add(0, downloader);
             } else {
+                if (isEnqueued(request, itemsEnqueued)) {
+                    request.setMediaEnqueued(true);
+                }
                 downloads.add(downloader);
             }
             downloadExecutor.submit(downloader);
@@ -461,6 +474,19 @@ public class DownloadService extends Service {
         }
 
         queryDownloads();
+    }
+
+    private static boolean isEnqueued(@NonNull DownloadRequest request,
+                                      @NonNull List<? extends FeedItem> itemsEnqueued) {
+        if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            final long mediaId = request.getFeedfileId();
+            for (FeedItem item : itemsEnqueued) {
+                if (item.getMedia() != null && item.getMedia().getId() == mediaId) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @VisibleForTesting

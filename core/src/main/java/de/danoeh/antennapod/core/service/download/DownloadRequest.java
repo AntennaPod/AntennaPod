@@ -28,6 +28,7 @@ public class DownloadRequest implements Parcelable {
     private long soFar;
     private long size;
     private int statusMsg;
+    private boolean mediaEnqueued;
 
     public DownloadRequest(@NonNull String destination,
                            @NonNull String source,
@@ -47,6 +48,7 @@ public class DownloadRequest implements Parcelable {
         this.username = username;
         this.password = password;
         this.deleteOnFailure = deleteOnFailure;
+        this.mediaEnqueued = false;
         this.arguments = (arguments != null) ? arguments : new Bundle();
     }
 
@@ -78,6 +80,7 @@ public class DownloadRequest implements Parcelable {
         deleteOnFailure = (in.readByte() > 0);
         username = nullIfEmpty(in.readString());
         password = nullIfEmpty(in.readString());
+        mediaEnqueued = (in.readByte() > 0);
         arguments = in.readBundle();
     }
 
@@ -102,6 +105,7 @@ public class DownloadRequest implements Parcelable {
         // see: https://stackoverflow.com/a/22926342
         dest.writeString(nonNullString(username));
         dest.writeString(nonNullString(password));
+        dest.writeByte((mediaEnqueued) ? (byte) 1 : 0);
         dest.writeBundle(arguments);
     }
 
@@ -148,6 +152,7 @@ public class DownloadRequest implements Parcelable {
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (username != null ? !username.equals(that.username) : that.username != null)
             return false;
+        if (mediaEnqueued != that.mediaEnqueued) return false;
         return true;
     }
 
@@ -167,6 +172,7 @@ public class DownloadRequest implements Parcelable {
         result = 31 * result + (int) (soFar ^ (soFar >>> 32));
         result = 31 * result + (int) (size ^ (size >>> 32));
         result = 31 * result + statusMsg;
+        result = 31 * result + (mediaEnqueued ? 1 : 0);
         return result;
     }
 
@@ -246,6 +252,18 @@ public class DownloadRequest implements Parcelable {
 
     public boolean isDeleteOnFailure() {
         return deleteOnFailure;
+    }
+
+    public boolean isMediaEnqueued() {
+        return mediaEnqueued;
+    }
+
+    /**
+     * Set to true if the media is enqueued because of this download.
+     * The state is helpful if the download is cancelled, and undoing the enqueue is needed.
+     */
+    public void setMediaEnqueued(boolean mediaEnqueued) {
+        this.mediaEnqueued = mediaEnqueued;
     }
 
     public Bundle getArguments() {

@@ -544,6 +544,11 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_ENABLE_AUTODL, false);
     }
 
+    @VisibleForTesting
+    public static void setEnableAutodownload(boolean enabled) {
+        prefs.edit().putBoolean(PREF_ENABLE_AUTODL, enabled).apply();
+    }
+
     public static boolean isEnableAutodownloadOnBattery() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_BATTERY, true);
     }
