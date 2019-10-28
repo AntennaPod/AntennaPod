@@ -566,10 +566,10 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public String getImageLocation() {
-        if (hasEmbeddedPicture()) {
-            return getLocalMediaUrl();
-        } else if(item != null) {
+        if (item != null) {
             return item.getImageLocation();
+        } else if (hasEmbeddedPicture()) {
+            return getLocalMediaUrl();
         } else {
             return null;
         }

@@ -375,10 +375,10 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
 
     @Override
     public String getImageLocation() {
-        if(media != null && media.hasEmbeddedPicture()) {
-            return media.getImageLocation();
-        } else if (imageUrl != null) {
-           return imageUrl;
+        if (imageUrl != null) {
+            return imageUrl;
+        } else if (media != null && media.hasEmbeddedPicture()) {
+            return media.getLocalMediaUrl();
         } else if (feed != null) {
             return feed.getImageLocation();
         } else {
