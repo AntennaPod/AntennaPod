@@ -3,11 +3,15 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
  * @see DBWriter#addQueueItem(Context, boolean, long...) it uses the class to determine
@@ -15,65 +19,41 @@ import de.danoeh.antennapod.core.feed.FeedItem;
  */
 class ItemEnqueuePositionCalculator {
 
-    public static class Options {
-        private boolean enqueueAtFront = false;
-        private boolean keepInProgressAtFront = false;
-
-        public boolean isEnqueueAtFront() {
-            return enqueueAtFront;
-        }
-
-        public Options setEnqueueAtFront(boolean enqueueAtFront) {
-            this.enqueueAtFront = enqueueAtFront;
-            return this;
-        }
-
-        public boolean isKeepInProgressAtFront() {
-            return keepInProgressAtFront;
-        }
-
-        public Options setKeepInProgressAtFront(boolean keepInProgressAtFront) {
-            this.keepInProgressAtFront = keepInProgressAtFront;
-            return this;
-        }
-    }
-
     @NonNull
-    private final Options options;
+    private final EnqueueLocation enqueueLocation;
 
     @VisibleForTesting
     DownloadStateProvider downloadStateProvider = DownloadRequester.getInstance();
 
-    public ItemEnqueuePositionCalculator(@NonNull Options options) {
-        this.options = options;
+    public ItemEnqueuePositionCalculator(@NonNull EnqueueLocation enqueueLocation) {
+        this.enqueueLocation = enqueueLocation;
     }
 
     /**
-     *
      * @param positionAmongToAdd Typically, the callers has a list of items to be inserted to
      *                           the queue. This parameter indicates the position (0-based) of
      *                           the item among the one to inserted. E.g., it is needed for
      *                           enqueue at front option.
-     *
-     * @param item the item to be inserted
-     * @param curQueue the queue to which the item is to be inserted
-     * @return the position (0-based) the item should be inserted to the named queu
+     * @param item               the item to be inserted
+     * @param curQueue           the queue to which the item is to be inserted
+     * @param currentPlaying     the currently playing media
+     * @return the position (0-based) the item should be inserted to the named queue
      */
-    public int calcPosition(int positionAmongToAdd, FeedItem item, List<FeedItem> curQueue) {
-        if (options.isEnqueueAtFront()) {
-            if (options.isKeepInProgressAtFront() &&
-                    curQueue.size() > 0 &&
-                    curQueue.get(0).getMedia() != null &&
-                    curQueue.get(0).getMedia().isInProgress()) {
-                // leave the front in progress item at the front
-                return getPositionOfFirstNonDownloadingItem(positionAmongToAdd + 1, curQueue);
-            } else { // typical case
+    public int calcPosition(int positionAmongToAdd, @NonNull FeedItem item,
+                            @NonNull List<FeedItem> curQueue, @Nullable Playable currentPlaying) {
+        switch (enqueueLocation) {
+            case BACK:
+                return curQueue.size();
+            case FRONT:
                 // return NOT 0, so that when a list of items are inserted, the items inserted
                 // keep the same order. Returning 0 will reverse the order
                 return getPositionOfFirstNonDownloadingItem(positionAmongToAdd, curQueue);
-            }
-        } else {
-            return curQueue.size();
+            case AFTER_CURRENTLY_PLAYING:
+                int currentlyPlayingPosition = getCurrentlyPlayingPosition(curQueue, currentPlaying);
+                return getPositionOfFirstNonDownloadingItem(
+                        currentlyPlayingPosition + (1 + positionAmongToAdd), curQueue);
+            default:
+                throw new AssertionError("calcPosition() : unrecognized enqueueLocation option: " + enqueueLocation);
         }
     }
 
@@ -102,5 +82,19 @@ class ItemEnqueuePositionCalculator {
         } else {
             return false;
         }
+    }
+
+    private static int getCurrentlyPlayingPosition(@NonNull List<FeedItem> curQueue,
+                                                   @Nullable Playable currentPlaying) {
+        if (!(currentPlaying instanceof FeedMedia)) {
+            return -1;
+        }
+        final long curPlayingItemId = ((FeedMedia) currentPlaying).getItem().getId();
+        for (int i = 0; i < curQueue.size(); i++) {
+            if (curPlayingItemId == curQueue.get(i).getId()) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

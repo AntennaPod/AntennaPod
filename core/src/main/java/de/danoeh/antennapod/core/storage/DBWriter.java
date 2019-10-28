@@ -46,6 +46,7 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -326,19 +327,15 @@ public class DBWriter {
                     List<QueueEvent> events = new ArrayList<>();
                     List<FeedItem> updatedItems = new ArrayList<>();
                     ItemEnqueuePositionCalculator positionCalculator =
-                            new ItemEnqueuePositionCalculator(
-                                    new ItemEnqueuePositionCalculator.Options()
-                                            .setEnqueueAtFront(UserPreferences.enqueueAtFront())
-                                            .setKeepInProgressAtFront(UserPreferences.keepInProgressAtFront())
-                            );
-
+                            new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
+                    Playable currentlyPlaying = Playable.PlayableUtils.createInstanceFromPreferences(context);
                     for (int i = 0; i < itemIds.length; i++) {
                         if (!itemListContains(queue, itemIds[i])) {
                             final FeedItem item = DBReader.getFeedItem(itemIds[i]);
 
 
                             if (item != null) {
-                                int insertPosition = positionCalculator.calcPosition(i, item, queue);
+                                int insertPosition = positionCalculator.calcPosition(i, item, queue, currentlyPlaying);
                                 queue.add(insertPosition, item);
                                 events.add(QueueEvent.added(item, insertPosition));
 

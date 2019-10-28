@@ -455,10 +455,10 @@
     <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_enqueue_location_title">Enqueue Location</string>
-    <string name="pref_enqueue_location_sum">Add episodes to: %1$s.</string>
-    <string name="enqueue_location_back">back of the queue</string>
-    <string name="enqueue_location_front">front of the queue</string>
-    <string name="enqueue_location_after_current">after current episode</string>
+    <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
+    <string name="enqueue_location_back">Back</string>
+    <string name="enqueue_location_front">Front</string>
+    <string name="enqueue_location_after_current">After current episode</string>
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>

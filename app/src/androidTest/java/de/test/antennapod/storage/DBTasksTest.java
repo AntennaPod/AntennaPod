@@ -189,7 +189,7 @@ public class DBTasksTest {
     public void testAddQueueItemsInDownload_EnqueueEnabled() throws Exception {
         // Setup test data / environment
         UserPreferences.setEnqueueDownloadedEpisodes(true);
-        UserPreferences.setEnqueueAtFront(false);
+        UserPreferences.setEnqueueLocation(UserPreferences.EnqueueLocation.BACK);
 
         List<FeedItem> fis1 = createSavedFeed("Feed 1", 2).getItems();
         List<FeedItem> fis2 = createSavedFeed("Feed 2", 3).getItems();

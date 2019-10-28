@@ -16,9 +16,16 @@ import java.util.stream.Collectors;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
-import de.danoeh.antennapod.core.storage.ItemEnqueuePositionCalculator.Options;
-import de.danoeh.antennapod.core.util.CollectionTestUtil;
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.core.util.playback.ExternalMedia;
+import de.danoeh.antennapod.core.util.playback.Playable;
 
+import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
+import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.BACK;
+import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.FRONT;
+import static de.danoeh.antennapod.core.util.CollectionTestUtil.concat;
+import static de.danoeh.antennapod.core.util.CollectionTestUtil.list;
 import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
@@ -31,28 +38,25 @@ public class ItemEnqueuePositionCalculatorTest {
     public static class BasicTest {
         @Parameters(name = "{index}: case<{0}>, expected:{1}")
         public static Iterable<Object[]> data() {
-            Options optDefault = new Options();
-            Options optEnqAtFront = new Options().setEnqueueAtFront(true);
-
             return Arrays.asList(new Object[][]{
                     {"case default, i.e., add to the end",
-                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, TFI_ID),
-                            optDefault, 0, QUEUE_DEFAULT},
+                            concat(QUEUE_DEFAULT_IDS, TFI_ID),
+                            BACK, 0, QUEUE_DEFAULT},
                     {"case default (2nd item)",
-                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, TFI_ID),
-                            optDefault, 1, QUEUE_DEFAULT},
+                            concat(QUEUE_DEFAULT_IDS, TFI_ID),
+                            BACK, 1, QUEUE_DEFAULT},
                     {"case option enqueue at front",
-                            CollectionTestUtil.concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            optEnqAtFront, 0, QUEUE_DEFAULT},
+                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
+                            FRONT, 0, QUEUE_DEFAULT},
                     {"case option enqueue at front (2nd item)",
-                            CollectionTestUtil.list(11L, TFI_ID, 12L, 13L, 14L),
-                            optEnqAtFront, 1, QUEUE_DEFAULT},
+                            list(11L, TFI_ID, 12L, 13L, 14L),
+                            FRONT, 1, QUEUE_DEFAULT},
                     {"case empty queue, option default",
-                            CollectionTestUtil.list(TFI_ID),
-                            optDefault, 0, QUEUE_EMPTY},
+                            list(TFI_ID),
+                            BACK, 0, QUEUE_EMPTY},
                     {"case empty queue, option enqueue at front",
-                            CollectionTestUtil.list(TFI_ID),
-                            optEnqAtFront, 0, QUEUE_EMPTY},
+                            list(TFI_ID),
+                            FRONT, 0, QUEUE_EMPTY},
             });
         }
 
@@ -63,14 +67,13 @@ public class ItemEnqueuePositionCalculatorTest {
         public List<Long> idsExpected;
 
         @Parameter(2)
-        public Options options;
+        public EnqueueLocation options;
 
         @Parameter(3)
         public int posAmongAdded; // the position of feed item to be inserted among the list to be inserted.
 
         @Parameter(4)
         public List<FeedItem> curQueue;
-
 
         public static final long TFI_ID = 101;
 
@@ -85,49 +88,62 @@ public class ItemEnqueuePositionCalculatorTest {
             List<FeedItem> queue = new ArrayList<>(curQueue);
             FeedItem tFI = tFI(TFI_ID);
             doAddToQueueAndAssertResult(message,
-                    calculator, posAmongAdded, tFI, queue,
+                    calculator, posAmongAdded, tFI, queue, getCurrentlyPlaying(),
                     idsExpected);
         }
 
+        Playable getCurrentlyPlaying() { return null; }
     }
 
     @RunWith(Parameterized.class)
-    public static class KeepInProgressAtFrontTest extends BasicTest {
+    public static class AfterCurrentlyPlayingTest extends BasicTest {
         @Parameters(name = "{index}: case<{0}>, expected:{1}")
         public static Iterable<Object[]> data() {
-            Options optKeepInProgressAtFront =
-                    new Options().setEnqueueAtFront(true).setKeepInProgressAtFront(true);
-            // edge case: keep in progress without enabling enqueue at front is meaningless
-            Options optKeepInProgressAtFrontWithNoEnqueueAtFront =
-                    new Options().setKeepInProgressAtFront(true);
-
             return Arrays.asList(new Object[][]{
-                    {"case option keep in progress at front",
-                            CollectionTestUtil.list(11L, TFI_ID, 12L, 13L),
-                            optKeepInProgressAtFront, 0, QUEUE_FRONT_IN_PROGRESS},
-                    {"case option keep in progress at front (2nd item)",
-                            CollectionTestUtil.list(11L, 12L, TFI_ID, 13L),
-                            optKeepInProgressAtFront, 1, QUEUE_FRONT_IN_PROGRESS},
-                    {"case option keep in progress at front, front item not in progress",
-                            CollectionTestUtil.concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            optKeepInProgressAtFront, 0, QUEUE_DEFAULT},
-                    {"case option keep in progress at front, front item no media at all",
-                            CollectionTestUtil.concat(TFI_ID, QUEUE_FRONT_NO_MEDIA_IDS),
-                            optKeepInProgressAtFront, 0, QUEUE_FRONT_NO_MEDIA}, // No media should not cause any exception
-                    {"case option keep in progress at front, but enqueue at front is disabled",
-                            CollectionTestUtil.concat(QUEUE_FRONT_IN_PROGRESS_IDS, TFI_ID),
-                            optKeepInProgressAtFrontWithNoEnqueueAtFront, 0, QUEUE_FRONT_IN_PROGRESS},
-                    {"case empty queue, option keep in progress at front",
-                            CollectionTestUtil.list(TFI_ID),
-                            optKeepInProgressAtFront, 0, QUEUE_EMPTY},
+                    {"case option after currently playing",
+                            list(11L, TFI_ID, 12L, 13L, 14L),
+                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, 11L},
+                    {"case option after currently playing (2nd item)",
+                            list(11L, 12L, TFI_ID, 13L, 14L),
+                            AFTER_CURRENTLY_PLAYING, 1, QUEUE_DEFAULT, 11L},
+                    {"case option after currently playing, currently playing in the middle of the queue",
+                            list(11L, 12L, 13L, TFI_ID, 14L),
+                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, 13L},
+                    {"case option after currently playing, currently playing is not in queue",
+                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
+                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, 99L},
+                    {"case option after currently playing, no currentlyPlaying is null",
+                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
+                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
+                    {"case option after currently playing, currentlyPlaying is externalMedia",
+                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
+                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA},
+                    {"case empty queue, option after currently playing",
+                            list(TFI_ID),
+                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_EMPTY, ID_CURRENTLY_PLAYING_NULL},
             });
         }
 
-        private static final List<FeedItem> QUEUE_FRONT_IN_PROGRESS = Arrays.asList(tFI(11, 60000), tFI(12), tFI(13));
-        private static final List<Long> QUEUE_FRONT_IN_PROGRESS_IDS = getIdList(QUEUE_FRONT_IN_PROGRESS);
+        @Parameter(5)
+        public long idCurrentlyPlaying = -1;
 
-        private static final List<FeedItem> QUEUE_FRONT_NO_MEDIA = Arrays.asList(tFINoMedia(11), tFI(12), tFI(13));
-        private static final List<Long> QUEUE_FRONT_NO_MEDIA_IDS = getIdList(QUEUE_FRONT_NO_MEDIA);
+        @Override
+        Playable getCurrentlyPlaying() {
+            if (ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA == idCurrentlyPlaying) {
+                return externalMedia();
+            }
+            if (ID_CURRENTLY_PLAYING_NULL == idCurrentlyPlaying) {
+                return null;
+            }
+            return tFI(idCurrentlyPlaying).getMedia();
+        }
+
+        private static Playable externalMedia() {
+            return new ExternalMedia("http://example.com/episode.mp3", MediaType.AUDIO);
+        }
+
+        private static final long ID_CURRENTLY_PLAYING_NULL = -1L;
+        private static final long ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA = -9999L;
 
     }
 
@@ -136,24 +152,21 @@ public class ItemEnqueuePositionCalculatorTest {
 
         @Parameters(name = "{index}: case<{0}>")
         public static Iterable<Object[]> data() {
-            Options optDefault = new Options();
-            Options optEnqAtFront = new Options().setEnqueueAtFront(true);
-
             // Attempts to make test more readable by showing the expected list of ids
             // (rather than the expected positions)
             return Arrays.asList(new Object[][] {
                     {"download order test, enqueue default",
-                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, 101L),
-                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, CollectionTestUtil.list(101L, 102L)),
-                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, CollectionTestUtil.list(101L, 102L, 201L)),
-                            CollectionTestUtil.concat(QUEUE_DEFAULT_IDS, CollectionTestUtil.list(101L, 102L, 201L, 202L)),
-                            optDefault, QUEUE_DEFAULT},
+                            concat(QUEUE_DEFAULT_IDS, 101L),
+                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L)),
+                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 201L)),
+                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 201L, 202L)),
+                            BACK, QUEUE_DEFAULT},
                     {"download order test, enqueue at front",
-                            CollectionTestUtil.concat(101L, QUEUE_DEFAULT_IDS),
-                            CollectionTestUtil.concat(CollectionTestUtil.list(101L, 102L), QUEUE_DEFAULT_IDS),
-                            CollectionTestUtil.concat(CollectionTestUtil.list(101L, 102L, 201L), QUEUE_DEFAULT_IDS),
-                            CollectionTestUtil.concat(CollectionTestUtil.list(101L, 102L, 201L, 202L), QUEUE_DEFAULT_IDS),
-                            optEnqAtFront, QUEUE_DEFAULT},
+                            concat(101L, QUEUE_DEFAULT_IDS),
+                            concat(list(101L, 102L), QUEUE_DEFAULT_IDS),
+                            concat(list(101L, 102L, 201L), QUEUE_DEFAULT_IDS),
+                            concat(list(101L, 102L, 201L, 202L), QUEUE_DEFAULT_IDS),
+                            FRONT, QUEUE_DEFAULT},
             });
         }
 
@@ -174,7 +187,7 @@ public class ItemEnqueuePositionCalculatorTest {
         public List<Long> idsExpectedAfter202;
 
         @Parameter(5)
-        public Options options;
+        public EnqueueLocation options;
 
         @Parameter(6)
         public List<FeedItem> queueInitial;
@@ -217,7 +230,7 @@ public class ItemEnqueuePositionCalculatorTest {
 
             FeedItem tFI202 = tFI_isDownloading(202, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (bulk insertion, 2nd item)",
-                    calculator, 1, tFI202, queue,
+                    calculator, 1, tFI202, queue, null,
                     idsExpectedAfter202);
 
             // TODO: simulate download failure cases.
@@ -249,31 +262,34 @@ public class ItemEnqueuePositionCalculatorTest {
                                             FeedItem itemToAdd,
                                             List<FeedItem> queue,
                                             List<Long> idsExpected) {
-        int posActual = calculator.calcPosition(positionAmongAdd, itemToAdd, queue);
+        doAddToQueueAndAssertResult(message, calculator, positionAmongAdd, itemToAdd, queue, null, idsExpected);
+    }
+
+    static void doAddToQueueAndAssertResult(String message,
+                                            ItemEnqueuePositionCalculator calculator,
+                                            int positionAmongAdd,
+                                            FeedItem itemToAdd,
+                                            List<FeedItem> queue,
+                                            Playable currentlyPlaying,
+                                            List<Long> idsExpected) {
+        int posActual = calculator.calcPosition(positionAmongAdd, itemToAdd, queue, currentlyPlaying);
         queue.add(posActual, itemToAdd);
         assertEquals(message, idsExpected, getIdList(queue));
     }
 
     static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(Arrays.asList());
 
-    static final List<FeedItem> QUEUE_DEFAULT = Collections.unmodifiableList(Arrays.asList(tFI(11), tFI(12), tFI(13), tFI(14)));
-    static final List<Long> QUEUE_DEFAULT_IDS = QUEUE_DEFAULT.stream().map(fi -> fi.getId()).collect(Collectors.toList());
+    static final List<FeedItem> QUEUE_DEFAULT = 
+            Collections.unmodifiableList(Arrays.asList(tFI(11), tFI(12), tFI(13), tFI(14)));
+    static final List<Long> QUEUE_DEFAULT_IDS =
+            QUEUE_DEFAULT.stream().map(fi -> fi.getId()).collect(Collectors.toList());
 
 
     static FeedItem tFI(long id) {
-        return tFI(id, -1);
-    }
-
-    static FeedItem tFI(long id, int position) {
         FeedItem item = tFINoMedia(id);
         FeedMedia media = new FeedMedia(item, "download_url", 1234567, "audio/mpeg");
         media.setId(item.getId());
         item.setMedia(media);
-
-        if (position >= 0) {
-            media.setPosition(position);
-        }
-
         return item;
     }
 

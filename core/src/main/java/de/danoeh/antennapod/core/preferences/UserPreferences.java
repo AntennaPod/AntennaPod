@@ -63,9 +63,6 @@ public class UserPreferences {
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
-    // Queue
-    public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
-    public static final String PREF_QUEUE_KEEP_IN_PROGESS_AT_FRONT = "prefQueueKeepInProgressAtFront";
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
@@ -299,6 +296,7 @@ public class UserPreferences {
         BACK, FRONT, AFTER_CURRENTLY_PLAYING;
     }
 
+    @NonNull
     public static EnqueueLocation getEnqueueLocation() {
         String valStr = prefs.getString(PREF_ENQUEUE_LOCATION, EnqueueLocation.BACK.name());
         try {
@@ -310,27 +308,10 @@ public class UserPreferences {
         }
     }
 
-    // TODO-2652: migrate settings
-
-    public static boolean enqueueAtFront() { // TODO-2652: migrate to the new settings
-        return prefs.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
-    }
-
-    @VisibleForTesting
-    public static void setEnqueueAtFront(boolean enqueueAtFront) { // TODO-2652: migrate to the new settings
+    public static void setEnqueueLocation(@NonNull EnqueueLocation location) {
         prefs.edit()
-                .putBoolean(PREF_QUEUE_ADD_TO_FRONT, enqueueAtFront)
+                .putString(PREF_ENQUEUE_LOCATION, location.name())
                 .apply();
-    }
-
-    /**
-     *
-     * @return {@code true} if in enqueuing items/podcast episodes, when the existing front item is
-     * in-progress, i.e., the user has played part of it, such item remains at the front of the
-     * queue; {@code false} otherwise.
-     */
-    public static boolean keepInProgressAtFront() { // TODO-2652: migrate to the new settings
-        return prefs.getBoolean(PREF_QUEUE_KEEP_IN_PROGESS_AT_FRONT, false);
     }
 
     public static boolean isPauseOnHeadsetDisconnect() {

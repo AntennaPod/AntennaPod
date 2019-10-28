@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.StringRes;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
@@ -129,7 +131,17 @@ public class PreferencesTest {
     @Test
     public void testEnqueueLocation() {
         clickPreference(R.string.playback_pref);
-        // TODO-2652: implement the test
+        doTestEnqueueLocation(R.string.enqueue_location_after_current, EnqueueLocation.AFTER_CURRENTLY_PLAYING);
+        doTestEnqueueLocation(R.string.enqueue_location_front, EnqueueLocation.FRONT);
+        doTestEnqueueLocation(R.string.enqueue_location_back, EnqueueLocation.BACK);
+    }
+
+    private void doTestEnqueueLocation(@StringRes int optionResId, EnqueueLocation expected) {
+        clickPreference(R.string.pref_enqueue_location_title);
+        onView(withText(optionResId)).perform(click());
+        assertTrue(solo.waitForCondition(
+                () -> expected == UserPreferences.getEnqueueLocation(),
+                Timeout.getLargeTimeout()));
     }
 
     @Test
