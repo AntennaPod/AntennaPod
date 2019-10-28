@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
@@ -89,6 +89,7 @@ public class UserPreferences {
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
+    public static final String PREF_ENQUEUE_LOCATION = "prefEnqueueLocation";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
@@ -294,12 +295,29 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static boolean enqueueAtFront() {
+    public enum EnqueueLocation {
+        BACK, FRONT, AFTER_CURRENTLY_PLAYING;
+    }
+
+    public static EnqueueLocation getEnqueueLocation() {
+        String valStr = prefs.getString(PREF_ENQUEUE_LOCATION, EnqueueLocation.BACK.name());
+        try {
+            return EnqueueLocation.valueOf(valStr);
+        } catch (Throwable t) {
+            // should never happen but just in case
+            Log.e(TAG, "getEnqueueLocation: invalid value '" + valStr + "' Use default.", t);
+            return EnqueueLocation.BACK;
+        }
+    }
+
+    // TODO-2652: migrate settings
+
+    public static boolean enqueueAtFront() { // TODO-2652: migrate to the new settings
         return prefs.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
     }
 
     @VisibleForTesting
-    public static void setEnqueueAtFront(boolean enqueueAtFront) {
+    public static void setEnqueueAtFront(boolean enqueueAtFront) { // TODO-2652: migrate to the new settings
         prefs.edit()
                 .putBoolean(PREF_QUEUE_ADD_TO_FRONT, enqueueAtFront)
                 .apply();
@@ -311,7 +329,7 @@ public class UserPreferences {
      * in-progress, i.e., the user has played part of it, such item remains at the front of the
      * queue; {@code false} otherwise.
      */
-    public static boolean keepInProgressAtFront() {
+    public static boolean keepInProgressAtFront() { // TODO-2652: migrate to the new settings
         return prefs.getBoolean(PREF_QUEUE_KEEP_IN_PROGESS_AT_FRONT, false);
     }
 

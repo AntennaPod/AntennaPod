@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import androidx.test.filters.LargeTest;
 
+import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
-import de.test.antennapod.EspressoTestUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.test.antennapod.EspressoTestUtils;
 
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
@@ -126,13 +127,9 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testEnqueueAtFront() {
+    public void testEnqueueLocation() {
         clickPreference(R.string.playback_pref);
-        final boolean enqueueAtFront = UserPreferences.enqueueAtFront();
-        clickPreference(R.string.pref_queueAddToFront_title);
-        assertTrue(solo.waitForCondition(() -> enqueueAtFront != UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
-        clickPreference(R.string.pref_queueAddToFront_title);
-        assertTrue(solo.waitForCondition(() -> enqueueAtFront == UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
+        // TODO-2652: implement the test
     }
 
     @Test

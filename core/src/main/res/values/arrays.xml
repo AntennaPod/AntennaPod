@@ -93,6 +93,19 @@
         <item>@string/episode_cleanup_never</item>
     </string-array>
 
+    <string-array name="enqueue_location_options">
+        <item>@string/enqueue_location_back</item>
+        <item>@string/enqueue_location_front</item>
+        <item>@string/enqueue_location_after_current</item>
+    </string-array>
+
+    <string-array name="enqueue_location_values">
+        <!-- MUST be the same as UserPreferences.EnqueueLocation enum -->
+        <item>BACK</item>
+        <item>FRONT</item>
+        <item>AFTER_CURRENTLY_PLAYING</item>
+    </string-array>
+
     <string-array name="episode_cleanup_values">
         <item>-1</item>
         <item>0</item>
