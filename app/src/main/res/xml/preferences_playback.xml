@@ -91,12 +91,12 @@
                 android:summary="@string/pref_enqueue_downloaded_summary"
                 android:title="@string/pref_enqueue_downloaded_title" />
         <ListPreference
-            android:defaultValue="BACK"
-            android:entries="@array/enqueue_location_options"
-            android:entryValues="@array/enqueue_location_values"
-            android:key="prefEnqueueLocation"
-            android:title="@string/pref_enqueue_location_title"
-            app:useStockLayout="true"/>
+                android:defaultValue="BACK"
+                android:entries="@array/enqueue_location_options"
+                android:entryValues="@array/enqueue_location_values"
+                android:key="prefEnqueueLocation"
+                android:title="@string/pref_enqueue_location_title"
+                app:useStockLayout="true"/>
         <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"

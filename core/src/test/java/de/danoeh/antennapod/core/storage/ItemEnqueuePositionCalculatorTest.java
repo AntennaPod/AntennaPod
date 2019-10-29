@@ -86,7 +86,7 @@ public class ItemEnqueuePositionCalculatorTest {
 
             // shallow copy to which the test will add items
             List<FeedItem> queue = new ArrayList<>(curQueue);
-            FeedItem tFI = tFI(TFI_ID);
+            FeedItem tFI = createFeedItem(TFI_ID);
             doAddToQueueAndAssertResult(message,
                     calculator, posAmongAdded, tFI, queue, getCurrentlyPlaying(),
                     idsExpected);
@@ -135,7 +135,7 @@ public class ItemEnqueuePositionCalculatorTest {
             if (ID_CURRENTLY_PLAYING_NULL == idCurrentlyPlaying) {
                 return null;
             }
-            return tFI(idCurrentlyPlaying).getMedia();
+            return createFeedItem(idCurrentlyPlaying).getMedia();
         }
 
         private static Playable externalMedia() {
@@ -210,25 +210,25 @@ public class ItemEnqueuePositionCalculatorTest {
             // Test body
 
             // User clicks download on feed item 101
-            FeedItem tFI101 = tFI_isDownloading(101, stubDownloadStateProvider);
+            FeedItem tFI101 = setAsDownloading(101, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (1st download)",
                     calculator, 0, tFI101, queue,
                     idsExpectedAfter101);
 
             // Then user clicks download on feed item 102
-            FeedItem tFI102 = tFI_isDownloading(102, stubDownloadStateProvider);
+            FeedItem tFI102 = setAsDownloading(102, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
                     calculator, 0, tFI102, queue,
                     idsExpectedAfter102);
 
             // Items 201 and 202 are added as part of a single DBWriter.addQueueItem() calls
 
-            FeedItem tFI201 = tFI_isDownloading(201, stubDownloadStateProvider);
+            FeedItem tFI201 = setAsDownloading(201, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (bulk insertion, 1st item)",
                     calculator, 0, tFI201, queue,
                     idsExpectedAfter201);
 
-            FeedItem tFI202 = tFI_isDownloading(202, stubDownloadStateProvider);
+            FeedItem tFI202 = setAsDownloading(202, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (bulk insertion, 2nd item)",
                     calculator, 1, tFI202, queue, null,
                     idsExpectedAfter202);
@@ -237,8 +237,8 @@ public class ItemEnqueuePositionCalculatorTest {
         }
 
 
-        private static FeedItem tFI_isDownloading(int id, DownloadStateProvider stubDownloadStateProvider) {
-            FeedItem item = tFI(id);
+        private static FeedItem setAsDownloading(int id, DownloadStateProvider stubDownloadStateProvider) {
+            FeedItem item = createFeedItem(id);
             FeedMedia media =
                     new FeedMedia(item, "http://download.url.net/" + id
                             , 100000 + id, "audio/mp3");
@@ -280,22 +280,18 @@ public class ItemEnqueuePositionCalculatorTest {
     static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(Arrays.asList());
 
     static final List<FeedItem> QUEUE_DEFAULT = 
-            Collections.unmodifiableList(Arrays.asList(tFI(11), tFI(12), tFI(13), tFI(14)));
+            Collections.unmodifiableList(Arrays.asList(
+                    createFeedItem(11), createFeedItem(12), createFeedItem(13), createFeedItem(14)));
     static final List<Long> QUEUE_DEFAULT_IDS =
             QUEUE_DEFAULT.stream().map(fi -> fi.getId()).collect(Collectors.toList());
 
 
-    static FeedItem tFI(long id) {
-        FeedItem item = tFINoMedia(id);
+    static FeedItem createFeedItem(long id) {
+        FeedItem item = new FeedItem(id, "Item" + id, "ItemId" + id, "url",
+                new Date(), FeedItem.PLAYED, FeedMother.anyFeed());
         FeedMedia media = new FeedMedia(item, "download_url", 1234567, "audio/mpeg");
         media.setId(item.getId());
         item.setMedia(media);
-        return item;
-    }
-
-    static FeedItem tFINoMedia(long id) {
-        FeedItem item = new FeedItem(id, "Item" + id, "ItemId" + id, "url",
-                new Date(), FeedItem.PLAYED, FeedMother.anyFeed());
         return item;
     }
 
