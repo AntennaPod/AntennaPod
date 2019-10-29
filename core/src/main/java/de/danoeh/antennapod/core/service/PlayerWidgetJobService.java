@@ -219,7 +219,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     }
 
     private String getProgressString(int position, int duration, float speed) {
-        if (position > 0 && duration > 0) {
+        if (position >= 0 && duration > 0) {
             TimeSpeedConverter converter = new TimeSpeedConverter(speed);
             position = converter.convert(position);
             duration = converter.convert(duration);
