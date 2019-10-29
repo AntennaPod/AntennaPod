@@ -7,48 +7,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.MediaMetadataRetriever;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.text.TextUtils;
+import android.util.Log;
+import android.webkit.URLUtil;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Pair;
-import android.webkit.URLUtil;
-
-import org.apache.commons.io.FileUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.xml.sax.SAXException;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadEvent;
@@ -56,24 +25,36 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
+import de.danoeh.antennapod.core.service.download.handler.FailedDownloadHandler;
+import de.danoeh.antennapod.core.service.download.handler.FeedSyncThread;
+import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
-import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
-import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.InvalidFeedException;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import org.apache.commons.io.FileUtils;
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued via the startService intent.
@@ -171,9 +152,18 @@ public class DownloadService extends Service {
                     final int type = status.getFeedfileType();
                     if (successful) {
                         if (type == Feed.FEEDFILETYPE_FEED) {
-                            handleCompletedFeedDownload(downloader.getDownloadRequest());
+                            Log.d(TAG, "Handling completed Feed Download");
+                            feedSyncThread.submitCompletedDownload(downloader.getDownloadRequest());
                         } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                            handleCompletedFeedMediaDownload(status, downloader.getDownloadRequest());
+                            Log.d(TAG, "Handling completed FeedMedia Download");
+                            syncExecutor.execute(() -> {
+                                MediaDownloadedHandler handler = new MediaDownloadedHandler(DownloadService.this,
+                                        status, downloader.getDownloadRequest());
+                                handler.run();
+                                saveDownloadStatus(handler.getUpdatedStatus());
+                                numberOfDownloads.decrementAndGet();
+                                queryDownloadsAsync();
+                            });
                         }
                     } else {
                         numberOfDownloads.decrementAndGet();
@@ -189,7 +179,7 @@ public class DownloadService extends Service {
                             } else {
                                 Log.e(TAG, "Download failed");
                                 saveDownloadStatus(status);
-                                handleFailedDownload(status, downloader.getDownloadRequest());
+                                syncExecutor.execute(new FailedDownloadHandler(downloader.getDownloadRequest()));
 
                                 if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                                     FeedItem item = getFeedItemFromId(status.getFeedfileId());
@@ -279,7 +269,23 @@ public class DownloadService extends Service {
                 }, (r, executor) -> Log.w(TAG, "SchedEx rejected submission of new task")
         );
         downloadCompletionThread.start();
-        feedSyncThread = new FeedSyncThread();
+        feedSyncThread = new FeedSyncThread(DownloadService.this, new FeedSyncThread.FeedSyncCallback() {
+            @Override
+            public void finishedSyncingFeeds(int numberOfCompletedFeeds) {
+                numberOfDownloads.addAndGet(-numberOfCompletedFeeds);
+                queryDownloadsAsync();
+            }
+
+            @Override
+            public void failedSyncingFeed() {
+                numberOfDownloads.decrementAndGet();
+            }
+
+            @Override
+            public void downloadStatusGenerated(DownloadStatus downloadStatus) {
+                saveDownloadStatus(downloadStatus);
+            }
+        });
         feedSyncThread.start();
 
         setupNotificationBuilders();
@@ -334,7 +340,7 @@ public class DownloadService extends Service {
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
                 .setSmallIcon(R.drawable.stat_notify_sync);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationCompatBuilder.setVisibility(Notification.VISIBILITY_PUBLIC);
+            notificationCompatBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         }
 
         Log.d(TAG, "Notification set up");
@@ -535,7 +541,7 @@ public class DownloadService extends Service {
                     )
                     .setAutoCancel(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             }
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(REPORT_ID, builder.build());
@@ -583,32 +589,11 @@ public class DownloadService extends Service {
                     .setAutoCancel(true)
                     .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(DownloadService.this, downloadRequest));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             }
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(downloadRequest.getSource().hashCode(), builder.build());
         });
-    }
-
-    /**
-     * Is called whenever a Feed is downloaded
-     */
-    private void handleCompletedFeedDownload(DownloadRequest request) {
-        Log.d(TAG, "Handling completed Feed Download");
-        feedSyncThread.submitCompletedDownload(request);
-    }
-
-    /**
-     * Is called whenever a FeedMedia is downloaded.
-     */
-    private void handleCompletedFeedMediaDownload(DownloadStatus status, DownloadRequest request) {
-        Log.d(TAG, "Handling completed FeedMedia Download");
-        syncExecutor.execute(new MediaHandlerThread(status, request));
-    }
-
-    private void handleFailedDownload(DownloadStatus status, DownloadRequest request) {
-        Log.d(TAG, "Handling failed download");
-        syncExecutor.execute(new FailedDownloadHandler(status, request));
     }
 
     @Nullable
@@ -619,300 +604,6 @@ public class DownloadService extends Service {
         } else {
             return null;
         }
-    }
-
-    /**
-     * Takes a single Feed, parses the corresponding file and refreshes
-     * information in the manager
-     */
-    private class FeedSyncThread extends Thread {
-        private static final String TAG = "FeedSyncThread";
-
-        private final BlockingQueue<DownloadRequest> completedRequests = new LinkedBlockingDeque<>();
-        private final CompletionService<Pair<DownloadRequest, FeedHandlerResult>> parserService = new ExecutorCompletionService<>(Executors.newSingleThreadExecutor());
-        private final ExecutorService dbService = Executors.newSingleThreadExecutor();
-        private Future<?> dbUpdateFuture;
-        private volatile boolean isActive = true;
-        private volatile boolean isCollectingRequests = false;
-
-        private static final long WAIT_TIMEOUT = 3000;
-
-        FeedSyncThread() {
-            super("FeedSyncThread");
-        }
-
-        /**
-         * Waits for completed requests. Once the first request has been taken, the method will wait WAIT_TIMEOUT ms longer to
-         * collect more completed requests.
-         *
-         * @return Collected feeds or null if the method has been interrupted during the first waiting period.
-         */
-        private List<Pair<DownloadRequest, FeedHandlerResult>> collectCompletedRequests() {
-            List<Pair<DownloadRequest, FeedHandlerResult>> results = new LinkedList<>();
-            DownloadRequester requester = DownloadRequester.getInstance();
-            int tasks = 0;
-
-            try {
-                DownloadRequest request = completedRequests.take();
-                parserService.submit(new FeedParserTask(request));
-                tasks++;
-            } catch (InterruptedException e) {
-                Log.e(TAG, "FeedSyncThread was interrupted");
-                return null;
-            }
-
-            tasks += pollCompletedDownloads();
-
-            isCollectingRequests = true;
-
-            if (requester.isDownloadingFeeds()) {
-                // wait for completion of more downloads
-                long startTime = System.currentTimeMillis();
-                long currentTime = startTime;
-                while (requester.isDownloadingFeeds() && (currentTime - startTime) < WAIT_TIMEOUT) {
-                    try {
-                        Log.d(TAG, "Waiting for " + (startTime + WAIT_TIMEOUT - currentTime) + " ms");
-                        sleep(startTime + WAIT_TIMEOUT - currentTime);
-                    } catch (InterruptedException e) {
-                        Log.d(TAG, "interrupted while waiting for more downloads");
-                        tasks += pollCompletedDownloads();
-                    } finally {
-                        currentTime = System.currentTimeMillis();
-                    }
-                }
-
-                tasks += pollCompletedDownloads();
-
-            }
-
-            isCollectingRequests = false;
-
-            for (int i = 0; i < tasks; i++) {
-                try {
-                    Pair<DownloadRequest, FeedHandlerResult> result = parserService.take().get();
-                    if (result != null) {
-                        results.add(result);
-                    }
-                } catch (InterruptedException e) {
-                    Log.e(TAG, "FeedSyncThread was interrupted");
-                } catch (ExecutionException e) {
-                    Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-
-            return results;
-        }
-
-        private int pollCompletedDownloads() {
-            int tasks = 0;
-            while (!completedRequests.isEmpty()) {
-                parserService.submit(new FeedParserTask(completedRequests.poll()));
-                tasks++;
-            }
-            return tasks;
-        }
-
-        @Override
-        public void run() {
-            while (isActive) {
-                final List<Pair<DownloadRequest, FeedHandlerResult>> results = collectCompletedRequests();
-
-                if (results == null) {
-                    continue;
-                }
-
-                Log.d(TAG, "Bundling " + results.size() + " feeds");
-
-                // Save information of feed in DB
-                if (dbUpdateFuture != null) {
-                    try {
-                        dbUpdateFuture.get();
-                    } catch (InterruptedException e) {
-                        Log.e(TAG, "FeedSyncThread was interrupted");
-                    } catch (ExecutionException e) {
-                        Log.e(TAG, "ExecutionException in FeedSyncThread: " + e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
-
-                dbUpdateFuture = dbService.submit(() -> {
-                    Feed[] savedFeeds = DBTasks.updateFeed(DownloadService.this, getFeeds(results));
-
-                    for (int i = 0; i < savedFeeds.length; i++) {
-                        Feed savedFeed = savedFeeds[i];
-
-                        // If loadAllPages=true, check if another page is available and queue it for download
-                        final boolean loadAllPages = results.get(i).first.getArguments().getBoolean(DownloadRequester.REQUEST_ARG_LOAD_ALL_PAGES);
-                        final Feed feed = results.get(i).second.feed;
-                        if (loadAllPages && feed.getNextPageLink() != null) {
-                            try {
-                                feed.setId(savedFeed.getId());
-                                DBTasks.loadNextPageOfFeed(DownloadService.this, savedFeed, true);
-                            } catch (DownloadRequestException e) {
-                                Log.e(TAG, "Error trying to load next page", e);
-                            }
-                        }
-
-                        ClientConfig.downloadServiceCallbacks.onFeedParsed(DownloadService.this,
-                                savedFeed);
-
-                        numberOfDownloads.decrementAndGet();
-                    }
-
-                    queryDownloadsAsync();
-                });
-
-            }
-
-            if (dbUpdateFuture != null) {
-                try {
-                    dbUpdateFuture.get();
-                } catch (InterruptedException e) {
-                    Log.e(TAG, "interrupted while updating the db");
-                } catch (ExecutionException e) {
-                    Log.e(TAG, "ExecutionException while updating the db: " + e.getMessage());
-                }
-            }
-
-            Log.d(TAG, "Shutting down");
-        }
-
-        /**
-         * Helper method
-         */
-        private Feed[] getFeeds(List<Pair<DownloadRequest, FeedHandlerResult>> results) {
-            Feed[] feeds = new Feed[results.size()];
-            for (int i = 0; i < results.size(); i++) {
-                feeds[i] = results.get(i).second.feed;
-            }
-            return feeds;
-        }
-
-        private class FeedParserTask implements Callable<Pair<DownloadRequest, FeedHandlerResult>> {
-
-            private final DownloadRequest request;
-
-            private FeedParserTask(DownloadRequest request) {
-                this.request = request;
-            }
-
-            @Override
-            public Pair<DownloadRequest, FeedHandlerResult> call() throws Exception {
-                return parseFeed(request);
-            }
-        }
-
-        private Pair<DownloadRequest, FeedHandlerResult> parseFeed(DownloadRequest request) {
-            Feed feed = new Feed(request.getSource(), request.getLastModified());
-            feed.setFile_url(request.getDestination());
-            feed.setId(request.getFeedfileId());
-            feed.setDownloaded(true);
-            feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
-                    request.getUsername(), request.getPassword()));
-            feed.setPageNr(request.getArguments().getInt(DownloadRequester.REQUEST_ARG_PAGE_NR, 0));
-
-            DownloadError reason = null;
-            String reasonDetailed = null;
-            boolean successful = true;
-            FeedHandler feedHandler = new FeedHandler();
-
-            FeedHandlerResult result = null;
-            try {
-                result = feedHandler.parseFeed(feed);
-                Log.d(TAG, feed.getTitle() + " parsed");
-                if (!checkFeedData(feed)) {
-                    throw new InvalidFeedException();
-                }
-
-            } catch (SAXException | IOException | ParserConfigurationException e) {
-                successful = false;
-                e.printStackTrace();
-                reason = DownloadError.ERROR_PARSER_EXCEPTION;
-                reasonDetailed = e.getMessage();
-            } catch (UnsupportedFeedtypeException e) {
-                e.printStackTrace();
-                successful = false;
-                reason = DownloadError.ERROR_UNSUPPORTED_TYPE;
-                reasonDetailed = e.getMessage();
-            } catch (InvalidFeedException e) {
-                e.printStackTrace();
-                successful = false;
-                reason = DownloadError.ERROR_PARSER_EXCEPTION;
-                reasonDetailed = e.getMessage();
-            } finally {
-                File feedFile = new File(request.getDestination());
-                if (feedFile.exists()) {
-                    boolean deleted = feedFile.delete();
-                    Log.d(TAG, "Deletion of file '" + feedFile.getAbsolutePath() + "' " + (deleted ? "successful" : "FAILED"));
-                }
-            }
-
-            if (successful) {
-                // we create a 'successful' download log if the feed's last refresh failed
-                List<DownloadStatus> log = DBReader.getFeedDownloadLog(feed);
-                if (log.size() > 0 && !log.get(0).isSuccessful()) {
-                    saveDownloadStatus(
-                            new DownloadStatus(feed, feed.getHumanReadableIdentifier(),
-                                    DownloadError.SUCCESS, successful, reasonDetailed));
-                }
-                return Pair.create(request, result);
-            } else {
-                numberOfDownloads.decrementAndGet();
-                saveDownloadStatus(
-                        new DownloadStatus(feed, feed.getHumanReadableIdentifier(), reason,
-                                successful, reasonDetailed));
-                return null;
-            }
-        }
-
-
-        /**
-         * Checks if the feed was parsed correctly.
-         */
-        private boolean checkFeedData(Feed feed) {
-            if (feed.getTitle() == null) {
-                Log.e(TAG, "Feed has no title.");
-                return false;
-            }
-            if (!hasValidFeedItems(feed)) {
-                Log.e(TAG, "Feed has invalid items");
-                return false;
-            }
-            return true;
-        }
-
-        private boolean hasValidFeedItems(Feed feed) {
-            for (FeedItem item : feed.getItems()) {
-                if (item.getTitle() == null) {
-                    Log.e(TAG, "Item has no title");
-                    return false;
-                }
-                if (item.getPubDate() == null) {
-                    Log.e(TAG, "Item has no pubDate. Using current time as pubDate");
-                    if (item.getTitle() != null) {
-                        Log.e(TAG, "Title of invalid item: " + item.getTitle());
-                    }
-                    item.setPubDate(new Date());
-                }
-            }
-            return true;
-        }
-
-        public void shutdown() {
-            isActive = false;
-            if (isCollectingRequests) {
-                interrupt();
-            }
-        }
-
-        void submitCompletedDownload(DownloadRequest request) {
-            completedRequests.offer(request);
-            if (isCollectingRequests) {
-                interrupt();
-            }
-        }
-
     }
 
     /**
@@ -948,120 +639,6 @@ public class DownloadService extends Service {
             } catch (ExecutionException e) {
                 Log.e(TAG, "ExecutionException in writeFileUrl: " + e.getMessage());
             }
-        }
-    }
-
-    /**
-     * Handles failed downloads.
-     * <p/>
-     * If the file has been partially downloaded, this handler will set the file_url of the FeedFile to the location
-     * of the downloaded file.
-     * <p/>
-     * Currently, this handler only handles FeedMedia objects, because Feeds and FeedImages are deleted if the download fails.
-     */
-    private static class FailedDownloadHandler implements Runnable {
-
-        private final DownloadRequest request;
-        private final DownloadStatus status;
-
-        FailedDownloadHandler(DownloadStatus status, DownloadRequest request) {
-            this.request = request;
-            this.status = status;
-        }
-
-        @Override
-        public void run() {
-            if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-                DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
-            } else if (request.isDeleteOnFailure()) {
-                Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
-            }
-        }
-    }
-
-    /**
-     * Handles a completed media download.
-     */
-    private class MediaHandlerThread implements Runnable {
-
-        private final DownloadRequest request;
-        private DownloadStatus status;
-
-        MediaHandlerThread(@NonNull DownloadStatus status,
-                           @NonNull DownloadRequest request) {
-            this.status = status;
-            this.request = request;
-        }
-
-        @Override
-        public void run() {
-            FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
-            if (media == null) {
-                Log.e(TAG, "Could not find downloaded media object in database");
-                return;
-            }
-            media.setDownloaded(true);
-            media.setFile_url(request.getDestination());
-            media.checkEmbeddedPicture(); // enforce check
-
-            // check if file has chapters
-            if(media.getItem() != null && !media.getItem().hasChapters()) {
-                ChapterUtils.loadChaptersFromFileUrl(media);
-            }
-
-            // Get duration
-            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-            String durationStr = null;
-            try {
-                mmr.setDataSource(media.getFile_url());
-                durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                media.setDuration(Integer.parseInt(durationStr));
-                Log.d(TAG, "Duration of file is " + media.getDuration());
-            } catch (NumberFormatException e) {
-                Log.d(TAG, "Invalid file duration: " + durationStr);
-            } catch (Exception e) {
-                Log.e(TAG, "Get duration failed", e);
-            } finally {
-                mmr.release();
-            }
-
-            final FeedItem item = media.getItem();
-
-            try {
-                DBWriter.setFeedMedia(media).get();
-
-                // we've received the media, we don't want to autodownload it again
-                if (item != null) {
-                    item.setAutoDownload(false);
-                    // setFeedItem() signals (via EventBus) that the item has been updated,
-                    // so we do it after the enclosing media has been updated above,
-                    // to ensure subscribers will get the updated FeedMedia as well
-                    DBWriter.setFeedItem(item).get();
-                }
-
-                if (item != null && UserPreferences.enqueueDownloadedEpisodes() &&
-                        !DBTasks.isInQueue(DownloadService.this, item.getId())) {
-                    DBWriter.addQueueItem(DownloadService.this, item).get();
-                }
-            } catch (InterruptedException e) {
-                Log.e(TAG, "MediaHandlerThread was interrupted");
-            } catch (ExecutionException e) {
-                Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
-                status = new DownloadStatus(media, media.getEpisodeTitle(), DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
-            }
-
-            saveDownloadStatus(status);
-
-            if (GpodnetPreferences.loggedIn() && item != null) {
-                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
-                        .currentDeviceId()
-                        .currentTimestamp()
-                        .build();
-                GpodnetPreferences.enqueueEpisodeAction(action);
-            }
-
-            numberOfDownloads.decrementAndGet();
-            queryDownloadsAsync();
         }
     }
 
