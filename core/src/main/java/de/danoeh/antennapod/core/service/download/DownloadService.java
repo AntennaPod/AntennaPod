@@ -98,10 +98,8 @@ public class DownloadService extends Service {
 
     private DownloadRequester requester;
 
-
-    private NotificationCompat.Builder notificationCompatBuilder;
-    private static final int NOTIFICATION_ID = 2;
-    private static final int REPORT_ID = 3;
+    private DownloadServiceNotification notificationManager;
+    public static final int NOTIFICATION_ID = 2;
 
     /**
      * Currently running downloads.
@@ -169,7 +167,7 @@ public class DownloadService extends Service {
                         numberOfDownloads.decrementAndGet();
                         if (!status.isCancelled()) {
                             if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
-                                postAuthenticationNotification(downloader.getDownloadRequest());
+                                notificationManager.postAuthenticationNotification(downloader.getDownloadRequest());
                             } else if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
                                     && Integer.parseInt(status.getReasonDetailed()) == 416) {
 
@@ -288,9 +286,11 @@ public class DownloadService extends Service {
         });
         feedSyncThread.start();
 
-        setupNotificationBuilders();
         requester = DownloadRequester.getInstance();
-        startForeground(NOTIFICATION_ID, updateNotifications());
+        notificationManager = new DownloadServiceNotification(this);
+        Notification notification = notificationManager.updateNotifications(
+                requester.getNumberOfDownloads(), downloads);
+        startForeground(NOTIFICATION_ID, notification);
     }
 
     @Override
@@ -303,9 +303,10 @@ public class DownloadService extends Service {
         Log.d(TAG, "Service shutting down");
         isRunning = false;
 
-        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport() &&
-                UserPreferences.showDownloadReport()) {
-            updateReport();
+        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()
+                && UserPreferences.showDownloadReport()) {
+            notificationManager.updateReport(reportQueue);
+            reportQueue.clear();
         }
 
         postHandler.removeCallbacks(postDownloaderTask);
@@ -332,40 +333,6 @@ public class DownloadService extends Service {
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
-    }
-
-    private void setupNotificationBuilders() {
-        notificationCompatBuilder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(true)
-                .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(this))
-                .setSmallIcon(R.drawable.stat_notify_sync);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationCompatBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        }
-
-        Log.d(TAG, "Notification set up");
-    }
-
-    /**
-     * Updates the contents of the service's notifications. Should be called
-     * after setupNotificationBuilders.
-     */
-    private Notification updateNotifications() {
-        if (notificationCompatBuilder == null) {
-            return null;
-        }
-
-        String contentTitle = getString(R.string.download_notification_title);
-        int numDownloads = requester.getNumberOfDownloads();
-        String downloadsLeft = (numDownloads > 0) ?
-                getResources().getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads) :
-                getString(R.string.downloads_processing);
-        String bigText = compileNotificationString(downloads);
-
-        notificationCompatBuilder.setContentTitle(contentTitle);
-        notificationCompatBuilder.setContentText(downloadsLeft);
-        notificationCompatBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
-        return notificationCompatBuilder.build();
     }
 
     private Downloader getDownloader(String downloadUrl) {
@@ -503,55 +470,6 @@ public class DownloadService extends Service {
     }
 
     /**
-     * Creates a notification at the end of the service lifecycle to notify the
-     * user about the number of completed downloads. A report will only be
-     * created if there is at least one failed download excluding images
-     */
-    private void updateReport() {
-        // check if report should be created
-        boolean createReport = false;
-        int successfulDownloads = 0;
-        int failedDownloads = 0;
-
-        // a download report is created if at least one download has failed
-        // (excluding failed image downloads)
-        for (DownloadStatus status : reportQueue) {
-            if (status.isSuccessful()) {
-                successfulDownloads++;
-            } else if (!status.isCancelled()) {
-                createReport = true;
-                failedDownloads++;
-            }
-        }
-
-        if (createReport) {
-            Log.d(TAG, "Creating report");
-            // create notification object
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_ERROR)
-                    .setTicker(getString(R.string.download_report_title))
-                    .setContentTitle(getString(R.string.download_report_content_title))
-                    .setContentText(
-                            String.format(
-                                    getString(R.string.download_report_content),
-                                    successfulDownloads, failedDownloads)
-                    )
-                    .setSmallIcon(R.drawable.stat_notify_sync_error)
-                    .setContentIntent(
-                            ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(this)
-                    )
-                    .setAutoCancel(true);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-            }
-            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(REPORT_ID, builder.build());
-        } else {
-            Log.d(TAG, "No report is created");
-        }
-        reportQueue.clear();
-    }
-
-    /**
      * Calls query downloads on the services main thread. This method should be used instead of queryDownloads if it is
      * used from a thread other than the main thread.
      */
@@ -570,30 +488,10 @@ public class DownloadService extends Service {
             stopSelf();
         } else {
             setupNotificationUpdater();
-            startForeground(NOTIFICATION_ID, updateNotifications());
+            Notification notification = notificationManager.updateNotifications(
+                    requester.getNumberOfDownloads(), downloads);
+            startForeground(NOTIFICATION_ID, notification);
         }
-    }
-
-    private void postAuthenticationNotification(final DownloadRequest downloadRequest) {
-        handler.post(() -> {
-            final String resourceTitle = (downloadRequest.getTitle() != null) ?
-                    downloadRequest.getTitle() : downloadRequest.getSource();
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this, NotificationUtils.CHANNEL_ID_USER_ACTION);
-            builder.setTicker(getText(R.string.authentication_notification_title))
-                    .setContentTitle(getText(R.string.authentication_notification_title))
-                    .setContentText(getText(R.string.authentication_notification_msg))
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(getText(R.string.authentication_notification_msg)
-                            + ": " + resourceTitle))
-                    .setSmallIcon(R.drawable.ic_notification_key)
-                    .setAutoCancel(true)
-                    .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(DownloadService.this, downloadRequest));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-            }
-            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(downloadRequest.getSource().hashCode(), builder.build());
-        });
     }
 
     @Nullable
@@ -667,7 +565,8 @@ public class DownloadService extends Service {
     private class NotificationUpdater implements Runnable {
         public void run() {
             handler.post(() -> {
-                Notification n = updateNotifications();
+                Notification n = notificationManager.updateNotifications(
+                        requester.getNumberOfDownloads(), downloads);
                 if (n != null) {
                     NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                     nm.notify(NOTIFICATION_ID, n);
@@ -702,35 +601,5 @@ public class DownloadService extends Service {
             postDownloaderTask.run();
             lastPost = now;
         }
-    }
-
-    private static String compileNotificationString(List<Downloader> downloads) {
-        List<String> lines = new ArrayList<>(downloads.size());
-        for (Downloader downloader : downloads) {
-            if (downloader.cancelled) {
-                continue;
-            }
-            StringBuilder line = new StringBuilder("• ");
-            DownloadRequest request = downloader.getDownloadRequest();
-            switch (request.getFeedfileType()) {
-                case Feed.FEEDFILETYPE_FEED:
-                    if (request.getTitle() != null) {
-                        line.append(request.getTitle());
-                    }
-                    break;
-                case FeedMedia.FEEDFILETYPE_FEEDMEDIA:
-                    if (request.getTitle() != null) {
-                        line.append(request.getTitle())
-                                .append(" (")
-                                .append(request.getProgressPercent())
-                                .append("%)");
-                    }
-                    break;
-                default:
-                    line.append("Unknown: ").append(request.getFeedfileType());
-            }
-            lines.add(line.toString());
-        }
-        return TextUtils.join("\n", lines);
     }
 }
