@@ -339,6 +339,14 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
     }
 
+    /**
+     * Set to true to enable Continuous Playback
+     */
+    @VisibleForTesting
+    public static void setFollowQueue(boolean value) {
+        prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).apply();
+    }
+
     public static boolean shouldSkipKeepEpisode() { return prefs.getBoolean(PREF_SKIP_KEEPS_EPISODE, true); }
 
     public static boolean shouldFavoriteKeepEpisode() {
