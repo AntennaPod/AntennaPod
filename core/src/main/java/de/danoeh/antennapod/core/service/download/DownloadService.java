@@ -125,6 +125,106 @@ public class DownloadService extends Service {
         }
     }
 
+    public DownloadService() {
+        reportQueue = Collections.synchronizedList(new ArrayList<>());
+        downloads = Collections.synchronizedList(new ArrayList<>());
+        numberOfDownloads = new AtomicInteger(0);
+        requester = DownloadRequester.getInstance();
+        notificationManager = new DownloadServiceNotification(this);
+
+        syncExecutor = Executors.newSingleThreadExecutor(r -> {
+            Thread t = new Thread(r);
+            t.setPriority(Thread.MIN_PRIORITY);
+            return t;
+        });
+        Log.d(TAG, "parallel downloads: " + UserPreferences.getParallelDownloads());
+        downloadExecutor = new ExecutorCompletionService<>(
+                Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
+                        r -> {
+                            Thread t = new Thread(r);
+                            t.setPriority(Thread.MIN_PRIORITY);
+                            return t;
+                        }
+                )
+        );
+        schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
+                r -> {
+                    Thread t = new Thread(r);
+                    t.setPriority(Thread.MIN_PRIORITY);
+                    return t;
+                }, (r, executor) -> Log.w(TAG, "SchedEx rejected submission of new task")
+        );
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
+            onDownloadQueued(intent);
+        } else if (numberOfDownloads.get() == 0) {
+            stopSelf();
+        }
+        return Service.START_NOT_STICKY;
+    }
+
+    @Override
+    public void onCreate() {
+        Log.d(TAG, "Service started");
+        isRunning = true;
+        handler = new Handler();
+
+        IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
+        cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
+        cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
+        registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
+
+        downloadCompletionThread.start();
+
+        Notification notification = notificationManager.updateNotifications(
+                requester.getNumberOfDownloads(), downloads);
+        startForeground(NOTIFICATION_ID, notification);
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "Service shutting down");
+        isRunning = false;
+
+        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()
+                && UserPreferences.showDownloadReport()) {
+            notificationManager.updateReport(reportQueue);
+            reportQueue.clear();
+        }
+
+        EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
+
+        stopForeground(true);
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(NOTIFICATION_ID);
+
+        downloadCompletionThread.interrupt();
+        syncExecutor.shutdown();
+        schedExecutor.shutdown();
+        cancelNotificationUpdater();
+        downloadPostFuture.cancel(true);
+        unregisterReceiver(cancelDownloadReceiver);
+
+        // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
+        // it is now time to sync the episode actions
+        if (GpodnetPreferences.loggedIn() &&
+                GpodnetPreferences.getLastSubscriptionSyncTimestamp() > 0 &&
+                GpodnetPreferences.getLastEpisodeActionsSyncTimestamp() == 0) {
+            GpodnetSyncService.sendSyncActionsIntent(this);
+        }
+
+        // start auto download in case anything new has shown up
+        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
+    }
+
     private final Thread downloadCompletionThread = new Thread("DownloadCompletionThread") {
         private static final String TAG = "downloadCompletionThd";
 
@@ -239,106 +339,6 @@ public class DownloadService extends Service {
                 EventBus.getDefault().post(FeedItemEvent.updated(item));
             }
         }
-    }
-
-    public DownloadService() {
-        reportQueue = Collections.synchronizedList(new ArrayList<>());
-        downloads = Collections.synchronizedList(new ArrayList<>());
-        numberOfDownloads = new AtomicInteger(0);
-        requester = DownloadRequester.getInstance();
-        notificationManager = new DownloadServiceNotification(this);
-
-        syncExecutor = Executors.newSingleThreadExecutor(r -> {
-            Thread t = new Thread(r);
-            t.setPriority(Thread.MIN_PRIORITY);
-            return t;
-        });
-        Log.d(TAG, "parallel downloads: " + UserPreferences.getParallelDownloads());
-        downloadExecutor = new ExecutorCompletionService<>(
-                Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
-                        r -> {
-                            Thread t = new Thread(r);
-                            t.setPriority(Thread.MIN_PRIORITY);
-                            return t;
-                        }
-                )
-        );
-        schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
-                r -> {
-                    Thread t = new Thread(r);
-                    t.setPriority(Thread.MIN_PRIORITY);
-                    return t;
-                }, (r, executor) -> Log.w(TAG, "SchedEx rejected submission of new task")
-        );
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
-            onDownloadQueued(intent);
-        } else if (numberOfDownloads.get() == 0) {
-            stopSelf();
-        }
-        return Service.START_NOT_STICKY;
-    }
-
-    @Override
-    public void onCreate() {
-        Log.d(TAG, "Service started");
-        isRunning = true;
-        handler = new Handler();
-
-        IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
-        cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
-        cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
-        registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
-
-        downloadCompletionThread.start();
-
-        Notification notification = notificationManager.updateNotifications(
-                requester.getNumberOfDownloads(), downloads);
-        startForeground(NOTIFICATION_ID, notification);
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        return mBinder;
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, "Service shutting down");
-        isRunning = false;
-
-        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()
-                && UserPreferences.showDownloadReport()) {
-            notificationManager.updateReport(reportQueue);
-            reportQueue.clear();
-        }
-
-        EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
-
-        stopForeground(true);
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.cancel(NOTIFICATION_ID);
-
-        downloadCompletionThread.interrupt();
-        syncExecutor.shutdown();
-        schedExecutor.shutdown();
-        cancelNotificationUpdater();
-        downloadPostFuture.cancel(true);
-        unregisterReceiver(cancelDownloadReceiver);
-
-        // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
-        // it is now time to sync the episode actions
-        if (GpodnetPreferences.loggedIn() &&
-                GpodnetPreferences.getLastSubscriptionSyncTimestamp() > 0 &&
-                GpodnetPreferences.getLastEpisodeActionsSyncTimestamp() == 0) {
-            GpodnetSyncService.sendSyncActionsIntent(this);
-        }
-
-        // start auto download in case anything new has shown up
-        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
     }
 
     private Downloader getDownloader(String downloadUrl) {
