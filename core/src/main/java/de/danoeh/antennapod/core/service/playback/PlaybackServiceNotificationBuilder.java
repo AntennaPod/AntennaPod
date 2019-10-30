@@ -46,16 +46,11 @@ public class PlaybackServiceNotificationBuilder {
         this.context = context;
     }
 
-    public void setMetadata(Playable playable, MediaSessionCompat.Token mediaSessionToken,
-                            PlayerStatus playerStatus, boolean isCasting) {
-
+    public void setPlayable(Playable playable) {
         if (playable != this.playable) {
             clearCache();
         }
         this.playable = playable;
-        this.mediaSessionToken = mediaSessionToken;
-        this.playerStatus = playerStatus;
-        this.isCasting = isCasting;
     }
 
     private void clearCache() {
@@ -63,7 +58,7 @@ public class PlaybackServiceNotificationBuilder {
         this.position = null;
     }
 
-    public void updatePosition(int position,float speed) {
+    public void updatePosition(int position, float speed) {
         TimeSpeedConverter converter = new TimeSpeedConverter(speed);
         this.position = Converter.getDurationStringLong(converter.convert(position));
     }
@@ -238,5 +233,21 @@ public class PlaybackServiceNotificationBuilder {
         } else {
             return PendingIntent.getService(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
+    }
+
+    public void setMediaSessionToken(MediaSessionCompat.Token mediaSessionToken) {
+        this.mediaSessionToken = mediaSessionToken;
+    }
+
+    public void setPlayerStatus(PlayerStatus playerStatus) {
+        this.playerStatus = playerStatus;
+    }
+
+    public void setCasting(boolean casting) {
+        isCasting = casting;
+    }
+
+    public PlayerStatus getPlayerStatus() {
+        return playerStatus;
     }
 }

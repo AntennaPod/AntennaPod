@@ -326,6 +326,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
+
+        if (notificationBuilder.getPlayerStatus() == PlayerStatus.PLAYING) {
+            notificationBuilder.setPlayerStatus(PlayerStatus.STOPPED);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        }
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
@@ -1197,7 +1203,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-        notificationBuilder.setMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
+        notificationBuilder.setPlayable(playable);
+        notificationBuilder.setMediaSessionToken(mediaSession.getSessionToken());
+        notificationBuilder.setPlayerStatus(playerStatus);
+        notificationBuilder.setCasting(isCasting);
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
         Log.d(TAG, "setupNotification: startForeground" + playerStatus);
