@@ -528,8 +528,7 @@ public class DownloadService extends Service {
         Log.d(TAG, "Setting up notification updater");
         if (notificationUpdater == null) {
             notificationUpdater = new NotificationUpdater();
-            notificationUpdaterFuture = schedExecutor.scheduleAtFixedRate(
-                    notificationUpdater, 5L, 5L, TimeUnit.SECONDS);
+            notificationUpdaterFuture = schedExecutor.scheduleAtFixedRate(notificationUpdater, 1, 1, TimeUnit.SECONDS);
         }
     }
 
