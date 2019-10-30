@@ -12,8 +12,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
-import android.webkit.URLUtil;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -116,6 +114,7 @@ public class DownloadService extends Service {
     private ScheduledFuture<?> downloadPostFuture;
     private static final int SCHED_EX_POOL_SIZE = 1;
     private ScheduledThreadPoolExecutor schedExecutor;
+    private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -397,7 +396,7 @@ public class DownloadService extends Service {
 
         writeFileUrl(request);
 
-        Downloader downloader = getDownloader(request);
+        Downloader downloader = downloaderFactory.create(request);
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();
             // smaller rss feeds before bigger media files
@@ -415,26 +414,6 @@ public class DownloadService extends Service {
     }
 
     @VisibleForTesting
-    public interface DownloaderFactory {
-        @Nullable
-        Downloader create(@NonNull DownloadRequest request);
-    }
-
-    private static class DefaultDownloaderFactory implements DownloaderFactory {
-        @Nullable
-        @Override
-        public Downloader create(@NonNull DownloadRequest request) {
-            if (!URLUtil.isHttpUrl(request.getSource()) && !URLUtil.isHttpsUrl(request.getSource())) {
-                Log.e(TAG, "Could not find appropriate downloader for " + request.getSource());
-                return null;
-            }
-            return new HttpDownloader(request);
-        }
-    }
-
-    private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
-
-    @VisibleForTesting
     public static DownloaderFactory getDownloaderFactory() {
         return downloaderFactory;
     }
@@ -444,10 +423,6 @@ public class DownloadService extends Service {
     @VisibleForTesting
     public static void setDownloaderFactory(DownloaderFactory downloaderFactory) {
         DownloadService.downloaderFactory = downloaderFactory;
-    }
-
-    private Downloader getDownloader(@NonNull DownloadRequest request) {
-        return downloaderFactory.create(request);
     }
 
     /**

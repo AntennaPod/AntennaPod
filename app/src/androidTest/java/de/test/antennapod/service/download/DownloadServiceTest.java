@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import de.danoeh.antennapod.core.service.download.DownloaderFactory;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
 import org.junit.After;
@@ -47,7 +48,7 @@ public class DownloadServiceTest {
     private Feed testFeed = null;
     private FeedMedia testMedia11 = null;
 
-    private DownloadService.DownloaderFactory origFactory = null;
+    private DownloaderFactory origFactory = null;
 
     @Before
     public void setUp() throws Exception {
@@ -106,7 +107,7 @@ public class DownloadServiceTest {
         });
     }
 
-    private static class StubDownloaderFactory implements DownloadService.DownloaderFactory {
+    private static class StubDownloaderFactory implements DownloaderFactory {
         private final long downloadTime;
 
         @NonNull
