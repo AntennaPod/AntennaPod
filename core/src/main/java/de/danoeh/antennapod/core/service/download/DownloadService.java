@@ -90,7 +90,7 @@ public class DownloadService extends Service {
     private final ExecutorService syncExecutor;
     private final CompletionService<Downloader> downloadExecutor;
     private final DownloadRequester requester;
-    private final DownloadServiceNotification notificationManager;
+    private DownloadServiceNotification notificationManager;
 
     /**
      * Currently running downloads.
@@ -129,7 +129,6 @@ public class DownloadService extends Service {
         downloads = Collections.synchronizedList(new ArrayList<>());
         numberOfDownloads = new AtomicInteger(0);
         requester = DownloadRequester.getInstance();
-        notificationManager = new DownloadServiceNotification(this);
 
         syncExecutor = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r);
@@ -170,6 +169,7 @@ public class DownloadService extends Service {
         Log.d(TAG, "Service started");
         isRunning = true;
         handler = new Handler();
+        notificationManager = new DownloadServiceNotification(this);
 
         IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
         cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
