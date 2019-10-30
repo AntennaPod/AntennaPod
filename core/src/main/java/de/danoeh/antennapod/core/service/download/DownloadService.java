@@ -137,101 +137,111 @@ public class DownloadService extends Service {
                 try {
                     Downloader downloader = downloadExecutor.take().get();
                     Log.d(TAG, "Received 'Download Complete' - message.");
-                    removeDownload(downloader);
-                    DownloadStatus status = downloader.getResult();
-                    DownloadRequest request = downloader.getDownloadRequest();
-                    boolean successful = status.isSuccessful();
-                    final int type = status.getFeedfileType();
 
-                    if (successful) {
-                        if (type == Feed.FEEDFILETYPE_FEED) {
-                            Log.d(TAG, "Handling completed Feed Download");
-                            syncExecutor.execute(() -> {
-                                FeedSyncTask task = new FeedSyncTask(DownloadService.this, request);
-                                boolean success = task.run();
+                    if (downloader.getResult().isSuccessful()) {
+                        syncExecutor.execute(() -> {
+                            handleSuccessfulDownload(downloader);
+                            removeDownload(downloader);
+                            numberOfDownloads.decrementAndGet();
+                            queryDownloadsAsync();
 
-                                if (success) {
-                                    // we create a 'successful' download log if the feed's last refresh failed
-                                    List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
-                                    if (log.size() > 0 && !log.get(0).isSuccessful()) {
-                                        saveDownloadStatus(task.getDownloadStatus());
-                                    }
-                                } else {
-                                    saveDownloadStatus(task.getDownloadStatus());
-                                }
-                                numberOfDownloads.decrementAndGet();
-                                queryDownloadsAsync();
-
-                            });
-
-                        } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                            Log.d(TAG, "Handling completed FeedMedia Download");
-                            syncExecutor.execute(() -> {
-                                MediaDownloadedHandler handler = new MediaDownloadedHandler(DownloadService.this,
-                                        status, request);
-                                handler.run();
-                                saveDownloadStatus(handler.getUpdatedStatus());
-                                numberOfDownloads.decrementAndGet();
-                                queryDownloadsAsync();
-                            });
-                        }
+                        });
                     } else {
+                        handleFailedDownload(downloader);
+                        removeDownload(downloader);
                         numberOfDownloads.decrementAndGet();
-                        if (!status.isCancelled()) {
-                            if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
-                                notificationManager.postAuthenticationNotification(downloader.getDownloadRequest());
-                            } else if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                                    && Integer.parseInt(status.getReasonDetailed()) == 416) {
-
-                                Log.d(TAG, "Requested invalid range, restarting download from the beginning");
-                                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
-                                DownloadRequester.getInstance().download(DownloadService.this, downloader.getDownloadRequest());
-                            } else {
-                                Log.e(TAG, "Download failed");
-                                saveDownloadStatus(status);
-                                syncExecutor.execute(new FailedDownloadHandler(downloader.getDownloadRequest()));
-
-                                if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                                    FeedItem item = getFeedItemFromId(status.getFeedfileId());
-                                    if (item == null) {
-                                        return;
-                                    }
-                                    boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                                            && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
-                                    boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
-                                            && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
-                                    boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
-                                    boolean wrongFileType = status.getReason() == DownloadError.ERROR_FILE_TYPE;
-                                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType) {
-                                        DBWriter.saveFeedItemAutoDownloadFailed(item).get();
-                                    }
-                                    // to make lists reload the failed item, we fake an item update
-                                    EventBus.getDefault().post(FeedItemEvent.updated(item));
-                                }
-                            }
-                        } else {
-                            // if FeedMedia download has been canceled, fake FeedItem update
-                            // so that lists reload that it
-                            if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-                                FeedItem item = getFeedItemFromId(status.getFeedfileId());
-                                if (item == null) {
-                                    return;
-                                }
-                                EventBus.getDefault().post(FeedItemEvent.updated(item));
-                            }
-                        }
                         queryDownloadsAsync();
                     }
                 } catch (InterruptedException e) {
                     Log.e(TAG, "DownloadCompletionThread was interrupted");
                 } catch (ExecutionException e) {
                     Log.e(TAG, "ExecutionException in DownloadCompletionThread: " + e.getMessage());
-                    numberOfDownloads.decrementAndGet();
                 }
             }
             Log.d(TAG, "End of downloadCompletionThread");
         }
     };
+
+    private void handleSuccessfulDownload(Downloader downloader) {
+        DownloadRequest request = downloader.getDownloadRequest();
+        DownloadStatus status = downloader.getResult();
+        final int type = status.getFeedfileType();
+
+        if (type == Feed.FEEDFILETYPE_FEED) {
+            Log.d(TAG, "Handling completed Feed Download");
+            FeedSyncTask task = new FeedSyncTask(DownloadService.this, request);
+            boolean success = task.run();
+
+            if (success) {
+                // we create a 'successful' download log if the feed's last refresh failed
+                List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
+                if (log.size() > 0 && !log.get(0).isSuccessful()) {
+                    saveDownloadStatus(task.getDownloadStatus());
+                }
+            } else {
+                saveDownloadStatus(task.getDownloadStatus());
+            }
+        } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            Log.d(TAG, "Handling completed FeedMedia Download");
+            MediaDownloadedHandler handler = new MediaDownloadedHandler(DownloadService.this, status, request);
+            handler.run();
+            saveDownloadStatus(handler.getUpdatedStatus());
+        }
+    }
+
+    private void handleFailedDownload(Downloader downloader) {
+        DownloadStatus status = downloader.getResult();
+        final int type = status.getFeedfileType();
+
+        if (!status.isCancelled()) {
+            if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
+                notificationManager.postAuthenticationNotification(downloader.getDownloadRequest());
+            } else if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
+                    && Integer.parseInt(status.getReasonDetailed()) == 416) {
+
+                Log.d(TAG, "Requested invalid range, restarting download from the beginning");
+                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+                DownloadRequester.getInstance().download(DownloadService.this, downloader.getDownloadRequest());
+            } else {
+                Log.e(TAG, "Download failed");
+                saveDownloadStatus(status);
+                syncExecutor.execute(new FailedDownloadHandler(downloader.getDownloadRequest()));
+
+                if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                    FeedItem item = getFeedItemFromId(status.getFeedfileId());
+                    if (item == null) {
+                        return;
+                    }
+                    boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
+                            && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
+                    boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
+                            && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
+                    boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
+                    boolean wrongFileType = status.getReason() == DownloadError.ERROR_FILE_TYPE;
+                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType) {
+                        try {
+                            DBWriter.saveFeedItemAutoDownloadFailed(item).get();
+                        } catch (ExecutionException | InterruptedException e) {
+                            Log.d(TAG, "Ignoring exception while setting item download status");
+                            e.printStackTrace();
+                        }
+                    }
+                    // to make lists reload the failed item, we fake an item update
+                    EventBus.getDefault().post(FeedItemEvent.updated(item));
+                }
+            }
+        } else {
+            // if FeedMedia download has been canceled, fake FeedItem update
+            // so that lists reload that it
+            if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                FeedItem item = getFeedItemFromId(status.getFeedfileId());
+                if (item == null) {
+                    return;
+                }
+                EventBus.getDefault().post(FeedItemEvent.updated(item));
+            }
+        }
+    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
