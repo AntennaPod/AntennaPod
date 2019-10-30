@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.handler.FailedDownloadHandler;
 import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
+import de.danoeh.antennapod.core.service.download.handler.PostDownloaderTask;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -82,23 +83,21 @@ public class DownloadService extends Service {
      */
     public static final String EXTRA_REQUEST = "request";
 
+    public static final int NOTIFICATION_ID = 2;
+
     /**
      * Contains all completed downloads that have not been included in the report yet.
      */
-    private List<DownloadStatus> reportQueue;
-
-    private ExecutorService syncExecutor;
-    private CompletionService<Downloader> downloadExecutor;
-
-    private DownloadRequester requester;
-
-    private DownloadServiceNotification notificationManager;
-    public static final int NOTIFICATION_ID = 2;
+    private final List<DownloadStatus> reportQueue;
+    private final ExecutorService syncExecutor;
+    private final CompletionService<Downloader> downloadExecutor;
+    private final DownloadRequester requester;
+    private final DownloadServiceNotification notificationManager;
 
     /**
      * Currently running downloads.
      */
-    private List<Downloader> downloads;
+    private final List<Downloader> downloads;
 
     /**
      * Number of running downloads.
@@ -114,10 +113,9 @@ public class DownloadService extends Service {
 
     private NotificationUpdater notificationUpdater;
     private ScheduledFuture<?> notificationUpdaterFuture;
+    private ScheduledFuture<?> downloadPostFuture;
     private static final int SCHED_EX_POOL_SIZE = 1;
     private ScheduledThreadPoolExecutor schedExecutor;
-
-    private final Handler postHandler = new Handler();
 
     private final IBinder mBinder = new LocalBinder();
 
@@ -243,29 +241,13 @@ public class DownloadService extends Service {
         }
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
-            onDownloadQueued(intent);
-        } else if (numberOfDownloads.get() == 0) {
-            stopSelf();
-        }
-        return Service.START_NOT_STICKY;
-    }
-
-    @Override
-    public void onCreate() {
-        Log.d(TAG, "Service started");
-        isRunning = true;
-        handler = new Handler();
+    public DownloadService() {
         reportQueue = Collections.synchronizedList(new ArrayList<>());
         downloads = Collections.synchronizedList(new ArrayList<>());
         numberOfDownloads = new AtomicInteger(0);
+        requester = DownloadRequester.getInstance();
+        notificationManager = new DownloadServiceNotification(this);
 
-        IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
-        cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
-        cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
-        registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
         syncExecutor = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r);
             t.setPriority(Thread.MIN_PRIORITY);
@@ -288,9 +270,31 @@ public class DownloadService extends Service {
                     return t;
                 }, (r, executor) -> Log.w(TAG, "SchedEx rejected submission of new task")
         );
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
+            onDownloadQueued(intent);
+        } else if (numberOfDownloads.get() == 0) {
+            stopSelf();
+        }
+        return Service.START_NOT_STICKY;
+    }
+
+    @Override
+    public void onCreate() {
+        Log.d(TAG, "Service started");
+        isRunning = true;
+        handler = new Handler();
+
+        IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
+        cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
+        cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
+        registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
+
         downloadCompletionThread.start();
-        requester = DownloadRequester.getInstance();
-        notificationManager = new DownloadServiceNotification(this);
+
         Notification notification = notificationManager.updateNotifications(
                 requester.getNumberOfDownloads(), downloads);
         startForeground(NOTIFICATION_ID, notification);
@@ -312,7 +316,6 @@ public class DownloadService extends Service {
             reportQueue.clear();
         }
 
-        postHandler.removeCallbacks(postDownloaderTask);
         EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
 
         stopForeground(true);
@@ -323,6 +326,7 @@ public class DownloadService extends Service {
         syncExecutor.shutdown();
         schedExecutor.shutdown();
         cancelNotificationUpdater();
+        downloadPostFuture.cancel(true);
         unregisterReceiver(cancelDownloadReceiver);
 
         // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
@@ -566,42 +570,20 @@ public class DownloadService extends Service {
 
     private class NotificationUpdater implements Runnable {
         public void run() {
-            handler.post(() -> {
-                Notification n = notificationManager.updateNotifications(
-                        requester.getNumberOfDownloads(), downloads);
-                if (n != null) {
-                    NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    nm.notify(NOTIFICATION_ID, n);
-                }
-            });
+            Notification n = notificationManager.updateNotifications(requester.getNumberOfDownloads(), downloads);
+            if (n != null) {
+                NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.notify(NOTIFICATION_ID, n);
+            }
         }
-
     }
 
-
-    private long lastPost = 0;
-
-    private final Runnable postDownloaderTask = new Runnable() {
-        @Override
-        public void run() {
-            List<Downloader> runningDownloads = new ArrayList<>();
-            for (Downloader downloader : downloads) {
-                if (!downloader.cancelled) {
-                    runningDownloads.add(downloader);
-                }
-            }
-            List<Downloader> list = Collections.unmodifiableList(runningDownloads);
-            EventBus.getDefault().postSticky(DownloadEvent.refresh(list));
-            postHandler.postDelayed(postDownloaderTask, 1500);
-        }
-    };
-
     private void postDownloaders() {
-        long now = System.currentTimeMillis();
-        if (now - lastPost >= 250) {
-            postHandler.removeCallbacks(postDownloaderTask);
-            postDownloaderTask.run();
-            lastPost = now;
+        new PostDownloaderTask(downloads).run();
+
+        if (downloadPostFuture == null) {
+            downloadPostFuture = schedExecutor.scheduleAtFixedRate(
+                    new PostDownloaderTask(downloads), 1, 1, TimeUnit.SECONDS);
         }
     }
 }
