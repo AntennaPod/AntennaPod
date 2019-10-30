@@ -31,7 +31,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
     }
 
     @Override
-    public FeedHandlerResult call() throws Exception {
+    public FeedHandlerResult call() {
         Feed feed = new Feed(request.getSource(), request.getLastModified());
         feed.setFile_url(request.getDestination());
         feed.setId(request.getFeedfileId());

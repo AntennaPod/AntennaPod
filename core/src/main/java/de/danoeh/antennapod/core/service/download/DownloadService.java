@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.text.TextUtils;
@@ -17,9 +16,7 @@ import android.webkit.URLUtil;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.app.NotificationCompat;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -29,17 +26,13 @@ import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.handler.FailedDownloadHandler;
-import de.danoeh.antennapod.core.service.download.handler.FeedSyncThread;
+import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-import org.apache.commons.io.FileUtils;
-import org.greenrobot.eventbus.EventBus;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -55,6 +48,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.apache.commons.io.FileUtils;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued via the startService intent.
@@ -94,7 +89,6 @@ public class DownloadService extends Service {
 
     private ExecutorService syncExecutor;
     private CompletionService<Downloader> downloadExecutor;
-    private FeedSyncThread feedSyncThread;
 
     private DownloadRequester requester;
 
@@ -145,18 +139,36 @@ public class DownloadService extends Service {
                     Log.d(TAG, "Received 'Download Complete' - message.");
                     removeDownload(downloader);
                     DownloadStatus status = downloader.getResult();
+                    DownloadRequest request = downloader.getDownloadRequest();
                     boolean successful = status.isSuccessful();
-
                     final int type = status.getFeedfileType();
+
                     if (successful) {
                         if (type == Feed.FEEDFILETYPE_FEED) {
                             Log.d(TAG, "Handling completed Feed Download");
-                            feedSyncThread.submitCompletedDownload(downloader.getDownloadRequest());
+                            syncExecutor.execute(() -> {
+                                FeedSyncTask task = new FeedSyncTask(DownloadService.this, request);
+                                boolean success = task.run();
+
+                                if (success) {
+                                    // we create a 'successful' download log if the feed's last refresh failed
+                                    List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
+                                    if (log.size() > 0 && !log.get(0).isSuccessful()) {
+                                        saveDownloadStatus(task.getDownloadStatus());
+                                    }
+                                } else {
+                                    saveDownloadStatus(task.getDownloadStatus());
+                                }
+                                numberOfDownloads.decrementAndGet();
+                                queryDownloadsAsync();
+
+                            });
+
                         } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                             Log.d(TAG, "Handling completed FeedMedia Download");
                             syncExecutor.execute(() -> {
                                 MediaDownloadedHandler handler = new MediaDownloadedHandler(DownloadService.this,
-                                        status, downloader.getDownloadRequest());
+                                        status, request);
                                 handler.run();
                                 saveDownloadStatus(handler.getUpdatedStatus());
                                 numberOfDownloads.decrementAndGet();
@@ -267,25 +279,6 @@ public class DownloadService extends Service {
                 }, (r, executor) -> Log.w(TAG, "SchedEx rejected submission of new task")
         );
         downloadCompletionThread.start();
-        feedSyncThread = new FeedSyncThread(DownloadService.this, new FeedSyncThread.FeedSyncCallback() {
-            @Override
-            public void finishedSyncingFeeds(int numberOfCompletedFeeds) {
-                numberOfDownloads.addAndGet(-numberOfCompletedFeeds);
-                queryDownloadsAsync();
-            }
-
-            @Override
-            public void failedSyncingFeed() {
-                numberOfDownloads.decrementAndGet();
-            }
-
-            @Override
-            public void downloadStatusGenerated(DownloadStatus downloadStatus) {
-                saveDownloadStatus(downloadStatus);
-            }
-        });
-        feedSyncThread.start();
-
         requester = DownloadRequester.getInstance();
         notificationManager = new DownloadServiceNotification(this);
         Notification notification = notificationManager.updateNotifications(
@@ -319,7 +312,6 @@ public class DownloadService extends Service {
         downloadCompletionThread.interrupt();
         syncExecutor.shutdown();
         schedExecutor.shutdown();
-        feedSyncThread.shutdown();
         cancelNotificationUpdater();
         unregisterReceiver(cancelDownloadReceiver);
 
