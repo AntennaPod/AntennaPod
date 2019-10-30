@@ -299,7 +299,7 @@ public final class DBTasks {
         media.setDownloaded(false);
         media.setFile_url(null);
         DBWriter.setFeedMedia(media);
-        EventBus.getDefault().post(new FeedListUpdateEvent());
+        EventBus.getDefault().post(new FeedListUpdateEvent(media.getItem().getFeed()));
     }
 
     /**
@@ -558,13 +558,13 @@ public final class DBTasks {
         adapter.close();
 
         try {
-            DBWriter.addNewFeed(context, newFeedsList.toArray(new Feed[newFeedsList.size()])).get();
-            DBWriter.setCompleteFeed(updatedFeedsList.toArray(new Feed[updatedFeedsList.size()])).get();
+            DBWriter.addNewFeed(context, newFeedsList.toArray(new Feed[0])).get();
+            DBWriter.setCompleteFeed(updatedFeedsList.toArray(new Feed[0])).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        EventBus.getDefault().post(new FeedListUpdateEvent());
+        EventBus.getDefault().post(new FeedListUpdateEvent(updatedFeedsList));
 
         return resultFeeds;
     }
