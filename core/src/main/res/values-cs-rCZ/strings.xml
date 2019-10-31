@@ -473,7 +473,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Odebírat</string>
   <string name="subscribed_label">Odebíráno</string>
-  <string name="fetching_podcast_label">Stahování</string>
+  <string name="downloading_label">Stahování</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Posunout zpět</string>
   <string name="fast_forward_label">Posunout vpřed</string>

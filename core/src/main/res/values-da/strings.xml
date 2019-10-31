@@ -514,7 +514,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribed_label">Abonneret</string>
-  <string name="fetching_podcast_label">Overfører…</string>
+  <string name="downloading_label">Overfører…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Spol tilbage</string>
   <string name="fast_forward_label">Spol frem</string>

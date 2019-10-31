@@ -639,7 +639,7 @@ URL файла:
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
   <string name="subscribed_label">Подписка оформлена</string>
-  <string name="fetching_podcast_label">Идёт загрузка…</string>
+  <string name="downloading_label">Идёт загрузка…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Назад</string>
   <string name="fast_forward_label">Вперёд</string>

@@ -595,7 +595,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Prenumerera</string>
   <string name="subscribed_label">Prenumererar</string>
-  <string name="fetching_podcast_label">Laddar ner…</string>
+  <string name="downloading_label">Laddar ner…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Backa</string>
   <string name="fast_forward_label">Snabbspola</string>

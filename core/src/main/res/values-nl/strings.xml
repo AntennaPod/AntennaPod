@@ -610,7 +610,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonneren</string>
   <string name="subscribed_label">Geabonneerd</string>
-  <string name="fetching_podcast_label">Bezig met downloaden...</string>
+  <string name="downloading_label">Bezig met downloaden...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Terugspoelen</string>
   <string name="fast_forward_label">Vooruitspoelen</string>

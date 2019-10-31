@@ -127,7 +127,7 @@
   <string name="choose_data_directory">Pilih Direktori Data</string>
   <string name="create_folder_success">Direktori baru dibuat</string>
   <!--Online feed view-->
-  <string name="fetching_podcast_label">Mengunduh...</string>
+  <string name="downloading_label">Mengunduh...</string>
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
   <!--Progress information-->

@@ -492,7 +492,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         if (subscribeButton != null && feed != null) {
             if (DownloadRequester.getInstance().isDownloadingFile(feed.getDownload_url())) {
                 subscribeButton.setEnabled(false);
-                subscribeButton.setText(R.string.fetching_podcast_label);
+                subscribeButton.setText(R.string.subscribing_label);
             } else if (feedInFeedlist(feed)) {
                 subscribeButton.setEnabled(true);
                 subscribeButton.setText(R.string.open_podcast);

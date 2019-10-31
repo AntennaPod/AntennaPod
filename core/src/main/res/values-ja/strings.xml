@@ -598,7 +598,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
   <string name="subscribed_label">購読しました</string>
-  <string name="fetching_podcast_label">ダウンロード中…</string>
+  <string name="downloading_label">ダウンロード中…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">巻き戻し</string>
   <string name="fast_forward_label">早送り</string>

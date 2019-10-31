@@ -538,7 +538,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Prenumeruoti</string>
   <string name="subscribed_label">Prenumeruojama</string>
-  <string name="fetching_podcast_label">Atsiunčiama...</string>
+  <string name="downloading_label">Atsiunčiama...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Atsukti</string>
   <string name="fast_forward_label">Persukti į priekį</string>

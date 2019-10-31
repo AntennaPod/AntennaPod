@@ -340,7 +340,7 @@
   <string name="create_folder_error">Nun pudo crease la carpeta</string>
   <string name="folder_not_empty_dialog_title">La carpeta nun ta balera</string>
   <!--Online feed view-->
-  <string name="fetching_podcast_label">Baxando...</string>
+  <string name="downloading_label">Baxando...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Rebobinar</string>
   <string name="fast_forward_label">Avance rápidu</string>

@@ -531,7 +531,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">구독</string>
   <string name="subscribed_label">구독함</string>
-  <string name="fetching_podcast_label">다운로드하는 중…</string>
+  <string name="downloading_label">다운로드하는 중…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">뒤로 감기</string>
   <string name="fast_forward_label">앞으로 감기</string>

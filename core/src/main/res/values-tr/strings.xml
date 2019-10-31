@@ -451,7 +451,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Üye ol</string>
   <string name="subscribed_label">Üye olundu</string>
-  <string name="fetching_podcast_label">İndiriliyor...</string>
+  <string name="downloading_label">İndiriliyor...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Geri sar</string>
   <string name="fast_forward_label">İleri sar</string>
