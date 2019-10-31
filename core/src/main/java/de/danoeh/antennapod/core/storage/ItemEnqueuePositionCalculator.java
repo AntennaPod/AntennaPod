@@ -30,28 +30,23 @@ class ItemEnqueuePositionCalculator {
     }
 
     /**
-     * @param positionAmongToAdd Typically, the callers has a list of items to be inserted to
-     *                           the queue. This parameter indicates the position (0-based) of
-     *                           the item among the one to inserted. E.g., it is needed for
-     *                           enqueue at front option.
-     * @param item               the item to be inserted
+     * Determine the position (0-based) that the item(s) should be inserted to the named queue.
+     *
      * @param curQueue           the queue to which the item is to be inserted
      * @param currentPlaying     the currently playing media
-     * @return the position (0-based) the item should be inserted to the named queue
      */
-    public int calcPosition(int positionAmongToAdd, @NonNull FeedItem item,
-                            @NonNull List<FeedItem> curQueue, @Nullable Playable currentPlaying) {
+    public int calcPosition(@NonNull List<FeedItem> curQueue, @Nullable Playable currentPlaying) {
         switch (enqueueLocation) {
             case BACK:
                 return curQueue.size();
             case FRONT:
                 // return NOT 0, so that when a list of items are inserted, the items inserted
                 // keep the same order. Returning 0 will reverse the order
-                return getPositionOfFirstNonDownloadingItem(positionAmongToAdd, curQueue);
+                return getPositionOfFirstNonDownloadingItem(0, curQueue);
             case AFTER_CURRENTLY_PLAYING:
                 int currentlyPlayingPosition = getCurrentlyPlayingPosition(curQueue, currentPlaying);
                 return getPositionOfFirstNonDownloadingItem(
-                        currentlyPlayingPosition + (1 + positionAmongToAdd), curQueue);
+                        currentlyPlayingPosition + 1, curQueue);
             default:
                 throw new AssertionError("calcPosition() : unrecognized enqueueLocation option: " + enqueueLocation);
         }

@@ -41,22 +41,16 @@ public class ItemEnqueuePositionCalculatorTest {
             return Arrays.asList(new Object[][]{
                     {"case default, i.e., add to the end",
                             concat(QUEUE_DEFAULT_IDS, TFI_ID),
-                            BACK, 0, QUEUE_DEFAULT},
-                    {"case default (2nd item)",
-                            concat(QUEUE_DEFAULT_IDS, TFI_ID),
-                            BACK, 1, QUEUE_DEFAULT},
+                            BACK, QUEUE_DEFAULT},
                     {"case option enqueue at front",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            FRONT, 0, QUEUE_DEFAULT},
-                    {"case option enqueue at front (2nd item)",
-                            list(11L, TFI_ID, 12L, 13L, 14L),
-                            FRONT, 1, QUEUE_DEFAULT},
+                            FRONT, QUEUE_DEFAULT},
                     {"case empty queue, option default",
                             list(TFI_ID),
-                            BACK, 0, QUEUE_EMPTY},
+                            BACK, QUEUE_EMPTY},
                     {"case empty queue, option enqueue at front",
                             list(TFI_ID),
-                            FRONT, 0, QUEUE_EMPTY},
+                            FRONT, QUEUE_EMPTY},
             });
         }
 
@@ -70,9 +64,6 @@ public class ItemEnqueuePositionCalculatorTest {
         public EnqueueLocation options;
 
         @Parameter(3)
-        public int posAmongAdded; // the position of feed item to be inserted among the list to be inserted.
-
-        @Parameter(4)
         public List<FeedItem> curQueue;
 
         public static final long TFI_ID = 101;
@@ -88,7 +79,7 @@ public class ItemEnqueuePositionCalculatorTest {
             List<FeedItem> queue = new ArrayList<>(curQueue);
             FeedItem tFI = createFeedItem(TFI_ID);
             doAddToQueueAndAssertResult(message,
-                    calculator, posAmongAdded, tFI, queue, getCurrentlyPlaying(),
+                    calculator, tFI, queue, getCurrentlyPlaying(),
                     idsExpected);
         }
 
@@ -102,40 +93,31 @@ public class ItemEnqueuePositionCalculatorTest {
             return Arrays.asList(new Object[][]{
                     {"case option after currently playing",
                             list(11L, TFI_ID, 12L, 13L, 14L),
-                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, 11L},
-                    {"case option after currently playing (2nd item)",
-                            list(11L, 12L, TFI_ID, 13L, 14L),
-                            AFTER_CURRENTLY_PLAYING, 1, QUEUE_DEFAULT, 11L},
+                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 11L},
                     {"case option after currently playing, currently playing in the middle of the queue",
                             list(11L, 12L, 13L, TFI_ID, 14L),
-                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, 13L},
+                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 13L},
                     {"case option after currently playing, currently playing is not in queue",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, 99L},
+                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 99L},
                     {"case option after currently playing, no currentlyPlaying is null",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
+                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
                     {"case option after currently playing, currentlyPlaying is externalMedia",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA},
+                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA},
                     {"case empty queue, option after currently playing",
                             list(TFI_ID),
-                            AFTER_CURRENTLY_PLAYING, 0, QUEUE_EMPTY, ID_CURRENTLY_PLAYING_NULL},
+                            AFTER_CURRENTLY_PLAYING, QUEUE_EMPTY, ID_CURRENTLY_PLAYING_NULL},
             });
         }
 
-        @Parameter(5)
-        public long idCurrentlyPlaying = -1;
+        @Parameter(4)
+        public long idCurrentlyPlaying;
 
         @Override
         Playable getCurrentlyPlaying() {
-            if (ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA == idCurrentlyPlaying) {
-                return externalMedia();
-            }
-            if (ID_CURRENTLY_PLAYING_NULL == idCurrentlyPlaying) {
-                return null;
-            }
-            return createFeedItem(idCurrentlyPlaying).getMedia();
+            return ItemEnqueuePositionCalculatorTest.getCurrentlyPlaying(idCurrentlyPlaying);
         }
 
         private static Playable externalMedia() {
@@ -150,6 +132,11 @@ public class ItemEnqueuePositionCalculatorTest {
     @RunWith(Parameterized.class)
     public static class ItemEnqueuePositionCalculatorPreserveDownloadOrderTest {
 
+        /**
+         * The test covers the use case that when user initiates multiple downloads in succession,
+         * resulting in multiple addQueueItem() calls in succession.
+         * the items in the queue will be in the same order as the the order user taps to download
+         */
         @Parameters(name = "{index}: case<{0}>")
         public static Iterable<Object[]> data() {
             // Attempts to make test more readable by showing the expected list of ids
@@ -158,15 +145,15 @@ public class ItemEnqueuePositionCalculatorTest {
                     {"download order test, enqueue default",
                             concat(QUEUE_DEFAULT_IDS, 101L),
                             concat(QUEUE_DEFAULT_IDS, list(101L, 102L)),
-                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 201L)),
-                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 201L, 202L)),
-                            BACK, QUEUE_DEFAULT},
-                    {"download order test, enqueue at front",
+                            BACK, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
+                    {"download order test, enqueue at front (currently playing has no effect)",
                             concat(101L, QUEUE_DEFAULT_IDS),
                             concat(list(101L, 102L), QUEUE_DEFAULT_IDS),
-                            concat(list(101L, 102L, 201L), QUEUE_DEFAULT_IDS),
-                            concat(list(101L, 102L, 201L, 202L), QUEUE_DEFAULT_IDS),
-                            FRONT, QUEUE_DEFAULT},
+                            FRONT, QUEUE_DEFAULT, 11L}, // 11 is at the front, currently playing
+                    {"download order test, enqueue after currently playing",
+                            list(11L, 101L, 12L, 13L, 14L),
+                            list(11L, 101L, 102L, 12L, 13L, 14L),
+                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 11L}  // 11 is at the front, currently playing
             });
         }
 
@@ -179,18 +166,14 @@ public class ItemEnqueuePositionCalculatorTest {
         @Parameter(2)
         public List<Long> idsExpectedAfter102;
 
-        // 2XX are for testing bulk insertion cases
         @Parameter(3)
-        public List<Long> idsExpectedAfter201;
-
-        @Parameter(4)
-        public List<Long> idsExpectedAfter202;
-
-        @Parameter(5)
         public EnqueueLocation options;
 
-        @Parameter(6)
+        @Parameter(4)
         public List<FeedItem> queueInitial;
+
+        @Parameter(5)
+        public long idCurrentlyPlaying;
 
         @Test
         public void testQueueOrderWhenDownloading2Items() {
@@ -209,29 +192,19 @@ public class ItemEnqueuePositionCalculatorTest {
 
             // Test body
 
+            Playable currentlyPlaying = getCurrentlyPlaying(idCurrentlyPlaying);
+
             // User clicks download on feed item 101
             FeedItem tFI101 = setAsDownloading(101, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (1st download)",
-                    calculator, 0, tFI101, queue,
+                    calculator, tFI101, queue, currentlyPlaying,
                     idsExpectedAfter101);
 
             // Then user clicks download on feed item 102
             FeedItem tFI102 = setAsDownloading(102, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
-                    calculator, 0, tFI102, queue,
+                    calculator, tFI102, queue, currentlyPlaying,
                     idsExpectedAfter102);
-
-            // Items 201 and 202 are added as part of a single DBWriter.addQueueItem() calls
-
-            FeedItem tFI201 = setAsDownloading(201, stubDownloadStateProvider);
-            doAddToQueueAndAssertResult(message + " (bulk insertion, 1st item)",
-                    calculator, 0, tFI201, queue,
-                    idsExpectedAfter201);
-
-            FeedItem tFI202 = setAsDownloading(202, stubDownloadStateProvider);
-            doAddToQueueAndAssertResult(message + " (bulk insertion, 2nd item)",
-                    calculator, 1, tFI202, queue, null,
-                    idsExpectedAfter202);
 
             // TODO: simulate download failure cases.
         }
@@ -258,21 +231,11 @@ public class ItemEnqueuePositionCalculatorTest {
 
     static void doAddToQueueAndAssertResult(String message,
                                             ItemEnqueuePositionCalculator calculator,
-                                            int positionAmongAdd,
-                                            FeedItem itemToAdd,
-                                            List<FeedItem> queue,
-                                            List<Long> idsExpected) {
-        doAddToQueueAndAssertResult(message, calculator, positionAmongAdd, itemToAdd, queue, null, idsExpected);
-    }
-
-    static void doAddToQueueAndAssertResult(String message,
-                                            ItemEnqueuePositionCalculator calculator,
-                                            int positionAmongAdd,
                                             FeedItem itemToAdd,
                                             List<FeedItem> queue,
                                             Playable currentlyPlaying,
                                             List<Long> idsExpected) {
-        int posActual = calculator.calcPosition(positionAmongAdd, itemToAdd, queue, currentlyPlaying);
+        int posActual = calculator.calcPosition(queue, currentlyPlaying);
         queue.add(posActual, itemToAdd);
         assertEquals(message, idsExpected, getIdList(queue));
     }
@@ -284,6 +247,24 @@ public class ItemEnqueuePositionCalculatorTest {
                     createFeedItem(11), createFeedItem(12), createFeedItem(13), createFeedItem(14)));
     static final List<Long> QUEUE_DEFAULT_IDS =
             QUEUE_DEFAULT.stream().map(fi -> fi.getId()).collect(Collectors.toList());
+
+
+    static Playable getCurrentlyPlaying(long idCurrentlyPlaying) {
+        if (ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA == idCurrentlyPlaying) {
+            return externalMedia();
+        }
+        if (ID_CURRENTLY_PLAYING_NULL == idCurrentlyPlaying) {
+            return null;
+        }
+        return createFeedItem(idCurrentlyPlaying).getMedia();
+    }
+
+    static Playable externalMedia() {
+        return new ExternalMedia("http://example.com/episode.mp3", MediaType.AUDIO);
+    }
+
+    static final long ID_CURRENTLY_PLAYING_NULL = -1L;
+    static final long ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA = -9999L;
 
 
     static FeedItem createFeedItem(long id) {

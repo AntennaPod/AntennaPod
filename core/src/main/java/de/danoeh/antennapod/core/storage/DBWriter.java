@@ -329,13 +329,13 @@ public class DBWriter {
                     ItemEnqueuePositionCalculator positionCalculator =
                             new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
                     Playable currentlyPlaying = Playable.PlayableUtils.createInstanceFromPreferences(context);
-                    for (int i = 0; i < itemIds.length; i++) {
-                        if (!itemListContains(queue, itemIds[i])) {
-                            final FeedItem item = DBReader.getFeedItem(itemIds[i]);
+                    int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
+                    for (long itemId : itemIds) {
+                        if (!itemListContains(queue, itemId)) {
+                            final FeedItem item = DBReader.getFeedItem(itemId);
 
 
                             if (item != null) {
-                                int insertPosition = positionCalculator.calcPosition(i, item, queue, currentlyPlaying);
                                 queue.add(insertPosition, item);
                                 events.add(QueueEvent.added(item, insertPosition));
 
@@ -345,6 +345,7 @@ public class DBWriter {
                                 if (item.isNew()) {
                                     markAsUnplayedIds.add(item.getId());
                                 }
+                                insertPosition++;
                             }
                         }
                     }
