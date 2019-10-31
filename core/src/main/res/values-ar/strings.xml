@@ -162,7 +162,7 @@
   <string name="create_folder_label">أنشأ مستندا جديدا</string>
   <string name="choose_data_directory">إختيار مستند البيانات</string>
   <!--Online feed view-->
-  <string name="downloading_label">تحميل ...</string>
+  <string name="fetching_podcast_label">تحميل ...</string>
   <!--Content descriptions for image buttons-->
   <string name="media_type_audio_label">صوت</string>
   <string name="media_type_video_label">فيديو</string>

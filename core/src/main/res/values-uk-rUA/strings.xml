@@ -603,7 +603,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribed_label">Підписано</string>
-  <string name="downloading_label">Завантажується…</string>
+  <string name="fetching_podcast_label">Завантажується…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Перемотка назад</string>
   <string name="fast_forward_label">Перемотка вперед</string>

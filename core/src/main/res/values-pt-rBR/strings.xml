@@ -554,7 +554,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Assinar</string>
   <string name="subscribed_label">Assinado</string>
-  <string name="downloading_label">Baixando...</string>
+  <string name="fetching_podcast_label">Baixando...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Voltar</string>
   <string name="fast_forward_label">Avançar</string>

@@ -349,7 +349,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Feliratkozás</string>
   <string name="subscribed_label">Feliratkozva</string>
-  <string name="downloading_label">Letöltés...</string>
+  <string name="fetching_podcast_label">Letöltés...</string>
   <!--Content descriptions for image buttons-->
   <string name="media_type_audio_label">Hang</string>
   <string name="media_type_video_label">Video</string>

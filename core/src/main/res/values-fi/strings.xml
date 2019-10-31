@@ -595,7 +595,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Tilaa</string>
   <string name="subscribed_label">Tilattu</string>
-  <string name="downloading_label">Lataa...</string>
+  <string name="fetching_podcast_label">Lataa...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Kelaa takaisin</string>
   <string name="fast_forward_label">Hyppää eteen</string>

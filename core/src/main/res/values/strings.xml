@@ -618,7 +618,7 @@
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
-    <string name="downloading_label">Downloading&#8230;</string>
+    <string name="fetching_podcast_label">Fetching Information&#8230;</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="rewind_label">Rewind</string>

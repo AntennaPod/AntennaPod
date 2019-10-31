@@ -512,7 +512,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Subscriu</string>
   <string name="subscribed_label">Subscrit</string>
-  <string name="downloading_label">S\'està baixant...</string>
+  <string name="fetching_podcast_label">S\'està baixant...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Rebobina</string>
   <string name="fast_forward_label">Avança ràpidament</string>

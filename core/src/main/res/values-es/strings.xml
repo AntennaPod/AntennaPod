@@ -610,7 +610,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Suscribirse</string>
   <string name="subscribed_label">Suscrito</string>
-  <string name="downloading_label">Descargando…</string>
+  <string name="fetching_podcast_label">Descargando…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Retroceso</string>
   <string name="fast_forward_label">Avance</string>

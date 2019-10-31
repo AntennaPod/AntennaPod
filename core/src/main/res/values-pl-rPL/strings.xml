@@ -507,7 +507,7 @@ https://gpodder.net/register/</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subskrybuj</string>
   <string name="subscribed_label">Subskrybowane</string>
-  <string name="downloading_label">Pobieranie...</string>
+  <string name="fetching_podcast_label">Pobieranie...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Cofnij</string>
   <string name="fast_forward_label">Przewiń</string>

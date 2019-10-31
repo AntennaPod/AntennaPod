@@ -634,7 +634,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">הרשמה</string>
   <string name="subscribed_label">נרשמת</string>
-  <string name="downloading_label">מתבצעת הורדה…</string>
+  <string name="fetching_podcast_label">מתבצעת הורדה…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">חזרה לאחור</string>
   <string name="fast_forward_label">הרצה קדימה</string>

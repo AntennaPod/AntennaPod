@@ -438,7 +438,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
   <string name="subscribed_label">Abonnert</string>
-  <string name="downloading_label">Laster ned...</string>
+  <string name="fetching_podcast_label">Laster ned...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Spol tilbake</string>
   <string name="fast_forward_label">Spol fremover</string>
