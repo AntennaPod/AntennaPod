@@ -32,6 +32,7 @@
                         android:layout_marginRight="8dp"
                         android:contentDescription="@string/search_podcast_hint"
                         app:srcCompat="?attr/action_search"
+                        android:id="@+id/search_icon"
                         android:scaleType="center"/>
 
                 <EditText

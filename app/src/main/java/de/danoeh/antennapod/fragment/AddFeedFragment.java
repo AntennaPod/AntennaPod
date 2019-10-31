@@ -46,7 +46,7 @@ public class AddFeedFragment extends Fragment {
         View butOpmlImport = root.findViewById(R.id.btn_opml_import);
         butOpmlImport.setOnClickListener(v -> startActivity(new Intent(getActivity(),
                 OpmlImportFromPathActivity.class)));
-
+        root.findViewById(R.id.search_icon).setOnClickListener(view -> performSearch());
         return root;
     }
 
