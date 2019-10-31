@@ -173,7 +173,7 @@ public class DBWriter {
                 if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                     GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
                 }
-                EventBus.getDefault().post(new FeedListUpdateEvent());
+                EventBus.getDefault().post(new FeedListUpdateEvent(feed));
 
                 // we assume we also removed download log entries for the feed or its media files.
                 // especially important if download or refresh failed, as the user should not be able
@@ -803,7 +803,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedPreferences(preferences);
             adapter.close();
-            EventBus.getDefault().post(new FeedListUpdateEvent());
+            EventBus.getDefault().post(new FeedListUpdateEvent(preferences.getFeedID()));
         });
     }
 
@@ -842,7 +842,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedCustomTitle(feed.getId(), feed.getCustomTitle());
             adapter.close();
-            EventBus.getDefault().post(new FeedListUpdateEvent());
+            EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
     }
 

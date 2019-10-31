@@ -201,7 +201,7 @@ public class UITestUtils {
         adapter.setCompleteFeed(hostedFeeds.toArray(new Feed[hostedFeeds.size()]));
         adapter.setQueue(queue);
         adapter.close();
-        EventBus.getDefault().post(new FeedListUpdateEvent());
+        EventBus.getDefault().post(new FeedListUpdateEvent(hostedFeeds));
         EventBus.getDefault().post(QueueEvent.setQueue(queue));
     }
 

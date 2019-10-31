@@ -409,7 +409,9 @@ public class FeedItemlistFragment extends ListFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
-        updateUi();
+        if (event.contains(feed)) {
+            updateUi();
+        }
     }
 
     private void updateProgressBarVisibility() {
