@@ -503,7 +503,8 @@ public class QueueFragment extends Fragment {
         registerForContextMenu(recyclerView);
 
         itemTouchHelper = new ItemTouchHelper(
-            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                    ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
                 // Position tracking whilst dragging
                 int dragFrom = -1;
