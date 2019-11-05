@@ -895,7 +895,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return null;
         }
 
-        if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()) {
+        if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()
+                && UserPreferences.isFollowQueue()) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, nextItem.getMedia())
                     .prepareImmediately(true)
