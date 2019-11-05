@@ -183,6 +183,17 @@ public class UserPreferences {
         }
     }
 
+    public static int getTranslucentTheme() {
+        int theme = getTheme();
+        if (theme == R.style.Theme_AntennaPod_Dark) {
+            return R.style.Theme_AntennaPod_Dark_Translucent;
+        } else if (theme == R.style.Theme_AntennaPod_TrueBlack) {
+            return R.style.Theme_AntennaPod_TrueBlack_Translucent;
+        } else {
+            return R.style.Theme_AntennaPod_Light_Translucent;
+        }
+    }
+
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));

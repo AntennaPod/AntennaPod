@@ -237,6 +237,7 @@
         <activity
             android:name=".activity.OnlineFeedViewActivity"
             android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
             android:label="@string/add_feed_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
