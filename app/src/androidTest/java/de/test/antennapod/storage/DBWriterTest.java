@@ -476,12 +476,12 @@ public class DBWriterTest {
         assertFalse(OLD_DATE == media.getPlaybackCompletionDate().getTime());
     }
 
-    private Feed queueTestSetupMultipleItems(final int NUM_ITEMS) throws InterruptedException, ExecutionException, TimeoutException {
+    private Feed queueTestSetupMultipleItems(final int numItems) throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
         UserPreferences.setEnqueueLocation(UserPreferences.EnqueueLocation.BACK);
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
-        for (int i = 0; i < NUM_ITEMS; i++) {
+        for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.PLAYED, feed);
             feed.getItems().add(item);
         }
