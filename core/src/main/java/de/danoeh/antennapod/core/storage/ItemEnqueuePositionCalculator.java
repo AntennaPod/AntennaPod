@@ -40,8 +40,10 @@ class ItemEnqueuePositionCalculator {
             case BACK:
                 return curQueue.size();
             case FRONT:
-                // return NOT 0, so that when a list of items are inserted, the items inserted
-                // keep the same order. Returning 0 will reverse the order
+                // Return not necessarily 0, so that when a list of items are downloaded and enqueued
+                // in succession of calls (e.g., users manually tapping download one by one),
+                // the items enqueued are kept the same order.
+                // Simply returning 0 will reverse the order.
                 return getPositionOfFirstNonDownloadingItem(0, curQueue);
             case AFTER_CURRENTLY_PLAYING:
                 int currentlyPlayingPosition = getCurrentlyPlayingPosition(curQueue, currentPlaying);

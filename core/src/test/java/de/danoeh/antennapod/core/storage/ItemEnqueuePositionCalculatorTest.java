@@ -189,17 +189,13 @@ public class ItemEnqueuePositionCalculatorTest {
             // A shallow copy, as the test code will manipulate the queue
             List<FeedItem> queue = new ArrayList<>(queueInitial);
 
-
             // Test body
-
             Playable currentlyPlaying = getCurrentlyPlaying(idCurrentlyPlaying);
-
             // User clicks download on feed item 101
             FeedItem tFI101 = setAsDownloading(101, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (1st download)",
                     calculator, tFI101, queue, currentlyPlaying,
                     idsExpectedAfter101);
-
             // Then user clicks download on feed item 102
             FeedItem tFI102 = setAsDownloading(102, stubDownloadStateProvider);
             doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
@@ -224,10 +220,6 @@ public class ItemEnqueuePositionCalculatorTest {
         }
     }
 
-
-    // Common helpers:
-    // - common queue (of items) for tests
-    // - construct FeedItems for tests
 
     static void doAddToQueueAndAssertResult(String message,
                                             ItemEnqueuePositionCalculator calculator,
