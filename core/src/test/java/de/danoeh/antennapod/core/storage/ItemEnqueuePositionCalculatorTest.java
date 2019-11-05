@@ -145,14 +145,20 @@ public class ItemEnqueuePositionCalculatorTest {
                     {"download order test, enqueue default",
                             concat(QUEUE_DEFAULT_IDS, 101L),
                             concat(QUEUE_DEFAULT_IDS, list(101L, 102L)),
+                            concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 103L)),
                             BACK, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
                     {"download order test, enqueue at front (currently playing has no effect)",
                             concat(101L, QUEUE_DEFAULT_IDS),
                             concat(list(101L, 102L), QUEUE_DEFAULT_IDS),
+                            concat(list(101L, 103L, 102L), QUEUE_DEFAULT_IDS),
+                            // ^ 103 is put ahead of 102, after 102 failed.
+                            // It is a limitation as the logic can't tell 102 download has failed
+                            // (as opposed to simply being enqueued)
                             FRONT, QUEUE_DEFAULT, 11L}, // 11 is at the front, currently playing
                     {"download order test, enqueue after currently playing",
                             list(11L, 101L, 12L, 13L, 14L),
                             list(11L, 101L, 102L, 12L, 13L, 14L),
+                            list(11L, 101L, 103L, 102L, 12L, 13L, 14L),
                             AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 11L}  // 11 is at the front, currently playing
             });
         }
@@ -167,12 +173,15 @@ public class ItemEnqueuePositionCalculatorTest {
         public List<Long> idsExpectedAfter102;
 
         @Parameter(3)
-        public EnqueueLocation options;
+        public List<Long> idsExpectedAfter103;
 
         @Parameter(4)
-        public List<FeedItem> queueInitial;
+        public EnqueueLocation options;
 
         @Parameter(5)
+        public List<FeedItem> queueInitial;
+
+        @Parameter(6)
         public long idCurrentlyPlaying;
 
         @Test
@@ -192,32 +201,45 @@ public class ItemEnqueuePositionCalculatorTest {
             // Test body
             Playable currentlyPlaying = getCurrentlyPlaying(idCurrentlyPlaying);
             // User clicks download on feed item 101
-            FeedItem tFI101 = setAsDownloading(101, stubDownloadStateProvider);
+            FeedItem tFI101 = setAsDownloading(101, stubDownloadStateProvider, true);
             doAddToQueueAndAssertResult(message + " (1st download)",
                     calculator, tFI101, queue, currentlyPlaying,
                     idsExpectedAfter101);
             // Then user clicks download on feed item 102
-            FeedItem tFI102 = setAsDownloading(102, stubDownloadStateProvider);
+            FeedItem tFI102 = setAsDownloading(102, stubDownloadStateProvider, true);
             doAddToQueueAndAssertResult(message + " (2nd download, it should preserve order of download)",
                     calculator, tFI102, queue, currentlyPlaying,
                     idsExpectedAfter102);
+            // simulate download failure case for 102
+            setAsDownloading(tFI102, stubDownloadStateProvider, false);
+            // Then user clicks download on feed item 103
+            FeedItem tFI103 = setAsDownloading(103, stubDownloadStateProvider, true);
+            doAddToQueueAndAssertResult(message
+                            + " (3rd download, with 2nd download failed; "
+                            + "it should be behind 1st download (unless enqueueLocation is BACK)",
+                    calculator, tFI103, queue, currentlyPlaying,
+                    idsExpectedAfter103);
 
-            // TODO: simulate download failure cases.
         }
 
 
-        private static FeedItem setAsDownloading(int id, DownloadStateProvider stubDownloadStateProvider) {
+        private static FeedItem setAsDownloading(int id, DownloadStateProvider stubDownloadStateProvider,
+                                                 boolean isDownloading) {
             FeedItem item = createFeedItem(id);
             FeedMedia media =
                     new FeedMedia(item, "http://download.url.net/" + id
                             , 100000 + id, "audio/mp3");
             media.setId(item.getId());
             item.setMedia(media);
+            return setAsDownloading(item, stubDownloadStateProvider, isDownloading);
+        }
 
-            stub(stubDownloadStateProvider.isDownloadingFile(media)).toReturn(true);
-
+        private static FeedItem setAsDownloading(FeedItem item, DownloadStateProvider stubDownloadStateProvider,
+                                                 boolean isDownloading) {
+            stub(stubDownloadStateProvider.isDownloadingFile(item.getMedia())).toReturn(isDownloading);
             return item;
         }
+
     }
 
 
