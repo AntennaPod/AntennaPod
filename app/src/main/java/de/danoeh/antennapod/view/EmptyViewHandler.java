@@ -2,6 +2,7 @@ package de.danoeh.antennapod.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.widget.AbsListView;
 import androidx.annotation.AttrRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,7 +10,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -54,28 +54,31 @@ public class EmptyViewHandler {
         emptyView.setVisibility(View.GONE);
     }
 
-    public void attachToListView(ListView listView) {
+    public void attachToListView(AbsListView listView) {
         if (layoutAdded) {
-            throw new IllegalStateException("Can not attach to ListView multiple times");
+            throw new IllegalStateException("Can not attach EmptyView multiple times");
         }
+        addToParentView(listView);
         layoutAdded = true;
-        ((ViewGroup) listView.getParent()).addView(emptyView);
         listView.setEmptyView(emptyView);
     }
 
     public void attachToRecyclerView(RecyclerView recyclerView) {
         if (layoutAdded) {
-            throw new IllegalStateException("Can not attach to ListView multiple times");
+            throw new IllegalStateException("Can not attach EmptyView multiple times");
         }
+        addToParentView(recyclerView);
         layoutAdded = true;
         this.recyclerView = recyclerView;
-        ViewGroup parent = ((ViewGroup) recyclerView.getParent());
-        parent.addView(emptyView);
         updateAdapter(recyclerView.getAdapter());
+    }
 
+    private void addToParentView(View view) {
+        ViewGroup parent = ((ViewGroup) view.getParent());
+        parent.addView(emptyView);
         if (parent instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParams =
-                    (RelativeLayout.LayoutParams)emptyView.getLayoutParams();
+                    (RelativeLayout.LayoutParams) emptyView.getLayoutParams();
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
             emptyView.setLayoutParams(layoutParams);
         }
@@ -99,7 +102,7 @@ public class EmptyViewHandler {
         }
     };
 
-    private void updateVisibility() {
+    public void updateVisibility() {
         boolean empty;
         if (adapter == null) {
             empty = true;
