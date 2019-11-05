@@ -7,10 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -25,10 +21,14 @@ import java.util.concurrent.Future;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -45,6 +45,7 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
 import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -314,56 +315,53 @@ public class DBWriter {
     public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
                                          final long... itemIds) {
         return dbExec.submit(() -> {
-            if (itemIds.length > 0) {
-                final PodDBAdapter adapter = PodDBAdapter.getInstance();
-                adapter.open();
-                final List<FeedItem> queue = DBReader.getQueue(adapter);
+            if (itemIds.length < 1) {
+                return;
+            }
 
-                if (queue != null) {
-                    boolean queueModified = false;
-                    LongList markAsUnplayedIds = new LongList();
-                    List<QueueEvent> events = new ArrayList<>();
-                    List<FeedItem> updatedItems = new ArrayList<>();
-                    for (int i = 0; i < itemIds.length; i++) {
-                        if (!itemListContains(queue, itemIds[i])) {
-                            final FeedItem item = DBReader.getFeedItem(itemIds[i]);
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.getQueue(adapter);
 
+            boolean queueModified = false;
+            LongList markAsUnplayedIds = new LongList();
+            List<QueueEvent> events = new ArrayList<>();
+            List<FeedItem> updatedItems = new ArrayList<>();
+            ItemEnqueuePositionCalculator positionCalculator =
+                    new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
+            Playable currentlyPlaying = Playable.PlayableUtils.createInstanceFromPreferences(context);
+            int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
+            for (long itemId : itemIds) {
+                if (!itemListContains(queue, itemId)) {
+                    final FeedItem item = DBReader.getFeedItem(itemId);
+                    if (item != null) {
+                        queue.add(insertPosition, item);
+                        events.add(QueueEvent.added(item, insertPosition));
 
-                            if (item != null) {
-                                // add item to either front ot back of queue
-                                boolean addToFront = UserPreferences.enqueueAtFront();
-                                if (addToFront) {
-                                    queue.add(i, item);
-                                    events.add(QueueEvent.added(item, i));
-                                } else {
-                                    queue.add(item);
-                                    events.add(QueueEvent.added(item, queue.size() - 1));
-                                }
-                                item.addTag(FeedItem.TAG_QUEUE);
-                                updatedItems.add(item);
-                                queueModified = true;
-                                if (item.isNew()) {
-                                    markAsUnplayedIds.add(item.getId());
-                                }
-                            }
+                        item.addTag(FeedItem.TAG_QUEUE);
+                        updatedItems.add(item);
+                        queueModified = true;
+                        if (item.isNew()) {
+                            markAsUnplayedIds.add(item.getId());
                         }
-                    }
-                    if (queueModified) {
-                        applySortOrder(queue, events);
-                        adapter.setQueue(queue);
-                        for (QueueEvent event : events) {
-                            EventBus.getDefault().post(event);
-                        }
-                        EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
-                        if (markAsUnplayedIds.size() > 0) {
-                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
-                        }
+                        insertPosition++;
                     }
                 }
-                adapter.close();
-                if (performAutoDownload) {
-                    DBTasks.autodownloadUndownloadedItems(context);
+            }
+            if (queueModified) {
+                applySortOrder(queue, events);
+                adapter.setQueue(queue);
+                for (QueueEvent event : events) {
+                    EventBus.getDefault().post(event);
                 }
+                EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
+                if (markAsUnplayedIds.size() > 0) {
+                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
+                }
+            }
+            adapter.close();
+            if (performAutoDownload) {
+                DBTasks.autodownloadUndownloadedItems(context);
             }
         });
     }

@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
@@ -75,6 +76,13 @@ public class PreferenceUpgrader {
             }
 
             UserPreferences.setQueueLocked(false);
+
+            if (!prefs.contains(UserPreferences.PREF_ENQUEUE_LOCATION)) {
+                final String keyOldPrefEnqueueFront = "prefQueueAddToFront";
+                boolean enqueueAtFront = prefs.getBoolean(keyOldPrefEnqueueFront, false);
+                EnqueueLocation enqueueLocation = enqueueAtFront ? EnqueueLocation.FRONT : EnqueueLocation.BACK;
+                UserPreferences.setEnqueueLocation(enqueueLocation);
+            }
         }
     }
 }

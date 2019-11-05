@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import androidx.test.filters.LargeTest;
 
+import androidx.annotation.StringRes;
+import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
 
-import de.test.antennapod.EspressoTestUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
@@ -28,6 +30,7 @@ import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.test.antennapod.EspressoTestUtils;
 
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
@@ -126,13 +129,19 @@ public class PreferencesTest {
     }
 
     @Test
-    public void testEnqueueAtFront() {
+    public void testEnqueueLocation() {
         clickPreference(R.string.playback_pref);
-        final boolean enqueueAtFront = UserPreferences.enqueueAtFront();
-        clickPreference(R.string.pref_queueAddToFront_title);
-        assertTrue(solo.waitForCondition(() -> enqueueAtFront != UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
-        clickPreference(R.string.pref_queueAddToFront_title);
-        assertTrue(solo.waitForCondition(() -> enqueueAtFront == UserPreferences.enqueueAtFront(), Timeout.getLargeTimeout()));
+        doTestEnqueueLocation(R.string.enqueue_location_after_current, EnqueueLocation.AFTER_CURRENTLY_PLAYING);
+        doTestEnqueueLocation(R.string.enqueue_location_front, EnqueueLocation.FRONT);
+        doTestEnqueueLocation(R.string.enqueue_location_back, EnqueueLocation.BACK);
+    }
+
+    private void doTestEnqueueLocation(@StringRes int optionResId, EnqueueLocation expected) {
+        clickPreference(R.string.pref_enqueue_location_title);
+        onView(withText(optionResId)).perform(click());
+        assertTrue(solo.waitForCondition(
+                () -> expected == UserPreferences.getEnqueueLocation(),
+                Timeout.getLargeTimeout()));
     }
 
     @Test

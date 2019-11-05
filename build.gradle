@@ -46,7 +46,7 @@ project.ext {
 
     workManagerVersion = "1.0.1"
     espressoVersion = "3.2.0"
-    awaitilityVersion = "3.1.2"
+    awaitilityVersion = "3.1.6"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
     commonstextVersion = "1.3"
