@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -63,6 +64,7 @@ public class SubscriptionFragment extends Fragment {
     private DBReader.NavDrawerData navDrawerData;
     private SubscriptionsAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
+    private EmptyViewHandler emptyView;
 
     private int mPosition = -1;
     private boolean isUpdatingFeeds = false;
@@ -87,6 +89,7 @@ public class SubscriptionFragment extends Fragment {
         subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, 3));
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
+        setupEmptyView();
         return root;
     }
 
@@ -136,9 +139,18 @@ public class SubscriptionFragment extends Fragment {
         getActivity().invalidateOptionsMenu();
     }
 
+    private void setupEmptyView() {
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.setIcon(R.attr.ic_folder);
+        emptyView.setTitle(R.string.no_subscriptions_head_label);
+        emptyView.setMessage(R.string.no_subscriptions_label);
+        emptyView.attachToListView(subscriptionGridLayout);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         subscriptionAdapter = new SubscriptionsAdapter((MainActivity) getActivity(), itemAccess);
         subscriptionGridLayout.setAdapter(subscriptionAdapter);
         subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
@@ -174,12 +186,14 @@ public class SubscriptionFragment extends Fragment {
         if(disposable != null) {
             disposable.dispose();
         }
+        emptyView.hide();
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;
                     subscriptionAdapter.notifyDataSetChanged();
+                    emptyView.updateVisibility();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

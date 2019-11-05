@@ -325,6 +325,8 @@
     <string name="no_fav_episodes_label">You can add episodes to the favorites by long-pressing them.</string>
     <string name="no_chapters_head_label">No chapters</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
+    <string name="no_subscriptions_head_label">No subscriptions</string>
+    <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
 
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
