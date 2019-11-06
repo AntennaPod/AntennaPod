@@ -70,7 +70,7 @@
 
             <TextView
                     android:id="@+id/discover_error"
-                    android:textColor="@color/md_edittext_error"
+                    android:textColor="@color/download_failed_red"
                     android:layout_width="match_parent"
                     android:layout_centerInParent="true"
                     android:layout_height="wrap_content" />

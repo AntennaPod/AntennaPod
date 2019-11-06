@@ -3,12 +3,12 @@ package de.danoeh.antennapod.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.Locale;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -24,7 +24,7 @@ public class PlaybackControlsDialog extends DialogFragment {
     private static final String ARGUMENT_IS_PLAYING_VIDEO = "isPlayingVideo";
 
     private PlaybackController controller;
-    private MaterialDialog dialog;
+    private AlertDialog dialog;
     private boolean isPlayingVideo;
 
     public static PlaybackControlsDialog newInstance(boolean isPlayingVideo) {
@@ -59,15 +59,14 @@ public class PlaybackControlsDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         isPlayingVideo = getArguments() != null && getArguments().getBoolean(ARGUMENT_IS_PLAYING_VIDEO);
 
-        dialog = new MaterialDialog.Builder(getContext())
-                .title(R.string.audio_controls)
-                .customView(R.layout.audio_controls, true)
-                .neutralText(R.string.close_label)
-                .onNeutral((dialog1, which) -> {
-                    final SeekBar left = (SeekBar) dialog1.findViewById(R.id.volume_left);
-                    final SeekBar right = (SeekBar) dialog1.findViewById(R.id.volume_right);
+        dialog = new AlertDialog.Builder(getContext())
+                .setTitle(R.string.audio_controls)
+                .setView(R.layout.audio_controls)
+                .setPositiveButton(R.string.close_label, (dialog1, which) -> {
+                    final SeekBar left = dialog.findViewById(R.id.volume_left);
+                    final SeekBar right = dialog.findViewById(R.id.volume_right);
                     UserPreferences.setVolume(left.getProgress(), right.getProgress());
-                }).build();
+                }).create();
         return dialog;
     }
 

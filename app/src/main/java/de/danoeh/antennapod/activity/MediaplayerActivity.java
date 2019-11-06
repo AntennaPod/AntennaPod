@@ -28,7 +28,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
@@ -427,19 +426,15 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     case R.id.disable_sleeptimer_item:
                         if (controller.serviceAvailable()) {
 
-                            MaterialDialog.Builder stDialog = new MaterialDialog.Builder(this);
-                            stDialog.title(R.string.sleep_timer_label);
-                            stDialog.content(getString(R.string.time_left_label)
-                                    + Converter.getDurationStringLong((int) controller
-                                    .getSleepTimerTimeLeft()));
-                            stDialog.positiveText(R.string.disable_sleeptimer_label);
-                            stDialog.negativeText(R.string.cancel_label);
-                            stDialog.onPositive((dialog, which) -> {
-                                dialog.dismiss();
-                                controller.disableSleepTimer();
-                            });
-                            stDialog.onNegative((dialog, which) -> dialog.dismiss());
-                            stDialog.build().show();
+                            new AlertDialog.Builder(this)
+                                .setTitle(R.string.sleep_timer_label)
+                                .setMessage(getString(R.string.time_left_label)
+                                        + Converter.getDurationStringLong((int) controller
+                                        .getSleepTimerTimeLeft()))
+                                .setPositiveButton(R.string.disable_sleeptimer_label, (dialog, which)
+                                        -> controller.disableSleepTimer())
+                                .setNegativeButton(R.string.cancel_label, null)
+                                .show();
                         }
                         break;
                     case R.id.set_sleeptimer_item:
