@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.afollestad.materialdialogs.MaterialDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
@@ -110,9 +110,9 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
                     Log.e(TAG, Log.getStackTraceString(error));
                     view.setAlpha(1f);
                     String prefix = getString(R.string.error_msg_prefix);
-                    new MaterialDialog.Builder(getActivity())
-                            .content(prefix + " " + error.getMessage())
-                            .neutralText(android.R.string.ok)
+                    new AlertDialog.Builder(getActivity())
+                            .setMessage(prefix + " " + error.getMessage())
+                            .setPositiveButton(android.R.string.ok, null)
                             .show();
                 });
     }

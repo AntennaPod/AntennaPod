@@ -154,9 +154,6 @@ dependencies {
 
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    implementation("com.afollestad.material-dialogs:commons:$materialDialogsVersion") {
-        transitive = true
-    }
     implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
     implementation "com.githang:viewpagerindicator:2.5.1@aar"
     implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"

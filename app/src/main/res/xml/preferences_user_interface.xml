@@ -10,8 +10,7 @@
                 android:title="@string/pref_set_theme_title"
                 android:key="prefTheme"
                 android:summary="@string/pref_set_theme_sum"
-                android:defaultValue="system"
-                app:useStockLayout="true"/>
+                android:defaultValue="system"/>
         <Preference
                 android:key="prefHiddenDrawerItems"
                 android:summary="@string/pref_nav_drawer_items_sum"
@@ -22,23 +21,20 @@
                 android:title="@string/pref_nav_drawer_feed_order_title"
                 android:key="prefDrawerFeedOrder"
                 android:summary="@string/pref_nav_drawer_feed_order_sum"
-                android:defaultValue="0"
-                app:useStockLayout="true"/>
+                android:defaultValue="0"/>
         <ListPreference
                 android:entryValues="@array/nav_drawer_feed_counter_values"
                 android:entries="@array/nav_drawer_feed_counter_options"
                 android:title="@string/pref_nav_drawer_feed_counter_title"
                 android:key="prefDrawerFeedIndicator"
                 android:summary="@string/pref_nav_drawer_feed_counter_sum"
-                android:defaultValue="0"
-                app:useStockLayout="true"/>
+                android:defaultValue="0"/>
         <SwitchPreference
                 android:title="@string/pref_episode_cover_title"
                 android:key="prefEpisodeCover"
                 android:summary="@string/pref_episode_cover_summary"
                 android:defaultValue="true"
-                android:enabled="true"
-                app:useStockLayout="true"/>
+                android:enabled="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreference
@@ -71,7 +67,6 @@
                 android:key="prefBackButtonBehavior"
                 android:title="@string/pref_back_button_behavior_title"
                 android:summary="@string/pref_back_button_behavior_sum"
-                android:defaultValue="default"
-                app:useStockLayout="true"/>
+                android:defaultValue="default"/>
     </PreferenceCategory>
 </PreferenceScreen>

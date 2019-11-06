@@ -3,7 +3,6 @@ package de.danoeh.antennapod.dialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -12,9 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-
+import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -26,7 +23,7 @@ public abstract class SleepTimerDialog {
 
     private final Context context;
 
-    private MaterialDialog dialog;
+    private AlertDialog dialog;
     private EditText etxtTime;
     private Spinner spTimeUnit;
     private CheckBox cbShakeToReset;
@@ -38,40 +35,38 @@ public abstract class SleepTimerDialog {
         this.context = context;
     }
 
-    public MaterialDialog createNewDialog() {
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
-        builder.title(R.string.set_sleeptimer_label);
-        builder.customView(R.layout.time_dialog, false);
-        builder.positiveText(R.string.set_sleeptimer_label);
-        builder.negativeText(R.string.cancel_label);
-        builder.onNegative((dialog, which) -> dialog.dismiss());
-        builder.onPositive((dialog, which) -> {
-                try {
-                    savePreferences();
-                    long input = SleepTimerPreferences.timerMillis();
-                    onTimerSet(input, cbShakeToReset.isChecked(), cbVibrate.isChecked());
-                    dialog.dismiss();
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    Toast toast = Toast.makeText(context, R.string.time_dialog_invalid_input,
-                            Toast.LENGTH_LONG);
-                    toast.show();
-                }
-            });
-        dialog = builder.build();
-        
-        View view = dialog.getView();
-        etxtTime = view.findViewById(R.id.etxtTime);
-        spTimeUnit = view.findViewById(R.id.spTimeUnit);
-        cbShakeToReset = view.findViewById(R.id.cbShakeToReset);
-        cbVibrate = view.findViewById(R.id.cbVibrate);
-        chAutoEnable = view.findViewById(R.id.chAutoEnable);
+    public AlertDialog createNewDialog() {
+        View content = View.inflate(context, R.layout.time_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.set_sleeptimer_label);
+        builder.setView(content);
+        builder.setNegativeButton(R.string.cancel_label, (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(R.string.set_sleeptimer_label, (dialog, which) -> {
+            try {
+                savePreferences();
+                long input = SleepTimerPreferences.timerMillis();
+                onTimerSet(input, cbShakeToReset.isChecked(), cbVibrate.isChecked());
+                dialog.dismiss();
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                Toast toast = Toast.makeText(context, R.string.time_dialog_invalid_input,
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+        dialog = builder.create();
+
+        etxtTime = content.findViewById(R.id.etxtTime);
+        spTimeUnit = content.findViewById(R.id.spTimeUnit);
+        cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
+        cbVibrate = content.findViewById(R.id.cbVibrate);
+        chAutoEnable = content.findViewById(R.id.chAutoEnable);
 
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                checkInputLength(s.length());
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.length() > 0);
             }
 
             @Override
@@ -107,16 +102,6 @@ public abstract class SleepTimerDialog {
             EventBus.getDefault().post(new MessageEvent(context.getString(messageString)));
         });
         return dialog;
-    }
-
-    private void checkInputLength(int length) {
-        if (length > 0) {
-            Log.d(TAG, "Length is larger than 0, enabling confirm button");
-            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(true);
-        } else {
-            Log.d(TAG, "Length is smaller than 0, disabling confirm button");
-            dialog.getActionButton(DialogAction.POSITIVE).setEnabled(false);
-        }
     }
 
     public abstract void onTimerSet(long millis, boolean shakeToReset, boolean vibrate);
