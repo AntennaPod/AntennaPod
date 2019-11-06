@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
@@ -42,8 +43,8 @@ import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -164,10 +165,27 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case MOVED:
+                promptUserToEnqueueAfterCurrentlyPlayingIfApplicable(event);
                 return;
         }
         saveScrollPosition();
         onFragmentLoaded(false);
+    }
+
+    private boolean promptUserToEnqueueAfterCurrentlyPlayingIfApplicable(@NonNull QueueEvent event) {
+        // applicable only if the item is moved to top
+        if (QueueEvent.Action.MOVED != event.action || event.position != 0) {
+            return false;
+        }
+        // TODO-2652: prompt if the item moved to the top is currently playing and enqueueLocation settings is FRONT
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Enqueue Location Settings")
+                .setView(R.layout.suggest_enqueue_after_currently_playing_dialog)
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .show();
+
+        return true;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
