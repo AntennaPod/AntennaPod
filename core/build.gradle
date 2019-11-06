@@ -61,7 +61,6 @@ dependencies {
     annotationProcessor "androidx.annotation:annotation:1.1.0"
     implementation "android.arch.work:work-runtime:$workManagerVersion"
     implementation "androidx.media:media:1.1.0"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"

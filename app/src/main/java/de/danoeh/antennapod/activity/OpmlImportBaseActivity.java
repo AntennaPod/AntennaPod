@@ -11,8 +11,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -99,7 +97,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
         if (requestCode != PERMISSION_REQUEST_READ_EXTERNAL_STORAGE) {
             return;
         }
-        if (grantResults.length > 0 && ArrayUtils.contains(grantResults, PackageManager.PERMISSION_GRANTED)) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             startImport();
         } else {
             new AlertDialog.Builder(this)

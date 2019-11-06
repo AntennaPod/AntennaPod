@@ -7,9 +7,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import org.apache.commons.lang3.Validate;
-
 import java.util.List;
+import java.util.Objects;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
@@ -74,9 +73,7 @@ public class SearchListFragment extends PodcastListFragment {
     }
 
     private void changeQuery(String query) {
-        Validate.notNull(query);
-
-        this.query = query;
+        this.query = Objects.requireNonNull(query);
         loadData();
     }
 }

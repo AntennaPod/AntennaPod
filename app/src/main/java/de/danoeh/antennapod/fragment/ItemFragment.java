@@ -36,11 +36,12 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
 
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import org.apache.commons.lang3.ArrayUtils;
+import de.danoeh.antennapod.core.util.ArrayUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -546,7 +547,7 @@ public class ItemFragment extends Fragment implements OnSwipeGesture {
             return;
         }
         long mediaId = item.getMedia().getId();
-        if(ArrayUtils.contains(update.mediaIds, mediaId)) {
+        if (ArrayUtils.contains(update.mediaIds, mediaId)) {
             if (itemsLoaded && getActivity() != null) {
                 updateAppearance();
             }

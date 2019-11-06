@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.Validate;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
@@ -55,7 +53,9 @@ public class DownloadAuthenticationActivity extends AppCompatActivity {
         Button butConfirm = findViewById(R.id.butConfirm);
         Button butCancel = findViewById(R.id.butCancel);
 
-        Validate.isTrue(getIntent().hasExtra(ARG_DOWNLOAD_REQUEST), "Download request missing");
+        if (!getIntent().hasExtra(ARG_DOWNLOAD_REQUEST)) {
+            throw new IllegalArgumentException("Download request missing");
+        }
         DownloadRequest request = getIntent().getParcelableExtra(ARG_DOWNLOAD_REQUEST);
         boolean sendToDownloadRequester = getIntent().getBooleanExtra(ARG_SEND_TO_DOWNLOAD_REQUESTER_BOOL, false);
 

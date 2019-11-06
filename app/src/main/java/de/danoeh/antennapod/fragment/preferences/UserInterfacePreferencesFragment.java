@@ -13,7 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import org.apache.commons.lang3.ArrayUtils;
+import de.danoeh.antennapod.core.util.ArrayUtils;
 
 import java.util.List;
 
@@ -79,7 +79,9 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle(R.string.back_button_go_to_page_title);
-                        builder.setSingleChoiceItems(navTitles, ArrayUtils.indexOf(navTags, UserPreferences.getBackButtonGoToPage()), (dialogInterface, i) -> {
+                        builder.setSingleChoiceItems(navTitles,
+                                ArrayUtils.indexOf(navTags, UserPreferences.getBackButtonGoToPage()),
+                                (dialogInterface, i) -> {
                             if (i >= 0) {
                                 choice[0] = navTags[i];
                             }

@@ -36,13 +36,13 @@ import com.bumptech.glide.Glide;
 
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
+import de.danoeh.antennapod.core.util.ArrayUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
@@ -377,7 +377,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
-        Validate.notNull(fragment);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         switch (transition) {
@@ -395,7 +394,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
         transaction
                 .hide(getSupportFragmentManager().findFragmentByTag("main"))
-                .add(R.id.main_view, fragment, "main")
+                .add(R.id.main_view, Objects.requireNonNull(fragment), "main")
                 .addToBackStack(null)
                 .commit();
     }

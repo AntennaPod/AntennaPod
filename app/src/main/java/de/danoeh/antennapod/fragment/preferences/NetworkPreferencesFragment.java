@@ -10,8 +10,8 @@ import android.text.format.DateFormat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.ArrayUtils;
 import de.danoeh.antennapod.dialog.ProxyDialog;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

@@ -139,7 +139,6 @@ dependencies {
     implementation "com.google.android.material:material:1.0.0"
     annotationProcessor "androidx.annotation:annotation:1.1.0"
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
-    implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
@@ -162,6 +161,7 @@ dependencies {
     implementation 'com.github.mfietz:fyydlin:v0.4.2'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
 
+    androidTestImplementation "org.apache.commons:commons-lang3:3.6"
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"

@@ -29,12 +29,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -132,9 +132,7 @@ public class FeedItemlistFragment extends ListFragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
 
-        Bundle args = getArguments();
-        Validate.notNull(args);
-        feedID = args.getLong(ARGUMENT_FEED_ID);
+        feedID = Objects.requireNonNull(getArguments()).getLong(ARGUMENT_FEED_ID);
     }
 
     @Override

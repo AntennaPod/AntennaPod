@@ -26,7 +26,6 @@ import android.widget.TextView;
 import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -38,6 +37,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.ArrayUtils;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;

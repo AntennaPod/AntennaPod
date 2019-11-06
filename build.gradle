@@ -48,7 +48,6 @@ project.ext {
     espressoVersion = "3.2.0"
     awaitilityVersion = "3.1.6"
     commonsioVersion = "2.5"
-    commonslangVersion = "3.6"
     eventbusVersion = "3.1.1"
     glideVersion = "4.8.0"
     glideOkhttpIntegrationVersion = "4.8.0"

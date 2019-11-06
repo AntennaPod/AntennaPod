@@ -9,8 +9,6 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Set;
 
 import de.danoeh.antennapod.R;
@@ -22,6 +20,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.core.util.StringUtils;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
 

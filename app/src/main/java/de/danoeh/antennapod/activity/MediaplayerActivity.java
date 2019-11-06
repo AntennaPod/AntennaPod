@@ -49,6 +49,7 @@ import de.danoeh.antennapod.core.util.Function;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.StringUtils;
 import de.danoeh.antennapod.core.util.Supplier;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
@@ -63,7 +64,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -500,7 +500,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static String getWebsiteLinkWithFallback(Playable media) {
         if (media == null) {
             return null;
-        } else if (StringUtils.isNotBlank(media.getWebsiteLink())) {
+        } else if (!StringUtils.isBlank(media.getWebsiteLink())) {
             return media.getWebsiteLink();
         } else if (media instanceof FeedMedia) {
             return FeedItemUtil.getLinkWithFallback(((FeedMedia)media).getItem());

@@ -6,10 +6,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.apache.commons.lang3.Validate;
-
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.receiver.SPAReceiver;
+
+import java.util.Objects;
 
 /**
  * Provides methods related to AntennaPodSP (https://github.com/danieloeh/AntennaPodSP)
@@ -59,9 +59,8 @@ public class SPAUtil {
      */
     public static void resetSPAPreferences(Context c) {
         if (BuildConfig.DEBUG) {
-            Validate.notNull(c);
-            SharedPreferences.Editor editor = PreferenceManager
-                    .getDefaultSharedPreferences(c.getApplicationContext()).edit();
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(
+                    Objects.requireNonNull(c).getApplicationContext()).edit();
             editor.putBoolean(PREF_HAS_QUERIED_SP_APPS, false);
             editor.apply();
         }

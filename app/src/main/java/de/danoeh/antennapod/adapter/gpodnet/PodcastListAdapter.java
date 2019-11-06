@@ -11,13 +11,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.core.util.StringUtils;
 
 /**
  * Adapter for displaying a list of GPodnetPodcast-Objects.
@@ -50,7 +50,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
             holder = (Holder) convertView.getTag();
         }
 
-        if (StringUtils.isNotBlank(podcast.getLogoUrl())) {
+        if (!StringUtils.isBlank(podcast.getLogoUrl())) {
             Glide.with(convertView.getContext())
                     .load(podcast.getLogoUrl())
                     .apply(new RequestOptions()

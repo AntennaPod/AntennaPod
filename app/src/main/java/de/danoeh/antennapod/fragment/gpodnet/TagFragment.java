@@ -3,9 +3,8 @@ package de.danoeh.antennapod.fragment.gpodnet;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
-import org.apache.commons.lang3.Validate;
-
 import java.util.List;
+import java.util.Objects;
 
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
@@ -25,10 +24,9 @@ public class TagFragment extends PodcastListFragment {
     private GpodnetTag tag;
 
     public static TagFragment newInstance(GpodnetTag tag) {
-        Validate.notNull(tag);
         TagFragment fragment = new TagFragment();
         Bundle args = new Bundle();
-        args.putParcelable("tag", tag);
+        args.putParcelable("tag", Objects.requireNonNull(tag));
         fragment.setArguments(args);
         return fragment;
     }
@@ -38,7 +36,9 @@ public class TagFragment extends PodcastListFragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        Validate.isTrue(args != null && args.getParcelable("tag") != null, "args invalid");
+        if (args.getParcelable("tag") == null) {
+            throw new IllegalArgumentException("args invalid");
+        }
         tag = args.getParcelable("tag");
     }
 
