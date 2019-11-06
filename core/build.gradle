@@ -62,7 +62,6 @@ dependencies {
     implementation "android.arch.work:work-runtime:$workManagerVersion"
     implementation "androidx.media:media:1.1.0"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "org.apache.commons:commons-text:$commonstextVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
