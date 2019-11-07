@@ -147,7 +147,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      */
     private void setLoadingLayout() {
         progressBar.setVisibility(View.VISIBLE);
-        listView.setVisibility(View.GONE);
+        findViewById(R.id.feedDisplay).setVisibility(View.GONE);
     }
 
     @Override
@@ -360,27 +360,26 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      */
     private void showFeedInformation(final Feed feed, Map<String, String> alternateFeedUrls) {
         progressBar.setVisibility(View.GONE);
-        listView.setVisibility(View.VISIBLE);
+        findViewById(R.id.feedDisplay).setVisibility(View.VISIBLE);
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
         listView.setSelector(android.R.color.transparent);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View header = inflater.inflate(R.layout.onlinefeedview_header, listView, false);
-        listView.addHeaderView(header);
-
         listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-        ImageView cover = header.findViewById(R.id.imgvCover);
-        ImageView headerBackground = header.findViewById(R.id.imgvBackground);
-        header.findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
-        header.findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
+        ImageView cover = findViewById(R.id.imgvCover);
+        ImageView headerBackground = findViewById(R.id.imgvBackground);
+        findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
+        findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         headerBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
-        TextView title = header.findViewById(R.id.txtvTitle);
-        TextView author = header.findViewById(R.id.txtvAuthor);
-        TextView description = header.findViewById(R.id.txtvDescription);
-        Spinner spAlternateUrls = header.findViewById(R.id.spinnerAlternateUrls);
+        TextView title = findViewById(R.id.txtvTitle);
+        TextView author = findViewById(R.id.txtvAuthor);
+        Spinner spAlternateUrls = findViewById(R.id.spinnerAlternateUrls);
 
-        subscribeButton = header.findViewById(R.id.butSubscribe);
+        View header = View.inflate(this, R.layout.onlinefeedview_header, null);
+        listView.addHeaderView(header);
+        TextView description = header.findViewById(R.id.txtvDescription);
+
+        subscribeButton = findViewById(R.id.butSubscribe);
 
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
