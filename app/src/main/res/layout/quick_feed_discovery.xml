@@ -52,8 +52,6 @@
                     android:numColumns="4"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1"
-                    android:horizontalSpacing="4dp"
-                    android:verticalSpacing="4dp"
                     android:scrollbars="none"
                     android:layout_marginTop="8dp"
                     android:layout_centerInParent="true"
