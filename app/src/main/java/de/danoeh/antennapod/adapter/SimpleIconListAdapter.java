@@ -38,8 +38,6 @@ public class SimpleIconListAdapter extends ArrayAdapter<SimpleIconListAdapter.Li
         Glide.with(context)
                 .load(item.imageUrl)
                 .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .error(R.color.light_gray)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .fitCenter()
                         .dontAnimate())

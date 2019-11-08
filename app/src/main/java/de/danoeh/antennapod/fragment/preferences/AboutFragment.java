@@ -24,7 +24,12 @@ public class AboutFragment extends PreferenceFragmentCompat {
         });
         findPreference("about_developers").setOnPreferenceClickListener((preference) -> {
             getFragmentManager().beginTransaction().replace(R.id.content, new AboutDevelopersFragment())
-                    .addToBackStack(getString(R.string.about_pref)).commit();
+                    .addToBackStack(getString(R.string.developers)).commit();
+            return true;
+        });
+        findPreference("about_translators").setOnPreferenceClickListener((preference) -> {
+            getFragmentManager().beginTransaction().replace(R.id.content, new AboutTranslatorsFragment())
+                    .addToBackStack(getString(R.string.translators)).commit();
             return true;
         });
     }
