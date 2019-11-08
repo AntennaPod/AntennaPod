@@ -1,24 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
-    <TextView android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:drawableTop="@drawable/ic_tooltip_arrow_up_24dp"
+        >
+    <ImageView
+            android:id="@+id/ic_arrow"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="You have moved the currently playing episode to the top.\n\nDo you want to enqueue episodes after currently playing one in the future?"
+            app:srcCompat="@drawable/ic_tooltip_arrow_up_24dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
             />
-    <LinearLayout
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
+    <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:background="@drawable/tooltip_background_no_arrow"
+            android:layout_below="@id/ic_arrow"
+            >
         <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/txtvMessage"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remember the choice" />
-    </LinearLayout>
-</LinearLayout>
+                android:textSize="14sp"
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingLeft="16dp"
+                android:paddingEnd="16dp"
+                android:paddingRight="16dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:text="You have moved the currently playing episode to the top.\nDo you want to enqueue episodes after currently playing one in the future?" />
+
+        <Space
+                android:id="@+id/spacer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@id/txtvMessage"
+                />
+
+        <Button
+                android:id="@+id/btnNegative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_below="@id/spacer"
+                android:layout_toStartOf="@id/btnPositive"
+                android:layout_toLeftOf="@id/btnPositive"
+                />
+
+        <Button
+                android:id="@+id/btnPositive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yes"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_below="@id/spacer"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                />
+
+    </RelativeLayout>
+
+</RelativeLayout>

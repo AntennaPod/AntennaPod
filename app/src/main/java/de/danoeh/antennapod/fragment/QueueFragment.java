@@ -26,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.tomergoldst.hoverview.HoverView;
+import com.tomergoldst.hoverview.HoverViewManager;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import org.greenrobot.eventbus.EventBus;
@@ -177,13 +179,30 @@ public class QueueFragment extends Fragment {
         if (QueueEvent.Action.MOVED != event.action || event.position != 0) {
             return false;
         }
+
         // TODO-2652: prompt if the item moved to the top is currently playing and enqueueLocation settings is FRONT
-        new AlertDialog.Builder(requireContext())
-                .setTitle("Enqueue Location Settings")
-                .setView(R.layout.suggest_enqueue_after_currently_playing_dialog)
-                .setPositiveButton("Yes", null)
-                .setNegativeButton("No", null)
-                .show();
+
+        final HoverViewManager viewManager = new HoverViewManager();
+        final ViewGroup rootView = (ViewGroup) requireView();
+        final View anchorView = recyclerView.getChildAt(0);
+        // don't have tooltip arrow built-in. I need to draw it in the promptView, assuming
+        // the view will be put below the anchor
+        View promptView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.suggest_enqueue_after_currently_playing_dialog, rootView, false);
+        promptView.findViewById(R.id.btnPositive).setOnClickListener(v -> {
+            // TODO-2652: actual logic
+            viewManager.findAndDismiss(anchorView);
+        });
+        promptView.findViewById(R.id.btnNegative).setOnClickListener(v -> {
+            viewManager.findAndDismiss(anchorView);
+        });
+
+        viewManager.show(new HoverView.Builder(requireContext(),
+                anchorView,
+                rootView,
+                promptView,
+                HoverView.POSITION_BELOW
+        ).build());
 
         return true;
     }
