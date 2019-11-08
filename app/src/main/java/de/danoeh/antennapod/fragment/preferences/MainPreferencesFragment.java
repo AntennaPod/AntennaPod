@@ -63,7 +63,8 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
 
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
-                    startActivity(new Intent(getActivity(), AboutActivity.class));
+                    getFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment())
+                            .addToBackStack(getString(R.string.about_pref)).commit();
                     return true;
                 }
         );
