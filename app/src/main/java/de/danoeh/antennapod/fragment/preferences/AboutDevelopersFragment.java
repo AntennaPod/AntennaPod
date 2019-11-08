@@ -43,7 +43,7 @@ public class AboutDevelopersFragment extends ListFragment {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-                developers -> setListAdapter(new SimpleIconListAdapter(getContext(), developers)),
+                developers -> setListAdapter(new SimpleIconListAdapter<>(getContext(), developers)),
                 error -> Toast.makeText(getContext(), "Error while loading developers", Toast.LENGTH_LONG).show()
         );
 

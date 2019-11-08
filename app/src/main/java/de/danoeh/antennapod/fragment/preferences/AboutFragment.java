@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.util.IntentUtils;
 
 public class AboutFragment extends PreferenceFragmentCompat {
 
@@ -33,6 +34,15 @@ public class AboutFragment extends PreferenceFragmentCompat {
         });
         findPreference("about_translators").setOnPreferenceClickListener((preference) -> {
             getFragmentManager().beginTransaction().replace(R.id.content, new AboutTranslatorsFragment())
+                    .addToBackStack(getString(R.string.translators)).commit();
+            return true;
+        });
+        findPreference("about_privacy_policy").setOnPreferenceClickListener((preference) -> {
+            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/privacy.html");
+            return true;
+        });
+        findPreference("about_licenses").setOnPreferenceClickListener((preference) -> {
+            getFragmentManager().beginTransaction().replace(R.id.content, new AboutLicensesFragment())
                     .addToBackStack(getString(R.string.translators)).commit();
             return true;
         });

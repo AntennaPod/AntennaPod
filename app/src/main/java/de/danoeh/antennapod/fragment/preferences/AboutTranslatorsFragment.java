@@ -42,7 +42,7 @@ public class AboutTranslatorsFragment extends ListFragment {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-                translators -> setListAdapter(new SimpleIconListAdapter(getContext(), translators)),
+                translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),
                 error -> Toast.makeText(getContext(), "Error while loading translators", Toast.LENGTH_LONG).show()
         );
 

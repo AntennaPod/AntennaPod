@@ -11,19 +11,19 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Displays a list of items that have a subtitle and an icon.
  */
-public class SimpleIconListAdapter extends ArrayAdapter<SimpleIconListAdapter.ListItem> {
+public class SimpleIconListAdapter<T extends SimpleIconListAdapter.ListItem> extends ArrayAdapter<T> {
     private final Context context;
-    private final ArrayList<ListItem> developers;
+    private final List<T> listItems;
 
-    public SimpleIconListAdapter(Context context, ArrayList<ListItem> developers) {
-        super(context, R.layout.simple_icon_list_item, developers);
+    public SimpleIconListAdapter(Context context, List<T> listItems) {
+        super(context, R.layout.simple_icon_list_item, listItems);
         this.context = context;
-        this.developers = developers;
+        this.listItems = listItems;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SimpleIconListAdapter extends ArrayAdapter<SimpleIconListAdapter.Li
             view = View.inflate(context, R.layout.simple_icon_list_item, null);
         }
 
-        ListItem item = developers.get(position);
+        ListItem item = listItems.get(position);
         ((TextView) view.findViewById(R.id.title)).setText(item.title);
         ((TextView) view.findViewById(R.id.subtitle)).setText(item.subtitle);
         Glide.with(context)
@@ -46,9 +46,9 @@ public class SimpleIconListAdapter extends ArrayAdapter<SimpleIconListAdapter.Li
     }
 
     public static class ListItem {
-        final String title;
-        final String subtitle;
-        final String imageUrl;
+        public final String title;
+        public final String subtitle;
+        public final String imageUrl;
 
         public ListItem(String title, String subtitle, String imageUrl) {
             this.title = title;
