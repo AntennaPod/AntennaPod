@@ -9,7 +9,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="4dp"
-            android:layout_margin="16dp"
+            android:layout_margin="32dp"
             android:elevation="16dp">
 
         <FrameLayout
@@ -23,10 +23,40 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/progressBar"
                     android:layout_gravity="center"/>
-            <ListView
-                    android:id="@+id/listview"
+
+            <LinearLayout
+                    android:id="@+id/feedDisplay"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <include layout="@layout/feeditemlist_header"/>
+
+                <Spinner
+                        android:id="@+id/spinnerAlternateUrls"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="8dp"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="@dimen/text_size_micro"/>
+
+                <Button
+                        android:id="@+id/butSubscribe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:focusable="false"
+                        android:text="@string/subscribe_label"/>
+
+                <ListView
+                        android:id="@+id/listview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+            </LinearLayout>
 
         </FrameLayout>
     </androidx.cardview.widget.CardView>
