@@ -31,7 +31,7 @@ public class AboutTranslatorsFragment extends ListFragment {
         translatorsLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
             ArrayList<SimpleIconListAdapter.ListItem> translators = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("translators.txt")));
+                    getContext().getAssets().open("translators.csv")));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");

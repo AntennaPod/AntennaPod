@@ -13,24 +13,27 @@ else:
     TRANSIFEX_USER = ""
     TRANSIFEX_PW = ""
 
-csvFile = open("app/src/main/assets/translators.txt", "w")
+csvFile = open("app/src/main/assets/translators.csv", "w")
+contributorsFile = open("CONTRIBUTORS", "a")
 r = requests.get('http://www.transifex.com/api/2/project/antennapod/languages/',
         auth=(TRANSIFEX_USER, TRANSIFEX_PW))
 for lang in r.json():
-    lang_contributers = lang['coordinators'] + lang['reviewers'] + lang['translators']
-    lang_contributers = sorted(lang_contributers, key=str.lower)
-    lang_code = lang['language_code']
+    langContributers = lang['coordinators'] + lang['reviewers'] + lang['translators']
+    langContributers = sorted(langContributers, key=str.lower)
+    langCode = lang['language_code']
     try:
-        lang_name = pycountry.languages.lookup(lang_code).name
+        langName = pycountry.languages.lookup(langCode).name
     except:
         try:
-            lang_name = pycountry.languages.lookup(
-                lang_code.split('_')[0]).name + ' (' + lang_code + ')'
+            langName = pycountry.languages.lookup(
+                langCode.split('_')[0]).name + ' (' + langCode + ')'
         except:
-            lang_name = lang['language_code']
-            print('\033[91mLanguage code not found:' + lang_code + '\033[0m')
+            langName = lang['language_code']
+            print('\033[91mLanguage code not found:' + langCode + '\033[0m')
 
-    line = lang_name + ';' + ', '.join(lang_contributers).replace(';', '')
-    csvFile.write(line + '\n')
-    print(line)
+    joinedTranslators = ', '.join(langContributers).replace(';', '');
+    contributorsFile.write(langName + ": " + joinedTranslators + '\n')
+    csvFile.write(langName + ';' + joinedTranslators + '\n')
+    print(langName + ';' + joinedTranslators)
 csvFile.close()
+contributorsFile.close()

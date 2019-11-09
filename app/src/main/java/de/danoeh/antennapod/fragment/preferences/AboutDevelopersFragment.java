@@ -31,7 +31,7 @@ public class AboutDevelopersFragment extends ListFragment {
         developersLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
             ArrayList<SimpleIconListAdapter.ListItem> developers = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("developers.txt")));
+                    getContext().getAssets().open("developers.csv")));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");

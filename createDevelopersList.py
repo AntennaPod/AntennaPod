@@ -4,7 +4,8 @@ import requests
 MAINTAINERS = ['mfietz', 'ByteHamster']
 FORMER_MAINTAINERS = ['TomHennen']
 
-csvFile = open("app/src/main/assets/developers.txt", "w")
+csvFile = open("app/src/main/assets/developers.csv", "w")
+contributorsFile = open("CONTRIBUTORS", "a")
 page = 1
 hasMore = True
 while hasMore:
@@ -21,7 +22,9 @@ while hasMore:
         line = contributor['login'].replace(";", "") + ';' + str(contributor['id']) + ';' + role
         csvFile.write(line + '\n')
         print(line)
+        contributorsFile.write(contributor['login'] + '\n')
     page = page + 1
     hasMore = len(json) > 0
 csvFile.close()
+contributorsFile.close()
          
