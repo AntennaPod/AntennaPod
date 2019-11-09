@@ -14,7 +14,7 @@ while hasMore:
     for contributor in json:
         role = 'Contributor'
         if contributor['login'] == 'danieloeh':
-            role = 'Creator (retired)'
+            role = 'Original creator of AntennaPod (retired)'
         elif contributor['login'] in MAINTAINERS:
             role = 'Maintainer'
         elif contributor['login'] in FORMER_MAINTAINERS:
