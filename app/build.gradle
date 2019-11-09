@@ -24,6 +24,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         generatedDensities = []
 
+        def commit = "Unknown commit"
+        try {
+            commit = "git rev-parse --short HEAD".execute().text.trim()
+        } catch (Exception ignore) { }
+        buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [ eventBusIndex : 'de.danoeh.antennapod.ApEventBusIndex' ]
@@ -181,18 +187,7 @@ if (project.hasProperty("antennaPodServiceAccountEmail")) {
     }
 }
 
-task filterAbout(type: Copy) {
-    from "src/main/templates/about.html"
-    into "src/main/assets"
-    filter(ReplaceTokens, tokens: [
-            versionname: android.defaultConfig.versionName,
-            commit     : "git rev-parse --short HEAD".execute().text,
-            year       : new Date().format('yyyy')])
-    outputs.upToDateWhen { false }
-}
-
-task copyTextFiles(type: Copy) {
-    from "../CONTRIBUTORS"
+task copyLicense(type: Copy) {
     from "../LICENSE"
     into "src/main/assets/"
     rename { String fileName ->
@@ -201,5 +196,5 @@ task copyTextFiles(type: Copy) {
     outputs.upToDateWhen { false }
 }
 
-preBuild.dependsOn filterAbout, copyTextFiles
+preBuild.dependsOn copyLicense
 

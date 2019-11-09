@@ -331,7 +331,6 @@
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
     <string name="project_pref">Project</string>
-    <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
     <string name="integrations_label">Integrations</string>
     <string name="automation">Automation</string>
@@ -502,6 +501,17 @@
     <string name="back_button_go_to_page_title">Select page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
+
+    <!-- About screen -->
+    <string name="about_pref">About</string>
+    <string name="antennapod_version">AntennaPod version</string>
+    <string name="developers">Developers</string>
+    <string name="developers_summary">Everyone can help to make AntennaPod better</string>
+    <string name="translators">Translators</string>
+    <string name="translators_summary">Translations are created by users of AntennaPod using Transifex</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="licenses">Licenses</string>
+    <string name="licenses_summary">AntennaPod uses other great software</string>
 
     <!-- Search -->
     <string name="search_hint">Search for episodes</string>
