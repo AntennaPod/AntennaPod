@@ -66,8 +66,8 @@ public abstract class PlaybackTest {
 
     @After
     public void tearDown() throws Exception {
+        activityTestRule.finishActivity();
         uiTestUtils.tearDown();
-
         // shut down playback service
         context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
         Awaitility.await().until(() -> !PlaybackService.isRunning);
