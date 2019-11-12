@@ -653,14 +653,16 @@ public class QueueFragment extends Fragment {
 
     private void refreshInfoBar() {
         String info = queue.size() + getString(R.string.episodes_suffix);
-        if(queue.size() > 0) {
+        if (queue.size() > 0) {
             long timeLeft = 0;
-            for(FeedItem item : queue) {
-                float playbackSpeed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(item.getMedia());
-                if(item.getMedia() != null) {
-                    timeLeft +=
-                            (long) ((item.getMedia().getDuration() - item.getMedia().getPosition())
-                                    / playbackSpeed);
+            for (FeedItem item : queue) {
+                float playbackSpeed = 1;
+                if (UserPreferences.timeRespectsSpeed()) {
+                    playbackSpeed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(item.getMedia());
+                }
+                if (item.getMedia() != null) {
+                    long itemTimeLeft = item.getMedia().getDuration() - item.getMedia().getPosition();
+                    timeLeft += itemTimeLeft / playbackSpeed;
                 }
             }
             info += " • ";
