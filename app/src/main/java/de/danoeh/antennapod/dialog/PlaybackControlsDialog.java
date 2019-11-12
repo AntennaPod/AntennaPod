@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import java.util.Locale;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -42,7 +43,12 @@ public class PlaybackControlsDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        controller = new PlaybackController(getActivity(), false);
+        controller = new PlaybackController(getActivity(), false) {
+            @Override
+            public void setupGUI() {
+                setupUi();
+            }
+        };
         controller.init();
         setupUi();
     }
@@ -109,6 +115,7 @@ public class PlaybackControlsDialog extends DialogFragment {
                     controller.setPlaybackSpeed(playbackSpeed);
                     String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
 
+                    PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(playbackSpeed);
                     if (isPlayingVideo) {
                         UserPreferences.setVideoPlaybackSpeed(speedPref);
                     } else {
@@ -135,7 +142,7 @@ public class PlaybackControlsDialog extends DialogFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        barPlaybackSpeed.setProgress((int) ((currentSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP));
+        barPlaybackSpeed.setProgress(Math.round((currentSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP));
 
         final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
         barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
