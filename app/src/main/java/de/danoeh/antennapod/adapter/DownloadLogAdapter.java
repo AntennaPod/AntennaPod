@@ -2,7 +2,6 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.os.Build;
-import androidx.core.content.ContextCompat;
 import android.text.Layout;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -12,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.joanzapata.iconify.widget.IconButton;
 import com.joanzapata.iconify.widget.IconTextView;
@@ -24,6 +25,7 @@ import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 /** Displays a list of DownloadStatus entries. */
 public class DownloadLogAdapter extends BaseAdapter {
@@ -132,7 +134,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 				FeedMedia media = DBReader.getFeedMedia(holder.id);
 				if (media != null) {
 					try {
-						DBTasks.downloadFeedItems(context, media.getItem());
+						DownloadRequester.getInstance().downloadMedia(context, media.getItem());
 						Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
 					} catch (DownloadRequestException e) {
 						e.printStackTrace();

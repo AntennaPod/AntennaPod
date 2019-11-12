@@ -9,6 +9,8 @@ import android.util.Log;
 
 import androidx.annotation.VisibleForTesting;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -38,7 +40,6 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
-import org.greenrobot.eventbus.EventBus;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -305,70 +306,9 @@ public final class DBTasks {
         EventBus.getDefault().post(new FeedListUpdateEvent(media.getItem().getFeed()));
     }
 
-    /**
-     * Requests the download of a list of FeedItem objects.
-     *
-     * @param context Used for requesting the download and accessing the DB.
-     * @param items   The FeedItem objects.
-     */
-    public static void downloadFeedItems(final Context context,
-                                         FeedItem... items) throws DownloadRequestException {
-        downloadFeedItems(true, context, items);
-    }
-
-    static void downloadFeedItems(boolean performAutoCleanup,
-                                  final Context context, final FeedItem... items)
-            throws DownloadRequestException {
-        final DownloadRequester requester = DownloadRequester.getInstance();
-
-        if (performAutoCleanup) {
-            new Thread() {
-
-                @Override
-                public void run() {
-                    ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
-                            .makeRoomForEpisodes(context, items.length);
-                }
-
-            }.start();
-        }
-        // #2448: First, add to-download items to the queue before actual download
-        // so that the resulting queue order is the same as when download is clicked
-        try {
-            enqueueFeedItemsToDownload(context, items);
-        } catch (Throwable t) {
-            throw new DownloadRequestException("Unexpected exception during enqueue before downloads", t);
-        }
-
-        // Then, download them
-        for (FeedItem item : items) {
-            if (item.getMedia() != null
-                    && !requester.isDownloadingFile(item.getMedia())
-                    && !item.getMedia().isDownloaded()) {
-                if (items.length > 1) {
-                    try {
-                        requester.downloadMedia(context, item.getMedia());
-                    } catch (DownloadRequestException e) {
-                        e.printStackTrace();
-                        DBWriter.addDownloadStatus(
-                                new DownloadStatus(item.getMedia(), item
-                                        .getMedia()
-                                        .getHumanReadableIdentifier(),
-                                        DownloadError.ERROR_REQUEST_ERROR,
-                                        false, e.getMessage()
-                                )
-                        );
-                    }
-                } else {
-                    requester.downloadMedia(context, item.getMedia());
-                }
-            }
-        }
-    }
-
-    @VisibleForTesting
+    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public static List<? extends FeedItem> enqueueFeedItemsToDownload(final Context context,
-                                                                      FeedItem... items)
+                                                                      List<? extends FeedItem> items)
             throws InterruptedException, ExecutionException {
         List<FeedItem> itemsToEnqueue = new ArrayList<>();
         if (UserPreferences.enqueueDownloadedEpisodes()) {
