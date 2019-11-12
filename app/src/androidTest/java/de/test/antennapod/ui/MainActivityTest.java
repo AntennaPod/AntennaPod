@@ -3,10 +3,10 @@ package de.test.antennapod.ui;
 import android.app.Activity;
 import android.content.Intent;
 import androidx.test.InstrumentationRegistry;
+import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.robotium.solo.Solo;
-import com.robotium.solo.Timeout;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -23,7 +23,13 @@ import java.io.IOException;
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.contrib.ActivityResultMatchers.hasResultCode;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.Intents.times;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
@@ -69,10 +75,11 @@ public class MainActivityTest {
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
         openNavDrawer();
         onView(withText(R.string.add_feed_label)).perform(click());
-        solo.enterText(1, feed.getDownload_url());
-        onView(withText(R.string.confirm_label)).perform(click());
+        onView(withId(R.id.etxtFeedurl)).perform(typeText(feed.getDownload_url()));
+        onView(withText(R.string.confirm_label)).perform(scrollTo()).perform(click());
+        Espresso.closeSoftKeyboard();
         onView(withText(R.string.subscribe_label)).perform(click());
-        assertTrue(solo.waitForText(solo.getString(R.string.open_podcast), 0, Timeout.getLargeTimeout(), false));
+        intended(hasComponent(MainActivity.class.getName()), times(2));
     }
 
     private String getActionbarTitle() {

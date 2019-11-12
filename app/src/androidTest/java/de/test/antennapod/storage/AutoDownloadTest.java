@@ -60,11 +60,10 @@ public class AutoDownloadTest {
     @After
     public void tearDown() throws Exception {
         stubFeedsServer.tearDown();
+        ClientConfig.dbTasksCallbacks = dbTasksCallbacksOrig;
 
         context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
         Awaitility.await().until(() -> !PlaybackService.isRunning);
-
-        ClientConfig.dbTasksCallbacks = dbTasksCallbacksOrig;
     }
 
     /**
