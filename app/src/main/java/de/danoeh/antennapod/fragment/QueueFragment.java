@@ -212,7 +212,14 @@ public class QueueFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (recyclerAdapter != null) {
-            recyclerAdapter.notifyCurrentlyPlayingItemChanged(event);
+            for (int i = 0; i < recyclerAdapter.getItemCount(); i++) {
+                QueueRecyclerAdapter.ViewHolder holder = (QueueRecyclerAdapter.ViewHolder)
+                        recyclerView.findViewHolderForAdapterPosition(i);
+                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                    holder.notifyPlaybackPositionUpdated(event);
+                    break;
+                }
+            }
         }
     }
 
