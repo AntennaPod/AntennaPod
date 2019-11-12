@@ -383,7 +383,14 @@ public abstract class EpisodesListFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (listAdapter != null) {
-            listAdapter.notifyCurrentlyPlayingItemChanged(event);
+            for (int i = 0; i < listAdapter.getItemCount(); i++) {
+                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)
+                        recyclerView.findViewHolderForAdapterPosition(i);
+                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                    holder.notifyPlaybackPositionUpdated(event);
+                    break;
+                }
+            }
         }
     }
 

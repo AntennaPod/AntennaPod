@@ -61,7 +61,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
     private boolean locked;
 
     private FeedItem selectedItem;
-    private ViewHolder currentlyPlayingItem = null;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
@@ -84,11 +83,13 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
         notifyDataSetChanged();
     }
 
+    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.queue_listitem, parent, false);
         return new ViewHolder(view);
     }
 
+    @Override
     public void onBindViewHolder(ViewHolder holder, int pos) {
         FeedItem item = itemAccess.getItem(pos);
         holder.bind(item);
@@ -96,18 +97,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             selectedItem = item;
             return false;
         });
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int pos, List<Object> payload) {
-        onBindViewHolder(holder, pos);
-
-        if (holder == currentlyPlayingItem && payload.size() == 1 && payload.get(0) instanceof PlaybackPositionEvent) {
-            PlaybackPositionEvent event = (PlaybackPositionEvent) payload.get(0);
-            holder.progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
-            holder.progressLeft.setText(Converter.getDurationStringLong(event.getPosition()));
-            holder.progressRight.setText(Converter.getDurationStringLong(event.getDuration()));
-        }
     }
 
     @Nullable
@@ -123,12 +112,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
     public int getItemCount() {
         return itemAccess.getCount();
-    }
-
-    public void notifyCurrentlyPlayingItemChanged(PlaybackPositionEvent event) {
-        if (currentlyPlayingItem != null && currentlyPlayingItem.getAdapterPosition() != RecyclerView.NO_POSITION) {
-            notifyItemChanged(currentlyPlayingItem.getAdapterPosition(), event);
-        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
@@ -310,7 +293,6 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
 
                 if(media.isCurrentlyPlaying()) {
                     container.setBackgroundColor(playingBackGroundColor);
-                    currentlyPlayingItem = this;
                 } else {
                     container.setBackgroundColor(normalBackGroundColor);
                 }
@@ -330,6 +312,15 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                     .load();
         }
 
+        public boolean isCurrentlyPlayingItem() {
+            return item.getMedia() != null && item.getMedia().isCurrentlyPlaying();
+        }
+
+        public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {
+            progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
+            progressLeft.setText(Converter.getDurationStringLong(event.getPosition()));
+            progressRight.setText(Converter.getDurationStringLong(event.getDuration()));
+        }
     }
 
     public interface ItemAccess {
