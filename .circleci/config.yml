@@ -52,17 +52,38 @@ workflows:
                 name: Execute release unit tests
                 command: ./gradlew :core:testPlayReleaseUnitTest -PdisablePreDex
       - build:
-          name: Build integration tests
-          build-steps:
-            - run:
-                name: Build integration tests
-                command: ./gradlew :app:assemblePlayDebugAndroidTest -PdisablePreDex
-      - build:
           name: Build free
           build-steps:
             - run:
                 name: Build free (for F-Droid)
                 command: ./gradlew assembleFreeRelease -PdisablePreDex -PfreeBuild
+      - build:
+          name: Run integration tests
+          build-steps:
+            - run:
+                name: Setup emulator
+                command: |
+                  sdkmanager --no_https "platforms;android-28"
+                  sdkmanager --no_https "emulator"
+                  sdkmanager --no_https "system-images;android-28;default;x86_64"
+                  echo "no" | avdmanager create avd -n test -k "system-images;android-28;default;x86_64"
+            - run:
+                name: Launch emulator
+                command: |
+                  export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
+                  emulator-headless -avd test -no-audio -camera-back none -camera-front none -no-boot-anim -no-window -verbose
+                background: true
+            - run:
+                name: Wait for emulator
+                command: |
+                  circle-android wait-for-boot
+                  adb shell input keyevent 82
+                  adb shell settings put global window_animation_scale 0
+                  adb shell settings put global transition_animation_scale 0
+                  adb shell settings put global animator_duration_scale 0
+            - run:
+                name: Run Tests
+                command: ./gradlew connectedPlayDebugAndroidTest
 
   static-analysis:
     jobs:
