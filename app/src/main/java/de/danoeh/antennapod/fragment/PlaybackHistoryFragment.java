@@ -106,7 +106,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         position -= l.getHeaderViewsCount();
         long[] ids = FeedItemUtil.getIds(playbackHistory);
-        ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(ids, position));
+        ((MainActivity) getActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
     }
 
     @Override

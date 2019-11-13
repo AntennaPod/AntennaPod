@@ -83,7 +83,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         position -= l.getHeaderViewsCount();
         long[] ids = FeedItemUtil.getIds(items);
-        ((MainActivity) requireActivity()).loadChildFragment(ItemFragment.newInstance(ids, position));
+        ((MainActivity) requireActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
     }
 
     @Override
