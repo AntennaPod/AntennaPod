@@ -41,6 +41,7 @@ public class Timeline {
             + "color: %s;"
             + "font-family: roboto-Light;"
             + "font-size: 13pt;"
+            + "overflow-wrap: break-word;"
             + "}"
             + "a {"
             + "font-style: normal;"
