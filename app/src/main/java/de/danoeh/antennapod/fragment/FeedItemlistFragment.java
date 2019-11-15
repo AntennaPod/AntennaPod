@@ -344,7 +344,7 @@ public class FeedItemlistFragment extends ListFragment {
         position -= l.getHeaderViewsCount();
         MainActivity activity = (MainActivity) getActivity();
         long[] ids = FeedItemUtil.getIds(feed.getItems());
-        activity.loadChildFragment(ItemFragment.newInstance(ids, position));
+        activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
         activity.getSupportActionBar().setTitle(feed.getTitle());
     }
 

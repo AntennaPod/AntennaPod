@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
+import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
 /**
@@ -245,7 +246,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             MainActivity mainActivity = mainActivityRef.get();
             if (mainActivity != null) {
                 long[] ids = itemAccess.getItemsIds().toArray();
-                mainActivity.loadChildFragment(ItemFragment.newInstance(ids, getAdapterPosition()));
+                mainActivity.loadChildFragment(ItemPagerFragment.newInstance(ids, getAdapterPosition()));
             }
         }
 

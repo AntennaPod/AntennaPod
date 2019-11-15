@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.os.Build;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.MotionEventCompat;
@@ -26,10 +25,10 @@ import android.widget.TextView;
 import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -44,7 +43,6 @@ import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
-import de.danoeh.antennapod.fragment.ItemFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
 /**
@@ -165,7 +163,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
             if (activity != null) {
                 long[] ids = itemAccess.getQueueIds().toArray();
                 int position = ArrayUtils.indexOf(ids, item.getId());
-                activity.loadChildFragment(ItemFragment.newInstance(ids, position));
+                activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             }
         }
 

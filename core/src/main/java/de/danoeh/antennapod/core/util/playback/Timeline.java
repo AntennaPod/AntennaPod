@@ -52,7 +52,7 @@ public class Timeline {
             + "a.timecode {"
             + "color: #669900;"
             + "}"
-            + "img {"
+            + "img, iframe {"
             + "display: block;"
             + "margin: 10 auto;"
             + "max-width: %s;"
