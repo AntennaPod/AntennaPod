@@ -79,6 +79,8 @@ public class ItemPagerFragment extends Fragment {
 
         ViewPager pager = layout.findViewById(R.id.pager);
         pager.setAdapter(new ItemPagerAdapter());
+        pager.setCurrentItem(feedItemPos);
+        loadItem(feedItems[feedItemPos]);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -87,7 +89,7 @@ public class ItemPagerFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-                loadItem(position);
+                loadItem(feedItems[position]);
             }
 
             @Override
@@ -95,7 +97,6 @@ public class ItemPagerFragment extends Fragment {
 
             }
         });
-        pager.setCurrentItem(feedItemPos);
 
         return layout;
     }
@@ -108,12 +109,12 @@ public class ItemPagerFragment extends Fragment {
         }
     }
 
-    private void loadItem(int position) {
+    private void loadItem(long itemId) {
         if (disposable != null) {
             disposable.dispose();
         }
 
-        disposable = Observable.fromCallable(() -> DBReader.getFeedItem(position))
+        disposable = Observable.fromCallable(() -> DBReader.getFeedItem(itemId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
