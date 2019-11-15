@@ -265,7 +265,6 @@ public class ItemFragment extends Fragment {
             Log.d(TAG, "updateAppearance item is null");
             return;
         }
-        getActivity().supportInvalidateOptionsMenu();
         txtvPodcast.setText(item.getFeed().getTitle());
         txtvTitle.setText(item.getTitle());
 

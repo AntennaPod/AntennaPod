@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -78,6 +79,12 @@ public class ItemPagerFragment extends Fragment {
         View layout = inflater.inflate(R.layout.feeditem_pager_fragment, container, false);
 
         ViewPager pager = layout.findViewById(R.id.pager);
+        // FragmentStatePagerAdapter documentation:
+        // > When using FragmentStatePagerAdapter the host ViewPager must have a valid ID set.
+        // When opening multiple ItemPagerFragments by clicking "item" -> "visit podcast" -> "item" -> etc,
+        // the ID is no longer unique and FragmentStatePagerAdapter does not display any pages.
+        int newId = ViewCompat.generateViewId();
+        pager.setId(newId);
         pager.setAdapter(new ItemPagerAdapter());
         pager.setCurrentItem(feedItemPos);
         loadItem(feedItems[feedItemPos]);
