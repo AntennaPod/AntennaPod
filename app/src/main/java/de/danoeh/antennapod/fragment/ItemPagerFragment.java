@@ -2,6 +2,9 @@ package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -10,6 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.CastEnabledActivity;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.Flavors;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Displays information about a list of FeedItems.
@@ -46,10 +59,13 @@ public class ItemPagerFragment extends Fragment {
 
     private long[] feedItems;
     private int feedItemPos;
+    private FeedItem item;
+    private Disposable disposable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
         feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
@@ -63,9 +79,90 @@ public class ItemPagerFragment extends Fragment {
 
         ViewPager pager = layout.findViewById(R.id.pager);
         pager.setAdapter(new ItemPagerAdapter());
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                loadItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         pager.setCurrentItem(feedItemPos);
 
         return layout;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (disposable != null) {
+            disposable.dispose();
+        }
+    }
+
+    private void loadItem(int position) {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+
+        disposable = Observable.fromCallable(() -> DBReader.getFeedItem(position))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    item = result;
+                    getActivity().invalidateOptionsMenu();
+                }, Throwable::printStackTrace);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (!isAdded() || item == null) {
+            return;
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+        if (Flavors.FLAVOR == Flavors.PLAY) {
+            ((CastEnabledActivity) getActivity()).requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+        inflater.inflate(R.menu.feeditem_options, menu);
+
+        FeedItemMenuHandler.MenuInterface popupMenuInterface = (id, visible) -> {
+            MenuItem item = menu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        };
+
+        if (item.hasMedia()) {
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item);
+        } else {
+            // these are already available via button1 and button2
+            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item,
+                    R.id.mark_read_item, R.id.visit_website_item);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.open_podcast:
+                openPodcast();
+                return true;
+            default:
+                return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
+        }
+    }
+
+    private void openPodcast() {
+        Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
+        ((MainActivity) getActivity()).loadChildFragment(fragment);
     }
 
     private class ItemPagerAdapter extends FragmentStatePagerAdapter {

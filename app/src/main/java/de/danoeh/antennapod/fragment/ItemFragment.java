@@ -6,52 +6,39 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GestureDetectorCompat;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconButton;
-
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import org.apache.commons.lang3.ArrayUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -61,19 +48,20 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.Flavors;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
-import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.view.OnSwipeGesture;
-import de.danoeh.antennapod.view.SwipeGestureDetector;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.ArrayUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 /**
  * Displays information about a FeedItem and actions.
@@ -114,7 +102,6 @@ public class ItemFragment extends Fragment {
     private ProgressBar progbarLoading;
     private IconButton butAction1;
     private IconButton butAction2;
-    private Menu popupMenu;
 
     private Disposable disposable;
 
@@ -126,8 +113,6 @@ public class ItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        setHasOptionsMenu(true);
 
         itemId = getArguments().getLong(ARG_FEEDITEM);
     }
@@ -261,48 +246,6 @@ public class ItemFragment extends Fragment {
             webvDescription.destroy();
         }
     }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(!isAdded() || item == null) {
-            return;
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-        if (Flavors.FLAVOR == Flavors.PLAY) {
-            ((CastEnabledActivity) getActivity()).requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        }
-        inflater.inflate(R.menu.feeditem_options, menu);
-        popupMenu = menu;
-        if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item);
-        } else {
-            // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item,
-                    R.id.mark_read_item, R.id.visit_website_item);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch(menuItem.getItemId()) {
-            case R.id.open_podcast:
-                openPodcast();
-                return true;
-            default:
-                return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
-        }
-    }
-
-    private final FeedItemMenuHandler.MenuInterface popupMenuInterface = new FeedItemMenuHandler.MenuInterface() {
-        @Override
-        public void setItemVisibility(int id, boolean visible) {
-            MenuItem item = popupMenu.findItem(id);
-            if (item != null) {
-                item.setVisible(visible);
-            }
-        }
-    };
-
 
     private void onFragmentLoaded() {
         if (webviewData != null) {
