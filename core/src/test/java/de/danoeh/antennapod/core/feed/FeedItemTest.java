@@ -3,6 +3,9 @@ package de.danoeh.antennapod.core.feed;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static de.danoeh.antennapod.core.feed.FeedItemMother.anyFeedItemWithImage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -38,6 +41,16 @@ public class FeedItemTest {
         setNewFeedItemImageDownloadUrl();
         original.updateFromOther(changedFeedItem);
         assertFeedItemImageWasUpdated();
+    }
+
+    @Test
+    public void testUpdateFromOther_dateChanged() throws Exception {
+        Date originalDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1952-03-11 00:00:00");
+        Date changedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1952-03-11 00:42:42");
+        original.setPubDate(originalDate);
+        changedFeedItem.setPubDate(changedDate);
+        original.updateFromOther(changedFeedItem);
+        assertEquals(changedDate.getTime(), original.getPubDate().getTime());
     }
 
     /**
