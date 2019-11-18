@@ -32,4 +32,12 @@
                     android:title="5"/>
         </menu>
     </item>
+    <item
+        android:id="@+id/subscription_filter"
+        android:icon="?attr/ic_filter"
+        android:menuCategory="container"
+        android:title="@string/filter"
+        custom:showAsAction="always"/>
+
+
 </menu>

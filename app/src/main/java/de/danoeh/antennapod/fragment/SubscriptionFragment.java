@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
@@ -20,7 +22,14 @@ import android.widget.GridView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 import java.util.concurrent.Callable;
+import java.util.function.Predicate;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -31,7 +40,10 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -40,7 +52,9 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
+import de.danoeh.antennapod.dialog.SubscriptionFilterDialog;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -57,6 +71,20 @@ import org.greenrobot.eventbus.ThreadMode;
 public class SubscriptionFragment extends Fragment {
 
     public static final String TAG = "SubscriptionFragment";
+    public static final String STRING_ENABLE = "Enable";
+    public static final String STRING_DISABLE = "Disable";
+    public static final String STRING_AUTO_DOWNLOAD = "auto_download";
+    public static final String STRING_KEEP_UPDATED = "keep_updated";
+    public static final String STRING_AUTO_DELETE = "auto_delete";
+    public static final String STRING_ALWAYS = "Always";
+    public static final String STRING_NEVER = "Never";
+    public static final String STRING_GLOBAL_DEFAULT = "Global default";
+    public static final String STRING_NO_FILTER = "No filter";
+
+    public static final String PREF_AUTO_DOWNLOAD = "auto_download_pref";
+    public static final String PREF_KEEP_UPDATED = "keep_updated_pref";
+    public static final String PREF_AUTO_DELETE = "auto_delete_pref";
+
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
 
@@ -71,6 +99,9 @@ public class SubscriptionFragment extends Fragment {
 
     private Disposable disposable;
     private SharedPreferences prefs;
+
+    private String autoDownload = "", keepUpdated = "", autoDelete ="";
+    private ArrayList<Feed> currentFeeds = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +118,11 @@ public class SubscriptionFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
         subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, 3));
+
+        autoDownload = prefs.getString(PREF_AUTO_DOWNLOAD,STRING_NO_FILTER);
+        keepUpdated = prefs.getString(PREF_KEEP_UPDATED,STRING_NO_FILTER);
+        autoDelete = prefs.getString(PREF_AUTO_DELETE,STRING_NO_FILTER);
+
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         setupEmptyView();
@@ -128,10 +164,96 @@ public class SubscriptionFragment extends Fragment {
             case R.id.subscription_num_columns_5:
                 setColumnNumber(5);
                 return true;
+            case R.id.subscription_filter:
+                openSubscriptionFilter();
+                return true;
             default:
                 return false;
         }
     }
+
+    private void openSubscriptionFilter() {
+        SubscriptionFilterDialog filterDialog = new SubscriptionFilterDialog(getContext(),
+                autoDownload,keepUpdated,autoDelete) {
+            @Override
+            protected void updateFilter(ArrayList<SubscriptionFilter> filterValues) {
+
+                // do some filtering work
+                // step 1: remove all existing data from current feeds
+                // Step 2: Add all where the filter value is true and assign to currentFeeds
+                currentFeeds = new ArrayList<>();
+                for(SubscriptionFilter filter: filterValues){
+
+                    switch (filter.getOption()) {
+                        case STRING_AUTO_DOWNLOAD:
+                            autoDownload = filter.getValue();
+                            break;
+                        case STRING_KEEP_UPDATED:
+                            keepUpdated = filter.getValue();
+                            break;
+                        case STRING_AUTO_DELETE:
+                            autoDelete = filter.getValue();
+                            break;
+                    }
+                }
+                // edit preference value.
+                prefs.edit().putString(PREF_AUTO_DOWNLOAD,autoDownload);
+                prefs.edit().putString(PREF_KEEP_UPDATED,keepUpdated);
+                prefs.edit().putString(PREF_AUTO_DELETE,autoDelete);
+
+                loadFilter();
+
+            }
+
+        };
+
+        filterDialog.openDialog();
+    }
+
+    private void loadFilter() {
+        String tempAutoDelete = STRING_NO_FILTER;
+        switch (autoDelete) {
+            case STRING_ALWAYS:
+                tempAutoDelete = "YES";
+                break;
+            case STRING_NEVER:
+                tempAutoDelete = "NO";
+                break;
+            case STRING_GLOBAL_DEFAULT:
+                tempAutoDelete = "GLOBAL";
+                break;
+        }
+        boolean autoDownloadValue = autoDownload.equals(STRING_ENABLE);
+        boolean keepUpdatedValue = keepUpdated.equals(STRING_ENABLE);
+
+        for(Feed feed: navDrawerData.feeds){
+            if(!autoDownload.equals(STRING_NO_FILTER) &&
+                    autoDownloadValue != feed.getPreferences().getAutoDownload())  {
+                // not adding current feed as its auto Download value does not match to what user choose
+                continue;
+            }
+            if(!keepUpdated.equals(STRING_NO_FILTER) &&
+                    keepUpdatedValue != feed.getPreferences().getKeepUpdated()){
+                // not adding current feed as its keep updated value does not match to what user choose
+                continue;
+            }
+
+            if(!tempAutoDelete.equals(STRING_NO_FILTER)){
+                FeedPreferences.AutoDeleteAction action = FeedPreferences.AutoDeleteAction.valueOf(tempAutoDelete);
+
+                FeedPreferences.AutoDeleteAction feedAction = feed.getPreferences().getAutoDeleteAction();
+                if( feedAction!= action ){
+                    // not adding current feed as its auto Download value does not match to what user choose
+                    continue;
+                }
+            }
+            currentFeeds.add(feed);
+        }
+        navDrawerData.feeds.get(0).getPreferences();
+        // Step 3: Refresh the dataset
+        subscriptionAdapter.notifyDataSetChanged();
+    }
+
 
     private void setColumnNumber(int columns) {
         subscriptionGridLayout.setNumColumns(columns);
@@ -192,6 +314,7 @@ public class SubscriptionFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;
+                    currentFeeds = (ArrayList<Feed>) navDrawerData.feeds;
                     subscriptionAdapter.notifyDataSetChanged();
                     emptyView.updateVisibility();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
@@ -328,8 +451,8 @@ public class SubscriptionFragment extends Fragment {
     private final SubscriptionsAdapter.ItemAccess itemAccess = new SubscriptionsAdapter.ItemAccess() {
         @Override
         public int getCount() {
-            if (navDrawerData != null) {
-                return navDrawerData.feeds.size();
+            if (currentFeeds != null) {
+                return currentFeeds.size();
             } else {
                 return 0;
             }
@@ -337,8 +460,8 @@ public class SubscriptionFragment extends Fragment {
 
         @Override
         public Feed getItem(int position) {
-            if (navDrawerData != null && 0 <= position && position < navDrawerData.feeds.size()) {
-                return navDrawerData.feeds.get(position);
+            if (currentFeeds != null && 0 <= position && position < currentFeeds.size()) {
+                return currentFeeds.get(position);
             } else {
                 return null;
             }

@@ -17,6 +17,7 @@ import java.lang.ref.WeakReference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import jp.shts.android.library.TriangleLabelView;

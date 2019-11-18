@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+   >
+
+
+    <TextView
+        android:id="@+id/textViewHeader"
+        android:textColor="@color/black"
+        android:text="@string/filter"
+        android:layout_margin="@dimen/md_icon_margin"
+        android:textSize="@dimen/md_title_textsize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSpinnerDetail"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewHeader"
+        android:layout_margin="@dimen/diag_icon_margin_top"
+        android:paddingBottom="@dimen/action_drawer_item_bottom_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/subscription_auto_download"/>
+
+        <Spinner
+            android:id="@+id/spinnerAutoDownload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/subscription_keep_updated"/>
+        <Spinner
+            android:id="@+id/spinnerKeepUpdated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinnerAutoDownload"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/subscription_auto_delete"/>
+        <Spinner
+            android:id="@+id/spinnerAutoDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinnerKeepUpdated"/>
+
+    </LinearLayout>
+
+
+
+
+    <Button
+       android:id="@+id/buttonCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutSpinnerDetail"
+        android:background="@drawable/md_transparent"
+        android:text = "@string/cancel_label"
+        android:textColor="@color/holo_blue_light"
+        android:padding="@dimen/md_listitem_margin_left"
+        android:layout_toLeftOf="@+id/buttonConfirm"
+        />
+    <Button
+        android:id="@+id/buttonConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutSpinnerDetail"
+        android:background="@drawable/md_transparent"
+        android:text = "@string/confirm_label"
+        android:textColor="@color/holo_blue_light"
+        android:padding="@dimen/md_listitem_margin_left"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

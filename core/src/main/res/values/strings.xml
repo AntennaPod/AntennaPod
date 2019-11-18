@@ -774,4 +774,8 @@
     <!-- Widget settings -->
     <string name="widget_create_button">Create widget</string>
     <string name="widget_opacity">Opacity</string>
+
+    <string name="subscription_auto_download">Auto Download</string>
+    <string name="subscription_keep_updated">Keep Updated</string>
+    <string name="subscription_auto_delete">Auto Delete</string>
 </resources>
