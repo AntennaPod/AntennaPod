@@ -260,7 +260,9 @@ public class Feed extends FeedFile implements ImageResource {
 
     @Override
     public String getHumanReadableIdentifier() {
-        if (feedTitle != null) {
+        if (!TextUtils.isEmpty(customTitle)) {
+            return customTitle;
+        } else if (!TextUtils.isEmpty(feedTitle)) {
             return feedTitle;
         } else {
             return download_url;
