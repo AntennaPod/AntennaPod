@@ -83,6 +83,8 @@
                         android:text="@string/txtvfeedurl_label"
                         android:textSize="18sp"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
                         android:textColor="?android:attr/textColorPrimary"/>
 
                 <EditText
