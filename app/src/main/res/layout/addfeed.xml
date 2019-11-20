@@ -97,8 +97,10 @@
 
                 <Button
                         android:id="@+id/butConfirm"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        style="?android:attr/buttonBarButtonStyle"
                         android:text="@string/confirm_label"/>
 
             </LinearLayout>
