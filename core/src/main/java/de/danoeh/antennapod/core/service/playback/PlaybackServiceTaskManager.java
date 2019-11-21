@@ -244,7 +244,7 @@ public class PlaybackServiceTaskManager {
     public synchronized void disableSleepTimer() {
         if (isSleepTimerActive()) {
             Log.d(TAG, "Disabling sleep timer");
-            sleepTimerFuture.cancel(true);
+            sleepTimer.cancel();
         }
     }
 
@@ -449,6 +449,13 @@ public class PlaybackServiceTaskManager {
             }
         }
 
+        public void cancel() {
+            sleepTimerFuture.cancel(true);
+            if (shakeListener != null) {
+                shakeListener.pause();
+            }
+            postCallback(callback::onSleepTimerReset);
+        }
     }
 
     public interface PSTMCallback {
