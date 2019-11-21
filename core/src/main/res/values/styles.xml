@@ -18,7 +18,7 @@
         <item name="action_about">@drawable/ic_info_grey600_24dp</item>
         <item name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_grey600_24dp</item>
         <item name="action_search">@drawable/ic_search_grey600_24dp</item>
-        <item name="action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
+        <item name="action_stream">@drawable/ic_stream_grey600</item>
         <item name="av_download">@drawable/ic_file_download_grey600_24dp</item>
         <item name="av_fast_forward">@drawable/ic_fast_forward_grey600_24dp</item>
         <item name="av_pause">@drawable/ic_pause_grey600_24dp</item>
@@ -105,7 +105,7 @@
         <item name="action_about">@drawable/ic_info_white_24dp</item>
         <item name="checkbox_multiple">@drawable/ic_checkbox_multiple_marked_outline_white_24dp</item>
         <item name="action_search">@drawable/ic_search_white_24dp</item>
-        <item name="action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
+        <item name="action_stream">@drawable/ic_stream_white</item>
         <item name="av_download">@drawable/ic_file_download_white_24dp</item>
         <item name="av_fast_forward">@drawable/ic_fast_forward_white_24dp</item>
         <item name="av_pause">@drawable/ic_pause_white_24dp</item>
