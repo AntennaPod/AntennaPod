@@ -112,37 +112,42 @@
             android:orientation="horizontal"
             tools:background="@android:color/holo_blue_bright">
 
-            <com.joanzapata.iconify.widget.IconButton
-                android:id="@+id/butAction1"
+            <View
                 android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/butAction1"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackground"
                 android:ellipsize="end"
-                android:gravity="center"
+                android:drawablePadding="8dp"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/text_size_small"
                 tools:text="Button 1"
                 tools:background="@android:color/holo_red_light" />
 
-            <com.joanzapata.iconify.widget.IconButton
-                android:id="@+id/butAction2"
+            <View
                 android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/butAction2"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackground"
+                android:drawablePadding="8dp"
                 android:ellipsize="end"
-                android:gravity="center"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/text_size_small"
                 tools:text="Button 2"
                 tools:background="@android:color/holo_orange_dark" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
 
         </LinearLayout>
 

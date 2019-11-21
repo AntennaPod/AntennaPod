@@ -3,12 +3,14 @@ package de.danoeh.antennapod.fragment;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,12 +20,16 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
@@ -101,8 +107,8 @@ public class ItemFragment extends Fragment {
     private ImageView imgvCover;
     private ProgressBar progbarDownload;
     private ProgressBar progbarLoading;
-    private IconButton butAction1;
-    private IconButton butAction2;
+    private Button butAction1;
+    private Button butAction2;
 
     private Disposable disposable;
 
@@ -295,53 +301,59 @@ public class ItemFragment extends Fragment {
         }
 
         FeedMedia media = item.getMedia();
-        String butAction1Icon = null;
-        int butAction1Text = 0;
-        String butAction2Icon = null;
-        int butAction2Text = 0;
+        @AttrRes int butAction1Icon = 0;
+        @StringRes int butAction1Text = 0;
+        @AttrRes int butAction2Icon = 0;
+        @StringRes int butAction2Text = 0;
         if (media == null) {
             if (!item.isPlayed()) {
-                butAction1Icon = "{fa-check 24sp}";
+                butAction1Icon = R.attr.navigation_accept;
                 butAction1Text = R.string.mark_read_label;
             }
             if (item.getLink() != null) {
-                butAction2Icon = "{md-web 24sp}";
+                butAction2Icon = R.attr.location_web_site;
                 butAction2Text = R.string.visit_website_label;
             }
         } else {
-            if(media.getDuration() > 0) {
+            if (media.getDuration() > 0) {
                 txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             }
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
             if (!media.isDownloaded()) {
-                butAction2Icon = "{md-settings-input-antenna 24sp}";
+                butAction2Icon = R.attr.action_stream;
                 butAction2Text = R.string.stream_label;
             } else {
-                butAction2Icon = "{md-delete 24sp}";
+                butAction2Icon = R.attr.content_discard;
                 butAction2Text = R.string.delete_label;
             }
             if (isDownloading) {
-                butAction1Icon = "{md-cancel 24sp}";
+                butAction1Icon = R.attr.navigation_cancel;
                 butAction1Text = R.string.cancel_label;
             } else if (media.isDownloaded()) {
-                butAction1Icon = "{md-play-arrow 24sp}";
+                butAction1Icon = R.attr.av_play;
                 butAction1Text = R.string.play_label;
             } else {
-                butAction1Icon = "{md-file-download 24sp}";
+                butAction1Icon = R.attr.av_download;
                 butAction1Text = R.string.download_label;
             }
         }
 
-        if(butAction1Icon != null && butAction1Text != 0) {
-            butAction1.setText(butAction1Icon +"\u0020\u0020" + getActivity().getString(butAction1Text));
-            Iconify.addIcons(butAction1);
+        if (butAction1Icon != 0 && butAction1Text != 0) {
+            butAction1.setText(butAction1Text);
+            butAction1.setTransformationMethod(null);
+            TypedValue typedValue = new TypedValue();
+            getContext().getTheme().resolveAttribute(butAction1Icon, typedValue, true);
+            butAction1.setCompoundDrawablesWithIntrinsicBounds(typedValue.resourceId, 0, 0, 0);
             butAction1.setVisibility(View.VISIBLE);
         } else {
             butAction1.setVisibility(View.INVISIBLE);
         }
-        if(butAction2Icon != null && butAction2Text != 0) {
-            butAction2.setText(butAction2Icon +"\u0020\u0020" + getActivity().getString(butAction2Text));
-            Iconify.addIcons(butAction2);
+        if (butAction2Icon != 0 && butAction2Text != 0) {
+            butAction2.setText(butAction2Text);
+            butAction2.setTransformationMethod(null);
+            TypedValue typedValue = new TypedValue();
+            getContext().getTheme().resolveAttribute(butAction2Icon, typedValue, true);
+            butAction2.setCompoundDrawablesWithIntrinsicBounds(typedValue.resourceId, 0, 0, 0);
             butAction2.setVisibility(View.VISIBLE);
         } else {
             butAction2.setVisibility(View.INVISIBLE);
