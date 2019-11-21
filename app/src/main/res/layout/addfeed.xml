@@ -73,7 +73,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:padding="16dp"
                     android:orientation="vertical">
 
                 <TextView
@@ -83,6 +83,8 @@
                         android:text="@string/txtvfeedurl_label"
                         android:textSize="18sp"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
                         android:textColor="?android:attr/textColorPrimary"/>
 
                 <EditText
@@ -97,8 +99,10 @@
 
                 <Button
                         android:id="@+id/butConfirm"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        style="?android:attr/buttonBarButtonStyle"
                         android:text="@string/confirm_label"/>
 
             </LinearLayout>
