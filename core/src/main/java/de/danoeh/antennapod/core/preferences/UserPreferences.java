@@ -82,7 +82,7 @@ public class UserPreferences {
     private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
     public static final String PREF_VIDEO_BEHAVIOR = "prefVideoBehavior";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
-    private static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
+    public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
