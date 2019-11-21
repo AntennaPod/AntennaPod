@@ -459,15 +459,12 @@ public class DownloadService extends Service {
         Downloader downloader = downloaderFactory.create(request);
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();
-            // smaller rss feeds before bigger media files
-            if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-                downloads.add(0, downloader);
-            } else {
-                if (isEnqueued(request, itemsEnqueued)) {
-                    request.setMediaEnqueued(true);
-                }
-                downloads.add(downloader);
+
+            if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                    && isEnqueued(request, itemsEnqueued)) {
+                request.setMediaEnqueued(true);
             }
+            downloads.add(downloader);
             downloadExecutor.submit(downloader);
 
             postDownloaders();
