@@ -15,10 +15,6 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class DownloadServiceNotification {
     private static final String TAG = "DownloadSvcNotification";
@@ -154,7 +150,7 @@ public class DownloadServiceNotification {
                 .setContentText(context.getText(R.string.authentication_notification_msg))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getText(R.string.authentication_notification_msg)
                         + ": " + resourceTitle))
-                .setSmallIcon(R.drawable.ic_notification_key)
+                .setSmallIcon(R.drawable.ic_key_white)
                 .setAutoCancel(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getAuthentificationNotificationContentIntent(context, downloadRequest));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
