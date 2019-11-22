@@ -831,6 +831,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedLastUpdateFailed(feedId, lastUpdateFailed);
             adapter.close();
+            EventBus.getDefault().post(new FeedListUpdateEvent(feedId));
         });
     }
 
