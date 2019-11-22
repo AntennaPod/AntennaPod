@@ -391,10 +391,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                     | Intent.FLAG_ACTIVITY_NEW_TASK);
 
             View cover = findViewById(R.id.imgvCover);
-            if (cover != null && Build.VERSION.SDK_INT >= 16) {
-                ActivityOptionsCompat options = ActivityOptionsCompat.
-                        makeSceneTransitionAnimation(MediaplayerActivity.this,
-                        cover, "coverTransition");
+            if (cover != null) {
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(MediaplayerActivity.this, cover, "coverTransition");
                 startActivity(intent, options.toBundle());
             } else {
                 startActivity(intent);

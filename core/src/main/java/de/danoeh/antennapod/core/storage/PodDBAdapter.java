@@ -327,9 +327,7 @@ public class PodDBAdapter {
         SQLiteDatabase newDb;
         try {
             newDb = SingletonHolder.dbHelper.getWritableDatabase();
-            if (Build.VERSION.SDK_INT >= 16) {
-                newDb.disableWriteAheadLogging();
-            }
+            newDb.disableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
             newDb = SingletonHolder.dbHelper.getReadableDatabase();
