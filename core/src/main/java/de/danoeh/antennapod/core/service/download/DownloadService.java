@@ -284,6 +284,7 @@ public class DownloadService extends Service {
                     saveDownloadStatus(task.getDownloadStatus());
                 }
             } else {
+                DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
                 saveDownloadStatus(task.getDownloadStatus());
             }
         } else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
