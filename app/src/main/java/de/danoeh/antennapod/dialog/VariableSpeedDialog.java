@@ -45,14 +45,12 @@ public class VariableSpeedDialog {
         builder.setTitle(R.string.no_playback_plugin_title);
         builder.setMessage(R.string.no_playback_plugin_or_sonic_msg);
 
-        if (Build.VERSION.SDK_INT >= 16) {
-            builder.setPositiveButton(R.string.enable_sonic, (dialog, which) -> {
-                UserPreferences.enableSonic();
-                if (showSpeedSelector) {
-                    showSpeedSelectorDialog(context);
-                }
-            });
-        }
+        builder.setPositiveButton(R.string.enable_sonic, (dialog, which) -> {
+            UserPreferences.enableSonic();
+            if (showSpeedSelector) {
+                showSpeedSelectorDialog(context);
+            }
+        });
         if (IntentUtils.isCallable(context.getApplicationContext(), playStoreIntent)) {
             builder.setNegativeButton(R.string.download_plugin_label, (dialog, which) -> {
                 try {

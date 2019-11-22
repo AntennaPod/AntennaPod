@@ -142,7 +142,7 @@ public class AntennapodHttpClient {
                 });
             }
         }
-        if (16 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT < 21) {
+        if (Build.VERSION.SDK_INT < 21) {
             builder.sslSocketFactory(new CustomSslSocketFactory(), trustManager());
         }
 

@@ -71,9 +71,9 @@ public class ExternalPlayerFragment extends Fragment {
             if (controller != null && controller.getMedia() != null) {
                 Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), controller.getMedia());
 
-                if (Build.VERSION.SDK_INT >= 16 && controller.getMedia().getMediaType() == MediaType.AUDIO) {
-                    ActivityOptionsCompat options = ActivityOptionsCompat.
-                            makeSceneTransitionAnimation(getActivity(), imgvCover, "coverTransition");
+                if (controller.getMedia().getMediaType() == MediaType.AUDIO) {
+                    ActivityOptionsCompat options = ActivityOptionsCompat
+                            .makeSceneTransitionAnimation(getActivity(), imgvCover, "coverTransition");
                     startActivity(intent, options.toBundle());
                 } else {
                     startActivity(intent);

@@ -50,7 +50,6 @@ public class SearchListFragment extends PodcastListFragment {
         // parent already inflated menu
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        MenuItemUtils.adjustTextColor(getActivity(), sv);
         sv.setQueryHint(getString(R.string.gpodnet_search_hint));
         sv.setQuery(query, false);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
