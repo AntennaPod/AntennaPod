@@ -2,32 +2,14 @@ package de.danoeh.antennapod.menuhandler;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.os.Build;
-import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
-
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Utilities for menu items
  */
 public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuItemUtils {
-
-    public static void adjustTextColor(Context context, SearchView sv) {
-        if(Build.VERSION.SDK_INT < 14) {
-            EditText searchEditText = sv.findViewById(R.id.search_src_text);
-            if (UserPreferences.getTheme() == de.danoeh.antennapod.R.style.Theme_AntennaPod_Dark
-                    || UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
-                searchEditText.setTextColor(Color.WHITE);
-            } else {
-                searchEditText.setTextColor(Color.BLACK);
-            }
-        }
-    }
 
     @SuppressWarnings("ResourceType")
     public static void refreshLockItem(Context context, Menu menu) {

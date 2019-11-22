@@ -185,7 +185,6 @@ public class FeedItemlistFragment extends ListFragment {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        MenuItemUtils.adjustTextColor(getActivity(), sv);
         sv.setQueryHint(getString(R.string.search_hint));
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
              @Override
