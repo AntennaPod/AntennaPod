@@ -27,7 +27,7 @@ How to report a bug
 1. Do this
 1. Do that
 
-**Environment**: Settings you have changed, e.g. Auto Download. "Unusual" devices you use, e.g. Bluetooth headphones. Do you still use Prestissimo?
+**Environment**: Settings you have changed, e.g. Auto Download. "Unusual" devices you use, e.g. Bluetooth headphones.
 
 **Stacktrace/Logcat**: [if available]
 ```
