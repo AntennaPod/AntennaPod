@@ -144,7 +144,6 @@ public class ItemDescriptionFragment extends Fragment {
         }
     };
 
-    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     @Override
     public boolean onContextItemSelected(MenuItem item) {

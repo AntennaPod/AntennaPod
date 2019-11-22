@@ -44,7 +44,7 @@ public class AutoDownloadTest {
     public void setUp() throws Exception {
         context = ApplicationProvider.getApplicationContext();
 
-        stubFeedsServer = new UITestUtils(context);;
+        stubFeedsServer = new UITestUtils(context);
         stubFeedsServer.setup();
 
         dbTasksCallbacksOrig = ClientConfig.dbTasksCallbacks;
@@ -130,7 +130,7 @@ public class AutoDownloadTest {
     }
 
     private void useDownloadAlgorithm(final AutomaticDownloadAlgorithm downloadAlgorithm) {
-        DBTasksCallbacks dbTasksCallbacksStub = new DBTasksCallbacks() {
+        ClientConfig.dbTasksCallbacks = new DBTasksCallbacks() {
             @Override
             public AutomaticDownloadAlgorithm getAutomaticDownloadAlgorithm() {
                 return downloadAlgorithm;
@@ -141,7 +141,6 @@ public class AutoDownloadTest {
                 return dbTasksCallbacksOrig.getEpisodeCacheCleanupAlgorithm();
             }
         };
-        ClientConfig.dbTasksCallbacks = dbTasksCallbacksStub;
     }
 
     private class StubDownloadAlgorithm implements AutomaticDownloadAlgorithm {
