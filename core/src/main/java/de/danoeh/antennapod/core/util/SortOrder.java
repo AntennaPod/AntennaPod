@@ -25,7 +25,7 @@ public enum SortOrder {
     SMART_SHUFFLE_NEW_OLD(105, INTER_FEED);
 
     public enum Scope {
-        INTRA_FEED, INTER_FEED;
+        INTRA_FEED, INTER_FEED
     }
 
     public final int code;
