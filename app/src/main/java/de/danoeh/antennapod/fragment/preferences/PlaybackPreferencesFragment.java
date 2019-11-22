@@ -41,12 +41,6 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.playback_pref);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkSonicItemVisibility();
-    }
-
     private void setupPlaybackScreen() {
         final Activity activity = getActivity();
 
@@ -129,15 +123,5 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
             }
         }
         pref.setEntries(entries);
-    }
-
-
-
-    private void checkSonicItemVisibility() {
-        if (Build.VERSION.SDK_INT < 16) {
-            ListPreference p = (ListPreference) findPreference(UserPreferences.PREF_MEDIA_PLAYER);
-            p.setEntries(R.array.media_player_options_no_sonic);
-            p.setEntryValues(R.array.media_player_values_no_sonic);
-        }
     }
 }

@@ -88,7 +88,7 @@ public class AspectRatioVideoView extends VideoView {
         mVideoWidth = videoWidth;
         mVideoHeight = videoHeight;
 
-        /**
+        /*
          * If this isn't set the video is stretched across the
          * SurfaceHolders display surface (i.e. the SurfaceHolder
          * as the same size and the video is drawn to fit this

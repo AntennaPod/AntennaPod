@@ -322,15 +322,11 @@ public class DBWriterTest {
 
         feed.setImageUrl("url");
 
-        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
             feed.getItems().add(item);
-
             File enc = new File(destFolder, "file " + i);
-            itemFiles.add(enc);
-
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", false, null, 0, 0);
             item.setMedia(media);
         }
@@ -387,15 +383,11 @@ public class DBWriterTest {
 
         feed.setImageUrl("url");
 
-        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
             feed.getItems().add(item);
-
             File enc = new File(destFolder, "file " + i);
-            itemFiles.add(enc);
-
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", false, null, 0, 0);
             item.setMedia(media);
         }

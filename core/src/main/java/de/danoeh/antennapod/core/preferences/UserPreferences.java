@@ -304,7 +304,7 @@ public class UserPreferences {
     }
 
     public enum EnqueueLocation {
-        BACK, FRONT, AFTER_CURRENTLY_PLAYING;
+        BACK, FRONT, AFTER_CURRENTLY_PLAYING
     }
 
     @NonNull
@@ -566,8 +566,7 @@ public class UserPreferences {
             prefs.edit().putString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE).apply();
             cacheSizeInt = Integer.parseInt(IMAGE_CACHE_DEFAULT_VALUE);
         }
-        int cacheSizeMB = cacheSizeInt * 1024 * 1024;
-        return cacheSizeMB;
+        return cacheSizeInt * 1024 * 1024;
     }
 
     public static int getFastForwardSecs() {
@@ -791,8 +790,7 @@ public class UserPreferences {
     }
 
     public static String getMediaPlayer() {
-        String s =  prefs.getString(PREF_MEDIA_PLAYER, "blaah");
-        return s;
+        return prefs.getString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER);
     }
 
     public static boolean useSonic() {

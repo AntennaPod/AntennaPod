@@ -317,8 +317,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 fragment = new AddFeedFragment();
                 break;
             case SubscriptionFragment.TAG:
-                SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
-                fragment = subscriptionFragment;
+                fragment = new SubscriptionFragment();
                 break;
             default:
                 // default to the queue
