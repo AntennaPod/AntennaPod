@@ -675,8 +675,7 @@ public class PlaybackController {
     }
 
     public boolean canSetPlaybackSpeed() {
-        return org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
-                || UserPreferences.useSonic()
+        return UserPreferences.useSonic()
                 || UserPreferences.useExoplayer()
                 || Build.VERSION.SDK_INT >= 23
                 || (playbackService != null && playbackService.canSetSpeed());

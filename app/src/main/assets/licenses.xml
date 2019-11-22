@@ -79,12 +79,6 @@
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library
-        name="Presto Client"
-        author="aocate"
-        website="http://www.aocate.com/presto/"
-        license="Apache 2.0"
-        licenseText="LICENSE_PRESTO.txt" />
-    <library
         name="RecyclerView-FlexibleDivider"
         author="yqritc"
         website="https://github.com/yqritc/RecyclerView-FlexibleDivider"

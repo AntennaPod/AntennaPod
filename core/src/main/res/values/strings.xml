@@ -301,7 +301,7 @@
     <!--  Variable Speed -->
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
-    <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, we recommend to enable the built-in Sonic mediaplayer [Android 4.1+].\n\nAlternatively, you can download the third party plugin <i>Prestissimo</i> from the Play Store.\nAny problems with Prestissimo are not the responsibility of AntennaPod and should be reported to the plugin owner.</string>
+    <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, we recommend to enable the built-in Sonic mediaplayer.</string>
     <string name="set_playback_speed_label">Playback Speeds</string>
     <string name="enable_sonic">Enable Sonic</string>
 

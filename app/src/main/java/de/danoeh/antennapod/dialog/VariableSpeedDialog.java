@@ -1,33 +1,21 @@
 package de.danoeh.antennapod.dialog;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import androidx.appcompat.app.AlertDialog;
-import android.util.Log;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.IntentUtils;
-
 public class VariableSpeedDialog {
-
-    private static final String TAG = VariableSpeedDialog.class.getSimpleName();
-
-    private static final Intent playStoreIntent = new Intent(Intent.ACTION_VIEW,
-        Uri.parse("market://details?id=com.falconware.prestissimo"));
 
     private VariableSpeedDialog() {
     }
 
     public static void showDialog(final Context context) {
-        if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(context)
-                || UserPreferences.useSonic()
+        if (UserPreferences.useSonic()
                 || UserPreferences.useExoplayer()
                 || Build.VERSION.SDK_INT >= 23) {
             showSpeedSelectorDialog(context);
@@ -44,23 +32,12 @@ public class VariableSpeedDialog {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.no_playback_plugin_title);
         builder.setMessage(R.string.no_playback_plugin_or_sonic_msg);
-
         builder.setPositiveButton(R.string.enable_sonic, (dialog, which) -> {
             UserPreferences.enableSonic();
             if (showSpeedSelector) {
                 showSpeedSelectorDialog(context);
             }
         });
-        if (IntentUtils.isCallable(context.getApplicationContext(), playStoreIntent)) {
-            builder.setNegativeButton(R.string.download_plugin_label, (dialog, which) -> {
-                try {
-                    context.startActivity(playStoreIntent);
-                } catch (ActivityNotFoundException e) {
-                    // this is usually thrown on an emulator if the Android market is not installed
-                    Log.e(TAG, Log.getStackTraceString(e));
-                }
-            });
-        }
         builder.setNeutralButton(R.string.close_label, null);
         builder.show();
     }
