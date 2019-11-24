@@ -163,11 +163,15 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null &&
-                intent.getParcelableArrayListExtra(EXTRA_REQUESTS) != null) {
+        if (intent != null && intent.getParcelableArrayListExtra(EXTRA_REQUESTS) != null) {
+            Notification notification = notificationManager.updateNotifications(
+                    requester.getNumberOfDownloads(), downloads);
+            startForeground(NOTIFICATION_ID, notification);
             onDownloadQueued(intent);
         } else if (numberOfDownloads.get() == 0) {
             stopSelf();
+        } else {
+            Log.d(TAG, "onStartCommand: Unknown intent");
         }
         return Service.START_NOT_STICKY;
     }
