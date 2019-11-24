@@ -217,7 +217,9 @@ public class DownloadService extends Service {
         syncExecutor.shutdown();
         schedExecutor.shutdown();
         cancelNotificationUpdater();
-        downloadPostFuture.cancel(true);
+        if (downloadPostFuture != null) {
+            downloadPostFuture.cancel(true);
+        }
         unregisterReceiver(cancelDownloadReceiver);
 
         // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
