@@ -19,7 +19,6 @@
   <string name="playback_history_label">Esitamise ajalugu</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net kasutajanimi</string>
-  <string name="free_space_label">%1$s vaba</string>
   <string name="episode_cache_full_title">Saadete vahemälu on täis</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Kuulatud taskuhäälingute kogupikkus:</string>
@@ -50,20 +49,14 @@
   <string name="reset">Nulli</string>
   <string name="language_label">Keel</string>
   <string name="url_label">URL</string>
-  <string name="podcast_settings_label">Seaded</string>
   <string name="cover_label">Pilt</string>
   <string name="error_label">Viga</string>
   <string name="error_msg_prefix">Tekkis viga:</string>
   <string name="refresh_label">Värskenda</string>
   <string name="chapters_label">Peatükid</string>
-  <string name="shownotes_label">Saate märkmed</string>
   <string name="description_label">Kirjeldus</string>
-  <string name="most_recent_prefix">Kõige värskem saade:\u0020</string>
   <string name="episodes_suffix">\u0020saadet</string>
-  <string name="length_prefix">Pikkus:\u0020</string>
-  <string name="size_prefix">Suurus:\u0020</string>
   <string name="processing_label">Töötlemine</string>
-  <string name="loading_label">Laadimine...</string>
   <string name="save_username_password_label">Salvesta kasutajanimi ja parool</string>
   <string name="close_label">Sulge</string>
   <string name="retry_label">Proovi uuesti</string>
@@ -86,7 +79,6 @@
   <string name="feedurl_label">Uudisvoo URL</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Lisa taskuhääling URL-iga</string>
-  <string name="podcastdirectories_label">Leia taskuhääling kaustast</string>
   <string name="browse_gpoddernet_label">Sirvi gpodder.net-i</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Märgi kuulatuks</string>
@@ -95,7 +87,6 @@
   <string name="share_label">Jaga...</string>
   <string name="share_file_label">Jaga faili</string>
   <string name="share_feed_url_label">Jaga uudisvoo URL-i</string>
-  <string name="hide_episodes_title">Peida saated</string>
   <string name="hide_unplayed_episodes_label">Esitamata</string>
   <string name="hide_paused_episodes_label">Peatatud</string>
   <string name="hide_played_episodes_label">Esitatud</string>
@@ -111,9 +102,7 @@
   <string name="download_label">Laadi alla</string>
   <string name="play_label">Esita</string>
   <string name="pause_label">Peata</string>
-  <string name="stop_label">Stopp</string>
   <string name="stream_label">Voogedastusena</string>
-  <string name="remove_label">Eemalda</string>
   <string name="delete_label">Kustuta</string>
   <string name="mark_read_label">Märgi esitatuks</string>
   <string name="marked_as_read_label">Märgitud kuulatuks</string>
@@ -133,13 +122,11 @@
   <string name="removed_item">Kirje on eemaldatud</string>
   <!--Download messages and labels-->
   <string name="download_successful">korras</string>
-  <string name="download_failed">ebaõnnestus</string>
   <string name="download_pending">Ootel allalaadimine</string>
   <string name="download_running">Allalaadimine on käimas</string>
   <string name="download_error_details">Üksikasjad</string>
   <string name="download_error_device_not_found">Salvestuskohta ei leitud</string>
   <string name="download_error_insufficient_space">Pole piisavalt ruumi</string>
-  <string name="download_error_file_error">Faili viga</string>
   <string name="download_error_http_data_error">HTTP andmete viga</string>
   <string name="download_error_error_unknown">Tundmatu tõrge</string>
   <string name="download_error_parser_exception">Parsimise järjekord</string>
@@ -149,7 +136,6 @@
   <string name="download_error_unauthorized">Autentimise viga</string>
   <string name="download_error_file_type_type">Failitüübi viga</string>
   <string name="download_error_forbidden">Keelatud</string>
-  <string name="cancel_all_downloads_label">Tühista kõik allalaadimised</string>
   <string name="download_canceled_msg">Allalaadimine on tühistatud</string>
   <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
   <string name="download_report_content_title">Allalaadimise aruanne</string>
@@ -166,7 +152,6 @@
   <string name="download_log_title_unknown">Tundmatu pealkiri</string>
   <string name="download_type_feed">Uudisvoog</string>
   <string name="download_type_media">Meediafail</string>
-  <string name="download_type_image">Pilt</string>
   <string name="authentication_notification_title">Autentimine on nõutud</string>
   <string name="confirm_mobile_download_dialog_title">Kinnita üle mobiili allalaadimine</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Järjekorda</string>
@@ -181,7 +166,6 @@
   <string name="playback_error_unknown">Tundmatu tõrge</string>
   <string name="no_media_playing_label">Mingit faili ei esitata</string>
   <string name="player_buffering_msg">Puhverdamine</string>
-  <string name="playbackservice_notification_title">Taskuhäälingu esitamine</string>
   <string name="unknown_media_key">AntennaPod - Tundmatu meedia võti: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Lukusta järjekord</string>
@@ -190,7 +174,6 @@
   <string name="queue_unlocked">Järjekorra lukustus on eemaldatud</string>
   <string name="clear_queue_label">Tühjenda järjekord</string>
   <string name="undo">Tühista</string>
-  <string name="removed_from_queue">Kirje on eemaldatud</string>
   <string name="move_to_top_label">Liiguta üles</string>
   <string name="move_to_bottom_label">Liiguta alla</string>
   <string name="sort">Sorteeri</string>
@@ -210,8 +193,6 @@
   <!--Preferences-->
   <string name="storage_pref">Salvestusruum</string>
   <string name="project_pref">Projekt</string>
-  <string name="other_pref">Muud</string>
-  <string name="about_pref">Info</string>
   <string name="queue_label">Järjekord</string>
   <string name="pref_episode_cleanup_title">Saadete kustutamien</string>
   <string name="pref_followQueue_sum">Kui saade lõpeb, siis esita kohe järgmine järjekorras olev saade.</string>
@@ -228,18 +209,13 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Määra aeg päevades</string>
   <string name="pref_autoUpdateIntervallOrTime_every">iga %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">kell %1$s</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Laadi meediafaile alla ainult üle Wifi</string>
   <string name="pref_followQueue_title">Pidev esitamine</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Meedia allalaadimine üle Wifi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kõrvaklappide eemaldmine</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kõrvaklappide uuesti ühendamine</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bloetoothi uuesti ühendamin</string>
   <string name="pref_mobileUpdate_title">Uuendamine üle andmeside</string>
-  <string name="refreshing_label">Värskendamine</string>
   <string name="user_interface_label">Kasutajalidies</string>
   <string name="pref_set_theme_title">Vali teema</string>
-  <string name="pref_nav_drawer_title">Kohanda peamenüüd</string>
-  <string name="pref_nav_drawer_sum">Kohanda peamenüü välimust</string>
   <string name="pref_nav_drawer_items_title">Määra peamenüü osad</string>
   <string name="pref_nav_drawer_items_sum">Määra, mis osad on peamenüüs nähtaval.</string>
   <string name="pref_nav_drawer_feed_order_title">Määra tellimuste järjekord</string>
@@ -273,21 +249,17 @@
   <string name="pref_compact_notification_buttons_title">Määra lukustutekraani nupud</string>
   <string name="pref_lockscreen_background_title">Määra lukustusekraani taustapilt</string>
   <string name="pref_showDownloadReport_title">Näita allalaadimise aruannet</string>
-  <string name="pref_queueAddToFront_title">Pane järjekorra algusesse</string>
   <string name="pref_smart_mark_as_played_disabled">Välja lülitatud</string>
   <string name="pref_image_cache_size_title">Pildi vahemälu suurus</string>
   <string name="pref_image_cache_size_sum">Piltide jaoks kasutatava vahemälu suurus</string>
-  <string name="crash_report_title">Veateated</string>
-  <string name="crash_report_sum">Saada veateated e-postiga</string>
-  <string name="send_email">Saata e-post</string>
   <string name="experimental_pref">Katsetamisel</string>
   <string name="pref_current_value">Praegune väärtus: %1$s</string>
   <string name="pref_proxy_title">Vaheserver</string>
   <string name="pref_proxy_sum">Määra võrgu vaheserver</string>
-  <string name="pref_faq">KKK</string>
-  <string name="pref_known_issues">Teadaolevad probleemid</string>
   <string name="pref_no_browser_found">Veebilehitsejat ei leitud.</string>
   <string name="pref_cast_title">Chromecasti tugi</string>
+  <!--About screen-->
+  <string name="about_pref">Info</string>
   <!--Search-->
   <string name="search_hint">Otsi saateid</string>
   <string name="found_in_shownotes_label">Leitud saate märkmetest</string>
@@ -296,21 +268,15 @@
   <string name="search_label">Otsi</string>
   <string name="found_in_title_label">Leitud pealkirjast</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">OPML failid võimaldavad sul liigutada oma taskuhäälinguid ühest rakendusest teise.</string>
   <string name="opml_import_option">Valik %1$d</string>
   <string name="opml_import_explanation_1">Vali failisüsteemist konktreetne kaust.</string>
-  <string name="opml_import_explanation_2">Kasuta OPML-faili avamiseks väliseid rakendusi nagu Dropbox, Google Drive või sinu lemmik failihaldur.</string>
-  <string name="start_import_label">Alusta importimist</string>
   <string name="opml_import_label">OPML import</string>
-  <string name="opml_directory_error">VIGA!</string>
   <string name="reading_opml_label">OPML faili lugemine</string>
   <string name="opml_reader_error">OPML dokumendi lugemisel tekkis tõrge:</string>
   <string name="opml_import_error_no_file">Ühtegi faili pole avatud!</string>
   <string name="select_all_label">Vali kõik</string>
   <string name="deselect_all_label">Ära vali midagi</string>
-  <string name="select_options_label">Vali...</string>
   <string name="choose_file_from_filesystem">Kohalikust failisüsteemist</string>
-  <string name="choose_file_from_external_application">Kasuta välist rakendust</string>
   <string name="opml_export_label">OPML eksport</string>
   <string name="html_export_label">HTML eksport</string>
   <string name="exporting_label">Eksportimine...</string>
@@ -390,8 +356,6 @@
   <string name="pref_restart_required">Selle muudatuse mõjumiseks tuleb AntennaPod taaskäivitada.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Telli</string>
-  <string name="subscribed_label">Tellitud</string>
-  <string name="downloading_label">Allalaadimine...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Keri tagasi</string>
   <string name="fast_forward_label">Keri edasi</string>
@@ -480,4 +444,5 @@
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_media_error_skipping">Tõrge meedia esitamisel. Jätame vahele...</string>
   <!--Notification channels-->
+  <!--Widget settings-->
 </resources>
