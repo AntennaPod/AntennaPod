@@ -138,7 +138,7 @@ public class DownloadService extends Service {
         requester = DownloadRequester.getInstance();
 
         syncExecutor = Executors.newSingleThreadExecutor(r -> {
-            Thread t = new Thread(r);
+            Thread t = new Thread(r, "SyncThread");
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         });
@@ -146,7 +146,7 @@ public class DownloadService extends Service {
         downloadExecutor = new ExecutorCompletionService<>(
                 Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
                         r -> {
-                            Thread t = new Thread(r);
+                            Thread t = new Thread(r, "DownloadThread");
                             t.setPriority(Thread.MIN_PRIORITY);
                             return t;
                         }
@@ -154,7 +154,7 @@ public class DownloadService extends Service {
         );
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
                 r -> {
-                    Thread t = new Thread(r);
+                    Thread t = new Thread(r, "DownloadSchedExecutorThread");
                     t.setPriority(Thread.MIN_PRIORITY);
                     return t;
                 }, (r, executor) -> Log.w(TAG, "SchedEx rejected submission of new task")
