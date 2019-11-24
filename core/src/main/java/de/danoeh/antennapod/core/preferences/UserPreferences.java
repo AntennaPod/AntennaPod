@@ -833,6 +833,9 @@ public class UserPreferences {
     }
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
+        if (!isEnableAutodownload()) {
+            return new APNullCleanupAlgorithm();
+        }
         int cleanupValue = getEpisodeCleanupValue();
         if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
@@ -844,7 +847,7 @@ public class UserPreferences {
     }
 
     public static int getEpisodeCleanupValue() {
-        return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "" + EPISODE_CLEANUP_NULL));
     }
 
     public static void setEpisodeCleanupValue(int episodeCleanupValue) {
