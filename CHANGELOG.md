@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+Version 1.8.0
+-------------
+* Added per-feed playback speed setting (by @spacecowboy)
+* Support sorting in Podcast screen (by orionlee)
+* Option to show stream button rather than download in lists (by dsmith47)
+* Option to replace Episode cover with Podcast cover (by xgouchet)
+* Transparent widget (by M-arcel)
+* User interface tweaks (by ByteHamster)
+* Tons of bug fixes and improvements
+
 Version 1.7.3
 -------------
 * Display episode image on widget (by @brad)
