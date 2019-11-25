@@ -89,7 +89,6 @@ public class SubscriptionFragment extends Fragment {
         subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, 3));
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
-        setupEmptyView();
         return root;
     }
 
@@ -154,6 +153,7 @@ public class SubscriptionFragment extends Fragment {
         subscriptionAdapter = new SubscriptionsAdapter((MainActivity) getActivity(), itemAccess);
         subscriptionGridLayout.setAdapter(subscriptionAdapter);
         subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
+        setupEmptyView();
 
         subscriptionAddButton.setOnClickListener(view -> {
             if (getActivity() instanceof MainActivity) {
