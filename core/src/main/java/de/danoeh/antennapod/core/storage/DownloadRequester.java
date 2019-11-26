@@ -202,7 +202,9 @@ public class DownloadRequester implements DownloadStateProvider {
 
             DownloadRequest request = createRequest(feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
                     true, username, password, lastModified, true, args);
-            download(context, request);
+            if (request != null) {
+                download(context, request);
+            }
         }
     }
 
