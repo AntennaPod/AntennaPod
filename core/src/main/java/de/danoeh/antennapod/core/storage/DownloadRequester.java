@@ -80,13 +80,14 @@ public class DownloadRequester implements DownloadStateProvider {
      *                 with the same source URL is already stored, this one will be skipped.
      * @return True if any of the download request was accepted, false otherwise.
      */
-    public synchronized boolean download(@NonNull Context context,
-                                         DownloadRequest... requests) {
+    public synchronized boolean download(@NonNull Context context, DownloadRequest... requests) {
         return download(context, false, requests);
     }
 
-    private boolean download(@NonNull Context context, boolean cleanupMedia,
-                             DownloadRequest... requests) {
+    private boolean download(@NonNull Context context, boolean cleanupMedia, DownloadRequest... requests) {
+        if (requests.length <= 0) {
+            return false;
+        }
         boolean result = false;
 
         ArrayList<DownloadRequest> requestsToSend = new ArrayList<>(requests.length);
