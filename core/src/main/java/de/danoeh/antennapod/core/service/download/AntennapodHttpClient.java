@@ -49,7 +49,7 @@ public class AntennapodHttpClient {
 
     private static final String TAG = "AntennapodHttpClient";
 
-    private static final int CONNECTION_TIMEOUT = 30000;
+    private static final int CONNECTION_TIMEOUT = 10000;
     private static final int READ_TIMEOUT = 30000;
 
     private static final int MAX_CONNECTIONS = 8;

@@ -138,7 +138,7 @@ public class DownloadService extends Service {
         requester = DownloadRequester.getInstance();
 
         syncExecutor = Executors.newSingleThreadExecutor(r -> {
-            Thread t = new Thread(r);
+            Thread t = new Thread(r, "SyncThread");
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         });
@@ -146,7 +146,7 @@ public class DownloadService extends Service {
         downloadExecutor = new ExecutorCompletionService<>(
                 Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
                         r -> {
-                            Thread t = new Thread(r);
+                            Thread t = new Thread(r, "DownloadThread");
                             t.setPriority(Thread.MIN_PRIORITY);
                             return t;
                         }
@@ -154,7 +154,7 @@ public class DownloadService extends Service {
         );
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
                 r -> {
-                    Thread t = new Thread(r);
+                    Thread t = new Thread(r, "DownloadSchedExecutorThread");
                     t.setPriority(Thread.MIN_PRIORITY);
                     return t;
                 }, (r, executor) -> Log.w(TAG, "SchedEx rejected submission of new task")
@@ -163,11 +163,15 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent != null &&
-                intent.getParcelableArrayListExtra(EXTRA_REQUESTS) != null) {
+        if (intent != null && intent.getParcelableArrayListExtra(EXTRA_REQUESTS) != null) {
+            Notification notification = notificationManager.updateNotifications(
+                    requester.getNumberOfDownloads(), downloads);
+            startForeground(NOTIFICATION_ID, notification);
             onDownloadQueued(intent);
         } else if (numberOfDownloads.get() == 0) {
             stopSelf();
+        } else {
+            Log.d(TAG, "onStartCommand: Unknown intent");
         }
         return Service.START_NOT_STICKY;
     }
@@ -217,7 +221,9 @@ public class DownloadService extends Service {
         syncExecutor.shutdown();
         schedExecutor.shutdown();
         cancelNotificationUpdater();
-        downloadPostFuture.cancel(true);
+        if (downloadPostFuture != null) {
+            downloadPostFuture.cancel(true);
+        }
         unregisterReceiver(cancelDownloadReceiver);
 
         // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,

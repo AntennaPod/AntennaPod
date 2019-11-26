@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.widget.AbsListView;
+import android.widget.ListAdapter;
 import androidx.annotation.AttrRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,8 +19,9 @@ import de.danoeh.antennapod.R;
 
 public class EmptyViewHandler {
     private boolean layoutAdded = false;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private View list;
+    private ListAdapter listAdapter;
+    private RecyclerView.Adapter recyclerAdapter;
 
     private final Context context;
     private final View emptyView;
@@ -60,7 +63,9 @@ public class EmptyViewHandler {
         }
         addToParentView(listView);
         layoutAdded = true;
+        this.list = listView;
         listView.setEmptyView(emptyView);
+        updateAdapter(listView.getAdapter());
     }
 
     public void attachToRecyclerView(RecyclerView recyclerView) {
@@ -69,7 +74,7 @@ public class EmptyViewHandler {
         }
         addToParentView(recyclerView);
         layoutAdded = true;
-        this.recyclerView = recyclerView;
+        this.list = recyclerView;
         updateAdapter(recyclerView.getAdapter());
     }
 
@@ -85,12 +90,23 @@ public class EmptyViewHandler {
     }
 
     public void updateAdapter(RecyclerView.Adapter adapter) {
-        if (this.adapter != null) {
-            this.adapter.unregisterAdapterDataObserver(adapterObserver);
+        if (this.recyclerAdapter != null) {
+            this.recyclerAdapter.unregisterAdapterDataObserver(adapterObserver);
         }
-        this.adapter = adapter;
+        this.recyclerAdapter = adapter;
         if (adapter != null) {
             adapter.registerAdapterDataObserver(adapterObserver);
+        }
+        updateVisibility();
+    }
+
+    private void updateAdapter(ListAdapter adapter) {
+        if (this.listAdapter != null) {
+            this.listAdapter.unregisterDataSetObserver(listAdapterObserver);
+        }
+        this.listAdapter = adapter;
+        if (adapter != null) {
+            adapter.registerDataSetObserver(listAdapterObserver);
         }
         updateVisibility();
     }
@@ -102,14 +118,22 @@ public class EmptyViewHandler {
         }
     };
 
+    private final DataSetObserver listAdapterObserver = new DataSetObserver() {
+        public void onChanged() {
+            updateVisibility();
+        }
+    };
+
     public void updateVisibility() {
         boolean empty;
-        if (adapter == null) {
-            empty = true;
+        if (recyclerAdapter != null) {
+            empty = recyclerAdapter.getItemCount() == 0;
+        } else if (listAdapter != null) {
+            empty = listAdapter.isEmpty();
         } else {
-            empty = adapter.getItemCount() == 0;
+            empty = true;
         }
-        recyclerView.setVisibility(empty ? View.GONE : View.VISIBLE);
+        list.setVisibility(empty ? View.GONE : View.VISIBLE);
         emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
     }
 }
