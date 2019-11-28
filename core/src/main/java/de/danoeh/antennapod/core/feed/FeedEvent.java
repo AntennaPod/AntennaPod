@@ -6,7 +6,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class FeedEvent {
 
     public enum Action {
-        FILTER_CHANGED
+        FILTER_CHANGED,
+        SORT_ORDER_CHANGED
     }
 
     private final Action action;

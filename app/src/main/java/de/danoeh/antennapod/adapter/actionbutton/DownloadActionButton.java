@@ -1,16 +1,16 @@
 package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
+import android.widget.Toast;
+
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import android.widget.Toast;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -64,7 +64,7 @@ class DownloadActionButton extends ItemActionButton {
 
     private void downloadEpisode(Context context) {
         try {
-            DBTasks.downloadFeedItems(context, item);
+            DownloadRequester.getInstance().downloadMedia(context, item);
             Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
         } catch (DownloadRequestException e) {
             e.printStackTrace();

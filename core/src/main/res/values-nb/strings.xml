@@ -21,7 +21,6 @@
   <string name="playback_history_label">Avspillingshistorikk</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net-innlogging</string>
-  <string name="free_space_label">%1$s ledig</string>
   <string name="episode_cache_full_title">Hurtigbuffer for episoder er full</string>
   <string name="episode_cache_full_message">Grensen for størrelse på hurtigbuffer er nådd. Du kan øke størrelsen på hurtigbuffer i instillingene.</string>
   <!--Statistics fragment-->
@@ -58,7 +57,6 @@
   <string name="reset">Tilbakestill</string>
   <string name="language_label">Språk</string>
   <string name="url_label">URL</string>
-  <string name="podcast_settings_label">Innstillinger</string>
   <string name="cover_label">Bilde</string>
   <string name="error_label">Feil</string>
   <string name="error_msg_prefix">Det oppsto en feil:</string>
@@ -66,14 +64,9 @@
   <string name="external_storage_error_msg">Finner ikke ekstern lagring. Sjekk at det eksterne lagringsmediet er montert.</string>
   <string name="chapters_label">Kapittel</string>
   <string name="chapter_duration">Varighet: %1$s</string>
-  <string name="shownotes_label">Shownotater</string>
   <string name="description_label">Beskrivelse</string>
-  <string name="most_recent_prefix">Nyeste episode:\u0020</string>
   <string name="episodes_suffix">\u0020episoder</string>
-  <string name="length_prefix">Lengde:\u0020</string>
-  <string name="size_prefix">Størrelse:\u0020</string>
   <string name="processing_label">Behandler</string>
-  <string name="loading_label">Laster ...</string>
   <string name="save_username_password_label">Lagre brukernavn og passord</string>
   <string name="close_label">Lukk</string>
   <string name="retry_label">Prøv igjen</string>
@@ -96,8 +89,6 @@
   <string name="feedurl_label">Strømmens URL</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Legg til en podcast via URL</string>
-  <string name="podcastdirectories_label">Finn podcast i katalog</string>
-  <string name="podcastdirectories_descr">Søk etter nye podcaster i iTunes eller fyyd, eller utforsk gpodder.net etter navn, kategori eller popularitet.</string>
   <string name="browse_gpoddernet_label">Bla gjennom gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som avspilt</string>
@@ -107,7 +98,6 @@
   <string name="share_label">Del ...</string>
   <string name="share_file_label">Del fil</string>
   <string name="share_feed_url_label">Del strømmens URL</string>
-  <string name="hide_episodes_title">Skjul episoder</string>
   <string name="hide_unplayed_episodes_label">Ikke avspilt</string>
   <string name="hide_paused_episodes_label">Pauset</string>
   <string name="hide_played_episodes_label">Avspilt</string>
@@ -123,9 +113,7 @@
   <string name="download_label">Last ned</string>
   <string name="play_label">Spill</string>
   <string name="pause_label">Pause</string>
-  <string name="stop_label">Stopp</string>
   <string name="stream_label">Strøm</string>
-  <string name="remove_label">Fjern</string>
   <string name="delete_label">Slett</string>
   <string name="delete_failed">Kan ikke slette filen. Omstart av enheten kan hjelpe.</string>
   <string name="mark_read_label">Marker som avspilt</string>
@@ -146,12 +134,10 @@
   <string name="removed_item">Element fjernet</string>
   <!--Download messages and labels-->
   <string name="download_successful">vellykket</string>
-  <string name="download_failed">mislyktes</string>
   <string name="download_pending">Nedlastning venter</string>
   <string name="download_running">Nedlasting pågår</string>
   <string name="download_error_device_not_found">Lagringsenhet ikke funnet</string>
   <string name="download_error_insufficient_space">Ikke nok plass</string>
-  <string name="download_error_file_error">Fil-feil</string>
   <string name="download_error_http_data_error">HTTP-datafeil</string>
   <string name="download_error_error_unknown">Ukjent feil</string>
   <string name="download_error_parser_exception">Parser-unntak</string>
@@ -161,7 +147,6 @@
   <string name="download_error_unauthorized">Autentiseringsfeil</string>
   <string name="download_error_file_type_type">Filtype-feil</string>
   <string name="download_error_forbidden">Ikke tillatt</string>
-  <string name="cancel_all_downloads_label">Avbryt alle nedlastninger</string>
   <string name="download_canceled_msg">Nedlasting avbrutt</string>
   <string name="download_canceled_autodownload_enabled_msg">Nedlasting avbrutt\n<i>Automatisk nedlasting</i> for dette elementet er deaktivert</string>
   <string name="download_report_title">Nedlasting fullført med feilmeldinger</string>
@@ -176,7 +161,6 @@
   <string name="download_log_title_unknown">Ukjent tittel</string>
   <string name="download_type_feed">Strøm</string>
   <string name="download_type_media">Mediafil</string>
-  <string name="download_type_image">Bilde</string>
   <string name="download_request_error_dialog_message_prefix">En feil oppsto under nedlastningen av filen:\u0020</string>
   <string name="authentication_notification_title">Autentisering påkreves</string>
   <string name="authentication_notification_msg">Ressursen du forespør krever brukernavn og passord</string>
@@ -195,7 +179,6 @@
   <string name="playback_error_unknown">Ukjent feil</string>
   <string name="no_media_playing_label">Ingen media spillende for øyeblikket.</string>
   <string name="player_buffering_msg">Bufrer</string>
-  <string name="playbackservice_notification_title">Spiller podcast</string>
   <string name="unknown_media_key">AntennaPod - Ukjent medienøkkel: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Lås køen</string>
@@ -204,7 +187,6 @@
   <string name="queue_unlocked">Kø opplåst</string>
   <string name="clear_queue_label">Slett køen</string>
   <string name="undo">Angre</string>
-  <string name="removed_from_queue">Objekt er fjernet</string>
   <string name="move_to_top_label">Gå til toppen</string>
   <string name="move_to_bottom_label">Gå til bunnen</string>
   <string name="sort">Sortér</string>
@@ -225,8 +207,6 @@
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
   <string name="project_pref">Prosjekt</string>
-  <string name="other_pref">Annet</string>
-  <string name="about_pref">Om</string>
   <string name="queue_label">Kø</string>
   <string name="pref_episode_cleanup_title">Episodeopprydding</string>
   <string name="pref_pauseOnDisconnect_sum">Sett playback på pause når hodetelefoner eller bluetooth er frakoblet</string>
@@ -252,18 +232,13 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Angi klokkeslett</string>
   <string name="pref_autoUpdateIntervallOrTime_every">hver %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">ved %1$s</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Last ned mediafiler eksklusivt med WiFi</string>
   <string name="pref_followQueue_title">Kontinuerlig avspilling</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">WiFi media nedlastning</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Frakobling av hodetelefoner</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Gjeninnkopling av hodetelefoner</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Blutetooth tilkoblet igjen</string>
   <string name="pref_mobileUpdate_title">Mobiloppdateringer</string>
-  <string name="refreshing_label">Oppdaterer</string>
   <string name="user_interface_label">Brukergrensesnitt</string>
   <string name="pref_set_theme_title">Velg tema</string>
-  <string name="pref_nav_drawer_title">Skreddersy navigasjonsskuff</string>
-  <string name="pref_nav_drawer_sum">Velg utseendet til navigasjonsskuffen.</string>
   <string name="pref_nav_drawer_items_title">Velg elementer i navigasjonsskuffen</string>
   <string name="pref_nav_drawer_items_sum">Endre hvilke elementer som vises i navigeringsfanen.</string>
   <string name="pref_nav_drawer_feed_order_title">Velg rekkefølge på abbonement</string>
@@ -274,8 +249,6 @@
   <string name="pref_automatic_download_sum">Konfigurer automatisk nedlasting av episoder.</string>
   <string name="pref_autodl_wifi_filter_title">Skru på Wi-Fi-filter</string>
   <string name="pref_autodl_wifi_filter_sum">Tillat automatisk nedlasting kun for valgte Wi-Fi-nettverk.</string>
-  <string name="pref_autodl_allow_on_mobile_title">Last ned via mobildata</string>
-  <string name="pref_autodl_allow_on_mobile_sum">Tillat oppdateringer over kobling via mobildata.</string>
   <string name="pref_automatic_download_on_battery_title">Last ned når enheten ikke lader</string>
   <string name="pref_automatic_download_on_battery_sum">Tillat automatisk nedlasting når enheten ikke står til lading</string>
   <string name="pref_parallel_downloads_title">Parallelle nedlastinger</string>
@@ -296,7 +269,6 @@
   <string name="pref_gpodnet_full_sync_title">Synkroniser alt nå</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">Siste synkroniseringsforsøk: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Synkronisering startet</string>
-  <string name="pref_gpodnet_full_sync_started">Full synkronisering startet</string>
   <string name="pref_gpodnet_notifications_title">Vis synkroniseringsfeil varsler</string>
   <string name="pref_gpodnet_notifications_sum">Denne instillingen gjelder ikke autentiseringfeil.</string>
   <string name="pref_playback_speed_title">Avspillingshastigheter</string>
@@ -311,20 +283,15 @@
   <string name="pref_showDownloadReport_title">Vis nedlastingsrapport</string>
   <string name="pref_showDownloadReport_sum">Generer en rapport som viser detaljer dersom nedlastinger feiler.</string>
   <string name="pref_expand_notify_unsupport_toast">Android-versjoner tidligere enn 4.1 støtter ikke utvidede varsler.</string>
-  <string name="pref_queueAddToFront_sum">Legg til nye episoder i begynnelsen av køen.</string>
-  <string name="pref_queueAddToFront_title">Legg til foran i køen</string>
   <string name="pref_smart_mark_as_played_disabled">Deaktivert</string>
   <string name="pref_image_cache_size_title">Størrelse for bildemellomlager</string>
   <string name="pref_image_cache_size_sum">Størrelsen på mellomlageret for bilder.</string>
-  <string name="crash_report_title">Kræsj-rapport</string>
-  <string name="crash_report_sum">Send den siste kræsj-rapporten via e-post</string>
-  <string name="send_email">Send e-post</string>
   <string name="experimental_pref">Eksperimentell</string>
-  <string name="pref_faq">FAQ</string>
-  <string name="pref_known_issues">Kjente problemer</string>
   <string name="pref_no_browser_found">Ingen nettleser funnet.</string>
   <string name="pref_cast_title">Chromecast støtte</string>
   <string name="pref_enqueue_downloaded_summary">Legg til nedlastede episoder i køen</string>
+  <!--About screen-->
+  <string name="about_pref">Om</string>
   <!--Search-->
   <string name="search_hint">Søk etter episoder</string>
   <string name="found_in_chapters_label">Funnet i kapitler</string>
@@ -333,22 +300,16 @@
   <string name="found_in_title_label">Funnet i tittel</string>
   <string name="no_results_for_query">Ingen resultalter for \"%1$s\"</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">OPML-filer lar deg flytte podcastene dine fra en podcatcher til en annen.</string>
   <string name="opml_import_option">Valg %1$d</string>
   <string name="opml_import_explanation_1">Velg en spesifikk filbane fra det lokale filsystemet.</string>
-  <string name="opml_import_explanation_2">Bruk en ektern applikasjon som Dropbox, Google Drive eller favoritt-filbehandleren din for å åpne en OPML-fil.</string>
   <string name="opml_import_explanation_3">Mange applikasjoner som Gmail, Dropbox, Google Drive og de fleste filbehandlere kan <i>åpne</i> OPML-filer <i>med</i> AntennaPod.</string>
-  <string name="start_import_label">Start importering</string>
   <string name="opml_import_label">OPML-import</string>
-  <string name="opml_directory_error">FEIL</string>
   <string name="reading_opml_label">Leser OPML-fil</string>
   <string name="opml_reader_error">En feil oppstod ved lesing av OPML dokument: </string>
   <string name="opml_import_error_no_file">Ingen fil er valgt.</string>
   <string name="select_all_label">Velg alle</string>
   <string name="deselect_all_label">Opphev alle markeringene</string>
-  <string name="select_options_label">Velg...</string>
   <string name="choose_file_from_filesystem">Fra lokalt filsystem</string>
-  <string name="choose_file_from_external_application">Bruk ekstern applikasjon</string>
   <string name="opml_export_label">OPML-eksportering</string>
   <string name="html_export_label">HTML eksport</string>
   <string name="exporting_label">Eksporterer...</string>
@@ -437,8 +398,6 @@
   <string name="pref_restart_required">AntennaPod må startes om for at denne endringen skal lagres.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
-  <string name="subscribed_label">Abonnert</string>
-  <string name="downloading_label">Laster ned...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Spol tilbake</string>
   <string name="fast_forward_label">Spol fremover</string>
@@ -525,4 +484,5 @@
   <string name="cast_failed_to_pause">Feilet å pause avspillingen av media</string>
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <!--Notification channels-->
+  <!--Widget settings-->
 </resources>

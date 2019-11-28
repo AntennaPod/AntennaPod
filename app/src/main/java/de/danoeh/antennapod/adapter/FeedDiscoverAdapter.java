@@ -59,6 +59,8 @@ public class FeedDiscoverAdapter extends BaseAdapter {
 
 
         final PodcastSearchResult podcast = getItem(position);
+        holder.imageView.setContentDescription(podcast.title);
+
         Glide.with(mainActivityRef.get())
                 .load(podcast.imageUrl)
                 .apply(new RequestOptions()

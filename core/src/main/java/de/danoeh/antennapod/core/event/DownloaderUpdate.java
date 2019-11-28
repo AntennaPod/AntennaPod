@@ -30,7 +30,8 @@ public class DownloaderUpdate {
 
     DownloaderUpdate(@NonNull List<Downloader> downloaders) {
         this.downloaders = downloaders;
-        LongList feedIds1 = new LongList(), mediaIds1 = new LongList();
+        LongList feedIds1 = new LongList();
+        LongList mediaIds1 = new LongList();
         for(Downloader d1 : downloaders) {
             int type = d1.getDownloadRequest().getFeedfileType();
             long id = d1.getDownloadRequest().getFeedfileId();

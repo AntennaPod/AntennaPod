@@ -29,7 +29,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
+import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
@@ -675,8 +675,7 @@ public class PlaybackController {
     }
 
     public boolean canSetPlaybackSpeed() {
-        return org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(activity.getApplicationContext())
-                || UserPreferences.useSonic()
+        return UserPreferences.useSonic()
                 || UserPreferences.useExoplayer()
                 || Build.VERSION.SDK_INT >= 23
                 || (playbackService != null && playbackService.canSetSpeed());
@@ -711,7 +710,7 @@ public class PlaybackController {
         if (playbackService != null && canSetPlaybackSpeed()) {
             return playbackService.getCurrentPlaybackSpeed();
         } else {
-            return PlaybackSpeedHelper.getCurrentPlaybackSpeed(getMedia());
+            return PlaybackSpeedUtils.getCurrentPlaybackSpeed(getMedia());
         }
     }
 

@@ -70,6 +70,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
@@ -137,12 +138,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * If the PlaybackService receives this action, it will pause playback.
      */
     public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
-
-
-    /**
-     * If the PlaybackService receives this action, it will resume playback.
-     */
-    public static final String ACTION_RESUME_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.resumePlayCurrentEpisode";
 
     /**
      * Custom action used by Android Wear
@@ -289,7 +284,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
         registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-        registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(ACTION_RESUME_PLAY_CURRENT_EPISODE));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
         flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
@@ -339,6 +333,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Service is about to be destroyed");
+
+        if (notificationBuilder.getPlayerStatus() == PlayerStatus.PLAYING) {
+            notificationBuilder.setPlayerStatus(PlayerStatus.STOPPED);
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        }
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
         currentMediaType = MediaType.UNKNOWN;
@@ -355,7 +355,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
-        unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
         flavorHelper.removeCastConsumer();
         flavorHelper.unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
@@ -931,7 +930,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return null;
         }
 
-        if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()) {
+        if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()
+                && UserPreferences.isFollowQueue()) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, nextItem.getMedia())
                     .prepareImmediately(true)
@@ -1180,7 +1180,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, p.getFeedTitle());
 
-            String imageLocation = p.getImageLocation();
+            String imageLocation = ImageResourceUtils.getImageLocation(p);
 
             if (!TextUtils.isEmpty(imageLocation)) {
                 if (UserPreferences.setLockscreenBackground()) {
@@ -1246,7 +1246,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
-        notificationBuilder.setMetadata(playable, mediaSession.getSessionToken(), playerStatus, isCasting);
+        notificationBuilder.setPlayable(playable);
+        notificationBuilder.setMediaSessionToken(mediaSession.getSessionToken());
+        notificationBuilder.setPlayerStatus(playerStatus);
+        notificationBuilder.setCasting(isCasting);
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
         Log.d(TAG, "setupNotification: startForeground" + playerStatus);
@@ -1468,16 +1471,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (TextUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.skip();
-            }
-        }
-    };
-
-    private final BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
-                Log.d(TAG, "Received RESUME_PLAY_CURRENT_EPISODE intent");
-                mediaPlayer.resume();
             }
         }
     };

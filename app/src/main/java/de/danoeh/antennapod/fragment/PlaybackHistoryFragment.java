@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -24,7 +26,6 @@ import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -39,11 +40,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PlaybackHistoryFragment extends ListFragment {
-
     public static final String TAG = "PlaybackHistoryFragment";
-
-    private static final int EVENTS = EventDistributor.PLAYBACK_HISTORY_UPDATE |
-            EventDistributor.PLAYER_STATUS_UPDATE;
 
     private List<FeedItem> playbackHistory;
     private FeedItemlistAdapter adapter;
@@ -83,7 +80,6 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadItems();
     }
@@ -92,7 +88,6 @@ public class PlaybackHistoryFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        EventDistributor.getInstance().unregister(contentUpdate);
         if (disposable != null) {
             disposable.dispose();
         }
@@ -111,7 +106,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         position -= l.getHeaderViewsCount();
         long[] ids = FeedItemUtil.getIds(playbackHistory);
-        ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(ids, position));
+        ((MainActivity) getActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
     }
 
     @Override
@@ -166,16 +161,17 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHistoryUpdated(PlaybackHistoryEvent event) {
+        loadItems();
+        getActivity().supportInvalidateOptionsMenu();
+    }
 
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
-                loadItems();
-                getActivity().supportInvalidateOptionsMenu();
-            }
-        }
-    };
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        loadItems();
+        getActivity().supportInvalidateOptionsMenu();
+    }
 
     private void onFragmentLoaded() {
         adapter.notifyDataSetChanged();

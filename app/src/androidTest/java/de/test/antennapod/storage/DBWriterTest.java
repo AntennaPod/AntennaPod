@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.filters.LargeTest;
-import androidx.test.filters.MediumTest;
 import android.util.Log;
 
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.MediumTest;
+
 import org.awaitility.Awaitility;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +32,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.Consumer;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
 
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.assertEquals;
@@ -321,15 +322,11 @@ public class DBWriterTest {
 
         feed.setImageUrl("url");
 
-        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
             feed.getItems().add(item);
-
             File enc = new File(destFolder, "file " + i);
-            itemFiles.add(enc);
-
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", false, null, 0, 0);
             item.setMedia(media);
         }
@@ -386,15 +383,11 @@ public class DBWriterTest {
 
         feed.setImageUrl("url");
 
-        List<File> itemFiles = new ArrayList<>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
             FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
             feed.getItems().add(item);
-
             File enc = new File(destFolder, "file " + i);
-            itemFiles.add(enc);
-
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", false, null, 0, 0);
             item.setMedia(media);
         }
@@ -475,11 +468,12 @@ public class DBWriterTest {
         assertFalse(OLD_DATE == media.getPlaybackCompletionDate().getTime());
     }
 
-    private Feed queueTestSetupMultipleItems(final int NUM_ITEMS) throws InterruptedException, ExecutionException, TimeoutException {
+    private Feed queueTestSetupMultipleItems(final int numItems) throws InterruptedException, ExecutionException, TimeoutException {
         final Context context = getInstrumentation().getTargetContext();
+        UserPreferences.setEnqueueLocation(UserPreferences.EnqueueLocation.BACK);
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
-        for (int i = 0; i < NUM_ITEMS; i++) {
+        for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), FeedItem.PLAYED, feed);
             feed.getItems().add(item);
         }
@@ -573,12 +567,16 @@ public class DBWriterTest {
         Cursor cursor = adapter.getQueueIDCursor();
         assertTrue(cursor.moveToFirst());
         assertTrue(cursor.getCount() == NUM_ITEMS);
+        List<Long> expectedIds = FeedItemUtil.getIdList(feed.getItems());
+        List<Long> actualIds = new ArrayList<>();
         for (int i = 0; i < NUM_ITEMS; i++) {
             assertTrue(cursor.moveToPosition(i));
-            assertTrue(cursor.getLong(0) == feed.getItems().get(i).getId());
+            actualIds.add(cursor.getLong(0));
         }
         cursor.close();
         adapter.close();
+        assertEquals("Bulk add to queue: result order should be the same as the order given",
+                expectedIds, actualIds);
     }
 
     @Test

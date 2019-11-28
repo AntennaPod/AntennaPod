@@ -6,27 +6,6 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
-    <include layout="@layout/feeditemlist_header"/>
-
-    <Spinner
-            android:id="@+id/spinnerAlternateUrls"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_micro"/>
-
-    <Button
-            android:id="@+id/butSubscribe"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:focusable="false"
-            android:text="@string/subscribe_label"/>
-
     <TextView
             android:id="@+id/txtvDescription"
             android:layout_width="wrap_content"
@@ -50,8 +29,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
-            android:textColor="?attr/colorAccent"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_medium"
             android:text="@string/episodes_label"/>
 
 </LinearLayout>

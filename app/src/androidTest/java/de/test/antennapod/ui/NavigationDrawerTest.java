@@ -38,6 +38,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static de.test.antennapod.NthMatcher.first;
 import static junit.framework.TestCase.assertTrue;
@@ -73,10 +74,6 @@ public class NavigationDrawerTest {
     private void openNavDrawer() {
         onView(isRoot()).perform(waitForView(withId(R.id.drawer_layout), 1000));
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-    }
-
-    private ViewInteraction onDrawerItem(Matcher<View> viewMatcher) {
-        return onView(allOf(viewMatcher, withId(R.id.txtvTitle)));
     }
 
     @Test

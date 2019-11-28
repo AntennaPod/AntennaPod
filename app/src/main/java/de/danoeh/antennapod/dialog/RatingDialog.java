@@ -7,11 +7,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import android.util.Log;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
+import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.IntentUtils;
 
@@ -97,21 +96,18 @@ public class RatingDialog {
     }
 
     @Nullable
-    private static MaterialDialog createDialog() {
+    private static AlertDialog createDialog() {
         Context context = mContext.get();
-        if(context == null) {
+        if (context == null) {
             return null;
         }
-        return new MaterialDialog.Builder(context)
-                .title(R.string.rating_title)
-                .content(R.string.rating_message)
-                .positiveText(R.string.rating_now_label)
-                .negativeText(R.string.rating_never_label)
-                .neutralText(R.string.rating_later_label)
-                .onPositive((dialog, which) -> rateNow())
-                .onNegative((dialog, which) -> saveRated())
-                .onNeutral((dialog, which) -> resetStartDate())
-                .cancelListener(dialog1 -> resetStartDate())
-                .build();
+        return new AlertDialog.Builder(context)
+                .setTitle(R.string.rating_title)
+                .setMessage(R.string.rating_message)
+                .setPositiveButton(R.string.rating_now_label, (dialog, which) -> rateNow())
+                .setNegativeButton(R.string.rating_never_label, (dialog, which) -> saveRated())
+                .setNeutralButton(R.string.rating_later_label, (dialog, which) -> resetStartDate())
+                .setOnCancelListener(dialog1 -> resetStartDate())
+                .create();
     }
 }

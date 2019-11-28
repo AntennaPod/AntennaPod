@@ -29,7 +29,7 @@ public class GPodnetServiceTest {
     private static final String PW = "";
 
     @Before
-    protected void setUp() {
+    public void setUp() {
         service = new GpodnetService();
     }
 

@@ -167,16 +167,8 @@ public class FeedInfoFragment extends Fragment {
 
         txtvTitle.setText(feed.getTitle());
 
-        String description = feed.getDescription();
-        if(description != null) {
-            if(Feed.TYPE_ATOM1.equals(feed.getType())) {
-                HtmlToPlainText formatter = new HtmlToPlainText();
-                Document feedDescription = Jsoup.parse(feed.getDescription());
-                description = StringUtils.trim(formatter.getPlainText(feedDescription));
-            }
-        } else {
-            description = "";
-        }
+        String description = HtmlToPlainText.getPlainText(feed.getDescription());
+
         txtvDescription.setText(description);
 
         if (!TextUtils.isEmpty(feed.getAuthor())) {

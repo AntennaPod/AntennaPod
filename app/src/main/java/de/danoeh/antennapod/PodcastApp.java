@@ -1,7 +1,6 @@
 package de.danoeh.antennapod;
 
 import android.app.Application;
-import android.os.Build;
 import android.os.StrictMode;
 
 import com.joanzapata.iconify.Iconify;
@@ -10,7 +9,6 @@ import com.joanzapata.iconify.fonts.MaterialModule;
 
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,46 +24,43 @@ public class PodcastApp extends Application {
         }
     }
 
-	private static PodcastApp singleton;
+    private static PodcastApp singleton;
 
-	public static PodcastApp getInstance() {
-		return singleton;
-	}
+    public static PodcastApp getInstance() {
+        return singleton;
+    }
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-		Thread.setDefaultUncaughtExceptionHandler(new CrashReportWriter());
+        Thread.setDefaultUncaughtExceptionHandler(new CrashReportWriter());
 
-		if(BuildConfig.DEBUG) {
-			StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder()
-				.detectLeakedSqlLiteObjects()
-				.penaltyLog()
-				.penaltyDropBox();
-			builder.detectActivityLeaks();
-			builder.detectLeakedClosableObjects();
-			if(Build.VERSION.SDK_INT >= 16) {
-				builder.detectLeakedRegistrationObjects();
-			}
-			StrictMode.setVmPolicy(builder.build());
-		}
+        if (BuildConfig.DEBUG) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .penaltyLog()
+                    .penaltyDropBox()
+                    .detectActivityLeaks()
+                    .detectLeakedClosableObjects()
+                    .detectLeakedRegistrationObjects();
+            StrictMode.setVmPolicy(builder.build());
+        }
 
-		singleton = this;
+        singleton = this;
 
-		ClientConfig.initialize(this);
+        ClientConfig.initialize(this);
 
-		EventDistributor.getInstance();
-		Iconify.with(new FontAwesomeModule());
-		Iconify.with(new MaterialModule());
+        Iconify.with(new FontAwesomeModule());
+        Iconify.with(new MaterialModule());
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
-		EventBus.builder()
-				.addIndex(new ApEventBusIndex())
-				.addIndex(new ApCoreEventBusIndex())
-				.logNoSubscriberMessages(false)
-				.sendNoSubscriberEvent(false)
-				.installDefaultEventBus();
+        EventBus.builder()
+                .addIndex(new ApEventBusIndex())
+                .addIndex(new ApCoreEventBusIndex())
+                .logNoSubscriberMessages(false)
+                .sendNoSubscriberEvent(false)
+                .installDefaultEventBus();
     }
 
 }

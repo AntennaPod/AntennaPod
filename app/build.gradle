@@ -18,11 +18,17 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 1070396
-        versionName "1.7.3b"
+        versionCode 1080002
+        versionName "1.8.0-RC2"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         generatedDensities = []
+
+        def commit = "Unknown commit"
+        try {
+            commit = "git rev-parse --short HEAD".execute().text.trim()
+        } catch (Exception ignore) { }
+        buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -154,9 +160,6 @@ dependencies {
 
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    implementation("com.afollestad.material-dialogs:commons:$materialDialogsVersion") {
-        transitive = true
-    }
     implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
     implementation "com.githang:viewpagerindicator:2.5.1@aar"
     implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
@@ -184,18 +187,7 @@ if (project.hasProperty("antennaPodServiceAccountEmail")) {
     }
 }
 
-task filterAbout(type: Copy) {
-    from "src/main/templates/about.html"
-    into "src/main/assets"
-    filter(ReplaceTokens, tokens: [
-            versionname: android.defaultConfig.versionName,
-            commit     : "git rev-parse --short HEAD".execute().text,
-            year       : new Date().format('yyyy')])
-    outputs.upToDateWhen { false }
-}
-
-task copyTextFiles(type: Copy) {
-    from "../CONTRIBUTORS"
+task copyLicense(type: Copy) {
     from "../LICENSE"
     into "src/main/assets/"
     rename { String fileName ->
@@ -204,5 +196,5 @@ task copyTextFiles(type: Copy) {
     outputs.upToDateWhen { false }
 }
 
-preBuild.dependsOn filterAbout, copyTextFiles
+preBuild.dependsOn copyLicense
 

@@ -1,11 +1,18 @@
 package de.danoeh.antennapod.core.util.syndication;
 
+import android.text.TextUtils;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
 import org.jsoup.helper.StringUtil;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.NodeTraversor;
 import org.jsoup.select.NodeVisitor;
+
+import java.util.regex.Pattern;
 
 /**
  * This class is based on <code>HtmlToPlainText</code> from jsoup's examples package.
@@ -25,6 +32,39 @@ import org.jsoup.select.NodeVisitor;
  * @author AntennaPod open source community
  */
 public class HtmlToPlainText {
+
+    /**
+     * Use this method to strip off HTML encoding from given text
+     * <p>
+     * Replaces bullet points with *, ignores colors/bold/...
+     *
+     * @param str String with any encoding
+     * @return Human readable text with minimal HTML formatting
+     */
+    public static String getPlainText(String str) {
+        if (!TextUtils.isEmpty(str) && isHtml(str)) {
+            HtmlToPlainText formatter = new HtmlToPlainText();
+            Document feedDescription = Jsoup.parse(str);
+            str = StringUtils.trim(formatter.getPlainText(feedDescription));
+        } else if (TextUtils.isEmpty(str)) {
+            str = "";
+        }
+
+        return str;
+    }
+
+    /**
+     * Use this method to determine if a given text has any HTML tag
+     *
+     * @param str String to be tested for presence of HTML content
+     * @return <b>True</b> if text contains any HTML tags</br><b>False</b> is no HTML tag is found
+     */
+    private static boolean isHtml(String str) {
+        final String HTML_TAG_PATTERN = "<(\"[^\"]*\"|'[^']*'|[^'\">])*>";
+        Pattern htmlValidator = TextUtils.isEmpty(HTML_TAG_PATTERN) ? null : Pattern.compile(HTML_TAG_PATTERN);
+
+        return htmlValidator.matcher(str).find();
+    }
 
     /**
      * Format an Element to plain-text

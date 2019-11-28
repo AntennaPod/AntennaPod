@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/interruptions">
         <SwitchPreference
@@ -42,8 +40,7 @@
                 android:entryValues="@array/video_background_behavior_values"
                 android:key="prefVideoBehavior"
                 android:summary="@string/pref_videoBehavior_sum"
-                android:title="@string/pref_videoBehavior_title"
-                app:useStockLayout="true"/>
+                android:title="@string/pref_videoBehavior_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_control">
@@ -64,6 +61,11 @@
                 android:key="prefPlaybackTimeRespectsSpeed"
                 android:summary="@string/pref_playback_time_respects_speed_sum"
                 android:title="@string/pref_playback_time_respects_speed_title"/>
+        <SwitchPreference
+                android:defaultValue="false"
+                android:key="prefStreamOverDownload"
+                android:summary="@string/pref_stream_over_download_sum"
+                android:title="@string/pref_stream_over_download_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/hardware_control">
@@ -73,16 +75,14 @@
             android:title="@string/pref_hardwareForwardSingleTapAction_title"
             android:key="prefHardwareForwardAction0"
             android:summary="@string/pref_hardwareForwardSingleTapAction_sum"
-            android:defaultValue="SEEK_FORWARD"
-            app:useStockLayout="true"/>
+            android:defaultValue="SEEK_FORWARD"/>
         <ListPreference
             android:entryValues="@array/hardware_back_single_tap_action_values"
             android:entries="@array/hardware_back_single_tap_action_options"
             android:title="@string/pref_hardwareBackSingleTapAction_title"
             android:key="prefHardwareBackAction0"
             android:summary="@string/pref_hardwareBackSingleTapAction_sum"
-            android:defaultValue="SEEK_BACKWARD"
-            app:useStockLayout="true"/>
+            android:defaultValue="SEEK_BACKWARD"/>
         <SwitchPreference
             android:defaultValue="false"
             android:enabled="true"
@@ -96,8 +96,7 @@
             android:key="prefHardwareForwardAction1"
             android:summary="@string/pref_hardwareForwardDoubleTapAction_sum"
             android:defaultValue="NONE"
-            android:dependency="prefAdvancedHardwareActions"
-            app:useStockLayout="true"/>
+            android:dependency="prefAdvancedHardwareActions"/>
         <ListPreference
             android:entryValues="@array/hardware_back_double_tap_action_values"
             android:entries="@array/hardware_back_double_tap_action_options"
@@ -105,8 +104,7 @@
             android:key="prefHardwareKeyBackAction1"
             android:summary="@string/pref_hardwareBackDoubleTapAction_sum"
             android:defaultValue="NONE"
-            android:dependency="prefAdvancedHardwareActions"
-            app:useStockLayout="true"/>
+            android:dependency="prefAdvancedHardwareActions"/>
         <ListPreference
             android:entryValues="@array/hardware_play_pause_double_tap_action_values"
             android:entries="@array/hardware_play_pause_double_tap_action_options"
@@ -114,8 +112,7 @@
             android:key="prefHardwarePlayPauseAction1"
             android:summary="@string/pref_hardwarePlayPauseDoubleTapAction_sum"
             android:defaultValue="NONE"
-            android:dependency="prefAdvancedHardwareActions"
-            app:useStockLayout="true"/>
+            android:dependency="prefAdvancedHardwareActions"/>
         <ListPreference
             android:entryValues="@array/hardware_play_pause_triple_tap_action_values"
             android:entries="@array/hardware_play_pause_triple_tap_action_options"
@@ -123,8 +120,7 @@
             android:key="prefHardwarePlayPauseAction2"
             android:summary="@string/pref_hardwarePlayPauseTripleTapAction_sum"
             android:defaultValue="NONE"
-            android:dependency="prefAdvancedHardwareActions"
-            app:useStockLayout="true"/>
+            android:dependency="prefAdvancedHardwareActions"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">
@@ -134,12 +130,12 @@
                 android:key="prefEnqueueDownloaded"
                 android:summary="@string/pref_enqueue_downloaded_summary"
                 android:title="@string/pref_enqueue_downloaded_title" />
-        <SwitchPreference
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefQueueAddToFront"
-                android:summary="@string/pref_queueAddToFront_sum"
-                android:title="@string/pref_queueAddToFront_title"/>
+        <ListPreference
+                android:defaultValue="BACK"
+                android:entries="@array/enqueue_location_options"
+                android:entryValues="@array/enqueue_location_values"
+                android:key="prefEnqueueLocation"
+                android:title="@string/pref_enqueue_location_title"/>
         <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
@@ -152,8 +148,7 @@
                 android:entryValues="@array/smart_mark_as_played_values"
                 android:key="prefSmartMarkAsPlayedSecs"
                 android:summary="@string/pref_smart_mark_as_played_sum"
-                android:title="@string/pref_smart_mark_as_played_title"
-                app:useStockLayout="true"/>
+                android:title="@string/pref_smart_mark_as_played_title"/>
         <SwitchPreference
                 android:defaultValue="true"
                 android:enabled="true"
@@ -169,8 +164,7 @@
                 android:key="prefMediaPlayer"
                 android:title="@string/media_player"
                 android:summary="@string/pref_media_player_message"
-                android:entryValues="@array/media_player_values"
-                app:useStockLayout="true"/>
+                android:entryValues="@array/media_player_values"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/experimental_pref">

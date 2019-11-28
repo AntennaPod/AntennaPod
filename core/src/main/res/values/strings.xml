@@ -301,7 +301,7 @@
     <!--  Variable Speed -->
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
-    <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, we recommend to enable the built-in Sonic mediaplayer [Android 4.1+].\n\nAlternatively, you can download the third party plugin <i>Prestissimo</i> from the Play Store.\nAny problems with Prestissimo are not the responsibility of AntennaPod and should be reported to the plugin owner.</string>
+    <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, we recommend to enable the built-in Sonic mediaplayer.</string>
     <string name="set_playback_speed_label">Playback Speeds</string>
     <string name="enable_sonic">Enable Sonic</string>
 
@@ -325,11 +325,12 @@
     <string name="no_fav_episodes_label">You can add episodes to the favorites by long-pressing them.</string>
     <string name="no_chapters_head_label">No chapters</string>
     <string name="no_chapters_label">This episode has no chapters.</string>
+    <string name="no_subscriptions_head_label">No subscriptions</string>
+    <string name="no_subscriptions_label">To subscribe to a podcast, press the plus icon below.</string>
 
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
     <string name="project_pref">Project</string>
-    <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
     <string name="integrations_label">Integrations</string>
     <string name="automation">Automation</string>
@@ -398,6 +399,8 @@
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones Disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
+    <string name="pref_stream_over_download_title">Prefer Streaming</string>
+    <string name="pref_stream_over_download_sum">Display stream button instead of download button in lists.</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Select what should be allowed over the mobile data connection</string>
     <string name="pref_mobileUpdate_refresh">Feed refresh</string>
@@ -425,6 +428,8 @@
     <string name="pref_parallel_downloads_title">Parallel Downloads</string>
     <string name="pref_episode_cache_title">Episode Cache</string>
     <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
+    <string name="pref_episode_cover_title">Use Episode Cover</string>
+    <string name="pref_episode_cover_summary">Use the episode specific cover whenever available. If unchecked, the app will always use the podcast cover image.</string>
     <string name="pref_theme_title_use_system">Use system theme</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
@@ -472,8 +477,11 @@
     <string name="pref_showDownloadReport_title">Show Download Report</string>
     <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
-    <string name="pref_queueAddToFront_sum">Add new episodes to the front of the queue.</string>
-    <string name="pref_queueAddToFront_title">Enqueue at Front</string>
+    <string name="pref_enqueue_location_title">Enqueue Location</string>
+    <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
+    <string name="enqueue_location_back">Back</string>
+    <string name="enqueue_location_front">Front</string>
+    <string name="enqueue_location_after_current">After current episode</string>
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
@@ -515,6 +523,17 @@
     <string name="back_button_go_to_page_title">Select page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
+
+    <!-- About screen -->
+    <string name="about_pref">About</string>
+    <string name="antennapod_version">AntennaPod version</string>
+    <string name="developers">Developers</string>
+    <string name="developers_summary">Everyone can help to make AntennaPod better</string>
+    <string name="translators">Translators</string>
+    <string name="translators_summary">Translations are created by users of AntennaPod using Transifex</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="licenses">Licenses</string>
+    <string name="licenses_summary">AntennaPod uses other great software</string>
 
     <!-- Search -->
     <string name="search_hint">Search for episodes</string>
@@ -636,7 +655,7 @@
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
-    <string name="downloading_label">Downloading&#8230;</string>
+    <string name="subscribing_label">Subscribing&#8230;</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="rewind_label">Rewind</string>
@@ -773,4 +792,8 @@
     <string name="notification_channel_error">Errors</string>
     <string name="notification_channel_error_description">Shown if something went wrong, for example if download or gpodder sync fails.</string>
     <string name="import_bad_file">Invalid/corrupt file</string>
+
+    <!-- Widget settings -->
+    <string name="widget_create_button">Create widget</string>
+    <string name="widget_opacity">Opacity</string>
 </resources>

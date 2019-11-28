@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
@@ -70,7 +71,7 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle.setText(media.getFeedTitle());
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         Glide.with(this)
-                .load(media.getImageLocation())
+                .load(ImageResourceUtils.getImageLocation(media))
                 .apply(new RequestOptions()
                     .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .dontAnimate()

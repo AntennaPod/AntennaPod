@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -34,7 +34,7 @@ import org.junit.Assert;
  * Utility methods for UI tests.
  * Starts a web server that hosts feeds, episodes and images.
  */
-class UITestUtils {
+public class UITestUtils {
 
     private static final String TAG = UITestUtils.class.getSimpleName();
 
@@ -201,7 +201,7 @@ class UITestUtils {
         adapter.setCompleteFeed(hostedFeeds.toArray(new Feed[hostedFeeds.size()]));
         adapter.setQueue(queue);
         adapter.close();
-        EventDistributor.getInstance().sendFeedUpdateBroadcast();
+        EventBus.getDefault().post(new FeedListUpdateEvent(hostedFeeds));
         EventBus.getDefault().post(QueueEvent.setQueue(queue));
     }
 

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.widget.SearchView;
@@ -17,8 +18,6 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.discovery.ItunesTopListLoader;
@@ -120,9 +119,9 @@ public class ItunesSearchFragment extends Fragment {
                         progressBar.setVisibility(View.GONE);
                         gridView.setVisibility(View.VISIBLE);
                         String prefix = getString(R.string.error_msg_prefix);
-                        new MaterialDialog.Builder(getActivity())
-                                .content(prefix + " " + error.getMessage())
-                                .neutralText(android.R.string.ok)
+                        new AlertDialog.Builder(getActivity())
+                                .setMessage(prefix + " " + error.getMessage())
+                                .setPositiveButton(android.R.string.ok, null)
                                 .show();
                     });
         });
@@ -151,7 +150,6 @@ public class ItunesSearchFragment extends Fragment {
         inflater.inflate(R.menu.itunes_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        MenuItemUtils.adjustTextColor(getActivity(), sv);
         sv.setQueryHint(getString(R.string.search_itunes_label));
         sv.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override

@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.core.util;
 
+import androidx.annotation.NonNull;
+
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -36,6 +39,15 @@ public class FeedItemUtil {
         long[] result = new long[items.size()];
         for(int i=0; i < items.size(); i++) {
             result[i] = items.get(i).getId();
+        }
+        return result;
+    }
+
+    @NonNull
+    public static List<Long> getIdList(List<? extends FeedItem> items) {
+        List<Long> result = new ArrayList<>();
+        for (FeedItem item : items) {
+            result.add(item.getId());
         }
         return result;
     }

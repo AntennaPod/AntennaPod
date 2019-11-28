@@ -22,10 +22,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">他のデバイスと同期</string>
   <string name="gpodnet_auth_label">gpodder.net ログイン</string>
-  <string name="free_space_label">%1$s 空き</string>
   <string name="episode_cache_full_title">エピソードキャッシュが一杯です</string>
   <string name="episode_cache_full_message">エピソードキャッシュが制限に達しました。設定でキャッシュサイズを増やすことができます。</string>
-  <string name="synchronizing">同期しています…</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">ポッドキャストを再生した合計時間:</string>
   <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
@@ -63,7 +61,6 @@
   <string name="author_label">作者</string>
   <string name="language_label">言語</string>
   <string name="url_label">URL</string>
-  <string name="podcast_settings_label">設定</string>
   <string name="cover_label">映像</string>
   <string name="error_label">エラー</string>
   <string name="error_msg_prefix">エラーが発生しました。</string>
@@ -72,14 +69,9 @@
   <string name="external_storage_error_msg">外部ストレージが利用できません。アプリが正常に動作できるように、外部ストレージがマウントされていることを確認してください。</string>
   <string name="chapters_label">チャプター</string>
   <string name="chapter_duration">時間: %1$s</string>
-  <string name="shownotes_label">ショーノート</string>
   <string name="description_label">説明</string>
-  <string name="most_recent_prefix">最も最近のエピソード:\u0020</string>
   <string name="episodes_suffix">\u0020エピソード</string>
-  <string name="length_prefix">長さ:\u0020</string>
-  <string name="size_prefix">サイズ:\u0020</string>
   <string name="processing_label">処理中</string>
-  <string name="loading_label">ロード中…</string>
   <string name="save_username_password_label">ユーザ名とパスワードを保存する</string>
   <string name="close_label">閉じる</string>
   <string name="retry_label">再試行</string>
@@ -106,8 +98,6 @@
   <string name="feedurl_label">フィードURL</string>
   <string name="etxtFeedurlHint">フィードまたはWebサイトのURL</string>
   <string name="txtvfeedurl_label">URLでポッドキャストを追加</string>
-  <string name="podcastdirectories_label">ディレクトリでポッドキャストを検索</string>
-  <string name="podcastdirectories_descr">新しいポッドキャストでは、名前、カテゴリー、人気でiTunesやfyydを検索したり、gpodder.netを参照することができます。</string>
   <string name="browse_gpoddernet_label">gpodder.netを参照</string>
   <string name="discover">発見</string>
   <string name="discover_more">さらに »</string>
@@ -135,7 +125,6 @@
   <string name="feed_delete_confirmation_msg">ポッドキャスト \"%1$s\" とすべての（ダウンロード済を含む）エピソードを削除することを確認してください。</string>
   <string name="feed_remover_msg">ポッドキャストを削除しています</string>
   <string name="load_complete_feed">ポッドキャストをすべて更新</string>
-  <string name="hide_episodes_title">エピソードを非表示にする</string>
   <string name="batch_edit">一括編集</string>
   <string name="select_all_above">上のすべてを選択</string>
   <string name="select_all_below">下のすべてを選択</string>
@@ -158,9 +147,7 @@
   </plurals>
   <string name="play_label">再生</string>
   <string name="pause_label">一時停止</string>
-  <string name="stop_label">停止</string>
   <string name="stream_label">ストリーム</string>
-  <string name="remove_label">削除</string>
   <string name="delete_label">削除</string>
   <string name="delete_failed">ファイルを削除できません。デバイスを再起動してみてください。</string>
   <string name="delete_episode_label">エピソードを削除</string>
@@ -199,14 +186,12 @@
   <string name="removed_item">アイテムを削除しました</string>
   <!--Download messages and labels-->
   <string name="download_successful">完成</string>
-  <string name="download_failed">失敗</string>
   <string name="download_pending">ダウンロードは保留中</string>
   <string name="download_running">ダウンロード実行中</string>
   <string name="download_error_details">詳細</string>
   <string name="download_error_details_message">%1$s \n\nファイル URL:\n%2$s</string>
   <string name="download_error_device_not_found">ストレージ デバイスが見つかりません</string>
   <string name="download_error_insufficient_space">スペースが不足しています</string>
-  <string name="download_error_file_error">ファイルエラー</string>
   <string name="download_error_http_data_error">HTTPデータエラー</string>
   <string name="download_error_error_unknown">不明なエラー</string>
   <string name="download_error_parser_exception">解析エラー</string>
@@ -216,7 +201,6 @@
   <string name="download_error_unauthorized">認証エラー</string>
   <string name="download_error_file_type_type">ファイルタイプ エラー</string>
   <string name="download_error_forbidden">禁止</string>
-  <string name="cancel_all_downloads_label">すべてのダウンロードをキャンセル</string>
   <string name="download_canceled_msg">ダウンロードをキャンセルしました</string>
   <string name="download_canceled_autodownload_enabled_msg">ダウンロードをキャンセルしました\nこのアイテムの <i>自動ダウンロード</i> を無効にしました</string>
   <string name="download_report_title">ダウンロードがエラーで完了しました</string>
@@ -234,7 +218,6 @@
   <string name="download_log_title_unknown">タイトル不明</string>
   <string name="download_type_feed">フィード</string>
   <string name="download_type_media">メディアファイル</string>
-  <string name="download_type_image">画像</string>
   <string name="download_request_error_dialog_message_prefix">ファイルのダウンロード中にエラーが発生しました:\u0020</string>
   <string name="null_value_podcast_error">表示できるポッドキャストがありません。</string>
   <string name="authentication_notification_title">認証が必要です</string>
@@ -260,7 +243,6 @@
   <string name="no_media_playing_label">再生するメディアがありません</string>
   <string name="player_buffering_msg">バッファー中</string>
   <string name="player_go_to_picture_in_picture">ピクチャ-イン-ピクチャ モード</string>
-  <string name="playbackservice_notification_title">ポッドキャストを再生中</string>
   <string name="unknown_media_key">AntennaPod - 不明なメディアキー: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">キューをロック</string>
@@ -269,7 +251,6 @@
   <string name="queue_unlocked">キューのロックを解除しました</string>
   <string name="clear_queue_label">キューをクリア</string>
   <string name="undo">元に戻す</string>
-  <string name="removed_from_queue">アイテムを削除しました</string>
   <string name="move_to_top_label">先頭に移動</string>
   <string name="move_to_bottom_label">最後に移動</string>
   <string name="sort">並べ替え</string>
@@ -294,7 +275,6 @@
   <!--Empty list labels-->
   <string name="no_items_header_label">エピソードはキューにありません</string>
   <string name="no_items_label">エピソードをダウンロードして追加するか、エピソードを長押しして \"キューに追加\" を選択してください。</string>
-  <string name="no_feeds_label">まだポッドキャストを何も購読していません。</string>
   <string name="no_shownotes_label">このエピソードにショーノートはありません。</string>
   <string name="no_run_downloads_head_label">実行中のダウンロードはありません</string>
   <string name="no_run_downloads_label">ポッドキャスト詳細画面でエピソードをダウンロードできます。</string>
@@ -315,8 +295,6 @@
   <!--Preferences-->
   <string name="storage_pref">ストレージ</string>
   <string name="project_pref">プロジェクト</string>
-  <string name="other_pref">その他</string>
-  <string name="about_pref">について</string>
   <string name="queue_label">キュー</string>
   <string name="integrations_label">統合</string>
   <string name="automation">自動</string>
@@ -359,9 +337,7 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">時間をセット</string>
   <string name="pref_autoUpdateIntervallOrTime_every">%1$s ごと</string>
   <string name="pref_autoUpdateIntervallOrTime_at">%1$s に</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">WiFi接続時のみメディアファイルをダウンロードします</string>
   <string name="pref_followQueue_title">連続再生</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">WiFiメディアダウンロード</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">ヘッドフォン切断</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">ヘッドフォン再接続</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth再接続</string>
@@ -372,11 +348,8 @@
   <string name="pref_mobileUpdate_auto_download">自動ダウンロード</string>
   <string name="pref_mobileUpdate_episode_download">エピソードのダウンロード</string>
   <string name="pref_mobileUpdate_streaming">ストリーミング</string>
-  <string name="refreshing_label">更新中</string>
   <string name="user_interface_label">インターフェース</string>
   <string name="pref_set_theme_title">テーマを選択</string>
-  <string name="pref_nav_drawer_title">ナビゲーションドロワーをカスタマイズ</string>
-  <string name="pref_nav_drawer_sum">ナビゲーションドロワーの外観をカスタマイズします。</string>
   <string name="pref_nav_drawer_items_title">ナビゲーションドロワーを変更</string>
   <string name="pref_nav_drawer_items_sum">ナビゲーションドロワーに表示するアイテムを変更します。</string>
   <string name="pref_nav_drawer_feed_order_title">購読注文をセット</string>
@@ -388,8 +361,6 @@
   <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを構成します。</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fiフィルターを有効にする</string>
   <string name="pref_autodl_wifi_filter_sum">選択したWi-Fiネットワークに対してのみ自動ダウンロードを許可します。</string>
-  <string name="pref_autodl_allow_on_mobile_title">モバイルデータ接続時にダウンロード</string>
-  <string name="pref_autodl_allow_on_mobile_sum">モバイルデータ接続時にダウンロードを許可します</string>
   <string name="pref_automatic_download_on_battery_title">充電中以外の時にダウンロード</string>
   <string name="pref_automatic_download_on_battery_sum">バッテリーを充電していない時に自動ダウンロードを許可します</string>
   <string name="pref_parallel_downloads_title">パラレル ダウンロード</string>
@@ -414,7 +385,6 @@
   <string name="pref_gpodnet_full_sync_sum">すべての購読とエピソードの状態を gpodder.net で同期します。</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">最後に同期を試行: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">同期を開始しました</string>
-  <string name="pref_gpodnet_full_sync_started">完全な同期を開始しました</string>
   <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> としてデバイス <i>%2$s</i> でログインしました]]></string>
   <string name="pref_gpodnet_notifications_title">同期エラーの通知を表示</string>
   <string name="pref_gpodnet_notifications_sum">この設定は、認証エラーには適用されません。</string>
@@ -441,21 +411,14 @@
   <string name="pref_showDownloadReport_title">ダウンロード レポートを表示</string>
   <string name="pref_showDownloadReport_sum">ダウンロードが失敗した場合、失敗の詳細を表示するレポートを生成します。</string>
   <string name="pref_expand_notify_unsupport_toast">Androidバージョン4.1以前では、拡張通知をサポートしていません。</string>
-  <string name="pref_queueAddToFront_sum">新しいエピソードをキューの先頭に追加します。</string>
-  <string name="pref_queueAddToFront_title">キューの先頭に入れる</string>
   <string name="pref_smart_mark_as_played_disabled">無効</string>
   <string name="pref_image_cache_size_title">画像キャッシュサイズ</string>
   <string name="pref_image_cache_size_sum">画像のディスクキャッシュのサイズ。</string>
-  <string name="crash_report_title">クラッシュレポート</string>
-  <string name="crash_report_sum">メールで最新のクラッシュレポートを送信します</string>
-  <string name="send_email">メールを送信</string>
   <string name="experimental_pref">実験的</string>
   <string name="pref_media_player_message">ファイルを再生するメディアプレーヤーを選択</string>
   <string name="pref_current_value">現在の値: %1$s</string>
   <string name="pref_proxy_title">プロキシ</string>
   <string name="pref_proxy_sum">ネットワーク プロキシの設定</string>
-  <string name="pref_faq">FAQ</string>
-  <string name="pref_known_issues">既知の問題</string>
   <string name="pref_no_browser_found">Webブラウザーが見つかりません。</string>
   <string name="pref_cast_title">Chromecast サポート</string>
   <string name="pref_cast_message_play_flavor">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
@@ -481,6 +444,8 @@
   <string name="back_button_go_to_page_title">ページの選択</string>
   <string name="pref_delete_removes_from_queue_title">キューから削除済を削除</string>
   <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
+  <!--About screen-->
+  <string name="about_pref">について</string>
   <!--Search-->
   <string name="search_hint">エピソードの検索</string>
   <string name="found_in_shownotes_label">ショーノートで見つかりました</string>
@@ -492,22 +457,16 @@
   <string name="found_in_title_label">タイトルで見つかりました</string>
   <string name="no_results_for_query">\"%1$s\" の結果は見つかりませんでした</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">OPMLファイルで、あるポッドキャッチャーから別のものにポッドキャストを移動することができます。</string>
   <string name="opml_import_option">オプション %1$d</string>
   <string name="opml_import_explanation_1">ローカルのファイルシステムから指定するファイルパスを選択してください。</string>
-  <string name="opml_import_explanation_2">Dropbox、Google ドライブ、またはお好みのファイルマネージャなどの外部アプリケーションを使用して、OPML ファイルを開いてください。</string>
   <string name="opml_import_explanation_3">Google メール、Dropbox、Google ドライブ、および多くのファイルマネージャーなどのアプリケーションで、AntennaPod <i>の</i> OPML ファイルを <i>開く</i> ことができます。</string>
-  <string name="start_import_label">インポート開始</string>
   <string name="opml_import_label">OPMLインポート</string>
-  <string name="opml_directory_error">エラー!</string>
   <string name="reading_opml_label">OPMLファイルを読み込み中</string>
   <string name="opml_reader_error">OPMLドキュメントの読み込み中にエラーが発生しました:</string>
   <string name="opml_import_error_no_file">ファイルが選択されていません!</string>
   <string name="select_all_label">すべてを選択</string>
   <string name="deselect_all_label">選択解除</string>
-  <string name="select_options_label">選択…</string>
   <string name="choose_file_from_filesystem">ローカル ファイルシステムから</string>
-  <string name="choose_file_from_external_application">外部アプリケーションを使用する</string>
   <string name="opml_export_label">OPMLエクスポート</string>
   <string name="html_export_label">HTML エクスポート</string>
   <string name="exporting_label">エクスポート中…</string>
@@ -597,8 +556,6 @@
   <string name="pref_restart_required">この変更を有効にするには AntennaPod を再起動する必要があります。</string>
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
-  <string name="subscribed_label">購読しました</string>
-  <string name="downloading_label">ダウンロード中…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">巻き戻し</string>
   <string name="fast_forward_label">早送り</string>
@@ -706,7 +663,6 @@
   <string name="cast_failed_setting_volume">音量の設定に失敗しました</string>
   <string name="cast_failed_no_connection">キャストデバイスへの接続が存在しません</string>
   <string name="cast_failed_no_connection_trans">キャストデバイスへの接続が失われました。可能な場合、アプリケーションは接続を再確立しようとします。数秒待ってから、もう一度お試しください。</string>
-  <string name="cast_failed_perform_action">操作の実行に失敗しました</string>
   <string name="cast_failed_status_request">キャストデバイスとの同期に失敗しました</string>
   <string name="cast_failed_seek">キャストデバイスの新しい位置への移動に失敗しました</string>
   <string name="cast_failed_receiver_player_error">レシーバープレーヤーで深刻なエラーが発生しました</string>
@@ -721,4 +677,5 @@
   <string name="notification_channel_error">エラー</string>
   <string name="notification_channel_error_description">ダウンロードや gpodder の同期に失敗した場合など、何か問題が発生した場合に表示されます。</string>
   <string name="import_bad_file">無効/破損ファイル</string>
+  <!--Widget settings-->
 </resources>

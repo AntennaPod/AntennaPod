@@ -22,10 +22,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Diğer cihazlarla senkronize et</string>
   <string name="gpodnet_auth_label">gpodder.net giriş</string>
-  <string name="free_space_label">%1$s ücretsiz</string>
   <string name="episode_cache_full_title">Bölüm önbelleği dolu</string>
   <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz. </string>
-  <string name="synchronizing">Senkronize ediliyor... </string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Toplam cep yayını çalma zamanı:</string>
   <string name="statistics_mode">İstatistik modu</string>
@@ -59,7 +57,6 @@
   <string name="author_label">Yazar(lar)</string>
   <string name="language_label">Dil</string>
   <string name="url_label">URL</string>
-  <string name="podcast_settings_label">Ayarlar</string>
   <string name="cover_label">Resim</string>
   <string name="error_label">Hata</string>
   <string name="error_msg_prefix">Bir hata oluştu:</string>
@@ -68,14 +65,9 @@
   <string name="external_storage_error_msg">Harici depolama yok. Lütfen uygulamanın düzgün çalışabilmesi için harici depolama aygıtının bağlandığından emin olun.</string>
   <string name="chapters_label">Kısımlar</string>
   <string name="chapter_duration">Süre: %1$s</string>
-  <string name="shownotes_label">Notlar</string>
   <string name="description_label">Tanım</string>
-  <string name="most_recent_prefix">Son Bölüm:\u0020 </string>
   <string name="episodes_suffix">\u0020bölüm</string>
-  <string name="length_prefix">Uzunluk:\u0020</string>
-  <string name="size_prefix">Boyut:\u0020</string>
   <string name="processing_label">İşleniyor</string>
-  <string name="loading_label">Yükleniyor...</string>
   <string name="save_username_password_label">Kullanıcı adı ve şifreyi kaydet</string>
   <string name="close_label">Kapat</string>
   <string name="retry_label">Yeniden dene</string>
@@ -99,8 +91,6 @@
   <string name="feedurl_label">Besleme Adresi</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">URL ile cep yayını ekle</string>
-  <string name="podcastdirectories_label">Dizinde cep yayını bul</string>
-  <string name="podcastdirectories_descr">Yeni podcast\'ler için iTunes, fyyd, veya gpodder.net adresinde isme, kategoriye, veya popülerliğe göre arama yapabilirsiniz.</string>
   <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
@@ -123,7 +113,6 @@
   <string name="feed_delete_confirmation_msg">Lütfen bu Cepyayını ve bu Cepyayınına ait indirilmiş BÜTÜN bölümleri silme isteğinizi onaylayın.</string>
   <string name="feed_remover_msg">Cepyayını kaldırılıyor</string>
   <string name="load_complete_feed">Tüm Cepyayınını yenile</string>
-  <string name="hide_episodes_title">Bölümleri gizle</string>
   <string name="batch_edit">Toplu düzenleme</string>
   <string name="select_all_above">Üsttekilerin tümünü seç</string>
   <string name="select_all_below">Alttakilerin tümünü seç</string>
@@ -143,9 +132,7 @@
   <string name="download_label">İndir</string>
   <string name="play_label">Oynat</string>
   <string name="pause_label">Duraklat</string>
-  <string name="stop_label">Durdur</string>
   <string name="stream_label">Akış</string>
-  <string name="remove_label">Kaldır</string>
   <string name="delete_label">Sil</string>
   <string name="delete_failed">Dosya silinemiyor. Cihazı yeniden başlatmak yardımcı olabilir.</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
@@ -166,13 +153,11 @@
   <string name="removed_item">Öge kaldırıldı</string>
   <!--Download messages and labels-->
   <string name="download_successful">başarılı</string>
-  <string name="download_failed">başarısız</string>
   <string name="download_pending">İndirme bekleniyor</string>
   <string name="download_running">İndiriliyor</string>
   <string name="download_error_details">Detaylar</string>
   <string name="download_error_device_not_found">Depolama aygıtı bulunamadı</string>
   <string name="download_error_insufficient_space">Yetersiz alan</string>
-  <string name="download_error_file_error">Dosya hatası</string>
   <string name="download_error_http_data_error">HTTP Veri Hatası</string>
   <string name="download_error_error_unknown">Bilinmeyen Hata</string>
   <string name="download_error_parser_exception">Ayrıştırıcı İstisnası</string>
@@ -182,7 +167,6 @@
   <string name="download_error_unauthorized">Yetkilendirme hatası</string>
   <string name="download_error_file_type_type">Dosya Tipi Hatası</string>
   <string name="download_error_forbidden">Yasak</string>
-  <string name="cancel_all_downloads_label">Bütün indirmeleri iptal et</string>
   <string name="download_canceled_msg">İndirme iptal edildi</string>
   <string name="download_canceled_autodownload_enabled_msg">İndirme iptal edildi\nBu öğe için <i>Otomatik İndirme</i> devre dışı</string>
   <string name="download_report_title">İndirme hata(lar) ile tamamlandı</string>
@@ -201,7 +185,6 @@
   <string name="download_log_title_unknown">bilinmeyen başlık</string>
   <string name="download_type_feed">Besleme</string>
   <string name="download_type_media">Medya dosyası</string>
-  <string name="download_type_image">Resim</string>
   <string name="download_request_error_dialog_message_prefix">Dosyayı indirmeye çalışırken bir hata oluştu:\u0020</string>
   <string name="authentication_notification_title">Yetkilendirme gerekiyor</string>
   <string name="authentication_notification_msg">İstediğiniz kaynak kullanıcı adı ve şifre istiyor</string>
@@ -221,7 +204,6 @@
   <string name="no_media_playing_label">Çalınan medya yok</string>
   <string name="player_buffering_msg">Ara belleğe alınıyor</string>
   <string name="player_go_to_picture_in_picture">Resim içinde Resim modu</string>
-  <string name="playbackservice_notification_title">Cep yayını çalınıyor</string>
   <string name="unknown_media_key">AntennaPod - Bilinmeyen medya anahtarı: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Kuyruğu kilitle</string>
@@ -230,7 +212,6 @@
   <string name="queue_unlocked">Kuyruk kilidi açıldı</string>
   <string name="clear_queue_label">Kuyruğu temizle</string>
   <string name="undo">Geri al</string>
-  <string name="removed_from_queue">Öge kaldırıldı</string>
   <string name="move_to_top_label">En üste taşı</string>
   <string name="move_to_bottom_label">En alta taşı</string>
   <string name="sort">Sırala</string>
@@ -250,14 +231,11 @@
   <string name="set_playback_speed_label">Çalma hızları</string>
   <string name="enable_sonic">Sonic\'i Etkinleştir</string>
   <!--Empty list labels-->
-  <string name="no_feeds_label">Henüz hiç bir Cepyayınına abone olmadınız.</string>
   <string name="no_shownotes_label">Bu dosya herhangi bir bilgi notu içermiyor.</string>
   <string name="no_chapters_label">Bu dosya herhangi bir bölüm içermiyor.</string>
   <!--Preferences-->
   <string name="storage_pref">Depolama</string>
   <string name="project_pref">Proje</string>
-  <string name="other_pref">Diğer</string>
-  <string name="about_pref">Hakkında</string>
   <string name="queue_label">Kuyruk</string>
   <string name="integrations_label">Entegrasyon</string>
   <string name="automation">Otomasyon</string>
@@ -295,18 +273,13 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Belirli saat ayarla</string>
   <string name="pref_autoUpdateIntervallOrTime_every">her%1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">süre%1$s</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Medya dosyalarını sadece kablosuz bağlantı üzerinden indir</string>
   <string name="pref_followQueue_title">Devamlı çalma</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Kablosuz medya indirmesi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kulaklık bağlı değil</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kulaklıklar yeniden bağlı</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth yeniden bağlandı</string>
   <string name="pref_mobileUpdate_title">Mobil güncellemeler</string>
-  <string name="refreshing_label">Yenileniyor</string>
   <string name="user_interface_label">Kullanıcı Arayüzü</string>
   <string name="pref_set_theme_title">Temayı seç</string>
-  <string name="pref_nav_drawer_title">Uygulama Çekmecesini Özelleştir</string>
-  <string name="pref_nav_drawer_sum">Uygulama çekmecesinin görüntüsünü özelleştir.</string>
   <string name="pref_nav_drawer_items_title">Uygulama Çekmecesi öğelerini ayarla</string>
   <string name="pref_nav_drawer_items_sum">Hangi öğelerin uygulama çekmecesinde görüneceğini değiştir.</string>
   <string name="pref_nav_drawer_feed_order_title">Abonelik sıralamasını ayarla</string>
@@ -342,36 +315,26 @@
   <string name="pref_showDownloadReport_title">İndirme Raporunu Göster</string>
   <string name="pref_showDownloadReport_sum">Eğer indirme başarısız olursa, hatanın ayrıntılarını gösteren bir rapor oluştur.</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 öncesi sürümler genişletilmiş bildirimleri desteklememektedir.</string>
-  <string name="pref_queueAddToFront_sum">Yeni bölümleri kuyruğun önüne ekle.</string>
-  <string name="pref_queueAddToFront_title">Kuyruğun önüne ekle.</string>
   <string name="pref_smart_mark_as_played_disabled">Devre dışı</string>
   <string name="pref_image_cache_size_title">Görüntü Önbelleği Boyutu</string>
   <string name="pref_image_cache_size_sum">Görüntüler için diskte tutulacak önbelleğin boyutu.</string>
-  <string name="crash_report_title">Çökme Raporu</string>
-  <string name="crash_report_sum">En son çökme raporunu e-posta ile gönder</string>
-  <string name="send_email">E-posta gönder</string>
   <string name="experimental_pref">Deneysel</string>
-  <string name="pref_faq">SSS</string>
+  <!--About screen-->
+  <string name="about_pref">Hakkında</string>
   <!--Search-->
   <string name="found_in_chapters_label">Kısımlarda bulundu</string>
   <string name="search_status_no_results">Sonuç bulunamadı</string>
   <string name="search_label">Ara</string>
   <string name="found_in_title_label">Başlıkta bulundu</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">OPML dosyaları cep yayınlarını bir cihazdan diğerine aktarmanıza yarar.</string>
   <string name="opml_import_option">Seçenek %1$d</string>
   <string name="opml_import_explanation_1">Yerel dosya sisteminden belirli bir yol seçin.</string>
-  <string name="opml_import_explanation_2">OPML dosyasını açmak için harici uygulamalardan Dropbox, Google Drive veya kendi favori dosya yöneticinizi kullanın.</string>
   <string name="opml_import_explanation_3">Google Mail, Dropbox, Google Drive gibi birçok uygulama ve çoğu dosya yöneticisi OPML dosyalarını AntennaPod <i>ile</i> <i>açabilir.</i></string>
-  <string name="start_import_label">İçe aktarmayı başlat</string>
   <string name="opml_import_label">OPML içe aktar</string>
-  <string name="opml_directory_error">HATA!</string>
   <string name="reading_opml_label">OPML dosyası okunuyor</string>
   <string name="select_all_label">Hepsini seç</string>
   <string name="deselect_all_label">Tüm seçimleri geri al</string>
-  <string name="select_options_label">Seç...</string>
   <string name="choose_file_from_filesystem">Yerel dosya sisteminden</string>
-  <string name="choose_file_from_external_application">Harici uygulama kullan</string>
   <string name="opml_export_label">OPML dışa aktar</string>
   <string name="export_error_label">Dışa aktarma hatası</string>
   <!--Sleep timer-->
@@ -450,8 +413,6 @@
   <string name="pref_restart_required">Bu değişikliğin geçerli olması için AntennaPod yeniden başlatılmalıdır.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Üye ol</string>
-  <string name="subscribed_label">Üye olundu</string>
-  <string name="downloading_label">İndiriliyor...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Geri sar</string>
   <string name="fast_forward_label">İleri sar</string>
@@ -510,4 +471,5 @@
   <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_seek">Yayın aygıtındaki yeni pozisyona erişilemedi</string>
   <!--Notification channels-->
+  <!--Widget settings-->
 </resources>

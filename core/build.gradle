@@ -66,9 +66,7 @@ dependencies {
     implementation "android.arch.work:work-runtime:$workManagerVersion"
     implementation "androidx.media:media:1.1.0"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
-    implementation "org.apache.commons:commons-text:$commonstextVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
-    implementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
@@ -101,7 +99,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
-
 }
 
 tasks.withType(Test) {

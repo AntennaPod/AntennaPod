@@ -22,10 +22,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Sincronizza con altri dispositivi</string>
   <string name="gpodnet_auth_label">Accesso a gpodder.net</string>
-  <string name="free_space_label">%1$s disponibili</string>
   <string name="episode_cache_full_title">Cache degli episodi piena</string>
   <string name="episode_cache_full_message">Lo spazio di memoria della cache degli episodi è esaurito. Puoi aumentarlo nelle Impostazioni</string>
-  <string name="synchronizing">Sincronizzazione...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo totale di riproduzione:</string>
   <string name="statistics_details_dialog">%1$d di %2$d episodi iniziati.\n\nRiprodotti %3$s di %4$s.</string>
@@ -63,7 +61,6 @@
   <string name="author_label">Autore(i)</string>
   <string name="language_label">Lingua</string>
   <string name="url_label">URL</string>
-  <string name="podcast_settings_label">Impostazioni</string>
   <string name="cover_label">Immagine</string>
   <string name="error_label">Errore</string>
   <string name="error_msg_prefix">È stato rilevato un errore:</string>
@@ -72,14 +69,9 @@
   <string name="external_storage_error_msg">Non risulta disponibile lo spazio di archiviazione esterno. Assicurati che lo spazio di archiviazione sia montato per permettere all\'applicazione di funzionare correttamente.</string>
   <string name="chapters_label">Capitoli</string>
   <string name="chapter_duration">Durata: %1$s</string>
-  <string name="shownotes_label">Note dell\'episodio</string>
   <string name="description_label">Descrizione</string>
-  <string name="most_recent_prefix">Episodio più recente:\u0020</string>
   <string name="episodes_suffix">\u0020episodi</string>
-  <string name="length_prefix">Durata:\u0020</string>
-  <string name="size_prefix">Dimensione:\u0020</string>
   <string name="processing_label">Elaborazione in corso</string>
-  <string name="loading_label">Caricamento...</string>
   <string name="save_username_password_label">Salva nome utente e password</string>
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
@@ -108,8 +100,6 @@
   <string name="feedurl_label">URL del feed</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Aggiungi un Podcast tramite URL</string>
-  <string name="podcastdirectories_label">Trova un podcast nella directory</string>
-  <string name="podcastdirectories_descr">Per trovare podcasts puoi cercare su iTunes o fyyd, oppure puoi esplorare gpodder.net per nome, categoria oppure popolarità.</string>
   <string name="browse_gpoddernet_label">Esplora gpodder.net</string>
   <string name="discover">Scopri</string>
   <string name="discover_more">altro »</string>
@@ -137,7 +127,6 @@
   <string name="feed_delete_confirmation_msg">Conferma di voler eliminare il podcast \"%1$s\" e TUTTI i suoi episodi (compresi quelli scaricati).</string>
   <string name="feed_remover_msg">Rimozione del Feed in corso</string>
   <string name="load_complete_feed">Aggiorna podcast completo</string>
-  <string name="hide_episodes_title">Nascondi gli episodi</string>
   <string name="batch_edit">Modifica in gruppo</string>
   <string name="select_all_above">Seleziona tutti sopra</string>
   <string name="select_all_below">Seleziona tutti sotto</string>
@@ -161,9 +150,7 @@
   </plurals>
   <string name="play_label">Riproduci</string>
   <string name="pause_label">Pausa</string>
-  <string name="stop_label">Ferma</string>
   <string name="stream_label">Stream</string>
-  <string name="remove_label">Rimuovi</string>
   <string name="delete_label">Elimina</string>
   <string name="delete_failed">Impossibile eliminare il file. Il riavvio del dispositivo potrebbe aiutare.</string>
   <string name="delete_episode_label">Elimina episodio</string>
@@ -207,14 +194,12 @@
   <string name="removed_item">Elemento rimosso</string>
   <!--Download messages and labels-->
   <string name="download_successful">successo</string>
-  <string name="download_failed">fallito</string>
   <string name="download_pending">Download in attesa</string>
   <string name="download_running">Download in corso</string>
   <string name="download_error_details">Dettagli</string>
   <string name="download_error_details_message">%1$s \n\nURL file:\n%2$s</string>
   <string name="download_error_device_not_found">Spazio di archiviazione non trovato</string>
   <string name="download_error_insufficient_space">Spazio insufficiente</string>
-  <string name="download_error_file_error">Errore del file</string>
   <string name="download_error_http_data_error">Errore dei dati HTTP</string>
   <string name="download_error_error_unknown">Errore sconosciuto</string>
   <string name="download_error_parser_exception">Eccezione del decodificatore</string>
@@ -224,11 +209,10 @@
   <string name="download_error_unauthorized">Errore di autenticazione</string>
   <string name="download_error_file_type_type">Errore Formato FIle</string>
   <string name="download_error_forbidden">Proibito</string>
-  <string name="cancel_all_downloads_label">Annulla tutti i download</string>
   <string name="download_canceled_msg">Download annullato</string>
   <string name="download_canceled_autodownload_enabled_msg">Download annullato\n<i>Download Automatico</i> disabilitato per questo elemento</string>
   <string name="download_report_title">Download completato con un errore (o errori)</string>
-  <string name="download_report_content_title">Rapporto del downoad</string>
+  <string name="download_report_content_title">Rapporto del download</string>
   <string name="download_error_malformed_url">URL malformato</string>
   <string name="download_error_io_error">Errore IO</string>
   <string name="download_error_request_error">Errore della richiesta</string>
@@ -243,7 +227,6 @@
   <string name="download_log_title_unknown">Titolo Sconosciuto</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">File multimediali</string>
-  <string name="download_type_image">Immagine</string>
   <string name="download_request_error_dialog_message_prefix">Rilevato errore durante il download del file:\u0020</string>
   <string name="null_value_podcast_error">Non è stato fornito alcun podcast da mostrare.</string>
   <string name="authentication_notification_title">Autenticazione richiesta</string>
@@ -269,7 +252,6 @@
   <string name="no_media_playing_label">Nessun elemento multimediale in riproduzione</string>
   <string name="player_buffering_msg">Buffer in corso</string>
   <string name="player_go_to_picture_in_picture">Modalità picture-in-picture</string>
-  <string name="playbackservice_notification_title">Riproduzione del podcast in corso</string>
   <string name="unknown_media_key">AntennaPod - Chiave dell\'elemento multimediale sconosciuta: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Blocca la coda</string>
@@ -278,7 +260,6 @@
   <string name="queue_unlocked">Coda sbloccata</string>
   <string name="clear_queue_label">Svuota la Coda</string>
   <string name="undo">Undo</string>
-  <string name="removed_from_queue">Oggetto rimosso</string>
   <string name="move_to_top_label">Sposta all\'inizio</string>
   <string name="move_to_bottom_label">Sposta in fondo</string>
   <string name="sort">Ordina</string>
@@ -303,7 +284,6 @@
   <!--Empty list labels-->
   <string name="no_items_header_label">Nessun episodio in coda</string>
   <string name="no_items_label">Aggiungi un episodio scaricandolo o tenendo premuto e selezionando \"Aggiungi alla coda\"</string>
-  <string name="no_feeds_label">Non sei ancora abbonato a nessun podcast. </string>
   <string name="no_shownotes_label">Questo episodio non ha note.</string>
   <string name="no_run_downloads_head_label">Nessun download in corso</string>
   <string name="no_run_downloads_label">Puoi scaricare gli episodi dalla vista dettagliata del podcast.</string>
@@ -324,8 +304,6 @@
   <!--Preferences-->
   <string name="storage_pref">Memoria</string>
   <string name="project_pref">Progetto</string>
-  <string name="other_pref">Altro</string>
-  <string name="about_pref">Informazioni</string>
   <string name="queue_label">Coda</string>
   <string name="integrations_label">Integrazioni</string>
   <string name="automation">Automazione</string>
@@ -368,9 +346,7 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Imposta orario</string>
   <string name="pref_autoUpdateIntervallOrTime_every">ogni %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">alle %1$s</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Abilita il download dei media solo tramite WiFi</string>
   <string name="pref_followQueue_title">Riproduzione continua</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Download dei media su WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Disconnessione cuffie</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Riconnessione cuffie</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Riconnessione Bluetooth</string>
@@ -381,11 +357,8 @@
   <string name="pref_mobileUpdate_auto_download">Download automatici</string>
   <string name="pref_mobileUpdate_episode_download">Download episodi</string>
   <string name="pref_mobileUpdate_streaming">Streaming</string>
-  <string name="refreshing_label">Aggiornamento</string>
   <string name="user_interface_label">Interfaccia utente</string>
   <string name="pref_set_theme_title">Seleziona un tema</string>
-  <string name="pref_nav_drawer_title">Personalizza menù di navigazione</string>
-  <string name="pref_nav_drawer_sum">Personalizza l\'aspetto del menù di navigazione</string>
   <string name="pref_nav_drawer_items_title">Seleziona elementi del menù</string>
   <string name="pref_nav_drawer_items_sum">Aggiungi o rimuovi gli elementi che appaiono nel menù laterale.</string>
   <string name="pref_nav_drawer_feed_order_title">Imposta l\'ordine delle sottoscrizioni</string>
@@ -397,8 +370,6 @@
   <string name="pref_automatic_download_sum">Configura il download automatico degli episodi</string>
   <string name="pref_autodl_wifi_filter_title">Abilita il filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Abilita il download automatico solo per alcune reti Wi-Fi selezionate.</string>
-  <string name="pref_autodl_allow_on_mobile_title">Scarica da rete mobile</string>
-  <string name="pref_autodl_allow_on_mobile_sum">Abilita il download automatico anche tramite la rete mobile.</string>
   <string name="pref_automatic_download_on_battery_title">Scarica quando la batteria non è in carica</string>
   <string name="pref_automatic_download_on_battery_sum">Permetti il download automatico quando la batteria non è in carica</string>
   <string name="pref_parallel_downloads_title">Download simulanei</string>
@@ -423,7 +394,6 @@
   <string name="pref_gpodnet_full_sync_sum">Sincronizza tutte le sottoscrizioni e gli stati degli episodi con gpodder.net</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">Ultimo tentativo: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Sincronizzazione avviata</string>
-  <string name="pref_gpodnet_full_sync_started">Sincronizzazione avviata</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Accesso come <i>%1$s</i> con il dispositivo <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Notifica gli errori di sincronizzazione</string>
   <string name="pref_gpodnet_notifications_sum">Non si applica agli errori di autenticazione.</string>
@@ -450,21 +420,14 @@
   <string name="pref_showDownloadReport_title">Mostra il rapporto del download</string>
   <string name="pref_showDownloadReport_sum">Se il download fallisce, genera un report che mostra i dettagli dell\'errore.</string>
   <string name="pref_expand_notify_unsupport_toast">Le versioni di Android prima della 4.1 non supportano le notifiche estese.</string>
-  <string name="pref_queueAddToFront_sum">Aggiungi i nuovi episodi in cima alla coda.</string>
-  <string name="pref_queueAddToFront_title">Aggiungi in cima alla coda</string>
   <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
   <string name="pref_image_cache_size_title">Dimensione cache delle immagini</string>
   <string name="pref_image_cache_size_sum">Spazio su disco usato per la cache delle immagini.</string>
-  <string name="crash_report_title">Report dei crash</string>
-  <string name="crash_report_sum">Invia il report dell\'ultimo crash via e-mail</string>
-  <string name="send_email">Invia e-mail</string>
   <string name="experimental_pref">Sperimentale</string>
   <string name="pref_media_player_message">Seleziona il media player da usare per riprodurre i file</string>
   <string name="pref_current_value">Impostazione attuale: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Imposta proxy di rete</string>
-  <string name="pref_faq">FAQ</string>
-  <string name="pref_known_issues">Problemi noti</string>
   <string name="pref_no_browser_found">Nessun browser web trovato.</string>
   <string name="pref_cast_title">Supporto a Chromecast</string>
   <string name="pref_cast_message_play_flavor">Abilita il supporto per la riproduzione multimediale remota sui device Cast (Chromecast, casse esterne o Android TV)</string>
@@ -490,6 +453,8 @@
   <string name="back_button_go_to_page_title">Seleziona pagina</string>
   <string name="pref_delete_removes_from_queue_title">Rimuovi dalla coda gli eliminati</string>
   <string name="pref_delete_removes_from_queue_sum">Rimuovi automaticamente un episodio dalla coda quando viene eliminato.</string>
+  <!--About screen-->
+  <string name="about_pref">Informazioni</string>
   <!--Search-->
   <string name="search_hint">Cerca negli episodi</string>
   <string name="found_in_shownotes_label">Trovato nelle note dell\'episodio</string>
@@ -501,22 +466,16 @@
   <string name="found_in_title_label">Trovato nel titolo</string>
   <string name="no_results_for_query">Nessun risultato trovato per \"%1$s\"</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">I file OPML ti permettono di spostare i tuoi podcast da un programma ad un altro.</string>
   <string name="opml_import_option">Opzione %1$d</string>
   <string name="opml_import_explanation_1">Scegli un percorso specifico dal filesystem locale.</string>
-  <string name="opml_import_explanation_2">Usa un\'applicazione esterna come Dropbox, Google Drive o il tuo gestore file preferito per aprire un file OPML.</string>
   <string name="opml_import_explanation_3">Molte applicazioni come Google Mail, Dropbox, Google Drive e i gestori di file possono <i>aprire</i> i file OPML <i>con</i> AntennaPod.</string>
-  <string name="start_import_label">Avvio importazione</string>
   <string name="opml_import_label">Importa da OPML</string>
-  <string name="opml_directory_error">ERRORE!</string>
   <string name="reading_opml_label">Lettura OPML file in corso</string>
   <string name="opml_reader_error">E\' stato riscontrato un errore nell\'apertura del documento OPML</string>
   <string name="opml_import_error_no_file">Nessun file selezionato!</string>
   <string name="select_all_label">Seleziona tutti</string>
   <string name="deselect_all_label">Deseleziona tutti</string>
-  <string name="select_options_label">Seleziona...</string>
   <string name="choose_file_from_filesystem">Dal filesystem locale</string>
-  <string name="choose_file_from_external_application">Utilizza un\'applicazione esterna</string>
   <string name="opml_export_label">Esporta in OPML</string>
   <string name="html_export_label">Esporta in HTML</string>
   <string name="exporting_label">Esportazione in corso...</string>
@@ -609,8 +568,6 @@
   <string name="pref_restart_required">AntennaPod deve essere riavviato per applicare le modifiche.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abbonati</string>
-  <string name="subscribed_label">Abbonato</string>
-  <string name="downloading_label">Download in corso...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Riavvolgi</string>
   <string name="fast_forward_label">Avanti veloce</string>
@@ -718,7 +675,6 @@
   <string name="cast_failed_setting_volume">Impostazione del volume fallita</string>
   <string name="cast_failed_no_connection">Nessuna connessione al dispositivo di ricezione</string>
   <string name="cast_failed_no_connection_trans">Connessione al dispositivo persa. L\'applicazione sta cercando di ristabilire la connessione, se possibile. Per favore attendi qualche secondo e riprova.</string>
-  <string name="cast_failed_perform_action">Esecuzione dell\'operazione fallita</string>
   <string name="cast_failed_status_request">Sincronizzazione con il dispositivo ricevente fallita</string>
   <string name="cast_failed_seek">Ricerca della nuova posizione sul dispositivo ricevente fallita</string>
   <string name="cast_failed_receiver_player_error">Il dispositivo ricevente ha restituito un errore grave</string>
@@ -733,4 +689,5 @@
   <string name="notification_channel_error">Errori</string>
   <string name="notification_channel_error_description">Mostrato se qualcosa è andato storto, per esempio se fallisce il download o la sincronizzazione di gpodder.</string>
   <string name="import_bad_file">File non valido/corrotto</string>
+  <!--Widget settings-->
 </resources>

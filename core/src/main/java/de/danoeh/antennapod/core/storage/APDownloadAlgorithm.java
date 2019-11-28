@@ -53,19 +53,19 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                 final List<FeedItem> newItems = DBReader.getNewItemsList();
                 candidates = new ArrayList<>(queue.size() + newItems.size());
                 candidates.addAll(queue);
-                for(FeedItem newItem : newItems) {
+                for (FeedItem newItem : newItems) {
                     FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
                     FeedFilter feedFilter = feedPrefs.getFilter();
-                    if(!candidates.contains(newItem) && feedFilter.shouldAutoDownload(newItem)) {
+                    if (!candidates.contains(newItem) && feedFilter.shouldAutoDownload(newItem)) {
                         candidates.add(newItem);
                     }
                 }
 
                 // filter items that are not auto downloadable
                 Iterator<FeedItem> it = candidates.iterator();
-                while(it.hasNext()) {
+                while (it.hasNext()) {
                     FeedItem item = it.next();
-                    if(!item.isAutoDownloadable()) {
+                    if (!item.isAutoDownloadable()) {
                         it.remove();
                     }
                 }
@@ -74,13 +74,12 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                 int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
                 int deletedEpisodes = UserPreferences.getEpisodeCleanupAlgorithm()
                         .makeRoomForEpisodes(context, autoDownloadableEpisodes);
-                boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
-                        .getEpisodeCacheSizeUnlimited();
+                boolean cacheIsUnlimited =
+                        UserPreferences.getEpisodeCacheSize() == UserPreferences.getEpisodeCacheSizeUnlimited();
                 int episodeCacheSize = UserPreferences.getEpisodeCacheSize();
 
                 int episodeSpaceLeft;
-                if (cacheIsUnlimited ||
-                        episodeCacheSize >= downloadedEpisodes + autoDownloadableEpisodes) {
+                if (cacheIsUnlimited || episodeCacheSize >= downloadedEpisodes + autoDownloadableEpisodes) {
                     episodeSpaceLeft = autoDownloadableEpisodes;
                 } else {
                     episodeSpaceLeft = episodeCacheSize - (downloadedEpisodes - deletedEpisodes);
@@ -89,14 +88,15 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                 FeedItem[] itemsToDownload = candidates.subList(0, episodeSpaceLeft)
                         .toArray(new FeedItem[episodeSpaceLeft]);
 
-                Log.d(TAG, "Enqueueing " + itemsToDownload.length + " items for download");
+                if (itemsToDownload.length > 0) {
+                    Log.d(TAG, "Enqueueing " + itemsToDownload.length + " items for download");
 
-                try {
-                    DBTasks.downloadFeedItems(false, context, itemsToDownload);
-                } catch (DownloadRequestException e) {
-                    e.printStackTrace();
+                    try {
+                        DownloadRequester.getInstance().downloadMedia(false, context, itemsToDownload);
+                    } catch (DownloadRequestException e) {
+                        e.printStackTrace();
+                    }
                 }
-
             }
         };
     }

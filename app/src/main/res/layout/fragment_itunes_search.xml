@@ -20,7 +20,7 @@
         tools:listitem="@layout/gpodnet_podcast_listitem" />
 
     <TextView
-        android:id="@id/android:empty"
+        android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"

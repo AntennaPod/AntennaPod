@@ -13,6 +13,8 @@ bin/
 gen/
 target/
 build/
+**/*.project
+**/*.classpath
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -33,6 +35,8 @@ out
 #transifex downloads
 contributers.py
 
+# View hierarchy captures
+captures
 # other
 *.odg#
 proguard

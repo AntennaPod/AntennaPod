@@ -22,6 +22,7 @@ class PlaybackServiceStateManager {
     void stopService() {
         stopForeground(true);
         playbackService.stopSelf();
+        hasReceivedValidStartCommand = false;
     }
 
     void stopForeground(boolean removeNotification) {
@@ -35,7 +36,6 @@ class PlaybackServiceStateManager {
             }
         }
         isInForeground = false;
-        hasReceivedValidStartCommand = false;
     }
 
     boolean isInForeground() {

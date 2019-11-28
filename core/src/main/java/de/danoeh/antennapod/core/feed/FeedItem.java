@@ -185,7 +185,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         if (other.link != null) {
             link = other.link;
         }
-        if (other.pubDate != null && other.pubDate.equals(pubDate)) {
+        if (other.pubDate != null && !other.pubDate.equals(pubDate)) {
             pubDate = other.pubDate;
         }
         if (other.media != null) {
@@ -375,10 +375,10 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
 
     @Override
     public String getImageLocation() {
-        if(media != null && media.hasEmbeddedPicture()) {
-            return media.getImageLocation();
-        } else if (imageUrl != null) {
-           return imageUrl;
+        if (imageUrl != null) {
+            return imageUrl;
+        } else if (media != null && media.hasEmbeddedPicture()) {
+            return media.getLocalMediaUrl();
         } else if (feed != null) {
             return feed.getImageLocation();
         } else {

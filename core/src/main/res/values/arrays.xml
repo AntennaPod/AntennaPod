@@ -172,6 +172,19 @@
         <item>@string/episode_cleanup_never</item>
     </string-array>
 
+    <string-array name="enqueue_location_options">
+        <item>@string/enqueue_location_back</item>
+        <item>@string/enqueue_location_front</item>
+        <item>@string/enqueue_location_after_current</item>
+    </string-array>
+
+    <string-array name="enqueue_location_values">
+        <!-- MUST be the same as UserPreferences.EnqueueLocation enum -->
+        <item>BACK</item>
+        <item>FRONT</item>
+        <item>AFTER_CURRENTLY_PLAYING</item>
+    </string-array>
+
     <string-array name="episode_cleanup_values">
         <item>-1</item>
         <item>0</item>
@@ -299,16 +312,6 @@
         <item>exoplayer</item>
     </string-array>
 
-    <string-array name="media_player_options_no_sonic">
-        <item>@string/media_player_builtin</item>
-        <item>@string/media_player_exoplayer</item>
-    </string-array>
-
-    <string-array name="media_player_values_no_sonic">
-        <item>builtin</item>
-        <item>exoplayer</item>
-    </string-array>
-
     <string-array name="episode_filter_options">
         <item>@string/hide_unplayed_episodes_label</item>
         <item>@string/hide_paused_episodes_label</item>
@@ -331,6 +334,25 @@
         <item>not_downloaded</item>
         <item>has_media</item>
         <item>is_favorite</item>
+    </string-array>
+
+    <!-- sort for podcast screen, not for queue -->
+    <string-array name="feed_episodes_sort_options">
+        <item>@string/sort_date_new_old</item>
+        <item>@string/sort_date_old_new</item>
+        <item>@string/sort_title_a_z</item>
+        <item>@string/sort_title_z_a</item>
+        <item>@string/sort_duration_short_long</item>
+        <item>@string/sort_duration_long_short</item>
+    </string-array>
+
+    <string-array name="feed_episodes_sort_values">
+        <item>DATE_NEW_OLD</item>
+        <item>DATE_OLD_NEW</item>
+        <item>EPISODE_TITLE_A_Z</item>
+        <item>EPISODE_TITLE_Z_A</item>
+        <item>DURATION_SHORT_LONG</item>
+        <item>DURATION_LONG_SHORT</item>
     </string-array>
 
     <string-array name="image_cache_size_options">

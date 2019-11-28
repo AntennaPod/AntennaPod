@@ -8,6 +8,7 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.MediaAction;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
@@ -33,6 +34,9 @@ public class PreferenceUpgrader {
     }
 
     private static void upgrade(int oldVersion) {
+        if (oldVersion == -1) {
+            return;
+        }
         if (oldVersion < 1070196) {
             // migrate episode cleanup value (unit changed from days to hours)
             int oldValueInDays = UserPreferences.getEpisodeCleanupValue();
@@ -73,28 +77,37 @@ public class PreferenceUpgrader {
             }
 
             UserPreferences.setQueueLocked(false);
+            prefs.edit().putBoolean(UserPreferences.PREF_STREAM_OVER_DOWNLOAD, false).apply();
 
+            if (!prefs.contains(UserPreferences.PREF_ENQUEUE_LOCATION)) {
+                final String keyOldPrefEnqueueFront = "prefQueueAddToFront";
+                boolean enqueueAtFront = prefs.getBoolean(keyOldPrefEnqueueFront, false);
+                EnqueueLocation enqueueLocation = enqueueAtFront ? EnqueueLocation.FRONT : EnqueueLocation.BACK;
+                UserPreferences.setEnqueueLocation(enqueueLocation);
+            }
+        }
+        if (oldVersion < 1090000) {
             // Migrate hardware button preferences to new system that supports repeat actions
             boolean nextButtonSkips =
-                prefs.getBoolean(UserPreferences.PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
+                    prefs.getBoolean(UserPreferences.PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
             boolean previousButtonRestarts =
-                prefs.getBoolean(UserPreferences.PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
+                    prefs.getBoolean(UserPreferences.PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
 
             SharedPreferences.Editor editor = prefs.edit();
             if (nextButtonSkips) {
                 editor.putString(UserPreferences.PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION,
-                    MediaAction.SKIP_FORWARD.name());
+                        MediaAction.SKIP_FORWARD.name());
             } else {
                 editor.putString(UserPreferences.PREF_HARDWARE_FORWARD_SINGLE_TAP_ACTION,
-                    MediaAction.SEEK_FORWARD.name());
+                        MediaAction.SEEK_FORWARD.name());
             }
 
             if (previousButtonRestarts) {
                 editor.putString(UserPreferences.PREF_HARDWARE_BACK_SINGLE_TAP_ACTION,
-                    MediaAction.RESTART.name());
+                        MediaAction.RESTART.name());
             } else {
                 editor.putString(UserPreferences.PREF_HARDWARE_BACK_SINGLE_TAP_ACTION,
-                    MediaAction.SKIP_BACKWARD.name());
+                        MediaAction.SKIP_BACKWARD.name());
             }
 
             editor.remove(UserPreferences.PREF_HARDWARE_FOWARD_BUTTON_SKIPS);

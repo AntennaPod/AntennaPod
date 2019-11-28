@@ -4,8 +4,15 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import java.util.Map;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -34,12 +41,6 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.playback_pref);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkSonicItemVisibility();
-    }
-
     private void setupPlaybackScreen() {
         final Activity activity = getActivity();
 
@@ -63,6 +64,43 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
             behaviour.setEntries(R.array.video_background_behavior_options_without_pip);
             behaviour.setEntryValues(R.array.video_background_behavior_values_without_pip);
         }
+
+        buildEnqueueLocationPreference();
+    }
+
+    private void buildEnqueueLocationPreference() {
+        final Resources res = requireActivity().getResources();
+        final Map<String, String> options = new ArrayMap<>();
+        {
+            String[] keys = res.getStringArray(R.array.enqueue_location_values);
+            String[] values = res.getStringArray(R.array.enqueue_location_options);
+            for (int i = 0; i < keys.length; i++) {
+                options.put(keys[i], values[i]);
+            }
+        }
+
+        ListPreference pref = requirePreference(UserPreferences.PREF_ENQUEUE_LOCATION);
+        pref.setSummary(res.getString(R.string.pref_enqueue_location_sum, options.get(pref.getValue())));
+
+        pref.setOnPreferenceChangeListener((preference, newValue) -> {
+            if (!(newValue instanceof String)) {
+                return false;
+            }
+            String newValStr = (String)newValue;
+            pref.setSummary(res.getString(R.string.pref_enqueue_location_sum, options.get(newValStr)));
+            return true;
+        });
+    }
+
+    @NonNull
+    private <T extends Preference> T requirePreference(@NonNull CharSequence key) {
+        // Possibly put it to a common method in abstract base class
+        T result = findPreference(key);
+        if (result == null) {
+            throw new IllegalArgumentException("Preference with key '" + key + "' is not found");
+
+        }
+        return result;
     }
 
     private void buildSmartMarkAsPlayedPreference() {
@@ -85,15 +123,5 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
             }
         }
         pref.setEntries(entries);
-    }
-
-
-
-    private void checkSonicItemVisibility() {
-        if (Build.VERSION.SDK_INT < 16) {
-            ListPreference p = (ListPreference) findPreference(UserPreferences.PREF_MEDIA_PLAYER);
-            p.setEntries(R.array.media_player_options_no_sonic);
-            p.setEntryValues(R.array.media_player_values_no_sonic);
-        }
     }
 }

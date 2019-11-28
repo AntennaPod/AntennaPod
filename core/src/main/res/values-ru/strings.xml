@@ -22,10 +22,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Синхронизировать с другими устройствами</string>
   <string name="gpodnet_auth_label">Войти на gpodder.net</string>
-  <string name="free_space_label">свободно %1$s</string>
   <string name="episode_cache_full_title">Кэш выпусков заполнен</string>
   <string name="episode_cache_full_message">Достигнут предел кэша выпусков. Объём кэша можно увеличить в Настройках.</string>
-  <string name="synchronizing">Синхронизация…</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Общее время прослушивания подкастов:</string>
   <string name="statistics_details_dialog">%1$d из %2$d выпусков начато.\n\nПрослушано %3$s из %4$s.</string>
@@ -63,7 +61,6 @@
   <string name="author_label">Автор(ы)</string>
   <string name="language_label">Язык</string>
   <string name="url_label">Адрес</string>
-  <string name="podcast_settings_label">Настройки</string>
   <string name="cover_label">Обложка</string>
   <string name="error_label">Ошибка</string>
   <string name="error_msg_prefix">Произошла ошибка:</string>
@@ -72,14 +69,9 @@
   <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель установлен, иначе приложение не сможет нормально работать.</string>
   <string name="chapters_label">Главы</string>
   <string name="chapter_duration">Длительность: %1$s</string>
-  <string name="shownotes_label">Примечания к выпуску</string>
   <string name="description_label">Описание</string>
-  <string name="most_recent_prefix">Последний выпуск:\u0020</string>
   <string name="episodes_suffix">\u0020выпуск(ов)</string>
-  <string name="length_prefix">Продолжительность:\u0020</string>
-  <string name="size_prefix">Размер:\u0020</string>
   <string name="processing_label">Обработка</string>
-  <string name="loading_label">Загрузка…</string>
   <string name="save_username_password_label">Сохранить имя пользователя и пароль</string>
   <string name="close_label">Закрыть</string>
   <string name="retry_label">Повторить</string>
@@ -112,8 +104,6 @@
   <string name="feedurl_label">URL канала</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Добавить подкаст по URL</string>
-  <string name="podcastdirectories_label">Найти подкаст в каталоге</string>
-  <string name="podcastdirectories_descr">Вы можете искать новые подкасты в каталогах iTunes, fyyd или gpodder.net по имени, категории или популярности.</string>
   <string name="browse_gpoddernet_label">Просмотр gpodder.net</string>
   <string name="discover">Найти каналы</string>
   <string name="discover_more">ещё »</string>
@@ -141,7 +131,6 @@
   <string name="feed_delete_confirmation_msg">Подтвердите желание удалить подкаст \"%1$s\" и ВСЕ его эпизоды, в том числе и скачанные.</string>
   <string name="feed_remover_msg">Удаление подкаста</string>
   <string name="load_complete_feed">Обновить весь подкаст</string>
-  <string name="hide_episodes_title">Скрыть выпуски</string>
   <string name="batch_edit">Групповая обработка</string>
   <string name="select_all_above">Выбрать всё выше</string>
   <string name="select_all_below">Выбрать всё ниже</string>
@@ -167,9 +156,7 @@
   </plurals>
   <string name="play_label">Воспроизвести</string>
   <string name="pause_label">Пауза</string>
-  <string name="stop_label">Остановить</string>
   <string name="stream_label">Воспроизвести из сети</string>
-  <string name="remove_label">Удалить</string>
   <string name="delete_label">Удалить</string>
   <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
   <string name="delete_episode_label">Удалить выпуск</string>
@@ -223,7 +210,6 @@
   <string name="removed_item">Удалено</string>
   <!--Download messages and labels-->
   <string name="download_successful">успешно</string>
-  <string name="download_failed">не удалось</string>
   <string name="download_pending">Загрузка в ожидании</string>
   <string name="download_running">Загрузка в процессе</string>
   <string name="download_error_details">Подробнее</string>
@@ -233,7 +219,6 @@ URL файла:
 %2$s</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
   <string name="download_error_insufficient_space">Недостаточно места</string>
-  <string name="download_error_file_error">Ошибка файла</string>
   <string name="download_error_http_data_error">Ошибка данных HTTP</string>
   <string name="download_error_error_unknown">Неизвестная ошибка</string>
   <string name="download_error_parser_exception">Ошибка обработки</string>
@@ -243,7 +228,6 @@ URL файла:
   <string name="download_error_unauthorized">Ошибка авторизации</string>
   <string name="download_error_file_type_type">Ошибка типа файла</string>
   <string name="download_error_forbidden">Доступ запрещён</string>
-  <string name="cancel_all_downloads_label">Отменить все загрузки</string>
   <string name="download_canceled_msg">Загрузка отменена</string>
   <string name="download_canceled_autodownload_enabled_msg">Загрузка отменена\nОтключена <i>Автоматическая загрузка</i> для этого эпизода</string>
   <string name="download_report_title">Загрузки завершились с ошибкой</string>
@@ -264,7 +248,6 @@ URL файла:
   <string name="download_log_title_unknown">Неизвестное название</string>
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Медиафайл</string>
-  <string name="download_type_image">Изображение</string>
   <string name="download_request_error_dialog_message_prefix">Ошибка при загрузке файла:\u0020</string>
   <string name="null_value_podcast_error">Не предоставлен подкаст, который можно было бы показать.</string>
   <string name="authentication_notification_title">Необходима авторизация</string>
@@ -290,7 +273,6 @@ URL файла:
   <string name="no_media_playing_label">Ничего не воспроизводится</string>
   <string name="player_buffering_msg">Буферизация</string>
   <string name="player_go_to_picture_in_picture">Картинка в картинке</string>
-  <string name="playbackservice_notification_title">Воспроизведение подкаста</string>
   <string name="unknown_media_key">AntennaPod - неизвестный ключ носителя: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Заблокировать очередь</string>
@@ -299,7 +281,6 @@ URL файла:
   <string name="queue_unlocked">Очередь разблокирована</string>
   <string name="clear_queue_label">Очистить очередь</string>
   <string name="undo">Отмена</string>
-  <string name="removed_from_queue">Удалено</string>
   <string name="move_to_top_label">Переместить вверх</string>
   <string name="move_to_bottom_label">Переместить вниз</string>
   <string name="sort">Сортировать</string>
@@ -324,7 +305,6 @@ URL файла:
   <!--Empty list labels-->
   <string name="no_items_header_label">Нет эпизодов в очереди</string>
   <string name="no_items_label">Добавьте выпуск, загрузив его, или долго удерживайте выпуск и выберите «Добавить в очередь».</string>
-  <string name="no_feeds_label">Вы ещё не подписаны ни на один подкаст.</string>
   <string name="no_shownotes_label">Этот выпуск не содержит примечаний.</string>
   <string name="no_run_downloads_head_label">Нет запущенных загрузок</string>
   <string name="no_run_downloads_label">Вы можете загрузить выпуски на экране сведений о подкасте.</string>
@@ -345,8 +325,6 @@ URL файла:
   <!--Preferences-->
   <string name="storage_pref">Хранилище</string>
   <string name="project_pref">Проект</string>
-  <string name="other_pref">Прочее</string>
-  <string name="about_pref">О программе</string>
   <string name="queue_label">Очередь</string>
   <string name="integrations_label">Интеграция</string>
   <string name="automation">Автоматизация</string>
@@ -389,9 +367,7 @@ URL файла:
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Задать время</string>
   <string name="pref_autoUpdateIntervallOrTime_every">каждые %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">в %1$s</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Загружать файлы только через Wi-Fi</string>
   <string name="pref_followQueue_title">Непрерывное воспроизведение</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Загрузка по Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Наушники отсоединены</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Наушники подключены обратно</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth-соединение восстановлено</string>
@@ -402,11 +378,8 @@ URL файла:
   <string name="pref_mobileUpdate_auto_download">Автозагрузка</string>
   <string name="pref_mobileUpdate_episode_download">Загрузка выпусков</string>
   <string name="pref_mobileUpdate_streaming">Трансляции по сети</string>
-  <string name="refreshing_label">Обновление</string>
   <string name="user_interface_label">Интерфейс</string>
   <string name="pref_set_theme_title">Выбор темы</string>
-  <string name="pref_nav_drawer_title">Настроить боковую панель</string>
-  <string name="pref_nav_drawer_sum">Настроить вид боковой панели</string>
   <string name="pref_nav_drawer_items_title">Выбрать пункты боковой панели</string>
   <string name="pref_nav_drawer_items_sum">Изменение отображения пунктов меню боковой панели</string>
   <string name="pref_nav_drawer_feed_order_title">Упорядочить подписки</string>
@@ -418,8 +391,6 @@ URL файла:
   <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков.</string>
   <string name="pref_autodl_wifi_filter_title">Включить фильтр Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Разрешать автоматическую загрузку только для выбранных сетей Wi-Fi.</string>
-  <string name="pref_autodl_allow_on_mobile_title">Загрузка через мобильное подключение к интернету</string>
-  <string name="pref_autodl_allow_on_mobile_sum">Позволить автоматические загрузки через мобильное подключение к интернету.</string>
   <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
   <string name="pref_automatic_download_on_battery_sum">Разрешать автоматическую загрузку когда батарея не заряжается</string>
   <string name="pref_parallel_downloads_title">Одновременные загрузки</string>
@@ -444,7 +415,6 @@ URL файла:
   <string name="pref_gpodnet_full_sync_sum">Синхронизировать состояния всех подписок и выпусков при помощи gpodder.net.</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">Предыдущая попытка синхронизации: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Синхронизация запущена</string>
-  <string name="pref_gpodnet_full_sync_started">Запущена полная синхронизация</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Вход как <i>%1$s</i> с устройства <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Показывать уведомления об ошибках синхронизации</string>
   <string name="pref_gpodnet_notifications_sum">Не затрагивает ошибки авторизации.</string>
@@ -471,21 +441,14 @@ URL файла:
   <string name="pref_showDownloadReport_title">Показывать отчёт о загрузках</string>
   <string name="pref_showDownloadReport_sum">Если загрузка не удаётся, показывать отчёт с подробностями об ошибке.</string>
   <string name="pref_expand_notify_unsupport_toast">Версии Android ниже 4.1 не поддерживают расширенные уведомления.</string>
-  <string name="pref_queueAddToFront_sum">Добавлять новые выпуски в начало очереди</string>
-  <string name="pref_queueAddToFront_title">В начало очереди</string>
   <string name="pref_smart_mark_as_played_disabled">Отключено</string>
   <string name="pref_image_cache_size_title">Размер кэша для изображений</string>
   <string name="pref_image_cache_size_sum">Размер дискового кэша для изображений</string>
-  <string name="crash_report_title">Отчёт о сбое</string>
-  <string name="crash_report_sum">Отослать последний отчёт о сбое по e-mail</string>
-  <string name="send_email">Отправить Email</string>
   <string name="experimental_pref">Экспериментальные настройки</string>
   <string name="pref_media_player_message">Выберите каким проигрывателем следует воспроизводить файлы</string>
   <string name="pref_current_value">Текущее значение: %1$s</string>
   <string name="pref_proxy_title">Прокси</string>
   <string name="pref_proxy_sum">Настройки прокси</string>
-  <string name="pref_faq">ЧаВо</string>
-  <string name="pref_known_issues">Известные проблемы</string>
   <string name="pref_no_browser_found">Веб-браузер не обнаружен.</string>
   <string name="pref_cast_title">Поддержка Chromecast</string>
   <string name="pref_cast_message_play_flavor">Включить поддержку удалённого воспроизведения на устройствах с Google Cast (таких как Chromecast, динамики или ТВ на ОС Android)</string>
@@ -511,6 +474,8 @@ URL файла:
   <string name="back_button_go_to_page_title">Выбрать страницу</string>
   <string name="pref_delete_removes_from_queue_title">Убирать удаленные из очереди</string>
   <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении.</string>
+  <!--About screen-->
+  <string name="about_pref">О программе</string>
   <!--Search-->
   <string name="search_hint">Найти выпуски</string>
   <string name="found_in_shownotes_label">Найдено в примечаниях к выпуску</string>
@@ -522,22 +487,16 @@ URL файла:
   <string name="found_in_title_label">Найдено в заголовке</string>
   <string name="no_results_for_query">Для \"%1$s\" ничего не найдено</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">OPML файлы позволяют перемещать ваши подкасты из одного менеджера подкастов в другой.</string>
   <string name="opml_import_option">Настройка %1$d</string>
   <string name="opml_import_explanation_1">Укажите путь к файлу на устройстве</string>
-  <string name="opml_import_explanation_2">Откройте OPML-файл с помощью внешних приложений: Dropbox, Google Drive или любого файлового менеджера.</string>
   <string name="opml_import_explanation_3">Множество приложений умеют <i>открывать</i> OPML-файлы <i>в</i> AntennaPod, например: Google Mail, Dropbox, Google Drive и большинство файловых менеджеров.</string>
-  <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>
-  <string name="opml_directory_error">Ошибка</string>
   <string name="reading_opml_label">Чтение файла OPML</string>
   <string name="opml_reader_error">При чтении OPML произошла ошибка:</string>
   <string name="opml_import_error_no_file">Файл не выбран!</string>
   <string name="select_all_label">Отметить все</string>
   <string name="deselect_all_label">Снять все отметки</string>
-  <string name="select_options_label">Отметить…</string>
   <string name="choose_file_from_filesystem">Из файловой системы</string>
-  <string name="choose_file_from_external_application">С помощью внешнего приложения</string>
   <string name="opml_export_label">Экспорт в OPML</string>
   <string name="html_export_label">Экспорт в HTML</string>
   <string name="exporting_label">Экспортируется...</string>
@@ -638,8 +597,6 @@ URL файла:
   <string name="pref_restart_required">Следует перезапустить AntennaPod для применения настроек.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
-  <string name="subscribed_label">Подписка оформлена</string>
-  <string name="downloading_label">Идёт загрузка…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Назад</string>
   <string name="fast_forward_label">Вперёд</string>
@@ -747,7 +704,6 @@ URL файла:
   <string name="cast_failed_setting_volume">Невозможно установить громкость</string>
   <string name="cast_failed_no_connection">Нет соединений с устройствами Google cast</string>
   <string name="cast_failed_no_connection_trans">Соединение с устройством Google cast потеряно. Идёт попытка восстановления соединения. Пожалуйста, подождите пару секунд и попробуйте снова.</string>
-  <string name="cast_failed_perform_action">Не удалось выполнить действие</string>
   <string name="cast_failed_status_request">Не удалось синхронизироваться с устройством Google cast</string>
   <string name="cast_failed_seek">Не удалось выполнить перемотку на устройстве Google cast</string>
   <string name="cast_failed_receiver_player_error">Серьёзная ошибка воспроизведения в устройстве Google cast</string>
@@ -762,4 +718,5 @@ URL файла:
   <string name="notification_channel_error">Ошибки</string>
   <string name="notification_channel_error_description">Показывается если что-то пошло не так, к примеру, неудавшаяся загрузка или синхронизация с gpodder.</string>
   <string name="import_bad_file">Недопустимый или поврежденный файл</string>
+  <!--Widget settings-->
 </resources>

@@ -5,11 +5,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import android.text.format.DateFormat;
-import com.afollestad.materialdialogs.MaterialDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -65,7 +62,7 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
         // validate and set correct value: number of downloads between 1 and 50 (inclusive)
         findPreference(PREF_PROXY).setOnPreferenceClickListener(preference -> {
             ProxyDialog dialog = new ProxyDialog(getActivity());
-            dialog.createDialog().show();
+            dialog.show();
             return true;
         });
     }
@@ -107,13 +104,10 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
     private void showUpdateIntervalTimePreferencesDialog() {
         final Context context = getActivity();
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
-        builder.title(R.string.pref_autoUpdateIntervallOrTime_title);
-        builder.content(R.string.pref_autoUpdateIntervallOrTime_message);
-        builder.positiveText(R.string.pref_autoUpdateIntervallOrTime_Interval);
-        builder.negativeText(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay);
-        builder.neutralText(R.string.pref_autoUpdateIntervallOrTime_Disable);
-        builder.onPositive((dialog, which) -> {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.pref_autoUpdateIntervallOrTime_title);
+        builder.setMessage(R.string.pref_autoUpdateIntervallOrTime_message);
+        builder.setPositiveButton(R.string.pref_autoUpdateIntervallOrTime_Interval, (dialog, which) -> {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
             builder1.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
             final String[] values = context.getResources().getStringArray(R.array.update_intervall_values);
@@ -133,8 +127,9 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
             builder1.setNegativeButton(context.getString(R.string.cancel_label), null);
             builder1.show();
         });
-        builder.onNegative((dialog, which) -> {
-            int hourOfDay = 7, minute = 0;
+        builder.setNegativeButton(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay, (dialog, which) -> {
+            int hourOfDay = 7;
+            int minute = 0;
             int[] updateTime = UserPreferences.getUpdateTimeOfDay();
             if (updateTime.length == 2) {
                 hourOfDay = updateTime[0];
@@ -151,7 +146,7 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
             timePickerDialog.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay));
             timePickerDialog.show();
         });
-        builder.onNeutral((dialog, which) -> {
+        builder.setNeutralButton(R.string.pref_autoUpdateIntervallOrTime_Disable, (dialog, which) -> {
             UserPreferences.disableAutoUpdate();
             setUpdateIntervalText();
         });

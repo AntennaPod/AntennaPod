@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +21,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
 public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.ViewHolder> {
@@ -105,7 +105,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         private TextView path;
         private TextView size;
         private RadioButton radioButton;
-        private MaterialProgressBar progressBar;
+        private ProgressBar progressBar;
 
         ViewHolder(View itemView) {
             super(itemView);

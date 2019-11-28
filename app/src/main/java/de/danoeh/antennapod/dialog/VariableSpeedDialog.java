@@ -1,37 +1,21 @@
 package de.danoeh.antennapod.dialog;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import androidx.appcompat.app.AlertDialog;
-import android.util.Log;
-import android.view.View;
-
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.IntentUtils;
-
 public class VariableSpeedDialog {
-
-    private static final String TAG = VariableSpeedDialog.class.getSimpleName();
-
-    private static final Intent playStoreIntent = new Intent(Intent.ACTION_VIEW,
-        Uri.parse("market://details?id=com.falconware.prestissimo"));
 
     private VariableSpeedDialog() {
     }
 
     public static void showDialog(final Context context) {
-        if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(context)
-                || UserPreferences.useSonic()
+        if (UserPreferences.useSonic()
                 || UserPreferences.useExoplayer()
                 || Build.VERSION.SDK_INT >= 23) {
             showSpeedSelectorDialog(context);
@@ -45,38 +29,17 @@ public class VariableSpeedDialog {
     }
 
     private static void showGetPluginDialog(final Context context, boolean showSpeedSelector) {
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
-        builder.title(R.string.no_playback_plugin_title);
-        builder.content(R.string.no_playback_plugin_or_sonic_msg);
-        builder.positiveText(R.string.enable_sonic);
-        builder.negativeText(R.string.download_plugin_label);
-        builder.neutralText(R.string.close_label);
-        builder.onPositive((dialog, which) -> {
-            if (Build.VERSION.SDK_INT >= 16) { // just to be safe
-                UserPreferences.enableSonic();
-                if(showSpeedSelector) {
-                    showSpeedSelectorDialog(context);
-                }
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.no_playback_plugin_title);
+        builder.setMessage(R.string.no_playback_plugin_or_sonic_msg);
+        builder.setPositiveButton(R.string.enable_sonic, (dialog, which) -> {
+            UserPreferences.enableSonic();
+            if (showSpeedSelector) {
+                showSpeedSelectorDialog(context);
             }
         });
-        builder.onNegative((dialog, which) -> {
-            try {
-                context.startActivity(playStoreIntent);
-            } catch (ActivityNotFoundException e) {
-                // this is usually thrown on an emulator if the Android market is not installed
-                Log.e(TAG, Log.getStackTraceString(e));
-            }
-        });
-        builder.forceStacking(true);
-        MaterialDialog dialog = builder.show();
-        if (Build.VERSION.SDK_INT < 16) {
-            View pos = dialog.getActionButton(DialogAction.POSITIVE);
-            pos.setEnabled(false);
-        }
-        if(!IntentUtils.isCallable(context.getApplicationContext(), playStoreIntent)) {
-            View pos = dialog.getActionButton(DialogAction.NEGATIVE);
-            pos.setEnabled(false);
-        }
+        builder.setNeutralButton(R.string.close_label, null);
+        builder.show();
     }
 
     private static void showSpeedSelectorDialog(final Context context) {

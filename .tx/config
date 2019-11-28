@@ -17,6 +17,7 @@ trans.el = core/src/main/res/values-el/strings.xml
 trans.es = core/src/main/res/values-es/strings.xml
 trans.es_ES = core/src/main/res/values-es-rES/strings.xml
 trans.et = core/src/main/res/values-et/strings.xml
+trans.eu = core/src/main/res/values-eu/strings.xml
 trans.fa = core/src/main/res/values-fa/strings.xml
 trans.fi = core/src/main/res/values-fi/strings.xml
 trans.fr = core/src/main/res/values-fr/strings.xml

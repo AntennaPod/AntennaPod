@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,12 +25,13 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.PlaybackSpeedHelper;
+import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -128,7 +130,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
                 icon = Glide.with(PlayerWidgetJobService.this)
                         .asBitmap()
-                        .load(media.getImageLocation())
+                        .load(ImageResourceUtils.getImageLocation(media))
                         .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
@@ -147,7 +149,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 progressString = getProgressString(playbackService.getCurrentPosition(),
                         playbackService.getDuration(), playbackService.getCurrentPlaybackSpeed());
             } else {
-                progressString = getProgressString(media.getPosition(), media.getDuration(), PlaybackSpeedHelper.getCurrentPlaybackSpeed(media));
+                progressString = getProgressString(media.getPosition(), media.getDuration(), PlaybackSpeedUtils.getCurrentPlaybackSpeed(media));
             }
 
             if (progressString != null) {
@@ -192,6 +194,11 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 } else {
                     views.setViewVisibility(R.id.layout_center, View.VISIBLE);
                 }
+
+                SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
+                int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
+                views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
+
                 manager.updateAppWidget(id, views);
             }
         } else {
@@ -213,7 +220,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     }
 
     private String getProgressString(int position, int duration, float speed) {
-        if (position > 0 && duration > 0) {
+        if (position >= 0 && duration > 0) {
             TimeSpeedConverter converter = new TimeSpeedConverter(speed);
             position = converter.convert(position);
             duration = converter.convert(duration);
@@ -242,6 +249,5 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             }
             Log.d(TAG, "Disconnected from service");
         }
-
     };
 }

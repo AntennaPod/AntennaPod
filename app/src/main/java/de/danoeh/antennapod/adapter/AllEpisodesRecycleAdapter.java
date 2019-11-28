@@ -35,10 +35,12 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.ItemFragment;
+import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
 /**
@@ -53,7 +55,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
     private final boolean showOnlyNewEpisodes;
 
     private FeedItem selectedItem;
-    private Holder currentlyPlayingItem = null;
 
     private final int playingBackGroundColor;
     private final int normalBackGroundColor;
@@ -171,7 +172,6 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
 
             if (media.isCurrentlyPlaying()) {
                 holder.container.setBackgroundColor(playingBackGroundColor);
-                currentlyPlayingItem = holder;
             } else {
                 holder.container.setBackgroundColor(normalBackGroundColor);
             }
@@ -194,27 +194,11 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         holder.butSecondary.setTag(item);
 
         new CoverLoader(mainActivityRef.get())
-                .withUri(item.getImageLocation())
+                .withUri(ImageResourceUtils.getImageLocation(item))
                 .withFallbackUri(item.getFeed().getImageLocation())
                 .withPlaceholderView(holder.placeholder)
                 .withCoverView(holder.cover)
                 .load();
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int pos, List<Object> payload) {
-        onBindViewHolder(holder, pos);
-
-        if (holder == currentlyPlayingItem && payload.size() == 1 && payload.get(0) instanceof PlaybackPositionEvent) {
-            PlaybackPositionEvent event = (PlaybackPositionEvent) payload.get(0);
-            holder.progress.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
-        }
-    }
-
-    public void notifyCurrentlyPlayingItemChanged(PlaybackPositionEvent event) {
-        if (currentlyPlayingItem != null && currentlyPlayingItem.getAdapterPosition() != RecyclerView.NO_POSITION) {
-            notifyItemChanged(currentlyPlayingItem.getAdapterPosition(), event);
-        }
     }
 
     @Nullable
@@ -262,7 +246,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             MainActivity mainActivity = mainActivityRef.get();
             if (mainActivity != null) {
                 long[] ids = itemAccess.getItemsIds().toArray();
-                mainActivity.loadChildFragment(ItemFragment.newInstance(ids, getAdapterPosition()));
+                mainActivity.loadChildFragment(ItemPagerFragment.newInstance(ids, getAdapterPosition()));
             }
         }
 
@@ -299,6 +283,14 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
                 }
             };
             FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item);
+        }
+
+        public boolean isCurrentlyPlayingItem() {
+            return item.getMedia() != null && item.getMedia().isCurrentlyPlaying();
+        }
+
+        public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {
+            progress.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
         }
 
     }
