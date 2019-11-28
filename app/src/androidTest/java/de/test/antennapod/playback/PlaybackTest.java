@@ -38,12 +38,12 @@ import static de.test.antennapod.NthMatcher.nth;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
- * test cases for starting and ending playback from the MainActivity and AudioPlayerActivity
+ * Test cases for starting and ending playback from the MainActivity and AudioPlayerActivity.
  */
 public abstract class PlaybackTest {
 
@@ -317,10 +317,7 @@ public abstract class PlaybackTest {
         //  assert item no longer in queue (needs to wait till skip is asynchronously processed)
         Awaitility.await()
                 .atMost(1000, MILLISECONDS)
-                .untilAsserted(() -> {
-                    assertThat("Ensure smart mark as play will lead to the item removed from the queue",
-                            DBReader.getQueue(), not(hasItems(feedItem)));
-                });
-        assertThat(DBReader.getFeedItem(feedItem.getId()).isPlayed(), is(true));
+                .until(() -> !DBReader.getQueue().contains(feedItem));
+        assertTrue(DBReader.getFeedItem(feedItem.getId()).isPlayed());
     }
 }
