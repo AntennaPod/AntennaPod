@@ -41,9 +41,7 @@ public class UITestUtils {
     private static final int NUM_FEEDS = 5;
     private static final int NUM_ITEMS_PER_FEED = 10;
 
-    private static final String TEST_FILE_NAME = "3sec.mp3";
-
-
+    private String testFileName = "3sec.mp3";
     private final Context context;
     private final HTTPBin server = new HTTPBin();
     private File destDir;
@@ -109,12 +107,12 @@ public class UITestUtils {
 
     private File newMediaFile(String name) throws IOException {
         File mediaFile = new File(hostedMediaDir, name);
-        if(mediaFile.exists()) {
+        if (mediaFile.exists()) {
             mediaFile.delete();
         }
         Assert.assertFalse(mediaFile.exists());
 
-        InputStream in = context.getAssets().open(TEST_FILE_NAME);
+        InputStream in = context.getAssets().open(testFileName);
         Assert.assertNotNull(in);
 
         FileOutputStream out = new FileOutputStream(mediaFile);
@@ -212,5 +210,9 @@ public class UITestUtils {
 
     public FeedMedia getCurrentMedia(MainActivity mainActivity) {
         return (FeedMedia)getPlaybackController(mainActivity).getMedia();
+    }
+
+    public void setMediaFileName(String filename) {
+        testFileName = filename;
     }
 }
