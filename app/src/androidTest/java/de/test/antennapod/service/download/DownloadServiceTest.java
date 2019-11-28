@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
+import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
 import org.junit.After;
@@ -53,6 +54,8 @@ public class DownloadServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        EspressoTestUtils.clearDatabase();
+        EspressoTestUtils.clearPreferences();
         origFactory = DownloadService.getDownloaderFactory();
         testFeed = setUpTestFeeds();
         testMedia11 = testFeed.getItemAtIndex(0).getMedia();
@@ -171,7 +174,7 @@ public class DownloadServiceTest {
                 final int totalNumEventsExpected = itemAlreadyInQueue ? 1 : 3;
                 Awaitility.await("item dequeue event + download termination event")
                         .atMost(1000, TimeUnit.MILLISECONDS)
-                        .until(() ->feedItemEventListener.getEvents().size() >= totalNumEventsExpected);
+                        .until(() -> feedItemEventListener.getEvents().size() >= totalNumEventsExpected);
                 assertFalse("The download should have been canceled",
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
                 if (itemAlreadyInQueue) {

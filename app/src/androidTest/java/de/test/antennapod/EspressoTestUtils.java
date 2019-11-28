@@ -1,6 +1,7 @@
 package de.test.antennapod;
 
 import android.content.Context;
+import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.PerformException;
@@ -77,6 +78,31 @@ public class EspressoTestUtils {
     }
 
     /**
+     * Perform action of waiting for a specific view id.
+     * https://stackoverflow.com/a/30338665/
+     * @param id The id of the child to click.
+     */
+    public static ViewAction clickChildViewWithId(final @IdRes int id) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return null;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Click on a child view with specified id.";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                View v = view.findViewById(id);
+                v.performClick();
+            }
+        };
+    }
+
+    /**
      * Clear all app databases
      */
     public static void clearPreferences() {
@@ -125,11 +151,6 @@ public class EspressoTestUtils {
     public static void openNavDrawer() {
         onView(isRoot()).perform(waitForView(withId(R.id.drawer_layout), 1000));
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-    }
-
-    public static void closeNavDrawer() {
-        onView(isRoot()).perform(waitForView(withId(R.id.drawer_layout), 1000));
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.close());
     }
 
     public static ViewInteraction onDrawerItem(Matcher<View> viewMatcher) {

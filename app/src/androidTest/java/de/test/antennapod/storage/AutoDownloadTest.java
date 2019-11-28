@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
 
+import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
 import org.junit.After;
@@ -49,12 +50,8 @@ public class AutoDownloadTest {
 
         dbTasksCallbacksOrig = ClientConfig.dbTasksCallbacks;
 
-        // create new database
-        PodDBAdapter.init(context);
-        PodDBAdapter.deleteDatabase();
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
+        EspressoTestUtils.clearPreferences();
+        EspressoTestUtils.clearDatabase();
     }
 
     @After
@@ -126,7 +123,7 @@ public class AutoDownloadTest {
         if (playable == null) {
             return null;
         }
-        return ((FeedMedia)playable).getItem();
+        return ((FeedMedia) playable).getItem();
     }
 
     private void useDownloadAlgorithm(final AutomaticDownloadAlgorithm downloadAlgorithm) {

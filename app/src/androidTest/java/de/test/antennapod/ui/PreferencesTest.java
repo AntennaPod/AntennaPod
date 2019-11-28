@@ -32,6 +32,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -246,10 +247,10 @@ public class PreferencesTest {
     public void testPauseForInterruptions() {
         onView(withText(R.string.playback_pref)).perform(click());
         final boolean pauseForFocusLoss = UserPreferences.shouldPauseForFocusLoss();
-        onView(withText(R.string.pref_pausePlaybackForFocusLoss_title)).perform(click());
+        clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> pauseForFocusLoss != UserPreferences.shouldPauseForFocusLoss());
-        onView(withText(R.string.pref_pausePlaybackForFocusLoss_title)).perform(click());
+        clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> pauseForFocusLoss == UserPreferences.shouldPauseForFocusLoss());
     }
@@ -332,7 +333,8 @@ public class PreferencesTest {
         clickPreference(R.string.network_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_episode_cache_title);
-        onView(withText(minEntry)).perform(scrollTo()).perform(click());
+        onView(withId(R.id.select_dialog_listview)).perform(swipeDown());
+        onView(withText(minEntry)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getEpisodeCacheSize() == minValue);
     }
@@ -346,6 +348,7 @@ public class PreferencesTest {
         onView(withText(R.string.network_pref)).perform(click());
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cache_title)).perform(click());
+        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
         onView(withText(maxEntry)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getEpisodeCacheSize() == maxValue);
@@ -365,17 +368,17 @@ public class PreferencesTest {
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(UserPreferences::isEnableAutodownload);
         final boolean enableAutodownloadOnBattery = UserPreferences.isEnableAutodownloadOnBattery();
-        onView(withText(R.string.pref_automatic_download_on_battery_title)).perform(click());
+        clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> enableAutodownloadOnBattery != UserPreferences.isEnableAutodownloadOnBattery());
-        onView(withText(R.string.pref_automatic_download_on_battery_title)).perform(click());
+        clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> enableAutodownloadOnBattery == UserPreferences.isEnableAutodownloadOnBattery());
         final boolean enableWifiFilter = UserPreferences.isEnableAutodownloadWifiFilter();
-        onView(withText(R.string.pref_autodl_wifi_filter_title)).perform(click());
+        clickPreference(R.string.pref_autodl_wifi_filter_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> enableWifiFilter != UserPreferences.isEnableAutodownloadWifiFilter());
-        onView(withText(R.string.pref_autodl_wifi_filter_title)).perform(click());
+        clickPreference(R.string.pref_autodl_wifi_filter_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> enableWifiFilter == UserPreferences.isEnableAutodownloadWifiFilter());
     }
@@ -425,7 +428,7 @@ public class PreferencesTest {
         clickPreference(R.string.network_pref);
         clickPreference(R.string.pref_automatic_download_title);
         clickPreference(R.string.pref_episode_cleanup_title);
-        String search = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, 5, 5);
+        String search = res.getQuantityString(R.plurals.episode_cleanup_days_after_listening, 3, 3);
         onView(isRoot()).perform(waitForView(withText(search), 1000));
         onView(withText(search)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -433,7 +436,7 @@ public class PreferencesTest {
                     EpisodeCleanupAlgorithm alg = UserPreferences.getEpisodeCleanupAlgorithm();
                     if (alg instanceof APCleanupAlgorithm) {
                         APCleanupAlgorithm cleanupAlg = (APCleanupAlgorithm) alg;
-                        return cleanupAlg.getNumberOfHoursAfterPlayback() == 120; // 5 days
+                        return cleanupAlg.getNumberOfHoursAfterPlayback() == 72; // 5 days
                     }
                     return false;
                 });

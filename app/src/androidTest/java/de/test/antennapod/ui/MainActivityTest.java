@@ -75,8 +75,8 @@ public class MainActivityTest {
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
         openNavDrawer();
         onView(withText(R.string.add_feed_label)).perform(click());
-        onView(withId(R.id.etxtFeedurl)).perform(typeText(feed.getDownload_url()));
-        onView(withText(R.string.confirm_label)).perform(scrollTo()).perform(click());
+        onView(withId(R.id.etxtFeedurl)).perform(scrollTo(), typeText(feed.getDownload_url()));
+        onView(withText(R.string.confirm_label)).perform(scrollTo(), click());
         Espresso.closeSoftKeyboard();
         onView(withText(R.string.subscribe_label)).perform(click());
         intended(hasComponent(MainActivity.class.getName()), times(2));
