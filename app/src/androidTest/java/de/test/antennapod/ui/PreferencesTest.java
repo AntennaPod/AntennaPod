@@ -32,12 +32,14 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
@@ -394,7 +396,7 @@ public class PreferencesTest {
         onView(withText(R.string.network_pref)).perform(click());
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
-        onView(isRoot()).perform(waitForView(withText(R.string.episode_cleanup_never), 1000));
+        onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
         onView(withText(R.string.episode_cleanup_never)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getEpisodeCleanupAlgorithm() instanceof APNullCleanupAlgorithm);
