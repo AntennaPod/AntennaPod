@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':dynamicfeature1'
 include ':core'

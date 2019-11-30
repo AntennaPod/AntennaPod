@@ -7,14 +7,14 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled false
-        versionCode 1
-        versionName "1.0"
+        versionCode 1080001
+        versionName "1.8.0-RC1"
         testApplicationId "de.danoeh.antennapod.core.tests"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ eventBusIndex : 'de.danoeh.antennapod.core.ApCoreEventBusIndex' ]
+                arguments = [ eventBusIndex : 'de.danoeh.antennapod.ApCoreEventBusIndex' ]
             }
         }
     }

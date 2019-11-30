@@ -27,12 +27,13 @@ android {
         def commit = "Unknown commit"
         try {
             commit = "git rev-parse --short HEAD".execute().text.trim()
-        } catch (Exception ignore) { }
+        } catch (Exception ignore) {
+        }
         buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ eventBusIndex : 'de.danoeh.antennapod.ApEventBusIndex' ]
+                arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
             }
         }
     }
@@ -75,7 +76,7 @@ android {
             // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication . 
             // See Issue #2813
             multiDexEnabled true
-            
+
             dexcount {
                 if (project.hasProperty("enableDexcountInDebug")) {
                     runOnEachPackage enableDexcountInDebug.toBoolean()
@@ -124,9 +125,28 @@ android {
         }
     }
 
-    dexOptions {
-        jumboMode true
+    /*dexOptions {
+        jum
+    oMode true
+    }*/
+    bundle {
+        density {
+            // Different APKs are generated for devices with different screen densities; true by default.
+            enableSplit true
+        }
+        abi {
+            // Different APKs are generated for devices with different CPU architectures; true by default.
+            enableSplit true
+        }
+        language {
+            // This is disabled so that the App Bundle does NOT split the APK for each language.
+            // We're gonna use the same APK for all languages.
+            enableSplit false
+        }
     }
+dynamicFeatures = [":dynamicfeature1"]
+
+
 }
 
 dependencies {
@@ -167,7 +187,7 @@ dependencies {
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.4.2'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
-
+    implementation 'com.google.android.play:core:1.3.4'
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
@@ -197,4 +217,3 @@ task copyLicense(type: Copy) {
 }
 
 preBuild.dependsOn copyLicense
-

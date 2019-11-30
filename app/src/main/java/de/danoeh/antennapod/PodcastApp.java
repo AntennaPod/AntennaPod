@@ -7,10 +7,10 @@ import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import com.joanzapata.iconify.fonts.MaterialModule;
 
-import de.danoeh.antennapod.core.ApCoreEventBusIndex;
+import org.greenrobot.eventbus.EventBus;
+
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.spa.SPAUtil;
-import org.greenrobot.eventbus.EventBus;
 
 /** Main application class. */
 public class PodcastApp extends Application {
