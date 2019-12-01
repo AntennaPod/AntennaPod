@@ -287,6 +287,7 @@ public abstract class PlaybackTest {
         setSmartMarkAsPlayedPreference(60);
         // ensure when an episode is skipped, it is removed due to smart as played
         setSkipKeepsEpisodePreference(false);
+        uiTestUtils.setMediaFileName("30sec.mp3");
         uiTestUtils.addLocalFeedData(true);
 
         int fiIdx;
@@ -304,7 +305,7 @@ public abstract class PlaybackTest {
 
         //  assert item no longer in queue (needs to wait till skip is asynchronously processed)
         Awaitility.await()
-                .atMost(1000, MILLISECONDS)
+                .atMost(3000, MILLISECONDS)
                 .until(() -> !DBReader.getQueue().contains(feedItem));
         assertTrue(DBReader.getFeedItem(feedItem.getId()).isPlayed());
     }
