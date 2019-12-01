@@ -46,11 +46,13 @@ public class ExoPlayerWrapper implements IPlayer {
     private MediaPlayer.OnCompletionListener audioCompletionListener;
     private MediaPlayer.OnErrorListener audioErrorListener;
     private MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener;
+    private PlaybackParameters playbackParameters;
 
 
     ExoPlayerWrapper(Context context) {
         mContext = context;
         mExoPlayer = createPlayer();
+        playbackParameters = mExoPlayer.getPlaybackParameters();
 
         bufferingUpdateDisposable = Observable.interval(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -145,7 +147,7 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public float getCurrentSpeedMultiplier() {
-        return mExoPlayer.getPlaybackParameters().speed;
+        return playbackParameters.speed;
     }
 
     @Override
@@ -225,8 +227,8 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void setPlaybackParams(float speed, boolean skipSilence) {
-        PlaybackParameters params = mExoPlayer.getPlaybackParameters();
-        mExoPlayer.setPlaybackParameters(new PlaybackParameters(speed, params.pitch, skipSilence));
+        playbackParameters = new PlaybackParameters(speed, playbackParameters.pitch, skipSilence);
+        mExoPlayer.setPlaybackParameters(playbackParameters);
     }
 
     @Override
@@ -247,6 +249,8 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void start() {
         mExoPlayer.setPlayWhenReady(true);
+        // Can't set params when paused - so always set it on start in case they changed
+        mExoPlayer.setPlaybackParameters(playbackParameters);
     }
 
     @Override
