@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
@@ -21,7 +22,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -45,13 +50,21 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test cases for starting and ending playback from the MainActivity and AudioPlayerActivity.
  */
-public abstract class PlaybackTest {
-
+@LargeTest
+@RunWith(Parameterized.class)
+public class PlaybackTest {
     @Rule
     public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class, false, false);
 
+    @Parameterized.Parameter(value = 0)
+    public String playerToUse;
     private UITestUtils uiTestUtils;
     protected Context context;
+
+    @Parameterized.Parameters(name = "{0}")
+    public static Collection<Object[]> initParameters() {
+        return Arrays.asList(new Object[][] { { "exoplayer" }, { "builtin" }, { "sonic" } });
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -59,6 +72,9 @@ public abstract class PlaybackTest {
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
         EspressoTestUtils.makeNotFirstRun();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER, playerToUse).apply();
 
         uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
