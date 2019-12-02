@@ -16,6 +16,7 @@ import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.dialog.RatingDialog;
@@ -171,6 +172,21 @@ public class EspressoTestUtils {
             // to onDestroy takes until the next GC of the system, which we can not influence.
             // Try to wait for the service at least a bit.
             Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> !PlaybackService.isRunning);
+        } catch (ConditionTimeoutException e) {
+            e.printStackTrace();
+        }
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+    }
+
+    public static void tryKillDownloadService() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        context.stopService(new Intent(context, DownloadService.class));
+        try {
+            // Android has no reliable way to stop a service instantly.
+            // Calling stopSelf marks allows the system to destroy the service but the actual call
+            // to onDestroy takes until the next GC of the system, which we can not influence.
+            // Try to wait for the service at least a bit.
+            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> !DownloadService.isRunning);
         } catch (ConditionTimeoutException e) {
             e.printStackTrace();
         }

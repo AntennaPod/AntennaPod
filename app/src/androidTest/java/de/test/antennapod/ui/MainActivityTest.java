@@ -29,10 +29,12 @@ import static androidx.test.espresso.contrib.ActivityResultMatchers.hasResultCod
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.Intents.times;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
+import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -79,7 +81,7 @@ public class MainActivityTest {
         onView(withText(R.string.confirm_label)).perform(scrollTo(), click());
         Espresso.closeSoftKeyboard();
         onView(withText(R.string.subscribe_label)).perform(click());
-        intended(hasComponent(MainActivity.class.getName()), times(2));
+        onView(isRoot()).perform(waitForView(withId(R.id.butShowSettings), 5000));
     }
 
     private String getActionbarTitle() {

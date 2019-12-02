@@ -12,8 +12,8 @@ import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -117,22 +117,10 @@ public class PlaybackTest {
         final FeedItem second = queue.get(1);
 
         playFromQueue(0);
-        Awaitility.await().atMost(2, TimeUnit.SECONDS).until(() -> {
-            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
-                return uiTestUtils.getCurrentMedia(getActivity()).getId()
-                        == first.getMedia().getId();
-            } else {
-                return false;
-            }
-        });
-        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(() -> {
-            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
-                return uiTestUtils.getCurrentMedia(getActivity()).getId()
-                        == second.getMedia().getId();
-            } else {
-                return false;
-            }
-        });
+        Awaitility.await().atMost(2, TimeUnit.SECONDS).until(
+                () -> first.getMedia().equals(uiTestUtils.getCurrentMedia()));
+        Awaitility.await().atMost(6, TimeUnit.SECONDS).until(
+                () -> second.getMedia().equals(uiTestUtils.getCurrentMedia()));
     }
 
 
@@ -240,14 +228,9 @@ public class PlaybackTest {
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
         onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.butSecondaryAction)));
 
-        long mediaId = episodes.get(0).getMedia().getId();
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
-            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
-                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
-            } else {
-                return false;
-            }
-        });
+        FeedMedia media = episodes.get(0).getMedia();
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
+                () -> media.equals(uiTestUtils.getCurrentMedia()));
     }
 
     /**
@@ -261,15 +244,10 @@ public class PlaybackTest {
         onView(isRoot()).perform(waitForView(queueMatcher, 1000));
         onView(queueMatcher).perform(actionOnItemAtPosition(itemIdx, clickChildViewWithId(R.id.butSecondaryAction)));
 
-        onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
-        long mediaId = queue.get(itemIdx).getMedia().getId();
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
-            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
-                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
-            } else {
-                return false;
-            }
-        });
+        FeedMedia media = queue.get(itemIdx).getMedia();
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
+                () -> media.equals(uiTestUtils.getCurrentMedia()));
+
     }
 
     /**
@@ -283,27 +261,17 @@ public class PlaybackTest {
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
 
         startLocalPlayback();
-        long mediaId = episodes.get(0).getMedia().getId();
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
-            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
-                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
-            } else {
-                return false;
-            }
-        });
+        FeedMedia media = episodes.get(0).getMedia();
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
+                () -> media.equals(uiTestUtils.getCurrentMedia()));
 
-        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(() ->
-                uiTestUtils.getCurrentMedia(getActivity()) == null
-                || uiTestUtils.getCurrentMedia(getActivity()).getId() != mediaId);
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(
+                () -> !media.equals(uiTestUtils.getCurrentMedia()));
 
         startLocalPlayback();
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
-            if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
-                return uiTestUtils.getCurrentMedia(getActivity()).getId() == mediaId;
-            } else {
-                return false;
-            }
-        });
+
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
+                () -> media.equals(uiTestUtils.getCurrentMedia()));
     }
 
     protected void doTestSmartMarkAsPlayed_Skip_ForEpisode(int itemIdxNegAllowed) throws Exception {
