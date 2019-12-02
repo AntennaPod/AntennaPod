@@ -15,6 +15,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.LongList;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.ui.UITestUtils;
 import org.awaitility.Awaitility;
@@ -44,6 +45,7 @@ import static de.test.antennapod.NthMatcher.first;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -307,13 +309,16 @@ public class PlaybackTest {
         uiTestUtils.setMediaFileName("30sec.mp3");
         uiTestUtils.addLocalFeedData(true);
 
+        LongList queue = DBReader.getQueueIDList();
         int fiIdx;
         if (itemIdxNegAllowed >= 0) {
             fiIdx = itemIdxNegAllowed;
         } else { // negative index: count from the end, with -1 being the last one, etc.
-            fiIdx = DBReader.getQueue().size() + itemIdxNegAllowed;
+            fiIdx = queue.size() + itemIdxNegAllowed;
         }
-        final FeedItem feedItem = DBReader.getQueue().get(fiIdx);
+        final long feedItemId = queue.get(fiIdx);
+        queue.removeIndex(fiIdx);
+        assertFalse(queue.contains(feedItemId)); // Verify that episode is in queue only once
 
         activityTestRule.launchActivity(new Intent());
         playFromQueue(fiIdx);
@@ -322,8 +327,8 @@ public class PlaybackTest {
 
         //  assert item no longer in queue (needs to wait till skip is asynchronously processed)
         Awaitility.await()
-                .atMost(3000, MILLISECONDS)
-                .until(() -> !DBReader.getQueue().contains(feedItem));
-        assertTrue(DBReader.getFeedItem(feedItem.getId()).isPlayed());
+                .atMost(5000, MILLISECONDS)
+                .until(() -> !DBReader.getQueueIDList().contains(feedItemId));
+        assertTrue(DBReader.getFeedItem(feedItemId).isPlayed());
     }
 }
