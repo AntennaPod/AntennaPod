@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
+import android.view.View;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -22,6 +23,7 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.ui.UITestUtils;
 import org.awaitility.Awaitility;
+import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -37,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -233,8 +236,9 @@ public class PlaybackTest {
         onView(withText(R.string.all_episodes_short_label)).perform(click());
 
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
-        onView(allOf(withId(android.R.id.list), isDisplayed())).perform(
-                actionOnItemAtPosition(0, clickChildViewWithId(R.id.butSecondaryAction)));
+        Matcher<View> allEpisodesMatcher = allOf(withId(android.R.id.list), isDisplayed(), hasMinimumChildCount(2));
+        onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
+        onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.butSecondaryAction)));
 
         long mediaId = episodes.get(0).getMedia().getId();
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
@@ -253,8 +257,9 @@ public class PlaybackTest {
     protected void playFromQueue(int itemIdx) {
         final List<FeedItem> queue = DBReader.getQueue();
 
-        onView(withId(R.id.recyclerView)).perform(
-                actionOnItemAtPosition(itemIdx, clickChildViewWithId(R.id.butSecondaryAction)));
+        Matcher<View> queueMatcher = allOf(withId(R.id.recyclerView), isDisplayed(), hasMinimumChildCount(2));
+        onView(isRoot()).perform(waitForView(queueMatcher, 1000));
+        onView(queueMatcher).perform(actionOnItemAtPosition(itemIdx, clickChildViewWithId(R.id.butSecondaryAction)));
 
         onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
         long mediaId = queue.get(itemIdx).getMedia().getId();
