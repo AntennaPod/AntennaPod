@@ -39,9 +39,6 @@ import de.danoeh.antennapod.BuildConfig;
  */
 public class HTTPBin extends NanoHTTPD {
     private static final String TAG = "HTTPBin";
-    public static final int PORT = 8124;
-    public static final String BASE_URL = "http://127.0.0.1:" + HTTPBin.PORT;
-
 
     private static final String MIME_HTML = "text/html";
     private static final String MIME_PLAIN = "text/plain";
@@ -49,8 +46,12 @@ public class HTTPBin extends NanoHTTPD {
     private final List<File> servedFiles;
 
     public HTTPBin() {
-        super(PORT);
+        super(0); // Let system pick a free port
         this.servedFiles = new ArrayList<>();
+    }
+
+    public String getBaseUrl() {
+        return "http://127.0.0.1:" + getListeningPort();
     }
 
     /**

@@ -87,13 +87,13 @@ public class UITestUtils {
         out.close();
         int id = server.serveFile(feedFile);
         Assert.assertTrue(id != -1);
-        return String.format("%s/files/%d", HTTPBin.BASE_URL, id);
+        return String.format("%s/files/%d", server.getBaseUrl(), id);
     }
 
     private String hostFile(File file) {
         int id = server.serveFile(file);
         Assert.assertTrue(id != -1);
-        return String.format("%s/files/%d", HTTPBin.BASE_URL, id);
+        return String.format("%s/files/%d", server.getBaseUrl(), id);
     }
 
     private File newBitmapFile(String name) throws IOException {
