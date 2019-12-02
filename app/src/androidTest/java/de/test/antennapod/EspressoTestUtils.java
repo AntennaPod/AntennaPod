@@ -1,6 +1,7 @@
 package de.test.antennapod;
 
 import android.content.Context;
+import android.content.Intent;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.test.InstrumentationRegistry;
@@ -15,11 +16,15 @@ import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import org.awaitility.Awaitility;
+import org.awaitility.core.ConditionTimeoutException;
 import org.hamcrest.Matcher;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -155,5 +160,20 @@ public class EspressoTestUtils {
 
     public static ViewInteraction onDrawerItem(Matcher<View> viewMatcher) {
         return onView(allOf(viewMatcher, withId(R.id.txtvTitle)));
+    }
+
+    public static void tryKillPlaybackService() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        context.stopService(new Intent(context, PlaybackService.class));
+        try {
+            // Android has no reliable way to stop a service instantly.
+            // Calling stopSelf marks allows the system to destroy the service but the actual call
+            // to onDestroy takes until the next GC of the system, which we can not influence.
+            // Try to wait for the service at least a bit.
+            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> !PlaybackService.isRunning);
+        } catch (ConditionTimeoutException e) {
+            e.printStackTrace();
+        }
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     }
 }

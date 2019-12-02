@@ -60,9 +60,7 @@ public class AutoDownloadTest {
     @After
     public void tearDown() throws Exception {
         ClientConfig.dbTasksCallbacks = dbTasksCallbacksOrig;
-        context.stopService(new Intent(context, PlaybackService.class));
-        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(() -> !PlaybackService.isRunning);
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        EspressoTestUtils.tryKillPlaybackService();
         stubFeedsServer.tearDown();
     }
 

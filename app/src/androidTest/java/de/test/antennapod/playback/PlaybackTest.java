@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.KeyEvent;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -11,6 +12,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -87,10 +89,7 @@ public class PlaybackTest {
     @After
     public void tearDown() throws Exception {
         activityTestRule.finishActivity();
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        context.stopService(new Intent(context, PlaybackService.class));
-        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(() -> !PlaybackService.isRunning);
-        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        EspressoTestUtils.tryKillPlaybackService();
         uiTestUtils.tearDown();
     }
 

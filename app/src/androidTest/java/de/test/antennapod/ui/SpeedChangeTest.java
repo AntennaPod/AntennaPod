@@ -68,9 +68,7 @@ public class SpeedChangeTest {
         UserPreferences.setPlaybackSpeedArray(new String[] {"1.00", "2.00", "3.00"});
         availableSpeeds = UserPreferences.getPlaybackSpeedArray();
 
-        context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-        Awaitility.await().until(() -> !PlaybackService.isRunning);
-
+        EspressoTestUtils.tryKillPlaybackService();
         activityRule.launchActivity(new Intent());
     }
 
