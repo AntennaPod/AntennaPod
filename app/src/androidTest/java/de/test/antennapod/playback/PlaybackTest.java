@@ -15,6 +15,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.ui.UITestUtils;
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -41,8 +43,8 @@ import static de.test.antennapod.EspressoTestUtils.clickChildViewWithId;
 import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
-import static de.test.antennapod.NthMatcher.first;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
@@ -218,13 +220,11 @@ public class PlaybackTest {
     }
 
     private void skipEpisode() {
-        Intent skipIntent = new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
-        context.sendBroadcast(skipIntent);
+        IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
     }
 
     protected void pauseEpisode() {
-        Intent pauseIntent = new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
-        context.sendBroadcast(pauseIntent);
+        IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
     }
 
     protected void startLocalPlayback() {
@@ -234,9 +234,9 @@ public class PlaybackTest {
         onView(withText(R.string.all_episodes_short_label)).perform(click());
 
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
-        onView(isRoot()).perform(waitForView(withId(R.id.butSecondaryAction), 1000));
+        onView(allOf(withId(android.R.id.list), isDisplayed())).perform(
+                actionOnItemAtPosition(0, clickChildViewWithId(R.id.butSecondaryAction)));
 
-        onView(first(withId(R.id.butSecondaryAction))).perform(click());
         long mediaId = episodes.get(0).getMedia().getId();
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(() -> {
             if (uiTestUtils.getCurrentMedia(getActivity()) != null) {
