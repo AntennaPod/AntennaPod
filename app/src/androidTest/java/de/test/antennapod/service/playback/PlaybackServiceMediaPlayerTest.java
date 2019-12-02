@@ -2,8 +2,8 @@ package de.test.antennapod.service.playback;
 
 import android.content.Context;
 
-import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import de.test.antennapod.EspressoTestUtils;
 import junit.framework.AssertionFailedError;
 
@@ -32,7 +32,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -66,7 +66,7 @@ public class PlaybackServiceMediaPlayerTest {
         EspressoTestUtils.makeNotFirstRun();
         EspressoTestUtils.clearDatabase();
 
-        final Context context = InstrumentationRegistry.getTargetContext();
+        final Context context = getInstrumentation().getTargetContext();
 
         httpServer = new HTTPBin();
         httpServer.start();
@@ -81,7 +81,7 @@ public class PlaybackServiceMediaPlayerTest {
         assertTrue(cacheDir.canWrite());
         assertTrue(cacheDir.canRead());
         if (!dest.exists()) {
-            InputStream i = InstrumentationRegistry.getContext().getAssets().open("3sec.mp3");
+            InputStream i = getInstrumentation().getTargetContext().getAssets().open("3sec.mp3");
             OutputStream o = new FileOutputStream(new File(cacheDir, PLAYABLE_DEST_URL));
             IOUtils.copy(i, o);
             o.flush();

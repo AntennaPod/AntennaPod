@@ -88,7 +88,7 @@ public class SpeedChangeTest {
     public void testChangeSpeedPlaying() {
         onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
         onView(withId(R.id.butPlay)).perform(click());
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(()
+        Awaitility.await().atMost(2, TimeUnit.SECONDS).until(()
                 -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PLAYING);
         clickThroughSpeeds();
     }
@@ -97,10 +97,10 @@ public class SpeedChangeTest {
     public void testChangeSpeedPaused() {
         onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
         onView(withId(R.id.butPlay)).perform(click());
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(()
+        Awaitility.await().atMost(2, TimeUnit.SECONDS).until(()
                 -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PLAYING);
         onView(withId(R.id.butPlay)).perform(click());
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(()
+        Awaitility.await().atMost(2, TimeUnit.SECONDS).until(()
                 -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PAUSED);
         clickThroughSpeeds();
     }
