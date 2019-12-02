@@ -218,6 +218,11 @@ public class DownloadService extends Service {
         nm.cancel(NOTIFICATION_ID);
 
         downloadCompletionThread.interrupt();
+        try {
+            downloadCompletionThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         syncExecutor.shutdown();
         schedExecutor.shutdown();
         cancelNotificationUpdater();
