@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
 
+import androidx.test.platform.app.InstrumentationRegistry;
 import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
@@ -15,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.DBTasksCallbacks;
@@ -56,11 +58,11 @@ public class AutoDownloadTest {
 
     @After
     public void tearDown() throws Exception {
-        stubFeedsServer.tearDown();
         ClientConfig.dbTasksCallbacks = dbTasksCallbacksOrig;
-
-        context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-        Awaitility.await().until(() -> !PlaybackService.isRunning);
+        context.stopService(new Intent(context, PlaybackService.class));
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(() -> !PlaybackService.isRunning);
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+        stubFeedsServer.tearDown();
     }
 
     /**
@@ -114,7 +116,7 @@ public class AutoDownloadTest {
         FeedMedia media = item.getMedia();
         DBTasks.playMedia(context, media, false, true, true);
         Awaitility.await("episode is playing")
-                .atMost(1000, MILLISECONDS)
+                .atMost(2000, MILLISECONDS)
                 .until(() -> item.equals(getCurrentlyPlaying()));
     }
 
