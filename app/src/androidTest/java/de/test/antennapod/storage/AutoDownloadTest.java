@@ -54,6 +54,7 @@ public class AutoDownloadTest {
 
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
+        UserPreferences.setAllowMobileStreaming(true);
     }
 
     @After
