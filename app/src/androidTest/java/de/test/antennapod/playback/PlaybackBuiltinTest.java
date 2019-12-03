@@ -1,7 +1,7 @@
 package de.test.antennapod.playback;
 
 import androidx.test.filters.LargeTest;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
 import org.junit.Before;
 
 /**

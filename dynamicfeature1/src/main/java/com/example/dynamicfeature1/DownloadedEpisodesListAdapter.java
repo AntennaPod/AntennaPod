@@ -12,14 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.request.RequestOptions;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapodSA.core.glide.ApGlideSettings;
+import de.danoeh.antennapodSA.core.util.Converter;
+import de.danoeh.antennapodSA.core.util.DateUtils;
 
 /**
  * Shows a list of downloaded episodes

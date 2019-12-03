@@ -1,11 +1,11 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapodSA.core.feed;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapodSA.core.util.SortOrder;
 
-import static de.danoeh.antennapod.core.feed.FeedMother.anyFeed;
+import static de.danoeh.antennapodSA.core.feed.FeedMother.anyFeed;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

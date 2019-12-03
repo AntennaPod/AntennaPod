@@ -1,11 +1,12 @@
 package com.example.dynamicfeature1;
 
 import android.database.Cursor;
+import android.text.TextUtils;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.ArrayMap;
-import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,20 +15,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.FeedItemStatistics;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.LongIntMap;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
-import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
-import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparator;
+import de.danoeh.antennapodSA.core.feed.Chapter;
+import de.danoeh.antennapodSA.core.feed.Feed;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.feed.FeedPreferences;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.service.download.DownloadStatus;
+import de.danoeh.antennapodSA.core.storage.FeedItemStatistics;
+import de.danoeh.antennapodSA.core.storage.PodDBAdapter;
+import de.danoeh.antennapodSA.core.util.LongIntMap;
+import de.danoeh.antennapodSA.core.util.LongList;
+import de.danoeh.antennapodSA.core.util.comparator.DownloadStatusComparator;
+import de.danoeh.antennapodSA.core.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapodSA.core.util.comparator.PlaybackCompletionDateComparator;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -276,7 +277,7 @@ public final class DBReader {
      * {@link #getQueue()} if the FeedItems of the queue are not needed.
      *
      * @return A list of IDs sorted by the same order as the queue. The caller can wrap the returned
-     * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
+     * list in a {@link de.danoeh.antennapodSA.core.util.QueueAccess} object for easier access to the queue's properties.
      */
     public static LongList getQueueIDList() {
         Log.d(TAG, "getQueueIDList() called");
@@ -310,7 +311,7 @@ public final class DBReader {
      * {@link #getQueueIDList()} instead.
      *
      * @return A list of FeedItems sorted by the same order as the queue. The caller can wrap the returned
-     * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
+     * list in a {@link de.danoeh.antennapodSA.core.util.QueueAccess} object for easier access to the queue's properties.
      */
     @NonNull
     public static List<FeedItem> getQueue() {

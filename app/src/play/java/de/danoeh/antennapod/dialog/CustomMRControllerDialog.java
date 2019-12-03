@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.dialog;
+package de.danoeh.antennapodSA.dialog;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -40,8 +40,8 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.concurrent.ExecutionException;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.core.glide.ApGlideSettings;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;

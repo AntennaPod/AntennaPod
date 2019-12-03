@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.danoeh.antennapod.core">
+    package="de.danoeh.antennapodSA.core">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -42,7 +42,7 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER" />
+                <action android:name="de.danoeh.antennapodSA.NOTIFY_BUTTON_RECEIVER" />
             </intent-filter>
         </receiver>
 

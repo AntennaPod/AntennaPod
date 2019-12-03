@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.syndication.namespace.atom;
+package de.danoeh.antennapodSA.core.syndication.namespace.atom;
 
 import androidx.test.filters.SmallTest;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapodSA.core.util;
 
 import androidx.test.filters.SmallTest;
 import org.junit.Test;

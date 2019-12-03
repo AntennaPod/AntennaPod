@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
-    <de.danoeh.antennapod.preferences.MasterSwitchPreference
+    <de.danoeh.antennapodSA.preferences.MasterSwitchPreference
             android:key="prefEnableAutoDl"
             android:title="@string/pref_automatic_download_title"
             search:summary="@string/pref_automatic_download_sum"

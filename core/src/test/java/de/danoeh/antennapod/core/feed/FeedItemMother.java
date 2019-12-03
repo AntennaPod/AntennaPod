@@ -1,8 +1,8 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapodSA.core.feed;
 
 import java.util.Date;
 
-import static de.danoeh.antennapod.core.feed.FeedMother.anyFeed;
+import static de.danoeh.antennapodSA.core.feed.FeedMother.anyFeed;
 
 class FeedItemMother {
     private static final String IMAGE_URL = "http://example.com/image";

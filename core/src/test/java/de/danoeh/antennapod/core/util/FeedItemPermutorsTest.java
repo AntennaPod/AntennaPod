@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapodSA.core.util;
 
 import org.junit.Test;
 
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.feed.Feed;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

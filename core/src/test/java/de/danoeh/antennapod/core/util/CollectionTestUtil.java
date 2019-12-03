@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapodSA.core.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;

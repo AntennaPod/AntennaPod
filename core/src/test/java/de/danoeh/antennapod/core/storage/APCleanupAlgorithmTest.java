@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapodSA.core.storage;
 
 import org.junit.Test;
 

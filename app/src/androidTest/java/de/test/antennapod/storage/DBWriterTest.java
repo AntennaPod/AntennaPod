@@ -24,15 +24,15 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.Consumer;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapodSA.core.feed.Feed;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.storage.DBReader;
+import de.danoeh.antennapodSA.core.storage.DBWriter;
+import de.danoeh.antennapodSA.core.storage.PodDBAdapter;
+import de.danoeh.antennapodSA.core.util.Consumer;
+import de.danoeh.antennapodSA.core.util.FeedItemUtil;
 
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.assertEquals;

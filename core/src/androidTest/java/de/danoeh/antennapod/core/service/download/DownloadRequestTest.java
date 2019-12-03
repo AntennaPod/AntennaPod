@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.download;
+package de.danoeh.antennapodSA.core.service.download;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapodSA.core.feed.FeedFile;
 
 import static org.junit.Assert.assertEquals;
 

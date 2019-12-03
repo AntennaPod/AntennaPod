@@ -58,7 +58,7 @@
 
         <fragment
                 android:id="@+id/quickFeedDiscovery"
-                android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment"
+                android:name="de.danoeh.antennapodSA.fragment.QuickFeedDiscoveryFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"/>

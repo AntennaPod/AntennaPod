@@ -1,0 +1,131 @@
+package de.danoeh.antennapodSA.menuhandler;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Set;
+
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapodSA.core.feed.Feed;
+import de.danoeh.antennapodSA.core.storage.DBTasks;
+import de.danoeh.antennapodSA.core.storage.DBWriter;
+import de.danoeh.antennapodSA.core.storage.DownloadRequestException;
+import de.danoeh.antennapodSA.core.util.IntentUtils;
+import de.danoeh.antennapodSA.core.util.ShareUtils;
+import de.danoeh.antennapodSA.core.util.SortOrder;
+import de.danoeh.antennapodSA.dialog.FilterDialog;
+import de.danoeh.antennapodSA.dialog.IntraFeedSortDialog;
+
+/**
+ * Handles interactions with the FeedItemMenu.
+ */
+public class FeedMenuHandler {
+
+    private FeedMenuHandler(){ }
+
+    private static final String TAG = "FeedMenuHandler";
+
+    public static boolean onCreateOptionsMenu(MenuInflater inflater, Menu menu) {
+        inflater.inflate(R.menu.feedlist, menu);
+        return true;
+    }
+
+    public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
+        if (selectedFeed == null) {
+            return true;
+        }
+
+        Log.d(TAG, "Preparing options menu");
+
+        menu.findItem(R.id.refresh_complete_item).setVisible(selectedFeed.isPaged());
+        if (StringUtils.isBlank(selectedFeed.getLink())) {
+            menu.findItem(R.id.visit_website_item).setVisible(false);
+            menu.findItem(R.id.share_link_item).setVisible(false);
+        }
+
+        return true;
+    }
+
+    /**
+     * NOTE: This method does not handle clicks on the 'remove feed' - item.
+     *
+     * @throws DownloadRequestException
+     */
+    public static boolean onOptionsItemClicked(final Context context, final MenuItem item,
+                                               final Feed selectedFeed) throws DownloadRequestException {
+        switch (item.getItemId()) {
+            case R.id.refresh_item:
+                DBTasks.forceRefreshFeed(context, selectedFeed);
+                break;
+            case R.id.refresh_complete_item:
+                DBTasks.forceRefreshCompleteFeed(context, selectedFeed);
+                break;
+            case R.id.sort_items:
+                showSortDialog(context, selectedFeed);
+                break;
+            case R.id.filter_items:
+                showFilterDialog(context, selectedFeed);
+                break;
+            case R.id.mark_all_read_item:
+                ConfirmationDialog conDialog = new ConfirmationDialog(context,
+                        R.string.mark_all_read_label,
+                        R.string.mark_all_read_feed_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.markFeedRead(selectedFeed.getId());
+                    }
+                };
+                conDialog.createNewDialog().show();
+                break;
+            case R.id.visit_website_item:
+                IntentUtils.openInBrowser(context, selectedFeed.getLink());
+                break;
+            case R.id.share_link_item:
+                ShareUtils.shareFeedlink(context, selectedFeed);
+                break;
+            case R.id.share_download_url_item:
+                ShareUtils.shareFeedDownloadLink(context, selectedFeed);
+                break;
+            default:
+                return false;
+        }
+        return true;
+    }
+
+    private static void showFilterDialog(Context context, Feed selectedFeed) {
+        FilterDialog filterDialog = new FilterDialog(context, selectedFeed.getItemFilter()) {
+            @Override
+            protected void updateFilter(Set<String> filterValues) {
+                selectedFeed.setItemFilter(filterValues.toArray(new String[filterValues.size()]));
+                DBWriter.setFeedItemsFilter(selectedFeed.getId(), filterValues);
+            }
+        };
+
+        filterDialog.openDialog();
+    }
+
+
+    private static void showSortDialog(Context context, Feed selectedFeed) {
+        IntraFeedSortDialog sortDialog = new IntraFeedSortDialog(context, selectedFeed.getSortOrder()) {
+            @Override
+            protected void updateSort(@NonNull SortOrder sortOrder) {
+                selectedFeed.setSortOrder(sortOrder);
+                DBWriter.setFeedItemSortOrder(selectedFeed.getId(), sortOrder);
+            }
+        };
+        sortDialog.openDialog();
+    }
+
+}

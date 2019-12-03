@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.cast;
+package de.danoeh.antennapodSA.core.cast;
 
 import android.app.Activity;
 import android.content.Context;

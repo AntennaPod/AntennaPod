@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <de.danoeh.antennapod.view.SquareImageView
+    <de.danoeh.antennapodSA.view.SquareImageView
         android:id="@+id/imgvCover"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scaleType="centerCrop"
         tools:src="@mipmap/ic_launcher_round">
-    </de.danoeh.antennapod.view.SquareImageView>
+    </de.danoeh.antennapodSA.view.SquareImageView>
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvTitle"

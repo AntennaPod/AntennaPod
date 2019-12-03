@@ -1,6 +1,6 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapodSA.core.feed;
 
-import de.danoeh.antennapod.core.cast.RemoteMedia;
+import de.danoeh.antennapodSA.core.cast.RemoteMedia;
 
 /**
  * Implements methods for FeedMedia that are flavor dependent.

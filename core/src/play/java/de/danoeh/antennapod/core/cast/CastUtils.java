@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.cast;
+package de.danoeh.antennapodSA.core.cast;
 
 import android.net.Uri;
 import android.text.TextUtils;
@@ -12,12 +12,12 @@ import com.google.android.gms.common.images.WebImage;
 import java.util.Calendar;
 import java.util.List;
 
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapodSA.core.feed.Feed;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.storage.DBReader;
+import de.danoeh.antennapodSA.core.util.playback.ExternalMedia;
+import de.danoeh.antennapodSA.core.util.playback.Playable;
 
 /**
  * Helper functions for Cast support.
@@ -27,13 +27,13 @@ public class CastUtils {
 
     private static final String TAG = "CastUtils";
 
-    public static final String KEY_MEDIA_ID = "de.danoeh.antennapod.core.cast.MediaId";
+    public static final String KEY_MEDIA_ID = "de.danoeh.antennapodSA.core.cast.MediaId";
 
-    public static final String KEY_EPISODE_IDENTIFIER = "de.danoeh.antennapod.core.cast.EpisodeId";
-    public static final String KEY_EPISODE_LINK = "de.danoeh.antennapod.core.cast.EpisodeLink";
-    public static final String KEY_FEED_URL = "de.danoeh.antennapod.core.cast.FeedUrl";
-    public static final String KEY_FEED_WEBSITE = "de.danoeh.antennapod.core.cast.FeedWebsite";
-    public static final String KEY_EPISODE_NOTES = "de.danoeh.antennapod.core.cast.EpisodeNotes";
+    public static final String KEY_EPISODE_IDENTIFIER = "de.danoeh.antennapodSA.core.cast.EpisodeId";
+    public static final String KEY_EPISODE_LINK = "de.danoeh.antennapodSA.core.cast.EpisodeLink";
+    public static final String KEY_FEED_URL = "de.danoeh.antennapodSA.core.cast.FeedUrl";
+    public static final String KEY_FEED_WEBSITE = "de.danoeh.antennapodSA.core.cast.FeedWebsite";
+    public static final String KEY_EPISODE_NOTES = "de.danoeh.antennapodSA.core.cast.EpisodeNotes";
     public static final int EPISODE_NOTES_MAX_LENGTH = Integer.MAX_VALUE;
 
     /**
@@ -45,7 +45,7 @@ public class CastUtils {
      * <code>MAX_VERSION_FORWARD_COMPATIBILITY</code> value set on the earlier one, so that it
      * doesn't try to parse the object.
      */
-    public static final String KEY_FORMAT_VERSION = "de.danoeh.antennapod.core.cast.FormatVersion";
+    public static final String KEY_FORMAT_VERSION = "de.danoeh.antennapodSA.core.cast.FormatVersion";
     public static final int FORMAT_VERSION_VALUE = 1;
     public static final int MAX_VERSION_FORWARD_COMPATIBILITY = 9999;
 

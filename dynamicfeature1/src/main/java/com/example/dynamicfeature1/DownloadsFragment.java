@@ -4,17 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.fragment.RunningDownloadsFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
+
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.fragment.RunningDownloadsFragment;
 
 /**
  * Shows the CompletedDownloadsFragment and the RunningDownloadsFragment

@@ -7,8 +7,8 @@ import android.preference.PreferenceManager;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
+import de.danoeh.antennapodSA.core.feed.MediaType;
+import de.danoeh.antennapodSA.core.util.playback.ExternalMedia;
 import org.junit.After;
 import org.junit.Test;
 

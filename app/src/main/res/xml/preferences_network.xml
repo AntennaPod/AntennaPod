@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:numberpicker="http://schemas.android.com/apk/de.danoeh.antennapod"
+        xmlns:numberpicker="http://schemas.android.com/apk/de.danoeh.antennapodSA"
         xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
     <PreferenceCategory android:title="@string/automation">
         <Preference
@@ -23,7 +23,7 @@
                 android:key="prefMobileUpdateTypes"
                 android:summary="@string/pref_mobileUpdate_sum"
                 android:title="@string/pref_mobileUpdate_title"/>
-        <de.danoeh.antennapod.preferences.NumberPickerPreference
+        <de.danoeh.antennapodSA.preferences.NumberPickerPreference
                 android:defaultValue="4"
                 numberpicker:minValue="1"
                 numberpicker:maxValue="50"

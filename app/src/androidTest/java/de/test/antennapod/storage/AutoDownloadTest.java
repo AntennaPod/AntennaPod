@@ -15,18 +15,18 @@ import org.junit.Test;
 
 import java.util.List;
 
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.DBTasksCallbacks;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapodSA.core.ClientConfig;
+import de.danoeh.antennapodSA.core.DBTasksCallbacks;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.service.playback.PlaybackService;
+import de.danoeh.antennapodSA.core.storage.AutomaticDownloadAlgorithm;
+import de.danoeh.antennapodSA.core.storage.DBReader;
+import de.danoeh.antennapodSA.core.storage.DBTasks;
+import de.danoeh.antennapodSA.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapodSA.core.storage.PodDBAdapter;
+import de.danoeh.antennapodSA.core.util.playback.Playable;
 import de.test.antennapod.ui.UITestUtils;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;

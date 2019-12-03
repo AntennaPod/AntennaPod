@@ -5,7 +5,7 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp">
 
-    <de.danoeh.antennapod.view.PieChartView
+    <de.danoeh.antennapodSA.view.PieChartView
             android:id="@+id/pie_chart"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"

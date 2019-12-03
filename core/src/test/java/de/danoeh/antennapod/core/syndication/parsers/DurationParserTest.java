@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.syndication.parsers;
+package de.danoeh.antennapodSA.core.syndication.parsers;
 
 import org.junit.Test;
 

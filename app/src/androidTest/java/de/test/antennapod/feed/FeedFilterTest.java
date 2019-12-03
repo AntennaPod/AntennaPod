@@ -1,8 +1,8 @@
 package de.test.antennapod.feed;
 
 import androidx.test.filters.SmallTest;
-import de.danoeh.antennapod.core.feed.FeedFilter;
-import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedFilter;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -1,11 +1,11 @@
-package de.danoeh.antennapod.config;
+package de.danoeh.antennapodSA.config;
 
 import androidx.annotation.NonNull;
 import androidx.mediarouter.app.MediaRouteControllerDialogFragment;
 import androidx.mediarouter.app.MediaRouteDialogFactory;
 
-import de.danoeh.antennapod.core.CastCallbacks;
-import de.danoeh.antennapod.fragment.CustomMRControllerDialogFragment;
+import de.danoeh.antennapodSA.core.CastCallbacks;
+import de.danoeh.antennapodSA.fragment.CustomMRControllerDialogFragment;
 
 public class CastCallbackImpl implements CastCallbacks {
     @Override

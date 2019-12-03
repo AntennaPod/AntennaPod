@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapodSA.core.service.playback;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,12 +23,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.CastManager;
-import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapodSA.core.cast.CastConsumer;
+import de.danoeh.antennapodSA.core.cast.CastManager;
+import de.danoeh.antennapodSA.core.cast.DefaultCastConsumer;
+import de.danoeh.antennapodSA.core.feed.MediaType;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.util.NetworkUtils;
 
 /**
  * Class intended to work along PlaybackService and provide support for different flavors.

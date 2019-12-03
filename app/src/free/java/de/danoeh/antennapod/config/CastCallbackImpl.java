@@ -1,6 +1,6 @@
-package de.danoeh.antennapod.config;
+package de.danoeh.antennapodSA.config;
 
-import de.danoeh.antennapod.core.CastCallbacks;
+import de.danoeh.antennapodSA.core.CastCallbacks;
 
 class CastCallbackImpl implements CastCallbacks {
 

@@ -17,15 +17,15 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapodSA.core.event.QueueEvent;
+import de.danoeh.antennapodSA.core.feed.Feed;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.service.playback.PlaybackServiceTaskManager;
+import de.danoeh.antennapodSA.core.storage.DBReader;
+import de.danoeh.antennapodSA.core.storage.DBWriter;
+import de.danoeh.antennapodSA.core.storage.PodDBAdapter;
+import de.danoeh.antennapodSA.core.util.playback.Playable;
 
 import static de.test.antennapod.util.event.FeedItemEventListener.withFeedItemEventListener;
 import static org.junit.Assert.assertFalse;

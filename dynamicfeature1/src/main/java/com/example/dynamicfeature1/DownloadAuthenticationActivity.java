@@ -12,10 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.apache.commons.lang3.Validate;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.service.download.DownloadRequest;
+import de.danoeh.antennapodSA.core.storage.DownloadRequester;
 
 /**
  * Shows a username and a password text field.

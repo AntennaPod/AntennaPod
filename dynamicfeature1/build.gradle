@@ -31,7 +31,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
+                arguments = [eventBusIndex: 'de.danoeh.antennapodSA.ApEventBusIndex']
             }
         }
 
@@ -67,7 +67,7 @@ android {
         //debuggable true
         debug {
             applicationIdSuffix ".debug"
-            resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
+            resValue "string", "provider_authority", "de.danoeh.antennapodSA.debug.provider"
             multiDexEnabled true
             // debug build has method count over 64k single-dex threshold.
             // For building debug build to use on Android < 21 (pre-Android 5) devices,
@@ -85,7 +85,7 @@ android {
             }*/
         }
         release {
-            resValue "string", "provider_authority", "de.danoeh.antennapod.provider"
+            resValue "string", "provider_authority", "de.danoeh.antennapodSA.provider"
             // minifyEnabled true
             // proguardFiles getDefaultProguardFile('proguard-android.txt'), "proguard.cfg"
             signingConfig signingConfigs.releaseConfig

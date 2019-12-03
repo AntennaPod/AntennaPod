@@ -12,10 +12,10 @@ import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.util.HumanReadables;
 import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.activity.MainActivity;
+import de.danoeh.antennapodSA.core.storage.PodDBAdapter;
+import de.danoeh.antennapodSA.dialog.RatingDialog;
 import org.hamcrest.Matcher;
 
 import java.io.File;

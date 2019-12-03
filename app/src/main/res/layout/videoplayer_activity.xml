@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/videoframe">
 
-    <de.danoeh.antennapod.view.AspectRatioVideoView
+    <de.danoeh.antennapodSA.view.AspectRatioVideoView
         android:id="@+id/videoview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

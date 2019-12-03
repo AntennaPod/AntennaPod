@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/feed_image_bg"
-    tools:context="de.danoeh.antennapod.activity.MainActivity"
+    tools:context="de.danoeh.antennapodSA.activity.MainActivity"
     tools:background="@android:color/darker_gray">
 
     <ImageView

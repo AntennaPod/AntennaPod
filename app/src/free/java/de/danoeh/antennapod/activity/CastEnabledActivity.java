@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.activity;
+package de.danoeh.antennapodSA.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

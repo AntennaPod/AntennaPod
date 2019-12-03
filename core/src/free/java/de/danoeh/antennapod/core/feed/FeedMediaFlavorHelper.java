@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapodSA.core.feed;
 
 /**
  * Implements methods for FeedMedia that are flavor dependent.

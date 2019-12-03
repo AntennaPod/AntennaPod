@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core;
+package de.danoeh.antennapodSA.core;
 
 /**
  * Callbacks for Chromecast support on the core module

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapodSA.core.service.playback;
 
 import android.content.Context;
 import androidx.annotation.StringRes;

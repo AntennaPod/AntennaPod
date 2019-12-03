@@ -9,11 +9,11 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.core.service.download.DownloadRequest;
+import de.danoeh.antennapodSA.core.service.download.DownloadStatus;
+import de.danoeh.antennapodSA.core.service.download.Downloader;
+import de.danoeh.antennapodSA.core.util.Converter;
 
 public class DownloadlistAdapter extends BaseAdapter {
 

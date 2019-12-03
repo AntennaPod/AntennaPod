@@ -8,17 +8,17 @@ import androidx.annotation.StringRes;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import com.google.android.material.snackbar.Snackbar;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.activity.PreferenceActivity;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapodSA.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapodSA.core.storage.APNullCleanupAlgorithm;
+import de.danoeh.antennapodSA.core.storage.APQueueCleanupAlgorithm;
+import de.danoeh.antennapodSA.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapodSA.fragment.EpisodesFragment;
+import de.danoeh.antennapodSA.fragment.QueueFragment;
+import de.danoeh.antennapodSA.fragment.SubscriptionFragment;
 import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.junit.Before;
@@ -70,7 +70,7 @@ public class PreferencesTest {
     public void testSwitchTheme() {
         final int theme = UserPreferences.getTheme();
         int otherTheme;
-        if (theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
+        if (theme == de.danoeh.antennapodSA.core.R.style.Theme_AntennaPod_Light) {
             otherTheme = R.string.pref_theme_title_dark;
         } else {
             otherTheme = R.string.pref_theme_title_light;
@@ -86,7 +86,7 @@ public class PreferencesTest {
     public void testSwitchThemeBack() {
         final int theme = UserPreferences.getTheme();
         int otherTheme;
-        if (theme == de.danoeh.antennapod.core.R.style.Theme_AntennaPod_Light) {
+        if (theme == de.danoeh.antennapodSA.core.R.style.Theme_AntennaPod_Light) {
             otherTheme = R.string.pref_theme_title_dark;
         } else {
             otherTheme = R.string.pref_theme_title_light;

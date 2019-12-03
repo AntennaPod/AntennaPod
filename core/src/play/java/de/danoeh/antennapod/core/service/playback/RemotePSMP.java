@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.service.playback;
+package de.danoeh.antennapodSA.core.service.playback;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -19,17 +19,17 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.cast.CastConsumer;
-import de.danoeh.antennapod.core.cast.CastManager;
-import de.danoeh.antennapod.core.cast.CastUtils;
-import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
-import de.danoeh.antennapod.core.cast.RemoteMedia;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapodSA.core.R;
+import de.danoeh.antennapodSA.core.cast.CastConsumer;
+import de.danoeh.antennapodSA.core.cast.CastManager;
+import de.danoeh.antennapodSA.core.cast.CastUtils;
+import de.danoeh.antennapodSA.core.cast.DefaultCastConsumer;
+import de.danoeh.antennapodSA.core.cast.RemoteMedia;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.feed.MediaType;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.util.RewindAfterPauseUtils;
+import de.danoeh.antennapodSA.core.util.playback.Playable;
 
 /**
  * Implementation of PlaybackServiceMediaPlayer suitable for remote playback on Cast Devices.
@@ -300,7 +300,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
      * Internal implementation of playMediaObject. This method has an additional parameter that allows the caller to force a media player reset even if
      * the given playable parameter is the same object as the currently playing media.
      *
-     * @see #playMediaObject(de.danoeh.antennapod.core.util.playback.Playable, boolean, boolean, boolean)
+     * @see #playMediaObject(de.danoeh.antennapodSA.core.util.playback.Playable, boolean, boolean, boolean)
      */
     private void playMediaObject(@NonNull final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (!CastUtils.isCastable(playable)) {

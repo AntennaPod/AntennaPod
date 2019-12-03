@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import androidx.fragment.app.ListFragment;
-import androidx.core.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,24 +12,28 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.ListFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.DownloadLogAdapter;
-import de.danoeh.antennapod.core.event.DownloadLogEvent;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.adapter.DownloadLogAdapter;
+import de.danoeh.antennapodSA.core.event.DownloadLogEvent;
+import de.danoeh.antennapodSA.core.feed.Feed;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.service.download.DownloadStatus;
+import de.danoeh.antennapodSA.core.storage.DBReader;
+import de.danoeh.antennapodSA.core.storage.DBWriter;
+import de.danoeh.antennapodSA.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Shows the download log

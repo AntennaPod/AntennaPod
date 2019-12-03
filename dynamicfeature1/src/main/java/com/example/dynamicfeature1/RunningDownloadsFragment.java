@@ -1,31 +1,32 @@
 package com.example.dynamicfeature1;
 
 import android.os.Bundle;
-import androidx.fragment.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.fragment.app.ListFragment;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.DownloadlistAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.view.EmptyViewHandler;
-import org.greenrobot.eventbus.ThreadMode;
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.adapter.DownloadlistAdapter;
+import de.danoeh.antennapodSA.core.event.DownloadEvent;
+import de.danoeh.antennapodSA.core.event.DownloaderUpdate;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.service.download.DownloadRequest;
+import de.danoeh.antennapodSA.core.service.download.Downloader;
+import de.danoeh.antennapodSA.core.storage.DBReader;
+import de.danoeh.antennapodSA.core.storage.DBWriter;
+import de.danoeh.antennapodSA.core.storage.DownloadRequester;
+import de.danoeh.antennapodSA.view.EmptyViewHandler;
 
 /**
  * Displays all running downloads and provides actions to cancel them

@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import java.io.File;
 import java.io.IOException;
 
-import de.danoeh.antennapod.core.util.FileNameGenerator;
+import de.danoeh.antennapodSA.core.util.FileNameGenerator;
 import org.junit.After;
 import org.junit.Test;
 

@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Map;
 
-import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
+import de.danoeh.antennapodSA.core.util.syndication.FeedDiscoverer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

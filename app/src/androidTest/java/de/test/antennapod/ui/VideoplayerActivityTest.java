@@ -4,8 +4,8 @@ import android.content.Intent;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.VideoplayerActivity;
+import de.danoeh.antennapodSA.R;
+import de.danoeh.antennapodSA.activity.VideoplayerActivity;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;

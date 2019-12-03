@@ -1,7 +1,7 @@
-package de.danoeh.antennapod.preferences;
+package de.danoeh.antennapodSA.preferences;
 
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.fragment.preferences.PlaybackPreferencesFragment;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.fragment.preferences.PlaybackPreferencesFragment;
 
 /**
  * Implements functions from PreferenceController that are flavor dependent.

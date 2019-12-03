@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.cast;
+package de.danoeh.antennapodSA.core.cast;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,17 +19,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapodSA.core.feed.Chapter;
+import de.danoeh.antennapodSA.core.feed.Feed;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.feed.MediaType;
+import de.danoeh.antennapodSA.core.util.ChapterUtils;
+import de.danoeh.antennapodSA.core.util.playback.Playable;
 
 /**
  * Playable implementation for media on a Cast Device for which a local version of
- * {@link de.danoeh.antennapod.core.feed.FeedMedia} hasn't been found.
+ * {@link de.danoeh.antennapodSA.core.feed.FeedMedia} hasn't been found.
  */
 public class RemoteMedia implements Playable {
     public static final String TAG = "RemoteMedia";

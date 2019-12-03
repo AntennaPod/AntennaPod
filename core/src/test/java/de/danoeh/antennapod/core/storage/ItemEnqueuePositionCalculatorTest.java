@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapodSA.core.storage;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,20 +13,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedMother;
-import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapodSA.core.feed.FeedItem;
+import de.danoeh.antennapodSA.core.feed.FeedMedia;
+import de.danoeh.antennapodSA.core.feed.FeedMother;
+import de.danoeh.antennapodSA.core.feed.MediaType;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapodSA.core.util.playback.ExternalMedia;
+import de.danoeh.antennapodSA.core.util.playback.Playable;
 
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.BACK;
-import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation.FRONT;
-import static de.danoeh.antennapod.core.util.CollectionTestUtil.concat;
-import static de.danoeh.antennapod.core.util.CollectionTestUtil.list;
-import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
+import static de.danoeh.antennapodSA.core.preferences.UserPreferences.EnqueueLocation.AFTER_CURRENTLY_PLAYING;
+import static de.danoeh.antennapodSA.core.preferences.UserPreferences.EnqueueLocation.BACK;
+import static de.danoeh.antennapodSA.core.preferences.UserPreferences.EnqueueLocation.FRONT;
+import static de.danoeh.antennapodSA.core.util.CollectionTestUtil.concat;
+import static de.danoeh.antennapodSA.core.util.CollectionTestUtil.list;
+import static de.danoeh.antennapodSA.core.util.FeedItemUtil.getIdList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;

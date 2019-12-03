@@ -2,8 +2,8 @@ package com.example.dynamicfeature1;
 
 import android.content.Context;
 
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapodSA.core.preferences.UserPreferences;
+import de.danoeh.antennapodSA.core.storage.DBReader;
 
 public abstract class DownloadCleanupAlgorithm {
 

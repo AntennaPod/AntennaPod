@@ -8,7 +8,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapodSA.core.event.FeedItemEvent;
 import io.reactivex.functions.Consumer;
 
 /**
