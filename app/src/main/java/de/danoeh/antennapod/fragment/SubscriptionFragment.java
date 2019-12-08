@@ -100,7 +100,9 @@ public class SubscriptionFragment extends Fragment {
     private Disposable disposable;
     private SharedPreferences prefs;
 
-    private String autoDownload = "", keepUpdated = "", autoDelete ="";
+    private String autoDownload = "";
+    private String keepUpdated = "";
+    private String autoDelete ="";
     private ArrayList<Feed> currentFeeds = new ArrayList<>();
 
     @Override
