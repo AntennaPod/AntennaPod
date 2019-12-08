@@ -157,6 +157,7 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
+
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.preference:preference:1.1.0"
     implementation "androidx.gridlayout:gridlayout:1.0.0"
@@ -187,7 +188,7 @@ dependencies {
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.4.2'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
-    implementation 'com.google.android.play:core:1.3.4'
+    implementation 'com.google.android.play:core:1.6.4'
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
