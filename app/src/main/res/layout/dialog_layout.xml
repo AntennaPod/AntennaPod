@@ -9,7 +9,7 @@
         android:id="@+id/textViewHeader"
         android:textColor="@color/black"
         android:text="@string/filter"
-        android:layout_margin="@dimen/diag_icon_margin_top"
+        android:layout_margin="8dp"
         android:textSize="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -22,8 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewHeader"
-        android:layout_margin="@dimen/diag_icon_margin_top"
-        android:paddingBottom="@dimen/action_drawer_item_bottom_padding">
+        android:layout_margin="8dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="wrap_content"

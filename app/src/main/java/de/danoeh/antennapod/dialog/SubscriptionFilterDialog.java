@@ -25,10 +25,16 @@ public abstract class SubscriptionFilterDialog {
 
     private final Context context;
     final Dialog dialog;
-    private Spinner spinnerAutoDownload,spinnerKeepUpdated,spinnerAutoDelete;
-    private Button buttonConfirm,buttonCancel;
-    private ArrayList<String> spinnerArrayAutoDown_keepUpdated, spinnerArrayAutoDelete;
-    private String autoDownload, keepUpdated, autoDelete;
+    private Spinner spinnerAutoDownload;
+    private Spinner spinnerKeepUpdated;
+    private Spinner spinnerAutoDelete;
+    private Button buttonConfirm;
+    private Button buttonCancel;
+    private ArrayList<String> spinnerArrayAutoDown_keepUpdated;
+    private ArrayList<String> spinnerArrayAutoDelete;
+    private String autoDownload;
+    private String keepUpdated;
+    private String autoDelete;
 
     protected SubscriptionFilterDialog(Context theContext,String theAutoDownload, String theKeepUpdated,
                                        String theAutoDelete) {
