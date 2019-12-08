@@ -317,6 +317,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 fragment = new EpisodesFragment();
                 break;
             case DownloadsFragment.TAG:
+                fragment = new DownloadsFragment();
                 // Builds a request to install the feature1 module
                 SplitInstallRequest request =
                         SplitInstallRequest
@@ -334,13 +335,21 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                             @Override
                             public void onSuccess(Integer integer) {
                                 // Module download successful
-
+                                Toast.makeText(getApplicationContext(), "successfully download feature1: ", Toast.LENGTH_LONG).show();
+                                try {
+                                    Intent myIntent = new Intent(MainActivity.this, Class.forName("com.example.dynamicfeature1.DownloadMainActivity"));
+                                    startActivity(myIntent);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(Exception e) {
                                 // Module download failed; handle the error here
+                                Toast.makeText(getApplicationContext(), "Couldn't download feature: " + e.getMessage(), Toast.LENGTH_LONG).show();
+
                             }
                         });
 
