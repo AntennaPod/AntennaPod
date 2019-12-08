@@ -63,9 +63,6 @@ public abstract class SubscriptionFilterDialog {
         spinnerAutoDownload.setAdapter(spinnerArrayAdapter);
         spinnerKeepUpdated.setAdapter(spinnerArrayAdapter);
 
-        spinnerAutoDownload.setSelection(spinnerArrayAutoDown_keepUpdated.indexOf(autoDownload));
-        spinnerKeepUpdated.setSelection(spinnerArrayAutoDown_keepUpdated.indexOf(keepUpdated));
-
         spinnerArrayAutoDelete.add(STRING_ALWAYS);
         spinnerArrayAutoDelete.add(STRING_NEVER);
         spinnerArrayAutoDelete.add(STRING_GLOBAL_DEFAULT);
@@ -75,6 +72,9 @@ public abstract class SubscriptionFilterDialog {
                 spinnerArrayAutoDelete);
         spinnerAutoDelete.setAdapter(spinnerArrayAdapter1);
 
+
+        spinnerAutoDownload.setSelection(spinnerArrayAutoDown_keepUpdated.indexOf(autoDownload));
+        spinnerKeepUpdated.setSelection(spinnerArrayAutoDown_keepUpdated.indexOf(keepUpdated));
         spinnerAutoDelete.setSelection(spinnerArrayAutoDelete.indexOf(autoDelete));
 
         dialog.setTitle(R.string.filter);
@@ -108,6 +108,7 @@ public abstract class SubscriptionFilterDialog {
 
     public class SubscriptionFilter {
         String option;
+        String value;
 
         public String getOption() {
             return option;
@@ -117,7 +118,7 @@ public abstract class SubscriptionFilterDialog {
             return value;
         }
 
-        String value;
+
 
         public SubscriptionFilter(String theoption, String thevalue) {
 

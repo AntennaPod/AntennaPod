@@ -9,8 +9,8 @@
         android:id="@+id/textViewHeader"
         android:textColor="@color/black"
         android:text="@string/filter"
-        android:layout_margin="@dimen/md_icon_margin"
-        android:textSize="@dimen/md_title_textsize"
+        android:layout_margin="@dimen/diag_icon_margin_top"
+        android:textSize="18dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -67,10 +67,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutSpinnerDetail"
-        android:background="@drawable/md_transparent"
+        android:background="@android:color/transparent"
         android:text = "@string/cancel_label"
         android:textColor="@color/holo_blue_light"
-        android:padding="@dimen/md_listitem_margin_left"
+        android:padding="8dp"
         android:layout_toLeftOf="@+id/buttonConfirm"
         />
     <Button
@@ -78,10 +78,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutSpinnerDetail"
-        android:background="@drawable/md_transparent"
+        android:background="@android:color/transparent"
         android:text = "@string/confirm_label"
         android:textColor="@color/holo_blue_light"
-        android:padding="@dimen/md_listitem_margin_left"
+        android:padding="8dp"
         android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

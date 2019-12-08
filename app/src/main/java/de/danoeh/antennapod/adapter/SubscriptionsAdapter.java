@@ -109,7 +109,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Fragment fragment = FeedItemlistFragment.newInstance(getItemId(position));
         mainActivityRef.get().loadChildFragment(fragment);
-    }
+}
 
     static class Holder {
         public TextView feedTitle;

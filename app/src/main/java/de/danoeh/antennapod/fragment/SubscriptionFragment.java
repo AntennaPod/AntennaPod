@@ -197,9 +197,9 @@ public class SubscriptionFragment extends Fragment {
                     }
                 }
                 // edit preference value.
-                prefs.edit().putString(PREF_AUTO_DOWNLOAD,autoDownload);
-                prefs.edit().putString(PREF_KEEP_UPDATED,keepUpdated);
-                prefs.edit().putString(PREF_AUTO_DELETE,autoDelete);
+                prefs.edit().putString(PREF_AUTO_DOWNLOAD,autoDownload).apply();
+                prefs.edit().putString(PREF_KEEP_UPDATED,keepUpdated).apply();
+                prefs.edit().putString(PREF_AUTO_DELETE,autoDelete).apply();
 
                 loadFilter();
 
@@ -226,30 +226,30 @@ public class SubscriptionFragment extends Fragment {
         boolean autoDownloadValue = autoDownload.equals(STRING_ENABLE);
         boolean keepUpdatedValue = keepUpdated.equals(STRING_ENABLE);
 
-        for(Feed feed: navDrawerData.feeds){
-            if(!autoDownload.equals(STRING_NO_FILTER) &&
-                    autoDownloadValue != feed.getPreferences().getAutoDownload())  {
-                // not adding current feed as its auto Download value does not match to what user choose
-                continue;
-            }
-            if(!keepUpdated.equals(STRING_NO_FILTER) &&
-                    keepUpdatedValue != feed.getPreferences().getKeepUpdated()){
-                // not adding current feed as its keep updated value does not match to what user choose
-                continue;
-            }
-
-            if(!tempAutoDelete.equals(STRING_NO_FILTER)){
-                FeedPreferences.AutoDeleteAction action = FeedPreferences.AutoDeleteAction.valueOf(tempAutoDelete);
-
-                FeedPreferences.AutoDeleteAction feedAction = feed.getPreferences().getAutoDeleteAction();
-                if( feedAction!= action ){
+            for(Feed feed: navDrawerData.feeds){
+                if(!autoDownload.equals(STRING_NO_FILTER) &&
+                        autoDownloadValue != feed.getPreferences().getAutoDownload())  {
                     // not adding current feed as its auto Download value does not match to what user choose
                     continue;
                 }
+                if(!keepUpdated.equals(STRING_NO_FILTER) &&
+                        keepUpdatedValue != feed.getPreferences().getKeepUpdated()){
+                    // not adding current feed as its keep updated value does not match to what user choose
+                    continue;
+                }
+
+                if(!tempAutoDelete.equals(STRING_NO_FILTER)){
+                    FeedPreferences.AutoDeleteAction action = FeedPreferences.AutoDeleteAction.valueOf(tempAutoDelete);
+
+                    FeedPreferences.AutoDeleteAction feedAction = feed.getPreferences().getAutoDeleteAction();
+                    if( feedAction!= action ){
+                        // not adding current feed as its auto Download value does not match to what user choose
+                        continue;
+                    }
+                }
+                currentFeeds.add(feed);
             }
-            currentFeeds.add(feed);
-        }
-        navDrawerData.feeds.get(0).getPreferences();
+         //   navDrawerData.feeds.get(0).getPreferences();
         // Step 3: Refresh the dataset
         subscriptionAdapter.notifyDataSetChanged();
     }
@@ -292,6 +292,11 @@ public class SubscriptionFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+
+        autoDownload = prefs.getString(PREF_AUTO_DOWNLOAD,STRING_NO_FILTER);
+        keepUpdated = prefs.getString(PREF_KEEP_UPDATED,STRING_NO_FILTER);
+        autoDelete = prefs.getString(PREF_AUTO_DELETE,STRING_NO_FILTER);
+
         loadSubscriptions();
     }
 
