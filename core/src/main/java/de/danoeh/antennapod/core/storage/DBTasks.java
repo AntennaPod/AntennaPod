@@ -308,8 +308,7 @@ public final class DBTasks {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public static List<? extends FeedItem> enqueueFeedItemsToDownload(final Context context,
-                                                                      List<? extends FeedItem> items)
-            throws InterruptedException, ExecutionException {
+                       List<? extends FeedItem> items) throws InterruptedException, ExecutionException {
         List<FeedItem> itemsToEnqueue = new ArrayList<>();
         if (UserPreferences.enqueueDownloadedEpisodes()) {
             LongList queueIDList = DBReader.getQueueIDList();
@@ -318,9 +317,7 @@ public final class DBTasks {
                     itemsToEnqueue.add(item);
                 }
             }
-            DBWriter.addQueueItem(context,
-                    itemsToEnqueue.toArray(new FeedItem[0]))
-                    .get();
+            DBWriter.addQueueItem(context, false, itemsToEnqueue.toArray(new FeedItem[0])).get();
         }
         return itemsToEnqueue;
     }
