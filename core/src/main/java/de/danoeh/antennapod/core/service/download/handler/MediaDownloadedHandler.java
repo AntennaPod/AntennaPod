@@ -77,6 +77,9 @@ public class MediaDownloadedHandler implements Runnable {
             // we've received the media, we don't want to autodownload it again
             if (item != null) {
                 item.setAutoDownload(false);
+                if (item.isNew()) {
+                    item.setPlayed(false);
+                }
                 // setFeedItem() signals (via EventBus) that the item has been updated,
                 // so we do it after the enclosing media has been updated above,
                 // to ensure subscribers will get the updated FeedMedia as well
@@ -89,7 +92,6 @@ public class MediaDownloadedHandler implements Runnable {
             updatedStatus = new DownloadStatus(media, media.getEpisodeTitle(),
                     DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
         }
-
 
         if (GpodnetPreferences.loggedIn() && item != null) {
             GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DOWNLOAD)

@@ -294,14 +294,17 @@ public class DBWriter {
 
     }
 
-    public static Future<?> addQueueItem(final Context context,
-                                         final FeedItem... items) {
+    public static Future<?> addQueueItem(final Context context, final FeedItem... items) {
+        return addQueueItem(context, true, items);
+    }
+
+    public static Future<?> addQueueItem(final Context context, boolean markAsUnplayed, final FeedItem... items) {
         LongList itemIds = new LongList(items.length);
         for (FeedItem item : items) {
             itemIds.add(item.getId());
             item.addTag(FeedItem.TAG_QUEUE);
         }
-        return addQueueItem(context, false, itemIds.toArray());
+        return addQueueItem(context, false, markAsUnplayed, itemIds.toArray());
     }
 
     /**
@@ -314,6 +317,20 @@ public class DBWriter {
      */
     public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
                                          final long... itemIds) {
+        return addQueueItem(context, performAutoDownload, true, itemIds);
+    }
+
+    /**
+     * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
+     * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
+     *
+     * @param context             A context that is used for opening a database connection.
+     * @param performAutoDownload true if an auto-download process should be started after the operation.
+     * @param markAsUnplayed      true if the items should be marked as unplayed when enqueueing
+     * @param itemIds             IDs of the FeedItem objects that should be added to the queue.
+     */
+    public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
+                                         final boolean markAsUnplayed, final long... itemIds) {
         return dbExec.submit(() -> {
             if (itemIds.length < 1) {
                 return;
@@ -355,7 +372,7 @@ public class DBWriter {
                     EventBus.getDefault().post(event);
                 }
                 EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
-                if (markAsUnplayedIds.size() > 0) {
+                if (markAsUnplayed && markAsUnplayedIds.size() > 0) {
                     DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
                 }
             }
