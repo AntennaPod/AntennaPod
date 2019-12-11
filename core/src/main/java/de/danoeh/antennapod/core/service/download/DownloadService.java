@@ -260,7 +260,6 @@ public class DownloadService extends Service {
                             removeDownload(downloader);
                             numberOfDownloads.decrementAndGet();
                             queryDownloadsAsync();
-
                         });
                     } else {
                         handleFailedDownload(downloader);
@@ -270,8 +269,10 @@ public class DownloadService extends Service {
                     }
                 } catch (InterruptedException e) {
                     Log.e(TAG, "DownloadCompletionThread was interrupted");
+                    return;
                 } catch (ExecutionException e) {
                     Log.e(TAG, "ExecutionException in DownloadCompletionThread: " + e.getMessage());
+                    return;
                 }
             }
             Log.d(TAG, "End of downloadCompletionThread");
