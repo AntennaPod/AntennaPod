@@ -21,7 +21,7 @@ jobs:
         api-level: 28
         headless: true
         disable-animations: true
-        script: ./gradlew connectedPlayDebugAndroidTest
+        script: ./gradlew connectedPlayDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
     - uses: actions/upload-artifact@v1
       if: failure()
       with:

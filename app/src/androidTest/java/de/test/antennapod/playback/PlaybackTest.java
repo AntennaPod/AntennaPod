@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.test.antennapod.EspressoTestUtils;
+import de.test.antennapod.IgnoreOnCi;
 import de.test.antennapod.ui.UITestUtils;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
@@ -60,6 +61,7 @@ import static org.junit.Assert.assertTrue;
  * Test cases for starting and ending playback from the MainActivity and AudioPlayerActivity.
  */
 @LargeTest
+@IgnoreOnCi
 @RunWith(Parameterized.class)
 public class PlaybackTest {
     @Rule
