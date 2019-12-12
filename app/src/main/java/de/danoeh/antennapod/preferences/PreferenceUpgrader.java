@@ -24,7 +24,6 @@ public class PreferenceUpgrader {
         int newVersion = BuildConfig.VERSION_CODE;
 
         if (oldVersion != newVersion) {
-            NotificationUtils.createChannels(context);
             AutoUpdateManager.restartUpdateAlarm();
 
             upgrade(oldVersion);
