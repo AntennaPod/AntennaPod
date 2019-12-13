@@ -50,6 +50,9 @@ public class ItemPagerFragment extends Fragment {
      * @return The ItemFragment instance
      */
     public static ItemPagerFragment newInstance(long[] feeditems, int feedItemPos) {
+        if (feeditems.length <= feedItemPos) {
+            throw new IllegalArgumentException("Trying to show a feed item that is out of the list");
+        }
         ItemPagerFragment fragment = new ItemPagerFragment();
         Bundle args = new Bundle();
         args.putLongArray(ARG_FEEDITEMS, feeditems);
