@@ -119,7 +119,7 @@ public class NetworkUtils {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         if (wifiInfo != null) {
-            return stripQuotes(wifiInfo.getSSID());
+            return stripQuotes(""+wifiInfo.getNetworkId());
         }
         return null;
     }
