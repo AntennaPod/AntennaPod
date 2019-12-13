@@ -11,8 +11,6 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -29,65 +27,56 @@ import okhttp3.Response;
 public class NetworkUtils {
     private NetworkUtils(){}
 
-	private static final String TAG = NetworkUtils.class.getSimpleName();
+    private static final String TAG = NetworkUtils.class.getSimpleName();
 
-	private static Context context;
+    private static Context context;
 
-	public static void init(Context context) {
-		NetworkUtils.context = context;
-	}
+    public static void init(Context context) {
+        NetworkUtils.context = context;
+    }
 
-	/**
-	 * Returns true if the device is connected to Wi-Fi and the Wi-Fi filter for
-	 * automatic downloads is disabled or the device is connected to a Wi-Fi
-	 * network that is on the 'selected networks' list of the Wi-Fi filter for
-	 * automatic downloads and false otherwise.
-	 * */
-	public static boolean autodownloadNetworkAvailable() {
-		ConnectivityManager cm = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-		if (networkInfo != null) {
-			if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-				Log.d(TAG, "Device is connected to Wi-Fi");
-				if (networkInfo.isConnected()) {
-					if (!UserPreferences.isEnableAutodownloadWifiFilter()) {
-						Log.d(TAG, "Auto-dl filter is disabled");
-						return true;
-					} else {
-						WifiManager wm = (WifiManager) context.getApplicationContext()
-								.getSystemService(Context.WIFI_SERVICE);
-						WifiInfo wifiInfo = wm.getConnectionInfo();
-						List<String> selectedNetworks = Arrays
-								.asList(UserPreferences
-										.getAutodownloadSelectedNetworks());
-						if (selectedNetworks.contains(Integer.toString(wifiInfo
-								.getNetworkId()))) {
-							Log.d(TAG, "Current network is on the selected networks list");
-							return true;
-						}
-					}
-				}
-			} else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
-				Log.d(TAG, "Device is connected to Ethernet");
-				if (networkInfo.isConnected()) {
-					return true;
-				}
-			} else {
-				if (!UserPreferences.isAllowMobileAutoDownload()) {
-					Log.d(TAG, "Auto Download not enabled on Mobile");
-					return false;
-				}
-				if (networkInfo.isRoaming()) {
-					Log.d(TAG, "Roaming on foreign network");
-					return false;
-				}
-				return true;
-			}
-		}
-		Log.d(TAG, "Network for auto-dl is not available");
-		return false;
-	}
+    /**
+     * Returns true if the device is connected to Wi-Fi and the Wi-Fi filter for
+     * automatic downloads is disabled or the device is connected to a Wi-Fi
+     * network that is on the 'selected networks' list of the Wi-Fi filter for
+     * automatic downloads and false otherwise.
+     * */
+    public static boolean autodownloadNetworkAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo == null) {
+            Log.d(TAG, "Network for auto-dl is not available");
+            return false;
+        }
+        if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            Log.d(TAG, "Device is connected to Wi-Fi");
+            if (networkInfo.isConnected()) {
+                if (!UserPreferences.isEnableAutodownloadWifiFilter()) {
+                    Log.d(TAG, "Auto-dl filter is disabled");
+                    return true;
+                } else if (UserPreferences.getAutodownloadSelectedNetworks().contains(getWifiSsid())) {
+                    Log.d(TAG, "Current network is on the selected networks list");
+                    return true;
+                }
+            }
+        } else if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
+            Log.d(TAG, "Device is connected to Ethernet");
+            if (networkInfo.isConnected()) {
+                return true;
+            }
+        } else {
+            if (!UserPreferences.isAllowMobileAutoDownload()) {
+                Log.d(TAG, "Auto Download not enabled on Mobile");
+                return false;
+            }
+            if (networkInfo.isRoaming()) {
+                Log.d(TAG, "Roaming on foreign network");
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
     public static boolean networkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -117,25 +106,33 @@ public class NetworkUtils {
         return UserPreferences.isAllowMobileFeedRefresh() || !NetworkUtils.isNetworkMetered();
     }
 
-	private static boolean isNetworkMetered() {
-		ConnectivityManager connManager = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+    private static boolean isNetworkMetered() {
+        ConnectivityManager connManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
         return ConnectivityManagerCompat.isActiveNetworkMetered(connManager);
-	}
+    }
 
     /**
      * Returns the SSID of the wifi connection, or <code>null</code> if there is no wifi.
      */
-    public static String getWifiSsid() {
+    private static String getWifiSsid() {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         if (wifiInfo != null) {
-            return wifiInfo.getSSID();
+            return stripQuotes(wifiInfo.getSSID());
         }
         return null;
     }
 
-	public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {
+    public static String stripQuotes(String ssid) {
+        if (ssid != null && ssid.startsWith("\"")) {
+            return ssid.substring(1, ssid.length() - 1);
+        } else {
+            return ssid;
+        }
+    }
+
+    public static Single<Long> getFeedMediaSizeObservable(FeedMedia media) {
         return Single.create((SingleOnSubscribe<Long>) emitter -> {
             if (!NetworkUtils.isEpisodeHeadDownloadAllowed()) {
                 emitter.onSuccess(0L);
@@ -188,7 +185,7 @@ public class NetworkUtils {
             DBWriter.setFeedMedia(media);
         })
                 .subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

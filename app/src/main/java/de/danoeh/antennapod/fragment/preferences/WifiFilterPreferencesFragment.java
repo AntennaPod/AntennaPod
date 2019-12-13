@@ -12,9 +12,9 @@ import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,19 +64,19 @@ public class WifiFilterPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void addNetwork(String ssid) {
-        List<String> networks = new ArrayList<>(Arrays.asList(UserPreferences.getAutodownloadSelectedNetworks()));
+        List<String> networks = UserPreferences.getAutodownloadSelectedNetworks();
         if (!networks.contains(ssid)) {
             networks.add(ssid);
-            UserPreferences.setAutodownloadSelectedNetworks(networks.toArray(new String[0]));
+            UserPreferences.setAutodownloadSelectedNetworks(networks);
             populateFilteredNetworksList();
         }
     }
 
     private void removeNetwork(String ssid) {
-        List<String> networks = new ArrayList<>(Arrays.asList(UserPreferences.getAutodownloadSelectedNetworks()));
+        List<String> networks = UserPreferences.getAutodownloadSelectedNetworks();
         if (networks.contains(ssid)) {
             networks.remove(ssid);
-            UserPreferences.setAutodownloadSelectedNetworks(networks.toArray(new String[0]));
+            UserPreferences.setAutodownloadSelectedNetworks(networks);
             populateFilteredNetworksList();
         }
     }
@@ -103,10 +103,7 @@ public class WifiFilterPreferencesFragment extends PreferenceFragmentCompat {
         Collections.sort(wifiConfigurations, (x, y) -> blankIfNull(x.SSID).compareToIgnoreCase(blankIfNull(y.SSID)));
         String[] networks = new String[wifiConfigurations.size()];
         for (int i = 0; i < wifiConfigurations.size(); i++) {
-            String ssid = wifiConfigurations.get(i).SSID;
-            if (ssid.startsWith("\"")) {
-                ssid = ssid.substring(1, ssid.length() - 1);
-            }
+            String ssid = NetworkUtils.stripQuotes(wifiConfigurations.get(i).SSID);
             networks[i] = ssid;
         }
         return networks;
@@ -121,7 +118,7 @@ public class WifiFilterPreferencesFragment extends PreferenceFragmentCompat {
             getPreferenceScreen().removePreference(network);
         }
         filteredNetworkPreferenceItems.clear();
-        List<String> allowedNetworks = Arrays.asList(UserPreferences.getAutodownloadSelectedNetworks());
+        List<String> allowedNetworks = UserPreferences.getAutodownloadSelectedNetworks();
         Collections.sort(allowedNetworks, String::compareToIgnoreCase);
         for (String network : allowedNetworks) {
             Preference pref = new Preference(getContext());

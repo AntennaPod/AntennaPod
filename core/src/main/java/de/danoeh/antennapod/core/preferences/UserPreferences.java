@@ -577,9 +577,9 @@ public class UserPreferences {
         return prefs.getInt(PREF_REWIND_SECS, 10);
     }
 
-    public static String[] getAutodownloadSelectedNetworks() {
+    public static List<String> getAutodownloadSelectedNetworks() {
         String selectedNetWorks = prefs.getString(PREF_AUTODL_SELECTED_NETWORKS, "");
-        return TextUtils.split(selectedNetWorks, ",");
+        return new ArrayList<>(Arrays.asList(TextUtils.split(selectedNetWorks, ",")));
     }
 
     public static void setProxyConfig(ProxyConfig config) {
@@ -674,9 +674,9 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setAutodownloadSelectedNetworks(String[] value) {
+    public static void setAutodownloadSelectedNetworks(List<String> value) {
         prefs.edit()
-             .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
+             .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value.toArray(new String[0])))
              .apply();
     }
 
