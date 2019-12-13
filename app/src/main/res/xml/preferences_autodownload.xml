@@ -28,8 +28,8 @@
             android:title="@string/pref_automatic_download_on_battery_title"
             android:summary="@string/pref_automatic_download_on_battery_sum"
             android:defaultValue="true"/>
-    <SwitchPreference
-            android:key="prefEnableAutoDownloadWifiFilter"
-            android:title="@string/pref_autodl_wifi_filter_title"
-            android:summary="@string/pref_autodl_wifi_filter_sum"/>
+    <Preference
+            android:key="prefWifiFilterScreen"
+            android:summary="@string/pref_autodl_wifi_filter_sum"
+            android:title="@string/pref_autodl_wifi_filter_title" />
 </PreferenceScreen>

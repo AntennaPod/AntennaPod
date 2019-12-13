@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <de.danoeh.antennapod.preferences.MasterSwitchPreference
+            android:key="prefEnableAutoDownloadWifiFilter"
+            android:title="@string/pref_autodl_wifi_filter_title" />
+    <Preference
+            android:key="prefWifiFilterAddNetwork"
+            android:title="@string/pref_wifi_filter_add_network"
+            android:icon="?attr/content_new"/>
+</PreferenceScreen>
