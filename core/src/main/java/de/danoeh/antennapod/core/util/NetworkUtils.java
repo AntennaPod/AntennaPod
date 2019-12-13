@@ -115,7 +115,7 @@ public class NetworkUtils {
     /**
      * Returns the SSID of the wifi connection, or <code>null</code> if there is no wifi.
      */
-    private static String getWifiSsid() {
+    public static String getWifiSsid() {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         if (wifiInfo != null) {

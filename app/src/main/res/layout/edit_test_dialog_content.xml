@@ -8,9 +8,8 @@
     <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
             android:ems="10"
             android:selectAllOnFocus="true"
-            android:id="@+id/number" />
+            android:id="@+id/edit_text" />
 
 </LinearLayout>

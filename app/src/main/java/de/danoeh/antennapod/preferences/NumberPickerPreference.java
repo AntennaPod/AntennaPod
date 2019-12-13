@@ -2,6 +2,7 @@ package de.danoeh.antennapod.preferences;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.InputType;
 import androidx.preference.Preference;
 import android.text.InputFilter;
 import android.util.AttributeSet;
@@ -61,8 +62,9 @@ public class NumberPickerPreference extends Preference {
     protected void onClick() {
         super.onClick();
 
-        View view = View.inflate(context, R.layout.numberpicker, null);
-        EditText number = view.findViewById(R.id.number);
+        View view = View.inflate(context, R.layout.edit_test_dialog_content, null);
+        EditText number = view.findViewById(R.id.edit_text);
+        number.setInputType(InputType.TYPE_CLASS_NUMBER);
         number.setText(getSharedPreferences().getString(getKey(), ""+defaultValue));
         number.setFilters(new InputFilter[]{(source, start, end, dest, dstart, dend) -> {
             try {

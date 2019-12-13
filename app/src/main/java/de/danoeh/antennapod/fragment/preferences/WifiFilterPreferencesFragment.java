@@ -2,11 +2,16 @@ package de.danoeh.antennapod.fragment.preferences;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
@@ -29,8 +34,8 @@ public class WifiFilterPreferencesFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences_wifi_filter);
 
         setupClickActions();
-        setWifiListItemsEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
         populateFilteredNetworksList();
+        setWifiListItemsEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
     private void setupClickActions() {
@@ -57,7 +62,14 @@ public class WifiFilterPreferencesFragment extends PreferenceFragmentCompat {
             String[] networks = getKnownNetworks();
             dialog.setItems(networks, (dialog1, which) -> addNetwork(networks[which]));
         } else {
-            // TODO
+            View view = View.inflate(getContext(), R.layout.edit_test_dialog_content, null);
+            EditText text = view.findViewById(R.id.edit_text);
+            text.setText(NetworkUtils.getWifiSsid());
+            text.setInputType(InputType.TYPE_CLASS_TEXT);
+            dialog.setView(view);
+            dialog.setMessage(R.string.pref_wifi_filter_add_network_description);
+            dialog.setPositiveButton(android.R.string.ok, (dialog12, which)
+                    -> addNetwork(text.getText().toString().trim()));
         }
         dialog.setNegativeButton(R.string.cancel_label, null);
         dialog.show();

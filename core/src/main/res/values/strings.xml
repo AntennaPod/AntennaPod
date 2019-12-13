@@ -400,6 +400,7 @@
     <string name="pref_autodl_wifi_filter_title">Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_wifi_filter_add_network">Add allowed network</string>
+    <string name="pref_wifi_filter_add_network_description">Enter the exact name of the Wi-Fi network you want to add</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_parallel_downloads_title">Parallel Downloads</string>
