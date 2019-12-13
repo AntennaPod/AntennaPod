@@ -2,14 +2,20 @@ package de.danoeh.antennapod.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PreferenceUpgrader {
     private static final String PREF_CONFIGURED_VERSION = "version_code";
@@ -26,12 +32,12 @@ public class PreferenceUpgrader {
         if (oldVersion != newVersion) {
             AutoUpdateManager.restartUpdateAlarm();
 
-            upgrade(oldVersion);
+            upgrade(context, oldVersion);
             upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
         }
     }
 
-    private static void upgrade(int oldVersion) {
+    private static void upgrade(Context context, int oldVersion) {
         if (oldVersion == -1) {
             return;
         }
@@ -82,6 +88,26 @@ public class PreferenceUpgrader {
                 boolean enqueueAtFront = prefs.getBoolean(keyOldPrefEnqueueFront, false);
                 EnqueueLocation enqueueLocation = enqueueAtFront ? EnqueueLocation.FRONT : EnqueueLocation.BACK;
                 UserPreferences.setEnqueueLocation(enqueueLocation);
+            }
+        }
+        if (oldVersion < 1080003) {
+            // Previous versions saved the network id. New versions save the SSID because Android 10
+            // does not allow to get the network id without location permissions.
+            WifiManager wifiService = (WifiManager) context.getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE);
+            List<WifiConfiguration> networks = wifiService.getConfiguredNetworks();
+            if (networks != null) {
+                List<String> oldNetworkIds = UserPreferences.getAutodownloadSelectedNetworks();
+                List<String> networkSsids = new ArrayList<>();
+                for (String id : oldNetworkIds) {
+                    for (WifiConfiguration network : networks) {
+                        if (Integer.toString(network.networkId).equals(id)) {
+                            networkSsids.add(NetworkUtils.stripQuotes(network.SSID));
+                            break;
+                        }
+                    }
+                }
+                UserPreferences.setAutodownloadSelectedNetworks(networkSsids);
             }
         }
     }
