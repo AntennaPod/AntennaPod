@@ -772,6 +772,7 @@
     <string name="import_bad_file">Invalid/corrupt file</string>
 
     <!-- Widget settings -->
+    <string name="widget_settings">Widget settings</string>
     <string name="widget_create_button">Create widget</string>
     <string name="widget_opacity">Opacity</string>
 </resources>
