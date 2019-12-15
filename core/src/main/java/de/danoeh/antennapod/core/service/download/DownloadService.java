@@ -213,10 +213,6 @@ public class DownloadService extends Service {
 
         EventBus.getDefault().postSticky(DownloadEvent.refresh(Collections.emptyList()));
 
-        stopForeground(true);
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.cancel(NOTIFICATION_ID);
-
         downloadCompletionThread.interrupt();
         try {
             downloadCompletionThread.join();
@@ -230,6 +226,10 @@ public class DownloadService extends Service {
             downloadPostFuture.cancel(true);
         }
         unregisterReceiver(cancelDownloadReceiver);
+
+        stopForeground(true);
+        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        nm.cancel(NOTIFICATION_ID);
 
         // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
         // it is now time to sync the episode actions
