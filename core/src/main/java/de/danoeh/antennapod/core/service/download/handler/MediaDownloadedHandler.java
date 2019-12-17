@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import java.util.concurrent.ExecutionException;
 
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
@@ -18,6 +19,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Handles a completed media download.
@@ -44,6 +46,8 @@ public class MediaDownloadedHandler implements Runnable {
             Log.e(TAG, "Could not find downloaded media object in database");
             return;
         }
+        // media.setDownloaded modifies played state
+        boolean broadcastUnreadStateUpdate = media.getItem() != null && media.getItem().isNew();
         media.setDownloaded(true);
         media.setFile_url(request.getDestination());
         media.checkEmbeddedPicture(); // enforce check
@@ -77,13 +81,13 @@ public class MediaDownloadedHandler implements Runnable {
             // we've received the media, we don't want to autodownload it again
             if (item != null) {
                 item.setAutoDownload(false);
-                if (item.isNew()) {
-                    item.setPlayed(false);
-                }
                 // setFeedItem() signals (via EventBus) that the item has been updated,
                 // so we do it after the enclosing media has been updated above,
                 // to ensure subscribers will get the updated FeedMedia as well
                 DBWriter.setFeedItem(item).get();
+                if (broadcastUnreadStateUpdate) {
+                    EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                }
             }
         } catch (InterruptedException e) {
             Log.e(TAG, "MediaHandlerThread was interrupted");
