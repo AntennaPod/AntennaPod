@@ -5,6 +5,8 @@ import de.danoeh.antennapod.core.util.URLChecker;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test class for URLChecker
@@ -118,5 +120,31 @@ public class URLCheckerTest {
         final String in = "example.com";
         final String out = URLChecker.prepareURL(in, null);
         assertEquals("http://example.com", out);
+    }
+
+    @Test
+    public void testUrlEqualsSame() {
+        assertTrue(URLChecker.urlEquals("https://www.example.com/test", "https://www.example.com/test"));
+        assertTrue(URLChecker.urlEquals("https://www.example.com/test", "https://www.example.com/test/"));
+        assertTrue(URLChecker.urlEquals("https://www.example.com/test", "https://www.example.com//test"));
+        assertTrue(URLChecker.urlEquals("https://www.example.com", "https://www.example.com/"));
+        assertTrue(URLChecker.urlEquals("https://www.example.com", "http://www.example.com"));
+        assertTrue(URLChecker.urlEquals("http://www.example.com/", "https://www.example.com/"));
+        assertTrue(URLChecker.urlEquals("https://www.example.com/?id=42", "https://www.example.com/?id=42"));
+        assertTrue(URLChecker.urlEquals("https://example.com/podcast%20test", "https://example.com/podcast test"));
+        assertTrue(URLChecker.urlEquals("https://example.com/?a=podcast%20test", "https://example.com/?a=podcast test"));
+        assertTrue(URLChecker.urlEquals("https://example.com/?", "https://example.com/"));
+        assertTrue(URLChecker.urlEquals("https://example.com/?", "https://example.com"));
+        assertTrue(URLChecker.urlEquals("https://Example.com", "https://example.com"));
+        assertTrue(URLChecker.urlEquals("https://example.com/test", "https://example.com/Test"));
+    }
+
+    @Test
+    public void testUrlEqualsDifferent() {
+        assertFalse(URLChecker.urlEquals("https://www.example.com/test", "https://www.example2.com/test"));
+        assertFalse(URLChecker.urlEquals("https://www.example.com/test", "https://www.example.de/test"));
+        assertFalse(URLChecker.urlEquals("https://example.com/", "https://otherpodcast.example.com/"));
+        assertFalse(URLChecker.urlEquals("https://www.example.com/?id=42&a=b", "https://www.example.com/?id=43&a=b"));
+        assertFalse(URLChecker.urlEquals("https://example.com/podcast%25test", "https://example.com/podcast test"));
     }
 }
