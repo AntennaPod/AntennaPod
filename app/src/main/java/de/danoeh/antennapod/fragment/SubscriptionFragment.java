@@ -176,7 +176,7 @@ public class SubscriptionFragment extends Fragment {
 
     private void openSubscriptionFilter() {
         SubscriptionFilterDialog filterDialog = new SubscriptionFilterDialog(getContext(),
-                autoDownload,keepUpdated,autoDelete) {
+                autoDownload, keepUpdated, autoDelete) {
             @Override
             protected void updateFilter(ArrayList<SubscriptionFilter> filterValues) {
 
@@ -184,8 +184,8 @@ public class SubscriptionFragment extends Fragment {
                 // step 1: remove all existing data from current feeds
                 // Step 2: Add all where the filter value is true and assign to currentFeeds
                 currentFeeds = new ArrayList<>();
-                for(SubscriptionFilter filter: filterValues){
-
+                for (SubscriptionFilter filter : filterValues)
+                {
                     switch (filter.getOption()) {
                         case STRING_AUTO_DOWNLOAD:
                             autoDownload = filter.getValue();
@@ -204,11 +204,8 @@ public class SubscriptionFragment extends Fragment {
                 prefs.edit().putString(PREF_AUTO_DELETE,autoDelete).apply();
 
                 loadFilter();
-
             }
-
         };
-
         filterDialog.openDialog();
     }
 
@@ -251,11 +248,9 @@ public class SubscriptionFragment extends Fragment {
                 }
                 currentFeeds.add(feed);
             }
-         //   navDrawerData.feeds.get(0).getPreferences();
         // Step 3: Refresh the dataset
         subscriptionAdapter.notifyDataSetChanged();
     }
-
 
     private void setColumnNumber(int columns) {
         subscriptionGridLayout.setNumColumns(columns);

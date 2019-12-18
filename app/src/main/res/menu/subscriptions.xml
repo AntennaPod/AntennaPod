@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:custom="http://schemas.android.com/apk/res-auto">
-
+    <item
+        android:id="@+id/subscription_filter"
+        android:icon="?attr/ic_filter"
+        android:menuCategory="container"
+        android:title="@string/filter"
+        custom:showAsAction="ifRoom"/>
     <item
             android:id="@+id/refresh_item"
             android:title="@string/refresh_label"
@@ -32,12 +37,5 @@
                     android:title="5"/>
         </menu>
     </item>
-    <item
-        android:id="@+id/subscription_filter"
-        android:icon="?attr/ic_filter"
-        android:menuCategory="container"
-        android:title="@string/filter"
-        custom:showAsAction="always"/>
-
 
 </menu>
