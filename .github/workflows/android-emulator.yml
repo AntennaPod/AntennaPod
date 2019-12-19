@@ -1,12 +1,12 @@
 name: Android Emulator test
 
-on: [push]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
-
     runs-on: macOS-latest
-
     steps:
     - uses: actions/checkout@v1
     - name: set up JDK 1.8
