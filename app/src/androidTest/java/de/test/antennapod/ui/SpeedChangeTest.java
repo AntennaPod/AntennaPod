@@ -11,11 +11,11 @@ import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.test.antennapod.EspressoTestUtils;
+import de.test.antennapod.IgnoreOnCi;
 import org.awaitility.Awaitility;
 import org.junit.After;
 import org.junit.Before;
@@ -39,6 +39,7 @@ import static de.test.antennapod.EspressoTestUtils.waitForView;
  * User interface tests for changing the playback speed.
  */
 @RunWith(AndroidJUnit4.class)
+@IgnoreOnCi
 public class SpeedChangeTest {
 
     @Rule
