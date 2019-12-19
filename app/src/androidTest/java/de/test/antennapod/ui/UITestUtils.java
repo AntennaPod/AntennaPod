@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -87,13 +88,13 @@ public class UITestUtils {
         out.close();
         int id = server.serveFile(feedFile);
         Assert.assertTrue(id != -1);
-        return String.format("%s/files/%d", HTTPBin.BASE_URL, id);
+        return String.format("%s/files/%d", server.getBaseUrl(), id);
     }
 
     private String hostFile(File file) {
         int id = server.serveFile(file);
         Assert.assertTrue(id != -1);
-        return String.format("%s/files/%d", HTTPBin.BASE_URL, id);
+        return String.format("%s/files/%d", server.getBaseUrl(), id);
     }
 
     private File newBitmapFile(String name) throws IOException {
@@ -204,12 +205,14 @@ public class UITestUtils {
     }
 
     public PlaybackController getPlaybackController(MainActivity mainActivity) {
-        ExternalPlayerFragment fragment = (ExternalPlayerFragment)mainActivity.getSupportFragmentManager().findFragmentByTag(ExternalPlayerFragment.TAG);
+        ExternalPlayerFragment fragment = (ExternalPlayerFragment) mainActivity.getSupportFragmentManager()
+                .findFragmentByTag(ExternalPlayerFragment.TAG);
         return fragment.getPlaybackControllerTestingOnly();
     }
 
-    public FeedMedia getCurrentMedia(MainActivity mainActivity) {
-        return (FeedMedia)getPlaybackController(mainActivity).getMedia();
+    public FeedMedia getCurrentMedia() {
+        Playable playable = Playable.PlayableUtils.createInstanceFromPreferences(context);
+        return (FeedMedia) playable;
     }
 
     public void setMediaFileName(String filename) {

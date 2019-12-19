@@ -215,7 +215,7 @@ public class DownloadService extends Service {
 
         downloadCompletionThread.interrupt();
         try {
-            downloadCompletionThread.join();
+            downloadCompletionThread.join(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

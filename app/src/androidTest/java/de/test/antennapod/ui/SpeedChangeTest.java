@@ -11,11 +11,11 @@ import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.test.antennapod.EspressoTestUtils;
+import de.test.antennapod.IgnoreOnCi;
 import org.awaitility.Awaitility;
 import org.junit.After;
 import org.junit.Before;
@@ -39,6 +39,7 @@ import static de.test.antennapod.EspressoTestUtils.waitForView;
  * User interface tests for changing the playback speed.
  */
 @RunWith(AndroidJUnit4.class)
+@IgnoreOnCi
 public class SpeedChangeTest {
 
     @Rule
@@ -68,9 +69,7 @@ public class SpeedChangeTest {
         UserPreferences.setPlaybackSpeedArray(new String[] {"1.00", "2.00", "3.00"});
         availableSpeeds = UserPreferences.getPlaybackSpeedArray();
 
-        context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-        Awaitility.await().until(() -> !PlaybackService.isRunning);
-
+        EspressoTestUtils.tryKillPlaybackService();
         activityRule.launchActivity(new Intent());
     }
 
@@ -88,7 +87,7 @@ public class SpeedChangeTest {
     public void testChangeSpeedPlaying() {
         onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
         onView(withId(R.id.butPlay)).perform(click());
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(()
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(()
                 -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PLAYING);
         clickThroughSpeeds();
     }
@@ -97,10 +96,10 @@ public class SpeedChangeTest {
     public void testChangeSpeedPaused() {
         onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
         onView(withId(R.id.butPlay)).perform(click());
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(()
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(()
                 -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PLAYING);
         onView(withId(R.id.butPlay)).perform(click());
-        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(()
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(()
                 -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PAUSED);
         clickThroughSpeeds();
     }

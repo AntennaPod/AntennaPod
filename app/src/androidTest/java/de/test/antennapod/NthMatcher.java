@@ -11,10 +11,6 @@ public class NthMatcher {
         return nth(matcher, 1);
     }
 
-    public static <T> Matcher<T> second(final Matcher<T> matcher) {
-        return nth(matcher, 2);
-    }
-
     public static <T> Matcher<T> nth(final Matcher<T> matcher, final int index) {
         return new BaseMatcher<T>() {
             AtomicInteger count = new AtomicInteger(0);
@@ -31,7 +27,8 @@ public class NthMatcher {
 
             @Override
             public void describeTo(final Description description) {
-                description.appendText("should return first matching item");
+                description.appendText("Item #" + index + " ");
+                description.appendDescriptionOf(matcher);
             }
         };
     }

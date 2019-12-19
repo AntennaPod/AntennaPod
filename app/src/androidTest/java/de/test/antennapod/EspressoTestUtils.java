@@ -1,6 +1,8 @@
 package de.test.antennapod;
 
 import android.content.Context;
+import android.content.Intent;
+import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.PerformException;
@@ -14,11 +16,16 @@ import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import org.awaitility.Awaitility;
+import org.awaitility.core.ConditionTimeoutException;
 import org.hamcrest.Matcher;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -77,6 +84,31 @@ public class EspressoTestUtils {
     }
 
     /**
+     * Perform action of waiting for a specific view id.
+     * https://stackoverflow.com/a/30338665/
+     * @param id The id of the child to click.
+     */
+    public static ViewAction clickChildViewWithId(final @IdRes int id) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return null;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Click on a child view with specified id.";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                View v = view.findViewById(id);
+                v.performClick();
+            }
+        };
+    }
+
+    /**
      * Clear all app databases
      */
     public static void clearPreferences() {
@@ -127,12 +159,37 @@ public class EspressoTestUtils {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
     }
 
-    public static void closeNavDrawer() {
-        onView(isRoot()).perform(waitForView(withId(R.id.drawer_layout), 1000));
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.close());
-    }
-
     public static ViewInteraction onDrawerItem(Matcher<View> viewMatcher) {
         return onView(allOf(viewMatcher, withId(R.id.txtvTitle)));
+    }
+
+    public static void tryKillPlaybackService() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        context.stopService(new Intent(context, PlaybackService.class));
+        try {
+            // Android has no reliable way to stop a service instantly.
+            // Calling stopSelf marks allows the system to destroy the service but the actual call
+            // to onDestroy takes until the next GC of the system, which we can not influence.
+            // Try to wait for the service at least a bit.
+            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> !PlaybackService.isRunning);
+        } catch (ConditionTimeoutException e) {
+            e.printStackTrace();
+        }
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+    }
+
+    public static void tryKillDownloadService() {
+        Context context = InstrumentationRegistry.getTargetContext();
+        context.stopService(new Intent(context, DownloadService.class));
+        try {
+            // Android has no reliable way to stop a service instantly.
+            // Calling stopSelf marks allows the system to destroy the service but the actual call
+            // to onDestroy takes until the next GC of the system, which we can not influence.
+            // Try to wait for the service at least a bit.
+            Awaitility.await().atMost(10, TimeUnit.SECONDS).until(() -> !DownloadService.isRunning);
+        } catch (ConditionTimeoutException e) {
+            e.printStackTrace();
+        }
+        androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     }
 }
