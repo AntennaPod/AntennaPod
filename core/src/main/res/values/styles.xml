@@ -23,7 +23,8 @@
         <item name="av_fast_forward">@drawable/ic_fast_forward_grey600_24dp</item>
         <item name="av_pause">@drawable/ic_pause_grey600_24dp</item>
         <item name="av_play">@drawable/ic_play_arrow_grey600_24dp</item>
-        <item name="av_speed">@drawable/ic_playback_speed_dark</item>
+        <item name="av_speed">@drawable/ic_playback_speed_dark_48dp</item>
+        <item name="ic_settings_speed">@drawable/ic_playback_speed_dark_24dp</item>
         <item name="av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item name="content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item name="content_new">@drawable/ic_add_grey600_24dp</item>
@@ -110,7 +111,8 @@
         <item name="av_fast_forward">@drawable/ic_fast_forward_white_24dp</item>
         <item name="av_pause">@drawable/ic_pause_white_24dp</item>
         <item name="av_play">@drawable/ic_play_arrow_white_24dp</item>
-        <item name="av_speed">@drawable/ic_playback_speed_white</item>
+        <item name="av_speed">@drawable/ic_playback_speed_white_48dp</item>
+        <item name="ic_settings_speed">@drawable/ic_playback_speed_white_24dp</item>
         <item name="av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item name="content_discard">@drawable/ic_delete_white_24dp</item>
         <item name="content_new">@drawable/ic_add_white_24dp</item>

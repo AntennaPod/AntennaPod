@@ -169,7 +169,7 @@
                     android:contentDescription="@string/set_playback_speed_label"
                     android:src="?attr/av_speed"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_playback_speed_white"
+                    tools:src="@drawable/ic_playback_speed_white_48dp"
                     tools:visibility="gone"
                     tools:background="@android:color/holo_green_dark" />
 
