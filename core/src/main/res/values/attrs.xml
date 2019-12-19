@@ -64,6 +64,7 @@
     <attr name="master_switch_background" format="color"/>
     <attr name="currently_playing_background" format="color"/>
     <attr name="ic_bookmark" format="reference"/>
+    <attr name="ic_settings_speed" format="reference" />
 
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference"/>
