@@ -299,7 +299,6 @@ URL файла:
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
-  <string name="no_playback_plugin_or_sonic_msg">Чтобы воспользоваться изменением скорости воспроизведения, рекомендуется включить встроенный медиапроигрыватель Sonic [Android 4.1+].\n\nИли же можно загрузить сторонний плагин <i>Prestissimo</i> из Play Store.\nОбо всех проблемах, относящихся к Prestissimo стоит сообщать владельцу плагина, AntennaPod к этому не причастен.</string>
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <string name="enable_sonic">Включить Sonic</string>
   <!--Empty list labels-->
@@ -449,6 +448,7 @@ URL файла:
   <string name="pref_current_value">Текущее значение: %1$s</string>
   <string name="pref_proxy_title">Прокси</string>
   <string name="pref_proxy_sum">Настройки прокси</string>
+  <string name="pref_faq">Часто задаваемые вопросы</string>
   <string name="pref_no_browser_found">Веб-браузер не обнаружен.</string>
   <string name="pref_cast_title">Поддержка Chromecast</string>
   <string name="pref_cast_message_play_flavor">Включить поддержку удалённого воспроизведения на устройствах с Google Cast (таких как Chromecast, динамики или ТВ на ОС Android)</string>
@@ -476,6 +476,8 @@ URL файла:
   <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении.</string>
   <!--About screen-->
   <string name="about_pref">О программе</string>
+  <string name="developers">Разработчики</string>
+  <string name="translators">Переводчики</string>
   <!--Search-->
   <string name="search_hint">Найти выпуски</string>
   <string name="found_in_shownotes_label">Найдено в примечаниях к выпуску</string>
@@ -719,4 +721,5 @@ URL файла:
   <string name="notification_channel_error_description">Показывается если что-то пошло не так, к примеру, неудавшаяся загрузка или синхронизация с gpodder.</string>
   <string name="import_bad_file">Недопустимый или поврежденный файл</string>
   <!--Widget settings-->
+  <string name="widget_create_button">Создать виджет</string>
 </resources>

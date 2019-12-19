@@ -32,7 +32,7 @@
   <string name="statistics_mode_count_all">Somar todos os podcasts marcados como reproduzidos</string>
   <string name="statistics_speed_not_counted">Aviso: a velocidade de reprodução nunca será considerada.</string>
   <string name="statistics_reset_data">Reiniciar estatísticas dos dados</string>
-  <string name="statistics_reset_data_msg">Isto irá apagar o histórico da duração reproduzida de todos os episódios. Tem a certeza que quer continuar?</string>
+  <string name="statistics_reset_data_msg">Isto irá apagar o histórico do tempo de reprodução pata todos os episódios. Tem a certeza de que deseja continuar?</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
@@ -123,7 +123,7 @@
   <string name="share_link_label">Partilhar URL do episódio</string>
   <string name="share_link_with_position_label">Partilhar URL do episódio (com posição)</string>
   <string name="share_file_label">Partilhar ficheiro</string>
-  <string name="share_website_url_label">Partilhar URL do Website</string>
+  <string name="share_website_url_label">Partilhar URL do site</string>
   <string name="share_feed_url_label">Partilhar URL da fonte</string>
   <string name="share_item_url_label">Partilhar URL do ficheiro multimédia</string>
   <string name="share_item_url_with_position_label">Partilhar URL do ficheiro multimédia (com posição)</string>
@@ -261,8 +261,8 @@
   <string name="unlock_queue">Desbloquear fila</string>
   <string name="queue_locked">Fila bloqueada</string>
   <string name="queue_unlocked">Fila desbloqueada</string>
-  <string name="queue_lock_warning">Se bloquear a fila deixará de poder deslizar ou reordenar episódios.</string>
-  <string name="checkbox_do_not_show_again">Não voltar a mostrar</string>
+  <string name="queue_lock_warning">Se bloquear a fila, deixará de poder deslizar ou reordenar episódios.</string>
+  <string name="checkbox_do_not_show_again">Não mostrar novamente</string>
   <string name="clear_queue_label">Limpar fila</string>
   <string name="undo">Anular</string>
   <string name="move_to_top_label">Mover para o topo</string>
@@ -283,7 +283,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descarregar extra</string>
   <string name="no_playback_plugin_title">Extra não instalado</string>
-  <string name="no_playback_plugin_or_sonic_msg">Para que a velocidade variável de reprodução funcione, recomendamos que ative o Sonic Media Player incorporado [Android 4.1+].\n\nEm alternativa, pode descarregar o extra <i>Prestissimo</i>, disponível na Google Play.\nQuaisquer problemas que ocorram com o Prestissimo não são da responsabilidade dos programadores do AntennaPod e devem ser reportados ao dono do extra.</string>
   <string name="set_playback_speed_label">Velocidades de reprodução</string>
   <string name="enable_sonic">Ativar Sonic</string>
   <!--Empty list labels-->
@@ -306,8 +305,8 @@
   <string name="no_fav_episodes_label">Pode adicionar episódios aos favoritos com um toque longo.</string>
   <string name="no_chapters_head_label">Não há capítulos</string>
   <string name="no_chapters_label">Este episódio não tem capítulos.</string>
-  <string name="no_subscriptions_head_label">Sem subscrições</string>
-  <string name="no_subscriptions_label">Para subscrever um podcast, clique no ícone `+` abaixo.</string>
+  <string name="no_subscriptions_head_label">Não tem subscrições</string>
+  <string name="no_subscriptions_label">Para subscrever um podcast, prima no ícone +</string>
   <!--Preferences-->
   <string name="storage_pref">Armazenamento</string>
   <string name="project_pref">Projeto</string>
@@ -357,8 +356,8 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Auscultadores removidos</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Auscultadores inseridos</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Ligação bluetooth</string>
-  <string name="pref_stream_over_download_title">Preferir Transmissão</string>
-  <string name="pref_stream_over_download_sum">Mostrar botão de transmissão ao invés do botão de descarga, nas listas.</string>
+  <string name="pref_stream_over_download_title">Preferir transmissão</string>
+  <string name="pref_stream_over_download_sum">Nas listas, mostrar botão de transmissão em vez do botão de descarga.</string>
   <string name="pref_mobileUpdate_title">Dados móveis</string>
   <string name="pref_mobileUpdate_sum">Selecione o que pode ser permitido através de dados móveis.</string>
   <string name="pref_mobileUpdate_refresh">Atualização de fontes</string>
@@ -379,16 +378,16 @@
   <string name="pref_automatic_download_sum">Configurar a descarga automática de episódios.</string>
   <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Apenas permitir descargas automáticas através de redes sem fios</string>
-  <string name="autodl_wifi_filter_permission_title">É necessária permissão</string>
-  <string name="autodl_wifi_filter_permission_message">É necessária a permissão de localização para o filtro Wi-Fi. Clique para dar permissão.</string>
+  <string name="autodl_wifi_filter_permission_title">Permissão necessária</string>
+  <string name="autodl_wifi_filter_permission_message">É necessária a permissão de localização para o filtro Wi-Fi. Toque para conceder a permissão.</string>
   <string name="pref_automatic_download_on_battery_title">Descarregar se não estiver a carregar</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir descarga automática se a bateria não estiver a ser carregada</string>
   <string name="pref_parallel_downloads_title">Descargas simultâneas</string>
   <string name="pref_episode_cache_title">Cache de episódios</string>
   <string name="pref_episode_cache_summary">Número máximo de episódios descarregados para colocar em cache. A descarga automática será suspensa se este número for atingido.</string>
-  <string name="pref_episode_cover_title">Utilizar Capa do Episódio</string>
-  <string name="pref_episode_cover_summary">Usar a capa específica do episódio sempre que esteja disponível. Se esta opção não estiver marcada, a aplicação irá usar sempre a imagem de capa do podcast.</string>
-  <string name="pref_theme_title_use_system">Usar o tema do sistema</string>
+  <string name="pref_episode_cover_title">Utilizar capa do episódio</string>
+  <string name="pref_episode_cover_summary">Utilizar imagem do episódio se disponível. Se desativar esta opção, será utilizada a imagem do podcast.</string>
+  <string name="pref_theme_title_use_system">Utilizar tema do sistema</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Escuro</string>
   <string name="pref_theme_title_trueblack">Preto (AMOLED)</string>
@@ -413,7 +412,7 @@
   <string name="pref_gpodnet_notifications_sum">Esta definição não é aplicável aos erros de autenticação.</string>
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
   <string name="pref_playback_speed_sum">Personalizar as velocidades de reprodução disponíveis.</string>
-  <string name="pref_feed_playback_speed_sum">A velocidade a usar ao iniciar a reprodução áudio para episódios deste alimentador RSS.</string>
+  <string name="pref_feed_playback_speed_sum">A velocidade utilizada para iniciar a reprodução áudio dos episódios desta fonte</string>
   <string name="pref_playback_time_respects_speed_title">Ajustar informações multimédia à velocidade de reprodução</string>
   <string name="pref_playback_time_respects_speed_sum">A posição e a duração serão ajustadas automaticamente à velocidade de reprodução</string>
   <string name="pref_fast_forward">Tempo a avançar</string>
@@ -437,14 +436,14 @@
   <string name="pref_expand_notify_unsupport_toast">As versões Android anteriores à 4.1 não possuem suporte à expansão de notificações</string>
   <string name="pref_enqueue_location_title">Colocar localização na fila</string>
   <string name="pref_enqueue_location_sum">Adicionar episódios a: %1$s</string>
-  <string name="enqueue_location_back">Voltar</string>
-  <string name="enqueue_location_front">Frente</string>
-  <string name="enqueue_location_after_current">Após episódio corrente</string>
+  <string name="enqueue_location_back">Recuar</string>
+  <string name="enqueue_location_front">Avançar</string>
+  <string name="enqueue_location_after_current">Após o episódio atual</string>
   <string name="pref_smart_mark_as_played_disabled">Desativada</string>
   <string name="pref_image_cache_size_title">Cache de imagens</string>
   <string name="pref_image_cache_size_sum">Tamanho para a cache de imagens.</string>
-  <string name="view_mailing_list">Ver lista de distribuição</string>
-  <string name="bug_report_title">Relatar erro</string>
+  <string name="view_mailing_list">Ver lista de correio</string>
+  <string name="bug_report_title">Reporte de erros</string>
   <string name="open_bug_tracker">Abrir rastreador de erros</string>
   <string name="copy_to_clipboard">Copiar para a área de transferência</string>
   <string name="copied_to_clipboard">Copiado para a área de transferência</string>
@@ -453,7 +452,7 @@
   <string name="pref_current_value">Valor atual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Definir um proxy de rede.</string>
-  <string name="pref_faq">Questões Frequentes</string>
+  <string name="pref_faq">Questões frequentes</string>
   <string name="pref_no_browser_found">Navegador web não encontrado</string>
   <string name="pref_cast_title">Suporte Chromecast</string>
   <string name="pref_cast_message_play_flavor">Ativar suporte a reprodução multimédia em dispositivos Cast (tais como Chromecast, Android TV...)</string>
@@ -485,7 +484,7 @@
   <string name="developers">Programadores</string>
   <string name="developers_summary">Todos podem ajudar a tornar o AntennaPod melhor</string>
   <string name="translators">Tradutores</string>
-  <string name="translators_summary">Traduções são criadas pelos utilizadores do AntennaPod usando o Transifex</string>
+  <string name="translators_summary">As traduções são criadas pelos utilizadores do AntennaPod, através da plataforma Transifex</string>
   <string name="privacy_policy">Política de privacidade</string>
   <string name="licenses">Licenças</string>
   <string name="licenses_summary">AntennaPod utiliza outro software grandioso</string>
@@ -602,7 +601,7 @@
   <string name="pref_restart_required">Tem que reiniciar o AntennaPod para aplicar as alterações</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscrever</string>
-  <string name="subscribing_label">Subscrevendo...</string>
+  <string name="subscribing_label">Subscrição em curso...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Recuo rápido</string>
   <string name="fast_forward_label">Avanço rápido</string>

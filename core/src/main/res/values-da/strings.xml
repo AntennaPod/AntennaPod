@@ -224,7 +224,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
-  <string name="no_playback_plugin_or_sonic_msg">For at afspilning med variabel hastighed skal fungere, anbefaler vi at slå den indbyggede Sonic-medieafspiller til (Android 4.1+).\n\nAlternativt kan du hente tredjeparts-pluginnet <i>Prestissimo</i> fra Play Store.\nProblemer med Prestissimo er ikke AntennaPods ansvar og skal rapporteres til pluginnets ejer.</string>
   <string name="set_playback_speed_label">Afspilningshastigheder</string>
   <string name="enable_sonic">Slå Sonic til</string>
   <!--Empty list labels-->

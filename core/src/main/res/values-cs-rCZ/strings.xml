@@ -224,7 +224,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Stáhnout modul</string>
   <string name="no_playback_plugin_title">Modul není nainstalován</string>
-  <string name="no_playback_plugin_or_sonic_msg">Pro fungující proměnné rychlosti přehrávání doporučujeme povolit zabudovaný Sonic mediaplayer [Android 4.1+].\n\nAlternativně je možné z Obchodu Play stáhnout zásuvný modul třetí strany <i>Prestissimo</i>.\nAntennaPod nenese zodpovědnost za jakékoliv problémy s modulem Prestissimo a ty by měly být hlášeny jeho vývojářům.</string>
   <string name="set_playback_speed_label">Rychlosti přehrávání</string>
   <string name="enable_sonic">Povolit Sonic</string>
   <!--Empty list labels-->

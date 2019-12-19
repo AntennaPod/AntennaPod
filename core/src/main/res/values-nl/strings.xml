@@ -278,7 +278,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Plug-in downloaden</string>
   <string name="no_playback_plugin_title">Plug-in niet geïnstalleerd</string>
-  <string name="no_playback_plugin_or_sonic_msg">Om variabele afspeelsnelheid te kunnen gebruiken, bevelen wij aan om de ingebouwde Sonic-mediaspeler te activeren [Android 4.1 en hoger]\n\nEvt. kun je de externe plug-in <i>Prestissimo</i> downloaden via de Play Store.\nWij zijn niet verantwoordelijk voor problemen met deze plug-in zijn; meld ze bij de plug-inontwikkelaar.</string>
   <string name="set_playback_speed_label">Afspeelsnelheden</string>
   <string name="enable_sonic">Sonic inschakelen</string>
   <!--Empty list labels-->

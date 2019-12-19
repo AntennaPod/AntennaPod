@@ -274,7 +274,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">插件下载</string>
   <string name="no_playback_plugin_title">插件没有安装</string>
-  <string name="no_playback_plugin_or_sonic_msg">为使可变速度回放正常工作，我们建议启用内置的Sonic媒体播放器［安卓系统4.1以上］您也可以从谷歌商城下载第三方插件1 Prestissimo1 ，但任何有关该插件的问题均非AntennaPod的责任，应当报告插件所有者</string>
   <string name="set_playback_speed_label">播放速度</string>
   <string name="enable_sonic">允许声音</string>
   <!--Empty list labels-->
@@ -379,6 +378,8 @@
   <string name="pref_episode_cache_summary">缓存在设备上的已下载节目总数
 若达到此数目，自动下载将被暂停</string>
   <string name="pref_episode_cover_title">使用音频封面</string>
+  <string name="pref_episode_cover_summary">只要可以就使用某一集的封面。如果未选中，AntennaPod将始终使用播客的封面图像。</string>
+  <string name="pref_theme_title_use_system">使用系统主题</string>
   <string name="pref_theme_title_light">浅色</string>
   <string name="pref_theme_title_dark">暗色</string>
   <string name="pref_theme_title_trueblack">纯黑（适用于 AMOLED 设备）</string>
@@ -403,6 +404,7 @@
   <string name="pref_gpodnet_notifications_sum">该设置无法适用于验证错误。</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
+  <string name="pref_feed_playback_speed_sum">开始回放该提要中的音频时所用的速度</string>
   <string name="pref_playback_time_respects_speed_title">根据回放速度调整媒体信息</string>
   <string name="pref_playback_time_respects_speed_sum">显示的播放位置和持续时间已根据回放速度进行调整</string>
   <string name="pref_fast_forward">快进跳过时间</string>
@@ -424,14 +426,25 @@
   <string name="pref_showDownloadReport_title">显示下载报告</string>
   <string name="pref_showDownloadReport_sum">如果下载失败，生成一份显示详细失败信息的报告。</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 之前不支持扩展通知。</string>
+  <string name="pref_enqueue_location_title">排队位置</string>
+  <string name="pref_enqueue_location_sum">添加音频至：%1$s</string>
+  <string name="enqueue_location_back">后退</string>
+  <string name="enqueue_location_front">前进</string>
+  <string name="enqueue_location_after_current">在当前音频之后</string>
   <string name="pref_smart_mark_as_played_disabled">已禁用</string>
   <string name="pref_image_cache_size_title">图像缓存大小</string>
   <string name="pref_image_cache_size_sum">用于缓存图像的存储空间大小</string>
+  <string name="view_mailing_list">查看邮件列表</string>
+  <string name="bug_report_title">报告Bug</string>
+  <string name="open_bug_tracker">打开Bug跟踪器</string>
+  <string name="copy_to_clipboard">复制到剪贴板</string>
+  <string name="copied_to_clipboard">已复制到剪贴板</string>
   <string name="experimental_pref">实验性</string>
   <string name="pref_media_player_message">选择使用哪个媒体播放器来播放文件</string>
   <string name="pref_current_value">当前值：%1$s</string>
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
+  <string name="pref_faq">常见问题</string>
   <string name="pref_no_browser_found">无网络浏览器</string>
   <string name="pref_cast_title">Chromecast 支持</string>
   <string name="pref_cast_message_play_flavor">启用在 Cast 设备（例如 Chromecast 、 Audio Speakers 和 Android TV ）上对于远端媒体回放的支持</string>
@@ -459,6 +472,14 @@
   <string name="pref_delete_removes_from_queue_sum">剧集被删除时自动将其移除列表</string>
   <!--About screen-->
   <string name="about_pref">关于</string>
+  <string name="antennapod_version">AntennaPod版本</string>
+  <string name="developers">开发者</string>
+  <string name="developers_summary">每个人都可以帮助改进AntennaPod</string>
+  <string name="translators">译者</string>
+  <string name="translators_summary">翻译由AntennPod用户使用Transifex创建</string>
+  <string name="privacy_policy">隐私政策</string>
+  <string name="licenses">许可证</string>
+  <string name="licenses_summary">AntennaPod使用其他伟大的软件</string>
   <!--Search-->
   <string name="search_hint">查找节目</string>
   <string name="found_in_shownotes_label">在节目笔记中找到</string>
@@ -550,6 +571,7 @@
   <string name="choose_data_directory">选择数据文件夹</string>
   <string name="choose_data_directory_message">请选择用于 AntennaPod 的数据根目录， AntennaPod 将会创建合适的子目录。</string>
   <string name="choose_data_directory_permission_rationale">访问外部存储需要</string>
+  <string name="choose_data_directory_available_space">%2$s中%1$s可用</string>
   <string name="create_folder_msg">确实创建 \"%1$s\" 文件夹?</string>
   <string name="create_folder_success">创建新文件夹</string>
   <string name="create_folder_error_no_write_access">本文件夹不能写入</string>
@@ -568,6 +590,7 @@
   <string name="pref_restart_required">需要重启 AntennaPod 使改变生效。</string>
   <!--Online feed view-->
   <string name="subscribe_label">订阅</string>
+  <string name="subscribing_label">订阅中...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">回放</string>
   <string name="fast_forward_label">快进</string>
@@ -689,4 +712,6 @@
   <string name="notification_channel_error_description">发生错误时显示，比如下载或与gpodder的同步失败</string>
   <string name="import_bad_file">无效/损坏文件</string>
   <!--Widget settings-->
+  <string name="widget_create_button">创建小部件</string>
+  <string name="widget_opacity">不透明度</string>
 </resources>

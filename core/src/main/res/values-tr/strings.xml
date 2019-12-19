@@ -227,7 +227,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Eklentiyi İndir</string>
   <string name="no_playback_plugin_title">Eklenti Yüklenmedi</string>
-  <string name="no_playback_plugin_or_sonic_msg">Değişken hızlı oynatmanın çalışması için, dahili Sonic mediaplayer tavsiye ediyoruz [Android 4.1+].\n\nAlternatif olarak, üçüncü parti <i>Prestissimo</i>eklentisini Play Store\'dan indirebilirsiniz.\nPrestissimo ilgili herhangi bir sorunda AntennaPod sorumlu değildir, sorun eklenti yazarına bildirilmelidir.</string>
   <string name="set_playback_speed_label">Çalma hızları</string>
   <string name="enable_sonic">Sonic\'i Etkinleştir</string>
   <!--Empty list labels-->

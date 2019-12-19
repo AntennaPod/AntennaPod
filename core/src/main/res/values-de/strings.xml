@@ -283,7 +283,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin herunterladen</string>
   <string name="no_playback_plugin_title">Plugin nicht installiert</string>
-  <string name="no_playback_plugin_or_sonic_msg">Um variable Wiedergabegeschwindigkeit benutzen zu können, empfehlen wir, den integrierten Sonic Mediaplayer [Android 4.1+] zu aktivieren.\n\nAlternativ kannst du das kostenlose Plugin <i>Prestissimo</i> eines Drittanbieters aus dem Play Store herunterladen.\nProbleme mit Prestissimo liegen nicht im Verantwortungsbereich von AntennaPod und sollten dem Entwickler des Plugins gemeldet werden.</string>
+  <string name="no_playback_plugin_or_sonic_msg">Um variable Wiedergabegeschwindigkeit benutzen zu können, empfehlen wir, den integrierten Sonic Mediaplayer zu aktivieren.</string>
   <string name="set_playback_speed_label">Wiedergabegeschwindigkeiten</string>
   <string name="enable_sonic">Sonic aktivieren</string>
   <!--Empty list labels-->
@@ -725,6 +725,7 @@
   <string name="notification_channel_error_description">Wird gezeigt, wenn etwas schief gegangen ist, etwa wenn das Herunterladen oder die gpodder-Synchronisierung fehlschlägt.</string>
   <string name="import_bad_file">Invalide/beschädigte Datei</string>
   <!--Widget settings-->
+  <string name="widget_settings">Widget-Einstellungen</string>
   <string name="widget_create_button">Widget erstellen</string>
   <string name="widget_opacity">Deckkraft</string>
 </resources>

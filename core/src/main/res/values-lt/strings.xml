@@ -31,6 +31,7 @@
   <string name="statistics_mode_normal">Apskaičiuoti tikrąją atkūrimo trukmę. Perklausa dukart skaičiuojama dvigubai, o pažymėjimas perklausytu neskaičiuojamas</string>
   <string name="statistics_mode_count_all">Sumuoti visas tinklalaides, pažymėtas kaip perklausytas</string>
   <string name="statistics_speed_not_counted">Atkreipkite dėmesį: į atkūrimo spartą neatsižvelgiama.</string>
+  <string name="statistics_reset_data">Nustatyti statistikos duomenis iš naujo</string>
   <!--Main activity-->
   <string name="drawer_open">Atverti meniu</string>
   <string name="drawer_close">Užverti meniu</string>
@@ -98,6 +99,8 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Pridėti tinklalaidę pagal URL adresą</string>
   <string name="browse_gpoddernet_label">Naršyti gpodder.net svetainėje</string>
+  <string name="discover">Atraskite</string>
+  <string name="discover_more">daugiau »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Pažymėti visus kaip perklausytus</string>
   <string name="mark_all_read_msg">Visi epizodai pažymėti kaip perklausyti</string>
@@ -136,6 +139,12 @@
   <string name="open_podcast">Atverti tinklalaidę</string>
   <!--actions on feeditems-->
   <string name="download_label">Atsisiųsti</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Atsiunčiamas %d epizodas.</item>
+    <item quantity="few">Atsiunčiami %d epizodai.</item>
+    <item quantity="many">Atsiunčiami %d epizodai.</item>
+    <item quantity="other">Atsiunčiami %d epizodai.</item>
+  </plurals>
   <string name="play_label">Atkurti</string>
   <string name="pause_label">Pristabdyti</string>
   <string name="stream_label">Klausytis tiesiogiai</string>
@@ -207,6 +216,7 @@
   <string name="confirm_mobile_download_dialog_title">Patvirtinkite atsiuntimą mobiliuoju internetu</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Atsiuntimas mobiliuoju internetu išjungtas nustatymuose.\n\nGalite pasirinkti tik pridėti epizodą į eilę arba laikinai leisti atsiuntimą.\n\n<small>Jūsų pasirinkimas bus prisimenamas 10 minučių.</small></string>
   <string name="confirm_mobile_download_dialog_message">Atsiuntimas mobiliuoju internetu išjungtas nustatymuose.\n\nAr norite laikinai leisti atsiuntimą?\n\n<small>Jūsų pasirinkimas bus prisimenamas 10 minučių.</small></string>
+  <string name="confirm_mobile_streaming_button_always">Leisti visada</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Pridėti į eilę</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Laikinai leisti</string>
   <!--Mediaplayer messages-->
@@ -226,6 +236,7 @@
   <string name="unlock_queue">Atrakinti eilę</string>
   <string name="queue_locked">Eilė užrakinta</string>
   <string name="queue_unlocked">Eilė atrakinta</string>
+  <string name="checkbox_do_not_show_again">Daugiau neberodyti</string>
   <string name="clear_queue_label">Išvalyti eilę</string>
   <string name="undo">Atšaukti</string>
   <string name="move_to_top_label">Perkelti į viršų</string>
@@ -243,12 +254,19 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Atsiųsti įskiepį</string>
   <string name="no_playback_plugin_title">Įskiepis neįdiegtas</string>
-  <string name="no_playback_plugin_or_sonic_msg">Jei norite, jog kintamos atkūrimo spartos funkcija veiktų, patartina įjungti įtaisytąją „Sonic“ medijos leistuvę [„Android“ 4.1+].\n\nKaip pakaitalą, naudodamiesi „Play Store“, galite atsisiųsti trečiųjų šalių įskiepį <i>Prestissimo</i>.\nBet kokie nesklandumai dėl „Prestissimo“ veikimo yra ne „AntennaPod“ atsakomybė, todėl apie juos reikėtų pranešti įskiepio autoriams.</string>
   <string name="set_playback_speed_label">Atkūrimo spartos</string>
   <string name="enable_sonic">Įjungti „Sonic“</string>
   <!--Empty list labels-->
   <string name="no_shownotes_label">Šis epizodas neturi užrašų.</string>
+  <string name="no_run_downloads_head_label">Nėra vykstančių atsiuntimų</string>
+  <string name="no_comp_downloads_head_label">Atsisiųstų epizodų nėra</string>
+  <string name="no_history_head_label">Istorijos nėra</string>
+  <string name="no_all_episodes_head_label">Epizodų nėra</string>
+  <string name="no_new_episodes_head_label">Naujų epizodų nėra</string>
+  <string name="no_fav_episodes_head_label">Mėgiamų epizodų nėra</string>
+  <string name="no_chapters_head_label">Skyrių nėra</string>
   <string name="no_chapters_label">Šis epizodas neturi skyrių.</string>
+  <string name="no_subscriptions_head_label">Prenumeratų nėra</string>
   <!--Preferences-->
   <string name="storage_pref">Laikmena</string>
   <string name="project_pref">Projektas</string>
@@ -260,6 +278,8 @@
   <string name="appearance">Išvaizda</string>
   <string name="external_elements">Išoriniai elementai</string>
   <string name="interruptions">Pertraukimai</string>
+  <string name="playback_control">Atkūrimo valdymas</string>
+  <string name="preference_search_clear_history">Išvalyti istoriją</string>
   <string name="media_player">Medijos grotuvas</string>
   <string name="pref_episode_cleanup_title">Epizodų valymas</string>
   <string name="pref_episode_cleanup_summary">Epizodai, nesantys eilėje ar tarp mėgiamųjų, gali būti ištrinti automatinio atsiuntimo metu pritrūkus laisvos vietos naujiems epizodams </string>
@@ -357,11 +377,14 @@
   <string name="pref_smart_mark_as_played_disabled">Išjungtas</string>
   <string name="pref_image_cache_size_title">Paveikslėlių podėlio dydis</string>
   <string name="pref_image_cache_size_sum">Paveikslėlių podėlio diske dydis.</string>
+  <string name="copy_to_clipboard">Kopijuoti į iškarpinę</string>
+  <string name="copied_to_clipboard">Nukopijuotas į iškarpinę</string>
   <string name="experimental_pref">Eksperimentinis</string>
   <string name="pref_media_player_message">Pasirinkite medijos grotuvą, kuris bus naudojamas atkūrimui</string>
   <string name="pref_current_value">Dabartinė reikšmė: %1$s</string>
   <string name="pref_proxy_title">Įgaliotasis serveris</string>
   <string name="pref_proxy_sum">Nustatyti įgaliotąjį tinklo serverį</string>
+  <string name="pref_faq">Dažniausiai užduodami klausimai</string>
   <string name="pref_no_browser_found">Nerasta jokia interneto naršyklė.</string>
   <string name="pref_cast_title">„Chromecast“ palaikymas</string>
   <string name="pref_cast_message_play_flavor">Įjungti nuotolinio medijos atkūrimo „Cast“ įrenginiuose (pvz. „Chromecast“, garso kolonėlės ar „Android TV“) palaikymą</string>

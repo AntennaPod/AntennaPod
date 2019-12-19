@@ -31,6 +31,8 @@
   <string name="statistics_mode_normal">実際に再生された時間を計算します。 2回再生すると2回カウントされ、再生済のマークはカウントされません</string>
   <string name="statistics_mode_count_all">再生済みとマークされたすべてのポッドキャストを集計する</string>
   <string name="statistics_speed_not_counted">注意: 再生速度は考慮されません。</string>
+  <string name="statistics_reset_data">統計情報のデータをリセット</string>
+  <string name="statistics_reset_data_msg">これにより、すべてのエピソードを再生した期間の履歴が消去されます。 続行しますか?</string>
   <!--Main activity-->
   <string name="drawer_open">メニューを開く</string>
   <string name="drawer_close">メニューを閉じる</string>
@@ -119,6 +121,7 @@
   <string name="share_link_label">エピソード URLを共有</string>
   <string name="share_link_with_position_label">エピソード URL を位置と共に共有</string>
   <string name="share_file_label">ファイルを共有</string>
+  <string name="share_website_url_label">ウェブサイト URLを共有</string>
   <string name="share_feed_url_label">フィード URLを共有</string>
   <string name="share_item_url_label">メディアファイル URLを共有</string>
   <string name="share_item_url_with_position_label">メディアファイル URL を位置と共に共有</string>
@@ -249,6 +252,8 @@
   <string name="unlock_queue">キューのロックを解除</string>
   <string name="queue_locked">キューをロックしました</string>
   <string name="queue_unlocked">キューのロックを解除しました</string>
+  <string name="queue_lock_warning">キューをロックすると、エピソードのスワイプや並べ替えができなくなります。</string>
+  <string name="checkbox_do_not_show_again">今後表示しない</string>
   <string name="clear_queue_label">キューをクリア</string>
   <string name="undo">元に戻す</string>
   <string name="move_to_top_label">先頭に移動</string>
@@ -269,7 +274,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">プラグインをダウンロード</string>
   <string name="no_playback_plugin_title">プラグイン はインストールされていません</string>
-  <string name="no_playback_plugin_or_sonic_msg">再生速度の変更を機能させるには、内蔵の Sonic メディアプレーヤーを有効にすることを推奨します [Android 4.1+]。代わりに、Google Play からサードパーティのプラグイン <i>Prestissimo</i> をダウンロードすることができます。\nPrestissimo での問題は AntennaPod の責任ではなく、プラグインのオーナーに報告すべきです。</string>
   <string name="set_playback_speed_label">再生速度</string>
   <string name="enable_sonic">Sonic を有効にする</string>
   <!--Empty list labels-->
@@ -292,6 +296,8 @@
   <string name="no_fav_episodes_label">長押ししてお気に入りにエピソードを追加できます。</string>
   <string name="no_chapters_head_label">チャプターなし</string>
   <string name="no_chapters_label">このエピソードにチャプターはありません。</string>
+  <string name="no_subscriptions_head_label">購読していません</string>
+  <string name="no_subscriptions_label">ポッドキャストを購読するには、下のプラスアイコンを押してください。</string>
   <!--Preferences-->
   <string name="storage_pref">ストレージ</string>
   <string name="project_pref">プロジェクト</string>
@@ -341,6 +347,8 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">ヘッドフォン切断</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">ヘッドフォン再接続</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth再接続</string>
+  <string name="pref_stream_over_download_title">ストリーミングを優先する</string>
+  <string name="pref_stream_over_download_sum">ダウンロードボタンの代わりにストリームボタンをリストに表示します。</string>
   <string name="pref_mobileUpdate_title">モバイル更新</string>
   <string name="pref_mobileUpdate_sum">モバイルデータ接続時に許可するものを選択します</string>
   <string name="pref_mobileUpdate_refresh">フィード更新</string>
@@ -361,11 +369,16 @@
   <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを構成します。</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fiフィルターを有効にする</string>
   <string name="pref_autodl_wifi_filter_sum">選択したWi-Fiネットワークに対してのみ自動ダウンロードを許可します。</string>
+  <string name="autodl_wifi_filter_permission_title">アクセス許可が必要です</string>
+  <string name="autodl_wifi_filter_permission_message">Wi-Fi フィルターには位置情報のアクセス許可が必要です。 タップして許可を付与します。</string>
   <string name="pref_automatic_download_on_battery_title">充電中以外の時にダウンロード</string>
   <string name="pref_automatic_download_on_battery_sum">バッテリーを充電していない時に自動ダウンロードを許可します</string>
   <string name="pref_parallel_downloads_title">パラレル ダウンロード</string>
   <string name="pref_episode_cache_title">エピソードキャッシュ</string>
   <string name="pref_episode_cache_summary">デバイスにキャッシュされたダウンロード済エピソードの合計数。この数に達すると自動ダウンロードが抑制されます。</string>
+  <string name="pref_episode_cover_title">エピソードカバーを使用する</string>
+  <string name="pref_episode_cover_summary">エピソード固有のカバーが利用できる場合は常に使用します。 チェックされていない場合、アプリは常にポッドキャストのカバー画像を使用します。</string>
+  <string name="pref_theme_title_use_system">システムのテーマを使用する</string>
   <string name="pref_theme_title_light">ライト</string>
   <string name="pref_theme_title_dark">ダーク</string>
   <string name="pref_theme_title_trueblack">黒 (AMOLED 対応)</string>
@@ -390,6 +403,7 @@
   <string name="pref_gpodnet_notifications_sum">この設定は、認証エラーには適用されません。</string>
   <string name="pref_playback_speed_title">再生速度</string>
   <string name="pref_playback_speed_sum">可変速度音声再生に使用可能な速度をカスタマイズします</string>
+  <string name="pref_feed_playback_speed_sum">このフィードでエピソードのオーディオ再生を開始するときに使用する速度</string>
   <string name="pref_playback_time_respects_speed_title">メディア情報を再生速度に調整</string>
   <string name="pref_playback_time_respects_speed_sum">表示される位置と時間が再生速度に調整されます</string>
   <string name="pref_fast_forward">早送りのスキップ時間</string>
@@ -411,14 +425,25 @@
   <string name="pref_showDownloadReport_title">ダウンロード レポートを表示</string>
   <string name="pref_showDownloadReport_sum">ダウンロードが失敗した場合、失敗の詳細を表示するレポートを生成します。</string>
   <string name="pref_expand_notify_unsupport_toast">Androidバージョン4.1以前では、拡張通知をサポートしていません。</string>
+  <string name="pref_enqueue_location_title">キューに入れる場所</string>
+  <string name="pref_enqueue_location_sum">エピソードを追加: %1$s</string>
+  <string name="enqueue_location_back">背面</string>
+  <string name="enqueue_location_front">前面</string>
+  <string name="enqueue_location_after_current">現在のエピソードの後</string>
   <string name="pref_smart_mark_as_played_disabled">無効</string>
   <string name="pref_image_cache_size_title">画像キャッシュサイズ</string>
   <string name="pref_image_cache_size_sum">画像のディスクキャッシュのサイズ。</string>
+  <string name="view_mailing_list">メーリングリストを表示</string>
+  <string name="bug_report_title">バグを報告</string>
+  <string name="open_bug_tracker">バグトラッカーを開く</string>
+  <string name="copy_to_clipboard">クリップボードにコピー</string>
+  <string name="copied_to_clipboard">クリップボードにコピーしました</string>
   <string name="experimental_pref">実験的</string>
   <string name="pref_media_player_message">ファイルを再生するメディアプレーヤーを選択</string>
   <string name="pref_current_value">現在の値: %1$s</string>
   <string name="pref_proxy_title">プロキシ</string>
   <string name="pref_proxy_sum">ネットワーク プロキシの設定</string>
+  <string name="pref_faq">よくある質問と答え</string>
   <string name="pref_no_browser_found">Webブラウザーが見つかりません。</string>
   <string name="pref_cast_title">Chromecast サポート</string>
   <string name="pref_cast_message_play_flavor">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
@@ -446,6 +471,14 @@
   <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
   <!--About screen-->
   <string name="about_pref">について</string>
+  <string name="antennapod_version">AntennaPod バージョン</string>
+  <string name="developers">開発者</string>
+  <string name="developers_summary">誰でも AntennaPod の改善に貢献できます</string>
+  <string name="translators">翻訳者</string>
+  <string name="translators_summary">翻訳は、Transifex を使用してAntennaPod のユーザーが作成します</string>
+  <string name="privacy_policy">プライバシーポリシー</string>
+  <string name="licenses">ライセンス</string>
+  <string name="licenses_summary">AntennaPod は他の優れたソフトウェアを使用しています</string>
   <!--Search-->
   <string name="search_hint">エピソードの検索</string>
   <string name="found_in_shownotes_label">ショーノートで見つかりました</string>
@@ -556,6 +589,7 @@
   <string name="pref_restart_required">この変更を有効にするには AntennaPod を再起動する必要があります。</string>
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
+  <string name="subscribing_label">購読中…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">巻き戻し</string>
   <string name="fast_forward_label">早送り</string>
@@ -678,4 +712,6 @@
   <string name="notification_channel_error_description">ダウンロードや gpodder の同期に失敗した場合など、何か問題が発生した場合に表示されます。</string>
   <string name="import_bad_file">無効/破損ファイル</string>
   <!--Widget settings-->
+  <string name="widget_create_button">ウィジェットを作成</string>
+  <string name="widget_opacity">透明度</string>
 </resources>

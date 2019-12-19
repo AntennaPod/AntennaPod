@@ -301,7 +301,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">הורדת תוסף</string>
   <string name="no_playback_plugin_title">תוסף לא מותקן</string>
-  <string name="no_playback_plugin_or_sonic_msg">כדי שתכונת המהירות המשתנה תפעל, מומלץ להפעיל את נגן המדיה המובנה בשם Sonic [מ־Android 4.1 ואילך].\n\nלחלופין, ניתן להוריד תוסף צד שלישי בשם <i>Prestissimo</i> מהחנות Play.\nכל תקלה שמופיעה ב־Prestissimo אינה באחריות אנטנה־פּוֹד ויש לדווח עליה לבעלים על התוסף.</string>
   <string name="set_playback_speed_label">מהירויות ניגון</string>
   <string name="enable_sonic">הפעלת Sonic</string>
   <!--Empty list labels-->

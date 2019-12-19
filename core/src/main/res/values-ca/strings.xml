@@ -230,7 +230,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Baixa el connector</string>
   <string name="no_playback_plugin_title">Connector no instal·lat</string>
-  <string name="no_playback_plugin_or_sonic_msg">Per a què funcioni la velocitat de reproducció variable, recomanem activar el Sonic Media Player integrat [Android 4.1+].\n\nAltra opció és baixar el connector de tercers <i>Prestissimo</i> de la Play Store.\nQualsevol problema amb Prestissimo no és responsabilitat d\'AntennaPod i haurà d\'informar-ne al seu propietari.</string>
   <string name="set_playback_speed_label">Velocitats de reproducció</string>
   <string name="enable_sonic">Activa Sonic</string>
   <!--Empty list labels-->

@@ -31,6 +31,8 @@
   <string name="statistics_mode_normal">Calcular a duración que foi realmente reproducida. Reproducir dúas veces conta dobre, mentres que marcar como lido non conta</string>
   <string name="statistics_mode_count_all">Sumar todos os podcast marcados como reproducidos</string>
   <string name="statistics_speed_not_counted">Aviso: A velocidade de reprodución non se ten en conta en ningún caso.</string>
+  <string name="statistics_reset_data">Restablecer estatísticas</string>
+  <string name="statistics_reset_data_msg">Esto borrará o histórico de escoita de todos os episodios. Seguro que queres borralo?</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Pechar menú</string>
@@ -121,6 +123,7 @@
   <string name="share_link_label">Compartir a URL do episodio</string>
   <string name="share_link_with_position_label">Compartir a URL do ficheiro do episodio coa posición</string>
   <string name="share_file_label">Compartir ficheiro</string>
+  <string name="share_website_url_label">Compartir URL da web</string>
   <string name="share_feed_url_label">Compartir URL da fonte</string>
   <string name="share_item_url_label">Compartir a URL do ficheiro multimedia</string>
   <string name="share_item_url_with_position_label">Compartir a URL do ficheiro multimedia coa posición</string>
@@ -150,7 +153,7 @@
   </plurals>
   <string name="play_label">Reproducir</string>
   <string name="pause_label">Pausar</string>
-  <string name="stream_label">Enviar</string>
+  <string name="stream_label">Difundir</string>
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">Non se puido eliminar o ficheiro. Reiniciar o dispositivo podería axudar.</string>
   <string name="delete_episode_label">Eliminar episodio</string>
@@ -258,6 +261,8 @@
   <string name="unlock_queue">Desbloquear a cola</string>
   <string name="queue_locked">Cola bloqueada</string>
   <string name="queue_unlocked">Cola desbloqueada</string>
+  <string name="queue_lock_warning">Se bloqueas a cola, non poderás quitar ou mover os episodios.</string>
+  <string name="checkbox_do_not_show_again">Non mostrar outra vez</string>
   <string name="clear_queue_label">Limpar cola</string>
   <string name="undo">Desfacer</string>
   <string name="move_to_top_label">Mover arriba</string>
@@ -278,7 +283,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descargar engadido</string>
   <string name="no_playback_plugin_title">Engadido non instalado</string>
-  <string name="no_playback_plugin_or_sonic_msg">Para que funcione a velocidade de reprodución variable recomendamos utilizar o reproductor Sonic incluído[Android 4.1+].\n\nAlternativamente tamén pode descargar o engadido de terceiros de nome <i>Prestissimo</i>desde a Play Store.\nCalquer problema con Prestissimo non é responsabilidade de AntennaPod e debería informar ao responsable do engadido.</string>
   <string name="set_playback_speed_label">Velocidade de reproducións</string>
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
@@ -302,6 +306,7 @@
   <string name="no_chapters_head_label">Sen capítulos</string>
   <string name="no_chapters_label">Este episodio non ten capítulos.</string>
   <string name="no_subscriptions_head_label">Sen subscricións</string>
+  <string name="no_subscriptions_label">Para subscribirte a un podcast, preme o botón máis, abaixo.</string>
   <!--Preferences-->
   <string name="storage_pref">Almacenamento</string>
   <string name="project_pref">Proxecto</string>
@@ -351,6 +356,8 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Desconexión de auriculares</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconexión de auriculares</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Reconexión bluetooth</string>
+  <string name="pref_stream_over_download_title">Preferir Difusión</string>
+  <string name="pref_stream_over_download_sum">Mostrar botón de difusión no lugar de botón de descarga nas listas.</string>
   <string name="pref_mobileUpdate_title">Actualizacións Móbil</string>
   <string name="pref_mobileUpdate_sum">Escolla o que estará permitido utilizando conexión de datos do móbil</string>
   <string name="pref_mobileUpdate_refresh">Actualizar fontes</string>
@@ -372,11 +379,15 @@
   <string name="pref_autodl_wifi_filter_title">Habilitar o filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir a descarga automática só en redes WiFi selecionadas.</string>
   <string name="autodl_wifi_filter_permission_title">Precísase permiso</string>
+  <string name="autodl_wifi_filter_permission_message">Precísase o permiso de localización para o filtro Wi-Fi. Toca para concedelo.</string>
   <string name="pref_automatic_download_on_battery_title">Descargar elementos cando non esté cargando</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir a descarga automática cando a batería non está a cargar</string>
   <string name="pref_parallel_downloads_title">Descargas simultáneas</string>
   <string name="pref_episode_cache_title">Caché de episodios</string>
   <string name="pref_episode_cache_summary">O número total de episodios descargados na caché do dispositivo. A descarga automática suspenderase se se alcanza este número.</string>
+  <string name="pref_episode_cover_title">Utilizar Portada do episodio</string>
+  <string name="pref_episode_cover_summary">Utilizar a portada específica do episodio cando sexa posible. Se non o marcas, a app mostrará sempre a portada do podcast.</string>
+  <string name="pref_theme_title_use_system">Utilizar o decorado do sistema</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Oscuro</string>
   <string name="pref_theme_title_trueblack">Negro (listo para AMOLED)</string>
@@ -401,6 +412,7 @@
   <string name="pref_gpodnet_notifications_sum">Esta preferencia non se aplica a fallos na autenticación.</string>
   <string name="pref_playback_speed_title">Velocidades de reprodución</string>
   <string name="pref_playback_speed_sum">Personalice a velocidade variable de reprodución de audio</string>
+  <string name="pref_feed_playback_speed_sum">A velocidade a utilizar cando se reproduce o audio dos episodios de esta fonte</string>
   <string name="pref_playback_time_respects_speed_title">Axustar info dos medios a velocidade de reprodución</string>
   <string name="pref_playback_time_respects_speed_sum">A posición mostrada e a duración están adaptadas a velocidade de reprodución</string>
   <string name="pref_fast_forward">Avance rápido Salta tempo</string>
@@ -423,9 +435,15 @@
   <string name="pref_showDownloadReport_sum">Si falla a descarga, xerar un informe que informe dos detalles do fallo.</string>
   <string name="pref_expand_notify_unsupport_toast">As versións de Android anteriores a 4.1 non teñen soporte para notificacións expandidas.</string>
   <string name="pref_enqueue_location_sum">Engadir episodios a: %1$s</string>
+  <string name="enqueue_location_back">Atrás</string>
+  <string name="enqueue_location_front">Diante</string>
+  <string name="enqueue_location_after_current">Tras o episodio actual</string>
   <string name="pref_smart_mark_as_played_disabled">Desactivado</string>
   <string name="pref_image_cache_size_title">Tamaño da caché de imaxes</string>
   <string name="pref_image_cache_size_sum">Tamaño da caché en disco para as imaxes.</string>
+  <string name="view_mailing_list">Ver lista de correo</string>
+  <string name="bug_report_title">Informar de fallo</string>
+  <string name="open_bug_tracker">Abrir seguimento de fallos</string>
   <string name="copy_to_clipboard">Copiar ó portapapeis</string>
   <string name="copied_to_clipboard">Copiado ó portapapeis</string>
   <string name="experimental_pref">En probas</string>
@@ -433,6 +451,7 @@
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Establecer un proxy para a rede</string>
+  <string name="pref_faq">Preguntas Máis Frecuentes</string>
   <string name="pref_no_browser_found">Non se atopou un navegador web</string>
   <string name="pref_cast_title">Soporte Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar o soporte de reprodución remota nun dispositivo Cast (como o Chromecast, Altofalantes ou Android TV)</string>
@@ -460,8 +479,14 @@
   <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio da cola cando se elimina.</string>
   <!--About screen-->
   <string name="about_pref">Sobre</string>
+  <string name="antennapod_version">Versión AntennaPod</string>
+  <string name="developers">Desenvolvedoras</string>
+  <string name="developers_summary">Todas podemos axudar a mellorar AntennaPod</string>
   <string name="translators">Tradutores</string>
+  <string name="translators_summary">As traducións de AntennaPod realízanse utilizando Transifex</string>
   <string name="privacy_policy">Política de privacidade</string>
+  <string name="licenses">Licenzas</string>
+  <string name="licenses_summary">AntennaPod toma como fonte outro software</string>
   <!--Search-->
   <string name="search_hint">Buscar episodios</string>
   <string name="found_in_shownotes_label">Atopado nas notas do episodio</string>
@@ -698,4 +723,6 @@
   <string name="notification_channel_error_description">Mostrado si algo falla, por exemplo si a descarga ou a sincronización con gpodder fallan.</string>
   <string name="import_bad_file">Ficheiro non válido/corrupto</string>
   <!--Widget settings-->
+  <string name="widget_create_button">Crear widget</string>
+  <string name="widget_opacity">Opacidade</string>
 </resources>

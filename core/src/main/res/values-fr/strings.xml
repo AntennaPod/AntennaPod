@@ -14,7 +14,7 @@
   <string name="downloads_label">Téléchargements</string>
   <string name="downloads_running_label">En cours</string>
   <string name="downloads_completed_label">Terminé</string>
-  <string name="downloads_log_label">Journal d\'activité</string>
+  <string name="downloads_log_label">Journal</string>
   <string name="subscriptions_label">Abonnements</string>
   <string name="subscriptions_list_label">Liste des abonnements</string>
   <string name="cancel_download_label">Annuler les téléchargements</string>
@@ -32,7 +32,7 @@
   <string name="statistics_mode_count_all">Additionner tous les podcasts marqués comme lus</string>
   <string name="statistics_speed_not_counted">Note : la vitesse de lecture n\'est jamais prise en compte.</string>
   <string name="statistics_reset_data">Réinitialiser les statistiques </string>
-  <string name="statistics_reset_data_msg">Les données de temps de lecture vont être effacées. Etes-vous sûr de vouloir continuer ?</string>
+  <string name="statistics_reset_data_msg">L\'information des temps de lecture va être effacée. Etes-vous sûr de vouloir continuer ?</string>
   <!--Main activity-->
   <string name="drawer_open">Ouvrir le menu</string>
   <string name="drawer_close">Fermer le menu</string>
@@ -80,7 +80,7 @@
   <string name="auto_download_label">Télécharger automatiquement</string>
   <string name="auto_download_apply_to_items_title">Appliquer aux épisodes précédents</string>
   <string name="auto_download_apply_to_items_message">Le nouveau paramètre <i>Téléchargement Automatique</i> sera automatiquement appliqué sur chaque nouvel épisode.\nVoulez-vous faire de même avec les épisodes précédents ?</string>
-  <string name="auto_delete_label">Suppression automatique de l\'épisode</string>
+  <string name="auto_delete_label">Suppression automatique des épisodes</string>
   <string name="parallel_downloads_suffix">\u0020téléchargements parallèles</string>
   <string name="feed_auto_download_global">Option par défaut</string>
   <string name="feed_auto_download_always">Toujours</string>
@@ -153,7 +153,7 @@
   </plurals>
   <string name="play_label">Lire</string>
   <string name="pause_label">Pause</string>
-  <string name="stream_label">Lire en ligne</string>
+  <string name="stream_label">Streaming</string>
   <string name="delete_label">Effacer</string>
   <string name="delete_failed">Suppression du fichier impossible. Redémarrer pourrait aider.</string>
   <string name="delete_episode_label">Suppression de l\'épisode</string>
@@ -257,12 +257,12 @@
   <string name="player_go_to_picture_in_picture">Mode Picture-in-Picture</string>
   <string name="unknown_media_key">AntennaPod - Touche média inconnue : %1$d</string>
   <!--Queue operations-->
-  <string name="lock_queue">Bloquer la liste de lecture</string>
-  <string name="unlock_queue">Débloquer la liste de lecture</string>
+  <string name="lock_queue">Verrouiller la liste de lecture</string>
+  <string name="unlock_queue">Déverrouiller la liste de lecture</string>
   <string name="queue_locked">Liste de lecture verrouillée</string>
   <string name="queue_unlocked">Liste de lecture déverrouillée</string>
-  <string name="queue_lock_warning">Le verrouillage de la liste de lecture empêchera le \"swipe\" ou le réarrangement des épisodes.</string>
-  <string name="checkbox_do_not_show_again">Ne plus réafficher</string>
+  <string name="queue_lock_warning">Lorsque la liste est verrouillée le swipe n\'est pas possible et l\'ordre des épisodes ne peut être changé.</string>
+  <string name="checkbox_do_not_show_again">Ne pas réafficher</string>
   <string name="clear_queue_label">Effacer la liste de lecture</string>
   <string name="undo">Annuler</string>
   <string name="move_to_top_label">Déplacer en haut de la liste</string>
@@ -283,7 +283,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Télécharger une extension</string>
   <string name="no_playback_plugin_title">Extension non installée</string>
-  <string name="no_playback_plugin_or_sonic_msg">Pour pouvoir changer la vitesse de lecture il est recommandé d\'activer le lecteur interne Sonic [Android 4.1+].\n\nVous pouvez également télécharger l\'extension <i>Prestissimo</i> depuis le Play Store.\nLes problème rencontrés avec Prestissimo ne sont pas de la responsabilité d\'AntennaPod et sont à communiquer au créateur de l\'extension.</string>
   <string name="set_playback_speed_label">Vitesses de lecture</string>
   <string name="enable_sonic">Activer Sonic</string>
   <!--Empty list labels-->
@@ -307,7 +306,7 @@
   <string name="no_chapters_head_label">Pas de chapitres</string>
   <string name="no_chapters_label">Cet épisode n\'a pas de chapitre.</string>
   <string name="no_subscriptions_head_label">Aucun abonnement</string>
-  <string name="no_subscriptions_label">Pour vous abonner à un podcast appuyer sur l’icône du bouton +.</string>
+  <string name="no_subscriptions_label">Pour vous abonner à un podcast appuyer sur le bouton +.</string>
   <!--Preferences-->
   <string name="storage_pref">Stockage</string>
   <string name="project_pref">Projet</string>
@@ -358,7 +357,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Connexion des écouteurs</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Connexion du Bluetooth</string>
   <string name="pref_stream_over_download_title">Préférer le streaming</string>
-  <string name="pref_stream_over_download_sum">Afficher dans les listes le bouton pour streamer au lieu de celui pour télécharger.</string>
+  <string name="pref_stream_over_download_sum">Afficher dans les listes le bouton du stream au lieu de celui de téléchargement.</string>
   <string name="pref_mobileUpdate_title">Utilisation de la connexion mobile</string>
   <string name="pref_mobileUpdate_sum">Choisir ce qui est autorisé lorsque la connexion mobile est utilisée</string>
   <string name="pref_mobileUpdate_refresh">Rafraîchissement des flux</string>
@@ -379,16 +378,16 @@
   <string name="pref_automatic_download_sum">Configurer le téléchargement automatique des épisodes.</string>
   <string name="pref_autodl_wifi_filter_title">Activer le filtre Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Autoriser le téléchargement automatique uniquement sur les réseaux Wi-Fi sélectionnés.</string>
-  <string name="autodl_wifi_filter_permission_title">Permission requise</string>
-  <string name="autodl_wifi_filter_permission_message">La permission de localisation est nécessaire pour filtrer le Wi-Fi. Appuyer pour l\'autoriser.</string>
+  <string name="autodl_wifi_filter_permission_title">Autorisation requise</string>
+  <string name="autodl_wifi_filter_permission_message">L\'autorisation de localisation est nécessaire pour filtrer le Wi-Fi. Appuyer pour accorder l\'autorisation.</string>
   <string name="pref_automatic_download_on_battery_title">Télécharger lorsque l\'appareil n\'est pas en charge</string>
   <string name="pref_automatic_download_on_battery_sum">Autoriser le téléchargement automatique quand l\'appareil n\'est pas en train de charger</string>
   <string name="pref_parallel_downloads_title">Téléchargements simultanés</string>
   <string name="pref_episode_cache_title">Nombre d\'épisodes stockés</string>
   <string name="pref_episode_cache_summary">Nombre maximum d\'épisodes stockés sur l\'appareil. Le téléchargement automatique sera suspendu si ce nombre est atteint.</string>
-  <string name="pref_episode_cover_title">Utiliser l\'image des épisodes</string>
-  <string name="pref_episode_cover_summary">Utiliser l\'image spécifique des épisodes si elle existe. Sinon l\'image du podcast sera utilisé.</string>
-  <string name="pref_theme_title_use_system">Utiliser le thème du système</string>
+  <string name="pref_episode_cover_title">Image des épisodes</string>
+  <string name="pref_episode_cover_summary">Lorsqu\'elle existe, utiliser l\'image propre aux épisodes au lieu de celle du podcast.</string>
+  <string name="pref_theme_title_use_system">Thème du système</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>
   <string name="pref_theme_title_trueblack">Noir (pour écran AMOLED)</string>
@@ -413,7 +412,7 @@
   <string name="pref_gpodnet_notifications_sum">Ce paramètre ne s\'applique pas aux erreurs d\'authentification.</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture audio</string>
-  <string name="pref_feed_playback_speed_sum">Vitesse de lecture à utiliser pour les épisodes de ce podcast</string>
+  <string name="pref_feed_playback_speed_sum">Vitesse de lecture pour les épisodes de ce flux</string>
   <string name="pref_playback_time_respects_speed_title">Ajuster les informations en fonction la vitesse de lecture</string>
   <string name="pref_playback_time_respects_speed_sum">La position et la durée affichée tiendront compte de la vitesse de lecture.</string>
   <string name="pref_fast_forward">Durée du saut avant</string>
@@ -425,7 +424,7 @@
   <string name="pref_expandNotify_title">Priorité haute de notification</string>
   <string name="pref_expandNotify_sum">Permet, généralement, d\'étendre la notification pour montrer les boutons de lecture</string>
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
-  <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verouillage quand la lecture est en pause</string>
+  <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verrouillage quand la lecture est en pause</string>
   <string name="pref_compact_notification_buttons_title">Définir les boutons de l\'écran de verrouillage</string>
   <string name="pref_compact_notification_buttons_sum">Change les boutons de lecture sur l\'écran de verrouillage. Le bouton de lecture/pause est toujours affiché.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Choisir un maximum de %1$d éléments</string>
@@ -435,7 +434,7 @@
   <string name="pref_showDownloadReport_title">Afficher le rapport de téléchargements</string>
   <string name="pref_showDownloadReport_sum">Si les téléchargements échouent, générer un rapport détaillé des échecs.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
-  <string name="pref_enqueue_location_title">Emplacement dans la liste de lecture</string>
+  <string name="pref_enqueue_location_title">Emplacement des épisodes téléchargés</string>
   <string name="pref_enqueue_location_sum">Ajouter les épisodes : %1$s</string>
   <string name="enqueue_location_back">en fin de liste</string>
   <string name="enqueue_location_front">en début de liste</string>
@@ -443,7 +442,7 @@
   <string name="pref_smart_mark_as_played_disabled">Désactivé</string>
   <string name="pref_image_cache_size_title">Taille du cache de l\'image</string>
   <string name="pref_image_cache_size_sum">Taille de l’espace de stockage temporaire des images.</string>
-  <string name="view_mailing_list">Voir la liste de diffusion</string>
+  <string name="view_mailing_list">Liste de diffusion</string>
   <string name="bug_report_title">Signaler un bug</string>
   <string name="open_bug_tracker">Ouvrir le suivi des bugs</string>
   <string name="copy_to_clipboard">Copier dans le presse-papier</string>
@@ -453,7 +452,7 @@
   <string name="pref_current_value">Valeur actuelle : %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Paramétrer un réseau proxy</string>
-  <string name="pref_faq">Questions fréquentes</string>
+  <string name="pref_faq">Foire aux questions</string>
   <string name="pref_no_browser_found">Aucun navigateur trouvé.</string>
   <string name="pref_cast_title">Support Chromecast</string>
   <string name="pref_cast_message_play_flavor">Activer la lecture à distance sur les appareils Cast (comme Chromecast, Audio Speaker ou Android TV)</string>
@@ -483,12 +482,12 @@
   <string name="about_pref">À propos</string>
   <string name="antennapod_version">Version d\'AntennaPod</string>
   <string name="developers">Développeurs</string>
-  <string name="developers_summary">Tout le monde peut aider à améliorer AntennaPod</string>
+  <string name="developers_summary">Tout le monde peut améliorer AntennaPod</string>
   <string name="translators">Traducteurs</string>
-  <string name="translators_summary">La traduction est faite par des utilisateurs d\'AntennaPod sur Transifex</string>
+  <string name="translators_summary">La traduction est faite par les utilisateurs d\'AntennaPod sur Transifex</string>
   <string name="privacy_policy">Politique de confidentialité</string>
   <string name="licenses">Licences</string>
-  <string name="licenses_summary">AntennaPod utilise d\'autres logiciels</string>
+  <string name="licenses_summary">AntennaPod s\'appuie sur d\'autres logiciels</string>
   <!--Search-->
   <string name="search_hint">Chercher les épisodes</string>
   <string name="found_in_shownotes_label">Trouvé dans les notes d\'épisodes</string>
@@ -615,7 +614,7 @@
   <string name="load_next_page_label">Charger la page suivante</string>
   <!--Feed information screen-->
   <string name="authentication_label">Authentification</string>
-  <string name="authentication_descr">Modifier votre identifiant et mot de passe pour ce podcast et tous ses épisodes</string>
+  <string name="authentication_descr">Identifiant et mot de passe pour ce podcast et ses épisodes.</string>
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
   <string name="episode_filters_label">Filtre d\'épisode</string>
   <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou exclure des téléchargements automatiques</string>

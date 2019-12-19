@@ -272,7 +272,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Lataa plugin</string>
   <string name="no_playback_plugin_title">Plugin ei asennettu</string>
-  <string name="no_playback_plugin_or_sonic_msg">Muuttuvan soittonopeuden toiminnassa suosittelemme sisäänrakennettua Sonic mediaplayer [Android 4.1+].\n\nVaihtoehtoisesti voit ladata kolmannen osapuolen pluginin <i>Prestissimo</i> Play Storesta.\nOngelmat Prestissimossa eivät ole AntennaPod vastuulla ja tulisi raportoida pluginin tekijöille.</string>
   <string name="set_playback_speed_label">Soittonopeudet</string>
   <string name="enable_sonic">Aloita Sonic</string>
   <!--Empty list labels-->

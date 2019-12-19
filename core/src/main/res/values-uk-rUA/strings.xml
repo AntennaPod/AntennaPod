@@ -281,7 +281,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити додаток</string>
   <string name="no_playback_plugin_title">Додаток не встановлено</string>
-  <string name="no_playback_plugin_or_sonic_msg">Для програвання зі змінною швидкістю, ми радимо включити вбудований програвач Sonic [Android 4.1+].\n\nАбо ви можете завантажити додаток <i>Prestissimo</i> із Play Store.\nБудь які проблеми з Prestissimo не є відповідальністю розробників AntennaPod та мають вирішуватись авторами додатка.</string>
   <string name="set_playback_speed_label">Швидкість програвання</string>
   <string name="enable_sonic">Включити Sonic</string>
   <!--Empty list labels-->

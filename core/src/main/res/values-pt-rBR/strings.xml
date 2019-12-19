@@ -257,7 +257,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Download Plugin</string>
   <string name="no_playback_plugin_title">Plugin Não Instalado</string>
-  <string name="no_playback_plugin_or_sonic_msg">Para alterar a velocidade da reprodução, nós recomendamos que você abilite o reprodutor de mídias Sonic [Android 4.1+].\n\nOu então, vocÊ pode baixar o plugin de terceiros <i>Prestissimo</i> da Play Store.\nQualquer problema com Prestissimo não é responsabilidade do AntennaPod e deverá ser reportado para o proprietário do plugin.</string>
   <string name="set_playback_speed_label">Velocidades de Reprodução</string>
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->

@@ -31,6 +31,8 @@
   <string name="statistics_mode_normal">Benetan ikusitakoen iraupena kalkulatzea. Bi aldiz ikustean bi aldiz kontatzen da; ikusita bezala markatzea, berriz, ez da kontatzen</string>
   <string name="statistics_mode_count_all">Ikusita markatutako podcast guztien laburpena</string>
   <string name="statistics_speed_not_counted">Oharra: erreprodukzioaren abiadura ez da sekula kontutan hartzen.</string>
+  <string name="statistics_reset_data">Estatistikak ezabatu</string>
+  <string name="statistics_reset_data_msg">Horrek atal guztien iraupenaren historia ezabatuko du. Ziur zaude egin nahi duzula?</string>
   <!--Main activity-->
   <string name="drawer_open">Zabaldu menua</string>
   <string name="drawer_close">Itxi menua</string>
@@ -121,6 +123,7 @@
   <string name="share_link_label">Partekatu URL saioa</string>
   <string name="share_link_with_position_label">Partekatu URL saioa kokapenaz</string>
   <string name="share_file_label">Partekatu fitxategia</string>
+  <string name="share_website_url_label">URL web gunea partekatu</string>
   <string name="share_feed_url_label">Partekatu jarioaren URLa</string>
   <string name="share_item_url_label">Partekatu media fitxategiaren URLa</string>
   <string name="share_item_url_with_position_label">Partekatu Media Fitxategiaren URLa kokapenaz</string>
@@ -258,6 +261,8 @@
   <string name="unlock_queue">Ilara desblokeatu</string>
   <string name="queue_locked">Ilara blokeaturik</string>
   <string name="queue_unlocked">Ilara desblokeaturik</string>
+  <string name="queue_lock_warning">Ilara blokeatzen baduzu, ezin izango dituzu saioak mugitu edo markatu.</string>
+  <string name="checkbox_do_not_show_again">Ez erakutsi berriro</string>
   <string name="clear_queue_label">Ilara hustu</string>
   <string name="undo">Desegin</string>
   <string name="move_to_top_label">Hasierara eraman</string>
@@ -278,7 +283,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Deskargatu osagarria</string>
   <string name="no_playback_plugin_title">Osagarria instalatu gabe</string>
-  <string name="no_playback_plugin_or_sonic_msg">Erreprodukzio aldakorreko abiadurak funtziona dezan, Sonic [Android 4.1+] erreproduzigailua gaitzea gomendatzen dugu.\n\n ere plugina deskarga dezakezu  <i>Prestissimo</i> Play Storetik.\ez dago arazorik Prestissimorekin, AntennaPoden erantzukizuna da eta pluginaren jabeari jakinarazi beharko litzaioke.</string>
   <string name="set_playback_speed_label">Erreprodukzio abiadurak</string>
   <string name="enable_sonic">Gaitu Sonic</string>
   <!--Empty list labels-->
@@ -301,6 +305,8 @@
   <string name="no_fav_episodes_label">Gogokoetan saio berriak gehitu ditzakezu gainean luze sakatuz.</string>
   <string name="no_chapters_head_label">Kapitulurik ez</string>
   <string name="no_chapters_label">Saio honek ez du kapitulurik.</string>
+  <string name="no_subscriptions_head_label">Ez dago harpidetzarik</string>
+  <string name="no_subscriptions_label">Podcast batean harpidetzeko, sakatu beheko \"gehi\" ikonoa.</string>
   <!--Preferences-->
   <string name="storage_pref">Biltegia</string>
   <string name="project_pref">Proiektua</string>
@@ -350,6 +356,8 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Deskonektatu entzungailurik gabe</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Birkonektatu entzungailuez</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Birkonektatu bluetooth bidez</string>
+  <string name="pref_stream_over_download_title">Nahiago zuzenean</string>
+  <string name="pref_stream_over_download_sum">Zuzenean botoia erakusten du, zerrendetan deskargatzeko botoiaren ordez.</string>
   <string name="pref_mobileUpdate_title">Sare bidezko eguneraketak</string>
   <string name="pref_mobileUpdate_sum">Aukeratu datu mugikorrez deskarga daitekeena</string>
   <string name="pref_mobileUpdate_refresh">Iturria eguneratu</string>
@@ -370,11 +378,16 @@
   <string name="pref_automatic_download_sum">Konfiguratu saioen deskarga automatikoa</string>
   <string name="pref_autodl_wifi_filter_title">Gaitu Wifi iragazkia</string>
   <string name="pref_autodl_wifi_filter_sum">Onartu deskarga automatikoak aukeratutako Wifi sareetan bakarrik</string>
+  <string name="autodl_wifi_filter_permission_title">Baimena beharrezkoa</string>
+  <string name="autodl_wifi_filter_permission_message">Wi-Fi sareen arabera iragazteko kokapen-baimena behar da. Klikatu baimena emateko.</string>
   <string name="pref_automatic_download_on_battery_title">Deskargatu kargatzen ari dela</string>
   <string name="pref_automatic_download_on_battery_sum">Onartu deskarga bateria kargatzen ari ez denean</string>
   <string name="pref_parallel_downloads_title">Deskarga paraleloak</string>
   <string name="pref_episode_cache_title">Saioak gordetzea</string>
   <string name="pref_episode_cache_summary">Gailuan katxeatutako saioen zenbatekoa. Deskarga automatikoa bertan behera utziko da zenbaki honetara heltzean.</string>
+  <string name="pref_episode_cover_title">Saioaren azala erabili</string>
+  <string name="pref_episode_cover_summary">Erabili atalaren azala ahal denean. Desaktibatzen bada, aplikazioak podcastaren azala erabiliko du beti.</string>
+  <string name="pref_theme_title_use_system">Sistemaren gaia erabili</string>
   <string name="pref_theme_title_light">Argia</string>
   <string name="pref_theme_title_dark">Iluna</string>
   <string name="pref_theme_title_trueblack">Beltza (AMOLEDentzako)</string>
@@ -399,6 +412,7 @@
   <string name="pref_gpodnet_notifications_sum">Ezarpen honek ez du eraginik saio hasierako erroretan eraginik.</string>
   <string name="pref_playback_speed_title">Erreproduzitzeko abiadurak</string>
   <string name="pref_playback_speed_sum">Pertsonalizatu eskura dauden abiadurak audio erreproduzitzeko abiadura aldakorrean</string>
+  <string name="pref_feed_playback_speed_sum">Feed honen saioak zein abiaduratan hasiko diren.</string>
   <string name="pref_playback_time_respects_speed_title">Doitu medioaren informazioa erreprodukzio-abiaduraren arabera doitzea</string>
   <string name="pref_playback_time_respects_speed_sum">Posizioa eta iraupena erreprodukzio-abiadurara egokituta daude.</string>
   <string name="pref_fast_forward">Aurrera egiteko tartea</string>
@@ -422,14 +436,25 @@
   <string name="pref_showDownloadReport_title">Deskarga txostena erakutsi</string>
   <string name="pref_showDownloadReport_sum">Deskargak huts egiten badu, sortu txostena akatsaren xehetasunekin.</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 aurreko bertsioek ez dituzte zabaldutako jakinarazpenak jasaten</string>
+  <string name="pref_enqueue_location_title">Ilaran gehitu kokalekuan</string>
+  <string name="pref_enqueue_location_sum">Saioak hemen gehitu: %1$s</string>
+  <string name="enqueue_location_back">Bukaera</string>
+  <string name="enqueue_location_front">Hasiera</string>
+  <string name="enqueue_location_after_current">Oraingo saioaren ondoren</string>
   <string name="pref_smart_mark_as_played_disabled">Desgaitua</string>
   <string name="pref_image_cache_size_title">Irudiak biltegiratzeko tamaina</string>
   <string name="pref_image_cache_size_sum">Diskoko irudien biltegiratze tamaina</string>
+  <string name="view_mailing_list">Posta zerrenda ikusi</string>
+  <string name="bug_report_title">Errorearen berri eman</string>
+  <string name="open_bug_tracker">Erroreen bilatzailea irekirik</string>
+  <string name="copy_to_clipboard">Kopiatu arbelean</string>
+  <string name="copied_to_clipboard">Arbelean kopiatu da</string>
   <string name="experimental_pref">Esperimentala</string>
   <string name="pref_media_player_message">Aukeratu zein erreprozitzeko gailua erabili artxibategiak erreproduzitzeko</string>
   <string name="pref_current_value">Egungo balioa: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Konfiguratu sareko proxya</string>
+  <string name="pref_faq">Ohiko galderak</string>
   <string name="pref_no_browser_found">Ez da web nabigatzailea aurkitu</string>
   <string name="pref_cast_title">Chromecasterako euskarria</string>
   <string name="pref_cast_message_play_flavor">Gaitu Cast gailuetan urrutira erreproduzitzeko euskarria (chromecast, altabozak edo Android TB modukoak)</string>
@@ -457,6 +482,14 @@
   <string name="pref_delete_removes_from_queue_sum">Kendu saio bat automatikoki ilaratik ezabatzean.</string>
   <!--About screen-->
   <string name="about_pref">Honi buruz</string>
+  <string name="antennapod_version">AntennaPod bertsioa</string>
+  <string name="developers">Garatzaileak</string>
+  <string name="developers_summary">Edonork lagun dezake AntennaPod hobetzen</string>
+  <string name="translators">Itzultzaileak</string>
+  <string name="translators_summary">Itzulpenek AntennaPod erabiltzaile berriak sortzen dituzte Transifex erabiliz</string>
+  <string name="privacy_policy">Pribatutasun politika</string>
+  <string name="licenses">Baimenak</string>
+  <string name="licenses_summary">AntennaPod-ek beste software ezin hobeak erabiltzen ditu</string>
   <!--Search-->
   <string name="search_hint">Saioak bilatu</string>
   <string name="found_in_shownotes_label">Programaren oharretan atzemanda</string>
@@ -571,6 +604,7 @@
   <string name="pref_restart_required">Beharrezkoa da AntennaPod berrabiaraztea aldaketak gauzatzeko.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Eman izena</string>
+  <string name="subscribing_label">Harpidetzen...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Atzera egin</string>
   <string name="fast_forward_label">Aurrera egin</string>
@@ -693,4 +727,6 @@
   <string name="notification_channel_error_description">Zerbait gaizki atera den erakusten du, adibidez, gpodder deskargak edo sinkronizazioak huts egiten duen.</string>
   <string name="import_bad_file">Fitxategi baliogabe/ustela</string>
   <!--Widget settings-->
+  <string name="widget_create_button">widget-a sortu</string>
+  <string name="widget_opacity">Opakutasuna</string>
 </resources>
