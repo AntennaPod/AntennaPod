@@ -43,6 +43,7 @@ public class UITestUtils {
     private static final int NUM_ITEMS_PER_FEED = 10;
 
     private String testFileName = "3sec.mp3";
+    private boolean hostTextOnlyFeeds = false;
     private final Context context;
     private final HTTPBin server = new HTTPBin();
     private File destDir;
@@ -142,9 +143,10 @@ public class UITestUtils {
                         "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);
                 items.add(item);
 
-                File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");
-                item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0, 0));
-
+                if (!hostTextOnlyFeeds) {
+                    File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");
+                    item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0, 0));
+                }
             }
             feed.setItems(items);
             feed.setDownload_url(hostFeed(feed));
@@ -191,7 +193,9 @@ public class UITestUtils {
             }
 
             queue.add(feed.getItems().get(0));
-            feed.getItems().get(1).getMedia().setPlaybackCompletionDate(new Date());
+            if (feed.getItems().get(1).hasMedia()) {
+                feed.getItems().get(1).getMedia().setPlaybackCompletionDate(new Date());
+            }
         }
         localFeedDataAdded = true;
 
@@ -217,5 +221,9 @@ public class UITestUtils {
 
     public void setMediaFileName(String filename) {
         testFileName = filename;
+    }
+
+    public void setHostTextOnlyFeeds(boolean hostTextOnlyFeeds) {
+        this.hostTextOnlyFeeds = hostTextOnlyFeeds;
     }
 }

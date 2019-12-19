@@ -235,7 +235,7 @@ public class ItemFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(itemsLoaded) {
+        if (itemsLoaded) {
             progbarLoading.setVisibility(View.GONE);
             updateAppearance();
         }
@@ -459,7 +459,7 @@ public class ItemFragment extends Fragment {
         }
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         load();
     }
