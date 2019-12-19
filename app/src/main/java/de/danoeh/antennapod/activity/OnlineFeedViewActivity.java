@@ -256,7 +256,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
             if (!isFinishing() && !isPaused) {
                 dialog = new FeedViewAuthenticationDialog(OnlineFeedViewActivity.this,
-                        R.string.authentication_notification_title, downloader.getDownloadRequest().getSource());
+                        R.string.authentication_notification_title,
+                        downloader.getDownloadRequest().getSource()).create();
                 dialog.show();
             }
         } else {
