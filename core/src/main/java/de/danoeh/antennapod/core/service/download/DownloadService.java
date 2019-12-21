@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
-import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 

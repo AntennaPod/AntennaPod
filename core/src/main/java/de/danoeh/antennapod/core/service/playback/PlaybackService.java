@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -58,7 +57,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SearchResult;
-import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -72,7 +71,6 @@ import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -139,11 +137,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
 
     /**
-     * If the PlaybackService receives this action, it will try to apply the supplied volume reduction setting.
+     * If the PlaybackService receives this action, it will try to apply the supplied volume adaption setting.
      */
-    public static final String ACTION_VOLUME_REDUCTION_CHANGED = "action.de.danoeh.antennapod.core.service.volumedReductionChanged";
-    public static final String EXTRA_VOLUME_REDUCTION_SETTING = "PlaybackService.VolumeReductionSettingExtra";
-    public static final String EXTRA_VOLUME_REDUCTION_AFFECTED_FEED = "PlaybackService.VolumeReductionSettingAffectedFeed";
+    public static final String ACTION_VOLUME_ADAPTION_CHANGED = "action.de.danoeh.antennapod.core.service.volumedAdaptionChanged";
+    public static final String EXTRA_VOLUME_ADAPTION_SETTING = "PlaybackService.VolumeAdaptionSettingExtra";
+    public static final String EXTRA_VOLUME_ADAPTION_AFFECTED_FEED = "PlaybackService.VolumeAdaptionSettingAffectedFeed";
 
     /**
      * Custom action used by Android Wear
@@ -286,7 +284,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
         registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-        registerReceiver(volumeReductionChangedReceiver, new IntentFilter(ACTION_VOLUME_REDUCTION_CHANGED));
+        registerReceiver(volumeAdaptionChangedReceiver, new IntentFilter(ACTION_VOLUME_ADAPTION_CHANGED));
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
         flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
@@ -1446,18 +1444,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     };
 
-    private final BroadcastReceiver volumeReductionChangedReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver volumeAdaptionChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_VOLUME_REDUCTION_CHANGED)) {
-                Log.d(TAG, "Received ACTION_VOLUME_REDUCTION_CHANGED intent");
+            if (TextUtils.equals(intent.getAction(), ACTION_VOLUME_ADAPTION_CHANGED)) {
+                Log.d(TAG, "Received ACTION_VOLUME_ADAPTION_CHANGED intent");
 
-                String affectedFeed = intent.getStringExtra(EXTRA_VOLUME_REDUCTION_AFFECTED_FEED);
-                Serializable volumeReductionExtra = intent.getSerializableExtra(EXTRA_VOLUME_REDUCTION_SETTING);
-                VolumeReductionSetting volumeReductionSetting = (VolumeReductionSetting) volumeReductionExtra;
+                String affectedFeed = intent.getStringExtra(EXTRA_VOLUME_ADAPTION_AFFECTED_FEED);
+                Serializable volumeAdaptionExtra = intent.getSerializableExtra(EXTRA_VOLUME_ADAPTION_SETTING);
+                VolumeAdaptionSetting volumeAdaptionSetting = (VolumeAdaptionSetting) volumeAdaptionExtra;
 
                 PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
-                playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, affectedFeed, volumeReductionSetting);
+                playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, affectedFeed, volumeAdaptionSetting);
             }
         }
     };

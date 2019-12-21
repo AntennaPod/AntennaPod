@@ -4,7 +4,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class PlaybackVolumeUpdaterTest {
         Playable noFeedMedia = mock(Playable.class);
         when(mediaPlayer.getPlayable()).thenReturn(noFeedMedia);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.OFF);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -51,7 +51,7 @@ public class PlaybackVolumeUpdaterTest {
         FeedMedia feedMedia = mock(FeedMedia.class);
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.OFF);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -66,7 +66,7 @@ public class PlaybackVolumeUpdaterTest {
         FeedMedia feedMedia = mock(FeedMedia.class);
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.OFF);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -81,7 +81,7 @@ public class PlaybackVolumeUpdaterTest {
         FeedMedia feedMedia = mock(FeedMedia.class);
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.OFF);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -98,7 +98,7 @@ public class PlaybackVolumeUpdaterTest {
         Feed feed = mockFeed(feedMedia, FEED_ID);
         when(feed.getIdentifyingValue()).thenReturn("wrongFeedId");
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.OFF);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -114,9 +114,9 @@ public class PlaybackVolumeUpdaterTest {
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
         FeedPreferences feedPreferences = mockFeedPreferences(feedMedia, FEED_ID);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.LIGHT);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
-        verify(feedPreferences, times(1)).setVolumeReductionSetting(VolumeReductionSetting.LIGHT);
+        verify(feedPreferences, times(1)).setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_REDUCTION);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -132,9 +132,9 @@ public class PlaybackVolumeUpdaterTest {
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
         FeedPreferences feedPreferences = mockFeedPreferences(feedMedia, FEED_ID);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.LIGHT);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
-        verify(feedPreferences, times(1)).setVolumeReductionSetting(VolumeReductionSetting.LIGHT);
+        verify(feedPreferences, times(1)).setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_REDUCTION);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -150,9 +150,9 @@ public class PlaybackVolumeUpdaterTest {
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
         FeedPreferences feedPreferences = mockFeedPreferences(feedMedia, FEED_ID);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.LIGHT);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
-        verify(feedPreferences, times(1)).setVolumeReductionSetting(VolumeReductionSetting.LIGHT);
+        verify(feedPreferences, times(1)).setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_REDUCTION);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -168,9 +168,9 @@ public class PlaybackVolumeUpdaterTest {
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
         FeedPreferences feedPreferences = mockFeedPreferences(feedMedia, FEED_ID);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.LIGHT);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
-        verify(feedPreferences, times(1)).setVolumeReductionSetting(VolumeReductionSetting.LIGHT);
+        verify(feedPreferences, times(1)).setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_REDUCTION);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -186,9 +186,9 @@ public class PlaybackVolumeUpdaterTest {
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
         FeedPreferences feedPreferences = mockFeedPreferences(feedMedia, FEED_ID);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.LIGHT);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
-        verify(feedPreferences, times(1)).setVolumeReductionSetting(VolumeReductionSetting.LIGHT);
+        verify(feedPreferences, times(1)).setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_REDUCTION);
 
         verify(mediaPlayer, never()).pause(anyBoolean(), anyBoolean());
         verify(mediaPlayer, never()).resume();
@@ -204,9 +204,9 @@ public class PlaybackVolumeUpdaterTest {
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
         FeedPreferences feedPreferences = mockFeedPreferences(feedMedia, FEED_ID);
 
-        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeReductionSetting.HEAVY);
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.HEAVY_REDUCTION);
 
-        verify(feedPreferences, times(1)).setVolumeReductionSetting(VolumeReductionSetting.HEAVY);
+        verify(feedPreferences, times(1)).setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
 
         verify(mediaPlayer, times(1)).pause(false, false);
         verify(mediaPlayer, times(1)).resume();

@@ -14,7 +14,7 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -216,42 +216,42 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         volumeReductionPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             switch ((String) newValue) {
                 case "off":
-                    feedPreferences.setVolumeReductionSetting(VolumeReductionSetting.OFF);
+                    feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.OFF);
                     break;
                 case "light":
-                    feedPreferences.setVolumeReductionSetting(VolumeReductionSetting.LIGHT);
+                    feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_REDUCTION);
                     break;
                 case "heavy":
-                    feedPreferences.setVolumeReductionSetting(VolumeReductionSetting.HEAVY);
+                    feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
                     break;
             }
             feed.savePreferences();
             updateVolumeReductionValue();
-            sendVolumeReductionChangedIntent();
+            sendVolumeAdaptionChangedIntent();
 
             return false;
         });
     }
 
-    private void sendVolumeReductionChangedIntent() {
+    private void sendVolumeAdaptionChangedIntent() {
         Context context = getContext();
-        Intent intent = new Intent(PlaybackService.ACTION_VOLUME_REDUCTION_CHANGED).setPackage(context.getPackageName());
-        intent.putExtra(PlaybackService.EXTRA_VOLUME_REDUCTION_AFFECTED_FEED, feed.getIdentifyingValue());
-        intent.putExtra(PlaybackService.EXTRA_VOLUME_REDUCTION_SETTING, feedPreferences.getVolumeReductionSetting());
+        Intent intent = new Intent(PlaybackService.ACTION_VOLUME_ADAPTION_CHANGED).setPackage(context.getPackageName());
+        intent.putExtra(PlaybackService.EXTRA_VOLUME_ADAPTION_AFFECTED_FEED, feed.getIdentifyingValue());
+        intent.putExtra(PlaybackService.EXTRA_VOLUME_ADAPTION_SETTING, feedPreferences.getVolumeAdaptionSetting());
         context.sendBroadcast(intent);
     }
 
     private void updateVolumeReductionValue() {
         ListPreference volumeReductionPreference = (ListPreference) findPreference("volumeReduction");
 
-        switch (feedPreferences.getVolumeReductionSetting()) {
+        switch (feedPreferences.getVolumeAdaptionSetting()) {
             case OFF:
                 volumeReductionPreference.setValue("off");
                 break;
-            case LIGHT:
+            case LIGHT_REDUCTION:
                 volumeReductionPreference.setValue("light");
                 break;
-            case HEAVY:
+            case HEAVY_REDUCTION:
                 volumeReductionPreference.setValue("heavy");
                 break;
         }

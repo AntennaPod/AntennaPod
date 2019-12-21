@@ -2,25 +2,25 @@ package de.danoeh.antennapod.core.service.playback;
 
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 class PlaybackVolumeUpdater {
 
-    public void updateVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeReductionSetting volumeReductionSetting) {
+    public void updateVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeAdaptionSetting volumeAdaptionSetting) {
         Playable playable = mediaPlayer.getPlayable();
         boolean isFeedMedia = playable instanceof FeedMedia;
         boolean isPlayableLoaded = isPlayableLoaded(mediaPlayer.getPlayerStatus());
 
         if (isFeedMedia && isPlayableLoaded) {
-            updateFeedMediaVolumeIfNecessary(mediaPlayer, affectedFeedIdentifier, volumeReductionSetting, (FeedMedia) playable);
+            updateFeedMediaVolumeIfNecessary(mediaPlayer, affectedFeedIdentifier, volumeAdaptionSetting, (FeedMedia) playable);
         }
     }
 
-    private void updateFeedMediaVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeReductionSetting volumeReductionSetting, FeedMedia feedMedia) {
+    private void updateFeedMediaVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, String affectedFeedIdentifier, VolumeAdaptionSetting volumeAdaptionSetting, FeedMedia feedMedia) {
         if (mediaBelongsToAffectedFeed(feedMedia, affectedFeedIdentifier)) {
             FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
-            preferences.setVolumeReductionSetting(volumeReductionSetting);
+            preferences.setVolumeAdaptionSetting(volumeAdaptionSetting);
 
             if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
                 forceUpdateVolume(mediaPlayer);

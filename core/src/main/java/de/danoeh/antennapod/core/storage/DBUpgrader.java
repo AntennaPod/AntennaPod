@@ -300,7 +300,7 @@ class DBUpgrader {
                     + " ADD COLUMN " + PodDBAdapter.KEY_SORT_ORDER + " TEXT");
 
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_VOLUME_REDUCTION + " INTEGER DEFAULT 0");
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0");
         }
     }
 

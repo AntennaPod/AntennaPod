@@ -29,8 +29,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
@@ -673,10 +673,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             if (playable instanceof FeedMedia) {
                 FeedMedia feedMedia = (FeedMedia) playable;
                 FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
-                VolumeReductionSetting volumeReductionSetting = preferences.getVolumeReductionSetting();
-                float reductionFactor = volumeReductionSetting.getReductionFactor();
-                volumeLeft *= reductionFactor;
-                volumeRight *= reductionFactor;
+                VolumeAdaptionSetting volumeAdaptionSetting = preferences.getVolumeAdaptionSetting();
+                float adaptionFactor = volumeAdaptionSetting.getAdaptionFactor();
+                volumeLeft *= adaptionFactor;
+                volumeRight *= adaptionFactor;
             }
             mediaPlayer.setVolume(volumeLeft, volumeRight);
             Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
