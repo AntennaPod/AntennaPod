@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,11 +21,14 @@ import java.util.concurrent.Future;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -36,19 +40,18 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Permutor;
-import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
  * In general, DBWriter-methods will be executed on an internal ExecutorService.
  * Some methods return a Future-object which the caller can use for waiting for the method's completion. The returned Future's
  * will NOT contain any results.
- * The caller can also use the {@link EventDistributor} in order to be notified about the method's completion asynchronously.
- * This class will use the {@link EventDistributor} to notify listeners about changes in the database.
  */
 public class DBWriter {
 
@@ -123,7 +126,7 @@ public class DBWriter {
             }
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
-        EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
 
         return true;
     }
@@ -171,12 +174,12 @@ public class DBWriter {
                 if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                     GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
                 }
-                EventDistributor.getInstance().sendFeedUpdateBroadcast();
+                EventBus.getDefault().post(new FeedListUpdateEvent(feed));
 
                 // we assume we also removed download log entries for the feed or its media files.
                 // especially important if download or refresh failed, as the user should not be able
                 // to retry these
-                EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
+                EventBus.getDefault().post(DownloadLogEvent.listUpdated());
 
                 BackupManager backupManager = new BackupManager(context);
                 backupManager.dataChanged();
@@ -193,7 +196,7 @@ public class DBWriter {
             adapter.open();
             adapter.clearPlaybackHistory();
             adapter.close();
-            EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
+            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
         });
     }
 
@@ -206,7 +209,7 @@ public class DBWriter {
             adapter.open();
             adapter.clearDownloadLog();
             adapter.close();
-            EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
+            EventBus.getDefault().post(DownloadLogEvent.listUpdated());
         });
     }
 
@@ -227,7 +230,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedMediaPlaybackCompletionDate(media);
             adapter.close();
-            EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
+            EventBus.getDefault().post(PlaybackHistoryEvent.listUpdated());
 
         });
     }
@@ -243,7 +246,7 @@ public class DBWriter {
             adapter.open();
             adapter.setDownloadStatus(status);
             adapter.close();
-            EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
+            EventBus.getDefault().post(DownloadLogEvent.listUpdated());
         });
 
     }
@@ -291,14 +294,17 @@ public class DBWriter {
 
     }
 
-    public static Future<?> addQueueItem(final Context context,
-                                         final FeedItem... items) {
+    public static Future<?> addQueueItem(final Context context, final FeedItem... items) {
+        return addQueueItem(context, true, items);
+    }
+
+    public static Future<?> addQueueItem(final Context context, boolean markAsUnplayed, final FeedItem... items) {
         LongList itemIds = new LongList(items.length);
         for (FeedItem item : items) {
             itemIds.add(item.getId());
             item.addTag(FeedItem.TAG_QUEUE);
         }
-        return addQueueItem(context, false, itemIds.toArray());
+        return addQueueItem(context, false, markAsUnplayed, itemIds.toArray());
     }
 
     /**
@@ -311,57 +317,68 @@ public class DBWriter {
      */
     public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
                                          final long... itemIds) {
+        return addQueueItem(context, performAutoDownload, true, itemIds);
+    }
+
+    /**
+     * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
+     * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
+     *
+     * @param context             A context that is used for opening a database connection.
+     * @param performAutoDownload true if an auto-download process should be started after the operation.
+     * @param markAsUnplayed      true if the items should be marked as unplayed when enqueueing
+     * @param itemIds             IDs of the FeedItem objects that should be added to the queue.
+     */
+    public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
+                                         final boolean markAsUnplayed, final long... itemIds) {
         return dbExec.submit(() -> {
-            if (itemIds.length > 0) {
-                final PodDBAdapter adapter = PodDBAdapter.getInstance();
-                adapter.open();
-                final List<FeedItem> queue = DBReader.getQueue(adapter);
+            if (itemIds.length < 1) {
+                return;
+            }
 
-                if (queue != null) {
-                    boolean queueModified = false;
-                    LongList markAsUnplayedIds = new LongList();
-                    List<QueueEvent> events = new ArrayList<>();
-                    List<FeedItem> updatedItems = new ArrayList<>();
-                    for (int i = 0; i < itemIds.length; i++) {
-                        if (!itemListContains(queue, itemIds[i])) {
-                            final FeedItem item = DBReader.getFeedItem(itemIds[i]);
+            final PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            final List<FeedItem> queue = DBReader.getQueue(adapter);
 
+            boolean queueModified = false;
+            LongList markAsUnplayedIds = new LongList();
+            List<QueueEvent> events = new ArrayList<>();
+            List<FeedItem> updatedItems = new ArrayList<>();
+            ItemEnqueuePositionCalculator positionCalculator =
+                    new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
+            Playable currentlyPlaying = Playable.PlayableUtils.createInstanceFromPreferences(context);
+            int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
+            for (long itemId : itemIds) {
+                if (!itemListContains(queue, itemId)) {
+                    final FeedItem item = DBReader.getFeedItem(itemId);
+                    if (item != null) {
+                        queue.add(insertPosition, item);
+                        events.add(QueueEvent.added(item, insertPosition));
 
-                            if (item != null) {
-                                // add item to either front ot back of queue
-                                boolean addToFront = UserPreferences.enqueueAtFront();
-                                if (addToFront) {
-                                    queue.add(i, item);
-                                    events.add(QueueEvent.added(item, i));
-                                } else {
-                                    queue.add(item);
-                                    events.add(QueueEvent.added(item, queue.size() - 1));
-                                }
-                                item.addTag(FeedItem.TAG_QUEUE);
-                                updatedItems.add(item);
-                                queueModified = true;
-                                if (item.isNew()) {
-                                    markAsUnplayedIds.add(item.getId());
-                                }
-                            }
+                        item.addTag(FeedItem.TAG_QUEUE);
+                        updatedItems.add(item);
+                        queueModified = true;
+                        if (item.isNew()) {
+                            markAsUnplayedIds.add(item.getId());
                         }
-                    }
-                    if (queueModified) {
-                        applySortOrder(queue, events);
-                        adapter.setQueue(queue);
-                        for (QueueEvent event : events) {
-                            EventBus.getDefault().post(event);
-                        }
-                        EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
-                        if (markAsUnplayedIds.size() > 0) {
-                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
-                        }
+                        insertPosition++;
                     }
                 }
-                adapter.close();
-                if (performAutoDownload) {
-                    DBTasks.autodownloadUndownloadedItems(context);
+            }
+            if (queueModified) {
+                applySortOrder(queue, events);
+                adapter.setQueue(queue);
+                for (QueueEvent event : events) {
+                    EventBus.getDefault().post(event);
                 }
+                EventBus.getDefault().post(FeedItemEvent.updated(updatedItems));
+                if (markAsUnplayed && markAsUnplayedIds.size() > 0) {
+                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
+                }
+            }
+            adapter.close();
+            if (performAutoDownload) {
+                DBTasks.autodownloadUndownloadedItems(context);
             }
         });
     }
@@ -385,7 +402,7 @@ public class DBWriter {
             // do not shuffle the list on every change
             return;
         }
-        Permutor<FeedItem> permutor = QueueSorter.getPermutor(sortOrder);
+        Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         permutor.reorder(queue);
 
         // Replace ADDED events by a single SORTED event
@@ -609,7 +626,7 @@ public class DBWriter {
             adapter.setFeedItemRead(played, itemIds);
             adapter.close();
             if (broadcastUpdate) {
-                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+                EventBus.getDefault().post(new UnreadItemsUpdateEvent());
             }
         });
     }
@@ -641,7 +658,7 @@ public class DBWriter {
                     resetMediaPosition);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -657,7 +674,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED, feedId);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -673,7 +690,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.PLAYED, feedId);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -687,7 +704,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.PLAYED);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -701,7 +718,7 @@ public class DBWriter {
             adapter.setFeedItems(FeedItem.NEW, FeedItem.UNPLAYED);
             adapter.close();
 
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -801,7 +818,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedPreferences(preferences);
             adapter.close();
-            EventDistributor.getInstance().sendFeedUpdateBroadcast();
+            EventBus.getDefault().post(new FeedListUpdateEvent(preferences.getFeedID()));
         });
     }
 
@@ -831,6 +848,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedLastUpdateFailed(feedId, lastUpdateFailed);
             adapter.close();
+            EventBus.getDefault().post(new FeedListUpdateEvent(feedId));
         });
     }
 
@@ -840,19 +858,23 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedCustomTitle(feed.getId(), feed.getCustomTitle());
             adapter.close();
-            EventDistributor.getInstance().sendFeedUpdateBroadcast();
+            EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
     }
 
     /**
-     * Sort the FeedItems in the queue with the given Permutor.
+     * Sort the FeedItems in the queue with the given the named sort order.
      *
-     * @param permutor        Encapsulates whole-Queue reordering logic.
      * @param broadcastUpdate <code>true</code> if this operation should trigger a
      *                        QueueUpdateBroadcast. This option should be set to <code>false</code>
      *                        if the caller wants to avoid unexpected updates of the GUI.
      */
-    public static Future<?> reorderQueue(final Permutor<FeedItem> permutor, final boolean broadcastUpdate) {
+    public static Future<?> reorderQueue(@Nullable SortOrder sortOrder, final boolean broadcastUpdate) {
+        if (sortOrder == null) {
+            Log.w(TAG, "reorderQueue() - sortOrder is null. Do nothing.");
+            return dbExec.submit(() -> { });
+        }
+        final Permutor<FeedItem> permutor = FeedItemPermutors.getPermutor(sortOrder);
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
@@ -884,7 +906,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemAutoDownload(feedItem, autoDownload ? 1 : 0);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -903,7 +925,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedItemAutoDownload(feedItem, autoDownload);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -921,7 +943,7 @@ public class DBWriter {
             adapter.open();
             adapter.setFeedsItemsAutoDownload(feed, autoDownload);
             adapter.close();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -944,6 +966,19 @@ public class DBWriter {
         });
     }
 
+    /**
+     * Set item sort order of the feed
+     *
+     */
+    public static Future<?> setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
+        return dbExec.submit(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedItemSortOrder(feedId, sortOrder);
+            adapter.close();
+            EventBus.getDefault().post(new FeedEvent(FeedEvent.Action.SORT_ORDER_CHANGED, feedId));
+        });
+    }
 
     /**
      * Reset the statistics in DB

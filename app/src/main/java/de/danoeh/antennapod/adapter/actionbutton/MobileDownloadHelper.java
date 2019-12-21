@@ -3,15 +3,14 @@ package de.danoeh.antennapod.adapter.actionbutton;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-
+import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 class MobileDownloadHelper {
     private static long addToQueueTimestamp;
@@ -27,16 +26,15 @@ class MobileDownloadHelper {
     }
 
     static void confirmMobileDownload(final Context context, final FeedItem item) {
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(context)
-                .title(R.string.confirm_mobile_download_dialog_title)
-                .content(R.string.confirm_mobile_download_dialog_message)
-                .positiveText(context.getText(R.string.confirm_mobile_download_dialog_enable_temporarily))
-                .onPositive((dialog, which) -> downloadFeedItems(context, item));
+        AlertDialog.Builder builder = new AlertDialog.Builder(context)
+                .setTitle(R.string.confirm_mobile_download_dialog_title)
+                .setMessage(R.string.confirm_mobile_download_dialog_message)
+                .setPositiveButton(context.getText(R.string.confirm_mobile_download_dialog_enable_temporarily),
+                        (dialog, which) -> downloadFeedItems(context, item));
         if (!DBReader.getQueueIDList().contains(item.getId())) {
-            builder
-                    .content(R.string.confirm_mobile_download_dialog_message_not_in_queue)
-                    .neutralText(R.string.confirm_mobile_download_dialog_only_add_to_queue)
-                    .onNeutral((dialog, which) -> addToQueue(context, item));
+            builder.setMessage(R.string.confirm_mobile_download_dialog_message_not_in_queue)
+                    .setNeutralButton(R.string.confirm_mobile_download_dialog_only_add_to_queue,
+                            (dialog, which) -> addToQueue(context, item));
         }
         builder.show();
     }
@@ -50,7 +48,7 @@ class MobileDownloadHelper {
     private static void downloadFeedItems(Context context, FeedItem item) {
         allowMobileDownloadTimestamp = System.currentTimeMillis();
         try {
-            DBTasks.downloadFeedItems(context, item);
+            DownloadRequester.getInstance().downloadMedia(context, item);
             Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
         } catch (DownloadRequestException e) {
             e.printStackTrace();

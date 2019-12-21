@@ -12,7 +12,6 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
-import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE;
 
 class PlayActionButton extends ItemActionButton {
 
@@ -52,12 +51,14 @@ class PlayActionButton extends ItemActionButton {
     }
 
     private void togglePlayPause(Context context, FeedMedia media) {
-        new PlaybackServiceStarter(context, media)
-                .startWhenPrepared(true)
-                .shouldStream(false)
-                .start();
-
-        String pauseOrResume = media.isCurrentlyPlaying() ? ACTION_PAUSE_PLAY_CURRENT_EPISODE : ACTION_RESUME_PLAY_CURRENT_EPISODE;
-        IntentUtils.sendLocalBroadcast(context, pauseOrResume);
+        if (media.isCurrentlyPlaying()) {
+            IntentUtils.sendLocalBroadcast(context, ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+        } else {
+            new PlaybackServiceStarter(context, media)
+                    .callEvenIfRunning(true)
+                    .startWhenPrepared(true)
+                    .shouldStream(false)
+                    .start();
+        }
     }
 }

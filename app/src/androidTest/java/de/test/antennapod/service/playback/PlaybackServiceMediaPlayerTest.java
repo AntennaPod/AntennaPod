@@ -2,8 +2,8 @@ package de.test.antennapod.service.playback;
 
 import android.content.Context;
 
-import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import de.danoeh.antennapod.core.feed.VolumeReductionSetting;
 import de.test.antennapod.EspressoTestUtils;
 import junit.framework.AssertionFailedError;
@@ -33,7 +33,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -46,13 +46,12 @@ import static org.junit.Assert.fail;
  */
 @MediumTest
 public class PlaybackServiceMediaPlayerTest {
-    private static final String PLAYABLE_FILE_URL = "http://127.0.0.1:" + HTTPBin.PORT + "/files/0";
     private static final String PLAYABLE_DEST_URL = "psmptestfile.mp3";
     private String PLAYABLE_LOCAL_URL = null;
     private static final int LATCH_TIMEOUT_SECONDS = 3;
 
     private HTTPBin httpServer;
-
+    private String playableFileUrl;
     private volatile AssertionFailedError assertionError;
 
     @After
@@ -68,10 +67,11 @@ public class PlaybackServiceMediaPlayerTest {
         EspressoTestUtils.makeNotFirstRun();
         EspressoTestUtils.clearDatabase();
 
-        final Context context = InstrumentationRegistry.getTargetContext();
+        final Context context = getInstrumentation().getTargetContext();
 
         httpServer = new HTTPBin();
         httpServer.start();
+        playableFileUrl = httpServer.getBaseUrl() + "/files/0";
 
         File cacheDir = context.getExternalFilesDir("testFiles");
         if (cacheDir == null)
@@ -82,7 +82,7 @@ public class PlaybackServiceMediaPlayerTest {
         assertTrue(cacheDir.canWrite());
         assertTrue(cacheDir.canRead());
         if (!dest.exists()) {
-            InputStream i = InstrumentationRegistry.getContext().getAssets().open("testfile.mp3");
+            InputStream i = getInstrumentation().getTargetContext().getAssets().open("3sec.mp3");
             OutputStream o = new FileOutputStream(new File(cacheDir, PLAYABLE_DEST_URL));
             IOUtils.copy(i, o);
             o.flush();
@@ -168,7 +168,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
+        Playable p = writeTestPlayable(playableFileUrl, null);
         psmp.playMediaObject(p, true, false, false);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         if (assertionError != null)
@@ -208,7 +208,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
+        Playable p = writeTestPlayable(playableFileUrl, null);
         psmp.playMediaObject(p, true, true, false);
 
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
@@ -252,7 +252,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
+        Playable p = writeTestPlayable(playableFileUrl, null);
         psmp.playMediaObject(p, true, false, true);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         if (assertionError != null)
@@ -297,7 +297,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
+        Playable p = writeTestPlayable(playableFileUrl, null);
         psmp.playMediaObject(p, true, true, true);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         if (assertionError != null)
@@ -335,7 +335,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
+        Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
         psmp.playMediaObject(p, false, false, false);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         if (assertionError != null)
@@ -374,7 +374,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
+        Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
         psmp.playMediaObject(p, false, true, false);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         if (assertionError != null)
@@ -416,7 +416,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
+        Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
         psmp.playMediaObject(p, false, false, true);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         if (assertionError != null)
@@ -461,7 +461,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
+        Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
         psmp.playMediaObject(p, false, true, true);
         boolean res = countDownLatch.await(LATCH_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         if (assertionError != null)
@@ -524,7 +524,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
+        Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
         if (initialState == PlayerStatus.PLAYING) {
             psmp.playMediaObject(p, stream, true, true);
         }
@@ -617,7 +617,7 @@ public class PlaybackServiceMediaPlayerTest {
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
         if (initialState == PlayerStatus.PREPARED || initialState == PlayerStatus.PLAYING || initialState == PlayerStatus.PAUSED) {
             boolean startWhenPrepared = (initialState != PlayerStatus.PREPARED);
-            psmp.playMediaObject(writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL), false, startWhenPrepared, true);
+            psmp.playMediaObject(writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL), false, startWhenPrepared, true);
         }
         if (initialState == PlayerStatus.PAUSED) {
             psmp.pause(false, false);
@@ -674,7 +674,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
+        Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
         if (initialState == PlayerStatus.INITIALIZED
                 || initialState == PlayerStatus.PLAYING
                 || initialState == PlayerStatus.PREPARED
@@ -748,7 +748,7 @@ public class PlaybackServiceMediaPlayerTest {
             }
         });
         PlaybackServiceMediaPlayer psmp = new LocalPSMP(c, callback);
-        Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
+        Playable p = writeTestPlayable(playableFileUrl, PLAYABLE_LOCAL_URL);
         boolean prepareImmediately = initialState != PlayerStatus.INITIALIZED;
         boolean startImmediately = initialState != PlayerStatus.PREPARED;
         psmp.playMediaObject(p, false, startImmediately, prepareImmediately);

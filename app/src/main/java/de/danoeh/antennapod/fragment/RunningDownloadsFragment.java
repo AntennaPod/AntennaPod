@@ -25,6 +25,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays all running downloads and provides actions to cancel them
@@ -75,7 +76,7 @@ public class RunningDownloadsFragment extends ListFragment {
         setListAdapter(null);
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(DownloadEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;

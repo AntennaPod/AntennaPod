@@ -151,10 +151,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         videoview.getHolder().addCallback(surfaceHolderCallback);
         videoframe.setOnTouchListener(onVideoviewTouched);
         videoOverlay.setOnTouchListener((view, motionEvent) -> true); // To suppress touches directly below the slider
-
-        if (Build.VERSION.SDK_INT >= 16) {
-            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        }
+        videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         videoOverlay.setFitsSystemWindows(true);
 
         setupVideoControlsToggler();
@@ -351,9 +348,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
                 controls.startAnimation(animation);
             }
         }
-        int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         videoOverlay.setFitsSystemWindows(true);
 
         videoOverlay.setVisibility(View.GONE);

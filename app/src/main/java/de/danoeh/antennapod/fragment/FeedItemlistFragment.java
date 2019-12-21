@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.ListFragment;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -23,12 +19,17 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.ListFragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -45,7 +46,12 @@ import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
+
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -59,6 +65,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Optional;
@@ -79,12 +86,6 @@ import io.reactivex.schedulers.Schedulers;
 @SuppressLint("ValidFragment")
 public class FeedItemlistFragment extends ListFragment {
     private static final String TAG = "ItemlistFragment";
-
-    private static final int EVENTS = EventDistributor.UNREAD_ITEMS_UPDATE
-            | EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.PLAYER_STATUS_UPDATE;
-
-    public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     private FeedItemlistAdapter adapter;
@@ -151,7 +152,6 @@ public class FeedItemlistFragment extends ListFragment {
 
         registerForContextMenu(getListView());
 
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadItems();
     }
@@ -160,7 +160,6 @@ public class FeedItemlistFragment extends ListFragment {
     public void onDestroyView() {
         super.onDestroyView();
 
-        EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
@@ -187,11 +186,11 @@ public class FeedItemlistFragment extends ListFragment {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        MenuItemUtils.adjustTextColor(getActivity(), sv);
         sv.setQueryHint(getString(R.string.search_hint));
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
              @Override
              public boolean onMenuItemActionExpand(MenuItem item) {
+                 menu.findItem(R.id.sort_items).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                  menu.findItem(R.id.filter_items).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                  menu.findItem(R.id.episode_actions).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                  menu.findItem(R.id.refresh_item).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
@@ -237,6 +236,10 @@ public class FeedItemlistFragment extends ListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
+            if (feed == null) {
+                Toast.makeText(getContext(), R.string.please_wait_for_data, Toast.LENGTH_LONG).show();
+                return true;
+            }
             try {
                 if (!FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed)) {
                     switch (item.getItemId()) {
@@ -345,7 +348,7 @@ public class FeedItemlistFragment extends ListFragment {
         position -= l.getHeaderViewsCount();
         MainActivity activity = (MainActivity) getActivity();
         long[] ids = FeedItemUtil.getIds(feed.getItems());
-        activity.loadChildFragment(ItemFragment.newInstance(ids, position));
+        activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
         activity.getSupportActionBar().setTitle(feed.getTitle());
     }
 
@@ -392,18 +395,28 @@ public class FeedItemlistFragment extends ListFragment {
         }
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+    private void updateUi() {
+        refreshHeaderView();
+        loadItems();
+        updateProgressBarVisibility();
+    }
 
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EVENTS & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent. arg " + arg);
-                refreshHeaderView();
-                loadItems();
-                updateProgressBarVisibility();
-            }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        if (event.contains(feed)) {
+            updateUi();
         }
-    };
+    }
 
     private void updateProgressBarVisibility() {
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
@@ -628,6 +641,11 @@ public class FeedItemlistFragment extends ListFragment {
             DBReader.loadAdditionalFeedItemListData(feed.getItems());
             FeedItemFilter filter = feed.getItemFilter();
             feed.setItems(filter.filter(feed.getItems()));
+        }
+        if (feed != null && feed.getSortOrder() != null) {
+            List<FeedItem> feedItems = feed.getItems();
+            FeedItemPermutors.getPermutor(feed.getSortOrder()).reorder(feedItems);
+            feed.setItems(feedItems);
         }
         return Optional.ofNullable(feed);
     }

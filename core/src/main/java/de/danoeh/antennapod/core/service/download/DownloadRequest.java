@@ -3,6 +3,8 @@ package de.danoeh.antennapod.core.service.download;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -26,6 +28,7 @@ public class DownloadRequest implements Parcelable {
     private long soFar;
     private long size;
     private int statusMsg;
+    private boolean mediaEnqueued;
 
     public DownloadRequest(@NonNull String destination,
                            @NonNull String source,
@@ -45,6 +48,7 @@ public class DownloadRequest implements Parcelable {
         this.username = username;
         this.password = password;
         this.deleteOnFailure = deleteOnFailure;
+        this.mediaEnqueued = false;
         this.arguments = (arguments != null) ? arguments : new Bundle();
     }
 
@@ -74,17 +78,10 @@ public class DownloadRequest implements Parcelable {
         feedfileType = in.readInt();
         lastModified = in.readString();
         deleteOnFailure = (in.readByte() > 0);
+        username = nullIfEmpty(in.readString());
+        password = nullIfEmpty(in.readString());
+        mediaEnqueued = (in.readByte() > 0);
         arguments = in.readBundle();
-        if (in.dataAvail() > 0) {
-            username = in.readString();
-        } else {
-            username = null;
-        }
-        if (in.dataAvail() > 0) {
-            password = in.readString();
-        } else {
-            password = null;
-        }
     }
 
     @Override
@@ -101,13 +98,23 @@ public class DownloadRequest implements Parcelable {
         dest.writeInt(feedfileType);
         dest.writeString(lastModified);
         dest.writeByte((deleteOnFailure) ? (byte) 1 : 0);
+        // in case of null username/password, still write an empty string
+        // (rather than skipping it). Otherwise, unmarshalling  a collection
+        // of them from a Parcel (from an Intent extra to submit a request to DownloadService) will fail.
+        //
+        // see: https://stackoverflow.com/a/22926342
+        dest.writeString(nonNullString(username));
+        dest.writeString(nonNullString(password));
+        dest.writeByte((mediaEnqueued) ? (byte) 1 : 0);
         dest.writeBundle(arguments);
-        if (username != null) {
-            dest.writeString(username);
-        }
-        if (password != null) {
-            dest.writeString(password);
-        }
+    }
+
+    private static String nonNullString(String str) {
+        return str != null ? str : "";
+    }
+
+    private static String nullIfEmpty(String str) {
+        return TextUtils.isEmpty(str) ? null : str;
     }
 
     public static final Parcelable.Creator<DownloadRequest> CREATOR = new Parcelable.Creator<DownloadRequest>() {
@@ -145,6 +152,7 @@ public class DownloadRequest implements Parcelable {
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (username != null ? !username.equals(that.username) : that.username != null)
             return false;
+        if (mediaEnqueued != that.mediaEnqueued) return false;
         return true;
     }
 
@@ -164,6 +172,7 @@ public class DownloadRequest implements Parcelable {
         result = 31 * result + (int) (soFar ^ (soFar >>> 32));
         result = 31 * result + (int) (size ^ (size >>> 32));
         result = 31 * result + statusMsg;
+        result = 31 * result + (mediaEnqueued ? 1 : 0);
         return result;
     }
 
@@ -243,6 +252,18 @@ public class DownloadRequest implements Parcelable {
 
     public boolean isDeleteOnFailure() {
         return deleteOnFailure;
+    }
+
+    public boolean isMediaEnqueued() {
+        return mediaEnqueued;
+    }
+
+    /**
+     * Set to true if the media is enqueued because of this download.
+     * The state is helpful if the download is cancelled, and undoing the enqueue is needed.
+     */
+    public void setMediaEnqueued(boolean mediaEnqueued) {
+        this.mediaEnqueued = mediaEnqueued;
     }
 
     public Bundle getArguments() {

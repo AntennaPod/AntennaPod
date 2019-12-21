@@ -10,35 +10,32 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="16dp"
             android:orientation="vertical">
 
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                      android:orientation="horizontal">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
             <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dip"
                     android:layout_height="wrap_content"
                     android:text="@string/discover"
                     android:textSize="18sp"
                     android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
                     android:textColor="?android:attr/textColorPrimary"/>
 
-            <TextView
-                    android:layout_width="0dp"
+            <Button
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
                     android:text="@string/discover_more"
-                    android:gravity="end"
-                    android:textAlignment="viewEnd"
-                    android:textSize="18sp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_marginBottom="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:layout_weight="1"
                     android:id="@+id/discover_more"
-                    android:textColor="@color/antennapod_blue"/>
+                    style="?android:attr/buttonBarButtonStyle"/>
         </LinearLayout>
 
         <RelativeLayout
@@ -52,8 +49,6 @@
                     android:numColumns="4"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1"
-                    android:horizontalSpacing="4dp"
-                    android:verticalSpacing="4dp"
                     android:scrollbars="none"
                     android:layout_marginTop="8dp"
                     android:layout_centerInParent="true"
@@ -70,7 +65,7 @@
 
             <TextView
                     android:id="@+id/discover_error"
-                    android:textColor="@color/md_edittext_error"
+                    android:textColor="@color/download_failed_red"
                     android:layout_width="match_parent"
                     android:layout_centerInParent="true"
                     android:layout_height="wrap_content" />

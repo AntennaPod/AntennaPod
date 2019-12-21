@@ -11,6 +11,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
@@ -140,7 +141,7 @@ public class PlaybackServiceTaskManager {
         if (queueFuture.isDone()) {
             try {
                 return queueFuture.get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException | ExecutionException | CancellationException e) {
                 e.printStackTrace();
             }
         }
@@ -244,7 +245,7 @@ public class PlaybackServiceTaskManager {
     public synchronized void disableSleepTimer() {
         if (isSleepTimerActive()) {
             Log.d(TAG, "Disabling sleep timer");
-            sleepTimerFuture.cancel(true);
+            sleepTimer.cancel();
         }
     }
 
@@ -449,6 +450,13 @@ public class PlaybackServiceTaskManager {
             }
         }
 
+        public void cancel() {
+            sleepTimerFuture.cancel(true);
+            if (shakeListener != null) {
+                shakeListener.pause();
+            }
+            postCallback(callback::onSleepTimerReset);
+        }
     }
 
     public interface PSTMCallback {

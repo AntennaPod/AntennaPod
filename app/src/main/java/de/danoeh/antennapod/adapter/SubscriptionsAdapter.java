@@ -84,6 +84,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         if (feed == null) return null;
 
         holder.feedTitle.setText(feed.getTitle());
+        holder.imageView.setContentDescription(feed.getTitle());
         holder.feedTitle.setVisibility(View.VISIBLE);
         int count = itemAccess.getFeedCounter(feed.getId());
         if(count > 0) {

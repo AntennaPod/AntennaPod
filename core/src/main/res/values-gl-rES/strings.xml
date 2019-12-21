@@ -4,7 +4,7 @@
   <string name="feed_update_receiver_name">Actualizar subscricións</string>
   <string name="feeds_label">Fontes</string>
   <string name="statistics_label">Estatísticas</string>
-  <string name="add_feed_label">Engadir podcast</string>
+  <string name="add_feed_label">Engadir Podcast</string>
   <string name="episodes_label">Episodios</string>
   <string name="all_episodes_short_label">Todo</string>
   <string name="new_episodes_label">Novo</string>
@@ -13,7 +13,7 @@
   <string name="settings_label">Axustes</string>
   <string name="downloads_label">Descargas</string>
   <string name="downloads_running_label">Activas</string>
-  <string name="downloads_completed_label">Completado</string>
+  <string name="downloads_completed_label">Completadas</string>
   <string name="downloads_log_label">Rexistro</string>
   <string name="subscriptions_label">Subscricións</string>
   <string name="subscriptions_list_label">Lista de subscricións</string>
@@ -22,10 +22,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Sincronizar con outros dispositivos</string>
   <string name="gpodnet_auth_label">gpodder.net Conexión</string>
-  <string name="free_space_label">%1$s libre</string>
   <string name="episode_cache_full_title">Caché de episodios chea</string>
   <string name="episode_cache_full_message">Acadouse o límite de espazo na caché de episodios. Pode incrementalo nos Axustes do tamaño da caché.</string>
-  <string name="synchronizing">Sincronizando...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo total dos podcast reproducidos:</string>
   <string name="statistics_details_dialog">%1$d de %2$d episodios iniciados.\n\nReproducidos %3$s de %4$s.</string>
@@ -33,6 +31,8 @@
   <string name="statistics_mode_normal">Calcular a duración que foi realmente reproducida. Reproducir dúas veces conta dobre, mentres que marcar como lido non conta</string>
   <string name="statistics_mode_count_all">Sumar todos os podcast marcados como reproducidos</string>
   <string name="statistics_speed_not_counted">Aviso: A velocidade de reprodución non se ten en conta en ningún caso.</string>
+  <string name="statistics_reset_data">Restablecer estatísticas</string>
+  <string name="statistics_reset_data_msg">Esto borrará o histórico de escoita de todos os episodios. Seguro que queres borralo?</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Pechar menú</string>
@@ -63,7 +63,6 @@
   <string name="author_label">Autor(es)</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
-  <string name="podcast_settings_label">Axustes</string>
   <string name="cover_label">Imaxe</string>
   <string name="error_label">Fallo</string>
   <string name="error_msg_prefix">Produciuse un fallo:</string>
@@ -72,14 +71,9 @@
   <string name="external_storage_error_msg">Non se dispón de almacenamento externo. Por favor asegúrese de que o almacenamento externo está montado e así a aplicación poderá funcionar correctamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="chapter_duration">Duración: %1$s</string>
-  <string name="shownotes_label">Notas do episodio</string>
   <string name="description_label">Descrición</string>
-  <string name="most_recent_prefix">Episodio máis recente:\u0020</string>
   <string name="episodes_suffix">\u0020episodios</string>
-  <string name="length_prefix">Duración:\u0020</string>
-  <string name="size_prefix">Tamaño:\u0020</string>
   <string name="processing_label">Procesando</string>
-  <string name="loading_label">Cargando...</string>
   <string name="save_username_password_label">Gardar nome de usuario e contrasinal</string>
   <string name="close_label">Pechar</string>
   <string name="retry_label">Reintentar</string>
@@ -108,8 +102,6 @@
   <string name="feedurl_label">URL da fonte</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Engadir Podcast por URL</string>
-  <string name="podcastdirectories_label">Buscar Podcast nun directorio</string>
-  <string name="podcastdirectories_descr">Para novos podcasts, pode buscar en iTunes ou fyyd, ou tamén en gpodder.net por nome, categoría ou popularidade.</string>
   <string name="browse_gpoddernet_label">Buscar en gpodder.net</string>
   <string name="discover">Descubrir</string>
   <string name="discover_more">máis »</string>
@@ -118,9 +110,9 @@
   <string name="mark_all_read_msg">Marcáronse todos como reproducidos</string>
   <string name="mark_all_read_confirmation_msg">Por favor confirme que quere marcar todos os episodios como reproducidos.</string>
   <string name="mark_all_read_feed_confirmation_msg">Por favor, confirme que quere marcar todos os episodios deste podcast como reproducidos.</string>
-  <string name="remove_all_new_flags_label">Eliminar todas as \"novas\" marcas</string>
+  <string name="remove_all_new_flags_label">Quitarlle a marca de \"novidade\" a todo</string>
   <string name="removed_all_new_flags_msg">Eliminou todas as \"novas\" marcas</string>
-  <string name="remove_all_new_flags_confirmation_msg">Por favor, confirme que quere eliminar a marca de \"novo\" de todos os episodios.</string>
+  <string name="remove_all_new_flags_confirmation_msg">Por favor, confirme que quere quitar marca de \"novidade\" a todos os episodios.</string>
   <string name="show_info_label">Mostrar información</string>
   <string name="show_feed_settings_label">Mostrar axustes do podcast</string>
   <string name="feed_info_label">Información do podcast</string>
@@ -131,13 +123,13 @@
   <string name="share_link_label">Compartir a URL do episodio</string>
   <string name="share_link_with_position_label">Compartir a URL do ficheiro do episodio coa posición</string>
   <string name="share_file_label">Compartir ficheiro</string>
+  <string name="share_website_url_label">Compartir URL da web</string>
   <string name="share_feed_url_label">Compartir URL da fonte</string>
   <string name="share_item_url_label">Compartir a URL do ficheiro multimedia</string>
   <string name="share_item_url_with_position_label">Compartir a URL do ficheiro multimedia coa posición</string>
   <string name="feed_delete_confirmation_msg">Por favor, confirme que quere eliminar o podcast \"%1$s\" e TODOS os seus episodios (incluídos os xa descargados).</string>
   <string name="feed_remover_msg">Eliminando o podcast</string>
   <string name="load_complete_feed">Actualizar o podcast completo</string>
-  <string name="hide_episodes_title">Ocultar episodios</string>
   <string name="batch_edit">Edición por lote</string>
   <string name="select_all_above">Seleccionar todo arriba</string>
   <string name="select_all_below">Seleccionar todo debaixo</string>
@@ -161,9 +153,7 @@
   </plurals>
   <string name="play_label">Reproducir</string>
   <string name="pause_label">Pausar</string>
-  <string name="stop_label">Parar</string>
-  <string name="stream_label">Enviar</string>
-  <string name="remove_label">Eliminar</string>
+  <string name="stream_label">Difundir</string>
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">Non se puido eliminar o ficheiro. Reiniciar o dispositivo podería axudar.</string>
   <string name="delete_episode_label">Eliminar episodio</string>
@@ -207,14 +197,12 @@
   <string name="removed_item">Elmento eleminado</string>
   <!--Download messages and labels-->
   <string name="download_successful">exitoso</string>
-  <string name="download_failed">fallou</string>
   <string name="download_pending">Descarga pendente</string>
   <string name="download_running">Descarga en proceso</string>
   <string name="download_error_details">Detalles</string>
   <string name="download_error_details_message">%1$s\n\nURL do ficheiro:\n %2$s </string>
   <string name="download_error_device_not_found">Non se atopou dispositivo de almacenamento</string>
   <string name="download_error_insufficient_space">Non hai suficiente espacio</string>
-  <string name="download_error_file_error">Fallo de ficheiro</string>
   <string name="download_error_http_data_error">Fallo de datos HTTP</string>
   <string name="download_error_error_unknown">Fallo descoñecido</string>
   <string name="download_error_parser_exception">Excepción no procesador</string>
@@ -224,7 +212,6 @@
   <string name="download_error_unauthorized">Fallo na autenticación</string>
   <string name="download_error_file_type_type">Fallo no tipo de ficheiro</string>
   <string name="download_error_forbidden">Non admitido</string>
-  <string name="cancel_all_downloads_label">Cancelar todas as descargas</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nDesactivouse a <i>Descarga Automática</i> para este elemento</string>
   <string name="download_report_title">Descargas completadas con erro(s)</string>
@@ -243,7 +230,6 @@
   <string name="download_log_title_unknown">Título descoñecido</string>
   <string name="download_type_feed">Fonte</string>
   <string name="download_type_media">Ficheiro de medios</string>
-  <string name="download_type_image">Imaxe</string>
   <string name="download_request_error_dialog_message_prefix">Houbo un fallo intentando descargar o ficheiro:\u0020</string>
   <string name="null_value_podcast_error">Non se proporcionou ningún podcast que se poida mostrar.</string>
   <string name="authentication_notification_title">Precísase autenticación</string>
@@ -269,16 +255,16 @@
   <string name="no_media_playing_label">Non reproducindo</string>
   <string name="player_buffering_msg">Almacenando</string>
   <string name="player_go_to_picture_in_picture">Modo imaxe-en-imaxe</string>
-  <string name="playbackservice_notification_title">Reproducindo podcast</string>
   <string name="unknown_media_key">AntennaPod - chave de medios descoñecida: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Bloquear a cola</string>
   <string name="unlock_queue">Desbloquear a cola</string>
   <string name="queue_locked">Cola bloqueada</string>
   <string name="queue_unlocked">Cola desbloqueada</string>
+  <string name="queue_lock_warning">Se bloqueas a cola, non poderás quitar ou mover os episodios.</string>
+  <string name="checkbox_do_not_show_again">Non mostrar outra vez</string>
   <string name="clear_queue_label">Limpar cola</string>
   <string name="undo">Desfacer</string>
-  <string name="removed_from_queue">Elemento eliminado</string>
   <string name="move_to_top_label">Mover arriba</string>
   <string name="move_to_bottom_label">Mover abaixo</string>
   <string name="sort">Ordenar</string>
@@ -297,13 +283,11 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descargar engadido</string>
   <string name="no_playback_plugin_title">Engadido non instalado</string>
-  <string name="no_playback_plugin_or_sonic_msg">Para que funcione a velocidade de reprodución variable recomendamos utilizar o reproductor Sonic incluído[Android 4.1+].\n\nAlternativamente tamén pode descargar o engadido de terceiros de nome <i>Prestissimo</i>desde a Play Store.\nCalquer problema con Prestissimo non é responsabilidade de AntennaPod e debería informar ao responsable do engadido.</string>
   <string name="set_playback_speed_label">Velocidade de reproducións</string>
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Sen episodios na cola</string>
   <string name="no_items_label">Engada un episodio descargándoo, ou manteña preso un episodio e escolla \"Engadir a cola\".</string>
-  <string name="no_feeds_label">Aínda non está subscrito a ningún podcast.</string>
   <string name="no_shownotes_label">Este episodio non ten notas de episodio.</string>
   <string name="no_run_downloads_head_label">Sen descargas activas</string>
   <string name="no_run_downloads_label">Pode descargar episodios na pantalla con detalles do episodio.</string>
@@ -321,11 +305,11 @@
   <string name="no_fav_episodes_label">Pode engadir episodios aos favoritos manténdoos pulsados.</string>
   <string name="no_chapters_head_label">Sen capítulos</string>
   <string name="no_chapters_label">Este episodio non ten capítulos.</string>
+  <string name="no_subscriptions_head_label">Sen subscricións</string>
+  <string name="no_subscriptions_label">Para subscribirte a un podcast, preme o botón máis, abaixo.</string>
   <!--Preferences-->
   <string name="storage_pref">Almacenamento</string>
   <string name="project_pref">Proxecto</string>
-  <string name="other_pref">Outro</string>
-  <string name="about_pref">Sobre</string>
   <string name="queue_label">Cola</string>
   <string name="integrations_label">Integracións</string>
   <string name="automation">Automatizado</string>
@@ -368,12 +352,12 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Establecer hora do día</string>
   <string name="pref_autoUpdateIntervallOrTime_every">cada %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">as %1$s</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Descargar ficheiros de medios so cando rede WiFi</string>
   <string name="pref_followQueue_title">Reprodución continua</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Descarga de medios WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Desconexión de auriculares</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Reconexión de auriculares</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Reconexión bluetooth</string>
+  <string name="pref_stream_over_download_title">Preferir Difusión</string>
+  <string name="pref_stream_over_download_sum">Mostrar botón de difusión no lugar de botón de descarga nas listas.</string>
   <string name="pref_mobileUpdate_title">Actualizacións Móbil</string>
   <string name="pref_mobileUpdate_sum">Escolla o que estará permitido utilizando conexión de datos do móbil</string>
   <string name="pref_mobileUpdate_refresh">Actualizar fontes</string>
@@ -381,11 +365,8 @@
   <string name="pref_mobileUpdate_auto_download">Descarga automática</string>
   <string name="pref_mobileUpdate_episode_download">Descarga de episodio</string>
   <string name="pref_mobileUpdate_streaming">Retransmisión</string>
-  <string name="refreshing_label">Actualizando</string>
   <string name="user_interface_label">Interface de usuaria</string>
   <string name="pref_set_theme_title">Escolla o decorado</string>
-  <string name="pref_nav_drawer_title">Personalice a Caixa de navegación</string>
-  <string name="pref_nav_drawer_sum">Personalice o aspecto da caixa de navegación</string>
   <string name="pref_nav_drawer_items_title">Estableza os elementos da Caixa de navegación</string>
   <string name="pref_nav_drawer_items_sum">Cambie os elementos que aparecerán na Caixa de navegación</string>
   <string name="pref_nav_drawer_feed_order_title">Estableza a orde das subscricións</string>
@@ -397,13 +378,16 @@
   <string name="pref_automatic_download_sum">Axuste a descarga automática de episodios.</string>
   <string name="pref_autodl_wifi_filter_title">Habilitar o filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir a descarga automática só en redes WiFi selecionadas.</string>
-  <string name="pref_autodl_allow_on_mobile_title">Descargar baixo conexión móbil</string>
-  <string name="pref_autodl_allow_on_mobile_sum">Permitir a descarga automática estando conectado a rede de datos móbil.</string>
+  <string name="autodl_wifi_filter_permission_title">Precísase permiso</string>
+  <string name="autodl_wifi_filter_permission_message">Precísase o permiso de localización para o filtro Wi-Fi. Toca para concedelo.</string>
   <string name="pref_automatic_download_on_battery_title">Descargar elementos cando non esté cargando</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir a descarga automática cando a batería non está a cargar</string>
   <string name="pref_parallel_downloads_title">Descargas simultáneas</string>
   <string name="pref_episode_cache_title">Caché de episodios</string>
   <string name="pref_episode_cache_summary">O número total de episodios descargados na caché do dispositivo. A descarga automática suspenderase se se alcanza este número.</string>
+  <string name="pref_episode_cover_title">Utilizar Portada do episodio</string>
+  <string name="pref_episode_cover_summary">Utilizar a portada específica do episodio cando sexa posible. Se non o marcas, a app mostrará sempre a portada do podcast.</string>
+  <string name="pref_theme_title_use_system">Utilizar o decorado do sistema</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Oscuro</string>
   <string name="pref_theme_title_trueblack">Negro (listo para AMOLED)</string>
@@ -423,12 +407,12 @@
   <string name="pref_gpodnet_full_sync_sum">Sincronizar todas as subscricións e estados de episodios con gpodder.net</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">Último intento de sincronización: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Sincronización iniciada</string>
-  <string name="pref_gpodnet_full_sync_started">Sincronización completa iniciada</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Conectada como <i>%1$s</i> co dispositivo <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Mostrar notificacións de erros na sincronización.</string>
   <string name="pref_gpodnet_notifications_sum">Esta preferencia non se aplica a fallos na autenticación.</string>
   <string name="pref_playback_speed_title">Velocidades de reprodución</string>
   <string name="pref_playback_speed_sum">Personalice a velocidade variable de reprodución de audio</string>
+  <string name="pref_feed_playback_speed_sum">A velocidade a utilizar cando se reproduce o audio dos episodios de esta fonte</string>
   <string name="pref_playback_time_respects_speed_title">Axustar info dos medios a velocidade de reprodución</string>
   <string name="pref_playback_time_respects_speed_sum">A posición mostrada e a duración están adaptadas a velocidade de reprodución</string>
   <string name="pref_fast_forward">Avance rápido Salta tempo</string>
@@ -450,21 +434,24 @@
   <string name="pref_showDownloadReport_title">Mostrar informe de descarga</string>
   <string name="pref_showDownloadReport_sum">Si falla a descarga, xerar un informe que informe dos detalles do fallo.</string>
   <string name="pref_expand_notify_unsupport_toast">As versións de Android anteriores a 4.1 non teñen soporte para notificacións expandidas.</string>
-  <string name="pref_queueAddToFront_sum">Engadir os novos episodios ao inicio da cola.</string>
-  <string name="pref_queueAddToFront_title">Por no inicio da cola</string>
+  <string name="pref_enqueue_location_sum">Engadir episodios a: %1$s</string>
+  <string name="enqueue_location_back">Atrás</string>
+  <string name="enqueue_location_front">Diante</string>
+  <string name="enqueue_location_after_current">Tras o episodio actual</string>
   <string name="pref_smart_mark_as_played_disabled">Desactivado</string>
   <string name="pref_image_cache_size_title">Tamaño da caché de imaxes</string>
   <string name="pref_image_cache_size_sum">Tamaño da caché en disco para as imaxes.</string>
-  <string name="crash_report_title">Informe de Desgracias</string>
-  <string name="crash_report_sum">Enviar por correo-e o informe de fallo xeral na aplicación</string>
-  <string name="send_email">Enviar email</string>
+  <string name="view_mailing_list">Ver lista de correo</string>
+  <string name="bug_report_title">Informar de fallo</string>
+  <string name="open_bug_tracker">Abrir seguimento de fallos</string>
+  <string name="copy_to_clipboard">Copiar ó portapapeis</string>
+  <string name="copied_to_clipboard">Copiado ó portapapeis</string>
   <string name="experimental_pref">En probas</string>
   <string name="pref_media_player_message">Escolla o reprodutor de medios para reproducir ficheiros</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Establecer un proxy para a rede</string>
-  <string name="pref_faq">PMF</string>
-  <string name="pref_known_issues">Problemas coñecidos</string>
+  <string name="pref_faq">Preguntas Máis Frecuentes</string>
   <string name="pref_no_browser_found">Non se atopou un navegador web</string>
   <string name="pref_cast_title">Soporte Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilitar o soporte de reprodución remota nun dispositivo Cast (como o Chromecast, Altofalantes ou Android TV)</string>
@@ -490,6 +477,16 @@
   <string name="back_button_go_to_page_title">Seleccionar páxina</string>
   <string name="pref_delete_removes_from_queue_title">Eliminar quita da Cola</string>
   <string name="pref_delete_removes_from_queue_sum">Eliminar automáticamente un episodio da cola cando se elimina.</string>
+  <!--About screen-->
+  <string name="about_pref">Sobre</string>
+  <string name="antennapod_version">Versión AntennaPod</string>
+  <string name="developers">Desenvolvedoras</string>
+  <string name="developers_summary">Todas podemos axudar a mellorar AntennaPod</string>
+  <string name="translators">Tradutores</string>
+  <string name="translators_summary">As traducións de AntennaPod realízanse utilizando Transifex</string>
+  <string name="privacy_policy">Política de privacidade</string>
+  <string name="licenses">Licenzas</string>
+  <string name="licenses_summary">AntennaPod toma como fonte outro software</string>
   <!--Search-->
   <string name="search_hint">Buscar episodios</string>
   <string name="found_in_shownotes_label">Atopado nas notas do episodio</string>
@@ -501,22 +498,16 @@
   <string name="found_in_title_label">Atopado no título</string>
   <string name="no_results_for_query">Non hai resultados para \"%1$s\"</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Os ficheiros OPML permítenlle mover os seus podcast de un xestor a outro.</string>
   <string name="opml_import_option">Opción %1$d</string>
   <string name="opml_import_explanation_1">Escolla unha ruta de ficheiro concreta no sistema de ficheiros local.</string>
-  <string name="opml_import_explanation_2">Utilice unha aplicación externa como Dropbox, Google Drive ou o seu xestor de ficheiros para abrir un ficheiro OPML.</string>
   <string name="opml_import_explanation_3">Moitas aplicacións, como Google Mail, Dropbox, Google Drive e a maioría dos xestores de ficheiros poden <i>abrir</i> ficheiros OPML <i>con</i> AntennaPod.</string>
-  <string name="start_import_label">Iniciar a importación</string>
   <string name="opml_import_label">Importar OPML</string>
-  <string name="opml_directory_error">FALLO!</string>
   <string name="reading_opml_label">Lendo ficheiro OPML</string>
   <string name="opml_reader_error">Houbo un fallo ao ler o documento OPML:</string>
   <string name="opml_import_error_no_file">Non hai ficheiro seleccionado!</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
-  <string name="select_options_label">Seleccionar...</string>
   <string name="choose_file_from_filesystem">Desde sistema local de ficheiros</string>
-  <string name="choose_file_from_external_application">Utilizar aplicacións externa</string>
   <string name="opml_export_label">Exportar OPML</string>
   <string name="html_export_label">Exportar HTML</string>
   <string name="exporting_label">Exportando...</string>
@@ -609,8 +600,7 @@
   <string name="pref_restart_required">AntennaPod debe reiniciarse para que esta opción se aplique.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscribir</string>
-  <string name="subscribed_label">Subscrito</string>
-  <string name="downloading_label">Descargando...</string>
+  <string name="subscribing_label">Subscribindo...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Rebobinar</string>
   <string name="fast_forward_label">Avance rápido</string>
@@ -718,7 +708,6 @@
   <string name="cast_failed_setting_volume">Non se puido establecer o volume</string>
   <string name="cast_failed_no_connection">Non hai conexión ao dispositivo de emisión</string>
   <string name="cast_failed_no_connection_trans">Perdeuse a conexión ao dispositivo de emisión. A aplicación está a intentar restablecela se fose posible. Por favor, agarde uns segundos e inténteo de novo.</string>
-  <string name="cast_failed_perform_action">Non se puido completar a acción</string>
   <string name="cast_failed_status_request">Fallo de sincronización co dispositivo de emisión</string>
   <string name="cast_failed_seek">Non se puido cambiar a posición no dispositivo de emisión</string>
   <string name="cast_failed_receiver_player_error">O reprodutor receptor atopou un fallo grave</string>
@@ -733,4 +722,7 @@
   <string name="notification_channel_error">Fallos</string>
   <string name="notification_channel_error_description">Mostrado si algo falla, por exemplo si a descarga ou a sincronización con gpodder fallan.</string>
   <string name="import_bad_file">Ficheiro non válido/corrupto</string>
+  <!--Widget settings-->
+  <string name="widget_create_button">Crear widget</string>
+  <string name="widget_opacity">Opacidade</string>
 </resources>

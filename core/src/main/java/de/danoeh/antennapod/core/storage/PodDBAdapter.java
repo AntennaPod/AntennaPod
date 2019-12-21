@@ -13,10 +13,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import org.apache.commons.io.FileUtils;
 
@@ -35,8 +35,10 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
+import de.danoeh.antennapod.core.util.SortOrder;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
+import static de.danoeh.antennapod.core.util.SortOrder.toCodeString;
 
 // TODO Remove media column from feeditem table
 
@@ -102,6 +104,7 @@ public class PodDBAdapter {
     public static final String KEY_IS_PAGED = "is_paged";
     public static final String KEY_NEXT_PAGE_LINK = "next_page_link";
     public static final String KEY_HIDE = "hide";
+    public static final String KEY_SORT_ORDER = "sort_order";
     public static final String KEY_LAST_UPDATE_FAILED = "last_update_failed";
     public static final String KEY_HAS_EMBEDDED_PICTURE = "has_embedded_picture";
     public static final String KEY_LAST_PLAYED_TIME = "last_played_time";
@@ -139,6 +142,7 @@ public class PodDBAdapter {
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
+            + KEY_SORT_ORDER + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
@@ -236,6 +240,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_USERNAME,
             TABLE_NAME_FEEDS + "." + KEY_PASSWORD,
             TABLE_NAME_FEEDS + "." + KEY_HIDE,
+            TABLE_NAME_FEEDS + "." + KEY_SORT_ORDER,
             TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
             TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_REDUCTION,
@@ -325,9 +330,7 @@ public class PodDBAdapter {
         SQLiteDatabase newDb;
         try {
             newDb = SingletonHolder.dbHelper.getWritableDatabase();
-            if (Build.VERSION.SDK_INT >= 16) {
-                newDb.disableWriteAheadLogging();
-            }
+            newDb.disableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
             newDb = SingletonHolder.dbHelper.getReadableDatabase();
@@ -381,6 +384,7 @@ public class PodDBAdapter {
         } else {
             values.put(KEY_HIDE, "");
         }
+        values.put(KEY_SORT_ORDER, toCodeString(feed.getSortOrder()));
         values.put(KEY_LAST_UPDATE_FAILED, feed.hasLastUpdateFailed());
         if (feed.getId() == 0) {
             // Create new entry
@@ -417,6 +421,12 @@ public class PodDBAdapter {
                 "setFeedItemFilter() called with: feedId = [%d], filterValues = [%s]", feedId, valuesList));
         ContentValues values = new ContentValues();
         values.put(KEY_HIDE, valuesList);
+        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
+    }
+
+    public void setFeedItemSortOrder(long feedId, @Nullable SortOrder sortOrder) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_SORT_ORDER, toCodeString(sortOrder));
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
@@ -1459,7 +1469,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private static final int VERSION = 1070400;
+        private static final int VERSION = 1070401;
 
         private final Context context;
 

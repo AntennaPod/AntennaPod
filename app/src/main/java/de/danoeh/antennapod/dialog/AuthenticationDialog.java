@@ -1,51 +1,29 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
 import de.danoeh.antennapod.R;
 
 /**
  * Displays a dialog with a username and password text field and an optional checkbox to save username and preferences.
  */
-public abstract class AuthenticationDialog extends Dialog {
+public abstract class AuthenticationDialog extends AlertDialog.Builder {
 
-    private final int titleRes;
-    private final boolean enableUsernameField;
-    private final boolean showSaveCredentialsCheckbox;
-    private final String usernameInitialValue;
-    private final String passwordInitialValue;
-
-    public AuthenticationDialog(Context context, int titleRes, boolean enableUsernameField, boolean showSaveCredentialsCheckbox, String usernameInitialValue, String passwordInitialValue) {
+    public AuthenticationDialog(Context context, int titleRes, boolean enableUsernameField,
+                                boolean showSaveCredentialsCheckbox, String usernameInitialValue,
+                                String passwordInitialValue) {
         super(context);
-        this.titleRes = titleRes;
-        this.enableUsernameField = enableUsernameField;
-        this.showSaveCredentialsCheckbox = showSaveCredentialsCheckbox;
-        this.usernameInitialValue = usernameInitialValue;
-        this.passwordInitialValue = passwordInitialValue;
-    }
+        setTitle(titleRes);
+        View rootView = View.inflate(context, R.layout.authentication_dialog, null);
+        setView(rootView);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.authentication_dialog);
-        final EditText etxtUsername = findViewById(R.id.etxtUsername);
-        final EditText etxtPassword = findViewById(R.id.etxtPassword);
-        final CheckBox saveUsernamePassword = findViewById(R.id.chkSaveUsernamePassword);
-        final Button butConfirm = findViewById(R.id.butConfirm);
-        final Button butCancel = findViewById(R.id.butCancel);
+        final EditText etxtUsername = rootView.findViewById(R.id.etxtUsername);
+        final EditText etxtPassword = rootView.findViewById(R.id.etxtPassword);
+        final CheckBox saveUsernamePassword = rootView.findViewById(R.id.chkSaveUsernamePassword);
 
-        if (titleRes != 0) {
-            setTitle(titleRes);
-        } else {
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-        }
         etxtUsername.setEnabled(enableUsernameField);
         if (showSaveCredentialsCheckbox) {
             saveUsernamePassword.setVisibility(View.VISIBLE);
@@ -59,13 +37,10 @@ public abstract class AuthenticationDialog extends Dialog {
             etxtPassword.setText(passwordInitialValue);
         }
         setOnCancelListener(dialog -> onCancelled());
-        butCancel.setOnClickListener(v -> cancel());
-        butConfirm.setOnClickListener(v -> {
-            onConfirmed(etxtUsername.getText().toString(),
-                    etxtPassword.getText().toString(),
-                    showSaveCredentialsCheckbox && saveUsernamePassword.isChecked());
-            dismiss();
-        });
+        setNegativeButton(R.string.cancel_label, null);
+        setPositiveButton(R.string.confirm_label, (dialog, which)
+                -> onConfirmed(etxtUsername.getText().toString(), etxtPassword.getText().toString(),
+                        showSaveCredentialsCheckbox && saveUsernamePassword.isChecked()));
     }
 
     protected void onCancelled() {

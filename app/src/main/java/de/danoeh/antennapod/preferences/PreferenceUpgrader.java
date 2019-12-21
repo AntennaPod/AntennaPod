@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
@@ -23,7 +24,6 @@ public class PreferenceUpgrader {
         int newVersion = BuildConfig.VERSION_CODE;
 
         if (oldVersion != newVersion) {
-            NotificationUtils.createChannels(context);
             AutoUpdateManager.restartUpdateAlarm();
 
             upgrade(oldVersion);
@@ -32,6 +32,9 @@ public class PreferenceUpgrader {
     }
 
     private static void upgrade(int oldVersion) {
+        if (oldVersion == -1) {
+            return;
+        }
         if (oldVersion < 1070196) {
             // migrate episode cleanup value (unit changed from days to hours)
             int oldValueInDays = UserPreferences.getEpisodeCleanupValue();
@@ -72,6 +75,14 @@ public class PreferenceUpgrader {
             }
 
             UserPreferences.setQueueLocked(false);
+            prefs.edit().putBoolean(UserPreferences.PREF_STREAM_OVER_DOWNLOAD, false).apply();
+
+            if (!prefs.contains(UserPreferences.PREF_ENQUEUE_LOCATION)) {
+                final String keyOldPrefEnqueueFront = "prefQueueAddToFront";
+                boolean enqueueAtFront = prefs.getBoolean(keyOldPrefEnqueueFront, false);
+                EnqueueLocation enqueueLocation = enqueueAtFront ? EnqueueLocation.FRONT : EnqueueLocation.BACK;
+                UserPreferences.setEnqueueLocation(enqueueLocation);
+            }
         }
     }
 }

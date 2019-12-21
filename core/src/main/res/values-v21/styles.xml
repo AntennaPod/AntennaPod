@@ -20,7 +20,8 @@
         <item name="android:colorPrimaryDark">@color/black</item>
     </style>
 
-    <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button">
+    <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/antennapod_blue</item>
         <item name="textAllCaps">true</item>
     </style>
 

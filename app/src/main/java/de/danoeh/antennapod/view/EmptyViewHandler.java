@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
+import android.widget.AbsListView;
+import android.widget.ListAdapter;
 import androidx.annotation.AttrRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,7 +12,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,8 +19,9 @@ import de.danoeh.antennapod.R;
 
 public class EmptyViewHandler {
     private boolean layoutAdded = false;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private View list;
+    private ListAdapter listAdapter;
+    private RecyclerView.Adapter recyclerAdapter;
 
     private final Context context;
     private final View emptyView;
@@ -54,40 +57,56 @@ public class EmptyViewHandler {
         emptyView.setVisibility(View.GONE);
     }
 
-    public void attachToListView(ListView listView) {
+    public void attachToListView(AbsListView listView) {
         if (layoutAdded) {
-            throw new IllegalStateException("Can not attach to ListView multiple times");
+            throw new IllegalStateException("Can not attach EmptyView multiple times");
         }
+        addToParentView(listView);
         layoutAdded = true;
-        ((ViewGroup) listView.getParent()).addView(emptyView);
+        this.list = listView;
         listView.setEmptyView(emptyView);
+        updateAdapter(listView.getAdapter());
     }
 
     public void attachToRecyclerView(RecyclerView recyclerView) {
         if (layoutAdded) {
-            throw new IllegalStateException("Can not attach to ListView multiple times");
+            throw new IllegalStateException("Can not attach EmptyView multiple times");
         }
+        addToParentView(recyclerView);
         layoutAdded = true;
-        this.recyclerView = recyclerView;
-        ViewGroup parent = ((ViewGroup) recyclerView.getParent());
-        parent.addView(emptyView);
+        this.list = recyclerView;
         updateAdapter(recyclerView.getAdapter());
+    }
 
+    private void addToParentView(View view) {
+        ViewGroup parent = ((ViewGroup) view.getParent());
+        parent.addView(emptyView);
         if (parent instanceof RelativeLayout) {
             RelativeLayout.LayoutParams layoutParams =
-                    (RelativeLayout.LayoutParams)emptyView.getLayoutParams();
+                    (RelativeLayout.LayoutParams) emptyView.getLayoutParams();
             layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
             emptyView.setLayoutParams(layoutParams);
         }
     }
 
     public void updateAdapter(RecyclerView.Adapter adapter) {
-        if (this.adapter != null) {
-            this.adapter.unregisterAdapterDataObserver(adapterObserver);
+        if (this.recyclerAdapter != null) {
+            this.recyclerAdapter.unregisterAdapterDataObserver(adapterObserver);
         }
-        this.adapter = adapter;
+        this.recyclerAdapter = adapter;
         if (adapter != null) {
             adapter.registerAdapterDataObserver(adapterObserver);
+        }
+        updateVisibility();
+    }
+
+    private void updateAdapter(ListAdapter adapter) {
+        if (this.listAdapter != null) {
+            this.listAdapter.unregisterDataSetObserver(listAdapterObserver);
+        }
+        this.listAdapter = adapter;
+        if (adapter != null) {
+            adapter.registerDataSetObserver(listAdapterObserver);
         }
         updateVisibility();
     }
@@ -99,14 +118,22 @@ public class EmptyViewHandler {
         }
     };
 
-    private void updateVisibility() {
-        boolean empty;
-        if (adapter == null) {
-            empty = true;
-        } else {
-            empty = adapter.getItemCount() == 0;
+    private final DataSetObserver listAdapterObserver = new DataSetObserver() {
+        public void onChanged() {
+            updateVisibility();
         }
-        recyclerView.setVisibility(empty ? View.GONE : View.VISIBLE);
+    };
+
+    public void updateVisibility() {
+        boolean empty;
+        if (recyclerAdapter != null) {
+            empty = recyclerAdapter.getItemCount() == 0;
+        } else if (listAdapter != null) {
+            empty = listAdapter.isEmpty();
+        } else {
+            empty = true;
+        }
+        list.setVisibility(empty ? View.GONE : View.VISIBLE);
         emptyView.setVisibility(empty ? View.VISIBLE : View.GONE);
     }
 }

@@ -2,11 +2,9 @@ package de.test.antennapod.ui;
 
 import android.content.Intent;
 import androidx.test.InstrumentationRegistry;
-import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.runner.AndroidJUnit4;
-import android.view.View;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -17,7 +15,6 @@ import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.test.antennapod.EspressoTestUtils;
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,15 +26,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static de.test.antennapod.NthMatcher.first;
 import static junit.framework.TestCase.assertTrue;
@@ -45,7 +45,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 
 /**
- * User interface tests for MainActivity drawer
+ * User interface tests for MainActivity drawer.
  */
 @RunWith(AndroidJUnit4.class)
 public class NavigationDrawerTest {
@@ -53,7 +53,7 @@ public class NavigationDrawerTest {
     private UITestUtils uiTestUtils;
 
     @Rule
-    public IntentsTestRule<MainActivity> mActivityRule = new IntentsTestRule<>(MainActivity.class, false, false);
+    public IntentsTestRule<MainActivity> activityRule = new IntentsTestRule<>(MainActivity.class, false, false);
 
     @Before
     public void setUp() throws IOException {
@@ -75,16 +75,12 @@ public class NavigationDrawerTest {
         onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
     }
 
-    private ViewInteraction onDrawerItem(Matcher<View> viewMatcher) {
-        return onView(allOf(viewMatcher, withId(R.id.txtvTitle)));
-    }
-
     @Test
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
-        mActivityRule.launchActivity(new Intent());
-        MainActivity activity = mActivityRule.getActivity();
+        activityRule.launchActivity(new Intent());
+        MainActivity activity = activityRule.getActivity();
 
         // queue
         openNavDrawer();
@@ -118,6 +114,7 @@ public class NavigationDrawerTest {
 
         // add podcast
         openNavDrawer();
+        onView(withId(R.id.nav_list)).perform(swipeUp());
         onDrawerItem(withText(R.string.add_feed_label)).perform(click());
         onView(isRoot()).perform(waitForView(withId(R.id.txtvFeedurl), 1000));
         assertEquals(activity.getString(R.string.add_feed_label), activity.getSupportActionBar().getTitle());
@@ -134,7 +131,7 @@ public class NavigationDrawerTest {
 
     @Test
     public void testGoToPreferences() {
-        mActivityRule.launchActivity(new Intent());
+        activityRule.launchActivity(new Intent());
         openNavDrawer();
         onView(withText(R.string.settings_label)).perform(click());
         intended(hasComponent(PreferenceActivity.class.getName()));
@@ -143,7 +140,7 @@ public class NavigationDrawerTest {
     @Test
     public void testDrawerPreferencesHideSomeElements() {
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
-        mActivityRule.launchActivity(new Intent());
+        activityRule.launchActivity(new Intent());
         openNavDrawer();
         onDrawerItem(withText(R.string.queue_label)).perform(longClick());
         onView(withText(R.string.episodes_label)).perform(click());
@@ -160,7 +157,7 @@ public class NavigationDrawerTest {
     public void testDrawerPreferencesUnhideSomeElements() {
         List<String> hidden = Arrays.asList(PlaybackHistoryFragment.TAG, DownloadsFragment.TAG);
         UserPreferences.setHiddenDrawerItems(hidden);
-        mActivityRule.launchActivity(new Intent());
+        activityRule.launchActivity(new Intent());
         openNavDrawer();
         onView(first(withText(R.string.queue_label))).perform(longClick());
 
@@ -178,14 +175,20 @@ public class NavigationDrawerTest {
     @Test
     public void testDrawerPreferencesHideAllElements() {
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
-        mActivityRule.launchActivity(new Intent());
-        String[] titles = mActivityRule.getActivity().getResources().getStringArray(R.array.nav_drawer_titles);
+        activityRule.launchActivity(new Intent());
+        String[] titles = activityRule.getActivity().getResources().getStringArray(R.array.nav_drawer_titles);
 
         openNavDrawer();
         onView(first(withText(R.string.queue_label))).perform(longClick());
-        for (String title : titles) {
+        for (int i = 0; i < titles.length; i++) {
+            String title = titles[i];
             onView(first(withText(title))).perform(click());
+
+            if (i == 3) {
+                onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
+            }
         }
+
         onView(withText(R.string.confirm_label)).perform(click());
 
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
@@ -198,7 +201,7 @@ public class NavigationDrawerTest {
     @Test
     public void testDrawerPreferencesHideCurrentElement() {
         UserPreferences.setHiddenDrawerItems(new ArrayList<>());
-        mActivityRule.launchActivity(new Intent());
+        activityRule.launchActivity(new Intent());
         openNavDrawer();
         onView(withText(R.string.downloads_label)).perform(click());
         openNavDrawer();

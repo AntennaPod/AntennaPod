@@ -22,10 +22,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Synkronisér med andre enheder</string>
   <string name="gpodnet_auth_label">Login til gpodder.net</string>
-  <string name="free_space_label">%1$s ledig</string>
   <string name="episode_cache_full_title">Mellemlageret for udsendelser er fuldt</string>
   <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for udsendelser. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
-  <string name="synchronizing">Synkroniserer ...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Samlet varighed for afspillede podcasts:</string>
   <string name="statistics_details_dialog">%1$d af %2$d udsendelser startet.\n\nAfspillet %3$s af %4$s.</string>
@@ -63,7 +61,6 @@
   <string name="author_label">Forfatter(e)</string>
   <string name="language_label">Sprog</string>
   <string name="url_label">Webadresse</string>
-  <string name="podcast_settings_label">Indstillinger </string>
   <string name="cover_label">Billede</string>
   <string name="error_label">Fejl</string>
   <string name="error_msg_prefix">En fejl er opstået:</string>
@@ -71,14 +68,9 @@
   <string name="external_storage_error_msg">Ingen ekstern harddisk er tilgængelig. Vær venlig at sørge for at den eksterne hukommelse er monteret så app\'en kan fungere korrekt.</string>
   <string name="chapters_label">Kapitler</string>
   <string name="chapter_duration">Varighed: %1$s</string>
-  <string name="shownotes_label">Beskrivelse</string>
   <string name="description_label">Beskrivelse</string>
-  <string name="most_recent_prefix">Seneste udsendelse:\u0020</string>
   <string name="episodes_suffix">\u0020udsendelser</string>
-  <string name="length_prefix">Længde:\u0020</string>
-  <string name="size_prefix">Størrelse:\u0020</string>
   <string name="processing_label">Behandler</string>
-  <string name="loading_label">Indlæser...</string>
   <string name="save_username_password_label">Gem brugernavn og adgangskode</string>
   <string name="close_label">Luk</string>
   <string name="retry_label">Prøv igen</string>
@@ -102,8 +94,6 @@
   <string name="feedurl_label">Webadresse for feed</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Tilføj podcast via webadresse</string>
-  <string name="podcastdirectories_label">Find podcast i mappe</string>
-  <string name="podcastdirectories_descr">For at finde nye podcasts kan du søge på iTunes eller fyyd, eller du kan bladre på gpodder.net efter navn, kategori eller popularitet.</string>
   <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som afspillet</string>
@@ -120,7 +110,6 @@
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du ønsker at slette podcasten \"%1$s\" og ALLE dens udsendelser (inklusive overførte udsendelser)</string>
   <string name="feed_remover_msg">Fjerner podcast</string>
   <string name="load_complete_feed">Opdater komplet podcast</string>
-  <string name="hide_episodes_title">Skjul udsendelser</string>
   <string name="batch_edit">Masseredigering</string>
   <string name="select_all_above">Vælg alt ovenfor</string>
   <string name="select_all_below">Vælg alt nedenfor</string>
@@ -140,9 +129,7 @@
   <string name="download_label">Hent</string>
   <string name="play_label">Afspil</string>
   <string name="pause_label">Sæt på pause</string>
-  <string name="stop_label">Stop</string>
   <string name="stream_label">Stream</string>
-  <string name="remove_label">Fjern</string>
   <string name="delete_label">Slet</string>
   <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
   <string name="mark_read_label">Marker som læst</string>
@@ -163,14 +150,12 @@
   <string name="removed_item">Element fjernet</string>
   <!--Download messages and labels-->
   <string name="download_successful">lykkedes</string>
-  <string name="download_failed">fejlede</string>
   <string name="download_pending">Afventer overførsel</string>
   <string name="download_running">Overfører</string>
   <string name="download_error_details">Detaljer</string>
   <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
   <string name="download_error_device_not_found">Kan ikke finde lagerenhed</string>
   <string name="download_error_insufficient_space">Ikke nok plads</string>
-  <string name="download_error_file_error">Filfejl</string>
   <string name="download_error_http_data_error">HTTP-datafejl</string>
   <string name="download_error_error_unknown">Ukendt fejl</string>
   <string name="download_error_parser_exception">Parser-undtagelse</string>
@@ -180,7 +165,6 @@
   <string name="download_error_unauthorized">Godkendelsesfejl</string>
   <string name="download_error_file_type_type">Filtypefejl</string>
   <string name="download_error_forbidden">Adgang nægtet</string>
-  <string name="cancel_all_downloads_label">Annuller alle overførsler</string>
   <string name="download_canceled_msg">Overførsel annulleret</string>
   <string name="download_canceled_autodownload_enabled_msg">Overførsel annulleret\n<i>Automatisk overførsel</i> blev slået fra for dette element</string>
   <string name="download_report_title">Overførsler afsluttet med fejl</string>
@@ -199,7 +183,6 @@
   <string name="download_log_title_unknown">Ukendt titel</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediefil</string>
-  <string name="download_type_image">Billede</string>
   <string name="download_request_error_dialog_message_prefix">En fejl opstod ved overførsel af filen:\u0020</string>
   <string name="authentication_notification_title">Godkendelse kræves</string>
   <string name="authentication_notification_msg">Ressourcen du efterspurgte kræver brugernavn og adgangskode</string>
@@ -219,7 +202,6 @@
   <string name="no_media_playing_label">Ingen medier afspiller</string>
   <string name="player_buffering_msg">Henter data til buffer</string>
   <string name="player_go_to_picture_in_picture">Billed-i-billed-tilstand</string>
-  <string name="playbackservice_notification_title">Afspiller podcast</string>
   <string name="unknown_media_key">AntennaPod - Ukendt medienøgle: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Lås kø</string>
@@ -228,7 +210,6 @@
   <string name="queue_unlocked">Kø låst op</string>
   <string name="clear_queue_label">Ryd kø</string>
   <string name="undo">Fortryd</string>
-  <string name="removed_from_queue">Element slettet</string>
   <string name="move_to_top_label">Flyt til toppen</string>
   <string name="move_to_bottom_label">Flyt til bunden</string>
   <string name="sort">Sorter</string>
@@ -243,18 +224,14 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
-  <string name="no_playback_plugin_or_sonic_msg">For at afspilning med variabel hastighed skal fungere, anbefaler vi at slå den indbyggede Sonic-medieafspiller til (Android 4.1+).\n\nAlternativt kan du hente tredjeparts-pluginnet <i>Prestissimo</i> fra Play Store.\nProblemer med Prestissimo er ikke AntennaPods ansvar og skal rapporteres til pluginnets ejer.</string>
   <string name="set_playback_speed_label">Afspilningshastigheder</string>
   <string name="enable_sonic">Slå Sonic til</string>
   <!--Empty list labels-->
-  <string name="no_feeds_label">Du har ikke abonneret på nogen podcasts endnu.</string>
   <string name="no_shownotes_label">Denne udsendelse har ingen beskrivelse.</string>
   <string name="no_chapters_label">Denne udsendelse har ingen kapitler.</string>
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
   <string name="project_pref">Projekt</string>
-  <string name="other_pref">Andre</string>
-  <string name="about_pref">Om</string>
   <string name="queue_label">Kø</string>
   <string name="integrations_label">Integrerede tjenester</string>
   <string name="automation">Automatisering</string>
@@ -290,18 +267,13 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Indstil klokkeslæt</string>
   <string name="pref_autoUpdateIntervallOrTime_every">hver %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">kl. %1$s</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Overfør mediefiler kun via wi-fi</string>
   <string name="pref_followQueue_title">Kontinuerlig afspilning</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Overførsel af mediefiler over wi-fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Afbrydelse af hovedtelefoner</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Tilslutning af hovedtelefoner igen</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth forbundet igen</string>
   <string name="pref_mobileUpdate_title">Mobile opdateringer</string>
-  <string name="refreshing_label">Opdaterer</string>
   <string name="user_interface_label">Brugergrænseflade</string>
   <string name="pref_set_theme_title">Vælg tema</string>
-  <string name="pref_nav_drawer_title">Tilpas navigationspanel</string>
-  <string name="pref_nav_drawer_sum">Tilpas udseendet af navigationspanelet</string>
   <string name="pref_nav_drawer_items_title">Vælg elementer i navigationspanelet</string>
   <string name="pref_nav_drawer_items_sum">Vælg hvilke elementer, der skal vises i navigationspanelet.</string>
   <string name="pref_nav_drawer_feed_order_title">Vælg abonnementsorden</string>
@@ -312,8 +284,6 @@
   <string name="pref_automatic_download_sum">Konfigurer automatisk overførsel af udsendelser</string>
   <string name="pref_autodl_wifi_filter_title">Slå wi-fi-filter til</string>
   <string name="pref_autodl_wifi_filter_sum">Tillad automatisk overførsel kun på de valgte wi-fi-netværk</string>
-  <string name="pref_autodl_allow_on_mobile_title">Hent på mobilt netværk</string>
-  <string name="pref_autodl_allow_on_mobile_sum">Tillad automatisk overførsel på den mobile dataforbindelse</string>
   <string name="pref_automatic_download_on_battery_title">Tillad overførsel ved batteridrift</string>
   <string name="pref_automatic_download_on_battery_sum">Tillad automatisk overførsel, når batteriet ikke oplades</string>
   <string name="pref_parallel_downloads_title">Parallelle overførsler</string>
@@ -337,7 +307,6 @@
   <string name="pref_gpodnet_full_sync_sum">Synkroniser tilstande for alle abonnementer og udsendelser med gpodder.net.</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">Sidste synkroniseringsforsøg: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Synkronisering startet</string>
-  <string name="pref_gpodnet_full_sync_started">Fuld synkronisering startet</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logget ind som <i>%1$s</i> med enheden <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Vis notifikationer med synkroniseringsfejl</string>
   <string name="pref_gpodnet_notifications_sum">Denne indstilling vedrører ikke godkendelsesfejl.</string>
@@ -362,20 +331,13 @@
   <string name="pref_showDownloadReport_title">Vis rapport over overførsler</string>
   <string name="pref_showDownloadReport_sum">Lav en rapport, som viser detaljer om fejlene, hvis overførsler fejler</string>
   <string name="pref_expand_notify_unsupport_toast">Android-versioner før 4.1 understøtter ikke udvidede notifikationer.</string>
-  <string name="pref_queueAddToFront_sum">Føj nye udsendelser til starten af køen.</string>
-  <string name="pref_queueAddToFront_title">Føj til starten af køen</string>
   <string name="pref_smart_mark_as_played_disabled">Slået fra</string>
   <string name="pref_image_cache_size_title">Størrelse på mellemlager (cache) for billeder</string>
   <string name="pref_image_cache_size_sum">Størrelse på diskmellemlageret (disk cache) for billeder</string>
-  <string name="crash_report_title">Nedbrudsrapport</string>
-  <string name="crash_report_sum">Send den seneste nedbrudsrapport via e-mail</string>
-  <string name="send_email">Send e-mail</string>
   <string name="experimental_pref">Eksperimentelt</string>
   <string name="pref_current_value">Nuværende værdi: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Indstil en netværksproxy</string>
-  <string name="pref_faq">Ofte spurgte spørgsmål</string>
-  <string name="pref_known_issues">Kendte problemer</string>
   <string name="pref_no_browser_found">Ingen webbrowser fundet</string>
   <string name="pref_cast_title">Chromecast-understøttelse</string>
   <string name="pref_cast_message_play_flavor">Aktiver understøttelse af fjernafspilning på Cast-enheder (såsom Chromecast, højttalere med indbygget Chromecast, eller Android TV)</string>
@@ -396,6 +358,8 @@
   <string name="double_tap_toast">Tryk på tilbageknappen igen for at afslutte</string>
   <string name="back_button_go_to_page">Gå til side ...</string>
   <string name="back_button_go_to_page_title">Vælg side</string>
+  <!--About screen-->
+  <string name="about_pref">Om</string>
   <!--Search-->
   <string name="search_hint">Søg efter udsendelser</string>
   <string name="found_in_shownotes_label">Fundet i beskrivelse</string>
@@ -407,22 +371,16 @@
   <string name="found_in_title_label">Fundet i titel</string>
   <string name="no_results_for_query">Ingen resultater fundet for \"%1$s\"</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">OPML-filer lader dig flytte dine podcasts fra én podcastafspiller til en anden.</string>
   <string name="opml_import_option">Valgmulighed %1$d</string>
   <string name="opml_import_explanation_1">Vælg en bestemt filsti fra det lokale filsystem.</string>
-  <string name="opml_import_explanation_2">Brug en ekstern app som Dropbox, Google Drive eller dit foretrukne filhåndteringsprogram til at åbne en OPML-fil.</string>
   <string name="opml_import_explanation_3">Mange apps som Gmail, Dropbox, Google Drive og de fleste filhåndteringsprogrammer kan <i>åbne</i> OPML-filer <i>med</i> AntennaPod.</string>
-  <string name="start_import_label">Start import</string>
   <string name="opml_import_label">OPML-import</string>
-  <string name="opml_directory_error">FEJL!</string>
   <string name="reading_opml_label">Indlæser OPML-fil</string>
   <string name="opml_reader_error">Der opstod en fejl, da OPML-dokumentet blev forsøgt indlæst</string>
   <string name="opml_import_error_no_file">Ingen fil valgt!</string>
   <string name="select_all_label">Vælg alle</string>
   <string name="deselect_all_label">Fravælg alle</string>
-  <string name="select_options_label">Vælg…</string>
   <string name="choose_file_from_filesystem">Fra lokalt filsystem</string>
-  <string name="choose_file_from_external_application">Brug ekstern app</string>
   <string name="opml_export_label">OPML eksport</string>
   <string name="html_export_label">HTML-eksport</string>
   <string name="exporting_label">Eksporterer…</string>
@@ -513,8 +471,6 @@
   <string name="pref_restart_required">AntennaPod skal genstartes for at denne indstilling kan træde i kraft</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
-  <string name="subscribed_label">Abonneret</string>
-  <string name="downloading_label">Overfører…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Spol tilbage</string>
   <string name="fast_forward_label">Spol frem</string>
@@ -615,7 +571,6 @@
   <string name="cast_failed_setting_volume">Kunne ikke indstille lydstyrken</string>
   <string name="cast_failed_no_connection">Der er ingen forbindelse til cast-enheden</string>
   <string name="cast_failed_no_connection_trans">Forbindelsen til cast-enheden er mistet. Appen forsøger at genskabe forbindelsen, om muligt. Vent venligst et par sekunder og prøv igen.</string>
-  <string name="cast_failed_perform_action">Det lykkedes ikke at udføre handlingen</string>
   <string name="cast_failed_status_request">Det lykkedes ikke at synkronisere med cast-enheden</string>
   <string name="cast_failed_seek">Det lykkedes ikke at søge til den nye position på cast-enheden</string>
   <string name="cast_failed_receiver_player_error">Modtagerafspilleren er stødt på en alvorlig fejl</string>
@@ -625,4 +580,5 @@
   <string name="notification_channel_downloading">Henter</string>
   <string name="notification_channel_downloading_description">Vises samtidig med den hentes.</string>
   <string name="notification_channel_error">Fejl</string>
+  <!--Widget settings-->
 </resources>

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.app.NotificationCompat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,8 +25,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
@@ -53,6 +55,7 @@ public class UserPreferences {
     private static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     private static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
+    public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
@@ -60,8 +63,6 @@ public class UserPreferences {
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
-    // Queue
-    private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
@@ -81,9 +82,11 @@ public class UserPreferences {
     private static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
     public static final String PREF_VIDEO_BEHAVIOR = "prefVideoBehavior";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
+    public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
+    public static final String PREF_ENQUEUE_LOCATION = "prefEnqueueLocation";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     private static final String PREF_MOBILE_UPDATE = "prefMobileUpdateTypes";
     public static final String PREF_EPISODE_CLEANUP = "prefEpisodeCleanup";
@@ -180,6 +183,17 @@ public class UserPreferences {
         }
     }
 
+    public static int getTranslucentTheme() {
+        int theme = getTheme();
+        if (theme == R.style.Theme_AntennaPod_Dark) {
+            return R.style.Theme_AntennaPod_Dark_Translucent;
+        } else if (theme == R.style.Theme_AntennaPod_TrueBlack) {
+            return R.style.Theme_AntennaPod_TrueBlack_Translucent;
+        } else {
+            return R.style.Theme_AntennaPod_Light_Translucent;
+        }
+    }
+
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
         return new ArrayList<>(Arrays.asList(TextUtils.split(hiddenItems, ",")));
@@ -232,6 +246,13 @@ public class UserPreferences {
     }
 
     /**
+     * @return {@code true} if episodes should use their own cover, {@code false}  otherwise
+     */
+    public static boolean getUseEpisodeCoverSetting() {
+        return prefs.getBoolean(PREF_USE_EPISODE_COVER, true);
+    }
+
+    /**
      * Returns notification priority.
      *
      * @return NotificationCompat.PRIORITY_MAX or NotificationCompat.PRIORITY_DEFAULT
@@ -275,8 +296,33 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_ENQUEUE_DOWNLOADED, true);
     }
 
-    public static boolean enqueueAtFront() {
-        return prefs.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
+    @VisibleForTesting
+    public static void setEnqueueDownloadedEpisodes(boolean enqueueDownloadedEpisodes) {
+        prefs.edit()
+                .putBoolean(PREF_ENQUEUE_DOWNLOADED, enqueueDownloadedEpisodes)
+                .apply();
+    }
+
+    public enum EnqueueLocation {
+        BACK, FRONT, AFTER_CURRENTLY_PLAYING
+    }
+
+    @NonNull
+    public static EnqueueLocation getEnqueueLocation() {
+        String valStr = prefs.getString(PREF_ENQUEUE_LOCATION, EnqueueLocation.BACK.name());
+        try {
+            return EnqueueLocation.valueOf(valStr);
+        } catch (Throwable t) {
+            // should never happen but just in case
+            Log.e(TAG, "getEnqueueLocation: invalid value '" + valStr + "' Use default.", t);
+            return EnqueueLocation.BACK;
+        }
+    }
+
+    public static void setEnqueueLocation(@NonNull EnqueueLocation location) {
+        prefs.edit()
+                .putString(PREF_ENQUEUE_LOCATION, location.name())
+                .apply();
     }
 
     public static boolean isPauseOnHeadsetDisconnect() {
@@ -302,6 +348,14 @@ public class UserPreferences {
 
     public static boolean isFollowQueue() {
         return prefs.getBoolean(PREF_FOLLOW_QUEUE, true);
+    }
+
+    /**
+     * Set to true to enable Continuous Playback
+     */
+    @VisibleForTesting
+    public static void setFollowQueue(boolean value) {
+        prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).apply();
     }
 
     public static boolean shouldSkipKeepEpisode() { return prefs.getBoolean(PREF_SKIP_KEEPS_EPISODE, true); }
@@ -490,6 +544,11 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_ENABLE_AUTODL, false);
     }
 
+    @VisibleForTesting
+    public static void setEnableAutodownload(boolean enabled) {
+        prefs.edit().putBoolean(PREF_ENABLE_AUTODL, enabled).apply();
+    }
+
     public static boolean isEnableAutodownloadOnBattery() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_ON_BATTERY, true);
     }
@@ -507,8 +566,7 @@ public class UserPreferences {
             prefs.edit().putString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE).apply();
             cacheSizeInt = Integer.parseInt(IMAGE_CACHE_DEFAULT_VALUE);
         }
-        int cacheSizeMB = cacheSizeInt * 1024 * 1024;
-        return cacheSizeMB;
+        return cacheSizeInt * 1024 * 1024;
     }
 
     public static int getFastForwardSecs() {
@@ -747,6 +805,14 @@ public class UserPreferences {
         prefs.edit().putString(PREF_MEDIA_PLAYER, "sonic").apply();
     }
 
+    public static void enableExoplayer() {
+        prefs.edit().putString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER).apply();
+    }
+
+    public static void enableBuiltin() {
+        prefs.edit().putString(PREF_MEDIA_PLAYER, "builtin").apply();
+    }
+
     public static boolean stereoToMono() {
         return prefs.getBoolean(PREF_STEREO_TO_MONO, false);
     }
@@ -767,6 +833,9 @@ public class UserPreferences {
     }
 
     public static EpisodeCleanupAlgorithm getEpisodeCleanupAlgorithm() {
+        if (!isEnableAutodownload()) {
+            return new APNullCleanupAlgorithm();
+        }
         int cleanupValue = getEpisodeCleanupValue();
         if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
@@ -778,7 +847,7 @@ public class UserPreferences {
     }
 
     public static int getEpisodeCleanupValue() {
-        return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "-1"));
+        return Integer.parseInt(prefs.getString(PREF_EPISODE_CLEANUP, "" + EPISODE_CLEANUP_NULL));
     }
 
     public static void setEpisodeCleanupValue(int episodeCleanupValue) {
@@ -929,6 +998,10 @@ public class UserPreferences {
 
     public static boolean timeRespectsSpeed() {
         return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
+    }
+
+    public static boolean streamOverDownload() {
+        return prefs.getBoolean(PREF_STREAM_OVER_DOWNLOAD, false);
     }
 
     /**

@@ -2,11 +2,14 @@ package de.danoeh.antennapod.menuhandler;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Set;
 
@@ -18,7 +21,9 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.dialog.FilterDialog;
+import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
 
 /**
  * Handles interactions with the FeedItemMenu.
@@ -42,6 +47,10 @@ public class FeedMenuHandler {
         Log.d(TAG, "Preparing options menu");
 
         menu.findItem(R.id.refresh_complete_item).setVisible(selectedFeed.isPaged());
+        if (StringUtils.isBlank(selectedFeed.getLink())) {
+            menu.findItem(R.id.visit_website_item).setVisible(false);
+            menu.findItem(R.id.share_link_item).setVisible(false);
+        }
 
         return true;
     }
@@ -59,6 +68,9 @@ public class FeedMenuHandler {
                 break;
             case R.id.refresh_complete_item:
                 DBTasks.forceRefreshCompleteFeed(context, selectedFeed);
+                break;
+            case R.id.sort_items:
+                showSortDialog(context, selectedFeed);
                 break;
             case R.id.filter_items:
                 showFilterDialog(context, selectedFeed);
@@ -103,4 +115,17 @@ public class FeedMenuHandler {
 
         filterDialog.openDialog();
     }
+
+
+    private static void showSortDialog(Context context, Feed selectedFeed) {
+        IntraFeedSortDialog sortDialog = new IntraFeedSortDialog(context, selectedFeed.getSortOrder()) {
+            @Override
+            protected void updateSort(@NonNull SortOrder sortOrder) {
+                selectedFeed.setSortOrder(sortOrder);
+                DBWriter.setFeedItemSortOrder(selectedFeed.getId(), sortOrder);
+            }
+        };
+        sortDialog.openDialog();
+    }
+
 }

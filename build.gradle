@@ -41,21 +41,19 @@ subprojects {
 
 project.ext {
     compileSdkVersion = 28
-    minSdkVersion = 14
+    minSdkVersion = 16
     targetSdkVersion = 28
 
     workManagerVersion = "1.0.1"
     espressoVersion = "3.2.0"
-    awaitilityVersion = "3.1.2"
+    awaitilityVersion = "3.1.6"
     commonsioVersion = "2.5"
     commonslangVersion = "3.6"
-    commonstextVersion = "1.3"
     eventbusVersion = "3.1.1"
     glideVersion = "4.8.0"
     glideOkhttpIntegrationVersion = "4.8.0"
     iconifyVersion = "2.2.2"
     jsoupVersion = "1.11.2"
-    materialDialogsVersion = "0.9.0.2"
     okhttpVersion = "3.12.5"
     okioVersion = "1.17.4"
     recyclerviewFlexibledividerVersion = "1.4.0"
@@ -65,7 +63,7 @@ project.ext {
     rxJavaRulesVersion = "1.3.3.0"
     triangleLabelViewVersion = "1.1.2"
 
-    exoPlayerVersion = "2.9.3"
+    exoPlayerVersion = "2.10.8"
     audioPlayerVersion = "v1.0.17"
 
     castCompanionLibVer = "2.9.1"
@@ -91,4 +89,5 @@ task checkstyle(type: Checkstyle) {
     classpath = files()
     source "${project.rootDir}"
     exclude("**/gen/**")
+    exclude("**/generated/**")
 }

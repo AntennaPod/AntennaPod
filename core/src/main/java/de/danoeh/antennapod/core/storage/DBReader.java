@@ -31,7 +31,6 @@ import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparato
  * Provides methods for reading data from the AntennaPod database.
  * In general, all database calls in DBReader-methods are executed on the caller's thread.
  * This means that the caller should make sure that DBReader-methods are not executed on the GUI-thread.
- * This class will use the {@link de.danoeh.antennapod.core.feed.EventDistributor} to notify listeners about changes in the database.
  */
 public final class DBReader {
 
@@ -516,13 +515,24 @@ public final class DBReader {
      * newest events first.
      */
     public static List<DownloadStatus> getFeedDownloadLog(Feed feed) {
-        Log.d(TAG, "getFeedDownloadLog() called with: " + "feed = [" + feed + "]");
+        return getFeedDownloadLog(feed.getId());
+    }
+
+    /**
+     * Loads the download log for a particular feed from the database.
+     *
+     * @param feedId Feed id for which the download log is loaded
+     * @return A list with DownloadStatus objects that represent the feed's download log,
+     * newest events first.
+     */
+    public static List<DownloadStatus> getFeedDownloadLog(long feedId) {
+        Log.d(TAG, "getFeedDownloadLog() called with: " + "feed = [" + feedId + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor cursor = null;
         try {
-            cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feed.getId());
+            cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId);
             List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 downloadLog.add(DownloadStatus.fromCursor(cursor));

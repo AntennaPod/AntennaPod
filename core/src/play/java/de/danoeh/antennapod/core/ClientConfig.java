@@ -10,6 +10,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.exception.RxJavaErrorHandlerSetup;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 /**
  * Stores callbacks for core classes like Services, DB classes etc. and other configuration variables.
@@ -58,6 +59,7 @@ public class ClientConfig {
         }
         SleepTimerPreferences.init(context);
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
+        NotificationUtils.createChannels(context);
         initialized = true;
     }
 

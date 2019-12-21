@@ -32,7 +32,35 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
 public class Timeline {
     private static final String TAG = "Timeline";
 
-    private static final String WEBVIEW_STYLE = "@font-face { font-family: 'Roboto-Light'; src: url('file:///android_asset/Roboto-Light.ttf'); } * { color: %s; font-family: roboto-Light; font-size: 13pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } a.timecode { color: #669900; } img { display: block; margin: 10 auto; max-width: %s; height: auto; } body { margin: %dpx %dpx %dpx %dpx; }";
+    private static final String WEBVIEW_STYLE =
+            "@font-face {"
+            + "font-family: 'Roboto-Light';"
+            + "src: url('file:///android_asset/Roboto-Light.ttf');"
+            + "}"
+            + "* {"
+            + "color: %s;"
+            + "font-family: roboto-Light;"
+            + "font-size: 13pt;"
+            + "overflow-wrap: break-word;"
+            + "}"
+            + "a {"
+            + "font-style: normal;"
+            + "text-decoration: none;"
+            + "font-weight: normal;"
+            + "color: #00A8DF;"
+            + "}"
+            + "a.timecode {"
+            + "color: #669900;"
+            + "}"
+            + "img, iframe {"
+            + "display: block;"
+            + "margin: 10 auto;"
+            + "max-width: %s;"
+            + "height: auto;"
+            + "}"
+            + "body {"
+            + "margin: %dpx %dpx %dpx %dpx;"
+            + "}";
 
 
     private ShownotesProvider shownotesProvider;

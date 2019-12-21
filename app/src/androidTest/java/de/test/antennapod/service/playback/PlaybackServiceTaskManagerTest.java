@@ -18,7 +18,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -106,18 +105,8 @@ public class PlaybackServiceTaskManagerTest {
         assertNotNull(testQueue);
         assertTrue(testQueue.isEmpty());
 
-
-        final CountDownLatch countDownLatch = new CountDownLatch(1);
-        EventDistributor.EventListener queueListener = new EventDistributor.EventListener() {
-            @Override
-            public void update(EventDistributor eventDistributor, Integer arg) {
-                countDownLatch.countDown();
-            }
-        };
-        EventDistributor.getInstance().register(queueListener);
         List<FeedItem> queue = writeTestQueue("a");
         EventBus.getDefault().post(QueueEvent.setQueue(queue));
-        countDownLatch.await(5000, TimeUnit.MILLISECONDS);
 
         assertNotNull(queue);
         testQueue = pstm.getQueue();

@@ -39,9 +39,6 @@ import de.danoeh.antennapod.BuildConfig;
  */
 public class HTTPBin extends NanoHTTPD {
     private static final String TAG = "HTTPBin";
-    public static final int PORT = 8124;
-    public static final String BASE_URL = "http://127.0.0.1:" + HTTPBin.PORT;
-
 
     private static final String MIME_HTML = "text/html";
     private static final String MIME_PLAIN = "text/plain";
@@ -49,8 +46,12 @@ public class HTTPBin extends NanoHTTPD {
     private final List<File> servedFiles;
 
     public HTTPBin() {
-        super(PORT);
+        super(0); // Let system pick a free port
         this.servedFiles = new ArrayList<>();
+    }
+
+    public String getBaseUrl() {
+        return "http://127.0.0.1:" + getListeningPort();
     }
 
     /**
@@ -98,7 +99,7 @@ public class HTTPBin extends NanoHTTPD {
         if (func.equalsIgnoreCase("status")) {
             try {
                 int code = Integer.parseInt(param);
-                return getStatus(code);
+                return new Response(getStatus(code), MIME_HTML, "");
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 return getInternalError();
@@ -284,31 +285,45 @@ public class HTTPBin extends NanoHTTPD {
         return response;
     }
 
-    private Response getStatus(final int code) {
-        Response.IStatus status = (code == 200) ? Response.Status.OK :
-                (code == 201) ? Response.Status.CREATED :
-                        (code == 206) ? Response.Status.PARTIAL_CONTENT :
-                                (code == 301) ? Response.Status.REDIRECT :
-                                        (code == 304) ? Response.Status.NOT_MODIFIED :
-                                                (code == 400) ? Response.Status.BAD_REQUEST :
-                                                        (code == 401) ? Response.Status.UNAUTHORIZED :
-                                                                (code == 403) ? Response.Status.FORBIDDEN :
-                                                                        (code == 404) ? Response.Status.NOT_FOUND :
-                                                                                (code == 405) ? Response.Status.METHOD_NOT_ALLOWED :
-                                                                                        (code == 416) ? Response.Status.RANGE_NOT_SATISFIABLE :
-                                                                                                (code == 500) ? Response.Status.INTERNAL_ERROR : new Response.IStatus() {
-                                                                                                    @Override
-                                                                                                    public int getRequestStatus() {
-                                                                                                        return code;
-                                                                                                    }
+    private Response.IStatus getStatus(final int code) {
+        switch (code) {
+            case 200:
+                return Response.Status.OK;
+            case 201:
+                return Response.Status.CREATED;
+            case 206:
+                return Response.Status.PARTIAL_CONTENT;
+            case 301:
+                return Response.Status.REDIRECT;
+            case 304:
+                return Response.Status.NOT_MODIFIED;
+            case 400:
+                return Response.Status.BAD_REQUEST;
+            case 401:
+                return Response.Status.UNAUTHORIZED;
+            case 403:
+                return Response.Status.FORBIDDEN;
+            case 404:
+                return Response.Status.NOT_FOUND;
+            case 405:
+                return Response.Status.METHOD_NOT_ALLOWED;
+            case 416:
+                return Response.Status.RANGE_NOT_SATISFIABLE;
+            case 500:
+                return Response.Status.INTERNAL_ERROR;
+            default:
+                return new Response.IStatus() {
+                    @Override
+                    public int getRequestStatus() {
+                        return code;
+                    }
 
-                                                                                                    @Override
-                                                                                                    public String getDescription() {
-                                                                                                        return "Unknown";
-                                                                                                    }
-                                                                                                };
-        return new Response(status, MIME_HTML, "");
-
+                    @Override
+                    public String getDescription() {
+                        return "Unknown";
+                    }
+                };
+        }
     }
 
     private Response getRedirectResponse(int times) {

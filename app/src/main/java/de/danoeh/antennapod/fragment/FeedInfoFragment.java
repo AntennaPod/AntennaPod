@@ -167,16 +167,8 @@ public class FeedInfoFragment extends Fragment {
 
         txtvTitle.setText(feed.getTitle());
 
-        String description = feed.getDescription();
-        if(description != null) {
-            if(Feed.TYPE_ATOM1.equals(feed.getType())) {
-                HtmlToPlainText formatter = new HtmlToPlainText();
-                Document feedDescription = Jsoup.parse(feed.getDescription());
-                description = StringUtils.trim(formatter.getPlainText(feedDescription));
-            }
-        } else {
-            description = "";
-        }
+        String description = HtmlToPlainText.getPlainText(feed.getDescription());
+
         txtvDescription.setText(description);
 
         if (!TextUtils.isEmpty(feed.getAuthor())) {
@@ -222,6 +214,10 @@ public class FeedInfoFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (feed == null) {
+            Toast.makeText(getContext(), R.string.please_wait_for_data, Toast.LENGTH_LONG).show();
+            return super.onOptionsItemSelected(item);
+        }
         boolean handled = false;
         try {
             handled = FeedMenuHandler.onOptionsItemClicked(getContext(), item, feed);

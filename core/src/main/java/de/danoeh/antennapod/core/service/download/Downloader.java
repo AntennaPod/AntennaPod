@@ -17,7 +17,7 @@ public abstract class Downloader implements Callable<Downloader> {
 
     private volatile boolean finished;
 
-    volatile boolean cancelled;
+    public volatile boolean cancelled;
 
     @NonNull
     final DownloadRequest request;

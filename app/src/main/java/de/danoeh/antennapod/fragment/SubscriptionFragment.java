@@ -28,7 +28,8 @@ import de.danoeh.antennapod.adapter.SubscriptionsAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -41,6 +42,7 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -55,9 +57,6 @@ import org.greenrobot.eventbus.ThreadMode;
 public class SubscriptionFragment extends Fragment {
 
     public static final String TAG = "SubscriptionFragment";
-
-    private static final int EVENTS = EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.UNREAD_ITEMS_UPDATE;
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
 
@@ -65,6 +64,7 @@ public class SubscriptionFragment extends Fragment {
     private DBReader.NavDrawerData navDrawerData;
     private SubscriptionsAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
+    private EmptyViewHandler emptyView;
 
     private int mPosition = -1;
     private boolean isUpdatingFeeds = false;
@@ -138,12 +138,22 @@ public class SubscriptionFragment extends Fragment {
         getActivity().invalidateOptionsMenu();
     }
 
+    private void setupEmptyView() {
+        emptyView = new EmptyViewHandler(getContext());
+        emptyView.setIcon(R.attr.ic_folder);
+        emptyView.setTitle(R.string.no_subscriptions_head_label);
+        emptyView.setMessage(R.string.no_subscriptions_label);
+        emptyView.attachToListView(subscriptionGridLayout);
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         subscriptionAdapter = new SubscriptionsAdapter((MainActivity) getActivity(), itemAccess);
         subscriptionGridLayout.setAdapter(subscriptionAdapter);
         subscriptionGridLayout.setOnItemClickListener(subscriptionAdapter);
+        setupEmptyView();
 
         subscriptionAddButton.setOnClickListener(view -> {
             if (getActivity() instanceof MainActivity) {
@@ -159,7 +169,6 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        EventDistributor.getInstance().register(contentUpdate);
         EventBus.getDefault().register(this);
         loadSubscriptions();
     }
@@ -167,7 +176,6 @@ public class SubscriptionFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         if(disposable != null) {
             disposable.dispose();
@@ -178,12 +186,14 @@ public class SubscriptionFragment extends Fragment {
         if(disposable != null) {
             disposable.dispose();
         }
+        emptyView.hide();
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     navDrawerData = result;
                     subscriptionAdapter.notifyDataSetChanged();
+                    emptyView.updateVisibility();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
@@ -294,15 +304,15 @@ public class SubscriptionFragment extends Fragment {
         dialog.createNewDialog().show();
     }
 
-    private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EVENTS & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent.");
-                loadSubscriptions();
-            }
-        }
-    };
+    @Subscribe
+    public void onFeedListChanged(FeedListUpdateEvent event) {
+        loadSubscriptions();
+    }
+
+    @Subscribe
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        loadSubscriptions();
+    }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {

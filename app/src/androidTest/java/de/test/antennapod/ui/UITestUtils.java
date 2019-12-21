@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +20,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -34,16 +35,15 @@ import org.junit.Assert;
  * Utility methods for UI tests.
  * Starts a web server that hosts feeds, episodes and images.
  */
-class UITestUtils {
+public class UITestUtils {
 
     private static final String TAG = UITestUtils.class.getSimpleName();
 
     private static final int NUM_FEEDS = 5;
     private static final int NUM_ITEMS_PER_FEED = 10;
 
-    private static final String TEST_FILE_NAME = "3sec.mp3";
-
-
+    private String testFileName = "3sec.mp3";
+    private boolean hostTextOnlyFeeds = false;
     private final Context context;
     private final HTTPBin server = new HTTPBin();
     private File destDir;
@@ -89,13 +89,13 @@ class UITestUtils {
         out.close();
         int id = server.serveFile(feedFile);
         Assert.assertTrue(id != -1);
-        return String.format("%s/files/%d", HTTPBin.BASE_URL, id);
+        return String.format("%s/files/%d", server.getBaseUrl(), id);
     }
 
     private String hostFile(File file) {
         int id = server.serveFile(file);
         Assert.assertTrue(id != -1);
-        return String.format("%s/files/%d", HTTPBin.BASE_URL, id);
+        return String.format("%s/files/%d", server.getBaseUrl(), id);
     }
 
     private File newBitmapFile(String name) throws IOException {
@@ -109,12 +109,12 @@ class UITestUtils {
 
     private File newMediaFile(String name) throws IOException {
         File mediaFile = new File(hostedMediaDir, name);
-        if(mediaFile.exists()) {
+        if (mediaFile.exists()) {
             mediaFile.delete();
         }
         Assert.assertFalse(mediaFile.exists());
 
-        InputStream in = context.getAssets().open(TEST_FILE_NAME);
+        InputStream in = context.getAssets().open(testFileName);
         Assert.assertNotNull(in);
 
         FileOutputStream out = new FileOutputStream(mediaFile);
@@ -143,9 +143,10 @@ class UITestUtils {
                         "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);
                 items.add(item);
 
-                File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");
-                item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0, 0));
-
+                if (!hostTextOnlyFeeds) {
+                    File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");
+                    item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0, 0));
+                }
             }
             feed.setItems(items);
             feed.setDownload_url(hostFeed(feed));
@@ -192,7 +193,9 @@ class UITestUtils {
             }
 
             queue.add(feed.getItems().get(0));
-            feed.getItems().get(1).getMedia().setPlaybackCompletionDate(new Date());
+            if (feed.getItems().get(1).hasMedia()) {
+                feed.getItems().get(1).getMedia().setPlaybackCompletionDate(new Date());
+            }
         }
         localFeedDataAdded = true;
 
@@ -201,16 +204,26 @@ class UITestUtils {
         adapter.setCompleteFeed(hostedFeeds.toArray(new Feed[hostedFeeds.size()]));
         adapter.setQueue(queue);
         adapter.close();
-        EventDistributor.getInstance().sendFeedUpdateBroadcast();
+        EventBus.getDefault().post(new FeedListUpdateEvent(hostedFeeds));
         EventBus.getDefault().post(QueueEvent.setQueue(queue));
     }
 
     public PlaybackController getPlaybackController(MainActivity mainActivity) {
-        ExternalPlayerFragment fragment = (ExternalPlayerFragment)mainActivity.getSupportFragmentManager().findFragmentByTag(ExternalPlayerFragment.TAG);
+        ExternalPlayerFragment fragment = (ExternalPlayerFragment) mainActivity.getSupportFragmentManager()
+                .findFragmentByTag(ExternalPlayerFragment.TAG);
         return fragment.getPlaybackControllerTestingOnly();
     }
 
-    public FeedMedia getCurrentMedia(MainActivity mainActivity) {
-        return (FeedMedia)getPlaybackController(mainActivity).getMedia();
+    public FeedMedia getCurrentMedia() {
+        Playable playable = Playable.PlayableUtils.createInstanceFromPreferences(context);
+        return (FeedMedia) playable;
+    }
+
+    public void setMediaFileName(String filename) {
+        testFileName = filename;
+    }
+
+    public void setHostTextOnlyFeeds(boolean hostTextOnlyFeeds) {
+        this.hostTextOnlyFeeds = hostTextOnlyFeeds;
     }
 }

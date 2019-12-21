@@ -1,5 +1,10 @@
 package de.danoeh.antennapod.core.util;
 
+import androidx.annotation.NonNull;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -38,6 +43,15 @@ public class FeedItemUtil {
         return result;
     }
 
+    @NonNull
+    public static List<Long> getIdList(List<? extends FeedItem> items) {
+        List<Long> result = new ArrayList<>();
+        for (FeedItem item : items) {
+            result.add(item.getId());
+        }
+        return result;
+    }
+
     /**
      * Get the link for the feed item for the purpose of Share. It fallbacks to
      * use the feed's link if the named feed item has no link.
@@ -45,9 +59,9 @@ public class FeedItemUtil {
     public static String getLinkWithFallback(FeedItem item) {
         if (item == null) {
             return null;
-        } else if (item.getLink() != null) {
+        } else if (StringUtils.isNotBlank(item.getLink())) {
             return item.getLink();
-        } else if (item.getFeed() != null) {
+        } else if (StringUtils.isNotBlank(item.getFeed().getLink())) {
             return item.getFeed().getLink();
         }
         return null;

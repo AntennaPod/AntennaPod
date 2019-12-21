@@ -22,10 +22,8 @@
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Synkronoi toisiin laitteisiin</string>
   <string name="gpodnet_auth_label">gpodder.net Kirjautuminen</string>
-  <string name="free_space_label">%1$s vapaa</string>
   <string name="episode_cache_full_title">Jaksojen välimuisti täynnä</string>
   <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa Asetuksissa.</string>
-  <string name="synchronizing">Synkronoi...</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Podcasteja soitettu yhteensä:</string>
   <string name="statistics_details_dialog">%1$d jakso %2$d:sta aloitettu.\n\nSoitettu %3$s jaksoa %4$s:sta.</string>
@@ -63,7 +61,6 @@
   <string name="author_label">Tekijä(t)</string>
   <string name="language_label">Kieli</string>
   <string name="url_label">URL</string>
-  <string name="podcast_settings_label">Asetukset</string>
   <string name="cover_label">Kuva</string>
   <string name="error_label">Virhe</string>
   <string name="error_msg_prefix">Tapahtui virhe:</string>
@@ -72,14 +69,9 @@
   <string name="external_storage_error_msg">Ulkoista tallennustilaa ei ole saatavilla. Varmista että ulkoinen tallennustila on aktivoitu, jotta sovellus voi toimia oikeellisesti.</string>
   <string name="chapters_label">Kappaleet</string>
   <string name="chapter_duration">Kesto: %1$s</string>
-  <string name="shownotes_label">Jaksomuistio</string>
   <string name="description_label">Kuvaus</string>
-  <string name="most_recent_prefix">Uusin jakso:\u0020</string>
   <string name="episodes_suffix">\u0020jaksoa</string>
-  <string name="length_prefix">Kesto:\u0020</string>
-  <string name="size_prefix">Koko:\u0020</string>
   <string name="processing_label">Prosessoi</string>
-  <string name="loading_label">Lataa...</string>
   <string name="save_username_password_label">Tallenna käyttäjätunnus ja salasana</string>
   <string name="close_label">Sulje</string>
   <string name="retry_label">Yritä uudelleen</string>
@@ -108,8 +100,6 @@
   <string name="feedurl_label">Syöte URL</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Lisää podcast URL</string>
-  <string name="podcastdirectories_label">Etsi podcast hakemistosta</string>
-  <string name="podcastdirectories_descr">Voit etsiä uusia podcasteja iTunes tai fyyd hakemistosta tai selata gpodder.net nimen, kategorian tai suosittujen mukaan.</string>
   <string name="browse_gpoddernet_label">Selaa gpodder.net</string>
   <string name="discover">Löydä</string>
   <string name="discover_more">lisää »</string>
@@ -137,7 +127,6 @@
   <string name="feed_delete_confirmation_msg">Varmista, että haluat poistaa podcastin \"%1$s\" ja KAIKKI sen jaksot (mukaanlukien ladatut jaksot).</string>
   <string name="feed_remover_msg">Poistetaan podcast</string>
   <string name="load_complete_feed">Päivitä podcast</string>
-  <string name="hide_episodes_title">Piilota jaksoja</string>
   <string name="batch_edit">Batch editoi</string>
   <string name="select_all_above">Valitse kaikki yllä</string>
   <string name="select_all_below">Valitse kaikki alla</string>
@@ -161,9 +150,7 @@
   </plurals>
   <string name="play_label">Soita</string>
   <string name="pause_label">Pause</string>
-  <string name="stop_label">Stop</string>
   <string name="stream_label">Striimaa</string>
-  <string name="remove_label">Poista</string>
   <string name="delete_label">Deletoi</string>
   <string name="delete_failed">Ei voida poistaa tiedostoa. Laitteen uudelleenkäynnistys saattaa auttaa.</string>
   <string name="delete_episode_label">Deletoi jakso</string>
@@ -207,14 +194,12 @@
   <string name="removed_item">Asia poistettu</string>
   <!--Download messages and labels-->
   <string name="download_successful">onnistui</string>
-  <string name="download_failed">epäonnistui</string>
   <string name="download_pending">Lataus odottamassa</string>
   <string name="download_running">Lataamassa</string>
   <string name="download_error_details">Tiedot</string>
   <string name="download_error_details_message">%1$s \n\nTiedoston URL:\n%2$s</string>
   <string name="download_error_device_not_found">Tallennuslaitetta ei löytynyt</string>
   <string name="download_error_insufficient_space">Ei tarpeeksi tilaa</string>
-  <string name="download_error_file_error">Tiedostovirhe</string>
   <string name="download_error_http_data_error">HTTP Data virhe</string>
   <string name="download_error_error_unknown">Odottamaton virhe</string>
   <string name="download_error_parser_exception">Parserin virhe</string>
@@ -224,7 +209,6 @@
   <string name="download_error_unauthorized">Autentikaatio virhe</string>
   <string name="download_error_file_type_type">Tiedostotyyppivirhe</string>
   <string name="download_error_forbidden">Ei sallittu</string>
-  <string name="cancel_all_downloads_label">Peruuta kaikki lataukset</string>
   <string name="download_canceled_msg">Lataus peruutettu</string>
   <string name="download_canceled_autodownload_enabled_msg">Lataus peruutettu\nPoistettu <i>Automaattinen lataus</i> tälle tiedolle </string>
   <string name="download_report_title">Lataukset valmistuivat virhe(ide)n kanssa</string>
@@ -243,7 +227,6 @@
   <string name="download_log_title_unknown">Tuntematon otsikko</string>
   <string name="download_type_feed">Syöte</string>
   <string name="download_type_media">Mediatiedosto</string>
-  <string name="download_type_image">Kuva</string>
   <string name="download_request_error_dialog_message_prefix">Tiedoston latauksen aikana tapahtui virhe:\u0020</string>
   <string name="null_value_podcast_error">Ei voida näyttää olematonta podcastia</string>
   <string name="authentication_notification_title">Vaaditaan autentikaatio</string>
@@ -264,7 +247,6 @@
   <string name="no_media_playing_label">Media ei soi</string>
   <string name="player_buffering_msg">Bufferoi</string>
   <string name="player_go_to_picture_in_picture">Kuva-kuvassa-tila</string>
-  <string name="playbackservice_notification_title">Soittaa podcastia</string>
   <string name="unknown_media_key">AntennaPod - Tuntematon media avain: %1$d</string>
   <!--Queue operations-->
   <string name="lock_queue">Lukitse jono</string>
@@ -273,7 +255,6 @@
   <string name="queue_unlocked">Jono avattu</string>
   <string name="clear_queue_label">Tyhjennä jono</string>
   <string name="undo">Peruuta</string>
-  <string name="removed_from_queue">Aihe poistettu</string>
   <string name="move_to_top_label">Siirrä ylimmäiseksi</string>
   <string name="move_to_bottom_label">Siirrä alimmaikseksi</string>
   <string name="sort">Lajittele</string>
@@ -291,13 +272,11 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Lataa plugin</string>
   <string name="no_playback_plugin_title">Plugin ei asennettu</string>
-  <string name="no_playback_plugin_or_sonic_msg">Muuttuvan soittonopeuden toiminnassa suosittelemme sisäänrakennettua Sonic mediaplayer [Android 4.1+].\n\nVaihtoehtoisesti voit ladata kolmannen osapuolen pluginin <i>Prestissimo</i> Play Storesta.\nOngelmat Prestissimossa eivät ole AntennaPod vastuulla ja tulisi raportoida pluginin tekijöille.</string>
   <string name="set_playback_speed_label">Soittonopeudet</string>
   <string name="enable_sonic">Aloita Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Ei jaksoja jonossa</string>
   <string name="no_items_label">Lisää jakso lataamalla ja painamalla pitkään jaksoa ja valitse \"Lisää jonoon\".</string>
-  <string name="no_feeds_label">Et ole tilannut yhtään podcastia vielä.</string>
   <string name="no_shownotes_label">Jaksolla ei ole jaksomuistiota</string>
   <string name="no_run_downloads_head_label">Ei latauksia</string>
   <string name="no_run_downloads_label">Voit ladata jakson podcastin lisätietosivulla.</string>
@@ -318,8 +297,6 @@
   <!--Preferences-->
   <string name="storage_pref">Tallennus</string>
   <string name="project_pref">Projekti</string>
-  <string name="other_pref">Muuta</string>
-  <string name="about_pref">Tietoja</string>
   <string name="queue_label">Jono</string>
   <string name="integrations_label">Integraatiot</string>
   <string name="automation">Automaatio</string>
@@ -359,18 +336,13 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Aseta ajankohta</string>
   <string name="pref_autoUpdateIntervallOrTime_every">joka %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">aika %1$s</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Lataa mediatiedostot vain WiFin kautta</string>
   <string name="pref_followQueue_title">Jatkuva soitto</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">WiFi medialataus</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kuulokkeiden irrotus</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kuulokkeiden uudelleenyhdistyminen</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth uudelleenyhdistyminen</string>
   <string name="pref_mobileUpdate_title">Mobiilipäivitykset</string>
-  <string name="refreshing_label">Päivittää</string>
   <string name="user_interface_label">Käyttöliittymä</string>
   <string name="pref_set_theme_title">Valitse teema</string>
-  <string name="pref_nav_drawer_title">Kustomoi navogointihylly</string>
-  <string name="pref_nav_drawer_sum">Kustomoi näkymä navigointihyllyssä</string>
   <string name="pref_nav_drawer_items_title">Aseta navigointihyllyn asiat</string>
   <string name="pref_nav_drawer_items_sum">Vaihda navigointihyllyssä esiintyviä asioita.</string>
   <string name="pref_nav_drawer_feed_order_title">Aseta tilauksien järjestys</string>
@@ -382,8 +354,6 @@
   <string name="pref_automatic_download_sum">Aseta jaksojen automaattinen lataus</string>
   <string name="pref_autodl_wifi_filter_title">Aseta Wi-Fi filtteri</string>
   <string name="pref_autodl_wifi_filter_sum">Salli automaatiset lataukset vain sallittujen Wi-Fi verkkojen kautta.</string>
-  <string name="pref_autodl_allow_on_mobile_title">Lataa mobiiilidatayhteydellä</string>
-  <string name="pref_autodl_allow_on_mobile_sum">Salli automaattinen lataus mobiilitdatayhteyden kautta</string>
   <string name="pref_automatic_download_on_battery_title">Lataa kun ei ladata akkua</string>
   <string name="pref_automatic_download_on_battery_sum">Salli automaattiset lataukset kun akku ei ole latautumassa</string>
   <string name="pref_parallel_downloads_title">Yhtäaikaiset lataukset</string>
@@ -408,7 +378,6 @@
   <string name="pref_gpodnet_full_sync_sum">Synkronoi kaikki tilaukset ja jaksojen tilastot gpodder.net</string>
   <string name="pref_gpodnet_sync_sum_last_sync_line">Viimeisin synkronointiyritys: %1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">Synkronointi aloitettu</string>
-  <string name="pref_gpodnet_full_sync_started">Täysi synkronointi aloitettu</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Kirjauduttu <i>%1$s</i> laitteella <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Näytä synkronointivirheet ilmoituksissa</string>
   <string name="pref_gpodnet_notifications_sum">Tämä asetus ei vaikuta autentikointivirheisiin.</string>
@@ -435,21 +404,14 @@
   <string name="pref_showDownloadReport_title">Näytä latausraportti</string>
   <string name="pref_showDownloadReport_sum">Jos lataus epäonnistuu, generoi raportti joka näyttää virheen tiedot.</string>
   <string name="pref_expand_notify_unsupport_toast">Android versiot ennen 4.1 eivät tue laajenettuja ilmoituksia.</string>
-  <string name="pref_queueAddToFront_sum">Lisää uusia jaksoja jonon eteen.</string>
-  <string name="pref_queueAddToFront_title">Lisää jonon eteen.</string>
   <string name="pref_smart_mark_as_played_disabled">Poissa käytöstä</string>
   <string name="pref_image_cache_size_title">Kuvan välimuistin koko</string>
   <string name="pref_image_cache_size_sum">Tallennusmedian välimuistin koko kuville.</string>
-  <string name="crash_report_title">Kaatumisen raportti</string>
-  <string name="crash_report_sum">Lähetä uusin kaatumisraportti emaililla</string>
-  <string name="send_email">Lähteä email</string>
   <string name="experimental_pref">Kokeellinen</string>
   <string name="pref_media_player_message">Valitse mediasovellus jolla soitetaan tiedostot</string>
   <string name="pref_current_value">Nykyinen arvo: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Aseta verkkoproxy</string>
-  <string name="pref_faq">FAQ</string>
-  <string name="pref_known_issues">Tunnetut ongelmat</string>
   <string name="pref_no_browser_found">Selainta ei löydetty</string>
   <string name="pref_cast_title">Chromecast-tuki</string>
   <string name="pref_cast_message_play_flavor">Aseta ulkoisten mediaohjelmien soitto Cast laitteilla (kuten Chromecast, Audio Speakers tai Android TV)</string>
@@ -475,6 +437,8 @@
   <string name="back_button_go_to_page_title">Valitse sivu</string>
   <string name="pref_delete_removes_from_queue_title">Deletointi poistaa jonosta</string>
   <string name="pref_delete_removes_from_queue_sum">Poista jakso automaattisesti jonosta kun se deletoidaan.</string>
+  <!--About screen-->
+  <string name="about_pref">Tietoja</string>
   <!--Search-->
   <string name="search_hint">Etsi jaksoja</string>
   <string name="found_in_shownotes_label">Löydetty jaksomuistiosta</string>
@@ -486,22 +450,16 @@
   <string name="found_in_title_label">Löydetty otsikoista</string>
   <string name="no_results_for_query">Ei löydetty tuloksia \"%1$s\"</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">OPML tiedostot mahdollistavat podcastien siirron podcasterista toiseen.</string>
   <string name="opml_import_option">Valinta %1$d</string>
   <string name="opml_import_explanation_1">Valitse täydellinen tiedostopolku tietojärjestelmästä</string>
-  <string name="opml_import_explanation_2">Käytä ulkopuolisia sovelluksia kuten Dropbox, Google Drive tai suosikki tiedostomanageria OPML tiedoston avaamiseen.</string>
   <string name="opml_import_explanation_3">Monet sovellukset kuten Google Mail, Dropbox, Google Drive ja useimmat tiedostomanagerit <i>avaavat</i> OPML tiedostoja <i>kanssa</i> AntennaPodiin.</string>
-  <string name="start_import_label">Aloita tuonti</string>
   <string name="opml_import_label">OPML tuonti</string>
-  <string name="opml_directory_error">VIRHE!</string>
   <string name="reading_opml_label">Lukee OPML tiedostoa</string>
   <string name="opml_reader_error">Virhe lukiessa OPML dokumenttia:</string>
   <string name="opml_import_error_no_file">Ei tiedostoa valittuna!</string>
   <string name="select_all_label">Valitse kaikki</string>
   <string name="deselect_all_label">Poista valinta kaikista</string>
-  <string name="select_options_label">Valitse...</string>
   <string name="choose_file_from_filesystem">Tiedostojärjestelmästä</string>
-  <string name="choose_file_from_external_application">Ulkoinen sovellus</string>
   <string name="opml_export_label">OPML vienti</string>
   <string name="html_export_label">HTML vienti</string>
   <string name="exporting_label">Vienti...</string>
@@ -594,8 +552,6 @@
   <string name="pref_restart_required">AntennaPod täytyy uudelleenkäynnistää tämän asetuksen voimaantuloon.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Tilaa</string>
-  <string name="subscribed_label">Tilattu</string>
-  <string name="downloading_label">Lataa...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Kelaa takaisin</string>
   <string name="fast_forward_label">Hyppää eteen</string>
@@ -703,7 +659,6 @@
   <string name="cast_failed_setting_volume">Epäonnistui asettaa äänenvoimakkuus</string>
   <string name="cast_failed_no_connection">Yhteyttä cast laitteeseen ei löydy</string>
   <string name="cast_failed_no_connection_trans">Yhteys cast laitteeseen menetetty. Sovelllus yrittää muodostaa yhteyden, jos mahdollista. Odota muutama sekunti ja yritä uudelleen.</string>
-  <string name="cast_failed_perform_action">Epäonnistui suorittaa toiminto</string>
   <string name="cast_failed_status_request">Epäonnistui synkronoida cast laitteeseen</string>
   <string name="cast_failed_seek">Epäonnistui löytää uusi osoite cast laitteelta</string>
   <string name="cast_failed_receiver_player_error">Vastaanotinlaiteessa on vakava virhe</string>
@@ -718,4 +673,5 @@
   <string name="notification_channel_error">Virheet</string>
   <string name="notification_channel_error_description">Näytetään kun jotain meni vikaan, esimerkiksi jos lataus tai gpodder synkronointi epäonnistui.</string>
   <string name="import_bad_file">Rikkinäinen/Korruptoitunut tiedosto</string>
+  <!--Widget settings-->
 </resources>

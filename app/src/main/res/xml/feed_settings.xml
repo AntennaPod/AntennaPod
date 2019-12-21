@@ -4,22 +4,26 @@
 
     <SwitchPreference
             android:key="keepUpdated"
+            android:icon="?attr/navigation_refresh"
             android:title="@string/keep_updated"
             android:summary="@string/keep_updated_summary"/>
 
     <Preference
             android:key="authentication"
+            android:icon="?attr/ic_key"
             android:title="@string/authentication_label"
             android:summary="@string/authentication_descr"/>
 
     <ListPreference
             android:key="feedPlaybackSpeed"
+            android:icon="?attr/ic_settings_speed"
             android:title="@string/playback_speed"
             android:summary="@string/pref_feed_playback_speed_sum"/>
 
     <ListPreference
             android:entries="@array/spnAutoDeleteItems"
             android:entryValues="@array/spnAutoDeleteValues"
+            android:icon="?attr/content_discard"
             android:title="@string/auto_delete_label"
             android:key="autoDelete"/>
 
