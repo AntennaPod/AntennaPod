@@ -54,7 +54,6 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
 
         setupAutoDownloadGlobalPreference(); // To prevent transition animation because of summary update
 
-        postponeEnterTransition();
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
         disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
             Feed feed = DBReader.getFeed(feedId);
@@ -81,8 +80,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     updateAutoDeleteSummary();
                     updateAutoDownloadEnabled();
                     updatePlaybackSpeedPreference();
-                }, error -> Log.d(TAG, Log.getStackTraceString(error)),
-                this::startPostponedEnterTransition);
+                }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
     }
 
     @Override
