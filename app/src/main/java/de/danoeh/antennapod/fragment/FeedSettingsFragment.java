@@ -52,6 +52,8 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.feed_settings);
 
+        setupAutoDownloadGlobalPreference(); // To prevent transition animation because of summary update
+
         postponeEnterTransition();
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
         disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
@@ -217,6 +219,16 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
             pref.setChecked(checked);
             return false;
         });
+    }
+
+    private void setupAutoDownloadGlobalPreference() {
+        if (!UserPreferences.isEnableAutodownload()) {
+            SwitchPreference autodl = findPreference("autoDownload");
+            autodl.setChecked(false);
+            autodl.setEnabled(false);
+            autodl.setSummary(R.string.auto_download_disabled_globally);
+            findPreference(PREF_EPISODE_FILTER).setEnabled(false);
+        }
     }
 
     private void setupAutoDownloadPreference() {

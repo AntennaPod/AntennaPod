@@ -25,6 +25,7 @@
             android:entryValues="@array/spnAutoDeleteValues"
             android:icon="?attr/content_discard"
             android:title="@string/auto_delete_label"
+            android:summary="@string/feed_auto_download_global"
             android:key="autoDelete"/>
 
     <PreferenceCategory android:title="@string/auto_download_settings_label">
