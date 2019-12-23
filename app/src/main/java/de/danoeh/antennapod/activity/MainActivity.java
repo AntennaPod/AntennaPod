@@ -385,10 +385,10 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 break;
             case FLIP:
                 transaction.setCustomAnimations(
-                    R.anim.card_flip_left_in,
-                    R.anim.card_flip_left_out,
-                    R.anim.card_flip_right_in,
-                    R.anim.card_flip_right_out);
+                        R.anim.card_flip_right_in,
+                        R.anim.card_flip_right_out,
+                        R.anim.card_flip_left_in,
+                        R.anim.card_flip_left_out);
                 break;
         }
 
