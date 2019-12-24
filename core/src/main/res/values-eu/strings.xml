@@ -9,7 +9,7 @@
   <string name="all_episodes_short_label">Denak</string>
   <string name="new_episodes_label">Berria</string>
   <string name="favorite_episodes_label">Gogokoak</string>
-  <string name="new_label">Berriak</string>
+  <string name="new_label">Berria</string>
   <string name="settings_label">Ezarpenak</string>
   <string name="downloads_label">Deskargak</string>
   <string name="downloads_running_label">Exekutatzen</string>
@@ -283,6 +283,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Deskargatu osagarria</string>
   <string name="no_playback_plugin_title">Osagarria instalatu gabe</string>
+  <string name="no_playback_plugin_or_sonic_msg">Abiadura aldakorreko erreprodukzioak funtziona dezan, Sonic multimedia-erreproduzitzailea gehitzea gomendatzen dugu.</string>
   <string name="set_playback_speed_label">Erreprodukzio abiadurak</string>
   <string name="enable_sonic">Gaitu Sonic</string>
   <!--Empty list labels-->
@@ -727,6 +728,7 @@
   <string name="notification_channel_error_description">Zerbait gaizki atera den erakusten du, adibidez, gpodder deskargak edo sinkronizazioak huts egiten duen.</string>
   <string name="import_bad_file">Fitxategi baliogabe/ustela</string>
   <!--Widget settings-->
+  <string name="widget_settings">Widget ezarpenak</string>
   <string name="widget_create_button">widget-a sortu</string>
   <string name="widget_opacity">Opakutasuna</string>
 </resources>

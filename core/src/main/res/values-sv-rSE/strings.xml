@@ -31,6 +31,8 @@
   <string name="statistics_mode_normal">Beräkna faktisk speltid. Att spela två gånger räknas två gånger, men att markera som spelad räknas inte</string>
   <string name="statistics_mode_count_all">Summera alla podcasts som markerats som spelade</string>
   <string name="statistics_speed_not_counted">Notera: Uppspelningshastighet tas inte med i beräkningarna. </string>
+  <string name="statistics_reset_data">Återställ statistikdata</string>
+  <string name="statistics_reset_data_msg">Detta kommer att radera historiken av spelad tid för alla episoder. Är du säker på att du vill fortsätta?</string>
   <!--Main activity-->
   <string name="drawer_open">Öppna meny</string>
   <string name="drawer_close">Stäng meny</string>
@@ -121,6 +123,7 @@
   <string name="share_link_label">Dela episod-URL</string>
   <string name="share_link_with_position_label">Dela episod-URL med position</string>
   <string name="share_file_label">Dela fil</string>
+  <string name="share_website_url_label">Dela Webbsidans URL</string>
   <string name="share_feed_url_label">Dela flödets URL</string>
   <string name="share_item_url_label">Dela mediafilens URL</string>
   <string name="share_item_url_with_position_label">Dela mediafilens URL med position</string>
@@ -258,6 +261,8 @@
   <string name="unlock_queue">Lås upp Kön</string>
   <string name="queue_locked">Kön låst</string>
   <string name="queue_unlocked">Kön upplåst</string>
+  <string name="queue_lock_warning">Om du låser kön kan du inte längre svepa eller ordna om episoder.</string>
+  <string name="checkbox_do_not_show_again">Visa inte igen</string>
   <string name="clear_queue_label">Rensa kön</string>
   <string name="undo">Ångra</string>
   <string name="move_to_top_label">Flytta längst upp</string>
@@ -278,6 +283,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Ladda ner tillägg</string>
   <string name="no_playback_plugin_title">Tillägg ej installerat</string>
+  <string name="no_playback_plugin_or_sonic_msg">Vi rekommenderar att den inbyggda Sonic-spelaren används för att kunna variera uppspelningshastigheten.</string>
   <string name="set_playback_speed_label">Uppspelningshastigheter</string>
   <string name="enable_sonic">Aktivera Sonic</string>
   <!--Empty list labels-->
@@ -300,6 +306,8 @@
   <string name="no_fav_episodes_label">Du kan lägga till episoder i favoriter genom att lång-trycka på dem.</string>
   <string name="no_chapters_head_label">Inga kapitel</string>
   <string name="no_chapters_label">Denna episod har inga kapitel.</string>
+  <string name="no_subscriptions_head_label">Inga prenumerationer</string>
+  <string name="no_subscriptions_label">Tryck på plus-ikonen nedan för att prenumerera på podcasts.</string>
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
   <string name="project_pref">Projekt</string>
@@ -349,6 +357,8 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Hörlurar bortkopplas</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Hörlurar återanslutna</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Blutetooth återansluts</string>
+  <string name="pref_stream_over_download_title">Föredra Strömmning</string>
+  <string name="pref_stream_over_download_sum">Visa strömningsknappen istället för nedlanningsknappen i listor.</string>
   <string name="pref_mobileUpdate_title">Mobila uppdateringar</string>
   <string name="pref_mobileUpdate_sum">Välj vad som ska tillåtas över mobila dataanslutningar</string>
   <string name="pref_mobileUpdate_refresh">Flödesuppdatering</string>
@@ -369,11 +379,16 @@
   <string name="pref_automatic_download_sum">Konfigurera automatisk nedladdning av episoder.</string>
   <string name="pref_autodl_wifi_filter_title">Aktivera WiFi filtrering</string>
   <string name="pref_autodl_wifi_filter_sum">Tillåt automatisk nedladdning endast för utvalda WiFi-nätverk.</string>
+  <string name="autodl_wifi_filter_permission_title">Rättighet krävs</string>
+  <string name="autodl_wifi_filter_permission_message">Platsrättigheten krävs för Wi-Fi filtrering. Tryck för att tilldela rättigheten.</string>
   <string name="pref_automatic_download_on_battery_title">Nedladdning vid batteridrift</string>
   <string name="pref_automatic_download_on_battery_sum">Tillåt automatisk nedladdning när batteriet inte laddas</string>
   <string name="pref_parallel_downloads_title">Parallella nedladdningar</string>
   <string name="pref_episode_cache_title">Episodcache</string>
   <string name="pref_episode_cache_summary">Totalt antal nedladdade epidoder som ligger i enhetens cache. Automatisk nedladdning kommer att vänta om detta antal nås.</string>
+  <string name="pref_episode_cover_title">Använd Episodomslag</string>
+  <string name="pref_episode_cover_summary">Använd episodens egna omslag om tillgängligt. Appen kommer alltid att använda podcastens omslagsbild om rutan lämnas tom.</string>
+  <string name="pref_theme_title_use_system">Använd systemtemat</string>
   <string name="pref_theme_title_light">Ljust</string>
   <string name="pref_theme_title_dark">Mörkt</string>
   <string name="pref_theme_title_trueblack">Svart (AMOLED redo)</string>
@@ -398,6 +413,7 @@
   <string name="pref_gpodnet_notifications_sum">Denna inställning påverkar inte autentiseringsfel.</string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
+  <string name="pref_feed_playback_speed_sum">Hastigheten att använda när ljuduppspelning startas för episoder i detta flöde</string>
   <string name="pref_playback_time_respects_speed_title">Justera mediainfo till uppspelningshastigheten</string>
   <string name="pref_playback_time_respects_speed_sum">Visad position och totallängd anpassas till uppspelningshastigheten</string>
   <string name="pref_fast_forward">Snabbspolningslängd</string>
@@ -419,14 +435,25 @@
   <string name="pref_showDownloadReport_title">Visa nedladdningsrapport</string>
   <string name="pref_showDownloadReport_sum">Visa en rapport med detaljer om felet när nedladdningar misslyckas.</string>
   <string name="pref_expand_notify_unsupport_toast">Androidversioner före 4.1 har inte stöd för expanderade aviseringar.</string>
+  <string name="pref_enqueue_location_title">Köplats</string>
+  <string name="pref_enqueue_location_sum">Lägg till episoder i: %1$s</string>
+  <string name="enqueue_location_back">Slutet</string>
+  <string name="enqueue_location_front">Början</string>
+  <string name="enqueue_location_after_current">Efter nuvarande episod</string>
   <string name="pref_smart_mark_as_played_disabled">Avaktiverad</string>
   <string name="pref_image_cache_size_title">Bildcachestorlek</string>
   <string name="pref_image_cache_size_sum">Storleken på bildcachen på disken.</string>
+  <string name="view_mailing_list">Visa mailinglistan</string>
+  <string name="bug_report_title">Rapportera bugg</string>
+  <string name="open_bug_tracker">Öppna buggtrackern</string>
+  <string name="copy_to_clipboard">Kopiera till urklipp</string>
+  <string name="copied_to_clipboard">Kopierat till urklipp</string>
   <string name="experimental_pref">Experimentellt</string>
   <string name="pref_media_player_message">Välj vilken mediaspelare som ska spela filer</string>
   <string name="pref_current_value">Nuvarande värde: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Använd en nätverksproxy</string>
+  <string name="pref_faq">Frekvent Frågade Frågor</string>
   <string name="pref_no_browser_found">Ingen webbläsare hittades.</string>
   <string name="pref_cast_title">Chromecast-stöd</string>
   <string name="pref_cast_message_play_flavor">Aktivera stöd för fjärruppspelning av media på Cast-enheter (såsom Chromecast, Ljudanläggningar eller Android TV)</string>
@@ -454,6 +481,14 @@
   <string name="pref_delete_removes_from_queue_sum">Ta automatiskt bort episoder från kön när de raderas.</string>
   <!--About screen-->
   <string name="about_pref">Om</string>
+  <string name="antennapod_version">AntennaPod version</string>
+  <string name="developers">Utvecklare</string>
+  <string name="developers_summary">Alla kan hjälpa till att göra AntennaPod bättre</string>
+  <string name="translators">Översättare</string>
+  <string name="translators_summary">Översättningar skapas av AntennaPods användare med hjälp av Transifex</string>
+  <string name="privacy_policy">Integritetspolicy</string>
+  <string name="licenses">Licenser</string>
+  <string name="licenses_summary">AntennaPod förlitar sig på annan bra programvara</string>
   <!--Search-->
   <string name="search_hint">Sök efter episoder</string>
   <string name="found_in_shownotes_label">Hittad i shownotes</string>
@@ -567,6 +602,7 @@
   <string name="pref_restart_required">AntennaPod behöver startas om för att denna inställning ska gälla.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Prenumerera</string>
+  <string name="subscribing_label">Prenumererar...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Backa</string>
   <string name="fast_forward_label">Snabbspola</string>
@@ -689,4 +725,7 @@
   <string name="notification_channel_error_description">Visas om något blev fel, exempelvis om nedladdning eller gpodder synkronisering misslyckas.</string>
   <string name="import_bad_file">Ogiltig/korrupt fil</string>
   <!--Widget settings-->
+  <string name="widget_settings">Widgetinställningar</string>
+  <string name="widget_create_button">Skapa widget</string>
+  <string name="widget_opacity">Opacitet</string>
 </resources>

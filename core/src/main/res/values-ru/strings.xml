@@ -31,6 +31,8 @@
   <string name="statistics_mode_normal">Рассчитывать длительность действительного воспроизведения. Повторное воспроизведение засчитывается, а отметка о прослушивании — нет</string>
   <string name="statistics_mode_count_all">Прибавлять также все подкасты, отмеченные как прослушанные</string>
   <string name="statistics_speed_not_counted">Замечание: Скорость воспроизведения не учитывается никогда.</string>
+  <string name="statistics_reset_data">Сброс статистики</string>
+  <string name="statistics_reset_data_msg">Подтвердите своё намерение стереть всю историю прослушанных выпусков.</string>
   <!--Main activity-->
   <string name="drawer_open">Открыть меню</string>
   <string name="drawer_close">Закрыть меню</string>
@@ -125,6 +127,7 @@
   <string name="share_link_label">Поделиться ссылкой на выпуск</string>
   <string name="share_link_with_position_label">Поделиться ссылкой на выпуск с отметкой времени</string>
   <string name="share_file_label">Поделиться файлом</string>
+  <string name="share_website_url_label">Поделиться ссылкой на сайт</string>
   <string name="share_feed_url_label">Поделиться ссылкой на канал</string>
   <string name="share_item_url_label">Поделиться ссылкой на файл</string>
   <string name="share_item_url_with_position_label">Поделиться ссылкой на файл с отметкой времени</string>
@@ -279,6 +282,8 @@ URL файла:
   <string name="unlock_queue">Разблокировать очередь</string>
   <string name="queue_locked">Очередь заблокирована</string>
   <string name="queue_unlocked">Очередь разблокирована</string>
+  <string name="queue_lock_warning">Заблокировав очередь Вы больше не сможете смахивать или перемещать выпуски.</string>
+  <string name="checkbox_do_not_show_again">Больше не показывать</string>
   <string name="clear_queue_label">Очистить очередь</string>
   <string name="undo">Отмена</string>
   <string name="move_to_top_label">Переместить вверх</string>
@@ -299,6 +304,7 @@ URL файла:
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
+  <string name="no_playback_plugin_or_sonic_msg">Чтобы воспользоваться изменением скорости воспроизведения, рекомендуется включить встроенный медиапроигрыватель Sonic.</string>
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <string name="enable_sonic">Включить Sonic</string>
   <!--Empty list labels-->
@@ -321,6 +327,8 @@ URL файла:
   <string name="no_fav_episodes_label">Вы можете добавить выпуски в избранное долгим нажатием на них.</string>
   <string name="no_chapters_head_label">Нет оглавления</string>
   <string name="no_chapters_label">Этот выпуск не содержит оглавления.</string>
+  <string name="no_subscriptions_head_label">Подписки не оформлены</string>
+  <string name="no_subscriptions_label">чтобы подписаться на подкаст, нажмите на плюсик внизу.</string>
   <!--Preferences-->
   <string name="storage_pref">Хранилище</string>
   <string name="project_pref">Проект</string>
@@ -370,6 +378,8 @@ URL файла:
   <string name="pref_pauseOnHeadsetDisconnect_title">Наушники отсоединены</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Наушники подключены обратно</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth-соединение восстановлено</string>
+  <string name="pref_stream_over_download_title">Трансляция по сети в приоритете</string>
+  <string name="pref_stream_over_download_sum">Заменяет кнопки загрузки на кнопку трансляции в перечнях.</string>
   <string name="pref_mobileUpdate_title">Мобильные обновления</string>
   <string name="pref_mobileUpdate_sum">Выберите что допускается загружать при мобильном интернет-подключении</string>
   <string name="pref_mobileUpdate_refresh">Обновления каналов</string>
@@ -378,23 +388,28 @@ URL файла:
   <string name="pref_mobileUpdate_episode_download">Загрузка выпусков</string>
   <string name="pref_mobileUpdate_streaming">Трансляции по сети</string>
   <string name="user_interface_label">Интерфейс</string>
-  <string name="pref_set_theme_title">Выбор темы</string>
+  <string name="pref_set_theme_title">Выбор оформления</string>
   <string name="pref_nav_drawer_items_title">Выбрать пункты боковой панели</string>
   <string name="pref_nav_drawer_items_sum">Изменение отображения пунктов меню боковой панели</string>
   <string name="pref_nav_drawer_feed_order_title">Упорядочить подписки</string>
   <string name="pref_nav_drawer_feed_order_sum">Выбрать порядок отображения подписок</string>
   <string name="pref_nav_drawer_feed_counter_title">Выбрать счётчик подписок</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Выбрать какую информацию показывать в счётчике подписок. Влияет также на очерёдность подписок, если сортировка подписок производится по счётчику.</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Какую информацию показывать в счётчике подписок. Влияет также на очерёдность подписок, если сортировка подписок производится по счётчику.</string>
   <string name="pref_set_theme_sum">Изменить тему оформления AntennaPod</string>
   <string name="pref_automatic_download_title">Автоматическая загрузка</string>
   <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков.</string>
   <string name="pref_autodl_wifi_filter_title">Включить фильтр Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Разрешать автоматическую загрузку только для выбранных сетей Wi-Fi.</string>
+  <string name="autodl_wifi_filter_permission_title">Требуется разрешение</string>
+  <string name="autodl_wifi_filter_permission_message">Для работы фильтра Wi-Fi требуется разрешение на определение местоположения. Нажмите \"Разрешить\".</string>
   <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
   <string name="pref_automatic_download_on_battery_sum">Разрешать автоматическую загрузку когда батарея не заряжается</string>
   <string name="pref_parallel_downloads_title">Одновременные загрузки</string>
   <string name="pref_episode_cache_title">Кэш выпусков</string>
   <string name="pref_episode_cache_summary">Общее количество загруженных в кэш выпусков. Автоматическая загрузка будет приостановлена, если это количество будет достигнуто.</string>
+  <string name="pref_episode_cover_title">Использовать обложку выпуска</string>
+  <string name="pref_episode_cover_summary">Отображать обложку выпуска вместо обложки подкаста. если она отличается.</string>
+  <string name="pref_theme_title_use_system">Использовать системное оформление</string>
   <string name="pref_theme_title_light">Светлая</string>
   <string name="pref_theme_title_dark">Тёмная</string>
   <string name="pref_theme_title_trueblack">Чёрная (для AMOLED)</string>
@@ -419,6 +434,7 @@ URL файла:
   <string name="pref_gpodnet_notifications_sum">Не затрагивает ошибки авторизации.</string>
   <string name="pref_playback_speed_title">Скорость воспроизведения</string>
   <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
+  <string name="pref_feed_playback_speed_sum">Скорость, с которой будут изначально воспроизводиться выпуски этого канала</string>
   <string name="pref_playback_time_respects_speed_title">Корректировка информации о медиа файлов с учетом скорости воспроизведения</string>
   <string name="pref_playback_time_respects_speed_sum">Отображаемые позиция и длительность адаптированы к скорости воспроизведения</string>
   <string name="pref_fast_forward">Интервал быстрой перемотки вперед</string>
@@ -440,9 +456,19 @@ URL файла:
   <string name="pref_showDownloadReport_title">Показывать отчёт о загрузках</string>
   <string name="pref_showDownloadReport_sum">Если загрузка не удаётся, показывать отчёт с подробностями об ошибке.</string>
   <string name="pref_expand_notify_unsupport_toast">Версии Android ниже 4.1 не поддерживают расширенные уведомления.</string>
+  <string name="pref_enqueue_location_title">Размещение в очереди</string>
+  <string name="pref_enqueue_location_sum">Добавлять выпуски %1$s</string>
+  <string name="enqueue_location_back">в конец</string>
+  <string name="enqueue_location_front">в начало</string>
+  <string name="enqueue_location_after_current">за текущим выпуском</string>
   <string name="pref_smart_mark_as_played_disabled">Отключено</string>
   <string name="pref_image_cache_size_title">Размер кэша для изображений</string>
   <string name="pref_image_cache_size_sum">Размер дискового кэша для изображений</string>
+  <string name="view_mailing_list">Показать список рассылки</string>
+  <string name="bug_report_title">Сообщить об ошибке</string>
+  <string name="open_bug_tracker">Посетить систему отслеживания ошибок</string>
+  <string name="copy_to_clipboard">Скопировать в буфер</string>
+  <string name="copied_to_clipboard">Скопировано в буфер</string>
   <string name="experimental_pref">Экспериментальные настройки</string>
   <string name="pref_media_player_message">Выберите каким проигрывателем следует воспроизводить файлы</string>
   <string name="pref_current_value">Текущее значение: %1$s</string>
@@ -476,8 +502,14 @@ URL файла:
   <string name="pref_delete_removes_from_queue_sum">Автоматически убирать выпуск из очереди при его удалении.</string>
   <!--About screen-->
   <string name="about_pref">О программе</string>
+  <string name="antennapod_version">Версия AntennaPod</string>
   <string name="developers">Разработчики</string>
+  <string name="developers_summary">Любой может помочь улучшить AntennaPod</string>
   <string name="translators">Переводчики</string>
+  <string name="translators_summary">Перевод выполнен пользователями AntennaPod при помощи Transifex</string>
+  <string name="privacy_policy">Политика конфиденциальности</string>
+  <string name="licenses">Лицензии</string>
+  <string name="licenses_summary">В AntennaPod используется другое отличное ПО</string>
   <!--Search-->
   <string name="search_hint">Найти выпуски</string>
   <string name="found_in_shownotes_label">Найдено в примечаниях к выпуску</string>
@@ -599,6 +631,7 @@ URL файла:
   <string name="pref_restart_required">Следует перезапустить AntennaPod для применения настроек.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
+  <string name="subscribing_label">Подписка оформляется…</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Назад</string>
   <string name="fast_forward_label">Вперёд</string>
@@ -721,5 +754,7 @@ URL файла:
   <string name="notification_channel_error_description">Показывается если что-то пошло не так, к примеру, неудавшаяся загрузка или синхронизация с gpodder.</string>
   <string name="import_bad_file">Недопустимый или поврежденный файл</string>
   <!--Widget settings-->
+  <string name="widget_settings">Настройки виджета</string>
   <string name="widget_create_button">Создать виджет</string>
+  <string name="widget_opacity">Непрозрачность</string>
 </resources>
