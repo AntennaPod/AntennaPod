@@ -383,12 +383,12 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             case FADE:
                 transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
                 break;
-            case FLIP:
+            case SLIDE:
                 transaction.setCustomAnimations(
-                    R.anim.card_flip_left_in,
-                    R.anim.card_flip_left_out,
-                    R.anim.card_flip_right_in,
-                    R.anim.card_flip_right_out);
+                        R.anim.slide_right_in,
+                        R.anim.slide_left_out,
+                        R.anim.slide_left_in,
+                        R.anim.slide_right_out);
                 break;
         }
 

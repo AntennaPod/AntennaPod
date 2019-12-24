@@ -515,7 +515,7 @@ public class FeedItemlistFragment extends ListFragment {
         butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
                 FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
-                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.FLIP);
+                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             }
         });
         headerCreated = true;
@@ -524,7 +524,7 @@ public class FeedItemlistFragment extends ListFragment {
     private void showFeedInfo() {
         if (feed != null) {
             FeedInfoFragment fragment = FeedInfoFragment.newInstance(feed);
-            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.FLIP);
+            ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
         }
     }
 

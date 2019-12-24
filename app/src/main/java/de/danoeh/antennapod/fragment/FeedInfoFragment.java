@@ -76,7 +76,7 @@ public class FeedInfoFragment extends Fragment {
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(feed != null && feed.getDownload_url() != null) {
+            if (feed != null && feed.getDownload_url() != null) {
                 String url = feed.getDownload_url();
                 ClipData clipData = ClipData.newPlainText(url, url);
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
@@ -91,12 +91,13 @@ public class FeedInfoFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle(R.string.feed_info_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.feed_info_label);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.feedinfo, null);
         setHasOptionsMenu(true);
 
@@ -118,7 +119,6 @@ public class FeedInfoFragment extends Fragment {
         txtvUrl = root.findViewById(R.id.txtvUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
-        postponeEnterTransition();
         return root;
     }
 
@@ -136,10 +136,9 @@ public class FeedInfoFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                            feed = result;
-                            showFeed();
-                        }, error -> Log.d(TAG, Log.getStackTraceString(error)),
-                        this::startPostponedEnterTransition);
+                    feed = result;
+                    showFeed();
+                }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
     }
 
     private void showFeed() {
@@ -208,8 +207,8 @@ public class FeedInfoFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
-        menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null &&
-                IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
+        menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
+                && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
     }
 
     @Override
