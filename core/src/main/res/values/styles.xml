@@ -76,6 +76,7 @@
         <item name="ic_bookmark">@drawable/ic_bookmark_grey600_24dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
         <item name="ic_key">@drawable/ic_key_grey600</item>
+        <item name="ic_volume_adaption">@drawable/ic_volume_adaption_grey</item>
         <item name="master_switch_background">@color/master_switch_background_light</item>
         <item name="currently_playing_background">@color/highlight_light</item>
 
@@ -164,6 +165,7 @@
         <item name="ic_bookmark">@drawable/ic_bookmark_white_24dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
         <item name="ic_key">@drawable/ic_key_white</item>
+        <item name="ic_volume_adaption">@drawable/ic_volume_adaption_white</item>
         <item name="master_switch_background">@color/master_switch_background_dark</item>
         <item name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
