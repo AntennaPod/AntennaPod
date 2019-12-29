@@ -356,6 +356,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
+        unregisterReceiver(volumeAdaptionChangedReceiver);
         flavorHelper.removeCastConsumer();
         flavorHelper.unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
