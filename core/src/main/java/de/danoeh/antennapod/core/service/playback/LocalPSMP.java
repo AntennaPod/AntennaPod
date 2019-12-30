@@ -668,19 +668,17 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     private void setVolumeSync(float volumeLeft, float volumeRight) {
         playerLock.lock();
-        if (media != null && EnumSet.of(MediaType.AUDIO, MediaType.VIDEO).contains(media.getMediaType())) {
-            Playable playable = getPlayable();
-            if (playable instanceof FeedMedia) {
-                FeedMedia feedMedia = (FeedMedia) playable;
-                FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
-                VolumeAdaptionSetting volumeAdaptionSetting = preferences.getVolumeAdaptionSetting();
-                float adaptionFactor = volumeAdaptionSetting.getAdaptionFactor();
-                volumeLeft *= adaptionFactor;
-                volumeRight *= adaptionFactor;
-            }
-            mediaPlayer.setVolume(volumeLeft, volumeRight);
-            Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
+        Playable playable = getPlayable();
+        if (playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+            VolumeAdaptionSetting volumeAdaptionSetting = preferences.getVolumeAdaptionSetting();
+            float adaptionFactor = volumeAdaptionSetting.getAdaptionFactor();
+            volumeLeft *= adaptionFactor;
+            volumeRight *= adaptionFactor;
         }
+        mediaPlayer.setVolume(volumeLeft, volumeRight);
+        Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
         playerLock.unlock();
     }
 
