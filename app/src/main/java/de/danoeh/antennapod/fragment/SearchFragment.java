@@ -122,7 +122,7 @@ public class SearchFragment extends ListFragment {
         } else {
             if (comp.getClass() == FeedItem.class) {
                 FeedItem item = (FeedItem) comp;
-                ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
+                ((MainActivity) getActivity()).loadChildFragment(ItemPagerFragment.newInstance(item.getId()));
             }
         }
     }
