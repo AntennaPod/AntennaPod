@@ -108,6 +108,7 @@
         <item quantity="other">%d days after finishing</item>
     </plurals>
     <string name="num_selected_label">%d selected</string>
+    <string name="loading_more">Loading more…</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>

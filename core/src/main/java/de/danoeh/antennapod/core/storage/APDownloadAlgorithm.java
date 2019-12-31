@@ -50,7 +50,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
 
                 List<FeedItem> candidates;
                 final List<FeedItem> queue = DBReader.getQueue();
-                final List<FeedItem> newItems = DBReader.getNewItemsList();
+                final List<FeedItem> newItems = DBReader.getNewItemsList(0, Integer.MAX_VALUE);
                 candidates = new ArrayList<>(queue.size() + newItems.size());
                 candidates.addAll(queue);
                 for (FeedItem newItem : newItems) {

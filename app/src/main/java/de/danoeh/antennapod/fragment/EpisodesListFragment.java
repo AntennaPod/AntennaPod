@@ -70,9 +70,14 @@ public abstract class EpisodesListFragment extends Fragment {
     private static final String PREF_SCROLL_POSITION = "scroll_position";
     private static final String PREF_SCROLL_OFFSET = "scroll_offset";
 
+    protected static final int EPISODES_PER_PAGE = 150;
+    private static final int VISIBLE_EPISODES_SCROLL_THRESHOLD = 5;
+    protected int page = 1;
+
     RecyclerView recyclerView;
     AllEpisodesRecycleAdapter listAdapter;
     ProgressBar progLoading;
+    View loadingMore;
     EmptyViewHandler emptyView;
 
     @NonNull
@@ -264,6 +269,7 @@ public abstract class EpisodesListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
         recyclerView.setVisibility(View.GONE);
+        setupLoadMoreScrollListener();
 
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
@@ -272,6 +278,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
+        loadingMore = root.findViewById(R.id.loadingMore);
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
@@ -283,6 +290,60 @@ public abstract class EpisodesListFragment extends Fragment {
         emptyView.hide();
 
         return root;
+    }
+
+    private void setupLoadMoreScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            /* Total number of episodes after last load */
+            private int previousTotalEpisodes = 0;
+
+            /* True if loading more episodes is still in progress */
+            private boolean isLoadingMore = true;
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int deltaX, int deltaY) {
+                super.onScrolled(recyclerView, deltaX, deltaY);
+
+                int visibleEpisodeCount = recyclerView.getChildCount();
+                int totalEpisodeCount = recyclerView.getLayoutManager().getItemCount();
+                int firstVisibleEpisode = layoutManager.findFirstVisibleItemPosition();
+
+                /* Determine if loading more episodes has finished */
+                if (isLoadingMore) {
+                    if (totalEpisodeCount > previousTotalEpisodes) {
+                        isLoadingMore = false;
+                        previousTotalEpisodes = totalEpisodeCount;
+                    }
+                }
+
+                /* Determine if the user scrolled to the bottom and loading more episodes is not already in progress */
+                if (!isLoadingMore && (totalEpisodeCount - visibleEpisodeCount)
+                        <= (firstVisibleEpisode + VISIBLE_EPISODES_SCROLL_THRESHOLD)) {
+
+                    /* The end of the list has been reached. Load more data. */
+                    page++;
+                    loadMoreItems();
+                    isLoadingMore = true;
+                }
+            }
+        });
+    }
+
+    private void loadMoreItems() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        loadingMore.setVisibility(View.VISIBLE);
+        disposable = Observable.fromCallable(this::loadMoreData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    loadingMore.setVisibility(View.GONE);
+                    progLoading.setVisibility(View.GONE);
+                    episodes.addAll(data);
+                    onFragmentLoaded(episodes);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     protected void onFragmentLoaded(List<FeedItem> episodes) {
@@ -453,4 +514,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
     @NonNull
     protected abstract List<FeedItem> loadData();
+
+    @NonNull
+    protected abstract List<FeedItem> loadMoreData();
 }
