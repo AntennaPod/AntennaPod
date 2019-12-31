@@ -496,17 +496,22 @@ public final class DBTasks {
                         // item is new
                         item.setFeed(savedFeed);
                         item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
-                        savedFeed.getItems().add(idx, item);
+
+                        if (idx >= savedFeed.getItems().size()) {
+                            savedFeed.getItems().add(item);
+                        } else {
+                            savedFeed.getItems().add(idx, item);
+                        }
 
                         // only mark the item new if it was published after or at the same time
                         // as the most recent item
                         // (if the most recent date is null then we can assume there are no items
                         // and this is the first, hence 'new')
-                        if (priorMostRecentDate == null ||
-                                priorMostRecentDate.before(item.getPubDate()) ||
-                                priorMostRecentDate.equals(item.getPubDate())) {
-                            Log.d(TAG, "Marking item published on " + item.getPubDate() +
-                                    " new, prior most recent date = " + priorMostRecentDate);
+                        if (priorMostRecentDate == null
+                                || priorMostRecentDate.before(item.getPubDate())
+                                || priorMostRecentDate.equals(item.getPubDate())) {
+                            Log.d(TAG, "Marking item published on " + item.getPubDate()
+                                    + " new, prior most recent date = " + priorMostRecentDate);
                             item.setNew();
                         }
                     } else {
