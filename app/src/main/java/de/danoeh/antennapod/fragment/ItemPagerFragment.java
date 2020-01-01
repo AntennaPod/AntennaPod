@@ -50,9 +50,6 @@ public class ItemPagerFragment extends Fragment {
      * @return The ItemFragment instance
      */
     public static ItemPagerFragment newInstance(long[] feeditems, int feedItemPos) {
-        if (feeditems.length <= feedItemPos) {
-            throw new IllegalArgumentException("Trying to show a feed item that is out of the list");
-        }
         ItemPagerFragment fragment = new ItemPagerFragment();
         Bundle args = new Bundle();
         args.putLongArray(ARG_FEEDITEMS, feeditems);
@@ -62,7 +59,6 @@ public class ItemPagerFragment extends Fragment {
     }
 
     private long[] feedItems;
-    private int feedItemPos;
     private FeedItem item;
     private Disposable disposable;
 
@@ -70,9 +66,6 @@ public class ItemPagerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
-        feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
     }
 
     @Override
@@ -80,6 +73,9 @@ public class ItemPagerFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_pager_fragment, container, false);
+
+        feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
+        int feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
 
         ViewPager pager = layout.findViewById(R.id.pager);
         // FragmentStatePagerAdapter documentation:
