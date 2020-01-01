@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
+import de.danoeh.antennapod.core.feed.Chapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -17,13 +18,12 @@ import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.util.comparator.InReverseChronologicalOrder;
 
 /**
- * Performs search on Feeds and FeedItems
+ * Performs search on Feeds and FeedItems.
  */
 public class FeedSearcher {
-    private FeedSearcher(){}
+    private FeedSearcher() {
 
-    private static final String TAG = "FeedSearcher";
-
+    }
 
     /**
      * Search through a feed, or all feeds, for episodes that match the query in either the title,
@@ -31,52 +31,54 @@ public class FeedSearcher {
      * show notes. The list of resulting episodes also describes where the first match occurred
      * (title, chapters, or show notes).
      *
-     * @param context
+     * @param context Used for database access
      * @param query search query
      * @param selectedFeed feed to search, 0 to search through all feeds
      * @return list of episodes containing the query
      */
     @NonNull
-    public static List<SearchResult> performSearch(final Context context,
-                                                   final String query, final long selectedFeed) {
-        final int values[] = {2, 1, 0, 0, 0, 0};
-        final String[] subtitles = {context.getString(R.string.found_in_title_label),
-                context.getString(R.string.found_in_chapters_label),
-                context.getString(R.string.found_in_shownotes_label),
-                context.getString(R.string.found_in_shownotes_label),
-                context.getString(R.string.found_in_authors_label),
-                context.getString(R.string.found_in_feeds_label)};
-
+    public static List<SearchResult> performSearch(final Context context, final String query, final long selectedFeed) {
         final List<SearchResult> result = new ArrayList<>();
-
-        List<FutureTask<List<FeedItem>>> tasks = new ArrayList<>();
-        tasks.add(DBTasks.searchFeedItemTitle(context, selectedFeed, query));
-        tasks.add(DBTasks.searchFeedItemChapters(context, selectedFeed, query));
-        tasks.add(DBTasks.searchFeedItemDescription(context, selectedFeed, query));
-        tasks.add(DBTasks.searchFeedItemContentEncoded(context, selectedFeed, query));
-        tasks.add(DBTasks.searchFeedItemAuthor(context, selectedFeed, query));
-        tasks.add(DBTasks.searchFeedItemFeedIdentifier(context, selectedFeed, query));
-
-        for (FutureTask<List<FeedItem>> task : tasks) {
-            task.run();
-        }
         try {
-            Set<Long> set = new HashSet<>();
-
-            for (int i = 0; i < tasks.size(); i++) {
-                FutureTask<List<FeedItem>> task = tasks.get(i);
-                List<FeedItem> items = task.get();
-                for (FeedItem item : items) {
-                    if (!set.contains(item.getId())) { // to prevent duplicate results
-                        result.add(new SearchResult(item, values[i], subtitles[i]));
-                        set.add(item.getId());
-                    }
+            FutureTask<List<FeedItem>> searchTask = DBTasks.searchFeedItems(context, selectedFeed, query);
+            searchTask.run();
+            final List<FeedItem> items = searchTask.get();
+            for (FeedItem item : items) {
+                SearchLocation location;
+                if (safeContains(item.getTitle(), query)) {
+                    location = SearchLocation.TITLE;
+                } else if (safeContains(item.getContentEncoded(), query)) {
+                    location = SearchLocation.SHOWNOTES;
+                } else if (safeContains(item.getDescription(), query)) {
+                    location = SearchLocation.SHOWNOTES;
+                } else if (safeContains(item.getChapters(), query)) {
+                    location = SearchLocation.CHAPTERS;
+                } else if (safeContains(item.getFeed().getAuthor(), query)) {
+                    location = SearchLocation.AUTHORS;
+                } else {
+                    location = SearchLocation.FEED;
                 }
+                result.add(new SearchResult(item, location));
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        Collections.sort(result, new InReverseChronologicalOrder());
         return result;
+    }
+
+    private static boolean safeContains(String haystack, String needle) {
+        return haystack != null && haystack.contains(needle);
+    }
+
+    private static boolean safeContains(List<Chapter> haystack, String needle) {
+        if (haystack == null) {
+            return false;
+        }
+        for (Chapter chapter : haystack) {
+            if (safeContains(chapter.getTitle(), needle)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
