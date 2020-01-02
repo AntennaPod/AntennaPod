@@ -510,17 +510,6 @@ public final class DBReader {
     /**
      * Loads the download log for a particular feed from the database.
      *
-     * @param feed Feed for which the download log is loaded
-     * @return A list with DownloadStatus objects that represent the feed's download log,
-     * newest events first.
-     */
-    public static List<DownloadStatus> getFeedDownloadLog(Feed feed) {
-        return getFeedDownloadLog(feed.getId());
-    }
-
-    /**
-     * Loads the download log for a particular feed from the database.
-     *
      * @param feedId Feed id for which the download log is loaded
      * @return A list with DownloadStatus objects that represent the feed's download log,
      * newest events first.
