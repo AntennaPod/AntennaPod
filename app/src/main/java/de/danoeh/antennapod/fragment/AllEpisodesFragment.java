@@ -146,7 +146,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         FilterDialog filterDialog = new FilterDialog(getContext(), feedItemFilter) {
             @Override
             protected void updateFilter(Set<String> filterValues) {
-                feedItemFilter = new FeedItemFilter(filterValues.toArray(new String[filterValues.size()]));
+                feedItemFilter = new FeedItemFilter(filterValues.toArray(new String[0]));
                 loadItems();
             }
         };
