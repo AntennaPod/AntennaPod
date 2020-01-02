@@ -33,19 +33,6 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void setupInterfaceScreen() {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            // disable expanded notification option on unsupported android versions
-            findPreference(PREF_EXPANDED_NOTIFICATION).setEnabled(false);
-            findPreference(PREF_EXPANDED_NOTIFICATION).setOnPreferenceClickListener(
-                    preference -> {
-                        Toast toast = Toast.makeText(getActivity(),
-                                R.string.pref_expand_notify_unsupport_toast, Toast.LENGTH_SHORT);
-                        toast.show();
-                        return true;
-                    }
-            );
-        }
         findPreference(UserPreferences.PREF_THEME)
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
