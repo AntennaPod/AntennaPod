@@ -167,7 +167,7 @@ public class DownloadService extends Service {
             Notification notification = notificationManager.updateNotifications(
                     requester.getNumberOfDownloads(), downloads);
             startForeground(NOTIFICATION_ID, notification);
-            onDownloadQueued(intent);
+            syncExecutor.execute(() -> onDownloadQueued(intent));
         } else if (numberOfDownloads.get() == 0) {
             stopSelf();
         } else {
