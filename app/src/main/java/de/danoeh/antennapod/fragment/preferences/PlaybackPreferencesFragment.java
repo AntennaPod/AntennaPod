@@ -2,29 +2,28 @@ package de.danoeh.antennapod.fragment.preferences;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-
-import java.util.Map;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.preferences.PreferenceControllerFlavorHelper;
+import java.util.Map;
+import org.greenrobot.eventbus.EventBus;
 
 public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
     private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
+    private static final String PREF_PLAYBACK_PREFER_STREAMING = "prefStreamOverDownload";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -44,26 +43,28 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
     private void setupPlaybackScreen() {
         final Activity activity = getActivity();
 
-        findPreference(PREF_PLAYBACK_SPEED_LAUNCHER)
-                .setOnPreferenceClickListener(preference -> {
-                    VariableSpeedDialog.showDialog(activity);
-                    return true;
-                });
-        findPreference(PREF_PLAYBACK_REWIND_DELTA_LAUNCHER)
-                .setOnPreferenceClickListener(preference -> {
-                    MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_REWIND);
-                    return true;
-                });
-        findPreference(PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER)
-                .setOnPreferenceClickListener(preference -> {
-                    MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_FORWARD);
-                    return true;
-                });
+        findPreference(PREF_PLAYBACK_SPEED_LAUNCHER).setOnPreferenceClickListener(preference -> {
+            VariableSpeedDialog.showDialog(activity);
+            return true;
+        });
+        findPreference(PREF_PLAYBACK_REWIND_DELTA_LAUNCHER).setOnPreferenceClickListener(preference -> {
+            MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_REWIND);
+            return true;
+        });
+        findPreference(PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER).setOnPreferenceClickListener(preference -> {
+            MediaplayerActivity.showSkipPreference(activity, MediaplayerActivity.SkipDirection.SKIP_FORWARD);
+            return true;
+        });
         if (!PictureInPictureUtil.supportsPictureInPicture(activity)) {
-            ListPreference behaviour = (ListPreference) findPreference(UserPreferences.PREF_VIDEO_BEHAVIOR);
+            ListPreference behaviour = findPreference(UserPreferences.PREF_VIDEO_BEHAVIOR);
             behaviour.setEntries(R.array.video_background_behavior_options_without_pip);
             behaviour.setEntryValues(R.array.video_background_behavior_values_without_pip);
         }
+        findPreference(PREF_PLAYBACK_PREFER_STREAMING).setOnPreferenceChangeListener((preference, newValue) -> {
+            // Update all visible lists to reflect new streaming action button
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+            return true;
+        });
 
         buildEnqueueLocationPreference();
     }
