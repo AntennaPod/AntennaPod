@@ -18,8 +18,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 1080006
-        versionName "1.8.0-RC6"
+        versionCode 1080007
+        versionName "1.8.0-RC7"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         generatedDensities = []
