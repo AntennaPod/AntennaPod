@@ -477,13 +477,13 @@ public class DownloadService extends Service {
                     && isEnqueued(request, itemsEnqueued)) {
                 request.setMediaEnqueued(true);
             }
-            downloads.add(downloader);
-            downloadExecutor.submit(downloader);
-
-            postDownloaders();
+            handler.post(() -> {
+                downloads.add(downloader);
+                downloadExecutor.submit(downloader);
+                postDownloaders();
+            });
         }
-
-        queryDownloads();
+        handler.post(this::queryDownloads);
     }
 
     private static boolean isEnqueued(@NonNull DownloadRequest request,
