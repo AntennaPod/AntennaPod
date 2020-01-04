@@ -31,6 +31,8 @@
         <item>30</item>
         <item>45</item>
         <item>60</item>
+        <item>120</item>
+        <item>300</item>
     </integer-array>
 
     <string-array name="update_intervall_values">
