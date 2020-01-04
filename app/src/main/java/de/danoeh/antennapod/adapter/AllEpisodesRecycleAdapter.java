@@ -245,8 +245,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
         public void onClick(View v) {
             MainActivity mainActivity = mainActivityRef.get();
             if (mainActivity != null) {
-                long[] ids = itemAccess.getItemsIds().toArray();
-                mainActivity.loadChildFragment(ItemPagerFragment.newInstance(ids, getAdapterPosition()));
+                LongList itemIds = itemAccess.getItemsIds();
+                long[] ids = itemIds.toArray();
+                mainActivity.loadChildFragment(ItemPagerFragment.newInstance(ids, itemIds.indexOf(item.getId())));
             }
         }
 
