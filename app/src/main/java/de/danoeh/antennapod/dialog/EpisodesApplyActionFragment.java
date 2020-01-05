@@ -490,7 +490,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
         }
-        close(R.plurals.downloading_batch_label, checkedIds.size());
+        close(R.plurals.downloading_batch_label, toDownload.size());
     }
 
     private void deleteChecked() {
