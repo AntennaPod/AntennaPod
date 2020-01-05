@@ -480,7 +480,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
         for(FeedItem episode : episodes) {
-            if(checkedIds.contains(episode.getId())) {
+            if(checkedIds.contains(episode.getId()) && episode.hasMedia()) {
                 toDownload.add(episode);
             }
         }
@@ -490,7 +490,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
         }
-        close(R.plurals.downloading_batch_label, checkedIds.size());
+        close(R.plurals.downloading_batch_label, toDownload.size());
     }
 
     private void deleteChecked() {
