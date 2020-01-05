@@ -480,7 +480,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
         for(FeedItem episode : episodes) {
-            if(checkedIds.contains(episode.getId())) {
+            if(checkedIds.contains(episode.getId()) && episode.hasMedia()) {
                 toDownload.add(episode);
             }
         }
