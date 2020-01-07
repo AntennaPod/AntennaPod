@@ -297,6 +297,22 @@
                 <data android:scheme="antennapod-subscribe"/>
             </intent-filter>
 
+            <!--Support for subscribeonandroid.com URLS-->
+
+            <intent-filter android:label="android.intent.action.VIEW">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:pathPattern=".*\\..*/.*" />
+                <data android:host="subscribeonandroid.com" />
+                <data android:host="www.subscribeonandroid.com" />
+                <data android:host="*subscribeonandroid.com" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
 
