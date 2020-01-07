@@ -299,7 +299,7 @@
 
             <!--Support for subscribeonandroid.com URLS-->
 
-            <intent-filter android:label="android.intent.action.VIEW">
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -311,6 +311,8 @@
                 <data android:host="*subscribeonandroid.com" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+
+
             </intent-filter>
 
             <intent-filter>
@@ -354,6 +356,8 @@
                 <action android:name="de.danoeh.antennapdsp.intent.SP_APPS_QUERY_FEEDS_RESPONSE"/>
             </intent-filter>
         </receiver>
+
+
 
         <provider
             android:authorities="@string/provider_authority"
