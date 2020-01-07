@@ -134,8 +134,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
             setLoadingLayout();
+            //Remove subscribeonandroid.com from feed URL in order to subscribe to the actual feed URL
             if(feedUrl.contains("subscribeonandroid.com")){
-                feedUrl = feedUrl.replaceAll("((www.)?(subscribeonandroid.com/))","");
+                feedUrl = feedUrl.replaceFirst("((www.)?(subscribeonandroid.com/))","");
             }
             if (savedInstanceState == null) {
                 startFeedDownload(feedUrl, null, null);
