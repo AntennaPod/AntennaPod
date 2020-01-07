@@ -16,12 +16,11 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assemblePlayDebugAndroidTest
     - name: Android Emulator test
-      uses: ReactiveCircus/android-emulator-runner@v1.0.1
+      uses: ReactiveCircus/android-emulator-runner@v2.2.0
       with:
         api-level: 28
-        headless: true
         disable-animations: true
-        script: ./gradlew connectedPlayDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
+        script: zsh .github/workflows/runTests.sh
     - uses: actions/upload-artifact@v1
       if: failure()
       with:
