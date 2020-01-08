@@ -179,26 +179,16 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 menu.setHeaderTitle(item.getTitle());
             }
 
-            FeedItemMenuHandler.MenuInterface contextMenuInterface = (id, visible) -> {
-                if (menu == null) {
-                    return;
-                }
-                MenuItem item1 = menu.findItem(id);
-                if (item1 != null) {
-                    item1.setVisible(visible);
-                }
-            };
-
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item,
+            FeedItemMenuHandler.onPrepareMenu(menu, item,
                     R.id.skip_episode_item); // Skip Episode is not useful in Queue, so hide it.
             // Queue-specific menu preparation
             final boolean keepSorted = UserPreferences.isQueueKeepSorted();
             final LongList queueAccess = itemAccess.getQueueIds();
             if (queueAccess.size() == 0 || queueAccess.get(0) == item.getId() || keepSorted) {
-                contextMenuInterface.setItemVisibility(R.id.move_to_top_item, false);
+                menu.findItem(R.id.move_to_top_item).setVisible(false);
             }
             if (queueAccess.size() == 0 || queueAccess.get(queueAccess.size()-1) == item.getId() || keepSorted) {
-                contextMenuInterface.setItemVisibility(R.id.move_to_bottom_item, false);
+                menu.findItem(R.id.move_to_bottom_item).setVisible(false);
             }
         }
 

@@ -308,7 +308,11 @@ public class ItemFragment extends Fragment {
         if (media == null) {
             if (!item.isPlayed()) {
                 butAction1Icon = R.attr.navigation_accept;
-                butAction1Text = R.string.mark_read_label;
+                if (item.hasMedia()) {
+                    butAction1Text = R.string.mark_read_label;
+                } else {
+                    butAction1Text = R.string.mark_read_no_media_label;
+                }
             }
             if (item.getLink() != null) {
                 butAction2Icon = R.attr.location_web_site;
