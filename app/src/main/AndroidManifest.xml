@@ -236,7 +236,6 @@
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
 
             <!-- URLs ending with '.xml' or '.rss' -->
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -252,7 +251,6 @@
             </intent-filter>
 
             <!-- Feedburner URLs -->
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -268,7 +266,6 @@
             </intent-filter>
 
             <!-- Files with mimeType rss/xml/atom -->
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -284,7 +281,6 @@
             </intent-filter>
 
             <!-- Podcast protocols -->
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -295,6 +291,21 @@
                 <data android:scheme="pcast"/>
                 <data android:scheme="feed"/>
                 <data android:scheme="antennapod-subscribe"/>
+            </intent-filter>
+
+            <!-- Support for subscribeonandroid.com URLS -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:pathPattern=".*\\..*/.*" />
+                <data android:host="subscribeonandroid.com" />
+                <data android:host="www.subscribeonandroid.com" />
+                <data android:host="*subscribeonandroid.com" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
             </intent-filter>
 
             <intent-filter>
