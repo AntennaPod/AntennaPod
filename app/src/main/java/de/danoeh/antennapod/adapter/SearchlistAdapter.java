@@ -93,10 +93,7 @@ public class SearchlistAdapter extends BaseAdapter {
         } else if (component.getClass() == FeedItem.class) {
             final FeedItem item = (FeedItem) component;
             holder.title.setText(item.getTitle());
-            if (result.getSubtitle() != null) {
-                holder.subtitle.setVisibility(View.VISIBLE);
-                holder.subtitle.setText(result.getSubtitle());
-            }
+            holder.subtitle.setText(result.getLocation().getDescription());
 
             convertView.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
 
