@@ -80,7 +80,7 @@ public class PreferencesTest {
         }
         clickPreference(R.string.user_interface_label);
         clickPreference(R.string.pref_set_theme_title);
-        clickPreference(otherTheme);
+        onView(withText(otherTheme)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> UserPreferences.getTheme() != theme);
     }
