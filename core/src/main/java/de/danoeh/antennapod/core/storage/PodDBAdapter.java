@@ -944,14 +944,17 @@ public class PodDBAdapter {
     }
 
 
-    public final Cursor getFavoritesCursor() {
+    public final Cursor getFavoritesCursor(int offset, int limit) {
         Object[] args = new String[]{
                 SEL_FI_SMALL_STR,
                 TABLE_NAME_FEED_ITEMS, TABLE_NAME_FAVORITES,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
                 TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM,
-                TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE};
-        String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s DESC", args);
+                TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE,
+                String.valueOf(offset),
+                String.valueOf(limit)
+        };
+        String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s DESC LIMIT %s, %s", args);
         return db.rawQuery(query, null);
     }
 
@@ -984,16 +987,19 @@ public class PodDBAdapter {
      * Excludes those feeds that do not have 'Keep Updated' enabled.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
-    public final Cursor getNewItemsCursor() {
+    public final Cursor getNewItemsCursor(int offset, int limit) {
         Object[] args = new String[]{
                 SEL_FI_SMALL_STR,
                 TABLE_NAME_FEED_ITEMS,
                 TABLE_NAME_FEEDS,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0",
-                KEY_PUBDATE + " DESC"
+                KEY_PUBDATE + " DESC",
+                String.valueOf(offset),
+                String.valueOf(limit)
         };
-        final String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s WHERE %s ORDER BY %s", args);
+        final String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s WHERE %s "
+                +  "ORDER BY %s LIMIT %s, %s", args);
         return db.rawQuery(query, null);
     }
 
