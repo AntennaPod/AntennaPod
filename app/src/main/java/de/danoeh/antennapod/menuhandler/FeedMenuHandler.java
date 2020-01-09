@@ -108,7 +108,7 @@ public class FeedMenuHandler {
         FilterDialog filterDialog = new FilterDialog(context, selectedFeed.getItemFilter()) {
             @Override
             protected void updateFilter(Set<String> filterValues) {
-                selectedFeed.setItemFilter(filterValues.toArray(new String[filterValues.size()]));
+                selectedFeed.setItemFilter(filterValues.toArray(new String[0]));
                 DBWriter.setFeedItemsFilter(selectedFeed.getId(), filterValues);
             }
         };
