@@ -367,9 +367,9 @@
     <string name="pref_favorite_keeps_episodes_sum">Keep episodes when they are marked Favorite</string>
     <string name="pref_favorite_keeps_episodes_title">Keep Favorite Episodes</string>
     <string name="playback_pref">Playback</string>
-    <string name="playback_pref_sum">Headphone controls, Skip intervals, Queue &amp; playlist</string>
+    <string name="playback_pref_sum">Headphone controls, Skip intervals, Queue</string>
     <string name="network_pref">Network</string>
-    <string name="network_pref_sum">Update interval, download controls, mobile data</string>
+    <string name="network_pref_sum">Update interval, Download controls, Mobile data</string>
     <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>
     <string name="pref_autoUpdateIntervallOrTime_sum">Specify an interval or a specific time of day to refresh the feeds automatically</string>
     <string name="pref_autoUpdateIntervallOrTime_message">You can set an <i>interval</i> like \"every 2 hours\", set a specific <i>time of day</i> like \"7:00 AM\" or <i>disable</i> automatic updates altogether.\n\n<small>Please note: Update times are inexact. You may encounter a short delay.</small></string>
