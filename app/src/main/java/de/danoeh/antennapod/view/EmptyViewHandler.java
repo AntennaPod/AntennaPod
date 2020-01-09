@@ -45,6 +45,10 @@ public class EmptyViewHandler {
         tvMessage.setText(message);
     }
 
+    public void setMessage(String message) {
+        tvMessage.setText(message);
+    }
+
     public void setIcon(@AttrRes int iconAttr) {
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(iconAttr, typedValue, true);
