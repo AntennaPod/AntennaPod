@@ -12,26 +12,31 @@
     <Preference
             android:key="prefScreenInterface"
             android:title="@string/user_interface_label"
+            android:summary="@string/user_interface_sum"
             android:icon="?attr/ic_cellphone_text" />
 
     <Preference
             android:key="prefScreenPlayback"
             android:title="@string/playback_pref"
+            android:summary="@string/playback_pref_sum"
             android:icon="?attr/av_play" />
 
     <Preference
             android:key="prefScreenNetwork"
             android:title="@string/network_pref"
+            android:summary="@string/network_pref_sum"
             android:icon="?attr/ic_swap" />
 
     <Preference
             android:key="prefScreenIntegrations"
             android:title="@string/integrations_label"
+            android:summary="@string/integrations_sum"
             android:icon="?attr/ic_unfav" />
 
     <Preference
             android:key="prefScreenStorage"
             android:title="@string/storage_pref"
+            android:summary="@string/storage_sum"
             android:icon="?attr/storage" />
 
     <Preference
