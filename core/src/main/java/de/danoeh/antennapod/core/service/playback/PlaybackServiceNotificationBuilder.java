@@ -25,10 +25,11 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import java.util.ArrayList;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class PlaybackServiceNotificationBuilder {
     private static final String TAG = "PlaybackSrvNotification";
@@ -151,7 +152,7 @@ public class PlaybackServiceNotificationBuilder {
 
     private void addActions(NotificationCompat.Builder notification, MediaSessionCompat.Token mediaSessionToken,
                             PlayerStatus playerStatus, boolean isCasting) {
-        IntList compactActionList = new IntList();
+        ArrayList<Integer> compactActionList = new ArrayList<>();
 
         int numActions = 0; // we start and 0 and then increment by 1 for each call to addAction
 
@@ -218,7 +219,7 @@ public class PlaybackServiceNotificationBuilder {
                 KeyEvent.KEYCODE_MEDIA_STOP, numActions);
         notification.setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                 .setMediaSession(mediaSessionToken)
-                .setShowActionsInCompactView(compactActionList.toArray())
+                .setShowActionsInCompactView(ArrayUtils.toPrimitive(compactActionList.toArray(new Integer[0])))
                 .setShowCancelButton(true)
                 .setCancelButtonIntent(stopButtonPendingIntent));
     }

@@ -98,15 +98,6 @@ public class UITestUtils {
         return String.format("%s/files/%d", server.getBaseUrl(), id);
     }
 
-    private File newBitmapFile(String name) throws IOException {
-        File imgFile = new File(destDir, name);
-        Bitmap bitmap = Bitmap.createBitmap(128, 128, Bitmap.Config.ARGB_8888);
-        FileOutputStream out = new FileOutputStream(imgFile);
-        bitmap.compress(Bitmap.CompressFormat.PNG, 1, out);
-        out.close();
-        return imgFile;
-    }
-
     private File newMediaFile(String name) throws IOException {
         File mediaFile = new File(hostedMediaDir, name);
         if (mediaFile.exists()) {

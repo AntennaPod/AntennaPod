@@ -28,7 +28,6 @@
     <attr name="ic_folder" format="reference"/>
     <attr name="type_audio" format="reference"/>
     <attr name="type_video" format="reference"/>
-    <attr name="borderless_button" format="reference"/>
     <attr name="overlay_drawable" format="reference"/>
     <attr name="dragview_background" format="reference"/>
     <attr name="dragview_float_background" format="reference"/>

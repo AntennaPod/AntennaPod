@@ -368,7 +368,6 @@ public class DBReaderTest {
 
     @Test
     public void testGetFeedItemlistCheckChaptersFalse() throws Exception {
-        Context context = InstrumentationRegistry.getTargetContext();
         List<Feed> feeds = DBTestUtils.saveFeedlist(10, 10, false, false, 0);
         for (Feed feed : feeds) {
             for (FeedItem item : feed.getItems()) {

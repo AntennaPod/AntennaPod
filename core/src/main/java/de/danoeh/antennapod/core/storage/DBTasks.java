@@ -379,18 +379,6 @@ public final class DBTasks {
         return result;
     }
 
-    /**
-     * Loads the queue from the database and checks if the specified FeedItem is in the queue.
-     * This method should NOT be executed in the GUI thread.
-     *
-     * @param context    Used for accessing the DB.
-     * @param feedItemId ID of the FeedItem
-     */
-    public static boolean isInQueue(Context context, final long feedItemId) {
-        LongList queue = DBReader.getQueueIDList();
-        return queue.contains(feedItemId);
-    }
-
     private static Feed searchFeedByIdentifyingValueOrID(PodDBAdapter adapter,
                                                          Feed feed) {
         if (feed.getId() != 0) {
