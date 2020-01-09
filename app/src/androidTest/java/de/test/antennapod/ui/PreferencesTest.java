@@ -164,7 +164,7 @@ public class PreferencesTest {
 
     @Test
     public void testHeadPhonesDisconnect() {
-        onView(withText(R.string.playback_pref)).perform(click());
+        clickPreference(R.string.playback_pref);
         final boolean pauseOnHeadsetDisconnect = UserPreferences.isPauseOnHeadsetDisconnect();
         onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -176,7 +176,7 @@ public class PreferencesTest {
 
     @Test
     public void testHeadPhonesReconnect() {
-        onView(withText(R.string.playback_pref)).perform(click());
+        clickPreference(R.string.playback_pref);
         if (!UserPreferences.isPauseOnHeadsetDisconnect()) {
             onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
             Awaitility.await().atMost(1000, MILLISECONDS)
@@ -193,7 +193,7 @@ public class PreferencesTest {
 
     @Test
     public void testBluetoothReconnect() {
-        onView(withText(R.string.playback_pref)).perform(click());
+        clickPreference(R.string.playback_pref);
         if (!UserPreferences.isPauseOnHeadsetDisconnect()) {
             onView(withText(R.string.pref_pauseOnHeadsetDisconnect_title)).perform(click());
             Awaitility.await().atMost(1000, MILLISECONDS)
@@ -222,7 +222,7 @@ public class PreferencesTest {
 
     @Test
     public void testAutoDelete() {
-        onView(withText(R.string.storage_pref)).perform(click());
+        clickPreference(R.string.storage_pref);
         final boolean autoDelete = UserPreferences.isAutoDelete();
         onView(withText(R.string.pref_auto_delete_title)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -245,7 +245,7 @@ public class PreferencesTest {
 
     @Test
     public void testPauseForInterruptions() {
-        onView(withText(R.string.playback_pref)).perform(click());
+        clickPreference(R.string.playback_pref);
         final boolean pauseForFocusLoss = UserPreferences.shouldPauseForFocusLoss();
         clickPreference(R.string.pref_pausePlaybackForFocusLoss_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -257,7 +257,7 @@ public class PreferencesTest {
 
     @Test
     public void testDisableUpdateInterval() {
-        onView(withText(R.string.network_pref)).perform(click());
+        clickPreference(R.string.network_pref);
         onView(withText(R.string.pref_autoUpdateIntervallOrTime_title)).perform(click());
         onView(withText(R.string.pref_autoUpdateIntervallOrTime_Disable)).perform(click());
         Awaitility.await().atMost(1000, MILLISECONDS)
@@ -385,7 +385,7 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupQueueOnly() {
-        onView(withText(R.string.network_pref)).perform(click());
+        clickPreference(R.string.network_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(isRoot()).perform(waitForView(withText(R.string.episode_cleanup_queue_removal), 1000));
@@ -396,7 +396,7 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupNeverAlg() {
-        onView(withText(R.string.network_pref)).perform(click());
+        clickPreference(R.string.network_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(withId(R.id.select_dialog_listview)).perform(swipeUp());
@@ -407,7 +407,7 @@ public class PreferencesTest {
 
     @Test
     public void testEpisodeCleanupClassic() {
-        onView(withText(R.string.network_pref)).perform(click());
+        clickPreference(R.string.network_pref);
         onView(withText(R.string.pref_automatic_download_title)).perform(click());
         onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
         onView(isRoot()).perform(waitForView(withText(R.string.episode_cleanup_after_listening), 1000));
