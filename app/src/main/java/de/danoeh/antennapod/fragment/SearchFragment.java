@@ -2,21 +2,22 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.ListFragment;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import android.widget.ProgressBar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SearchlistAdapter;
@@ -26,17 +27,20 @@ import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
+import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.ArrayList;
+import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
  */
-public class SearchFragment extends ListFragment {
+public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "SearchFragment";
 
     private static final String ARG_QUERY = "query";
@@ -45,6 +49,9 @@ public class SearchFragment extends ListFragment {
     private SearchlistAdapter searchAdapter;
     private List<SearchResult> searchResults = new ArrayList<>();
     private Disposable disposable;
+    private ListView listView;
+    private ProgressBar progressBar;
+    private EmptyViewHandler emptyViewHandler;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -84,26 +91,30 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
 
+    @Nullable
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // add padding
-        final ListView lv = getListView();
-        lv.setClipToPadding(false);
-        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
-        lv.setPadding(0, vertPadding, 0, vertPadding);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_label);
 
+        View layout = inflater.inflate(R.layout.search_fragment, container, false);
+        listView = layout.findViewById(R.id.listview);
+        progressBar = layout.findViewById(R.id.progressBar);
         searchAdapter = new SearchlistAdapter(getActivity(), itemAccess);
-        setListAdapter(searchAdapter);
+        listView.setAdapter(searchAdapter);
+        listView.setOnItemClickListener(this);
+
+        emptyViewHandler = new EmptyViewHandler(getContext());
+        emptyViewHandler.attachToListView(listView);
+        emptyViewHandler.setIcon(R.attr.action_search);
+        emptyViewHandler.setTitle(R.string.search_status_no_results);
         EventBus.getDefault().register(this);
+        return layout;
     }
 
     @Override
@@ -113,9 +124,8 @@ public class SearchFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        SearchResult result = (SearchResult) l.getAdapter().getItem(position);
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        SearchResult result = (SearchResult) listView.getAdapter().getItem(position);
         FeedComponent comp = result.getComponent();
         if (comp.getClass() == Feed.class) {
             ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId(), null);
@@ -128,7 +138,7 @@ public class SearchFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
@@ -158,10 +168,11 @@ public class SearchFragment extends ListFragment {
     }
 
     private void onSearchResults(List<SearchResult> results) {
+        progressBar.setVisibility(View.GONE);
         searchResults = results;
         searchAdapter.notifyDataSetChanged();
         String query = getArguments().getString(ARG_QUERY);
-        setEmptyText(getString(R.string.no_results_for_query, query));
+        emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
     }
 
     private final SearchlistAdapter.ItemAccess itemAccess = new SearchlistAdapter.ItemAccess() {
@@ -181,9 +192,11 @@ public class SearchFragment extends ListFragment {
     };
 
     private void search() {
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
+        progressBar.setVisibility(View.VISIBLE);
+        emptyViewHandler.hide();
         disposable = Observable.fromCallable(this::performSearch)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

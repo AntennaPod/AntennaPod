@@ -51,7 +51,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     public static final int ACTION_REMOVE_FROM_QUEUE = 2;
     private static final int ACTION_MARK_PLAYED = 4;
     private static final int ACTION_MARK_UNPLAYED = 8;
-    private static final int ACTION_DOWNLOAD = 16;
+    public static final int ACTION_DOWNLOAD = 16;
     public static final int ACTION_DELETE = 32;
     private static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
             | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
@@ -480,7 +480,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
         for(FeedItem episode : episodes) {
-            if(checkedIds.contains(episode.getId())) {
+            if(checkedIds.contains(episode.getId()) && episode.hasMedia()) {
                 toDownload.add(episode);
             }
         }
@@ -490,7 +490,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
         }
-        close(R.plurals.downloading_batch_label, checkedIds.size());
+        close(R.plurals.downloading_batch_label, toDownload.size());
     }
 
     private void deleteChecked() {

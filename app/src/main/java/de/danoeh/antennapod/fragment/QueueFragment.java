@@ -69,6 +69,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REMOVE_FROM_QUEUE;
+import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DOWNLOAD;
 
 /**
  * Shows all items in the queue
@@ -349,7 +350,7 @@ public class QueueFragment extends Fragment {
                     return true;
                 case R.id.episode_actions:
                     ((MainActivity) requireActivity()).loadChildFragment(
-                            EpisodesApplyActionFragment.newInstance(queue, ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE));
+                            EpisodesApplyActionFragment.newInstance(queue, ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE  | ACTION_DOWNLOAD));
                     return true;
                 case R.id.queue_sort_episode_title_asc:
                     setSortOrder(SortOrder.EPISODE_TITLE_A_Z);

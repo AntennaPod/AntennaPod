@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +22,8 @@ import de.danoeh.antennapod.dialog.FilterDialog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Set;
@@ -32,12 +36,13 @@ public class AllEpisodesFragment extends EpisodesListFragment {
 
     public static final String TAG = "AllEpisodesFragment";
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
+    private static final String PREF_FILTER = "filter";
 
     private static final int EPISODES_PER_PAGE = 150;
     private static final int VISIBLE_EPISODES_SCROLL_THRESHOLD = 5;
     private static int page = 1;
 
-    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
+    private FeedItemFilter feedItemFilter = new FeedItemFilter("");
 
     @Override
     protected boolean showOnlyNewEpisodes() {
@@ -68,6 +73,9 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        feedItemFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -147,6 +155,8 @@ public class AllEpisodesFragment extends EpisodesListFragment {
             @Override
             protected void updateFilter(Set<String> filterValues) {
                 feedItemFilter = new FeedItemFilter(filterValues.toArray(new String[0]));
+                SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                prefs.edit().putString(PREF_FILTER, StringUtils.join(filterValues, ",")).apply();
                 loadItems();
             }
         };
