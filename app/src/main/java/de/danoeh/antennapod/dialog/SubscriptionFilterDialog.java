@@ -1,57 +1,52 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
+import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.SubscriptionFilter;
 
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_ALWAYS;
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_AUTO_DELETE;
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_AUTO_DOWNLOAD;
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_DISABLE;
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_ENABLE;
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_GLOBAL_DEFAULT;
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_KEEP_UPDATED;
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_NEVER;
-import static de.danoeh.antennapod.fragment.SubscriptionFragment.STRING_NO_FILTER;
+import static de.danoeh.antennapod.core.feed.SubscriptionFilter.STRING_ALWAYS;
+import static de.danoeh.antennapod.core.feed.SubscriptionFilter.STRING_DISABLE;
+import static de.danoeh.antennapod.core.feed.SubscriptionFilter.STRING_ENABLE;
+import static de.danoeh.antennapod.core.feed.SubscriptionFilter.STRING_GLOBAL_DEFAULT;
+import static de.danoeh.antennapod.core.feed.SubscriptionFilter.STRING_NEVER;
+import static de.danoeh.antennapod.core.feed.SubscriptionFilter.STRING_NO_FILTER;
 
 public abstract class SubscriptionFilterDialog {
 
-    private final Context context;
-    final Dialog dialog;
+    private Context context;
     private Spinner spinnerAutoDownload;
     private Spinner spinnerKeepUpdated;
     private Spinner spinnerAutoDelete;
-    private Button buttonConfirm;
-    private Button buttonCancel;
-    private String autoDownload;
-    private String keepUpdated;
-    private String autoDelete;
-
-    protected SubscriptionFilterDialog(Context theContext,String theAutoDownload, String theKeepUpdated,
-                                       String theAutoDelete) {
+    private SubscriptionFilter.AutoDownload autoDownload;
+    private SubscriptionFilter.KeepUpdated keepUpdated;
+    private SubscriptionFilter.AutoDelete autoDelete;
+    private AlertDialog dialog;
+    protected SubscriptionFilterDialog(Context theContext, SubscriptionFilter.AutoDownload theAutoDownload, SubscriptionFilter.KeepUpdated theKeepUpdated,
+                                       SubscriptionFilter.AutoDelete theAutoDelete) {
         this.context = theContext;
         this.autoDownload = theAutoDownload;
         this.keepUpdated = theKeepUpdated;
         this.autoDelete = theAutoDelete;
 
-        dialog = new Dialog(context);
-        dialog.setContentView(R.layout.dialog_layout);
-
-        spinnerAutoDownload = dialog.findViewById(R.id.spinnerAutoDownload);
-        spinnerKeepUpdated = dialog.findViewById(R.id.spinnerKeepUpdated);
-        spinnerAutoDelete = dialog.findViewById(R.id.spinnerAutoDelete);
-        buttonConfirm = dialog.findViewById(R.id.buttonConfirm);
-        buttonCancel = dialog.findViewById(R.id.buttonCancel);
     }
 
-    public void openDialog() {
+    public AlertDialog openDialog() {
+
+        View content = View.inflate(context, R.layout.dialog_layout, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setView(content);
+        spinnerAutoDownload = content.findViewById(R.id.spinnerAutoDownload);
+        spinnerKeepUpdated = content.findViewById(R.id.spinnerKeepUpdated);
+        spinnerAutoDelete = content.findViewById(R.id.spinnerAutoDelete);
+
         ArrayList<String> spinnerArrayAutoDown_keepUpdated = new ArrayList<>();
         ArrayList<String> spinnerArrayAutoDelete = new ArrayList<>();
 
@@ -71,51 +66,23 @@ public abstract class SubscriptionFilterDialog {
                 spinnerArrayAutoDelete);
         spinnerAutoDelete.setAdapter(spinnerArrayAdapter1);
 
-        spinnerAutoDownload.setSelection(spinnerArrayAutoDown_keepUpdated.indexOf(autoDownload));
-        spinnerKeepUpdated.setSelection(spinnerArrayAutoDown_keepUpdated.indexOf(keepUpdated));
-        spinnerAutoDelete.setSelection(spinnerArrayAutoDelete.indexOf(autoDelete));
+        spinnerAutoDownload.setSelection(spinnerArrayAutoDown_keepUpdated.indexOf(autoDownload.toString()));
+        spinnerKeepUpdated.setSelection(spinnerArrayAutoDown_keepUpdated.indexOf(keepUpdated.toString()));
+        spinnerAutoDelete.setSelection(spinnerArrayAutoDelete.indexOf(autoDelete.toString()));
 
-        dialog.setTitle(R.string.filter);
+        builder.setNegativeButton(R.string.cancel_label, (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
 
-        buttonCancel.setOnClickListener(v -> {
-            dialog.cancel();
+            updateFilter(SubscriptionFilter.AutoDownload.parse(spinnerAutoDownload.getSelectedItem().toString()),
+                    SubscriptionFilter.KeepUpdated.parse(spinnerKeepUpdated.getSelectedItem().toString()),
+                    SubscriptionFilter.AutoDelete.parse(spinnerAutoDelete.getSelectedItem().toString()));
+            dialog.dismiss();
         });
-        buttonConfirm.setOnClickListener(v -> {
-            String autoDownloadValue = spinnerAutoDownload.getSelectedItem().toString();
-            String keepUpdatedValue = spinnerKeepUpdated.getSelectedItem().toString();
-            String autoDeleteValue = spinnerAutoDelete.getSelectedItem().toString();
+        dialog = builder.create();
 
-            final ArrayList<SubscriptionFilter> filterValues = new ArrayList<>();
-            filterValues.add(new SubscriptionFilter(STRING_AUTO_DOWNLOAD,autoDownloadValue));
-            filterValues.add(new SubscriptionFilter(STRING_KEEP_UPDATED,keepUpdatedValue));
-            filterValues.add(new SubscriptionFilter(STRING_AUTO_DELETE,autoDeleteValue));
-
-            updateFilter(filterValues);
-
-            dialog.cancel();
-        });
-        dialog.show();
-
+        return dialog;
     }
 
-    protected abstract void updateFilter(ArrayList<SubscriptionFilter> filterValues);
+    protected abstract void updateFilter(SubscriptionFilter.AutoDownload autoDownload, SubscriptionFilter.KeepUpdated keepUpdated, SubscriptionFilter.AutoDelete autoDelete);
 
-    public class SubscriptionFilter {
-        String option;
-        String value;
-
-        public String getOption() {
-            return option;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public SubscriptionFilter(String theoption, String thevalue) {
-
-            this.option = theoption;
-            this.value = thevalue;
-        }
-    }
 }

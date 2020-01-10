@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:text="@string/subscription_keep_updated"/>
+            android:text="@string/keep_updated"/>
         <Spinner
             android:id="@+id/spinnerKeepUpdated"
             android:layout_width="match_parent"
@@ -65,6 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linearLayoutSpinnerDetail"
         android:background="@android:color/transparent"
+        android:visibility="gone"
         android:text = "@string/cancel_label"
         android:textColor="@color/holo_blue_light"
         android:padding="8dp"
@@ -77,6 +78,7 @@
         android:layout_below="@+id/linearLayoutSpinnerDetail"
         android:background="@android:color/transparent"
         android:text = "@string/confirm_label"
+        android:visibility="gone"
         android:textColor="@color/holo_blue_light"
         android:padding="8dp"
         android:layout_alignParentRight="true"/>

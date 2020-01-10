@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.SubscriptionFilter;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -71,16 +72,6 @@ import org.greenrobot.eventbus.ThreadMode;
 public class SubscriptionFragment extends Fragment {
 
     public static final String TAG = "SubscriptionFragment";
-    public static final String STRING_ENABLE = "Enable";
-    public static final String STRING_DISABLE = "Disable";
-    public static final String STRING_AUTO_DOWNLOAD = "auto_download";
-    public static final String STRING_KEEP_UPDATED = "keep_updated";
-    public static final String STRING_AUTO_DELETE = "auto_delete";
-    public static final String STRING_ALWAYS = "Always";
-    public static final String STRING_NEVER = "Never";
-    public static final String STRING_GLOBAL_DEFAULT = "Global default";
-    public static final String STRING_NO_FILTER = "No filter";
-
     public static final String PREF_AUTO_DOWNLOAD = "auto_download_pref";
     public static final String PREF_KEEP_UPDATED = "keep_updated_pref";
     public static final String PREF_AUTO_DELETE = "auto_delete_pref";
@@ -100,9 +91,6 @@ public class SubscriptionFragment extends Fragment {
     private Disposable disposable;
     private SharedPreferences prefs;
 
-    private String autoDownload = "";
-    private String keepUpdated = "";
-    private String autoDelete ="";
     private ArrayList<Feed> currentFeeds = new ArrayList<>();
 
     @Override
@@ -121,9 +109,8 @@ public class SubscriptionFragment extends Fragment {
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
         subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, 3));
 
-        autoDownload = prefs.getString(PREF_AUTO_DOWNLOAD,STRING_NO_FILTER);
-        keepUpdated = prefs.getString(PREF_KEEP_UPDATED,STRING_NO_FILTER);
-        autoDelete = prefs.getString(PREF_AUTO_DELETE,STRING_NO_FILTER);
+
+
 
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
@@ -175,79 +162,40 @@ public class SubscriptionFragment extends Fragment {
     }
 
     private void openSubscriptionFilter() {
+        SubscriptionFilter.AutoDownload autoDownload= SubscriptionFilter.AutoDownload.valueOf(prefs.getString(PREF_AUTO_DOWNLOAD, SubscriptionFilter.STRING_NO_FILTER));
+        SubscriptionFilter.KeepUpdated keepUpdated = SubscriptionFilter.KeepUpdated.valueOf(prefs.getString(PREF_KEEP_UPDATED, SubscriptionFilter.STRING_NO_FILTER));
+        SubscriptionFilter.AutoDelete autoDelete = SubscriptionFilter.AutoDelete.valueOf(prefs.getString(PREF_AUTO_DELETE, SubscriptionFilter.STRING_NO_FILTER));
+
         SubscriptionFilterDialog filterDialog = new SubscriptionFilterDialog(getContext(),
                 autoDownload, keepUpdated, autoDelete) {
             @Override
-            protected void updateFilter(ArrayList<SubscriptionFilter> filterValues) {
+            protected void updateFilter(SubscriptionFilter.AutoDownload autoDownload, SubscriptionFilter.KeepUpdated keepUpdated, SubscriptionFilter.AutoDelete autoDelete) {
 
                 // do some filtering work
                 // step 1: remove all existing data from current feeds
                 // Step 2: Add all where the filter value is true and assign to currentFeeds
                 currentFeeds = new ArrayList<>();
-                for (SubscriptionFilter filter : filterValues)
-                {
-                    switch (filter.getOption()) {
-                        case STRING_AUTO_DOWNLOAD:
-                            autoDownload = filter.getValue();
-                            break;
-                        case STRING_KEEP_UPDATED:
-                            keepUpdated = filter.getValue();
-                            break;
-                        case STRING_AUTO_DELETE:
-                            autoDelete = filter.getValue();
-                            break;
-                    }
-                }
-                // edit preference value.
-                prefs.edit().putString(PREF_AUTO_DOWNLOAD,autoDownload).apply();
-                prefs.edit().putString(PREF_KEEP_UPDATED,keepUpdated).apply();
-                prefs.edit().putString(PREF_AUTO_DELETE,autoDelete).apply();
 
-                loadFilter();
+                // edit preference value.
+                prefs.edit().putString(PREF_AUTO_DOWNLOAD,autoDownload.name()).apply();
+                prefs.edit().putString(PREF_KEEP_UPDATED,keepUpdated.name()).apply();
+                prefs.edit().putString(PREF_AUTO_DELETE,autoDelete.name()).apply();
+
+                loadFilter(autoDownload, keepUpdated, autoDelete);
             }
         };
-        filterDialog.openDialog();
+        filterDialog.openDialog().show();
     }
 
-    private void loadFilter() {
-        String tempAutoDelete = STRING_NO_FILTER;
-        switch (autoDelete) {
-            case STRING_ALWAYS:
-                tempAutoDelete = "YES";
-                break;
-            case STRING_NEVER:
-                tempAutoDelete = "NO";
-                break;
-            case STRING_GLOBAL_DEFAULT:
-                tempAutoDelete = "GLOBAL";
-                break;
-        }
-        boolean autoDownloadValue = autoDownload.equals(STRING_ENABLE);
-        boolean keepUpdatedValue = keepUpdated.equals(STRING_ENABLE);
+    private void loadFilter(SubscriptionFilter.AutoDownload autoDownload, SubscriptionFilter.KeepUpdated keepUpdated, SubscriptionFilter.AutoDelete autoDelete) {
+        // navDrawerData.feeds
+        // currentFeeds
+        currentFeeds.clear();
+        SubscriptionFilter filter = new SubscriptionFilter();
+        ArrayList<Feed> filteredFeeds = filter.subscriptionFilter(navDrawerData.feeds, autoDownload, keepUpdated, autoDelete);
 
-            for(Feed feed: navDrawerData.feeds){
-                if(!autoDownload.equals(STRING_NO_FILTER) &&
-                        autoDownloadValue != feed.getPreferences().getAutoDownload())  {
-                    // not adding current feed as its auto Download value does not match to what user choose
-                    continue;
-                }
-                if(!keepUpdated.equals(STRING_NO_FILTER) &&
-                        keepUpdatedValue != feed.getPreferences().getKeepUpdated()){
-                    // not adding current feed as its keep updated value does not match to what user choose
-                    continue;
-                }
+        currentFeeds.addAll(filteredFeeds);
 
-                if(!tempAutoDelete.equals(STRING_NO_FILTER)){
-                    FeedPreferences.AutoDeleteAction action = FeedPreferences.AutoDeleteAction.valueOf(tempAutoDelete);
-
-                    FeedPreferences.AutoDeleteAction feedAction = feed.getPreferences().getAutoDeleteAction();
-                    if( feedAction!= action ){
-                        // not adding current feed as its auto Download value does not match to what user choose
-                        continue;
-                    }
-                }
-                currentFeeds.add(feed);
-            }
         // Step 3: Refresh the dataset
         subscriptionAdapter.notifyDataSetChanged();
     }
@@ -290,9 +238,9 @@ public class SubscriptionFragment extends Fragment {
         super.onStart();
         EventBus.getDefault().register(this);
 
-        autoDownload = prefs.getString(PREF_AUTO_DOWNLOAD,STRING_NO_FILTER);
-        keepUpdated = prefs.getString(PREF_KEEP_UPDATED,STRING_NO_FILTER);
-        autoDelete = prefs.getString(PREF_AUTO_DELETE,STRING_NO_FILTER);
+  //      autoDownload = SubscriptionFilterDialog.AutoDownload.valueOf(prefs.getString(PREF_AUTO_DOWNLOAD,STRING_NO_FILTER));
+//        keepUpdated = SubscriptionFilterDialog.KeepUpdated.valueOf(prefs.getString(PREF_KEEP_UPDATED,STRING_NO_FILTER));
+    //    autoDelete =SubscriptionFilterDialog.AutoDelete.valueOf(prefs.getString(PREF_AUTO_DELETE,STRING_NO_FILTER));
 
         loadSubscriptions();
     }
