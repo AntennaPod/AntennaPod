@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_list_grey600_24dp"
+        android:shortcutId="queue"
+        android:shortcutShortLabel="@string/queue_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="de.danoeh.antennapod.activity.MainActivity"
+            android:targetPackage="de.danoeh.antennapod.debug">
+            <extra
+                android:name="fragment_tag"
+                android:value="QueueFragment" />
+            <extra
+                android:name="nav_type"
+                android:value="0" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_feed_grey600_24dp"
+        android:shortcutId="episodes"
+        android:shortcutShortLabel="@string/episodes_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="de.danoeh.antennapod.activity.MainActivity"
+            android:targetPackage="de.danoeh.antennapod.debug">
+            <extra
+                android:name="fragment_tag"
+                android:value="EpisodesFragment" />
+            <extra
+                android:name="nav_type"
+                android:value="0" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_folder_grey600_24dp"
+        android:shortcutId="subscriptions"
+        android:shortcutShortLabel="@string/subscriptions_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="de.danoeh.antennapod.activity.MainActivity"
+            android:targetPackage="de.danoeh.antennapod.debug">
+            <extra
+                android:name="fragment_tag"
+                android:value="SubscriptionFragment" />
+            <extra
+                android:name="nav_type"
+                android:value="0" />
+        </intent>
+    </shortcut>
+</shortcuts>
