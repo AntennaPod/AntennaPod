@@ -53,4 +53,19 @@
                 android:value="0" />
         </intent>
     </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_refresh_grey600_24dp"
+        android:shortcutId="refresh"
+        android:shortcutShortLabel="@string/refresh_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="de.danoeh.antennapod.activity.MainActivity"
+            android:targetPackage="de.danoeh.antennapod">
+            <extra
+                android:name="refresh_on_start"
+                android:value="true" />
+        </intent>
+    </shortcut>
 </shortcuts>

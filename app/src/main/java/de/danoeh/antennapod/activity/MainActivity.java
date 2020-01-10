@@ -93,6 +93,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     public static final String EXTRA_NAV_INDEX = "nav_index";
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
+    public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
     private static final String EXTRA_FEED_ID = "fragment_feed_id";
 
     private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
@@ -826,12 +827,19 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private void handleNavIntent() {
         Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_FEED_ID) ||
+        if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(EXTRA_REFRESH_ON_START) ||
                 (intent.hasExtra(EXTRA_NAV_TYPE) &&
                         (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)))) {
             int index = intent.getIntExtra(EXTRA_NAV_INDEX, -1);
             String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
+            boolean refreshOnStart = intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false);
+            if (refreshOnStart) {
+                tag = QueueFragment.TAG;
+                args = new Bundle();
+                args.putBoolean(QueueFragment.ARG_REFRESH_ON_START, true);
+            }
+
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
             if (index >= 0) {
                 loadFragment(index, args);
