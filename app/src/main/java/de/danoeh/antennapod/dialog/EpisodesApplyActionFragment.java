@@ -116,7 +116,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     public static EpisodesApplyActionFragment newInstance(List<FeedItem> items, int actions) {
         EpisodesApplyActionFragment f = new EpisodesApplyActionFragment();
         f.episodes.addAll(items);
-        for(FeedItem episode : items) {
+        for (FeedItem episode : items) {
             f.idMap.put(episode.getId(), episode);
         }
         f.actions = actions;
@@ -411,7 +411,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void refreshTitles() {
         titles.clear();
-        for(FeedItem episode : episodes) {
+        for (FeedItem episode : episodes) {
             titles.add(episode.getTitle());
         }
         mAdapter.notifyDataSetChanged();
@@ -457,8 +457,15 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void queueChecked() {
-        DBWriter.addQueueItem(getActivity(), true, checkedIds.toArray());
-        close(R.plurals.added_to_queue_batch_label, checkedIds.size());
+        // Check if an episode actually contains any media files before adding it to queue
+        LongList toQueue = new LongList(checkedIds.size());
+        for (FeedItem episode : episodes) {
+            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
+                toQueue.add(episode.getId());
+            }
+        }
+        DBWriter.addQueueItem(getActivity(), true, toQueue.toArray());
+        close(R.plurals.added_to_queue_batch_label, toQueue.size());
     }
 
     private void removeFromQueueChecked() {
@@ -479,7 +486,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     private void downloadChecked() {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
-        for(FeedItem episode : episodes) {
+        for (FeedItem episode : episodes) {
             if(checkedIds.contains(episode.getId()) && episode.hasMedia()) {
                 toDownload.add(episode);
             }
@@ -494,7 +501,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void deleteChecked() {
-        for(long id : checkedIds.toArray()) {
+        for (long id : checkedIds.toArray()) {
             FeedItem episode = idMap.get(id);
             if(episode.hasMedia()) {
                 DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());

@@ -180,11 +180,14 @@
     <string name="removed_new_flag_label">Removed \"new\" flag</string>
     <string name="mark_read_label">Mark as played</string>
     <string name="marked_as_read_label">Marked as played</string>
+    <string name="mark_read_no_media_label">Mark as read</string>
+    <string name="marked_as_read_no_media_label">Marked as read</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d episode marked as played.</item>
         <item quantity="other">%d episodes marked as played.</item>
     </plurals>
     <string name="mark_unread_label">Mark as unplayed</string>
+    <string name="mark_unread_label_no_media">Mark as unread</string>
     <plurals name="marked_unread_batch_label">
         <item quantity="one">%d episode marked as unplayed.</item>
         <item quantity="other">%d episodes marked as unplayed.</item>

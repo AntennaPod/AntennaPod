@@ -550,7 +550,8 @@ public class QueueFragment extends Fragment {
                     final boolean isRead = item.isPlayed();
                     DBWriter.markItemPlayed(FeedItem.PLAYED, false, item.getId());
                     DBWriter.removeQueueItem(getActivity(), true, item);
-                    Snackbar snackbar = Snackbar.make(root, getString(R.string.marked_as_read_label), Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make
+                            (root, getString(item.hasMedia() ? R.string.marked_as_read_label: R.string.marked_as_read_no_media_label), Snackbar.LENGTH_LONG);
                     snackbar.setAction(getString(R.string.undo), v -> {
                         DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
                         if(!isRead) {

@@ -140,19 +140,14 @@ public class ItemPagerFragment extends Fragment {
         }
         inflater.inflate(R.menu.feeditem_options, menu);
 
-        FeedItemMenuHandler.MenuInterface popupMenuInterface = (id, visible) -> {
-            MenuItem item = menu.findItem(id);
-            if (item != null) {
-                item.setVisible(visible);
+        if (menu != null && item != null) {
+            if (item.hasMedia()) {
+                FeedItemMenuHandler.onPrepareMenu(menu, item);
+            } else {
+                // these are already available via button1 and button2
+                FeedItemMenuHandler.onPrepareMenu(menu, item,
+                        R.id.mark_read_item, R.id.visit_website_item);
             }
-        };
-
-        if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item);
-        } else {
-            // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item,
-                    R.id.mark_read_item, R.id.visit_website_item);
         }
     }
 

@@ -290,19 +290,6 @@ public class FeedItemlistFragment extends ListFragment {
         }
     }
 
-    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
-        @Override
-        public void setItemVisibility(int id, boolean visible) {
-            if(contextMenu == null) {
-                return;
-            }
-            MenuItem item = contextMenu.findItem(id);
-            if (item != null) {
-                item.setVisible(visible);
-            }
-        }
-    };
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -320,7 +307,7 @@ public class FeedItemlistFragment extends ListFragment {
 
         contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item);
+        FeedItemMenuHandler.onPrepareMenu(menu, item);
     }
 
     @Override
