@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -112,6 +113,7 @@ public class AntennapodHttpClient {
             }
             return response;
         });
+        builder.interceptors().add(new BasicAuthorizationInterceptor());
 
         // set cookie handler
         CookieManager cm = new CookieManager();

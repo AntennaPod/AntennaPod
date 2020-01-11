@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -54,9 +55,7 @@ public class HttpDownloader extends Downloader {
             return;
         }
 
-        OkHttpClient.Builder httpClientBuilder = AntennapodHttpClient.newBuilder();
-        httpClientBuilder.interceptors().add(new BasicAuthorizationInterceptor(request));
-        OkHttpClient httpClient = httpClientBuilder.build();
+        OkHttpClient httpClient = AntennapodHttpClient.getHttpClient();
         RandomAccessFile out = null;
         InputStream connection;
         ResponseBody responseBody = null;
@@ -65,6 +64,7 @@ public class HttpDownloader extends Downloader {
             final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
             Request.Builder httpReq = new Request.Builder().url(uri.toURL())
                     .header("User-Agent", ClientConfig.USER_AGENT);
+            httpReq.tag(request);
             if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 // set header explicitly so that okhttp doesn't do transparent gzip
                 Log.d(TAG, "addHeader(\"Accept-Encoding\", \"identity\")");
@@ -308,63 +308,4 @@ public class HttpDownloader extends Downloader {
             throw new AssertionError(e);
         }
     }
-
-    private static class BasicAuthorizationInterceptor implements Interceptor {
-
-        private final DownloadRequest downloadRequest;
-
-        public BasicAuthorizationInterceptor(DownloadRequest downloadRequest) {
-            this.downloadRequest = downloadRequest;
-        }
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            String userInfo = URIUtil.getURIFromRequestUrl(downloadRequest.getSource()).getUserInfo();
-
-            Response response = chain.proceed(request);
-
-            if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) {
-                return response;
-            }
-
-            Request.Builder newRequest = request.newBuilder();
-
-            Log.d(TAG, "Authorization failed, re-trying with ISO-8859-1 encoded credentials");
-            if (userInfo != null) {
-                String[] parts = userInfo.split(":");
-                if (parts.length == 2) {
-                    String credentials = encodeCredentials(parts[0], parts[1], "ISO-8859-1");
-                    newRequest.header("Authorization", credentials);
-                }
-            } else if (!TextUtils.isEmpty(downloadRequest.getUsername()) && downloadRequest.getPassword() != null) {
-                String credentials = encodeCredentials(downloadRequest.getUsername(), downloadRequest.getPassword(),
-                        "ISO-8859-1");
-                newRequest.header("Authorization", credentials);
-            }
-
-            response = chain.proceed(newRequest.build());
-
-            if (response.code() != HttpURLConnection.HTTP_UNAUTHORIZED) {
-                return response;
-            }
-
-            Log.d(TAG, "Authorization failed, re-trying with UTF-8 encoded credentials");
-            if (userInfo != null) {
-                String[] parts = userInfo.split(":");
-                if (parts.length == 2) {
-                    String credentials = encodeCredentials(parts[0], parts[1], "UTF-8");
-                    newRequest.header("Authorization", credentials);
-                }
-            } else if (!TextUtils.isEmpty(downloadRequest.getUsername()) && downloadRequest.getPassword() != null) {
-                String credentials = encodeCredentials(downloadRequest.getUsername(), downloadRequest.getPassword(),
-                        "UTF-8");
-                newRequest.header("Authorization", credentials);
-            }
-
-            return chain.proceed(newRequest.build());
-        }
-
-    }
-
 }

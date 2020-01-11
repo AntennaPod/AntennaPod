@@ -11,6 +11,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 
+import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -49,7 +50,6 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                     if (internalClient == null) {
                         OkHttpClient.Builder builder = AntennapodHttpClient.newBuilder();
                         builder.interceptors().add(new NetworkAllowanceInterceptor());
-                        builder.interceptors().add(new BasicAuthenticationInterceptor());
                         internalClient = builder.build();
                     }
                 }
@@ -123,48 +123,5 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                         .build();
             }
         }
-
     }
-
-    private static class BasicAuthenticationInterceptor implements Interceptor {
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            String url = request.url().toString();
-            String authentication = DBReader.getImageAuthentication(url);
-
-            if(TextUtils.isEmpty(authentication)) {
-                Log.d(TAG, "no credentials for '" + url + "'");
-                return chain.proceed(request);
-            }
-
-            // add authentication
-            String[] auth = authentication.split(":");
-            if (auth.length != 2) {
-                Log.d(TAG, "Invalid credentials for '" + url + "'");
-                return chain.proceed(request);
-            }
-
-            String credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "ISO-8859-1");
-            Request newRequest = request
-                    .newBuilder()
-                    .addHeader("Authorization", credentials)
-                    .build();
-            Log.d(TAG, "Basic authentication with ISO-8859-1 encoding");
-            Response response = chain.proceed(newRequest);
-            if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "UTF-8");
-                newRequest = request
-                        .newBuilder()
-                        .addHeader("Authorization", credentials)
-                        .build();
-                Log.d(TAG, "Basic authentication with UTF-8 encoding");
-                return chain.proceed(newRequest);
-            } else {
-                return response;
-            }
-        }
-    }
-
 }
