@@ -904,49 +904,6 @@ public class PodDBAdapter {
                         null, null);
     }
 
-    /**
-     * Returns a cursor for a DB query in the FeedImages table for given IDs.
-     *
-     * @param imageIds IDs of the images
-     * @return The cursor of the query
-     */
-    public final Cursor getImageCursor(String... imageIds) {
-        int length = imageIds.length;
-        if (length > IN_OPERATOR_MAXIMUM) {
-            Log.w(TAG, "Length of id array is larger than "
-                    + IN_OPERATOR_MAXIMUM + ". Creating multiple cursors");
-            int numCursors = (int) (((double) length) / (IN_OPERATOR_MAXIMUM)) + 1;
-            Cursor[] cursors = new Cursor[numCursors];
-            for (int i = 0; i < numCursors; i++) {
-                int neededLength;
-                String[] parts;
-                final int elementsLeft = length - i * IN_OPERATOR_MAXIMUM;
-
-                if (elementsLeft >= IN_OPERATOR_MAXIMUM) {
-                    neededLength = IN_OPERATOR_MAXIMUM;
-                    parts = Arrays.copyOfRange(imageIds, i
-                            * IN_OPERATOR_MAXIMUM, (i + 1)
-                            * IN_OPERATOR_MAXIMUM);
-                } else {
-                    neededLength = elementsLeft;
-                    parts = Arrays.copyOfRange(imageIds, i
-                            * IN_OPERATOR_MAXIMUM, (i * IN_OPERATOR_MAXIMUM)
-                            + neededLength);
-                }
-
-                cursors[i] = db.rawQuery("SELECT * FROM "
-                        + TABLE_NAME_FEED_IMAGES + " WHERE " + KEY_ID + " IN "
-                        + buildInOperator(neededLength), parts);
-            }
-            Cursor result = new MergeCursor(cursors);
-            result.moveToFirst();
-            return result;
-        } else {
-            return db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + " IN "
-                    + buildInOperator(length), imageIds, null, null, null);
-        }
-    }
-
     public final Cursor getSimpleChaptersOfFeedItemCursor(final FeedItem item) {
         return db.query(TABLE_NAME_SIMPLECHAPTERS, null, KEY_FEEDITEM
                         + "=?", new String[]{String.valueOf(item.getId())}, null,
@@ -987,14 +944,17 @@ public class PodDBAdapter {
     }
 
 
-    public final Cursor getFavoritesCursor() {
+    public final Cursor getFavoritesCursor(int offset, int limit) {
         Object[] args = new String[]{
                 SEL_FI_SMALL_STR,
                 TABLE_NAME_FEED_ITEMS, TABLE_NAME_FAVORITES,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
                 TABLE_NAME_FAVORITES + "." + KEY_FEEDITEM,
-                TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE};
-        String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s DESC", args);
+                TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE,
+                String.valueOf(offset),
+                String.valueOf(limit)
+        };
+        String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s DESC LIMIT %s, %s", args);
         return db.rawQuery(query, null);
     }
 
@@ -1027,16 +987,19 @@ public class PodDBAdapter {
      * Excludes those feeds that do not have 'Keep Updated' enabled.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
-    public final Cursor getNewItemsCursor() {
+    public final Cursor getNewItemsCursor(int offset, int limit) {
         Object[] args = new String[]{
                 SEL_FI_SMALL_STR,
                 TABLE_NAME_FEED_ITEMS,
                 TABLE_NAME_FEEDS,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.NEW + " AND " + TABLE_NAME_FEEDS + "." + KEY_KEEP_UPDATED + " > 0",
-                KEY_PUBDATE + " DESC"
+                KEY_PUBDATE + " DESC",
+                String.valueOf(offset),
+                String.valueOf(limit)
         };
-        final String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s WHERE %s ORDER BY %s", args);
+        final String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s WHERE %s "
+                +  "ORDER BY %s LIMIT %s, %s", args);
         return db.rawQuery(query, null);
     }
 
@@ -1290,133 +1253,39 @@ public class PodDBAdapter {
     }
 
     /**
-     * Searches for the given query in the description of all items or the items
+     * Searches for the given query in various values of all items or the items
      * of a specified feed.
      *
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
-    public Cursor searchItemDescriptions(long feedID, String query) {
+    public Cursor searchItems(long feedID, String searchQuery) {
+        String preparedQuery = prepareSearchQuery(searchQuery);
+
+        String queryFeedId = "";
         if (feedID != 0) {
             // search items in specific feed
-            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
-                            + "=? AND " + KEY_DESCRIPTION + " LIKE '%"
-                            + prepareSearchQuery(query) + "%'",
-                    new String[]{String.valueOf(feedID)}, null, null,
-                    null
-            );
+            queryFeedId = KEY_FEED + " = " + feedID;
         } else {
             // search through all items
-            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
-                    KEY_DESCRIPTION + " LIKE '%" + prepareSearchQuery(query)
-                            + "%'", null, null, null, null
-            );
+            queryFeedId = "1 = 1";
         }
-    }
 
-    /**
-     * Searches for the given query in the content-encoded field of all items or
-     * the items of a specified feed.
-     *
-     * @return A cursor with all search results in SEL_FI_EXTRA selection.
-     */
-    public Cursor searchItemContentEncoded(long feedID, String query) {
-        if (feedID != 0) {
-            // search items in specific feed
-            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
-                            + "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%"
-                            + prepareSearchQuery(query) + "%'",
-                    new String[]{String.valueOf(feedID)}, null, null,
-                    null
-            );
-        } else {
-            // search through all items
-            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
-                    KEY_CONTENT_ENCODED + " LIKE '%"
-                            + prepareSearchQuery(query) + "%'", null, null,
-                    null, null
-            );
-        }
-    }
-
-    public Cursor searchItemTitles(long feedID, String query) {
-        if (feedID != 0) {
-            // search items in specific feed
-            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
-                            + "=? AND " + KEY_TITLE + " LIKE '%"
-                            + prepareSearchQuery(query) + "%'",
-                    new String[]{String.valueOf(feedID)}, null, null,
-                    null
-            );
-        } else {
-            // search through all items
-            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
-                    KEY_TITLE + " LIKE '%"
-                            + prepareSearchQuery(query) + "%'", null, null,
-                    null, null
-            );
-        }
-    }
-
-    public Cursor searchItemAuthors(long feedID, String query) {
-        if (feedID != 0) {
-            // search items in specific feed
-            return db.rawQuery("SELECT " + TextUtils.join(", ", FEEDITEM_SEL_FI_SMALL) + " FROM " + TABLE_NAME_FEED_ITEMS
-                            + " JOIN " + TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                            + " WHERE " + KEY_FEED
-                            + "=? AND " + KEY_AUTHOR + " LIKE '%"
-                            + prepareSearchQuery(query) + "%' ORDER BY "
-                            + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC",
-                    new String[]{String.valueOf(feedID)}
-            );
-        } else {
-            // search through all items
-            return db.rawQuery("SELECT " + TextUtils.join(", ", FEEDITEM_SEL_FI_SMALL) + " FROM " + TABLE_NAME_FEED_ITEMS
-                            + " JOIN " + TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                            + " WHERE " + KEY_AUTHOR + " LIKE '%"
-                            + prepareSearchQuery(query) + "%' ORDER BY "
-                            + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC",
-                    null
-            );
-        }
-    }
-
-    public Cursor searchItemFeedIdentifiers(long feedID, String query) {
-        if (feedID != 0) {
-            // search items in specific feed
-            return db.rawQuery("SELECT " + TextUtils.join(", ", FEEDITEM_SEL_FI_SMALL) + " FROM " + TABLE_NAME_FEED_ITEMS
-                            + " JOIN " + TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                            + " WHERE " + KEY_FEED
-                            + "=? AND " + KEY_FEED_IDENTIFIER + " LIKE '%"
-                            + prepareSearchQuery(query) + "%' ORDER BY "
-                            + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC",
-                    new String[]{String.valueOf(feedID)}
-            );
-        } else {
-            // search through all items
-            return db.rawQuery("SELECT " + TextUtils.join(", ", FEEDITEM_SEL_FI_SMALL) + " FROM " + TABLE_NAME_FEED_ITEMS
-                            + " JOIN " + TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
-                            + " WHERE " + KEY_FEED_IDENTIFIER + " LIKE '%"
-                            + prepareSearchQuery(query) + "%' ORDER BY "
-                            + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + " DESC",
-                    null
-            );
-        }
-    }
-
-    public Cursor searchItemChapters(long feedID, String searchQuery) {
-        final String query;
-        if (feedID != 0) {
-            query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS + " INNER JOIN " +
-                    TABLE_NAME_SIMPLECHAPTERS + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM + "=" +
-                    TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" +
-                    feedID + " AND " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%"
-                    + prepareSearchQuery(searchQuery) + "%'";
-        } else {
-            query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS + " INNER JOIN " +
-                    TABLE_NAME_SIMPLECHAPTERS + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM + "=" +
-                    TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " WHERE " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%"
-                    + prepareSearchQuery(searchQuery) + "%'";
-        }
+        String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " LEFT JOIN " + TABLE_NAME_SIMPLECHAPTERS
+                + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM
+                + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+                + " LEFT JOIN " + TABLE_NAME_FEEDS
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
+                + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
+                + " WHERE " + queryFeedId + " AND ("
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' OR "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_CONTENT_ENCODED + " LIKE '%" + preparedQuery + "%' OR "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
+                + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
+                + TABLE_NAME_FEEDS + "." + KEY_AUTHOR + " LIKE '%" + preparedQuery + "%' OR "
+                + TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER + " LIKE '%" + preparedQuery + "%'"
+                + ") ORDER BY " + KEY_PUBDATE + " DESC "
+                + "LIMIT 500";
         return db.rawQuery(query, null);
     }
 

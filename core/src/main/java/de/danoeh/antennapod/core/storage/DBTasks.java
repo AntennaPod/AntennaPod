@@ -379,18 +379,6 @@ public final class DBTasks {
         return result;
     }
 
-    /**
-     * Loads the queue from the database and checks if the specified FeedItem is in the queue.
-     * This method should NOT be executed in the GUI thread.
-     *
-     * @param context    Used for accessing the DB.
-     * @param feedItemId ID of the FeedItem
-     */
-    public static boolean isInQueue(Context context, final long feedItemId) {
-        LongList queue = DBReader.getQueueIDList();
-        return queue.contains(feedItemId);
-    }
-
     private static Feed searchFeedByIdentifyingValueOrID(PodDBAdapter adapter,
                                                          Feed feed) {
         if (feed.getId() != 0) {
@@ -543,140 +531,20 @@ public final class DBTasks {
     }
 
     /**
-     * Searches the titles of FeedItems of a specific Feed for a given
-     * string.
+     * Searches the FeedItems of a specific Feed for a given string.
      *
      * @param context Used for accessing the DB.
      * @param feedID  The id of the feed whose items should be searched.
      * @param query   The search string.
-     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
+     * @return A FutureTask object that executes the search request
+     *         and returns the search result as a List of FeedItems.
      */
-    public static FutureTask<List<FeedItem>> searchFeedItemTitle(final Context context,
+    public static FutureTask<List<FeedItem>> searchFeedItems(final Context context,
                                                                  final long feedID, final String query) {
         return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
             @Override
             public void execute(PodDBAdapter adapter) {
-                Cursor searchResult = adapter.searchItemTitles(feedID,
-                        query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadAdditionalFeedItemListData(items);
-                setResult(items);
-                searchResult.close();
-            }
-        });
-    }
-
-    /**
-     * Searches the authors of FeedItems of a specific Feed for a given
-     * string.
-     *
-     * @param context Used for accessing the DB.
-     * @param feedID  The id of the feed whose items should be searched.
-     * @param query   The search string.
-     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
-     */
-    public static FutureTask<List<FeedItem>> searchFeedItemAuthor(final Context context,
-                                                                 final long feedID, final String query) {
-        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
-            @Override
-            public void execute(PodDBAdapter adapter) {
-                Cursor searchResult = adapter.searchItemAuthors(feedID,
-                        query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadAdditionalFeedItemListData(items);
-                setResult(items);
-                searchResult.close();
-            }
-        });
-    }
-
-    /**
-     * Searches the feed identifiers of FeedItems of a specific Feed for a given
-     * string.
-     *
-     * @param context Used for accessing the DB.
-     * @param feedID  The id of the feed whose items should be searched.
-     * @param query   The search string.
-     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
-     */
-    public static FutureTask<List<FeedItem>> searchFeedItemFeedIdentifier(final Context context,
-                                                                 final long feedID, final String query) {
-        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
-            @Override
-            public void execute(PodDBAdapter adapter) {
-                Cursor searchResult = adapter.searchItemFeedIdentifiers(feedID,
-                        query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadAdditionalFeedItemListData(items);
-                setResult(items);
-                searchResult.close();
-            }
-        });
-    }
-
-    /**
-     * Searches the descriptions of FeedItems of a specific Feed for a given
-     * string.
-     *
-     * @param context Used for accessing the DB.
-     * @param feedID  The id of the feed whose items should be searched.
-     * @param query   The search string
-     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
-     */
-    public static FutureTask<List<FeedItem>> searchFeedItemDescription(final Context context,
-                                                                       final long feedID, final String query) {
-        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
-            @Override
-            public void execute(PodDBAdapter adapter) {
-                Cursor searchResult = adapter.searchItemDescriptions(feedID,
-                        query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadAdditionalFeedItemListData(items);
-                setResult(items);
-                searchResult.close();
-            }
-        });
-    }
-
-    /**
-     * Searches the contentEncoded-value of FeedItems of a specific Feed for a given
-     * string.
-     *
-     * @param context Used for accessing the DB.
-     * @param feedID  The id of the feed whose items should be searched.
-     * @param query   The search string
-     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
-     */
-    public static FutureTask<List<FeedItem>> searchFeedItemContentEncoded(final Context context,
-                                                                          final long feedID, final String query) {
-        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
-            @Override
-            public void execute(PodDBAdapter adapter) {
-                Cursor searchResult = adapter.searchItemContentEncoded(feedID,
-                        query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
-                DBReader.loadAdditionalFeedItemListData(items);
-                setResult(items);
-                searchResult.close();
-            }
-        });
-    }
-
-    /**
-     * Searches chapters of the FeedItems of a specific Feed for a given string.
-     *
-     * @param context Used for accessing the DB.
-     * @param feedID  The id of the feed whose items should be searched.
-     * @param query   The search string
-     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
-     */
-    public static FutureTask<List<FeedItem>> searchFeedItemChapters(final Context context,
-                                                                    final long feedID, final String query) {
-        return new FutureTask<>(new QueryTask<List<FeedItem>>(context) {
-            @Override
-            public void execute(PodDBAdapter adapter) {
-                Cursor searchResult = adapter.searchItemChapters(feedID,
-                        query);
+                Cursor searchResult = adapter.searchItems(feedID, query);
                 List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
                 DBReader.loadAdditionalFeedItemListData(items);
                 setResult(items);

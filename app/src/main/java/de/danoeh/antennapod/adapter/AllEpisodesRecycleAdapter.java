@@ -273,17 +273,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             if (item != null) {
                 menu.setHeaderTitle(item.getTitle());
             }
-
-            FeedItemMenuHandler.MenuInterface contextMenuInterface = (id, visible) -> {
-                if (menu == null) {
-                    return;
-                }
-                MenuItem item1 = menu.findItem(id);
-                if (item1 != null) {
-                    item1.setVisible(visible);
-                }
-            };
-            FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item);
+            FeedItemMenuHandler.onPrepareMenu(menu, item);
         }
 
         public boolean isCurrentlyPlayingItem() {

@@ -131,9 +131,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
                     prefValuesList.add(key);
                 }
 
-                UserPreferences.setAutodownloadSelectedNetworks(
-                        prefValuesList.toArray(new String[prefValuesList.size()])
-                );
+                UserPreferences.setAutodownloadSelectedNetworks(prefValuesList.toArray(new String[0]));
                 return true;
             } else {
                 return false;

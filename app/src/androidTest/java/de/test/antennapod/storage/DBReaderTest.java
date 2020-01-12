@@ -267,11 +267,11 @@ public class DBReaderTest {
         for (int i = 0; i < newItems.size(); i++) {
             unreadIds[i] = newItems.get(i).getId();
         }
-        List<FeedItem> newItemsSaved = DBReader.getNewItemsList();
+        List<FeedItem> newItemsSaved = DBReader.getNewItemsList(0, Integer.MAX_VALUE);
         assertNotNull(newItemsSaved);
         assertTrue(newItems.size() == newItemsSaved.size());
-        for(int i=0; i < newItemsSaved.size(); i++) {
-            long savedId = newItemsSaved.get(i).getId();
+        for (FeedItem feedItem : newItemsSaved) {
+            long savedId = feedItem.getId();
             boolean found = false;
             for (long id : unreadIds) {
                 if (id == savedId) {
@@ -368,7 +368,6 @@ public class DBReaderTest {
 
     @Test
     public void testGetFeedItemlistCheckChaptersFalse() throws Exception {
-        Context context = InstrumentationRegistry.getTargetContext();
         List<Feed> feeds = DBTestUtils.saveFeedlist(10, 10, false, false, 0);
         for (Feed feed : feeds) {
             for (FeedItem item : feed.getItems()) {

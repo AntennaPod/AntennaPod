@@ -279,6 +279,7 @@
     <style name="AntennaPod.TextView.Heading" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 
     <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@android:style/TextAppearance.Small">
