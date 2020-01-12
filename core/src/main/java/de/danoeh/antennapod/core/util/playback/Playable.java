@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import android.util.Log;
 
 import java.util.List;
+import java.util.Date;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -67,6 +68,11 @@ public interface Playable extends Parcelable,
      * Returns the title of the feed this Playable belongs to.
      */
     String getFeedTitle();
+
+    /**
+     * Returns the pubDate of the episode.
+     */
+    Date getEpisodePubDate();
 
     /**
      * Returns a unique identifier, for example a file url or an ID from a

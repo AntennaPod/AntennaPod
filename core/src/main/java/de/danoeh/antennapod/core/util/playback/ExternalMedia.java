@@ -9,6 +9,8 @@ import android.os.Parcelable;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.ChapterUtils;
+
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import org.apache.commons.io.FilenameUtils;
@@ -110,6 +112,11 @@ public class ExternalMedia implements Playable {
     @Override
     public String getEpisodeTitle() {
         return episodeTitle;
+    }
+
+    @Override
+    public Date getEpisodePubDate() {
+        return null;
     }
 
     @Override

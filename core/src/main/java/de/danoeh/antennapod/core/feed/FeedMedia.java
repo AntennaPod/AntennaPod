@@ -419,6 +419,18 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
+    public Date getEpisodePubDate() {
+        if (item == null) {
+            return null;
+        }
+        if (item.getPubDate() != null) {
+            return item.getPubDate();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public List<Chapter> getChapters() {
         if (item == null) {
             return null;
