@@ -6,17 +6,6 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/txtvPodcastTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.25"
-        android:ellipsize="end"
-        android:gravity="center"
-        android:maxLines="2"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textIsSelectable="true"
-        tools:text="Podcast" />
 
     <ImageView
         android:id="@+id/imgvCover"
@@ -30,10 +19,22 @@
         android:foreground="?attr/selectableItemBackground" />
 
     <TextView
+        android:id="@+id/txtvPodcastTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.125"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textIsSelectable="true"
+        tools:text="Podcast" />
+
+    <TextView
         android:id="@+id/txtvEpisodeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.25"
+        android:layout_weight="0.125"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
@@ -46,13 +47,10 @@
         style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
+        android:gravity="left"
         android:layout_weight="0"
         android:contentDescription="Published Date"
         android:maxLines="1"
-        tools:background="@android:color/holo_green_dark"
         tools:text="Jan 1" />
 
 </LinearLayout>
