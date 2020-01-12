@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
@@ -33,6 +34,7 @@ public class CoverFragment extends Fragment {
     private View root;
     private TextView txtvPodcastTitle;
     private TextView txtvEpisodeTitle;
+    private TextView txtvPubDate;
     private ImageView imgvCover;
     private PlaybackController controller;
     private Disposable disposable;
@@ -44,6 +46,7 @@ public class CoverFragment extends Fragment {
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
+        txtvPubDate = root.findViewById(R.id.txtvPubDate);
         imgvCover = root.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> onPlayPause());
         return root;
@@ -70,6 +73,14 @@ public class CoverFragment extends Fragment {
     private void displayMediaInfo(@NonNull Playable media) {
         txtvPodcastTitle.setText(media.getFeedTitle());
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        if (media.getEpisodePubDate() != null) {
+            String pubDateStr = DateUtils.formatAbbrev(getActivity(), media.getEpisodePubDate());
+            txtvPubDate.setVisibility(View.VISIBLE);
+            txtvPubDate.setText(pubDateStr);
+        } else {
+            txtvPubDate.setVisibility(View.INVISIBLE);
+        }
+
         Glide.with(this)
                 .load(ImageResourceUtils.getImageLocation(media))
                 .apply(new RequestOptions()

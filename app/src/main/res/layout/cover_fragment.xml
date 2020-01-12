@@ -41,4 +41,18 @@
         android:textIsSelectable="true"
         tools:text="Episode" />
 
+    <TextView
+        android:id="@+id/txtvPubDate"
+        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_weight="0"
+        android:contentDescription="Published Date"
+        android:maxLines="1"
+        tools:background="@android:color/holo_green_dark"
+        tools:text="Jan 1" />
+
 </LinearLayout>
