@@ -868,12 +868,10 @@ public final class DBReader {
     /**
      * Searches the DB for statistics
      *
-     * @param sortByCountAll If true, the statistic items will be sorted according to the
-     *                       countAll calculation time
      * @return The StatisticsInfo object
      */
     @NonNull
-    public static StatisticsData getStatistics(boolean sortByCountAll) {
+    public static StatisticsData getStatistics() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
@@ -889,6 +887,7 @@ public final class DBReader {
             long episodes = 0;
             long episodesStarted = 0;
             long episodesStartedIncludingMarked = 0;
+            long totalDownloadSize = 0;
             List<FeedItem> items = getFeed(feed.getId()).getItems();
             for (FeedItem item : items) {
                 FeedMedia media = item.getMedia();
@@ -913,41 +912,22 @@ public final class DBReader {
                 }
 
                 feedTotalTime += media.getDuration() / 1000;
+
+                if (media.isDownloaded()) {
+                    totalDownloadSize = totalDownloadSize + media.getSize();
+                }
+
                 episodes++;
             }
             feedTime.add(new StatisticsItem(
                     feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-                    episodesStarted, episodesStartedIncludingMarked));
+                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize));
             totalTime += feedPlayedTime;
             totalTimeCountAll += feedPlayedTimeCountAll;
         }
 
-        if (sortByCountAll) {
-            Collections.sort(feedTime, (item1, item2) ->
-                    compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
-        } else {
-            Collections.sort(feedTime, (item1, item2) ->
-                    compareLong(item1.timePlayed, item2.timePlayed));
-        }
-
         adapter.close();
         return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
-    }
-
-    /**
-     * Compares two {@code long} values. Long.compare() is not available before API 19
-     *
-     * @return 0 if long1 = long2, less than 0 if long1 &lt; long2,
-     * and greater than 0 if long1 &gt; long2.
-     */
-    private static int compareLong(long long1, long long2) {
-        if (long1 > long2) {
-            return -1;
-        } else if (long1 < long2) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     public static class StatisticsData {
@@ -961,12 +941,12 @@ public final class DBReader {
          */
         public final long totalTime;
 
-        public final List<StatisticsItem> feedTime;
+        public final List<StatisticsItem> feeds;
 
-        public StatisticsData(long totalTime, long totalTimeCountAll, List<StatisticsItem> feedTime) {
+        public StatisticsData(long totalTime, long totalTimeCountAll, List<StatisticsItem> feeds) {
             this.totalTime = totalTime;
             this.totalTimeCountAll = totalTimeCountAll;
-            this.feedTime = feedTime;
+            this.feeds = feeds;
         }
     }
 
@@ -991,9 +971,14 @@ public final class DBReader {
          * All episodes that are marked as played (or have position != 0)
          */
         public final long episodesStartedIncludingMarked;
+        /**
+         * Simply sums up the size of download podcasts
+         */
+        public final long totalDownloadSize;
 
         public StatisticsItem(Feed feed, long time, long timePlayed, long timePlayedCountAll,
-                              long episodes, long episodesStarted, long episodesStartedIncludingMarked) {
+                              long episodes, long episodesStarted, long episodesStartedIncludingMarked,
+                              long totalDownloadSize) {
             this.feed = feed;
             this.time = time;
             this.timePlayed = timePlayed;
@@ -1001,6 +986,7 @@ public final class DBReader {
             this.episodes = episodes;
             this.episodesStarted = episodesStarted;
             this.episodesStartedIncludingMarked = episodesStartedIncludingMarked;
+            this.totalDownloadSize = totalDownloadSize;
         }
     }
 

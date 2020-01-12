@@ -15,9 +15,8 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/total_time_description"
+            android:id="@+id/total_description"
             android:textSize="14sp"
-            android:text="@string/total_time_listened_to_podcasts"
             android:gravity="center_horizontal"
             android:layout_above="@+id/total_time"/>
 
