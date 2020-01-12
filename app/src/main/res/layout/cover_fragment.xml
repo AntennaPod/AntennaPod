@@ -25,7 +25,7 @@
         android:layout_weight="0.125"
         android:ellipsize="end"
         android:gravity="center"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textColor="?android:attr/textColorSecondary"
         android:textIsSelectable="true"
         tools:text="Podcast" />
