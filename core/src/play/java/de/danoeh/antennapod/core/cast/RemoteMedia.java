@@ -283,6 +283,9 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
+    public Date getPubDate() { return pubDate; }
+    
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(downloadUrl);
         dest.writeString(itemIdentifier);
