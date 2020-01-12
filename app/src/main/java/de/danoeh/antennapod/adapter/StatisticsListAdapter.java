@@ -2,49 +2,44 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.view.PieChartView;
 
 /**
- * Adapter for the statistics list
+ * Parent Adapter for the playback and download statistics list
  */
-public class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
-    private final Context context;
-    private DBReader.StatisticsData statisticsData;
-    private boolean countAll = true;
+    final Context context;
+    DBReader.StatisticsData statisticsData;
 
-    public StatisticsListAdapter(Context context) {
+    StatisticsListAdapter(Context context) {
         this.context = context;
-    }
-
-    public void setCountAll(boolean countAll) {
-        this.countAll = countAll;
     }
 
     @Override
     public int getItemCount() {
-        return statisticsData.feedTime.size() + 1;
+        return statisticsData.feeds.size() + 1;
     }
 
     public DBReader.StatisticsItem getItem(int position) {
         if (position == 0) {
             return null;
         }
-        return statisticsData.feedTime.get(position - 1);
+        return statisticsData.feeds.get(position - 1);
     }
 
     @Override
@@ -57,7 +52,10 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         if (viewType == TYPE_HEADER) {
-            return new HeaderHolder(inflater.inflate(R.layout.statistics_listitem_total_time, parent, false));
+            View view = inflater.inflate(R.layout.statistics_listitem_total, parent, false);
+            TextView totalText = view.findViewById(R.id.total_description);
+            totalText.setText(getHeaderCaptionResourceId());
+            return new HeaderHolder(view);
         }
         return new StatisticsHolder(inflater.inflate(R.layout.statistics_listitem, parent, false));
     }
@@ -65,18 +63,10 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         if (getItemViewType(position) == TYPE_HEADER) {
-            HeaderHolder holder = (HeaderHolder) h;
-            long time = countAll ? statisticsData.totalTimeCountAll : statisticsData.totalTime;
-            holder.totalTime.setText(Converter.shortLocalizedDuration(context, time));
-            float[] dataValues = new float[statisticsData.feedTime.size()];
-            for (int i = 0; i < statisticsData.feedTime.size(); i++) {
-                DBReader.StatisticsItem item = statisticsData.feedTime.get(i);
-                dataValues[i] = countAll ? item.timePlayedCountAll : item.timePlayed;
-            }
-            holder.pieChart.setData(dataValues);
+            onBindHeaderViewHolder((HeaderHolder) h);
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
-            DBReader.StatisticsItem statsItem = statisticsData.feedTime.get(position - 1);
+            DBReader.StatisticsItem statsItem = statisticsData.feeds.get(position - 1);
             Glide.with(context)
                     .load(statsItem.feed.getImageLocation())
                     .apply(new RequestOptions()
@@ -88,20 +78,7 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     .into(holder.image);
 
             holder.title.setText(statsItem.feed.getTitle());
-            long time = countAll ? statsItem.timePlayedCountAll : statsItem.timePlayed;
-            holder.time.setText(Converter.shortLocalizedDuration(context, time));
-
-            holder.itemView.setOnClickListener(v -> {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-                dialog.setTitle(statsItem.feed.getTitle());
-                dialog.setMessage(context.getString(R.string.statistics_details_dialog,
-                        countAll ? statsItem.episodesStartedIncludingMarked : statsItem.episodesStarted,
-                        statsItem.episodes, Converter.shortLocalizedDuration(context,
-                                countAll ? statsItem.timePlayedCountAll : statsItem.timePlayed),
-                        Converter.shortLocalizedDuration(context, statsItem.time)));
-                dialog.setPositiveButton(android.R.string.ok, null);
-                dialog.show();
-            });
+            onBindFeedViewHolder(holder, position);
         }
     }
 
@@ -124,14 +101,19 @@ public class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     static class StatisticsHolder extends RecyclerView.ViewHolder {
         ImageView image;
         TextView title;
-        TextView time;
+        TextView value;
 
         StatisticsHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.imgvCover);
             title = itemView.findViewById(R.id.txtvTitle);
-            time = itemView.findViewById(R.id.txtvTime);
+            value = itemView.findViewById(R.id.txtvValue);
         }
     }
 
+    abstract int getHeaderCaptionResourceId();
+
+    abstract void onBindHeaderViewHolder(HeaderHolder holder);
+
+    abstract void onBindFeedViewHolder(StatisticsHolder holder, int position);
 }

@@ -29,6 +29,8 @@
     <string name="gpodnet_auth_label">gpodder.net Login</string>
     <string name="episode_cache_full_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
+    <string name="playback_statistics_label">Playback</string>
+    <string name="download_statistics_label">Downloads</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
@@ -39,6 +41,9 @@
     <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
     <string name="statistics_reset_data">Reset statistics data</string>
     <string name="statistics_reset_data_msg">This will erase the history of duration played for all episodes. Are you sure you want to proceed?</string>
+
+    <!-- Download Statistics fragment -->
+    <string name="total_size_downloaded_podcasts">Total size of downloaded podcasts:</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
