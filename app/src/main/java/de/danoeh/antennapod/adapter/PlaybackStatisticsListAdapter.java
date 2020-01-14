@@ -6,9 +6,10 @@ import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.view.PieChartView;
 
 /**
- * Adapter for the playback statistics list
+ * Adapter for the playback statistics list.
  */
 public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
 
@@ -28,20 +29,22 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    void onBindHeaderViewHolder(HeaderHolder holder) {
-        long time = countAll ? statisticsData.totalTimeCountAll : statisticsData.totalTime;
-        holder.totalTime.setText(Converter.shortLocalizedDuration(context, time));
+    String getHeaderValue() {
+        return Converter.shortLocalizedDuration(context, (long) pieChartData.getSum());
+    }
+
+    @Override
+    PieChartView.PieChartData generateChartData(DBReader.StatisticsData statisticsData) {
         float[] dataValues = new float[statisticsData.feeds.size()];
         for (int i = 0; i < statisticsData.feeds.size(); i++) {
             DBReader.StatisticsItem item = statisticsData.feeds.get(i);
             dataValues[i] = countAll ? item.timePlayedCountAll : item.timePlayed;
         }
-        holder.pieChart.setData(dataValues);
+        return new PieChartView.PieChartData(dataValues);
     }
 
     @Override
-    void onBindFeedViewHolder(StatisticsHolder holder, int position) {
-        DBReader.StatisticsItem statsItem = statisticsData.feeds.get(position - 1);
+    void onBindFeedViewHolder(StatisticsHolder holder, DBReader.StatisticsItem statsItem) {
         long time = countAll ? statsItem.timePlayedCountAll : statsItem.timePlayed;
         holder.value.setText(Converter.shortLocalizedDuration(context, time));
 

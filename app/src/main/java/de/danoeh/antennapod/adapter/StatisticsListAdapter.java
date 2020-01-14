@@ -18,13 +18,14 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.view.PieChartView;
 
 /**
- * Parent Adapter for the playback and download statistics list
+ * Parent Adapter for the playback and download statistics list.
  */
 public abstract class StatisticsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
     final Context context;
-    DBReader.StatisticsData statisticsData;
+    private DBReader.StatisticsData statisticsData;
+    PieChartView.PieChartData pieChartData;
 
     StatisticsListAdapter(Context context) {
         this.context = context;
@@ -63,7 +64,9 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder h, int position) {
         if (getItemViewType(position) == TYPE_HEADER) {
-            onBindHeaderViewHolder((HeaderHolder) h);
+            HeaderHolder holder = (HeaderHolder) h;
+            holder.pieChart.setData(pieChartData);
+            holder.totalTime.setText(getHeaderValue());
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
             DBReader.StatisticsItem statsItem = statisticsData.feeds.get(position - 1);
@@ -78,12 +81,14 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
                     .into(holder.image);
 
             holder.title.setText(statsItem.feed.getTitle());
-            onBindFeedViewHolder(holder, position);
+            holder.chip.setTextColor(pieChartData.getColorOfItem(position - 1));
+            onBindFeedViewHolder(holder, statsItem);
         }
     }
 
     public void update(DBReader.StatisticsData statistics) {
         this.statisticsData = statistics;
+        pieChartData = generateChartData(statistics);
         notifyDataSetChanged();
     }
 
@@ -102,18 +107,22 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
         ImageView image;
         TextView title;
         TextView value;
+        TextView chip;
 
         StatisticsHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.imgvCover);
             title = itemView.findViewById(R.id.txtvTitle);
             value = itemView.findViewById(R.id.txtvValue);
+            chip = itemView.findViewById(R.id.chip);
         }
     }
 
     abstract int getHeaderCaptionResourceId();
 
-    abstract void onBindHeaderViewHolder(HeaderHolder holder);
+    abstract String getHeaderValue();
 
-    abstract void onBindFeedViewHolder(StatisticsHolder holder, int position);
+    abstract PieChartView.PieChartData generateChartData(DBReader.StatisticsData statisticsData);
+
+    abstract void onBindFeedViewHolder(StatisticsHolder holder, DBReader.StatisticsItem item);
 }

@@ -5,9 +5,10 @@ import android.content.Context;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.view.PieChartView;
 
 /**
- * Adapter for the download statistics list
+ * Adapter for the download statistics list.
  */
 public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
@@ -21,25 +22,23 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    void onBindHeaderViewHolder(HeaderHolder holder) {
-        long totalDownloadSize = 0;
+    String getHeaderValue() {
+        return Converter.byteToString((long) pieChartData.getSum());
+    }
 
-        for (DBReader.StatisticsItem item: statisticsData.feeds) {
-            totalDownloadSize = totalDownloadSize + item.totalDownloadSize;
-        }
-        holder.totalTime.setText(Converter.byteToString(totalDownloadSize));
+    @Override
+    PieChartView.PieChartData generateChartData(DBReader.StatisticsData statisticsData) {
         float[] dataValues = new float[statisticsData.feeds.size()];
         for (int i = 0; i < statisticsData.feeds.size(); i++) {
             DBReader.StatisticsItem item = statisticsData.feeds.get(i);
             dataValues[i] = item.totalDownloadSize;
         }
-        holder.pieChart.setData(dataValues);
+        return new PieChartView.PieChartData(dataValues);
     }
 
     @Override
-    void onBindFeedViewHolder(StatisticsHolder holder, int position) {
-        DBReader.StatisticsItem statsItem = statisticsData.feeds.get(position - 1);
-        holder.value.setText(Converter.byteToString(statsItem.totalDownloadSize));
+    void onBindFeedViewHolder(StatisticsHolder holder, DBReader.StatisticsItem item) {
+        holder.value.setText(Converter.byteToString(item.totalDownloadSize));
     }
 
 }
