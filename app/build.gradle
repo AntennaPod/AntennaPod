@@ -198,3 +198,7 @@ task copyLicense(type: Copy) {
 
 preBuild.dependsOn copyLicense
 
+apply plugin: 'de.timfreiheit.resourceplaceholders.plugin'
+resourcePlaceholders {
+    files = ['xml/shortcuts.xml']
+}

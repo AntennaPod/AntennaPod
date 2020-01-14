@@ -8,7 +8,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="de.danoeh.antennapod.activity.MainActivity"
-            android:targetPackage="de.danoeh.antennapod">
+            android:targetPackage="${applicationId}">
             <extra
                 android:name="fragment_tag"
                 android:value="QueueFragment" />
@@ -26,7 +26,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="de.danoeh.antennapod.activity.MainActivity"
-            android:targetPackage="de.danoeh.antennapod">
+            android:targetPackage="${applicationId}">
             <extra
                 android:name="fragment_tag"
                 android:value="EpisodesFragment" />
@@ -44,7 +44,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="de.danoeh.antennapod.activity.MainActivity"
-            android:targetPackage="de.danoeh.antennapod">
+            android:targetPackage="${applicationId}">
             <extra
                 android:name="fragment_tag"
                 android:value="SubscriptionFragment" />
@@ -62,7 +62,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="de.danoeh.antennapod.activity.MainActivity"
-            android:targetPackage="de.danoeh.antennapod">
+            android:targetPackage="${applicationId}">
             <extra
                 android:name="refresh_on_start"
                 android:value="true" />
