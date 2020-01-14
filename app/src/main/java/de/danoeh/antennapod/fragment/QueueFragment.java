@@ -76,7 +76,6 @@ import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DOW
  */
 public class QueueFragment extends Fragment {
     public static final String TAG = "QueueFragment";
-    public static final String ARG_REFRESH_ON_START = "refresh_on_start";
 
     private TextView infoBar;
     private RecyclerView recyclerView;
@@ -116,10 +115,6 @@ public class QueueFragment extends Fragment {
         }
         loadItems(true);
         EventBus.getDefault().register(this);
-        Bundle args = getArguments();
-        if (args != null && args.getBoolean(ARG_REFRESH_ON_START)) {
-            AutoUpdateManager.runImmediate(requireContext());
-        }
     }
 
     @Override

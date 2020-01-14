@@ -60,6 +60,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -835,9 +836,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
             boolean refreshOnStart = intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false);
             if (refreshOnStart) {
-                tag = QueueFragment.TAG;
-                args = new Bundle();
-                args.putBoolean(QueueFragment.ARG_REFRESH_ON_START, true);
+                AutoUpdateManager.runImmediate(this);
             }
 
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
