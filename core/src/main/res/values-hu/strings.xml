@@ -720,6 +720,7 @@
   <string name="notification_channel_error_description">Akkor látszik, ha hiba történt, például ha a letöltés vagy a gpodder szinkronizálás sikertelen.</string>
   <string name="import_bad_file">Érvénytelen/sérült fájl</string>
   <!--Widget settings-->
+  <string name="widget_settings">Widget beállítások</string>
   <string name="widget_create_button">Widget létrehozása</string>
   <string name="widget_opacity">Átlátszatlanság</string>
 </resources>
