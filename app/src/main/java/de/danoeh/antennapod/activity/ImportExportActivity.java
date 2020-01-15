@@ -160,6 +160,7 @@ public class ImportExportActivity extends AppCompatActivity {
             ComponentName cn = intent.getComponent();
             Intent mainIntent = Intent.makeRestartActivityTask(cn);
             startActivity(mainIntent);
+            Runtime.getRuntime().exit(0);
         });
         d.show();
     }
