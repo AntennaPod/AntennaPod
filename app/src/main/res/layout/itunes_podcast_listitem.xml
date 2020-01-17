@@ -45,7 +45,7 @@
             tools:text="Podcast title" />
 
         <TextView
-            android:id="@+id/txtvUrl"
+            android:id="@+id/txtvDescription"
             style="android:style/TextAppearance.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -192,7 +192,7 @@ public class ItunesSearchFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.loadToplist(25)
+        disposable = loader.loadToplist(100)
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
                     topList = podcasts;

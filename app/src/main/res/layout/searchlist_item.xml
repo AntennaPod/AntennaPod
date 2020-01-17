@@ -47,7 +47,7 @@
             style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="1"
+            android:lines="2"
             tools:text="Search item subtitle"
             tools:background="@android:color/holo_blue_light"/>
     </LinearLayout>

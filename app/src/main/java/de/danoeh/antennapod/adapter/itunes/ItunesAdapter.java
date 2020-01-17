@@ -67,11 +67,14 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
 
         //Set the title
         viewHolder.titleView.setText(podcast.title);
-        if(podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
-            viewHolder.urlView.setText(podcast.feedUrl);
-            viewHolder.urlView.setVisibility(View.VISIBLE);
+        if(podcast.summary != null && ! podcast.summary.trim().isEmpty()) {
+            viewHolder.descriptionView.setText(podcast.summary);
+            viewHolder.descriptionView.setVisibility(View.VISIBLE);
+        } else if(podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
+            viewHolder.descriptionView.setText(podcast.feedUrl);
+            viewHolder.descriptionView.setVisibility(View.VISIBLE);
         } else {
-            viewHolder.urlView.setVisibility(View.GONE);
+            viewHolder.descriptionView.setVisibility(View.GONE);
         }
 
         //Update the empty imageView with the image from the feed
@@ -103,7 +106,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
          */
         final TextView titleView;
 
-        final TextView urlView;
+        final TextView descriptionView;
 
 
         /**
@@ -113,7 +116,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
         PodcastViewHolder(View view){
             coverView = view.findViewById(R.id.imgvCover);
             titleView = view.findViewById(R.id.txtvTitle);
-            urlView = view.findViewById(R.id.txtvUrl);
+            descriptionView = view.findViewById(R.id.txtvDescription);
         }
     }
 }

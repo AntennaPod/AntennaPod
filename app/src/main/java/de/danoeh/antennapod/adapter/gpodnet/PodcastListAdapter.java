@@ -44,7 +44,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
             holder.image = convertView.findViewById(R.id.imgvCover);
             holder.title = convertView.findViewById(R.id.txtvTitle);
             holder.subscribers = convertView.findViewById(R.id.txtvSubscribers);
-            holder.url = convertView.findViewById(R.id.txtvUrl);
+            holder.description = convertView.findViewById(R.id.txtvDescription);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -64,7 +64,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
 
         holder.title.setText(podcast.getTitle());
         holder.subscribers.setText(String.valueOf(podcast.getSubscribers()));
-        holder.url.setText(podcast.getUrl());
+        holder.description.setText(podcast.getDescription());
 
         return convertView;
     }
@@ -73,6 +73,6 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
         ImageView image;
         TextView title;
         TextView subscribers;
-        TextView url;
+        TextView description;
     }
 }
