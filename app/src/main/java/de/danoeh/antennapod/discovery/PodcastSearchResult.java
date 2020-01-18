@@ -29,14 +29,14 @@ public class PodcastSearchResult {
      * artistName of the podcast feed
      */
     @Nullable
-    public final String summary;
+    public final String author;
 
 
-    private PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl, @Nullable String summary) {
+    private PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl, @Nullable String author) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.feedUrl = feedUrl;
-        this.summary = summary;
+        this.author = author;
     }
     private PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl) {
         this(title, imageUrl, feedUrl, "");
@@ -56,8 +56,8 @@ public class PodcastSearchResult {
         String title = json.optString("collectionName", "");
         String imageUrl = json.optString("artworkUrl100", null);
         String feedUrl = json.optString("feedUrl", null);
-        String summary = json.optString("artistName", null);
-        return new PodcastSearchResult(title, imageUrl, feedUrl, summary);
+        String author = json.optString("artistName", null);
+        return new PodcastSearchResult(title, imageUrl, feedUrl, author);
     }
 
     /**
@@ -80,20 +80,20 @@ public class PodcastSearchResult {
         String feedUrl = "https://itunes.apple.com/lookup?id=" +
                 json.getJSONObject("id").getJSONObject("attributes").getString("im:id");
 
-        String summary = null;
+        String author = null;
         try {
-            summary = json.getJSONObject("summary").getString("label");
+            author = json.getJSONObject("im:artist").getString("label");
         } catch (Exception e) {
-            // Some feeds have empty summary
+            // Some feeds have empty artist
         }
-        return new PodcastSearchResult(title, imageUrl, feedUrl, summary);
+        return new PodcastSearchResult(title, imageUrl, feedUrl, author);
     }
 
     public static PodcastSearchResult fromFyyd(SearchHit searchHit) {
         return new PodcastSearchResult(searchHit.getTitle(),
                                        searchHit.getThumbImageURL(),
                                        searchHit.getXmlUrl(),
-                                       searchHit.getDescription());
+                                       searchHit.getSubtitle());
     }
 
     public static PodcastSearchResult fromGpodder(GpodnetPodcast searchHit) {

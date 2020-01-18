@@ -67,14 +67,14 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
 
         //Set the title
         viewHolder.titleView.setText(podcast.title);
-        if(podcast.summary != null && ! podcast.summary.trim().isEmpty()) {
-            viewHolder.descriptionView.setText(podcast.summary);
-            viewHolder.descriptionView.setVisibility(View.VISIBLE);
+        if(podcast.author != null && ! podcast.author.trim().isEmpty()) {
+            viewHolder.authorView.setText(podcast.author);
+            viewHolder.authorView.setVisibility(View.VISIBLE);
         } else if(podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
-            viewHolder.descriptionView.setText(podcast.feedUrl);
-            viewHolder.descriptionView.setVisibility(View.VISIBLE);
+            viewHolder.authorView.setText(podcast.feedUrl);
+            viewHolder.authorView.setVisibility(View.VISIBLE);
         } else {
-            viewHolder.descriptionView.setVisibility(View.GONE);
+            viewHolder.authorView.setVisibility(View.GONE);
         }
 
         //Update the empty imageView with the image from the feed
@@ -106,7 +106,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
          */
         final TextView titleView;
 
-        final TextView descriptionView;
+        final TextView authorView;
 
 
         /**
@@ -116,7 +116,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
         PodcastViewHolder(View view){
             coverView = view.findViewById(R.id.imgvCover);
             titleView = view.findViewById(R.id.txtvTitle);
-            descriptionView = view.findViewById(R.id.txtvDescription);
+            authorView = view.findViewById(R.id.txtvAuthor);
         }
     }
 }
