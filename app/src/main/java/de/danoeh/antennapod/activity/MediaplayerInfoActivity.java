@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -259,7 +260,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         pager = findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
-        pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager(), this);
         pager.setAdapter(pagerAdapter);
         CirclePageIndicator pageIndicator = findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
@@ -512,9 +513,11 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     private static class MediaplayerInfoPagerAdapter extends FragmentStatePagerAdapter {
         private static final String TAG = "MPInfoPagerAdapter";
+        private Activity activity;
 
-        public MediaplayerInfoPagerAdapter(FragmentManager fm) {
+        public MediaplayerInfoPagerAdapter(FragmentManager fm, Activity a) {
             super(fm);
+            activity = a;
         }
 
         @Override
@@ -534,7 +537,14 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         @Override
         public int getCount() {
-            return NUM_CONTENT_FRAGMENTS;
+            PlaybackController controller = new PlaybackController(this.activity, false);
+            if (controller.getMedia() == null  ||
+                    controller.getMedia().getChapters() == null  ||
+                    controller.getMedia().getChapters().size() == 0) {
+                return NUM_CONTENT_FRAGMENTS - 1;
+            } else {
+                return NUM_CONTENT_FRAGMENTS;
+            }
         }
     }
 }
