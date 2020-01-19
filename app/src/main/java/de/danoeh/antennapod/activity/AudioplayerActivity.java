@@ -1,28 +1,25 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
-import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+
+import java.text.DecimalFormat;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Activity for playing audio files.
  */
 public class AudioplayerActivity extends MediaplayerInfoActivity {
     private static final String TAG = "AudioPlayerActivity";
+    private static final float EPSILON = 0.001f;
 
     private final AtomicBoolean isSetup = new AtomicBoolean(false);
 
@@ -33,8 +30,8 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             playExternalMedia(getIntent(), MediaType.AUDIO);
         } else if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
-            if (intent.getComponent() != null &&
-                    !intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
+            if (intent.getComponent() != null
+                    && !intent.getComponent().getClassName().equals(AudioplayerActivity.class.getName())) {
                 saveCurrentFragment();
                 finish();
                 startActivity(intent);
@@ -57,7 +54,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
 
     @Override
     protected void updatePlaybackSpeedButton() {
-        if(butPlaybackSpeed == null) {
+        if (butPlaybackSpeed == null) {
             return;
         }
         if (controller == null) {
@@ -66,14 +63,14 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             return;
         }
         updatePlaybackSpeedButtonText();
-        ViewCompat.setAlpha(butPlaybackSpeed, controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
+        butPlaybackSpeed.setAlpha(controller.canSetPlaybackSpeed() ? 1.0f : 0.5f);
         butPlaybackSpeed.setVisibility(View.VISIBLE);
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void updatePlaybackSpeedButtonText() {
-        if(butPlaybackSpeed == null) {
+        if (butPlaybackSpeed == null) {
             return;
         }
         if (controller == null) {
@@ -82,7 +79,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             return;
         }
         float speed = 1.0f;
-        if(controller.canSetPlaybackSpeed()) {
+        if (controller.canSetPlaybackSpeed()) {
             speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(controller.getMedia());
         }
         String speedStr = new DecimalFormat("0.00").format(speed);
@@ -91,54 +88,40 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
 
     @Override
     protected void setupGUI() {
-        if(isSetup.getAndSet(true)) {
+        if (isSetup.getAndSet(true)) {
             return;
         }
         super.setupGUI();
-        if(butCastDisconnect != null) {
+        if (butCastDisconnect != null) {
             butCastDisconnect.setVisibility(View.GONE);
         }
-        if(butPlaybackSpeed != null) {
+        if (butPlaybackSpeed != null) {
             butPlaybackSpeed.setOnClickListener(v -> {
                 if (controller == null) {
                     return;
                 }
                 if (controller.canSetPlaybackSpeed()) {
-                    String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
-                    DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
-                    format.setDecimalSeparator('.');
+                    float[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+                    float currentSpeed = controller.getCurrentPlaybackSpeedMultiplier();
 
-                    float currentSpeedValue = controller.getCurrentPlaybackSpeedMultiplier();
-                    String currentSpeed = new DecimalFormat("0.00", format).format(currentSpeedValue);
+                    int newSpeedIndex = 0;
+                    while (newSpeedIndex < availableSpeeds.length
+                            && availableSpeeds[newSpeedIndex] < currentSpeed + EPSILON) {
+                        newSpeedIndex++;
+                    }
 
-                    // Provide initial value in case the speed list has changed
-                    // out from under us
-                    // and our current speed isn't in the new list
-                    String newSpeed;
-                    if (availableSpeeds.length > 0) {
+                    float newSpeed;
+                    if (availableSpeeds.length == 0) {
+                        newSpeed = 1.0f;
+                    } else if (newSpeedIndex == availableSpeeds.length) {
                         newSpeed = availableSpeeds[0];
                     } else {
-                        newSpeed = "1.00";
+                        newSpeed = availableSpeeds[newSpeedIndex];
                     }
 
-                    for (int i = 0; i < availableSpeeds.length; i++) {
-                        if (availableSpeeds[i].equals(currentSpeed)) {
-                            if (i == availableSpeeds.length - 1) {
-                                newSpeed = availableSpeeds[0];
-                            } else {
-                                newSpeed = availableSpeeds[i + 1];
-                            }
-                            break;
-                        }
-                    }
-
-                    try {
-                        PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(Float.parseFloat(newSpeed));
-                    } catch (NumberFormatException e) {
-                        // Well this was awkward...
-                    }
+                    PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(newSpeed);
                     UserPreferences.setPlaybackSpeed(newSpeed);
-                    controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
+                    controller.setPlaybackSpeed(newSpeed);
                     onPositionObserverUpdate();
                 } else {
                     VariableSpeedDialog.showGetPluginDialog(this);
