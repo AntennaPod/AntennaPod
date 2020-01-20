@@ -38,6 +38,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 /**
@@ -185,15 +186,14 @@ public class GpodnetSyncService extends SafeJobIntentService {
         // local changes are always superior to remote changes!
         // add subscription if (1) not already subscribed and (2) not just unsubscribed
         for (String downloadUrl : changes.getAdded()) {
-            if (!localSubscriptions.contains(downloadUrl) &&
-                    !localRemoved.contains(downloadUrl)) {
+            if (!URLChecker.containsUrl(localSubscriptions, downloadUrl) && !localRemoved.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null);
                 DownloadRequester.getInstance().downloadFeed(this, feed);
             }
         }
         // remove subscription if not just subscribed (again)
         for (String downloadUrl : changes.getRemoved()) {
-            if(!localAdded.contains(downloadUrl)) {
+            if (!localAdded.contains(downloadUrl)) {
                 DBTasks.removeFeedWithDownloadUrl(GpodnetSyncService.this, downloadUrl);
             }
         }
