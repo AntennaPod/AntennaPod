@@ -24,7 +24,6 @@ public class CoverLoader {
     private TextView txtvPlaceholder;
     private ImageView imgvCover;
     private MainActivity activity;
-    private int errorResource = -1;
 
     public CoverLoader(MainActivity activity) {
         this.activity = activity;
@@ -45,11 +44,6 @@ public class CoverLoader {
         return this;
     }
 
-    public CoverLoader withError(int errorResource) {
-        this.errorResource = errorResource;
-        return this;
-    }
-
     public CoverLoader withPlaceholderView(TextView placeholderView) {
         txtvPlaceholder = placeholderView;
         return this;
@@ -60,10 +54,6 @@ public class CoverLoader {
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate();
-
-        if (errorResource != -1) {
-            options = options.error(errorResource);
-        }
 
         RequestBuilder<Drawable> builder = Glide.with(activity)
                 .load(uri)
@@ -84,6 +74,9 @@ public class CoverLoader {
 
         public CoverTarget(TextView txtvPlaceholder, ImageView imgvCover) {
             super(imgvCover);
+            if (txtvPlaceholder != null) {
+                txtvPlaceholder.setVisibility(View.VISIBLE);
+            }
             placeholder = new WeakReference<>(txtvPlaceholder);
             cover = new WeakReference<>(imgvCover);
         }
