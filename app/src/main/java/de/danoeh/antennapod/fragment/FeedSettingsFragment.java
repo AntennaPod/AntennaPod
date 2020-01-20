@@ -109,8 +109,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private void setupPlaybackSpeedPreference() {
         ListPreference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
 
-        String[] speeds = UserPreferences.getPlaybackSpeedArray();
-
+        final String[] speeds = getResources().getStringArray(R.array.playback_speed_values);
         String[] values = new String[speeds.length + 1];
         values[0] = decimalFormat.format(SPEED_USE_GLOBAL);
 

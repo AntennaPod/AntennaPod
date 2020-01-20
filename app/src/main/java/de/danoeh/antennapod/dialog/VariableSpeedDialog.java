@@ -6,8 +6,12 @@ import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class VariableSpeedDialog {
 
@@ -43,15 +47,22 @@ public class VariableSpeedDialog {
     }
 
     private static void showSpeedSelectorDialog(final Context context) {
+        DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
+        format.setDecimalSeparator('.');
+        DecimalFormat speedFormat = new DecimalFormat("0.00", format);
+
         final String[] speedValues = context.getResources().getStringArray(
                 R.array.playback_speed_values);
         // According to Java spec these get initialized to false on creation
         final boolean[] speedChecked = new boolean[speedValues.length];
 
-        // Build the "isChecked" array so that multiChoice dialog is
-        // populated correctly
-        List<String> selectedSpeedList = Arrays.asList(UserPreferences
-                .getPlaybackSpeedArray());
+        // Build the "isChecked" array so that multiChoice dialog is populated correctly
+        List<String> selectedSpeedList = new ArrayList<>();
+        float[] selectedSpeeds = UserPreferences.getPlaybackSpeedArray();
+        for (float speed : selectedSpeeds) {
+            selectedSpeedList.add(speedFormat.format(speed));
+        }
+
         for (int i = 0; i < speedValues.length; i++) {
             speedChecked[i] = selectedSpeedList.contains(speedValues[i]);
         }

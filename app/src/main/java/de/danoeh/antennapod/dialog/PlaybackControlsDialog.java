@@ -98,11 +98,11 @@ public class PlaybackControlsDialog extends DialogFragment {
         final TextView txtvPlaybackSpeed = (TextView) dialog.findViewById(R.id.txtvPlaybackSpeed);
         float currentSpeed = getCurrentSpeed();
 
-        String[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+        float[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
         final float minPlaybackSpeed = availableSpeeds.length > 1 ?
-                Float.valueOf(availableSpeeds[0]) : DEFAULT_MIN_PLAYBACK_SPEED;
+                availableSpeeds[0] : DEFAULT_MIN_PLAYBACK_SPEED;
         float maxPlaybackSpeed = availableSpeeds.length > 1 ?
-                Float.valueOf(availableSpeeds[availableSpeeds.length - 1]) : DEFAULT_MAX_PLAYBACK_SPEED;
+                availableSpeeds[availableSpeeds.length - 1] : DEFAULT_MAX_PLAYBACK_SPEED;
         int progressMax = (int) ((maxPlaybackSpeed - minPlaybackSpeed) / PLAYBACK_SPEED_STEP);
         barPlaybackSpeed.setMax(progressMax);
 
@@ -113,13 +113,12 @@ public class PlaybackControlsDialog extends DialogFragment {
                 if (controller != null && controller.canSetPlaybackSpeed()) {
                     float playbackSpeed = progress * PLAYBACK_SPEED_STEP + minPlaybackSpeed;
                     controller.setPlaybackSpeed(playbackSpeed);
-                    String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
 
                     PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(playbackSpeed);
                     if (isPlayingVideo) {
-                        UserPreferences.setVideoPlaybackSpeed(speedPref);
+                        UserPreferences.setVideoPlaybackSpeed(playbackSpeed);
                     } else {
-                        UserPreferences.setPlaybackSpeed(speedPref);
+                        UserPreferences.setPlaybackSpeed(playbackSpeed);
                     }
 
                     String speedStr = String.format("%.2fx", playbackSpeed);
