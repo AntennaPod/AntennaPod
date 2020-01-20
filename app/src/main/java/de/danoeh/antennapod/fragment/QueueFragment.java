@@ -472,15 +472,19 @@ public class QueueFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
+        int position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
+        if (position < 0) {
+            Log.i(TAG, "Selected item no longer exist, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
         switch(item.getItemId()) {
             case R.id.move_to_top_item:
-                int position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
                 queue.add(0, queue.remove(position));
                 recyclerAdapter.notifyItemMoved(position, 0);
                 DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
                 return true;
             case R.id.move_to_bottom_item:
-                position = FeedItemUtil.indexOfItemWithId(queue, selectedItem.getId());
                 queue.add(queue.size()-1, queue.remove(position));
                 recyclerAdapter.notifyItemMoved(position, queue.size()-1);
                 DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
