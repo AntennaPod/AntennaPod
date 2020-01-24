@@ -352,4 +352,63 @@
         <item>EpisodesFragment</item>
         <item>SubscriptionFragment</item>
     </string-array>
+
+    <string-array name="itunes_genres_title">
+        <item>Arts</item>
+        <item>Arts:Books</item>
+        <item>Arts:Design</item>
+        <item>Arts:Fashion &amp; Beauty</item>
+        <item>Arts:Food</item>
+        <item>Arts:Performing Arts</item>
+        <item>Arts:Visual Arts</item>
+        <item>Business</item>
+        <item>Comedy</item>
+        <item>Education</item>
+        <item>Fiction</item>
+        <item>Government</item>
+        <item>Health &amp; Fitness</item>
+        <item>&#160; &#160; Mental Health</item>
+        <item>History</item>
+        <item>Kids &amp; Family</item>
+        <item>Leisure</item>
+        <item>Music</item>
+        <item>News</item>
+        <item>Religion &amp; Spirituality</item>
+        <item>&#160; &#160; Buddhism</item>
+        <item>Science</item>
+        <item>Society &amp; Culture</item>
+        <item>Sports</item>
+        <item>TV &amp; Film</item>
+        <item>Technology</item>
+        <item>True Crime</item>
+    </string-array>
+    <string-array name="itunes_genres_code">
+        <item genre="Arts">1301</item>
+        <item genre="Arts:Books">1482</item>
+        <item genre="Arts:Design">1402</item>
+        <item genre="Arts:Fashion &amp; Beauty">1459</item>
+        <item genre="Arts:Food">1306</item>
+        <item genre="Arts:Performing Arts">1405</item>
+        <item genre="Arts:Visual Arts">1406</item>
+        <item genre="Business">1321</item>
+        <item genre="Comedy">1303</item>
+        <item genre="Education">1304</item>
+        <item genre="Fiction">1483</item>
+        <item genre="Government">1511</item>
+        <item genre="Health &amp; Fitness">1512</item>
+        <item genre="Mental Health">1517</item>
+        <item genre="History">1487</item>
+        <item genre="Kids &amp; Family">1305</item>
+        <item genre="Leisure">1502</item>
+        <item genre="Music">1310</item>
+        <item genre="News">1489</item>
+        <item genre="Religion &amp; Spirituality">1314</item>
+        <item genre="Buddhism">1438</item>
+        <item genre="Science">1533</item>
+        <item genre="Society &amp; Culture ">1324</item>
+        <item genre="Sports">1545</item>
+        <item genre="TV &amp; Film">1309</item>
+        <item genre="Technology">1318</item>
+        <item genre="True Crime">1488</item>
+    </string-array>
 </resources>

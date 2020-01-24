@@ -31,14 +31,17 @@ public class ItunesTopListLoader {
     }
 
     public Single<List<PodcastSearchResult>> loadToplist(int limit) {
+        return this.loadToplist(limit, "");
+    }
+    public Single<List<PodcastSearchResult>> loadToplist(int limit, String genre) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
             String country = Locale.getDefault().getCountry();
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             String feedString;
             try {
-                feedString = getTopListFeed(client, country, limit);
+                feedString = getTopListFeed(client, country, genre, limit);
             } catch (IOException e) {
-                feedString = getTopListFeed(client, "us", limit);
+                feedString = getTopListFeed(client, "us", genre, limit);
             }
             List<PodcastSearchResult> podcasts = parseFeed(feedString);
             emitter.onSuccess(podcasts);
@@ -77,12 +80,12 @@ public class ItunesTopListLoader {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private String getTopListFeed(OkHttpClient client, String country, int limit) throws IOException {
-        String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit="+limit+"/explicit=true/json";
-        Log.d(LOG, "Feed URL "+String.format(url, country));
+    private String getTopListFeed(OkHttpClient client, String country, String genre, int limit) throws IOException {
+        String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit="+limit+"/genre=%s/explicit=true/json";
+        Log.d(LOG, "Feed URL "+String.format(url, country, genre));
         Request.Builder httpReq = new Request.Builder()
                 .header("User-Agent", ClientConfig.USER_AGENT)
-                .url(String.format(url, country));
+                .url(String.format(url, country, genre));
 
         try (Response response = client.newCall(httpReq.build()).execute()) {
             if (response.isSuccessful()) {

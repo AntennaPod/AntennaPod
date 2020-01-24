@@ -1,8 +1,12 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+
+import androidx.annotation.ArrayRes;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.widget.SearchView;
@@ -14,6 +18,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -33,7 +39,7 @@ import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import io.reactivex.disposables.Disposable;
 
 //Searches iTunes store for given string and displays results in a list
-public class ItunesSearchFragment extends Fragment {
+public class ItunesSearchFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "ItunesSearchFragment";
 
@@ -97,6 +103,10 @@ public class ItunesSearchFragment extends Fragment {
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
+        AppCompatSpinner genre_spinner = root.findViewById(R.id.spinner_genre);
+        genre_spinner.setOnItemSelectedListener(this);
+
+
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
             PodcastSearchResult podcast = searchResults.get(position);
@@ -130,7 +140,8 @@ public class ItunesSearchFragment extends Fragment {
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
 
-        loadToplist();
+        String genre = "1406";
+        loadToplist(genre);
 
         return root;
     }
@@ -181,7 +192,7 @@ public class ItunesSearchFragment extends Fragment {
         });
     }
 
-    private void loadToplist() {
+    private void loadToplist(String genre) {
         if (disposable != null) {
             disposable.dispose();
         }
@@ -192,7 +203,7 @@ public class ItunesSearchFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.loadToplist(25)
+        disposable = loader.loadToplist(100, genre)
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
                     topList = podcasts;
@@ -202,7 +213,7 @@ public class ItunesSearchFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     txtvError.setText(error.toString());
                     txtvError.setVisibility(View.VISIBLE);
-                    butRetry.setOnClickListener(v -> loadToplist());
+                    butRetry.setOnClickListener(v -> loadToplist(genre));
                     butRetry.setVisibility(View.VISIBLE);
                 });
     }
@@ -231,4 +242,23 @@ public class ItunesSearchFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+
+        String genre = (String) adapterView.getItemAtPosition(pos);
+        String[] genre_code_array = getResources().getStringArray(R.array.itunes_genres_code);
+        String genre_code = (pos < genre_code_array.length) ? genre_code_array[pos] : "";
+
+        Log.d(TAG, "Genre spinner selected position " +
+                pos + " " +
+                genre +  " " +
+                genre_code);
+        loadToplist(genre_code);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        Log.d(TAG, "Nothing Selected in Genre spinner");
+    }
 }
+
