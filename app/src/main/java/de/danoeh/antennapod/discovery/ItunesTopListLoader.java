@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class ItunesTopListLoader {
     private final Context context;
-    String LOG = "ITunesTopListLoader";
+    String TAG = "ITunesTopListLoader";
 
     public ItunesTopListLoader(Context context) {
         this.context = context;
@@ -79,7 +79,7 @@ public class ItunesTopListLoader {
 
     private String getTopListFeed(OkHttpClient client, String country, int limit) throws IOException {
         String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit="+limit+"/explicit=true/json";
-        Log.d(LOG, "Feed URL "+String.format(url, country));
+        Log.d(TAG, "Feed URL " + String.format(url, country));
         Request.Builder httpReq = new Request.Builder()
                 .header("User-Agent", ClientConfig.USER_AGENT)
                 .url(String.format(url, country));
