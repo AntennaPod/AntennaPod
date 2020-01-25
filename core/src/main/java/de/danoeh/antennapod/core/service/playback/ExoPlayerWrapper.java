@@ -16,8 +16,9 @@ import com.google.android.exoplayer2.SeekParameters;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioAttributes;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
@@ -71,7 +72,7 @@ public class ExoPlayerWrapper implements IPlayer {
         loadControl.setBackBuffer(UserPreferences.getRewindSecs() * 1000 + 500, true);
         SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(mContext, new DefaultRenderersFactory(mContext),
                 new DefaultTrackSelector(), loadControl.createDefaultLoadControl());
-        p.setSeekParameters(SeekParameters.PREVIOUS_SYNC);
+        p.setSeekParameters(SeekParameters.EXACT);
         p.addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
@@ -170,7 +171,7 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void prepare() throws IllegalStateException {
-        mExoPlayer.prepare(mediaSource);
+        mExoPlayer.prepare(mediaSource, false, true);
     }
 
     @Override
@@ -216,7 +217,9 @@ public class ExoPlayerWrapper implements IPlayer {
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(mContext, null, httpDataSourceFactory);
-        ExtractorMediaSource.Factory f = new ExtractorMediaSource.Factory(dataSourceFactory);
+        DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        extractorsFactory.setConstantBitrateSeekingEnabled(true);
+        ProgressiveMediaSource.Factory f = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory);
         mediaSource = f.createMediaSource(Uri.parse(s));
     }
 
