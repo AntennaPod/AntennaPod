@@ -353,8 +353,16 @@
         <item>SubscriptionFragment</item>
     </string-array>
 
+    <string-array name="itunes_country">
+       <item>United States</item>
+       <item>China</item>
+    </string-array>
+    <string-array name="itunes_country_code">
+        <item>us</item>
+        <item>cn</item>
+    </string-array>
     <string-array name="itunes_genres_title">
-        <item>Top</item>
+        <item>Genres - Top</item>
         <item>Arts</item>
         <item>&#160; &#160; Books</item>
         <item>&#160; &#160; Design</item>
@@ -426,7 +434,7 @@
         <item>&#160; &#160;  Religion</item>
         <item>&#160; &#160;  Spirituality</item>
         <item>Science</item>
-        <item>Astronomy</item>
+        <item>&#160; &#160;  Astronomy</item>
         <item>&#160; &#160;  Chemistry</item>
         <item>&#160; &#160;  Earth Sciences</item>
         <item>&#160; &#160;  Life Sciences</item>

@@ -8,7 +8,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_margin="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner_country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:entries="@array/itunes_country"
+            android:spinnerMode="dropdown" />
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinner_genre"
             android:layout_width="wrap_content"
@@ -16,7 +27,7 @@
             android:layout_gravity="end"
             android:entries="@array/itunes_genres_title"
             android:spinnerMode="dropdown" />
-
+    </LinearLayout>
         <GridView
             android:id="@+id/gridView"
             android:layout_width="match_parent"

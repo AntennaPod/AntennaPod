@@ -1,6 +1,10 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+
 import android.content.res.Resources;
 import android.os.Bundle;
 
@@ -38,11 +42,20 @@ import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import io.reactivex.disposables.Disposable;
 
+import static android.content.Context.MODE_PRIVATE;
+
 //Searches iTunes store for given string and displays results in a list
 public class ItunesSearchFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "ItunesSearchFragment";
 
+    static String genre_code = "26";
+    static String country_code = "us";
+
+    private SharedPreferences prefs;
+    private static final String PREFS = "ItunesSearchFragment";
+    private static final String PREF_KEY_COUNTRY_CODE = "itunes_genre_country";
+    private static final String PREF_KEY_GENRE_CODE = "itunes_genre_code";
 
     /**
      * Adapter responsible with the search results
@@ -106,6 +119,8 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
         AppCompatSpinner genre_spinner = root.findViewById(R.id.spinner_genre);
         genre_spinner.setOnItemSelectedListener(this);
 
+        AppCompatSpinner country_spinner = root.findViewById(R.id.spinner_country);
+        country_spinner.setOnItemSelectedListener(this);
 
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
@@ -140,8 +155,7 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
 
-        String genre = "1406";
-        loadToplist(genre);
+        loadToplist(country_code, genre_code);
 
         return root;
     }
@@ -192,7 +206,7 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
         });
     }
 
-    private void loadToplist(String genre) {
+    private void loadToplist(String country, String genre) {
         if (disposable != null) {
             disposable.dispose();
         }
@@ -203,7 +217,7 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
         progressBar.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.loadToplist(100, genre)
+        disposable = loader.loadToplist(100, country, genre)
                 .subscribe(podcasts -> {
                     progressBar.setVisibility(View.GONE);
                     topList = podcasts;
@@ -213,7 +227,7 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
                     progressBar.setVisibility(View.GONE);
                     txtvError.setText(error.toString());
                     txtvError.setVisibility(View.VISIBLE);
-                    butRetry.setOnClickListener(v -> loadToplist(genre));
+                    butRetry.setOnClickListener(v -> loadToplist(country, genre));
                     butRetry.setVisibility(View.VISIBLE);
                 });
     }
@@ -244,21 +258,47 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-
         String genre = (String) adapterView.getItemAtPosition(pos);
-        String[] genre_code_array = getResources().getStringArray(R.array.itunes_genres_code);
-        String genre_code = (pos < genre_code_array.length) ? genre_code_array[pos] : "";
+
+        if (adapterView.getId() == R.id.spinner_genre) {
+            String[] genre_code_array = getResources().getStringArray(R.array.itunes_genres_code);
+            genre_code = (pos < genre_code_array.length) ? genre_code_array[pos] : "";
+        } else {
+            String[] country_code_array = getResources().getStringArray(R.array.itunes_country_code);
+            country_code = (pos < country_code_array.length) ? country_code_array[pos] : "";
+        }
+
+        Log.d(TAG, "Saving preferences");
+        prefs = getActivity().getSharedPreferences(PREFS, MODE_PRIVATE);
+        prefs.edit()
+                .putString(PREF_KEY_GENRE_CODE, genre_code)
+                .apply();
+        prefs.edit()
+                .putString(PREF_KEY_COUNTRY_CODE, country_code)
+                .apply();
+
 
         Log.d(TAG, "Genre spinner selected position " +
+                view.getId() +
+                "spinner_genre " + R.id.spinner_genre +
+                "spinner country " + R.id.spinner_country +
                 pos + " " +
-                genre +  " " +
-                genre_code);
-        loadToplist(genre_code);
+                  genre +  " " +
+                  genre_code);
+        loadToplist(country_code, genre_code);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         Log.d(TAG, "Nothing Selected in Genre spinner");
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, MODE_PRIVATE);
+
+        country_code = prefs.getString(PREF_KEY_COUNTRY_CODE, "us");
+        genre_code= prefs.getString(PREF_KEY_GENRE_CODE, "26");
+        Log.d(TAG, "onNothingSelected "+
+                country_code + " " +
+                genre_code+ " "
+                );
     }
 }
 

@@ -24,24 +24,28 @@ import java.util.Locale;
 
 public class ItunesTopListLoader {
     private final Context context;
-    String LOG = "ITunesTopListLoader";
+    String TAG = "ITunesTopListLoader";
 
     public ItunesTopListLoader(Context context) {
         this.context = context;
     }
 
     public Single<List<PodcastSearchResult>> loadToplist(int limit) {
-        return this.loadToplist(limit, "");
+        return this.loadToplist(limit, "", "");
     }
-    public Single<List<PodcastSearchResult>> loadToplist(int limit, String genre) {
+    public Single<List<PodcastSearchResult>> loadToplist(int limit, String country, String genre) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
-            String country = Locale.getDefault().getCountry();
+            String device_country = Locale.getDefault().getCountry();
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             String feedString;
             try {
                 feedString = getTopListFeed(client, country, genre, limit);
             } catch (IOException e) {
-                feedString = getTopListFeed(client, "us", genre, limit);
+                try {
+                    feedString = getTopListFeed(client, device_country, genre, limit);
+                } catch (IOException exeption) {
+                    feedString = getTopListFeed(client, "us", genre, limit);
+                }
             }
             List<PodcastSearchResult> podcasts = parseFeed(feedString);
             emitter.onSuccess(podcasts);
@@ -82,7 +86,7 @@ public class ItunesTopListLoader {
 
     private String getTopListFeed(OkHttpClient client, String country, String genre, int limit) throws IOException {
         String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit="+limit+"/genre=%s/explicit=true/json";
-        Log.d(LOG, "Feed URL "+String.format(url, country, genre));
+        Log.d(TAG, "Feed URL " + String.format(url, country, genre));
         Request.Builder httpReq = new Request.Builder()
                 .header("User-Agent", ClientConfig.USER_AGENT)
                 .url(String.format(url, country, genre));
