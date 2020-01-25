@@ -48,7 +48,7 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.ERROR);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
@@ -63,7 +63,7 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.INDETERMINATE);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
@@ -78,7 +78,7 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.STOPPED);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
@@ -91,10 +91,9 @@ public class PlaybackVolumeUpdaterTest {
     public void noChangeIfPlayableIsNoItemOfAffectedFeed() {
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.PLAYING);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
-        Feed feed = mockFeed(feedMedia);
-        when(feed.getIdentifyingValue()).thenReturn("wrongFeedId");
+        when(feedMedia.getItem().getFeed().getId()).thenReturn(FEED_ID + 1);
 
         PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.OFF);
@@ -109,9 +108,9 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.PAUSED);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
-        FeedPreferences feedPreferences = mockFeedPreferences(feedMedia);
+        FeedPreferences feedPreferences = feedMedia.getItem().getFeed().getPreferences();
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
@@ -127,9 +126,9 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.PREPARED);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
-        FeedPreferences feedPreferences = mockFeedPreferences(feedMedia);
+        FeedPreferences feedPreferences = feedMedia.getItem().getFeed().getPreferences();
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
@@ -145,9 +144,9 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.INITIALIZING);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
-        FeedPreferences feedPreferences = mockFeedPreferences(feedMedia);
+        FeedPreferences feedPreferences = feedMedia.getItem().getFeed().getPreferences();
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
@@ -163,9 +162,9 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.PREPARING);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
-        FeedPreferences feedPreferences = mockFeedPreferences(feedMedia);
+        FeedPreferences feedPreferences = feedMedia.getItem().getFeed().getPreferences();
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
@@ -181,9 +180,9 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.SEEKING);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
-        FeedPreferences feedPreferences = mockFeedPreferences(feedMedia);
+        FeedPreferences feedPreferences = feedMedia.getItem().getFeed().getPreferences();
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.LIGHT_REDUCTION);
 
@@ -199,9 +198,9 @@ public class PlaybackVolumeUpdaterTest {
 
         when(mediaPlayer.getPlayerStatus()).thenReturn(PlayerStatus.PLAYING);
 
-        FeedMedia feedMedia = mock(FeedMedia.class);
+        FeedMedia feedMedia = mockFeedMedia();
         when(mediaPlayer.getPlayable()).thenReturn(feedMedia);
-        FeedPreferences feedPreferences = mockFeedPreferences(feedMedia);
+        FeedPreferences feedPreferences = feedMedia.getItem().getFeed().getPreferences();
 
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, FEED_ID, VolumeAdaptionSetting.HEAVY_REDUCTION);
 
@@ -210,20 +209,17 @@ public class PlaybackVolumeUpdaterTest {
         verify(mediaPlayer, times(1)).pause(false, false);
         verify(mediaPlayer, times(1)).resume();
     }
-
-    private FeedPreferences mockFeedPreferences(FeedMedia feedMedia) {
-        Feed feed = mockFeed(feedMedia);
-        FeedPreferences feedPreferences = mock(FeedPreferences.class);
-        when(feed.getPreferences()).thenReturn(feedPreferences);
-        return feedPreferences;
-    }
-
-    private Feed mockFeed(FeedMedia feedMedia) {
+    
+    private FeedMedia mockFeedMedia() {
+        FeedMedia feedMedia = mock(FeedMedia.class);
         FeedItem feedItem = mock(FeedItem.class);
-        when(feedMedia.getItem()).thenReturn(feedItem);
         Feed feed = mock(Feed.class);
-        when(feed.getId()).thenReturn(FEED_ID);
+        FeedPreferences feedPreferences = mock(FeedPreferences.class);
+
+        when(feedMedia.getItem()).thenReturn(feedItem);
         when(feedItem.getFeed()).thenReturn(feed);
-        return feed;
+        when(feed.getId()).thenReturn(FEED_ID);
+        when(feed.getPreferences()).thenReturn(feedPreferences);
+        return feedMedia;
     }
 }
