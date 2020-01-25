@@ -11,6 +11,7 @@ import android.util.Log;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -26,6 +27,8 @@ import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -234,11 +237,8 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
     }
 
     private void sendVolumeAdaptionChangedIntent() {
-        Context context = getContext();
-        Intent intent = new Intent(PlaybackService.ACTION_VOLUME_ADAPTION_CHANGED).setPackage(context.getPackageName());
-        intent.putExtra(PlaybackService.EXTRA_VOLUME_ADAPTION_AFFECTED_FEED, feed.getIdentifyingValue());
-        intent.putExtra(PlaybackService.EXTRA_VOLUME_ADAPTION_SETTING, feedPreferences.getVolumeAdaptionSetting());
-        context.sendBroadcast(intent);
+        EventBus.getDefault().post(
+                new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
     }
 
     private void updateVolumeReductionValue() {

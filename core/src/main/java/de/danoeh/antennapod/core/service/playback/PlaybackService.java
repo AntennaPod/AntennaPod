@@ -41,7 +41,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -51,13 +50,13 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SearchResult;
-import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -79,6 +78,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -135,13 +135,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * If the PlaybackService receives this action, it will pause playback.
      */
     public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
-
-    /**
-     * If the PlaybackService receives this action, it will try to apply the supplied volume adaption setting.
-     */
-    public static final String ACTION_VOLUME_ADAPTION_CHANGED = "action.de.danoeh.antennapod.core.service.volumedAdaptionChanged";
-    public static final String EXTRA_VOLUME_ADAPTION_SETTING = "PlaybackService.VolumeAdaptionSettingExtra";
-    public static final String EXTRA_VOLUME_ADAPTION_AFFECTED_FEED = "PlaybackService.VolumeAdaptionSettingAffectedFeed";
 
     /**
      * Custom action used by Android Wear
@@ -284,7 +277,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
         registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
-        registerReceiver(volumeAdaptionChangedReceiver, new IntentFilter(ACTION_VOLUME_ADAPTION_CHANGED));
+        EventBus.getDefault().register(this);
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
         flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
@@ -356,7 +349,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         unregisterReceiver(pausePlayCurrentEpisodeReceiver);
-        unregisterReceiver(volumeAdaptionChangedReceiver);
         flavorHelper.removeCastConsumer();
         flavorHelper.unregisterWifiBroadcastReceiver();
         mediaPlayer.shutdown();
@@ -1445,21 +1437,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     };
 
-    private final BroadcastReceiver volumeAdaptionChangedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (TextUtils.equals(intent.getAction(), ACTION_VOLUME_ADAPTION_CHANGED)) {
-                Log.d(TAG, "Received ACTION_VOLUME_ADAPTION_CHANGED intent");
-
-                String affectedFeed = intent.getStringExtra(EXTRA_VOLUME_ADAPTION_AFFECTED_FEED);
-                Serializable volumeAdaptionExtra = intent.getSerializableExtra(EXTRA_VOLUME_ADAPTION_SETTING);
-                VolumeAdaptionSetting volumeAdaptionSetting = (VolumeAdaptionSetting) volumeAdaptionExtra;
-
-                PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
-                playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, affectedFeed, volumeAdaptionSetting);
-            }
-        }
-    };
+    @Subscribe
+    public void volumeAdaptionChanged(VolumeAdaptionChangedEvent event) {
+        PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, event.getFeedId(), event.getVolumeAdaptionSetting());
+    }
 
     public static MediaType getCurrentMediaType() {
         return currentMediaType;
