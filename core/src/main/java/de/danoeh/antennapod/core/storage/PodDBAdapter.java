@@ -1467,10 +1467,7 @@ public class PodDBAdapter {
      * Helper class for opening the Antennapod database.
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
-
-        private static final int VERSION = 1070401;
-
-        private final Context context;
+        private static final int VERSION = 1090000;
 
         /**
          * Constructor.
@@ -1482,7 +1479,6 @@ public class PodDBAdapter {
         public PodDBHelper(final Context context, final String name,
                            final CursorFactory factory) {
             super(context, name, factory, VERSION, new PodDbErrorHandler());
-            this.context = context;
         }
 
         @Override
@@ -1501,7 +1497,6 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
-
         }
 
         @Override
