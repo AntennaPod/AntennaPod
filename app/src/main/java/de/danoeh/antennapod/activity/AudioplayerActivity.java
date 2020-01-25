@@ -73,7 +73,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
 
     @Override
     protected void updatePlaybackSpeedButtonText() {
-        if(butPlaybackSpeed == null) {
+        if (butPlaybackSpeed == null) {
             return;
         }
         if (controller == null) {
@@ -82,11 +82,12 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             return;
         }
         float speed = 1.0f;
-        if(controller.canSetPlaybackSpeed()) {
+        if (controller.canSetPlaybackSpeed()) {
             speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(controller.getMedia());
         }
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
+        butPlaybackSpeed.setSpeed(speed);
     }
 
     @Override
