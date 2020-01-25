@@ -10,10 +10,8 @@ class PlaybackVolumeUpdater {
     public void updateVolumeIfNecessary(PlaybackServiceMediaPlayer mediaPlayer, long feedId,
                                         VolumeAdaptionSetting volumeAdaptionSetting) {
         Playable playable = mediaPlayer.getPlayable();
-        boolean isFeedMedia = playable instanceof FeedMedia;
-        boolean isPlayableLoaded = isPlayableLoaded(mediaPlayer.getPlayerStatus());
 
-        if (isFeedMedia && isPlayableLoaded) {
+        if (playable instanceof FeedMedia) {
             updateFeedMediaVolumeIfNecessary(mediaPlayer, feedId, volumeAdaptionSetting, (FeedMedia) playable);
         }
     }
@@ -28,15 +26,6 @@ class PlaybackVolumeUpdater {
                 forceUpdateVolume(mediaPlayer);
             }
         }
-    }
-
-    private static boolean isPlayableLoaded(PlayerStatus playerStatus) {
-        return playerStatus == PlayerStatus.PLAYING
-                || playerStatus == PlayerStatus.PAUSED
-                || playerStatus == PlayerStatus.SEEKING
-                || playerStatus == PlayerStatus.PREPARING
-                || playerStatus == PlayerStatus.PREPARED
-                || playerStatus == PlayerStatus.INITIALIZING;
     }
 
     private void forceUpdateVolume(PlaybackServiceMediaPlayer mediaPlayer) {
