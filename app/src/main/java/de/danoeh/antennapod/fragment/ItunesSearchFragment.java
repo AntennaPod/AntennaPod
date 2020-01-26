@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
@@ -27,13 +28,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -45,7 +49,8 @@ import io.reactivex.disposables.Disposable;
 import static android.content.Context.MODE_PRIVATE;
 
 //Searches iTunes store for given string and displays results in a list
-public class ItunesSearchFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class ItunesSearchFragment extends Fragment
+        implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "ItunesSearchFragment";
 
@@ -105,6 +110,11 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, MODE_PRIVATE);
+
+        country_code = prefs.getString(PREF_KEY_COUNTRY_CODE, "us");
+        genre_code= prefs.getString(PREF_KEY_GENRE_CODE, "26");
     }
 
     @Override
@@ -116,11 +126,24 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
 
+        List genre_codes = Arrays.asList(getActivity().
+                getResources().
+                getStringArray(R.array.itunes_genres_code));
+
+
         AppCompatSpinner genre_spinner = root.findViewById(R.id.spinner_genre);
         genre_spinner.setOnItemSelectedListener(this);
+        int pos = genre_codes.indexOf(genre_code);
+        genre_spinner.setSelection (pos);
+
+        List country_codes = Arrays.asList(getActivity().
+                getResources().
+                getStringArray(R.array.itunes_country_code));
 
         AppCompatSpinner country_spinner = root.findViewById(R.id.spinner_country);
         country_spinner.setOnItemSelectedListener(this);
+        pos = country_codes.indexOf(country_code);
+        country_spinner.setSelection (pos);
 
         //Show information about the podcast when the list item is clicked
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
@@ -154,7 +177,10 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
-
+        Log.d(TAG, "iTunespref onCreatedView"+
+                country_code + " " +
+                genre_code+ " "
+        );
         loadToplist(country_code, genre_code);
 
         return root;
@@ -268,7 +294,7 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
             country_code = (pos < country_code_array.length) ? country_code_array[pos] : "";
         }
 
-        Log.d(TAG, "Saving preferences");
+        Log.d(TAG, "iTunespref Saving preferences " + genre_code + " " + country_code);
         prefs = getActivity().getSharedPreferences(PREFS, MODE_PRIVATE);
         prefs.edit()
                 .putString(PREF_KEY_GENRE_CODE, genre_code)
@@ -290,12 +316,12 @@ public class ItunesSearchFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        Log.d(TAG, "Nothing Selected in Genre spinner");
+        Log.d(TAG, "iTunespref Nothing Selected in Genre spinner");
         SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, MODE_PRIVATE);
 
         country_code = prefs.getString(PREF_KEY_COUNTRY_CODE, "us");
         genre_code= prefs.getString(PREF_KEY_GENRE_CODE, "26");
-        Log.d(TAG, "onNothingSelected "+
+        Log.d(TAG, "iTunespref onNothingSelected "+
                 country_code + " " +
                 genre_code+ " "
                 );
