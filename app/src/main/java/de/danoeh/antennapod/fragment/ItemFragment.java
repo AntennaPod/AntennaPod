@@ -183,7 +183,7 @@ public class ItemFragment extends Fragment {
             if (item == null) {
                 return;
             }
-            ItemActionButton actionButton = ItemActionButton.forItem(item, item.isTagged(FeedItem.TAG_QUEUE));
+            ItemActionButton actionButton = ItemActionButton.forItem(item, item.isTagged(FeedItem.TAG_QUEUE), false);
             actionButton.onClick(getActivity());
 
             FeedMedia media = item.getMedia();
