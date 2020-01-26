@@ -355,8 +355,8 @@
 
     <string-array name="itunes_country">
        <item>China</item>
-       <item>United States</item>
        <item>Germany</item>
+        <item>United States</item>
     </string-array>
     <string-array name="itunes_country_code">
         <item>cn</item>
