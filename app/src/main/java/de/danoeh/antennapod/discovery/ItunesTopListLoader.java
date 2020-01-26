@@ -24,6 +24,7 @@ import java.util.Locale;
 
 public class ItunesTopListLoader {
     private final Context context;
+    protected String itunes_top_genre = "26";
     String TAG = "ITunesTopListLoader";
 
     public ItunesTopListLoader(Context context) {
@@ -31,7 +32,7 @@ public class ItunesTopListLoader {
     }
 
     public Single<List<PodcastSearchResult>> loadToplist(int limit) {
-        return this.loadToplist(limit, "", "");
+        return this.loadToplist(limit, "us", itunes_top_genre);
     }
     public Single<List<PodcastSearchResult>> loadToplist(int limit, String country, String genre) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
@@ -43,7 +44,7 @@ public class ItunesTopListLoader {
             } catch (IOException e) {
                 try {
                     feedString = getTopListFeed(client, device_country, genre, limit);
-                } catch (IOException exeption) {
+                } catch (IOException exception) {
                     feedString = getTopListFeed(client, "us", genre, limit);
                 }
             }
