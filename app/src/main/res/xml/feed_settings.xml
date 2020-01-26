@@ -28,6 +28,15 @@
             android:summary="@string/feed_auto_download_global"
             android:key="autoDelete"/>
 
+    <ListPreference
+            android:entries="@array/spnVolumeReductionItems"
+            android:entryValues="@array/spnVolumeReductionValues"
+            android:icon="?attr/ic_volume_adaption"
+            android:summary="@string/feed_volume_reduction_summary"
+            android:title="@string/feed_volume_reduction"
+            android:defaultValue="off"
+            android:key="volumeReduction"/>
+
     <PreferenceCategory android:title="@string/auto_download_settings_label">
         <SwitchPreference
                 android:key="autoDownload"

@@ -12,7 +12,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -97,6 +96,7 @@ public class PodDBAdapter {
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
     public static final String KEY_KEEP_UPDATED = "keep_updated";
     public static final String KEY_AUTO_DELETE_ACTION = "auto_delete_action";
+    public static final String KEY_FEED_VOLUME_ADAPTION = "feed_volume_adaption";
     public static final String KEY_PLAYED_DURATION = "played_duration";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
@@ -144,7 +144,8 @@ public class PodDBAdapter {
             + KEY_SORT_ORDER + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
-            + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ")";
+            + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
+            + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -241,6 +242,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_SORT_ORDER,
             TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_ADAPTION,
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED
@@ -403,6 +405,7 @@ public class PodDBAdapter {
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
         values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
         values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().ordinal());
+        values.put(KEY_FEED_VOLUME_ADAPTION, prefs.getVolumeAdaptionSetting().toInteger());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
@@ -1333,10 +1336,7 @@ public class PodDBAdapter {
      * Helper class for opening the Antennapod database.
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
-
-        private static final int VERSION = 1070401;
-
-        private final Context context;
+        private static final int VERSION = 1090000;
 
         /**
          * Constructor.
@@ -1348,7 +1348,6 @@ public class PodDBAdapter {
         public PodDBHelper(final Context context, final String name,
                            final CursorFactory factory) {
             super(context, name, factory, VERSION, new PodDbErrorHandler());
-            this.context = context;
         }
 
         @Override
@@ -1367,7 +1366,6 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
-
         }
 
         @Override

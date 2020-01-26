@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.preference.SwitchPreference;
 import androidx.preference.ListPreference;
@@ -10,10 +11,13 @@ import android.util.Log;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
@@ -23,6 +27,8 @@ import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -73,11 +79,13 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     setupAutoDownloadPreference();
                     setupKeepUpdatedPreference();
                     setupAutoDeletePreference();
+                    setupVolumeReductionPreferences();
                     setupAuthentificationPreference();
                     setupEpisodeFilterPreference();
                     setupPlaybackSpeedPreference();
 
                     updateAutoDeleteSummary();
+                    updateVolumeReductionValue();
                     updateAutoDownloadEnabled();
                     updatePlaybackSpeedPreference();
                 }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
@@ -202,6 +210,49 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
             case NO:
                 autoDeletePreference.setSummary(R.string.feed_auto_download_never);
                 autoDeletePreference.setValue("never");
+                break;
+        }
+    }
+
+    private void setupVolumeReductionPreferences() {
+        ListPreference volumeReductionPreference = (ListPreference) findPreference("volumeReduction");
+        volumeReductionPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            switch ((String) newValue) {
+                case "off":
+                    feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.OFF);
+                    break;
+                case "light":
+                    feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.LIGHT_REDUCTION);
+                    break;
+                case "heavy":
+                    feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
+                    break;
+            }
+            feed.savePreferences();
+            updateVolumeReductionValue();
+            sendVolumeAdaptionChangedIntent();
+
+            return false;
+        });
+    }
+
+    private void sendVolumeAdaptionChangedIntent() {
+        EventBus.getDefault().post(
+                new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
+    }
+
+    private void updateVolumeReductionValue() {
+        ListPreference volumeReductionPreference = (ListPreference) findPreference("volumeReduction");
+
+        switch (feedPreferences.getVolumeAdaptionSetting()) {
+            case OFF:
+                volumeReductionPreference.setValue("off");
+                break;
+            case LIGHT_REDUCTION:
+                volumeReductionPreference.setValue("light");
+                break;
+            case HEAVY_REDUCTION:
+                volumeReductionPreference.setValue("heavy");
                 break;
         }
     }

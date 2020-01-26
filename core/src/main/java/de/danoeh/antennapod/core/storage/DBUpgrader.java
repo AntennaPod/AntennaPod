@@ -294,10 +294,13 @@ class DBUpgrader {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL);
         }
-
         if (oldVersion < 1070401) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_SORT_ORDER + " TEXT");
+        }
+        if (oldVersion < 1090000) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0");
         }
     }
 

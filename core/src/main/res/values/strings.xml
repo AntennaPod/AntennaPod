@@ -96,6 +96,11 @@
     <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
     <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
     <string name="auto_delete_label">Auto Delete Episode</string>
+    <string name="feed_volume_reduction">Volume Reduction</string>
+    <string name="feed_volume_reduction_summary">Turn down volume for episodes of this feed: \%s</string>
+    <string name="feed_volume_reduction_off">Off</string>
+    <string name="feed_volume_reduction_light">Light</string>
+    <string name="feed_volume_reduction_heavy">Heavy</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
     <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>

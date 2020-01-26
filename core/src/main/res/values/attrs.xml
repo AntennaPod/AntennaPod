@@ -52,6 +52,7 @@
     <attr name="ic_select_none" format="reference"/>
     <attr name="ic_sort" format="reference"/>
     <attr name="ic_key" format="reference"/>
+    <attr name="ic_volume_adaption" format="reference"/>
     <attr name="ic_sd_storage" format="reference"/>
     <attr name="ic_create_new_folder" format="reference"/>
     <attr name="ic_cast_disconnect" format="reference"/>

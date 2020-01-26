@@ -12,11 +12,11 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
@@ -26,13 +26,17 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 
 /**
@@ -308,7 +312,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 acquireWifiLockIfNecessary();
 
                 setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
-                setVolume(UserPreferences.getLeftVolume(), UserPreferences.getRightVolume());
+
+                float leftVolume = UserPreferences.getLeftVolume();
+                float rightVolume = UserPreferences.getRightVolume();
+                setVolume(leftVolume, rightVolume);
 
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                     int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
@@ -661,6 +668,15 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
      */
     private void setVolumeSync(float volumeLeft, float volumeRight) {
         playerLock.lock();
+        Playable playable = getPlayable();
+        if (playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+            VolumeAdaptionSetting volumeAdaptionSetting = preferences.getVolumeAdaptionSetting();
+            float adaptionFactor = volumeAdaptionSetting.getAdaptionFactor();
+            volumeLeft *= adaptionFactor;
+            volumeRight *= adaptionFactor;
+        }
         mediaPlayer.setVolume(volumeLeft, volumeRight);
         Log.d(TAG, "Media player volume was set to " + volumeLeft + " " + volumeRight);
         playerLock.unlock();
