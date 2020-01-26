@@ -187,7 +187,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
             holder.queueStatus.setVisibility(View.INVISIBLE);
         }
 
-        ItemActionButton actionButton = ItemActionButton.forItem(item, isInQueue);
+        ItemActionButton actionButton = ItemActionButton.forItem(item, isInQueue, true);
         actionButton.configure(holder.butSecondary, mainActivityRef.get());
 
         holder.butSecondary.setFocusable(false);

@@ -189,7 +189,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 }
             }
 
-            ItemActionButton actionButton = ItemActionButton.forItem(item, isInQueue);
+            ItemActionButton actionButton = ItemActionButton.forItem(item, isInQueue, true);
             actionButton.configure(holder.butAction, context);
 
             holder.butAction.setFocusable(false);
