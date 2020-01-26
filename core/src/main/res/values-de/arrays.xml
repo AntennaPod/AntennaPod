@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="itunes_country">
+        <item>China</item>
+        <item>Germany</item>
+        <item>United States</item>
+    </string-array>
+    <string-array name="itunes_country_code">
+        <item>cn</item>
+        <item>de</item>
+        <item>us</item>
+    </string-array>
+
+    <string-array name="itunes_genres_title">
+        <item>Genre - Oben</item>
+        <item>Kunst</item>
+        <item>&#160; &#160; Bücher</item>
+        <item>&#160; &#160; Design</item>
+        <item>&#160; &#160; Mode und Schönheit</item>
+        <item>&#160; &#160; Essen</item>
+        <item>&#160; &#160; Darstellende Kunst</item>
+        <item>&#160; &#160; Bildende Kunst</item>
+        <item>Wirtschaft</item>
+        <item>&#160; &#160; Karriere</item>
+        <item>&#160; &#160; Firmengründung</item>
+        <item>&#160; &#160; Geldanlage</item>
+        <item>&#160; &#160; Management</item>
+        <item>&#160; &#160; Marketing</item>
+        <item>&#160; &#160; Gemeinnützig</item>
+        <item>Comedy</item>
+        <item>&#160; &#160; Comedy-Interviews</item>
+        <item>&#160; &#160; Impro-Comedy</item>
+        <item>&#160; &#160; Stand-Up-Comedy</item>
+        <item>Bildung</item>
+        <item>&#160; &#160; Kurse</item>
+        <item>&#160; &#160; So geht’s</item>
+        <item>&#160; &#160; Sprachen lernen</item>
+        <item>&#160; &#160; Selbstverwirklichung</item>
+        <item>Fiktion</item>
+        <item>&#160; &#160; Comedy-Fiction</item>
+        <item>&#160; &#160; Drama</item>
+        <item>&#160; &#160; Science-Fiction</item>
+        <item>Regierung</item>
+        <item>Gesundheit und Fitness</item>
+        <item>&#160; &#160; Alternative Therapien</item>
+        <item>&#160; &#160; Fitness</item>
+        <item>&#160; &#160; Medizin</item>
+        <item>&#160; &#160; Mentale Gesundheit</item>
+        <item>&#160; &#160; Ernährung</item>
+        <item>&#160; &#160; Sexualität</item>
+        <item>Geschichte</item>
+        <item>Kinder und Familie</item>
+        <item>&#160; &#160; Bildung für Kids</item>
+        <item>&#160; &#160; Kindererziehung</item>
+        <item>&#160; &#160; Haus- und Wildtiere</item>
+        <item>&#160; &#160; Geschichten für Kids</item>
+        <item>Freizeit</item>
+        <item>&#160; &#160; Animation und Manga</item>
+        <item>&#160; &#160; Rund ums Auto</item>
+        <item>&#160; &#160; Luftfahrt</item>
+        <item>&#160; &#160; Basteln</item>
+        <item>&#160; &#160; Spiele</item>
+        <item>&#160; &#160; Hobbys</item>
+        <item>&#160; &#160; Heim und Garten</item>
+        <item>&#160; &#160; Videospiele</item>
+        <item>Musik</item>
+        <item>&#160; &#160; Musikrezensionen</item>
+        <item>&#160; &#160; Musikgeschichte</item>
+        <item>&#160; &#160; Musikinterviews</item>
+        <item>Nachrichten</item>
+        <item>&#160; &#160; Wirtschaftsnachrichten</item>
+        <item>&#160; &#160; Nachrichten des Tages</item>
+        <item>&#160; &#160; Aktuelles aus der Unterhaltung</item>
+        <item>&#160; &#160; Kommentare</item>
+        <item>&#160; &#160; Politik</item>
+        <item>&#160; &#160; Sportnews</item>
+        <item>&#160; &#160; Neues aus der Technik</item>
+        <item>Religion und Spiritualität</item>
+        <item>&#160; &#160; Buddhismus</item>
+        <item>&#160; &#160; Christentum</item>
+        <item>&#160; &#160; Hinduismus</item>
+        <item>&#160; &#160; Islam</item>
+        <item>&#160; &#160; Judentum</item>
+        <item>&#160; &#160; Religion</item>
+        <item>&#160; &#160; Spiritualität</item>
+        <item>Wissenschaft</item>
+        <item>&#160; &#160; Astronomie</item>
+        <item>&#160; &#160; Chemie</item>
+        <item>&#160; &#160; Geowissenschaften</item>
+        <item>&#160; &#160; Biowissenschaften</item>
+        <item>&#160; &#160; Mathematik</item>
+        <item>&#160; &#160; Naturwissenschaften</item>
+        <item>&#160; &#160; Natur</item>
+        <item>&#160; &#160; Physik</item>
+        <item>&#160; &#160; Sozialwissenschaften</item>
+        <item>Gesellschaft und Kultur</item>
+        <item>&#160; &#160; Dokumentation</item>
+        <item>&#160; &#160; Tagebücher</item>
+        <item>&#160; &#160; Philosophie</item>
+        <item>&#160; &#160; Reisen und Orte</item>
+        <item>&#160; &#160; Beziehungen</item>
+        <item>Sport</item>
+        <item>&#160; &#160; Baseball</item>
+        <item>&#160; &#160; Basketball</item>
+        <item>&#160; &#160; Cricket</item>
+        <item>&#160; &#160; Fantasy Sport</item>
+        <item>&#160; &#160; Football</item>
+        <item>&#160; &#160; Golf</item>
+        <item>&#160; &#160; Eishockey</item>
+        <item>&#160; &#160; Rugby</item>
+        <item>&#160; &#160; Läufer</item>
+        <item>&#160; &#160; Fußball</item>
+        <item>&#160; &#160; Schwimmen</item>
+        <item>&#160; &#160; Tennis</item>
+        <item>&#160; &#160; Volleyball</item>
+        <item>&#160; &#160; Abenteuer Natur</item>
+        <item>&#160; &#160; Wrestling</item>
+        <item>TV und Film</item>
+        <item>&#160; &#160; Backstage</item>
+        <item>&#160; &#160; Filmgeschichte</item>
+        <item>&#160; &#160; Filminterviews</item>
+        <item>&#160; &#160; Filmrezensionen</item>
+        <item>&#160; &#160; TV-Rezensionen</item>
+        <item>Technologie</item>
+        <item>Wahre Kriminalfälle</item>
+    </string-array>
+
+    <string-array name="itunes_genres_code">
+        <item genre="Top">26</item>
+        <item genre="Kunst">1301</item>
+        <item genre="Bücher">1482</item>
+        <item genre="Design">1402</item>
+        <item genre="Mode und Schönheit">1459</item>
+        <item genre="Essen">1306</item>
+        <item genre="Darstellende Kunst">1405</item>
+        <item genre="Bildende Kunst">1406</item>
+        <item genre="Wirtschaft">1321</item>
+        <item genre="Karriere">1410</item>
+        <item genre="Firmengründung">1493</item>
+        <item genre="Geldanlage">1412</item>
+        <item genre="Management">1491</item>
+        <item genre="Marketing">1492</item>
+        <item genre="Gemeinnützig">1494</item>
+        <item genre="Comedy">1303</item>
+        <item genre="Comedy-Interviews">1496</item>
+        <item genre="Impro-Comedy">1495</item>
+        <item genre="Stand-Up-Comedy">1497</item>
+        <item genre="Bildung">1304</item>
+        <item genre="Kurse">1501</item>
+        <item genre="So geht’s">1499</item>
+        <item genre="Sprachen lernen">1498</item>
+        <item genre="Selbstverwirklichung">1500</item>
+        <item genre="Fiktion">1483</item>
+        <item genre="Comedy-Fiction">1486</item>
+        <item genre="Drama">1484</item>
+        <item genre="Science-Fiction">1485</item>
+        <item genre="Regierung">1511</item>
+        <item genre="Gesundheit und Fitness">1512</item>
+        <item genre="Alternative Therapien">1513</item>
+        <item genre="Fitness">1514</item>
+        <item genre="Medizin">1518</item>
+        <item genre="Mentale Gesundheit">1517</item>
+        <item genre="Ernährung">1515</item>
+        <item genre="Sexualität">1516</item>
+        <item genre="Geschichte">1487</item>
+        <item genre="Kinder und Familie">1305</item>
+        <item genre="Bildung für Kids">1519</item>
+        <item genre="Kindererziehung">1521</item>
+        <item genre="Haus- und Wildtiere">1522</item>
+        <item genre="Geschichten für Kids">1520</item>
+        <item genre="Freizeit">1502</item>
+        <item genre="Animation und Manga">1510</item>
+        <item genre="Rund ums Auto">1503</item>
+        <item genre="Luftfahrt">1504</item>
+        <item genre="Basteln">1506</item>
+        <item genre="Spiele">1507</item>
+        <item genre="Hobbys">1505</item>
+        <item genre="Heim und Garten">1508</item>
+        <item genre="Videospiele">1509</item>
+        <item genre="Musik">1310</item>
+        <item genre="Musikrezensionen">1523</item>
+        <item genre="Musikgeschichte">1524</item>
+        <item genre="Musikinterviews">1525</item>
+        <item genre="Nachrichten">1489</item>
+        <item genre="Wirtschaftsnachrichten">1490</item>
+        <item genre="Nachrichten des Tages">1526</item>
+        <item genre="Aktuelles aus der Unterhaltung">1531</item>
+        <item genre="Kommentare">1530</item>
+        <item genre="Politik">1527</item>
+        <item genre="Sportnews">1529</item>
+        <item genre="Neues aus der Technik">1528</item>
+        <item genre="Religion und Spiritualität">1314</item>
+        <item genre="Buddhismus">1438</item>
+        <item genre="Christentum">1439</item>
+        <item genre="Hinduismus">1463</item>
+        <item genre="Islam">1440</item>
+        <item genre="Judentum">1441</item>
+        <item genre="Religion">1532</item>
+        <item genre="Spiritualität">1444</item>
+        <item genre="Wissenschaft">1533</item>
+        <item genre="Astronomie">1538</item>
+        <item genre="Chemie">1539</item>
+        <item genre="Geowissenschaften">1540</item>
+        <item genre="Biowissenschaften">1541</item>
+        <item genre="Mathematik">1536</item>
+        <item genre="Naturwissenschaften">1534</item>
+        <item genre="Natur">1537</item>
+        <item genre="Physik">1542</item>
+        <item genre="Sozialwissenschaften">1535</item>
+        <item genre="Gesellschaft und Kultur">1324</item>
+        <item genre="Dokumentation">1543</item>
+        <item genre="Tagebücher">1302</item>
+        <item genre="Philosophie">1443</item>
+        <item genre="Reisen und Orte">1320</item>
+        <item genre="Beziehungen">1544</item>
+        <item genre="Sport">1545</item>
+        <item genre="Baseball">1549</item>
+        <item genre="Basketball">1548</item>
+        <item genre="Cricket">1554</item>
+        <item genre="Fantasy Sport">1560</item>
+        <item genre="Football">1547</item>
+        <item genre="Golf">1553</item>
+        <item genre="Eishockey">1550</item>
+        <item genre="Rugby">1552</item>
+        <item genre="Läufer">1551</item>
+        <item genre="Fußball">1546</item>
+        <item genre="Schwimmen">1558</item>
+        <item genre="Tennis">1556</item>
+        <item genre="Volleyball">1557</item>
+        <item genre="Abenteuer Natur">1559</item>
+        <item genre="Wrestling">1555</item>
+        <item genre="TV und Film">1309</item>
+        <item genre="Backstage">1562</item>
+        <item genre="Filmgeschichte">1564</item>
+        <item genre="Filminterviews">1565</item>
+        <item genre="Filmrezensionen">1563</item>
+        <item genre="TV-Rezensionen">1561</item>
+        <item genre="Technologie">1318</item>
+        <item genre="Wahre Kriminalfälle">1488</item>
+    </string-array>
+
+</resources>

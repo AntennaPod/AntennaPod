@@ -1,231 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="itunes_country">
+        <item>China</item>
+        <item>Germany</item>
+        <item>United States</item>
+    </string-array>
+    <string-array name="itunes_country_code">
+        <item>cn</item>
+        <item>de</item>
+        <item>us</item>
+    </string-array>
     <string-array name="itunes_genres_title">
-    <item>Genres - Top</item>
+        <item>类型 - 最佳</item>
         <item>艺术</item>
-        <item>&#160; &#160;  图书</item>
-        <item>&#160; &#160;  设计</item>
-        <item>&#160; &#160;  时尚美容</item>
-        <item>&#160; &#160;  食物</item>
-        <item>&#160; &#160;  表演</item>
-        <item>&#160; &#160;  视觉艺术</item>
+        <item>&#160; &#160; 图书</item>
+        <item>&#160; &#160; 设计</item>
+        <item>&#160; &#160; 时尚美容</item>
+        <item>&#160; &#160; 食物</item>
+        <item>&#160; &#160; 表演</item>
+        <item>&#160; &#160; 视觉艺术</item>
         <item>商务</item>
-        <item>&#160; &#160;  职业</item>
-        <item>&#160; &#160;  创业</item>
-        <item>&#160; &#160;  投资</item>
-        <item>&#160; &#160;  管理</item>
-        <item>&#160; &#160;  营销</item>
-        <item>&#160; &#160;  非营利</item>
+        <item>&#160; &#160; 职业</item>
+        <item>&#160; &#160; 创业</item>
+        <item>&#160; &#160; 投资</item>
+        <item>&#160; &#160; 管理</item>
+        <item>&#160; &#160; 营销</item>
+        <item>&#160; &#160; 非营利</item>
         <item>喜剧</item>
-        <item>&#160; &#160;  喜剧专访</item>
-        <item>&#160; &#160;  即兴表演</item>
-        <item>&#160; &#160;  独角喜剧</item>
+        <item>&#160; &#160; 喜剧专访</item>
+        <item>&#160; &#160; 即兴表演</item>
+        <item>&#160; &#160; 独角喜剧</item>
         <item>教育</item>
-        <item>&#160; &#160;  课程</item>
-        <item>&#160; &#160;  指南</item>
-        <item>&#160; &#160;  语言学习</item>
-        <item>&#160; &#160;  自我完善</item>
+        <item>&#160; &#160; 课程</item>
+        <item>&#160; &#160; 指南</item>
+        <item>&#160; &#160; 语言学习</item>
+        <item>&#160; &#160; 自我完善</item>
         <item>小说</item>
-        <item>&#160; &#160;  喜剧小说</item>
-        <item>&#160; &#160;  剧情</item>
-        <item>&#160; &#160;  科幻小说</item>
+        <item>&#160; &#160; 喜剧小说</item>
+        <item>&#160; &#160; 剧情</item>
+        <item>&#160; &#160; 科幻小说</item>
         <item>政府</item>
         <item>健康与健美</item>
-        <item>&#160; &#160;  另类保健</item>
-        <item>&#160; &#160;  健美</item>
-        <item>&#160; &#160;  医学</item>
-        <item>&#160; &#160;  心理健康</item>
-        <item>&#160; &#160;  营养</item>
-        <item>&#160; &#160;  两性</item>
+        <item>&#160; &#160; 另类保健</item>
+        <item>&#160; &#160; 健美</item>
+        <item>&#160; &#160; 医学</item>
+        <item>&#160; &#160; 心理健康</item>
+        <item>&#160; &#160; 营养</item>
+        <item>&#160; &#160; 两性</item>
         <item>历史</item>
         <item>儿童与家庭</item>
-        <item>&#160; &#160;  儿童教育</item>
-        <item>&#160; &#160;  育儿</item>
-        <item>&#160; &#160;  宠物与动物</item>
-        <item>&#160; &#160;  儿童故事</item>
+        <item>&#160; &#160; 儿童教育</item>
+        <item>&#160; &#160; 育儿</item>
+        <item>&#160; &#160; 宠物与动物</item>
+        <item>&#160; &#160; 儿童故事</item>
         <item>休闲</item>
-        <item>&#160; &#160;  动画与漫画</item>
-        <item>&#160; &#160;  汽车</item>
-        <item>&#160; &#160;  航空</item>
-        <item>&#160; &#160;  手工</item>
-        <item>&#160; &#160;  游戏</item>
-        <item>&#160; &#160;  爱好</item>
-        <item>&#160; &#160;  家居与园艺</item>
-        <item>&#160; &#160;  电子游戏</item>
+        <item>&#160; &#160; 动画与漫画</item>
+        <item>&#160; &#160; 汽车</item>
+        <item>&#160; &#160; 航空</item>
+        <item>&#160; &#160; 手工</item>
+        <item>&#160; &#160; 游戏</item>
+        <item>&#160; &#160; 爱好</item>
+        <item>&#160; &#160; 家居与园艺</item>
+        <item>&#160; &#160; 电子游戏</item>
         <item>音乐</item>
-        <item>&#160; &#160;  音乐赏析</item>
-        <item>&#160; &#160;  音乐史</item>
-        <item>&#160; &#160;  音乐专访</item>
+        <item>&#160; &#160; 音乐赏析</item>
+        <item>&#160; &#160; 音乐史</item>
+        <item>&#160; &#160; 音乐专访</item>
         <item>新闻</item>
-        <item>&#160; &#160;  商业新闻</item>
-        <item>&#160; &#160;  每日新闻</item>
-        <item>&#160; &#160;  娱乐新闻</item>
-        <item>&#160; &#160;  新闻解说</item>
-        <item>&#160; &#160;  政治</item>
-        <item>&#160; &#160;  体育新闻</item>
-        <item>&#160; &#160;  科技新闻</item>
+        <item>&#160; &#160; 商业新闻</item>
+        <item>&#160; &#160; 每日新闻</item>
+        <item>&#160; &#160; 娱乐新闻</item>
+        <item>&#160; &#160; 新闻解说</item>
+        <item>&#160; &#160; 政治</item>
+        <item>&#160; &#160; 体育新闻</item>
+        <item>&#160; &#160; 科技新闻</item>
         <item>心灵修炼</item>
-        <item>&#160; &#160;  佛教</item>
-        <item>&#160; &#160;  基督教</item>
-        <item>&#160; &#160;  印度教</item>
-        <item>&#160; &#160;  伊斯兰教</item>
-        <item>&#160; &#160;  犹太教</item>
-        <item>&#160; &#160;  宗教</item>
-        <item>&#160; &#160;  灵修</item>
+        <item>&#160; &#160; 佛教</item>
+        <item>&#160; &#160; 基督教</item>
+        <item>&#160; &#160; 印度教</item>
+        <item>&#160; &#160; 伊斯兰教</item>
+        <item>&#160; &#160; 犹太教</item>
+        <item>&#160; &#160; 宗教</item>
+        <item>&#160; &#160; 灵修</item>
         <item>科学</item>
-        <item>&#160; &#160;  天文</item>
-        <item>&#160; &#160;  化学</item>
-        <item>&#160; &#160;  地球科学</item>
-        <item>&#160; &#160;  生命科学</item>
-        <item>&#160; &#160;  数学</item>
-        <item>&#160; &#160;  自然科学</item>
-        <item>&#160; &#160;  自然</item>
-        <item>&#160; &#160;  物理</item>
-        <item>&#160; &#160;  社会科学</item>
-        <item>&#160; &#160;  社会与文化</item>
-        <item>&#160; &#160;  纪录片</item>
-        <item>&#160; &#160;  个人日记</item>
-        <item>&#160; &#160;  哲学</item>
-        <item>&#160; &#160;  名胜与旅行</item>
-        <item>&#160; &#160;  情感关系</item>
+        <item>&#160; &#160; 天文</item>
+        <item>&#160; &#160; 化学</item>
+        <item>&#160; &#160; 地球科学</item>
+        <item>&#160; &#160; 生命科学</item>
+        <item>&#160; &#160; 数学</item>
+        <item>&#160; &#160; 自然科学</item>
+        <item>&#160; &#160; 自然</item>
+        <item>&#160; &#160; 物理</item>
+        <item>&#160; &#160; 社会科学</item>
+        <item>&#160; &#160; 社会与文化</item>
+        <item>&#160; &#160; 纪录片</item>
+        <item>&#160; &#160; 个人日记</item>
+        <item>&#160; &#160; 哲学</item>
+        <item>&#160; &#160; 名胜与旅行</item>
+        <item>&#160; &#160; 情感关系</item>
         <item>体育</item>
-        <item>&#160; &#160;  棒球</item>
-        <item>&#160; &#160;  篮球</item>
-        <item>&#160; &#160;  板球</item>
-        <item>&#160; &#160;  梦幻体育</item>
-        <item>&#160; &#160;  橄榄球</item>
-        <item>&#160; &#160;  高尔夫球</item>
-        <item>&#160; &#160;  曲棍球</item>
-        <item>&#160; &#160;  英式橄榄球</item>
-        <item>&#160; &#160;  跑步</item>
-        <item>&#160; &#160;  足球</item>
-        <item>&#160; &#160;  游泳</item>
-        <item>&#160; &#160;  网球</item>
-        <item>&#160; &#160;  排球</item>
-        <item>&#160; &#160;  野外</item>
-        <item>&#160; &#160;  摔跤</item>
+        <item>&#160; &#160; 棒球</item>
+        <item>&#160; &#160; 篮球</item>
+        <item>&#160; &#160; 板球</item>
+        <item>&#160; &#160; 梦幻体育</item>
+        <item>&#160; &#160; 橄榄球</item>
+        <item>&#160; &#160; 高尔夫球</item>
+        <item>&#160; &#160; 曲棍球</item>
+        <item>&#160; &#160; 英式橄榄球</item>
+        <item>&#160; &#160; 跑步</item>
+        <item>&#160; &#160; 足球</item>
+        <item>&#160; &#160; 游泳</item>
+        <item>&#160; &#160; 网球</item>
+        <item>&#160; &#160; 排球</item>
+        <item>&#160; &#160; 野外</item>
+        <item>&#160; &#160; 摔跤</item>
         <item>电视与电影</item>
-        <item>&#160; &#160;  节目回顾</item>
-        <item>&#160; &#160;  电影史</item>
-        <item>&#160; &#160;  电影专访</item>
-        <item>&#160; &#160;  影评</item>
-        <item>&#160; &#160;  电视评论</item>
+        <item>&#160; &#160; 节目回顾</item>
+        <item>&#160; &#160; 电影史</item>
+        <item>&#160; &#160; 电影专访</item>
+        <item>&#160; &#160; 影评</item>
+        <item>&#160; &#160; 电视评论</item>
         <item>科技</item>
         <item>犯罪纪实</item>
     </string-array>
 
     <string-array name="itunes_genres_code">
         <item genre="Top">26</item>
-
-    <item genre="艺术">1301</item>
-    <item genre="图书">1482</item>
-    <item genre="设计">1402</item>
-    <item genre="时尚美容">1459</item>
-    <item genre="食物">1306</item>
-    <item genre="表演">1405</item>
-    <item genre="视觉艺术">1406</item>
-    <item genre="商务">1321</item>
-    <item genre="职业">1410</item>
-    <item genre="创业">1493</item>
-    <item genre="投资">1412</item>
-    <item genre="管理">1491</item>
-    <item genre="营销">1492</item>
-    <item genre="非营利">1494</item>
-    <item genre="喜剧">1303</item>
-    <item genre="喜剧专访">1496</item>
-    <item genre="即兴表演">1495</item>
-    <item genre="独角喜剧">1497</item>
-    <item genre="教育">1304</item>
-    <item genre="课程">1501</item>
-    <item genre="指南">1499</item>
-    <item genre="语言学习">1498</item>
-    <item genre="自我完善">1500</item>
-    <item genre="小说">1483</item>
-    <item genre="喜剧小说">1486</item>
-    <item genre="剧情">1484</item>
-    <item genre="科幻小说">1485</item>
-    <item genre="政府">1511</item>
-    <item genre="健康与健美">1512</item>
-    <item genre="另类保健">1513</item>
-    <item genre="健美">1514</item>
-    <item genre="医学">1518</item>
-    <item genre="心理健康">1517</item>
-    <item genre="营养">1515</item>
-    <item genre="两性">1516</item>
-    <item genre="历史">1487</item>
-    <item genre="儿童与家庭">1305</item>
-    <item genre="儿童教育">1519</item>
-    <item genre="育儿">1521</item>
-    <item genre="宠物与动物">1522</item>
-    <item genre="儿童故事">1520</item>
-    <item genre="休闲">1502</item>
-    <item genre="动画与漫画">1510</item>
-    <item genre="汽车">1503</item>
-    <item genre="航空">1504</item>
-    <item genre="手工">1506</item>
-    <item genre="游戏">1507</item>
-    <item genre="爱好">1505</item>
-    <item genre="家居与园艺">1508</item>
-    <item genre="电子游戏">1509</item>
-    <item genre="音乐">1310</item>
-    <item genre="音乐赏析">1523</item>
-    <item genre="音乐史">1524</item>
-    <item genre="音乐专访">1525</item>
-    <item genre="新闻">1489</item>
-    <item genre="商业新闻">1490</item>
-    <item genre="每日新闻">1526</item>
-    <item genre="娱乐新闻">1531</item>
-    <item genre="新闻解说">1530</item>
-    <item genre="政治">1527</item>
-    <item genre="体育新闻">1529</item>
-    <item genre="科技新闻">1528</item>
-    <item genre="心灵修炼">1314</item>
-    <item genre="佛教">1438</item>
-    <item genre="基督教">1439</item>
-    <item genre="印度教">1463</item>
-    <item genre="伊斯兰教">1440</item>
-    <item genre="犹太教">1441</item>
-    <item genre="宗教">1532</item>
-    <item genre="灵修">1444</item>
-    <item genre="科学">1533</item>
-    <item genre="天文">1538</item>
-    <item genre="化学">1539</item>
-    <item genre="地球科学">1540</item>
-    <item genre="生命科学">1541</item>
-    <item genre="数学">1536</item>
-    <item genre="自然科学">1534</item>
-    <item genre="自然">1537</item>
-    <item genre="物理">1542</item>
-    <item genre="社会科学">1535</item>
-    <item genre="社会与文化">1324</item>
-    <item genre="纪录片">1543</item>
-    <item genre="个人日记">1302</item>
-    <item genre="哲学">1443</item>
-    <item genre="名胜与旅行">1320</item>
-    <item genre="情感关系">1544</item>
-    <item genre="体育">1545</item>
-    <item genre="棒球">1549</item>
-    <item genre="篮球">1548</item>
-    <item genre="板球">1554</item>
-    <item genre="梦幻体育">1560</item>
-    <item genre="橄榄球">1547</item>
-    <item genre="高尔夫球">1553</item>
-    <item genre="曲棍球">1550</item>
-    <item genre="英式橄榄球">1552</item>
-    <item genre="跑步">1551</item>
-    <item genre="足球">1546</item>
-    <item genre="游泳">1558</item>
-    <item genre="网球">1556</item>
-    <item genre="排球">1557</item>
-    <item genre="野外">1559</item>
-    <item genre="摔跤">1555</item>
-    <item genre="电视与电影">1309</item>
-    <item genre="节目回顾">1562</item>
-    <item genre="电影史">1564</item>
-    <item genre="电影专访">1565</item>
-    <item genre="影评">1563</item>
-    <item genre="电视评论">1561</item>
-    <item genre="科技">1318</item>
-    <item genre="犯罪纪实">1488</item>
+        <item genre="艺术">1301</item>
+        <item genre="图书">1482</item>
+        <item genre="设计">1402</item>
+        <item genre="时尚美容">1459</item>
+        <item genre="食物">1306</item>
+        <item genre="表演">1405</item>
+        <item genre="视觉艺术">1406</item>
+        <item genre="商务">1321</item>
+        <item genre="职业">1410</item>
+        <item genre="创业">1493</item>
+        <item genre="投资">1412</item>
+        <item genre="管理">1491</item>
+        <item genre="营销">1492</item>
+        <item genre="非营利">1494</item>
+        <item genre="喜剧">1303</item>
+        <item genre="喜剧专访">1496</item>
+        <item genre="即兴表演">1495</item>
+        <item genre="独角喜剧">1497</item>
+        <item genre="教育">1304</item>
+        <item genre="课程">1501</item>
+        <item genre="指南">1499</item>
+        <item genre="语言学习">1498</item>
+        <item genre="自我完善">1500</item>
+        <item genre="小说">1483</item>
+        <item genre="喜剧小说">1486</item>
+        <item genre="剧情">1484</item>
+        <item genre="科幻小说">1485</item>
+        <item genre="政府">1511</item>
+        <item genre="健康与健美">1512</item>
+        <item genre="另类保健">1513</item>
+        <item genre="健美">1514</item>
+        <item genre="医学">1518</item>
+        <item genre="心理健康">1517</item>
+        <item genre="营养">1515</item>
+        <item genre="两性">1516</item>
+        <item genre="历史">1487</item>
+        <item genre="儿童与家庭">1305</item>
+        <item genre="儿童教育">1519</item>
+        <item genre="育儿">1521</item>
+        <item genre="宠物与动物">1522</item>
+        <item genre="儿童故事">1520</item>
+        <item genre="休闲">1502</item>
+        <item genre="动画与漫画">1510</item>
+        <item genre="汽车">1503</item>
+        <item genre="航空">1504</item>
+        <item genre="手工">1506</item>
+        <item genre="游戏">1507</item>
+        <item genre="爱好">1505</item>
+        <item genre="家居与园艺">1508</item>
+        <item genre="电子游戏">1509</item>
+        <item genre="音乐">1310</item>
+        <item genre="音乐赏析">1523</item>
+        <item genre="音乐史">1524</item>
+        <item genre="音乐专访">1525</item>
+        <item genre="新闻">1489</item>
+        <item genre="商业新闻">1490</item>
+        <item genre="每日新闻">1526</item>
+        <item genre="娱乐新闻">1531</item>
+        <item genre="新闻解说">1530</item>
+        <item genre="政治">1527</item>
+        <item genre="体育新闻">1529</item>
+        <item genre="科技新闻">1528</item>
+        <item genre="心灵修炼">1314</item>
+        <item genre="佛教">1438</item>
+        <item genre="基督教">1439</item>
+        <item genre="印度教">1463</item>
+        <item genre="伊斯兰教">1440</item>
+        <item genre="犹太教">1441</item>
+        <item genre="宗教">1532</item>
+        <item genre="灵修">1444</item>
+        <item genre="科学">1533</item>
+        <item genre="天文">1538</item>
+        <item genre="化学">1539</item>
+        <item genre="地球科学">1540</item>
+        <item genre="生命科学">1541</item>
+        <item genre="数学">1536</item>
+        <item genre="自然科学">1534</item>
+        <item genre="自然">1537</item>
+        <item genre="物理">1542</item>
+        <item genre="社会科学">1535</item>
+        <item genre="社会与文化">1324</item>
+        <item genre="纪录片">1543</item>
+        <item genre="个人日记">1302</item>
+        <item genre="哲学">1443</item>
+        <item genre="名胜与旅行">1320</item>
+        <item genre="情感关系">1544</item>
+        <item genre="体育">1545</item>
+        <item genre="棒球">1549</item>
+        <item genre="篮球">1548</item>
+        <item genre="板球">1554</item>
+        <item genre="梦幻体育">1560</item>
+        <item genre="橄榄球">1547</item>
+        <item genre="高尔夫球">1553</item>
+        <item genre="曲棍球">1550</item>
+        <item genre="英式橄榄球">1552</item>
+        <item genre="跑步">1551</item>
+        <item genre="足球">1546</item>
+        <item genre="游泳">1558</item>
+        <item genre="网球">1556</item>
+        <item genre="排球">1557</item>
+        <item genre="野外">1559</item>
+        <item genre="摔跤">1555</item>
+        <item genre="电视与电影">1309</item>
+        <item genre="节目回顾">1562</item>
+        <item genre="电影史">1564</item>
+        <item genre="电影专访">1565</item>
+        <item genre="影评">1563</item>
+        <item genre="电视评论">1561</item>
+        <item genre="科技">1318</item>
+        <item genre="犯罪纪实">1488</item>
     </string-array>
 </resources>

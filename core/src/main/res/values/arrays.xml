@@ -354,12 +354,14 @@
     </string-array>
 
     <string-array name="itunes_country">
-       <item>United States</item>
        <item>China</item>
+       <item>United States</item>
+       <item>Germany</item>
     </string-array>
     <string-array name="itunes_country_code">
-        <item>us</item>
         <item>cn</item>
+        <item>de</item>
+        <item>us</item>
     </string-array>
     <string-array name="itunes_genres_title">
         <item>Genres - Top</item>
