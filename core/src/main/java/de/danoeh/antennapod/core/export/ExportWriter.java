@@ -11,8 +11,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.danoeh.antennapod.core.export;
 
+import android.content.Context;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
@@ -21,9 +23,9 @@ import de.danoeh.antennapod.core.feed.Feed;
 
 public interface ExportWriter {
 
-	void writeDocument(List<Feed> feeds, Writer writer)
-			throws IllegalArgumentException, IllegalStateException, IOException;
+    void writeDocument(List<Feed> feeds, Writer writer, Context context)
+            throws IllegalArgumentException, IllegalStateException, IOException;
 
-	String fileExtension();
+    String fileExtension();
 
 }

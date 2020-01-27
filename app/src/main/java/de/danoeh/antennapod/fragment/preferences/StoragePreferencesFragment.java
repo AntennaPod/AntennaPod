@@ -171,7 +171,7 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         progressDialog.setIndeterminate(true);
         progressDialog.show();
         if (uri == null) {
-            Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
+            Observable<File> observable = new ExportWorker(exportWriter, getContext()).exportObservable();
             disposable = observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output -> {

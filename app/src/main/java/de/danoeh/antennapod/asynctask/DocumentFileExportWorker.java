@@ -45,7 +45,7 @@ public class DocumentFileExportWorker {
                     throw new IOException();
                 }
                 writer = new OutputStreamWriter(outputStream, LangUtils.UTF_8);
-                exportWriter.writeDocument(DBReader.getFeedList(), writer);
+                exportWriter.writeDocument(DBReader.getFeedList(), writer, context);
                 subscriber.onNext(output);
             } catch (IOException e) {
                 subscriber.onError(e);
