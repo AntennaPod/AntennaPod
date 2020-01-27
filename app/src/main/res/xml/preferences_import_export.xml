@@ -14,18 +14,23 @@
                 android:summary="@string/opml_import_summary"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/database">
+        <Preference
+                android:key="prefDatabaseExport"
+                search:keywords="@string/import_export_search_keywords"
+                android:title="@string/database_export_label"
+                android:summary="@string/database_export_summary"/>
+        <Preference
+                android:key="prefDatabaseImport"
+                search:keywords="@string/import_export_search_keywords"
+                android:title="@string/database_import_label"
+                android:summary="@string/database_import_summary"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/html">
         <Preference
                 android:key="prefHtmlExport"
                 android:title="@string/html_export_label"
                 android:summary="@string/html_export_summary"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/database">
-        <Preference
-                android:key="importExport"
-                search:keywords="@string/import_export_search_keywords"
-                android:title="@string/import_export"
-                android:summary="@string/database_export_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>
