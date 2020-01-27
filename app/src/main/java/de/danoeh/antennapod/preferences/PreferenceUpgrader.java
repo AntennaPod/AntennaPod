@@ -84,5 +84,8 @@ public class PreferenceUpgrader {
                 UserPreferences.setEnqueueLocation(enqueueLocation);
             }
         }
+        if (oldVersion < 1080100) {
+            prefs.edit().putString(UserPreferences.PREF_VIDEO_BEHAVIOR, "pip").apply();
+        }
     }
 }
