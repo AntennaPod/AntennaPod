@@ -151,7 +151,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                        Snackbar.make(getView(), R.string.export_ok, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }, this::showExportErrorDialog);
         }
@@ -242,7 +242,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                        Snackbar.make(getView(), R.string.export_ok, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }, this::showExportErrorDialog);
         }
