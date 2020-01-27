@@ -15,18 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.activity.OpmlImportFromIntentActivity;
-import de.danoeh.antennapod.core.export.html.HtmlWriter;
-import de.danoeh.antennapod.core.export.opml.OpmlWriter;
-import de.danoeh.antennapod.core.storage.DatabaseExporter;
+import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
-import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Provides actions for adding new podcast subscriptions
@@ -159,7 +152,7 @@ public class AddFeedFragment extends Fragment {
         Uri uri = data.getData();
 
         if (requestCode == REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH) {
-            Intent intent = new Intent(getContext(), OpmlImportFromIntentActivity.class);
+            Intent intent = new Intent(getContext(), OpmlImportActivity.class);
             intent.setData(uri);
             startActivity(intent);
         }

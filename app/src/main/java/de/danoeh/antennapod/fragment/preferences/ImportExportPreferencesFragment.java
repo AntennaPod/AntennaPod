@@ -18,7 +18,7 @@ import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.OpmlImportFromIntentActivity;
+import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.asynctask.DocumentFileExportWorker;
@@ -81,7 +81,6 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void setupStorageScreen() {
-        final Activity activity = getActivity();
         findPreference(PREF_OPML_EXPORT).setOnPreferenceClickListener(
                 preference -> {
                     openExportPathPicker(CONTENT_TYPE_OPML, DEFAULT_OPML_OUTPUT_NAME,
@@ -254,7 +253,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                         progressDialog.dismiss();
                     }, this::showExportErrorDialog);
         } else if (requestCode == REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH) {
-            Intent intent = new Intent(getContext(), OpmlImportFromIntentActivity.class);
+            Intent intent = new Intent(getContext(), OpmlImportActivity.class);
             intent.setData(uri);
             startActivity(intent);
         }

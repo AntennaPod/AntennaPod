@@ -4,34 +4,52 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-
+import androidx.core.app.ActivityCompat;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
+import de.danoeh.antennapod.asynctask.OpmlImportWorker;
+import de.danoeh.antennapod.core.export.opml.OpmlElement;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.LangUtils;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
-import de.danoeh.antennapod.asynctask.OpmlImportWorker;
-import de.danoeh.antennapod.core.export.opml.OpmlElement;
-import de.danoeh.antennapod.core.util.LangUtils;
-
 /**
- * Base activity for Opml Import - e.g. with code what to do afterwards
+ * Activity for Opml Import.
  * */
-public class OpmlImportBaseActivity extends AppCompatActivity {
-
+public class OpmlImportActivity extends AppCompatActivity {
     private static final String TAG = "OpmlImportBaseActivity";
     private static final int PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 5;
-    private OpmlImportWorker importWorker;
     @Nullable private Uri uri;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(UserPreferences.getTheme());
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        Uri uri = getIntent().getData();
+        if (uri != null && uri.toString().startsWith("/")) {
+            uri = Uri.parse("file://" + uri.toString());
+        } else {
+            String extraText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+            if (extraText != null) {
+                uri = Uri.parse(extraText);
+            }
+        }
+        importUri(uri);
+    }
 
     /**
      * Handles the choices made by the user in the OpmlFeedChooserActivity and
@@ -42,9 +60,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
         Log.d(TAG, "Received result");
         if (resultCode == RESULT_CANCELED) {
             Log.d(TAG, "Activity was cancelled");
-            if (finishWhenCanceled()) {
-                finish();
-            }
+            finish();
         } else {
             int[] selected = data.getIntArrayExtra(OpmlFeedChooserActivity.EXTRA_SELECTED_ITEMS);
             if (selected != null && selected.length > 0) {
@@ -53,7 +69,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
                     @Override
                     protected void onPostExecute(Void result) {
                         super.onPostExecute(result);
-                        Intent intent = new Intent(OpmlImportBaseActivity.this, MainActivity.class);
+                        Intent intent = new Intent(OpmlImportActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
@@ -68,7 +84,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
     }
 
     void importUri(@Nullable Uri uri) {
-        if(uri == null) {
+        if (uri == null) {
             new AlertDialog.Builder(this)
                     .setMessage(R.string.opml_import_error_no_file)
                     .setPositiveButton(android.R.string.ok, null)
@@ -76,9 +92,10 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
             return;
         }
         this.uri = uri;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                uri.toString().contains(Environment.getExternalStorageDirectory().toString())) {
-            int permission = ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && uri.toString().contains(Environment.getExternalStorageDirectory().toString())) {
+            int permission = ActivityCompat.checkSelfPermission(this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE);
             if (permission != PackageManager.PERMISSION_GRANTED) {
                 requestPermission();
                 return;
@@ -93,9 +110,8 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions,
-                                           int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode != PERMISSION_REQUEST_READ_EXTERNAL_STORAGE) {
             return;
         }
@@ -113,8 +129,8 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
     /** Starts the import process. */
     private void startImport() {
         try {
-            Reader mReader = new InputStreamReader(getContentResolver().openInputStream(uri), LangUtils.UTF_8);
-            importWorker = new OpmlImportWorker(this, mReader) {
+            Reader reader = new InputStreamReader(getContentResolver().openInputStream(uri), LangUtils.UTF_8);
+            OpmlImportWorker importWorker = new OpmlImportWorker(this, reader) {
 
                 @Override
                 protected void onPostExecute(ArrayList<OpmlElement> result) {
@@ -123,7 +139,7 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
                         Log.d(TAG, "Parsing was successful");
                         OpmlImportHolder.setReadElements(result);
                         startActivityForResult(new Intent(
-                                OpmlImportBaseActivity.this,
+                                OpmlImportActivity.this,
                                 OpmlFeedChooserActivity.class), 0);
                     } else {
                         Log.d(TAG, "Parser error occurred");
@@ -140,10 +156,4 @@ public class OpmlImportBaseActivity extends AppCompatActivity {
                     .show();
         }
     }
-
-    boolean finishWhenCanceled() {
-        return false;
-    }
-
-
 }
