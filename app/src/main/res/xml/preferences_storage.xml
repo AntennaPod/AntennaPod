@@ -33,5 +33,7 @@
             android:title="@string/pref_delete_removes_from_queue_title"/>
     <Preference
             android:title="@string/import_export_pref"
-            android:key="prefImportExport"/>
+            android:summary="@string/import_export_summary"
+            android:key="prefImportExport"
+            search:ignore="true"/>
 </PreferenceScreen>

@@ -544,7 +544,16 @@
     <string name="found_in_title_label">Found in title</string>
     <string name="no_results_for_query">No results were found for \"%1$s\"</string>
 
-    <!-- OPML import and export -->
+    <!-- import and export -->
+    <string name="import_export_summary">Move subscriptions and queue to another device</string>
+    <string name="database">Database</string>
+    <string name="opml">OPML</string>
+    <string name="html">HTML</string>
+    <string name="html_export_summary">Show your subscriptions to a friend</string>
+    <string name="opml_export_summary">Transfer your subscriptions to another podcast app</string>
+    <string name="opml_import_summary">Import your subscriptions from another podcast app</string>
+    <string name="database_export_summary">Transfer subscriptions, listened episodes and queue to AntennaPod on another device</string>
+    <string name="database_import_summary">Import AntennaPod database from another device</string>
     <string name="opml_import_option">Option %1$d</string>
     <string name="opml_import_explanation_1">Choose a specific file path from the local filesystem.</string>
     <string name="opml_import_explanation_3">Many applications like Google Mail, Dropbox, Google Drive and most file managers can <i>open</i> OPML files <i>with</i> AntennaPod.</string>
@@ -562,6 +571,13 @@
     <string name="export_success_title">Export successful</string>
     <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
+    <string name="import_export">Database import/export</string>
+    <string name="import_export_warning">This experimental function can be used to transfer your subscriptions and played episodes to another device.\n\nExported databases can only be imported when using the same version of AntennaPod. Otherwise, this function will lead to unexpected behavior.\n\nAfter importing, episodes might be displayed as downloaded even though they are not. Just press the play button of the episodes to make AntennaPod detect this.</string>
+    <string name="label_import">Import</string>
+    <string name="label_export">Export</string>
+    <string name="import_select_file">Select file to import</string>
+    <string name="export_ok">Export successful.</string>
+    <string name="import_ok">Import successful.\n\nPlease press OK to restart AntennaPod</string>
 
     <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>
@@ -754,15 +770,6 @@
 
     <!-- Subscriptions fragment -->
     <string name="subscription_num_columns">Number of columns</string>
-
-    <!-- Database import/export -->
-    <string name="import_export">Database import/export</string>
-    <string name="import_export_warning">This experimental function can be used to transfer your subscriptions and played episodes to another device.\n\nExported databases can only be imported when using the same version of AntennaPod. Otherwise, this function will lead to unexpected behavior.\n\nAfter importing, episodes might be displayed as downloaded even though they are not. Just press the play button of the episodes to make AntennaPod detect this.</string>
-    <string name="label_import">Import</string>
-    <string name="label_export">Export</string>
-    <string name="import_select_file">Select file to import</string>
-    <string name="export_ok">Export successful.</string>
-    <string name="import_ok">Import successful.\n\nPlease press OK to restart AntennaPod</string>
 
     <!-- Casting -->
     <string name="cast_media_route_menu_title">Play on&#8230;</string>
