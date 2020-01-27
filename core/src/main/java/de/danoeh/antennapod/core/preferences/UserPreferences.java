@@ -822,11 +822,11 @@ public class UserPreferences {
     }
 
     public static VideoBackgroundBehavior getVideoBackgroundBehavior() {
-        switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "stop")) {
+        switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "pip")) {
             case "stop": return VideoBackgroundBehavior.STOP;
             case "pip": return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
             case "continue": return VideoBackgroundBehavior.CONTINUE_PLAYING;
-            default: return VideoBackgroundBehavior.STOP;
+            default: return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
         }
     }
 
