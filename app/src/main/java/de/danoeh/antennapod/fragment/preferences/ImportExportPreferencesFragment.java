@@ -18,7 +18,7 @@ import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.OpmlImportFromIntentActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.asynctask.DocumentFileExportWorker;
@@ -44,14 +44,15 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String PREF_DATABASE_IMPORT = "prefDatabaseImport";
     private static final String PREF_DATABASE_EXPORT = "prefDatabaseExport";
-    private static final int REQUEST_CODE_CHOOSE_OPML_EXPORT_PATH = 1;
     private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds.opml";
     private static final String CONTENT_TYPE_OPML = "text/x-opml";
-    private static final int REQUEST_CODE_CHOOSE_HTML_EXPORT_PATH = 2;
     private static final String DEFAULT_HTML_OUTPUT_NAME = "antennapod-feeds.html";
     private static final String CONTENT_TYPE_HTML = "text/html";
-    private static final int REQUEST_CODE_RESTORE_DATABASE = 3;
-    private static final int REQUEST_CODE_BACKUP_DATABASE = 4;
+    private static final int REQUEST_CODE_CHOOSE_OPML_EXPORT_PATH = 1;
+    private static final int REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH = 2;
+    private static final int REQUEST_CODE_CHOOSE_HTML_EXPORT_PATH = 3;
+    private static final int REQUEST_CODE_RESTORE_DATABASE = 4;
+    private static final int REQUEST_CODE_BACKUP_DATABASE = 5;
     private static final String DATABASE_EXPORT_FILENAME = "AntennaPodBackup.db";
     private Disposable disposable;
     private ProgressDialog progressDialog;
@@ -96,7 +97,14 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                 });
         findPreference(PREF_OPML_IMPORT).setOnPreferenceClickListener(
                 preference -> {
-                    activity.startActivity(new Intent(activity, OpmlImportFromPathActivity.class));
+                    try {
+                        Intent intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
+                        intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
+                        intentGetContentAction.setType("*/*");
+                        startActivityForResult(intentGetContentAction, REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH);
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "No activity found. Should never happen...");
+                    }
                     return true;
                 });
         findPreference(PREF_DATABASE_IMPORT).setOnPreferenceClickListener(
@@ -245,6 +253,10 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                         Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }, this::showExportErrorDialog);
+        } else if (requestCode == REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH) {
+            Intent intent = new Intent(getContext(), OpmlImportFromIntentActivity.class);
+            intent.setData(uri);
+            startActivity(intent);
         }
     }
 

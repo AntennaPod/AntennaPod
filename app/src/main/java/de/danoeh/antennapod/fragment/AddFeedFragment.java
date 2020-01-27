@@ -1,7 +1,11 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import androidx.fragment.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -11,11 +15,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.OpmlImportFromIntentActivity;
+import de.danoeh.antennapod.core.export.html.HtmlWriter;
+import de.danoeh.antennapod.core.export.opml.OpmlWriter;
+import de.danoeh.antennapod.core.storage.DatabaseExporter;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Provides actions for adding new podcast subscriptions
@@ -28,6 +39,7 @@ public class AddFeedFragment extends Fragment {
      * Preset value for url text field.
      */
     private static final String ARG_FEED_URL = "feedurl";
+    private static final int REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH = 1;
 
     private EditText combinedFeedSearchBox;
     private MainActivity activity;
@@ -44,8 +56,16 @@ public class AddFeedFragment extends Fragment {
         setupSeachBox(root);
 
         View butOpmlImport = root.findViewById(R.id.btn_opml_import);
-        butOpmlImport.setOnClickListener(v -> startActivity(new Intent(getActivity(),
-                OpmlImportFromPathActivity.class)));
+        butOpmlImport.setOnClickListener(v -> {
+            try {
+                Intent intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
+                intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
+                intentGetContentAction.setType("*/*");
+                startActivityForResult(intentGetContentAction, REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "No activity found. Should never happen...");
+            }
+        });
         root.findViewById(R.id.search_icon).setOnClickListener(view -> performSearch());
         return root;
     }
@@ -129,5 +149,19 @@ public class AddFeedFragment extends Fragment {
         // but unless we say we do, old options menus sometimes
         // persist.  mfietz thinks this causes the ActionBar to be invalidated
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            return;
+        }
+        Uri uri = data.getData();
+
+        if (requestCode == REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH) {
+            Intent intent = new Intent(getContext(), OpmlImportFromIntentActivity.class);
+            intent.setData(uri);
+            startActivity(intent);
+        }
     }
 }

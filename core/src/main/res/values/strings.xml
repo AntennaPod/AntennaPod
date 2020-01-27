@@ -554,15 +554,11 @@
     <string name="opml_import_summary">Import your subscriptions from another podcast app</string>
     <string name="database_export_summary">Transfer subscriptions, listened episodes and queue to AntennaPod on another device</string>
     <string name="database_import_summary">Import AntennaPod database from another device</string>
-    <string name="opml_import_option">Option %1$d</string>
-    <string name="opml_import_explanation_1">Choose a specific file path from the local filesystem.</string>
-    <string name="opml_import_explanation_3">Many applications like Google Mail, Dropbox, Google Drive and most file managers can <i>open</i> OPML files <i>with</i> AntennaPod.</string>
     <string name="opml_import_label">OPML Import</string>
     <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
     <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
-    <string name="choose_file_from_filesystem">From local filesystem</string>
     <string name="opml_export_label">OPML export</string>
     <string name="html_export_label">HTML export</string>
     <string name="database_export_label">Database export</string>
