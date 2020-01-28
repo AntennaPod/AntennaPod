@@ -105,50 +105,55 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginEnd="16dp"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
             tools:background="@android:color/holo_blue_bright">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/butAction1"
+                    android:orientation="horizontal"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center">
+                <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:id="@+id/butAction1Icon"
+                        android:layout_margin="12dp"
+                        tools:src="@drawable/ic_settings_grey600_24dp"/>
+                <TextView
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:id="@+id/butAction1Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorPrimary"
+                        tools:text="Button 1"/>
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/butAction1"
-                style="?attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:ellipsize="end"
-                android:drawablePadding="8dp"
-                android:textColor="?android:attr/textColorPrimary"
-                tools:text="Button 1"
-                tools:background="@android:color/holo_red_light" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/butAction2"
-                style="?attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:drawablePadding="8dp"
-                android:ellipsize="end"
-                android:textColor="?android:attr/textColorPrimary"
-                tools:text="Button 2"
-                tools:background="@android:color/holo_orange_dark" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/butAction2"
+                    android:orientation="horizontal"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center">
+                <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:id="@+id/butAction2Icon"
+                        android:layout_margin="12dp"
+                        tools:src="@drawable/ic_settings_grey600_24dp"/>
+                <TextView
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:id="@+id/butAction2Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorPrimary"
+                        tools:text="Button 2"/>
+            </LinearLayout>
         </LinearLayout>
 
         <View
