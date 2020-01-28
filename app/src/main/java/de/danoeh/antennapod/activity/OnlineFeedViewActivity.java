@@ -7,14 +7,8 @@ import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.UiThread;
-import androidx.core.app.NavUtils;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,26 +19,18 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -73,6 +59,16 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Downloads a feed from a feed URL and parses it. Subclasses can display the
@@ -364,8 +360,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         findViewById(R.id.feedDisplay).setVisibility(View.VISIBLE);
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
-        listView.setSelector(android.R.color.transparent);
-        listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
         ImageView cover = findViewById(R.id.imgvCover);
         ImageView headerBackground = findViewById(R.id.imgvBackground);
@@ -378,6 +372,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         View header = View.inflate(this, R.layout.onlinefeedview_header, null);
         listView.addHeaderView(header);
+        listView.setSelector(android.R.color.transparent);
+        listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
+
         TextView description = header.findViewById(R.id.txtvDescription);
 
         subscribeButton = findViewById(R.id.butSubscribe);
