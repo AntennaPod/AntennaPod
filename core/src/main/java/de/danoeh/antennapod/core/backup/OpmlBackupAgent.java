@@ -93,7 +93,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
             try {
                 // Write OPML
-                new OpmlWriter().writeDocument(DBReader.getFeedList(), writer);
+                new OpmlWriter().writeDocument(DBReader.getFeedList(), writer, mContext);
 
                 // Compare checksum of new and old file to see if we need to perform a backup at all
                 if (digester != null) {
