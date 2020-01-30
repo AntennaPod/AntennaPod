@@ -103,6 +103,9 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_network));
         config.index(R.xml.preferences_storage)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_storage));
+        config.index(R.xml.preferences_import_export)
+                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_storage))
+                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_import_export));
         config.index(R.xml.preferences_autodownload)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_network))
                 .addBreadcrumb(R.string.automation)

@@ -141,19 +141,7 @@
         <activity android:name=".activity.StorageErrorActivity">
         </activity>
         <activity
-                android:name=".activity.ImportExportActivity"
-                android:label="@string/import_export">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
-        </activity>
-        <activity
-            android:name=".activity.OpmlImportFromPathActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/opml_import_label">
-        </activity>
-        <activity
-            android:name=".activity.OpmlImportFromIntentActivity"
+            android:name=".activity.OpmlImportActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/opml_import_label">
             <intent-filter>
