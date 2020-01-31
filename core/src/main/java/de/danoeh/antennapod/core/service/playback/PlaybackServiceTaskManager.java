@@ -397,40 +397,41 @@ public class PlaybackServiceTaskManager {
             while (timeLeft > 0) {
                 try {
                     Thread.sleep(UPDATE_INTERVAL);
-                    long now = System.currentTimeMillis();
-                    timeLeft -= now - lastTick;
-                    lastTick = now;
-
-                    if(timeLeft < NOTIFICATION_THRESHOLD && !notifiedAlmostExpired) {
-                        Log.d(TAG, "Sleep timer is about to expire");
-                        if(vibrate) {
-                            Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                            if(v != null) {
-                                v.vibrate(500);
-                            }
-                        }
-                        if(shakeListener == null && shakeToReset) {
-                            shakeListener = new ShakeListener(context, this);
-                        }
-                        postCallback(callback::onSleepTimerAlmostExpired);
-                        notifiedAlmostExpired = true;
-                    }
-                    if (timeLeft <= 0) {
-                        Log.d(TAG, "Sleep timer expired");
-                        if(shakeListener != null) {
-                            shakeListener.pause();
-                            shakeListener = null;
-                        }
-                        if (!Thread.currentThread().isInterrupted()) {
-                            postCallback(callback::onSleepTimerExpired);
-                        } else {
-                            Log.d(TAG, "Sleep timer interrupted");
-                        }
-                    }
                 } catch (InterruptedException e) {
                     Log.d(TAG, "Thread was interrupted while waiting");
                     e.printStackTrace();
                     break;
+                }
+
+                long now = System.currentTimeMillis();
+                timeLeft -= now - lastTick;
+                lastTick = now;
+
+                if (timeLeft < NOTIFICATION_THRESHOLD && !notifiedAlmostExpired) {
+                    Log.d(TAG, "Sleep timer is about to expire");
+                    if (vibrate) {
+                        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        if (v != null) {
+                            v.vibrate(500);
+                        }
+                    }
+                    if (shakeListener == null && shakeToReset) {
+                        shakeListener = new ShakeListener(context, this);
+                    }
+                    postCallback(callback::onSleepTimerAlmostExpired);
+                    notifiedAlmostExpired = true;
+                }
+                if (timeLeft <= 0) {
+                    Log.d(TAG, "Sleep timer expired");
+                    if (shakeListener != null) {
+                        shakeListener.pause();
+                        shakeListener = null;
+                    }
+                    if (!Thread.currentThread().isInterrupted()) {
+                        postCallback(callback::onSleepTimerExpired);
+                    } else {
+                        Log.d(TAG, "Sleep timer interrupted");
+                    }
                 }
             }
         }

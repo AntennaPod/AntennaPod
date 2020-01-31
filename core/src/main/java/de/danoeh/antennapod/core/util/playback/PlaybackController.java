@@ -628,10 +628,6 @@ public class PlaybackController {
         return playbackService != null && playbackService.sleepTimerActive();
     }
 
-    public boolean sleepTimerNotActive() {
-        return playbackService != null && !playbackService.sleepTimerActive();
-    }
-
     public void disableSleepTimer() {
         if (playbackService != null) {
             playbackService.disableSleepTimer();

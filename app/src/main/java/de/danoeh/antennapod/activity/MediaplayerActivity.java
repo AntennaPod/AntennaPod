@@ -358,10 +358,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             menu.findItem(R.id.remove_from_favorites_item).setVisible(isFavorite);
         }
 
-        boolean sleepTimerSet = controller.sleepTimerActive();
-        boolean sleepTimerNotSet = controller.sleepTimerNotActive();
-        menu.findItem(R.id.set_sleeptimer_item).setVisible(sleepTimerNotSet);
-        menu.findItem(R.id.disable_sleeptimer_item).setVisible(sleepTimerSet);
+        menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
+        menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
 
         if (this instanceof AudioplayerActivity) {
             int[] attrs = {R.attr.action_bar_icon_color};
@@ -422,30 +420,9 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                                     .show();
                         }
                         break;
-                    case R.id.disable_sleeptimer_item:
-                        if (controller.serviceAvailable()) {
-
-                            new AlertDialog.Builder(this)
-                                .setTitle(R.string.sleep_timer_label)
-                                .setMessage(getString(R.string.time_left_label)
-                                        + Converter.getDurationStringLong((int) controller
-                                        .getSleepTimerTimeLeft()))
-                                .setPositiveButton(R.string.disable_sleeptimer_label, (dialog, which)
-                                        -> controller.disableSleepTimer())
-                                .setNegativeButton(R.string.cancel_label, null)
-                                .show();
-                        }
-                        break;
+                    case R.id.disable_sleeptimer_item: // Fall-through
                     case R.id.set_sleeptimer_item:
-                        if (controller.serviceAvailable()) {
-                            SleepTimerDialog td = new SleepTimerDialog(this) {
-                                @Override
-                                public void onTimerSet(long millis, boolean shakeToReset, boolean vibrate) {
-                                    controller.setSleepTimer(millis, shakeToReset, vibrate);
-                                }
-                            };
-                            td.createNewDialog().show();
-                        }
+                        new SleepTimerDialog().show(getSupportFragmentManager(), "SleepTimerDialog");
                         break;
                     case R.id.audio_controls:
                         boolean isPlayingVideo = controller.getMedia().getMediaType() == MediaType.VIDEO;
