@@ -64,8 +64,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
 
         holder.title.setText(podcast.getTitle());
         holder.subscribers.setText(String.valueOf(podcast.getSubscribers()));
-        // TODO: TT:
-        holder.author.setText(podcast.getDescription());
+        holder.author.setText(podcast.getAuthor());
 
         return convertView;
     }
