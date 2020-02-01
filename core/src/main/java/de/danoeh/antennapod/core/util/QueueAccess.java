@@ -26,36 +26,4 @@ public abstract class QueueAccess {
 
     private QueueAccess() {
     }
-
-    public static QueueAccess ItemListAccess(final List<FeedItem> items) {
-        return new QueueAccess() {
-            @Override
-            public boolean contains(long id) {
-                if (items == null) {
-                    return false;
-                }
-                for (FeedItem item : items) {
-                    if (item.getId() == id) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            public boolean remove(long id) {
-                Iterator<FeedItem> it = items.iterator();
-                FeedItem item;
-                while (it.hasNext()) {
-                    item = it.next();
-                    if (item.getId() == id) {
-                        it.remove();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        };
-    }
-
 }
