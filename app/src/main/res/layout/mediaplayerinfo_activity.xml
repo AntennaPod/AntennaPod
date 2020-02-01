@@ -26,16 +26,24 @@
             android:minHeight="?attr/actionBarSize"
             tools:background="@android:color/darker_gray"/>
 
-            <com.viewpagerindicator.CirclePageIndicator
+            <com.rd.PageIndicatorView
                 android:id="@+id/page_indicator"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:layout_marginTop="-12dp"
+                android:layout_centerInParent="true"
                 android:layout_marginBottom="4dp"
+                android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                app:fillColor="?android:attr/textColorSecondary"
-                app:strokeColor="?android:attr/textColorSecondary"
-                app:radius="4dp" />
+                app:piv_unselectedColor="?android:attr/textColorSecondary"
+                app:piv_selectedColor="?android:attr/textColorPrimary"
+                app:piv_strokeWidth="1dp"
+                app:piv_radius="5dp"
+                app:piv_scaleFactor="0.7"
+                app:piv_padding="2dp"
+                app:piv_rtl_mode="auto"
+                app:piv_animationType="scale"
+                app:piv_dynamicCount="true"
+                app:piv_interactiveAnimation="true" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

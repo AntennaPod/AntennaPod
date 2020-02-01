@@ -28,8 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.viewpagerindicator.CirclePageIndicator;
-
+import com.rd.PageIndicatorView;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -261,7 +260,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         pager.setOffscreenPageLimit(3);
         pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
-        CirclePageIndicator pageIndicator = findViewById(R.id.page_indicator);
+        PageIndicatorView pageIndicator = findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
         loadLastFragment();
         pager.onSaveInstanceState();
