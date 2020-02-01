@@ -151,7 +151,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int EXTRA_CODE_CAST = 3;
 
     public static final int NOTIFICATION_TYPE_ERROR = 0;
-    public static final int NOTIFICATION_TYPE_INFO = 1;
     public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
 
     /**

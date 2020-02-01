@@ -111,20 +111,13 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private Toolbar toolbar;
     private ExternalPlayerFragment externalPlayerFragment;
     private DrawerLayout drawerLayout;
-
     private View navDrawer;
     private ListView navList;
     private NavListAdapter navAdapter;
     private int mPosition = -1;
-
     private ActionBarDrawerToggle drawerToggle;
-
     private CharSequence currentTitle;
-
-    private ProgressDialog pd;
-
     private Disposable disposable;
-
     private long lastBackButtonPressTime = 0;
 
     @NonNull
@@ -280,10 +273,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     public boolean isDrawerOpen() {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
-    }
-
-    public List<Feed> getFeeds() {
-        return (navDrawerData != null) ? navDrawerData.feeds : null;
     }
 
     private void loadFragment(int index, Bundle args) {
@@ -517,9 +506,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
-        }
-        if(pd != null) {
-            pd.dismiss();
         }
     }
 
@@ -848,10 +834,5 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-    }
-
-    @VisibleForTesting
-    public void updateNavDrawer() {
-        navAdapter.notifyDataSetChanged();
     }
 }
