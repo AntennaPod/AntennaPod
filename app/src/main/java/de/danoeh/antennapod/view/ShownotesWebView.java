@@ -3,6 +3,7 @@ package de.danoeh.antennapod.view;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -51,10 +52,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
     }
 
     private void setup() {
-        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark
-                || UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
-            setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
-        }
+        setBackgroundColor(Color.TRANSPARENT);
         if (!NetworkUtils.networkAvailable()) {
             getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
             // Use cached resources, even if they have expired

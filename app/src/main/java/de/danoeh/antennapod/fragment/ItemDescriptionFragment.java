@@ -85,7 +85,7 @@ public class ItemDescriptionFragment extends Fragment {
     @NonNull
     private String loadData() {
         Timeline timeline = new Timeline(getActivity(), controller.getMedia());
-        return timeline.processShownotes(true);
+        return timeline.processShownotes();
     }
 
     @Override

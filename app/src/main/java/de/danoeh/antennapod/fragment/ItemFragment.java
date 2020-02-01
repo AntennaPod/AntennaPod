@@ -24,6 +24,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
@@ -42,6 +43,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Observable;
@@ -96,6 +98,7 @@ public class ItemFragment extends Fragment {
     private Button butAction2;
 
     private Disposable disposable;
+    private PlaybackController controller;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,12 +127,11 @@ public class ItemFragment extends Fragment {
         }
         webvDescription = layout.findViewById(R.id.webvDescription);
         webvDescription.setTimecodeSelectedListener(time -> {
-            /*if (getActivity() != null && getActivity() instanceof MainActivity) {
-                PlaybackController pc = ((MainActivity) getActivity()).getPlaybackController();
-                if (pc != null) {
-                    pc.seekTo(time);
-                }
-            }*/
+            if (controller != null && item.getMedia().getIdentifier().equals(controller.getMedia().getIdentifier())) {
+                controller.seekTo(time);
+            } else {
+                Snackbar.make(getView(), R.string.play_this_to_seek_position, Snackbar.LENGTH_LONG).show();
+            }
         });
         registerForContextMenu(webvDescription);
 
@@ -191,6 +193,8 @@ public class ItemFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        controller = new PlaybackController(getActivity(), false);
+        controller.init();
     }
 
     @Override
@@ -206,6 +210,7 @@ public class ItemFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+        controller.release();
     }
 
     @Override
@@ -389,7 +394,7 @@ public class ItemFragment extends Fragment {
         Context context = getContext();
         if (feedItem != null && context != null) {
             Timeline t = new Timeline(context, feedItem);
-            webviewData = t.processShownotes(false);
+            webviewData = t.processShownotes();
         }
         return feedItem;
     }
