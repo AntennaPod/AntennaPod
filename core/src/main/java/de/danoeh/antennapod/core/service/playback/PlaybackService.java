@@ -745,10 +745,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     setupPositionUpdater();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
-                    if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
-                            SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
+                    if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
+                            && SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
                         setSleepTimer(SleepTimerPreferences.timerMillis(), SleepTimerPreferences.shakeToReset(),
                                 SleepTimerPreferences.vibrate());
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
+                                PlaybackService.this::disableSleepTimer));
                     }
                     break;
 
@@ -1007,17 +1009,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void setSleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
-        Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime) + " milliseconds");
+        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
         taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
-                this::disableSleepTimer));
     }
 
     public void disableSleepTimer() {
         taskManager.disableSleepTimer();
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_disabled_label)));
     }
 
     private void sendNotificationBroadcast(int type, int code) {
