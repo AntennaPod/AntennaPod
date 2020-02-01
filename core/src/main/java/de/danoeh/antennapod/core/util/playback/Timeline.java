@@ -106,11 +106,10 @@ public class Timeline {
      * This method does NOT change the original shownotes string of the shownotesProvider object and it should
      * also not be changed by the caller.
      *
-     * @param addTimecodes True if this method should add timecode links
      * @return The processed HTML string.
      */
     @NonNull
-    public String processShownotes(final boolean addTimecodes) {
+    public String processShownotes() {
         final Playable playable = (shownotesProvider instanceof Playable) ? (Playable) shownotesProvider : null;
 
         // load shownotes
@@ -155,10 +154,7 @@ public class Timeline {
         document.head().appendElement("style").attr("type", "text/css").text(styleStr);
 
         // apply timecode links
-        if (addTimecodes) {
-            addTimecodes(document, playable);
-        }
-
+        addTimecodes(document, playable);
         return document.toString();
     }
 
@@ -186,11 +182,6 @@ public class Timeline {
             }
         }
         return -1;
-    }
-
-
-    public void setShownotesProvider(@NonNull ShownotesProvider shownotesProvider) {
-        this.shownotesProvider = shownotesProvider;
     }
 
     private void addTimecodes(Document document, final Playable playable) {

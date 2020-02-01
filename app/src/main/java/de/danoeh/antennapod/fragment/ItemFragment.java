@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,31 +9,22 @@ import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.AttrRes;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.joanzapata.iconify.Iconify;
-import com.joanzapata.iconify.widget.IconButton;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
@@ -47,7 +36,6 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -55,10 +43,9 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
+import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -99,7 +86,7 @@ public class ItemFragment extends Fragment {
     private List<Downloader> downloaderList;
 
     private ViewGroup root;
-    private WebView webvDescription;
+    private ShownotesWebView webvDescription;
     private TextView txtvPodcast;
     private TextView txtvTitle;
     private TextView txtvDuration;
@@ -111,11 +98,7 @@ public class ItemFragment extends Fragment {
     private Button butAction2;
 
     private Disposable disposable;
-
-    /**
-     * URL that was selected via long-press.
-     */
-    private String selectedURL;
+    private PlaybackController controller;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -134,7 +117,7 @@ public class ItemFragment extends Fragment {
         txtvPodcast = layout.findViewById(R.id.txtvPodcast);
         txtvPodcast.setOnClickListener(v -> openPodcast());
         txtvTitle = layout.findViewById(R.id.txtvTitle);
-        if(Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= 23) {
             txtvTitle.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         }
         txtvDuration = layout.findViewById(R.id.txtvDuration);
@@ -143,31 +126,11 @@ public class ItemFragment extends Fragment {
             txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         }
         webvDescription = layout.findViewById(R.id.webvDescription);
-        if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark ||
-                UserPreferences.getTheme() == R.style.Theme_AntennaPod_TrueBlack) {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
-            webvDescription.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
-        }
-        if (!NetworkUtils.networkAvailable()) {
-            webvDescription.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-            // Use cached resources, even if they have expired
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            webvDescription.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-        }
-        webvDescription.getSettings().setUseWideViewPort(false);
-        webvDescription.getSettings().setLayoutAlgorithm(
-            WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        webvDescription.getSettings().setLoadWithOverviewMode(true);
-            webvDescription.setOnLongClickListener(webViewLongClickListener);
-
-        webvDescription.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                IntentUtils.openInBrowser(getContext(), url);
-                return true;
+        webvDescription.setTimecodeSelectedListener(time -> {
+            if (controller != null && item.getMedia().getIdentifier().equals(controller.getMedia().getIdentifier())) {
+                controller.seekTo(time);
+            } else {
+                Snackbar.make(getView(), R.string.play_this_to_seek_position, Snackbar.LENGTH_LONG).show();
             }
         });
         registerForContextMenu(webvDescription);
@@ -230,6 +193,8 @@ public class ItemFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        controller = new PlaybackController(getActivity(), false);
+        controller.init();
     }
 
     @Override
@@ -245,12 +210,13 @@ public class ItemFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+        controller.release();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         if (webvDescription != null && root != null) {
@@ -364,76 +330,14 @@ public class ItemFragment extends Fragment {
         }
     }
 
-    private final View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
-
-        @Override
-        public boolean onLongClick(View v) {
-            WebView.HitTestResult r = webvDescription.getHitTestResult();
-            if (r != null
-                    && r.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
-                Log.d(TAG, "Link of webview was long-pressed. Extra: " + r.getExtra());
-                selectedURL = r.getExtra();
-                webvDescription.showContextMenu();
-                return true;
-            }
-            selectedURL = null;
-            return false;
-        }
-    };
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        boolean handled = selectedURL != null;
-        if (selectedURL != null) {
-            switch (item.getItemId()) {
-                case R.id.open_in_browser_item:
-                    IntentUtils.openInBrowser(getContext(), selectedURL);
-                    break;
-                case R.id.share_url_item:
-                    ShareUtils.shareLink(getActivity(), selectedURL);
-                    break;
-                case R.id.copy_url_item:
-                    ClipData clipData = ClipData.newPlainText(selectedURL,
-                            selectedURL);
-                    android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
-                            .getSystemService(Context.CLIPBOARD_SERVICE);
-                    cm.setPrimaryClip(clipData);
-                    Toast t = Toast.makeText(getActivity(),
-                            R.string.copied_url_msg, Toast.LENGTH_SHORT);
-                    t.show();
-                    break;
-                default:
-                    handled = false;
-                    break;
-
-            }
-            selectedURL = null;
-        }
-        return handled;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
-        if (selectedURL != null) {
-            super.onCreateContextMenu(menu, v, menuInfo);
-                Uri uri = Uri.parse(selectedURL);
-                final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                if(IntentUtils.isCallable(getActivity(), intent)) {
-                    menu.add(Menu.NONE, R.id.open_in_browser_item, Menu.NONE,
-                            R.string.open_in_browser_label);
-                }
-                menu.add(Menu.NONE, R.id.copy_url_item, Menu.NONE,
-                        R.string.copy_url_label);
-                menu.add(Menu.NONE, R.id.share_url_item, Menu.NONE,
-                        R.string.share_url_label);
-                menu.setHeaderTitle(selectedURL);
-        }
+        return webvDescription.onContextItemSelected(item);
     }
 
     private void openPodcast() {
         Fragment fragment = FeedItemlistFragment.newInstance(item.getFeedId());
-        ((MainActivity)getActivity()).loadChildFragment(fragment);
+        ((MainActivity) getActivity()).loadChildFragment(fragment);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -452,11 +356,11 @@ public class ItemFragment extends Fragment {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
-        if(item == null || item.getMedia() == null) {
+        if (item == null || item.getMedia() == null) {
             return;
         }
         long mediaId = item.getMedia().getId();
-        if(ArrayUtils.contains(update.mediaIds, mediaId)) {
+        if (ArrayUtils.contains(update.mediaIds, mediaId)) {
             if (itemsLoaded && getActivity() != null) {
                 updateAppearance();
             }
@@ -490,7 +394,7 @@ public class ItemFragment extends Fragment {
         Context context = getContext();
         if (feedItem != null && context != null) {
             Timeline t = new Timeline(context, feedItem);
-            webviewData = t.processShownotes(false);
+            webviewData = t.processShownotes();
         }
         return feedItem;
     }

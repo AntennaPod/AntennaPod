@@ -192,6 +192,7 @@
     <string name="marked_as_read_label">Marked as played</string>
     <string name="mark_read_no_media_label">Mark as read</string>
     <string name="marked_as_read_no_media_label">Marked as read</string>
+    <string name="play_this_to_seek_position">To jump to positions, you need to play the episode</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d episode marked as played.</item>
         <item quantity="other">%d episodes marked as played.</item>

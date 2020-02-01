@@ -158,7 +158,7 @@
 
     </LinearLayout>
 
-    <WebView
+    <de.danoeh.antennapod.view.ShownotesWebView
         android:id="@+id/webvDescription"
         android:layout_width="match_parent"
         android:layout_below="@id/header"

@@ -55,7 +55,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -66,7 +66,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -77,7 +77,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -88,7 +88,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", 11 * 60 * 1000);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -99,7 +99,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -110,7 +110,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStr + " here.</p>", 2 * 60 * 1000);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -120,7 +120,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 2 * 60 * 60 * 1000);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 60 * 60 * 1000 + 10 * 60 * 1000 + 12 * 1000 }, timeStrings);
     }
 
@@ -132,7 +132,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode " + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 3 * 60 * 60 * 1000);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 2 * 60 * 1000 + 12 * 1000 }, timeStrings);
     }
 
@@ -143,7 +143,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode (" + timeStr + ") here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -154,7 +154,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode [" + timeStr + "] here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -165,7 +165,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode <" + timeStr + "> here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
@@ -181,7 +181,7 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, shownotes.toString(), Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        String res = t.processShownotes(true);
+        String res = t.processShownotes();
         checkLinkCorrect(res, new long[0], new String[0]);
     }
 
