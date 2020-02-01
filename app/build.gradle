@@ -161,7 +161,6 @@ dependencies {
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
     implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
-    implementation "com.githang:viewpagerindicator:2.5.1@aar"
     implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
     implementation 'com.leinardi.android:speed-dial:3.0.0'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
