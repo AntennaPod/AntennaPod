@@ -462,7 +462,7 @@
   <string name="pref_enqueue_downloaded_summary">Füge heruntergeladene Episoden zur Abspielliste hinzu</string>
   <string name="media_player_builtin">Androids eingebauter Abspieler</string>
   <string name="pref_skip_silence_title">Stille im Ton überspringen</string>
-  <string name="pref_videoBehavior_title">Beim Beenden des Videos</string>
+  <string name="pref_videoBehavior_title">Beim Beenden von Videos</string>
   <string name="pref_videoBehavior_sum">Verhalten beim Verlassen der Video-Wiedergabe</string>
   <string name="stop_playback">Wiedergabe anhalten</string>
   <string name="continue_playback">Audiowiedergabe fortsetzen</string>

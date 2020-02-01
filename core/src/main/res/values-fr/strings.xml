@@ -261,7 +261,7 @@
   <string name="unlock_queue">Déverrouiller la liste de lecture</string>
   <string name="queue_locked">Liste de lecture verrouillée</string>
   <string name="queue_unlocked">Liste de lecture déverrouillée</string>
-  <string name="queue_lock_warning">Quand la liste de lecture est verrouillée il n\'est pas possible de swiper ou de réorganiser l\'ordre des épisodes.</string>
+  <string name="queue_lock_warning">Quand la liste est verrouillée il n\'est plus possible d\'utiliser le swipe ou de changer l\'ordre des épisodes.</string>
   <string name="checkbox_do_not_show_again">Ne pas réafficher</string>
   <string name="clear_queue_label">Effacer la liste de lecture</string>
   <string name="undo">Annuler</string>
@@ -361,7 +361,7 @@
   <string name="pref_stream_over_download_sum">Afficher dans les listes le bouton du streaming au lieu de celui du téléchargement.</string>
   <string name="pref_mobileUpdate_title">Utilisation de la connexion mobile</string>
   <string name="pref_mobileUpdate_sum">Choisir ce qui est autorisé lorsque la connexion mobile est utilisée</string>
-  <string name="pref_mobileUpdate_refresh">Rafraîchissement des flux</string>
+  <string name="pref_mobileUpdate_refresh">Mise à jour des flux</string>
   <string name="pref_mobileUpdate_images">Récupération des images</string>
   <string name="pref_mobileUpdate_auto_download">Téléchargement automatique</string>
   <string name="pref_mobileUpdate_episode_download">Téléchargement d\'épisodes</string>
@@ -387,7 +387,7 @@
   <string name="pref_episode_cache_title">Nombre d\'épisodes stockés</string>
   <string name="pref_episode_cache_summary">Nombre maximum d\'épisodes stockés sur l\'appareil. Le téléchargement automatique sera suspendu si ce nombre est atteint.</string>
   <string name="pref_episode_cover_title">Image des épisodes</string>
-  <string name="pref_episode_cover_summary">Lorsqu\'elle existe, utiliser l\'image propre aux épisodes au lieu de celle du podcast.</string>
+  <string name="pref_episode_cover_summary">Lorsqu\'elles existent, utiliser les images propres aux épisodes au lieu de celle du podcast.</string>
   <string name="pref_theme_title_use_system">Thème du système</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>

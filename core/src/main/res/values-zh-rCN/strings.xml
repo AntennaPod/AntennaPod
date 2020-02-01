@@ -274,6 +274,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">插件下载</string>
   <string name="no_playback_plugin_title">插件没有安装</string>
+  <string name="no_playback_plugin_or_sonic_msg">为了使变速播放正常工作，我们建议启用内置的Sonic媒体播放器</string>
   <string name="set_playback_speed_label">播放速度</string>
   <string name="enable_sonic">允许声音</string>
   <!--Empty list labels-->
@@ -712,6 +713,7 @@
   <string name="notification_channel_error_description">发生错误时显示，比如下载或与gpodder的同步失败</string>
   <string name="import_bad_file">无效/损坏文件</string>
   <!--Widget settings-->
+  <string name="widget_settings">小部件设置</string>
   <string name="widget_create_button">创建小部件</string>
   <string name="widget_opacity">不透明度</string>
 </resources>
