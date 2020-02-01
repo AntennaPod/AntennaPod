@@ -3,9 +3,11 @@ package de.danoeh.antennapod.adapter;
 import android.content.Context;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.view.PieChartView;
+
+import java.util.List;
 
 /**
  * Adapter for the download statistics list.
@@ -27,17 +29,17 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    PieChartView.PieChartData generateChartData(DBReader.StatisticsData statisticsData) {
-        float[] dataValues = new float[statisticsData.feeds.size()];
-        for (int i = 0; i < statisticsData.feeds.size(); i++) {
-            DBReader.StatisticsItem item = statisticsData.feeds.get(i);
+    PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData) {
+        float[] dataValues = new float[statisticsData.size()];
+        for (int i = 0; i < statisticsData.size(); i++) {
+            StatisticsItem item = statisticsData.get(i);
             dataValues[i] = item.totalDownloadSize;
         }
         return new PieChartView.PieChartData(dataValues);
     }
 
     @Override
-    void onBindFeedViewHolder(StatisticsHolder holder, DBReader.StatisticsItem item) {
+    void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item) {
         holder.value.setText(Converter.byteToString(item.totalDownloadSize));
     }
 

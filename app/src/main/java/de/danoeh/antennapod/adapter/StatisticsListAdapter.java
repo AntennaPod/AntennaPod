@@ -14,8 +14,10 @@ import com.bumptech.glide.request.RequestOptions;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.view.PieChartView;
+
+import java.util.List;
 
 /**
  * Parent Adapter for the playback and download statistics list.
@@ -24,7 +26,7 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_FEED = 1;
     final Context context;
-    private DBReader.StatisticsData statisticsData;
+    private List<StatisticsItem> statisticsData;
     PieChartView.PieChartData pieChartData;
 
     StatisticsListAdapter(Context context) {
@@ -33,14 +35,14 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
 
     @Override
     public int getItemCount() {
-        return statisticsData.feeds.size() + 1;
+        return statisticsData.size() + 1;
     }
 
-    public DBReader.StatisticsItem getItem(int position) {
+    public StatisticsItem getItem(int position) {
         if (position == 0) {
             return null;
         }
-        return statisticsData.feeds.get(position - 1);
+        return statisticsData.get(position - 1);
     }
 
     @Override
@@ -69,7 +71,7 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
             holder.totalTime.setText(getHeaderValue());
         } else {
             StatisticsHolder holder = (StatisticsHolder) h;
-            DBReader.StatisticsItem statsItem = statisticsData.feeds.get(position - 1);
+            StatisticsItem statsItem = statisticsData.get(position - 1);
             Glide.with(context)
                     .load(statsItem.feed.getImageLocation())
                     .apply(new RequestOptions()
@@ -86,8 +88,8 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
         }
     }
 
-    public void update(DBReader.StatisticsData statistics) {
-        this.statisticsData = statistics;
+    public void update(List<StatisticsItem> statistics) {
+        statisticsData = statistics;
         pieChartData = generateChartData(statistics);
         notifyDataSetChanged();
     }
@@ -122,7 +124,7 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
 
     abstract String getHeaderValue();
 
-    abstract PieChartView.PieChartData generateChartData(DBReader.StatisticsData statisticsData);
+    abstract PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData);
 
-    abstract void onBindFeedViewHolder(StatisticsHolder holder, DBReader.StatisticsItem item);
+    abstract void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item);
 }
