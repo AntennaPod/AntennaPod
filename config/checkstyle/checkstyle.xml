@@ -91,6 +91,9 @@
             <property name="tokens" value="VARIABLE_DEF"/>
             <property name="allowSamelineMultipleAnnotations" value="true"/>
         </module>
+        <module name="SingleLineJavadoc">
+            <property name="ignoreInlineTags" value="false"/>
+        </module>
         <module name="NestedIfDepth">
             <property name="max" value="4"/>
         </module>

@@ -689,7 +689,7 @@ public final class DBReader {
      * Returns credentials based on image URL
      *
      * @param imageUrl The URL of the image
-     * @return Credentials in format "<Username>:<Password>", empty String if no authorization given
+     * @return Credentials in format "Username:Password", empty String if no authorization given
      */
     public static String getImageAuthentication(final String imageUrl) {
         Log.d(TAG, "getImageAuthentication() called with: " + "imageUrl = [" + imageUrl + "]");
