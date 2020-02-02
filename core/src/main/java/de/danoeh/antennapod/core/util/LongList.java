@@ -154,7 +154,7 @@ public final class LongList {
 
         growIfNeeded();
 
-        System.arraycopy (values, n, values, n+1, size - n);
+        System.arraycopy(values, n, values, n+1, size - n);
         values[n] = value;
         size++;
     }
@@ -211,7 +211,7 @@ public final class LongList {
             throw new IndexOutOfBoundsException("n < 0");
         }
         size--;
-        System.arraycopy (values, index + 1, values, index, size - index);
+        System.arraycopy(values, index + 1, values, index, size - index);
     }
 
     /**
