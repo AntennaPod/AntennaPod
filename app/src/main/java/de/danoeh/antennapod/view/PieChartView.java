@@ -81,7 +81,7 @@ public class PieChartView extends AppCompatImageView {
         }
 
         public boolean isLargeEnoughToDisplay(int index) {
-            return getPercentageOfItem(index) > 0.05;
+            return getPercentageOfItem(index) > 0.04;
         }
 
         public int getColorOfItem(int index) {
@@ -94,7 +94,6 @@ public class PieChartView extends AppCompatImageView {
 
     private static class PieChartDrawable extends Drawable {
         private static final float PADDING_DEGREES = 3f;
-        private static final float STROKE_SIZE = 15f;
         private PieChartData data;
         private final Paint paint;
 
@@ -104,14 +103,16 @@ public class PieChartView extends AppCompatImageView {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeJoin(Paint.Join.ROUND);
             paint.setStrokeCap(Paint.Cap.ROUND);
-            paint.setStrokeWidth(STROKE_SIZE);
         }
 
         @Override
         public void draw(@NonNull Canvas canvas) {
-            float radius = getBounds().height() - STROKE_SIZE;
+            final float strokeSize = getBounds().height() / 30f;
+            paint.setStrokeWidth(strokeSize);
+
+            float radius = getBounds().height() - strokeSize;
             float center = getBounds().width() / 2.f;
-            RectF arcBounds = new RectF(center - radius, STROKE_SIZE, center + radius, STROKE_SIZE + radius * 2);
+            RectF arcBounds = new RectF(center - radius, strokeSize, center + radius, strokeSize + radius * 2);
 
             float startAngle = 180;
             for (int i = 0; i < data.values.length; i++) {
