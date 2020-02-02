@@ -27,7 +27,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.export.opml.OpmlReader;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
@@ -43,18 +42,6 @@ public class OpmlBackupAgent extends BackupAgentHelper {
     @Override
     public void onCreate() {
         addHelper(OPML_BACKUP_KEY, new OpmlBackupHelper(this));
-    }
-
-    private static void LOGD(String tag, String msg) {
-        if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.DEBUG)) {
-            Log.d(tag, msg);
-        }
-    }
-
-    private static void LOGD(String tag, String msg, Throwable tr) {
-        if (BuildConfig.DEBUG && Log.isLoggable(tag, Log.DEBUG)) {
-            Log.d(tag, msg, tr);
-        }
     }
 
     /**
@@ -98,7 +85,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                 // Compare checksum of new and old file to see if we need to perform a backup at all
                 if (digester != null) {
                     byte[] newChecksum = digester.digest();
-                    LOGD(TAG, "New checksum: " + new BigInteger(1, newChecksum).toString(16));
+                    Log.d(TAG, "New checksum: " + new BigInteger(1, newChecksum).toString(16));
 
                     // Get the old checksum
                     if (oldState != null) {
@@ -108,10 +95,10 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                         if (len != -1) {
                             byte[] oldChecksum = new byte[len];
                             inState.read(oldChecksum);
-                            LOGD(TAG, "Old checksum: " + new BigInteger(1, oldChecksum).toString(16));
+                            Log.d(TAG, "Old checksum: " + new BigInteger(1, oldChecksum).toString(16));
 
                             if (Arrays.equals(oldChecksum, newChecksum)) {
-                                LOGD(TAG, "Checksums are the same; won't backup");
+                                Log.d(TAG, "Checksums are the same; won't backup");
                                 return;
                             }
                         }
@@ -120,7 +107,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                     writeNewStateDescription(newState, newChecksum);
                 }
 
-                LOGD(TAG, "Backing up OPML");
+                Log.d(TAG, "Backing up OPML");
                 byte[] bytes = byteStream.toByteArray();
                 data.writeEntityHeader(OPML_ENTITY_KEY, bytes.length);
                 data.writeEntityData(bytes, bytes.length);
@@ -138,10 +125,10 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
         @Override
         public void restoreEntity(BackupDataInputStream data) {
-            LOGD(TAG, "Backup restore");
+            Log.d(TAG, "Backup restore");
 
             if (!OPML_ENTITY_KEY.equals(data.getKey())) {
-                LOGD(TAG, "Unknown entity key: " + data.getKey());
+                Log.d(TAG, "Unknown entity key: " + data.getKey());
                 return;
             }
 
@@ -167,7 +154,7 @@ public class OpmlBackupAgent extends BackupAgentHelper {
                     try {
                         downloader.downloadFeed(mContext, feed);
                     } catch (DownloadRequestException e) {
-                        LOGD(TAG, "Error while restoring/downloading feed", e);
+                        Log.d(TAG, "Error while restoring/downloading feed", e);
                     }
                 }
             } catch (XmlPullParserException e) {
