@@ -50,6 +50,7 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -79,6 +80,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -1436,10 +1440,23 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     };
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void volumeAdaptionChanged(VolumeAdaptionChangedEvent event) {
         PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, event.getFeedId(), event.getVolumeAdaptionSetting());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void speedPresetChanged(SpeedPresetChangedEvent event) {
+        if (getPlayable() instanceof FeedMedia) {
+            if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
+                if (event.getSpeed() == SPEED_USE_GLOBAL) {
+                    setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
+                } else {
+                    setSpeed(event.getSpeed());
+                }
+            }
+        }
     }
 
     public static MediaType getCurrentMediaType() {
