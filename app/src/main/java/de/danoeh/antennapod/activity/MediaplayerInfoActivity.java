@@ -28,8 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.viewpagerindicator.CirclePageIndicator;
-
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -38,6 +36,7 @@ import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -59,6 +58,7 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.view.PagerIndicatorView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -102,6 +102,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
     private int mPosition = -1;
 
     private ViewPager pager;
+    private PagerIndicatorView pageIndicator;
     private MediaplayerInfoPagerAdapter pagerAdapter;
 
     private Disposable disposable;
@@ -261,12 +262,24 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         pager.setOffscreenPageLimit(3);
         pagerAdapter = new MediaplayerInfoPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
-        CirclePageIndicator pageIndicator = findViewById(R.id.page_indicator);
+        pageIndicator = findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
+        pageIndicator.setOnClickListener(v
+                -> pager.setCurrentItem((pager.getCurrentItem() + 1) % pager.getChildCount()));
         loadLastFragment();
         pager.onSaveInstanceState();
 
         navList.post(this::supportStartPostponedEnterTransition);
+    }
+
+    @Override
+    boolean loadMediaInfo() {
+        if (controller != null) {
+            List<Chapter> chapters = controller.getMedia().getChapters();
+            boolean hasChapters = chapters != null && !chapters.isEmpty();
+            pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
+        }
+        return super.loadMediaInfo();
     }
 
     @Override

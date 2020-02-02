@@ -26,16 +26,14 @@
             android:minHeight="?attr/actionBarSize"
             tools:background="@android:color/darker_gray"/>
 
-            <com.viewpagerindicator.CirclePageIndicator
+            <de.danoeh.antennapod.view.PagerIndicatorView
                 android:id="@+id/page_indicator"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_width="40dp"
                 android:layout_marginTop="-12dp"
-                android:layout_marginBottom="4dp"
-                android:background="@android:color/transparent"
-                app:fillColor="?android:attr/textColorSecondary"
-                app:strokeColor="?android:attr/textColorSecondary"
-                app:radius="4dp" />
+                android:paddingBottom="4dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
