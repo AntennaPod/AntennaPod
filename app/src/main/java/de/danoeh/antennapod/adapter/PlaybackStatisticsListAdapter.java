@@ -4,9 +4,11 @@ import android.content.Context;
 import androidx.appcompat.app.AlertDialog;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.view.PieChartView;
+
+import java.util.List;
 
 /**
  * Adapter for the playback statistics list.
@@ -34,17 +36,17 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    PieChartView.PieChartData generateChartData(DBReader.StatisticsData statisticsData) {
-        float[] dataValues = new float[statisticsData.feeds.size()];
-        for (int i = 0; i < statisticsData.feeds.size(); i++) {
-            DBReader.StatisticsItem item = statisticsData.feeds.get(i);
+    PieChartView.PieChartData generateChartData(List<StatisticsItem> statisticsData) {
+        float[] dataValues = new float[statisticsData.size()];
+        for (int i = 0; i < statisticsData.size(); i++) {
+            StatisticsItem item = statisticsData.get(i);
             dataValues[i] = countAll ? item.timePlayedCountAll : item.timePlayed;
         }
         return new PieChartView.PieChartData(dataValues);
     }
 
     @Override
-    void onBindFeedViewHolder(StatisticsHolder holder, DBReader.StatisticsItem statsItem) {
+    void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem statsItem) {
         long time = countAll ? statsItem.timePlayedCountAll : statsItem.timePlayed;
         holder.value.setText(Converter.shortLocalizedDuration(context, time));
 

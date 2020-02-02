@@ -866,17 +866,15 @@ public final class DBReader {
     }
 
     /**
-     * Searches the DB for statistics
+     * Searches the DB for statistics.
      *
-     * @return The StatisticsInfo object
+     * @return The list of statistics objects
      */
     @NonNull
-    public static StatisticsData getStatistics() {
+    public static List<StatisticsItem> getStatistics() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        long totalTimeCountAll = 0;
-        long totalTime = 0;
         List<StatisticsItem> feedTime = new ArrayList<>();
 
         List<Feed> feeds = getFeedList();
@@ -922,72 +920,10 @@ public final class DBReader {
             feedTime.add(new StatisticsItem(
                     feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
                     episodesStarted, episodesStartedIncludingMarked, totalDownloadSize));
-            totalTime += feedPlayedTime;
-            totalTimeCountAll += feedPlayedTimeCountAll;
         }
 
         adapter.close();
-        return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
-    }
-
-    public static class StatisticsData {
-        /**
-         * Simply sums up time of podcasts that are marked as played
-         */
-        public final long totalTimeCountAll;
-
-        /**
-         * Respects speed, listening twice, ...
-         */
-        public final long totalTime;
-
-        public final List<StatisticsItem> feeds;
-
-        public StatisticsData(long totalTime, long totalTimeCountAll, List<StatisticsItem> feeds) {
-            this.totalTime = totalTime;
-            this.totalTimeCountAll = totalTimeCountAll;
-            this.feeds = feeds;
-        }
-    }
-
-    public static class StatisticsItem {
-        public final Feed feed;
-        public final long time;
-
-        /**
-         * Respects speed, listening twice, ...
-         */
-        public final long timePlayed;
-        /**
-         * Simply sums up time of podcasts that are marked as played
-         */
-        public final long timePlayedCountAll;
-        public final long episodes;
-        /**
-         * Episodes that are actually played
-         */
-        public final long episodesStarted;
-        /**
-         * All episodes that are marked as played (or have position != 0)
-         */
-        public final long episodesStartedIncludingMarked;
-        /**
-         * Simply sums up the size of download podcasts
-         */
-        public final long totalDownloadSize;
-
-        public StatisticsItem(Feed feed, long time, long timePlayed, long timePlayedCountAll,
-                              long episodes, long episodesStarted, long episodesStartedIncludingMarked,
-                              long totalDownloadSize) {
-            this.feed = feed;
-            this.time = time;
-            this.timePlayed = timePlayed;
-            this.timePlayedCountAll = timePlayedCountAll;
-            this.episodes = episodes;
-            this.episodesStarted = episodesStarted;
-            this.episodesStartedIncludingMarked = episodesStartedIncludingMarked;
-            this.totalDownloadSize = totalDownloadSize;
-        }
+        return feedTime;
     }
 
     /**
