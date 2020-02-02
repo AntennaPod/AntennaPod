@@ -264,6 +264,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         pager.setAdapter(pagerAdapter);
         pageIndicator = findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
+        pageIndicator.setOnClickListener(v
+                -> pager.setCurrentItem((pager.getCurrentItem() + 1) % pager.getChildCount()));
         loadLastFragment();
         pager.onSaveInstanceState();
 
