@@ -98,7 +98,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    public void onUserLeaveHint () {
+    public void onUserLeaveHint() {
         if (!PictureInPictureUtil.isInPictureInPictureMode(this) && UserPreferences.getVideoBackgroundBehavior()
                 == UserPreferences.VideoBackgroundBehavior.PICTURE_IN_PICTURE) {
             compatEnterPictureInPicture();

@@ -226,9 +226,7 @@ public class ItemEnqueuePositionCalculatorTest {
         private static FeedItem setAsDownloading(int id, DownloadStateProvider stubDownloadStateProvider,
                                                  boolean isDownloading) {
             FeedItem item = createFeedItem(id);
-            FeedMedia media =
-                    new FeedMedia(item, "http://download.url.net/" + id
-                            , 100000 + id, "audio/mp3");
+            FeedMedia media = new FeedMedia(item, "http://download.url.net/" + id, 100000 + id, "audio/mp3");
             media.setId(item.getId());
             item.setMedia(media);
             return setAsDownloading(item, stubDownloadStateProvider, isDownloading);

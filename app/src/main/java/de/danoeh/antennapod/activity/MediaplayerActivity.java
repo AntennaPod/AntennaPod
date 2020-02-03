@@ -770,7 +770,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private float prog;
 
     @Override
-    public void onProgressChanged (SeekBar seekBar,int progress, boolean fromUser) {
+    public void onProgressChanged(SeekBar seekBar,int progress, boolean fromUser) {
         if (controller == null || txtvLength == null) {
             return;
         }

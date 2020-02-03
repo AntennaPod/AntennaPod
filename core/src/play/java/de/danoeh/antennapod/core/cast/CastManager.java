@@ -1243,14 +1243,11 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
             throw new NoConnectionException();
         }
         Log.d(TAG, "remoteMediaPlayer.seek() to position " + position);
-        remoteMediaPlayer.seek(mApiClient,
-                position,
-                RESUME_STATE_UNCHANGED).
-                setResultCallback(result -> {
-                    if (!result.getStatus().isSuccess()) {
-                        onFailed(R.string.cast_failed_seek, result.getStatus().getStatusCode());
-                    }
-                });
+        remoteMediaPlayer.seek(mApiClient, position, RESUME_STATE_UNCHANGED).setResultCallback(result -> {
+            if (!result.getStatus().isSuccess()) {
+                onFailed(R.string.cast_failed_seek, result.getStatus().getStatusCode());
+            }
+        });
     }
 
     /**
