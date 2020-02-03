@@ -1,0 +1,37 @@
+@font-face {
+     font-family: 'Roboto-Light';
+     src: url('file:///android_asset/Roboto-Light.ttf');
+}
+* {
+     color: %s;
+     font-family: roboto-Light;
+     font-size: 13pt;
+     overflow-wrap: break-word;
+}
+a {
+     font-style: normal;
+     text-decoration: none;
+     font-weight: normal;
+     color: #00A8DF;
+}
+a.timecode {
+     color: #669900;
+}
+img, iframe {
+     display: block;
+     margin: 10 auto;
+     max-width: 100%%;
+     height: auto;
+}
+body {
+     margin: %dpx %dpx %dpx %dpx;
+}
+p#apNoShownotes {
+    position: fixed;
+    top: 50%%;
+    left: 50%%;
+    transform: translate(-50%%, -50%%);
+    text-align: center;
+    -webkit-text-size-adjust: none;
+    font-size: 80%%;
+}
