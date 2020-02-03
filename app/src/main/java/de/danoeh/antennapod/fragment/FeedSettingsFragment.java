@@ -2,22 +2,21 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import androidx.preference.SwitchPreference;
+import android.util.Log;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
-import android.util.Log;
+import androidx.preference.SwitchPreference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFilter;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
@@ -38,7 +37,8 @@ import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
     private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
-    private static final DecimalFormat decimalFormat = new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
+    private static final DecimalFormat SPEED_FORMAT =
+            new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedSettingsFragment";
 
@@ -120,7 +120,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         String[] speeds = UserPreferences.getPlaybackSpeedArray();
 
         String[] values = new String[speeds.length + 1];
-        values[0] = decimalFormat.format(SPEED_USE_GLOBAL);
+        values[0] = SPEED_FORMAT.format(SPEED_USE_GLOBAL);
 
         String[] entries = new String[speeds.length + 1];
         entries[0] = getString(R.string.feed_auto_download_global);
@@ -130,11 +130,12 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
 
         feedPlaybackSpeedPreference.setEntryValues(values);
         feedPlaybackSpeedPreference.setEntries(entries);
-
         feedPlaybackSpeedPreference.setOnPreferenceChangeListener((preference, newValue) -> {
             feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) newValue));
             feed.savePreferences();
             updatePlaybackSpeedPreference();
+            EventBus.getDefault().post(
+                    new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
             return false;
         });
     }
@@ -192,7 +193,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         ListPreference feedPlaybackSpeedPreference = findPreference(PREF_FEED_PLAYBACK_SPEED);
 
         float speedValue = feedPreferences.getFeedPlaybackSpeed();
-        feedPlaybackSpeedPreference.setValue(decimalFormat.format(speedValue));
+        feedPlaybackSpeedPreference.setValue(SPEED_FORMAT.format(speedValue));
     }
 
     private void updateAutoDeleteSummary() {
@@ -230,15 +231,10 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
             }
             feed.savePreferences();
             updateVolumeReductionValue();
-            sendVolumeAdaptionChangedIntent();
-
+            EventBus.getDefault().post(
+                    new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
             return false;
         });
-    }
-
-    private void sendVolumeAdaptionChangedIntent() {
-        EventBus.getDefault().post(
-                new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
     }
 
     private void updateVolumeReductionValue() {
