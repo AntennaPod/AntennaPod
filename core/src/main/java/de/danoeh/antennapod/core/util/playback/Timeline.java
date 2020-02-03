@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 
+import de.danoeh.antennapod.core.feed.FeedItem;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -27,7 +28,8 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
  * shownotes to navigate to another position in the podcast or by highlighting certain parts of the shownotesProvider's
  * shownotes.
  * <p/>
- * A timeline object needs a shownotesProvider from which the chapter information is retrieved and shownotes are generated.
+ * A timeline object needs a shownotesProvider from which the chapter information
+ * is retrieved and shownotes are generated.
  */
 public class Timeline {
     private static final String TAG = "Timeline";
@@ -110,8 +112,6 @@ public class Timeline {
      */
     @NonNull
     public String processShownotes() {
-        final Playable playable = (shownotesProvider instanceof Playable) ? (Playable) shownotesProvider : null;
-
         // load shownotes
 
         String shownotes;
@@ -154,7 +154,7 @@ public class Timeline {
         document.head().appendElement("style").attr("type", "text/css").text(styleStr);
 
         // apply timecode links
-        addTimecodes(document, playable);
+        addTimecodes(document);
         return document.toString();
     }
 
@@ -184,7 +184,7 @@ public class Timeline {
         return -1;
     }
 
-    private void addTimecodes(Document document, final Playable playable) {
+    private void addTimecodes(Document document) {
         Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
         Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
 
@@ -193,7 +193,13 @@ public class Timeline {
             return;
         }
 
-        int playableDuration = playable == null ? Integer.MAX_VALUE : playable.getDuration();
+        int playableDuration = Integer.MAX_VALUE;
+        if (shownotesProvider instanceof Playable) {
+            playableDuration = ((Playable) shownotesProvider).getDuration();
+        } else if (shownotesProvider instanceof FeedItem && ((FeedItem) shownotesProvider).getMedia() != null) {
+            playableDuration = ((FeedItem) shownotesProvider).getMedia().getDuration();
+        }
+
         boolean useHourFormat = true;
 
         if (playableDuration != Integer.MAX_VALUE) {
