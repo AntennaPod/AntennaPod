@@ -274,7 +274,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     @Override
     boolean loadMediaInfo() {
-        if (controller != null) {
+        if (controller != null && controller.getMedia() != null) {
             List<Chapter> chapters = controller.getMedia().getChapters();
             boolean hasChapters = chapters != null && !chapters.isEmpty();
             pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
