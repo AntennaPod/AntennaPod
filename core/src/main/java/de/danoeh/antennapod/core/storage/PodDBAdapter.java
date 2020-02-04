@@ -284,10 +284,13 @@ public class PodDBAdapter {
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
      */
     private static final String SEL_FI_SMALL_STR;
+    private static final String FEED_SEL_STD_STR;
 
     static {
         String selFiSmall = Arrays.toString(FEEDITEM_SEL_FI_SMALL);
         SEL_FI_SMALL_STR = selFiSmall.substring(1, selFiSmall.length() - 1);
+        String selFeedSmall = Arrays.toString(FEED_SEL_STD);
+        FEED_SEL_STD_STR = selFeedSmall.substring(1, selFeedSmall.length() - 1);
     }
 
     /**
@@ -1283,7 +1286,24 @@ public class PodDBAdapter {
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
                 + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%'"
                 + ") ORDER BY " + KEY_PUBDATE + " DESC "
-                + "LIMIT 500";
+                + "LIMIT 300";
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * Searches for the given query in various values of all feeds.
+     *
+     * @return A cursor with all search results in SEL_FI_EXTRA selection.
+     */
+    public Cursor searchFeeds(String searchQuery) {
+        String preparedQuery = prepareSearchQuery(searchQuery);
+        String query = "SELECT " + FEED_SEL_STD_STR + " FROM " + TABLE_NAME_FEEDS + " WHERE "
+                + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_CUSTOM_TITLE + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_AUTHOR + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' "
+                + "ORDER BY " + KEY_TITLE + " ASC "
+                + "LIMIT 300";
         return db.rawQuery(query, null);
     }
 

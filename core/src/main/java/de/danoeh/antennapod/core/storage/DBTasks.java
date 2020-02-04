@@ -553,6 +553,23 @@ public final class DBTasks {
         });
     }
 
+    public static FutureTask<List<Feed>> searchFeeds(final Context context, final String query) {
+        return new FutureTask<>(new QueryTask<List<Feed>>(context) {
+            @Override
+            public void execute(PodDBAdapter adapter) {
+                Cursor cursor = adapter.searchFeeds(query);
+                List<Feed> items = new ArrayList<>();
+                if (cursor.moveToFirst()) {
+                    do {
+                        items.add(Feed.fromCursor(cursor));
+                    } while (cursor.moveToNext());
+                }
+                setResult(items);
+                cursor.close();
+            }
+        });
+    }
+
     /**
      * A runnable which should be used for database queries. The onCompletion
      * method is executed on the database executor to handle Cursors correctly.

@@ -2,20 +2,15 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
-
 import de.danoeh.antennapod.core.feed.Chapter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
-import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
-import de.danoeh.antennapod.core.util.comparator.InReverseChronologicalOrder;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 /**
  * Performs search on Feeds and FeedItems.
@@ -40,9 +35,17 @@ public class FeedSearcher {
     public static List<SearchResult> performSearch(final Context context, final String query, final long selectedFeed) {
         final List<SearchResult> result = new ArrayList<>();
         try {
-            FutureTask<List<FeedItem>> searchTask = DBTasks.searchFeedItems(context, selectedFeed, query);
-            searchTask.run();
-            final List<FeedItem> items = searchTask.get();
+            FutureTask<List<FeedItem>> itemSearchTask = DBTasks.searchFeedItems(context, selectedFeed, query);
+            FutureTask<List<Feed>> feedSearchTask = DBTasks.searchFeeds(context, query);
+            itemSearchTask.run();
+            feedSearchTask.run();
+
+            final List<Feed> feeds = feedSearchTask.get();
+            for (Feed item : feeds) {
+                result.add(new SearchResult(item, null));
+            }
+
+            final List<FeedItem> items = itemSearchTask.get();
             for (FeedItem item : items) {
                 SearchLocation location;
                 if (safeContains(item.getTitle(), query)) {
