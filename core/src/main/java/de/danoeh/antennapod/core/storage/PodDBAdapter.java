@@ -48,6 +48,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
+    public static final int VERSION = 1090000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -1336,8 +1337,6 @@ public class PodDBAdapter {
      * Helper class for opening the Antennapod database.
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
-        private static final int VERSION = 1090000;
-
         /**
          * Constructor.
          *
@@ -1345,8 +1344,7 @@ public class PodDBAdapter {
          * @param name    Name of the database
          * @param factory to use for creating cursor objects
          */
-        public PodDBHelper(final Context context, final String name,
-                           final CursorFactory factory) {
+        public PodDBHelper(final Context context, final String name, final CursorFactory factory) {
             super(context, name, factory, VERSION, new PodDbErrorHandler());
         }
 
@@ -1369,10 +1367,8 @@ public class PodDBAdapter {
         }
 
         @Override
-        public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
-                              final int newVersion) {
-            Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
-                    + newVersion + ".");
+        public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+            Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
         }
     }

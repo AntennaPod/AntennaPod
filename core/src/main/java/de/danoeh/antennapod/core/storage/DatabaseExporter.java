@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
@@ -14,21 +16,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.FileChannel;
-import java.util.Arrays;
 
 public class DatabaseExporter {
     private static final String TAG = "DatabaseExporter";
-    private static final byte[] SQLITE3_MAGIC = "SQLite format 3\0".getBytes();
-
-    public static boolean validateDB(Uri inputUri, Context context) throws IOException {
-        try (InputStream inputStream = context.getContentResolver().openInputStream(inputUri)) {
-            byte[] magicBuf = new byte[SQLITE3_MAGIC.length];
-            if (inputStream.read(magicBuf) == magicBuf.length) {
-                return Arrays.equals(SQLITE3_MAGIC, magicBuf);
-            }
-        }
-        return false;
-    }
+    private static final String TEMP_DB_NAME = PodDBAdapter.DATABASE_NAME + "_tmp";
 
     public static void exportToDocument(Uri uri, Context context) throws IOException {
         ParcelFileDescriptor pfd = null;
@@ -78,14 +69,21 @@ public class DatabaseExporter {
     public static void importBackup(Uri inputUri, Context context) throws IOException {
         InputStream inputStream = null;
         try {
-            if (!validateDB(inputUri, context)) {
-                throw new IOException(context.getString(R.string.import_bad_file));
+            File tempDB = context.getDatabasePath(TEMP_DB_NAME);
+            inputStream = context.getContentResolver().openInputStream(inputUri);
+            FileUtils.copyInputStreamToFile(inputStream, tempDB);
+
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(tempDB.getAbsolutePath(),
+                    null, SQLiteDatabase.OPEN_READONLY);
+            if (db.getVersion() > PodDBAdapter.VERSION) {
+                throw new IOException(context.getString(R.string.import_no_downgrade));
             }
+            db.close();
 
             File currentDB = context.getDatabasePath(PodDBAdapter.DATABASE_NAME);
-            inputStream = context.getContentResolver().openInputStream(inputUri);
-            FileUtils.copyInputStreamToFile(inputStream, currentDB);
-        } catch (IOException e) {
+            currentDB.delete();
+            FileUtils.moveFile(tempDB, currentDB);
+        } catch (IOException | SQLiteException e) {
             Log.e(TAG, Log.getStackTraceString(e));
             throw e;
         } finally {
