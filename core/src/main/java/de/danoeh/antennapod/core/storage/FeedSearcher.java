@@ -47,16 +47,10 @@ public class FeedSearcher {
                 SearchLocation location;
                 if (safeContains(item.getTitle(), query)) {
                     location = SearchLocation.TITLE;
-                } else if (safeContains(item.getContentEncoded(), query)) {
-                    location = SearchLocation.SHOWNOTES;
-                } else if (safeContains(item.getDescription(), query)) {
-                    location = SearchLocation.SHOWNOTES;
                 } else if (safeContains(item.getChapters(), query)) {
                     location = SearchLocation.CHAPTERS;
-                } else if (safeContains(item.getFeed().getAuthor(), query)) {
-                    location = SearchLocation.AUTHORS;
                 } else {
-                    location = SearchLocation.FEED;
+                    location = SearchLocation.SHOWNOTES;
                 }
                 result.add(new SearchResult(item, location));
             }
