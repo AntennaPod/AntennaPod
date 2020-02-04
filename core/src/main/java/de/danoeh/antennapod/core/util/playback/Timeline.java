@@ -9,11 +9,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 
+import de.danoeh.antennapod.core.feed.FeedItem;
+import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,48 +31,20 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
  * shownotes to navigate to another position in the podcast or by highlighting certain parts of the shownotesProvider's
  * shownotes.
  * <p/>
- * A timeline object needs a shownotesProvider from which the chapter information is retrieved and shownotes are generated.
+ * A timeline object needs a shownotesProvider from which the chapter information
+ * is retrieved and shownotes are generated.
  */
 public class Timeline {
     private static final String TAG = "Timeline";
 
-    private static final String WEBVIEW_STYLE =
-            "@font-face {"
-            + "font-family: 'Roboto-Light';"
-            + "src: url('file:///android_asset/Roboto-Light.ttf');"
-            + "}"
-            + "* {"
-            + "color: %s;"
-            + "font-family: roboto-Light;"
-            + "font-size: 13pt;"
-            + "overflow-wrap: break-word;"
-            + "}"
-            + "a {"
-            + "font-style: normal;"
-            + "text-decoration: none;"
-            + "font-weight: normal;"
-            + "color: #00A8DF;"
-            + "}"
-            + "a.timecode {"
-            + "color: #669900;"
-            + "}"
-            + "img, iframe {"
-            + "display: block;"
-            + "margin: 10 auto;"
-            + "max-width: %s;"
-            + "height: auto;"
-            + "}"
-            + "body {"
-            + "margin: %dpx %dpx %dpx %dpx;"
-            + "}";
+    private static final Pattern TIMECODE_LINK_REGEX = Pattern.compile("antennapod://timecode/((\\d+))");
+    private static final String TIMECODE_LINK = "<a class=\"timecode\" href=\"antennapod://timecode/%d\">%s</a>";
+    private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b((\\d+):)?(\\d+):(\\d{2})\\b");
+    private static final Pattern LINE_BREAK_REGEX = Pattern.compile("<br */?>");
 
-
-    private ShownotesProvider shownotesProvider;
-
+    private final ShownotesProvider shownotesProvider;
     private final String noShownotesLabel;
-    private final String colorPrimaryString;
-    private final String colorSecondaryString;
-    private final int pageMargin;
+    private final String webviewStyle;
 
     public Timeline(Context context, ShownotesProvider shownotesProvider) {
         if (shownotesProvider == null) {
@@ -80,25 +56,20 @@ public class Timeline {
 
         TypedArray res = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.textColorPrimary});
         @ColorInt int col = res.getColor(0, 0);
-        colorPrimaryString = "rgba(" + Color.red(col) + "," + Color.green(col) + "," +
-                Color.blue(col) + "," + (Color.alpha(col) / 255.0) + ")";
+        final String colorPrimary = "rgba(" + Color.red(col) + "," + Color.green(col) + ","
+                + Color.blue(col) + "," + (Color.alpha(col) / 255.0) + ")";
         res.recycle();
-        res = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.textColorSecondary});
-        col = res.getColor(0, 0);
-        colorSecondaryString = "rgba(" + Color.red(col) + "," + Color.green(col) + "," +
-                Color.blue(col) + "," + (Color.alpha(col) / 255.0) + ")";
-        res.recycle();
-
-        pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
-                context.getResources().getDisplayMetrics()
-        );
+        final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
+                context.getResources().getDisplayMetrics());
+        String styleString = "";
+        try {
+            InputStream templateStream = context.getAssets().open("shownotes-style.css");
+            styleString = IOUtils.toString(templateStream, "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        webviewStyle = String.format(Locale.getDefault(), styleString, colorPrimary, margin, margin, margin, margin);
     }
-
-    private static final Pattern TIMECODE_LINK_REGEX = Pattern.compile("antennapod://timecode/((\\d+))");
-    private static final String TIMECODE_LINK = "<a class=\"timecode\" href=\"antennapod://timecode/%d\">%s</a>";
-    private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b((\\d+):)?(\\d+):(\\d{2})\\b");
-    private static final Pattern LINE_BREAK_REGEX = Pattern.compile("<br */?>");
-
 
     /**
      * Applies an app-specific CSS stylesheet and adds timecode links (optional).
@@ -110,10 +81,6 @@ public class Timeline {
      */
     @NonNull
     public String processShownotes() {
-        final Playable playable = (shownotesProvider instanceof Playable) ? (Playable) shownotesProvider : null;
-
-        // load shownotes
-
         String shownotes;
         try {
             shownotes = shownotesProvider.loadShownotes().call();
@@ -124,21 +91,7 @@ public class Timeline {
 
         if (TextUtils.isEmpty(shownotes)) {
             Log.d(TAG, "shownotesProvider contained no shownotes. Returning 'no shownotes' message");
-            shownotes = "<html>" +
-                    "<head>" +
-                    "<style type='text/css'>" +
-                    "html, body { margin: 0; padding: 0; width: 100%; height: 100%; } " +
-                    "html { display: table; }" +
-                    "body { display: table-cell; vertical-align: middle; text-align:center;" +
-                    "-webkit-text-size-adjust: none; font-size: 87%; color: " + colorSecondaryString + ";} " +
-                    "</style>" +
-                    "</head>" +
-                    "<body>" +
-                    "<p>" + noShownotesLabel + "</p>" +
-                    "</body>" +
-                    "</html>";
-            Log.d(TAG, "shownotes: " + shownotes);
-            return shownotes;
+            shownotes = "<html><head></head><body><p id='apNoShownotes'>" + noShownotesLabel + "</p></body></html>";
         }
 
         // replace ASCII line breaks with HTML ones if shownotes don't contain HTML line breaks already
@@ -147,14 +100,10 @@ public class Timeline {
         }
 
         Document document = Jsoup.parse(shownotes);
-
-        // apply style
-        String styleStr = String.format(Locale.getDefault(), WEBVIEW_STYLE, colorPrimaryString, "100%",
-                pageMargin, pageMargin, pageMargin, pageMargin);
-        document.head().appendElement("style").attr("type", "text/css").text(styleStr);
+        document.head().appendElement("style").attr("type", "text/css").text(webviewStyle);
 
         // apply timecode links
-        addTimecodes(document, playable);
+        addTimecodes(document);
         return document.toString();
     }
 
@@ -184,7 +133,7 @@ public class Timeline {
         return -1;
     }
 
-    private void addTimecodes(Document document, final Playable playable) {
+    private void addTimecodes(Document document) {
         Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
         Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
 
@@ -193,7 +142,13 @@ public class Timeline {
             return;
         }
 
-        int playableDuration = playable == null ? Integer.MAX_VALUE : playable.getDuration();
+        int playableDuration = Integer.MAX_VALUE;
+        if (shownotesProvider instanceof Playable) {
+            playableDuration = ((Playable) shownotesProvider).getDuration();
+        } else if (shownotesProvider instanceof FeedItem && ((FeedItem) shownotesProvider).getMedia() != null) {
+            playableDuration = ((FeedItem) shownotesProvider).getMedia().getDuration();
+        }
+
         boolean useHourFormat = true;
 
         if (playableDuration != Integer.MAX_VALUE) {
