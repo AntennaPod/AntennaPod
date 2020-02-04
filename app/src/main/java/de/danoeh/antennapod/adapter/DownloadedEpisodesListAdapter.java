@@ -1,37 +1,24 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.Context;
-import android.os.Build;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-
-import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.view.EpisodeItemViewHolder;
 
 /**
- * Shows a list of downloaded episodes
+ * Shows a list of downloaded episodes.
  */
 public class DownloadedEpisodesListAdapter extends BaseAdapter {
 
-    private final Context context;
+    private final MainActivity activity;
     private final ItemAccess itemAccess;
 
-    public DownloadedEpisodesListAdapter(Context context, ItemAccess itemAccess) {
+    public DownloadedEpisodesListAdapter(MainActivity activity, ItemAccess itemAccess) {
         super();
-        this.context = context;
+        this.activity = activity;
         this.itemAccess = itemAccess;
     }
 
@@ -52,77 +39,23 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Holder holder;
-        final FeedItem item = getItem(position);
-        if (item == null) return null;
-
+        EpisodeItemViewHolder holder;
         if (convertView == null) {
-            holder = new Holder();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.downloaded_episodeslist_item,
-                    parent, false);
-            holder.imageView = convertView.findViewById(R.id.imgvImage);
-            holder.title = convertView.findViewById(R.id.txtvTitle);
-            if(Build.VERSION.SDK_INT >= 23) {
-                holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
-            }
-            holder.txtvSize = convertView.findViewById(R.id.txtvSize);
-            holder.queueStatus = convertView.findViewById(R.id.imgvInPlaylist);
-            holder.pubDate = convertView
-                    .findViewById(R.id.txtvPublished);
-            holder.butSecondary = convertView
-                    .findViewById(R.id.butSecondaryAction);
-            convertView.setTag(holder);
+            holder = new EpisodeItemViewHolder(activity, parent);
         } else {
-            holder = (Holder) convertView.getTag();
+            holder = (EpisodeItemViewHolder) convertView.getTag();
         }
 
-        Glide.with(context)
-                .load(ImageResourceUtils.getImageLocation(item))
-                .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate())
-                .into(holder.imageView);
+        final FeedItem item = getItem(position);
+        holder.bind(item);
+        holder.dragHandle.setVisibility(View.GONE);
+        holder.butSecondary.setImageResource(R.drawable.ic_delete_grey600_24dp);
+        holder.butSecondary.setOnClickListener(v -> {
+            FeedItem item1 = (FeedItem) v.getTag();
+            itemAccess.onFeedItemSecondaryAction(item1);
+        });
 
-        if(item.isPlayed()) {
-            convertView.setAlpha(0.5f);
-        } else {
-            convertView.setAlpha(1.0f);
-        }
-
-        holder.title.setText(item.getTitle());
-        holder.txtvSize.setText(Converter.byteToString(item.getMedia().getSize()));
-        holder.queueStatus.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
-        String pubDateStr = DateUtils.formatAbbrev(context, item.getPubDate());
-        holder.pubDate.setText(pubDateStr);
-
-        holder.butSecondary.setFocusable(false);
-        holder.butSecondary.setTag(item);
-        holder.butSecondary.setOnClickListener(secondaryActionListener);
-
-        return convertView;
-    }
-
-    private final View.OnClickListener secondaryActionListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            FeedItem item = (FeedItem) v.getTag();
-            itemAccess.onFeedItemSecondaryAction(item);
-        }
-    };
-
-
-    static class Holder {
-        ImageView imageView;
-        TextView title;
-        TextView txtvSize;
-        ImageView queueStatus;
-        TextView pubDate;
-        ImageButton butSecondary;
+        return holder.itemView;
     }
 
     public interface ItemAccess {

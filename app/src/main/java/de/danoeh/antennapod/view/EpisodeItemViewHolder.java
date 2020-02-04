@@ -54,7 +54,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
     private final ImageView isVideo;
     private final ImageView isFavorite;
     private final ProgressBar progressBar;
-    private final ImageButton butSecondary;
+    public final ImageButton butSecondary;
     private final MainActivity activity;
 
     private FeedItem item;

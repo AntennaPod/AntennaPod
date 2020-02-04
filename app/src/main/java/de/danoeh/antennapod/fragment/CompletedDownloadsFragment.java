@@ -52,7 +52,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         addVerticalPadding();
         addEmptyView();
 
-        listAdapter = new DownloadedEpisodesListAdapter(getActivity(), itemAccess);
+        listAdapter = new DownloadedEpisodesListAdapter((MainActivity) getActivity(), itemAccess);
         setListAdapter(listAdapter);
         setListShown(false);
         EventBus.getDefault().register(this);
