@@ -176,6 +176,10 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         }
     }
 
+    public FeedItem getFeedItem() {
+        return item;
+    }
+
     public boolean isCurrentlyPlayingItem() {
         return item.getMedia() != null && item.getMedia().isCurrentlyPlaying();
     }

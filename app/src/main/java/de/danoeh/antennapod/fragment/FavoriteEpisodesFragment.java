@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import de.danoeh.antennapod.view.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
@@ -63,8 +64,8 @@ public class FavoriteEpisodesFragment extends EpisodesListFragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
-                Log.d(TAG, String.format("remove(%s)", holder.getItemId()));
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewHolder;
+                Log.d(TAG, String.format("remove(%s)", holder.getFeedItem().getId()));
 
                 if (disposable != null) {
                     disposable.dispose();

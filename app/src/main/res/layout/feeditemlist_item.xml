@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        tools:layout_height="150dp"
         android:gravity="center_vertical"
         android:baselineAligned="false">
 
@@ -48,8 +47,7 @@
                 android:layout_height="@dimen/thumbnail_length_queue_item"
                 android:layout_centerVertical="true"
                 android:contentDescription="@string/cover_label"
-                tools:src="@drawable/ic_antenna"
-                tools:background="@android:color/holo_green_dark"/>
+                tools:src="@tools:sample/avatars" />
 
     </RelativeLayout>
 
@@ -80,7 +78,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/statusUnread"
                     android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"/>
+                    android:layout_marginEnd="4dp"
+                    tools:text="@sample/episodes.json/data/status_label"/>
 
             <ImageView
                     android:layout_width="16dp"
@@ -121,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="4dp"
                     android:layout_marginEnd="4dp"
-                    tools:text="Feb 12"/>
+                    tools:text="@sample/episodes.json/data/published_at"/>
 
             <TextView
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
@@ -147,7 +146,7 @@
                 style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Item title"
+                tools:text="@sample/episodes.json/data/title"
                 android:ellipsize="end"
                 tools:background="@android:color/holo_blue_light"/>
 
@@ -183,7 +182,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="0dp"
-                    tools:text="01:23:23"
+                    tools:text="@sample/episodes.json/data/duration"
                     tools:background="@android:color/holo_blue_light"/>
 
         </LinearLayout>

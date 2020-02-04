@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.view.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -385,32 +386,6 @@ public abstract class EpisodesListFragment extends Fragment {
         }
 
         @Override
-        public LongList getItemsIds() {
-            LongList ids = new LongList(episodes.size());
-            for (FeedItem episode : episodes) {
-                ids.add(episode.getId());
-            }
-            return ids;
-        }
-
-        @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
-            for (Downloader downloader : downloaderList) {
-                DownloadRequest downloadRequest = downloader.getDownloadRequest();
-                if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                        && downloadRequest.getFeedfileId() == item.getMedia().getId()) {
-                    return downloadRequest.getProgressPercent();
-                }
-            }
-            return 0;
-        }
-
-        @Override
-        public boolean isInQueue(FeedItem item) {
-            return item != null && item.isTagged(FeedItem.TAG_QUEUE);
-        }
-
-        @Override
         public LongList getQueueIds() {
             LongList queueIds = new LongList();
             for (FeedItem item : episodes) {
@@ -444,8 +419,7 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (listAdapter != null) {
             for (int i = 0; i < listAdapter.getItemCount(); i++) {
-                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)
-                        recyclerView.findViewHolderForAdapterPosition(i);
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
                 if (holder != null && holder.isCurrentlyPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
                     break;
