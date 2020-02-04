@@ -424,7 +424,7 @@ public class FeedItemlistFragment extends ListFragment {
             setListAdapter(null);
             setupHeaderView();
             setupFooterView();
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, false, true);
+            adapter = new FeedItemlistAdapter((MainActivity) getActivity(), itemAccess, false, true);
             setListAdapter(adapter);
         }
         refreshHeaderView();
@@ -575,38 +575,11 @@ public class FeedItemlistFragment extends ListFragment {
         }
 
         @Override
-        public LongList getQueueIds() {
-            LongList queueIds = new LongList();
-            if(feed == null) {
-                return queueIds;
-            }
-            for(FeedItem item : feed.getItems()) {
-                if(item.isTagged(FeedItem.TAG_QUEUE)) {
-                    queueIds.add(item.getId());
-                }
-            }
-            return queueIds;
-        }
-
-        @Override
         public int getCount() {
             return (feed != null) ? feed.getNumOfItems() : 0;
         }
 
-        @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
-            if (downloaderList != null) {
-                for (Downloader downloader : downloaderList) {
-                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
-                        return downloader.getDownloadRequest().getProgressPercent();
-                    }
-                }
-            }
-            return 0;
-        }
     };
-
 
     private void loadItems() {
         if(disposable != null) {

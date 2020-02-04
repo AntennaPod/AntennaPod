@@ -21,6 +21,7 @@ import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -42,8 +43,12 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
     private final ImageView cover;
     private final TextView title;
     private final TextView pubDate;
-    private final TextView progressLeft;
-    private final TextView progressRight;
+    private final TextView position;
+    private final TextView duration;
+    private final TextView size;
+    private final TextView isNew;
+    private final ImageView isInQueue;
+    private final ImageView isVideo;
     private final ProgressBar progressBar;
     private final ImageButton butSecondary;
     private final MainActivity activity;
@@ -51,7 +56,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
     private FeedItem item;
 
     public EpisodeItemViewHolder(MainActivity activity) {
-        super(View.inflate(activity, R.layout.queue_listitem, null));
+        super(View.inflate(activity, R.layout.feeditemlist_item, null));
         this.activity = activity;
         container = itemView.findViewById(R.id.container);
         dragHandle = itemView.findViewById(R.id.drag_handle);
@@ -62,10 +67,14 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
             title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
         }
         pubDate = itemView.findViewById(R.id.txtvPubDate);
-        progressLeft = itemView.findViewById(R.id.txtvProgressLeft);
-        progressRight = itemView.findViewById(R.id.txtvProgressRight);
+        position = itemView.findViewById(R.id.txtvProgressLeft);
+        duration = itemView.findViewById(R.id.txtvProgressRight);
         butSecondary = itemView.findViewById(R.id.butSecondaryAction);
         progressBar = itemView.findViewById(R.id.progressBar);
+        isInQueue = itemView.findViewById(R.id.ivInPlaylist);
+        isVideo = itemView.findViewById(R.id.ivIsVideo);
+        isNew = itemView.findViewById(R.id.statusUnread);
+        size = itemView.findViewById(R.id.size);
         itemView.setTag(this);
     }
 
@@ -84,59 +93,13 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         placeholder.setText(item.getFeed().getTitle());
         title.setText(item.getTitle());
         title.setText(item.getTitle());
-        pubDate.setText(formatPubDate());
+        pubDate.setText(DateUtils.formatAbbrev(activity, item.getPubDate()));
+        isNew.setVisibility(item.isNew() ? View.VISIBLE : View.INVISIBLE);
+        isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.INVISIBLE);
+        itemView.setAlpha(item.isPlayed() /*&& makePlayedItemsTransparent*/ ? 0.5f : 1.0f);
 
-        FeedMedia media = item.getMedia();
-        if (media != null) {
-            final DownloadRequest downloadRequest = DownloadRequester.getInstance().getRequestFor(media);
-            FeedItem.State state = item.getState();
-            if (downloadRequest != null) {
-                progressLeft.setText(Converter.byteToString(downloadRequest.getSoFar()));
-                if (downloadRequest.getSize() > 0) {
-                    progressRight.setText(Converter.byteToString(downloadRequest.getSize()));
-                } else {
-                    progressRight.setText(Converter.byteToString(media.getSize()));
-                }
-                progressBar.setProgress(downloadRequest.getProgressPercent());
-                progressBar.setVisibility(View.VISIBLE);
-            } else if (state == FeedItem.State.PLAYING || state == FeedItem.State.IN_PROGRESS) {
-                if (media.getDuration() > 0) {
-                    int progress = (int) (100.0 * media.getPosition() / media.getDuration());
-                    progressBar.setProgress(progress);
-                    progressBar.setVisibility(View.VISIBLE);
-                    progressLeft.setText(Converter.getDurationStringLong(media.getPosition()));
-                    progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
-                }
-            } else {
-                if (media.getSize() > 0) {
-                    progressLeft.setText(Converter.byteToString(media.getSize()));
-                } else if (NetworkUtils.isEpisodeHeadDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
-                    progressLeft.setText("{fa-spinner}");
-                    Iconify.addIcons(progressLeft);
-                    NetworkUtils.getFeedMediaSizeObservable(media).subscribe(
-                            size -> {
-                                if (size > 0) {
-                                    progressLeft.setText(Converter.byteToString(size));
-                                } else {
-                                    progressLeft.setText("");
-                                }
-                            }, error -> {
-                                progressLeft.setText("");
-                                Log.e(TAG, Log.getStackTraceString(error));
-                            });
-                } else {
-                    progressLeft.setText("");
-                }
-                progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-
-            if (media.isCurrentlyPlaying()) {
-                container.setBackgroundColor(ThemeUtils.getColorFromAttr(activity,
-                        R.attr.currently_playing_background));
-            } else {
-                container.setBackgroundColor(Color.TRANSPARENT);
-            }
+        if (item.getMedia() != null) {
+            bind(item.getMedia());
         }
 
         ItemActionButton actionButton = ItemActionButton.forItem(item, true);
@@ -152,22 +115,56 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
                 .load();
     }
 
-    private String formatPubDate() {
-        String pubDateStr = DateUtils.formatAbbrev(activity, item.getPubDate());
-        int index = 0;
-        if (countMatches(pubDateStr, ' ') == 1 || countMatches(pubDateStr, ' ') == 2) {
-            index = pubDateStr.lastIndexOf(' ');
-        } else if (countMatches(pubDateStr, '.') == 2) {
-            index = pubDateStr.lastIndexOf('.');
-        } else if (countMatches(pubDateStr, '-') == 2) {
-            index = pubDateStr.lastIndexOf('-');
-        } else if (countMatches(pubDateStr, '/') == 2) {
-            index = pubDateStr.lastIndexOf('/');
+    private void bind(FeedMedia media) {
+        isVideo.setVisibility(media.getMediaType() == MediaType.VIDEO ? View.VISIBLE : View.INVISIBLE);
+        duration.setText(Converter.getDurationStringLong(media.getDuration()));
+
+        if (media.isCurrentlyPlaying()) {
+            container.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
+        } else {
+            container.setBackgroundColor(Color.TRANSPARENT);
         }
-        if (index > 0) {
-            pubDateStr = pubDateStr.substring(0, index+1).trim() + "\n" + pubDateStr.substring(index+1);
+
+        final DownloadRequest downloadRequest = DownloadRequester.getInstance().getRequestFor(media);
+        progressBar.setVisibility(View.INVISIBLE);
+        if (downloadRequest != null) {
+            position.setText(Converter.byteToString(downloadRequest.getSoFar()));
+            if (downloadRequest.getSize() > 0) {
+                duration.setText(Converter.byteToString(downloadRequest.getSize()));
+            } else {
+                duration.setText(Converter.byteToString(media.getSize()));
+            }
+            progressBar.setProgress(downloadRequest.getProgressPercent());
+            progressBar.setVisibility(View.VISIBLE);
+        } else if (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS) {
+            if (media.getDuration() > 0) {
+                int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+                progressBar.setProgress(progress);
+                progressBar.setVisibility(View.VISIBLE);
+                position.setText(Converter.getDurationStringLong(media.getPosition()));
+                duration.setText(Converter.getDurationStringLong(media.getDuration()));
+            }
         }
-        return pubDateStr;
+
+        if (media.getSize() > 0) {
+            size.setText(Converter.byteToString(media.getSize()));
+        } else if (NetworkUtils.isEpisodeHeadDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
+            size.setText("{fa-spinner}");
+            Iconify.addIcons(size);
+            NetworkUtils.getFeedMediaSizeObservable(media).subscribe(
+                    sizeValue -> {
+                        if (sizeValue > 0) {
+                            size.setText(Converter.byteToString(sizeValue));
+                        } else {
+                            size.setText("");
+                        }
+                    }, error -> {
+                        size.setText("");
+                        Log.e(TAG, Log.getStackTraceString(error));
+                    });
+        } else {
+            size.setText("");
+        }
     }
 
     public boolean isCurrentlyPlayingItem() {
@@ -176,21 +173,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
 
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {
         progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
-        progressLeft.setText(Converter.getDurationStringLong(event.getPosition()));
-        progressRight.setText(Converter.getDurationStringLong(event.getDuration()));
-    }
-
-    // Oh Xiaomi, I hate you so much. How did you manage to fuck this up?
-    private static int countMatches(final CharSequence str, final char ch) {
-        if (TextUtils.isEmpty(str)) {
-            return 0;
-        }
-        int count = 0;
-        for (int i = 0; i < str.length(); i++) {
-            if (ch == str.charAt(i)) {
-                count++;
-            }
-        }
-        return count;
+        position.setText(Converter.getDurationStringLong(event.getPosition()));
+        duration.setText(Converter.getDurationStringLong(event.getDuration()));
     }
 }
