@@ -55,7 +55,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<EpisodeItemViewHo
     @NonNull
     @Override
     public EpisodeItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        EpisodeItemViewHolder viewHolder = new EpisodeItemViewHolder(mainActivity.get());
+        EpisodeItemViewHolder viewHolder = new EpisodeItemViewHolder(mainActivity.get(), parent);
         viewHolder.dragHandle.setOnTouchListener((v1, event) -> {
             if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
                 Log.d(TAG, "startDrag()");

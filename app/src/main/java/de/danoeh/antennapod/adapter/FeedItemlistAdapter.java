@@ -51,7 +51,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         EpisodeItemViewHolder holder;
         if (convertView == null) {
-            holder = new EpisodeItemViewHolder(activity);
+            holder = new EpisodeItemViewHolder(activity, parent);
         } else {
             holder = (EpisodeItemViewHolder) convertView.getTag();
         }
