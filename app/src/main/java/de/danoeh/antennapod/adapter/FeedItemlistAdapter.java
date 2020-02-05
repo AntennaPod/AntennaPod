@@ -65,6 +65,10 @@ public class FeedItemlistAdapter extends BaseAdapter {
         holder.bind(item);
         holder.dragHandle.setVisibility(View.GONE);
 
+        if (!makePlayedItemsTransparent) {
+            holder.itemView.setAlpha(1.0f);
+        }
+
         if (item.getMedia() != null && item.getMedia().isCurrentlyPlaying()) {
             currentlyPlayingItem = position;
         }
