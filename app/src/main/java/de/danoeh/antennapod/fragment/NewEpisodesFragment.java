@@ -16,7 +16,7 @@ import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.view.EpisodeItemViewHolder;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and

@@ -6,7 +6,7 @@ import android.widget.BaseAdapter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.view.EpisodeItemViewHolder;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 /**
  * Shows a list of downloaded episodes.

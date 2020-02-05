@@ -10,13 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.danoeh.antennapod.view.EpisodeItemViewHolder;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;

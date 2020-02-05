@@ -7,7 +7,7 @@ import android.widget.ListView;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.view.EpisodeItemViewHolder;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 /**
  * List adapter for items of feeds that the user has already subscribed to.

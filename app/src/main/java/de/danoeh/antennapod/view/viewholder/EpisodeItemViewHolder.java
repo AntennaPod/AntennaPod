@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.view;
+package de.danoeh.antennapod.view.viewholder;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -31,11 +31,12 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.view.CircularProgressBar;
 
 /**
  * Holds the view which shows FeedItems.
  */
-public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
+public class EpisodeItemViewHolder extends FeedComponentViewHolder
         implements QueueRecyclerAdapter.ItemTouchHelperViewHolder {
     private static final String TAG = "EpisodeItemViewHolder";
 
@@ -104,12 +105,11 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         this.item = item;
         placeholder.setText(item.getFeed().getTitle());
         title.setText(item.getTitle());
-        title.setText(item.getTitle());
         pubDate.setText(DateUtils.formatAbbrev(activity, item.getPubDate()));
         isNew.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         isFavorite.setVisibility(item.isTagged(FeedItem.TAG_FAVORITE) ? View.VISIBLE : View.GONE);
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
-        itemView.setAlpha(item.isPlayed() /*&& makePlayedItemsTransparent*/ ? 0.5f : 1.0f);
+        itemView.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
 
         ItemActionButton actionButton = ItemActionButton.forItem(item, true, true);
         actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);

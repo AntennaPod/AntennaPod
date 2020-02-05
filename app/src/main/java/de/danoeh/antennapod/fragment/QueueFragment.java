@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.google.android.material.snackbar.Snackbar;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import de.danoeh.antennapod.view.EpisodeItemViewHolder;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -46,11 +46,9 @@ import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -509,7 +507,6 @@ public class QueueFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
-        recyclerView.setHasFixedSize(true);
         registerForContextMenu(recyclerView);
 
         itemTouchHelper = new ItemTouchHelper(

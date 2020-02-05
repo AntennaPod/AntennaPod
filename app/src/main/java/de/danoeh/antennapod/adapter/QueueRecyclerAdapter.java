@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.fragment.ItemPagerFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.view.EpisodeItemViewHolder;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
