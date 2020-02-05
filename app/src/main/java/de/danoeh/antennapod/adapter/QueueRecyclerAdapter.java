@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -54,19 +55,12 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<EpisodeItemViewHo
 
     @NonNull
     @Override
-    public EpisodeItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        EpisodeItemViewHolder viewHolder = new EpisodeItemViewHolder(mainActivity.get(), parent);
-        viewHolder.dragHandle.setOnTouchListener((v1, event) -> {
-            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                Log.d(TAG, "startDrag()");
-                itemTouchHelper.startDrag(viewHolder);
-            }
-            return false;
-        });
-        return viewHolder;
+    public EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new EpisodeItemViewHolder(mainActivity.get(), parent);
     }
 
     @Override
+    @SuppressLint("ClickableViewAccessibility")
     public void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
         FeedItem item = itemAccess.getItem(pos);
         holder.bind(item);
@@ -83,6 +77,22 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<EpisodeItemViewHo
                 activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
             }
         });
+
+        View.OnTouchListener startDragTouchListener = (v1, event) -> {
+            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                Log.d(TAG, "startDrag()");
+                itemTouchHelper.startDrag(holder);
+            }
+            return false;
+        };
+        if (!locked) {
+            holder.dragHandle.setOnTouchListener(startDragTouchListener);
+            holder.coverHolder.setOnTouchListener(startDragTouchListener);
+        } else {
+            holder.dragHandle.setOnTouchListener(null);
+            holder.coverHolder.setOnTouchListener(null);
+        }
+
         holder.itemView.setOnCreateContextMenuListener(this);
         holder.isInQueue.setVisibility(View.GONE);
         holder.hideSeparatorIfNecessary();

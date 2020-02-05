@@ -110,7 +110,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
         itemView.setAlpha(item.isPlayed() /*&& makePlayedItemsTransparent*/ ? 0.5f : 1.0f);
 
-        ItemActionButton actionButton = ItemActionButton.forItem(item, true);
+        ItemActionButton actionButton = ItemActionButton.forItem(item, true, true);
         actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
         secondaryActionButton.setFocusable(false);
 

@@ -100,7 +100,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:srcCompat="?attr/stat_playlist"
-                    tools:srcCompat="@drawable/ic_playlist_grey_24dp"
+                    tools:srcCompat="@drawable/ic_list_grey600_24dp"
                     android:id="@+id/ivInPlaylist"/>
 
             <TextView
