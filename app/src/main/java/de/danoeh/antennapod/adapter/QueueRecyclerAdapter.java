@@ -84,6 +84,8 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<EpisodeItemViewHo
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
+        holder.isInQueue.setVisibility(View.GONE);
+        holder.hideSeparatorIfNecessary();
     }
 
     @Nullable

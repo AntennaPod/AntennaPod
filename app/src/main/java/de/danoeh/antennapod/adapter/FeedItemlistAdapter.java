@@ -63,6 +63,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
         if (item.getMedia() != null && item.getMedia().isCurrentlyPlaying()) {
             currentlyPlayingItem = position;
         }
+        holder.hideSeparatorIfNecessary();
         return holder.itemView;
     }
 

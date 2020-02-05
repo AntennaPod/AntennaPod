@@ -93,10 +93,6 @@ public abstract class EpisodesListFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     protected TextView txtvInformation;
 
-    boolean showOnlyNewEpisodes() {
-        return false;
-    }
-
     String getPrefName() {
         return DEFAULT_PREF_NAME;
     }
@@ -364,7 +360,7 @@ public abstract class EpisodesListFragment extends Fragment {
      */
     private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
         MainActivity mainActivity = (MainActivity) getActivity();
-        listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess, showOnlyNewEpisodes());
+        listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess);
         listAdapter.setHasStableIds(true);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);

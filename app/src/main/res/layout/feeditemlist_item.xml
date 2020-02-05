@@ -103,6 +103,7 @@
                     android:id="@+id/ivInPlaylist"/>
 
             <TextView
+                    android:id="@+id/separatorIcons"
                     style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -54,6 +54,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
             FeedItem item1 = (FeedItem) v.getTag();
             itemAccess.onFeedItemSecondaryAction(item1);
         });
+        holder.hideSeparatorIfNecessary();
 
         return holder.itemView;
     }

@@ -49,13 +49,14 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
     private final TextView position;
     private final TextView duration;
     private final TextView size;
-    private final TextView isNew;
-    private final ImageView isInQueue;
+    public final TextView isNew;
+    public final ImageView isInQueue;
     private final ImageView isVideo;
-    private final ImageView isFavorite;
+    public final ImageView isFavorite;
     private final ProgressBar progressBar;
     public final ImageButton butSecondary;
     private final MainActivity activity;
+    private final TextView separatorIcons;
 
     private FeedItem item;
 
@@ -80,6 +81,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         isNew = itemView.findViewById(R.id.statusUnread);
         isFavorite = itemView.findViewById(R.id.isFavorite);
         size = itemView.findViewById(R.id.size);
+        separatorIcons = itemView.findViewById(R.id.separatorIcons);
         itemView.setTag(this);
     }
 
@@ -188,5 +190,17 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
         position.setText(Converter.getDurationStringLong(event.getPosition()));
         duration.setText(Converter.getDurationStringLong(event.getDuration()));
+    }
+
+    /**
+     * Hides the separator dot between icons and text if there are no icons.
+     */
+    public void hideSeparatorIfNecessary() {
+        boolean hasIcons = isNew.getVisibility() == View.VISIBLE
+                || isInQueue.getVisibility() == View.VISIBLE
+                || isVideo.getVisibility() == View.VISIBLE
+                || isFavorite.getVisibility() == View.VISIBLE
+                || isNew.getVisibility() == View.VISIBLE;
+        separatorIcons.setVisibility(hasIcons ? View.VISIBLE : View.GONE);
     }
 }

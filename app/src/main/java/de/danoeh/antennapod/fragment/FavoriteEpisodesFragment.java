@@ -32,11 +32,6 @@ public class FavoriteEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 
     @Override
-    protected boolean showOnlyNewEpisodes() {
-        return true;
-    }
-
-    @Override
     protected String getPrefName() {
         return PREF_NAME;
     }

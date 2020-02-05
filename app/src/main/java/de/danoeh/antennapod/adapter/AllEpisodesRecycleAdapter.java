@@ -27,20 +27,18 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<EpisodeItemV
 
     private final WeakReference<MainActivity> mainActivityRef;
     private final ItemAccess itemAccess;
-    private final boolean showOnlyNewEpisodes;
 
     private FeedItem selectedItem;
 
-    public AllEpisodesRecycleAdapter(MainActivity mainActivity, ItemAccess itemAccess, boolean showOnlyNewEpisodes) {
+    public AllEpisodesRecycleAdapter(MainActivity mainActivity, ItemAccess itemAccess) {
         super();
         this.mainActivityRef = new WeakReference<>(mainActivity);
         this.itemAccess = itemAccess;
-        this.showOnlyNewEpisodes = showOnlyNewEpisodes;
     }
 
     @NonNull
     @Override
-    public EpisodeItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         EpisodeItemViewHolder viewHolder = new EpisodeItemViewHolder(mainActivityRef.get(), parent);
         viewHolder.dragHandle.setVisibility(View.GONE);
         return viewHolder;
@@ -63,6 +61,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<EpisodeItemV
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
+        holder.hideSeparatorIfNecessary();
     }
 
     @Nullable
