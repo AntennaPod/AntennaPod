@@ -23,7 +23,7 @@
 
     <dimen name="listitem_threeline_textleftpadding">16dp</dimen>
     <dimen name="listitem_threeline_textrightpadding">8dp</dimen>
-    <dimen name="listitem_threeline_verticalpadding">16dp</dimen>
+    <dimen name="listitem_threeline_verticalpadding">8dp</dimen>
     <dimen name="listitem_threeline_horizontalpadding">16dp</dimen>
 
     <dimen name="list_vertical_padding">8dp</dimen>

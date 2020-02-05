@@ -42,7 +42,7 @@
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:background="@color/light_gray"
-                android:maxLines="3"
+                android:maxLines="2"
                 android:ellipsize="end"/>
         <ImageView
                 android:id="@+id/imgvCover"
