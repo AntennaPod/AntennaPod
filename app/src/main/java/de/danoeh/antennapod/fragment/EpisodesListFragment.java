@@ -83,8 +83,6 @@ public abstract class EpisodesListFragment extends Fragment {
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
-    @NonNull
-    private List<Downloader> downloaderList = new ArrayList<>();
 
     private boolean isUpdatingFeeds;
     boolean isMenuInvalidationAllowed = false;
@@ -344,10 +342,10 @@ public abstract class EpisodesListFragment extends Fragment {
     }
 
     protected void onFragmentLoaded(List<FeedItem> episodes) {
-        listAdapter.notifyDataSetChanged();
-
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
+        } else {
+            listAdapter.updateItems(episodes);
         }
 
         restoreScrollPosition();
@@ -360,39 +358,12 @@ public abstract class EpisodesListFragment extends Fragment {
      */
     private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
         MainActivity mainActivity = (MainActivity) getActivity();
-        listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess);
+        listAdapter = new AllEpisodesRecycleAdapter(mainActivity);
         listAdapter.setHasStableIds(true);
+        listAdapter.updateItems(episodes);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);
     }
-
-    private final AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
-
-        @Override
-        public int getCount() {
-            return episodes.size();
-        }
-
-        @Override
-        public FeedItem getItem(int position) {
-            if (0 <= position && position < episodes.size()) {
-                return episodes.get(position);
-            }
-            return null;
-        }
-
-        @Override
-        public LongList getQueueIds() {
-            LongList queueIds = new LongList();
-            for (FeedItem item : episodes) {
-                if (item.isTagged(FeedItem.TAG_QUEUE)) {
-                    queueIds.add(item.getId());
-                }
-            }
-            return queueIds;
-        }
-
-    };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
@@ -432,7 +403,7 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        downloaderList = update.downloaders;
+        List<Downloader> downloaderList = update.downloaders;
         if (isMenuInvalidationAllowed && event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             requireActivity().invalidateOptionsMenu();
         }
