@@ -186,7 +186,7 @@ public class FeedItemlistFragment extends ListFragment {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setQueryHint(getString(R.string.search_label));
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
              @Override
              public boolean onMenuItemActionExpand(MenuItem item) {
