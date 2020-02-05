@@ -2,20 +2,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="48dp"
-             android:layout_height="match_parent"
+             android:layout_height="48dp"
              android:layout_marginRight="16dp"
-             android:layout_marginEnd="16dp">
+             android:layout_marginEnd="16dp"
+             android:id="@+id/secondaryActionButton"
+             android:background="?selectableItemBackgroundBorderless"
+             android:clickable="true"
+             android:focusable="false"
+             android:focusableInTouchMode="false" >
 
-    <ImageButton
-            android:id="@+id/butSecondaryAction"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:clickable="false"
-            android:focusable="false"
+    <ImageView
+            android:id="@+id/secondaryActionIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_gravity="center"
-            android:focusableInTouchMode="false"
             tools:ignore="ContentDescription"
-            android:background="?selectableItemBackgroundBorderless"
             tools:src="@sample/secondaryaction"/>
 
     <de.danoeh.antennapod.view.CircularProgressBar

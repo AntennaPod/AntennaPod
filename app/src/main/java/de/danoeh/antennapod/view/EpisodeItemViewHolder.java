@@ -51,7 +51,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
     private final ImageView isVideo;
     public final ImageView isFavorite;
     private final ProgressBar progressBar;
-    public final ImageButton butSecondary;
+    public final View secondaryActionButton;
+    public final ImageView secondaryActionIcon;
     private final CircularProgressBar secondaryActionProgress;
     private final MainActivity activity;
     private final TextView separatorIcons;
@@ -72,7 +73,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         pubDate = itemView.findViewById(R.id.txtvPubDate);
         position = itemView.findViewById(R.id.txtvPosition);
         duration = itemView.findViewById(R.id.txtvDuration);
-        butSecondary = itemView.findViewById(R.id.butSecondaryAction);
         progressBar = itemView.findViewById(R.id.progressBar);
         isInQueue = itemView.findViewById(R.id.ivInPlaylist);
         isVideo = itemView.findViewById(R.id.ivIsVideo);
@@ -81,6 +81,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         size = itemView.findViewById(R.id.size);
         separatorIcons = itemView.findViewById(R.id.separatorIcons);
         secondaryActionProgress = itemView.findViewById(R.id.secondaryActionProgress);
+        secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
+        secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         itemView.setTag(this);
     }
 
@@ -106,9 +108,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         itemView.setAlpha(item.isPlayed() /*&& makePlayedItemsTransparent*/ ? 0.5f : 1.0f);
 
         ItemActionButton actionButton = ItemActionButton.forItem(item, true);
-        actionButton.configure(butSecondary, activity);
-        butSecondary.setFocusable(false);
-        butSecondary.setTag(item);
+        actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
+        secondaryActionButton.setFocusable(false);
 
         if (item.getMedia() != null) {
             bind(item.getMedia());
@@ -131,7 +132,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         if (media.isCurrentlyPlaying()) {
             container.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
         } else {
-            container.setBackgroundColor(Color.TRANSPARENT);
+            container.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         }
 
         if (DownloadRequester.getInstance().isDownloadingFile(media)) {
@@ -146,7 +147,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
 
         if (media.getDuration() > 0
                 && (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS)) {
-                int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+            int progress = (int) (100.0 * media.getPosition() / media.getDuration());
             progressBar.setProgress(progress);
             position.setText(Converter.getDurationStringLong(media.getPosition()));
             duration.setText(Converter.getDurationStringLong(media.getDuration()));
