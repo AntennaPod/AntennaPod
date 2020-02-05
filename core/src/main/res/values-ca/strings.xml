@@ -91,11 +91,14 @@
     <item quantity="one">1 dia després d\'acabar</item>
     <item quantity="other">%d dies després d\'acabar</item>
   </plurals>
+  <string name="num_selected_label">%d sel·leccionat</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Enllaç del canal</string>
   <string name="etxtFeedurlHint">URL, canal o lloc web</string>
   <string name="txtvfeedurl_label">Afegeix podcast amb l\'URL</string>
   <string name="browse_gpoddernet_label">Navega gpodder.net</string>
+  <string name="discover">Descobreix</string>
+  <string name="discover_more">més »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
   <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
@@ -246,6 +249,7 @@
   <string name="appearance">Aparença</string>
   <string name="external_elements">Elements externs</string>
   <string name="interruptions">Interrupcions</string>
+  <string name="preference_search_hint">Cerca…</string>
   <string name="media_player">Reproductor multimèdia</string>
   <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
   <string name="pref_episode_cleanup_summary">Els episodis que no es troben a la cua i no són preferits seran candidats a ser suprimits si l\'Auto Descàrrega necessita espai per a nous episodis</string>
@@ -494,8 +498,10 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
   <!--Add podcast fragment-->
+  <string name="search_podcast_hint">Cerca podcast…</string>
   <string name="search_itunes_label">Cerca a iTunes</string>
   <string name="search_fyyd_label">Cerca a fyyd</string>
+  <string name="advanced_search">Cerca avançada</string>
   <string name="filter">Filtra</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tot</string>

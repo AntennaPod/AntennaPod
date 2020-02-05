@@ -10,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import java.util.Locale;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -102,13 +101,12 @@ public class PlaybackControlsDialog extends DialogFragment {
                 if (controller != null && controller.canSetPlaybackSpeed()) {
                     float playbackSpeed = (progress + 10) / 20.0f;
                     controller.setPlaybackSpeed(playbackSpeed);
-                    String speedPref = String.format(Locale.US, "%.2f", playbackSpeed);
 
                     PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(playbackSpeed);
                     if (isPlayingVideo) {
-                        UserPreferences.setVideoPlaybackSpeed(speedPref);
+                        UserPreferences.setVideoPlaybackSpeed(playbackSpeed);
                     } else {
-                        UserPreferences.setPlaybackSpeed(speedPref);
+                        UserPreferences.setPlaybackSpeed(playbackSpeed);
                     }
 
                     String speedStr = String.format("%.2fx", playbackSpeed);

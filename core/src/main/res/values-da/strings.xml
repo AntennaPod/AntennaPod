@@ -64,6 +64,7 @@
   <string name="cover_label">Billede</string>
   <string name="error_label">Fejl</string>
   <string name="error_msg_prefix">En fejl er opstået:</string>
+  <string name="needs_storage_permission">Tilladelse til lageradgang kræves for denne handling</string>
   <string name="refresh_label">Opdater</string>
   <string name="external_storage_error_msg">Ingen ekstern harddisk er tilgængelig. Vær venlig at sørge for at den eksterne hukommelse er monteret så app\'en kan fungere korrekt.</string>
   <string name="chapters_label">Kapitler</string>
@@ -86,6 +87,10 @@
   <string name="episode_cleanup_never">Aldrig</string>
   <string name="episode_cleanup_queue_removal">Når ikke i kø</string>
   <string name="episode_cleanup_after_listening">Efter færdig afspilning</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 time efter afslutning</item>
+    <item quantity="other">%d timer efter afslutning</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 dag efter færdig afspilning</item>
     <item quantity="other">%d dage efter færdig afspilning</item>
@@ -95,18 +100,28 @@
   <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Tilføj podcast via webadresse</string>
   <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
+  <string name="discover">Opdag</string>
+  <string name="discover_more">mere »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som afspillet</string>
   <string name="mark_all_read_msg">Marker alle udsendelser som afspillet</string>
   <string name="mark_all_read_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som værende afspillet.</string>
+  <string name="remove_all_new_flags_label">Fjern alle \"ny\"-markeringer</string>
+  <string name="removed_all_new_flags_msg">Fjernede alle \"ny\"-markeringer</string>
   <string name="show_info_label">Vis information</string>
+  <string name="show_feed_settings_label">Vis podcast-indstillinger</string>
   <string name="feed_info_label">Podcast-info</string>
+  <string name="feed_settings_label">Podcast-indstillinger</string>
   <string name="rename_feed_label">Omdøb podcast</string>
   <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_label">Del…</string>
   <string name="share_link_label">Del udsendelsens webadresse</string>
+  <string name="share_link_with_position_label">Del webadresse for udsendelse med position</string>
   <string name="share_file_label">Del fil</string>
+  <string name="share_website_url_label">Del webstedets adresse</string>
   <string name="share_feed_url_label">Del webadresse for feedet</string>
+  <string name="share_item_url_label">Del webadresse for mediefil</string>
+  <string name="share_item_url_with_position_label">Del webadresse for mediefil med position</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du ønsker at slette podcasten \"%1$s\" og ALLE dens udsendelser (inklusive overførte udsendelser)</string>
   <string name="feed_remover_msg">Fjerner podcast</string>
   <string name="load_complete_feed">Opdater komplet podcast</string>
@@ -127,17 +142,40 @@
   <string name="open_podcast">Åbn podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
+  <plurals name="downloading_batch_label">
+    <item quantity="one">Henter %d udsendelse.</item>
+    <item quantity="other">Henter %d udsendelser.</item>
+  </plurals>
   <string name="play_label">Afspil</string>
   <string name="pause_label">Sæt på pause</string>
   <string name="stream_label">Stream</string>
   <string name="delete_label">Slet</string>
   <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
+  <string name="delete_episode_label">Slet udsendelse</string>
+  <plurals name="deleted_episode_batch_label">
+    <item quantity="one">%d udsendelse slettet.</item>
+    <item quantity="other">%d udsendelser slettet.</item>
+  </plurals>
+  <string name="remove_new_flag_label">Fjern \"ny\"-markering</string>
+  <string name="removed_new_flag_label">Fjernet \"ny\"-markering</string>
   <string name="mark_read_label">Marker som læst</string>
   <string name="marked_as_read_label">Markeret som afspillet</string>
+  <plurals name="marked_read_batch_label">
+    <item quantity="one">%d udsendelse markeret som afspillet.</item>
+    <item quantity="other">%d udsendelser markeret som afspillet.</item>
+  </plurals>
   <string name="mark_unread_label">Marker som uafspillet</string>
+  <plurals name="marked_unread_batch_label">
+    <item quantity="one">%d udsendelse markeret som uafspillet.</item>
+    <item quantity="other">%d udsendelser markeret som uafspillede.</item>
+  </plurals>
   <string name="add_to_queue_label">Føj til kø</string>
   <string name="added_to_queue_label">Føjet til kø</string>
   <string name="remove_from_queue_label">Fjern fra kø</string>
+  <plurals name="removed_from_queue_batch_label">
+    <item quantity="one">%d udsendelse fjernet fra køen.</item>
+    <item quantity="other">%d udsendelser fjernet fra køen.</item>
+  </plurals>
   <string name="add_to_favorite_label">Føj til foretrukne</string>
   <string name="added_to_favorites">Føjet til foretrukne</string>
   <string name="remove_from_favorite_label">Fjern fra foretrukne</string>
@@ -189,6 +227,9 @@
   <string name="confirm_mobile_download_dialog_title">Bekræft brug af mobildata</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Overførsel over mobil dataforbindelse er slået fra i indstillingerne.\n\nDu kan vælge blot at føje udsendelsen til køen eller du kan tillade overførsel midlertidigt.\n\n<small>Dit valg vil blive husket i 10 minutter.</small></string>
   <string name="confirm_mobile_download_dialog_message">Overførsel over mobil dataforbindelse er slået fra i indstillingerne.\n\nVil du tillade overførsel midlertidigt?\n\n<small>Dit valg vil blive husket i 10 minutter.</small></string>
+  <string name="confirm_mobile_streaming_notification_title">Bekræft mobil streaming</string>
+  <string name="confirm_mobile_streaming_notification_message">Streaming via mobildata er slået fra i indstillingerne. Tryk for at streame alligevel.</string>
+  <string name="confirm_mobile_streaming_button_always">Tillad altid</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Sæt i kø</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Tillad midlertidigt</string>
   <!--Mediaplayer messages-->
@@ -198,6 +239,7 @@
   <string name="player_ready_msg">Klar</string>
   <string name="player_seeking_msg">Søger</string>
   <string name="playback_error_server_died">Server døde</string>
+  <string name="playback_error_unsupported">Kan ikke afspille denne medietype</string>
   <string name="playback_error_unknown">Ukendt fejl</string>
   <string name="no_media_playing_label">Ingen medier afspiller</string>
   <string name="player_buffering_msg">Henter data til buffer</string>
@@ -208,27 +250,44 @@
   <string name="unlock_queue">Lås kø op</string>
   <string name="queue_locked">Kø låst</string>
   <string name="queue_unlocked">Kø låst op</string>
+  <string name="checkbox_do_not_show_again">Vis ikke igen</string>
   <string name="clear_queue_label">Ryd kø</string>
   <string name="undo">Fortryd</string>
   <string name="move_to_top_label">Flyt til toppen</string>
   <string name="move_to_bottom_label">Flyt til bunden</string>
   <string name="sort">Sorter</string>
+  <string name="keep_sorted">Hold sorteret</string>
   <string name="date">Dato</string>
   <string name="duration">Varighed</string>
   <string name="episode_title">Titel på udsendelse</string>
   <string name="feed_title">Titel på podcast</string>
   <string name="random">Tilfældig</string>
+  <string name="smart_shuffle">Smart blanding</string>
   <string name="ascending">Stigende</string>
   <string name="descending">Faldende</string>
   <string name="clear_queue_confirmation_msg">Bekræft venligst at du vil rydde ALLE udsendelser fra køen</string>
+  <string name="sort_old_to_new">Gamle til nye</string>
+  <string name="sort_new_to_old">Nye til gamle</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
   <string name="set_playback_speed_label">Afspilningshastigheder</string>
   <string name="enable_sonic">Slå Sonic til</string>
   <!--Empty list labels-->
+  <string name="no_items_header_label">Ingen udsendelser i køen</string>
   <string name="no_shownotes_label">Denne udsendelse har ingen beskrivelse.</string>
+  <string name="no_run_downloads_head_label">Ingen overførsler i gang</string>
+  <string name="no_comp_downloads_head_label">Ingen overførte udsendelser</string>
+  <string name="no_log_downloads_head_label">Ingen overførselslog</string>
+  <string name="no_history_head_label">Ingen historik</string>
+  <string name="no_all_episodes_head_label">Ingen udsendelser</string>
+  <string name="no_all_episodes_label">Når du tilføjer en podcast, vil udsendelserne blive vist her.</string>
+  <string name="no_new_episodes_label">Når nye udsendelser ankommer, vil de blive vist her.</string>
+  <string name="no_fav_episodes_head_label">Ingen foretrukne udsendelser</string>
+  <string name="no_fav_episodes_label">Du kan føje udsendelser til foretrukne ved at trykke længe på dem</string>
+  <string name="no_chapters_head_label">Ingen kapitler</string>
   <string name="no_chapters_label">Denne udsendelse har ingen kapitler.</string>
+  <string name="no_subscriptions_head_label">Ingen abonnementer</string>
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
   <string name="project_pref">Projekt</string>
@@ -237,8 +296,12 @@
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Import/eksport</string>
+  <string name="import_export_search_keywords">sikkerhedskopiering, sikkerhedskopi, backup, gendan, gendannelse, restore</string>
   <string name="appearance">Udseende</string>
   <string name="interruptions">Afbrydelser</string>
+  <string name="preference_search_hint">Søg...</string>
+  <string name="preference_search_no_results">Ingen resultater</string>
+  <string name="preference_search_clear_history">Slet historik</string>
   <string name="media_player">Medieafspiller</string>
   <string name="pref_episode_cleanup_title">Oprydning i udsendelser</string>
   <string name="pref_episode_cleanup_summary">Tillad at udsendelser, som ikke er i køen og som ikke er markeret som foretrukne, kan fjernes, hvis Automatisk overførsel har brug for plads til nye udsendelser</string>
@@ -271,7 +334,11 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Afbrydelse af hovedtelefoner</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Tilslutning af hovedtelefoner igen</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth forbundet igen</string>
+  <string name="pref_stream_over_download_title">Foretræk streaming</string>
   <string name="pref_mobileUpdate_title">Mobile opdateringer</string>
+  <string name="pref_mobileUpdate_auto_download">Hent automatisk</string>
+  <string name="pref_mobileUpdate_episode_download">Download af udsendelser</string>
+  <string name="pref_mobileUpdate_streaming">Streaming</string>
   <string name="user_interface_label">Brugergrænseflade</string>
   <string name="pref_set_theme_title">Vælg tema</string>
   <string name="pref_nav_drawer_items_title">Vælg elementer i navigationspanelet</string>
@@ -288,6 +355,7 @@
   <string name="pref_automatic_download_on_battery_sum">Tillad automatisk overførsel, når batteriet ikke oplades</string>
   <string name="pref_parallel_downloads_title">Parallelle overførsler</string>
   <string name="pref_episode_cache_title">Mellemlager for udsendelser</string>
+  <string name="pref_theme_title_use_system">Brug systemtema</string>
   <string name="pref_theme_title_light">Lys</string>
   <string name="pref_theme_title_dark">Mørk</string>
   <string name="pref_theme_title_trueblack">Sort (AMOLED-klar)</string>
@@ -331,9 +399,18 @@
   <string name="pref_showDownloadReport_title">Vis rapport over overførsler</string>
   <string name="pref_showDownloadReport_sum">Lav en rapport, som viser detaljer om fejlene, hvis overførsler fejler</string>
   <string name="pref_expand_notify_unsupport_toast">Android-versioner før 4.1 understøtter ikke udvidede notifikationer.</string>
+  <string name="pref_enqueue_location_title">Placering i kø</string>
+  <string name="pref_enqueue_location_sum">Føj udsendelser til: %1$s</string>
+  <string name="enqueue_location_back">Slutningen</string>
+  <string name="enqueue_location_front">Starten</string>
+  <string name="enqueue_location_after_current">Efter aktuel udsendelse</string>
   <string name="pref_smart_mark_as_played_disabled">Slået fra</string>
   <string name="pref_image_cache_size_title">Størrelse på mellemlager (cache) for billeder</string>
   <string name="pref_image_cache_size_sum">Størrelse på diskmellemlageret (disk cache) for billeder</string>
+  <string name="bug_report_title">Rapportér fejl i appen</string>
+  <string name="open_bug_tracker">Åbn programfejlsdatabase</string>
+  <string name="copy_to_clipboard">Kopier til udklipsholder</string>
+  <string name="copied_to_clipboard">Kopieret til udklipsholder</string>
   <string name="experimental_pref">Eksperimentelt</string>
   <string name="pref_current_value">Nuværende værdi: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
@@ -343,9 +420,10 @@
   <string name="pref_cast_message_play_flavor">Aktiver understøttelse af fjernafspilning på Cast-enheder (såsom Chromecast, højttalere med indbygget Chromecast, eller Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast kræver tredjeparts proprietære biblioteker, som er slået fra i denne version af AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Sæt overførte udsendelser i kø</string>
-  <string name="pref_enqueue_downloaded_summary">Føj udsendelser til køen, så snart de er overført</string>
+  <string name="pref_enqueue_downloaded_summary">Føj downloadede udsendelser til køen</string>
   <string name="media_player_builtin">Indbygget Android-afspiller</string>
   <string name="pref_videoBehavior_title">Når videoen forlades</string>
+  <string name="pref_videoBehavior_sum">Opførsel når videoafspilning forlades</string>
   <string name="stop_playback">Stop afspilning</string>
   <string name="continue_playback">Fortsæt afspilning af lyd</string>
   <string name="behavior">Funktion</string>
@@ -355,11 +433,13 @@
   <string name="back_button_open_drawer">Åbn navigationsskuffen</string>
   <string name="back_button_double_tap">Dobbelttryk for at afslutte</string>
   <string name="back_button_show_prompt">Bekræft for at afslutte</string>
+  <string name="close_prompt">Er du sikker på at du vil lukke AntennaPod?</string>
   <string name="double_tap_toast">Tryk på tilbageknappen igen for at afslutte</string>
   <string name="back_button_go_to_page">Gå til side ...</string>
   <string name="back_button_go_to_page_title">Vælg side</string>
   <!--About screen-->
   <string name="about_pref">Om</string>
+  <string name="translators">Oversættere</string>
   <!--Search-->
   <string name="search_hint">Søg efter udsendelser</string>
   <string name="found_in_shownotes_label">Fundet i beskrivelse</string>
@@ -453,6 +533,7 @@
   <string name="choose_data_directory">Vælg datamappe</string>
   <string name="choose_data_directory_message">Vælg venligst roden af din datamappe. AntennaPod vil oprette passende undermapper.</string>
   <string name="choose_data_directory_permission_rationale">Adgang til eksternt lager er kræver for at ændre datamappen</string>
+  <string name="choose_data_directory_available_space">%1$s af %2$s ledig</string>
   <string name="create_folder_msg">Opret en ny mappe med navnet \"%1$s\"?</string>
   <string name="create_folder_success">Oprettede ny mappe</string>
   <string name="create_folder_error_no_write_access">Kan ikke skrive til denne mappe</string>
@@ -471,6 +552,7 @@
   <string name="pref_restart_required">AntennaPod skal genstartes for at denne indstilling kan træde i kraft</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonner</string>
+  <string name="subscribing_label">Abonnerer ...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Spol tilbage</string>
   <string name="fast_forward_label">Spol frem</string>
@@ -496,8 +578,10 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra enkeltformålsapps…</string>
   <!--Add podcast fragment-->
+  <string name="search_podcast_hint">Søg efter podcast ...</string>
   <string name="search_itunes_label">Søg i iTunes</string>
   <string name="search_fyyd_label">Søg i fyyd</string>
+  <string name="advanced_search">Avanceret søgning</string>
   <string name="filter">Filtrér</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
@@ -579,6 +663,9 @@
   <string name="notification_channel_user_action">Handling påkrævet</string>
   <string name="notification_channel_downloading">Henter</string>
   <string name="notification_channel_downloading_description">Vises samtidig med den hentes.</string>
+  <string name="notification_channel_playing">Spiller nu</string>
   <string name="notification_channel_error">Fejl</string>
+  <string name="import_bad_file">Ugyldig/ødelagt fil</string>
   <!--Widget settings-->
+  <string name="widget_opacity">Ugennemsigtighed</string>
 </resources>

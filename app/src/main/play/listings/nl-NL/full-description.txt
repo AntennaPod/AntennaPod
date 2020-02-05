@@ -1,42 +1,31 @@
-Met AntennaPod speel en beheer je al je podcasts en krijg je directe toegang tot duizenden gratis en betaalde podcasts - van onafhankelijke makers tot grote merken zoals BBC, CNN en NPO. Via de iTunes-databank, OPML-bestanden en simpele RSS-linkjes voeg je deze podcasts gemakkelijk toe. Dankzij simpele maar slimme automatische controle van het downloaden en verwijderen van afleveringen bespaar je de accu, hoef je je favoriete podcast niet meer handmatig te volgen en verbruik je geen onnodige mobiele gegevens.<br>
-Maar belangrijker: download, stream of voeg afleveringen toe aan de wachtrij en geniet ervan! Je hebt beschikking over afspeelsnelheden, hoofdstukondersteuning en een slaaptimer.
+Met AntennaPod speel en beheer je al je podcasts en krijg je directe toegang tot duizenden gratis en betaalde podcasts - van onafhankelijke makers tot grote merken zoals BBC, CNN en NPO. Via de iTunes-database, OPML-bestanden en simpele RSS-linkjes voeg je deze podcasts makkelijk toe.
+Download, stream of voeg afleveringen toe aan de wachtrij. Met instelbare afspeelsnelheden, hoofdstukondersteuning en een slaaptimer luister je podcasts op de manier die jij prettig vindt.
+Spaar moeite, je batterij en je databundel met slimme automatische controle op het downloaden nieuwe afleveringen. En AntennaPod verwijdert ook je oude afleveringen, afhankelijk van je instellingen.
 
-Gemaakt door podcast-enthousiastelingen, AntennaPod is vrij in de breedste zin van het woord: vrij van advertenties, open source en gratis.
+AntennaPod is gemaakt door podcast-enthousiastelingen. Het team van vrijwilligers bieden je het gratis aan - vrij van advertenties en open source.
 
-<b>Alle features:</b><br>
-IMPORTEREN, ORGANISEREN, AFSPELEN<br>
-&#8226; Voeg feeds toe via iTunes and gPodder.net database, OPML-bestanden and RSS of Atom linkjes<br>
-&#8226; Beheer het afspelen overal: met een homescreen widget, in je Android meldingen en de knoppen op je koptelefoon en bluetooth-apparaat<br>
-&#8226; Bepaal zelf hoe je luistert met aanpasbare afspeelsnelheden, ondersteuning van hoofdstukken (MP3, VorbisComment en Podlove), afspeelpositie voor elke aflevering en een handige 'slaap timer' (schudden om te resetten, volume langzaam zachter en herstel naar normale afspeelsnelheid)<br>
-&#8226; Toegang tot wachtwoord-beveiligde podcasts en afleveringen<br>
-&#8226; Doe je voordeel met 'paged feeds' (www.podlove.org/paged-feeds)
+<b>Importeren, organiseren en afspelen</b>
+• Beheer het afspelen op elke manier: met een homescreen widget, in je Android meldingen en via de knoppen op je koptelefoon en bluetooth-apparaat
+• Voeg podcasts toe via iTunes- en gPodder.net-databases, OPML-bestanden en RSS- of Atom-links
+• Bepaal zelf hoe je luistert met aanpasbare afspeelsnelheden, ondersteuning van hoofdstukken, opslag van afspeelpositie voor elke aflevering en een handige 'slaap timer' (schudden om te resetten, volume langzaam zachter)
+• Toegang tot wachtwoord-beveiligde podcasts en afleveringen
 
-DEEL & WAARDEER<br>
-&#8226; Hou het beste van het beste bij door afleveringen als favoriet te markeren<br>
-&#8226; Vindt die ene aflevering terug in de afspeelgeschiedenis of door te zoeken (in titels, shownotes en makers)<br>
-&#8226; Deel podcasts en afleveringen via uitgebreide opties voor sociale media, WhatsApp, email en gPodder.net<br>
+<b>Hou bij, deel en waardeer</b>
+• Hou het beste van het beste bij door afleveringen als favoriet te markeren
+• Vindt die ene aflevering terug via de afspeelgeschiedenis of door te zoeken in titels en shownotes
+• Deel podcasts en afleveringen via uitgebreide opties voor sociale media, email, gPodder.net of een OPML-bestand
 
-HOUD DE CONTROLE
-&#8226; Beheer automatische downloads: kies je podcasts, sluit mobiele netwerken uit, selecteer specifieke WiFi-verbindingen, eis dat de telefoon wordt opgeladen and bepaal tijden of intervals<br>
-&#8226; Controleer geheugengebruik: stel een maximumaantal gedownloade afleveringen in, laat afleveringen automatisch verwijderen (maar sluit je favorieten en niet-afgespeelde afleveringen uit) en selecteer zelf je opslaglocatie<br>
-&#8226; Gebruik AntennaPod in jouw taal: Nederlands! (Of in het Engels, Zweeds, Frans, Duits, Spaans, enz)<br>
-&#8226; Voel je een kameleon: kies voor een licht of donker uiterlijk<br>
-&#8226; Back-up je abonnementen via gPodder.net en geëxporteerde OPML-bestanden
+<b>Hou de controle</b>
+• Beheer automatische downloads: kies je podcasts, sluit mobiele netwerken uit, selecteer specifieke WiFi-verbindingen, vereis dat de telefoon wordt opgeladen en bepaal tijden of intervals
+• Controleer geheugengebruik: stel een maximumaantal gedownloade afleveringen in, laat afleveringen automatisch verwijderen en selecteer zelf je opslaglocatie
+• Voel je een kameleon: kies voor een licht of donker uiterlijk
+• Back-up je abonnementen via gPodder.net en geëxporteerde OPML-bestanden
 
-<b>Doe mee met de AntennaPod gemeenschap!</b><br>
+<b>Doe mee met de AntennaPod-gemeenschap!</b>
 AntennaPod wordt regelmatig geüpdatet door vrijwilligers. En jij kan ook helpen, met code of commentaar!
 
-GitHub is de beste plek voor foutmeldingen, verzoekjes voor nieuwe functies en bijdragen aan de code:<br>
+Je kunt op GitHub terecht voor foutmeldingen, verzoekjes voor nieuwe functies en bijdragen aan de code:
 https://www.github.com/AntennaPod/AntennaPod
 
-Onze Google Group is de beste plek om je ideeën, favoriete podcast-momenten en waardering naar alle vrijwilligers te delen:<br>
-https://groups.google.com/forum/#!forum/antennapod
-
-Heb je een vraag of wil je feedback geven?
-https://twitter.com/@AntennaPod
-
-Transifex is de beste plek om te helpen met vertalen:<br>
+Transifex is de beste plek om te helpen met vertalen:
 https://www.transifex.com/antennapod/antennapod
-
-Check het Beta Testprogramma om de laatste features als eerst te krijgen:<br>
-https://www.github.com/AntennaPod/AntennaPod/wiki/Help-test-AntennaPod

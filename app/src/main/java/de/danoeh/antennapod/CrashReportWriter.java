@@ -35,7 +35,9 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
         PrintWriter out = null;
         try {
             out = new PrintWriter(new FileWriter(path));
-            out.println(getSystemInfo());
+            out.println("[ Crash info ]");
+            out.println("Time: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
+            out.println("AntennaPod version: " + BuildConfig.VERSION_NAME);
             out.println();
             out.println("[ StackTrace ]");
             ex.printStackTrace(out);
@@ -54,7 +56,6 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
                 "\nAntennaPod version: " + BuildConfig.VERSION_NAME +
                 "\nModel: " + Build.MODEL +
                 "\nDevice: " + Build.DEVICE +
-                "\nProduct: " + Build.PRODUCT +
-                "\nTime: " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()) + "\n";
+                "\nProduct: " + Build.PRODUCT;
     }
 }

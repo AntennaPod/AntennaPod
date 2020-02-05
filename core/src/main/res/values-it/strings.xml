@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="feed_update_receiver_name">Aggiorna Sottoscrizioni</string>
+  <string name="feed_update_receiver_name">Aggiorna sottoscrizioni</string>
   <string name="feeds_label">Feed</string>
   <string name="statistics_label">Statistiche</string>
   <string name="add_feed_label">Aggiungi un podcast</string>
@@ -17,7 +17,7 @@
   <string name="downloads_log_label">Registro</string>
   <string name="subscriptions_label">Sottoscrizioni</string>
   <string name="subscriptions_list_label">Elenco sottoscrizioni</string>
-  <string name="cancel_download_label">Annulla\nil Download</string>
+  <string name="cancel_download_label">Annulla\nil download</string>
   <string name="playback_history_label">Cronologia riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_summary">Sincronizza con altri dispositivi</string>
@@ -28,15 +28,15 @@
   <string name="total_time_listened_to_podcasts">Tempo totale di riproduzione:</string>
   <string name="statistics_details_dialog">%1$d di %2$d episodi iniziati.\n\nRiprodotti %3$s di %4$s.</string>
   <string name="statistics_mode">Modalità di calcolo</string>
-  <string name="statistics_mode_normal">Calcola il tempo di riproduzione reale. Riprodurre un podcast due volte verrà contato due volte, segnarlo come riprodotto no.</string>
+  <string name="statistics_mode_normal">Tempo di riproduzione reale. Riprodurre due volte un episodio verrà contato doppio, segnarlo come riprodotto no.</string>
   <string name="statistics_mode_count_all">Somma il tempo di riproduzione di tutti i podcast segnati come riprodotti</string>
-  <string name="statistics_speed_not_counted">Avviso: La velocità di riproduzione non viene considerata.</string>
+  <string name="statistics_speed_not_counted">Avviso: la velocità di riproduzione non viene considerata.</string>
   <string name="statistics_reset_data">Resetta statistiche</string>
-  <string name="statistics_reset_data_msg">Verranno eliminate le statistiche del tempo di riproduzione per tutti gli episodi. Sei sicuro?</string>
+  <string name="statistics_reset_data_msg">Verranno eliminate le statistiche sul tempo di riproduzione di tutti gli episodi. Sei sicuro?</string>
   <!--Main activity-->
   <string name="drawer_open">Apri il menù</string>
   <string name="drawer_close">Chiudi il menù</string>
-  <string name="drawer_preferences">Preferenze del Drawer</string>
+  <string name="drawer_preferences">Preferenze del drawer</string>
   <string name="drawer_feed_order_unplayed_episodes">Ordina per contatore</string>
   <string name="drawer_feed_order_alphabetical">Ordina alfabeticamente</string>
   <string name="drawer_feed_order_last_update">Ordina per data di pubblicazione</string>
@@ -47,13 +47,13 @@
   <string name="drawer_feed_counter_downloaded">Numero di episodi scaricati</string>
   <string name="drawer_feed_counter_none">Nulla</string>
   <!--Webview actions-->
-  <string name="open_in_browser_label">Apri nel Browser</string>
+  <string name="open_in_browser_label">Apri nel browser</string>
   <string name="copy_url_label">Copia URL</string>
   <string name="share_url_label">Condividi URL</string>
   <string name="copied_url_msg">URL copiato negli appunti</string>
   <string name="go_to_position_label">Vai a questa posizione</string>
   <!--Playback history-->
-  <string name="clear_history_label">Pulisci la cronologia</string>
+  <string name="clear_history_label">Svuota la cronologia</string>
   <!--Other-->
   <string name="confirm_label">Conferma</string>
   <string name="cancel_label">Annulla</string>
@@ -68,7 +68,7 @@
   <string name="error_msg_prefix">È stato rilevato un errore:</string>
   <string name="needs_storage_permission">Questa operazione richiede l\'accesso alla memoria</string>
   <string name="refresh_label">Aggiorna</string>
-  <string name="external_storage_error_msg">Non risulta disponibile lo spazio di archiviazione esterno. Assicurati che lo spazio di archiviazione sia montato per permettere all\'applicazione di funzionare correttamente.</string>
+  <string name="external_storage_error_msg">Spazio di archiviazione esterno non disponibile. Assicurati che sia montato per consentire all\'app di funzionare correttamente.</string>
   <string name="chapters_label">Capitoli</string>
   <string name="chapter_duration">Durata: %1$s</string>
   <string name="description_label">Descrizione</string>
@@ -78,9 +78,9 @@
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
   <string name="auto_download_label">Includi nei download automatici</string>
-  <string name="auto_download_apply_to_items_title">Applica ai Precedenti Episodi</string>
-  <string name="auto_download_apply_to_items_message">L\'opzione <i>Download Automatico</i> verrà applicata ai nuovi episodi.\nVuoi anche applicarla agli episodi precedenti?</string>
-  <string name="auto_delete_label">Elimina Episodi Automaticamente</string>
+  <string name="auto_download_apply_to_items_title">Applica agli episodi precedenti</string>
+  <string name="auto_download_apply_to_items_message">L\'opzione <i>Download automatico</i> verrà applicata ai nuovi episodi.\nVuoi applicarla anche agli episodi precedenti?</string>
+  <string name="auto_delete_label">Elimina episodi automaticamente</string>
   <string name="parallel_downloads_suffix">\u0020download paralleli</string>
   <string name="feed_auto_download_global">Predefinita globale</string>
   <string name="feed_auto_download_always">Sempre</string>
@@ -101,7 +101,7 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del feed</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
-  <string name="txtvfeedurl_label">Aggiungi un Podcast tramite URL</string>
+  <string name="txtvfeedurl_label">Aggiungi un podcast tramite URL</string>
   <string name="browse_gpoddernet_label">Esplora gpodder.net</string>
   <string name="discover">Scopri</string>
   <string name="discover_more">altro »</string>
@@ -121,14 +121,14 @@
   <string name="remove_feed_label">Rimuovi podcast</string>
   <string name="share_label">Condividi...</string>
   <string name="share_link_label">Condividi URL episodio</string>
-  <string name="share_link_with_position_label">Condividi URL dell\'episodio con la posizione</string>
+  <string name="share_link_with_position_label">Condividi URL episodio con posizione</string>
   <string name="share_file_label">Condividi il file</string>
   <string name="share_website_url_label">Condividi URL del sito</string>
   <string name="share_feed_url_label">Condividi URL del feed</string>
   <string name="share_item_url_label">Condividi URL del media</string>
-  <string name="share_item_url_with_position_label">Condividi URL del media con la posizione</string>
+  <string name="share_item_url_with_position_label">Condividi URL del media con posizione</string>
   <string name="feed_delete_confirmation_msg">Conferma di voler eliminare il podcast \"%1$s\" e TUTTI i suoi episodi (compresi quelli scaricati).</string>
-  <string name="feed_remover_msg">Rimozione del Feed in corso</string>
+  <string name="feed_remover_msg">Rimozione podcast in corso</string>
   <string name="load_complete_feed">Aggiorna podcast completo</string>
   <string name="batch_edit">Modifica in gruppo</string>
   <string name="select_all_above">Seleziona tutti sopra</string>
@@ -144,7 +144,7 @@
   <string name="hide_is_favorite_label">E\' preferito</string>
   <string name="filtered_label">Filtrati</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Ultimo aggiornamento fallito</string>
-  <string name="open_podcast">Apri Podcast</string>
+  <string name="open_podcast">Apri podcast</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <plurals name="downloading_batch_label">
@@ -186,14 +186,14 @@
     <item quantity="other">%d episodi rimossi dalla coda.</item>
   </plurals>
   <string name="add_to_favorite_label">Aggiungi ai preferiti</string>
-  <string name="added_to_favorites">Aggiunto ai Preferiti</string>
+  <string name="added_to_favorites">Aggiunto ai preferiti</string>
   <string name="remove_from_favorite_label">Rimuovi dai preferiti</string>
-  <string name="removed_from_favorites">Rimosso dai Preferiti</string>
+  <string name="removed_from_favorites">Rimosso dai preferiti</string>
   <string name="visit_website_label">Visita il sito</string>
   <string name="skip_episode_label">Salta l\'episodio</string>
   <string name="activate_auto_download">Attiva il download automatico</string>
   <string name="deactivate_auto_download">Disattiva il download automatico</string>
-  <string name="reset_position">Azzera la Posizione di Riproduzione</string>
+  <string name="reset_position">Azzera la posizione di riproduzione</string>
   <string name="removed_item">Elemento rimosso</string>
   <!--Download messages and labels-->
   <string name="download_successful">successo</string>
@@ -210,10 +210,10 @@
   <string name="download_error_connection_error">Errore di connessione</string>
   <string name="download_error_unknown_host">Host sconosciuto</string>
   <string name="download_error_unauthorized">Errore di autenticazione</string>
-  <string name="download_error_file_type_type">Errore Formato FIle</string>
+  <string name="download_error_file_type_type">Errore del formato file</string>
   <string name="download_error_forbidden">Proibito</string>
   <string name="download_canceled_msg">Download annullato</string>
-  <string name="download_canceled_autodownload_enabled_msg">Download annullato\n<i>Download Automatico</i> disabilitato per questo elemento</string>
+  <string name="download_canceled_autodownload_enabled_msg">Download annullato\n<i>Download automatico</i> disabilitato per questo elemento</string>
   <string name="download_report_title">Download completato con un errore (o errori)</string>
   <string name="download_report_content_title">Rapporto del download</string>
   <string name="download_error_malformed_url">URL malformato</string>
@@ -225,17 +225,17 @@
     <item quantity="other">%d download rimanenti</item>
   </plurals>
   <string name="downloads_processing">Elaborazione dei download in corso</string>
-  <string name="download_notification_title">Download podcast in corso</string>
+  <string name="download_notification_title">Scaricamento podcast in corso</string>
   <string name="download_report_content">%1$d download con successo, %2$d falliti</string>
-  <string name="download_log_title_unknown">Titolo Sconosciuto</string>
+  <string name="download_log_title_unknown">Titolo sconosciuto</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">File multimediali</string>
   <string name="download_request_error_dialog_message_prefix">Rilevato errore durante il download del file:\u0020</string>
   <string name="null_value_podcast_error">Non è stato fornito alcun podcast da mostrare.</string>
   <string name="authentication_notification_title">Autenticazione richiesta</string>
   <string name="authentication_notification_msg">La risorsa che hai richiesto richiede un nome utente e una password</string>
-  <string name="confirm_mobile_download_dialog_title">Conferma il download su cellulare</string>
-  <string name="confirm_mobile_download_dialog_message_not_in_queue">Il download tramite rete mobile è disattivato nelle impostazioni.\n\nÈ possibile scegliere di aggiungere semplicemente l\'episodio alla coda o consentire temporaneamente il download.\n\n<small>La scelta  verrà ricordata per 10 minuti.</small></string>
+  <string name="confirm_mobile_download_dialog_title">Conferma download su rete mobile</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Il download tramite rete mobile è disattivato nelle impostazioni.\n\nPuoi scegliere di aggiungere semplicemente l\'episodio alla coda o consentire temporaneamente i download.\n\n<small>La scelta  sarà valida per 10 minuti.</small></string>
   <string name="confirm_mobile_download_dialog_message">Il download tramite rete mobile è disattivato nelle impostazioni.\n\nVuoi abilitare temporaneamente il download?\n\n<small>La scelta verrà ricordata per 10 minuti.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Conferma streaming su rete mobile</string>
   <string name="confirm_mobile_streaming_notification_message">Lo streaming su rete mobile è disattivato nelle impostazioni. Tocca per avviare comunque.</string>
@@ -263,7 +263,7 @@
   <string name="queue_unlocked">Coda sbloccata</string>
   <string name="queue_lock_warning">Se blocchi la coda non potrai più fare swipe o riordinare gli episodi.</string>
   <string name="checkbox_do_not_show_again">Non mostrare più</string>
-  <string name="clear_queue_label">Svuota la Coda</string>
+  <string name="clear_queue_label">Svuota la coda</string>
   <string name="undo">Undo</string>
   <string name="move_to_top_label">Sposta all\'inizio</string>
   <string name="move_to_bottom_label">Sposta in fondo</string>
@@ -271,7 +271,7 @@
   <string name="keep_sorted">Mantieni ordinato</string>
   <string name="date">Per data</string>
   <string name="duration">Per durata</string>
-  <string name="episode_title">Titolo dell\'episodio</string>
+  <string name="episode_title">Titolo episodio</string>
   <string name="feed_title">Titolo podcast</string>
   <string name="random">Casuale</string>
   <string name="smart_shuffle">Casuale intelligente</string>
@@ -326,14 +326,14 @@
   <string name="preference_search_clear_history">Svuota cronologia</string>
   <string name="media_player">Media player</string>
   <string name="pref_episode_cleanup_title">Pulizia episodi</string>
-  <string name="pref_episode_cleanup_summary">Gli episodi che non sono in coda e non sono tra i preferiti potrebbero essere rimossi se i Download Automatici richiedono maggiore spazio.</string>
+  <string name="pref_episode_cleanup_summary">Gli episodi che non sono in coda e non sono tra i preferiti potrebbero essere rimossi se i Download automatici richiedono altro spazio.</string>
   <string name="pref_pauseOnDisconnect_sum">Sospendi la riproduzione quando le cuffie o il bluetooth vengono disconnessi</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Riprendi la riproduzione quando vengono riconnesse le cuffie</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Riprendi la riproduzione quando il Bluetooth si riconnette</string>
   <string name="pref_hardwareForwardButtonSkips_title">Il tasto Avanti salta la traccia</string>
   <string name="pref_hardwareForwardButtonSkips_sum">Quando viene premuto il tasto Avanti sul dispositivo bluetooth connesso, passa all\'episodio successivo invece di andare avanti veloce</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">Il tasto Indietro riavvia la traccia</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Quando viene premuto il tasto fisico Indietro, viene riavviata la traccia invece di tornare indietro</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">Quando viene premuto il tasto fisico Indietro, viene riavviata la traccia invece di saltare indietro</string>
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda quando viene completata la riproduzione</string>
   <string name="pref_auto_delete_sum">Elimina l\'episodio quando viene completata la riproduzione</string>
   <string name="pref_auto_delete_title">Elimina automaticamente</string>
@@ -347,7 +347,7 @@
   <string name="network_pref">Rete</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervallo o orario di aggiornamento</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Imposta un intervallo di tempo o un orario specifico in cui le sottoscrizioni vengono aggiornate automaticamente</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Puoi impostare un <i>intervallo</i> come \"ogni 2 ore\", impostare <i>un\'ora del giorno</i> specifica, come \"7:00\" oppure <i>disabilitare</i> gli aggiornamenti automatici del tutto.\n\n<small>Nota: I tempi di aggiornamento non sono perfetti. Potrai riscontrare dei brevi ritardi.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Puoi impostare un <i>intervallo</i> come \"ogni 2 ore\", <i>un\'ora del giorno</i> specifica come \"7:00\" oppure <i>disabilitare</i> gli aggiornamenti automatici.\n\n<small>Nota: I tempi di aggiornamento non sono perfetti. Potrebbero esserci dei leggeri ritardi.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Disabilita</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Imposta Intervallo</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Imposta orario</string>
@@ -381,9 +381,9 @@
   <string name="pref_autodl_wifi_filter_sum">Abilita il download automatico solo per alcune reti Wi-Fi selezionate.</string>
   <string name="autodl_wifi_filter_permission_title">Autorizzazione richiesta</string>
   <string name="autodl_wifi_filter_permission_message">Per il filtro Wi-Fi è richiesto l\'accesso alla posizione. Tocca per autorizzare.</string>
-  <string name="pref_automatic_download_on_battery_title">Scarica quando la batteria non è in carica</string>
+  <string name="pref_automatic_download_on_battery_title">Scarica episodi con batteria non in carica</string>
   <string name="pref_automatic_download_on_battery_sum">Permetti il download automatico quando la batteria non è in carica</string>
-  <string name="pref_parallel_downloads_title">Download simulanei</string>
+  <string name="pref_parallel_downloads_title">Download simultanei</string>
   <string name="pref_episode_cache_title">Cache degli episodi</string>
   <string name="pref_episode_cache_summary">Numero di episodi scaricati memorizzabili sul dispositivo. I download automatici vengono interrotti se si raggiunge questo valore.</string>
   <string name="pref_episode_cover_title">Usa immagine episodio</string>
@@ -434,7 +434,7 @@
   <string name="pref_lockscreen_background_sum">Sostituisce l\'immagine della schermata di blocco con quella dell\'episodio in riproduzione. Mostrerà l\'immagine anche in app di terze parti.</string>
   <string name="pref_showDownloadReport_title">Mostra il rapporto del download</string>
   <string name="pref_showDownloadReport_sum">Se il download fallisce, genera un report che mostra i dettagli dell\'errore.</string>
-  <string name="pref_expand_notify_unsupport_toast">Le versioni di Android prima della 4.1 non supportano le notifiche estese.</string>
+  <string name="pref_expand_notify_unsupport_toast">Le versioni Android precedenti alla 4.1 non supportano le notifiche estese.</string>
   <string name="pref_enqueue_location_title">Posizione in coda</string>
   <string name="pref_enqueue_location_sum">Aggiungi episodi a: %1$s</string>
   <string name="enqueue_location_back">Retro</string>
@@ -463,7 +463,7 @@
   <string name="media_player_builtin">Player Android integrato</string>
   <string name="pref_skip_silence_title">Salta il silenzio audio</string>
   <string name="pref_videoBehavior_title">Uscita dal video</string>
-  <string name="pref_videoBehavior_sum">Comportamento quando si esce dalla riproduzione video</string>
+  <string name="pref_videoBehavior_sum">Comportamento quando si termina una riproduzione video</string>
   <string name="stop_playback">Interrompi riproduzione</string>
   <string name="continue_playback">Continua riproduzione audio</string>
   <string name="behavior">Comportamento</string>
@@ -551,7 +551,7 @@
   <string name="gpodnet_suggestions_header">SUGGERIMENTI</string>
   <string name="gpodnet_search_hint">Cerca su gpodder.net</string>
   <string name="gpodnetauth_login_title">Login</string>
-  <string name="gpodnetauth_login_descr">Benvenuto sul processo di login di gpodder.net. Per prima cosa, inserisci le tue informazioni di login:</string>
+  <string name="gpodnetauth_login_descr">Benvenuto alla procedura di login di gpodder.net. Come prima cosa, inserisci le credenziali:</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
   <string name="gpodnetauth_login_register">Se non hai ancora un account, puoi crearne uno qui:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Username</string>
@@ -563,11 +563,11 @@
   <string name="gpodnetauth_device_butCreateNewDevice">Crea un nuovo dispositivo</string>
   <string name="gpodnetauth_device_chooseExistingDevice">Scegli un dispositivo esistente:</string>
   <string name="gpodnetauth_device_errorEmpty">L\'ID del dispositivo non può essere vuoto</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">ID di dispositivo già in uso</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">ID del dispositivo già in uso</string>
   <string name="gpodnetauth_device_caption_errorEmpty">La didascalia non può essere vuota</string>
   <string name="gpodnetauth_device_butChoose">Scegli</string>
   <string name="gpodnetauth_finish_title">Login effettuato!</string>
-  <string name="gpodnetauth_finish_descr">Congraturazioni! Il tuo account gpodder.net è stato collegato con il tuo dispositivo. Da ora AntennaPod sincronizzerà automaticamente le sottoscrizioni sul tuo dispositivo con il tuo account gpodder.net.</string>
+  <string name="gpodnetauth_finish_descr">Congraturazioni! Il tuo account gpodder.net è stato collegato con il dispositivo. Ora AntennaPod sincronizzerà automaticamente le sottoscrizioni sul dispositivo con il tuo account gpodder.net.</string>
   <string name="gpodnetauth_finish_butsyncnow">Avvia la sincronizzazione</string>
   <string name="gpodnetauth_finish_butgomainscreen">Vai alla schermata principale</string>
   <string name="gpodnetsync_auth_error_title">errore di autenticazione su gpodder.net</string>
@@ -584,7 +584,7 @@
   <string name="choose_data_directory_message">Scegli la base della tua cartella dati. AntennaPod creerà le sottocartelle appropriate.</string>
   <string name="choose_data_directory_permission_rationale">E\' necessario accedere alla memoria esterna per cambiare la cartella dei dati</string>
   <string name="choose_data_directory_available_space">%1$s di %2$s liberi</string>
-  <string name="create_folder_msg">Crea una nuova directory con nome \"%1$s\"?</string>
+  <string name="create_folder_msg">Creare una nuova directory con nome \"%1$s\"?</string>
   <string name="create_folder_success">Crea una nuova directory</string>
   <string name="create_folder_error_no_write_access">Impossibile scrivere in questa directory</string>
   <string name="create_folder_error_already_exists">La cartella esiste già</string>
@@ -595,7 +595,7 @@
   <string name="folder_not_empty_dialog_title">La cartella non è vuota</string>
   <string name="folder_not_empty_dialog_msg">La cartella che hai selezionato non è vuota. I download dei media e altri file saranno creati in questa cartella. Continuare?</string>
   <string name="set_to_default_folder">Scegli la cartella predefinita</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Sospendi la riproduzione invece di abbassare il volume quando un\'altra app emette un suono</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Quando un\'altra app emette un suono, sospendi la riproduzione invece di abbassare il volume</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa su interruzione</string>
   <string name="pref_resumeAfterCall_sum">Riprendi la riproduzione al termine di una chiamata</string>
   <string name="pref_resumeAfterCall_title">Riprendi dopo la chiamata</string>
@@ -622,7 +622,7 @@
   <string name="episode_filters_include">Includi</string>
   <string name="episode_filters_exclude">Escludi</string>
   <string name="episode_filters_hint">Parole singole \n\"Parole multiple\"</string>
-  <string name="keep_updated">Mantieni Aggiornato</string>
+  <string name="keep_updated">Mantieni aggiornato</string>
   <string name="keep_updated_summary">Includi nell\'(auto-)aggiornamento di tutti i feed</string>
   <string name="auto_download_disabled_globally">Il download automatico è disabilitato nelle Impostazioni generali.</string>
   <!--Progress information-->
@@ -637,9 +637,9 @@
   <string name="filter">Filtro</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tutto</string>
-  <string name="selected_all_label">Seleziona tutti gli Episodi</string>
+  <string name="selected_all_label">Seleziona tutti gli episodi</string>
   <string name="none_label">Nulla</string>
-  <string name="deselected_all_label">De-seleziona tutti gli episodi</string>
+  <string name="deselected_all_label">Deseleziona tutti gli episodi</string>
   <string name="played_label">Riprodotti</string>
   <string name="selected_played_label">Selezionati gli episodi riprodotti</string>
   <string name="unplayed_label">Non riprodotti</string>
@@ -675,7 +675,7 @@
   <string name="right_short">Dx</string>
   <string name="audio_effects">Effetti Audio</string>
   <string name="stereo_to_mono">Downmix: da Stereo a Mono</string>
-  <string name="sonic_only">solo Sonic</string>
+  <string name="sonic_only">Solo Sonic</string>
   <string name="exoplayer_only">Solo ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipo</string>
@@ -693,7 +693,7 @@
   <string name="subscription_num_columns">Numero di colonne</string>
   <!--Database import/export-->
   <string name="import_export">Importa/Esporta database</string>
-  <string name="import_export_warning">Questa funzione sperimentale può essere usata per trasferire le sottoscrizioni e gli episoti completati ad un altro dispositivo.\n\nIl database potrà essere importato solo se si usa la stessa versione di AntennaPod, altrimenti potrebbero generarsi comportamenti anomali.\n\nDopo l\'importazione, gli episodi potrebbero essere mostrati come scaricati anche se non lo sono. Basta premere Play per farli riconoscere ad AntennaPod.</string>
+  <string name="import_export_warning">Questa funzione sperimentale può essere usata per trasferire le sottoscrizioni e gli episodi completati ad un altro dispositivo.\n\nIl database potrà essere importato solo se si usa la stessa versione di AntennaPod, altrimenti potrebbero generarsi comportamenti anomali.\n\nDopo l\'importazione, gli episodi potrebbero essere mostrati come scaricati anche se non lo sono. Basta premere Play per farli riconoscere ad AntennaPod.</string>
   <string name="label_import">Importa</string>
   <string name="label_export">Esporta</string>
   <string name="import_select_file">Scegli file da importare</string>
@@ -716,7 +716,7 @@
   <string name="cast_failed_media_error_skipping">Errore nella riproduzione. Salto...</string>
   <!--Notification channels-->
   <string name="notification_channel_user_action">Azione richesta</string>
-  <string name="notification_channel_user_action_description">Mostra se è richesto un tuo intervento, per sempio se è necessario inserire la password.</string>
+  <string name="notification_channel_user_action_description">Mostra se è richesto un tuo intervento, per esempio se è necessario inserire la password.</string>
   <string name="notification_channel_downloading">Scaricando</string>
   <string name="notification_channel_downloading_description">Mostra mentre è in corso il download</string>
   <string name="notification_channel_playing">In riproduzione</string>

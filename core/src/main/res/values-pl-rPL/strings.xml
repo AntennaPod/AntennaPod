@@ -302,6 +302,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Pobierz wtyczkę</string>
   <string name="no_playback_plugin_title">Wtyczka nie zainstalowana</string>
+  <string name="no_playback_plugin_or_sonic_msg">Aby używać zmiennej prędkości odtwarzania, zalecamy używanie wbudowanego odtwarzacza Sonic.</string>
   <string name="set_playback_speed_label">Prędkość odtwarzania</string>
   <string name="enable_sonic">Włącz Sonic</string>
   <!--Empty list labels-->
@@ -750,6 +751,7 @@ https://gpodder.net/register/</string>
   <string name="notification_channel_error_description">Pokazywane gdy coś pójdzie nie tak, na przykład jeśli nie powiedzie się pobieranie lub synchronizacja z gpodder.</string>
   <string name="import_bad_file">Nieprawidłowy/uszkodzony plik</string>
   <!--Widget settings-->
+  <string name="widget_settings">Ustawienia widżetu</string>
   <string name="widget_create_button">Dodaj widżet</string>
   <string name="widget_opacity">Nieprzezroczystość</string>
 </resources>

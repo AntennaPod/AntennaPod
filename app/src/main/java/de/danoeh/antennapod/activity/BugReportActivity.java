@@ -30,16 +30,17 @@ public class BugReportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.bug_report);
 
-        TextView crashDetailsText = findViewById(R.id.crash_report_logs);
+        String crashDetailsText = CrashReportWriter.getSystemInfo() + "\n\n";
+        TextView crashDetailsTextView = findViewById(R.id.crash_report_logs);
 
         try {
             File crashFile = CrashReportWriter.getFile();
-            String crashReportContent = IOUtils.toString(new FileInputStream(crashFile), Charset.forName("UTF-8"));
-            crashDetailsText.setText(crashReportContent);
+            crashDetailsText += IOUtils.toString(new FileInputStream(crashFile), Charset.forName("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
-            crashDetailsText.setText("No crash report recorded\n" + CrashReportWriter.getSystemInfo());
+            crashDetailsText += "No crash report recorded";
         }
+        crashDetailsTextView.setText(crashDetailsText);
 
         findViewById(R.id.btn_open_bug_tracker).setOnClickListener(v -> {
             IntentUtils.openInBrowser(BugReportActivity.this, "https://github.com/AntennaPod/AntennaPod/issues");
@@ -47,7 +48,7 @@ public class BugReportActivity extends AppCompatActivity {
 
         findViewById(R.id.btn_copy_log).setOnClickListener(v -> {
             ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-            ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title), crashDetailsText.getText());
+            ClipData clip = ClipData.newPlainText(getString(R.string.bug_report_title), crashDetailsTextView.getText());
             clipboard.setPrimaryClip(clip);
             Snackbar.make(findViewById(android.R.id.content), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
         });

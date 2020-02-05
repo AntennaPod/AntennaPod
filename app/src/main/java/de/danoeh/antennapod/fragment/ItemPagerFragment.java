@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Flavors;
@@ -24,6 +25,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays information about a list of FeedItems.
@@ -104,12 +108,14 @@ public class ItemPagerFragment extends Fragment {
             }
         });
 
+        EventBus.getDefault().register(this);
         return layout;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
         }
@@ -159,6 +165,17 @@ public class ItemPagerFragment extends Fragment {
                 return true;
             default:
                 return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        for (FeedItem item : event.items) {
+            if (this.item != null && this.item.getId() == item.getId()) {
+                this.item = item;
+                getActivity().invalidateOptionsMenu();
+                return;
+            }
         }
     }
 

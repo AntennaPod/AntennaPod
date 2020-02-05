@@ -574,6 +574,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else if (mediaPlayer.getPlayable() == null) {
                     startPlayingFromPreferences();
                 }
+                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
@@ -584,6 +585,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else if (mediaPlayer.getPlayable() == null) {
                     startPlayingFromPreferences();
                 }
+                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
@@ -833,9 +835,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlaybackStart(@NonNull Playable playable, int position) {
-            if (taskManager.isSleepTimerActive()) {
-                taskManager.restartSleepTimer();
-            }
             taskManager.startWidgetUpdater();
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
@@ -1468,10 +1467,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void resume() {
         mediaPlayer.resume();
+        taskManager.restartSleepTimer();
     }
 
     public void prepare() {
         mediaPlayer.prepare();
+        taskManager.restartSleepTimer();
     }
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {

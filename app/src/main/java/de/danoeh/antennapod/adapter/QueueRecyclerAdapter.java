@@ -286,7 +286,7 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
                 }
             }
 
-            ItemActionButton actionButton = ItemActionButton.forItem(item, true);
+            ItemActionButton actionButton = ItemActionButton.forItem(item, true, true);
             actionButton.configure(butSecondary, mainActivity.get());
 
             butSecondary.setFocusable(false);
