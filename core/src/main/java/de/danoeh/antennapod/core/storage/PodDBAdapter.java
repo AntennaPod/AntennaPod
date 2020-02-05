@@ -1276,15 +1276,11 @@ public class PodDBAdapter {
             queryFeedId = "1 = 1";
         }
 
-        String query = "SELECT DISTINCT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " LEFT JOIN " + TABLE_NAME_SIMPLECHAPTERS
-                + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM
-                + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+        String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " WHERE " + queryFeedId + " AND ("
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_CONTENT_ENCODED + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%'"
+                + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_CONTENT_ENCODED + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_TITLE + " LIKE '%" + preparedQuery + "%'"
                 + ") ORDER BY " + KEY_PUBDATE + " DESC "
                 + "LIMIT 300";
         return db.rawQuery(query, null);
