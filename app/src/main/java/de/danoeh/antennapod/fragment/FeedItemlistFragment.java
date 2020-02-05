@@ -289,7 +289,7 @@ public class FeedItemlistFragment extends ListFragment {
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
         // because of addHeaderView(), positions are increased by 1!
-        FeedItem item = itemAccess.getItem(adapterInfo.position-1);
+        FeedItem item = (FeedItem) itemAccess.getItem(adapterInfo.position - 1);
 
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.feeditemlist_context, menu);
@@ -305,11 +305,11 @@ public class FeedItemlistFragment extends ListFragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if(menuInfo == null) {
+        if (menuInfo == null) {
             menuInfo = lastMenuInfo;
         }
         // because of addHeaderView(), positions are increased by 1!
-        FeedItem selectedItem = itemAccess.getItem(menuInfo.position-1);
+        FeedItem selectedItem = feed.getItemAtIndex(menuInfo.position - 1);
 
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");

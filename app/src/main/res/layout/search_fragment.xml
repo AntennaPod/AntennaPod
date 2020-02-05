@@ -13,8 +13,5 @@
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingLeft="@dimen/list_vertical_padding"
-        android:paddingRight="@dimen/list_vertical_padding" />
+        android:layout_height="match_parent" />
 </FrameLayout>

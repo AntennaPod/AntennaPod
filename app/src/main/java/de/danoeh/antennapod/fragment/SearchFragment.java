@@ -20,11 +20,12 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.SearchlistAdapter;
+import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -33,6 +34,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -45,7 +49,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
 
-    private SearchlistAdapter searchAdapter;
+    private FeedItemlistAdapter searchAdapter;
     private List<FeedComponent> searchResults = new ArrayList<>();
     private Disposable disposable;
     private ProgressBar progressBar;
@@ -105,7 +109,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = layout.findViewById(R.id.listview);
         progressBar = layout.findViewById(R.id.progressBar);
-        searchAdapter = new SearchlistAdapter(getActivity(), itemAccess);
+        searchAdapter = new FeedItemlistAdapter((MainActivity) getActivity(), itemAccess, true, true);
         listView.setAdapter(searchAdapter);
         listView.setOnItemClickListener(this);
 
@@ -172,7 +176,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
     }
 
-    private final SearchlistAdapter.ItemAccess itemAccess = new SearchlistAdapter.ItemAccess() {
+    private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
         @Override
         public int getCount() {
             return searchResults.size();

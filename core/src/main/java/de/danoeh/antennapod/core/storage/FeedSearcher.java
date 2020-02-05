@@ -35,11 +35,12 @@ public class FeedSearcher {
         final List<FeedComponent> result = new ArrayList<>();
         try {
             FutureTask<List<FeedItem>> itemSearchTask = DBTasks.searchFeedItems(context, selectedFeed, query);
-            FutureTask<List<Feed>> feedSearchTask = DBTasks.searchFeeds(context, query);
             itemSearchTask.run();
-            feedSearchTask.run();
-
-            result.addAll(feedSearchTask.get());
+            if (selectedFeed == 0) {
+                FutureTask<List<Feed>> feedSearchTask = DBTasks.searchFeeds(context, query);
+                feedSearchTask.run();
+                result.addAll(feedSearchTask.get());
+            }
             result.addAll(itemSearchTask.get());
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
