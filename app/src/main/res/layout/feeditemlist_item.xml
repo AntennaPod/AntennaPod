@@ -84,16 +84,16 @@
             <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    app:srcCompat="?attr/ic_unfav"
-                    tools:srcCompat="@drawable/ic_star_grey600_24dp"
-                    android:id="@+id/isFavorite"/>
+                    app:srcCompat="?attr/type_video"
+                    tools:srcCompat="@drawable/ic_videocam_grey600_24dp"
+                    android:id="@+id/ivIsVideo"/>
 
             <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    app:srcCompat="?attr/type_video"
-                    tools:srcCompat="@drawable/ic_remove_red_eye_grey600_18dp"
-                    android:id="@+id/ivIsVideo"/>
+                    app:srcCompat="?attr/ic_unfav"
+                    tools:srcCompat="@drawable/ic_star_grey600_24dp"
+                    android:id="@+id/isFavorite"/>
 
             <ImageView
                     android:layout_width="20dp"
