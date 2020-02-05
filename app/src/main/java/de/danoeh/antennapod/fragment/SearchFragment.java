@@ -25,7 +25,6 @@ import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
@@ -47,9 +46,8 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     private static final String ARG_FEED = "feed";
 
     private SearchlistAdapter searchAdapter;
-    private List<SearchResult> searchResults = new ArrayList<>();
+    private List<FeedComponent> searchResults = new ArrayList<>();
     private Disposable disposable;
-    private ListView listView;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyViewHandler;
 
@@ -57,7 +55,9 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
      * Create a new SearchFragment that searches all feeds.
      */
     public static SearchFragment newInstance(String query) {
-        if (query == null) query = "";
+        if (query == null) {
+            query = "";
+        }
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_QUERY, query);
@@ -103,7 +103,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_label);
 
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
-        listView = layout.findViewById(R.id.listview);
+        ListView listView = layout.findViewById(R.id.listview);
         progressBar = layout.findViewById(R.id.progressBar);
         searchAdapter = new SearchlistAdapter(getActivity(), itemAccess);
         listView.setAdapter(searchAdapter);
@@ -125,15 +125,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        SearchResult result = (SearchResult) listView.getAdapter().getItem(position);
-        FeedComponent comp = result.getComponent();
+        FeedComponent comp = searchAdapter.getItem(position);
         if (comp.getClass() == Feed.class) {
             ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId(), null);
-        } else {
-            if (comp.getClass() == FeedItem.class) {
-                FeedItem item = (FeedItem) comp;
-                ((MainActivity) getActivity()).loadChildFragment(ItemPagerFragment.newInstance(item.getId()));
-            }
+        } else if (comp.getClass() == FeedItem.class) {
+            FeedItem item = (FeedItem) comp;
+            ((MainActivity) getActivity()).loadChildFragment(ItemPagerFragment.newInstance(item.getId()));
         }
     }
 
@@ -143,7 +140,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         final SearchView sv = new SearchView(getActivity());
-        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setQueryHint(getString(R.string.search_label));
         sv.setQuery(getArguments().getString(ARG_QUERY), false);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -167,7 +164,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         search();
     }
 
-    private void onSearchResults(List<SearchResult> results) {
+    private void onSearchResults(List<FeedComponent> results) {
         progressBar.setVisibility(View.GONE);
         searchResults = results;
         searchAdapter.notifyDataSetChanged();
@@ -182,7 +179,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         }
 
         @Override
-        public SearchResult getItem(int position) {
+        public FeedComponent getItem(int position) {
             if (0 <= position && position < searchResults.size()) {
                 return searchResults.get(position);
             } else {
@@ -204,7 +201,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     @NonNull
-    private List<SearchResult> performSearch() {
+    private List<FeedComponent> performSearch() {
         Bundle args = getArguments();
         String query = args.getString(ARG_QUERY);
         long feed = args.getLong(ARG_FEED);

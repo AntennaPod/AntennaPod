@@ -536,14 +536,8 @@
     <string name="licenses_summary">AntennaPod uses other great software</string>
 
     <!-- Search -->
-    <string name="search_hint">Search for episodes</string>
-    <string name="found_in_shownotes_label">Found in show notes</string>
-    <string name="found_in_chapters_label">Found in chapters</string>
-    <string name="found_in_authors_label">Found in author(s)</string>
-    <string name="found_in_feeds_label">Found in podcast</string>
     <string name="search_status_no_results">No results were found</string>
     <string name="search_label">Search</string>
-    <string name="found_in_title_label">Found in title</string>
     <string name="no_results_for_query">No results were found for \"%1$s\"</string>
 
     <!-- import and export -->
@@ -572,6 +566,7 @@
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
     <string name="import_select_file">Select file to import</string>
     <string name="import_ok">Import successful.\n\nPlease press OK to restart AntennaPod</string>
+    <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>
 
     <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>
@@ -579,7 +574,7 @@
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
     <string name="shake_to_reset_label">Shake to reset</string>
-    <string name="timer_vibration_label">Vibrate</string>
+    <string name="timer_vibration_label">Vibrate shortly before end</string>
     <string name="time_seconds">seconds</string>
     <string name="time_minutes">minutes</string>
     <string name="time_hours">hours</string>
@@ -768,7 +763,6 @@
     <string name="cast_failed_to_play">Failed to start the playback of media</string>
     <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
     <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
-    <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
     <string name="cast_failed_setting_volume">Failed to set the volume</string>
     <string name="cast_failed_no_connection">No connection to the cast device is present</string>
     <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
@@ -786,7 +780,6 @@
     <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
     <string name="notification_channel_error">Errors</string>
     <string name="notification_channel_error_description">Shown if something went wrong, for example if download or gpodder sync fails.</string>
-    <string name="import_bad_file">Invalid/corrupt file</string>
 
     <!-- Widget settings -->
     <string name="widget_settings">Widget settings</string>

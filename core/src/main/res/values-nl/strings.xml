@@ -68,7 +68,7 @@
   <string name="error_msg_prefix">Er is een fout opgetreden:</string>
   <string name="needs_storage_permission">Machtiging vereist voor gebruik van opslag</string>
   <string name="refresh_label">Verversen</string>
-  <string name="external_storage_error_msg">Geen externe opslag beschikbaar. Zorg ervoor dat de externe opslag is aangekoppeld zodat de app goed kan werken.</string>
+  <string name="external_storage_error_msg">Geen externe opslag beschikbaar. Zorg ervoor dat de externe opslag gekoppeld is zodat de app juist kan functioneren.</string>
   <string name="chapters_label">Hoofdstukken</string>
   <string name="chapter_duration">Duur: %1$s</string>
   <string name="description_label">Omschrijving</string>
@@ -101,12 +101,12 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed-url</string>
   <string name="etxtFeedurlHint">www.voorbeeld.nl/feed</string>
-  <string name="txtvfeedurl_label">Podcast toevoegen middels url</string>
+  <string name="txtvfeedurl_label">Podcast toevoegen middels URL</string>
   <string name="browse_gpoddernet_label">Verken gpodder.net</string>
   <string name="discover">Ontdekken</string>
   <string name="discover_more">meer »</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Alles markeren als afgespeeld</string>
+  <string name="mark_all_read_label">Alles als afgespeeld markeren</string>
   <string name="mark_all_read_msg">Alle afleveringen zijn gemarkeerd als afgespeeld</string>
   <string name="mark_all_read_confirmation_msg">Bevestig dat je alle afleveringen wilt markeren als afgespeeld.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bevestig dat je alle afleveringen van deze podcast wilt markeren als afgespeeld.</string>
@@ -163,13 +163,13 @@
   </plurals>
   <string name="remove_new_flag_label">\'Nieuw\'-label verwijderen</string>
   <string name="removed_new_flag_label">\'Nieuw\'-label is verwijderd</string>
-  <string name="mark_read_label">Markeren als afgespeeld</string>
+  <string name="mark_read_label">Als afgespeeld markeren</string>
   <string name="marked_as_read_label">Gemarkeerd als afgespeeld</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d aflevering gemarkeerd als afgespeeld.</item>
     <item quantity="other">%d afleveringen gemarkeerd als afgespeeld.</item>
   </plurals>
-  <string name="mark_unread_label">Markeren als niet-afgespeeld</string>
+  <string name="mark_unread_label">Als niet-afgespeeld markeren</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d aflevering gemarkeerd als niet-afgespeeld.</item>
     <item quantity="other">%d afleveringen gemarkeerd als niet-afgespeeld.</item>

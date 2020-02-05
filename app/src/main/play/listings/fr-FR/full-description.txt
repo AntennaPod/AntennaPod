@@ -12,20 +12,20 @@ Conçu par des fans de podcast, AntennaPod est gratuit, open source et sans publ
 
 <b>Suivez, partagez et appréciez</b>
 • Enregistrez les meilleurs épisodes en tant que favoris
-• Retrouvez un épisode à partir de l'historique de lecture ou en recherchant les noms et commentaires des épisodes
+• Retrouvez un épisode à partir de l'historique de lecture ou en recherchant les titres et commentaires des épisodes
 • Partagez vos épisodes et flux sur les réseaux sociaux, par email, sur gPodder.net ou en les exportant au format OPML
 
 <b>Contrôlez</b>
-• Prenez le contrôle en automatisant vos téléchargements : flux spécifiques, restriction de la connexion mobile, réseaux WIFI autorisés, seulement pendant la recharge, fréquence de mise à jour
+• Prenez le contrôle en automatisant vos téléchargements : flux spécifiques, restriction de la connexion mobile, réseaux WIFI autorisés, seulement pendant la recharge, fréquence ou heure de mise à jour
 • Gérez l'espace de stockage en réglant le nombre d'épisodes à garder, quand les supprimer et où les enregistrer
-• Choisissez le thème de l'interface
+• Adaptez l'interface selon vos préférences avec le thème clair ou sombre 
 • Sauvegardez vos abonnements avec gPodder.net ou des exports OPML 
 
 <b>Rejoignez la communauté d'AntennaPod !</b>
 AntennaPod est développé activement par des volontaires. Vous pouvez aussi contribuer avec du code, des traductions ou des commentaires !
 
-Allez sur GitHub pour demander de nouvelles options, signaler des bugs ou pour contribuer au développement :
+Rendez-vous sur GitHub pour demander de nouvelles options, signaler des bugs ou pour contribuer au développement :
 https://www.github.com/AntennaPod/AntennaPod
 
-Allez sur Transifex pour aider la traduction :
+Rendez-vous sur Transifex pour aider la traduction :
 https://www.transifex.com/antennapod/antennapod

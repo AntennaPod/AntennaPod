@@ -646,6 +646,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         float retVal = 1;
         if ((playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
+                || playerStatus == PlayerStatus.INITIALIZED
                 || playerStatus == PlayerStatus.PREPARED) && mediaPlayer.canSetSpeed()) {
             retVal = mediaPlayer.getCurrentSpeedMultiplier();
         }

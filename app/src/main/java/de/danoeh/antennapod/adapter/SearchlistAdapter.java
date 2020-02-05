@@ -9,15 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
 /**
@@ -40,7 +37,7 @@ public class SearchlistAdapter extends BaseAdapter {
     }
 
     @Override
-    public SearchResult getItem(int position) {
+    public FeedComponent getItem(int position) {
         return itemAccess.getItem(position);
     }
 
@@ -52,8 +49,7 @@ public class SearchlistAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Holder holder;
-        SearchResult result = getItem(position);
-        FeedComponent component = result.getComponent();
+        FeedComponent component = getItem(position);
 
         // Inflate Layout
         if (convertView == null) {
@@ -93,7 +89,7 @@ public class SearchlistAdapter extends BaseAdapter {
         } else if (component.getClass() == FeedItem.class) {
             final FeedItem item = (FeedItem) component;
             holder.title.setText(item.getTitle());
-            holder.subtitle.setText(result.getLocation().getDescription());
+            holder.subtitle.setVisibility(View.VISIBLE);
 
             convertView.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
 
@@ -121,7 +117,7 @@ public class SearchlistAdapter extends BaseAdapter {
     public interface ItemAccess {
         int getCount();
 
-        SearchResult getItem(int position);
+        FeedComponent getItem(int position);
     }
 
 }

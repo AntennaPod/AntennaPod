@@ -37,6 +37,7 @@
             android:layout_toLeftOf="@id/horizontal_divider"
             android:layout_toStartOf="@id/horizontal_divider"
             android:background="?android:attr/selectableItemBackground"
+            android:textColor="?android:attr/textColorPrimary"
             android:text="@string/cancel_label" />
 
         <Button
@@ -50,6 +51,7 @@
             android:layout_toRightOf="@id/horizontal_divider"
             android:layout_toEndOf="@id/horizontal_divider"
             android:background="?android:attr/selectableItemBackground"
+            android:textColor="?android:attr/textColorPrimary"
             android:text="@string/confirm_label" />
     </RelativeLayout>
 

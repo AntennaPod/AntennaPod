@@ -105,6 +105,7 @@
   <string name="etxtFeedurlHint">Посилання на канал чи сторінку</string>
   <string name="txtvfeedurl_label">Додати подкаст за URL</string>
   <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
+  <string name="discover_more">більше »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Позначити всі як відтворені</string>
   <string name="mark_all_read_msg">Позначено всі епізоди як відтворені</string>
@@ -117,12 +118,13 @@
   <string name="rename_feed_label">Перейменувати подкаст</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_label">Поділитися…</string>
-  <string name="share_link_label">Поділитись посиланням на епізод</string>
+  <string name="share_link_label">Поділитися посиланням на епізод</string>
   <string name="share_link_with_position_label">Поділіться посиланням на епізод з позицією відтворення</string>
-  <string name="share_file_label">Поділитись файлом</string>
-  <string name="share_feed_url_label">Поділитись посиланням на канал</string>
-  <string name="share_item_url_label">Поділитись посиланням на медіа-файл</string>
-  <string name="share_item_url_with_position_label">Поділитись посиланням на медіа-файл з позицією відтворення</string>
+  <string name="share_file_label">Поділитися файлом</string>
+  <string name="share_website_url_label">Поділитися посиланням на сайт</string>
+  <string name="share_feed_url_label">Поділитися посиланням на канал</string>
+  <string name="share_item_url_label">Поділитися посиланням на медіа-файл</string>
+  <string name="share_item_url_with_position_label">Поділитися посиланням на медіа-файл з позицією відтворення</string>
   <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити подкаст \"%1$s\" і ВСІ його епізоди (разом з завантаженими).</string>
   <string name="feed_remover_msg">Видалення подкасту</string>
   <string name="load_complete_feed">Оновити весь подкаст</string>
@@ -245,6 +247,7 @@
   <string name="confirm_mobile_download_dialog_title">Підтвердження завантажень через мобільні мережі</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Завантаження через мобільні мережі вимкнено в налаштуваннях.\n\nВибрати додавання епізоду до черги чи тимчасове завантаження?\n\n<small>Ваш вибір буде дійсним 10 хвилин.</small></string>
   <string name="confirm_mobile_download_dialog_message">Завантаження через мобільні мережі вимкнено в налаштуваннях.\n\nУвімкнути тимчасово?\n\n<small>Ваш вибір буде дійсним 10 хвилин.</small></string>
+  <string name="confirm_mobile_streaming_button_always">Завжди дозволяти</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Лише додати до черги</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Увімкнути тимчасово</string>
   <!--Mediaplayer messages-->
@@ -254,6 +257,7 @@
   <string name="player_ready_msg">Готов</string>
   <string name="player_seeking_msg">Шукаю</string>
   <string name="playback_error_server_died">Сервер помер</string>
+  <string name="playback_error_unsupported">Тип медіа не підтримується</string>
   <string name="playback_error_unknown">Невідома помилка</string>
   <string name="no_media_playing_label">Немає що грати</string>
   <string name="player_buffering_msg">Буферізую</string>
@@ -264,6 +268,7 @@
   <string name="unlock_queue">Розблокувати чергу</string>
   <string name="queue_locked">Чергу заблоковано</string>
   <string name="queue_unlocked">Чергу розблоковано</string>
+  <string name="checkbox_do_not_show_again">Більше не показувати</string>
   <string name="clear_queue_label">Очистити чергу</string>
   <string name="undo">Скасувати</string>
   <string name="move_to_top_label">Догори</string>
@@ -278,6 +283,8 @@
   <string name="ascending">За зростанням</string>
   <string name="descending">За спаданням</string>
   <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте вилучити всі епізоди з черги.</string>
+  <string name="sort_old_to_new">Спочатку старіші</string>
+  <string name="sort_new_to_old">Спочатку новіші</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити додаток</string>
   <string name="no_playback_plugin_title">Додаток не встановлено</string>
@@ -301,7 +308,10 @@
   <string name="no_new_episodes_label">Коли з’являться нові епізоди, іх буде показано тут.</string>
   <string name="no_fav_episodes_head_label">Немає улюблених епізодів</string>
   <string name="no_fav_episodes_label">Ви можете додавати епізоди до улюблених за допомогою довгого натискання.</string>
-  <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
+  <string name="no_chapters_head_label">Немає глав</string>
+  <string name="no_chapters_label">В цьому епізоді немає глав.</string>
+  <string name="no_subscriptions_head_label">Немає підписок</string>
+  <string name="no_subscriptions_label">Щоб підписатись на подкаст, натисніть на значок плюса нижче</string>
   <!--Preferences-->
   <string name="storage_pref">Зберігання</string>
   <string name="project_pref">Проект</string>
@@ -314,6 +324,9 @@
   <string name="appearance">Вигляд</string>
   <string name="external_elements">Зовнішні елементи</string>
   <string name="interruptions">Тимчасові паузи</string>
+  <string name="preference_search_hint">Пошук...</string>
+  <string name="preference_search_no_results">Немає результатів</string>
+  <string name="preference_search_clear_history">Очистити історію</string>
   <string name="media_player">Медіа програвач</string>
   <string name="pref_episode_cleanup_title">Очищення епізодів</string>
   <string name="pref_episode_cleanup_summary">Епізоди що не знаходяться в черзі та не помічені як улюблені можуть бути видалені якщо Автозавантажувач потребуватиме місце для нових епізодів.</string>
@@ -365,6 +378,7 @@
   <string name="pref_automatic_download_on_battery_sum">Дозволити автозавантаження коли зарядний пристрій не підключений</string>
   <string name="pref_parallel_downloads_title">Паралельні завантаження</string>
   <string name="pref_episode_cache_title">Кеш епізодів</string>
+  <string name="pref_theme_title_use_system">Використовувати системну тему</string>
   <string name="pref_theme_title_light">Світла</string>
   <string name="pref_theme_title_dark">Темна</string>
   <string name="pref_theme_title_trueblack">Чорна (для AMOLED)</string>
@@ -389,6 +403,7 @@
   <string name="pref_gpodnet_notifications_sum">Це налаштування не застосовується до помилок автентифікації.</string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
+  <string name="pref_feed_playback_speed_sum">Виберіть швидкість відтворення епізодів з цього каналу</string>
   <string name="pref_fast_forward">Час, що пропускається кнопкою перемотки вперед</string>
   <string name="pref_fast_forward_sum">Налаштувати кількість секунд, які пропускаються при натисканні кнопки перемотки вперед</string>
   <string name="pref_rewind">Час, що пропускається кнопкою відмотки назад</string>
@@ -408,14 +423,21 @@
   <string name="pref_showDownloadReport_title">Показати звіт про завантаження</string>
   <string name="pref_showDownloadReport_sum">У разі помилки при завантаженні створити детальний звіт про помилку.</string>
   <string name="pref_expand_notify_unsupport_toast">Android до версії 4.1 не підтримує розширені повідомлення.</string>
+  <string name="pref_enqueue_location_sum">Додати епізоди до: %1$s</string>
+  <string name="enqueue_location_after_current">Після поточного епізоду</string>
   <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
   <string name="pref_image_cache_size_title">Розмір кеша зображень</string>
   <string name="pref_image_cache_size_sum">Розмір дискового кеша для зображень.</string>
+  <string name="bug_report_title">Повідомити про помилку</string>
+  <string name="open_bug_tracker">Відкрити трекер помилок</string>
+  <string name="copy_to_clipboard">Копіювати</string>
+  <string name="copied_to_clipboard">Скопійовано</string>
   <string name="experimental_pref">Експериментальні</string>
   <string name="pref_media_player_message">Оберіть медіа плеєр для програвання файлів</string>
   <string name="pref_current_value">Поточне значення: %1$s</string>
   <string name="pref_proxy_title">Проксі</string>
   <string name="pref_proxy_sum">Застосувати проксі сервер</string>
+  <string name="pref_faq">Часті питання</string>
   <string name="pref_no_browser_found">Веб браузер не знайдено.</string>
   <string name="pref_cast_title">Підтримка для Chromecast</string>
   <string name="pref_cast_message_play_flavor">Включити підтримку програвання на таких пристроях як Chromecast або Android TV</string>
@@ -443,6 +465,14 @@
   <string name="pref_delete_removes_from_queue_sum">Автоматично видаляти епізод із черги, коли він буде видалений.</string>
   <!--About screen-->
   <string name="about_pref">Про програму</string>
+  <string name="antennapod_version">Версія AntennaPod</string>
+  <string name="developers">Розробники</string>
+  <string name="developers_summary">Кожен може допомогти AntennaPod стати краще</string>
+  <string name="translators">Перекладачі</string>
+  <string name="translators_summary">Переклади створюються користувачами AntennaPod за допомогою Transifex</string>
+  <string name="privacy_policy">Політика конфіденційності</string>
+  <string name="licenses">Ліцензії</string>
+  <string name="licenses_summary">AntennaPod використовує інше чудове програмне забезпечення</string>
   <!--Search-->
   <string name="search_hint">Пошук епізодів</string>
   <string name="found_in_shownotes_label">Знайдено в нотатках епізода</string>
@@ -536,12 +566,14 @@
   <string name="gpodnetsync_error_descr">Трапилась помилка при сінхронизації:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Успішно</string>
   <string name="gpodnetsync_pref_report_failed">Невдало</string>
+  <string name="gpodnetsync_username_characters_error">Імена користувачів можуть містити лише літери, цифри, дефіси та підкреслення.</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Обрати папку:</string>
   <string name="create_folder_label">Нова папка</string>
   <string name="choose_data_directory">Обрати папку</string>
   <string name="choose_data_directory_message">Оберіть, будь ласка, базовий каталог даних. AntennaPod створить відповідні підрозділи.</string>
   <string name="choose_data_directory_permission_rationale">Для зміни папки зберігання даних потрібен доступ до зовнішнього носія</string>
+  <string name="choose_data_directory_available_space">%1$s з %2$s вільно</string>
   <string name="create_folder_msg">Створити папку з ім\'ям \"%1$s\"?</string>
   <string name="create_folder_success">Створена нова папка</string>
   <string name="create_folder_error_no_write_access">Не можу записати в цю папку</string>
@@ -560,6 +592,7 @@
   <string name="pref_restart_required">Для застосування змін потрібно перезапустити AntennaPod</string>
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
+  <string name="subscribing_label">Підписка...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Перемотка назад</string>
   <string name="fast_forward_label">Перемотка вперед</string>
@@ -580,13 +613,17 @@
   <string name="episode_filters_exclude">Виключити</string>
   <string name="episode_filters_hint">Окремі слова \n\"Кілька слів\"</string>
   <string name="keep_updated">Підтримувати оновленим</string>
+  <string name="keep_updated_summary">Включити цей канал під час (авто-)оновлення всіх каналів</string>
+  <string name="auto_download_disabled_globally">Автозавантаження вимкнено в налаштуваннях AntennaPod</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Оновлення бази даних</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <!--Add podcast fragment-->
+  <string name="search_podcast_hint">Шукати подкаст...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
   <string name="search_fyyd_label">Шукати в fyyd</string>
+  <string name="advanced_search">Розширений пошук</string>
   <string name="filter">Фільтр</string>
   <!--Episodes apply actions-->
   <string name="all_label">Всі</string>
@@ -676,5 +713,9 @@
   <string name="notification_channel_playing_description">Дозволяє керувати відтворенням. Це основне сповіщення, яке ви бачите під час відтворення подкасту.</string>
   <string name="notification_channel_error">Помилки</string>
   <string name="notification_channel_error_description">Відображається, якщо щось пішло не так, наприклад, якщо не вдалося завантажити або синхронізувати з gpodder.</string>
+  <string name="import_bad_file">Недоступний/пошкоджений файл</string>
   <!--Widget settings-->
+  <string name="widget_settings">Налаштування віджету</string>
+  <string name="widget_create_button">Створити віджет</string>
+  <string name="widget_opacity">Непрозорість</string>
 </resources>

@@ -54,10 +54,10 @@ import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -574,6 +574,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else if (mediaPlayer.getPlayable() == null) {
                     startPlayingFromPreferences();
                 }
+                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
@@ -584,6 +585,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 } else if (mediaPlayer.getPlayable() == null) {
                     startPlayingFromPreferences();
                 }
+                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
@@ -833,9 +835,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlaybackStart(@NonNull Playable playable, int position) {
-            if (taskManager.isSleepTimerActive()) {
-                taskManager.restartSleepTimer();
-            }
             taskManager.startWidgetUpdater();
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
@@ -1468,10 +1467,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void resume() {
         mediaPlayer.resume();
+        taskManager.restartSleepTimer();
     }
 
     public void prepare() {
         mediaPlayer.prepare();
+        taskManager.restartSleepTimer();
     }
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
@@ -1634,16 +1635,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlayFromSearch(String query, Bundle extras) {
             Log.d(TAG, "onPlayFromSearch  query=" + query + " extras=" + extras.toString());
 
-            List<SearchResult> results = FeedSearcher.performSearch(getBaseContext(), query, 0);
-            for (SearchResult result : results) {
-                try {
-                    FeedMedia p = ((FeedItem) (result.getComponent())).getMedia();
-                    mediaPlayer.playMediaObject(p, !p.localFileAvailable(), true, true);
-                    return;
-                } catch (Exception e) {
-                    Log.d(TAG, e.getMessage());
-                    e.printStackTrace();
-                    continue;
+            List<FeedComponent> results = FeedSearcher.performSearch(getBaseContext(), query, 0);
+            for (FeedComponent result : results) {
+                if (result instanceof FeedItem) {
+                    try {
+                        FeedMedia media = ((FeedItem) result).getMedia();
+                        mediaPlayer.playMediaObject(media, !media.localFileAvailable(), true, true);
+                        return;
+                    } catch (Exception e) {
+                        Log.d(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             }
             onPlay();

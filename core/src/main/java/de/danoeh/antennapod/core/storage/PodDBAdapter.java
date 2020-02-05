@@ -48,6 +48,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
+    public static final int VERSION = 1090000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -284,10 +285,13 @@ public class PodDBAdapter {
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
      */
     private static final String SEL_FI_SMALL_STR;
+    private static final String FEED_SEL_STD_STR;
 
     static {
         String selFiSmall = Arrays.toString(FEEDITEM_SEL_FI_SMALL);
         SEL_FI_SMALL_STR = selFiSmall.substring(1, selFiSmall.length() - 1);
+        String selFeedSmall = Arrays.toString(FEED_SEL_STD);
+        FEED_SEL_STD_STR = selFeedSmall.substring(1, selFeedSmall.length() - 1);
     }
 
     /**
@@ -1274,21 +1278,29 @@ public class PodDBAdapter {
         }
 
         String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " LEFT JOIN " + TABLE_NAME_SIMPLECHAPTERS
-                + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM
-                + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
-                + " LEFT JOIN " + TABLE_NAME_FEEDS
-                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
-                + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
                 + " WHERE " + queryFeedId + " AND ("
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_CONTENT_ENCODED + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEEDS + "." + KEY_AUTHOR + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER + " LIKE '%" + preparedQuery + "%'"
+                + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_CONTENT_ENCODED + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_TITLE + " LIKE '%" + preparedQuery + "%'"
                 + ") ORDER BY " + KEY_PUBDATE + " DESC "
-                + "LIMIT 500";
+                + "LIMIT 300";
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * Searches for the given query in various values of all feeds.
+     *
+     * @return A cursor with all search results in SEL_FI_EXTRA selection.
+     */
+    public Cursor searchFeeds(String searchQuery) {
+        String preparedQuery = prepareSearchQuery(searchQuery);
+        String query = "SELECT " + FEED_SEL_STD_STR + " FROM " + TABLE_NAME_FEEDS + " WHERE "
+                + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_CUSTOM_TITLE + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_AUTHOR + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' "
+                + "ORDER BY " + KEY_TITLE + " ASC "
+                + "LIMIT 300";
         return db.rawQuery(query, null);
     }
 
@@ -1336,8 +1348,6 @@ public class PodDBAdapter {
      * Helper class for opening the Antennapod database.
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
-        private static final int VERSION = 1090000;
-
         /**
          * Constructor.
          *
@@ -1345,8 +1355,7 @@ public class PodDBAdapter {
          * @param name    Name of the database
          * @param factory to use for creating cursor objects
          */
-        public PodDBHelper(final Context context, final String name,
-                           final CursorFactory factory) {
+        public PodDBHelper(final Context context, final String name, final CursorFactory factory) {
             super(context, name, factory, VERSION, new PodDbErrorHandler());
         }
 
@@ -1369,10 +1378,8 @@ public class PodDBAdapter {
         }
 
         @Override
-        public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
-                              final int newVersion) {
-            Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
-                    + newVersion + ".");
+        public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+            Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
         }
     }

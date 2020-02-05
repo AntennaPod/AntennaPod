@@ -389,7 +389,7 @@ public class UserPreferences {
             return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            UserPreferences.setPlaybackSpeed("1.00");
+            UserPreferences.setPlaybackSpeed(1.0f);
             return 1.0f;
         }
     }
@@ -399,7 +399,7 @@ public class UserPreferences {
             return Float.parseFloat(prefs.getString(PREF_VIDEO_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            UserPreferences.setVideoPlaybackSpeed("1.00");
+            UserPreferences.setVideoPlaybackSpeed(1.0f);
             return 1.0f;
         }
     }
@@ -408,7 +408,7 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
     }
 
-    public static String[] getPlaybackSpeedArray() {
+    public static float[] getPlaybackSpeedArray() {
         return readPlaybackSpeedArray(prefs.getString(PREF_PLAYBACK_SPEED_ARRAY, null));
     }
 
@@ -638,15 +638,15 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setPlaybackSpeed(String speed) {
+    public static void setPlaybackSpeed(float speed) {
         prefs.edit()
-             .putString(PREF_PLAYBACK_SPEED, speed)
+             .putString(PREF_PLAYBACK_SPEED, String.valueOf(speed))
              .apply();
     }
 
-    public static void setVideoPlaybackSpeed(String speed) {
+    public static void setVideoPlaybackSpeed(float speed) {
         prefs.edit()
-                .putString(PREF_VIDEO_PLAYBACK_SPEED, speed)
+                .putString(PREF_VIDEO_PLAYBACK_SPEED, String.valueOf(speed))
                 .apply();
     }
 
@@ -769,24 +769,22 @@ public class UserPreferences {
         }
     }
 
-    private static String[] readPlaybackSpeedArray(String valueFromPrefs) {
-        String[] selectedSpeeds = null;
-        // If this preference hasn't been set yet, return the default options
-        if (valueFromPrefs == null) {
-            selectedSpeeds = new String[] { "0.75", "1.00", "1.25", "1.50", "1.75", "2.00" };
-        } else {
+    private static float[] readPlaybackSpeedArray(String valueFromPrefs) {
+        if (valueFromPrefs != null) {
             try {
                 JSONArray jsonArray = new JSONArray(valueFromPrefs);
-                selectedSpeeds = new String[jsonArray.length()];
+                float[] selectedSpeeds = new float[jsonArray.length()];
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    selectedSpeeds[i] = jsonArray.getString(i);
+                    selectedSpeeds[i] = (float) jsonArray.getDouble(i);
                 }
+                return selectedSpeeds;
             } catch (JSONException e) {
                 Log.e(TAG, "Got JSON error when trying to get speeds from JSONArray");
                 e.printStackTrace();
             }
         }
-        return selectedSpeeds;
+        // If this preference hasn't been set yet, return the default options
+        return new float[] { 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f };
     }
 
     public static String getMediaPlayer() {
@@ -816,11 +814,11 @@ public class UserPreferences {
     }
 
     public static VideoBackgroundBehavior getVideoBackgroundBehavior() {
-        switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "stop")) {
+        switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "pip")) {
             case "stop": return VideoBackgroundBehavior.STOP;
             case "pip": return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
             case "continue": return VideoBackgroundBehavior.CONTINUE_PLAYING;
-            default: return VideoBackgroundBehavior.STOP;
+            default: return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
         }
     }
 

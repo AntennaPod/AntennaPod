@@ -33,6 +33,7 @@
         android:label="@string/app_name"
         android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
+        android:theme="@style/Theme.AntennaPod.Splash"
         android:usesCleartextTraffic="true"
         android:logo="@mipmap/ic_launcher">
 
@@ -53,12 +54,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:label="@string/app_name"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/Theme.AntennaPod.Dark.Splash">
-            <!-- android:launchMode="singleTask"  removed for #2948, so that
-                 when app is launched again, the app will go to the last activity users use
-                 (if the app has been used recently, e.g., last 30 minutes),
-                 rather than always go to MainActivity (launched by SplashActivity here) -->
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

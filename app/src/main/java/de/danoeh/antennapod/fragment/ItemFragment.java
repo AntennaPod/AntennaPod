@@ -94,8 +94,12 @@ public class ItemFragment extends Fragment {
     private ImageView imgvCover;
     private ProgressBar progbarDownload;
     private ProgressBar progbarLoading;
-    private Button butAction1;
-    private Button butAction2;
+    private TextView butAction1Text;
+    private TextView butAction2Text;
+    private ImageView butAction1Icon;
+    private ImageView butAction2Icon;
+    private View butAction1;
+    private View butAction2;
 
     private Disposable disposable;
     private PlaybackController controller;
@@ -141,12 +145,16 @@ public class ItemFragment extends Fragment {
         progbarLoading = layout.findViewById(R.id.progbarLoading);
         butAction1 = layout.findViewById(R.id.butAction1);
         butAction2 = layout.findViewById(R.id.butAction2);
+        butAction1Icon = layout.findViewById(R.id.butAction1Icon);
+        butAction2Icon = layout.findViewById(R.id.butAction2Icon);
+        butAction1Text = layout.findViewById(R.id.butAction1Text);
+        butAction2Text = layout.findViewById(R.id.butAction2Text);
 
         butAction1.setOnClickListener(v -> {
             if (item == null) {
                 return;
             }
-            ItemActionButton actionButton = ItemActionButton.forItem(item, item.isTagged(FeedItem.TAG_QUEUE));
+            ItemActionButton actionButton = ItemActionButton.forItem(item, item.isTagged(FeedItem.TAG_QUEUE), false);
             actionButton.onClick(getActivity());
 
             FeedMedia media = item.getMedia();
@@ -267,22 +275,22 @@ public class ItemFragment extends Fragment {
         }
 
         FeedMedia media = item.getMedia();
-        @AttrRes int butAction1Icon = 0;
-        @StringRes int butAction1Text = 0;
-        @AttrRes int butAction2Icon = 0;
-        @StringRes int butAction2Text = 0;
+        @AttrRes int butAction1IconRes = 0;
+        @StringRes int butAction1TextRes = 0;
+        @AttrRes int butAction2IconRes = 0;
+        @StringRes int butAction2TextRes = 0;
         if (media == null) {
             if (!item.isPlayed()) {
-                butAction1Icon = R.attr.navigation_accept;
+                butAction1IconRes = R.attr.navigation_accept;
                 if (item.hasMedia()) {
-                    butAction1Text = R.string.mark_read_label;
+                    butAction1TextRes = R.string.mark_read_label;
                 } else {
-                    butAction1Text = R.string.mark_read_no_media_label;
+                    butAction1TextRes = R.string.mark_read_no_media_label;
                 }
             }
             if (item.getLink() != null) {
-                butAction2Icon = R.attr.location_web_site;
-                butAction2Text = R.string.visit_website_label;
+                butAction2IconRes = R.attr.location_web_site;
+                butAction2TextRes = R.string.visit_website_label;
             }
         } else {
             if (media.getDuration() > 0) {
@@ -290,40 +298,40 @@ public class ItemFragment extends Fragment {
             }
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
             if (!media.isDownloaded()) {
-                butAction2Icon = R.attr.action_stream;
-                butAction2Text = R.string.stream_label;
+                butAction2IconRes = R.attr.action_stream;
+                butAction2TextRes = R.string.stream_label;
             } else {
-                butAction2Icon = R.attr.content_discard;
-                butAction2Text = R.string.delete_label;
+                butAction2IconRes = R.attr.content_discard;
+                butAction2TextRes = R.string.delete_label;
             }
             if (isDownloading) {
-                butAction1Icon = R.attr.navigation_cancel;
-                butAction1Text = R.string.cancel_label;
+                butAction1IconRes = R.attr.navigation_cancel;
+                butAction1TextRes = R.string.cancel_label;
             } else if (media.isDownloaded()) {
-                butAction1Icon = R.attr.av_play;
-                butAction1Text = R.string.play_label;
+                butAction1IconRes = R.attr.av_play;
+                butAction1TextRes = R.string.play_label;
             } else {
-                butAction1Icon = R.attr.av_download;
-                butAction1Text = R.string.download_label;
+                butAction1IconRes = R.attr.av_download;
+                butAction1TextRes = R.string.download_label;
             }
         }
 
-        if (butAction1Icon != 0 && butAction1Text != 0) {
-            butAction1.setText(butAction1Text);
-            butAction1.setTransformationMethod(null);
+        if (butAction1IconRes != 0 && butAction1TextRes != 0) {
+            butAction1Text.setText(butAction1TextRes);
+            butAction1Text.setTransformationMethod(null);
             TypedValue typedValue = new TypedValue();
-            getContext().getTheme().resolveAttribute(butAction1Icon, typedValue, true);
-            butAction1.setCompoundDrawablesWithIntrinsicBounds(typedValue.resourceId, 0, 0, 0);
+            getContext().getTheme().resolveAttribute(butAction1IconRes, typedValue, true);
+            butAction1Icon.setImageResource(typedValue.resourceId);
             butAction1.setVisibility(View.VISIBLE);
         } else {
             butAction1.setVisibility(View.INVISIBLE);
         }
-        if (butAction2Icon != 0 && butAction2Text != 0) {
-            butAction2.setText(butAction2Text);
-            butAction2.setTransformationMethod(null);
+        if (butAction2IconRes != 0 && butAction2TextRes != 0) {
+            butAction2Text.setText(butAction2TextRes);
+            butAction2Text.setTransformationMethod(null);
             TypedValue typedValue = new TypedValue();
-            getContext().getTheme().resolveAttribute(butAction2Icon, typedValue, true);
-            butAction2.setCompoundDrawablesWithIntrinsicBounds(typedValue.resourceId, 0, 0, 0);
+            getContext().getTheme().resolveAttribute(butAction2IconRes, typedValue, true);
+            butAction2Icon.setImageResource(typedValue.resourceId);
             butAction2.setVisibility(View.VISIBLE);
         } else {
             butAction2.setVisibility(View.INVISIBLE);
