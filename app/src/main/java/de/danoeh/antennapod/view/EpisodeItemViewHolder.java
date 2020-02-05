@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.joanzapata.iconify.Iconify;
@@ -54,9 +55,10 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
     public final View secondaryActionButton;
     public final ImageView secondaryActionIcon;
     private final CircularProgressBar secondaryActionProgress;
-    private final MainActivity activity;
     private final TextView separatorIcons;
+    public final RelativeLayout coverHolder;
 
+    private final MainActivity activity;
     private FeedItem item;
 
     public EpisodeItemViewHolder(MainActivity activity, ViewGroup parent) {
@@ -83,6 +85,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         secondaryActionProgress = itemView.findViewById(R.id.secondaryActionProgress);
         secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
+        coverHolder = itemView.findViewById(R.id.coverHolder);
         itemView.setTag(this);
     }
 
@@ -117,12 +120,14 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
             secondaryActionProgress.setPercentage(0, item);
         }
 
-        new CoverLoader(activity)
-                .withUri(ImageResourceUtils.getImageLocation(item))
-                .withFallbackUri(item.getFeed().getImageLocation())
-                .withPlaceholderView(placeholder)
-                .withCoverView(cover)
-                .load();
+        if (coverHolder.getVisibility() == View.VISIBLE) {
+            new CoverLoader(activity)
+                    .withUri(ImageResourceUtils.getImageLocation(item))
+                    .withFallbackUri(item.getFeed().getImageLocation())
+                    .withPlaceholderView(placeholder)
+                    .withCoverView(cover)
+                    .load();
+        }
     }
 
     private void bind(FeedMedia media) {

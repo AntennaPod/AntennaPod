@@ -16,18 +16,19 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
     private final ItemAccess itemAccess;
     private final MainActivity activity;
-    /** true if played items should be made partially transparent */
     private final boolean makePlayedItemsTransparent;
+    private final boolean showIcons;
 
     private int currentlyPlayingItem = -1;
 
     public FeedItemlistAdapter(MainActivity activity,
                                ItemAccess itemAccess,
-                               boolean showFeedtitle,
+                               boolean showIcons,
                                boolean makePlayedItemsTransparent) {
         super();
         this.activity = activity;
         this.itemAccess = itemAccess;
+        this.showIcons = showIcons;
         this.makePlayedItemsTransparent = makePlayedItemsTransparent;
     }
 
@@ -54,6 +55,10 @@ public class FeedItemlistAdapter extends BaseAdapter {
             holder = new EpisodeItemViewHolder(activity, parent);
         } else {
             holder = (EpisodeItemViewHolder) convertView.getTag();
+        }
+
+        if (!showIcons) {
+            holder.coverHolder.setVisibility(View.GONE);
         }
 
         final FeedItem item = getItem(position);

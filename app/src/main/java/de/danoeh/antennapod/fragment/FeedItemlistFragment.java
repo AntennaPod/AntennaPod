@@ -89,25 +89,18 @@ public class FeedItemlistFragment extends ListFragment {
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     private FeedItemlistAdapter adapter;
-    private ContextMenu contextMenu;
     private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
+    private MoreContentListFooterUtil listFooter;
 
     private long feedID;
     private Feed feed;
-
     private boolean headerCreated = false;
-
-    private List<Downloader> downloaderList;
-
-    private MoreContentListFooterUtil listFooter;
-
     private boolean isUpdatingFeed;
 
     private TextView txtvTitle;
     private IconTextView txtvFailure;
     private ImageView imgvBackground;
     private ImageView imgvCover;
-
     private TextView txtvInformation;
 
     private Disposable disposable;
@@ -305,7 +298,6 @@ public class FeedItemlistFragment extends ListFragment {
             menu.setHeaderTitle(item.getTitle());
         }
 
-        contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         FeedItemMenuHandler.onPrepareMenu(menu, item);
     }
@@ -366,7 +358,6 @@ public class FeedItemlistFragment extends ListFragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        downloaderList = update.downloaders;
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeed)) {
             updateProgressBarVisibility();
         }
