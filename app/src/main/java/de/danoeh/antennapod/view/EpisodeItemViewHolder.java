@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
@@ -56,7 +57,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
     public final ImageView secondaryActionIcon;
     private final CircularProgressBar secondaryActionProgress;
     private final TextView separatorIcons;
-    public final RelativeLayout coverHolder;
+    public final CardView coverHolder;
 
     private final MainActivity activity;
     private FeedItem item;

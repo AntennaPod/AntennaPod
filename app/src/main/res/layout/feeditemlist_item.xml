@@ -22,37 +22,45 @@
                 android:scaleType="center"
                 android:src="?attr/dragview_background"
                 tools:src="@drawable/ic_drag_vertical_grey600_48dp"
-                tools:background="@android:color/holo_green_dark" />
+                tools:background="@android:color/holo_green_dark"/>
 
     </LinearLayout>
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
             android:layout_width="@dimen/thumbnail_length_queue_item"
             android:layout_height="@dimen/thumbnail_length_queue_item"
             android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:layout_marginRight="@dimen/listitem_threeline_textleftpadding"
             android:layout_marginEnd="@dimen/listitem_threeline_textleftpadding"
-            android:id="@+id/coverHolder">
+            android:id="@+id/coverHolder"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp">
 
-        <TextView
-                android:id="@+id/txtvPlaceholder"
+        <RelativeLayout
                 android:layout_width="@dimen/thumbnail_length_queue_item"
-                android:layout_height="@dimen/thumbnail_length_queue_item"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:background="@color/light_gray"
-                android:maxLines="2"
-                android:ellipsize="end"/>
-        <ImageView
-                android:id="@+id/imgvCover"
-                android:layout_width="@dimen/thumbnail_length_queue_item"
-                android:layout_height="@dimen/thumbnail_length_queue_item"
-                android:layout_centerVertical="true"
-                android:contentDescription="@string/cover_label"
-                tools:src="@tools:sample/avatars" />
+                android:layout_height="@dimen/thumbnail_length_queue_item">
 
-    </RelativeLayout>
+            <TextView
+                    android:id="@+id/txtvPlaceholder"
+                    android:layout_width="@dimen/thumbnail_length_queue_item"
+                    android:layout_height="@dimen/thumbnail_length_queue_item"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:background="@color/light_gray"
+                    android:maxLines="3"
+                    android:padding="2dp"
+                    android:ellipsize="end"/>
+            <ImageView
+                    android:id="@+id/imgvCover"
+                    android:layout_width="@dimen/thumbnail_length_queue_item"
+                    android:layout_height="@dimen/thumbnail_length_queue_item"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/cover_label"
+                    tools:src="@tools:sample/avatars"/>
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
             android:layout_width="0dp"
