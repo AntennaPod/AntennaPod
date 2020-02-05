@@ -3,17 +3,14 @@ package de.danoeh.antennapod.view;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.Layout;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.core.view.LayoutInflaterCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
@@ -55,6 +52,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
     public final ImageView isFavorite;
     private final ProgressBar progressBar;
     public final ImageButton butSecondary;
+    private final CircularProgressBar secondaryActionProgress;
     private final MainActivity activity;
     private final TextView separatorIcons;
 
@@ -82,6 +80,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         isFavorite = itemView.findViewById(R.id.isFavorite);
         size = itemView.findViewById(R.id.size);
         separatorIcons = itemView.findViewById(R.id.separatorIcons);
+        secondaryActionProgress = itemView.findViewById(R.id.secondaryActionProgress);
         itemView.setTag(this);
     }
 
@@ -106,14 +105,16 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
         itemView.setAlpha(item.isPlayed() /*&& makePlayedItemsTransparent*/ ? 0.5f : 1.0f);
 
-        if (item.getMedia() != null) {
-            bind(item.getMedia());
-        }
-
         ItemActionButton actionButton = ItemActionButton.forItem(item, true);
         actionButton.configure(butSecondary, activity);
         butSecondary.setFocusable(false);
         butSecondary.setTag(item);
+
+        if (item.getMedia() != null) {
+            bind(item.getMedia());
+        } else {
+            secondaryActionProgress.setPercentage(0, item);
+        }
 
         new CoverLoader(activity)
                 .withUri(ImageResourceUtils.getImageLocation(item))
@@ -133,28 +134,27 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder
             container.setBackgroundColor(Color.TRANSPARENT);
         }
 
-        final DownloadRequest downloadRequest = DownloadRequester.getInstance().getRequestFor(media);
-        progressBar.setVisibility(View.GONE);
-        position.setVisibility(View.GONE);
-        if (downloadRequest != null) {
-            position.setText(Converter.byteToString(downloadRequest.getSoFar()));
-            if (downloadRequest.getSize() > 0) {
-                duration.setText(Converter.byteToString(downloadRequest.getSize()));
-            } else {
-                duration.setText(Converter.byteToString(media.getSize()));
-            }
-            progressBar.setProgress(downloadRequest.getProgressPercent());
+        if (DownloadRequester.getInstance().isDownloadingFile(media)) {
+            final DownloadRequest downloadRequest = DownloadRequester.getInstance().getRequestFor(media);
+            float percent = 0.01f * downloadRequest.getProgressPercent();
+            secondaryActionProgress.setPercentage(Math.max(percent, 0.01f), item);
+        } else if (media.isDownloaded()) {
+            secondaryActionProgress.setPercentage(1, item); // Do not animate 100% -> 0%
+        } else {
+            secondaryActionProgress.setPercentage(0, item); // Animate X% -> 0%
+        }
+
+        if (media.getDuration() > 0
+                && (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS)) {
+                int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+            progressBar.setProgress(progress);
+            position.setText(Converter.getDurationStringLong(media.getPosition()));
+            duration.setText(Converter.getDurationStringLong(media.getDuration()));
             progressBar.setVisibility(View.VISIBLE);
             position.setVisibility(View.VISIBLE);
-        } else if (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS) {
-            if (media.getDuration() > 0) {
-                int progress = (int) (100.0 * media.getPosition() / media.getDuration());
-                progressBar.setProgress(progress);
-                progressBar.setVisibility(View.VISIBLE);
-                position.setVisibility(View.VISIBLE);
-                position.setText(Converter.getDurationStringLong(media.getPosition()));
-                duration.setText(Converter.getDurationStringLong(media.getDuration()));
-            }
+        } else {
+            progressBar.setVisibility(View.GONE);
+            position.setVisibility(View.GONE);
         }
 
         if (media.getSize() > 0) {

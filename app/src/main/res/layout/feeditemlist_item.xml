@@ -190,8 +190,6 @@
 
     </LinearLayout>
 
-    <include layout="@layout/vertical_list_divider"/>
-
     <include layout="@layout/secondary_action"/>
 
 </LinearLayout>
