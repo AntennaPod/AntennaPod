@@ -6,6 +6,7 @@ import android.widget.BaseAdapter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 /**
@@ -49,7 +50,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         final FeedItem item = getItem(position);
         holder.bind(item);
         holder.dragHandle.setVisibility(View.GONE);
-        holder.secondaryActionIcon.setImageResource(R.drawable.ic_delete_grey600_24dp);
+        holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.content_discard));
         holder.secondaryActionButton.setOnClickListener(v -> itemAccess.onFeedItemSecondaryAction(item));
         holder.hideSeparatorIfNecessary();
 
