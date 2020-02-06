@@ -104,11 +104,12 @@ public class RunningDownloadsFragment extends ListFragment {
             DownloadRequest downloadRequest = downloader.getDownloadRequest();
             DownloadRequester.getInstance().cancelDownload(getActivity(), downloadRequest.getSource());
 
-            if(downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA &&
-                    UserPreferences.isEnableAutodownload()) {
+            if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                    && UserPreferences.isEnableAutodownload()) {
                 FeedMedia media = DBReader.getFeedMedia(downloadRequest.getFeedfileId());
                 DBWriter.setFeedItemAutoDownload(media.getItem(), false);
-                Toast.makeText(getActivity(), R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.download_canceled_autodownload_enabled_msg,
+                        Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), R.string.download_canceled_msg, Toast.LENGTH_SHORT).show();
             }
