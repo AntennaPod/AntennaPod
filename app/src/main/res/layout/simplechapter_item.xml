@@ -1,86 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    tools:background="@android:color/darker_gray">
-
-    <TextView
-        android:id="@+id/txtvStart"
-        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
-        android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:gravity="center_vertical"
-        tools:text="Start"
-        tools:background="@android:color/holo_green_dark" />
+        android:baselineAligned="false"
+        android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-        android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
-        android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
-        android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding"
-        android:layout_marginEnd="@dimen/listitem_threeline_horizontalpadding"
-        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        tools:background="@android:color/holo_red_dark">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
+            android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
+            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp"
-            tools:text="Chapter title"
-            tools:background="@android:color/holo_green_dark" />
+                android:id="@+id/txtvStart"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="00:00:00"/>
 
         <TextView
-            android:id="@+id/txtvLink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:maxLines="1"
-            android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="Link"
-            tools:background="@android:color/holo_green_dark" />
+                android:id="@+id/txtvTitle"
+                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@sample/episodes.json/data/title"
+                android:ellipsize="end"/>
+
+        <TextView
+                android:id="@+id/txtvLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:visibility="gone"
+                android:background="?attr/selectableItemBackground"
+                tools:visibility="visible"
+                tools:text="https://example.com"/>
 
         <TextView
                 android:id="@+id/txtvDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:maxLines="1"
-                tools:text="Duration"
-                tools:background="@android:color/holo_green_dark" />
-
+                tools:text="Duration: 00:00:00"/>
     </LinearLayout>
 
-    <include layout="@layout/vertical_list_divider" />
-
-    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/butPlayChapter"
-        android:layout_width="@dimen/listview_secondary_button_width"
-        android:layout_height="match_parent"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="false"
-        android:contentDescription="@string/chapters_label"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:src="?attr/av_play"
-        tools:src="@drawable/ic_play_arrow_white_36dp"
-        tools:background="@android:color/holo_green_dark" />
+    <include layout="@layout/secondary_action"/>
 
 </LinearLayout>
