@@ -58,7 +58,8 @@ class DBTestUtils {
                     List<Chapter> chapters = new ArrayList<>();
                     item.setChapters(chapters);
                     for (int k = 0; k < numChapters; k++) {
-                        chapters.add(new SimpleChapter(k, "item " + j + " chapter " + k, item, "http://example.com"));
+                        chapters.add(new SimpleChapter(k, "item " + j + " chapter " + k,
+                                "http://example.com", "http://example.com/image.png"));
                     }
                 }
                 f.getItems().add(item);

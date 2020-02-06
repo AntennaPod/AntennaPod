@@ -795,9 +795,7 @@ public final class DBReader {
     }
 
     private static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getSimpleChaptersOfFeedItemCursor(item);
+        try (Cursor cursor = adapter.getSimpleChaptersOfFeedItemCursor(item)) {
             int chaptersCount = cursor.getCount();
             if (chaptersCount == 0) {
                 item.setChapters(null);
@@ -805,14 +803,7 @@ public final class DBReader {
             }
             item.setChapters(new ArrayList<>(chaptersCount));
             while (cursor.moveToNext()) {
-                Chapter chapter = Chapter.fromCursor(cursor, item);
-                if (chapter != null) {
-                    item.getChapters().add(chapter);
-                }
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
+                item.getChapters().add(Chapter.fromCursor(cursor));
             }
         }
     }
