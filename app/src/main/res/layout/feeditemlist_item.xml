@@ -91,22 +91,22 @@
                     tools:text="@sample/episodes.json/data/status_label"/>
 
             <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="14sp"
+                    android:layout_height="14sp"
                     app:srcCompat="?attr/type_video"
                     tools:srcCompat="@drawable/ic_videocam_grey600_24dp"
                     android:id="@+id/ivIsVideo"/>
 
             <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="14sp"
+                    android:layout_height="14sp"
                     app:srcCompat="?attr/ic_unfav"
                     tools:srcCompat="@drawable/ic_star_grey600_24dp"
                     android:id="@+id/isFavorite"/>
 
             <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="14sp"
+                    android:layout_height="14sp"
                     app:srcCompat="?attr/stat_playlist"
                     tools:srcCompat="@drawable/ic_list_grey600_24dp"
                     android:id="@+id/ivInPlaylist"/>
