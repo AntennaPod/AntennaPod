@@ -11,7 +11,10 @@ import java.util.ListIterator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
+import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
@@ -20,14 +23,17 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class ChaptersFragment extends ListFragment {
     private static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
     private PlaybackController controller;
     private Disposable disposable;
-    private EmptyViewHandler emptyView;
-
+    private int focusedChapter = -1;
+    private Playable media;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -38,15 +44,19 @@ public class ChaptersFragment extends ListFragment {
         final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
-        emptyView = new EmptyViewHandler(getContext());
+        EmptyViewHandler emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToListView(lv);
         emptyView.setIcon(R.attr.ic_bookmark);
         emptyView.setTitle(R.string.no_chapters_head_label);
         emptyView.setMessage(R.string.no_chapters_label);
 
         adapter = new ChaptersListAdapter(getActivity(), 0, pos -> {
+            if (controller.getStatus() != PlayerStatus.PLAYING) {
+                controller.playPause();
+            }
             Chapter chapter = (Chapter) getListAdapter().getItem(pos);
             controller.seekToChapter(chapter);
+            updateChapterSelection(pos);
         });
         setListAdapter(adapter);
     }
@@ -67,7 +77,7 @@ public class ChaptersFragment extends ListFragment {
             }
         };
         controller.init();
-
+        EventBus.getDefault().register(this);
         loadMediaInfo();
     }
 
@@ -85,6 +95,12 @@ public class ChaptersFragment extends ListFragment {
         super.onStop();
         controller.release();
         controller = null;
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        updateChapterSelection(getCurrentChapter(media));
     }
 
     private int getCurrentChapter(Playable media) {
@@ -94,10 +110,9 @@ public class ChaptersFragment extends ListFragment {
         int currentPosition = controller.getPosition();
 
         List<Chapter> chapters = media.getChapters();
-        for (final ListIterator<Chapter> it = chapters.listIterator(); it.hasNext(); ) {
-            Chapter chapter = it.next();
-            if (chapter.getStart() > currentPosition) {
-                return it.previousIndex() - 1;
+        for (int i = 0; i < chapters.size(); i++) {
+            if (chapters.get(i).getStart() > currentPosition) {
+                return i - 1;
             }
         }
         return chapters.size() - 1;
@@ -108,27 +123,42 @@ public class ChaptersFragment extends ListFragment {
             disposable.dispose();
         }
         disposable = Maybe.create(emitter -> {
-                    Playable media = controller.getMedia();
-                    if (media != null) {
-                        emitter.onSuccess(media);
-                    } else {
-                        emitter.onComplete();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> onMediaChanged((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+            Playable media = controller.getMedia();
+            if (media != null) {
+                emitter.onSuccess(media);
+            } else {
+                emitter.onComplete();
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(media -> onMediaChanged((Playable) media),
+                error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void onMediaChanged(Playable media) {
-        if (adapter != null) {
-            adapter.setMedia(media);
-            adapter.notifyDataSetChanged();
+        this.media = media;
+        focusedChapter = -1;
+        if (adapter == null) {
+            return;
+        }
+        adapter.setMedia(media);
+        adapter.notifyDataSetChanged();
+        int positionOfCurrentChapter = getCurrentChapter(media);
+        updateChapterSelection(positionOfCurrentChapter);
+    }
 
-            int positionOfCurrentChapter = getCurrentChapter(media);
-            if (positionOfCurrentChapter != -1) {
-                getListView().setSelection(positionOfCurrentChapter);
+    private void updateChapterSelection(int position) {
+        if (adapter == null) {
+            return;
+        }
+
+        if (position != -1 && focusedChapter != position) {
+            focusedChapter = position;
+            adapter.notifyChapterChanged(focusedChapter);
+            if (getListView().getFirstVisiblePosition() >= position
+                    || getListView().getLastVisiblePosition() <= position) {
+                getListView().setSelectionFromTop(position, 100);
             }
         }
     }
