@@ -22,6 +22,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
     private Playable media;
     private final Callback callback;
+    private int currentChapterIndex = -1;
 
     public ChaptersListAdapter(Context context, int textViewResourceId, Callback callback) {
         super(context, textViewResourceId);
@@ -86,8 +87,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
             }
         });
 
-        Chapter current = ChapterUtils.getCurrentChapter(media);
-        if (current == sc) {
+        if (position == currentChapterIndex) {
             int playingBackGroundColor = ThemeUtils.getColorFromAttr(getContext(), R.attr.currently_playing_background);
             holder.view.setBackgroundColor(playingBackGroundColor);
         } else {
@@ -120,6 +120,11 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
             }
         }
         return counter;
+    }
+
+    public void notifyChapterChanged(int newChapterIndex) {
+        currentChapterIndex = newChapterIndex;
+        notifyDataSetChanged();
     }
 
     private boolean ignoreChapter(Chapter c) {

@@ -186,6 +186,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             ComponentName cn = intent.getComponent();
             Intent mainIntent = Intent.makeRestartActivityTask(cn);
             startActivity(mainIntent);
+            Runtime.getRuntime().exit(0);
         });
         d.show();
     }
