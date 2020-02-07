@@ -470,6 +470,8 @@
     <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
     <string name="pref_showDownloadReport_title">Show Download Report</string>
     <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
+    <string name="pref_showAutoDownloadReport_title">Show Auto Download Report</string>
+    <string name="pref_showAutoDownloadReport_sum">Generate a report that shows the details of auto downloaded episodes.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_enqueue_location_title">Enqueue Location</string>
     <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>

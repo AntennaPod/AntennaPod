@@ -60,6 +60,7 @@ public class UserPreferences {
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
+    private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
@@ -290,6 +291,10 @@ public class UserPreferences {
      */
     public static boolean showDownloadReport() {
         return prefs.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
+    }
+
+    public static boolean showAutoDownloadReport() {
+        return prefs.getBoolean(PREF_SHOW_AUTO_DOWNLOAD_REPORT, false);
     }
 
     public static boolean enqueueDownloadedEpisodes() {

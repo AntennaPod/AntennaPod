@@ -96,7 +96,7 @@ public class DownloadServiceNotification {
      * user about the number of completed downloads. A report will only be
      * created if there is at least one failed download excluding images
      */
-    public void updateReport(List<DownloadStatus> reportQueue) {
+    public void updateReport(List<DownloadStatus> reportQueue, boolean showAutoDownloadReport) {
         // check if report should be created
         boolean createReport = false;
         int successfulDownloads = 0;
@@ -110,7 +110,7 @@ public class DownloadServiceNotification {
             } else if (!status.isCancelled()) {
                 failedDownloads++;
             }
-            if (failedDownloads > 0 || status.isGeneratedBySystem() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            if (failedDownloads > 0 || showAutoDownloadReport && status.isGeneratedBySystem() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 createReport = true;
             }
         }
