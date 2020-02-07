@@ -45,13 +45,13 @@ public class DownloadRequestTest {
             FeedFile item1 = createFeedItem(1);
             Bundle arg1 = new Bundle();
             arg1.putString("arg1", "value1");
-            DownloadRequest request1 = new DownloadRequest.Builder(destStr, item1)
+            DownloadRequest request1 = new DownloadRequest.Builder(destStr, item1, false)
                     .withAuthentication(username1, password1)
                     .withArguments(arg1)
                     .build();
 
             FeedFile item2 = createFeedItem(2);
-            DownloadRequest request2 = new DownloadRequest.Builder(destStr, item2)
+            DownloadRequest request2 = new DownloadRequest.Builder(destStr, item2, true)
                     .withAuthentication(username2, password2)
                     .build();
 
