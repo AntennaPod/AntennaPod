@@ -108,8 +108,10 @@ public class DownloadServiceNotification {
             if (status.isSuccessful()) {
                 successfulDownloads++;
             } else if (!status.isCancelled()) {
-                createReport = true;
                 failedDownloads++;
+            }
+            if (failedDownloads > 0 || status.isGeneratedBySystem() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                createReport = true;
             }
         }
 

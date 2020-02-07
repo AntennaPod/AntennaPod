@@ -96,7 +96,7 @@ public class MediaDownloadedHandler implements Runnable {
         } catch (ExecutionException e) {
             Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
             updatedStatus = new DownloadStatus(media, media.getEpisodeTitle(),
-                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage(), false);
+                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage(), request.isGeneratedBySystem());
         }
 
         if (GpodnetPreferences.loggedIn() && item != null) {
