@@ -1225,7 +1225,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void startForegroundIfPlaying(@NonNull PlayerStatus status) {
         if (stateManager.hasReceivedValidStartCommand()) {
             if (isCasting || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
-                    || status == PlayerStatus.SEEKING) {
+                    || status == PlayerStatus.SEEKING || status == PlayerStatus.INITIALIZING
+                    || status == PlayerStatus.INITIALIZED) {
                 stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
             } else {
                 stateManager.stopForeground(false);
