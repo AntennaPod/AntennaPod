@@ -110,7 +110,7 @@ public class DownloadServiceNotification {
             } else if (!status.isCancelled()) {
                 failedDownloads++;
             }
-            if (failedDownloads > 0 || showAutoDownloadReport && status.isGeneratedBySystem() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            if (failedDownloads > 0 || showAutoDownloadReport && !status.isInitiatedByUser() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 createReport = true;
             }
         }

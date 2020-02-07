@@ -148,12 +148,12 @@ public final class DBTasks {
                 } catch (DownloadRequestException e) {
                     e.printStackTrace();
                     DBWriter.addDownloadStatus(
-                            new DownloadStatus(feed, feed
-                                    .getHumanReadableIdentifier(),
-                                    DownloadError.ERROR_REQUEST_ERROR, false, e
-                                    .getMessage(),
-                                    true
-                            )
+                            new DownloadStatus(feed,
+                                               feed.getHumanReadableIdentifier(),
+                                               DownloadError.ERROR_REQUEST_ERROR,
+                                               false,
+                                               e.getMessage(),
+                                               false)
                     );
                 }
             }
@@ -169,16 +169,16 @@ public final class DBTasks {
      */
     public static void forceRefreshCompleteFeed(final Context context, final Feed feed) {
         try {
-            refreshFeed(context, feed, true, true, true);
+            refreshFeed(context, feed, true, true, false);
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DBWriter.addDownloadStatus(
-                    new DownloadStatus(feed, feed
-                            .getHumanReadableIdentifier(),
-                            DownloadError.ERROR_REQUEST_ERROR, false, e
-                            .getMessage(),
-                            true
-                    )
+                    new DownloadStatus(feed,
+                                       feed.getHumanReadableIdentifier(),
+                                       DownloadError.ERROR_REQUEST_ERROR,
+                                       false,
+                                       e.getMessage(),
+                                       false)
             );
         }
     }
@@ -198,8 +198,7 @@ public final class DBTasks {
             nextFeed.setPageNr(pageNr);
             nextFeed.setPaged(true);
             nextFeed.setId(feed.getId());
-            DownloadRequester.getInstance().downloadFeed(context, nextFeed, loadAllPages, false, false
-            );
+            DownloadRequester.getInstance().downloadFeed(context, nextFeed, loadAllPages, false, true);
         } else {
             Log.e(TAG, "loadNextPageOfFeed: Feed was either not paged or contained no nextPageLink");
         }
@@ -215,7 +214,7 @@ public final class DBTasks {
     private static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
         Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
-        refreshFeed(context, feed, false, false, true);
+        refreshFeed(context, feed, false, false, false);
     }
 
     /**
@@ -224,13 +223,13 @@ public final class DBTasks {
      * @param context Used for requesting the download.
      * @param feed    The Feed object.
      */
-    public static void forceRefreshFeed(Context context, Feed feed, boolean generatedBySystem)
+    public static void forceRefreshFeed(Context context, Feed feed, boolean initiatedByUser)
             throws DownloadRequestException {
         Log.d(TAG, "refreshFeed(feed.id: " + feed.getId() +")");
-        refreshFeed(context, feed, false, true, generatedBySystem);
+        refreshFeed(context, feed, false, true, initiatedByUser);
     }
 
-    private static void refreshFeed(Context context, Feed feed, boolean loadAllPages, boolean force, boolean generatedBySystem)
+    private static void refreshFeed(Context context, Feed feed, boolean loadAllPages, boolean force, boolean initiatedByUser)
             throws DownloadRequestException {
         Feed f;
         String lastUpdate = feed.hasLastUpdateFailed() ? null : feed.getLastUpdate();
@@ -241,7 +240,7 @@ public final class DBTasks {
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
-        DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force, generatedBySystem);
+        DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force, initiatedByUser);
     }
 
     /**

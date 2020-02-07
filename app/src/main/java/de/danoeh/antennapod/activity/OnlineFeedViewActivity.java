@@ -137,9 +137,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 feedUrl = feedUrl.replaceFirst("((www.)?(subscribeonandroid.com/))", "");
             }
             if (savedInstanceState == null) {
-                startFeedDownload(feedUrl, null, null, false);
+                startFeedDownload(feedUrl, null, null, true);
             } else {
-                startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"), false);
+                startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"), true);
             }
         }
     }
@@ -223,7 +223,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void startFeedDownload(String url, String username, String password, boolean generatedBysystem) {
+    private void startFeedDownload(String url, String username, String password, boolean initiatedByUser) {
         Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, null);
@@ -235,7 +235,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         feed.setFile_url(fileUrl);
         final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
                 feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password,
-                true, null, generatedBysystem);
+                true, null, initiatedByUser);
 
         download = Observable.fromCallable(() -> {
                     feeds = DBReader.getFeedList();
@@ -589,9 +589,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             resetIntent(selectedUrl, titles.get(which));
             FeedPreferences prefs = feed.getPreferences();
             if(prefs != null) {
-                startFeedDownload(selectedUrl, prefs.getUsername(), prefs.getPassword(), false);
+                startFeedDownload(selectedUrl, prefs.getUsername(), prefs.getPassword(), true);
             } else {
-                startFeedDownload(selectedUrl, null, null, false);
+                startFeedDownload(selectedUrl, null, null, true);
             }
         };
 
@@ -627,7 +627,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         @Override
         protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
-            startFeedDownload(feedUrl, username, password, false);
+            startFeedDownload(feedUrl, username, password, true);
         }
     }
 

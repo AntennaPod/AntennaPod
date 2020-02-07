@@ -120,7 +120,7 @@ public class DownloadServiceTest {
                 assertFalse("The media in test should not yet been downloaded",
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
 
-                DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry.getTargetContext(), false, testMedia11.getItem());
+                DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry.getTargetContext(), true, testMedia11.getItem());
                 Awaitility.await()
                         .atMost(5000, TimeUnit.MILLISECONDS)
                         .until(() -> feedItemEventListener.getEvents().size() >= numEventsExpected);
@@ -165,7 +165,7 @@ public class DownloadServiceTest {
         }
 
         withFeedItemEventListener(feedItemEventListener -> {
-            DownloadRequester.getInstance().downloadMedia(false, context, false, testMedia11.getItem());
+            DownloadRequester.getInstance().downloadMedia(false, context, true, testMedia11.getItem());
             withDownloadEventListener(downloadEventListener ->
                     Awaitility.await("download is actually running")
                         .atMost(5000, TimeUnit.MILLISECONDS)

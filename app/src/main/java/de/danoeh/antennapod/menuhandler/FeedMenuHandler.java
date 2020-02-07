@@ -64,7 +64,7 @@ public class FeedMenuHandler {
                                                final Feed selectedFeed) throws DownloadRequestException {
         switch (item.getItemId()) {
             case R.id.refresh_item:
-                DBTasks.forceRefreshFeed(context, selectedFeed, false);
+                DBTasks.forceRefreshFeed(context, selectedFeed, true);
                 break;
             case R.id.refresh_complete_item:
                 DBTasks.forceRefreshCompleteFeed(context, selectedFeed);

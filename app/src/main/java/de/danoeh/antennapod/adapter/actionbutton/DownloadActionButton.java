@@ -71,7 +71,7 @@ public class DownloadActionButton extends ItemActionButton {
 
     private void downloadEpisode(Context context) {
         try {
-            DownloadRequester.getInstance().downloadMedia(context, item);
+            DownloadRequester.getInstance().downloadMedia(context, true, item);
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());

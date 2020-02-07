@@ -92,7 +92,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     Log.d(TAG, "Enqueueing " + itemsToDownload.length + " items for download");
 
                     try {
-                        DownloadRequester.getInstance().downloadMedia(false, context, true, itemsToDownload);
+                        DownloadRequester.getInstance().downloadMedia(false, context, false, itemsToDownload);
                     } catch (DownloadRequestException e) {
                         e.printStackTrace();
                     }

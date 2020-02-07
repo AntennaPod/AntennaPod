@@ -41,7 +41,7 @@ public class DownloadStatus {
 	 * FEEDFILETYPE_FEEDIMAGE or FEEDFILETYPE_FEEDMEDIA
 	 */
     private final int feedfileType;
-    private final boolean generatedBySystem;
+    private final boolean initiatedByUser;
 
 	// ------------------------------------ NOT STORED IN DB
     private boolean done;
@@ -52,7 +52,7 @@ public class DownloadStatus {
 						  boolean successful,
 						  boolean cancelled,
 						  String reasonDetailed,
-						  boolean generatedBySystem) {
+						  boolean initiatedByUser) {
 		this(0,
 			 request.getTitle(),
 			 request.getFeedfileId(),
@@ -63,7 +63,7 @@ public class DownloadStatus {
 			 reason,
 			 new Date(),
 			 reasonDetailed,
-			 generatedBySystem);
+				initiatedByUser);
 	}
 
 	/** Constructor for creating new completed downloads. */
@@ -72,7 +72,7 @@ public class DownloadStatus {
 						  DownloadError reason,
 						  boolean successful,
 						  String reasonDetailed,
-						  boolean generatedBySystem) {
+						  boolean initiatedByUser) {
 		this(0,
 			 title,
 			 feedfile.getId(),
@@ -83,28 +83,7 @@ public class DownloadStatus {
 			 reason,
 			 new Date(),
 			 reasonDetailed,
-			 generatedBySystem);
-	}
-
-	/** Constructor for creating new completed downloads. */
-	public DownloadStatus(long feedfileId,
-						  int feedfileType,
-						  String title,
-						  DownloadError reason,
-						  boolean successful,
-						  String reasonDetailed,
-						  boolean generatedBySystem) {
-		this(0,
-			 title,
-			 feedfileId,
-			 feedfileType,
-			 successful,
-			 false,
-			 true,
-			 reason,
-			 new Date(),
-			 reasonDetailed,
-			 generatedBySystem);
+				initiatedByUser);
 	}
 
 	public static DownloadStatus fromCursor(Cursor cursor) {
@@ -116,7 +95,7 @@ public class DownloadStatus {
 		int indexReason = cursor.getColumnIndex(PodDBAdapter.KEY_REASON);
 		int indexCompletionDate = cursor.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE);
 		int indexReasonDetailed = cursor.getColumnIndex(PodDBAdapter.KEY_REASON_DETAILED);
-		int indexGeneratedBySystem = cursor.getColumnIndex(PodDBAdapter.KEY_GENERATED_BY_SYSTEM);
+		int indexInitiatedByUser = cursor.getColumnIndex(PodDBAdapter.KEY_INITIATED_BY_USER);
 
 		return new DownloadStatus(cursor.getLong(indexId),
 								  cursor.getString(indexTitle),
@@ -128,7 +107,7 @@ public class DownloadStatus {
 								  DownloadError.fromCode(cursor.getInt(indexReason)),
 								  new Date(cursor.getLong(indexCompletionDate)),
 								  cursor.getString(indexReasonDetailed),
-								  cursor.getInt(indexGeneratedBySystem) > 0);
+								  cursor.getInt(indexInitiatedByUser) > 0);
 	}
 
 	private DownloadStatus(long id,
@@ -141,7 +120,7 @@ public class DownloadStatus {
 						   DownloadError reason,
 						   Date completionDate,
 						   String reasonDetailed,
-						   boolean generatedBySystem) {
+						   boolean initiatedByUser) {
 		this.id = id;
 		this.title = title;
 		this.feedfileId = feedfileId;
@@ -152,7 +131,7 @@ public class DownloadStatus {
 		this.completionDate = (Date) completionDate.clone();
 		this.reasonDetailed = reasonDetailed;
 		this.feedfileType = feedfileType;
-		this.generatedBySystem = generatedBySystem;
+		this.initiatedByUser = initiatedByUser;
 	}
 
 	@Override
@@ -197,7 +176,7 @@ public class DownloadStatus {
         return feedfileType;
     }
 
-    public boolean isGeneratedBySystem() { return generatedBySystem; }
+    public boolean isInitiatedByUser() { return initiatedByUser; }
 
     public boolean isDone() {
         return done;

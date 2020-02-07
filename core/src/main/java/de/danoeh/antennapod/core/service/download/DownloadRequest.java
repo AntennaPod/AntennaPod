@@ -29,7 +29,7 @@ public class DownloadRequest implements Parcelable {
     private long size;
     private int statusMsg;
     private boolean mediaEnqueued;
-    private boolean generatedBySystem;
+    private boolean initiatedByUser;
 
     public DownloadRequest(@NonNull String destination,
                            @NonNull String source,
@@ -40,7 +40,7 @@ public class DownloadRequest implements Parcelable {
                            String password,
                            boolean deleteOnFailure,
                            Bundle arguments,
-                           boolean generatedBySystem) {
+                           boolean initiatedByUser) {
         this(destination,
              source,
              title,
@@ -52,7 +52,7 @@ public class DownloadRequest implements Parcelable {
              password,
              false,
              arguments,
-             generatedBySystem);
+             initiatedByUser);
     }
 
     private DownloadRequest(Builder builder) {
@@ -67,7 +67,7 @@ public class DownloadRequest implements Parcelable {
              builder.password,
              false,
              (builder.arguments != null) ? builder.arguments : new Bundle(),
-             builder.generatedBySystem);
+             builder.initiatedByUser);
     }
 
     private DownloadRequest(Parcel in) {
@@ -96,7 +96,7 @@ public class DownloadRequest implements Parcelable {
                             String password,
                             boolean mediaEnqueued,
                             Bundle arguments,
-                            boolean generatedBySystem) {
+                            boolean initiatedByUser) {
         this.destination = destination;
         this.source = source;
         this.title = title;
@@ -108,7 +108,7 @@ public class DownloadRequest implements Parcelable {
         this.password = password;
         this.mediaEnqueued = mediaEnqueued;
         this.arguments = arguments;
-        this.generatedBySystem = generatedBySystem;
+        this.initiatedByUser = initiatedByUser;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class DownloadRequest implements Parcelable {
         dest.writeString(nonNullString(password));
         dest.writeByte((mediaEnqueued) ? (byte) 1 : 0);
         dest.writeBundle(arguments);
-        dest.writeByte(generatedBySystem ? (byte)1 : 0);
+        dest.writeByte(initiatedByUser ? (byte)1 : 0);
     }
 
     private static String nonNullString(String str) {
@@ -181,7 +181,7 @@ public class DownloadRequest implements Parcelable {
         if (username != null ? !username.equals(that.username) : that.username != null)
             return false;
         if (mediaEnqueued != that.mediaEnqueued) return false;
-        if (generatedBySystem != that.generatedBySystem) return false;
+        if (initiatedByUser != that.initiatedByUser) return false;
         return true;
     }
 
@@ -287,7 +287,7 @@ public class DownloadRequest implements Parcelable {
         return mediaEnqueued;
     }
 
-    public boolean isGeneratedBySystem() { return generatedBySystem; }
+    public boolean isInitiatedByUser() { return initiatedByUser; }
 
     /**
      * Set to true if the media is enqueued because of this download.
@@ -312,15 +312,15 @@ public class DownloadRequest implements Parcelable {
         private final long feedfileId;
         private final int feedfileType;
         private Bundle arguments;
-        private boolean generatedBySystem;
+        private boolean initiatedByUser;
 
-        public Builder(@NonNull String destination, @NonNull FeedFile item, boolean generatedBySystem) {
+        public Builder(@NonNull String destination, @NonNull FeedFile item, boolean initiatedByUser) {
             this.destination = destination;
             this.source = URLChecker.prepareURL(item.getDownload_url());
             this.title = item.getHumanReadableIdentifier();
             this.feedfileId = item.getId();
             this.feedfileType = item.getTypeAsInt();
-            this.generatedBySystem = generatedBySystem;
+            this.initiatedByUser = initiatedByUser;
         }
 
         public Builder deleteOnFailure(boolean deleteOnFailure) {
