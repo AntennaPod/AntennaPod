@@ -48,7 +48,7 @@ class MobileDownloadHelper {
     private static void downloadFeedItems(Context context, FeedItem item) {
         allowMobileDownloadTimestamp = System.currentTimeMillis();
         try {
-            DownloadRequester.getInstance().downloadMedia(context, item);
+            DownloadRequester.getInstance().downloadMedia(context, false, item);
             Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
         } catch (DownloadRequestException e) {
             e.printStackTrace();

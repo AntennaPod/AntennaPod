@@ -101,7 +101,7 @@ public class DownloadLogAdapter extends BaseAdapter {
                             return;
                         }
                         try {
-                            DBTasks.forceRefreshFeed(context, feed);
+                            DBTasks.forceRefreshFeed(context, feed, false);
                         } catch (DownloadRequestException e) {
                             e.printStackTrace();
                         }

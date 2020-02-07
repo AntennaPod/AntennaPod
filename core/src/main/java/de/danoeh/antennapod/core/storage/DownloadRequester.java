@@ -115,7 +115,7 @@ public class DownloadRequester implements DownloadStateProvider {
     @Nullable
     private DownloadRequest createRequest(FeedFile item, FeedFile container, File dest,
                                           boolean overwriteIfExists, String username, String password,
-                                          String lastModified, boolean deleteOnFailure, Bundle arguments) {
+                                          String lastModified, boolean deleteOnFailure, Bundle arguments, boolean generatedBySystem) {
         final boolean partiallyDownloadedFileExists = item.getFile_url() != null && new File(item.getFile_url()).exists();
 
         Log.d(TAG, "partiallyDownloadedFileExists: " + partiallyDownloadedFileExists);
@@ -156,7 +156,7 @@ public class DownloadRequester implements DownloadStateProvider {
         String baseUrl = (container != null) ? container.getDownload_url() : null;
         item.setDownload_url(URLChecker.prepareURL(item.getDownload_url(), baseUrl));
 
-        DownloadRequest.Builder builder = new DownloadRequest.Builder(dest.toString(), item)
+        DownloadRequest.Builder builder = new DownloadRequest.Builder(dest.toString(), item, generatedBySystem)
                 .withAuthentication(username, password)
                 .lastModified(lastModified)
                 .deleteOnFailure(deleteOnFailure)
@@ -191,7 +191,7 @@ public class DownloadRequester implements DownloadStateProvider {
      * @param loadAllPages Set to true to download all pages
      */
     public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages,
-                                          boolean force)
+                                          boolean force, boolean generatedBySystem)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
@@ -203,7 +203,8 @@ public class DownloadRequester implements DownloadStateProvider {
             args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
 
             DownloadRequest request = createRequest(feed, null, new File(getFeedfilePath(), getFeedfileName(feed)),
-                    true, username, password, lastModified, true, args);
+                    true, username, password, lastModified, true, args, generatedBySystem
+            );
             if (request != null) {
                 download(context, request);
             }
@@ -211,17 +212,17 @@ public class DownloadRequester implements DownloadStateProvider {
     }
 
     public synchronized void downloadFeed(Context context, Feed feed) throws DownloadRequestException {
-        downloadFeed(context, feed, false, false);
+        downloadFeed(context, feed, false, false, false);
     }
 
-    public synchronized void downloadMedia(@NonNull Context context, FeedItem... feedItems)
+    public synchronized void downloadMedia(@NonNull Context context, boolean generatedBySystem, FeedItem... feedItems)
             throws DownloadRequestException {
-        downloadMedia(true, context, feedItems);
+        downloadMedia(true, context, generatedBySystem, feedItems);
 
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-    public synchronized void downloadMedia(boolean performAutoCleanup, @NonNull Context context,
+    public synchronized void downloadMedia(boolean performAutoCleanup, @NonNull Context context, boolean generatedBySystem,
                                     FeedItem... items)
             throws DownloadRequestException {
         Log.d(TAG, "downloadMedia() called with: performAutoCleanup = [" + performAutoCleanup
@@ -230,7 +231,7 @@ public class DownloadRequester implements DownloadStateProvider {
         List<DownloadRequest> requests = new ArrayList<>(items.length);
         for (FeedItem item : items) {
             try {
-                DownloadRequest request = createRequest(item.getMedia());
+                DownloadRequest request = createRequest(item.getMedia(), generatedBySystem);
                 if (request != null) {
                     requests.add(request);
                 }
@@ -256,7 +257,7 @@ public class DownloadRequester implements DownloadStateProvider {
     }
 
     @Nullable
-    private DownloadRequest createRequest(@Nullable FeedMedia feedmedia)
+    private DownloadRequest createRequest(@Nullable FeedMedia feedmedia, boolean generatedBySystem)
             throws DownloadRequestException {
         if (!feedFileValid(feedmedia)) {
             return null;
@@ -279,7 +280,7 @@ public class DownloadRequester implements DownloadStateProvider {
             dest = new File(getMediafilePath(feedmedia), getMediafilename(feedmedia));
         }
         return createRequest(feedmedia, feed,
-                dest, false, username, password, null, false, null);
+                dest, false, username, password, null, false, null, generatedBySystem);
     }
 
     /**
