@@ -265,6 +265,8 @@ public class DownloadRequest implements Parcelable {
         return mediaEnqueued;
     }
 
+    public boolean isGeneratedBySystem() { return generatedBySystem; }
+
     /**
      * Set to true if the media is enqueued because of this download.
      * The state is helpful if the download is cancelled, and undoing the enqueue is needed.

@@ -247,7 +247,7 @@ public class DownloadRequester implements DownloadStateProvider {
                                     .getMedia()
                                     .getHumanReadableIdentifier(),
                                     DownloadError.ERROR_REQUEST_ERROR,
-                                    false, e.getMessage()
+                                    false, e.getMessage(), generatedBySystem
                             )
                     );
                 }

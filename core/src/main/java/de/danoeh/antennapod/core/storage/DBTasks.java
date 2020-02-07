@@ -151,7 +151,8 @@ public final class DBTasks {
                             new DownloadStatus(feed, feed
                                     .getHumanReadableIdentifier(),
                                     DownloadError.ERROR_REQUEST_ERROR, false, e
-                                    .getMessage()
+                                    .getMessage(),
+                                    true
                             )
                     );
                 }
@@ -175,7 +176,8 @@ public final class DBTasks {
                     new DownloadStatus(feed, feed
                             .getHumanReadableIdentifier(),
                             DownloadError.ERROR_REQUEST_ERROR, false, e
-                            .getMessage()
+                            .getMessage(),
+                            true
                     )
             );
         }

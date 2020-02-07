@@ -41,6 +41,7 @@ public class DownloadStatus {
 	 * FEEDFILETYPE_FEEDIMAGE or FEEDFILETYPE_FEEDMEDIA
 	 */
     private final int feedfileType;
+    private final boolean generatedBySystem;
 
 	// ------------------------------------ NOT STORED IN DB
     private boolean done;
@@ -49,7 +50,7 @@ public class DownloadStatus {
 	/** Constructor for restoring Download status entries from DB. */
     private DownloadStatus(long id, String title, long feedfileId,
                            int feedfileType, boolean successful, DownloadError reason,
-                           Date completionDate, String reasonDetailed) {
+                           Date completionDate, String reasonDetailed, boolean generatedBySystem) {
 		this.id = id;
 		this.title = title;
 		this.done = true;
@@ -59,10 +60,11 @@ public class DownloadStatus {
 		this.completionDate = (Date) completionDate.clone();
 		this.reasonDetailed = reasonDetailed;
 		this.feedfileType = feedfileType;
+		this.generatedBySystem = generatedBySystem;
 	}
 
 	public DownloadStatus(@NonNull DownloadRequest request, DownloadError reason,
-			boolean successful, boolean cancelled, String reasonDetailed) {
+			boolean successful, boolean cancelled, String reasonDetailed, boolean generatedBySystem) {
 		this.title = request.getTitle();
 		this.feedfileId = request.getFeedfileId();
 		this.feedfileType = request.getFeedfileType();
@@ -71,11 +73,12 @@ public class DownloadStatus {
 		this.cancelled = cancelled;
 		this.reasonDetailed = reasonDetailed;
 		this.completionDate = new Date();
+		this.generatedBySystem = generatedBySystem;
 	}
 
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(@NonNull FeedFile feedfile, String title, DownloadError reason,
-						  boolean successful, String reasonDetailed) {
+						  boolean successful, String reasonDetailed, boolean generatedBySystem) {
 		this.title = title;
 		this.done = true;
 		this.feedfileId = feedfile.getId();
@@ -84,11 +87,12 @@ public class DownloadStatus {
 		this.successful = successful;
 		this.completionDate = new Date();
 		this.reasonDetailed = reasonDetailed;
+		this.generatedBySystem = generatedBySystem;
 	}
 
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(long feedfileId, int feedfileType, String title,
-			DownloadError reason, boolean successful, String reasonDetailed) {
+			DownloadError reason, boolean successful, String reasonDetailed, boolean generatedBySystem) {
 		this.title = title;
 		this.done = true;
 		this.feedfileId = feedfileId;
@@ -97,6 +101,7 @@ public class DownloadStatus {
 		this.successful = successful;
 		this.completionDate = new Date();
 		this.reasonDetailed = reasonDetailed;
+		this.generatedBySystem = generatedBySystem;
 	}
 
 	public static DownloadStatus fromCursor(Cursor cursor) {
@@ -108,6 +113,7 @@ public class DownloadStatus {
 		int indexReason = cursor.getColumnIndex(PodDBAdapter.KEY_REASON);
 		int indexCompletionDate = cursor.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE);
 		int indexReasonDetailed = cursor.getColumnIndex(PodDBAdapter.KEY_REASON_DETAILED);
+		int indexGeneratedBySystem = cursor.getColumnIndex(PodDBAdapter.KEY_GENERATED_BY_SYSTEM);
 
 		long id = cursor.getLong(indexId);
 		String title = cursor.getString(indexTitle);
@@ -117,10 +123,12 @@ public class DownloadStatus {
 		int reason = cursor.getInt(indexReason);
 		Date completionDate = new Date(cursor.getLong(indexCompletionDate));
 		String reasonDetailed = cursor.getString(indexReasonDetailed);
+		boolean generatedBySystem = cursor.getInt(indexGeneratedBySystem) > 0;
+
 
 		return new DownloadStatus(id, title, feedfileId,
 				feedfileType, successful, DownloadError.fromCode(reason), completionDate,
-				reasonDetailed);
+				reasonDetailed, generatedBySystem);
 	}
 
 	@Override
@@ -164,6 +172,8 @@ public class DownloadStatus {
     public int getFeedfileType() {
         return feedfileType;
     }
+
+    public boolean isGeneratedBySystem() { return generatedBySystem; }
 
     public boolean isDone() {
         return done;
