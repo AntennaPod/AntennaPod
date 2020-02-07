@@ -47,61 +47,64 @@ public class DownloadStatus {
     private boolean done;
 	private boolean cancelled;
 
-	/** Constructor for restoring Download status entries from DB. */
-    private DownloadStatus(long id, String title, long feedfileId,
-                           int feedfileType, boolean successful, DownloadError reason,
-                           Date completionDate, String reasonDetailed, boolean generatedBySystem) {
-		this.id = id;
-		this.title = title;
-		this.done = true;
-		this.feedfileId = feedfileId;
-		this.reason = reason;
-		this.successful = successful;
-		this.completionDate = (Date) completionDate.clone();
-		this.reasonDetailed = reasonDetailed;
-		this.feedfileType = feedfileType;
-		this.generatedBySystem = generatedBySystem;
-	}
-
-	public DownloadStatus(@NonNull DownloadRequest request, DownloadError reason,
-			boolean successful, boolean cancelled, String reasonDetailed, boolean generatedBySystem) {
-		this.title = request.getTitle();
-		this.feedfileId = request.getFeedfileId();
-		this.feedfileType = request.getFeedfileType();
-		this.reason = reason;
-		this.successful = successful;
-		this.cancelled = cancelled;
-		this.reasonDetailed = reasonDetailed;
-		this.completionDate = new Date();
-		this.generatedBySystem = generatedBySystem;
+	public DownloadStatus(@NonNull DownloadRequest request,
+						  DownloadError reason,
+						  boolean successful,
+						  boolean cancelled,
+						  String reasonDetailed,
+						  boolean generatedBySystem) {
+		this(0,
+			 request.getTitle(),
+			 request.getFeedfileId(),
+			 request.getFeedfileType(),
+			 successful,
+			 cancelled,
+			 false,
+			 reason,
+			 new Date(),
+			 reasonDetailed,
+			 generatedBySystem);
 	}
 
 	/** Constructor for creating new completed downloads. */
-	public DownloadStatus(@NonNull FeedFile feedfile, String title, DownloadError reason,
-						  boolean successful, String reasonDetailed, boolean generatedBySystem) {
-		this.title = title;
-		this.done = true;
-		this.feedfileId = feedfile.getId();
-		this.feedfileType = feedfile.getTypeAsInt();
-		this.reason = reason;
-		this.successful = successful;
-		this.completionDate = new Date();
-		this.reasonDetailed = reasonDetailed;
-		this.generatedBySystem = generatedBySystem;
+	public DownloadStatus(@NonNull FeedFile feedfile,
+						  String title,
+						  DownloadError reason,
+						  boolean successful,
+						  String reasonDetailed,
+						  boolean generatedBySystem) {
+		this(0,
+			 title,
+			 feedfile.getId(),
+			 feedfile.getTypeAsInt(),
+			 successful,
+			 false,
+			 true,
+			 reason,
+			 new Date(),
+			 reasonDetailed,
+			 generatedBySystem);
 	}
 
 	/** Constructor for creating new completed downloads. */
-	public DownloadStatus(long feedfileId, int feedfileType, String title,
-			DownloadError reason, boolean successful, String reasonDetailed, boolean generatedBySystem) {
-		this.title = title;
-		this.done = true;
-		this.feedfileId = feedfileId;
-		this.feedfileType = feedfileType;
-		this.reason = reason;
-		this.successful = successful;
-		this.completionDate = new Date();
-		this.reasonDetailed = reasonDetailed;
-		this.generatedBySystem = generatedBySystem;
+	public DownloadStatus(long feedfileId,
+						  int feedfileType,
+						  String title,
+						  DownloadError reason,
+						  boolean successful,
+						  String reasonDetailed,
+						  boolean generatedBySystem) {
+		this(0,
+			 title,
+			 feedfileId,
+			 feedfileType,
+			 successful,
+			 false,
+			 true,
+			 reason,
+			 new Date(),
+			 reasonDetailed,
+			 generatedBySystem);
 	}
 
 	public static DownloadStatus fromCursor(Cursor cursor) {
@@ -115,20 +118,41 @@ public class DownloadStatus {
 		int indexReasonDetailed = cursor.getColumnIndex(PodDBAdapter.KEY_REASON_DETAILED);
 		int indexGeneratedBySystem = cursor.getColumnIndex(PodDBAdapter.KEY_GENERATED_BY_SYSTEM);
 
-		long id = cursor.getLong(indexId);
-		String title = cursor.getString(indexTitle);
-		long feedfileId = cursor.getLong(indexFeedFile);
-		int feedfileType = cursor.getInt(indexFileFileType);
-		boolean successful = cursor.getInt(indexSuccessful) > 0;
-		int reason = cursor.getInt(indexReason);
-		Date completionDate = new Date(cursor.getLong(indexCompletionDate));
-		String reasonDetailed = cursor.getString(indexReasonDetailed);
-		boolean generatedBySystem = cursor.getInt(indexGeneratedBySystem) > 0;
+		return new DownloadStatus(cursor.getLong(indexId),
+								  cursor.getString(indexTitle),
+								  cursor.getLong(indexFeedFile),
+								  cursor.getInt(indexFileFileType),
+								  cursor.getInt(indexSuccessful) > 0,
+								  false,
+								  true,
+								  DownloadError.fromCode(cursor.getInt(indexReason)),
+								  new Date(cursor.getLong(indexCompletionDate)),
+								  cursor.getString(indexReasonDetailed),
+								  cursor.getInt(indexGeneratedBySystem) > 0);
+	}
 
-
-		return new DownloadStatus(id, title, feedfileId,
-				feedfileType, successful, DownloadError.fromCode(reason), completionDate,
-				reasonDetailed, generatedBySystem);
+	private DownloadStatus(long id,
+						   String title,
+						   long feedfileId,
+						   int feedfileType,
+						   boolean successful,
+						   boolean cancelled,
+						   boolean done,
+						   DownloadError reason,
+						   Date completionDate,
+						   String reasonDetailed,
+						   boolean generatedBySystem) {
+		this.id = id;
+		this.title = title;
+		this.feedfileId = feedfileId;
+		this.reason = reason;
+		this.successful = successful;
+		this.cancelled = cancelled;
+		this.done = done;
+		this.completionDate = (Date) completionDate.clone();
+		this.reasonDetailed = reasonDetailed;
+		this.feedfileType = feedfileType;
+		this.generatedBySystem = generatedBySystem;
 	}
 
 	@Override

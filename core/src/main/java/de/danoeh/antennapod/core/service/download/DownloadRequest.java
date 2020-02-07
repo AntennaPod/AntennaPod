@@ -41,52 +41,74 @@ public class DownloadRequest implements Parcelable {
                            boolean deleteOnFailure,
                            Bundle arguments,
                            boolean generatedBySystem) {
+        this(destination,
+             source,
+             title,
+             feedfileId,
+             feedfileType,
+             null,
+             deleteOnFailure,
+             username,
+             password,
+             false,
+             arguments,
+             generatedBySystem);
+    }
 
+    private DownloadRequest(Builder builder) {
+        this(builder.destination,
+             builder.source,
+             builder.title,
+             builder.feedfileId,
+             builder.feedfileType,
+             builder.lastModified,
+             builder.deleteOnFailure,
+             builder.username,
+             builder.password,
+             false,
+             (builder.arguments != null) ? builder.arguments : new Bundle(),
+             builder.generatedBySystem);
+    }
+
+    private DownloadRequest(Parcel in) {
+        this(in.readString(),
+             in.readString(),
+             in.readString(),
+             in.readLong(),
+             in.readInt(),
+             in.readString(),
+             in.readByte() > 0,
+             nullIfEmpty(in.readString()),
+             nullIfEmpty(in.readString()),
+             in.readByte() > 0,
+             in.readBundle(),
+             in.readByte() > 0);
+    }
+
+    private DownloadRequest(String destination,
+                            String source,
+                            String title,
+                            long feedfileId,
+                            int feedfileType,
+                            String lastModified,
+                            boolean deleteOnFailure,
+                            String username,
+                            String password,
+                            boolean mediaEnqueued,
+                            Bundle arguments,
+                            boolean generatedBySystem) {
         this.destination = destination;
         this.source = source;
         this.title = title;
         this.feedfileId = feedfileId;
         this.feedfileType = feedfileType;
+        this.lastModified = lastModified;
+        this.deleteOnFailure = deleteOnFailure;
         this.username = username;
         this.password = password;
-        this.deleteOnFailure = deleteOnFailure;
-        this.mediaEnqueued = false;
-        this.arguments = (arguments != null) ? arguments : new Bundle();
+        this.mediaEnqueued = mediaEnqueued;
+        this.arguments = arguments;
         this.generatedBySystem = generatedBySystem;
-    }
-
-    public DownloadRequest(String destination, String source, String title,
-                           long feedfileId, int feedfileType, boolean generatedBySystem) {
-        this(destination, source, title, feedfileId, feedfileType, null, null, true, null, generatedBySystem);
-    }
-
-    private DownloadRequest(Builder builder) {
-        this.destination = builder.destination;
-        this.source = builder.source;
-        this.title = builder.title;
-        this.feedfileId = builder.feedfileId;
-        this.feedfileType = builder.feedfileType;
-        this.username = builder.username;
-        this.password = builder.password;
-        this.lastModified = builder.lastModified;
-        this.deleteOnFailure = builder.deleteOnFailure;
-        this.arguments = (builder.arguments != null) ? builder.arguments : new Bundle();
-        this.generatedBySystem = builder.generatedBySystem;
-    }
-
-    private DownloadRequest(Parcel in) {
-        destination = in.readString();
-        source = in.readString();
-        title = in.readString();
-        feedfileId = in.readLong();
-        feedfileType = in.readInt();
-        lastModified = in.readString();
-        deleteOnFailure = (in.readByte() > 0);
-        username = nullIfEmpty(in.readString());
-        password = nullIfEmpty(in.readString());
-        mediaEnqueued = (in.readByte() > 0);
-        arguments = in.readBundle();
-        generatedBySystem = (in.readByte() > 0);
     }
 
     @Override

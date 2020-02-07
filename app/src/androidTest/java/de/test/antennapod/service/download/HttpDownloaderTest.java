@@ -113,7 +113,7 @@ public class HttpDownloaderTest {
     public void testCancel() {
         final String url = httpServer.getBaseUrl() + "/delay/3";
         FeedFileImpl feedFile = setupFeedFile(url, "delay", true);
-        final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getFile_url(), url, "delay", 0, feedFile.getTypeAsInt(), false));
+        final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getFile_url(), url, "delay", 0, feedFile.getTypeAsInt(), null, null, true, null, false));
         Thread t = new Thread() {
             @Override
             public void run() {
