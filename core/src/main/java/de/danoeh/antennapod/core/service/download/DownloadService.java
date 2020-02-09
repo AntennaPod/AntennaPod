@@ -336,7 +336,12 @@ public class DownloadService extends Service {
                             && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
                     boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
                     boolean wrongFileType = status.getReason() == DownloadError.ERROR_FILE_TYPE;
-                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType) {
+                    boolean httpGone = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
+                            && String.valueOf(HttpURLConnection.HTTP_GONE).equals(status.getReasonDetailed());
+                    boolean httpBadReq = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
+                            && String.valueOf(HttpURLConnection.HTTP_BAD_REQUEST).equals(status.getReasonDetailed());
+
+                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType || httpGone || httpBadReq ) {
                         try {
                             DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                         } catch (ExecutionException | InterruptedException e) {
