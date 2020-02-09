@@ -37,7 +37,7 @@ public class ID3Reader {
             ID3ReaderException {
         int rc;
         readerPosition = 0;
-        char[] tagHeaderSource = readBytes(input, HEADER_LENGTH);
+        char[] tagHeaderSource = readChars(input, HEADER_LENGTH);
         tagHeader = createTagHeader(tagHeaderSource);
         if (tagHeader == null) {
             onNoTagHeaderFound();
@@ -47,7 +47,7 @@ public class ID3Reader {
                 onEndTag();
             } else {
                 while (readerPosition < tagHeader.getSize()) {
-                    FrameHeader frameHeader = createFrameHeader(readBytes(input, HEADER_LENGTH));
+                    FrameHeader frameHeader = createFrameHeader(readChars(input, HEADER_LENGTH));
                     if (checkForNullString(frameHeader.getId())) {
                         break;
                     }
@@ -84,17 +84,30 @@ public class ID3Reader {
     }
 
     /**
-     * Read a certain number of bytes from the given input stream. This method
+     * Read a certain number of chars from the given input stream. This method
      * changes the readerPosition-attribute.
      */
-    char[] readBytes(InputStream input, int number)
-            throws IOException, ID3ReaderException {
+    char[] readChars(InputStream input, int number) throws IOException, ID3ReaderException {
         char[] header = new char[number];
         for (int i = 0; i < number; i++) {
             int b = input.read();
             readerPosition++;
             if (b != -1) {
                 header[i] = (char) b;
+            } else {
+                throw new ID3ReaderException("Unexpected end of stream");
+            }
+        }
+        return header;
+    }
+
+    byte[] readBytes(InputStream input, int number) throws IOException, ID3ReaderException {
+        byte[] header = new byte[number];
+        for (int i = 0; i < number; i++) {
+            int b = input.read();
+            readerPosition++;
+            if (b != -1) {
+                header[i] = (byte) b;
             } else {
                 throw new ID3ReaderException("Unexpected end of stream");
             }
@@ -168,7 +181,7 @@ public class ID3Reader {
     protected int readString(StringBuilder buffer, InputStream input, int max) throws IOException,
             ID3ReaderException {
         if (max > 0) {
-            char[] encoding = readBytes(input, 1);
+            char[] encoding = readChars(input, 1);
             max--;
 
             if (encoding[0] == ENCODING_UTF16_WITH_BOM || encoding[0] == ENCODING_UTF16_WITHOUT_BOM) {
