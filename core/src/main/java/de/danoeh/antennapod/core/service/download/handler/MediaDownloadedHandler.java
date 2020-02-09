@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
@@ -50,6 +51,7 @@ public class MediaDownloadedHandler implements Runnable {
         boolean broadcastUnreadStateUpdate = media.getItem() != null && media.getItem().isNew();
         media.setDownloaded(true);
         media.setFile_url(request.getDestination());
+        media.setSize(new File(request.getDestination()).length());
         media.checkEmbeddedPicture(); // enforce check
 
         // check if file has chapters
