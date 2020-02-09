@@ -573,6 +573,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.prepare();
                 } else if (mediaPlayer.getPlayable() == null) {
                     startPlayingFromPreferences();
+                } else {
+                    return false;
                 }
                 taskManager.restartSleepTimer();
                 return true;
@@ -584,18 +586,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.prepare();
                 } else if (mediaPlayer.getPlayable() == null) {
                     startPlayingFromPreferences();
+                } else {
+                    return false;
                 }
                 taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
+                    return true;
                 }
-
-                return true;
+                return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (notificationButton ||
-                        UserPreferences.shouldHardwareButtonSkip()) {
+                if (notificationButton || UserPreferences.shouldHardwareButtonSkip()) {
                     // assume the skip command comes from a notification or the lockscreen
                     // a >| skip button should actually skip
                     mediaPlayer.skip();
