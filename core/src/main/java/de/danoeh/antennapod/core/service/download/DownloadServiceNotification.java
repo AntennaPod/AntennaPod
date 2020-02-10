@@ -107,10 +107,9 @@ public class DownloadServiceNotification {
         for (DownloadStatus status : reportQueue) {
             if (status.isSuccessful()) {
                 successfulDownloads++;
+                createReport = createReport || showAutoDownloadReport && !status.isInitiatedByUser() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA;
             } else if (!status.isCancelled()) {
                 failedDownloads++;
-            }
-            if (failedDownloads > 0 || showAutoDownloadReport && !status.isInitiatedByUser() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 createReport = true;
             }
         }

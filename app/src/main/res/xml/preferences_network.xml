@@ -36,11 +36,11 @@
                 android:summary="@string/pref_showDownloadReport_sum"
                 android:title="@string/pref_showDownloadReport_title"/>
         <SwitchPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefShowAutoDownloadReport"
-            android:summary="@string/pref_showAutoDownloadReport_sum"
-            android:title="@string/pref_showAutoDownloadReport_title"/>
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefShowAutoDownloadReport"
+                android:summary="@string/pref_showAutoDownloadReport_sum"
+                android:title="@string/pref_showAutoDownloadReport_title"/>
         <Preference
                 android:key="prefProxy"
                 android:summary="@string/pref_proxy_sum"

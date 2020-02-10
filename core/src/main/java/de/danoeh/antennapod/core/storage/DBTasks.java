@@ -105,8 +105,9 @@ public final class DBTasks {
      * enqueuing Feeds for download from a previous call
      *
      * @param context  Might be used for accessing the database
+     * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
      */
-    public static void refreshAllFeeds(final Context context) {
+    public static void refreshAllFeeds(final Context context, boolean initiatedByUser) {
         if (!isRefreshing.compareAndSet(false, true)) {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
             return;
@@ -116,7 +117,7 @@ public final class DBTasks {
             throw new IllegalStateException("DBTasks.refreshAllFeeds() must not be called from the main thread.");
         }
 
-        refreshFeeds(context, DBReader.getFeedList());
+        refreshFeeds(context, DBReader.getFeedList(), initiatedByUser);
         isRefreshing.set(false);
 
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -134,9 +135,11 @@ public final class DBTasks {
     /**
      * @param context
      * @param feedList the list of feeds to refresh
+     * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
      */
     private static void refreshFeeds(final Context context,
-                                     final List<Feed> feedList) {
+                                     final List<Feed> feedList,
+                                     boolean initiatedByUser) {
 
         for (Feed feed : feedList) {
             FeedPreferences prefs = feed.getPreferences();
@@ -153,7 +156,7 @@ public final class DBTasks {
                                                DownloadError.ERROR_REQUEST_ERROR,
                                                false,
                                                e.getMessage(),
-                                               false)
+                                               initiatedByUser)
                     );
                 }
             }

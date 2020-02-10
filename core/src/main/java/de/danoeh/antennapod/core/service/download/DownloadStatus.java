@@ -51,8 +51,7 @@ public class DownloadStatus {
 						  DownloadError reason,
 						  boolean successful,
 						  boolean cancelled,
-						  String reasonDetailed,
-						  boolean initiatedByUser) {
+						  String reasonDetailed) {
 		this(0,
 			 request.getTitle(),
 			 request.getFeedfileId(),
@@ -63,7 +62,7 @@ public class DownloadStatus {
 			 reason,
 			 new Date(),
 			 reasonDetailed,
-				initiatedByUser);
+			 request.isInitiatedByUser());
 	}
 
 	/** Constructor for creating new completed downloads. */
