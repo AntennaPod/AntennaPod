@@ -4,6 +4,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
 import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
 
@@ -104,8 +105,8 @@ public class ChapterReader extends ID3Reader {
                         // Data contains the picture
                         int length = header.getSize() - read;
                         if (TextUtils.isEmpty(currentChapter.getImageUrl()) || type == IMAGE_TYPE_COVER) {
-                            currentChapter.setImageUrl("embedded-image://" + mime.toString()
-                                    + "@" + input.getByteCount() + ":" + length);
+                            currentChapter.setImageUrl(
+                                    EmbeddedChapterImage.makeUrl(mime.toString(), input.getCount(), length));
                         }
                         skipBytes(input, length);
                     }

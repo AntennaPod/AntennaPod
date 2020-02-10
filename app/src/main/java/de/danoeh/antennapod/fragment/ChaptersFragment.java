@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -104,18 +105,10 @@ public class ChaptersFragment extends ListFragment {
     }
 
     private int getCurrentChapter(Playable media) {
-        if (media == null || media.getChapters() == null || media.getChapters().size() == 0 || controller == null) {
+        if (controller == null) {
             return -1;
         }
-        int currentPosition = controller.getPosition();
-
-        List<Chapter> chapters = media.getChapters();
-        for (int i = 0; i < chapters.size(); i++) {
-            if (chapters.get(i).getStart() > currentPosition) {
-                return i - 1;
-            }
-        }
-        return chapters.size() - 1;
+        return ChapterUtils.getCurrentChapterIndex(media, controller.getPosition());
     }
 
     private void loadMediaInfo() {

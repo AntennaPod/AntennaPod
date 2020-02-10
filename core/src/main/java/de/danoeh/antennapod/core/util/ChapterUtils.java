@@ -36,24 +36,17 @@ public class ChapterUtils {
     private ChapterUtils() {
     }
 
-    @Nullable
-    public static Chapter getCurrentChapter(Playable media) {
-        if (media.getChapters() == null) {
-            return null;
+    public static int getCurrentChapterIndex(Playable media, int position) {
+        if (media == null || media.getChapters() == null || media.getChapters().size() == 0) {
+            return -1;
         }
         List<Chapter> chapters = media.getChapters();
-        if (chapters == null) {
-            return null;
-        }
-        Chapter current = chapters.get(0);
-        for (Chapter sc : chapters) {
-            if (sc.getStart() > media.getPosition()) {
-                break;
-            } else {
-                current = sc;
+        for (int i = 0; i < chapters.size(); i++) {
+            if (chapters.get(i).getStart() > position) {
+                return i - 1;
             }
         }
-        return current;
+        return chapters.size() - 1;
     }
 
     public static void loadChaptersFromStreamUrl(Playable media) {

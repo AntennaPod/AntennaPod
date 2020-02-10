@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
@@ -14,14 +15,20 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays the cover and the title of a FeedItem.
@@ -36,6 +43,8 @@ public class CoverFragment extends Fragment {
     private ImageView imgvCover;
     private PlaybackController controller;
     private Disposable disposable;
+    private int displayedChapterIndex = -1;
+    private Playable media;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,18 +62,20 @@ public class CoverFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Maybe.create(emitter -> {
-                    Playable media = controller.getMedia();
-                    if (media != null) {
-                        emitter.onSuccess(media);
-                    } else {
-                        emitter.onComplete();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> displayMediaInfo((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+        disposable = Maybe.<Playable>create(emitter -> {
+            Playable media = controller.getMedia();
+            if (media != null) {
+                emitter.onSuccess(media);
+            } else {
+                emitter.onComplete();
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(media -> {
+            this.media = media;
+            displayMediaInfo(media);
+        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
@@ -99,6 +110,7 @@ public class CoverFragment extends Fragment {
         };
         controller.init();
         loadMediaInfo();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -106,6 +118,30 @@ public class CoverFragment extends Fragment {
         super.onStop();
         controller.release();
         controller = null;
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (controller == null) {
+            return;
+        }
+        int chapter = ChapterUtils.getCurrentChapterIndex(media, event.getPosition());
+        if (chapter != displayedChapterIndex) {
+            displayedChapterIndex = chapter;
+
+            if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
+                displayMediaInfo(media);
+            } else {
+                Glide.with(this)
+                        .load(EmbeddedChapterImage.getModelFor(media, chapter))
+                        .apply(new RequestOptions()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .dontAnimate()
+                                .fitCenter())
+                        .into(imgvCover);
+            }
+        }
     }
 
     @Override
