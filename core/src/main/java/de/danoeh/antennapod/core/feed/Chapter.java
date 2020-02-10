@@ -2,10 +2,7 @@ package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
 
-import android.text.TextUtils;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-
-import java.util.Objects;
 
 public abstract class Chapter extends FeedComponent {
 

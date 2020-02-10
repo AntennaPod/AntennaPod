@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
 import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
+import org.apache.commons.io.input.CountingInputStream;
 
 /**
  * Reads the ID3 Tag of a given file. In order to use this class, you should
@@ -33,8 +34,7 @@ public class ID3Reader {
     ID3Reader() {
     }
 
-    public final void readInputStream(InputStream input) throws IOException,
-            ID3ReaderException {
+    public final void readInputStream(CountingInputStream input) throws IOException, ID3ReaderException {
         int rc;
         readerPosition = 0;
         char[] tagHeaderSource = readChars(input, HEADER_LENGTH);
@@ -94,20 +94,6 @@ public class ID3Reader {
             readerPosition++;
             if (b != -1) {
                 header[i] = (char) b;
-            } else {
-                throw new ID3ReaderException("Unexpected end of stream");
-            }
-        }
-        return header;
-    }
-
-    byte[] readBytes(InputStream input, int number) throws IOException, ID3ReaderException {
-        byte[] header = new byte[number];
-        for (int i = 0; i < number; i++) {
-            int b = input.read();
-            readerPosition++;
-            if (b != -1) {
-                header[i] = (byte) b;
             } else {
                 throw new ID3ReaderException("Unexpected end of stream");
             }
@@ -243,8 +229,7 @@ public class ID3Reader {
         return ACTION_SKIP;
     }
 
-    int onStartFrameHeader(FrameHeader header, InputStream input)
-            throws IOException, ID3ReaderException {
+    int onStartFrameHeader(FrameHeader header, CountingInputStream input) throws IOException, ID3ReaderException {
         return ACTION_SKIP;
     }
 

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
+import java.util.zip.CheckedOutputStream;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -23,6 +24,7 @@ import de.danoeh.antennapod.core.util.id3reader.ID3ReaderException;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.vorbiscommentreader.VorbisCommentChapterReader;
 import de.danoeh.antennapod.core.util.vorbiscommentreader.VorbisCommentReaderException;
+import org.apache.commons.io.input.CountingInputStream;
 
 /**
  * Utility class for getting chapter data from media files.
@@ -82,13 +84,12 @@ public class ChapterUtils {
             return;
         }
         Log.d(TAG, "Reading id3 chapters from item " + p.getEpisodeTitle());
-        InputStream in = null;
+        CountingInputStream in = null;
         try {
             URL url = new URL(p.getStreamUrl());
-
-            in = url.openStream();
+            in = new CountingInputStream(url.openStream());
             List<Chapter> chapters = readChaptersFrom(in);
-            if(!chapters.isEmpty()) {
+            if (!chapters.isEmpty()) {
                 p.setChapters(chapters);
             }
             Log.i(TAG, "Chapters loaded");
@@ -114,9 +115,9 @@ public class ChapterUtils {
             return;
         }
 
-        InputStream in = null;
+        CountingInputStream in = null;
         try {
-            in = new BufferedInputStream(new FileInputStream(source));
+            in = new CountingInputStream(new BufferedInputStream(new FileInputStream(source)));
             List<Chapter> chapters = readChaptersFrom(in);
             if (!chapters.isEmpty()) {
                 p.setChapters(chapters);
@@ -130,7 +131,7 @@ public class ChapterUtils {
     }
 
     @NonNull
-    private static List<Chapter> readChaptersFrom(InputStream in) throws IOException, ID3ReaderException {
+    private static List<Chapter> readChaptersFrom(CountingInputStream in) throws IOException, ID3ReaderException {
         ChapterReader reader = new ChapterReader();
         reader.readInputStream(in);
         List<Chapter> chapters = reader.getChapters();

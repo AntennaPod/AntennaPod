@@ -1,22 +1,17 @@
 package de.danoeh.antennapod.core.util.id3reader;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
+import android.text.TextUtils;
 import android.util.Log;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
 import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.io.input.CountingInputStream;
 
 public class ChapterReader extends ID3Reader {
     private static final String TAG = "ID3ChapterReader";
@@ -24,6 +19,8 @@ public class ChapterReader extends ID3Reader {
     private static final String FRAME_ID_CHAPTER = "CHAP";
     private static final String FRAME_ID_TITLE = "TIT2";
     private static final String FRAME_ID_LINK = "WXXX";
+    private static final String FRAME_ID_PICTURE = "APIC";
+    private static final int IMAGE_TYPE_COVER = 3;
 
     private List<Chapter> chapters;
     private ID3Chapter currentChapter;
@@ -36,8 +33,7 @@ public class ChapterReader extends ID3Reader {
     }
 
     @Override
-    public int onStartFrameHeader(FrameHeader header, InputStream input)
-            throws IOException, ID3ReaderException {
+    public int onStartFrameHeader(FrameHeader header, CountingInputStream input) throws IOException, ID3ReaderException {
         Log.d(TAG, "header: " + header);
         switch (header.getId()) {
             case FRAME_ID_CHAPTER:
@@ -85,57 +81,37 @@ public class ChapterReader extends ID3Reader {
                     return ID3Reader.ACTION_DONT_SKIP;
                 }
                 break;
-            case "APIC":
-                Log.d(TAG, header.toString());
-                StringBuilder mime = new StringBuilder();
-                int read = readString(mime, input, header.getSize());
-                byte type = (byte) input.read();
-                // $00  Other
-                // $01  32x32 pixels 'file icon' (PNG only)
-                // $02  Other file icon
-                // $03  Cover (front)
-                // $04  Cover (back)
-                // $05  Leaflet page
-                // $06  Media (e.g. label side of CD)
-                // $07  Lead artist/lead performer/soloist
-                // $08  Artist/performer
-                // $09  Conductor
-                // $0A  Band/Orchestra
-                // $0B  Composer
-                // $0C  Lyricist/text writer
-                // $0D  Recording Location
-                // $0E  During recording
-                // $0F  During performance
-                // $10  Movie/video screen capture
-                // $11  A bright coloured fish
-                // $12  Illustration
-                // $13  Band/artist logotype
-                // $14  Publisher/Studio logotype
-                read++;
-                StringBuilder description = new StringBuilder();
-                read += readISOString(description, input, header.getSize()); // Should use encoding from first string
+            case FRAME_ID_PICTURE:
+                if (currentChapter != null) {
+                    Log.d(TAG, header.toString());
+                    StringBuilder mime = new StringBuilder();
+                    int read = readString(mime, input, header.getSize());
+                    byte type = (byte) readChars(input, 1)[0];
+                    read++;
+                    StringBuilder description = new StringBuilder();
+                    read += readISOString(description, input, header.getSize()); // Should use same encoding as mime
 
-
-                Log.d(TAG, "Found apic: " + mime + "," + description);
-                if (mime.toString().equals("-->")) {
-                    // Data contains a link to a picture
-                    StringBuilder link = new StringBuilder();
-                    readISOString(link, input, header.getSize());
-                    Log.d(TAG, "link: " + link);
-                } else {
-                    // Data contains the picture
-                    byte[] imageData = readBytes(input, header.getSize() - read);
-
-                    Bitmap bmp = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-                    try (FileOutputStream out = new FileOutputStream(new File(UserPreferences.getDataFolder(null),
-                            "chapter" + chapters.size() + ".jpg"))) {
-                        bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-                        // PNG is a lossless format, the compression factor (100) is ignored
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    Log.d(TAG, "Found apic: " + mime + "," + description);
+                    if (mime.toString().equals("-->")) {
+                        // Data contains a link to a picture
+                        StringBuilder link = new StringBuilder();
+                        readISOString(link, input, header.getSize());
+                        Log.d(TAG, "link: " + link.toString());
+                        if (TextUtils.isEmpty(currentChapter.getImageUrl()) || type == IMAGE_TYPE_COVER) {
+                            currentChapter.setImageUrl(link.toString());
+                        }
+                    } else {
+                        // Data contains the picture
+                        int length = header.getSize() - read;
+                        if (TextUtils.isEmpty(currentChapter.getImageUrl()) || type == IMAGE_TYPE_COVER) {
+                            currentChapter.setImageUrl("embedded-image://" + mime.toString()
+                                    + "@" + input.getByteCount() + ":" + length);
+                        }
+                        skipBytes(input, length);
                     }
+                    return ID3Reader.ACTION_DONT_SKIP;
                 }
-                return ID3Reader.ACTION_DONT_SKIP;
+                break;
         }
 
         return super.onStartFrameHeader(header, input);
