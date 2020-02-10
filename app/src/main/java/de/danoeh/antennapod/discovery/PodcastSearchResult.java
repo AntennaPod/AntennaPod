@@ -38,6 +38,7 @@ public class PodcastSearchResult {
         this.feedUrl = feedUrl;
         this.author = author;
     }
+
     private PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl) {
         this(title, imageUrl, feedUrl, "");
     }

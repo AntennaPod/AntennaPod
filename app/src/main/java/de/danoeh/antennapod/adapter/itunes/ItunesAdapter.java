@@ -65,12 +65,12 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
             viewHolder = (PodcastViewHolder) view.getTag();
         }
 
-        //Set the title
+        // Set the title
         viewHolder.titleView.setText(podcast.title);
-        if(podcast.author != null && ! podcast.author.trim().isEmpty()) {
+        if (podcast.author != null && ! podcast.author.trim().isEmpty()) {
             viewHolder.authorView.setText(podcast.author);
             viewHolder.authorView.setVisibility(View.VISIBLE);
-        } else if(podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
+        } else if (podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
             viewHolder.authorView.setText(podcast.feedUrl);
             viewHolder.authorView.setVisibility(View.VISIBLE);
         } else {
