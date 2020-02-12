@@ -10,7 +10,9 @@ import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -18,6 +20,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.io.IOUtils;
 
 public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapterImage, ByteBuffer> {
@@ -45,7 +50,7 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
         return true;
     }
 
-    class EmbeddedImageFetcher implements DataFetcher<ByteBuffer> {
+    static class EmbeddedImageFetcher implements DataFetcher<ByteBuffer> {
         private final EmbeddedChapterImage image;
 
         public EmbeddedImageFetcher(EmbeddedChapterImage image) {
@@ -60,17 +65,25 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
                 if (image.getMedia().localFileAvailable()) {
                     File localFile = new File(image.getMedia().getLocalMediaUrl());
                     stream = new BufferedInputStream(new FileInputStream(localFile));
+                    stream.skip(image.getPosition());
+                    byte[] imageContent = new byte[image.getLength()];
+                    stream.read(imageContent, 0, image.getLength());
+                    callback.onDataReady(ByteBuffer.wrap(imageContent));
                 } else {
-                    URL url = new URL(image.getMedia().getStreamUrl());
-                    stream = new BufferedInputStream(url.openStream());
+                    Request.Builder httpReq = new Request.Builder();
+                    httpReq.header("User-Agent", ClientConfig.USER_AGENT);
+                    // Skipping would download the whole file
+                    httpReq.header("Range", "bytes=" + image.getPosition()
+                            + "-" + (image.getPosition() + image.getLength()));
+                    httpReq.url(image.getMedia().getStreamUrl());
+                    Response response = AntennapodHttpClient.getHttpClient().newCall(httpReq.build()).execute();
+                    if (!response.isSuccessful() || response.body() == null) {
+                        throw new IOException("Invalid response: " + response.code() + " " + response.message());
+                    }
+                    callback.onDataReady(ByteBuffer.wrap(response.body().bytes()));
                 }
-                byte[] imageContent = new byte[image.getLength()];
-                stream.skip(image.getPosition());
-                stream.read(imageContent, 0, image.getLength());
-                callback.onDataReady(ByteBuffer.wrap(imageContent));
             } catch (IOException e) {
-                callback.onLoadFailed(new IOException("Loading embedded cover did not work"));
-                e.printStackTrace();
+                callback.onLoadFailed(e);
             } finally {
                 IOUtils.closeQuietly(stream);
             }
