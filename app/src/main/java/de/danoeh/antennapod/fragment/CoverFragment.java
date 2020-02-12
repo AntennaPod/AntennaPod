@@ -1,25 +1,25 @@
 package de.danoeh.antennapod.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
-
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
-import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
@@ -43,7 +43,7 @@ public class CoverFragment extends Fragment {
     private ImageView imgvCover;
     private PlaybackController controller;
     private Disposable disposable;
-    private int displayedChapterIndex = -1;
+    private int displayedChapterIndex = -2;
     private Playable media;
 
     @Override
@@ -81,14 +81,7 @@ public class CoverFragment extends Fragment {
     private void displayMediaInfo(@NonNull Playable media) {
         txtvPodcastTitle.setText(media.getFeedTitle());
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
-        displayedChapterIndex = -1;
-        Glide.with(this)
-                .load(ImageResourceUtils.getImageLocation(media))
-                .apply(new RequestOptions()
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .dontAnimate()
-                    .fitCenter())
-                .into(imgvCover);
+        displayCoverImage(media.getPosition());
     }
 
     @Override
@@ -127,12 +120,22 @@ public class CoverFragment extends Fragment {
         if (controller == null) {
             return;
         }
-        int chapter = ChapterUtils.getCurrentChapterIndex(media, event.getPosition());
+        displayCoverImage(event.getPosition());
+    }
+
+    private void displayCoverImage(int position) {
+        int chapter = ChapterUtils.getCurrentChapterIndex(media, position);
         if (chapter != displayedChapterIndex) {
             displayedChapterIndex = chapter;
 
+            RequestBuilder<Drawable> cover = Glide.with(this)
+                    .load(ImageResourceUtils.getImageLocation(media))
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .dontAnimate()
+                            .fitCenter());
             if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
-                displayMediaInfo(media);
+                cover.into(imgvCover);
             } else {
                 Glide.with(this)
                         .load(EmbeddedChapterImage.getModelFor(media, chapter))
@@ -140,6 +143,8 @@ public class CoverFragment extends Fragment {
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .dontAnimate()
                                 .fitCenter())
+                        .thumbnail(cover)
+                        .error(cover)
                         .into(imgvCover);
             }
         }
