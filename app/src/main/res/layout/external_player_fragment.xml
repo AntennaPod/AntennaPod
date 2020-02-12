@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/external_player_height"
@@ -44,7 +44,9 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/pause_label"
         android:background="?attr/selectableItemBackground"
-        android:src="?attr/av_play_big"
+        app:srcCompat="?attr/av_play"
+        android:scaleType="fitCenter"
+        android:padding="8dp"
         tools:src="@drawable/ic_play_arrow_white_36dp"/>
 
     <TextView

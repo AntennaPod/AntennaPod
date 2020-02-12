@@ -121,9 +121,9 @@
                     android:layout_centerHorizontal="true"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/pause_label"
-                    android:src="?attr/av_play"
+                    app:srcCompat="?attr/av_play"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_play_arrow_white_24dp"
+                    tools:src="@drawable/ic_av_play_white_24dp"
                     tools:background="@android:color/holo_green_dark" />
 
                 <ImageButton
@@ -136,9 +136,9 @@
                     android:layout_marginStart="16dp"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/rewind_label"
-                    android:src="?attr/av_rew_big"
+                    app:srcCompat="?attr/av_rewind"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_fast_rewind_white_36dp"
+                    tools:src="@drawable/ic_av_fast_rewind_white_48dp"
                     tools:background="@android:color/holo_blue_dark" />
 
                 <TextView
@@ -165,7 +165,7 @@
                     android:layout_toStartOf="@id/butRev"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/set_playback_speed_label"
-                    android:src="?attr/av_speed"
+                    app:srcCompat="?attr/av_speed"
                     android:scaleType="fitCenter"
                     tools:src="@drawable/ic_playback_speed_white_48dp"
                     tools:visibility="gone"
@@ -212,9 +212,9 @@
                     android:layout_marginEnd="16dp"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/fast_forward_label"
-                    android:src="?attr/av_ff_big"
+                    app:srcCompat="?attr/av_fast_forward"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_fast_forward_white_36dp"
+                    tools:src="@drawable/ic_av_fast_forward_white_48dp"
                     tools:background="@android:color/holo_blue_dark" />
 
                 <TextView
@@ -241,9 +241,9 @@
                     android:layout_toEndOf="@id/butFF"
                     android:background="?attr/selectableItemBackground"
                     android:scaleType="fitCenter"
-                    android:src="?attr/av_skip_big"
+                    app:srcCompat="?attr/av_skip"
                     android:contentDescription="@string/skip_episode_label"
-                    tools:src="@drawable/ic_skip_white_36dp"
+                    tools:src="@drawable/ic_av_skip_white_48dp"
                     tools:background="@android:color/holo_green_dark" />
             </RelativeLayout>
 
