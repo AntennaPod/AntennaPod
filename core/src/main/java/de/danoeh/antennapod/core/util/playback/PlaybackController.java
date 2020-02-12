@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import de.danoeh.antennapod.core.R;
@@ -397,12 +398,10 @@ public class PlaybackController {
         final CharSequence playText = activity.getString(R.string.play_label);
         final CharSequence pauseText = activity.getString(R.string.pause_label);
 
-        if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO ||
-                PlaybackService.isCasting()) {
-            TypedArray res = activity.obtainStyledAttributes(new int[]{
-                    R.attr.av_play_big, R.attr.av_pause_big});
-            playResource = res.getResourceId(0, R.drawable.ic_play_arrow_grey600_36dp);
-            pauseResource = res.getResourceId(1, R.drawable.ic_pause_grey600_36dp);
+        if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO  ||  PlaybackService.isCasting()) {
+            TypedArray res = activity.obtainStyledAttributes(new int[]{ R.attr.av_play, R.attr.av_pause});
+            playResource = res.getResourceId(0, R.drawable.ic_av_play_dark_48dp);
+            pauseResource = res.getResourceId(1, R.drawable.ic_av_pause_dark_48dp);
             res.recycle();
         } else {
             playResource = R.drawable.ic_av_play_white_80dp;
@@ -779,11 +778,8 @@ public class PlaybackController {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(media -> {
                 if (media.getMediaType() == MediaType.AUDIO) {
-                    TypedArray res = activity.obtainStyledAttributes(new int[]{
-                            de.danoeh.antennapod.core.R.attr.av_play_big});
                     getPlayButton().setImageResource(
-                            res.getResourceId(0, de.danoeh.antennapod.core.R.drawable.ic_play_arrow_grey600_36dp));
-                    res.recycle();
+                            ThemeUtils.getDrawableFromAttr(activity, de.danoeh.antennapod.core.R.attr.av_play));
                 } else {
                     getPlayButton().setImageResource(R.drawable.ic_av_play_white_80dp);
                 }
