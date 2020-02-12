@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:squareImageView="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="8dp"
     android:gravity="center">
@@ -18,7 +19,8 @@
         android:layout_marginRight="32dp"
         android:transitionName="coverTransition"
         tools:src="@android:drawable/sym_def_app_icon"
-        android:foreground="?attr/selectableItemBackgroundBorderless"/>
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        squareImageView:useMinimum="true" />
 
     <TextView
         android:id="@+id/txtvPodcastTitle"
