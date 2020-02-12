@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.google.android.material.snackbar.Snackbar;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -45,11 +46,9 @@ import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -84,7 +83,6 @@ public class QueueFragment extends Fragment {
     private ProgressBar progLoading;
 
     private List<FeedItem> queue;
-    private List<Downloader> downloaderList;
 
     private boolean isUpdatingFeeds = false;
 
@@ -196,7 +194,6 @@ public class QueueFragment extends Fragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        downloaderList = update.downloaders;
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             getActivity().invalidateOptionsMenu();
         }
@@ -214,7 +211,7 @@ public class QueueFragment extends Fragment {
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (recyclerAdapter != null) {
             for (int i = 0; i < recyclerAdapter.getItemCount(); i++) {
-                QueueRecyclerAdapter.ViewHolder holder = (QueueRecyclerAdapter.ViewHolder)
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder)
                         recyclerView.findViewHolderForAdapterPosition(i);
                 if (holder != null && holder.isCurrentlyPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
@@ -510,7 +507,6 @@ public class QueueFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
-        recyclerView.setHasFixedSize(true);
         registerForContextMenu(recyclerView);
 
         itemTouchHelper = new ItemTouchHelper(
@@ -690,46 +686,6 @@ public class QueueFragment extends Fragment {
                 return queue.get(position);
             }
             return null;
-        }
-
-        @Override
-        public long getItemDownloadedBytes(FeedItem item) {
-            if (downloaderList != null) {
-                for (Downloader downloader : downloaderList) {
-                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
-                        Log.d(TAG, "downloaded bytes: " + downloader.getDownloadRequest().getSoFar());
-                        return downloader.getDownloadRequest().getSoFar();
-                    }
-                }
-            }
-            return 0;
-        }
-
-        @Override
-        public long getItemDownloadSize(FeedItem item) {
-            if (downloaderList != null) {
-                for (Downloader downloader : downloaderList) {
-                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
-                        Log.d(TAG, "downloaded size: " + downloader.getDownloadRequest().getSize());
-                        return downloader.getDownloadRequest().getSize();
-                    }
-                }
-            }
-            return 0;
-        }
-        @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
-            if (downloaderList != null) {
-                for (Downloader downloader : downloaderList) {
-                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
-                        return downloader.getDownloadRequest().getProgressPercent();
-                    }
-                }
-            }
-            return 0;
         }
 
         @Override

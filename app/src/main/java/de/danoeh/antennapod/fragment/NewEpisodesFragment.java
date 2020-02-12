@@ -16,6 +16,7 @@ import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
@@ -25,11 +26,6 @@ public class NewEpisodesFragment extends EpisodesListFragment {
 
     public static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
-
-    @Override
-    protected boolean showOnlyNewEpisodes() {
-        return true;
-    }
 
     @Override
     protected String getPrefName() {
@@ -63,7 +59,7 @@ public class NewEpisodesFragment extends EpisodesListFragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewHolder;
                 FeedItemMenuHandler.removeNewFlagWithUndo(NewEpisodesFragment.this, holder.getFeedItem());
             }
 

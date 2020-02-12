@@ -7,8 +7,8 @@
     <color name="black">#000000</color>
     <color name="holo_blue_light">#33B5E5</color>
     <color name="holo_blue_dark">#0099CC</color>
-    <color name="download_success_green">#669900</color>
-    <color name="download_failed_red">#CC0000</color>
+    <color name="download_success_green">#248800</color>
+    <color name="download_failed_red">#B00020</color>
     <color name="status_progress">#E033B5E5</color>
     <color name="overlay_dark">#2C2C2C</color>
     <color name="overlay_light">#FFFFFF</color>

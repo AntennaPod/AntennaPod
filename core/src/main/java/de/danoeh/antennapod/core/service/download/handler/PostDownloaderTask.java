@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.download.handler;
 
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.service.download.Downloader;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class PostDownloaderTask implements Runnable {
                 runningDownloads.add(downloader);
             }
         }
+        DownloadRequester.getInstance().updateProgress(downloads);
         List<Downloader> list = Collections.unmodifiableList(runningDownloads);
         EventBus.getDefault().postSticky(DownloadEvent.refresh(list));
     }

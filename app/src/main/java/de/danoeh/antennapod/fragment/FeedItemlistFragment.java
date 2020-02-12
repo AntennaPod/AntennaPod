@@ -89,25 +89,18 @@ public class FeedItemlistFragment extends ListFragment {
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     private FeedItemlistAdapter adapter;
-    private ContextMenu contextMenu;
     private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
+    private MoreContentListFooterUtil listFooter;
 
     private long feedID;
     private Feed feed;
-
     private boolean headerCreated = false;
-
-    private List<Downloader> downloaderList;
-
-    private MoreContentListFooterUtil listFooter;
-
     private boolean isUpdatingFeed;
 
     private TextView txtvTitle;
     private IconTextView txtvFailure;
     private ImageView imgvBackground;
     private ImageView imgvCover;
-
     private TextView txtvInformation;
 
     private Disposable disposable;
@@ -296,7 +289,7 @@ public class FeedItemlistFragment extends ListFragment {
         AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
         // because of addHeaderView(), positions are increased by 1!
-        FeedItem item = itemAccess.getItem(adapterInfo.position-1);
+        FeedItem item = (FeedItem) itemAccess.getItem(adapterInfo.position - 1);
 
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.feeditemlist_context, menu);
@@ -305,7 +298,6 @@ public class FeedItemlistFragment extends ListFragment {
             menu.setHeaderTitle(item.getTitle());
         }
 
-        contextMenu = menu;
         lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         FeedItemMenuHandler.onPrepareMenu(menu, item);
     }
@@ -313,11 +305,11 @@ public class FeedItemlistFragment extends ListFragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if(menuInfo == null) {
+        if (menuInfo == null) {
             menuInfo = lastMenuInfo;
         }
         // because of addHeaderView(), positions are increased by 1!
-        FeedItem selectedItem = itemAccess.getItem(menuInfo.position-1);
+        FeedItem selectedItem = feed.getItemAtIndex(menuInfo.position - 1);
 
         if (selectedItem == null) {
             Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
@@ -366,7 +358,6 @@ public class FeedItemlistFragment extends ListFragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        downloaderList = update.downloaders;
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeed)) {
             updateProgressBarVisibility();
         }
@@ -424,7 +415,7 @@ public class FeedItemlistFragment extends ListFragment {
             setListAdapter(null);
             setupHeaderView();
             setupFooterView();
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, false, true);
+            adapter = new FeedItemlistAdapter((MainActivity) getActivity(), itemAccess, false, true);
             setListAdapter(adapter);
         }
         refreshHeaderView();
@@ -575,38 +566,11 @@ public class FeedItemlistFragment extends ListFragment {
         }
 
         @Override
-        public LongList getQueueIds() {
-            LongList queueIds = new LongList();
-            if(feed == null) {
-                return queueIds;
-            }
-            for(FeedItem item : feed.getItems()) {
-                if(item.isTagged(FeedItem.TAG_QUEUE)) {
-                    queueIds.add(item.getId());
-                }
-            }
-            return queueIds;
-        }
-
-        @Override
         public int getCount() {
             return (feed != null) ? feed.getNumOfItems() : 0;
         }
 
-        @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
-            if (downloaderList != null) {
-                for (Downloader downloader : downloaderList) {
-                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
-                        return downloader.getDownloadRequest().getProgressPercent();
-                    }
-                }
-            }
-            return 0;
-        }
     };
-
 
     private void loadItems() {
         if(disposable != null) {

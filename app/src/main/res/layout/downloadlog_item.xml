@@ -1,97 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="8dp"
-    android:descendantFocusability="blocksDescendants"
-    tools:background="@android:color/darker_gray">
+<LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:baselineAligned="false"
+        android:descendantFocusability="blocksDescendants">
 
     <com.joanzapata.iconify.widget.IconTextView
-        android:id="@+id/txtvIcon"
-        android:layout_width="48sp"
-        android:layout_height="48sp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="48sp"
-        android:gravity="center" />
+            android:id="@+id/txtvIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
+            android:layout_marginStart="@dimen/listitem_threeline_textleftpadding"
+            android:textSize="40dp"
+            android:gravity="center"
+            tools:text="X"/>
 
-    <com.joanzapata.iconify.widget.IconButton
-        android:id="@+id/btnRetry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvIcon"
-        android:layout_alignLeft="@id/txtvIcon"
-        android:layout_alignStart="@id/txtvIcon"
-        android:layout_alignRight="@id/txtvIcon"
-        android:layout_alignEnd="@id/txtvIcon"
-        android:layout_marginTop="8dp"
-        android:text="{fa-repeat}"
-        tools:text="↻" />
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
+            android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
+            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtvType"
-        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        tools:text="Media file"
-        tools:background="@android:color/holo_green_dark" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/status"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/txtvTitle"
-        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/txtvIcon"
-        android:layout_toEndOf="@id/txtvIcon"
-        android:layout_toLeftOf="@id/txtvType"
-        android:layout_toStartOf="@id/txtvType"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        android:minLines="1"
-        android:maxLines="2"
-        tools:text="Download item title"
-        tools:background="@android:color/holo_blue_light" />
+            <TextView
+                    android:id="@+id/txtvType"
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Media file"/>
+            <TextView
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:text="·"
+                    tools:background="@android:color/holo_blue_light"/>
+            <TextView
+                    android:id="@+id/txtvDate"
+                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="January 23"/>
 
-    <TextView
-        android:id="@+id/txtvDate"
-        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/txtvIcon"
-        android:layout_toEndOf="@id/txtvIcon"
-        android:layout_below="@id/txtvTitle"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="8dp"
-        tools:text="January 23"
-        tools:background="@android:color/holo_green_dark" />
+        </LinearLayout>
+        <TextView
+                android:id="@+id/txtvTitle"
+                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@sample/episodes.json/data/title"
+                android:ellipsize="end"
+                tools:background="@android:color/holo_blue_light"/>
 
-    <TextView
-        android:id="@+id/txtvReason"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvDate"
-        android:layout_toRightOf="@id/txtvIcon"
-        android:layout_toEndOf="@id/txtvIcon"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_micro"
-        tools:text="@string/design_time_downloaded_log_failure_reason"
-        tools:background="@android:color/holo_green_dark" />
+        <TextView
+                android:id="@+id/txtvReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
+                tools:text="@string/design_time_downloaded_log_failure_reason"/>
 
-</RelativeLayout>
+    </LinearLayout>
+
+    <include layout="@layout/secondary_action"/>
+
+</LinearLayout>

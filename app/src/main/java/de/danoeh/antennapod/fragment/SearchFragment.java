@@ -20,7 +20,8 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.SearchlistAdapter;
+import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
+import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
@@ -33,8 +34,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -45,7 +48,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
 
-    private SearchlistAdapter searchAdapter;
+    private FeedItemlistAdapter searchAdapter;
     private List<FeedComponent> searchResults = new ArrayList<>();
     private Disposable disposable;
     private ProgressBar progressBar;
@@ -105,7 +108,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = layout.findViewById(R.id.listview);
         progressBar = layout.findViewById(R.id.progressBar);
-        searchAdapter = new SearchlistAdapter(getActivity(), itemAccess);
+        searchAdapter = new FeedItemlistAdapter((MainActivity) getActivity(), itemAccess, true, true);
         listView.setAdapter(searchAdapter);
         listView.setOnItemClickListener(this);
 
@@ -164,6 +167,14 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         search();
     }
 
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (searchAdapter != null) {
+            searchAdapter.notifyDataSetChanged();
+        }
+    }
+
     private void onSearchResults(List<FeedComponent> results) {
         progressBar.setVisibility(View.GONE);
         searchResults = results;
@@ -172,7 +183,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
     }
 
-    private final SearchlistAdapter.ItemAccess itemAccess = new SearchlistAdapter.ItemAccess() {
+    private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
         @Override
         public int getCount() {
             return searchResults.size();

@@ -34,7 +34,7 @@
         app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
         app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
         tools:itemCount="13"
-        tools:listitem="@layout/new_episodes_listitem" />
+        tools:listitem="@layout/feeditemlist_item" />
 
     <ProgressBar
         android:id="@+id/progLoading"

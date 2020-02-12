@@ -39,11 +39,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     @Override
-    protected boolean showOnlyNewEpisodes() {
-        return false;
-    }
-
-    @Override
     protected String getPrefName() {
         return PREF_NAME;
     }
