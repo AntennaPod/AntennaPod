@@ -110,7 +110,6 @@ public class PodDBAdapter {
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
-    public static final String KEY_INITIATED_BY_USER = "initiated_by_user";
 
     // Table names
     static final String TABLE_NAME_FEEDS = "Feeds";

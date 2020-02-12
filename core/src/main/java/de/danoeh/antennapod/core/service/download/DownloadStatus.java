@@ -94,7 +94,6 @@ public class DownloadStatus {
 		int indexReason = cursor.getColumnIndex(PodDBAdapter.KEY_REASON);
 		int indexCompletionDate = cursor.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE);
 		int indexReasonDetailed = cursor.getColumnIndex(PodDBAdapter.KEY_REASON_DETAILED);
-		int indexInitiatedByUser = cursor.getColumnIndex(PodDBAdapter.KEY_INITIATED_BY_USER);
 
 		return new DownloadStatus(cursor.getLong(indexId),
 								  cursor.getString(indexTitle),
@@ -106,7 +105,7 @@ public class DownloadStatus {
 								  DownloadError.fromCode(cursor.getInt(indexReason)),
 								  new Date(cursor.getLong(indexCompletionDate)),
 								  cursor.getString(indexReasonDetailed),
-								  cursor.getInt(indexInitiatedByUser) > 0);
+								  false);
 	}
 
 	private DownloadStatus(long id,
