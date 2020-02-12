@@ -211,12 +211,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            findViewById(R.id.shadow).setVisibility(View.GONE);
-            AppBarLayout appBarLayout = findViewById(R.id.appBar);
-            float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources().getDisplayMetrics());
-            appBarLayout.setElevation(px);
-        }
         drawerLayout = findViewById(R.id.drawer_layout);
         navList = findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);

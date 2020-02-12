@@ -4,36 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:gravity="center">
+
+    <de.danoeh.antennapod.view.SquareImageView
+        android:id="@+id/imgvCover"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/cover_label"
+        android:scaleType="fitCenter"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:transitionName="coverTransition"
+        tools:src="@android:drawable/sym_def_app_icon"
+        android:foreground="?attr/selectableItemBackgroundBorderless"/>
 
     <TextView
         android:id="@+id/txtvPodcastTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.25"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
+        android:layout_marginTop="16dp"
         android:textColor="?android:attr/textColorSecondary"
         android:textIsSelectable="true"
         tools:text="Podcast" />
-
-    <ImageView
-        android:id="@+id/imgvCover"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:contentDescription="@string/cover_label"
-        android:scaleType="fitCenter"
-        android:transitionName="coverTransition"
-        tools:src="@android:drawable/sym_def_app_icon"
-        android:foreground="?attr/selectableItemBackground" />
 
     <TextView
         android:id="@+id/txtvEpisodeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.25"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"

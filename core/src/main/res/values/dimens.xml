@@ -37,6 +37,4 @@
     <dimen name="media_router_controller_playback_control_start_padding">24dp</dimen>
     <dimen name="media_router_controller_bottom_margin">8dp</dimen>
 
-    <dimen name="scrubber_vertical_padding">0dp</dimen>
-
 </resources>
