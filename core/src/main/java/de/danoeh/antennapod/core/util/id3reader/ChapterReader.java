@@ -105,8 +105,7 @@ public class ChapterReader extends ID3Reader {
                         // Data contains the picture
                         int length = header.getSize() - read;
                         if (TextUtils.isEmpty(currentChapter.getImageUrl()) || type == IMAGE_TYPE_COVER) {
-                            currentChapter.setImageUrl(
-                                    EmbeddedChapterImage.makeUrl(mime.toString(), input.getCount(), length));
+                            currentChapter.setImageUrl(EmbeddedChapterImage.makeUrl(input.getCount(), length));
                         }
                         skipBytes(input, length);
                     }
