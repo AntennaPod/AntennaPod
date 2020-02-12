@@ -115,7 +115,7 @@ public class DownloadLogAdapter extends BaseAdapter {
                             return;
                         }
                         try {
-                            DownloadRequester.getInstance().downloadMedia(context, media.getItem());
+                            DownloadRequester.getInstance().downloadMedia(context, true, media.getItem());
                             Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
                         } catch (DownloadRequestException e) {
                             e.printStackTrace();
