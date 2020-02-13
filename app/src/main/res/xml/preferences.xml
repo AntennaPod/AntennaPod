@@ -19,7 +19,7 @@
             android:key="prefScreenPlayback"
             android:title="@string/playback_pref"
             android:summary="@string/playback_pref_sum"
-            android:icon="?attr/av_play" />
+            android:icon="?attr/ic_settings_playback" />
 
     <Preference
             android:key="prefScreenNetwork"

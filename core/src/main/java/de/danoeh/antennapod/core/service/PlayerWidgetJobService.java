@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import androidx.annotation.NonNull;
@@ -158,10 +157,10 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             }
 
             if (status == PlayerStatus.PLAYING) {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_pause_white_24dp);
+                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_pause_white_48dp);
                 views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
             } else {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
+                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
                 views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
             }
             views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent());
@@ -177,7 +176,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
             views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_foreground);
-            views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
+            views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
         }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {

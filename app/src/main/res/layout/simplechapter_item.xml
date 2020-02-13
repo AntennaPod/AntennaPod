@@ -10,6 +10,15 @@
         android:baselineAligned="false"
         android:descendantFocusability="blocksDescendants">
 
+    <ImageView
+        android:id="@+id/imgvCover"
+        android:layout_width="@dimen/thumbnail_length_queue_item"
+        android:layout_height="@dimen/thumbnail_length_queue_item"
+        android:contentDescription="@string/cover_label"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        tools:src="@tools:sample/avatars"/>
+
     <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
