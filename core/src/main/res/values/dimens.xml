@@ -31,12 +31,11 @@
     <dimen name="listitem_icon_rightpadding">16dp</dimen>
 
     <dimen name="audioplayer_playercontrols_length">48dp</dimen>
+    <dimen name="audioplayer_playercontrols_length_big">64dp</dimen>
 
     <dimen name="media_router_controller_playback_control_vertical_padding">16dp</dimen>
     <dimen name="media_router_controller_playback_control_horizontal_spacing">12dp</dimen>
     <dimen name="media_router_controller_playback_control_start_padding">24dp</dimen>
     <dimen name="media_router_controller_bottom_margin">8dp</dimen>
-
-    <dimen name="scrubber_vertical_padding">0dp</dimen>
 
 </resources>

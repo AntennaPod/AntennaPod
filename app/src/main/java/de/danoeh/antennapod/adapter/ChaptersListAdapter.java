@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -121,7 +123,8 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
                         .apply(new RequestOptions()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .dontAnimate()
-                                .fitCenter())
+                                .transforms(new FitCenter(), new RoundedCorners((int)
+                                        (4 * getContext().getResources().getDisplayMetrics().density))))
                         .into(holder.image);
             }
         } else {

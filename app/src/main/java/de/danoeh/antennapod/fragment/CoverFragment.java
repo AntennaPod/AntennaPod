@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
@@ -81,6 +83,7 @@ public class CoverFragment extends Fragment {
     private void displayMediaInfo(@NonNull Playable media) {
         txtvPodcastTitle.setText(media.getFeedTitle());
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
 
@@ -133,7 +136,8 @@ public class CoverFragment extends Fragment {
                     .apply(new RequestOptions()
                             .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                             .dontAnimate()
-                            .fitCenter());
+                            .transforms(new FitCenter(),
+                                    new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))));
             if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
                 cover.into(imgvCover);
             } else {
@@ -142,7 +146,8 @@ public class CoverFragment extends Fragment {
                         .apply(new RequestOptions()
                                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .dontAnimate()
-                                .fitCenter())
+                                .transforms(new FitCenter(),
+                                        new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))))
                         .thumbnail(cover)
                         .error(cover)
                         .into(imgvCover);
