@@ -27,8 +27,7 @@ public class SquareImageView extends AppCompatImageView {
     }
 
     private void loadAttrs(Context context, AttributeSet attrs) {
-        TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
-                new int[]{R.styleable.SquareImageView_useMinimum}, 0, 0);
+        TypedArray a = context.obtainStyledAttributes(attrs, new int[]{R.styleable.SquareImageView_useMinimum});
         useMinimum = a.getBoolean(0, false);
         a.recycle();
     }

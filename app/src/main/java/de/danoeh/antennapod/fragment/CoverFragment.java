@@ -83,6 +83,7 @@ public class CoverFragment extends Fragment {
     private void displayMediaInfo(@NonNull Playable media) {
         txtvPodcastTitle.setText(media.getFeedTitle());
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
     }
 
