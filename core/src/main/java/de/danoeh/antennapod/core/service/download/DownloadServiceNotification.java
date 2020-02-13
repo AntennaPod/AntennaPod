@@ -116,20 +116,19 @@ public class DownloadServiceNotification {
 
         if (createReport) {
             Log.d(TAG, "Creating report");
+
             // create notification object
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
-                    NotificationUtils.CHANNEL_ID_ERROR)
-                    .setTicker(context.getString(R.string.download_report_title))
-                    .setContentTitle(context.getString(R.string.download_report_content_title))
-                    .setContentText(
-                            String.format(
+            boolean autoDownloadReport = failedDownloads == 0;
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                                                        context,
+                                                        autoDownloadReport ? NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD : NotificationUtils.CHANNEL_ID_ERROR);
+            builder.setTicker(context.getString(R.string.download_report_title))
+                   .setContentTitle(context.getString(R.string.download_report_content_title))
+                   .setContentText(String.format(
                                     context.getString(R.string.download_report_content),
-                                    successfulDownloads, failedDownloads)
-                    )
-                    .setSmallIcon(R.drawable.stat_notify_sync_error)
-                    .setContentIntent(
-                            ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context)
-                    )
+                                    successfulDownloads, failedDownloads))
+                    .setSmallIcon(autoDownloadReport ? R.drawable.stat_notify_sync : R.drawable.stat_notify_sync_error)
+                    .setContentIntent(ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context))
                     .setAutoCancel(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);

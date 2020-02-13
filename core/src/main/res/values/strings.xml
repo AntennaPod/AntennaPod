@@ -236,7 +236,7 @@
     <string name="download_error_forbidden">Forbidden</string>
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
-    <string name="download_report_title">Downloads completed with error(s)</string>
+    <string name="download_report_title">Downloads completed</string>
     <string name="download_report_content_title">Download Report</string>
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
@@ -783,6 +783,8 @@
     <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
     <string name="notification_channel_error">Errors</string>
     <string name="notification_channel_error_description">Shown if something went wrong, for example if download or gpodder sync fails.</string>
+    <string name="notification_channel_auto_download">Auto Downloads</string>
+    <string name="notification_channel_error_auto_download">Shown when episodes are automatically downloaded.</string>
 
     <!-- Widget settings -->
     <string name="widget_settings">Widget settings</string>
