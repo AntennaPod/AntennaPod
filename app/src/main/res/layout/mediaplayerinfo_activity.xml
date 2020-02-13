@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="4dp">
 
                 <TextView
                     android:id="@+id/txtvPosition"
@@ -105,24 +105,36 @@
                 android:id="@+id/player_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="24dp"
                 tools:background="@android:color/holo_purple">
 
                 <ImageButton
                     android:id="@+id/butPlay"
-                    android:layout_width="@dimen/audioplayer_playercontrols_length"
-                    android:layout_height="@dimen/audioplayer_playercontrols_length"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length_big"
+                    android:layout_height="@dimen/audioplayer_playercontrols_length_big"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:padding="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/pause_label"
+                    app:srcCompat="?attr/av_play"
+                    android:scaleType="fitCenter"
+                    tools:srcCompat="@drawable/ic_av_play_white_24dp"
+                    tools:background="@android:color/holo_green_dark" />
+
+                <de.danoeh.antennapod.view.CircularProgressBar
+                    android:layout_width="@dimen/audioplayer_playercontrols_length_big"
+                    android:layout_height="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_centerHorizontal="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/pause_label"
-                    app:srcCompat="?attr/av_play"
-                    android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_av_play_white_24dp"
-                    tools:background="@android:color/holo_green_dark" />
+                    android:layout_centerVertical="true" />
 
                 <ImageButton
                     android:id="@+id/butRev"
@@ -130,13 +142,14 @@
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
                     android:layout_toLeftOf="@id/butPlay"
                     android:layout_toStartOf="@id/butPlay"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/rewind_label"
                     app:srcCompat="?attr/av_rewind"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_av_fast_rewind_white_48dp"
+                    tools:srcCompat="@drawable/ic_av_fast_rewind_white_48dp"
                     tools:background="@android:color/holo_blue_dark" />
 
                 <TextView
@@ -148,7 +161,6 @@
                     android:layout_alignStart="@id/butRev"
                     android:layout_alignRight="@id/butRev"
                     android:layout_alignEnd="@id/butRev"
-                    android:layout_marginTop="-8dp"
                     android:gravity="center"
                     android:text="30"
                     android:textSize="12sp"
@@ -161,11 +173,12 @@
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
                     android:layout_toLeftOf="@id/butRev"
                     android:layout_toStartOf="@id/butRev"
+                    android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/set_playback_speed_label"
                     app:srcCompat="?attr/av_speed"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_playback_speed_white_48dp"
+                    tools:srcCompat="@drawable/ic_playback_speed_white_48dp"
                     tools:visibility="gone"
                     tools:background="@android:color/holo_green_dark" />
 
@@ -178,7 +191,6 @@
                     android:layout_alignStart="@id/butPlaybackSpeed"
                     android:layout_alignRight="@id/butPlaybackSpeed"
                     android:layout_alignEnd="@id/butPlaybackSpeed"
-                    android:layout_marginTop="-8dp"
                     android:gravity="center"
                     android:text="1.00"
                     android:textSize="12sp"
@@ -191,6 +203,7 @@
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
                     android:layout_toLeftOf="@id/butRev"
                     android:layout_toStartOf="@id/butRev"
+                    android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/cast_disconnect_label"
                     android:src="?attr/ic_cast_disconnect"
@@ -206,13 +219,14 @@
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
                     android:layout_toRightOf="@id/butPlay"
                     android:layout_toEndOf="@id/butPlay"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/fast_forward_label"
                     app:srcCompat="?attr/av_fast_forward"
                     android:scaleType="fitCenter"
-                    tools:src="@drawable/ic_av_fast_forward_white_48dp"
+                    tools:srcCompat="@drawable/ic_av_fast_forward_white_48dp"
                     tools:background="@android:color/holo_blue_dark" />
 
                 <TextView
@@ -224,7 +238,6 @@
                     android:layout_alignStart="@id/butFF"
                     android:layout_alignRight="@id/butFF"
                     android:layout_alignEnd="@id/butFF"
-                    android:layout_marginTop="-8dp"
                     android:gravity="center"
                     android:text="30"
                     android:textSize="12sp"
@@ -237,11 +250,12 @@
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
                     android:layout_toRightOf="@id/butFF"
                     android:layout_toEndOf="@id/butFF"
+                    android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:scaleType="fitCenter"
                     app:srcCompat="?attr/av_skip"
                     android:contentDescription="@string/skip_episode_label"
-                    tools:src="@drawable/ic_av_skip_white_48dp"
+                    tools:srcCompat="@drawable/ic_av_skip_white_48dp"
                     tools:background="@android:color/holo_green_dark" />
             </RelativeLayout>
 
