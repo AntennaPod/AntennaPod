@@ -11,10 +11,12 @@ import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.module.AppGlideModule;
 
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import java.io.InputStream;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import java.nio.ByteBuffer;
 
 /**
  * {@see com.bumptech.glide.integration.okhttp.OkHttpGlideModule}
@@ -32,5 +34,6 @@ public class ApGlideModule extends AppGlideModule {
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
         registry.replace(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
+        registry.append(EmbeddedChapterImage.class, ByteBuffer.class, new ChapterImageModelLoader.Factory());
     }
 }

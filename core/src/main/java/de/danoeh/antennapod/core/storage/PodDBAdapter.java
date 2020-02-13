@@ -69,7 +69,6 @@ public class PodDBAdapter {
     public static final String KEY_POSITION = "position";
     public static final String KEY_SIZE = "filesize";
     public static final String KEY_MIME_TYPE = "mime_type";
-    public static final String KEY_IMAGE = "image";
     public static final String KEY_IMAGE_URL = "image_url";
     public static final String KEY_FEED = "feed";
     public static final String KEY_MEDIA = "media";
@@ -183,7 +182,7 @@ public class PodDBAdapter {
     private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
             + TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
-            + KEY_LINK + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
+            + KEY_LINK + " TEXT," + KEY_IMAGE_URL + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
 
     // SQL Statements for creating indexes
     static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
@@ -674,6 +673,7 @@ public class PodDBAdapter {
             values.put(KEY_START, chapter.getStart());
             values.put(KEY_FEEDITEM, item.getId());
             values.put(KEY_LINK, chapter.getLink());
+            values.put(KEY_IMAGE_URL, chapter.getImageUrl());
             values.put(KEY_CHAPTER_TYPE, chapter.getChapterType());
             if (chapter.getId() == 0) {
                 chapter.setId(db.insert(TABLE_NAME_SIMPLECHAPTERS, null, values));

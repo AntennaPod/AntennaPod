@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -23,6 +29,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
     private Playable media;
     private final Callback callback;
     private int currentChapterIndex = -1;
+    private boolean hasImages = false;
 
     public ChaptersListAdapter(Context context, int textViewResourceId, Callback callback) {
         super(context, textViewResourceId);
@@ -31,6 +38,15 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
 
     public void setMedia(Playable media) {
         this.media = media;
+        hasImages = false;
+        if (media.getChapters() != null) {
+            for (Chapter chapter : media.getChapters()) {
+                if (!ignoreChapter(chapter) && !TextUtils.isEmpty(chapter.getImageUrl())) {
+                    hasImages = true;
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -51,6 +67,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
             holder.title = convertView.findViewById(R.id.txtvTitle);
             holder.start = convertView.findViewById(R.id.txtvStart);
             holder.link = convertView.findViewById(R.id.txtvLink);
+            holder.image = convertView.findViewById(R.id.imgvCover);
             holder.duration = convertView.findViewById(R.id.txtvDuration);
             holder.secondaryActionButton = convertView.findViewById(R.id.secondaryActionButton);
             holder.secondaryActionIcon = convertView.findViewById(R.id.secondaryActionIcon);
@@ -94,6 +111,23 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
             holder.view.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
         }
 
+        if (hasImages) {
+            holder.image.setVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(sc.getImageUrl())) {
+                Glide.with(getContext()).clear(holder.image);
+            } else {
+                Glide.with(getContext())
+                        .load(EmbeddedChapterImage.getModelFor(media, position))
+                        .apply(new RequestOptions()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .dontAnimate()
+                                .fitCenter())
+                        .into(holder.image);
+            }
+        } else {
+            holder.image.setVisibility(View.GONE);
+        }
+
         return convertView;
     }
 
@@ -103,6 +137,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
         TextView start;
         TextView link;
         TextView duration;
+        ImageView image;
         View secondaryActionButton;
         ImageView secondaryActionIcon;
     }
