@@ -546,7 +546,7 @@ public class PlaybackController {
      */
     public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
         if (playbackService != null && media != null) {
-            playbackService.seekTo((int) (prog * media.getDuration()));
+            seekTo((int) (prog * getDuration()));
         }
     }
 
