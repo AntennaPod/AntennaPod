@@ -9,11 +9,11 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 public abstract class VorbisCommentReader {
     /** Length of first page in an ogg file in bytes. */
-    private static final int FIRST_PAGE_LENGTH = 58;
+    private static final int FIRST_OGG_PAGE_LENGTH = 58;
+    private static final int FIRST_OPUS_PAGE_LENGTH = 47;
     private static final int SECOND_PAGE_MAX_LENGTH = 64 * 1024 * 1024;
     private static final int PACKET_TYPE_IDENTIFICATION = 1;
     private static final int PACKET_TYPE_COMMENT = 3;
@@ -93,13 +93,14 @@ public abstract class VorbisCommentReader {
      * method will return true, otherwise false.
      */
     private boolean findIdentificationHeader(InputStream input) throws IOException {
-        byte[] buffer = new byte[FIRST_PAGE_LENGTH];
+        byte[] buffer = new byte[FIRST_OPUS_PAGE_LENGTH];
         IOUtils.readFully(input, buffer);
+        final byte[] oggIdentificationHeader = new byte[]{ PACKET_TYPE_IDENTIFICATION, 'v', 'o', 'r', 'b', 'i', 's' };
         for (int i = 6; i < buffer.length; i++) {
-            if (buffer[i - 5] == 'v' && buffer[i - 4] == 'o'
-                    && buffer[i - 3] == 'r' && buffer[i - 2] == 'b'
-                    && buffer[i - 1] == 'i' && buffer[i] == 's'
-                    && buffer[i - 6] == PACKET_TYPE_IDENTIFICATION) {
+            if (bufferMatches(buffer, oggIdentificationHeader, i)) {
+                IOUtils.skip(input, FIRST_OGG_PAGE_LENGTH - FIRST_OPUS_PAGE_LENGTH);
+                return true;
+            } else if (bufferMatches(buffer, "OpusHead".getBytes(), i)) {
                 return true;
             }
         }
@@ -107,45 +108,35 @@ public abstract class VorbisCommentReader {
     }
 
     private boolean findCommentHeader(InputStream input) throws IOException {
-        char[] buffer = new char["vorbis".length() + 1];
+        byte[] buffer = new byte[64]; // Enough space for some bytes. Used circularly.
+        final byte[] oggCommentHeader = new byte[]{ PACKET_TYPE_COMMENT, 'v', 'o', 'r', 'b', 'i', 's' };
         for (int bytesRead = 0; bytesRead < SECOND_PAGE_MAX_LENGTH; bytesRead++) {
-            char c = (char) input.read();
-            int dest = -1;
-            switch (c) {
-                case PACKET_TYPE_COMMENT:
-                    dest = 0;
-                    break;
-                case 'v':
-                    dest = 1;
-                    break;
-                case 'o':
-                    dest = 2;
-                    break;
-                case 'r':
-                    dest = 3;
-                    break;
-                case 'b':
-                    dest = 4;
-                    break;
-                case 'i':
-                    dest = 5;
-                    break;
-                case 's':
-                    dest = 6;
-                    break;
-            }
-            if (dest >= 0) {
-                buffer[dest] = c;
-                if (buffer[1] == 'v' && buffer[2] == 'o' && buffer[3] == 'r'
-                        && buffer[4] == 'b' && buffer[5] == 'i'
-                        && buffer[6] == 's' && buffer[0] == PACKET_TYPE_COMMENT) {
-                    return true;
-                }
-            } else {
-                Arrays.fill(buffer, (char) 0);
+            buffer[bytesRead % buffer.length] = (byte) input.read();
+            if (bufferMatches(buffer, oggCommentHeader, bytesRead)) {
+                return true;
+            } else if (bufferMatches(buffer, "OpusTags".getBytes(), bytesRead)) {
+                return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Reads backwards in haystack, starting at position. Checks if the bytes match needle.
+     * Uses haystack circularly, so when reading at (-1), it reads at (length - 1).
+     */
+    boolean bufferMatches(byte[] haystack, byte[] needle, int position) {
+        for (int i = 0; i < needle.length; i++) {
+            int posInHaystack = position - i;
+            while (posInHaystack < 0) {
+                posInHaystack += haystack.length;
+            }
+            posInHaystack = posInHaystack % haystack.length;
+            if (haystack[posInHaystack] != needle[needle.length - 1 - i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @NonNull
