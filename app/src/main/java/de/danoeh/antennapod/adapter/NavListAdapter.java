@@ -7,7 +7,6 @@ import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
-import androidx.appcompat.app.AlertDialog;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,33 +15,28 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AlertDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * BaseAdapter for the navigation drawer
@@ -112,7 +106,7 @@ public class NavListAdapter extends BaseAdapter
 
     private Drawable getDrawable(String tag) {
         Activity context = activity.get();
-        if(context == null) {
+        if (context == null) {
             return null;
         }
         int icon;
@@ -120,13 +114,7 @@ public class NavListAdapter extends BaseAdapter
             case QueueFragment.TAG:
                 icon = R.attr.stat_playlist;
                 break;
-            case NewEpisodesFragment.TAG:
-                icon = R.attr.ic_new;
-                break;
             case EpisodesFragment.TAG:
-                icon = R.attr.feed;
-                break;
-            case AllEpisodesFragment.TAG:
                 icon = R.attr.feed;
                 break;
             case DownloadsFragment.TAG:

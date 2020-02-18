@@ -24,7 +24,7 @@
         android:layout_marginStart="@dimen/listitem_icon_leftpadding"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        tools:src="@drawable/ic_new_releases_white_24dp"
+        tools:src="@drawable/ic_file_download_grey600_24dp"
         tools:background="@android:color/holo_green_dark"/>
 
 

@@ -43,7 +43,6 @@
         <item name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
         <item name="nav_drawer_background">@color/white</item>
         <item name="drawer_activated_color">@color/highlight_light</item>
-        <item name="ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item name="ic_history">@drawable/ic_history_grey600_24dp</item>
         <item name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
         <item name="ic_settings_playback">@drawable/ic_av_play_dark_24dp</item>
@@ -119,7 +118,6 @@
         <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item name="nav_drawer_background">@color/nav_drawer_background_dark</item>
         <item name="drawer_activated_color">@color/nav_drawer_highlighted_dark</item>
-        <item name="ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item name="ic_history">@drawable/ic_history_white_24dp</item>
         <item name="ic_folder">@drawable/ic_folder_white_24dp</item>
         <item name="ic_settings_playback">@drawable/ic_av_play_white_24dp</item>
