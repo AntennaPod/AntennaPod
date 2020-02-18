@@ -13,14 +13,14 @@
         android:background="?attr/colorPrimary"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         tools:background="@android:color/darker_gray">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp">
+            android:layout_marginTop="16dp">
 
             <ImageView
                 android:id="@+id/imgvCover"
@@ -99,8 +99,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:visibility="gone" />
 
         <LinearLayout
@@ -123,7 +121,10 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:id="@+id/butAction1Icon"
-                    android:layout_margin="12dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
                     tools:src="@drawable/ic_settings_grey600_24dp" />
 
                 <TextView
@@ -148,7 +149,10 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:id="@+id/butAction2Icon"
-                    android:layout_margin="12dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
                     tools:src="@drawable/ic_settings_grey600_24dp" />
 
                 <TextView
@@ -163,8 +167,8 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/light_gray" />
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerVertical"/>
 
     </LinearLayout>
 
