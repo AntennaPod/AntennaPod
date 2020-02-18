@@ -20,18 +20,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginRight="16dp">
 
             <ImageView
                 android:id="@+id/imgvCover"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/thumbnail_length_queue_item"
+                android:layout_height="@dimen/thumbnail_length_queue_item"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/cover_label"
                 android:foreground="?attr/selectableItemBackground"
-                tools:src="@drawable/ic_antenna"
-                tools:background="@android:color/holo_green_dark" />
+                tools:src="@tools:sample/avatars" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,7 +55,7 @@
                     android:textColor="?android:attr/textColorPrimary"
                     android:ellipsize="end"
                     android:maxLines="5"
-                    tools:text="Episode title"
+                    tools:text="@sample/episodes.json/data/title"
                     tools:background="@android:color/holo_green_dark" />
 
                 <LinearLayout
@@ -69,7 +67,7 @@
                         style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        tools:text="00:42:23"
+                        tools:text="@sample/episodes.json/data/duration"
                         tools:background="@android:color/holo_green_dark" />
 
                     <TextView
