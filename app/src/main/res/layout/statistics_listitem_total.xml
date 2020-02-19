@@ -6,11 +6,15 @@
                 android:padding="16dp">
 
     <de.danoeh.antennapod.view.PieChartView
-            android:id="@+id/pie_chart"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/pie_chart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:maxWidth="800dp"
+        android:minWidth="460dp"
+        />
 
     <TextView
             android:layout_width="match_parent"
