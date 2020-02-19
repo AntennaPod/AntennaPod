@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -47,7 +48,7 @@ public class EpisodesFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
         viewPager = rootView.findViewById(R.id.viewpager);
-        viewPager.setAdapter(new EpisodesPagerAdapter(getChildFragmentManager(), getResources()));
+        viewPager.setAdapter(new EpisodesPagerAdapter());
 
         // Give the TabLayout the ViewPager
         tabLayout = rootView.findViewById(R.id.sliding_tabs);
@@ -76,23 +77,23 @@ public class EpisodesFragment extends Fragment {
         viewPager.setCurrentItem(lastPosition);
     }
 
-    public static class EpisodesPagerAdapter extends FragmentPagerAdapter {
+    public class EpisodesPagerAdapter extends FragmentPagerAdapter {
 
-        private final Resources resources;
-        private final EpisodesListFragment[] fragments = {
-                new NewEpisodesFragment(),
-                new AllEpisodesFragment(),
-                new FavoriteEpisodesFragment()
-        };
-
-        public EpisodesPagerAdapter(FragmentManager fm, Resources resources) {
-            super(fm);
-            this.resources = resources;
+        public EpisodesPagerAdapter() {
+            super(getChildFragmentManager());
         }
 
         @Override
+        @NonNull
         public Fragment getItem(int position) {
-            return fragments[position];
+            switch (position) {
+                case 0:
+                    return new NewEpisodesFragment();
+                case 1:
+                    return new AllEpisodesFragment();
+                default:
+                    return new FavoriteEpisodesFragment();
+            }
         }
 
         @Override
@@ -104,22 +105,13 @@ public class EpisodesFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case POS_ALL_EPISODES:
-                    return resources.getString(R.string.all_episodes_short_label);
+                    return getString(R.string.all_episodes_short_label);
                 case POS_NEW_EPISODES:
-                    return resources.getString(R.string.new_episodes_label);
+                    return getString(R.string.new_episodes_label);
                 case POS_FAV_EPISODES:
-                    return resources.getString(R.string.favorite_episodes_label);
+                    return getString(R.string.favorite_episodes_label);
                 default:
                     return super.getPageTitle(position);
-            }
-        }
-
-        @Override
-        public void setPrimaryItem(ViewGroup container, int position, Object object) {
-            super.setPrimaryItem(container, position, object);
-            for (int i = 0; i < TOTAL_COUNT; i++) {
-                // Invalidating the OptionsMenu is only allowed for the currently active fragment
-                fragments[i].isMenuInvalidationAllowed = (i == position);
             }
         }
     }

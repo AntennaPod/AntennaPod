@@ -62,7 +62,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.filter_items).setVisible(true);
-        menu.findItem(R.id.mark_all_read_item).setVisible(!episodes.isEmpty());
+        menu.findItem(R.id.mark_all_read_item).setVisible(true);
     }
 
     @Override
