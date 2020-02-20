@@ -521,13 +521,14 @@ public class PlaybackController {
      * Should be used by classes which implement the OnSeekBarChanged interface.
      */
     public float onSeekBarProgressChanged(SeekBar seekBar, int progress,
-                                          boolean fromUser, TextView txtvPosition) {
+                                          boolean fromUser, TextView txtvPosition, TextView seekDisplay) {
         if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(playbackService.getCurrentPlaybackSpeed());
             int position = converter.convert((int) (prog * duration));
             txtvPosition.setText(Converter.getDurationStringLong(position));
+            seekDisplay.setText(Converter.getDurationStringLong(position));
             return prog;
         }
         return 0;

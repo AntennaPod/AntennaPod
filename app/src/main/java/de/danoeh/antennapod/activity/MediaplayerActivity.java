@@ -91,6 +91,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
+    private TextView seekDisplay;
 
     private boolean showTimeLeft = false;
 
@@ -518,6 +519,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return;
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        seekDisplay.setText(Converter.getDurationStringLong(currentPosition));
         if (showTimeLeft) {
             txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {
@@ -652,6 +654,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         setContentView(getContentViewResourceId());
         sbPosition = findViewById(R.id.sbPosition);
         txtvPosition = findViewById(R.id.txtvPosition);
+        seekDisplay = findViewById(R.id.seek_display);
 
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
@@ -774,7 +777,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (controller == null || txtvLength == null) {
             return;
         }
-        prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
+        prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition, seekDisplay);
         if (showTimeLeft && prog != 0) {
             int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
@@ -789,6 +792,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (controller != null) {
             controller.onSeekBarStartTrackingTouch(seekBar);
         }
+        seekDisplay.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -796,6 +800,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (controller != null) {
             controller.onSeekBarStopTrackingTouch(seekBar, prog);
         }
+        seekDisplay.setVisibility(View.GONE);
     }
 
     private void checkFavorite() {

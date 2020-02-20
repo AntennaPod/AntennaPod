@@ -46,6 +46,25 @@
             tools:background="@android:color/holo_orange_light"
             android:layout_marginBottom="12dp" />
 
+        <TextView
+            android:id="@+id/seek_display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/sbPosition"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="5dp"
+            android:background="#c0000000"
+            android:paddingLeft="30dp"
+            android:paddingTop="5dp"
+            android:paddingRight="30dp"
+            android:paddingBottom="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="3:33:33"
+            tools:visibility="visible" />
+
         <SeekBar
             android:id="@+id/sbPosition"
             android:layout_width="match_parent"
