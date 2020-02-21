@@ -14,11 +14,12 @@ import de.danoeh.antennapod.R;
 public class PlaybackSpeedIndicatorView extends View {
     private static final float DEG_2_RAD = (float) (Math.PI / 180);
     private static final float PADDING_ANGLE = 30;
+    private static final float VALUE_UNSET = -4242;
 
     private final Paint arcPaint = new Paint();
     private final Paint indicatorPaint = new Paint();
     private final Path trianglePath = new Path();
-    private float angle = 0;
+    private float angle = VALUE_UNSET;
     private float targetAngle = 0.5f;
     private float degreePerFrame = 2;
     private float paddingArc = 20;
@@ -58,11 +59,11 @@ public class PlaybackSpeedIndicatorView extends View {
 
     public void setSpeed(float value) {
         float maxAnglePerDirection = 90 + 45 - 2 * paddingArc;
-        if (value >= 1) {
-            // Speed values above 3 are probably not too common. Cap at 3 for better differentiation
-            targetAngle = maxAnglePerDirection * ((Math.min(3, value) - 1) / 2);
-        } else {
-            targetAngle = -maxAnglePerDirection * (1 - ((value - 0.5f) * 2));
+        // Speed values above 3 are probably not too common. Cap at 3 for better differentiation
+        float normalizedValue = Math.min(2.5f, value - 0.5f) / 2.5f; // Linear between 0 and 1
+        targetAngle = -maxAnglePerDirection + 2 * maxAnglePerDirection * normalizedValue;
+        if (angle == VALUE_UNSET) {
+            angle = targetAngle;
         }
         degreePerFrame = Math.abs(targetAngle - angle) / 20;
         invalidate();
