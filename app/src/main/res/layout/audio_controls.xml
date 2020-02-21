@@ -68,7 +68,7 @@
             android:layout_toLeftOf="@id/butIncSpeed"
             android:layout_toStartOf="@id/butIncSpeed"
             android:layout_centerVertical="true"
-            android:max="40"/>
+            android:max="70"/>
 
     </RelativeLayout>
 
