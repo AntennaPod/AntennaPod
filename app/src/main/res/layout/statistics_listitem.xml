@@ -36,9 +36,25 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_toRightOf="@id/imgvCover"
+            android:layout_toEndOf="@id/imgvCover"
             android:layout_alignTop="@id/imgvCover"
             android:layout_alignWithParentIfMissing="true"
             tools:text="Feed title"/>
+
+    <TextView
+            android:id="@+id/chip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_toEndOf="@+id/imgvCover"
+            android:layout_toRightOf="@+id/imgvCover"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_below="@+id/txtvTitle"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:text="⬤"
+            tools:ignore="HardcodedText"/>
 
     <TextView
             android:id="@+id/txtvValue"
@@ -47,10 +63,8 @@
             android:lines="1"
             android:textColor="?android:attr/textColorTertiary"
             android:textSize="14sp"
-            android:layout_toEndOf="@+id/imgvCover"
-            android:layout_toRightOf="@+id/imgvCover"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@+id/chip"
+            android:layout_toRightOf="@+id/chip"
             android:layout_below="@+id/txtvTitle"
             tools:text="23 hours"/>
 

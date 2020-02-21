@@ -95,7 +95,7 @@ class DBUpgrader {
                     + " ADD COLUMN " + PodDBAdapter.KEY_PASSWORD
                     + " TEXT");
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
-                    + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE
+                    + " ADD COLUMN image"
                     + " INTEGER");
         }
         if (oldVersion <= 12) {
@@ -280,13 +280,13 @@ class DBUpgrader {
                     + " SELECT " + PodDBAdapter.KEY_DOWNLOAD_URL
                     + " FROM " + PodDBAdapter.TABLE_NAME_FEED_IMAGES
                     + " WHERE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES + "." + PodDBAdapter.KEY_ID
-                    + " = " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_IMAGE + ")");
+                    + " = " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + ".image)");
 
             db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEEDS + " SET " + PodDBAdapter.KEY_IMAGE_URL + " = ("
                     + " SELECT " + PodDBAdapter.KEY_DOWNLOAD_URL
                     + " FROM " + PodDBAdapter.TABLE_NAME_FEED_IMAGES
                     + " WHERE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES + "." + PodDBAdapter.KEY_ID
-                    + " = " + PodDBAdapter.TABLE_NAME_FEEDS + "." + PodDBAdapter.KEY_IMAGE + ")");
+                    + " = " + PodDBAdapter.TABLE_NAME_FEEDS + ".image)");
 
             db.execSQL("DROP TABLE " + PodDBAdapter.TABLE_NAME_FEED_IMAGES);
         }
@@ -294,10 +294,15 @@ class DBUpgrader {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL);
         }
-
         if (oldVersion < 1070401) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_SORT_ORDER + " TEXT");
+        }
+        if (oldVersion < 1090000) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_SIMPLECHAPTERS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_IMAGE_URL + " TEXT DEFAULT NULL");
         }
     }
 

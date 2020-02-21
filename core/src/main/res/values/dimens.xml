@@ -10,8 +10,8 @@
     <dimen name="text_size_navdrawer">16sp</dimen>
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
-	<dimen name="thumbnail_length_itemlist">64dp</dimen>
-    <dimen name="thumbnail_length_queue_item">64dp</dimen>
+	<dimen name="thumbnail_length_itemlist">56dp</dimen>
+    <dimen name="thumbnail_length_queue_item">56dp</dimen>
     <dimen name="thumbnail_length_downloaded_item">64dp</dimen>
     <dimen name="thumbnail_length_onlinefeedview">100dp</dimen>
     <dimen name="feeditemlist_header_height">132dp</dimen>
@@ -23,7 +23,7 @@
 
     <dimen name="listitem_threeline_textleftpadding">16dp</dimen>
     <dimen name="listitem_threeline_textrightpadding">8dp</dimen>
-    <dimen name="listitem_threeline_verticalpadding">16dp</dimen>
+    <dimen name="listitem_threeline_verticalpadding">8dp</dimen>
     <dimen name="listitem_threeline_horizontalpadding">16dp</dimen>
 
     <dimen name="list_vertical_padding">8dp</dimen>
@@ -31,12 +31,11 @@
     <dimen name="listitem_icon_rightpadding">16dp</dimen>
 
     <dimen name="audioplayer_playercontrols_length">48dp</dimen>
+    <dimen name="audioplayer_playercontrols_length_big">64dp</dimen>
 
     <dimen name="media_router_controller_playback_control_vertical_padding">16dp</dimen>
     <dimen name="media_router_controller_playback_control_horizontal_spacing">12dp</dimen>
     <dimen name="media_router_controller_playback_control_start_padding">24dp</dimen>
     <dimen name="media_router_controller_bottom_margin">8dp</dimen>
-
-    <dimen name="scrubber_vertical_padding">0dp</dimen>
 
 </resources>

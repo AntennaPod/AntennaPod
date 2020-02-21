@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/butSecondaryAction"
-    android:layout_width="@dimen/listview_secondary_button_width"
-    android:layout_height="match_parent"
-    android:background="?attr/selectableItemBackground"
-    android:clickable="false"
-    android:focusable="false"
-    android:focusableInTouchMode="false"
-    tools:ignore="ContentDescription"
-    tools:src="@sample/secondaryaction" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="48dp"
+             android:layout_height="48dp"
+             android:layout_marginRight="12dp"
+             android:layout_marginEnd="12dp"
+             android:id="@+id/secondaryActionButton"
+             android:background="?selectableItemBackgroundBorderless"
+             android:clickable="true"
+             android:focusable="false"
+             android:focusableInTouchMode="false" >
+
+    <ImageView
+            android:id="@+id/secondaryActionIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            tools:ignore="ContentDescription"
+            tools:src="@sample/secondaryaction"/>
+
+    <de.danoeh.antennapod.view.CircularProgressBar
+            android:id="@+id/secondaryActionProgress"
+            android:layout_width="40dp"
+            android:layout_gravity="center"
+            android:layout_height="40dp"/>
+</FrameLayout>

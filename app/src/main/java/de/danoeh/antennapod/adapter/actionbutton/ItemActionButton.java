@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.widget.ImageView;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -33,7 +34,7 @@ public abstract class ItemActionButton {
     }
 
     @NonNull
-    public static ItemActionButton forItem(@NonNull FeedItem item, boolean isInQueue) {
+    public static ItemActionButton forItem(@NonNull FeedItem item, boolean isInQueue, boolean allowStream) {
         final FeedMedia media = item.getMedia();
         if (media == null) {
             return new MarkAsPlayedActionButton(item);
@@ -44,23 +45,23 @@ public abstract class ItemActionButton {
             return new PlayActionButton(item);
         } else if (isDownloadingMedia) {
             return new CancelDownloadActionButton(item);
-        } else if (UserPreferences.streamOverDownload()) {
+        } else if (UserPreferences.streamOverDownload() && allowStream) {
             return new StreamActionButton(item);
-        } else if (MobileDownloadHelper.userAllowedMobileDownloads() || !MobileDownloadHelper.userChoseAddToQueue() || isInQueue) {
+        } else if (MobileDownloadHelper.userAllowedMobileDownloads()
+                || !MobileDownloadHelper.userChoseAddToQueue() || isInQueue) {
             return new DownloadActionButton(item, isInQueue);
         } else {
             return new AddToQueueActionButton(item);
         }
     }
 
-    public void configure(@NonNull ImageButton button, Context context) {
-        TypedArray drawables = context.obtainStyledAttributes(new int[]{getDrawable()});
-
+    public void configure(@NonNull View button, @NonNull ImageView icon, Context context) {
         button.setVisibility(getVisibility());
         button.setContentDescription(context.getString(getLabel()));
-        button.setImageDrawable(drawables.getDrawable(0));
         button.setOnClickListener((view) -> onClick(context));
 
+        TypedArray drawables = context.obtainStyledAttributes(new int[]{getDrawable()});
+        icon.setImageDrawable(drawables.getDrawable(0));
         drawables.recycle();
     }
 }

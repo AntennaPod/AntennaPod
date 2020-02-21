@@ -261,7 +261,7 @@
   <string name="unlock_queue">Déverrouiller la liste de lecture</string>
   <string name="queue_locked">Liste de lecture verrouillée</string>
   <string name="queue_unlocked">Liste de lecture déverrouillée</string>
-  <string name="queue_lock_warning">Lorsque la liste est verrouillée le swipe n\'est pas possible et l\'ordre des épisodes ne peut être changé.</string>
+  <string name="queue_lock_warning">Quand la liste est verrouillée il n\'est plus possible d\'utiliser le swipe ou de changer l\'ordre des épisodes.</string>
   <string name="checkbox_do_not_show_again">Ne pas réafficher</string>
   <string name="clear_queue_label">Effacer la liste de lecture</string>
   <string name="undo">Annuler</string>
@@ -358,10 +358,10 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Connexion des écouteurs</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Connexion du Bluetooth</string>
   <string name="pref_stream_over_download_title">Préférer le streaming</string>
-  <string name="pref_stream_over_download_sum">Afficher dans les listes le bouton du stream au lieu de celui de téléchargement.</string>
+  <string name="pref_stream_over_download_sum">Afficher dans les listes le bouton du streaming au lieu de celui du téléchargement.</string>
   <string name="pref_mobileUpdate_title">Utilisation de la connexion mobile</string>
   <string name="pref_mobileUpdate_sum">Choisir ce qui est autorisé lorsque la connexion mobile est utilisée</string>
-  <string name="pref_mobileUpdate_refresh">Rafraîchissement des flux</string>
+  <string name="pref_mobileUpdate_refresh">Mise à jour des flux</string>
   <string name="pref_mobileUpdate_images">Récupération des images</string>
   <string name="pref_mobileUpdate_auto_download">Téléchargement automatique</string>
   <string name="pref_mobileUpdate_episode_download">Téléchargement d\'épisodes</string>
@@ -387,7 +387,7 @@
   <string name="pref_episode_cache_title">Nombre d\'épisodes stockés</string>
   <string name="pref_episode_cache_summary">Nombre maximum d\'épisodes stockés sur l\'appareil. Le téléchargement automatique sera suspendu si ce nombre est atteint.</string>
   <string name="pref_episode_cover_title">Image des épisodes</string>
-  <string name="pref_episode_cover_summary">Lorsqu\'elle existe, utiliser l\'image propre aux épisodes au lieu de celle du podcast.</string>
+  <string name="pref_episode_cover_summary">Lorsqu\'elles existent, utiliser les images propres aux épisodes au lieu de celle du podcast.</string>
   <string name="pref_theme_title_use_system">Thème du système</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>
@@ -413,7 +413,7 @@
   <string name="pref_gpodnet_notifications_sum">Ce paramètre ne s\'applique pas aux erreurs d\'authentification.</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture audio</string>
-  <string name="pref_feed_playback_speed_sum">Vitesse de lecture pour les épisodes de ce flux</string>
+  <string name="pref_feed_playback_speed_sum">Vitesse de lecture par défaut pour les épisodes de ce flux</string>
   <string name="pref_playback_time_respects_speed_title">Ajuster les informations en fonction la vitesse de lecture</string>
   <string name="pref_playback_time_respects_speed_sum">La position et la durée affichée tiendront compte de la vitesse de lecture.</string>
   <string name="pref_fast_forward">Durée du saut avant</string>
@@ -725,7 +725,7 @@
   <string name="notification_channel_error_description">S\'affiche en cas de problème. Par exemple, un téléchargement ou une synchronisation qui échoue.</string>
   <string name="import_bad_file">Fichier invalide/corrompu</string>
   <!--Widget settings-->
-  <string name="widget_settings">Préférences des widget</string>
+  <string name="widget_settings">Préférences des widgets</string>
   <string name="widget_create_button">Créer un widget</string>
   <string name="widget_opacity">Opacité</string>
 </resources>

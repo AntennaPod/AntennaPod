@@ -73,7 +73,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         // played items shoudln't be transparent for this fragment since, *all* items
         // in this fragment will, by definition, be played. So it serves no purpose and can make
         // it harder to read.
-        adapter = new FeedItemlistAdapter(getActivity(), itemAccess, true, false);
+        adapter = new FeedItemlistAdapter((MainActivity) getActivity(), itemAccess, true, false);
         setListAdapter(adapter);
     }
 
@@ -93,7 +93,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(DownloadEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
@@ -181,19 +181,6 @@ public class PlaybackHistoryFragment extends ListFragment {
     private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
 
         @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
-            if (downloaderList != null) {
-                for (Downloader downloader : downloaderList) {
-                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
-                        return downloader.getDownloadRequest().getProgressPercent();
-                    }
-                }
-            }
-            return 0;
-        }
-
-        @Override
         public int getCount() {
             return (playbackHistory != null) ? playbackHistory.size() : 0;
         }
@@ -205,20 +192,6 @@ public class PlaybackHistoryFragment extends ListFragment {
             } else {
                 return null;
             }
-        }
-
-        @Override
-        public LongList getQueueIds() {
-            LongList queueIds = new LongList();
-            if(playbackHistory == null) {
-                return queueIds;
-            }
-            for (FeedItem item : playbackHistory) {
-                if (item.isTagged(FeedItem.TAG_QUEUE)) {
-                    queueIds.add(item.getId());
-                }
-            }
-            return queueIds;
         }
     };
 

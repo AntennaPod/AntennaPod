@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no' ?>
+<html>
+    <head>
+        <title>AntennaPod Subscriptions</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            * {
+                font-family: 'Lato', sans-serif;
+                font-weight: 300;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html {
+                background: #3498db;
+                text-align: center;
+                padding: 10px;
+            }
+            h1 {
+                color: #fff;
+                font-weight: 300;
+                display: inline-block;
+                margin-top: 40px;
+                margin-bottom: 20px;
+                vertical-align: top;
+            }
+            ul {
+                text-align: center;
+            }
+            li {
+                width: 100%;
+                max-width: 500px;
+                display: block;
+                    display: inline-flex;
+                padding: 10px;
+            }
+            li > div {
+                background: #fefefe;
+                padding: 10px;
+                display: inline-block;
+                width: 100%;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                text-align: left;
+            }
+            li span {
+                margin-top: 10px;
+                display: block;
+            }
+            a {
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            span a {
+                color: #3498db;
+            }
+            img {
+                width: 100px;
+                height: 100px;
+                margin-right: 10px;
+            }
+            li > div > img { 
+                float: left; 
+            } 
+            li > div > p { 
+                width: 100%; 
+            } 
+            body > a {
+                color: #ffffff;
+                display: inline-block;
+                margin-top: 10px;
+                clear:left;
+            }
+        </style>
+    </head>
+    <body>
+        <img src="https://antennapod.org/assets/img/antennapod-logo.png" />
+        <h1>AntennaPod Subscriptions</h1>
+        <ul>
+            {FEEDS}
+        </ul>
+        <a href="https://play.google.com/store/apps/details?id=de.danoeh.antennapod" target="_blank">Get AntennaPod</a>
+    </body>
+</html>

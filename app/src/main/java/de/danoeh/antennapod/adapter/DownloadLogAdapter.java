@@ -26,171 +26,139 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.view.viewholder.DownloadItemViewHolder;
+import de.danoeh.antennapod.view.viewholder.FeedViewHolder;
 
-/** Displays a list of DownloadStatus entries. */
+/**
+ * Displays a list of DownloadStatus entries.
+ */
 public class DownloadLogAdapter extends BaseAdapter {
+    private static final String TAG = "DownloadLogAdapter";
 
-	private static final String TAG = "DownloadLogAdapter";
-
-	private final Context context;
-
+    private final Context context;
     private final ItemAccess itemAccess;
 
-	public DownloadLogAdapter(Context context, ItemAccess itemAccess) {
-		super();
+    public DownloadLogAdapter(Context context, ItemAccess itemAccess) {
+        super();
         this.itemAccess = itemAccess;
-		this.context = context;
-	}
+        this.context = context;
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		Holder holder;
-		DownloadStatus status = getItem(position);
-		if (convertView == null) {
-			holder = new Holder();
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.downloadlog_item, parent, false);
-			holder.icon = convertView.findViewById(R.id.txtvIcon);
-			holder.retry = convertView.findViewById(R.id.btnRetry);
-			holder.date = convertView.findViewById(R.id.txtvDate);
-			holder.title = convertView.findViewById(R.id.txtvTitle);
-			if(Build.VERSION.SDK_INT >= 23) {
-				holder.title.setHyphenationFrequency(Layout.HYPHENATION_FREQUENCY_FULL);
-			}
-			holder.type = convertView.findViewById(R.id.txtvType);
-			holder.reason = convertView.findViewById(R.id.txtvReason);
-			convertView.setTag(holder);
-		} else {
-			holder = (Holder) convertView.getTag();
-		}
-		if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-			holder.type.setText(R.string.download_type_feed);
-		} else if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-			holder.type.setText(R.string.download_type_media);
-		}
-		if (status.getTitle() != null) {
-			holder.title.setText(status.getTitle());
-		} else {
-			holder.title.setText(R.string.download_log_title_unknown);
-		}
-		holder.date.setText(DateUtils.getRelativeTimeSpanString(
-				status.getCompletionDate().getTime(),
-				System.currentTimeMillis(), 0, 0));
-		if (status.isSuccessful()) {
-			holder.icon.setTextColor(ContextCompat.getColor(convertView.getContext(),
-					R.color.download_success_green));
-			holder.icon.setText("{fa-check-circle}");
-			holder.retry.setVisibility(View.GONE);
-			holder.reason.setVisibility(View.GONE);
-		} else {
-			holder.icon.setTextColor(ContextCompat.getColor(convertView.getContext(),
-					R.color.download_failed_red));
-			holder.icon.setText("{fa-times-circle}");
-			String reasonText = status.getReason().getErrorString(context);
-			if (status.getReasonDetailed() != null) {
-				reasonText += ": " + status.getReasonDetailed();
-			}
-			holder.reason.setText(reasonText);
-			holder.reason.setVisibility(View.VISIBLE);
-			if(!newerWasSuccessful(position, status.getFeedfileType(), status.getFeedfileId())) {
-				holder.retry.setVisibility(View.VISIBLE);
-				holder.retry.setOnClickListener(clickListener);
-				ButtonHolder btnHolder;
-				if(holder.retry.getTag() != null) {
-					btnHolder = (ButtonHolder) holder.retry.getTag();
-				}  else {
-					btnHolder = new ButtonHolder();
-				}
-				btnHolder.typeId = status.getFeedfileType();
-				btnHolder.id = status.getFeedfileId();
-				holder.retry.setTag(btnHolder);
-			} else {
-				holder.retry.setVisibility(View.GONE);
-				holder.retry.setOnClickListener(null);
-				holder.retry.setTag(null);
-			}
-		}
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        DownloadItemViewHolder holder;
+        if (convertView == null) {
+            holder = new DownloadItemViewHolder(context, parent);
+        } else {
+            holder = (DownloadItemViewHolder) convertView.getTag();
+        }
 
-		return convertView;
-	}
+        DownloadStatus status = getItem(position);
+        if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            holder.type.setText(R.string.download_type_feed);
+        } else if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            holder.type.setText(R.string.download_type_media);
+        }
 
-	private final View.OnClickListener clickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			ButtonHolder holder = (ButtonHolder) v.getTag();
-			if(holder.typeId == Feed.FEEDFILETYPE_FEED) {
-				Feed feed = DBReader.getFeed(holder.id);
-				if (feed != null) {
-					try {
-						DBTasks.forceRefreshFeed(context, feed);
-					} catch (DownloadRequestException e) {
-						e.printStackTrace();
-					}
-				} else {
-					Log.wtf(TAG, "Could not find feed for feed id: " + holder.id);
-				}
-			} else if(holder.typeId == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-				FeedMedia media = DBReader.getFeedMedia(holder.id);
-				if (media != null) {
-					try {
-						DownloadRequester.getInstance().downloadMedia(context, media.getItem());
-						Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
-					} catch (DownloadRequestException e) {
-						e.printStackTrace();
-						DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
-					}
-				} else {
-					Log.wtf(TAG, "Could not find media for id: " + holder.id);
-				}
-			} else {
-				Log.wtf(TAG, "Unexpected type id: " + holder.typeId);
-			}
-			v.setVisibility(View.GONE);
-		}
-	};
+        if (status.getTitle() != null) {
+            holder.title.setText(status.getTitle());
+        } else {
+            holder.title.setText(R.string.download_log_title_unknown);
+        }
+        holder.date.setText(DateUtils.getRelativeTimeSpanString(status.getCompletionDate().getTime(),
+                System.currentTimeMillis(), 0, 0));
 
-	private boolean newerWasSuccessful(int position, int feedTypeId, long id) {
-		for (int i = 0; i < position; i++) {
-			DownloadStatus status = getItem(i);
-			if (status.getFeedfileType() == feedTypeId && status.getFeedfileId() == id &&
-					status.isSuccessful()) return true;
-		}
-		return false;
-	}
+        if (status.isSuccessful()) {
+            holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_success_green));
+            holder.icon.setText("{fa-check-circle}");
+            holder.secondaryActionButton.setVisibility(View.INVISIBLE);
+            holder.reason.setVisibility(View.GONE);
+        } else {
+            holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_failed_red));
+            holder.icon.setText("{fa-times-circle}");
+            String reasonText = status.getReason().getErrorString(context);
+            if (status.getReasonDetailed() != null) {
+                reasonText += ": " + status.getReasonDetailed();
+            }
+            holder.reason.setText(reasonText);
+            holder.reason.setVisibility(View.VISIBLE);
 
-	static class Holder {
-		IconTextView icon;
-		IconButton retry;
-		TextView title;
-		TextView type;
-		TextView date;
-		TextView reason;
-	}
+            if (newerWasSuccessful(position, status.getFeedfileType(), status.getFeedfileId())) {
+                holder.secondaryActionButton.setVisibility(View.INVISIBLE);
+                holder.secondaryActionButton.setOnClickListener(null);
+                holder.secondaryActionButton.setTag(null);
+            } else {
+                holder.secondaryActionIcon.setImageResource(
+                        ThemeUtils.getDrawableFromAttr(context, R.attr.navigation_refresh));
+                holder.secondaryActionButton.setVisibility(View.VISIBLE);
 
-	static class ButtonHolder {
-		int typeId;
-		long id;
-	}
+                if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+                    holder.secondaryActionButton.setOnClickListener(v -> {
+                        holder.secondaryActionButton.setVisibility(View.INVISIBLE);
+                        Feed feed = DBReader.getFeed(status.getFeedfileId());
+                        if (feed == null) {
+                            Log.e(TAG, "Could not find feed for feed id: " + status.getFeedfileId());
+                            return;
+                        }
+                        try {
+                            DBTasks.forceRefreshFeed(context, feed);
+                        } catch (DownloadRequestException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } else if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                    holder.secondaryActionButton.setOnClickListener(v -> {
+                        holder.secondaryActionButton.setVisibility(View.INVISIBLE);
+                        FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
+                        if (media == null) {
+                            Log.e(TAG, "Could not find feed media for feed id: " + status.getFeedfileId());
+                            return;
+                        }
+                        try {
+                            DownloadRequester.getInstance().downloadMedia(context, media.getItem());
+                            Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
+                        } catch (DownloadRequestException e) {
+                            e.printStackTrace();
+                            DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
+                        }
+                    });
+                }
+            }
+        }
 
-	@Override
-	public int getCount() {
+        return holder.itemView;
+    }
+
+    private boolean newerWasSuccessful(int position, int feedTypeId, long id) {
+        for (int i = 0; i < position; i++) {
+            DownloadStatus status = getItem(i);
+            if (status.getFeedfileType() == feedTypeId && status.getFeedfileId() == id && status.isSuccessful()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int getCount() {
         return itemAccess.getCount();
-	}
+    }
 
-	@Override
-	public DownloadStatus getItem(int position) {
+    @Override
+    public DownloadStatus getItem(int position) {
         return itemAccess.getItem(position);
-	}
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
     public interface ItemAccess {
-		int getCount();
-		DownloadStatus getItem(int position);
+        int getCount();
+
+        DownloadStatus getItem(int position);
     }
 
 }

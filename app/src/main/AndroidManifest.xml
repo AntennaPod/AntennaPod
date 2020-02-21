@@ -33,19 +33,18 @@
         android:label="@string/app_name"
         android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
+        android:theme="@style/Theme.AntennaPod.Splash"
         android:usesCleartextTraffic="true"
         android:logo="@mipmap/ic_launcher">
 
-        <activity
-            android:name=".activity.WidgetConfigActivity"
-            android:label="@string/widget_settings">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGUR"/>
-            </intent-filter>
-        </activity>
 
+        <meta-data android:name="android.webkit.WebView.MetricsOptOut"
+            android:value="true"/>
         <meta-data android:name="com.google.android.gms.car.notification.SmallIcon"
-                    android:resource="@drawable/ic_antenna" />
+            android:resource="@drawable/ic_antenna"/>
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc"/>
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
@@ -53,12 +52,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:label="@string/app_name"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/Theme.AntennaPod.Dark.Splash">
-            <!-- android:launchMode="singleTask"  removed for #2948, so that
-                 when app is launched again, the app will go to the last activity users use
-                 (if the app has been used recently, e.g., last 30 minutes),
-                 rather than always go to MainActivity (launched by SplashActivity here) -->
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -71,12 +65,14 @@
                     "android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:label="@string/app_name">
         </activity>
+
         <activity
             android:name=".activity.AudioplayerActivity"
             android:launchMode="singleTop">
@@ -93,6 +89,7 @@
                 <data android:mimeType="audio/*"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.CastplayerActivity"
             android:launchMode="singleTop">
@@ -112,6 +109,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
+        </activity>
+
+        <activity
+            android:name=".activity.WidgetConfigActivity"
+            android:label="@string/widget_settings">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGUR"/>
+            </intent-filter>
         </activity>
 
         <service
@@ -141,19 +146,7 @@
         <activity android:name=".activity.StorageErrorActivity">
         </activity>
         <activity
-                android:name=".activity.ImportExportActivity"
-                android:label="@string/import_export">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
-        </activity>
-        <activity
-            android:name=".activity.OpmlImportFromPathActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/opml_import_label">
-        </activity>
-        <activity
-            android:name=".activity.OpmlImportFromIntentActivity"
+            android:name=".activity.OpmlImportActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/opml_import_label">
             <intent-filter>
@@ -359,10 +352,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
-
-        <meta-data
-                    android:name="com.google.android.gms.car.application"
-                    android:resource="@xml/automotive_app_desc"/>
     </application>
 
 </manifest>

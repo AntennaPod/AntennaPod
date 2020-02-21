@@ -64,6 +64,7 @@ public class TextOnlyFeedsTest {
         openNavDrawer();
         onDrawerItem(withText(feed.getTitle())).perform(scrollTo(), click());
         onView(withText(feed.getItemAtIndex(0).getTitle())).perform(click());
+        onView(isRoot()).perform(waitForView(withText(R.string.mark_read_no_media_label), 3000));
         onView(withText(R.string.mark_read_no_media_label)).perform(click());
         onView(isRoot()).perform(waitForView(allOf(withText(R.string.mark_read_no_media_label), not(isDisplayed())), 3000));
     }

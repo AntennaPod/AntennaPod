@@ -27,6 +27,7 @@ import de.danoeh.antennapod.adapter.PlaybackStatisticsListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.comparator.CompareCompat;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -35,6 +36,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Displays the 'playback statistics' screen
@@ -180,13 +182,13 @@ public class PlaybackStatisticsFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private DBReader.StatisticsData fetchStatistics() {
-        DBReader.StatisticsData statisticsData = DBReader.getStatistics();
+    private List<StatisticsItem> fetchStatistics() {
+        List<StatisticsItem> statisticsData = DBReader.getStatistics();
         if (countAll) {
-            Collections.sort(statisticsData.feeds, (item1, item2) ->
+            Collections.sort(statisticsData, (item1, item2) ->
                     CompareCompat.compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
         } else {
-            Collections.sort(statisticsData.feeds, (item1, item2) ->
+            Collections.sort(statisticsData, (item1, item2) ->
                     CompareCompat.compareLong(item1.timePlayed, item2.timePlayed));
         }
         return statisticsData;

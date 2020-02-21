@@ -116,8 +116,8 @@ public class EspressoTestUtils {
         String[] sharedPreferencesFileNames = new File(root, "shared_prefs").list();
         for (String fileName : sharedPreferencesFileNames) {
             System.out.println("Cleared database: " + fileName);
-            InstrumentationRegistry.getTargetContext().
-                    getSharedPreferences(fileName.replace(".xml", ""), Context.MODE_PRIVATE).edit().clear().commit();
+            InstrumentationRegistry.getTargetContext().getSharedPreferences(
+                    fileName.replace(".xml", ""), Context.MODE_PRIVATE).edit().clear().commit();
         }
     }
 

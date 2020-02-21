@@ -245,7 +245,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu (Menu menu) {
+    public void onPrepareOptionsMenu(Menu menu) {
         // Prepare icon for select toggle button
 
         int[] icon = new int[1];

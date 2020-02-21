@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -51,12 +50,14 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
+import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -70,7 +71,6 @@ import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -79,6 +79,10 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -151,7 +155,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int EXTRA_CODE_CAST = 3;
 
     public static final int NOTIFICATION_TYPE_ERROR = 0;
-    public static final int NOTIFICATION_TYPE_INFO = 1;
     public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
 
     /**
@@ -277,6 +280,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         registerReceiver(audioBecomingNoisy, new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
         registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+        EventBus.getDefault().register(this);
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
 
         flavorHelper = new PlaybackServiceFlavorHelper(PlaybackService.this, flavorHelperCallback);
@@ -569,7 +573,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.prepare();
                 } else if (mediaPlayer.getPlayable() == null) {
                     startPlayingFromPreferences();
+                } else {
+                    return false;
                 }
+                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
                 if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
@@ -579,17 +586,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     mediaPlayer.prepare();
                 } else if (mediaPlayer.getPlayable() == null) {
                     startPlayingFromPreferences();
+                } else {
+                    return false;
                 }
+                taskManager.restartSleepTimer();
                 return true;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
+                    return true;
                 }
-
-                return true;
+                return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (notificationButton ||
-                        UserPreferences.shouldHardwareButtonSkip()) {
+                if (notificationButton || UserPreferences.shouldHardwareButtonSkip()) {
                     // assume the skip command comes from a notification or the lockscreen
                     // a >| skip button should actually skip
                     mediaPlayer.skip();
@@ -744,10 +753,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     setupPositionUpdater();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
-                    if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING &&
-                            SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
+                    if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
+                            && SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
                         setSleepTimer(SleepTimerPreferences.timerMillis(), SleepTimerPreferences.shakeToReset(),
                                 SleepTimerPreferences.vibrate());
+                        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
+                                PlaybackService.this::disableSleepTimer));
                     }
                     break;
 
@@ -827,9 +838,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlaybackStart(@NonNull Playable playable, int position) {
-            if (taskManager.isSleepTimerActive()) {
-                taskManager.restartSleepTimer();
-            }
             taskManager.startWidgetUpdater();
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
@@ -1006,17 +1014,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     public void setSleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
-        Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime) + " milliseconds");
+        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
         taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
-                this::disableSleepTimer));
     }
 
     public void disableSleepTimer() {
         taskManager.disableSleepTimer();
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
-        EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_disabled_label)));
     }
 
     private void sendNotificationBroadcast(int type, int code) {
@@ -1326,7 +1331,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (isInitialStickyBroadcast ()) {
+            if (isInitialStickyBroadcast()) {
                 // Don't pause playback after we just started, just because the receiver
                 // delivers the current headset state (instead of a change)
                 return;
@@ -1436,6 +1441,25 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     };
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void volumeAdaptionChanged(VolumeAdaptionChangedEvent event) {
+        PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
+        playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, event.getFeedId(), event.getVolumeAdaptionSetting());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void speedPresetChanged(SpeedPresetChangedEvent event) {
+        if (getPlayable() instanceof FeedMedia) {
+            if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
+                if (event.getSpeed() == SPEED_USE_GLOBAL) {
+                    setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
+                } else {
+                    setSpeed(event.getSpeed());
+                }
+            }
+        }
+    }
+
     public static MediaType getCurrentMediaType() {
         return currentMediaType;
     }
@@ -1446,10 +1470,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     public void resume() {
         mediaPlayer.resume();
+        taskManager.restartSleepTimer();
     }
 
     public void prepare() {
         mediaPlayer.prepare();
+        taskManager.restartSleepTimer();
     }
 
     public void pause(boolean abandonAudioFocus, boolean reinit) {
@@ -1612,16 +1638,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlayFromSearch(String query, Bundle extras) {
             Log.d(TAG, "onPlayFromSearch  query=" + query + " extras=" + extras.toString());
 
-            List<SearchResult> results = FeedSearcher.performSearch(getBaseContext(), query, 0);
-            for (SearchResult result : results) {
-                try {
-                    FeedMedia p = ((FeedItem) (result.getComponent())).getMedia();
-                    mediaPlayer.playMediaObject(p, !p.localFileAvailable(), true, true);
-                    return;
-                } catch (Exception e) {
-                    Log.d(TAG, e.getMessage());
-                    e.printStackTrace();
-                    continue;
+            List<FeedComponent> results = FeedSearcher.performSearch(getBaseContext(), query, 0);
+            for (FeedComponent result : results) {
+                if (result instanceof FeedItem) {
+                    try {
+                        FeedMedia media = ((FeedItem) result).getMedia();
+                        mediaPlayer.playMediaObject(media, !media.localFileAvailable(), true, true);
+                        return;
+                    } catch (Exception e) {
+                        Log.d(TAG, e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             }
             onPlay();

@@ -20,12 +20,13 @@
         <item name="action_search">@drawable/ic_search_grey600_24dp</item>
         <item name="action_stream">@drawable/ic_stream_grey600</item>
         <item name="av_download">@drawable/ic_file_download_grey600_24dp</item>
-        <item name="av_fast_forward">@drawable/ic_fast_forward_grey600_24dp</item>
-        <item name="av_pause">@drawable/ic_pause_grey600_24dp</item>
-        <item name="av_play">@drawable/ic_play_arrow_grey600_24dp</item>
+        <item name="av_pause">@drawable/ic_av_pause_dark_48dp</item>
+        <item name="av_play">@drawable/ic_av_play_dark_48dp</item>
+        <item name="av_rewind">@drawable/ic_av_fast_rewind_dark_48dp</item>
+        <item name="av_fast_forward">@drawable/ic_av_fast_forward_dark_48dp</item>
+        <item name="av_skip">@drawable/ic_av_skip_dark_48dp</item>
         <item name="av_speed">@drawable/ic_playback_speed_dark_48dp</item>
         <item name="ic_settings_speed">@drawable/ic_playback_speed_dark_24dp</item>
-        <item name="av_rewind">@drawable/ic_fast_rewind_grey600_24dp</item>
         <item name="content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item name="content_new">@drawable/ic_add_grey600_24dp</item>
         <item name="content_remove_from_queue">@drawable/ic_remove_grey600</item>
@@ -38,23 +39,13 @@
         <item name="navigation_up">@drawable/navigation_up</item>
         <item name="social_share">@drawable/ic_share_grey600_24dp</item>
         <item name="stat_playlist">@drawable/ic_list_grey600_24dp</item>
-        <item name="type_audio">@drawable/ic_hearing_grey600_18dp</item>
-        <item name="type_video">@drawable/ic_remove_red_eye_grey600_18dp</item>
-        <item name="non_transparent_background">@color/white</item>
-        <item name="overlay_background">@color/overlay_light</item>
-        <item name="overlay_drawable">@drawable/overlay_drawable</item>
+        <item name="type_video">@drawable/ic_videocam_grey600_24dp</item>
         <item name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
-        <item name="dragview_float_background">@color/white</item>
         <item name="nav_drawer_background">@color/white</item>
         <item name="drawer_activated_color">@color/highlight_light</item>
-        <item name="ic_new">@drawable/ic_new_releases_grey600_24dp</item>
         <item name="ic_history">@drawable/ic_history_grey600_24dp</item>
         <item name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
-        <item name="av_play_big">@drawable/ic_play_arrow_grey600_36dp</item>
-        <item name="av_pause_big">@drawable/ic_pause_grey600_36dp</item>
-        <item name="av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
-        <item name="av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
-        <item name="av_skip_big">@drawable/ic_skip_grey600_36dp</item>
+        <item name="ic_settings_playback">@drawable/ic_av_play_dark_24dp</item>
         <item name="ic_fav">@drawable/ic_star_border_grey600_24dp</item>
         <item name="ic_unfav">@drawable/ic_star_grey600_24dp</item>
         <item name="ic_settings">@drawable/ic_settings_grey600_24dp</item>
@@ -76,15 +67,11 @@
         <item name="ic_bookmark">@drawable/ic_bookmark_grey600_24dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
         <item name="ic_key">@drawable/ic_key_grey600</item>
+        <item name="ic_volume_adaption">@drawable/ic_volume_adaption_grey</item>
         <item name="master_switch_background">@color/master_switch_background_light</item>
         <item name="currently_playing_background">@color/highlight_light</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-
-        <item name="about_screen_background">#e5e5e5</item>
-        <item name="about_screen_card_background">#ffffff</item>
-        <item name="about_screen_card_border">#d2d2d2</item>
-        <item name="about_screen_font_color">#000000</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -108,12 +95,13 @@
         <item name="action_search">@drawable/ic_search_white_24dp</item>
         <item name="action_stream">@drawable/ic_stream_white</item>
         <item name="av_download">@drawable/ic_file_download_white_24dp</item>
-        <item name="av_fast_forward">@drawable/ic_fast_forward_white_24dp</item>
-        <item name="av_pause">@drawable/ic_pause_white_24dp</item>
-        <item name="av_play">@drawable/ic_play_arrow_white_24dp</item>
+        <item name="av_rewind">@drawable/ic_av_fast_rewind_white_48dp</item>
+        <item name="av_fast_forward">@drawable/ic_av_fast_forward_white_48dp</item>
+        <item name="av_pause">@drawable/ic_av_pause_white_48dp</item>
+        <item name="av_play">@drawable/ic_av_play_white_48dp</item>
+        <item name="av_skip">@drawable/ic_av_skip_white_48dp</item>
         <item name="av_speed">@drawable/ic_playback_speed_white_48dp</item>
         <item name="ic_settings_speed">@drawable/ic_playback_speed_white_24dp</item>
-        <item name="av_rewind">@drawable/ic_fast_rewind_white_24dp</item>
         <item name="content_discard">@drawable/ic_delete_white_24dp</item>
         <item name="content_new">@drawable/ic_add_white_24dp</item>
         <item name="content_remove_from_queue">@drawable/ic_remove_white</item>
@@ -126,23 +114,13 @@
         <item name="navigation_up">@drawable/navigation_up_dark</item>
         <item name="social_share">@drawable/ic_share_white_24dp</item>
         <item name="stat_playlist">@drawable/ic_list_white_24dp</item>
-        <item name="type_audio">@drawable/ic_hearing_white_18dp</item>
-        <item name="type_video">@drawable/ic_remove_red_eye_white_18dp</item>
-        <item name="non_transparent_background">@color/black</item>
-        <item name="overlay_background">@color/overlay_dark</item>
-        <item name="overlay_drawable">@drawable/overlay_drawable_dark</item>
+        <item name="type_video">@drawable/ic_videocam_white_24dp</item>
         <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
-        <item name="dragview_float_background">@color/black</item>
         <item name="nav_drawer_background">@color/nav_drawer_background_dark</item>
         <item name="drawer_activated_color">@color/nav_drawer_highlighted_dark</item>
-        <item name="ic_new">@drawable/ic_new_releases_white_24dp</item>
         <item name="ic_history">@drawable/ic_history_white_24dp</item>
         <item name="ic_folder">@drawable/ic_folder_white_24dp</item>
-        <item name="av_play_big">@drawable/ic_play_arrow_white_36dp</item>
-        <item name="av_pause_big">@drawable/ic_pause_white_36dp</item>
-        <item name="av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
-        <item name="av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
-        <item name="av_skip_big">@drawable/ic_skip_white_36dp</item>
+        <item name="ic_settings_playback">@drawable/ic_av_play_white_24dp</item>
         <item name="ic_fav">@drawable/ic_star_border_white_24dp</item>
         <item name="ic_unfav">@drawable/ic_star_white_24dp</item>
         <item name="ic_settings">@drawable/ic_settings_white_24dp</item>
@@ -164,14 +142,10 @@
         <item name="ic_bookmark">@drawable/ic_bookmark_white_24dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
         <item name="ic_key">@drawable/ic_key_white</item>
+        <item name="ic_volume_adaption">@drawable/ic_volume_adaption_white</item>
         <item name="master_switch_background">@color/master_switch_background_dark</item>
         <item name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-
-        <item name="about_screen_background">#303030</item>
-        <item name="about_screen_card_background">#424242</item>
-        <item name="about_screen_card_border">#262626</item>
-        <item name="about_screen_font_color">#ffffff</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
@@ -180,12 +154,8 @@
 
     <style name="Theme.Base.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.Dark">
         <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
-        <item name="non_transparent_background">@color/black</item>
-        <item name="overlay_background">@color/black</item>
-        <item name="overlay_drawable">@drawable/overlay_drawable_dark_trueblack</item>
         <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_black</item>
-        <item name="dragview_float_background">@color/black</item>
         <item name="nav_drawer_background">@color/black</item>
         <item name="drawer_activated_color">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
@@ -266,7 +236,11 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark.Splash" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.AntennaPod.Splash" parent="Theme.Base.AntennaPod.Splash">
+        <!-- Room for API dependent attributes -->
+    </style>
+
+    <style name="Theme.Base.AntennaPod.Splash" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="colorPrimary">@color/ic_launcher_background</item>
         <item name="colorPrimaryDark">@color/ic_launcher_background</item>
@@ -285,7 +259,7 @@
     <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:lines">2</item>
+        <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
     </style>
 

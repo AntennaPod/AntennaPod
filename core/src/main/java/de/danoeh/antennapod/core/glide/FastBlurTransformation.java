@@ -14,19 +14,15 @@ public class FastBlurTransformation extends BitmapTransformation {
 
     private static final String TAG = FastBlurTransformation.class.getSimpleName();
 
-    private static final int STACK_BLUR_RADIUS = 1;
-    private static final int BLUR_IMAGE_WIDTH = 150;
+    private static final int STACK_BLUR_RADIUS = 5;
 
     public FastBlurTransformation() {
         super();
     }
 
     @Override
-    protected Bitmap transform(BitmapPool pool, Bitmap source,
-                               int outWidth, int outHeight) {
-        int targetWidth = BLUR_IMAGE_WIDTH;
-        int targetHeight = (int) (1.0 * outHeight * targetWidth / outWidth);
-        Bitmap resized = ThumbnailUtils.extractThumbnail(source, targetWidth, targetHeight);
+    protected Bitmap transform(BitmapPool pool, Bitmap source, int outWidth, int outHeight) {
+        Bitmap resized = ThumbnailUtils.extractThumbnail(source, outWidth / 3, outHeight / 3);
         Bitmap result = fastBlur(resized, STACK_BLUR_RADIUS);
         if (result == null) {
             Log.w(TAG, "result was null");
@@ -80,9 +76,9 @@ public class FastBlurTransformation extends BitmapTransformation {
         int wh = w * h;
         int div = radius + radius + 1;
 
-        int r[] = new int[wh];
-        int g[] = new int[wh];
-        int b[] = new int[wh];
+        int[] r = new int[wh];
+        int[] g = new int[wh];
+        int[] b = new int[wh];
         int rsum;
         int gsum;
         int bsum;
@@ -93,11 +89,11 @@ public class FastBlurTransformation extends BitmapTransformation {
         int yp;
         int yi;
         int yw;
-        int vmin[] = new int[Math.max(w, h)];
+        int[] vmin = new int[Math.max(w, h)];
 
         int divsum = (div + 1) >> 1;
         divsum *= divsum;
-        int dv[] = new int[256 * divsum];
+        int[] dv = new int[256 * divsum];
         for (i = 0; i < 256 * divsum; i++) {
             dv[i] = (i / divsum);
         }
@@ -225,8 +221,8 @@ public class FastBlurTransformation extends BitmapTransformation {
             yi = x;
             stackpointer = radius;
             for (y = 0; y < h; y++) {
-                // Preserve alpha channel: ( 0xff000000 & pix[yi] )
-                pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16) | (dv[gsum] << 8) | dv[bsum];
+                // Set alpha to 1
+                pix[yi] = 0xff000000 | (dv[rsum] << 16) | (dv[gsum] << 8) | dv[bsum];
 
                 rsum -= routsum;
                 gsum -= goutsum;

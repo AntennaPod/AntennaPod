@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
 
+import de.danoeh.antennapod.core.service.download.Downloader;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -344,6 +345,16 @@ public class DownloadRequester implements DownloadStateProvider {
     }
 
     /**
+     * Get the downloader for this item.
+     */
+    public synchronized DownloadRequest getRequestFor(FeedFile item) {
+        if (isDownloadingFile(item)) {
+            return downloads.get(item.getDownload_url());
+        }
+        return null;
+    }
+
+    /**
      * Checks if feedfile with the given download url is in the downloads list
      */
     public synchronized boolean isDownloadingFile(String downloadUrl) {
@@ -427,5 +438,14 @@ public class DownloadRequester implements DownloadStateProvider {
             filename = URLBaseFilename;
         }
         return filename;
+    }
+
+    public void updateProgress(List<Downloader> newDownloads) {
+        for (Downloader downloader : newDownloads) {
+            DownloadRequest request = downloader.getDownloadRequest();
+            if (downloads.containsKey(request.getSource())) {
+                downloads.put(request.getSource(), request);
+            }
+        }
     }
 }

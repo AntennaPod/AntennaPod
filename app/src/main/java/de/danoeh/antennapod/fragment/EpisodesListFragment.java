@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -43,14 +44,11 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -82,19 +80,12 @@ public abstract class EpisodesListFragment extends Fragment {
 
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
-    @NonNull
-    private List<Downloader> downloaderList = new ArrayList<>();
 
-    private boolean isUpdatingFeeds;
-    boolean isMenuInvalidationAllowed = false;
-
+    private volatile boolean isUpdatingFeeds;
+    private boolean isMenuVisible = true;
     protected Disposable disposable;
     private LinearLayoutManager layoutManager;
     protected TextView txtvInformation;
-
-    boolean showOnlyNewEpisodes() {
-        return false;
-    }
 
     String getPrefName() {
         return DEFAULT_PREF_NAME;
@@ -165,6 +156,12 @@ public abstract class EpisodesListFragment extends Fragment {
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     @Override
+    public void setMenuVisibility(final boolean visible) {
+        super.setMenuVisibility(visible);
+        isMenuVisible = visible;
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (!isAdded()) {
             return;
@@ -174,7 +171,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setQueryHint(getString(R.string.search_label));
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -347,14 +344,16 @@ public abstract class EpisodesListFragment extends Fragment {
     }
 
     protected void onFragmentLoaded(List<FeedItem> episodes) {
-        listAdapter.notifyDataSetChanged();
-
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
+        } else {
+            listAdapter.updateItems(episodes);
         }
 
         restoreScrollPosition();
-        requireActivity().invalidateOptionsMenu();
+        if (isMenuVisible && isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+            requireActivity().invalidateOptionsMenu();
+        }
     }
 
     /**
@@ -363,65 +362,12 @@ public abstract class EpisodesListFragment extends Fragment {
      */
     private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
         MainActivity mainActivity = (MainActivity) getActivity();
-        listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess, showOnlyNewEpisodes());
+        listAdapter = new AllEpisodesRecycleAdapter(mainActivity);
         listAdapter.setHasStableIds(true);
+        listAdapter.updateItems(episodes);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);
     }
-
-    private final AllEpisodesRecycleAdapter.ItemAccess itemAccess = new AllEpisodesRecycleAdapter.ItemAccess() {
-
-        @Override
-        public int getCount() {
-            return episodes.size();
-        }
-
-        @Override
-        public FeedItem getItem(int position) {
-            if (0 <= position && position < episodes.size()) {
-                return episodes.get(position);
-            }
-            return null;
-        }
-
-        @Override
-        public LongList getItemsIds() {
-            LongList ids = new LongList(episodes.size());
-            for (FeedItem episode : episodes) {
-                ids.add(episode.getId());
-            }
-            return ids;
-        }
-
-        @Override
-        public int getItemDownloadProgressPercent(FeedItem item) {
-            for (Downloader downloader : downloaderList) {
-                DownloadRequest downloadRequest = downloader.getDownloadRequest();
-                if (downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
-                        && downloadRequest.getFeedfileId() == item.getMedia().getId()) {
-                    return downloadRequest.getProgressPercent();
-                }
-            }
-            return 0;
-        }
-
-        @Override
-        public boolean isInQueue(FeedItem item) {
-            return item != null && item.isTagged(FeedItem.TAG_QUEUE);
-        }
-
-        @Override
-        public LongList getQueueIds() {
-            LongList queueIds = new LongList();
-            for (FeedItem item : episodes) {
-                if (item.isTagged(FeedItem.TAG_QUEUE)) {
-                    queueIds.add(item.getId());
-                }
-            }
-            return queueIds;
-        }
-
-    };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
@@ -444,8 +390,7 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (listAdapter != null) {
             for (int i = 0; i < listAdapter.getItemCount(); i++) {
-                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder)
-                        recyclerView.findViewHolderForAdapterPosition(i);
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
                 if (holder != null && holder.isCurrentlyPlayingItem()) {
                     holder.notifyPlaybackPositionUpdated(event);
                     break;
@@ -462,8 +407,7 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        downloaderList = update.downloaders;
-        if (isMenuInvalidationAllowed && event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+        if (isMenuVisible && event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             requireActivity().invalidateOptionsMenu();
         }
         if (update.mediaIds.length > 0) {
@@ -478,7 +422,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
     private void updateUi() {
         loadItems();
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+        if (isMenuVisible && isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
             requireActivity().invalidateOptionsMenu();
         }
     }

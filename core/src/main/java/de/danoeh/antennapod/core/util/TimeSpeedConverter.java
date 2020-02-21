@@ -10,7 +10,7 @@ public class TimeSpeedConverter {
     }
 
     /** Convert millisecond according to the current playback speed
-     * @param time: time to convert
+     * @param time time to convert
      * @return converted time (can be < 0 if time is < 0)
      */
     public int convert(int time) {

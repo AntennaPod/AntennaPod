@@ -57,7 +57,7 @@ public class HtmlToPlainText {
      * Use this method to determine if a given text has any HTML tag
      *
      * @param str String to be tested for presence of HTML content
-     * @return <b>True</b> if text contains any HTML tags</br><b>False</b> is no HTML tag is found
+     * @return <b>True</b> if text contains any HTML tags<br /><b>False</b> is no HTML tag is found
      */
     private static boolean isHtml(String str) {
         final String HTML_TAG_PATTERN = "<(\"[^\"]*\"|'[^']*'|[^'\">])*>";

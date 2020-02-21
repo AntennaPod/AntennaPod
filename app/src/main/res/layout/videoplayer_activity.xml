@@ -27,6 +27,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layoutDirection="ltr"
+        android:background="@android:color/transparent"
+        android:padding="16dp"
         android:orientation="horizontal">
 
         <ImageButton
@@ -34,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/rewind_label"
             app:srcCompat="@drawable/ic_av_fast_rewind_white_80dp" />
 
@@ -43,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/pause_label"
             app:srcCompat="@drawable/ic_av_pause_white_80dp" />
 
@@ -52,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@android:color/transparent"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/fast_forward_label"
             app:srcCompat="@drawable/ic_av_fast_forward_white_80dp" />
 

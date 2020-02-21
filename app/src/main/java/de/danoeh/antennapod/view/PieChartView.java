@@ -39,14 +39,10 @@ public class PieChartView extends AppCompatImageView {
     }
 
     /**
-     * Set array od names, array of values and array of colors.
+     * Set of data values to display.
      */
-    public void setData(float[] dataValues) {
-        drawable.dataValues = dataValues;
-        drawable.valueSum = 0;
-        for (float datum : dataValues) {
-            drawable.valueSum += datum;
-        }
+    public void setData(PieChartData data) {
+        drawable.data = data;
     }
 
     @Override
@@ -56,15 +52,49 @@ public class PieChartView extends AppCompatImageView {
         setMeasuredDimension(width, width / 2);
     }
 
-    private static class PieChartDrawable extends Drawable {
-        private static final float MIN_DEGREES = 10f;
-        private static final float PADDING_DEGREES = 3f;
-        private static final float STROKE_SIZE = 15f;
+    public static class PieChartData {
         private static final int[] COLOR_VALUES = new int[]{0xFF3775E6, 0xffe51c23, 0xffff9800, 0xff259b24, 0xff9c27b0,
                 0xff0099c6, 0xffdd4477, 0xff66aa00, 0xffb82e2e, 0xff316395,
                 0xff994499, 0xff22aa99, 0xffaaaa11, 0xff6633cc, 0xff0073e6};
-        private float[] dataValues;
-        private float valueSum;
+
+        private final float valueSum;
+        private final float[] values;
+
+        public PieChartData(float[] values) {
+            this.values = values;
+            float valueSum = 0;
+            for (float datum : values) {
+                valueSum += datum;
+            }
+            this.valueSum = valueSum;
+        }
+
+        public float getSum() {
+            return valueSum;
+        }
+
+        public float getPercentageOfItem(int index) {
+            if (valueSum == 0) {
+                return 0;
+            }
+            return values[index] / valueSum;
+        }
+
+        public boolean isLargeEnoughToDisplay(int index) {
+            return getPercentageOfItem(index) > 0.04;
+        }
+
+        public int getColorOfItem(int index) {
+            if (!isLargeEnoughToDisplay(index)) {
+                return Color.GRAY;
+            }
+            return COLOR_VALUES[index % COLOR_VALUES.length];
+        }
+    }
+
+    private static class PieChartDrawable extends Drawable {
+        private static final float PADDING_DEGREES = 3f;
+        private PieChartData data;
         private final Paint paint;
 
         private PieChartDrawable() {
@@ -73,27 +103,25 @@ public class PieChartView extends AppCompatImageView {
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeJoin(Paint.Join.ROUND);
             paint.setStrokeCap(Paint.Cap.ROUND);
-            paint.setStrokeWidth(STROKE_SIZE);
         }
 
         @Override
         public void draw(@NonNull Canvas canvas) {
-            if (valueSum == 0) {
-                return;
-            }
-            float radius = getBounds().height() - STROKE_SIZE;
+            final float strokeSize = getBounds().height() / 30f;
+            paint.setStrokeWidth(strokeSize);
+
+            float radius = getBounds().height() - strokeSize;
             float center = getBounds().width() / 2.f;
-            RectF arcBounds = new RectF(center - radius, STROKE_SIZE, center + radius, STROKE_SIZE + radius * 2);
+            RectF arcBounds = new RectF(center - radius, strokeSize, center + radius, strokeSize + radius * 2);
 
             float startAngle = 180;
-            for (int i = 0; i < dataValues.length; i++) {
-                float datum = dataValues[i];
-                float sweepAngle = (180f - PADDING_DEGREES) * (datum / valueSum);
-                if (sweepAngle < MIN_DEGREES) {
+            for (int i = 0; i < data.values.length; i++) {
+                if (!data.isLargeEnoughToDisplay(i)) {
                     break;
                 }
-                paint.setColor(COLOR_VALUES[i % COLOR_VALUES.length]);
+                paint.setColor(data.getColorOfItem(i));
                 float padding = i == 0 ? PADDING_DEGREES / 2 : PADDING_DEGREES;
+                float sweepAngle = (180f - PADDING_DEGREES) * data.getPercentageOfItem(i);
                 canvas.drawArc(arcBounds, startAngle + padding, sweepAngle - padding, false, paint);
                 startAngle = startAngle + sweepAngle;
             }

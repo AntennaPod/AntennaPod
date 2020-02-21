@@ -64,7 +64,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         remoteState = MediaStatus.PLAYER_STATE_UNKNOWN;
     }
 
-    public void init () {
+    public void init() {
         try {
             if (castMgr.isConnected() && castMgr.isRemoteMediaLoaded()) {
                 onRemoteMediaPlayerStatusUpdated();

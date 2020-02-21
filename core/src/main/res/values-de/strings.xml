@@ -114,10 +114,10 @@
   <string name="removed_all_new_flags_msg">Alle \"neu\"-Markierungen entfernt</string>
   <string name="remove_all_new_flags_confirmation_msg">Bitte bestätige, dass du die \"neu\"-Markierung aller Episoden entfernen willst.</string>
   <string name="show_info_label">Informationen anzeigen</string>
-  <string name="show_feed_settings_label">Zeige Feed-Einstellungen</string>
-  <string name="feed_info_label">Feed-Informationen</string>
-  <string name="feed_settings_label">Feed-Einstellungen</string>
-  <string name="rename_feed_label">Feed umbenennen</string>
+  <string name="show_feed_settings_label">Zeige Podcast-Einstellungen</string>
+  <string name="feed_info_label">Podcast-Informationen</string>
+  <string name="feed_settings_label">Podcast-Einstellungen</string>
+  <string name="rename_feed_label">Podcast umbenennen</string>
   <string name="remove_feed_label">Podcast entfernen</string>
   <string name="share_label">Teilen…</string>
   <string name="share_link_label">Episoden URL Teilen</string>
@@ -127,9 +127,9 @@
   <string name="share_feed_url_label">Teile URL des Podcasts</string>
   <string name="share_item_url_label">Teile URL der Episodendatei</string>
   <string name="share_item_url_with_position_label">Teile URL der Episodendatei mit Zeitmarke</string>
-  <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast \"%1$s\" und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
-  <string name="feed_remover_msg">Entferne Podcast</string>
-  <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
+  <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du den Podcast \"%1$s\" und ALL dessen Episoden entfernen möchtest (auch heruntergeladene).</string>
+  <string name="feed_remover_msg">Podcast wird entfernt</string>
+  <string name="load_complete_feed">Kompletten Podcast aktualisieren</string>
   <string name="batch_edit">Stapelbearbeitung</string>
   <string name="select_all_above">Alles oberhalb auswählen</string>
   <string name="select_all_below">Alles unterhalb auswählen</string>
@@ -156,7 +156,7 @@
   <string name="stream_label">Streamen</string>
   <string name="delete_label">Löschen</string>
   <string name="delete_failed">Die Datei kann nicht gelöscht werden. Eventuell hilft es, das Gerät neu zu starten.</string>
-  <string name="delete_episode_label">Episode entfernen</string>
+  <string name="delete_episode_label">Episode löschen</string>
   <plurals name="deleted_episode_batch_label">
     <item quantity="one">%d Episode gelöscht.</item>
     <item quantity="other">%d Episoden gelöscht.</item>
@@ -272,7 +272,7 @@
   <string name="date">Datum</string>
   <string name="duration">Dauer</string>
   <string name="episode_title">Episodentitel</string>
-  <string name="feed_title">Feedname</string>
+  <string name="feed_title">Podcast-Name</string>
   <string name="random">Zufällig</string>
   <string name="smart_shuffle">Schlaues Mischen</string>
   <string name="ascending">Aufsteigend</string>
@@ -320,7 +320,7 @@
   <string name="appearance">Erscheinungsbild</string>
   <string name="external_elements">Externe Elemente</string>
   <string name="interruptions">Unterbrechungen</string>
-  <string name="playback_control">Wiedergabesteurung</string>
+  <string name="playback_control">Wiedergabesteuerung</string>
   <string name="preference_search_hint">Suchen…</string>
   <string name="preference_search_no_results">Keine Ergebnisse</string>
   <string name="preference_search_clear_history">Verlauf leeren</string>
@@ -369,7 +369,7 @@
   <string name="user_interface_label">Benutzeroberfläche</string>
   <string name="pref_set_theme_title">Theme auswählen</string>
   <string name="pref_nav_drawer_items_title">Seitenleiste ändern</string>
-  <string name="pref_nav_drawer_items_sum">Ändere, welche Listen in der Seitenleiste erscheinen</string>
+  <string name="pref_nav_drawer_items_sum">Ändere, welche Einträge in der Seitenleiste erscheinen</string>
   <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>
   <string name="pref_nav_drawer_feed_order_sum">Ändere die Reihenfolge deiner Abonnements</string>
   <string name="pref_nav_drawer_feed_counter_title">Abonnement-Zähler einstellen</string>
@@ -462,7 +462,7 @@
   <string name="pref_enqueue_downloaded_summary">Füge heruntergeladene Episoden zur Abspielliste hinzu</string>
   <string name="media_player_builtin">Androids eingebauter Abspieler</string>
   <string name="pref_skip_silence_title">Stille im Ton überspringen</string>
-  <string name="pref_videoBehavior_title">Beim Beenden des Videos</string>
+  <string name="pref_videoBehavior_title">Beim Beenden von Videos</string>
   <string name="pref_videoBehavior_sum">Verhalten beim Verlassen der Video-Wiedergabe</string>
   <string name="stop_playback">Wiedergabe anhalten</string>
   <string name="continue_playback">Audiowiedergabe fortsetzen</string>
@@ -493,8 +493,8 @@
   <string name="search_hint">Suche nach Episoden</string>
   <string name="found_in_shownotes_label">In Shownotizen gefunden</string>
   <string name="found_in_chapters_label">In Kapiteln gefunden</string>
-  <string name="found_in_authors_label">Gefunden in Autor(en)</string>
-  <string name="found_in_feeds_label">Gefunden in Podcast</string>
+  <string name="found_in_authors_label">In Autor(en) gefunden</string>
+  <string name="found_in_feeds_label">In Podcast gefunden</string>
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
   <string name="search_label">Suchen</string>
   <string name="found_in_title_label">In Titel gefunden</string>
@@ -676,7 +676,7 @@
   <string name="audio_effects">Audioeffekte</string>
   <string name="stereo_to_mono">Heruntermischen: Stereo zu Mono</string>
   <string name="sonic_only">nur Sonic</string>
-  <string name="exoplayer_only">Nur ExoPlayer</string>
+  <string name="exoplayer_only">nur ExoPlayer</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Typ</string>
   <string name="host_label">Host</string>

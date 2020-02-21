@@ -1,24 +1,28 @@
 <?xml version='1.0' encoding='utf-8'?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
     <de.danoeh.antennapod.view.SquareImageView
         android:id="@+id/imgvCover"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:scaleType="centerCrop"
-        tools:src="@mipmap/ic_launcher_round">
-    </de.danoeh.antennapod.view.SquareImageView>
+        tools:src="@mipmap/ic_launcher_round" />
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/light_gray"
+        android:layout_alignLeft="@+id/imgvCover"
+        android:layout_alignRight="@+id/imgvCover"
+        android:layout_alignStart="@+id/imgvCover"
+        android:layout_alignEnd="@+id/imgvCover"
+        android:layout_alignTop="@+id/imgvCover"
+        android:layout_alignBottom="@+id/imgvCover"
         android:ellipsize="end"
         android:gravity="center"
         tools:text="@string/app_name" />
@@ -27,11 +31,12 @@
         android:id="@+id/triangleCountView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="right|top"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
         app:backgroundColor="@color/antennapod_blue"
         app:corner="rightTop"
         app:primaryText="Test"
         app:primaryTextColor="@color/white"
-        app:primaryTextSize="12sp">
-    </jp.shts.android.library.TriangleLabelView>
-</FrameLayout>
+        app:primaryTextSize="12sp" />
+</RelativeLayout>

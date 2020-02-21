@@ -66,8 +66,8 @@ public class SpeedChangeTest {
 
         List<FeedItem> queue = DBReader.getQueue();
         PlaybackPreferences.writeMediaPlaying(queue.get(0).getMedia(), PlayerStatus.PAUSED, false);
-        UserPreferences.setPlaybackSpeedArray(new String[] {"1.00", "2.00", "3.00"});
-        availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+        availableSpeeds = new String[] {"1.00", "2.00", "3.00"};
+        UserPreferences.setPlaybackSpeedArray(availableSpeeds);
 
         EspressoTestUtils.tryKillPlaybackService();
         activityRule.launchActivity(new Intent());

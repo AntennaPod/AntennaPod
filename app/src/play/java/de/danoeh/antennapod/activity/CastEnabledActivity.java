@@ -43,8 +43,8 @@ public abstract class CastEnabledActivity extends AppCompatActivity
             return;
         }
 
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).
-                registerOnSharedPreferenceChangeListener(this);
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .registerOnSharedPreferenceChangeListener(this);
 
         castConsumer = new DefaultCastConsumer() {
             @Override

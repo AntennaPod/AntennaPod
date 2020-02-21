@@ -1,7 +1,3 @@
-- Added per-feed playback speed setting (by @spacecowboy)
-- Support sorting in Podcast screen (by @orionlee)
-- Option to show stream button rather than download in lists (by @dsmith47)
-- Option to replace Episode cover with Podcast cover (by @xgouchet)
-- Transparent widget (by @M-arcel)
-- User interface tweaks (by @ByteHamster)
-- Tons of bug fixes and improvements
+- Enabled picture-in-picture for video podcasts by default (by @ByteHamster)
+- Fixed podcast discovery not showing local trends (by @tonytamsf)
+- Various bug fixes and improvements (by @ByteHamster)

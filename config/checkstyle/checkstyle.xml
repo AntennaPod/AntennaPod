@@ -4,10 +4,12 @@
           "https://checkstyle.org/dtds/configuration_1_3.dtd">
 <module name = "Checker">
     <property name="charset" value="UTF-8"/>
-
     <property name="severity" value="error"/>
+    <property name="fileExtensions" value="java, properties, xml"/>
 
-    <property name="fileExtensions" value="java, xml"/>
+    <module name="SuppressionFilter">
+        <property name="file" value="${config_loc}/suppressions.xml" />
+    </module>
 
     <module name="TreeWalker">
         <module name="OuterTypeFilename"/>
@@ -36,6 +38,33 @@
         <module name="FallThrough"/>
         <module name="UpperEll"/>
         <module name="ModifierOrder"/>
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapDot"/>
+            <property name="tokens" value="DOT"/>
+            <property name="option" value="nl"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapComma"/>
+            <property name="tokens" value="COMMA"/>
+            <property name="option" value="EOL"/>
+        </module>
+        <module name="SeparatorWrap">
+            <!-- ELLIPSIS is EOL until https://github.com/google/styleguide/issues/258 -->
+            <property name="id" value="SeparatorWrapEllipsis"/>
+            <property name="tokens" value="ELLIPSIS"/>
+            <property name="option" value="EOL"/>
+        </module>
+        <module name="SeparatorWrap">
+            <!-- ARRAY_DECLARATOR is EOL until https://github.com/google/styleguide/issues/259 -->
+            <property name="id" value="SeparatorWrapArrayDeclarator"/>
+            <property name="tokens" value="ARRAY_DECLARATOR"/>
+            <property name="option" value="EOL"/>
+        </module>
+        <module name="SeparatorWrap">
+            <property name="id" value="SeparatorWrapMethodRef"/>
+            <property name="tokens" value="METHOD_REF"/>
+            <property name="option" value="nl"/>
+        </module>
         <module name="PackageName">
             <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
             <message key="name.invalidPattern"
@@ -76,6 +105,7 @@
             <message key="ws.notPreceded"
                      value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
         </module>
+        <module name="MethodParamPad"/>
         <module name="NoWhitespaceBefore">
             <property name="tokens"
              value="COMMA, SEMI, POST_INC, POST_DEC, DOT, ELLIPSIS, METHOD_REF"/>
@@ -90,6 +120,14 @@
             <property name="id" value="AnnotationLocationVariables"/>
             <property name="tokens" value="VARIABLE_DEF"/>
             <property name="allowSamelineMultipleAnnotations" value="true"/>
+        </module>
+        <module name="MethodName">
+            <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
+            <message key="name.invalidPattern"
+                     value="Method name ''{0}'' must match pattern ''{1}''."/>
+        </module>
+        <module name="SingleLineJavadoc">
+            <property name="ignoreInlineTags" value="false"/>
         </module>
         <module name="NestedIfDepth">
             <property name="max" value="4"/>

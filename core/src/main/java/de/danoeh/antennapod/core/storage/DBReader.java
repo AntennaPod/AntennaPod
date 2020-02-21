@@ -689,7 +689,7 @@ public final class DBReader {
      * Returns credentials based on image URL
      *
      * @param imageUrl The URL of the image
-     * @return Credentials in format "<Username>:<Password>", empty String if no authorization given
+     * @return Credentials in format "Username:Password", empty String if no authorization given
      */
     public static String getImageAuthentication(final String imageUrl) {
         Log.d(TAG, "getImageAuthentication() called with: " + "imageUrl = [" + imageUrl + "]");
@@ -795,9 +795,7 @@ public final class DBReader {
     }
 
     private static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getSimpleChaptersOfFeedItemCursor(item);
+        try (Cursor cursor = adapter.getSimpleChaptersOfFeedItemCursor(item)) {
             int chaptersCount = cursor.getCount();
             if (chaptersCount == 0) {
                 item.setChapters(null);
@@ -805,14 +803,7 @@ public final class DBReader {
             }
             item.setChapters(new ArrayList<>(chaptersCount));
             while (cursor.moveToNext()) {
-                Chapter chapter = Chapter.fromCursor(cursor, item);
-                if (chapter != null) {
-                    item.getChapters().add(chapter);
-                }
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
+                item.getChapters().add(Chapter.fromCursor(cursor));
             }
         }
     }
@@ -866,17 +857,15 @@ public final class DBReader {
     }
 
     /**
-     * Searches the DB for statistics
+     * Searches the DB for statistics.
      *
-     * @return The StatisticsInfo object
+     * @return The list of statistics objects
      */
     @NonNull
-    public static StatisticsData getStatistics() {
+    public static List<StatisticsItem> getStatistics() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        long totalTimeCountAll = 0;
-        long totalTime = 0;
         List<StatisticsItem> feedTime = new ArrayList<>();
 
         List<Feed> feeds = getFeedList();
@@ -922,72 +911,10 @@ public final class DBReader {
             feedTime.add(new StatisticsItem(
                     feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
                     episodesStarted, episodesStartedIncludingMarked, totalDownloadSize));
-            totalTime += feedPlayedTime;
-            totalTimeCountAll += feedPlayedTimeCountAll;
         }
 
         adapter.close();
-        return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
-    }
-
-    public static class StatisticsData {
-        /**
-         * Simply sums up time of podcasts that are marked as played
-         */
-        public final long totalTimeCountAll;
-
-        /**
-         * Respects speed, listening twice, ...
-         */
-        public final long totalTime;
-
-        public final List<StatisticsItem> feeds;
-
-        public StatisticsData(long totalTime, long totalTimeCountAll, List<StatisticsItem> feeds) {
-            this.totalTime = totalTime;
-            this.totalTimeCountAll = totalTimeCountAll;
-            this.feeds = feeds;
-        }
-    }
-
-    public static class StatisticsItem {
-        public final Feed feed;
-        public final long time;
-
-        /**
-         * Respects speed, listening twice, ...
-         */
-        public final long timePlayed;
-        /**
-         * Simply sums up time of podcasts that are marked as played
-         */
-        public final long timePlayedCountAll;
-        public final long episodes;
-        /**
-         * Episodes that are actually played
-         */
-        public final long episodesStarted;
-        /**
-         * All episodes that are marked as played (or have position != 0)
-         */
-        public final long episodesStartedIncludingMarked;
-        /**
-         * Simply sums up the size of download podcasts
-         */
-        public final long totalDownloadSize;
-
-        public StatisticsItem(Feed feed, long time, long timePlayed, long timePlayedCountAll,
-                              long episodes, long episodesStarted, long episodesStartedIncludingMarked,
-                              long totalDownloadSize) {
-            this.feed = feed;
-            this.time = time;
-            this.timePlayed = timePlayed;
-            this.timePlayedCountAll = timePlayedCountAll;
-            this.episodes = episodes;
-            this.episodesStarted = episodesStarted;
-            this.episodesStartedIncludingMarked = episodesStartedIncludingMarked;
-            this.totalDownloadSize = totalDownloadSize;
-        }
+        return feedTime;
     }
 
     /**

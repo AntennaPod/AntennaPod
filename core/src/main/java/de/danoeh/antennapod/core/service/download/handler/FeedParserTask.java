@@ -4,6 +4,7 @@ import android.util.Log;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -37,7 +38,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         feed.setId(request.getFeedfileId());
         feed.setDownloaded(true);
         feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
-                request.getUsername(), request.getPassword()));
+                VolumeAdaptionSetting.OFF, request.getUsername(), request.getPassword()));
         feed.setPageNr(request.getArguments().getInt(DownloadRequester.REQUEST_ARG_PAGE_NR, 0));
 
         DownloadError reason = null;
