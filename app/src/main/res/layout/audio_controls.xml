@@ -1,151 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="300dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                android:layout_weight="1"
+                android:text="@string/playback_speed" />
+
+            <TextView
+                android:id="@+id/txtvPlaybackSpeed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.00x" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/butDecSpeed"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:gravity="center"
+                android:text="-"
+                android:textStyle="bold"
+                android:textColor="@color/status_progress"
+                android:textSize="24sp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <SeekBar
+                android:id="@+id/playback_speed"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:max="70"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/butIncSpeed"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:minWidth="0dp"
+                android:gravity="center"
+                android:text="+"
+                android:textStyle="bold"
+                android:textColor="@color/status_progress"
+                android:textSize="24sp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
             style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-            android:text="@string/playback_speed"
-            android:textStyle="bold"/>
+            android:text="@string/volume" />
 
-        <TextView
-            android:id="@+id/txtvPlaybackSpeed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:text="1.00x"/>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-12dp">
-
-        <Button
-            android:id="@+id/butDecSpeed"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:gravity="center"
-            android:text="-"
-            android:textStyle="bold"
-            android:textColor="@color/status_progress"
-            android:textSize="24sp"
-            android:background="?android:attr/selectableItemBackground"/>
-
-        <Button
-            android:id="@+id/butIncSpeed"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:minWidth="0dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:gravity="center"
-            android:text="+"
-            android:textStyle="bold"
-            android:textColor="@color/status_progress"
-            android:textSize="24sp"
-            android:background="?android:attr/selectableItemBackground"/>
-
-        <SeekBar
-            android:id="@+id/playback_speed"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_toRightOf="@id/butDecSpeed"
-            android:layout_toEndOf="@id/butDecSpeed"
-            android:layout_toLeftOf="@id/butIncSpeed"
-            android:layout_toStartOf="@id/butIncSpeed"
-            android:layout_centerVertical="true"
-            android:max="70"/>
-
-    </RelativeLayout>
-
-    <CheckBox
-        android:id="@+id/skipSilence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="@string/pref_skip_silence_title" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-        android:text="@string/volume"
-        android:textStyle="bold"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-12dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <TextView
-            android:id="@+id/txtvLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/left_short" />
-
-        <SeekBar
-            android:id="@+id/volume_left"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="100" />
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/txtvLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/left_short" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+            <SeekBar
+                android:id="@+id/volume_left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100" />
 
-        <TextView
-            android:id="@+id/txtvRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/right_short" />
+        </LinearLayout>
 
-        <SeekBar
-            android:id="@+id/volume_right"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="100"/>
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="horizontal"
+            android:gravity="center">
 
+            <TextView
+                android:id="@+id/txtvRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/right_short" />
+
+            <SeekBar
+                android:id="@+id/volume_right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="100" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+            android:text="@string/audio_effects" />
+
+        <CheckBox
+            android:id="@+id/skipSilence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pref_skip_silence_title" />
+
+        <CheckBox
+            android:id="@+id/stereo_to_mono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stereo_to_mono" />
     </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-        android:text="@string/audio_effects"
-        android:textStyle="bold"/>
-
-    <CheckBox
-        android:id="@+id/stereo_to_mono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-12dp"
-        android:text="@string/stereo_to_mono" />
-
-</LinearLayout>
+</ScrollView>
