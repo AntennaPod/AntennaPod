@@ -1,14 +1,15 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
+import de.danoeh.antennapod.R;
 
 public class PlaybackSpeedIndicatorView extends View {
     private static final float DEG_2_RAD = (float) (Math.PI / 180);
@@ -39,13 +40,17 @@ public class PlaybackSpeedIndicatorView extends View {
     }
 
     private void setup() {
+        int[] colorAttrs = new int[] {R.attr.action_icon_color };
+        TypedArray a = getContext().obtainStyledAttributes(colorAttrs);
+        arcPaint.setColor(a.getColor(0, 0xffffffff));
+        indicatorPaint.setColor(a.getColor(0, 0xffffffff));
+        a.recycle();
+
         arcPaint.setAntiAlias(true);
-        arcPaint.setColor(Color.GRAY);
         arcPaint.setStyle(Paint.Style.STROKE);
         arcPaint.setStrokeCap(Paint.Cap.ROUND);
 
         indicatorPaint.setAntiAlias(true);
-        indicatorPaint.setColor(Color.GRAY);
         indicatorPaint.setStyle(Paint.Style.FILL);
 
         trianglePath.setFillType(Path.FillType.EVEN_ODD);
@@ -67,15 +72,15 @@ public class PlaybackSpeedIndicatorView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        paddingArc = getMeasuredHeight() / 5f;
-        paddingIndicator = getMeasuredHeight() / 10f;
+        paddingArc = getMeasuredHeight() / 4.5f;
+        paddingIndicator = getMeasuredHeight() / 6f;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float radiusInnerCircle = getWidth() / 8f;
+        float radiusInnerCircle = getWidth() / 10f;
         canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, radiusInnerCircle, indicatorPaint);
 
         trianglePath.rewind();
