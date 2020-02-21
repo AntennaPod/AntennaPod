@@ -61,6 +61,7 @@
     <attr name="nav_drawer_background" format="color"/>
     <attr name="drawer_activated_color" format="color"/>
     <attr name="batch_edit_fab_icon" format="reference"/>
+    <attr name="action_icon_color" format="color"/>
 
     <declare-styleable name="SquareImageView">
         <attr name="useMinimum" format="boolean" />
