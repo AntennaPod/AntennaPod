@@ -283,6 +283,7 @@
     <string name="playback_error_server_died">Server died</string>
     <string name="playback_error_unsupported">Unsupported media type</string>
     <string name="playback_error_timeout">Operation timed out</string>
+    <string name="playback_error_source">Unable to access media file</string>
     <string name="playback_error_unknown">Unknown Error</string>
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translate="false">00:00:00</string>
