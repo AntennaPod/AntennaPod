@@ -1,35 +1,26 @@
-package de.danoeh.antennapod.core.cast;
+package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
-
-import com.google.android.gms.cast.MediaInfo;
-import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.common.images.WebImage;
-
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Callable;
-
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.ChapterUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Callable;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
- * Playable implementation for media on a Cast Device for which a local version of
+ * Playable implementation for media for which a local version of
  * {@link de.danoeh.antennapod.core.feed.FeedMedia} hasn't been found.
+ * Used for Casting and for previewing unsubscribed feeds.
  */
 public class RemoteMedia implements Playable {
     public static final String TAG = "RemoteMedia";
@@ -45,7 +36,7 @@ public class RemoteMedia implements Playable {
     private String feedAuthor;
     private String imageUrl;
     private String feedLink;
-    private String mime_type;
+    private String mimeType;
     private Date pubDate;
     private String notes;
     private List<Chapter> chapters;
@@ -55,7 +46,7 @@ public class RemoteMedia implements Playable {
 
     public RemoteMedia(String downloadUrl, String itemId, String feedUrl, String feedTitle,
                        String episodeTitle, String episodeLink, String feedAuthor,
-                       String imageUrl, String feedLink, String mime_type, Date pubDate) {
+                       String imageUrl, String feedLink, String mimeType, Date pubDate) {
         this.downloadUrl = downloadUrl;
         this.itemIdentifier = itemId;
         this.feedUrl = feedUrl;
@@ -65,61 +56,26 @@ public class RemoteMedia implements Playable {
         this.feedAuthor = feedAuthor;
         this.imageUrl = imageUrl;
         this.feedLink = feedLink;
-        this.mime_type = mime_type;
+        this.mimeType = mimeType;
         this.pubDate = pubDate;
+    }
+
+    public RemoteMedia(FeedItem item) {
+        this.downloadUrl = item.getMedia().getDownload_url();
+        this.itemIdentifier = item.getItemIdentifier();
+        this.feedUrl = item.getFeed().getDownload_url();
+        this.feedTitle = item.getFeed().getTitle();
+        this.episodeTitle = item.getTitle();
+        this.episodeLink = item.getLink();
+        this.feedAuthor = item.getFeed().getAuthor();
+        this.imageUrl = item.getImageUrl();
+        this.feedLink = item.getFeed().getLink();
+        this.mimeType = item.getMedia().getMime_type();
+        this.pubDate = item.getPubDate();
     }
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    public MediaInfo extractMediaInfo() {
-        MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
-
-        metadata.putString(MediaMetadata.KEY_TITLE, episodeTitle);
-        metadata.putString(MediaMetadata.KEY_SUBTITLE, feedTitle);
-        if (!TextUtils.isEmpty(imageUrl)) {
-            metadata.addImage(new WebImage(Uri.parse(imageUrl)));
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(pubDate);
-        metadata.putDate(MediaMetadata.KEY_RELEASE_DATE, calendar);
-        if (!TextUtils.isEmpty(feedAuthor)) {
-            metadata.putString(MediaMetadata.KEY_ARTIST, feedAuthor);
-        }
-        if (!TextUtils.isEmpty(feedUrl)) {
-            metadata.putString(CastUtils.KEY_FEED_URL, feedUrl);
-        }
-        if (!TextUtils.isEmpty(feedLink)) {
-            metadata.putString(CastUtils.KEY_FEED_WEBSITE, feedLink);
-        }
-        if (!TextUtils.isEmpty(itemIdentifier)) {
-            metadata.putString(CastUtils.KEY_EPISODE_IDENTIFIER, itemIdentifier);
-        } else {
-            metadata.putString(CastUtils.KEY_EPISODE_IDENTIFIER, downloadUrl);
-        }
-        if (!TextUtils.isEmpty(episodeLink)) {
-            metadata.putString(CastUtils.KEY_EPISODE_LINK, episodeLink);
-        }
-        String notes = this.notes;
-        if (notes != null) {
-            if (notes.length() > CastUtils.EPISODE_NOTES_MAX_LENGTH) {
-                notes = notes.substring(0, CastUtils.EPISODE_NOTES_MAX_LENGTH);
-            }
-            metadata.putString(CastUtils.KEY_EPISODE_NOTES, notes);
-        }
-        // Default id value
-        metadata.putInt(CastUtils.KEY_MEDIA_ID, 0);
-        metadata.putInt(CastUtils.KEY_FORMAT_VERSION, CastUtils.FORMAT_VERSION_VALUE);
-
-        MediaInfo.Builder builder = new MediaInfo.Builder(downloadUrl)
-                .setContentType(mime_type)
-                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
-                .setMetadata(metadata);
-        if (duration > 0) {
-            builder.setStreamDuration(duration);
-        }
-        return builder.build();
     }
 
     public String getEpisodeIdentifier() {
@@ -128,6 +84,38 @@ public class RemoteMedia implements Playable {
 
     public String getFeedUrl() {
         return feedUrl;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public String getEpisodeLink() {
+        return episodeLink;
+    }
+
+    public String getFeedAuthor() {
+        return feedAuthor;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getFeedLink() {
+        return feedLink;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public Date getPubDate() {
+        return pubDate;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 
     @Override
@@ -196,7 +184,7 @@ public class RemoteMedia implements Playable {
 
     @Override
     public MediaType getMediaType() {
-        return MediaType.fromMimeType(mime_type);
+        return MediaType.fromMimeType(mimeType);
     }
 
     @Override
@@ -293,7 +281,7 @@ public class RemoteMedia implements Playable {
         dest.writeString(feedAuthor);
         dest.writeString(imageUrl);
         dest.writeString(feedLink);
-        dest.writeString(mime_type);
+        dest.writeString(mimeType);
         dest.writeLong(pubDate.getTime());
         dest.writeString(notes);
         dest.writeInt(duration);
@@ -324,9 +312,9 @@ public class RemoteMedia implements Playable {
     public boolean equals(Object other) {
         if (other instanceof RemoteMedia) {
             RemoteMedia rm = (RemoteMedia) other;
-            return TextUtils.equals(downloadUrl, rm.downloadUrl) &&
-                    TextUtils.equals(feedUrl, rm.feedUrl) &&
-                    TextUtils.equals(itemIdentifier, rm.itemIdentifier);
+            return TextUtils.equals(downloadUrl, rm.downloadUrl)
+                    && TextUtils.equals(feedUrl, rm.feedUrl)
+                    && TextUtils.equals(itemIdentifier, rm.itemIdentifier);
         }
         if (other instanceof FeedMedia) {
             FeedMedia fm = (FeedMedia) other;

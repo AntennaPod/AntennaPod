@@ -5,17 +5,17 @@ import android.view.View;
 import android.widget.CheckBox;
 import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 public class StreamingConfirmationDialog {
     private final Context context;
-    private final FeedMedia media;
+    private final Playable playable;
 
-    public StreamingConfirmationDialog(Context context, FeedMedia media) {
+    public StreamingConfirmationDialog(Context context, Playable playable) {
         this.context = context;
-        this.media = media;
+        this.playable = playable;
     }
 
     public void show() {
@@ -30,7 +30,7 @@ public class StreamingConfirmationDialog {
                     if (checkDoNotShowAgain.isChecked()) {
                         UserPreferences.setAllowMobileStreaming(true);
                     }
-                    new PlaybackServiceStarter(context, media)
+                    new PlaybackServiceStarter(context, playable)
                             .callEvenIfRunning(true)
                             .startWhenPrepared(true)
                             .shouldStream(true)
