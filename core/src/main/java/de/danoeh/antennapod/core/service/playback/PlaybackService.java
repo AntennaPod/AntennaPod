@@ -643,7 +643,18 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void startPlayingFromPreferences() {
         Playable playable = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
         if (playable != null) {
-            mediaPlayer.playMediaObject(playable, false, true, true);
+            if (PlaybackPreferences.getCurrentEpisodeIsStream() && !NetworkUtils.isStreamingAllowed()) {
+                displayStreamingNotAllowedNotification(
+                        new PlaybackServiceStarter(this, playable)
+                                .prepareImmediately(true)
+                                .startWhenPrepared(true)
+                                .shouldStream(true)
+                                .getIntent());
+                PlaybackPreferences.writeNoMediaPlaying();
+                stateManager.stopService();
+                return;
+            }
+            mediaPlayer.playMediaObject(playable, PlaybackPreferences.getCurrentEpisodeIsStream(), true, true);
             stateManager.validStartCommandWasReceived();
             PlaybackService.this.updateMediaSessionMetadata(playable);
         } else {
