@@ -186,7 +186,7 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:clickable="false" />
 
-                <ImageButton
+                <de.danoeh.antennapod.view.PlaybackSpeedIndicatorView
                     android:id="@+id/butPlaybackSpeed"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
@@ -195,8 +195,6 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/set_playback_speed_label"
-                    app:srcCompat="?attr/av_speed"
-                    android:scaleType="fitCenter"
                     tools:srcCompat="@drawable/ic_playback_speed_white_48dp"
                     tools:visibility="gone"
                     tools:background="@android:color/holo_green_dark" />

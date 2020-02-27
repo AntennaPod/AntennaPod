@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ExoPlayerWrapper implements IPlayer {
     private static final String TAG = "ExoPlayerWrapper";
+    public static final int ERROR_CODE_OFFSET = 1000;
     private final Context mContext;
     private final Disposable bufferingUpdateDisposable;
     private SimpleExoPlayer mExoPlayer;
@@ -109,7 +110,7 @@ public class ExoPlayerWrapper implements IPlayer {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 if (audioErrorListener != null) {
-                    audioErrorListener.onError(null, 0, 0);
+                    audioErrorListener.onError(null, error.type + ERROR_CODE_OFFSET, 0);
                 }
             }
 

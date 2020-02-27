@@ -84,6 +84,7 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
         }
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
+        butPlaybackSpeed.setSpeed(speed);
     }
 
     @Override

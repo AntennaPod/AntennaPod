@@ -81,9 +81,8 @@ public abstract class EpisodesListFragment extends Fragment {
     @NonNull
     List<FeedItem> episodes = new ArrayList<>();
 
-    private boolean isUpdatingFeeds;
-    boolean isMenuInvalidationAllowed = false;
-
+    private volatile boolean isUpdatingFeeds;
+    private boolean isMenuVisible = true;
     protected Disposable disposable;
     private LinearLayoutManager layoutManager;
     protected TextView txtvInformation;
@@ -155,6 +154,12 @@ public abstract class EpisodesListFragment extends Fragment {
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
             () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+
+    @Override
+    public void setMenuVisibility(final boolean visible) {
+        super.setMenuVisibility(visible);
+        isMenuVisible = visible;
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -346,7 +351,9 @@ public abstract class EpisodesListFragment extends Fragment {
         }
 
         restoreScrollPosition();
-        requireActivity().invalidateOptionsMenu();
+        if (isMenuVisible && isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+            requireActivity().invalidateOptionsMenu();
+        }
     }
 
     /**
@@ -400,8 +407,7 @@ public abstract class EpisodesListFragment extends Fragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
-        List<Downloader> downloaderList = update.downloaders;
-        if (isMenuInvalidationAllowed && event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+        if (isMenuVisible && event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             requireActivity().invalidateOptionsMenu();
         }
         if (update.mediaIds.length > 0) {
@@ -416,7 +422,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
     private void updateUi() {
         loadItems();
-        if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+        if (isMenuVisible && isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
             requireActivity().invalidateOptionsMenu();
         }
     }
