@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/sbPosition"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="40dp"
             android:background="#c0000000"
             android:paddingLeft="30dp"
             android:paddingTop="5dp"

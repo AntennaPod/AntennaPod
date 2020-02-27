@@ -525,6 +525,7 @@ public class PlaybackController {
         if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
+            if (duration == -1) duration = getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(playbackService.getCurrentPlaybackSpeed());
             int position = converter.convert((int) (prog * duration));
             txtvPosition.setText(Converter.getDurationStringLong(position));

@@ -309,12 +309,14 @@ public class VideoplayerActivity extends MediaplayerActivity {
     public void onStartTrackingTouch(SeekBar seekBar) {
         super.onStartTrackingTouch(seekBar);
         videoControlsHider.stop();
+        controls.setVisibility(View.GONE);
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         super.onStopTrackingTouch(seekBar);
         setupVideoControlsToggler();
+        controls.setVisibility(View.VISIBLE);
     }
 
     @Override
