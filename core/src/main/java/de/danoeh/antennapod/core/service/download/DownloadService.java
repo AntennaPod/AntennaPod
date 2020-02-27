@@ -558,6 +558,7 @@ public class DownloadService extends Service {
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
             stopSelf();
+            notificationUpdater.run();
         } else {
             setupNotificationUpdater();
             Notification notification = notificationManager.updateNotifications(
@@ -616,8 +617,8 @@ public class DownloadService extends Service {
      * Schedules the notification updater task if it hasn't been scheduled yet.
      */
     private void setupNotificationUpdater() {
-        Log.d(TAG, "Setting up notification updater");
         if (notificationUpdater == null) {
+            Log.d(TAG, "Setting up notification updater");
             notificationUpdater = new NotificationUpdater();
             notificationUpdaterFuture = schedExecutor.scheduleAtFixedRate(notificationUpdater, 1, 1, TimeUnit.SECONDS);
         }

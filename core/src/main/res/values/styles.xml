@@ -70,8 +70,8 @@
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_grey</item>
         <item name="master_switch_background">@color/master_switch_background_light</item>
         <item name="currently_playing_background">@color/highlight_light</item>
-
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="action_icon_color">#FF757575</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -146,6 +146,7 @@
         <item name="master_switch_background">@color/master_switch_background_dark</item>
         <item name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="action_icon_color">@color/white</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">

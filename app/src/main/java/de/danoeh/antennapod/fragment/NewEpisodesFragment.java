@@ -40,7 +40,7 @@ public class NewEpisodesFragment extends EpisodesListFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.remove_all_new_flags_item).setVisible(!episodes.isEmpty());
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(true);
     }
 
     @NonNull

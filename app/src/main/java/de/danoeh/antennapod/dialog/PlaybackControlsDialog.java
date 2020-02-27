@@ -139,7 +139,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         if (controller != null && !controller.canDownmix()) {
             stereoToMono.setEnabled(false);
             String sonicOnly = getString(R.string.sonic_only);
-            stereoToMono.setText(stereoToMono.getText() + " [" + sonicOnly + "]");
+            stereoToMono.setText(getString(R.string.stereo_to_mono) + " [" + sonicOnly + "]");
         }
 
         if (UserPreferences.useExoplayer()) {
@@ -151,7 +151,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         if (!UserPreferences.useExoplayer()) {
             skipSilence.setEnabled(false);
             String exoplayerOnly = getString(R.string.exoplayer_only);
-            skipSilence.setText(skipSilence.getText() + " [" + exoplayerOnly + "]");
+            skipSilence.setText(getString(R.string.pref_skip_silence_title) + " [" + exoplayerOnly + "]");
         }
         skipSilence.setOnCheckedChangeListener((buttonView, isChecked) -> {
             UserPreferences.setSkipSilence(isChecked);
