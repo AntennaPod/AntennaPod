@@ -119,6 +119,10 @@ public class EpisodeItemViewHolder extends FeedComponentViewHolder
             bind(item.getMedia());
         } else {
             secondaryActionProgress.setPercentage(0, item);
+            isVideo.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            duration.setVisibility(View.GONE);
+            position.setVisibility(View.GONE);
         }
 
         if (coverHolder.getVisibility() == View.VISIBLE) {
@@ -133,6 +137,7 @@ public class EpisodeItemViewHolder extends FeedComponentViewHolder
 
     private void bind(FeedMedia media) {
         isVideo.setVisibility(media.getMediaType() == MediaType.VIDEO ? View.VISIBLE : View.GONE);
+        duration.setVisibility(media.getDuration() > 0 ? View.VISIBLE : View.GONE);
         duration.setText(Converter.getDurationStringLong(media.getDuration()));
 
         if (media.isCurrentlyPlaying()) {
@@ -151,12 +156,10 @@ public class EpisodeItemViewHolder extends FeedComponentViewHolder
             secondaryActionProgress.setPercentage(0, item); // Animate X% -> 0%
         }
 
-        if (media.getDuration() > 0
-                && (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS)) {
+        if (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS) {
             int progress = (int) (100.0 * media.getPosition() / media.getDuration());
             progressBar.setProgress(progress);
             position.setText(Converter.getDurationStringLong(media.getPosition()));
-            duration.setText(Converter.getDurationStringLong(media.getDuration()));
             progressBar.setVisibility(View.VISIBLE);
             position.setVisibility(View.VISIBLE);
         } else {
