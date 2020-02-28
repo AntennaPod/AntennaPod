@@ -94,13 +94,13 @@ public class PodcastSearchResult {
         return new PodcastSearchResult(searchHit.getTitle(),
                                        searchHit.getThumbImageURL(),
                                        searchHit.getXmlUrl(),
-                                       searchHit.getSubtitle());
+                                       searchHit.getAuthor());
     }
 
     public static PodcastSearchResult fromGpodder(GpodnetPodcast searchHit) {
         return new PodcastSearchResult(searchHit.getTitle(),
                                        searchHit.getLogoUrl(),
                                        searchHit.getUrl(),
-                                       searchHit.getDescription());
+                                       searchHit.getAuthor());
     }
 }
