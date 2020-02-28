@@ -16,7 +16,7 @@ import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_
 
 public class StreamActionButton extends ItemActionButton {
 
-    StreamActionButton(FeedItem item) {
+    public StreamActionButton(FeedItem item) {
         super(item);
     }
 

@@ -12,9 +12,9 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 
-class CancelDownloadActionButton extends ItemActionButton {
+public class CancelDownloadActionButton extends ItemActionButton {
 
-    CancelDownloadActionButton(FeedItem item) {
+    public CancelDownloadActionButton(FeedItem item) {
         super(item);
     }
 

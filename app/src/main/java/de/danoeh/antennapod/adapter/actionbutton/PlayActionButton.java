@@ -13,9 +13,9 @@ import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
 
-class PlayActionButton extends ItemActionButton {
+public class PlayActionButton extends ItemActionButton {
 
-    PlayActionButton(FeedItem item) {
+    public PlayActionButton(FeedItem item) {
         super(item);
     }
 
