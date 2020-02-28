@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,8 +44,10 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
+import de.danoeh.antennapod.dialog.StreamingConfirmationDialog;
 import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -174,6 +175,10 @@ public class ItemFragment extends Fragment {
             if (item.hasMedia()) {
                 FeedMedia media = item.getMedia();
                 if (!media.isDownloaded()) {
+                    if (!NetworkUtils.isStreamingAllowed()) {
+                        new StreamingConfirmationDialog(getContext(), media).show();
+                        return;
+                    }
                     DBTasks.playMedia(getActivity(), media, true, true, true);
                     ((MainActivity) getActivity()).dismissChildFragment();
                 } else {

@@ -13,6 +13,7 @@ public class PlaybackServiceStarter {
     private final Playable media;
     private boolean startWhenPrepared = false;
     private boolean shouldStream = false;
+    private boolean shouldStreamThisTime = false;
     private boolean callEvenIfRunning = false;
     private boolean prepareImmediately = true;
 
@@ -58,12 +59,18 @@ public class PlaybackServiceStarter {
         return this;
     }
 
+    public PlaybackServiceStarter shouldStreamThisTime(boolean shouldStreamThisTime) {
+        this.shouldStreamThisTime = shouldStreamThisTime;
+        return this;
+    }
+
     public Intent getIntent() {
         Intent launchIntent = new Intent(context, PlaybackService.class);
         launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
         launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, startWhenPrepared);
         launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
         launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, prepareImmediately);
+        launchIntent.putExtra(PlaybackService.EXTRA_ALLOW_STREAM_THIS_TIME, shouldStreamThisTime);
 
         return launchIntent;
     }
