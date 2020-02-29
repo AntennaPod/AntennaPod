@@ -52,5 +52,19 @@ public class BugReportActivity extends AppCompatActivity {
             clipboard.setPrimaryClip(clip);
             Snackbar.make(findViewById(android.R.id.content), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
         });
+
+        findViewById(R.id.btn_export_logcat).setOnClickListener(v -> {
+            try {
+                File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
+                filename.createNewFile();
+                String cmd = "logcat -d -f " + filename.getAbsolutePath();
+                Runtime.getRuntime().exec(cmd);
+                Snackbar.make(findViewById(android.R.id.content),
+                        filename.getAbsolutePath(), Snackbar.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Snackbar.make(findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 }
