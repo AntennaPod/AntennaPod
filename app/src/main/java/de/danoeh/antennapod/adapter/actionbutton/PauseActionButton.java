@@ -6,24 +6,26 @@ import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import de.danoeh.antennapod.core.util.IntentUtils;
 
-public class PlayActionButton extends ItemActionButton {
+import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
 
-    public PlayActionButton(FeedItem item) {
+class PauseActionButton extends ItemActionButton {
+
+    PauseActionButton(FeedItem item) {
         super(item);
     }
 
     @Override
     @StringRes
     public int getLabel() {
-        return R.string.play_label;
+        return R.string.pause_label;
     }
 
     @Override
     @AttrRes
     public int getDrawable() {
-        return R.attr.av_play;
+        return R.attr.av_pause;
     }
 
     @Override
@@ -33,10 +35,8 @@ public class PlayActionButton extends ItemActionButton {
             return;
         }
 
-        new PlaybackServiceStarter(context, media)
-                .callEvenIfRunning(true)
-                .startWhenPrepared(true)
-                .shouldStream(false)
-                .start();
+        if (media.isCurrentlyPlaying()) {
+            IntentUtils.sendLocalBroadcast(context, ACTION_PAUSE_PLAY_CURRENT_EPISODE);
+        }
     }
 }
