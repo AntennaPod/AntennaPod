@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.AttrRes;
@@ -16,10 +17,10 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
-class DownloadActionButton extends ItemActionButton {
+public class DownloadActionButton extends ItemActionButton {
     private boolean isInQueue;
 
-    DownloadActionButton(FeedItem item, boolean isInQueue) {
+    public DownloadActionButton(FeedItem item, boolean isInQueue) {
         super(item);
         this.isInQueue = isInQueue;
     }
@@ -34,6 +35,12 @@ class DownloadActionButton extends ItemActionButton {
     @AttrRes
     public int getDrawable() {
         return R.attr.av_download;
+    }
+
+    @Override
+    public int getVisibility() {
+        return (item.getMedia() != null && DownloadRequester.getInstance().isDownloadingFile(item.getMedia()))
+                ? View.INVISIBLE : View.VISIBLE;
     }
 
     @Override
