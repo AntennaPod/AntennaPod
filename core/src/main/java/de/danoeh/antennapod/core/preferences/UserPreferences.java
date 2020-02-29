@@ -236,12 +236,12 @@ public class UserPreferences {
     }
 
     public static int getFeedOrder() {
-        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "0");
+        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "" + FEED_ORDER_COUNTER);
         return Integer.parseInt(value);
     }
 
     public static int getFeedCounterSetting() {
-        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "0");
+        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "" + FEED_COUNTER_SHOW_NEW);
         return Integer.parseInt(value);
     }
 
