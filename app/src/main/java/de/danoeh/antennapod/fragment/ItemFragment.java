@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
@@ -16,10 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -28,10 +24,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.actionbutton.CancelDownloadActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.DownloadActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.MarkAsPlayedActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.PauseActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.PlayActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -39,15 +44,12 @@ import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
-import de.danoeh.antennapod.dialog.StreamingConfirmationDialog;
 import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -103,6 +105,8 @@ public class ItemFragment extends Fragment {
     private ImageView butAction2Icon;
     private View butAction1;
     private View butAction2;
+    private ItemActionButton actionButton1;
+    private ItemActionButton actionButton2;
 
     private Disposable disposable;
     private PlaybackController controller;
@@ -152,44 +156,8 @@ public class ItemFragment extends Fragment {
         butAction2Icon = layout.findViewById(R.id.butAction2Icon);
         butAction1Text = layout.findViewById(R.id.butAction1Text);
         butAction2Text = layout.findViewById(R.id.butAction2Text);
-
-        butAction1.setOnClickListener(v -> {
-            if (item == null) {
-                return;
-            }
-            ItemActionButton actionButton = ItemActionButton.forItem(item, item.isTagged(FeedItem.TAG_QUEUE), false);
-            actionButton.onClick(getActivity());
-
-            FeedMedia media = item.getMedia();
-            if (media != null && media.isDownloaded()) {
-                // playback was started, dialog should close itself
-                ((MainActivity) getActivity()).dismissChildFragment();
-            }
-        });
-
-        butAction2.setOnClickListener(v -> {
-            if (item == null) {
-                return;
-            }
-
-            if (item.hasMedia()) {
-                FeedMedia media = item.getMedia();
-                if (!media.isDownloaded()) {
-                    if (!NetworkUtils.isStreamingAllowed()) {
-                        new StreamingConfirmationDialog(getContext(), media).show();
-                        return;
-                    }
-                    DBTasks.playMedia(getActivity(), media, true, true, true);
-                    ((MainActivity) getActivity()).dismissChildFragment();
-                } else {
-                    DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
-                }
-            } else if (item.getLink() != null) {
-                Uri uri = Uri.parse(item.getLink());
-                getActivity().startActivity(new Intent(Intent.ACTION_VIEW, uri));
-            }
-        });
-
+        butAction1.setOnClickListener(v -> actionButton1.onClick(getContext()));
+        butAction2.setOnClickListener(v -> actionButton2.onClick(getContext()));
         return layout;
     }
 
@@ -269,7 +237,10 @@ public class ItemFragment extends Fragment {
                             new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
                     .dontAnimate())
                 .into(imgvCover);
+        updateButtons();
+    }
 
+    private void updateButtons() {
         progbarDownload.setVisibility(View.GONE);
         if (item.hasMedia() && downloaderList != null) {
             for (Downloader downloader : downloaderList) {
@@ -282,67 +253,41 @@ public class ItemFragment extends Fragment {
         }
 
         FeedMedia media = item.getMedia();
-        @AttrRes int butAction1IconRes = 0;
-        @StringRes int butAction1TextRes = 0;
-        @AttrRes int butAction2IconRes = 0;
-        @StringRes int butAction2TextRes = 0;
         if (media == null) {
-            if (!item.isPlayed()) {
-                butAction1IconRes = R.attr.navigation_accept;
-                if (item.hasMedia()) {
-                    butAction1TextRes = R.string.mark_read_label;
-                } else {
-                    butAction1TextRes = R.string.mark_read_no_media_label;
-                }
-            }
-            if (item.getLink() != null) {
-                butAction2IconRes = R.attr.location_web_site;
-                butAction2TextRes = R.string.visit_website_label;
-            }
+            actionButton1 = new MarkAsPlayedActionButton(item);
+            actionButton2 = new VisitWebsiteActionButton(item);
         } else {
             if (media.getDuration() > 0) {
                 txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             }
-            boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
-            if (!media.isDownloaded()) {
-                butAction2IconRes = R.attr.action_stream;
-                butAction2TextRes = R.string.stream_label;
-            } else {
-                butAction2IconRes = R.attr.content_discard;
-                butAction2TextRes = R.string.delete_label;
-            }
-            if (isDownloading) {
-                butAction1IconRes = R.attr.navigation_cancel;
-                butAction1TextRes = R.string.cancel_label;
+            if (media.isCurrentlyPlaying()) {
+                actionButton1 = new PauseActionButton(item);
             } else if (media.isDownloaded()) {
-                butAction1IconRes = R.attr.av_play;
-                butAction1TextRes = R.string.play_label;
+                actionButton1 = new PlayActionButton(item);
             } else {
-                butAction1IconRes = R.attr.av_download;
-                butAction1TextRes = R.string.download_label;
+                actionButton1 = new StreamActionButton(item);
+            }
+            if (DownloadRequester.getInstance().isDownloadingFile(media)) {
+                actionButton2 = new CancelDownloadActionButton(item);
+            } else if (!media.isDownloaded()) {
+                actionButton2 = new DownloadActionButton(item, false);
+            } else {
+                actionButton2 = new DeleteActionButton(item);
             }
         }
 
-        if (butAction1IconRes != 0 && butAction1TextRes != 0) {
-            butAction1Text.setText(butAction1TextRes);
-            butAction1Text.setTransformationMethod(null);
-            TypedValue typedValue = new TypedValue();
-            getContext().getTheme().resolveAttribute(butAction1IconRes, typedValue, true);
-            butAction1Icon.setImageResource(typedValue.resourceId);
-            butAction1.setVisibility(View.VISIBLE);
-        } else {
-            butAction1.setVisibility(View.INVISIBLE);
-        }
-        if (butAction2IconRes != 0 && butAction2TextRes != 0) {
-            butAction2Text.setText(butAction2TextRes);
-            butAction2Text.setTransformationMethod(null);
-            TypedValue typedValue = new TypedValue();
-            getContext().getTheme().resolveAttribute(butAction2IconRes, typedValue, true);
-            butAction2Icon.setImageResource(typedValue.resourceId);
-            butAction2.setVisibility(View.VISIBLE);
-        } else {
-            butAction2.setVisibility(View.INVISIBLE);
-        }
+        butAction1Text.setText(actionButton1.getLabel());
+        butAction1Text.setTransformationMethod(null);
+        TypedValue typedValue = new TypedValue();
+        getContext().getTheme().resolveAttribute(actionButton1.getDrawable(), typedValue, true);
+        butAction1Icon.setImageResource(typedValue.resourceId);
+        butAction1.setVisibility(actionButton1.getVisibility());
+
+        butAction2Text.setText(actionButton2.getLabel());
+        butAction2Text.setTransformationMethod(null);
+        getContext().getTheme().resolveAttribute(actionButton2.getDrawable(), typedValue, true);
+        butAction2Icon.setImageResource(typedValue.resourceId);
+        butAction2.setVisibility(actionButton1.getVisibility());
     }
 
     @Override
@@ -383,6 +328,11 @@ public class ItemFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        updateButtons();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         load();
     }
@@ -391,7 +341,9 @@ public class ItemFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        progbarLoading.setVisibility(View.VISIBLE);
+        if (!itemsLoaded) {
+            progbarLoading.setVisibility(View.VISIBLE);
+        }
         disposable = Observable.fromCallable(this::loadInBackground)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
