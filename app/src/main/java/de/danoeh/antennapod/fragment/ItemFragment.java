@@ -286,7 +286,7 @@ public class ItemFragment extends Fragment {
         butAction2Text.setTransformationMethod(null);
         getContext().getTheme().resolveAttribute(actionButton2.getDrawable(), typedValue, true);
         butAction2Icon.setImageResource(typedValue.resourceId);
-        butAction2.setVisibility(actionButton1.getVisibility());
+        butAction2.setVisibility(actionButton2.getVisibility());
     }
 
     @Override

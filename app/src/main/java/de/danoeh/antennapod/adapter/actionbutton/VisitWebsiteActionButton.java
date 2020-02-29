@@ -35,6 +35,6 @@ public class VisitWebsiteActionButton extends ItemActionButton {
 
     @Override
     public int getVisibility() {
-        return (item.getLink() != null) ? View.INVISIBLE : View.VISIBLE;
+        return (item.getLink() == null) ? View.INVISIBLE : View.VISIBLE;
     }
 }
