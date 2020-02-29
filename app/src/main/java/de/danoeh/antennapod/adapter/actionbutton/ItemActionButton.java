@@ -41,7 +41,9 @@ public abstract class ItemActionButton {
         }
 
         final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
-        if (media.isDownloaded()) {
+        if (media.isCurrentlyPlaying()) {
+            return new PauseActionButton(item);
+        } else if (media.isDownloaded()) {
             return new PlayActionButton(item);
         } else if (isDownloadingMedia) {
             return new CancelDownloadActionButton(item);
