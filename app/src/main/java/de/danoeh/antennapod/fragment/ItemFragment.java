@@ -29,12 +29,14 @@ import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.DownloadActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.MarkAsPlayedActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.PauseActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.PlayActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -234,7 +236,10 @@ public class ItemFragment extends Fragment {
                             new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
                     .dontAnimate())
                 .into(imgvCover);
+        updateButtons();
+    }
 
+    private void updateButtons() {
         progbarDownload.setVisibility(View.GONE);
         if (item.hasMedia() && downloaderList != null) {
             for (Downloader downloader : downloaderList) {
@@ -254,14 +259,16 @@ public class ItemFragment extends Fragment {
             if (media.getDuration() > 0) {
                 txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             }
-            if (DownloadRequester.getInstance().isDownloadingFile(media)) {
-                actionButton1 = new CancelDownloadActionButton(item);
+            if (media.isCurrentlyPlaying()) {
+                actionButton1 = new PauseActionButton(item);
             } else if (media.isDownloaded()) {
                 actionButton1 = new PlayActionButton(item);
             } else {
                 actionButton1 = new StreamActionButton(item);
             }
-            if (!media.isDownloaded()) {
+            if (DownloadRequester.getInstance().isDownloadingFile(media)) {
+                actionButton2 = new CancelDownloadActionButton(item);
+            } else if (!media.isDownloaded()) {
                 actionButton2 = new DownloadActionButton(item, false);
             } else {
                 actionButton2 = new DeleteActionButton(item);
@@ -320,6 +327,11 @@ public class ItemFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        updateButtons();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         load();
     }
@@ -328,7 +340,9 @@ public class ItemFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        progbarLoading.setVisibility(View.VISIBLE);
+        if (!itemsLoaded) {
+            progbarLoading.setVisibility(View.VISIBLE);
+        }
         disposable = Observable.fromCallable(this::loadInBackground)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
