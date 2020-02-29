@@ -349,11 +349,11 @@
 
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
-    <string name="storage_sum">Episode auto delete, Export, Import</string>
+    <string name="storage_sum">Episode auto delete, Import, Export</string>
     <string name="project_pref">Project</string>
     <string name="queue_label">Queue</string>
     <string name="integrations_label">Integrations</string>
-    <string name="integrations_sum">External services</string>
+    <string name="integrations_sum">Synchronization</string>
     <string name="automation">Automation</string>
     <string name="download_pref_details">Details</string>
     <string name="import_export_pref">Import/Export</string>
@@ -487,7 +487,7 @@
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
-    <string name="visit_user_forum">Visit user forum</string>
+    <string name="visit_user_forum">User forum</string>
     <string name="bug_report_title">Report bug</string>
     <string name="open_bug_tracker">Open bug tracker</string>
     <string name="export_logs">Export logs</string>
