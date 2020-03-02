@@ -221,6 +221,11 @@
   <!--Episodes apply actions-->
   <string name="all_label">Todos</string>
   <string name="none_label">Ningun</string>
+  <string name="pref_queue_max_age_title">Antigüedad límite de los episodios en días</string>
+  <string name="pref_queue_max_age_unlimited">Ilimitada</string>
+  <string name="pref_queue_max_age_summary">Una vez caducados, los episodios son desencolados, marcados como leídos y borrados. Los episodios de alta prioridad son ignorados.</string>
+  <string name="is_high_priority">Alta prioridad</string>
+  <string name="is_high_priority_summary">Los podcasts de alta prioridad se encolan sobre los demás y no expiran.</string>
   <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->

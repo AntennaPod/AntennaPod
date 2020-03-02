@@ -479,6 +479,9 @@
     <string name="pref_showDownloadReport_title">Show Download Report</string>
     <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
+    <string name="pref_queue_max_age_title">Episodes max age in days</string>
+    <string name="pref_queue_max_age_summary">Once expired, episodes will be de-queued, marked as read and deleted. Episodes of high priority feeds will be ignored.</string>
+    <string name="pref_queue_max_age_unlimited">Unlimited</string>
     <string name="pref_enqueue_location_title">Enqueue Location</string>
     <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
     <string name="enqueue_location_back">Back</string>
@@ -681,6 +684,8 @@
     <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
+    <string name="is_high_priority">Is high priority</string>
+    <string name="is_high_priority_summary">High priority podcasts are queued on top of the others and they don\'t expire.</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
 
     <!-- Progress information -->

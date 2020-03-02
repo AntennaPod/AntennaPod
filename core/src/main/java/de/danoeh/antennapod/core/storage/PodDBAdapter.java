@@ -110,6 +110,7 @@ public class PodDBAdapter {
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
+    public static final String KEY_FEED_IS_HIGH_PRIORITY = "feed_is_high_priority";
 
     // Table names
     static final String TABLE_NAME_FEEDS = "Feeds";
@@ -145,7 +146,8 @@ public class PodDBAdapter {
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
-            + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0)";
+            + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0" + ","
+            + KEY_FEED_IS_HIGH_PRIORITY + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -245,7 +247,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_ADAPTION,
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED
+            TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_IS_HIGH_PRIORITY
     };
 
     /**
@@ -414,6 +417,7 @@ public class PodDBAdapter {
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
+        values.put(KEY_FEED_IS_HIGH_PRIORITY, prefs.getHighPriority());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 

@@ -107,6 +107,12 @@
                     app:srcCompat="?attr/ic_unfav"
                     tools:srcCompat="@drawable/ic_star_grey600_24dp"
                     android:id="@+id/isFavorite"/>
+            <ImageView
+                    android:layout_width="14sp"
+                    android:layout_height="14sp"
+                    app:srcCompat="?attr/ic_high_priority"
+                    tools:srcCompat="?attr/ic_high_priority"
+                    android:id="@+id/isHighPriority"/>
 
             <ImageView
                     android:layout_width="14sp"

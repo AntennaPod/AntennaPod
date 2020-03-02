@@ -480,6 +480,13 @@ public final class DBTasks {
                     final FeedItem item = newFeed.getItems().get(idx);
                     FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed,
                             item.getIdentifyingValue());
+
+                    // if item is expired mark it as played
+                    if (item.isExpired()){
+                        item.setPlayed(true);
+                        item.setAutoDownload(false);
+                    }
+
                     if (oldItem == null) {
                         // item is new
                         item.setFeed(savedFeed);

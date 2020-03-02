@@ -112,6 +112,13 @@
                 android:key="prefSkipKeepsEpisode"
                 android:summary="@string/pref_skip_keeps_episodes_sum"
                 android:title="@string/pref_skip_keeps_episodes_title"/>
+        <ListPreference
+                android:defaultValue="-1"
+                android:entries="@array/queue_max_age_entries"
+                android:entryValues="@array/queue_max_age_values"
+                android:key="prefPlaybackQueueMaxAge"
+                android:summary="@string/pref_queue_max_age_summary"
+                android:title="@string/pref_queue_max_age_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/media_player">

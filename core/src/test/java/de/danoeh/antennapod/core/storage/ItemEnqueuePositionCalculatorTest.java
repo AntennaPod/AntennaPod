@@ -13,9 +13,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -41,10 +43,10 @@ public class ItemEnqueuePositionCalculatorTest {
             return Arrays.asList(new Object[][]{
                     {"case default, i.e., add to the end",
                             concat(QUEUE_DEFAULT_IDS, TFI_ID),
-                            BACK, QUEUE_DEFAULT},
+                            BACK, getQueueDefault()},
                     {"case option enqueue at front",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            FRONT, QUEUE_DEFAULT},
+                            FRONT, getQueueDefault()},
                     {"case empty queue, option default",
                             list(TFI_ID),
                             BACK, QUEUE_EMPTY},
@@ -93,19 +95,19 @@ public class ItemEnqueuePositionCalculatorTest {
             return Arrays.asList(new Object[][]{
                     {"case option after currently playing",
                             list(11L, TFI_ID, 12L, 13L, 14L),
-                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 11L},
+                            AFTER_CURRENTLY_PLAYING, getQueueDefault(), 11L},
                     {"case option after currently playing, currently playing in the middle of the queue",
                             list(11L, 12L, 13L, TFI_ID, 14L),
-                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 13L},
+                            AFTER_CURRENTLY_PLAYING, getQueueDefault(), 13L},
                     {"case option after currently playing, currently playing is not in queue",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 99L},
+                            AFTER_CURRENTLY_PLAYING, getQueueDefault(), 99L},
                     {"case option after currently playing, no currentlyPlaying is null",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
+                            AFTER_CURRENTLY_PLAYING, getQueueDefault(), ID_CURRENTLY_PLAYING_NULL},
                     {"case option after currently playing, currentlyPlaying is externalMedia",
                             concat(TFI_ID, QUEUE_DEFAULT_IDS),
-                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA},
+                            AFTER_CURRENTLY_PLAYING, getQueueDefault(), ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA},
                     {"case empty queue, option after currently playing",
                             list(TFI_ID),
                             AFTER_CURRENTLY_PLAYING, QUEUE_EMPTY, ID_CURRENTLY_PLAYING_NULL},
@@ -130,6 +132,91 @@ public class ItemEnqueuePositionCalculatorTest {
     }
 
     @RunWith(Parameterized.class)
+    public static class HighPriorityFeedTest extends BasicTest {
+        @Parameters(name = "{index}: case<{0}>, expected:{1}")
+        public static Iterable<Object[]> data() {
+            return Arrays.asList(new Object[][]{
+                    {"case option after currently playing, adding high priority",
+                            list(11L, TFI_ID, 12L, 13L, 14L),
+                            AFTER_CURRENTLY_PLAYING, getQueueDefault(), 11L,
+                            list(12L, TFI_ID)},
+                    {"case option after currently playing, currently playing in the middle of the queue, adding low priority",
+                            list(11L, 12L, 13L, 14L, TFI_ID),
+                            AFTER_CURRENTLY_PLAYING, getQueueDefault(), 13L,
+                            list(12L, 14L)},
+                    {"case option front, add high priority",
+                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
+                            FRONT, getQueueDefault(),
+                            ID_CURRENTLY_PLAYING_NULL,
+                            list(11L, TFI_ID)},
+                    {"case option front, add high priority with low priority bubble",
+                            concat(TFI_ID, QUEUE_DEFAULT_IDS),
+                            FRONT, getQueueDefault(),
+                            ID_CURRENTLY_PLAYING_NULL,
+                            list(11L, 13L, TFI_ID)},
+                    {"case option front, add non high priority",
+                            list(11L, 12L, TFI_ID, 13L, 14L),
+                            FRONT, getQueueDefault(),
+                            ID_CURRENTLY_PLAYING_NULL,
+                            list(11L, 12L)},
+                    {"case option back, add high priority",
+                            list(11L, 12L, TFI_ID, 13L, 14L),
+                            BACK, getQueueDefault(),
+                            ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA,
+                            list(11L, 12L, TFI_ID)},
+                    {"case option back, add high priority with low priority bubble",
+                            list(11L, 12L, 13L, TFI_ID, 14L),
+                            BACK, getQueueDefault(),
+                            ID_CURRENTLY_PLAYING_NULL,
+                            list(11L, 13L, TFI_ID)},
+                    {"case option back, add non high priority",
+                            concat(QUEUE_DEFAULT_IDS, TFI_ID),
+                            BACK, getQueueDefault(),
+                            ID_CURRENTLY_PLAYING_NULL,
+                            list(11L, 12L)}
+            });
+        }
+
+        @Parameter(4)
+        public long idCurrentlyPlaying;
+
+        @Parameter(5)
+        public List<Long> highPriorityItems;
+
+        @Override
+        Playable getCurrentlyPlaying() {
+            return ItemEnqueuePositionCalculatorTest.getCurrentlyPlaying(idCurrentlyPlaying);
+        }
+
+        private static final long ID_CURRENTLY_PLAYING_NULL = -1L;
+        private static final long ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA = -9999L;
+
+        @Test
+        public void test() {
+            ItemEnqueuePositionCalculator calculator = new ItemEnqueuePositionCalculator(options);
+
+            // shallow copy to which the test will add items
+            List<FeedItem> queue = new ArrayList<>(curQueue);
+            FeedItem tFI = createFeedItem(TFI_ID);
+
+            // Set the high priority value
+            for (Long highPrioItem : highPriorityItems){
+                for (FeedItem item : queue) {
+                    if (highPrioItem.compareTo(item.getId()) == 0) {
+                        item.getFeed().getPreferences().setHighPriority(true);
+                    }
+                }
+                if (highPrioItem.compareTo(TFI_ID) == 0){
+                    tFI.getFeed().getPreferences().setHighPriority(true);
+                }
+            }
+            doAddToQueueAndAssertResult(message,
+                    calculator, tFI, queue, getCurrentlyPlaying(),
+                    idsExpected);
+        }
+    }
+
+    @RunWith(Parameterized.class)
     public static class ItemEnqueuePositionCalculatorPreserveDownloadOrderTest {
 
         /**
@@ -146,7 +233,7 @@ public class ItemEnqueuePositionCalculatorTest {
                             concat(QUEUE_DEFAULT_IDS, 101L),
                             concat(QUEUE_DEFAULT_IDS, list(101L, 102L)),
                             concat(QUEUE_DEFAULT_IDS, list(101L, 102L, 103L)),
-                            BACK, QUEUE_DEFAULT, ID_CURRENTLY_PLAYING_NULL},
+                            BACK, getQueueDefault(), ID_CURRENTLY_PLAYING_NULL},
                     {"download order test, enqueue at front (currently playing has no effect)",
                             concat(101L, QUEUE_DEFAULT_IDS),
                             concat(list(101L, 102L), QUEUE_DEFAULT_IDS),
@@ -154,12 +241,12 @@ public class ItemEnqueuePositionCalculatorTest {
                             // ^ 103 is put ahead of 102, after 102 failed.
                             // It is a limitation as the logic can't tell 102 download has failed
                             // (as opposed to simply being enqueued)
-                            FRONT, QUEUE_DEFAULT, 11L}, // 11 is at the front, currently playing
+                            FRONT, getQueueDefault(), 11L}, // 11 is at the front, currently playing
                     {"download order test, enqueue after currently playing",
                             list(11L, 101L, 12L, 13L, 14L),
                             list(11L, 101L, 102L, 12L, 13L, 14L),
                             list(11L, 101L, 103L, 102L, 12L, 13L, 14L),
-                            AFTER_CURRENTLY_PLAYING, QUEUE_DEFAULT, 11L}  // 11 is at the front, currently playing
+                            AFTER_CURRENTLY_PLAYING, getQueueDefault(), 11L}  // 11 is at the front, currently playing
             });
         }
 
@@ -247,18 +334,21 @@ public class ItemEnqueuePositionCalculatorTest {
                                             List<FeedItem> queue,
                                             Playable currentlyPlaying,
                                             List<Long> idsExpected) {
-        int posActual = calculator.calcPosition(queue, currentlyPlaying);
+        boolean itemHighPriority = itemToAdd.getFeed() != null ? itemToAdd.getFeed().getPreferences() != null ? itemToAdd.getFeed().getPreferences().getHighPriority() : false : false;
+        int posActual = calculator.calcPosition(queue, currentlyPlaying, itemHighPriority);
         queue.add(posActual, itemToAdd);
         assertEquals(message, idsExpected, getIdList(queue));
     }
 
     static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(Arrays.asList());
 
-    static final List<FeedItem> QUEUE_DEFAULT = 
-            Collections.unmodifiableList(Arrays.asList(
-                    createFeedItem(11), createFeedItem(12), createFeedItem(13), createFeedItem(14)));
+    static final List<FeedItem> getQueueDefault() {
+        return Collections.unmodifiableList(Arrays.asList(
+                createFeedItem(11), createFeedItem(12), createFeedItem(13), createFeedItem(14)));
+    }
+
     static final List<Long> QUEUE_DEFAULT_IDS =
-            QUEUE_DEFAULT.stream().map(fi -> fi.getId()).collect(Collectors.toList());
+            getQueueDefault().stream().map(fi -> fi.getId()).collect(Collectors.toList());
 
 
     static Playable getCurrentlyPlaying(long idCurrentlyPlaying) {
@@ -283,6 +373,10 @@ public class ItemEnqueuePositionCalculatorTest {
         FeedItem item = new FeedItem(id, "Item" + id, "ItemId" + id, "url",
                 new Date(), FeedItem.PLAYED, FeedMother.anyFeed());
         FeedMedia media = new FeedMedia(item, "download_url", 1234567, "audio/mpeg");
+        Feed feed = new Feed();
+        FeedPreferences feedPreferences = new FeedPreferences(id, false, null, null, null, null);
+        feed.setPreferences(feedPreferences);
+        item.setFeed(feed);
         media.setId(item.getId());
         item.setMedia(media);
         return item;

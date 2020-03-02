@@ -21,6 +21,7 @@ public class FeedPreferences {
     private long feedID;
     private boolean autoDownload;
     private boolean keepUpdated;
+    private boolean highPriority;
 
     public enum AutoDeleteAction {
         GLOBAL,
@@ -36,10 +37,10 @@ public class FeedPreferences {
     private float feedPlaybackSpeed;
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
-        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting, username, password, new FeedFilter(), SPEED_USE_GLOBAL);
+        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting, username, password, new FeedFilter(), SPEED_USE_GLOBAL, false);
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed) {
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, boolean highPriority) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -49,6 +50,7 @@ public class FeedPreferences {
         this.password = password;
         this.filter = filter;
         this.feedPlaybackSpeed = feedPlaybackSpeed;
+        this.highPriority = highPriority;
     }
 
     public static FeedPreferences fromCursor(Cursor cursor) {
@@ -62,10 +64,12 @@ public class FeedPreferences {
         int indexIncludeFilter = cursor.getColumnIndex(PodDBAdapter.KEY_INCLUDE_FILTER);
         int indexExcludeFilter = cursor.getColumnIndex(PodDBAdapter.KEY_EXCLUDE_FILTER);
         int indexFeedPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_PLAYBACK_SPEED);
+        int indexIsHighPriority = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_IS_HIGH_PRIORITY);
 
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
         boolean autoRefresh = cursor.getInt(indexAutoRefresh) > 0;
+        boolean isHighPriority = cursor.getInt(indexIsHighPriority) > 0;
         int autoDeleteActionIndex = cursor.getInt(indexAutoDeleteAction);
         AutoDeleteAction autoDeleteAction = AutoDeleteAction.values()[autoDeleteActionIndex];
         int volumeAdaptionValue = cursor.getInt(indexVolumeAdaption);
@@ -75,7 +79,7 @@ public class FeedPreferences {
         String includeFilter = cursor.getString(indexIncludeFilter);
         String excludeFilter = cursor.getString(indexExcludeFilter);
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
-        return new FeedPreferences(feedId, autoDownload, autoRefresh, autoDeleteAction, volumeAdaptionSetting, username, password, new FeedFilter(includeFilter, excludeFilter), feedPlaybackSpeed);
+        return new FeedPreferences(feedId, autoDownload, autoRefresh, autoDeleteAction, volumeAdaptionSetting, username, password, new FeedFilter(includeFilter, excludeFilter), feedPlaybackSpeed, isHighPriority);
     }
 
     /**
@@ -100,6 +104,16 @@ public class FeedPreferences {
     public void setKeepUpdated(boolean keepUpdated) {
         this.keepUpdated = keepUpdated;
     }
+
+    /**
+     * @return true if this feed's episodes should always be placed on top of the queue and not
+     *         deleted automatically after the expire period.
+     */
+    public boolean getHighPriority() {
+      return highPriority;
+    }
+
+    public void setHighPriority(boolean highPriority) { this.highPriority = highPriority; }
 
     /**
      * Compare another FeedPreferences with this one. The feedID, autoDownload and AutoDeleteAction attribute are excluded from the

@@ -8,6 +8,12 @@
             android:title="@string/keep_updated"
             android:summary="@string/keep_updated_summary"/>
 
+    <SwitchPreference
+            android:key="isHighPriority"
+            android:icon="?attr/ic_high_priority"
+            android:title="@string/is_high_priority"
+            android:summary="@string/is_high_priority_summary"/>
+
     <Preference
             android:key="authentication"
             android:icon="?attr/ic_key"

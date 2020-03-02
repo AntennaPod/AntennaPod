@@ -35,22 +35,63 @@ class ItemEnqueuePositionCalculator {
      * @param curQueue           the queue to which the item is to be inserted
      * @param currentPlaying     the currently playing media
      */
-    public int calcPosition(@NonNull List<FeedItem> curQueue, @Nullable Playable currentPlaying) {
+    public int calcPosition(@NonNull List<FeedItem> curQueue, @Nullable Playable currentPlaying, boolean isHighPriority) {
         switch (enqueueLocation) {
             case BACK:
-                return curQueue.size();
+                // For high priority items, they will be inserted after the last high priority (if any)
+                if (isHighPriority) {
+                    return getPositionOfFirstNonHighPriorityItem(0 , curQueue);
+                } else {
+                    return curQueue.size();
+                }
             case FRONT:
                 // Return not necessarily 0, so that when a list of items are downloaded and enqueued
                 // in succession of calls (e.g., users manually tapping download one by one),
                 // the items enqueued are kept the same order.
                 // Simply returning 0 will reverse the order.
-                return getPositionOfFirstNonDownloadingItem(0, curQueue);
+                if (isHighPriority) {
+                    return getPositionOfFirstNonDownloadingItem(0, curQueue);
+                } else {
+                    return getPositionOfFirstNonHighPriorityItem(0, curQueue);
+                }
             case AFTER_CURRENTLY_PLAYING:
                 int currentlyPlayingPosition = getCurrentlyPlayingPosition(curQueue, currentPlaying);
-                return getPositionOfFirstNonDownloadingItem(
-                        currentlyPlayingPosition + 1, curQueue);
+                if (isHighPriority) {
+                    return getPositionOfFirstNonDownloadingItem(currentlyPlayingPosition + 1, curQueue);
+                } else {
+                    return getPositionOfFirstNonHighPriorityItem(currentlyPlayingPosition + 1, curQueue);
+                }
             default:
                 throw new AssertionError("calcPosition() : unrecognized enqueueLocation option: " + enqueueLocation);
+        }
+    }
+
+    private int getPositionOfFirstNonHighPriorityItem(int startPosition, List<FeedItem> curQueue) {
+        final int curQueueSize = curQueue.size();
+        int firstNonDownloadingPosition = getPositionOfFirstNonDownloadingItem(startPosition, curQueue);
+        for (int i = curQueueSize-1; i >= firstNonDownloadingPosition; i--) {
+            if (isItemAtPositionHighPriority(i, curQueue)) {
+                return i + 1;
+            } // else continue to search;
+        }
+        return firstNonDownloadingPosition;
+    }
+
+    private boolean isItemAtPositionHighPriority(int position, List<FeedItem> curQueue) {
+        FeedItem curItem;
+        try {
+            curItem = curQueue.get(position);
+        } catch (IndexOutOfBoundsException e) {
+            curItem = null;
+        }
+
+        if (curItem != null
+                && curItem.getFeed() != null
+                && curItem.getFeed().getPreferences() != null
+                && curItem.getFeed().getPreferences().getHighPriority()) {
+            return true;
+        } else {
+            return false;
         }
     }
 

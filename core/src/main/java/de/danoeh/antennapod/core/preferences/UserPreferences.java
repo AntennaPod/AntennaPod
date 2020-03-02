@@ -83,6 +83,7 @@ public class UserPreferences {
     public static final String PREF_VIDEO_BEHAVIOR = "prefVideoBehavior";
     private static final String PREF_TIME_RESPECTS_SPEED = "prefPlaybackTimeRespectsSpeed";
     public static final String PREF_STREAM_OVER_DOWNLOAD = "prefStreamOverDownload";
+    public static final String PREF_QUEUE_MAX_AGE = "prefPlaybackQueueMaxAge";
 
     // Network
     private static final String PREF_ENQUEUE_DOWNLOADED = "prefEnqueueDownloaded";
@@ -1036,6 +1037,22 @@ public class UserPreferences {
         }
         prefs.edit()
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
+                .apply();
+    }
+
+    /**
+     * Returns the sort order for the queue keep sorted mode.
+     * Note: This value is stored independently from the keep sorted state.
+     *
+     * @see #isQueueKeepSorted()
+     */
+    public static int getPlaybackQueueMaxAge() {
+        return Integer.valueOf(prefs.getString(PREF_QUEUE_MAX_AGE, "-1"));
+    }
+
+    public static void setPlaybackQueueMaxAge(int playbackQueueMaxAge) {
+        prefs.edit()
+                .putString(PREF_QUEUE_MAX_AGE, String.valueOf(playbackQueueMaxAge))
                 .apply();
     }
 }

@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
@@ -451,7 +453,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     }
 
     public boolean isAutoDownloadable() {
-        if (media == null || media.isPlaying() || media.isDownloaded() || autoDownload == 0) {
+        if (media == null || media.isPlaying() || media.isDownloaded() || autoDownload == 0 || isExpired()) {
             return false;
         }
         if (autoDownload == 1) {
@@ -479,6 +481,27 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
      * @param tag the to remove
      */
     public void removeTag(String tag) { tags.remove(tag); }
+
+    /**
+     * @return true if the episode is expired
+     */
+    public boolean isExpired() {
+        Date maxAgeThresholdDate = null;
+        // If queue max age is different than unlimited (-1), calculate the threshold date
+        if (UserPreferences.getPlaybackQueueMaxAge() >= 0) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, -1 * UserPreferences.getPlaybackQueueMaxAge());
+            maxAgeThresholdDate = cal.getTime();
+        }
+        boolean isHighPriority = false;
+        if (getFeed() != null
+                && getFeed().getPreferences() != null){
+
+            isHighPriority = getFeed().getPreferences().getHighPriority();
+        }
+        return !isHighPriority && maxAgeThresholdDate != null && getPubDate().before(maxAgeThresholdDate);
+    }
 
     @Override
     public String toString() {

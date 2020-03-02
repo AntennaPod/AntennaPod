@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Implementation of the EpisodeCleanupAlgorithm interface used by AntennaPod.
@@ -91,20 +92,28 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
         Date mostRecentDateForDeletion = calcMostRecentDateForDeletion(new Date());
         for (FeedItem item : downloadedItems) {
-            if (item.hasMedia()
-                    && item.getMedia().isDownloaded()
-                    && !item.isTagged(FeedItem.TAG_QUEUE)
-                    && item.isPlayed()
-                    && !item.isTagged(FeedItem.TAG_FAVORITE)) {
-                FeedMedia media = item.getMedia();
-                // make sure this candidate was played at least the proper amount of days prior
-                // to now
-                if (media != null
-                        && media.getPlaybackCompletionDate() != null
-                        && media.getPlaybackCompletionDate().before(mostRecentDateForDeletion)) {
-                    candidates.add(item);
+            boolean addCandidate = false;
+            if (item.hasMedia()){
+                // Default behaviour
+                if (item.getMedia().isDownloaded()
+                        && !item.isTagged(FeedItem.TAG_QUEUE)
+                        && item.isPlayed()
+                        && !item.isTagged(FeedItem.TAG_FAVORITE)) {
+                    FeedMedia media = item.getMedia();
+                    // make sure this candidate was played at least the proper amount of days prior
+                    // to now
+                    if (media != null
+                            && media.getPlaybackCompletionDate() != null
+                            && media.getPlaybackCompletionDate().before(mostRecentDateForDeletion)) {
+                        addCandidate = true;
+                    }
                 }
             }
+            // Add expired items for deletion
+            if (item.isExpired()) {
+                addCandidate = true;
+            }
+            if (addCandidate) candidates.add(item);
         }
         return candidates;
     }

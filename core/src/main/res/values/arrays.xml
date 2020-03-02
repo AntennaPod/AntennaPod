@@ -55,6 +55,24 @@
         <item>72</item>
     </string-array>
 
+    <string-array name="queue_max_age_entries">
+        <item>7</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>@string/pref_queue_max_age_unlimited</item>
+    </string-array>
+
+    <string-array name="queue_max_age_values">
+        <item>7</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+        <item>-1</item>
+    </string-array>
+
     <string-array name="episode_cache_size_entries">
         <item>5</item>
         <item>10</item>

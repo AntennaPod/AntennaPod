@@ -54,6 +54,7 @@
     <attr name="ic_questionmark" format="reference" />
     <attr name="ic_chat" format="reference"/>
     <attr name="ic_bug" format="reference" />
+    <attr name="ic_high_priority" format="reference" />
     <attr name="master_switch_background" format="color"/>
     <attr name="currently_playing_background" format="color"/>
     <attr name="ic_bookmark" format="reference"/>

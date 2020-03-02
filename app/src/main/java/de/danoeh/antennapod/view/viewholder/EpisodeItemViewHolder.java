@@ -53,6 +53,7 @@ public class EpisodeItemViewHolder extends FeedComponentViewHolder
     public final ImageView isInQueue;
     private final ImageView isVideo;
     public final ImageView isFavorite;
+    public final ImageView isHighPriority;
     private final ProgressBar progressBar;
     public final View secondaryActionButton;
     public final ImageView secondaryActionIcon;
@@ -82,6 +83,7 @@ public class EpisodeItemViewHolder extends FeedComponentViewHolder
         isVideo = itemView.findViewById(R.id.ivIsVideo);
         isNew = itemView.findViewById(R.id.statusUnread);
         isFavorite = itemView.findViewById(R.id.isFavorite);
+        isHighPriority = itemView.findViewById(R.id.isHighPriority);
         size = itemView.findViewById(R.id.size);
         separatorIcons = itemView.findViewById(R.id.separatorIcons);
         secondaryActionProgress = itemView.findViewById(R.id.secondaryActionProgress);
@@ -108,6 +110,7 @@ public class EpisodeItemViewHolder extends FeedComponentViewHolder
         pubDate.setText(DateUtils.formatAbbrev(activity, item.getPubDate()));
         isNew.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         isFavorite.setVisibility(item.isTagged(FeedItem.TAG_FAVORITE) ? View.VISIBLE : View.GONE);
+        isHighPriority.setVisibility(item.getFeed().getPreferences().getHighPriority() ? View.VISIBLE : View.GONE);
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
         itemView.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
 
@@ -209,6 +212,7 @@ public class EpisodeItemViewHolder extends FeedComponentViewHolder
         boolean hasIcons = isNew.getVisibility() == View.VISIBLE
                 || isInQueue.getVisibility() == View.VISIBLE
                 || isVideo.getVisibility() == View.VISIBLE
+                || isHighPriority.getVisibility() == View.VISIBLE
                 || isFavorite.getVisibility() == View.VISIBLE
                 || isNew.getVisibility() == View.VISIBLE;
         separatorIcons.setVisibility(hasIcons ? View.VISIBLE : View.GONE);

@@ -347,10 +347,17 @@ public class DBWriter {
             ItemEnqueuePositionCalculator positionCalculator =
                     new ItemEnqueuePositionCalculator(UserPreferences.getEnqueueLocation());
             Playable currentlyPlaying = Playable.PlayableUtils.createInstanceFromPreferences(context);
-            int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying);
             for (long itemId : itemIds) {
                 if (!itemListContains(queue, itemId)) {
                     final FeedItem item = DBReader.getFeedItem(itemId);
+                    // Find out if the item should be treated as a high priority one
+                    boolean isHighPriority = false;
+                    if (item.getFeed() != null
+                            && item.getFeed().getPreferences() != null) {
+                        isHighPriority = item.getFeed().getPreferences().getHighPriority();
+                    }
+                    int insertPosition = positionCalculator.calcPosition(queue, currentlyPlaying, isHighPriority);
+                    // Do the insert
                     if (item != null) {
                         queue.add(insertPosition, item);
                         events.add(QueueEvent.added(item, insertPosition));
@@ -361,7 +368,6 @@ public class DBWriter {
                         if (item.isNew()) {
                             markAsUnplayedIds.add(item.getId());
                         }
-                        insertPosition++;
                     }
                 }
             }

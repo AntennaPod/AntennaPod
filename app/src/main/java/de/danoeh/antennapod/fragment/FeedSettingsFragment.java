@@ -37,6 +37,7 @@ import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
 public class FeedSettingsFragment extends PreferenceFragmentCompat {
     private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
     private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
+    private static final String PREF_FEED_HIGH_PRIORITY = "isHighPriority";
     private static final DecimalFormat SPEED_FORMAT =
             new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
@@ -83,6 +84,7 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
                     setupAuthentificationPreference();
                     setupEpisodeFilterPreference();
                     setupPlaybackSpeedPreference();
+                    setupHighPriorityPreference();
 
                     updateAutoDeleteSummary();
                     updateVolumeReductionValue();
@@ -259,6 +261,19 @@ public class FeedSettingsFragment extends PreferenceFragmentCompat {
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             boolean checked = newValue == Boolean.TRUE;
             feedPreferences.setKeepUpdated(checked);
+            feed.savePreferences();
+            pref.setChecked(checked);
+            return false;
+        });
+    }
+
+    private void setupHighPriorityPreference() {
+        SwitchPreference pref = (SwitchPreference) findPreference(PREF_FEED_HIGH_PRIORITY);
+
+        pref.setChecked(feedPreferences.getHighPriority());
+        pref.setOnPreferenceChangeListener((preference, newValue) -> {
+            boolean checked = newValue == Boolean.TRUE;
+            feedPreferences.setHighPriority(checked);
             feed.savePreferences();
             pref.setChecked(checked);
             return false;
