@@ -40,7 +40,7 @@ class ItemEnqueuePositionCalculator {
             case BACK:
                 // For high priority items, they will be inserted after the last high priority (if any)
                 if (isHighPriority) {
-                    return getPositionOfFirstNonHighPriorityItem(0 , curQueue);
+                    return getPositionOfFirstNonHighPriorityItem(0, curQueue);
                 } else {
                     return curQueue.size();
                 }
