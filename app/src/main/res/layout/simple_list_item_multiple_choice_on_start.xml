@@ -30,4 +30,6 @@
     android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
     android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+    android:maxLines="2"
+    android:ellipsize="end"
     />
