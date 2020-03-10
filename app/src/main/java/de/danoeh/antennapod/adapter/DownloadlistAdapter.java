@@ -77,7 +77,7 @@ public class DownloadlistAdapter extends BaseAdapter {
         }
         status += " · ";
         if (request.getSoFar() <= 0) {
-            status += context.getString(R.string.download_queued);
+            status += context.getString(R.string.download_pending);
         } else {
             status += Converter.byteToString(request.getSoFar());
             if (request.getSize() != DownloadStatus.SIZE_UNKNOWN) {
