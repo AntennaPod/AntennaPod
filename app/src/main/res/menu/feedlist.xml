@@ -41,7 +41,7 @@
         android:id="@+id/episode_actions"
         android:menuCategory="container"
         android:icon="?attr/checkbox_multiple"
-        android:title="@string/batch_edit"
+        android:title="@string/multi_select"
         custom:showAsAction="collapseActionView">
     </item>
     <item

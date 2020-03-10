@@ -153,7 +153,7 @@
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
-    <string name="batch_edit">Batch edit</string>
+    <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
