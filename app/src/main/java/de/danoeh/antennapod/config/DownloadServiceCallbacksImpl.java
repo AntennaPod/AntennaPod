@@ -12,6 +12,7 @@ import de.danoeh.antennapod.core.DownloadServiceCallbacks;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
 
 
 public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
@@ -35,7 +36,7 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     }
 
     @Override
-    public PendingIntent getReportNotificationContentIntent(Context context) {
+    public PendingIntent getReportNotificationContentIntent(Context context, boolean autoDownloadReport) {
         Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
         Bundle args = new Bundle();

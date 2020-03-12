@@ -40,7 +40,7 @@ public interface DownloadServiceCallbacks {
      *
      * @return A non-null PendingIntent for the notification or null if shouldCreateReport()==false
      */
-    PendingIntent getReportNotificationContentIntent(Context context);
+    PendingIntent getReportNotificationContentIntent(Context context, boolean autoDownloadReport);
 
     /**
      * Called by the FeedSyncThread after a feed has been downloaded and parsed.

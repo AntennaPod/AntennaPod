@@ -125,12 +125,10 @@ public class DownloadServiceNotification {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
             builder.setTicker(context.getString(titleId))
                    .setContentTitle(context.getString(R.string.download_report_content_title))
-                   .setContentText(String.format(
-                                    context.getString(R.string.download_report_content),
-                                    successfulDownloads, failedDownloads))
-                    .setSmallIcon(autoDownloadReport ? R.drawable.stat_notify_sync : R.drawable.stat_notify_sync_error)
-                    .setContentIntent(ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context))
-                    .setAutoCancel(true);
+                   .setContentText(String.format(context.getString(R.string.download_report_content), successfulDownloads, failedDownloads))
+                   .setSmallIcon(autoDownloadReport ? R.drawable.stat_notify_sync : R.drawable.stat_notify_sync_error)
+                   .setContentIntent(ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context, autoDownloadReport))
+                   .setAutoCancel(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             }
