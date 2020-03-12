@@ -368,8 +368,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         ImageView cover = findViewById(R.id.imgvCover);
         ImageView headerBackground = findViewById(R.id.imgvBackground);
-        findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
-        findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         headerBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
         TextView title = findViewById(R.id.txtvTitle);
         TextView author = findViewById(R.id.txtvAuthor);
