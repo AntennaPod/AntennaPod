@@ -2,50 +2,50 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.ListFragment;
-import androidx.core.view.MenuItemCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
+import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.view.EmptyViewHandler;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
-import de.danoeh.antennapod.core.event.DownloadEvent;
-import de.danoeh.antennapod.core.event.DownloaderUpdate;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.view.EmptyViewHandler;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-
-public class PlaybackHistoryFragment extends ListFragment {
+public class PlaybackHistoryFragment extends Fragment implements AdapterView.OnItemClickListener {
     public static final String TAG = "PlaybackHistoryFragment";
 
     private List<FeedItem> playbackHistory;
     private FeedItemlistAdapter adapter;
-    private List<Downloader> downloaderList;
     private Disposable disposable;
+    private ListView listView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,26 +55,26 @@ public class PlaybackHistoryFragment extends ListFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
+        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.playback_history_label);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        // add padding
-        final ListView lv = getListView();
-        lv.setClipToPadding(false);
-        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
-        lv.setPadding(0, vertPadding, 0, vertPadding);
-
+        listView = root.findViewById(android.R.id.list);
         EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
         emptyView.setIcon(R.attr.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
-        emptyView.attachToListView(getListView());
+        emptyView.attachToListView(listView);
 
         // played items shoudln't be transparent for this fragment since, *all* items
         // in this fragment will, by definition, be played. So it serves no purpose and can make
         // it harder to read.
         adapter = new FeedItemlistAdapter((MainActivity) getActivity(), itemAccess, true, false);
-        setListAdapter(adapter);
+        listView.setAdapter(adapter);
+        return root;
     }
 
     @Override
@@ -96,15 +96,12 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEvent(DownloadEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
-        DownloaderUpdate update = event.update;
-        downloaderList = update.downloaders;
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        position -= l.getHeaderViewsCount();
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        position -= listView.getHeaderViewsCount();
         long[] ids = FeedItemUtil.getIds(playbackHistory);
         ((MainActivity) getActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
     }
@@ -149,12 +146,12 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if(playbackHistory == null) {
+        if (playbackHistory == null) {
             return;
         }
-        for(FeedItem item : event.items) {
+        for (FeedItem item : event.items) {
             int pos = FeedItemUtil.indexOfItemWithId(playbackHistory, item.getId());
-            if(pos >= 0) {
+            if (pos >= 0) {
                 loadItems();
                 return;
             }
@@ -196,7 +193,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     };
 
     private void loadItems() {
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         disposable = Observable.fromCallable(this::loadData)

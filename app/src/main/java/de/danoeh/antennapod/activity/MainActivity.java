@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,18 +10,7 @@ import android.database.DataSetObserver;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.annotation.VisibleForTesting;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,25 +19,23 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
-
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
-
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -77,6 +63,13 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -96,7 +89,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     private static final String EXTRA_FEED_ID = "fragment_feed_id";
 
     private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
-    private static final String SAVE_TITLE = "title";
 
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
@@ -108,15 +100,11 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
-    private Toolbar toolbar;
-    private ExternalPlayerFragment externalPlayerFragment;
     private DrawerLayout drawerLayout;
     private View navDrawer;
-    private ListView navList;
     private NavListAdapter navAdapter;
     private int mPosition = -1;
     private ActionBarDrawerToggle drawerToggle;
-    private CharSequence currentTitle;
     private Disposable disposable;
     private long lastBackButtonPressTime = 0;
 
@@ -135,20 +123,8 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            findViewById(R.id.shadow).setVisibility(View.GONE);
-            int elevation = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
-                    getResources().getDisplayMetrics());
-            getSupportActionBar().setElevation(elevation);
-        }
-
-        currentTitle = getTitle();
-
         drawerLayout = findViewById(R.id.drawer_layout);
-        navList = findViewById(R.id.nav_list);
+        ListView navList = findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
@@ -161,9 +137,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         final FragmentManager fm = getSupportFragmentManager();
 
         fm.addOnBackStackChangedListener(() -> drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0));
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         navAdapter = new NavListAdapter(itemAccess, this);
         navList.setAdapter(navAdapter);
@@ -203,7 +176,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 }
             }
         }
-        externalPlayerFragment = new ExternalPlayerFragment();
+        ExternalPlayerFragment externalPlayerFragment = new ExternalPlayerFragment();
         transaction.replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG);
         transaction.commit();
 
@@ -315,8 +288,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
                 args = null;
                 break;
         }
-        currentTitle = navAdapter.getLabel(tag);
-        getSupportActionBar().setTitle(currentTitle);
         saveLastNavFragment(tag);
         if (args != null) {
             fragment.setArguments(args);
@@ -338,8 +309,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             fragment.setArguments(args);
         }
         saveLastNavFragment(String.valueOf(feedId));
-        currentTitle = "";
-        getSupportActionBar().setTitle(currentTitle);
         loadFragment(fragment);
     }
 
@@ -452,10 +421,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
         if (savedInstanceState != null) {
-            currentTitle = savedInstanceState.getString(SAVE_TITLE);
-            if (!drawerLayout.isDrawerOpen(navDrawer)) {
-                getSupportActionBar().setTitle(currentTitle);
-            }
             selectedNavListIndex = getSelectedNavListIndex();
         }
     }
@@ -469,7 +434,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(SAVE_TITLE, getSupportActionBar().getTitle().toString());
         outState.putInt(SAVE_BACKSTACK_COUNT, getSupportFragmentManager().getBackStackEntryCount());
     }
 

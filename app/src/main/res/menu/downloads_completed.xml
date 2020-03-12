@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/episode_actions"
         android:menuCategory="container"
         android:title="@string/multi_select"
         android:icon="?attr/checkbox_multiple"
-        custom:showAsAction="always">
-    </item>
-
+        android:showAsAction="ifRoom" />
 </menu>

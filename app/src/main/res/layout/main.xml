@@ -19,28 +19,12 @@
             tools:layout_height="64dp"
             tools:background="@android:color/holo_green_light" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            tools:background="@android:color/holo_blue_dark" />
-
-        <View
-            android:id="@+id/shadow"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_below="@id/toolbar"
-            android:background="@drawable/shadow" />
-
         <FrameLayout
             android:id="@+id/main_view"
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_above="@id/playerFragment"
-            android:layout_below="@id/toolbar"
+            android:layout_alignParentTop="true"
             android:foreground="?android:windowContentOverlay"
             tools:background="@android:color/holo_red_dark" />
 

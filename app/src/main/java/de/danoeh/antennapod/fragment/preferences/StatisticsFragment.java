@@ -49,6 +49,8 @@ public class StatisticsFragment extends Fragment {
         tabLayout = rootView.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        rootView.findViewById(R.id.toolbar).setVisibility(View.GONE);
+
         return rootView;
     }
 
