@@ -113,9 +113,9 @@ public class DownloadRequester implements DownloadStateProvider {
     }
 
     @Nullable
-    private DownloadRequest createRequest(FeedFile item, FeedFile container, File dest,
-                                          boolean overwriteIfExists, String username, String password,
-                                          String lastModified, boolean deleteOnFailure, Bundle arguments, boolean initiatedByUser) {
+    private DownloadRequest createRequest(FeedFile item, FeedFile container, File dest, boolean overwriteIfExists,
+                                          String username, String password, String lastModified,
+                                          boolean deleteOnFailure, Bundle arguments, boolean initiatedByUser) {
         final boolean partiallyDownloadedFileExists = item.getFile_url() != null && new File(item.getFile_url()).exists();
 
         Log.d(TAG, "partiallyDownloadedFileExists: " + partiallyDownloadedFileExists);
@@ -222,8 +222,8 @@ public class DownloadRequester implements DownloadStateProvider {
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-    public synchronized void downloadMedia(boolean performAutoCleanup, @NonNull Context context, boolean initiatedByUser,
-                                    FeedItem... items)
+    public synchronized void downloadMedia(boolean performAutoCleanup, @NonNull Context context,
+                                           boolean initiatedByUser, FeedItem... items)
             throws DownloadRequestException {
         Log.d(TAG, "downloadMedia() called with: performAutoCleanup = [" + performAutoCleanup
                 + "], #items = [" + items.length + "]");

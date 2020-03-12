@@ -119,10 +119,11 @@ public class DownloadServiceNotification {
 
             // create notification object
             boolean autoDownloadReport = failedDownloads == 0;
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                                                        context,
-                                                        autoDownloadReport ? NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD : NotificationUtils.CHANNEL_ID_ERROR);
-            builder.setTicker(context.getString(R.string.download_report_title))
+            String channelId = autoDownloadReport ? NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD : NotificationUtils.CHANNEL_ID_ERROR;
+            int titleId = autoDownloadReport ? R.string.auto_download_report_title : R.string.download_report_title;
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
+            builder.setTicker(context.getString(titleId))
                    .setContentTitle(context.getString(R.string.download_report_content_title))
                    .setContentText(String.format(
                                     context.getString(R.string.download_report_content),

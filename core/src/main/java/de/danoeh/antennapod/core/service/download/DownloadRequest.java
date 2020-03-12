@@ -31,72 +31,28 @@ public class DownloadRequest implements Parcelable {
     private boolean mediaEnqueued;
     private boolean initiatedByUser;
 
-    public DownloadRequest(@NonNull String destination,
-                           @NonNull String source,
-                           @NonNull String title,
-                           long feedfileId,
-                           int feedfileType,
-                           String username,
-                           String password,
-                           boolean deleteOnFailure,
-                           Bundle arguments,
-                           boolean initiatedByUser) {
-        this(destination,
-             source,
-             title,
-             feedfileId,
-             feedfileType,
-             null,
-             deleteOnFailure,
-             username,
-             password,
-             false,
-             arguments,
-             initiatedByUser);
+    public DownloadRequest(@NonNull String destination, @NonNull String source, @NonNull String title, long feedfileId,
+                           int feedfileType, String username, String password, boolean deleteOnFailure,
+                           Bundle arguments, boolean initiatedByUser) {
+        this(destination, source, title, feedfileId, feedfileType, null, deleteOnFailure, username, password, false,
+             arguments, initiatedByUser);
     }
 
     private DownloadRequest(Builder builder) {
-        this(builder.destination,
-             builder.source,
-             builder.title,
-             builder.feedfileId,
-             builder.feedfileType,
-             builder.lastModified,
-             builder.deleteOnFailure,
-             builder.username,
-             builder.password,
-             false,
-             (builder.arguments != null) ? builder.arguments : new Bundle(),
-             builder.initiatedByUser);
+        this(builder.destination, builder.source, builder.title, builder.feedfileId, builder.feedfileType,
+             builder.lastModified, builder.deleteOnFailure, builder.username, builder.password, false,
+             builder.arguments != null ? builder.arguments : new Bundle(), builder.initiatedByUser);
     }
 
     private DownloadRequest(Parcel in) {
-        this(in.readString(),
-             in.readString(),
-             in.readString(),
-             in.readLong(),
-             in.readInt(),
-             in.readString(),
-             in.readByte() > 0,
-             nullIfEmpty(in.readString()),
-             nullIfEmpty(in.readString()),
-             in.readByte() > 0,
-             in.readBundle(),
-             in.readByte() > 0);
+        this(in.readString(), in.readString(), in.readString(), in.readLong(), in.readInt(), in.readString(),
+             in.readByte() > 0, nullIfEmpty(in.readString()), nullIfEmpty(in.readString()), in.readByte() > 0,
+             in.readBundle(), in.readByte() > 0);
     }
 
-    private DownloadRequest(String destination,
-                            String source,
-                            String title,
-                            long feedfileId,
-                            int feedfileType,
-                            String lastModified,
-                            boolean deleteOnFailure,
-                            String username,
-                            String password,
-                            boolean mediaEnqueued,
-                            Bundle arguments,
-                            boolean initiatedByUser) {
+    private DownloadRequest(String destination, String source, String title, long feedfileId, int feedfileType,
+                            String lastModified, boolean deleteOnFailure, String username, String password,
+                            boolean mediaEnqueued, Bundle arguments, boolean initiatedByUser) {
         this.destination = destination;
         this.source = source;
         this.title = title;
@@ -134,7 +90,7 @@ public class DownloadRequest implements Parcelable {
         dest.writeString(nonNullString(password));
         dest.writeByte((mediaEnqueued) ? (byte) 1 : 0);
         dest.writeBundle(arguments);
-        dest.writeByte(initiatedByUser ? (byte)1 : 0);
+        dest.writeByte(initiatedByUser ? (byte) 1 : 0);
     }
 
     private static String nonNullString(String str) {
@@ -287,7 +243,9 @@ public class DownloadRequest implements Parcelable {
         return mediaEnqueued;
     }
 
-    public boolean isInitiatedByUser() { return initiatedByUser; }
+    public boolean isInitiatedByUser() {
+        return initiatedByUser;
+    }
 
     /**
      * Set to true if the media is enqueued because of this download.
