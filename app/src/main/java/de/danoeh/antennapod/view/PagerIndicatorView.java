@@ -86,11 +86,12 @@ public class PagerIndicatorView extends View {
     }
 
     private void drawCircle(Canvas canvas, int position, float frac) {
-        float circleRadiusSmall = canvas.getHeight() * 0.26f;
-        float circleRadiusBig = canvas.getHeight() * 0.35f;
+        float availableHeight = canvas.getHeight() - getPaddingTop() - getPaddingBottom();
+        float circleRadiusSmall = availableHeight * 0.26f;
+        float circleRadiusBig = availableHeight * 0.35f;
         float circleRadiusDelta = (circleRadiusBig - circleRadiusSmall);
-        float start = 0.5f * (canvas.getWidth() - numPages * 1.5f * canvas.getHeight());
-        paint.setStrokeWidth(canvas.getHeight() * 0.3f);
+        float start = 0.5f * (canvas.getWidth() - numPages * 1.5f * availableHeight);
+        paint.setStrokeWidth(availableHeight * 0.3f);
 
         if (position == disabledPage) {
             paint.setStyle(Paint.Style.STROKE);
@@ -99,7 +100,7 @@ public class PagerIndicatorView extends View {
         }
 
         paint.setColor((Integer) new ArgbEvaluator().evaluate(frac, circleColor, circleColorHighlight));
-        canvas.drawCircle(start + (position * 1.5f + 0.75f) * canvas.getHeight(), 0.5f * canvas.getHeight(),
+        canvas.drawCircle(start + (position * 1.5f + 0.75f) * availableHeight, 0.5f * availableHeight + getPaddingTop(),
                 circleRadiusSmall + frac * circleRadiusDelta, paint);
     }
 }

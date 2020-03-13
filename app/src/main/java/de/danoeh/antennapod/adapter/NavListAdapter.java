@@ -202,17 +202,13 @@ public class NavListAdapter extends BaseAdapter
             v = getFeedView(position, convertView, parent);
         }
         if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
-            TextView txtvTitle = v.findViewById(R.id.txtvTitle);
             TypedValue typedValue = new TypedValue();
 
             if (position == itemAccess.getSelectedItemIndex()) {
-                txtvTitle.setTypeface(null, Typeface.BOLD);
-                v.getContext().getTheme().resolveAttribute(de.danoeh.antennapod.core.R.attr.drawer_activated_color, typedValue, true);
+                v.getContext().getTheme().resolveAttribute(R.attr.drawer_activated_color, typedValue, true);
                 v.setBackgroundResource(typedValue.resourceId);
-
             } else {
-                txtvTitle.setTypeface(null, Typeface.NORMAL);
-                v.getContext().getTheme().resolveAttribute(de.danoeh.antennapod.core.R.attr.nav_drawer_background, typedValue, true);
+                v.getContext().getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true);
                 v.setBackgroundResource(typedValue.resourceId);
             }
         }
@@ -356,11 +352,6 @@ public class NavListAdapter extends BaseAdapter
         if(counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
             holder.count.setText(String.valueOf(counter));
-            if (itemAccess.getSelectedItemIndex() == position) {
-                holder.count.setTypeface(null, Typeface.BOLD);
-            } else {
-                holder.count.setTypeface(null, Typeface.NORMAL);
-            }
         } else {
             holder.count.setVisibility(View.GONE);
         }
