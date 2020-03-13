@@ -31,7 +31,7 @@ public abstract class IntraFeedSortDialog {
 
         int idxCurrentSort = -1;
         for  (int i = 0; i < values.length; i++) {
-            if (currentSortOrder == values[i]) {
+            if (currentSortOrder == values[i] || currentSortOrder == null) {
                 idxCurrentSort = i;
                 break;
             }
