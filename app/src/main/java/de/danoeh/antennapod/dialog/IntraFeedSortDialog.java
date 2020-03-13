@@ -29,9 +29,9 @@ public abstract class IntraFeedSortDialog {
             values[i] = SortOrder.valueOf(valueStrs[i]);
         }
 
-        int idxCurrentSort = -1;
+        int idxCurrentSort = 0;
         for  (int i = 0; i < values.length; i++) {
-            if (currentSortOrder == values[i] || currentSortOrder == null) {
+            if (currentSortOrder == values[i]) {
                 idxCurrentSort = i;
                 break;
             }
