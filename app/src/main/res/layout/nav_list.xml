@@ -5,7 +5,7 @@
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="?attr/nav_drawer_background"
+    android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
     <LinearLayout

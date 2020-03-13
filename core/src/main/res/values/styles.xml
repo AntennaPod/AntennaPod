@@ -10,6 +10,7 @@
         <item name="colorAccent">@color/holo_blue_light</item>
         <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
+        <item name="android:windowBackground">@color/primary_light</item>
         <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
         <item name="action_bar_icon_color">@color/grey600</item>
         <item name="storage">@drawable/ic_sd_grey600_24dp</item>
@@ -41,7 +42,6 @@
         <item name="stat_playlist">@drawable/ic_list_grey600_24dp</item>
         <item name="type_video">@drawable/ic_videocam_grey600_24dp</item>
         <item name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
-        <item name="nav_drawer_background">@color/white</item>
         <item name="drawer_activated_color">@color/highlight_light</item>
         <item name="ic_history">@drawable/ic_history_grey600_24dp</item>
         <item name="ic_folder">@drawable/ic_folder_grey600_24dp</item>
@@ -82,6 +82,7 @@
         <item name="colorAccent">@color/holo_blue_dark</item>
         <item name="colorPrimary">@color/primary_darktheme</item>
         <item name="colorPrimaryDark">@color/primary_darktheme</item>
+        <item name="android:windowBackground">@color/primary_darktheme</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
@@ -116,8 +117,7 @@
         <item name="stat_playlist">@drawable/ic_list_white_24dp</item>
         <item name="type_video">@drawable/ic_videocam_white_24dp</item>
         <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
-        <item name="nav_drawer_background">@color/nav_drawer_background_dark</item>
-        <item name="drawer_activated_color">@color/nav_drawer_highlighted_dark</item>
+        <item name="drawer_activated_color">@color/highlight_dark</item>
         <item name="ic_history">@drawable/ic_history_white_24dp</item>
         <item name="ic_folder">@drawable/ic_folder_white_24dp</item>
         <item name="ic_settings_playback">@drawable/ic_av_play_white_24dp</item>
@@ -157,7 +157,6 @@
         <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
         <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_black</item>
-        <item name="nav_drawer_background">@color/black</item>
         <item name="drawer_activated_color">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
