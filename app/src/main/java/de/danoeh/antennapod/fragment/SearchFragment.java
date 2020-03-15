@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -139,10 +138,12 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
-        item.setShowAsAction(MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        final SearchView sv = new SearchView(getActivity());
+        inflater.inflate(R.menu.search, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        item.expandActionView();
+        final SearchView sv = (SearchView) item.getActionView();
         sv.setQueryHint(getString(R.string.search_label));
+        sv.clearFocus();
         sv.setQuery(getArguments().getString(ARG_QUERY), false);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -158,8 +159,18 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                 return false;
             }
         });
-        sv.setIconifiedByDefault(false);
-        item.setActionView(sv);
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                getFragmentManager().popBackStack();
+                return true;
+            }
+        });
     }
 
     @Subscribe

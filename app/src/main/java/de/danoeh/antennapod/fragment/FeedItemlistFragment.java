@@ -209,41 +209,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         optionsMenu = menu;
         FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
         iconTintManager.updateTint();
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        sv.setQueryHint(getString(R.string.search_label));
-        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-             @Override
-             public boolean onMenuItemActionExpand(MenuItem item) {
-                 menu.findItem(R.id.sort_items).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-                 menu.findItem(R.id.filter_items).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-                 menu.findItem(R.id.episode_actions).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-                 menu.findItem(R.id.refresh_item).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
-                 return true;
-             }
-
-             @Override
-             public boolean onMenuItemActionCollapse(MenuItem item) {
-                 getActivity().invalidateOptionsMenu();
-                 return true;
-             }
-         });
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                if (feed != null) {
-                    ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s, feed.getId()));
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+        MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID);
         if (feed == null || feed.getLink() == null) {
             menu.findItem(R.id.share_link_item).setVisible(false);
             menu.findItem(R.id.visit_website_item).setVisible(false);
