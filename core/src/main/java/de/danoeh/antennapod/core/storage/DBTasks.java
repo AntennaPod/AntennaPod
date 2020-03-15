@@ -6,9 +6,22 @@ import android.database.Cursor;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
-
 import androidx.annotation.VisibleForTesting;
-
+import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.event.MessageEvent;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.GpodnetSyncService;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
@@ -23,23 +36,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.GpodnetSyncService;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
-import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -97,53 +93,6 @@ public final class DBTasks {
             }
         } else {
             Log.w(TAG, "removeFeedWithDownloadUrl: Could not find feed with url: " + downloadUrl);
-        }
-    }
-
-    /**
-     * Starts playback of a FeedMedia object's file. This method will build an Intent based on the given parameters to
-     * start the {@link PlaybackService}.
-     *
-     * @param context           Used for sending starting Services and Activities.
-     * @param media             The FeedMedia object.
-     * @param showPlayer        If true, starts the appropriate player activity ({@link de.danoeh.antennapod.activity.AudioplayerActivity}
-     *                          or {@link de.danoeh.antennapod.activity.VideoplayerActivity}
-     * @param startWhenPrepared Parameter for the {@link PlaybackService} start intent. If true, playback will start as
-     *                          soon as the PlaybackService has finished loading the FeedMedia object's file.
-     * @param shouldStream      Parameter for the {@link PlaybackService} start intent. If true, the FeedMedia object's file
-     *                          will be streamed, otherwise the downloaded file will be used. If the downloaded file cannot be
-     *                          found, the PlaybackService will shutdown and the database entry of the FeedMedia object will be
-     *                          corrected.
-     */
-    public static void playMedia(final Context context, final FeedMedia media,
-                                 boolean showPlayer, boolean startWhenPrepared, boolean shouldStream) {
-        try {
-            if (!shouldStream) {
-                if (!media.fileExists()) {
-                    throw new MediaFileNotFoundException(
-                            "No episode was found at " + media.getFile_url(),
-                            media);
-                }
-            }
-
-            new PlaybackServiceStarter(context, media)
-                    .callEvenIfRunning(true)
-                    .startWhenPrepared(startWhenPrepared)
-                    .shouldStream(shouldStream)
-                    .start();
-
-            if (showPlayer) {
-                // Launch media player
-                context.startActivity(PlaybackService.getPlayerActivityIntent(
-                        context, media));
-            }
-            DBWriter.addQueueItemAt(context, media.getItem().getId(), 0, false);
-        } catch (MediaFileNotFoundException e) {
-            e.printStackTrace();
-            if (media.isPlaying()) {
-                IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
-            }
-            notifyMissingFeedMediaFile(context, media);
         }
     }
 
@@ -293,17 +242,16 @@ public final class DBTasks {
     }
 
     /**
-     * Notifies the database about a missing FeedMedia file. This method will correct the FeedMedia object's values in the
-     * DB and send a FeedUpdateBroadcast.
+     * Notifies the database about a missing FeedMedia file. This method will correct the FeedMedia object's
+     * values in the DB and send a FeedItemEvent.
      */
-    public static void notifyMissingFeedMediaFile(final Context context,
-                                                  final FeedMedia media) {
-        Log.i(TAG,
-                "The feedmanager was notified about a missing episode. It will update its database now.");
+    public static void notifyMissingFeedMediaFile(final Context context, final FeedMedia media) {
+        Log.i(TAG, "The feedmanager was notified about a missing episode. It will update its database now.");
         media.setDownloaded(false);
         media.setFile_url(null);
         DBWriter.setFeedMedia(media);
-        EventBus.getDefault().post(new FeedListUpdateEvent(media.getItem().getFeed()));
+        EventBus.getDefault().post(FeedItemEvent.deletedMedia(media.getItem()));
+        EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)

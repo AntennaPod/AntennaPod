@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
 
 import androidx.test.platform.app.InstrumentationRegistry;
+import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
@@ -113,7 +114,11 @@ public class AutoDownloadTest {
 
     private void playEpisode(@NonNull FeedItem item) {
         FeedMedia media = item.getMedia();
-        DBTasks.playMedia(context, media, false, true, true);
+        new PlaybackServiceStarter(context, media)
+                .callEvenIfRunning(true)
+                .startWhenPrepared(true)
+                .shouldStream(true)
+                .start();
         Awaitility.await("episode is playing")
                 .atMost(2000, MILLISECONDS)
                 .until(() -> item.equals(getCurrentlyPlaying()));
