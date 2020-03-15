@@ -33,11 +33,11 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
     public void updateTint() {
         if (isTinted) {
             doTint(new ContextThemeWrapper(context, R.style.Theme_AntennaPod_Dark));
-            //toolbar.getNavigationIcon().setColorFilter(0xffffffff, PorterDuff.Mode.SRC_ATOP);
+            toolbar.getNavigationIcon().setColorFilter(0xffffffff, PorterDuff.Mode.SRC_ATOP);
             toolbar.getOverflowIcon().setColorFilter(0xffffffff, PorterDuff.Mode.SRC_ATOP);
         } else {
             doTint(context);
-            //toolbar.getNavigationIcon().clearColorFilter();
+            toolbar.getNavigationIcon().clearColorFilter();
             toolbar.getOverflowIcon().clearColorFilter();
         }
     }

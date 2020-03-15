@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,8 +21,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -127,16 +130,9 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         ListView navList = findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
-        if (savedInstanceState != null) {
-            int backstackCount = savedInstanceState.getInt(SAVE_BACKSTACK_COUNT, 0);
-            drawerToggle.setDrawerIndicatorEnabled(backstackCount == 0);
-        }
-        drawerLayout.setDrawerListener(drawerToggle);
-
         final FragmentManager fm = getSupportFragmentManager();
-
-        fm.addOnBackStackChangedListener(() -> drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0));
+        fm.addOnBackStackChangedListener(() ->
+                drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0));
 
         navAdapter = new NavListAdapter(itemAccess, this);
         navList.setAdapter(navAdapter);
@@ -184,11 +180,22 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         PreferenceUpgrader.checkUpgrades(this);
     }
 
+    @Override
+    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+        super.setSupportActionBar(toolbar);
+
+        drawerLayout.removeDrawerListener(drawerToggle);
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                R.string.drawer_open, R.string.drawer_close);
+        drawerLayout.addDrawerListener(drawerToggle);
+        drawerToggle.syncState();
+    }
+
     private void saveLastNavFragment(String tag) {
-        Log.d(TAG, "saveLastNavFragment(tag: " + tag +")");
+        Log.d(TAG, "saveLastNavFragment(tag: " + tag + ")");
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
-        if(tag != null) {
+        if (tag != null) {
             edit.putString(PREF_LAST_FRAGMENT_TAG, tag);
         } else {
             edit.remove(PREF_LAST_FRAGMENT_TAG);
