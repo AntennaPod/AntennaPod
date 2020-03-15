@@ -120,7 +120,7 @@ public class CoverFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
-        if (controller == null) {
+        if (media == null) {
             return;
         }
         displayCoverImage(event.getPosition());
