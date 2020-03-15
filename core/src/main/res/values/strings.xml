@@ -658,6 +658,7 @@
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribing_label">Subscribing&#8230;</string>
+    <string name="preview_episode">Preview</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="rewind_label">Rewind</string>

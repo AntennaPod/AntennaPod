@@ -56,4 +56,14 @@
         tools:text="Feed item description"
         tools:background="@android:color/holo_green_dark" />
 
+    <Button
+        android:id="@+id/butPreview"
+        android:layout_below="@id/txtvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        style="?android:attr/buttonBarButtonStyle"
+        android:text="@string/preview_episode"/>
+
 </RelativeLayout>

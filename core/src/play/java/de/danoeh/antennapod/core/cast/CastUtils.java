@@ -9,6 +9,7 @@ import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
 
+import de.danoeh.antennapod.core.util.playback.RemoteMedia;
 import java.util.Calendar;
 import java.util.List;
 

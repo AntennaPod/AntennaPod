@@ -15,6 +15,7 @@ import com.google.android.libraries.cast.companionlibrary.cast.exceptions.CastEx
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
 
+import de.danoeh.antennapod.core.cast.MediaInfoCreator;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,7 +25,7 @@ import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.CastUtils;
 import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
-import de.danoeh.antennapod.core.cast.RemoteMedia;
+import de.danoeh.antennapod.core.util.playback.RemoteMedia;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -165,7 +166,7 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             return CastUtils.convertFromFeedMedia((FeedMedia) playable);
         }
         if (playable instanceof RemoteMedia) {
-            return ((RemoteMedia) playable).extractMediaInfo();
+            return MediaInfoCreator.from((RemoteMedia) playable);
         }
         return null;
     }
