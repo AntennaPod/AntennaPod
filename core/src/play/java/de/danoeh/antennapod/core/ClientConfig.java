@@ -11,6 +11,7 @@ import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.exception.RxJavaErrorHandlerSetup;
@@ -62,6 +63,7 @@ public class ClientConfig {
             Log.v(TAG, "Cast is disabled. All Cast-related initialization will be skipped.");
         }
         installSslProvider(context);
+        AntennapodHttpClient.setCacheDirectory(context.getCacheDir());
         SleepTimerPreferences.init(context);
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
         NotificationUtils.createChannels(context);
