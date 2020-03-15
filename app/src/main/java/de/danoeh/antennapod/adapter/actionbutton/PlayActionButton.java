@@ -6,6 +6,7 @@ import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 
 public class PlayActionButton extends ItemActionButton {
@@ -32,7 +33,10 @@ public class PlayActionButton extends ItemActionButton {
         if (media == null) {
             return;
         }
-
+        if (!media.fileExists()) {
+            DBTasks.notifyMissingFeedMediaFile(context, media);
+            return;
+        }
         new PlaybackServiceStarter(context, media)
                 .callEvenIfRunning(true)
                 .startWhenPrepared(true)
