@@ -126,8 +126,6 @@ public class DBWriter {
             }
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
-        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-
         return true;
     }
 

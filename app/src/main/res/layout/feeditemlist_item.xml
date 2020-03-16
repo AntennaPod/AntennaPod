@@ -25,6 +25,7 @@
                 android:src="?attr/dragview_background"
                 android:paddingEnd="8dp"
                 android:paddingRight="8dp"
+                android:visibility="gone"
                 tools:src="@drawable/ic_drag_vertical_grey600_48dp"
                 tools:background="@android:color/holo_green_dark"/>
 

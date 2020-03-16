@@ -78,8 +78,13 @@ public class CircularProgressBar extends View {
         }
 
         if (Math.abs(percentage - targetPercentage) > EPSILON) {
-            float delta = Math.min(0.02f, Math.abs(targetPercentage - percentage));
-            percentage += delta * ((targetPercentage - percentage) > 0 ? 1f : -1f);
+            float speed = 0.02f;
+            if (Math.abs(targetPercentage - percentage) < 0.1 && targetPercentage > percentage) {
+                speed = 0.006f;
+            }
+            float delta = Math.min(speed, Math.abs(targetPercentage - percentage));
+            float direction = ((targetPercentage - percentage) > 0 ? 1f : -1f);
+            percentage += delta * direction;
             invalidate();
         }
     }

@@ -7,6 +7,7 @@ import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -19,32 +20,25 @@ public class FeedSearcher {
 
     }
 
-    /**
-     * Search through a feed, or all feeds, for episodes that match the query in either the title,
-     * chapter, or show notes. The search is first performed on titles, then chapters, and finally
-     * show notes. The list of resulting episodes also describes where the first match occurred
-     * (title, chapters, or show notes).
-     *
-     * @param context Used for database access
-     * @param query search query
-     * @param selectedFeed feed to search, 0 to search through all feeds
-     * @return list of episodes containing the query
-     */
     @NonNull
-    public static List<FeedComponent> performSearch(final Context context, final String query, final long selectedFeed) {
-        final List<FeedComponent> result = new ArrayList<>();
+    public static List<FeedItem> searchFeedItems(final Context context, final String query, final long selectedFeed) {
         try {
             FutureTask<List<FeedItem>> itemSearchTask = DBTasks.searchFeedItems(context, selectedFeed, query);
             itemSearchTask.run();
-            if (selectedFeed == 0) {
-                FutureTask<List<Feed>> feedSearchTask = DBTasks.searchFeeds(context, query);
-                feedSearchTask.run();
-                result.addAll(feedSearchTask.get());
-            }
-            result.addAll(itemSearchTask.get());
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            return itemSearchTask.get();
+        } catch (ExecutionException | InterruptedException e) {
+            return Collections.emptyList();
         }
-        return result;
+    }
+
+    @NonNull
+    public static List<Feed> searchFeeds(final Context context, final String query) {
+        try {
+            FutureTask<List<Feed>> feedSearchTask = DBTasks.searchFeeds(context, query);
+            feedSearchTask.run();
+            return feedSearchTask.get();
+        } catch (ExecutionException | InterruptedException e) {
+            return Collections.emptyList();
+        }
     }
 }

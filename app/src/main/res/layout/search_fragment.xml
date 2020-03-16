@@ -22,9 +22,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
             android:layout_below="@id/toolbar"
-            android:id="@+id/listview"
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 </RelativeLayout>

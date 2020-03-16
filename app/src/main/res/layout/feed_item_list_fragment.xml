@@ -39,17 +39,17 @@
                     android:theme="?attr/actionBarTheme"
                     android:layout_alignParentTop="true"
                     android:id="@+id/toolbar"
+                    app:navigationIcon="?homeAsUpIndicator"
                     app:layout_collapseMode="pin"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <de.danoeh.antennapod.view.NestedScrollingListView
-            android:clipToPadding="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@android:id/list" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <ProgressBar
             android:id="@+id/progLoading"

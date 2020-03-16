@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -53,7 +52,8 @@ public class NewEpisodesFragment extends EpisodesListFragment {
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -61,33 +61,6 @@ public class NewEpisodesFragment extends EpisodesListFragment {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewHolder;
                 FeedItemMenuHandler.removeNewFlagWithUndo(NewEpisodesFragment.this, holder.getFeedItem());
-            }
-
-            @Override
-            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,
-                                          int actionState) {
-                // We only want the active item
-                if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-                    if (viewHolder instanceof AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) {
-                        AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder itemViewHolder =
-                                (AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) viewHolder;
-                        itemViewHolder.onItemSelected();
-                    }
-                }
-
-                super.onSelectedChanged(viewHolder, actionState);
-            }
-
-            @Override
-            public void clearView(RecyclerView recyclerView,
-                                  RecyclerView.ViewHolder viewHolder) {
-                super.clearView(recyclerView, viewHolder);
-
-                if (viewHolder instanceof AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) {
-                    AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder itemViewHolder =
-                            (AllEpisodesRecycleAdapter.ItemTouchHelperViewHolder) viewHolder;
-                    itemViewHolder.onItemClear();
-                }
             }
         };
 

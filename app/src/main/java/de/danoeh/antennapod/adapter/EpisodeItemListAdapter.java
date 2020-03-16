@@ -1,12 +1,12 @@
 package de.danoeh.antennapod.adapter;
 
+import android.app.Activity;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -24,15 +24,14 @@ import java.util.List;
 /**
  * List adapter for the list of new episodes.
  */
-public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<EpisodeItemViewHolder>
+public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemViewHolder>
         implements View.OnCreateContextMenuListener {
 
     private final WeakReference<MainActivity> mainActivityRef;
     private List<FeedItem> episodes = new ArrayList<>();
-
     private FeedItem selectedItem;
 
-    public AllEpisodesRecycleAdapter(MainActivity mainActivity) {
+    public EpisodeItemListAdapter(MainActivity mainActivity) {
         super();
         this.mainActivityRef = new WeakReference<>(mainActivity);
     }
@@ -45,9 +44,7 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<EpisodeItemV
     @NonNull
     @Override
     public EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        EpisodeItemViewHolder viewHolder = new EpisodeItemViewHolder(mainActivityRef.get(), parent);
-        viewHolder.dragHandle.setVisibility(View.GONE);
-        return viewHolder;
+        return new EpisodeItemViewHolder(mainActivityRef.get(), parent);
     }
 
     @Override
@@ -86,33 +83,19 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<EpisodeItemV
         return episodes.size();
     }
 
+    protected FeedItem getItem(int index) {
+        return episodes.get(index);
+    }
+
+    protected Activity getActivity() {
+        return mainActivityRef.get();
+    }
+
     @Override
     public void onCreateContextMenu(final ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = mainActivityRef.get().getMenuInflater();
         inflater.inflate(R.menu.feeditemlist_context, menu);
         menu.setHeaderTitle(selectedItem.getTitle());
         FeedItemMenuHandler.onPrepareMenu(menu, selectedItem, R.id.skip_episode_item);
-    }
-
-    /**
-     * Notifies a View Holder of relevant callbacks from
-     * {@link ItemTouchHelper.Callback}.
-     */
-    public interface ItemTouchHelperViewHolder {
-
-        /**
-         * Called when the {@link ItemTouchHelper} first registers an
-         * item as being moved or swiped.
-         * Implementations should update the item view to indicate
-         * it's active state.
-         */
-        void onItemSelected();
-
-
-        /**
-         * Called when the {@link ItemTouchHelper} has completed the
-         * move or swipe, and the active item state should be cleared.
-         */
-        void onItemClear();
     }
 }
