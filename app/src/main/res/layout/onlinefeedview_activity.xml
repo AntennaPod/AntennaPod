@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -30,7 +30,77 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <include layout="@layout/feeditemlist_header"/>
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/feed_image_bg">
+
+                    <ImageView
+                            android:id="@+id/imgvBackground"
+                            style="@style/BigBlurryBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/feeditemlist_header_height" />
+
+                    <ImageView
+                            android:id="@+id/imgvCover"
+                            android:layout_width="@dimen/thumbnail_length_onlinefeedview"
+                            android:layout_height="@dimen/thumbnail_length_onlinefeedview"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:contentDescription="@string/cover_label"
+                            tools:src="@drawable/ic_antenna"/>
+
+                    <TextView
+                            android:id="@+id/txtvTitle"
+                            style="@style/AntennaPod.TextView.Heading"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_toRightOf="@id/imgvCover"
+                            android:layout_toEndOf="@id/imgvCover"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:shadowColor="@color/black"
+                            android:shadowRadius="3"
+                            android:textColor="@color/white"
+                            tools:text="Podcast title" />
+
+                    <TextView
+                            android:id="@+id/txtvAuthor"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/txtvTitle"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_toRightOf="@id/imgvCover"
+                            android:layout_toEndOf="@id/imgvCover"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:shadowColor="@color/black"
+                            android:shadowRadius="3"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            tools:text="Podcast author"/>
+                </RelativeLayout>
 
                 <Spinner
                         android:id="@+id/spinnerAlternateUrls"

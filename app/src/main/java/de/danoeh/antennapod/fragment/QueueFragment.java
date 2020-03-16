@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
@@ -283,24 +284,7 @@ public class QueueFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         if (queue != null) {
             inflater.inflate(R.menu.queue, menu);
-
-            MenuItem searchItem = menu.findItem(R.id.action_search);
-            final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-            sv.setQueryHint(getString(R.string.search_label));
-            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    sv.clearFocus();
-                    ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s));
-                    return true;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return false;
-                }
-            });
-
+            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), 0);
             MenuItemUtils.refreshLockItem(getActivity(), menu);
 
             // Show Lock Item only if queue is sorted manually
@@ -495,9 +479,8 @@ public class QueueFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queue_label);
-
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         infoBar = root.findViewById(R.id.info_bar);
         recyclerView = root.findViewById(R.id.recyclerView);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();

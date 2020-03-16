@@ -168,23 +168,7 @@ public abstract class EpisodesListFragment extends Fragment {
         }
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.episodes, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        sv.setQueryHint(getString(R.string.search_label));
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                ((MainActivity) requireActivity()).loadChildFragment(SearchFragment.newInstance(s));
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+        MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), 0);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 

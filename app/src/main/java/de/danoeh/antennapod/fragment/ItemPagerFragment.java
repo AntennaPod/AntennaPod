@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -77,6 +79,9 @@ public class ItemPagerFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_pager_fragment, container, false);
+        Toolbar toolbar = layout.findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
         int feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
@@ -145,15 +150,12 @@ public class ItemPagerFragment extends Fragment {
             ((CastEnabledActivity) getActivity()).requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         inflater.inflate(R.menu.feeditem_options, menu);
-
-        if (menu != null && item != null) {
-            if (item.hasMedia()) {
-                FeedItemMenuHandler.onPrepareMenu(menu, item);
-            } else {
-                // these are already available via button1 and button2
-                FeedItemMenuHandler.onPrepareMenu(menu, item,
-                        R.id.mark_read_item, R.id.visit_website_item);
-            }
+        if (item.hasMedia()) {
+            FeedItemMenuHandler.onPrepareMenu(menu, item);
+        } else {
+            // these are already available via button1 and button2
+            FeedItemMenuHandler.onPrepareMenu(menu, item,
+                    R.id.mark_read_item, R.id.visit_website_item);
         }
     }
 

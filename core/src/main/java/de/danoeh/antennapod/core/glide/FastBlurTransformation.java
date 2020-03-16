@@ -31,6 +31,16 @@ public class FastBlurTransformation extends BitmapTransformation {
         return result;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof FastBlurTransformation;
+    }
+
+    @Override
+    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+        messageDigest.update(TAG.getBytes());
+    }
+
     private static Bitmap fastBlur(Bitmap bitmap, int radius) {
 
         // Stack Blur v1.0 from
@@ -268,10 +278,5 @@ public class FastBlurTransformation extends BitmapTransformation {
         }
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
         return bitmap;
-    }
-
-    @Override
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
-        messageDigest.update(TAG.getBytes());
     }
 }

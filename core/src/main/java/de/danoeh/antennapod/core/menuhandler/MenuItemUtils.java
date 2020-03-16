@@ -13,7 +13,7 @@ public class MenuItemUtils {
     /**
      * Changes the appearance of a MenuItem depending on whether the given UpdateRefreshMenuItemChecker
      * is refreshing or not. If it returns true, the menu item will be replaced by an indeterminate progress
-     * bar, otherwise nothing will happen.
+     * bar, otherwise the progress bar will be hidden.
      *
      * @param menu    The menu that the MenuItem belongs to
      * @param resId   The id of the MenuItem
@@ -22,11 +22,12 @@ public class MenuItemUtils {
      */
     public static boolean updateRefreshMenuItem(Menu menu, int resId, UpdateRefreshMenuItemChecker checker) {
         // expand actionview if feeds are being downloaded, collapse otherwise
+        MenuItem refreshItem = menu.findItem(resId);
         if (checker.isRefreshing()) {
-            MenuItem refreshItem = menu.findItem(resId);
             refreshItem.setActionView(R.layout.refresh_action_view);
             return true;
         } else {
+            refreshItem.setActionView(null);
             return false;
         }
     }

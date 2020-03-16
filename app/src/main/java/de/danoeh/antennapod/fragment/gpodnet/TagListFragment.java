@@ -24,8 +24,6 @@ import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 
 public class TagListFragment extends ListFragment {
-
-    private static final String TAG = "TagListFragment";
     private static final int COUNT = 50;
 
     @Override
@@ -70,12 +68,6 @@ public class TagListFragment extends ListFragment {
         });
 
         startLoadTask();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.add_feed_label);
     }
 
     @Override
