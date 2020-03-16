@@ -55,7 +55,6 @@
         <item name="ic_select_none">@drawable/ic_select_none_black</item>
         <item name="ic_sort">@drawable/ic_sort_black</item>
         <item name="ic_sliders">@drawable/ic_sliders_black</item>
-        <item name="ic_cast_disconnect">@drawable/ic_cast_disconnect_grey600_36dp</item>
         <item name="ic_appearance">@drawable/ic_appearance_black</item>
         <item name="ic_questionmark">@drawable/ic_questionmark_black</item>
         <item name="ic_chat">@drawable/ic_chat_black</item>
@@ -126,7 +125,6 @@
         <item name="ic_select_none">@drawable/ic_select_none_white</item>
         <item name="ic_sort">@drawable/ic_sort_white</item>
         <item name="ic_sliders">@drawable/ic_sliders_white</item>
-        <item name="ic_cast_disconnect">@drawable/ic_cast_disconnect_white_36dp</item>
         <item name="ic_appearance">@drawable/ic_appearance_white</item>
         <item name="ic_questionmark">@drawable/ic_questionmark_white</item>
         <item name="ic_chat">@drawable/ic_chat_white</item>
