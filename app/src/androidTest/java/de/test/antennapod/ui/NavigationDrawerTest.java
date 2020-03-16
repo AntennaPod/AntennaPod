@@ -116,7 +116,7 @@ public class NavigationDrawerTest {
         openNavDrawer();
         onView(withId(R.id.nav_list)).perform(swipeUp());
         onDrawerItem(withText(R.string.add_feed_label)).perform(click());
-        onView(isRoot()).perform(waitForView(withId(R.id.txtvFeedurl), 1000));
+        onView(isRoot()).perform(waitForView(withId(R.id.btn_add_via_url), 1000));
         assertEquals(activity.getString(R.string.add_feed_label), activity.getSupportActionBar().getTitle());
 
         // podcasts

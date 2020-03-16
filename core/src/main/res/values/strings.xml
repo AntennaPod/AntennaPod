@@ -120,14 +120,6 @@
     <string name="num_selected_label">%d selected</string>
     <string name="loading_more">Loading more…</string>
 
-    <!-- 'Add Feed' Activity labels -->
-    <string name="feedurl_label">Podcast feed URL</string>
-    <string name="etxtFeedurlHint">www.example.com/feed</string>
-    <string name="txtvfeedurl_label">Add Podcast by URL</string>
-    <string name="browse_gpoddernet_label">Browse gpodder.net</string>
-    <string name="discover">Discover</string>
-    <string name="discover_more">more »</string>
-
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
     <string name="mark_all_read_msg">Marked all Episodes as played</string>
@@ -694,7 +686,12 @@
     <string name="search_podcast_hint">Search podcast…</string>
     <string name="search_itunes_label">Search iTunes</string>
     <string name="search_fyyd_label">Search fyyd</string>
-    <string name="advanced_search">Advanced search</string>
+    <string name="advanced">Advanced</string>
+    <string name="add_podcast_by_url">Add Podcast by URL</string>
+    <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
+    <string name="browse_gpoddernet_label">Browse gpodder.net</string>
+    <string name="discover">Discover</string>
+    <string name="discover_more">more »</string>
 
     <string name="filter">Filter</string>
     
