@@ -22,7 +22,9 @@ public class FastBlurTransformation extends BitmapTransformation {
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap source, int outWidth, int outHeight) {
-        Bitmap resized = ThumbnailUtils.extractThumbnail(source, outWidth / 3, outHeight / 3);
+        int targetWidth = outWidth / 3;
+        int targetHeight = (int) (1.0 * outHeight * targetWidth / outWidth);
+        Bitmap resized = ThumbnailUtils.extractThumbnail(source, targetWidth, targetHeight);
         Bitmap result = fastBlur(resized, STACK_BLUR_RADIUS);
         if (result == null) {
             Log.w(TAG, "result was null");
