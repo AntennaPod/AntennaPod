@@ -63,8 +63,7 @@ public class HttpDownloader extends Downloader {
 
         try {
             final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
-            Request.Builder httpReq = new Request.Builder().url(uri.toURL())
-                    .header("User-Agent", ClientConfig.USER_AGENT);
+            Request.Builder httpReq = new Request.Builder().url(uri.toURL());
             httpReq.tag(request);
             if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 // set header explicitly so that okhttp doesn't do transparent gzip
