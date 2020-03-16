@@ -43,8 +43,7 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
 
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             Request.Builder httpReq = new Request.Builder()
-                    .url(formattedUrl)
-                    .header("User-Agent", ClientConfig.USER_AGENT);
+                    .url(formattedUrl);
             List<PodcastSearchResult> podcasts = new ArrayList<>();
             try {
                 Response response = client.newCall(httpReq.build()).execute();

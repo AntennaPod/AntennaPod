@@ -57,8 +57,7 @@ public class ItunesTopListLoader {
         return Single.create((SingleOnSubscribe<String>) emitter -> {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             Request.Builder httpReq = new Request.Builder()
-                    .url(podcast.feedUrl)
-                    .header("User-Agent", ClientConfig.USER_AGENT);
+                    .url(podcast.feedUrl);
             try {
                 Response response = client.newCall(httpReq.build()).execute();
                 if (response.isSuccessful()) {
@@ -84,7 +83,6 @@ public class ItunesTopListLoader {
         Log.d(TAG, "Feed URL " + String.format(url, country));
         Request.Builder httpReq = new Request.Builder()
                 .cacheControl(new CacheControl.Builder().minFresh(1, TimeUnit.DAYS).build())
-                .header("User-Agent", ClientConfig.USER_AGENT)
                 .url(String.format(url, country));
 
         try (Response response = client.newCall(httpReq.build()).execute()) {

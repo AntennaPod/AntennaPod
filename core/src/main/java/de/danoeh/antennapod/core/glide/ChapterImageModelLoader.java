@@ -71,7 +71,6 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
                     callback.onDataReady(ByteBuffer.wrap(imageContent));
                 } else {
                     Request.Builder httpReq = new Request.Builder();
-                    httpReq.header("User-Agent", ClientConfig.USER_AGENT);
                     // Skipping would download the whole file
                     httpReq.header("Range", "bytes=" + image.getPosition()
                             + "-" + (image.getPosition() + image.getLength()));
