@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
+import okhttp3.CacheControl;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -69,6 +70,7 @@ public class HttpDownloader extends Downloader {
                 // set header explicitly so that okhttp doesn't do transparent gzip
                 Log.d(TAG, "addHeader(\"Accept-Encoding\", \"identity\")");
                 httpReq.addHeader("Accept-Encoding", "identity");
+                httpReq.cacheControl(new CacheControl.Builder().noStore().build());
             }
 
             if (!TextUtils.isEmpty(request.getLastModified())) {

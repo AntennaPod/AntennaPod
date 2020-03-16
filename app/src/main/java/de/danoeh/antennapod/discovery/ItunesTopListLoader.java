@@ -10,6 +10,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class ItunesTopListLoader {
     private static final String TAG = "ITunesTopListLoader";
@@ -81,6 +83,7 @@ public class ItunesTopListLoader {
         String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit=" + limit + "/explicit=true/json";
         Log.d(TAG, "Feed URL " + String.format(url, country));
         Request.Builder httpReq = new Request.Builder()
+                .cacheControl(new CacheControl.Builder().minFresh(1, TimeUnit.DAYS).build())
                 .header("User-Agent", ClientConfig.USER_AGENT)
                 .url(String.format(url, country));
 

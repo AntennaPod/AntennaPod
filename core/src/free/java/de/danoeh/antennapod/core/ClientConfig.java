@@ -5,6 +5,7 @@ import android.content.Context;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.exception.RxJavaErrorHandlerSetup;
@@ -43,6 +44,7 @@ public class ClientConfig {
         UserPreferences.init(context);
         PlaybackPreferences.init(context);
         NetworkUtils.init(context);
+        AntennapodHttpClient.setCacheDirectory(context.getCacheDir());
         SleepTimerPreferences.init(context);
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
         NotificationUtils.createChannels(context);

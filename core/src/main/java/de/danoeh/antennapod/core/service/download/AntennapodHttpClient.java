@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -31,6 +33,7 @@ import javax.net.ssl.X509TrustManager;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import okhttp3.Cache;
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
 import okhttp3.Credentials;
@@ -45,18 +48,17 @@ import okhttp3.internal.http.StatusLine;
  * Provides access to a HttpClient singleton.
  */
 public class AntennapodHttpClient {
-
-    private AntennapodHttpClient(){}
-
     private static final String TAG = "AntennapodHttpClient";
-
     private static final int CONNECTION_TIMEOUT = 10000;
     private static final int READ_TIMEOUT = 30000;
-
     private static final int MAX_CONNECTIONS = 8;
-
+    private static File cacheDirectory;
 
     private static volatile OkHttpClient httpClient = null;
+
+    private AntennapodHttpClient() {
+
+    }
 
     /**
      * Returns the HttpClient singleton.
@@ -91,14 +93,14 @@ public class AntennapodHttpClient {
         builder.networkInterceptors().add(chain -> {
             Request request = chain.request();
             Response response = chain.proceed(request);
-            if (response.code() == HttpURLConnection.HTTP_MOVED_PERM ||
-                    response.code() == StatusLine.HTTP_PERM_REDIRECT) {
+            if (response.code() == HttpURLConnection.HTTP_MOVED_PERM
+                    || response.code() == StatusLine.HTTP_PERM_REDIRECT) {
                 String location = response.header("Location");
                 if (location.startsWith("/")) { // URL is not absolute, but relative
                     HttpUrl url = request.url();
                     location = url.scheme() + "://" + url.host() + location;
-                } else if (!location.toLowerCase().startsWith("http://") &&
-                        !location.toLowerCase().startsWith("https://")) {
+                } else if (!location.toLowerCase().startsWith("http://")
+                        && !location.toLowerCase().startsWith("https://")) {
                     // Reference is relative to current path
                     HttpUrl url = request.url();
                     String path = url.encodedPath();
@@ -124,6 +126,7 @@ public class AntennapodHttpClient {
         builder.connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
         builder.readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
         builder.writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+        builder.cache(new Cache(cacheDirectory, 20L * 1000000)); // 20MB
 
         // configure redirects
         builder.followRedirects(true);
@@ -146,9 +149,7 @@ public class AntennapodHttpClient {
         }
         if (Build.VERSION.SDK_INT < 21) {
             builder.sslSocketFactory(new CustomSslSocketFactory(), trustManager());
-        }
 
-        if (Build.VERSION.SDK_INT < 21) {
             // workaround for Android 4.x for certain web sites.
             // see: https://github.com/square/okhttp/issues/4053#issuecomment-402579554
             List<CipherSuite> cipherSuites = new ArrayList<>();
@@ -190,6 +191,10 @@ public class AntennapodHttpClient {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }
+    }
+
+    public static void setCacheDirectory(File cacheDirectory) {
+        AntennapodHttpClient.cacheDirectory = cacheDirectory;
     }
 
     private static class CustomSslSocketFactory extends SSLSocketFactory {
