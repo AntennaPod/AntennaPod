@@ -382,6 +382,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (PictureInPictureUtil.supportsPictureInPicture(this)) {
             menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
         }
+        menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders_white);
         return true;
     }
 

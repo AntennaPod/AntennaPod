@@ -30,6 +30,7 @@
 
     <item
         android:id="@+id/audio_controls"
+        android:icon="?attr/ic_sliders"
         android:title="@string/audio_controls"
         custom:showAsAction="always">
     </item>
@@ -59,9 +60,8 @@
 
     <item
         android:id="@+id/share_item"
-        android:icon="?attr/social_share"
         android:menuCategory="container"
-        custom:showAsAction="ifRoom"
+        custom:showAsAction="never"
         android:title="@string/share_label">
         <menu>
             <item

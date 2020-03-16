@@ -12,11 +12,10 @@
 
     <ImageView
             android:id="@+id/emptyViewIcon"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:paddingBottom="8dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:visibility="gone"
-            tools:src="@drawable/ic_feed_grey600_24dp"
+            tools:src="@drawable/ic_feed_black"
             tools:visibility="visible"/>
 
     <TextView
@@ -25,8 +24,7 @@
             android:layout_height="wrap_content"
             tools:text="Title"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:paddingBottom="8dp"/>
+            android:textColor="?android:attr/textColorPrimary"/>
 
     <TextView
             android:id="@+id/emptyViewMessage"

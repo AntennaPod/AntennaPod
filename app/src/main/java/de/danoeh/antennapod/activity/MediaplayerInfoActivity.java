@@ -94,7 +94,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
     TextView txtvPlaybackSpeed;
-    ImageButton butCastDisconnect;
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
@@ -251,7 +250,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
 
         butPlaybackSpeed = findViewById(R.id.butPlaybackSpeed);
         txtvPlaybackSpeed = findViewById(R.id.txtvPlaybackSpeed);
-        butCastDisconnect = findViewById(R.id.butCastDisconnect);
 
         pager = findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);

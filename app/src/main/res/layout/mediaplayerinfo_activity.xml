@@ -167,7 +167,7 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/set_playback_speed_label"
-                    tools:srcCompat="@drawable/ic_playback_speed_white_48dp"
+                    tools:srcCompat="@drawable/ic_playback_speed_white"
                     tools:visibility="gone"
                     tools:background="@android:color/holo_green_dark" />
 
@@ -185,22 +185,6 @@
                     android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:clickable="false" />
-
-                <ImageButton
-                    android:id="@+id/butCastDisconnect"
-                    android:layout_width="@dimen/audioplayer_playercontrols_length"
-                    android:layout_height="@dimen/audioplayer_playercontrols_length"
-                    android:layout_toLeftOf="@id/butRev"
-                    android:layout_toStartOf="@id/butRev"
-                    android:layout_centerVertical="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/cast_disconnect_label"
-                    android:src="?attr/ic_cast_disconnect"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    tools:src="@drawable/ic_cast_disconnect_white_36dp"
-                    tools:background="@android:color/holo_green_dark" />
 
                 <ImageButton
                     android:id="@+id/butFF"

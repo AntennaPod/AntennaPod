@@ -1,13 +1,14 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class CircularProgressBar extends View {
     private static final float EPSILON = 0.005f;
@@ -41,11 +42,9 @@ public class CircularProgressBar extends View {
         paintProgress.setStyle(Paint.Style.STROKE);
         paintProgress.setStrokeCap(Paint.Cap.ROUND);
 
-        int[] colorAttrs = new int[] { android.R.attr.textColorPrimary, android.R.attr.textColorSecondary };
-        TypedArray a = getContext().obtainStyledAttributes(colorAttrs);
-        paintProgress.setColor(a.getColor(0, 0xffffffff));
-        paintBackground.setColor(a.getColor(1, 0xffffffff));
-        a.recycle();
+        int color = ThemeUtils.getColorFromAttr(getContext(), R.attr.action_icon_color);
+        paintProgress.setColor(color);
+        paintBackground.setColor(color);
     }
 
     /**
@@ -68,7 +67,7 @@ public class CircularProgressBar extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        float padding = getHeight() * 0.06f;
+        float padding = getHeight() * 0.07f;
         paintBackground.setStrokeWidth(getHeight() * 0.02f);
         paintProgress.setStrokeWidth(padding);
         RectF bounds = new RectF(padding, padding, getWidth() - padding, getHeight() - padding);

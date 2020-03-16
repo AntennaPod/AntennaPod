@@ -93,9 +93,6 @@ public class AudioplayerActivity extends MediaplayerInfoActivity {
             return;
         }
         super.setupGUI();
-        if (butCastDisconnect != null) {
-            butCastDisconnect.setVisibility(View.GONE);
-        }
         if (butPlaybackSpeed != null) {
             butPlaybackSpeed.setOnClickListener(v -> {
                 if (controller == null) {

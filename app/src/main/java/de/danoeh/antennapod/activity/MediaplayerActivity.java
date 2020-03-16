@@ -6,17 +6,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,11 +19,13 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
-import com.joanzapata.iconify.IconDrawable;
-import com.joanzapata.iconify.fonts.FontAwesomeIcons;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -360,19 +354,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
         menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
         menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
-
-        if (this instanceof AudioplayerActivity) {
-            int[] attrs = {R.attr.action_bar_icon_color};
-            TypedArray ta = obtainStyledAttributes(UserPreferences.getTheme(), attrs);
-            int textColor = ta.getColor(0, Color.GRAY);
-            ta.recycle();
-            menu.findItem(R.id.audio_controls).setIcon(new IconDrawable(this,
-                    FontAwesomeIcons.fa_sliders).color(textColor).actionBarSize());
-        } else {
-            menu.findItem(R.id.audio_controls).setIcon(new IconDrawable(this,
-                    FontAwesomeIcons.fa_sliders).color(0xffffffff).actionBarSize());
-        }
-
         return true;
     }
 

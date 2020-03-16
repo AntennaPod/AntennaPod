@@ -73,7 +73,7 @@
 
     <item
         android:id="@+id/remove_item"
-        android:icon="?attr/content_discard"
+        android:icon="?attr/ic_delete"
         android:menuCategory="container"
         android:title="@string/remove_feed_label"
         android:visible="true"
