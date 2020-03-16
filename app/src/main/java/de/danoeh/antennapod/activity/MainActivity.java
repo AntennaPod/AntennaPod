@@ -182,13 +182,12 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
 
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        super.setSupportActionBar(toolbar);
-
         drawerLayout.removeDrawerListener(drawerToggle);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+        super.setSupportActionBar(toolbar);
     }
 
     private void saveLastNavFragment(String tag) {
@@ -368,10 +367,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         loadChildFragment(fragment, TransitionEffect.NONE);
     }
 
-    public void dismissChildFragment() {
-        getSupportFragmentManager().popBackStack();
-    }
-
     private int getSelectedNavListIndex() {
         String currentFragment = getLastNavFragment();
         if(currentFragment == null) {
@@ -523,7 +518,7 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
             return true;
         } else if (item.getItemId() == android.R.id.home) {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                dismissChildFragment();
+                getSupportFragmentManager().popBackStack();
             }
             return true;
         } else {
