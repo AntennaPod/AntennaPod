@@ -24,7 +24,7 @@ public class DeleteActionButton extends ItemActionButton {
     @Override
     @AttrRes
     public int getDrawable() {
-        return R.attr.content_discard;
+        return R.attr.ic_delete;
     }
 
     @Override

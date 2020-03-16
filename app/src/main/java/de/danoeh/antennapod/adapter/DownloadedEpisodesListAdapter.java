@@ -50,7 +50,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         final FeedItem item = getItem(position);
         holder.bind(item);
         holder.dragHandle.setVisibility(View.GONE);
-        holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.content_discard));
+        holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.ic_delete));
         holder.secondaryActionButton.setOnClickListener(v -> itemAccess.onFeedItemSecondaryAction(item));
         holder.hideSeparatorIfNecessary();
 

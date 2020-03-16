@@ -167,7 +167,7 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/set_playback_speed_label"
-                    tools:srcCompat="@drawable/ic_playback_speed_white_48dp"
+                    tools:srcCompat="@drawable/ic_playback_speed_white"
                     tools:visibility="gone"
                     tools:background="@android:color/holo_green_dark" />
 

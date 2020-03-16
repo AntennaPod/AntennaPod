@@ -13,7 +13,7 @@
             android:key="prefScreenInterface"
             android:title="@string/user_interface_label"
             android:summary="@string/user_interface_sum"
-            android:icon="?attr/ic_cellphone_text" />
+            android:icon="?attr/ic_appearance" />
 
     <Preference
             android:key="prefScreenPlayback"
@@ -25,7 +25,7 @@
             android:key="prefScreenNetwork"
             android:title="@string/network_pref"
             android:summary="@string/network_pref_sum"
-            android:icon="?attr/ic_swap" />
+            android:icon="?attr/ic_network" />
 
     <Preference
             android:key="prefScreenIntegrations"

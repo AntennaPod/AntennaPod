@@ -114,7 +114,7 @@ public class PlaybackHistoryFragment extends Fragment implements AdapterView.OnI
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
         MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
+        TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.ic_delete});
         clearHistory.setIcon(drawables.getDrawable(0));
         drawables.recycle();
     }

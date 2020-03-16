@@ -29,10 +29,10 @@
         android:paddingBottom="@dimen/list_vertical_padding"
         android:layout_above="@id/loadingMore"
         app:fastScrollEnabled="true"
-        app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
-        app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
-        app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-        app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
+        app:fastScrollHorizontalThumbDrawable="@drawable/scrollbar_thumb_drawable"
+        app:fastScrollHorizontalTrackDrawable="@drawable/scrollbar_line_drawable"
+        app:fastScrollVerticalThumbDrawable="@drawable/scrollbar_thumb_drawable"
+        app:fastScrollVerticalTrackDrawable="@drawable/scrollbar_line_drawable"
         tools:itemCount="13"
         tools:listitem="@layout/feeditemlist_item" />
 

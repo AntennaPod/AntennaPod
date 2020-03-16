@@ -23,7 +23,7 @@
     <ListPreference
             android:entries="@array/spnAutoDeleteItems"
             android:entryValues="@array/spnAutoDeleteValues"
-            android:icon="?attr/content_discard"
+            android:icon="?attr/ic_delete"
             android:title="@string/auto_delete_label"
             android:summary="@string/feed_auto_download_global"
             android:key="autoDelete"/>

@@ -400,8 +400,8 @@ public class PlaybackController {
 
         if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO  ||  PlaybackService.isCasting()) {
             TypedArray res = activity.obtainStyledAttributes(new int[]{ R.attr.av_play, R.attr.av_pause});
-            playResource = res.getResourceId(0, R.drawable.ic_av_play_dark_48dp);
-            pauseResource = res.getResourceId(1, R.drawable.ic_av_pause_dark_48dp);
+            playResource = res.getResourceId(0, R.drawable.ic_av_play_black_48dp);
+            pauseResource = res.getResourceId(1, R.drawable.ic_av_pause_black_48dp);
             res.recycle();
         } else {
             playResource = R.drawable.ic_av_play_white_80dp;
