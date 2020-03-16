@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            app:navigationIcon="?homeAsUpIndicator"
             android:id="@+id/toolbar"/>
 
     <com.google.android.material.tabs.TabLayout
