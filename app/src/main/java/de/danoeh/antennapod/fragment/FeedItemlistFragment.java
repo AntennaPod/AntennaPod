@@ -87,7 +87,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     private FeedItemListAdapter adapter;
-    private MoreContentListFooterUtil listFooter;
+    private MoreContentListFooterUtil nextPageLoader;
 
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
@@ -179,6 +179,33 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         };
         appBar.addOnOffsetChangedListener(iconTintManager);
+
+        nextPageLoader = new MoreContentListFooterUtil(root.findViewById(R.id.more_content_list_footer));
+        nextPageLoader.setClickListener(() -> {
+            if (feed != null) {
+                try {
+                    DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
+                }
+            }
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int deltaX, int deltaY) {
+                super.onScrolled(recyclerView, deltaX, deltaY);
+
+                int visibleEpisodeCount = recyclerView.getChildCount();
+                int totalEpisodeCount = recyclerView.getLayoutManager().getItemCount();
+                int firstVisibleEpisode = layoutManager.findFirstVisibleItemPosition();
+
+                boolean isAtBottom = (totalEpisodeCount - visibleEpisodeCount) <= (firstVisibleEpisode + 3);
+                boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
+                nextPageLoader.getRoot().setVisibility((isAtBottom && hasMorePages) ? View.VISIBLE : View.GONE);
+            }
+        });
+
         EventBus.getDefault().register(this);
         loadItems();
         return root;
@@ -193,7 +220,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             disposable.dispose();
         }
         adapter = null;
-        listFooter = null;
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
@@ -390,9 +416,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
             getActivity().supportInvalidateOptionsMenu();
         }
-        if (listFooter != null) {
-            listFooter.setLoadingState(DownloadRequester.getInstance().isDownloadingFeeds());
+        if (!DownloadRequester.getInstance().isDownloadingFeeds()) {
+            nextPageLoader.getRoot().setVisibility(View.GONE);
         }
+        nextPageLoader.setLoadingState(DownloadRequester.getInstance().isDownloadingFeeds());
     }
 
     private void displayList() {
@@ -402,7 +429,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         if (adapter == null) {
             recyclerView.setAdapter(null);
-            setupFooterView();
             adapter = new FeedItemListAdapter((MainActivity) getActivity());
             recyclerView.setAdapter(adapter);
         }
@@ -411,10 +437,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         adapter.updateItems(feed.getItems());
 
         getActivity().supportInvalidateOptionsMenu();
-
-        /*if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
-            listView.removeFooterView(listFooter.getRoot());
-        }*/
+        updateProgressBarVisibility();
     }
 
     private void refreshHeaderView() {
@@ -494,31 +517,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     .fitCenter()
                     .dontAnimate())
                 .into(imgvCover);
-    }
-
-
-    private void setupFooterView() {
-        if (recyclerView == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
-            return;
-        }
-        if (feed.isPaged() && feed.getNextPageLink() != null) {
-            LayoutInflater inflater = (LayoutInflater)
-                    getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View footer = inflater.inflate(R.layout.more_content_list_footer, null, false);
-            //adapter.setFooterView(footer);
-            listFooter = new MoreContentListFooterUtil(footer);
-            listFooter.setClickListener(() -> {
-                if (feed != null) {
-                    try {
-                        DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
-                    } catch (DownloadRequestException e) {
-                        e.printStackTrace();
-                        DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
-                    }
-                }
-            });
-        }
     }
 
     private void loadItems() {

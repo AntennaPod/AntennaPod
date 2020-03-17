@@ -59,4 +59,11 @@
             android:indeterminateOnly="true"
             android:visibility="gone"/>
 
+    <include
+            layout="@layout/more_content_list_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:visibility="gone"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
