@@ -72,7 +72,6 @@ public class DownloadActionButton extends ItemActionButton {
     private void downloadEpisode(Context context) {
         try {
             DownloadRequester.getInstance().downloadMedia(context, item);
-            Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
