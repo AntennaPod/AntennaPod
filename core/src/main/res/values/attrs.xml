@@ -57,6 +57,10 @@
     <attr name="action_icon_color" format="color"/>
 
     <declare-styleable name="SquareImageView">
-        <attr name="useMinimum" format="boolean" />
+        <attr name="direction" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+            <enum name="minimum" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

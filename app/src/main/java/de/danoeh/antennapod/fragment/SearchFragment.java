@@ -3,55 +3,65 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.FeedSearchResultAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.DownloaderUpdate;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
+import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
  */
-public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class SearchFragment extends Fragment {
     private static final String TAG = "SearchFragment";
-
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
 
-    private FeedItemlistAdapter searchAdapter;
-    private List<FeedComponent> searchResults = new ArrayList<>();
+    private EpisodeItemListAdapter adapter;
+    private FeedSearchResultAdapter adapterFeeds;
     private Disposable disposable;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyViewHandler;
+    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewFeeds;
+    private List<FeedItem> results;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -104,14 +114,27 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(layout.findViewById(R.id.toolbar));
-        ListView listView = layout.findViewById(R.id.listview);
         progressBar = layout.findViewById(R.id.progressBar);
-        searchAdapter = new FeedItemlistAdapter((MainActivity) getActivity(), itemAccess, true, true);
-        listView.setAdapter(searchAdapter);
-        listView.setOnItemClickListener(this);
+
+        recyclerView = layout.findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setVisibility(View.GONE);
+        adapter = new EpisodeItemListAdapter((MainActivity) getActivity());
+        recyclerView.setAdapter(adapter);
+
+        recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
+        LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
+        layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
+        recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
+        recyclerViewFeeds.setHasFixedSize(true);
+        adapterFeeds = new FeedSearchResultAdapter((MainActivity) getActivity());
+        recyclerViewFeeds.setAdapter(adapterFeeds);
 
         emptyViewHandler = new EmptyViewHandler(getContext());
-        emptyViewHandler.attachToListView(listView);
+        emptyViewHandler.attachToRecyclerView(recyclerView);
         emptyViewHandler.setIcon(R.attr.action_search);
         emptyViewHandler.setTitle(R.string.search_status_no_results);
         EventBus.getDefault().register(this);
@@ -122,17 +145,6 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
     public void onDestroyView() {
         super.onDestroyView();
         EventBus.getDefault().unregister(this);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        FeedComponent comp = searchAdapter.getItem(position);
-        if (comp.getClass() == Feed.class) {
-            ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId(), null);
-        } else if (comp.getClass() == FeedItem.class) {
-            FeedItem item = (FeedItem) comp;
-            ((MainActivity) getActivity()).loadChildFragment(ItemPagerFragment.newInstance(item.getId()));
-        }
     }
 
     @Override
@@ -173,42 +185,72 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         });
     }
 
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        FeedItem selectedItem = adapter.getSelectedItem();
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at current position was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+    }
+
     @Subscribe
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         search();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (results == null) {
+            return;
+        } else if (adapter == null) {
+            search();
+            return;
+        }
+        for (int i = 0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
+            int pos = FeedItemUtil.indexOfItemWithId(results, item.getId());
+            if (pos >= 0) {
+                results.remove(pos);
+                results.add(pos, item);
+                adapter.notifyItemChanged(pos);
+            }
+        }
+    }
+
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (searchAdapter != null) {
-            searchAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void onSearchResults(List<FeedComponent> results) {
-        progressBar.setVisibility(View.GONE);
-        searchResults = results;
-        searchAdapter.notifyDataSetChanged();
-        String query = getArguments().getString(ARG_QUERY);
-        emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
-    }
-
-    private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
-        @Override
-        public int getCount() {
-            return searchResults.size();
-        }
-
-        @Override
-        public FeedComponent getItem(int position) {
-            if (0 <= position && position < searchResults.size()) {
-                return searchResults.get(position);
-            } else {
-                return null;
+        DownloaderUpdate update = event.update;
+        if (adapter != null && update.mediaIds.length > 0) {
+            for (long mediaId : update.mediaIds) {
+                int pos = FeedItemUtil.indexOfItemWithMediaId(results, mediaId);
+                if (pos >= 0) {
+                    adapter.notifyItemChanged(pos);
+                }
             }
         }
-    };
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (adapter != null) {
+            for (int i = 0; i < adapter.getItemCount(); i++) {
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                    holder.notifyPlaybackPositionUpdated(event);
+                    break;
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        search();
+    }
 
     private void search() {
         if (disposable != null) {
@@ -219,15 +261,22 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
         disposable = Observable.fromCallable(this::performSearch)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onSearchResults, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(results -> {
+                    progressBar.setVisibility(View.GONE);
+                    this.results = results.first;
+                    adapter.updateItems(results.first);
+                    adapterFeeds.updateData(results.second);
+                    String query = getArguments().getString(ARG_QUERY);
+                    emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @NonNull
-    private List<FeedComponent> performSearch() {
-        Bundle args = getArguments();
-        String query = args.getString(ARG_QUERY);
-        long feed = args.getLong(ARG_FEED);
-        Context context = getActivity();
-        return FeedSearcher.performSearch(context, query, feed);
+    private Pair<List<FeedItem>, List<Feed>> performSearch() {
+        String query = getArguments().getString(ARG_QUERY);
+        long feed = getArguments().getLong(ARG_FEED);
+        List<FeedItem> items = FeedSearcher.searchFeedItems(getContext(), query, feed);
+        List<Feed> feeds = FeedSearcher.searchFeeds(getContext(), query);
+        return new Pair<>(items, feeds);
     }
 }

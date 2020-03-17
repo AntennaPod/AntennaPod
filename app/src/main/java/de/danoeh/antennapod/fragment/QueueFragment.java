@@ -14,27 +14,15 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-
-import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
@@ -44,8 +32,8 @@ import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -55,24 +43,29 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
-import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REMOVE_FROM_QUEUE;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DOWNLOAD;
+import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REMOVE_FROM_QUEUE;
 
 /**
- * Shows all items in the queue
+ * Shows all items in the queue.
  */
 public class QueueFragment extends Fragment {
     public static final String TAG = "QueueFragment";
@@ -179,10 +172,10 @@ public class QueueFragment extends Fragment {
             loadItems(true);
             return;
         }
-        for(int i=0, size = event.items.size(); i < size; i++) {
+        for (int i = 0, size = event.items.size(); i < size; i++) {
             FeedItem item = event.items.get(i);
             int pos = FeedItemUtil.indexOfItemWithId(queue, item.getId());
-            if(pos >= 0) {
+            if (pos >= 0) {
                 queue.remove(pos);
                 queue.add(pos, item);
                 recyclerAdapter.notifyItemChanged(pos);
@@ -501,12 +494,13 @@ public class QueueFragment extends Fragment {
                 int dragTo = -1;
 
                 @Override
-                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                      RecyclerView.ViewHolder target) {
                     int fromPosition = viewHolder.getAdapterPosition();
                     int toPosition = target.getAdapterPosition();
 
                     // Update tracked position
-                    if(dragFrom == -1) {
+                    if (dragFrom == -1) {
                         dragFrom =  fromPosition;
                     }
                     dragTo = toPosition;
@@ -514,7 +508,7 @@ public class QueueFragment extends Fragment {
                     int from = viewHolder.getAdapterPosition();
                     int to = target.getAdapterPosition();
                     Log.d(TAG, "move(" + from + ", " + to + ") in memory");
-                    if(from >= queue.size() || to >= queue.size()) {
+                    if (from >= queue.size() || to >= queue.size()) {
                         return false;
                     }
                     queue.add(to, queue.remove(from));
@@ -524,7 +518,7 @@ public class QueueFragment extends Fragment {
 
                 @Override
                 public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                    if(disposable != null) {
+                    if (disposable != null) {
                         disposable.dispose();
                     }
                     final int position = viewHolder.getAdapterPosition();
@@ -556,36 +550,14 @@ public class QueueFragment extends Fragment {
                 }
 
                 @Override
-                public void onSelectedChanged(RecyclerView.ViewHolder viewHolder,
-                                              int actionState) {
-                    // We only want the active item
-                    if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-                        if (viewHolder instanceof QueueRecyclerAdapter.ItemTouchHelperViewHolder) {
-                            QueueRecyclerAdapter.ItemTouchHelperViewHolder itemViewHolder =
-                                    (QueueRecyclerAdapter.ItemTouchHelperViewHolder) viewHolder;
-                            itemViewHolder.onItemSelected();
-                        }
-                    }
-
-                    super.onSelectedChanged(viewHolder, actionState);
-                }
-                @Override
-                public void clearView(RecyclerView recyclerView,
-                                      RecyclerView.ViewHolder viewHolder) {
+                public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                     super.clearView(recyclerView, viewHolder);
-
                     // Check if drag finished
-                    if(dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
+                    if (dragFrom != -1 && dragTo != -1 && dragFrom != dragTo) {
                         reallyMoved(dragFrom, dragTo);
                     }
 
                     dragFrom = dragTo = -1;
-
-                    if (viewHolder instanceof QueueRecyclerAdapter.ItemTouchHelperViewHolder) {
-                        QueueRecyclerAdapter.ItemTouchHelperViewHolder itemViewHolder =
-                                (QueueRecyclerAdapter.ItemTouchHelperViewHolder) viewHolder;
-                        itemViewHolder.onItemClear();
-                    }
                 }
 
                 private void reallyMoved(int from, int to) {
@@ -613,11 +585,11 @@ public class QueueFragment extends Fragment {
         if (queue != null && queue.size() > 0) {
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
-                recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess, itemTouchHelper);
-                recyclerAdapter.setHasStableIds(true);
+                recyclerAdapter = new QueueRecyclerAdapter(activity, itemTouchHelper);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }
+            recyclerAdapter.updateItems(queue);
             recyclerView.setVisibility(View.VISIBLE);
         } else {
             recyclerAdapter = null;
@@ -657,29 +629,9 @@ public class QueueFragment extends Fragment {
         infoBar.setText(info);
     }
 
-    private final QueueRecyclerAdapter.ItemAccess itemAccess = new QueueRecyclerAdapter.ItemAccess() {
-        @Override
-        public int getCount() {
-            return queue != null ? queue.size() : 0;
-        }
-
-        @Override
-        public FeedItem getItem(int position) {
-            if (queue != null && 0 <= position && position < queue.size()) {
-                return queue.get(position);
-            }
-            return null;
-        }
-
-        @Override
-        public LongList getQueueIds() {
-            return queue != null ? LongList.of(FeedItemUtil.getIds(queue)) : new LongList(0);
-        }
-    };
-
     private void loadItems(final boolean restoreScrollPosition) {
         Log.d(TAG, "loadItems()");
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         if (queue == null) {
@@ -694,7 +646,7 @@ public class QueueFragment extends Fragment {
                     progLoading.setVisibility(View.GONE);
                     queue = items;
                     onFragmentLoaded(restoreScrollPosition);
-                    if(recyclerAdapter != null) {
+                    if (recyclerAdapter != null) {
                         recyclerAdapter.notifyDataSetChanged();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));

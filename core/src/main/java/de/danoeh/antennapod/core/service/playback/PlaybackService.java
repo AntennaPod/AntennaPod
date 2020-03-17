@@ -54,7 +54,6 @@ import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -1649,18 +1648,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onPlayFromSearch(String query, Bundle extras) {
             Log.d(TAG, "onPlayFromSearch  query=" + query + " extras=" + extras.toString());
 
-            List<FeedComponent> results = FeedSearcher.performSearch(getBaseContext(), query, 0);
-            for (FeedComponent result : results) {
-                if (result instanceof FeedItem) {
-                    try {
-                        FeedMedia media = ((FeedItem) result).getMedia();
-                        mediaPlayer.playMediaObject(media, !media.localFileAvailable(), true, true);
-                        return;
-                    } catch (Exception e) {
-                        Log.d(TAG, e.getMessage());
-                        e.printStackTrace();
-                    }
-                }
+            List<FeedItem> results = FeedSearcher.searchFeedItems(getBaseContext(), query, 0);
+            if (results.size() > 0 && results.get(0).getMedia() != null) {
+                FeedMedia media = results.get(0).getMedia();
+                mediaPlayer.playMediaObject(media, !media.localFileAvailable(), true, true);
+                return;
             }
             onPlay();
         }

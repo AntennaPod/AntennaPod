@@ -1,16 +1,13 @@
 package de.danoeh.antennapod.view.viewholder;
 
-import android.graphics.Color;
 import android.os.Build;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,8 +33,7 @@ import de.danoeh.antennapod.view.CircularProgressBar;
 /**
  * Holds the view which shows FeedItems.
  */
-public class EpisodeItemViewHolder extends FeedComponentViewHolder
-        implements QueueRecyclerAdapter.ItemTouchHelperViewHolder {
+public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "EpisodeItemViewHolder";
 
     private final View container;
@@ -89,16 +85,6 @@ public class EpisodeItemViewHolder extends FeedComponentViewHolder
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         coverHolder = itemView.findViewById(R.id.coverHolder);
         itemView.setTag(this);
-    }
-
-    @Override
-    public void onItemSelected() {
-        itemView.setAlpha(0.5f);
-    }
-
-    @Override
-    public void onItemClear() {
-        itemView.setAlpha(1.0f);
     }
 
     public void bind(FeedItem item) {

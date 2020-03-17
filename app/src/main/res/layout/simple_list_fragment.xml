@@ -11,11 +11,12 @@
             android:layout_alignParentTop="true"
             android:id="@+id/toolbar"/>
 
-    <ListView android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_below="@id/toolbar"
-              android:id="@android:id/list"
-              android:clipToPadding="false"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar"
+            android:id="@+id/recyclerView"
+            android:clipToPadding="false"/>
 
     <ProgressBar
             android:id="@+id/progLoading"

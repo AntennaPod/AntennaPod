@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,19 +21,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -68,6 +67,7 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -86,12 +86,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private static final String TAG = "ItemlistFragment";
     private static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
-    private FeedItemlistAdapter adapter;
-    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
-    private MoreContentListFooterUtil listFooter;
+    private FeedItemListAdapter adapter;
+    private MoreContentListFooterUtil nextPageLoader;
 
     private ProgressBar progressBar;
-    private ListView listView;
+    private RecyclerView recyclerView;
     private TextView txtvTitle;
     private IconTextView txtvFailure;
     private ImageView imgvBackground;
@@ -144,9 +143,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         toolbar.setTitle("");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        listView = root.findViewById(android.R.id.list);
-        listView.setOnItemClickListener(this);
-        registerForContextMenu(listView);
+        recyclerView = root.findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setVisibility(View.GONE);
+
         progressBar = root.findViewById(R.id.progLoading);
         txtvTitle = root.findViewById(R.id.txtvTitle);
         txtvAuthor = root.findViewById(R.id.txtvAuthor);
@@ -176,6 +179,33 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         };
         appBar.addOnOffsetChangedListener(iconTintManager);
+
+        nextPageLoader = new MoreContentListFooterUtil(root.findViewById(R.id.more_content_list_footer));
+        nextPageLoader.setClickListener(() -> {
+            if (feed != null) {
+                try {
+                    DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
+                }
+            }
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int deltaX, int deltaY) {
+                super.onScrolled(recyclerView, deltaX, deltaY);
+
+                int visibleEpisodeCount = recyclerView.getChildCount();
+                int totalEpisodeCount = recyclerView.getLayoutManager().getItemCount();
+                int firstVisibleEpisode = layoutManager.findFirstVisibleItemPosition();
+
+                boolean isAtBottom = (totalEpisodeCount - visibleEpisodeCount) <= (firstVisibleEpisode + 3);
+                boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
+                nextPageLoader.getRoot().setVisibility((isAtBottom && hasMorePages) ? View.VISIBLE : View.GONE);
+            }
+        });
+
         EventBus.getDefault().register(this);
         loadItems();
         return root;
@@ -190,7 +220,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             disposable.dispose();
         }
         adapter = null;
-        listFooter = null;
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
@@ -283,35 +312,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-
-        FeedItem item = (FeedItem) itemAccess.getItem(adapterInfo.position);
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.feeditemlist_context, menu);
-
-        if (item != null) {
-            menu.setHeaderTitle(item.getTitle());
-        }
-
-        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        FeedItemMenuHandler.onPrepareMenu(menu, item);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        if (menuInfo == null) {
-            menuInfo = lastMenuInfo;
-        }
-        FeedItem selectedItem = feed.getItemAtIndex(menuInfo.position);
-
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        FeedItem selectedItem = adapter.getSelectedItem();
         if (selectedItem == null) {
-            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            Log.i(TAG, "Selected item at current position was null, ignoring selection");
             return super.onContextItemSelected(item);
         }
-
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
@@ -336,14 +342,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(FeedItemEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
-        if (feed == null || feed.getItems() == null || adapter == null) {
+        if (feed == null || feed.getItems() == null) {
+            return;
+        } else if (adapter == null) {
+            loadItems();
             return;
         }
-        for (FeedItem item : event.items) {
+        for (int i = 0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
             int pos = FeedItemUtil.indexOfItemWithId(feed.getItems(), item.getId());
             if (pos >= 0) {
-                loadItems();
-                return;
+                feed.getItems().remove(pos);
+                feed.getItems().add(pos, item);
+                adapter.notifyItemChanged(pos);
             }
         }
     }
@@ -356,14 +367,25 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             updateProgressBarVisibility();
         }
         if (adapter != null && update.mediaIds.length > 0) {
-            adapter.notifyDataSetChanged();
+            for (long mediaId : update.mediaIds) {
+                int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
+                if (pos >= 0) {
+                    adapter.notifyItemChanged(pos);
+                }
+            }
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         if (adapter != null) {
-            adapter.notifyCurrentlyPlayingItemChanged(event, listView);
+            for (int i = 0; i < adapter.getItemCount(); i++) {
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                    holder.notifyPlaybackPositionUpdated(event);
+                    break;
+                }
+            }
         }
     }
 
@@ -394,9 +416,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
             getActivity().supportInvalidateOptionsMenu();
         }
-        if (listFooter != null) {
-            listFooter.setLoadingState(DownloadRequester.getInstance().isDownloadingFeeds());
+        if (!DownloadRequester.getInstance().isDownloadingFeeds()) {
+            nextPageLoader.getRoot().setVisibility(View.GONE);
         }
+        nextPageLoader.setLoadingState(DownloadRequester.getInstance().isDownloadingFeeds());
     }
 
     private void displayList() {
@@ -405,24 +428,20 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             return;
         }
         if (adapter == null) {
-            listView.setAdapter(null);
-            setupFooterView();
-            adapter = new FeedItemlistAdapter((MainActivity) getActivity(), itemAccess, false, true);
-            listView.setAdapter(adapter);
+            recyclerView.setAdapter(null);
+            adapter = new FeedItemListAdapter((MainActivity) getActivity());
+            recyclerView.setAdapter(adapter);
         }
-        listView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-        adapter.notifyDataSetChanged();
+        adapter.updateItems(feed.getItems());
 
         getActivity().supportInvalidateOptionsMenu();
-
-        if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
-            listView.removeFooterView(listFooter.getRoot());
-        }
+        updateProgressBarVisibility();
     }
 
     private void refreshHeaderView() {
-        if (listView == null || feed == null || !headerCreated) {
+        if (recyclerView == null || feed == null || !headerCreated) {
             Log.e(TAG, "Unable to refresh header view");
             return;
         }
@@ -453,11 +472,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void setupHeaderView() {
-        if (listView == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
-            return;
-        }
-        if (headerCreated) {
+        if (feed == null || headerCreated) {
             return;
         }
 
@@ -504,49 +519,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .into(imgvCover);
     }
 
-
-    private void setupFooterView() {
-        if (listView == null || feed == null) {
-            Log.e(TAG, "Unable to setup listview: recyclerView = null or feed = null");
-            return;
-        }
-        if (feed.isPaged() && feed.getNextPageLink() != null) {
-            LayoutInflater inflater = (LayoutInflater)
-                    getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View header = inflater.inflate(R.layout.more_content_list_footer, listView, false);
-            listView.addFooterView(header);
-            listFooter = new MoreContentListFooterUtil(header);
-            listFooter.setClickListener(() -> {
-                if (feed != null) {
-                    try {
-                        DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
-                    } catch (DownloadRequestException e) {
-                        e.printStackTrace();
-                        DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
-                    }
-                }
-            });
-        }
-    }
-
-    private final FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
-
-        @Override
-        public FeedItem getItem(int position) {
-            if (feed != null && 0 <= position && position < feed.getNumOfItems()) {
-                return feed.getItemAtIndex(position);
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return (feed != null) ? feed.getNumOfItems() : 0;
-        }
-
-    };
-
     private void loadItems() {
         if (disposable != null) {
             disposable.dispose();
@@ -575,5 +547,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             feed.setItems(feedItems);
         }
         return Optional.ofNullable(feed);
+    }
+
+    private static class FeedItemListAdapter extends EpisodeItemListAdapter {
+        public FeedItemListAdapter(MainActivity mainActivity) {
+            super(mainActivity);
+        }
+
+        @NonNull
+        @Override
+        public EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            EpisodeItemViewHolder viewHolder = super.onCreateViewHolder(parent, viewType);
+            viewHolder.coverHolder.setVisibility(View.GONE);
+            return viewHolder;
+        }
     }
 }
