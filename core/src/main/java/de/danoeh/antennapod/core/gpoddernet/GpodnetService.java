@@ -688,8 +688,20 @@ public class GpodnetService {
             website = (String) websiteObj;
         }
         String mygpoLink = object.getString("mygpo_link");
-        return new GpodnetPodcast(url, title, description, subscribers,
-                logoUrl, website, mygpoLink);
+
+        String author = null;
+        Object authorObj = object.opt("author");
+        if (authorObj != null && authorObj instanceof String) {
+            author = (String) authorObj;
+        }
+        return new GpodnetPodcast(url,
+                title,
+                description,
+                subscribers,
+                logoUrl,
+                website,
+                mygpoLink,
+                author);
     }
 
     private List<GpodnetDevice> readDeviceListFromJSONArray(@NonNull JSONArray array)
