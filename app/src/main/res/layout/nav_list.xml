@@ -2,15 +2,17 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_layout"
-    android:layout_width="@dimen/drawer_width"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginEnd="24dp"
+    android:layout_marginRight="24dp"
     android:layout_gravity="start"
     android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/nav_settings"
-        android:layout_width="@dimen/drawer_width"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/listitem_iconwithtext_height"
         android:layout_alignParentBottom="true"
         android:background="?attr/selectableItemBackground"
@@ -36,7 +38,7 @@
             tools:src="@android:drawable/sym_def_app_icon" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
@@ -51,7 +53,7 @@
 
     <View
         android:id="@+id/divider"
-        android:layout_width="@dimen/drawer_width"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_above="@id/nav_settings"
         android:layout_centerVertical="true"
@@ -60,17 +62,15 @@
 
     <ListView
         android:id="@+id/nav_list"
-        android:layout_width="@dimen/drawer_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/divider"
-        android:layout_alignParentTop="true"
         android:choiceMode="singleChoice"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:paddingBottom="@dimen/list_vertical_padding"
-        android:paddingTop="@dimen/list_vertical_padding"
+        android:paddingTop="8dp"
         android:scrollbarStyle="outsideOverlay"
-        tools:background="@android:color/holo_purple"
         tools:listitem="@layout/nav_listitem" />
 </RelativeLayout>
