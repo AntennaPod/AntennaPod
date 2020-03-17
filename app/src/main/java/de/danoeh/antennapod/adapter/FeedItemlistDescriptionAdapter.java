@@ -63,6 +63,9 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
         holder.description.setTag(Boolean.FALSE); // not expanded
         holder.preview.setVisibility(View.GONE);
         holder.preview.setOnClickListener(v -> {
+            if (item.getMedia() == null) {
+                return;
+            }
             Playable playable = new RemoteMedia(item);
             if (!NetworkUtils.isStreamingAllowed()) {
                 new StreamingConfirmationDialog(getContext(), playable).show();

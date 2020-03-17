@@ -573,6 +573,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             titles.add(urlsMap.get(url));
         }
 
+        if (urls.size() == 1) {
+            // Skip dialog and display the item directly
+            resetIntent(urls.get(0), titles.get(0));
+            startFeedDownload(urls.get(0), null, null);
+            return true;
+        }
+
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(OnlineFeedViewActivity.this, R.layout.ellipsize_start_listitem, R.id.txtvTitle, titles);
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
             String selectedUrl = urls.get(which);
