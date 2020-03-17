@@ -82,7 +82,7 @@ public class ItunesTopListLoader {
         String url = "https://itunes.apple.com/%s/rss/toppodcasts/limit=" + limit + "/explicit=true/json";
         Log.d(TAG, "Feed URL " + String.format(url, country));
         Request.Builder httpReq = new Request.Builder()
-                .cacheControl(new CacheControl.Builder().minFresh(1, TimeUnit.DAYS).build())
+                .cacheControl(new CacheControl.Builder().maxStale(1, TimeUnit.DAYS).build())
                 .url(String.format(url, country));
 
         try (Response response = client.newCall(httpReq.build()).execute()) {

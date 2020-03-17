@@ -17,6 +17,8 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.exception.RxJavaErrorHandlerSetup;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
+import java.io.File;
+
 /**
  * Stores callbacks for core classes like Services, DB classes etc. and other configuration variables.
  * Apps using the core module of AntennaPod should register implementations of all interfaces here.
@@ -63,7 +65,7 @@ public class ClientConfig {
             Log.v(TAG, "Cast is disabled. All Cast-related initialization will be skipped.");
         }
         installSslProvider(context);
-        AntennapodHttpClient.setCacheDirectory(context.getCacheDir());
+        AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
         NotificationUtils.createChannels(context);
