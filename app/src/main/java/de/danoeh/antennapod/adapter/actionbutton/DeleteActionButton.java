@@ -38,6 +38,6 @@ public class DeleteActionButton extends ItemActionButton {
 
     @Override
     public int getVisibility() {
-        return (item.isPlayed()) ? View.INVISIBLE : View.VISIBLE;
+        return (item.getMedia() != null && item.getMedia().isDownloaded()) ? View.VISIBLE : View.INVISIBLE;
     }
 }
