@@ -344,7 +344,6 @@ public abstract class EpisodesListFragment extends Fragment {
     private void createRecycleAdapter(RecyclerView recyclerView, EmptyViewHandler emptyViewHandler) {
         MainActivity mainActivity = (MainActivity) getActivity();
         listAdapter = new EpisodeItemListAdapter(mainActivity);
-        listAdapter.setHasStableIds(true);
         listAdapter.updateItems(episodes);
         recyclerView.setAdapter(listAdapter);
         emptyViewHandler.updateAdapter(listAdapter);

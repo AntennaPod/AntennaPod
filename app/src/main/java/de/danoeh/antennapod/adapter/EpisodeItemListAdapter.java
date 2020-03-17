@@ -34,6 +34,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
     public EpisodeItemListAdapter(MainActivity mainActivity) {
         super();
         this.mainActivityRef = new WeakReference<>(mainActivity);
+        setHasStableIds(true);
     }
 
     public void updateItems(List<FeedItem> items) {

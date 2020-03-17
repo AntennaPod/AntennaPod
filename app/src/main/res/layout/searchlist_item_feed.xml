@@ -3,18 +3,18 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="96dp"
         android:padding="4dp"
         android:clipToPadding="false">
 
     <de.danoeh.antennapod.view.SquareImageView
             android:id="@+id/discovery_cover"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="96dp"
             android:elevation="4dp"
             android:outlineProvider="bounds"
             android:foreground="?android:attr/selectableItemBackground"
-            squareImageView:direction="width" />
+            squareImageView:direction="height" />
 
 </LinearLayout>
 

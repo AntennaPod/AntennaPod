@@ -586,7 +586,6 @@ public class QueueFragment extends Fragment {
             if (recyclerAdapter == null) {
                 MainActivity activity = (MainActivity) getActivity();
                 recyclerAdapter = new QueueRecyclerAdapter(activity, itemTouchHelper);
-                recyclerAdapter.setHasStableIds(true);
                 recyclerView.setAdapter(recyclerAdapter);
                 emptyView.updateAdapter(recyclerAdapter);
             }

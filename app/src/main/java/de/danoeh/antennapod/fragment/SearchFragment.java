@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,12 +22,14 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.FeedSearchResultAdapter;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
@@ -52,10 +55,12 @@ public class SearchFragment extends Fragment {
     private static final String ARG_FEED = "feed";
 
     private EpisodeItemListAdapter adapter;
+    private FeedSearchResultAdapter adapterFeeds;
     private Disposable disposable;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyViewHandler;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewFeeds;
     private List<FeedItem> results;
 
     /**
@@ -110,6 +115,7 @@ public class SearchFragment extends Fragment {
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(layout.findViewById(R.id.toolbar));
         progressBar = layout.findViewById(R.id.progressBar);
+
         recyclerView = layout.findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -118,6 +124,14 @@ public class SearchFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
+
+        recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
+        LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
+        layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
+        recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
+        recyclerViewFeeds.setHasFixedSize(true);
+        adapterFeeds = new FeedSearchResultAdapter((MainActivity) getActivity());
+        recyclerViewFeeds.setAdapter(adapterFeeds);
 
         emptyViewHandler = new EmptyViewHandler(getContext());
         emptyViewHandler.attachToRecyclerView(recyclerView);
@@ -249,19 +263,20 @@ public class SearchFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(results -> {
                     progressBar.setVisibility(View.GONE);
-                    this.results = results;
-                    adapter.updateItems(results);
+                    this.results = results.first;
+                    adapter.updateItems(results.first);
+                    adapterFeeds.updateData(results.second);
                     String query = getArguments().getString(ARG_QUERY);
                     emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @NonNull
-    private List<FeedItem> performSearch() {
-        Bundle args = getArguments();
-        String query = args.getString(ARG_QUERY);
-        long feed = args.getLong(ARG_FEED);
-        Context context = getActivity();
-        return FeedSearcher.searchFeedItems(context, query, feed);
+    private Pair<List<FeedItem>, List<Feed>> performSearch() {
+        String query = getArguments().getString(ARG_QUERY);
+        long feed = getArguments().getLong(ARG_FEED);
+        List<FeedItem> items = FeedSearcher.searchFeedItems(getContext(), query, feed);
+        List<Feed> feeds = FeedSearcher.searchFeeds(getContext(), query);
+        return new Pair<>(items, feeds);
     }
 }

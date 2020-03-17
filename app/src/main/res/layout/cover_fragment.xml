@@ -20,7 +20,7 @@
         android:transitionName="coverTransition"
         tools:src="@android:drawable/sym_def_app_icon"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        squareImageView:useMinimum="true" />
+        squareImageView:direction="minimum" />
 
     <TextView
         android:id="@+id/txtvPodcastTitle"
