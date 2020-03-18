@@ -184,7 +184,11 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     protected void onPostExecute(Void result) {
                         super.onPostExecute(result);
                         if (selectedNavListIndex == position) {
-                            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+                            if (getActivity() instanceof MainActivity) {
+                                ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+                            } else {
+                                showMainActivity(EpisodesFragment.TAG);
+                            }
                             saveLastNavFragment(EpisodesFragment.TAG);
                         }
                     }
@@ -213,6 +217,12 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void showMainActivity(String tag) {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, tag);
+        startActivity(intent);
     }
 
     @Subscribe
@@ -353,12 +363,22 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
             if (position < navAdapter.getSubscriptionOffset()) {
                 String tag = navAdapter.getTags().get(position);
-                ((MainActivity) getActivity()).loadFragment(tag, null);
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).loadFragment(tag, null);
+                } else {
+                    showMainActivity(tag);
+                }
                 saveLastNavFragment(tag);
             } else {
                 int pos = position - navAdapter.getSubscriptionOffset();
                 long feedId = navDrawerData.feeds.get(pos).getId();
-                ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
+                } else {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
+                    startActivity(intent);
+                }
                 saveLastNavFragment(String.valueOf(feedId));
             }
             selectedNavListIndex = position;

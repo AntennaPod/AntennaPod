@@ -1,18 +1,12 @@
 package de.danoeh.antennapod.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -24,38 +18,17 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.core.asynctask.FeedRemover;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.dialog.RenameFeedDialog;
-import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.ChaptersFragment;
 import de.danoeh.antennapod.fragment.CoverFragment;
-import de.danoeh.antennapod.fragment.DownloadsFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
-import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
+import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.view.PagerIndicatorView;
 import de.danoeh.antennapod.view.PlaybackSpeedIndicatorView;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -76,30 +49,14 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
     private static final String PREFS = "AudioPlayerActivityPreferences";
     private static final String PREF_KEY_SELECTED_FRAGMENT_POSITION = "selectedFragmentPosition";
 
-    private static final String[] NAV_DRAWER_TAGS = {
-            QueueFragment.TAG,
-            EpisodesFragment.TAG,
-            SubscriptionFragment.TAG,
-            DownloadsFragment.TAG,
-            PlaybackHistoryFragment.TAG,
-            AddFeedFragment.TAG,
-            NavListAdapter.SUBSCRIPTION_LIST_TAG
-    };
-
     PlaybackSpeedIndicatorView butPlaybackSpeed;
     TextView txtvPlaybackSpeed;
     private DrawerLayout drawerLayout;
-    private NavListAdapter navAdapter;
-    private ListView navList;
     private View navDrawer;
     private ActionBarDrawerToggle drawerToggle;
-    private int mPosition = -1;
-
     private ViewPager pager;
     private PagerIndicatorView pageIndicator;
     private MediaplayerInfoPagerAdapter pagerAdapter;
-
-    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +68,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-        if (disposable != null) {
-            disposable.dispose();
-        }
         saveCurrentFragment();
     }
 
@@ -123,8 +77,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
         super.onDestroy();
         // don't risk creating memory leaks
         drawerLayout = null;
-        navAdapter = null;
-        navList = null;
         navDrawer = null;
         drawerToggle = null;
         pager = null;
@@ -137,7 +89,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
     }
 
     void saveCurrentFragment() {
-        if(pager == null) {
+        if (pager == null) {
             return;
         }
         Log.d(TAG, "Saving preferences");
@@ -150,7 +102,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if(drawerToggle != null) {
+        if (drawerToggle != null) {
             drawerToggle.onConfigurationChanged(newConfig);
         }
     }
@@ -160,12 +112,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         int lastPosition = prefs.getInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, -1);
         pager.setCurrentItem(lastPosition);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        loadData();
     }
 
     @Override
@@ -206,44 +152,18 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
         drawerLayout = findViewById(R.id.drawer_layout);
-        navList = findViewById(R.id.nav_list);
-        navDrawer = findViewById(R.id.nav_layout);
+        navDrawer = findViewById(R.id.navDrawerFragment);
+        butPlaybackSpeed = findViewById(R.id.butPlaybackSpeed);
+        txtvPlaybackSpeed = findViewById(R.id.txtvPlaybackSpeed);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.setDrawerIndicatorEnabled(false);
         drawerLayout.addDrawerListener(drawerToggle);
-
-        navAdapter = new NavListAdapter(itemAccess, this);
-        navList.setAdapter(navAdapter);
-        navList.setOnItemClickListener((parent, view, position, id) -> {
-            int viewType = parent.getAdapter().getItemViewType(position);
-            if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
-                Intent intent = new Intent(MediaplayerInfoActivity.this, MainActivity.class);
-                //intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
-                //intent.putExtra(MainActivity.EXTRA_NAV_INDEX, position); //TODO
-                startActivity(intent);
-            }
-            drawerLayout.closeDrawer(navDrawer);
-        });
-        navList.setOnItemLongClickListener((parent, view, position, id) -> {
-            if (position < navAdapter.getTags().size()) {
-                showDrawerPreferencesDialog();
-                return true;
-            } else {
-                mPosition = position;
-                return false;
-            }
-        });
-        registerForContextMenu(navList);
         drawerToggle.syncState();
 
-        findViewById(R.id.nav_settings).setOnClickListener(v -> {
-            drawerLayout.closeDrawer(navDrawer);
-            startActivity(new Intent(MediaplayerInfoActivity.this, PreferenceActivity.class));
-        });
-
-        butPlaybackSpeed = findViewById(R.id.butPlaybackSpeed);
-        txtvPlaybackSpeed = findViewById(R.id.txtvPlaybackSpeed);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.navDrawerFragment, new NavDrawerFragment(), NavDrawerFragment.TAG)
+                .commit();
 
         pager = findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);
@@ -256,7 +176,7 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
         loadLastFragment();
         pager.onSaveInstanceState();
 
-        navList.post(this::supportStartPostponedEnterTransition);
+        pager.post(this::supportStartPostponedEnterTransition);
     }
 
     @Override
@@ -302,84 +222,14 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
         return R.layout.mediaplayerinfo_activity;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) || super.onOptionsItemSelected(item);
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        if(v.getId() != R.id.nav_list) {
-            return;
-        }
-        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        int position = adapterInfo.position;
-        if(position < navAdapter.getSubscriptionOffset()) {
-            return;
-        }
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.nav_feed_context, menu);
-        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
-        menu.setHeaderTitle(feed.getTitle());
-        // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        final int position = mPosition;
-        mPosition = -1; // reset
-        if(position < 0) {
-            return false;
-        }
-        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
-        switch(item.getItemId()) {
-            case R.id.remove_all_new_flags_item:
-                DBWriter.removeFeedNewFlag(feed.getId());
-                return true;
-            case R.id.mark_all_read_item:
-                DBWriter.markFeedRead(feed.getId());
-                return true;
-            case R.id.rename_item:
-                new RenameFeedDialog(this, feed).show();
-                return true;
-            case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(this, feed);
-                ConfirmationDialog conDialog = new ConfirmationDialog(this,
-                        R.string.remove_feed_label,
-                        getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
-                    @Override
-                    public void onConfirmButtonPressed(
-                            DialogInterface dialog) {
-                        dialog.dismiss();
-                        if (controller != null) {
-                            Playable playable = controller.getMedia();
-                            if (playable != null && playable instanceof FeedMedia) {
-                                FeedMedia media = (FeedMedia) playable;
-                                if (media.getItem() != null && media.getItem().getFeed() != null &&
-                                        media.getItem().getFeed().getId() == feed.getId()) {
-                                    Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
-                                    remover.skipOnCompletion = true;
-                                    if(controller.getStatus() == PlayerStatus.PLAYING) {
-                                        IntentUtils.sendLocalBroadcast(MediaplayerInfoActivity.this, PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
-                                    }
-                                }
-                            }
-                        }
-                        remover.executeAsync();
-                    }
-                };
-                conDialog.createNewDialog().show();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
-    @Override
     public void onBackPressed() {
-        if(isDrawerOpen()) {
+        if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
         } else if (pager == null || pager.getCurrentItem() == 0) {
             // If the user is currently looking at the first step, allow the system to handle the
@@ -389,46 +239,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
             // Otherwise, select the previous step.
             pager.setCurrentItem(pager.getCurrentItem() - 1);
         }
-    }
-
-    private void showDrawerPreferencesDialog() {
-        final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
-        String[] navLabels = new String[NAV_DRAWER_TAGS.length];
-        final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];
-        for (int i = 0; i < NAV_DRAWER_TAGS.length; i++) {
-            String tag = NAV_DRAWER_TAGS[i];
-            navLabels[i] = navAdapter.getLabel(tag);
-            if (!hiddenDrawerItems.contains(tag)) {
-                checked[i] = true;
-            }
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.drawer_preferences);
-        builder.setMultiChoiceItems(navLabels, checked, (dialog, which, isChecked) -> {
-            if (isChecked) {
-                hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
-            } else {
-                hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
-            }
-        });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> UserPreferences.setHiddenDrawerItems(hiddenDrawerItems));
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
-    }
-
-    private DBReader.NavDrawerData navDrawerData;
-
-    private void loadData() {
-        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    navDrawerData = result;
-                    if (navAdapter != null) {
-                        navAdapter.notifyDataSetChanged();
-                    }
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -441,73 +251,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
         }
         snackbar.show();
     }
-
-    @Subscribe
-    public void onFeedListChanged(FeedListUpdateEvent event) {
-        loadData();
-    }
-
-    private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
-        @Override
-        public int getCount() {
-            if (navDrawerData != null) {
-                return navDrawerData.feeds.size();
-            } else {
-                return 0;
-            }
-        }
-
-        @Override
-        public Feed getItem(int position) {
-            if (navDrawerData != null && 0 <= position && position < navDrawerData.feeds.size()) {
-                return navDrawerData.feeds.get(position);
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public int getSelectedItemIndex() {
-            return -1;
-        }
-
-        @Override
-        public int getQueueSize() {
-            return (navDrawerData != null) ? navDrawerData.queueSize : 0;
-        }
-
-        @Override
-        public int getNumberOfNewItems() {
-            return (navDrawerData != null) ? navDrawerData.numNewItems : 0;
-        }
-
-        @Override
-        public int getNumberOfDownloadedItems() {
-            return (navDrawerData != null) ? navDrawerData.numDownloadedItems : 0;
-        }
-
-        @Override
-        public int getReclaimableItems() {
-            return (navDrawerData != null) ? navDrawerData.reclaimableSpace : 0;
-        }
-
-        @Override
-        public int getFeedCounter(long feedId) {
-            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
-        }
-
-        @Override
-        public int getFeedCounterSum() {
-            if(navDrawerData == null) {
-                return 0;
-            }
-            int sum = 0;
-            for(int counter : navDrawerData.feedCounters.values()) {
-                sum += counter;
-            }
-            return sum;
-        }
-    };
 
     private static class MediaplayerInfoPagerAdapter extends FragmentStatePagerAdapter {
         private static final String TAG = "MPInfoPagerAdapter";

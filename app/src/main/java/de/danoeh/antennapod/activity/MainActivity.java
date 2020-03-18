@@ -60,7 +60,7 @@ public class MainActivity extends CastEnabledActivity {
 
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
-    private static final String EXTRA_FEED_ID = "fragment_feed_id";
+    public static final String EXTRA_FEED_ID = "fragment_feed_id";
 
     private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
 
