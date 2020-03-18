@@ -13,6 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.List;
@@ -89,11 +90,11 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         final Context context = getActivity();
         final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
         final String[] navTitles = context.getResources().getStringArray(R.array.nav_drawer_titles);
-        final String[] NAV_DRAWER_TAGS = MainActivity.NAV_DRAWER_TAGS;
-        boolean[] checked = new boolean[MainActivity.NAV_DRAWER_TAGS.length];
-        for(int i=0; i < NAV_DRAWER_TAGS.length; i++) {
+        final String[] NAV_DRAWER_TAGS = NavDrawerFragment.NAV_DRAWER_TAGS;
+        boolean[] checked = new boolean[NavDrawerFragment.NAV_DRAWER_TAGS.length];
+        for (int i = 0; i < NAV_DRAWER_TAGS.length; i++) {
             String tag = NAV_DRAWER_TAGS[i];
-            if(!hiddenDrawerItems.contains(tag)) {
+            if (!hiddenDrawerItems.contains(tag)) {
                 checked[i] = true;
             }
         }

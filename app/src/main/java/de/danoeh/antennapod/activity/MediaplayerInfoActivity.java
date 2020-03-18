@@ -5,31 +5,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.List;
-
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
@@ -57,7 +50,6 @@ import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.view.PagerIndicatorView;
 import de.danoeh.antennapod.view.PlaybackSpeedIndicatorView;
 import io.reactivex.Observable;
@@ -67,10 +59,12 @@ import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 /**
  * Activity for playing files that do not require a video surface.
  */
-public abstract class MediaplayerInfoActivity extends MediaplayerActivity implements NavDrawerActivity {
+public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
 
     private static final String TAG = "MediaplayerInfoActivity";
 
@@ -225,8 +219,8 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
             int viewType = parent.getAdapter().getItemViewType(position);
             if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
                 Intent intent = new Intent(MediaplayerInfoActivity.this, MainActivity.class);
-                intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
-                intent.putExtra(MainActivity.EXTRA_NAV_INDEX, position);
+                //intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
+                //intent.putExtra(MainActivity.EXTRA_NAV_INDEX, position); //TODO
                 startActivity(intent);
             }
             drawerLayout.closeDrawer(navDrawer);
@@ -299,7 +293,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity implem
         return controller;
     }
 
-    @Override
     public boolean isDrawerOpen() {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
