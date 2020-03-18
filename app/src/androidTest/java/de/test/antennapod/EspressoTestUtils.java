@@ -70,8 +70,7 @@ public class EspressoTestUtils {
                     }
 
                     uiController.loopMainThreadForAtLeast(50);
-                }
-                while (System.currentTimeMillis() < endTime);
+                } while (System.currentTimeMillis() < endTime);
 
                 // timeout happens
                 throw new PerformException.Builder()

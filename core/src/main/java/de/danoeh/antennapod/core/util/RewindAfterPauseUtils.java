@@ -40,8 +40,7 @@ public class RewindAfterPauseUtils {
             int newPosition = currentPosition - (int) rewindTime;
 
             return newPosition > 0 ? newPosition : 0;
-        }
-        else {
+        } else {
             return currentPosition;
         }
     }
