@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
@@ -48,8 +49,10 @@ import java.util.List;
 
 public class NavDrawerFragment extends Fragment implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener {
-    private static final String PREF_LAST_FRAGMENT_TAG = "prefLastFragmentTag";
-    private static final String PREF_NAME = "NavDrawerPrefs";
+    @VisibleForTesting
+    public static final String PREF_LAST_FRAGMENT_TAG = "prefLastFragmentTag";
+    @VisibleForTesting
+    public static final String PREF_NAME = "NavDrawerPrefs";
     public static final String TAG = "NavDrawerFragment";
 
     public static final String[] NAV_DRAWER_TAGS = {

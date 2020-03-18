@@ -99,6 +99,7 @@ public class MainActivityTest {
 
         solo.goBackToActivity(MainActivity.class.getSimpleName());
         solo.goBack();
+        solo.goBack();
         assertEquals(solo.getString(R.string.subscriptions_label), getActionbarTitle());
     }
 
@@ -110,6 +111,7 @@ public class MainActivityTest {
         clickPreference(R.string.pref_back_button_behavior_title);
         onView(withText(R.string.back_button_open_drawer)).perform(click());
         solo.goBackToActivity(MainActivity.class.getSimpleName());
+        solo.goBack();
         solo.goBack();
         assertTrue(((MainActivity)solo.getCurrentActivity()).isDrawerOpen());
     }
@@ -124,6 +126,7 @@ public class MainActivityTest {
         solo.goBackToActivity(MainActivity.class.getSimpleName());
         solo.goBack();
         solo.goBack();
+        solo.goBack();
         assertThat(mActivityRule.getActivityResult(), hasResultCode(Activity.RESULT_CANCELED));
     }
 
@@ -135,6 +138,7 @@ public class MainActivityTest {
         clickPreference(R.string.pref_back_button_behavior_title);
         onView(withText(R.string.back_button_show_prompt)).perform(click());
         solo.goBackToActivity(MainActivity.class.getSimpleName());
+        solo.goBack();
         solo.goBack();
         onView(withText(R.string.yes)).perform(click());
         Thread.sleep(100);
@@ -149,6 +153,7 @@ public class MainActivityTest {
         clickPreference(R.string.pref_back_button_behavior_title);
         onView(withText(R.string.back_button_default)).perform(click());
         solo.goBackToActivity(MainActivity.class.getSimpleName());
+        solo.goBack();
         solo.goBack();
         assertThat(mActivityRule.getActivityResult(), hasResultCode(Activity.RESULT_CANCELED));
     }
