@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
 import org.hamcrest.Matcher;
@@ -131,9 +132,10 @@ public class EspressoTestUtils {
     }
 
     public static void setLastNavFragment(String tag) {
-        InstrumentationRegistry.getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE)
+        InstrumentationRegistry.getTargetContext().getSharedPreferences(
+                NavDrawerFragment.PREF_NAME, Context.MODE_PRIVATE)
                 .edit()
-                .putString(MainActivity.PREF_LAST_FRAGMENT_TAG, tag)
+                .putString(NavDrawerFragment.PREF_LAST_FRAGMENT_TAG, tag)
                 .commit();
     }
 

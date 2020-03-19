@@ -12,6 +12,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.test.antennapod.EspressoTestUtils;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.longClick;
@@ -194,7 +194,7 @@ public class NavigationDrawerTest {
 
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(titles.length, hidden.size());
-        for (String tag : MainActivity.NAV_DRAWER_TAGS) {
+        for (String tag : NavDrawerFragment.NAV_DRAWER_TAGS) {
             assertTrue(hidden.contains(tag));
         }
     }

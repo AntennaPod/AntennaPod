@@ -236,6 +236,13 @@
 
     </RelativeLayout>
 
-    <include layout="@layout/nav_list" />
+    <FrameLayout
+            android:id="@+id/navDrawerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_gravity="start"
+            android:orientation="vertical" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

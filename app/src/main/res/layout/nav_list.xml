@@ -4,11 +4,7 @@
     android:id="@+id/nav_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginEnd="24dp"
-    android:layout_marginRight="24dp"
-    android:layout_gravity="start"
-    android:background="?android:attr/windowBackground"
-    android:orientation="vertical">
+    android:background="?android:attr/windowBackground">
 
     <LinearLayout
         android:id="@+id/nav_settings"
@@ -68,6 +64,7 @@
         android:choiceMode="singleChoice"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
+        android:layout_alignParentTop="true"
         android:dividerHeight="0dp"
         android:paddingBottom="@dimen/list_vertical_padding"
         android:paddingTop="8dp"
