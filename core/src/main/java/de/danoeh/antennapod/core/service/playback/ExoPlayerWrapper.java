@@ -58,7 +58,7 @@ public class ExoPlayerWrapper implements IPlayer {
 
         bufferingUpdateDisposable = Observable.interval(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
+                .subscribe(tickNumber -> {
                         if (bufferingUpdateListener != null) {
                             bufferingUpdateListener.onBufferingUpdate(null, mExoPlayer.getBufferedPercentage());
                         }

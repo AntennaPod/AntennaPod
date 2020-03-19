@@ -62,7 +62,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                         final Context context = getActivity();
                         final String[] navTitles = context.getResources().getStringArray(R.array.back_button_go_to_pages);
                         final String[] navTags = context.getResources().getStringArray(R.array.back_button_go_to_pages_tags);
-                        final String choice[] = { UserPreferences.getBackButtonGoToPage() };
+                        final String[] choice = { UserPreferences.getBackButtonGoToPage() };
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setTitle(R.string.back_button_go_to_page_title);
