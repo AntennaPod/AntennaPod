@@ -16,6 +16,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -36,6 +37,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Consumer;
 
+import static de.test.antennapod.util.event.DownloadEventListener.withDownloadEventListener;
 import static de.test.antennapod.util.event.FeedItemEventListener.withFeedItemEventListener;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -119,8 +121,9 @@ public class DownloadServiceTest {
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
 
                 DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry.getTargetContext(),
-                        testMedia11.getItem());Awaitility.await()
-                        .atMost(1000, TimeUnit.MILLISECONDS)
+                        testMedia11.getItem());
+                Awaitility.await()
+                        .atMost(5000, TimeUnit.MILLISECONDS)
                         .until(() -> feedItemEventListener.getEvents().size() >= numEventsExpected);
                 assertTrue("After media download has completed, FeedMedia object in db should indicate so.",
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
@@ -146,8 +149,8 @@ public class DownloadServiceTest {
 
     private void doTestCancelDownload_UndoEnqueue(boolean itemAlreadyInQueue) throws Exception {
         Context context = InstrumentationRegistry.getTargetContext();
-        // let download takes longer to ensure the test can cancel the download in time
-        DownloadService.setDownloaderFactory(new StubDownloaderFactory(10000, downloadStatus -> {
+        // let download take longer to ensure the test can cancel the download in time
+        DownloadService.setDownloaderFactory(new StubDownloaderFactory(30000, downloadStatus -> {
             downloadStatus.setSuccessful();
         }));
         UserPreferences.setEnqueueDownloadedEpisodes(true);
@@ -164,11 +167,16 @@ public class DownloadServiceTest {
 
         withFeedItemEventListener(feedItemEventListener -> {
             DownloadRequester.getInstance().downloadMedia(false, context, testMedia11.getItem());
+            withDownloadEventListener(downloadEventListener ->
+                    Awaitility.await("download is actually running")
+                        .atMost(5000, TimeUnit.MILLISECONDS)
+                        .until(() -> downloadEventListener.getLatestEvent() != null
+                                && downloadEventListener.getLatestEvent().update.mediaIds.length > 0
+                                && downloadEventListener.getLatestEvent().update.mediaIds[0] == testMedia11.getId()));
+
             if (itemAlreadyInQueue) {
-                Awaitility.await("download service receives the request - "
-                        + "no event is expected before cancel is issued")
-                        .atLeast(100, TimeUnit.MILLISECONDS)
-                        .until(() -> true);
+                assertEquals("download service receives the request - no event is expected before cancel is issued",
+                        0, feedItemEventListener.getEvents().size());
             } else {
                 Awaitility.await("item enqueue event")
                         .atMost(2000, TimeUnit.MILLISECONDS)
@@ -177,7 +185,7 @@ public class DownloadServiceTest {
             DownloadRequester.getInstance().cancelDownload(context, testMedia11);
             final int totalNumEventsExpected = itemAlreadyInQueue ? 1 : 3;
             Awaitility.await("item dequeue event + download termination event")
-                    .atMost(1000, TimeUnit.MILLISECONDS)
+                    .atMost(2000, TimeUnit.MILLISECONDS)
                     .until(() -> feedItemEventListener.getEvents().size() >= totalNumEventsExpected);
             assertFalse("The download should have been canceled",
                     DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
