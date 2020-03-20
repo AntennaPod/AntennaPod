@@ -192,7 +192,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                             } else {
                                 showMainActivity(EpisodesFragment.TAG);
                             }
-                            saveLastNavFragment(EpisodesFragment.TAG);
+                            saveLastNavFragment(getContext(), EpisodesFragment.TAG);
                         }
                     }
                 };
@@ -371,7 +371,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 } else {
                     showMainActivity(tag);
                 }
-                saveLastNavFragment(tag);
+                saveLastNavFragment(getContext(), tag);
             } else {
                 int pos = position - navAdapter.getSubscriptionOffset();
                 long feedId = navDrawerData.feeds.get(pos).getId();
@@ -382,7 +382,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
                     startActivity(intent);
                 }
-                saveLastNavFragment(String.valueOf(feedId));
+                saveLastNavFragment(getContext(), String.valueOf(feedId));
             }
             selectedNavListIndex = position;
             navAdapter.notifyDataSetChanged();
@@ -400,9 +400,9 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         }
     }
 
-    private void saveLastNavFragment(String tag) {
+    public static void saveLastNavFragment(Context context, String tag) {
         Log.d(TAG, "saveLastNavFragment(tag: " + tag + ")");
-        SharedPreferences prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
         if (tag != null) {
             edit.putString(PREF_LAST_FRAGMENT_TAG, tag);

@@ -367,6 +367,7 @@ public class MainActivity extends CastEnabledActivity {
                         super.onBackPressed();
                     } else {
                         loadFragment(UserPreferences.getBackButtonGoToPage(), null);
+                        NavDrawerFragment.saveLastNavFragment(this, UserPreferences.getBackButtonGoToPage());
                     }
                     break;
                 default: super.onBackPressed();
