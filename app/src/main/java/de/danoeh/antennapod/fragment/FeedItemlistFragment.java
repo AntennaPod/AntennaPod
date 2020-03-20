@@ -354,7 +354,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             if (pos >= 0) {
                 feed.getItems().remove(pos);
                 feed.getItems().add(pos, item);
-                adapter.notifyItemChanged(pos);
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }
@@ -370,7 +370,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
                 if (pos >= 0) {
-                    adapter.notifyItemChanged(pos);
+                    adapter.notifyItemChangedCompat(pos);
                 }
             }
         }
@@ -407,7 +407,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
         if (event.contains(feed)) {
-            refreshHeaderView();
             updateUi();
         }
     }
@@ -441,7 +440,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     private void refreshHeaderView() {
-        if (recyclerView == null || feed == null || !headerCreated) {
+        setupHeaderView();
+        if (recyclerView == null || feed == null) {
             Log.e(TAG, "Unable to refresh header view");
             return;
         }
@@ -487,7 +487,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             }
         });
         headerCreated = true;
-        refreshHeaderView();
     }
 
     private void showFeedInfo() {
@@ -528,7 +527,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result.orElse(null);
-                    setupHeaderView();
+                    refreshHeaderView();
                     displayList();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }

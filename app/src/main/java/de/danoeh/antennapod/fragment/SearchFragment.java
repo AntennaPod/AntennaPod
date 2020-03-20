@@ -215,7 +215,7 @@ public class SearchFragment extends Fragment {
             if (pos >= 0) {
                 results.remove(pos);
                 results.add(pos, item);
-                adapter.notifyItemChanged(pos);
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }
@@ -228,7 +228,7 @@ public class SearchFragment extends Fragment {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(results, mediaId);
                 if (pos >= 0) {
-                    adapter.notifyItemChanged(pos);
+                    adapter.notifyItemChangedCompat(pos);
                 }
             }
         }

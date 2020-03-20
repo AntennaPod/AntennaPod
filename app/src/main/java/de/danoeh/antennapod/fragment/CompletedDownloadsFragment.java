@@ -151,7 +151,7 @@ public class CompletedDownloadsFragment extends Fragment {
                 items.remove(pos);
                 if (item.getMedia().isDownloaded()) {
                     items.add(pos, item);
-                    adapter.notifyItemChanged(pos);
+                    adapter.notifyItemChangedCompat(pos);
                 } else {
                     adapter.notifyItemRemoved(pos);
                 }
