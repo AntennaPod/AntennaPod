@@ -178,7 +178,7 @@ public class QueueFragment extends Fragment {
             if (pos >= 0) {
                 queue.remove(pos);
                 queue.add(pos, item);
-                recyclerAdapter.notifyItemChanged(pos);
+                recyclerAdapter.notifyItemChangedCompat(pos);
                 refreshInfoBar();
             }
         }
@@ -195,7 +195,7 @@ public class QueueFragment extends Fragment {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(queue, mediaId);
                 if (pos >= 0) {
-                    recyclerAdapter.notifyItemChanged(pos);
+                    recyclerAdapter.notifyItemChangedCompat(pos);
                 }
             }
         }

@@ -68,6 +68,19 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         holder.hideSeparatorIfNecessary();
     }
 
+    /**
+     * {@link #notifyItemChanged(int)} is final, so we can not override.
+     * Calling {@link #notifyItemChanged(int)} may bind the item to a new ViewHolder and execute a transition.
+     * This causes flickering and breaks the download animation that stores the old progress in the View.
+     * Instead, we tell the adapter to use partial binding by calling {@link #notifyItemChanged(int, Object)}.
+     * We actually ignore the payload and always do a full bind but calling the partial bind method ensures
+     * that ViewHolders are always re-used.
+     * @param position Position of the item that has changed
+     */
+    public void notifyItemChangedCompat(int position) {
+        notifyItemChanged(position, "foo");
+    }
+
     @Nullable
     public FeedItem getSelectedItem() {
         return selectedItem;

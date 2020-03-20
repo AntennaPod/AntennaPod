@@ -115,7 +115,7 @@ public class PlaybackHistoryFragment extends Fragment {
             if (pos >= 0) {
                 playbackHistory.remove(pos);
                 playbackHistory.add(pos, item);
-                adapter.notifyItemChanged(pos);
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }
@@ -128,7 +128,7 @@ public class PlaybackHistoryFragment extends Fragment {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(playbackHistory, mediaId);
                 if (pos >= 0) {
-                    adapter.notifyItemChanged(pos);
+                    adapter.notifyItemChangedCompat(pos);
                 }
             }
         }

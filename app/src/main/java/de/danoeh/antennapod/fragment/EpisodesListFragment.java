@@ -358,7 +358,7 @@ public abstract class EpisodesListFragment extends Fragment {
                 episodes.remove(pos);
                 if (shouldUpdatedItemRemainInList(item)) {
                     episodes.add(pos, item);
-                    listAdapter.notifyItemChanged(pos);
+                    listAdapter.notifyItemChangedCompat(pos);
                 } else {
                     listAdapter.notifyItemRemoved(pos);
                 }
@@ -394,7 +394,7 @@ public abstract class EpisodesListFragment extends Fragment {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(episodes, mediaId);
                 if (pos >= 0) {
-                    listAdapter.notifyItemChanged(pos);
+                    listAdapter.notifyItemChangedCompat(pos);
                 }
             }
         }

@@ -354,7 +354,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             if (pos >= 0) {
                 feed.getItems().remove(pos);
                 feed.getItems().add(pos, item);
-                adapter.notifyItemChanged(pos);
+                adapter.notifyItemChangedCompat(pos);
             }
         }
     }
@@ -370,7 +370,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
                 if (pos >= 0) {
-                    adapter.notifyItemChanged(pos);
+                    adapter.notifyItemChangedCompat(pos);
                 }
             }
         }
