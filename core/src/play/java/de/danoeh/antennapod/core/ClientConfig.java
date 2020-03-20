@@ -64,7 +64,6 @@ public class ClientConfig {
         } else {
             Log.v(TAG, "Cast is disabled. All Cast-related initialization will be skipped.");
         }
-        installSslProvider(context);
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
@@ -72,7 +71,7 @@ public class ClientConfig {
         initialized = true;
     }
 
-    private static void installSslProvider(Context context) {
+    public static void installSslProvider(Context context) {
         try {
             ProviderInstaller.installIfNeeded(context);
         } catch (GooglePlayServicesRepairableException e) {
