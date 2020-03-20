@@ -45,6 +45,7 @@ public class SplashActivity extends AppCompatActivity {
             .subscribe(() -> {
                 Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 finish();
             });
     }
