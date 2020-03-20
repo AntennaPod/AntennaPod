@@ -474,6 +474,7 @@ public class DownloadService extends Service {
                                   @NonNull List<? extends FeedItem> itemsEnqueued) {
         writeFileUrl(request);
 
+        ClientConfig.installSslProvider(this);
         Downloader downloader = downloaderFactory.create(request);
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();

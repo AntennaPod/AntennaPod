@@ -28,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
@@ -238,6 +239,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         download = Observable.fromCallable(() -> {
                     feeds = DBReader.getFeedList();
+                    ClientConfig.installSslProvider(this);
                     downloader = new HttpDownloader(request);
                     downloader.call();
                     return downloader.getResult();

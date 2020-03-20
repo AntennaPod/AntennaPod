@@ -53,4 +53,7 @@ public class ClientConfig {
         initialized = true;
     }
 
+    public static void installSslProvider(Context context) {
+        // ProviderInstaller is a closed-source Google library
+    }
 }
