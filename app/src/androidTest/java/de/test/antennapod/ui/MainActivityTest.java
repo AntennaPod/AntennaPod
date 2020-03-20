@@ -101,6 +101,8 @@ public class MainActivityTest {
         solo.goBack();
         solo.goBack();
         assertEquals(solo.getString(R.string.subscriptions_label), getActionbarTitle());
+        solo.goBack();
+        assertThat(mActivityRule.getActivityResult(), hasResultCode(Activity.RESULT_CANCELED));
     }
 
     @Test

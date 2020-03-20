@@ -76,9 +76,9 @@ public class AddFeedFragment extends Fragment {
         EditText editText = content.findViewById(R.id.text);
         editText.setHint(R.string.add_podcast_by_url_hint);
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-        String clipboardContent = clipboard.getText().toString();
-        if (clipboardContent.startsWith("http")) {
-            editText.setText(clipboardContent);
+        String clipboardContent = clipboard.getText() != null ? clipboard.getText().toString() : "";
+        if (clipboardContent.trim().startsWith("http")) {
+            editText.setText(clipboardContent.trim());
         }
         builder.setView(content);
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> addUrl(editText.getText().toString()));
