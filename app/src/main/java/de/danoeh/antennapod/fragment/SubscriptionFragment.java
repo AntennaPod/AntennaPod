@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.ProgressBar;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -65,6 +66,7 @@ public class SubscriptionFragment extends Fragment {
     private DBReader.NavDrawerData navDrawerData;
     private SubscriptionsAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
+    private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
 
     private int mPosition = -1;
@@ -91,6 +93,7 @@ public class SubscriptionFragment extends Fragment {
         subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, 3));
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
+        progressBar = root.findViewById(R.id.progLoading);
         return root;
     }
 
@@ -175,16 +178,17 @@ public class SubscriptionFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
     }
 
     private void loadSubscriptions() {
-        if(disposable != null) {
+        if (disposable != null) {
             disposable.dispose();
         }
         emptyView.hide();
+        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -192,6 +196,7 @@ public class SubscriptionFragment extends Fragment {
                     navDrawerData = result;
                     subscriptionAdapter.notifyDataSetChanged();
                     emptyView.updateVisibility();
+                    progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
@@ -207,7 +212,7 @@ public class SubscriptionFragment extends Fragment {
             return;
         }
 
-        Feed feed = (Feed)selectedObject;
+        Feed feed = (Feed) selectedObject;
 
         MenuInflater inflater = requireActivity().getMenuInflater();
         inflater.inflate(R.menu.nav_feed_context, menu);
@@ -221,7 +226,7 @@ public class SubscriptionFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         final int position = mPosition;
         mPosition = -1; // reset
-        if(position < 0) {
+        if (position < 0) {
             return false;
         }
 
@@ -231,8 +236,8 @@ public class SubscriptionFragment extends Fragment {
             return false;
         }
 
-        Feed feed = (Feed)selectedObject;
-        switch(item.getItemId()) {
+        Feed feed = (Feed) selectedObject;
+        switch (item.getItemId()) {
             case R.id.remove_all_new_flags_item:
                 displayConfirmationDialog(
                         R.string.remove_all_new_flags_label,
