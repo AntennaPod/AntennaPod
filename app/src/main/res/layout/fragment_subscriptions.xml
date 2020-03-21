@@ -26,6 +26,14 @@
             android:paddingBottom="88dp"
             android:clipToPadding="false"/>
 
+    <ProgressBar
+            android:id="@+id/progLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminateOnly="true"
+            android:visibility="visible"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/subscriptions_add"
             android:layout_width="56dp"

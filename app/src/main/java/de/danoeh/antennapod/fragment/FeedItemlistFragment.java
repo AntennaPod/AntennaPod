@@ -364,7 +364,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         DownloaderUpdate update = event.update;
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeed)) {
-            updateProgressBarVisibility();
+            updateSyncProgressBarVisibility();
         }
         if (adapter != null && update.mediaIds.length > 0) {
             for (long mediaId : update.mediaIds) {
@@ -391,7 +391,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     private void updateUi() {
         loadItems();
-        updateProgressBarVisibility();
+        updateSyncProgressBarVisibility();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -411,7 +411,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
     }
 
-    private void updateProgressBarVisibility() {
+    private void updateSyncProgressBarVisibility() {
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
             getActivity().supportInvalidateOptionsMenu();
         }
@@ -436,7 +436,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         adapter.updateItems(feed.getItems());
 
         getActivity().supportInvalidateOptionsMenu();
-        updateProgressBarVisibility();
+        updateSyncProgressBarVisibility();
     }
 
     private void refreshHeaderView() {
@@ -478,8 +478,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
         // https://github.com/bumptech/glide/issues/529
         imgvBackground.setColorFilter(new LightingColorFilter(0xff666666, 0x000000));
+        butShowInfo.setVisibility(View.VISIBLE);
         butShowInfo.setOnClickListener(v -> showFeedInfo());
         imgvCover.setOnClickListener(v -> showFeedInfo());
+        butShowSettings.setVisibility(View.VISIBLE);
         butShowSettings.setOnClickListener(v -> {
             if (feed != null) {
                 FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
@@ -522,6 +524,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (disposable != null) {
             disposable.dispose();
         }
+        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

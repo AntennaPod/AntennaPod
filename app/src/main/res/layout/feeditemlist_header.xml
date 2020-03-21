@@ -71,6 +71,8 @@
                         android:layout_marginLeft="-8dp"
                         android:layout_marginStart="-8dp"
                         android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        tools:visibility="visible"
                         android:padding="8dp"/>
 
                 <ImageButton
@@ -82,6 +84,8 @@
                         app:srcCompat="@drawable/ic_settings_white"
                         tools:background="@android:color/holo_green_dark"
                         android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        tools:visibility="visible"
                         android:padding="8dp"/>
             </LinearLayout>
 

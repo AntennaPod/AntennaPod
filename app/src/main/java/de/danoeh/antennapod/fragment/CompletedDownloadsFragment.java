@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -55,7 +56,9 @@ public class CompletedDownloadsFragment extends Fragment {
     private List<FeedItem> items = new ArrayList<>();
     private CompletedDownloadsListAdapter adapter;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
     private Disposable disposable;
+    private EmptyViewHandler emptyView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -72,6 +75,7 @@ public class CompletedDownloadsFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
+        progressBar = root.findViewById(R.id.progLoading);
 
         addEmptyView();
         EventBus.getDefault().register(this);
@@ -127,7 +131,7 @@ public class CompletedDownloadsFragment extends Fragment {
     }
 
     private void addEmptyView() {
-        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView = new EmptyViewHandler(getActivity());
         emptyView.setIcon(R.attr.av_download);
         emptyView.setTitle(R.string.no_comp_downloads_head_label);
         emptyView.setMessage(R.string.no_comp_downloads_label);
@@ -191,6 +195,8 @@ public class CompletedDownloadsFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+        progressBar.setVisibility(View.VISIBLE);
+        emptyView.hide();
         disposable = Observable.fromCallable(DBReader::getDownloadedItems)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -198,6 +204,7 @@ public class CompletedDownloadsFragment extends Fragment {
                     items = result;
                     adapter.updateItems(result);
                     requireActivity().invalidateOptionsMenu();
+                    progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

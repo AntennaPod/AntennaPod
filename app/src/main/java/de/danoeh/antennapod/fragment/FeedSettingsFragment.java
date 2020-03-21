@@ -97,6 +97,7 @@ public class FeedSettingsFragment extends Fragment {
 
     public static class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
+        private static final CharSequence PREF_SCREEN = "feedSettingsScreen";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final DecimalFormat SPEED_FORMAT =
                 new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
@@ -116,7 +117,7 @@ public class FeedSettingsFragment extends Fragment {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.feed_settings);
-
+            findPreference(PREF_SCREEN).setEnabled(false);
             setupAutoDownloadGlobalPreference(); // To prevent transition animation because of summary update
 
             long feedId = getArguments().getLong(EXTRA_FEED_ID);
@@ -146,6 +147,7 @@ public class FeedSettingsFragment extends Fragment {
                         updateVolumeReductionValue();
                         updateAutoDownloadEnabled();
                         updatePlaybackSpeedPreference();
+                        findPreference(PREF_SCREEN).setEnabled(true);
                     }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
         }
 

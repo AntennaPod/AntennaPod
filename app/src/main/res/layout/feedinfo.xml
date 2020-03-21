@@ -20,6 +20,7 @@
             <ImageView
                     android:id="@+id/imgvBackground"
                     style="@style/BigBlurryBackground"
+                    android:background="@color/image_readability_tint"
                     android:layout_width="match_parent"
                     android:layout_height="256dp"
                     app:layout_collapseMode="parallax"

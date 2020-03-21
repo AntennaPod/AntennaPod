@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,8 @@ public class PlaybackHistoryFragment extends Fragment {
     private PlaybackHistoryListAdapter adapter;
     private Disposable disposable;
     private RecyclerView recyclerView;
+    private EmptyViewHandler emptyView;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,8 +78,9 @@ public class PlaybackHistoryFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         adapter = new PlaybackHistoryListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
+        progressBar = root.findViewById(R.id.progLoading);
 
-        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView = new EmptyViewHandler(getActivity());
         emptyView.setIcon(R.attr.ic_history);
         emptyView.setTitle(R.string.no_history_head_label);
         emptyView.setMessage(R.string.no_history_label);
@@ -215,15 +219,16 @@ public class PlaybackHistoryFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+        progressBar.setVisibility(View.VISIBLE);
+        emptyView.hide();
         disposable = Observable.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
-                    if (result != null) {
-                        playbackHistory = result;
-                        adapter.updateItems(playbackHistory);
-                        onFragmentLoaded();
-                    }
+                    progressBar.setVisibility(View.GONE);
+                    playbackHistory = result;
+                    adapter.updateItems(playbackHistory);
+                    onFragmentLoaded();
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
