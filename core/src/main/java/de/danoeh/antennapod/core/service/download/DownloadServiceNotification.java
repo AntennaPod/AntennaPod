@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class DownloadServiceNotification {
     private static final String TAG = "DownloadSvcNotification";
@@ -107,7 +109,7 @@ public class DownloadServiceNotification {
         for (DownloadStatus status : reportQueue) {
             if (status.isSuccessful()) {
                 successfulDownloads++;
-                createReport = createReport || showAutoDownloadReport && !status.isInitiatedByUser() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA;
+                createReport |= showAutoDownloadReport && !status.isInitiatedByUser() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA;
             } else if (!status.isCancelled()) {
                 failedDownloads++;
                 createReport = true;
@@ -118,16 +120,29 @@ public class DownloadServiceNotification {
             Log.d(TAG, "Creating report");
 
             // create notification object
-            boolean autoDownloadReport = failedDownloads == 0;
-            String channelId = autoDownloadReport ? NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD : NotificationUtils.CHANNEL_ID_ERROR;
-            int titleId = autoDownloadReport ? R.string.auto_download_report_title : R.string.download_report_title;
+            String channelId;
+            int titleId;
+            int iconId;
+            PendingIntent intent;
+            if (failedDownloads == 0) {
+                // We are generating an auto-download report
+                channelId = NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD;
+                titleId = R.string.auto_download_report_title;
+                iconId = R.drawable.stat_notify_sync;
+                intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
+            } else {
+                channelId = NotificationUtils.CHANNEL_ID_ERROR;
+                titleId = R.string.download_report_title;
+                iconId = R.drawable.stat_notify_sync_error;
+                intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
+            }
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
             builder.setTicker(context.getString(titleId))
-                   .setContentTitle(context.getString(R.string.download_report_content_title))
+                   .setContentTitle(context.getString(titleId))
                    .setContentText(String.format(context.getString(R.string.download_report_content), successfulDownloads, failedDownloads))
-                   .setSmallIcon(autoDownloadReport ? R.drawable.stat_notify_sync : R.drawable.stat_notify_sync_error)
-                   .setContentIntent(ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context, autoDownloadReport))
+                   .setSmallIcon(iconId)
+                   .setContentIntent(intent)
                    .setAutoCancel(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);

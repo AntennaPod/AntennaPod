@@ -67,11 +67,9 @@ public class NotificationUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static NotificationChannel createChannelAutoDownload(Context c) {
-        NotificationChannel mChannel = new NotificationChannel(
-                                            CHANNEL_ID_AUTO_DOWNLOAD,
-                                            c.getString(R.string.notification_channel_auto_download),
-                                            NotificationManager.IMPORTANCE_DEFAULT);
-        mChannel.setDescription(c.getString(R.string.notification_channel_downloading_description));
+        NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_AUTO_DOWNLOAD,
+                c.getString(R.string.notification_channel_auto_download), NotificationManager.IMPORTANCE_DEFAULT);
+        mChannel.setDescription(c.getString(R.string.notification_channel_episode_auto_download));
         return mChannel;
     }
 }
