@@ -31,6 +31,7 @@ import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
+import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
@@ -157,6 +158,9 @@ public class MainActivity extends CastEnabledActivity {
         switch (tag) {
             case QueueFragment.TAG:
                 fragment = new QueueFragment();
+                break;
+            case AudioPlayerFragment.TAG:
+                fragment = new AudioPlayerFragment();
                 break;
             case EpisodesFragment.TAG:
                 fragment = new EpisodesFragment();
@@ -305,6 +309,7 @@ public class MainActivity extends CastEnabledActivity {
             switch (NavDrawerFragment.getLastNavFragment(this)) {
                 case QueueFragment.TAG:
                 case EpisodesFragment.TAG:
+                case AudioPlayerFragment.TAG:
                     requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);
                     return retVal;
                 case DownloadsFragment.TAG:

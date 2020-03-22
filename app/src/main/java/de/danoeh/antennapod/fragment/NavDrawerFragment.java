@@ -56,6 +56,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     public static final String TAG = "NavDrawerFragment";
 
     public static final String[] NAV_DRAWER_TAGS = {
+            AudioPlayerFragment.TAG,
             QueueFragment.TAG,
             EpisodesFragment.TAG,
             SubscriptionFragment.TAG,
