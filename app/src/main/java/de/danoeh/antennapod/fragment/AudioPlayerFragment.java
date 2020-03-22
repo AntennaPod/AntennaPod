@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.view.PagerIndicatorView;
 import de.danoeh.antennapod.view.PlaybackSpeedIndicatorView;
@@ -113,7 +114,8 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
             }
         });
         butRev.setOnLongClickListener(v -> {
-            //showSkipPreference(MediaplayerActivity.this, MediaplayerActivity.SkipDirection.SKIP_REWIND);
+            SkipPreferenceDialog.showSkipPreference(getContext(),
+                    SkipPreferenceDialog.SkipDirection.SKIP_REWIND, txtvRev);
             return true;
         });
         butPlay.setOnClickListener(v -> {
@@ -129,7 +131,8 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
             }
         });
         butFF.setOnLongClickListener(v -> {
-            //showSkipPreference(MediaplayerActivity.this, MediaplayerActivity.SkipDirection.SKIP_FORWARD);
+            SkipPreferenceDialog.showSkipPreference(getContext(),
+                    SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, txtvFF);
             return false;
         });
         butSkip.setOnClickListener(v ->

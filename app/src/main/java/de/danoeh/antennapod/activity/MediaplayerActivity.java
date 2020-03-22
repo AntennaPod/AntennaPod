@@ -2,7 +2,6 @@ package de.danoeh.antennapod.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -35,15 +34,12 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.Consumer;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
-import de.danoeh.antennapod.core.util.Function;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.Supplier;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
@@ -52,6 +48,7 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
+import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -196,13 +193,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         onPositionObserverUpdate();
-    }
-
-    private static TextView getTxtvFFFromActivity(MediaplayerActivity activity) {
-        return activity.txtvFF;
-    }
-    private static TextView getTxtvRevFromActivity(MediaplayerActivity activity) {
-        return activity.txtvRev;
     }
 
     private void onSetSpeedAbilityChanged() {
@@ -543,92 +533,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         // Only meaningful on AudioplayerActivity, where it is overridden.
     }
 
-    /**
-     * Abstract directions to skip forward or back (rewind) and encapsulates behavior to get or set preference (including update of UI on the skip buttons).
-     */
-    public enum SkipDirection {
-        SKIP_FORWARD(
-                UserPreferences::getFastForwardSecs,
-                MediaplayerActivity::getTxtvFFFromActivity,
-                UserPreferences::setFastForwardSecs,
-                R.string.pref_fast_forward),
-        SKIP_REWIND(UserPreferences::getRewindSecs,
-                MediaplayerActivity::getTxtvRevFromActivity,
-                UserPreferences::setRewindSecs,
-                R.string.pref_rewind);
-
-        private final Supplier<Integer> getPrefSecsFn;
-        private final Function<MediaplayerActivity, TextView> getTextViewFn;
-        private final Consumer<Integer> setPrefSecsFn;
-        private final int titleResourceID;
-
-        /**
-         *  Constructor for skip direction enum.  Stores references to  utility functions and resource
-         *  id's that vary dependending on the direction.
-         *
-         * @param getPrefSecsFn Handle to function that retrieves current seconds of the skip delta
-         * @param getTextViewFn Handle to function that gets the TextView which displays the current skip delta value
-         * @param setPrefSecsFn Handle to function that sets the preference (setting) for the skip delta value (and optionally updates the button label with the current values)
-         * @param titleResourceID ID of the resource string with the title for a view
-         */
-        SkipDirection(Supplier<Integer> getPrefSecsFn, Function<MediaplayerActivity, TextView> getTextViewFn, Consumer<Integer> setPrefSecsFn, int titleResourceID) {
-            this.getPrefSecsFn = getPrefSecsFn;
-            this.getTextViewFn = getTextViewFn;
-            this.setPrefSecsFn = setPrefSecsFn;
-            this.titleResourceID = titleResourceID;
-        }
-
-
-        public int getPrefSkipSeconds() {
-            return(getPrefSecsFn.get());
-        }
-
-        /**
-         * Updates preferences for a forward or backward skip depending on the direction of the instance, optionally updating the UI.
-         *
-         * @param seconds Number of seconds to set the preference associated with the direction of the instance.
-         * @param activity MediaplyerActivity that contains textview to update the display of the skip delta setting (or null if nothing to update)
-         */
-        public void setPrefSkipSeconds(int seconds, @Nullable Activity activity) {
-            setPrefSecsFn.accept(seconds);
-
-            if (activity != null && activity instanceof  MediaplayerActivity)  {
-                TextView tv = getTextViewFn.apply((MediaplayerActivity)activity);
-                if (tv != null) tv.setText(String.valueOf(seconds));
-            }
-        }
-        public int getTitleResourceID() {
-            return titleResourceID;
-        }
-    }
-
-    public static void showSkipPreference(Activity activity, SkipDirection direction) {
-        int checked = 0;
-        int skipSecs = direction.getPrefSkipSeconds();
-        final int[] values = activity.getResources().getIntArray(R.array.seek_delta_values);
-        final String[] choices = new String[values.length];
-        for (int i = 0; i < values.length; i++) {
-            if (skipSecs == values[i]) {
-                checked = i;
-            }
-            choices[i] = String.valueOf(values[i]) + " " + activity.getString(R.string.time_seconds);
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle(direction.getTitleResourceID());
-        builder.setSingleChoiceItems(choices, checked, null);
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            int choice = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
-            if (choice < 0 || choice >= values.length) {
-                System.err.printf("Choice in showSkipPreference is out of bounds %d", choice);
-            } else {
-                direction.setPrefSkipSeconds(values[choice], activity);
-            }
-        });
-        builder.create().show();
-    }
-
     void setupGUI() {
         setContentView(getContentViewResourceId());
         sbPosition = findViewById(R.id.sbPosition);
@@ -688,7 +592,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (butRev != null) {
             butRev.setOnClickListener(v -> onRewind());
             butRev.setOnLongClickListener(v -> {
-                showSkipPreference(MediaplayerActivity.this, SkipDirection.SKIP_REWIND);
+                SkipPreferenceDialog.showSkipPreference(MediaplayerActivity.this,
+                        SkipPreferenceDialog.SkipDirection.SKIP_REWIND, txtvRev);
                 return true;
             });
         }
@@ -698,7 +603,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (butFF != null) {
             butFF.setOnClickListener(v -> onFastForward());
             butFF.setOnLongClickListener(v -> {
-                showSkipPreference(MediaplayerActivity.this, SkipDirection.SKIP_FORWARD);
+                SkipPreferenceDialog.showSkipPreference(MediaplayerActivity.this,
+                        SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, txtvFF);
                 return false;
             });
         }
