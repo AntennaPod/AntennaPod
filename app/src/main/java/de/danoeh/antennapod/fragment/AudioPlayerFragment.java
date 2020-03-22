@@ -1,15 +1,21 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -17,8 +23,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -28,8 +38,11 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
+import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.PagerIndicatorView;
 import de.danoeh.antennapod.view.PlaybackSpeedIndicatorView;
 import org.greenrobot.eventbus.EventBus;
@@ -37,6 +50,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  * Shows the audio player.
@@ -300,6 +314,10 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton();
         getActivity().invalidateOptionsMenu();
+
+        List<Chapter> chapters = controller.getMedia().getChapters();
+        boolean hasChapters = chapters != null && !chapters.isEmpty();
+        pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
     }
 
     @Override
@@ -351,6 +369,11 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
         sbPosition.setProgress((int) (progress * sbPosition.getMax()));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void favoritesChanged(FavoritesEvent event) {
+        getActivity().invalidateOptionsMenu();
+    }
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (controller == null || txtvLength == null) {
@@ -382,6 +405,65 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
             float prog = seekBar.getProgress() / ((float) seekBar.getMax());
             controller.seekTo((int) (prog * controller.getDuration()));
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        /*if (Flavors.FLAVOR == Flavors.PLAY) {
+            requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }*/
+        inflater.inflate(R.menu.mediaplayer, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        if (controller == null) {
+            return;
+        }
+        Playable media = controller.getMedia();
+        boolean isFeedMedia = media instanceof FeedMedia;
+        menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia);
+        if (isFeedMedia) {
+            FeedItemMenuHandler.onPrepareMenu(menu, ((FeedMedia) media).getItem());
+        }
+
+        menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
+        menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (controller == null) {
+            return false;
+        }
+        Playable media = controller.getMedia();
+        if (media == null) {
+            return false;
+        }
+
+        final @Nullable FeedItem feedItem = (media instanceof FeedMedia) ? ((FeedMedia) media).getItem() : null;
+        if (feedItem != null && FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), feedItem)) {
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.disable_sleeptimer_item: // Fall-through
+            case R.id.set_sleeptimer_item:
+                new SleepTimerDialog().show(getFragmentManager(), "SleepTimerDialog");
+                return true;
+            case R.id.audio_controls:
+                PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance(false);
+                dialog.show(getFragmentManager(), "playback_controls");
+                return true;
+            case R.id.open_feed_item:
+                if (feedItem != null) {
+                    Intent intent = MainActivity.getIntentToOpenFeed(getContext(), feedItem.getFeedId());
+                    startActivity(intent);
+                }
+                return true;
+        }
+        return false;
     }
 
     private static class AudioPlayerPagerAdapter extends FragmentStatePagerAdapter {
