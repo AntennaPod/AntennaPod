@@ -48,7 +48,6 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     @Override
     public PendingIntent getAutoDownloadReportNotificationContentIntent(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_NAV_TYPE, NavListAdapter.VIEW_TYPE_NAV);
         intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, QueueFragment.TAG);
         return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
