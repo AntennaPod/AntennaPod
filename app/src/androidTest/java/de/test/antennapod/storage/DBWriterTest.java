@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.core.util.Consumer;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
 
@@ -31,7 +32,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.Consumer;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
