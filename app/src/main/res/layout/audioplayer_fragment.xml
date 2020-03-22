@@ -84,6 +84,7 @@
                     android:text="@string/position_default_label"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="@dimen/text_size_micro"
+                    android:background="?android:attr/selectableItemBackground"
                     tools:background="@android:color/holo_green_dark"/>
 
         </RelativeLayout>

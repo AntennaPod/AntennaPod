@@ -599,8 +599,8 @@ public class PlaybackController {
     public int getPosition() {
         if (playbackService != null) {
             return playbackService.getCurrentPosition();
-        } else if (media != null) {
-            return media.getPosition();
+        } else if (getMedia() != null) {
+            return getMedia().getPosition();
         } else {
             return PlaybackService.INVALID_TIME;
         }
@@ -609,8 +609,8 @@ public class PlaybackController {
     public int getDuration() {
         if (playbackService != null) {
             return playbackService.getDuration();
-        } else if (media != null) {
-            return media.getDuration();
+        } else if (getMedia() != null) {
+            return getMedia().getDuration();
         } else {
             return PlaybackService.INVALID_TIME;
         }
