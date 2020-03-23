@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +16,7 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -69,13 +68,10 @@ public class ExternalPlayerFragment extends Fragment {
             Log.d(TAG, "layoutInfo was clicked");
 
             if (controller != null && controller.getMedia() != null) {
-                Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), controller.getMedia());
-
                 if (controller.getMedia().getMediaType() == MediaType.AUDIO) {
-                    ActivityOptionsCompat options = ActivityOptionsCompat
-                            .makeSceneTransitionAnimation(getActivity(), imgvCover, "coverTransition");
-                    startActivity(intent, options.toBundle());
+                    ((MainActivity) getActivity()).expandBottomSheet();
                 } else {
+                    Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), controller.getMedia());
                     startActivity(intent);
                 }
             }

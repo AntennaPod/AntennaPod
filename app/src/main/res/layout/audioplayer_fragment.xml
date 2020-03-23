@@ -12,6 +12,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             android:layout_alignParentTop="true"
+            app:navigationIcon="?homeAsUpIndicator"
             android:id="@+id/toolbar"/>
 
     <de.danoeh.antennapod.view.PagerIndicatorView
@@ -22,6 +23,15 @@
             android:padding="4dp"
             android:layout_below="@id/toolbar"
             android:layout_centerHorizontal="true"/>
+
+    <FrameLayout
+            android:id="@+id/playerFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/windowBackground"
+            tools:layout_height="@dimen/external_player_height"
+            tools:background="@android:color/holo_green_light" />
 
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"

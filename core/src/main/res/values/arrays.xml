@@ -196,7 +196,6 @@
     </string-array>
 
     <string-array name="nav_drawer_titles">
-        <item>Audio player</item>
         <item>@string/queue_label</item>
         <item>@string/episodes_label</item>
         <item>@string/subscriptions_label</item>

@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
@@ -34,7 +35,6 @@ import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
@@ -68,6 +68,7 @@ public class MainActivity extends CastEnabledActivity {
     private DrawerLayout drawerLayout;
     private View navDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    private BottomSheetBehavior sheetBehavior;
     private long lastBackButtonPressTime = 0;
 
     @NonNull
@@ -112,15 +113,34 @@ public class MainActivity extends CastEnabledActivity {
                 }
             }
         }
-        ExternalPlayerFragment externalPlayerFragment = new ExternalPlayerFragment();
-        transaction.replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG);
         NavDrawerFragment navDrawerFragment = new NavDrawerFragment();
         transaction.replace(R.id.navDrawerFragment, navDrawerFragment, NavDrawerFragment.TAG);
-
+        AudioPlayerFragment audioPlayerFragment = new AudioPlayerFragment();
+        transaction.replace(R.id.audioplayerFragment, audioPlayerFragment, AudioPlayerFragment.TAG);
         transaction.commit();
 
         checkFirstLaunch();
         PreferenceUpgrader.checkUpgrades(this);
+        View bottomSheet = findViewById(R.id.audioplayerFragment);
+        sheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        sheetBehavior.setPeekHeight((int) getResources().getDimension(R.dimen.external_player_height));
+        sheetBehavior.setHideable(false);
+        sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int state) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float slideOffset) {
+                AudioPlayerFragment audioPlayer =
+                        (AudioPlayerFragment) getSupportFragmentManager().findFragmentByTag(AudioPlayerFragment.TAG);
+                float condensedSlideOffset = Math.max(0.0f, Math.min(0.1f, slideOffset - 0.5f)) / 0.1f;
+                audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
+                audioPlayer.getExternalPlayerHolder().setVisibility(
+                        condensedSlideOffset > 0.99f ? View.GONE : View.VISIBLE);
+            }
+        });
     }
 
     @Override
@@ -152,15 +172,20 @@ public class MainActivity extends CastEnabledActivity {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
+    public void expandBottomSheet() {
+        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    public void collapseBottomSheet() {
+        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+
     public void loadFragment(String tag, Bundle args) {
         Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment;
         switch (tag) {
             case QueueFragment.TAG:
                 fragment = new QueueFragment();
-                break;
-            case AudioPlayerFragment.TAG:
-                fragment = new AudioPlayerFragment();
                 break;
             case EpisodesFragment.TAG:
                 fragment = new EpisodesFragment();
@@ -344,6 +369,8 @@ public class MainActivity extends CastEnabledActivity {
     public void onBackPressed() {
         if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
+        } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            collapseBottomSheet();
         } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
         } else {

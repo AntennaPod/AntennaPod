@@ -6,17 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -55,7 +51,8 @@ import java.util.List;
 /**
  * Shows the audio player.
  */
-public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
+public class AudioPlayerFragment extends Fragment implements
+        SeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
@@ -69,7 +66,6 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
     TextView txtvPlaybackSpeed;
     private ViewPager pager;
     private PagerIndicatorView pageIndicator;
-    private AudioPlayerPagerAdapter pagerAdapter;
     private TextView txtvPosition;
     private TextView txtvLength;
     private SeekBar sbPosition;
@@ -79,6 +75,7 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
+    private Toolbar toolbar;
 
     private PlaybackController controller;
     private boolean showTimeLeft;
@@ -87,9 +84,16 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.audioplayer_fragment, container, false);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle("");
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> ((MainActivity) getActivity()).collapseBottomSheet());
+        toolbar.setOnMenuItemClickListener(this);
+        setupOptionsMenu();
+
+        ExternalPlayerFragment externalPlayerFragment = new ExternalPlayerFragment();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
+                .commit();
 
         butPlaybackSpeed = root.findViewById(R.id.butPlaybackSpeed);
         txtvPlaybackSpeed = root.findViewById(R.id.txtvPlaybackSpeed);
@@ -111,13 +115,17 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
         sbPosition.setOnSeekBarChangeListener(this);
 
         pager = root.findViewById(R.id.pager);
-        pagerAdapter = new AudioPlayerPagerAdapter(getFragmentManager());
+        AudioPlayerPagerAdapter pagerAdapter = new AudioPlayerPagerAdapter(getFragmentManager());
         pager.setAdapter(pagerAdapter);
         pageIndicator = root.findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
         pageIndicator.setOnClickListener(v ->
                 pager.setCurrentItem((pager.getCurrentItem() + 1) % pager.getChildCount()));
         return root;
+    }
+
+    public View getExternalPlayerHolder() {
+        return getView().findViewById(R.id.playerFragment);
     }
 
     private void setupControlButtons() {
@@ -256,7 +264,7 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
 
             @Override
             public void onSleepTimerUpdate() {
-                getActivity().invalidateOptionsMenu();
+                setupOptionsMenu();
             }
 
             @Override
@@ -313,7 +321,7 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
         }
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton();
-        getActivity().invalidateOptionsMenu();
+        setupOptionsMenu();
 
         List<Chapter> chapters = controller.getMedia().getChapters();
         boolean hasChapters = chapters != null && !chapters.isEmpty();
@@ -324,7 +332,7 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
     }
 
     @Override
@@ -371,7 +379,7 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void favoritesChanged(FavoritesEvent event) {
-        getActivity().invalidateOptionsMenu();
+        setupOptionsMenu();
     }
 
     @Override
@@ -407,34 +415,26 @@ public class AudioPlayerFragment extends Fragment implements SeekBar.OnSeekBarCh
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        /*if (Flavors.FLAVOR == Flavors.PLAY) {
-            requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        }*/
-        inflater.inflate(R.menu.mediaplayer, menu);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+    public void setupOptionsMenu() {
+        if (toolbar.getMenu().size() == 0) {
+            toolbar.inflateMenu(R.menu.mediaplayer);
+        }
         if (controller == null) {
             return;
         }
         Playable media = controller.getMedia();
         boolean isFeedMedia = media instanceof FeedMedia;
-        menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia);
+        toolbar.getMenu().findItem(R.id.open_feed_item).setVisible(isFeedMedia);
         if (isFeedMedia) {
-            FeedItemMenuHandler.onPrepareMenu(menu, ((FeedMedia) media).getItem());
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), ((FeedMedia) media).getItem());
         }
 
-        menu.findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
-        menu.findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
+        toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
+        toolbar.getMenu().findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) {
         if (controller == null) {
             return false;
         }
