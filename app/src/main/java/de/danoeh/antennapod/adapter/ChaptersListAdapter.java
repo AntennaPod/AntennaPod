@@ -2,7 +2,6 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +115,6 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
     @Override
     public int getItemCount() {
         if (media == null || media.getChapters() == null) {
-            Log.d("aaaaa", "0");
             return 0;
         }
         // ignore invalid chapters
@@ -126,7 +124,6 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
                 counter++;
             }
         }
-        Log.d("aaaaa", "0"+counter);
         return counter;
     }
 

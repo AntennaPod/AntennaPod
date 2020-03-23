@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
@@ -119,6 +119,14 @@ public class AudioPlayerFragment extends Fragment implements
         pager = root.findViewById(R.id.pager);
         AudioPlayerPagerAdapter pagerAdapter = new AudioPlayerPagerAdapter(getFragmentManager());
         pager.setAdapter(pagerAdapter);
+        // Required for getChildAt(int) in ViewPagerBottomSheetBehavior to return the correct page
+        pager.setOffscreenPageLimit(NUM_CONTENT_FRAGMENTS);
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                pager.post(() -> ((MainActivity) getActivity()).getBottomSheet().updateScrollingChild());
+            }
+        });
         pageIndicator = root.findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
         pageIndicator.setOnClickListener(v ->
@@ -468,7 +476,7 @@ public class AudioPlayerFragment extends Fragment implements
         return false;
     }
 
-    private static class AudioPlayerPagerAdapter extends FragmentStatePagerAdapter {
+    private static class AudioPlayerPagerAdapter extends FragmentPagerAdapter {
         private static final String TAG = "AudioPlayerPagerAdapter";
 
         public AudioPlayerPagerAdapter(FragmentManager fm) {

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
@@ -35,7 +36,8 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "Creating view");
-        webvDescription = new ShownotesWebView(getActivity().getApplicationContext());
+        View root = inflater.inflate(R.layout.item_description_fragment, container, false);
+        webvDescription = root.findViewById(R.id.webview);
         webvDescription.setTimecodeSelectedListener(time -> {
             if (controller != null) {
                 controller.seekTo(time);
@@ -46,7 +48,7 @@ public class ItemDescriptionFragment extends Fragment {
             webvDescription.postDelayed(ItemDescriptionFragment.this::restoreFromPreference, 50);
         });
         registerForContextMenu(webvDescription);
-        return webvDescription;
+        return root;
     }
 
     @Override
