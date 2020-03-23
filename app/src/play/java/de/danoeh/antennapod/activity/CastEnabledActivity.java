@@ -31,9 +31,8 @@ public abstract class CastEnabledActivity extends AppCompatActivity
 
     private CastConsumer castConsumer;
     private CastManager castManager;
-
     private SwitchableMediaRouteActionProvider mediaRouteActionProvider;
-    private final CastButtonVisibilityManager castButtonVisibilityManager = new CastButtonVisibilityManager();
+    private CastButtonVisibilityManager castButtonVisibilityManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +58,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         };
         castManager = CastManager.getInstance();
         castManager.addCastConsumer(castConsumer);
+        castButtonVisibilityManager = new CastButtonVisibilityManager(castManager);
         castButtonVisibilityManager.setPrefEnabled(UserPreferences.isCastEnabled());
         onCastConnectionChanged(castManager.isConnected());
     }
@@ -103,6 +103,7 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         }
         mediaRouteActionProvider = castManager.addMediaRouterButton(mediaRouteButton);
         if (mediaRouteActionProvider != null) {
+            castButtonVisibilityManager.mediaRouteActionProvider = mediaRouteActionProvider;
             mediaRouteActionProvider.setEnabled(castButtonVisibilityManager.shouldEnable());
         }
         return true;
@@ -162,13 +163,19 @@ public abstract class CastEnabledActivity extends AppCompatActivity
         castButtonVisibilityManager.requestCastButton(showAsAction);
     }
 
-    private class CastButtonVisibilityManager {
+    public static class CastButtonVisibilityManager {
+        private final CastManager castManager;
         private volatile boolean prefEnabled = false;
         private volatile boolean viewRequested = false;
         private volatile boolean resumed = false;
         private volatile boolean connected = false;
         private volatile int showAsAction = MenuItem.SHOW_AS_ACTION_IF_ROOM;
         private Menu menu;
+        public SwitchableMediaRouteActionProvider mediaRouteActionProvider;
+
+        public CastButtonVisibilityManager(CastManager castManager) {
+            this.castManager = castManager;
+        }
 
         public synchronized void setPrefEnabled(boolean newValue) {
             if (prefEnabled != newValue && resumed && (viewRequested || connected)) {

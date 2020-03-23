@@ -1218,7 +1218,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.setCasting(isCasting);
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
-        Log.d(TAG, "setupNotification: startForeground" + playerStatus);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
         startForegroundIfPlaying(playerStatus);
@@ -1236,10 +1235,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void startForegroundIfPlaying(@NonNull PlayerStatus status) {
+        Log.d(TAG, "startForegroundIfPlaying: " + status);
         if (stateManager.hasReceivedValidStartCommand()) {
             if (isCasting || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
                     || status == PlayerStatus.SEEKING) {
                 stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
+                Log.d(TAG, "foreground");
             } else {
                 stateManager.stopForeground(false);
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -1781,6 +1782,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void setIsCasting(boolean isCasting) {
             PlaybackService.isCasting = isCasting;
+            stateManager.validStartCommandWasReceived();
         }
 
         @Override
