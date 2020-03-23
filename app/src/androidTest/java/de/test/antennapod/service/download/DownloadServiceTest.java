@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Consumer;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
@@ -35,7 +36,6 @@ import de.danoeh.antennapod.core.service.download.StubDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.Consumer;
 
 import static de.test.antennapod.util.event.DownloadEventListener.withDownloadEventListener;
 import static de.test.antennapod.util.event.FeedItemEventListener.withFeedItemEventListener;
