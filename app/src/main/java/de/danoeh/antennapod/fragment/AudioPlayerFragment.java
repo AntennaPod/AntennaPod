@@ -333,9 +333,11 @@ public class AudioPlayerFragment extends Fragment implements
         updatePlaybackSpeedButton();
         setupOptionsMenu();
 
-        List<Chapter> chapters = controller.getMedia().getChapters();
-        boolean hasChapters = chapters != null && !chapters.isEmpty();
-        pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
+        if (controller.getMedia() != null) {
+            List<Chapter> chapters = controller.getMedia().getChapters();
+            boolean hasChapters = chapters != null && !chapters.isEmpty();
+            pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
+        }
     }
 
     @Override
