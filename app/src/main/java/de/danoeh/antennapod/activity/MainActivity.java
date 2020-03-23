@@ -42,6 +42,7 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
+import de.danoeh.antennapod.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
@@ -68,7 +69,7 @@ public class MainActivity extends CastEnabledActivity {
     private DrawerLayout drawerLayout;
     private View navDrawer;
     private ActionBarDrawerToggle drawerToggle;
-    private BottomSheetBehavior sheetBehavior;
+    private LockableBottomSheetBehavior sheetBehavior;
     private long lastBackButtonPressTime = 0;
 
     @NonNull
@@ -122,7 +123,7 @@ public class MainActivity extends CastEnabledActivity {
         checkFirstLaunch();
         PreferenceUpgrader.checkUpgrades(this);
         View bottomSheet = findViewById(R.id.audioplayerFragment);
-        sheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setPeekHeight((int) getResources().getDimension(R.dimen.external_player_height));
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -172,12 +173,8 @@ public class MainActivity extends CastEnabledActivity {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
-    public void expandBottomSheet() {
-        sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
-    public void collapseBottomSheet() {
-        sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    public LockableBottomSheetBehavior getBottomSheet() {
+        return sheetBehavior;
     }
 
     public void loadFragment(String tag, Bundle args) {
@@ -370,7 +367,7 @@ public class MainActivity extends CastEnabledActivity {
         if (isDrawerOpen()) {
             drawerLayout.closeDrawer(navDrawer);
         } else if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            collapseBottomSheet();
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             super.onBackPressed();
         } else {

@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
@@ -86,7 +87,8 @@ public class AudioPlayerFragment extends Fragment implements
         View root = inflater.inflate(R.layout.audioplayer_fragment, container, false);
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle("");
-        toolbar.setNavigationOnClickListener(v -> ((MainActivity) getActivity()).collapseBottomSheet());
+        toolbar.setNavigationOnClickListener(v ->
+                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED));
         toolbar.setOnMenuItemClickListener(this);
         setupOptionsMenu();
 

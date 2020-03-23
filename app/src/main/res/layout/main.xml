@@ -22,11 +22,12 @@
             tools:background="@android:color/holo_red_dark" />
 
         <FrameLayout
+            android:elevation="8dp"
             android:id="@+id/audioplayerFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?android:attr/windowBackground"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
+            app:layout_behavior="de.danoeh.antennapod.view.LockableBottomSheetBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

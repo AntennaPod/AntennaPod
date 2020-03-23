@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
@@ -69,7 +70,7 @@ public class ExternalPlayerFragment extends Fragment {
 
             if (controller != null && controller.getMedia() != null) {
                 if (controller.getMedia().getMediaType() == MediaType.AUDIO) {
-                    ((MainActivity) getActivity()).expandBottomSheet();
+                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_EXPANDED);
                 } else {
                     Intent intent = PlaybackService.getPlayerActivityIntent(getActivity(), controller.getMedia());
                     startActivity(intent);
@@ -236,8 +237,11 @@ public class ExternalPlayerFragment extends Fragment {
             fragmentLayout.setVisibility(View.VISIBLE);
             if (controller != null && controller.isPlayingVideoLocally()) {
                 butPlay.setVisibility(View.GONE);
+                ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
+                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
             } else {
                 butPlay.setVisibility(View.VISIBLE);
+                ((MainActivity) getActivity()).getBottomSheet().setLocked(false);
             }
         } else {
             Log.w(TAG, "loadMediaInfo was called while the media object of playbackService was null!");
