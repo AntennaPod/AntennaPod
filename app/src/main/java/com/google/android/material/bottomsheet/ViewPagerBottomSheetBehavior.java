@@ -34,7 +34,9 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends BottomSheetBeh
         if (view instanceof ViewPager) {
             ViewPager viewPager = (ViewPager) view;
             View currentViewPagerChild = viewPager.getChildAt(viewPager.getCurrentItem());
-            return findScrollingChild(currentViewPagerChild);
+            if (currentViewPagerChild != null) {
+                return findScrollingChild(currentViewPagerChild);
+            }
         } else if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
             for (int i = 0, count = group.getChildCount(); i < count; i++) {

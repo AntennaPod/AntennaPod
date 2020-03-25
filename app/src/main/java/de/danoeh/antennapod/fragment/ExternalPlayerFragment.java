@@ -40,7 +40,6 @@ import org.greenrobot.eventbus.ThreadMode;
 public class ExternalPlayerFragment extends Fragment {
     public static final String TAG = "ExternalPlayerFragment";
 
-    private ViewGroup fragmentLayout;
     private ImageView imgvCover;
     private TextView txtvTitle;
     private ImageButton butPlay;
@@ -56,16 +55,14 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.external_player_fragment,
-                container, false);
-        fragmentLayout = root.findViewById(R.id.fragmentLayout);
+        View root = inflater.inflate(R.layout.external_player_fragment, container, false);
         imgvCover = root.findViewById(R.id.imgvCover);
         txtvTitle = root.findViewById(R.id.txtvTitle);
         butPlay = root.findViewById(R.id.butPlay);
         mFeedName = root.findViewById(R.id.txtvAuthor);
         mProgressBar = root.findViewById(R.id.episodeProgress);
 
-        fragmentLayout.setOnClickListener(v -> {
+        root.findViewById(R.id.fragmentLayout).setOnClickListener(v -> {
             Log.d(TAG, "layoutInfo was clicked");
 
             if (controller != null && controller.getMedia() != null) {
@@ -175,9 +172,7 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     private void playbackDone() {
-        if (fragmentLayout != null) {
-            fragmentLayout.setVisibility(View.GONE);
-        }
+        clearUi();
         if (controller != null) {
             controller.release();
         }
@@ -214,8 +209,20 @@ public class ExternalPlayerFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> updateUi((Playable) media),
                         error -> Log.e(TAG, Log.getStackTraceString(error)),
-                        () -> fragmentLayout.setVisibility(View.GONE));
+                        this::clearUi);
         return true;
+    }
+
+    private void clearUi() {
+        if (txtvTitle == null || mFeedName == null || mProgressBar == null || butPlay == null) {
+            return;
+        }
+        txtvTitle.setText(R.string.no_media_playing_label);
+        mFeedName.setText("");
+        butPlay.setVisibility(View.GONE);
+        mProgressBar.setProgress(0);
+        Glide.with(getActivity()).clear(imgvCover);
+        ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
     }
 
     private void updateUi(Playable media) {
@@ -233,8 +240,6 @@ public class ExternalPlayerFragment extends Fragment {
                         .fitCenter()
                         .dontAnimate())
                     .into(imgvCover);
-
-            fragmentLayout.setVisibility(View.VISIBLE);
             if (controller != null && controller.isPlayingVideoLocally()) {
                 butPlay.setVisibility(View.GONE);
                 ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
