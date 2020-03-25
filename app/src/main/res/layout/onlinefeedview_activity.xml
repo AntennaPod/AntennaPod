@@ -2,15 +2,18 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools">
+        android:layout_height="match_parent"
+        android:id="@+id/transparentBackground">
 
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="4dp"
             android:layout_margin="32dp"
-            android:elevation="16dp">
+            android:elevation="16dp"
+            android:id="@+id/card">
 
         <FrameLayout
                 android:orientation="vertical"
@@ -27,7 +30,7 @@
             <LinearLayout
                     android:id="@+id/feedDisplay"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                 <RelativeLayout
@@ -39,7 +42,7 @@
                             android:id="@+id/imgvBackground"
                             style="@style/BigBlurryBackground"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/feeditemlist_header_height" />
+                            android:layout_height="@dimen/feeditemlist_header_height"/>
 
                     <ImageView
                             android:id="@+id/imgvCover"
@@ -77,7 +80,7 @@
                             android:shadowColor="@color/black"
                             android:shadowRadius="3"
                             android:textColor="@color/white"
-                            tools:text="Podcast title" />
+                            tools:text="Podcast title"/>
 
                     <TextView
                             android:id="@+id/txtvAuthor"

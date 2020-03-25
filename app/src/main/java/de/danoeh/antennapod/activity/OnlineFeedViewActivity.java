@@ -113,6 +113,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         listView = findViewById(R.id.listview);
         progressBar = findViewById(R.id.progressBar);
 
+        findViewById(R.id.transparentBackground).setOnClickListener(v -> finish());
+        findViewById(R.id.card).setOnClickListener(null);
+
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
