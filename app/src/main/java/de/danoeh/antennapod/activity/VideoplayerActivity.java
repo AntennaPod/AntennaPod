@@ -278,12 +278,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             }
             return;
         }
-        if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
-            Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
-            destroyingDueToReload = true;
-            finish();
-            startActivity(new Intent(this, AudioplayerActivity.class));
-        } else if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
+        if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
             Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
             destroyingDueToReload = true;
             finish();

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.CastplayerActivity;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
 import de.danoeh.antennapod.core.PlaybackServiceCallbacks;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -24,7 +24,7 @@ public class PlaybackServiceCallbacksImpl implements PlaybackServiceCallbacks {
             }
             return i;
         } else {
-            return new Intent(context, AudioplayerActivity.class);
+            return new Intent(context, MainActivity.class).putExtra(MainActivity.EXTRA_OPEN_PLAYER, true);
         }
     }
 

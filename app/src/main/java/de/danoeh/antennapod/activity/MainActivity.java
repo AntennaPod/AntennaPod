@@ -63,6 +63,7 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
+    public static final String EXTRA_OPEN_PLAYER = "open_player";
 
     private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
 
@@ -403,9 +404,11 @@ public class MainActivity extends CastEnabledActivity {
             } else if (feedId > 0) {
                 loadFeedFragmentById(feedId, args);
             }
-            // to avoid handling the intent twice when the configuration changes
-            setIntent(new Intent(MainActivity.this, MainActivity.class));
+        } else if (intent.hasExtra(EXTRA_OPEN_PLAYER)) {
+            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
+        // to avoid handling the intent twice when the configuration changes
+        setIntent(new Intent(MainActivity.this, MainActivity.class));
     }
 
     @Override
