@@ -36,16 +36,7 @@ public class AtomText extends SyndElement {
         }
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public void setContent(String content) {
         this.content = content;
     }
-
-    public String getType() {
-        return type;
-    }
-
 }

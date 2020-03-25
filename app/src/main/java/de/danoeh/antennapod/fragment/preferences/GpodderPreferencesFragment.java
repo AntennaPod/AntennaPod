@@ -63,11 +63,11 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_GPODNET_SETLOGIN_INFORMATION)
                 .setOnPreferenceClickListener(preference -> {
                     AuthenticationDialog dialog = new AuthenticationDialog(activity,
-                            R.string.pref_gpodnet_setlogin_information_title, false, false, GpodnetPreferences.getUsername(),
+                            R.string.pref_gpodnet_setlogin_information_title, false, GpodnetPreferences.getUsername(),
                             null) {
 
                         @Override
-                        protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+                        protected void onConfirmed(String username, String password) {
                             GpodnetPreferences.setPassword(password);
                         }
                     };

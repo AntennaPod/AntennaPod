@@ -618,7 +618,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         private final String feedUrl;
 
         FeedViewAuthenticationDialog(Context context, int titleRes, String feedUrl) {
-            super(context, titleRes, true, false, null, null);
+            super(context, titleRes, true, null, null);
             this.feedUrl = feedUrl;
         }
 
@@ -629,7 +629,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+        protected void onConfirmed(String username, String password) {
             startFeedDownload(feedUrl, username, password);
         }
     }

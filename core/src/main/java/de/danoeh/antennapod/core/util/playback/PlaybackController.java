@@ -382,12 +382,6 @@ public class PlaybackController {
 
     public void onPlaybackEnd() {}
 
-    public void repeatHandleStatus() {
-        if (status != null && playbackService != null) {
-            handleStatus();
-        }
-    }
-
     /**
      * Is called whenever the PlaybackService changes its status. This method
      * should be used to update the GUI or start/cancel background threads.

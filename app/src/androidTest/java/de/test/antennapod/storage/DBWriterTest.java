@@ -422,7 +422,6 @@ public class DBWriterTest {
     }
 
     private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
-        final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
@@ -558,7 +557,6 @@ public class DBWriterTest {
 
     @Test
     public void testAddQueueItemMultipleItems() throws InterruptedException, ExecutionException, TimeoutException {
-        final Context context = getInstrumentation().getTargetContext();
         final int NUM_ITEMS = 10;
 
         Feed feed = queueTestSetupMultipleItems(NUM_ITEMS);
@@ -583,7 +581,7 @@ public class DBWriterTest {
     public void testClearQueue() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
 
-        Feed feed = queueTestSetupMultipleItems(NUM_ITEMS);
+        queueTestSetupMultipleItems(NUM_ITEMS);
         DBWriter.clearQueue().get(TIMEOUT, TimeUnit.SECONDS);
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

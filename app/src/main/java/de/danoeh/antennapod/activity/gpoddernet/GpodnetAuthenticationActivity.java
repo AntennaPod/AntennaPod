@@ -190,8 +190,6 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
         final AtomicReference<List<GpodnetDevice>> devices = new AtomicReference<>();
         new AsyncTask<GpodnetService, Void, List<GpodnetDevice>>() {
 
-            private volatile Exception exception;
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -226,7 +224,6 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
                     return params[0].getDevices(username);
                 } catch (GpodnetServiceException e) {
                     e.printStackTrace();
-                    exception = e;
                     return null;
                 }
             }

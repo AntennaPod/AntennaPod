@@ -11,12 +11,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.view.CircularProgressBar;
 
 public class DownloadItemViewHolder extends RecyclerView.ViewHolder {
     public final View secondaryActionButton;
     public final ImageView secondaryActionIcon;
-    public final CircularProgressBar secondaryActionProgress;
     public final IconTextView icon;
     public final TextView title;
     public final TextView type;
@@ -29,7 +27,6 @@ public class DownloadItemViewHolder extends RecyclerView.ViewHolder {
         type = itemView.findViewById(R.id.txtvType);
         icon = itemView.findViewById(R.id.txtvIcon);
         reason = itemView.findViewById(R.id.txtvReason);
-        secondaryActionProgress = itemView.findViewById(R.id.secondaryActionProgress);
         secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         title = itemView.findViewById(R.id.txtvTitle);

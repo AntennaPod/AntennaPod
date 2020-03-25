@@ -33,8 +33,4 @@ public class PlaybackServiceCallbacksImpl implements PlaybackServiceCallbacks {
         return true;
     }
 
-    @Override
-    public int getNotificationIconResource(Context context) {
-        return R.drawable.ic_antenna;
-    }
 }

@@ -59,18 +59,6 @@ public class QueueEvent {
         return new QueueEvent(Action.MOVED, item, null, newPosition);
     }
 
-    public boolean contains(long id) {
-        if(item != null) {
-            return item.getId() == id;
-        }
-        for(FeedItem item : items) {
-            if(item.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)

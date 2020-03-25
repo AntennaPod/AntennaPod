@@ -1,20 +1,16 @@
 package de.test.antennapod.storage;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import androidx.test.InstrumentationRegistry;
-import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.FeedItemStatistics;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.LongList;
 import org.junit.After;
@@ -103,7 +99,6 @@ public class DBReaderTest {
 
     @Test
     public void testLoadFeedDataOfFeedItemlist() {
-        final Context context = InstrumentationRegistry.getTargetContext();
         final int numFeeds = 10;
         final int numItems = 1;
         List<Feed> feeds = saveFeedlist(numFeeds, numItems, false);
@@ -314,23 +309,10 @@ public class DBReaderTest {
     }
 
     @Test
-    public void testGetFeedStatisticsCheckOrder() {
-        final int NUM_FEEDS = 10;
-        final int NUM_ITEMS = 10;
-        List<Feed> feeds = DBTestUtils.saveFeedlist(NUM_FEEDS, NUM_ITEMS, false);
-        List<FeedItemStatistics> statistics = DBReader.getFeedStatisticsList();
-        assertNotNull(statistics);
-        assertEquals(feeds.size(), statistics.size());
-        for (int i = 0; i < NUM_FEEDS; i++) {
-            assertEquals("Wrong entry at index " + i, feeds.get(i).getId(), statistics.get(i).getFeedID());
-        }
-    }
-
-    @Test
     public void testGetNavDrawerDataQueueEmptyNoUnreadItems() {
         final int NUM_FEEDS = 10;
         final int NUM_ITEMS = 10;
-        List<Feed> feeds = DBTestUtils.saveFeedlist(NUM_FEEDS, NUM_ITEMS, true);
+        DBTestUtils.saveFeedlist(NUM_FEEDS, NUM_ITEMS, true);
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData();
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
         assertEquals(0, navDrawerData.numNewItems);

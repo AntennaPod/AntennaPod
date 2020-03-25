@@ -221,16 +221,6 @@ public class FeedMedia extends FeedFile implements Playable {
                 ((PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PLAYING));
     }
 
-    /**
-     * Reads playback preferences to determine whether this FeedMedia object is
-     * currently being played and the current player status is paused.
-     */
-    public boolean isCurrentlyPaused() {
-        return isPlaying() &&
-                ((PlaybackPreferences.getCurrentPlayerStatus() == PlaybackPreferences.PLAYER_STATUS_PAUSED));
-    }
-
-
     public boolean hasAlmostEnded() {
         int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
         return this.position >= this.duration - smartMarkAsPlayedSecs * 1000;

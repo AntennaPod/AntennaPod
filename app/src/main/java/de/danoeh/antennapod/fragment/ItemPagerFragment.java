@@ -41,16 +41,6 @@ public class ItemPagerFragment extends Fragment {
     /**
      * Creates a new instance of an ItemPagerFragment.
      *
-     * @param feeditem The ID of the FeedItem that should be displayed.
-     * @return The ItemFragment instance
-     */
-    public static ItemPagerFragment newInstance(long feeditem) {
-        return newInstance(new long[] { feeditem }, 0);
-    }
-
-    /**
-     * Creates a new instance of an ItemPagerFragment.
-     *
      * @param feeditems The IDs of the FeedItems that belong to the same list
      * @param feedItemPos The position of the FeedItem that is currently shown
      * @return The ItemFragment instance
