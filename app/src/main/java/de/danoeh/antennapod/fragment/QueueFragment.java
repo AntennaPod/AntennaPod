@@ -416,11 +416,11 @@ public class QueueFragment extends Fragment {
             recyclerAdapter.setLocked(locked);
         }
         if (locked) {
-            Snackbar.make(getActivity().findViewById(R.id.content), R.string
-                    .queue_locked, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(getActivity().findViewById(android.R.id.content),
+                    R.string.queue_locked, Snackbar.LENGTH_SHORT).show();
         } else {
-            Snackbar.make(getActivity().findViewById(R.id.content), R.string
-                    .queue_unlocked, Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(getActivity().findViewById(android.R.id.content),
+                    R.string.queue_unlocked, Snackbar.LENGTH_SHORT).show();
         }
     }
 
