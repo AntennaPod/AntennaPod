@@ -94,6 +94,20 @@ public class DownloadServiceNotification {
         return TextUtils.join("\n", lines);
     }
 
+    private static String createAutoDownloadNotificationContent(List<DownloadStatus> statuses) {
+        int length = statuses.size();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            sb.append("• ").append(statuses.get(i).getTitle());
+            if (i != length - 1) {
+                sb.append("\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
     /**
      * Creates a notification at the end of the service lifecycle to notify the
      * user about the number of completed downloads. A report will only be
@@ -125,6 +139,7 @@ public class DownloadServiceNotification {
             int titleId;
             int iconId;
             int id;
+            String content;
             PendingIntent intent;
             if (failedDownloads == 0) {
                 // We are generating an auto-download report
@@ -133,18 +148,26 @@ public class DownloadServiceNotification {
                 iconId = R.drawable.stat_notify_sync;
                 intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
                 id = AUTO_REPORT_ID;
+                StringBuilder sb = new StringBuilder();
+                for (DownloadStatus status: reportQueue) {
+                    sb.append("A");
+                    sb.append("\n");
+                }
+                content = createAutoDownloadNotificationContent(reportQueue);
             } else {
                 channelId = NotificationUtils.CHANNEL_ID_ERROR;
                 titleId = R.string.download_report_title;
                 iconId = R.drawable.stat_notify_sync_error;
                 intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
                 id = REPORT_ID;
+                content = String.format(context.getString(R.string.download_report_content), successfulDownloads, failedDownloads);
             }
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
             builder.setTicker(context.getString(titleId))
                    .setContentTitle(context.getString(titleId))
-                   .setContentText(String.format(context.getString(R.string.download_report_content), successfulDownloads, failedDownloads))
+                   .setContentText(content)
+                   .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
                    .setSmallIcon(iconId)
                    .setContentIntent(intent)
                    .setAutoCancel(true);
