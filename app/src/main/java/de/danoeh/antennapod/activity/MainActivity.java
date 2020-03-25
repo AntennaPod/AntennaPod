@@ -325,30 +325,6 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        boolean retVal = super.onCreateOptionsMenu(menu);
-        if (Flavors.FLAVOR == Flavors.PLAY) {
-            switch (NavDrawerFragment.getLastNavFragment(this)) {
-                case QueueFragment.TAG:
-                case EpisodesFragment.TAG:
-                case AudioPlayerFragment.TAG:
-                    requestCastButton(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-                    return retVal;
-                case DownloadsFragment.TAG:
-                case PlaybackHistoryFragment.TAG:
-                case AddFeedFragment.TAG:
-                case SubscriptionFragment.TAG:
-                    return retVal;
-                default:
-                    requestCastButton(MenuItem.SHOW_AS_ACTION_NEVER);
-                    return retVal;
-            }
-        } else {
-            return retVal;
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;

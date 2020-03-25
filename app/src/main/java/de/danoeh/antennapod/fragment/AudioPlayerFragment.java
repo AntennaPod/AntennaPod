@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
@@ -423,7 +424,6 @@ public class AudioPlayerFragment extends Fragment implements
 
     public void setupOptionsMenu() {
         if (toolbar.getMenu().size() == 0) {
-            //toolbar.inflateMenu(R.menu.cast_enabled);
             toolbar.inflateMenu(R.menu.mediaplayer);
         }
         if (controller == null) {
@@ -439,17 +439,7 @@ public class AudioPlayerFragment extends Fragment implements
         toolbar.getMenu().findItem(R.id.set_sleeptimer_item).setVisible(!controller.sleepTimerActive());
         toolbar.getMenu().findItem(R.id.disable_sleeptimer_item).setVisible(controller.sleepTimerActive());
 
-        /*MenuItem mediaRouteButton = toolbar.getMenu().findItem(R.id.media_route_menu_item);
-        SwitchableMediaRouteActionProvider mediaRouteActionProvider =
-                CastManager.getInstance().addMediaRouterButton(mediaRouteButton);
-        CastEnabledActivity.CastButtonVisibilityManager castButtonVisibilityManager =
-                new CastEnabledActivity.CastButtonVisibilityManager(CastManager.getInstance());
-        castButtonVisibilityManager.setMenu(toolbar.getMenu());
-        castButtonVisibilityManager.setPrefEnabled(UserPreferences.isCastEnabled());
-        castButtonVisibilityManager.mediaRouteActionProvider = mediaRouteActionProvider;
-        castButtonVisibilityManager.setResumed(true);
-        castButtonVisibilityManager.requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        mediaRouteActionProvider.setEnabled(castButtonVisibilityManager.shouldEnable());*/
+        ((CastEnabledActivity) getActivity()).requestCastButton(toolbar.getMenu());
     }
 
     @Override

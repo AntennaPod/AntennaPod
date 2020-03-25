@@ -146,9 +146,6 @@ public class ItemPagerFragment extends Fragment {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
-        if (Flavors.FLAVOR == Flavors.PLAY) {
-            ((CastEnabledActivity) getActivity()).requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        }
         inflater.inflate(R.menu.feeditem_options, menu);
         if (item.hasMedia()) {
             FeedItemMenuHandler.onPrepareMenu(menu, item);

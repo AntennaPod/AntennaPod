@@ -136,8 +136,8 @@
 
             <ProgressBar
                     style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length_big"
+                    android:layout_height="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:id="@+id/progLoading"
