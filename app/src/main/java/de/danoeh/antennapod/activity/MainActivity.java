@@ -176,6 +176,7 @@ public class MainActivity extends CastEnabledActivity {
             default:
                 // default to the queue
                 fragment = new QueueFragment();
+                tag = QueueFragment.TAG;
                 args = null;
                 break;
         }
@@ -183,6 +184,7 @@ public class MainActivity extends CastEnabledActivity {
         if (args != null) {
             fragment.setArguments(args);
         }
+        NavDrawerFragment.saveLastNavFragment(this, tag);
         loadFragment(fragment);
     }
 
@@ -191,6 +193,7 @@ public class MainActivity extends CastEnabledActivity {
         if (args != null) {
             fragment.setArguments(args);
         }
+        NavDrawerFragment.saveLastNavFragment(this, String.valueOf(feedId));
         loadFragment(fragment);
     }
 
@@ -367,7 +370,6 @@ public class MainActivity extends CastEnabledActivity {
                         super.onBackPressed();
                     } else {
                         loadFragment(UserPreferences.getBackButtonGoToPage(), null);
-                        NavDrawerFragment.saveLastNavFragment(this, UserPreferences.getBackButtonGoToPage());
                     }
                     break;
                 default: super.onBackPressed();
