@@ -1,24 +1,24 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import androidx.fragment.app.ListFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListView;
-
-import de.danoeh.antennapod.core.util.ChapterUtils;
-import java.util.List;
-import java.util.ListIterator;
-
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChaptersListAdapter;
-import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,38 +28,43 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class ChaptersFragment extends ListFragment {
+public class ChaptersFragment extends Fragment {
     private static final String TAG = "ChaptersFragment";
     private ChaptersListAdapter adapter;
     private PlaybackController controller;
     private Disposable disposable;
     private int focusedChapter = -1;
     private Playable media;
+    private LinearLayoutManager layoutManager;
 
+    @Nullable
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // add padding
-        final ListView lv = getListView();
-        lv.setClipToPadding(false);
-        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
-        lv.setPadding(0, vertPadding, 0, vertPadding);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
+        root.findViewById(R.id.toolbar).setVisibility(View.GONE);
+        RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+
+        adapter = new ChaptersListAdapter(getActivity(), pos -> {
+            if (controller.getStatus() != PlayerStatus.PLAYING) {
+                controller.playPause();
+            }
+            Chapter chapter = adapter.getItem(pos);
+            controller.seekToChapter(chapter);
+            updateChapterSelection(pos);
+        });
+        recyclerView.setAdapter(adapter);
 
         EmptyViewHandler emptyView = new EmptyViewHandler(getContext());
-        emptyView.attachToListView(lv);
+        emptyView.attachToRecyclerView(recyclerView);
         emptyView.setIcon(R.attr.ic_bookmark);
         emptyView.setTitle(R.string.no_chapters_head_label);
         emptyView.setMessage(R.string.no_chapters_label);
 
-        adapter = new ChaptersListAdapter(getActivity(), 0, pos -> {
-            if (controller.getStatus() != PlayerStatus.PLAYING) {
-                controller.playPause();
-            }
-            Chapter chapter = (Chapter) getListAdapter().getItem(pos);
-            controller.seekToChapter(chapter);
-            updateChapterSelection(pos);
-        });
-        setListAdapter(adapter);
+        return root;
     }
 
     @Override
@@ -136,7 +141,6 @@ public class ChaptersFragment extends ListFragment {
             return;
         }
         adapter.setMedia(media);
-        adapter.notifyDataSetChanged();
         int positionOfCurrentChapter = getCurrentChapter(media);
         updateChapterSelection(positionOfCurrentChapter);
     }
@@ -149,9 +153,9 @@ public class ChaptersFragment extends ListFragment {
         if (position != -1 && focusedChapter != position) {
             focusedChapter = position;
             adapter.notifyChapterChanged(focusedChapter);
-            if (getListView().getFirstVisiblePosition() >= position
-                    || getListView().getLastVisiblePosition() <= position) {
-                getListView().setSelectionFromTop(position, 100);
+            if (layoutManager.findFirstCompletelyVisibleItemPosition() >= position
+                    || layoutManager.findLastCompletelyVisibleItemPosition() <= position) {
+                layoutManager.scrollToPositionWithOffset(position, 100);
             }
         }
     }

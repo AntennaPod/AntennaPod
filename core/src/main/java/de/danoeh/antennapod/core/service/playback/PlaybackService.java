@@ -182,11 +182,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED = 9;
 
     /**
-     * Send a message to the user (with provided String resource id)
-     */
-    public static final int NOTIFICATION_TYPE_SHOW_TOAST = 10;
-
-    /**
      * Returned by getPositionSafe() or getDurationSafe() if the playbackService
      * is in an invalid state.
      */
@@ -1218,7 +1213,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.setCasting(isCasting);
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
-        Log.d(TAG, "setupNotification: startForeground" + playerStatus);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
         startForegroundIfPlaying(playerStatus);
@@ -1236,10 +1230,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void startForegroundIfPlaying(@NonNull PlayerStatus status) {
+        Log.d(TAG, "startForegroundIfPlaying: " + status);
         if (stateManager.hasReceivedValidStartCommand()) {
             if (isCasting || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
                     || status == PlayerStatus.SEEKING) {
                 stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
+                Log.d(TAG, "foreground");
             } else {
                 stateManager.stopForeground(false);
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
@@ -1781,6 +1777,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void setIsCasting(boolean isCasting) {
             PlaybackService.isCasting = isCasting;
+            stateManager.validStartCommandWasReceived();
         }
 
         @Override

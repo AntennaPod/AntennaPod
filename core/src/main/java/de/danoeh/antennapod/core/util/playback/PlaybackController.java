@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -333,8 +334,6 @@ public class PlaybackController {
                 case PlaybackService.NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED:
                     onSetSpeedAbilityChanged();
                     break;
-                case PlaybackService.NOTIFICATION_TYPE_SHOW_TOAST:
-                    postStatusMsg(code, true);
             }
         }
 
@@ -411,11 +410,10 @@ public class PlaybackController {
         Log.d(TAG, "status: " + status.toString());
         switch (status) {
             case ERROR:
-                postStatusMsg(R.string.player_error_msg, false);
+                EventBus.getDefault().post(new MessageEvent(activity.getString(R.string.player_error_msg)));
                 handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
                 break;
             case PAUSED:
-                clearStatusMsg();
                 checkMediaInfoLoaded();
                 onPositionObserverUpdate();
                 updatePlayButtonAppearance(playResource, playText);
@@ -425,7 +423,6 @@ public class PlaybackController {
                 }
                 break;
             case PLAYING:
-                clearStatusMsg();
                 checkMediaInfoLoaded();
                 if (!PlaybackService.isCasting() &&
                         PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
@@ -435,7 +432,6 @@ public class PlaybackController {
                 updatePlayButtonAppearance(pauseResource, pauseText);
                 break;
             case PREPARING:
-                postStatusMsg(R.string.player_preparing_msg, false);
                 checkMediaInfoLoaded();
                 if (playbackService != null) {
                     if (playbackService.isStartWhenPrepared()) {
@@ -446,21 +442,17 @@ public class PlaybackController {
                 }
                 break;
             case STOPPED:
-                postStatusMsg(R.string.player_stopped_msg, false);
                 break;
             case PREPARED:
                 checkMediaInfoLoaded();
-                postStatusMsg(R.string.player_ready_msg, false);
                 updatePlayButtonAppearance(playResource, playText);
                 onPositionObserverUpdate();
                 break;
             case SEEKING:
                 onPositionObserverUpdate();
-                postStatusMsg(R.string.player_seeking_msg, false);
                 break;
             case INITIALIZED:
                 checkMediaInfoLoaded();
-                clearStatusMsg();
                 updatePlayButtonAppearance(playResource, playText);
                 break;
         }
@@ -481,10 +473,6 @@ public class PlaybackController {
     public ImageButton getPlayButton() {
         return null;
     }
-
-    public void postStatusMsg(int msg, boolean showToast) {}
-
-    public void clearStatusMsg() {}
 
     public boolean loadMediaInfo() {
         return false;
@@ -599,8 +587,8 @@ public class PlaybackController {
     public int getPosition() {
         if (playbackService != null) {
             return playbackService.getCurrentPosition();
-        } else if (media != null) {
-            return media.getPosition();
+        } else if (getMedia() != null) {
+            return getMedia().getPosition();
         } else {
             return PlaybackService.INVALID_TIME;
         }
@@ -609,8 +597,8 @@ public class PlaybackController {
     public int getDuration() {
         if (playbackService != null) {
             return playbackService.getDuration();
-        } else if (media != null) {
-            return media.getDuration();
+        } else if (getMedia() != null) {
+            return getMedia().getDuration();
         } else {
             return PlaybackService.INVALID_TIME;
         }
