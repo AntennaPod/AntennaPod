@@ -291,13 +291,9 @@ public class PlaybackController {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (!isConnectedToPlaybackService()) {
-                bindToService();
-                return;
-            }
-                int type = intent.getIntExtra(PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
-                int code = intent.getIntExtra(PlaybackService.EXTRA_NOTIFICATION_CODE, -1);
-            if(code == -1 || type == -1) {
+            int type = intent.getIntExtra(PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
+            int code = intent.getIntExtra(PlaybackService.EXTRA_NOTIFICATION_CODE, -1);
+            if (code == -1 || type == -1) {
                 Log.d(TAG, "Bad arguments. Won't handle intent");
                 return;
             }
@@ -310,6 +306,10 @@ public class PlaybackController {
                     onBufferUpdate(progress);
                     break;
                 case PlaybackService.NOTIFICATION_TYPE_RELOAD:
+                    if (!isConnectedToPlaybackService()) {
+                        bindToService();
+                        return;
+                    }
                     mediaInfoLoaded = false;
                     queryService();
                     onReloadNotification(intent.getIntExtra(
