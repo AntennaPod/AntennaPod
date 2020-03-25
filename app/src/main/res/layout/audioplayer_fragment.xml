@@ -134,6 +134,15 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"/>
 
+            <ProgressBar
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/progLoading"
+                    android:visibility="gone"/>
+
             <ImageButton
                     android:id="@+id/butRev"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"

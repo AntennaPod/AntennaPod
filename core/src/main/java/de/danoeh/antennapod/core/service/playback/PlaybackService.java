@@ -182,11 +182,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     public static final int NOTIFICATION_TYPE_SET_SPEED_ABILITY_CHANGED = 9;
 
     /**
-     * Send a message to the user (with provided String resource id)
-     */
-    public static final int NOTIFICATION_TYPE_SHOW_TOAST = 10;
-
-    /**
      * Returned by getPositionSafe() or getDurationSafe() if the playbackService
      * is in an invalid state.
      */

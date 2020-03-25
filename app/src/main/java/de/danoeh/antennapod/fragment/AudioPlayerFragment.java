@@ -10,9 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -33,6 +35,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
+import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
@@ -77,6 +80,7 @@ public class AudioPlayerFragment extends Fragment implements
     private TextView txtvFF;
     private ImageButton butSkip;
     private Toolbar toolbar;
+    private ProgressBar progressIndicator;
 
     private PlaybackController controller;
     private boolean showTimeLeft;
@@ -108,6 +112,7 @@ public class AudioPlayerFragment extends Fragment implements
         butFF = root.findViewById(R.id.butFF);
         txtvFF = root.findViewById(R.id.txtvFF);
         butSkip = root.findViewById(R.id.butSkip);
+        progressIndicator = root.findViewById(R.id.progLoading);
 
         setupLengthTextView();
         setupControlButtons();
@@ -249,27 +254,32 @@ public class AudioPlayerFragment extends Fragment implements
 
             @Override
             public void onBufferStart() {
-                //MediaplayerActivity.this.onBufferStart();
+                progressIndicator.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onBufferEnd() {
-                //MediaplayerActivity.this.onBufferEnd();
+                progressIndicator.setVisibility(View.GONE);
             }
 
             @Override
             public void onBufferUpdate(float progress) {
-                //MediaplayerActivity.this.onBufferUpdate(progress);
+                sbPosition.setSecondaryProgress((int) (progress * sbPosition.getMax()));
             }
 
             @Override
             public void handleError(int code) {
-                //MediaplayerActivity.this.handleError(code);
-            }
-
-            @Override
-            public void onReloadNotification(int code) {
-                //MediaplayerActivity.this.onReloadNotification(code);
+                final AlertDialog.Builder errorDialog = new AlertDialog.Builder(getContext());
+                errorDialog.setTitle(R.string.error_label);
+                errorDialog.setMessage(MediaPlayerError.getErrorString(getContext(), code));
+                errorDialog.setNeutralButton(android.R.string.ok,
+                        (dialog, which) -> {
+                            dialog.dismiss();
+                            ((MainActivity) getActivity()).getBottomSheet()
+                                    .setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
+                );
+                errorDialog.create().show();
             }
 
             @Override
@@ -283,35 +293,20 @@ public class AudioPlayerFragment extends Fragment implements
             }
 
             @Override
-            public void postStatusMsg(int msg, boolean showToast) {
-                //MediaplayerActivity.this.postStatusMsg(msg, showToast);
-            }
-
-            @Override
-            public void clearStatusMsg() {
-                //MediaplayerActivity.this.clearStatusMsg();
-            }
-
-            @Override
             public boolean loadMediaInfo() {
                 updateUi();
                 return true;
-            }/*
-
-            @Override
-            public void onServiceQueried() {
-                MediaplayerActivity.this.onServiceQueried();
             }
 
             @Override
             public void onShutdownNotification() {
-                finish();
+                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
 
             @Override
             public void onPlaybackEnd() {
-                finish();
-            }*/
+                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
 
             @Override
             public void onPlaybackSpeedChange() {
@@ -344,7 +339,6 @@ public class AudioPlayerFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        //setHasOptionsMenu(true);
     }
 
     @Override

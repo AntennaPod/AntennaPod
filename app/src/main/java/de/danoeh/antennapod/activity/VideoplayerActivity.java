@@ -171,20 +171,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
     }
 
-    @Override
-    protected void postStatusMsg(int resId, boolean showToast) {
-        if (resId == R.string.player_preparing_msg) {
-            progressIndicator.setVisibility(View.VISIBLE);
-        } else {
-            progressIndicator.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    @Override
-    protected void clearStatusMsg() {
-        progressIndicator.setVisibility(View.INVISIBLE);
-    }
-
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (PictureInPictureUtil.isInPictureInPictureMode(this)) {

@@ -138,16 +138,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
 
             @Override
-            public void postStatusMsg(int msg, boolean showToast) {
-                MediaplayerActivity.this.postStatusMsg(msg, showToast);
-            }
-
-            @Override
-            public void clearStatusMsg() {
-                MediaplayerActivity.this.clearStatusMsg();
-            }
-
-            @Override
             public boolean loadMediaInfo() {
                 return MediaplayerActivity.this.loadMediaInfo();
             }
@@ -248,12 +238,16 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      * Should be used to inform the user that the PlaybackService is currently
      * buffering.
      */
-    protected abstract void onBufferStart();
+    protected void onBufferStart() {
+
+    }
 
     /**
      * Should be used to hide the view that was showing the 'buffering'-message.
      */
-    protected abstract void onBufferEnd();
+    protected void onBufferEnd() {
+
+    }
 
     private void onBufferUpdate(float progress) {
         if (sbPosition != null) {
@@ -467,10 +461,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      * a video surface.
      */
     protected abstract void onAwaitingVideoSurface();
-
-    protected abstract void postStatusMsg(int resId, boolean showToast);
-
-    protected abstract void clearStatusMsg();
 
     void onPositionObserverUpdate() {
         if (controller == null || txtvPosition == null || txtvLength == null) {

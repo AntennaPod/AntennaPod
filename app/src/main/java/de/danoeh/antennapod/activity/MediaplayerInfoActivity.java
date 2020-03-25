@@ -127,24 +127,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
     }
 
     @Override
-    protected void postStatusMsg(int resId, boolean showToast) {
-        if (resId == R.string.player_preparing_msg
-                || resId == R.string.player_seeking_msg
-                || resId == R.string.player_buffering_msg) {
-            // TODO Show progress bar here
-        }
-        if (showToast) {
-            Toast.makeText(this, resId, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    protected void clearStatusMsg() {
-        // TODO Hide progress bar here
-    }
-
-
-    @Override
     protected void setupGUI() {
         super.setupGUI();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -197,16 +179,6 @@ public abstract class MediaplayerInfoActivity extends MediaplayerActivity {
             startActivity(new Intent(this, VideoplayerActivity.class));
 
         }
-    }
-
-    @Override
-    protected void onBufferStart() {
-        postStatusMsg(R.string.player_buffering_msg, false);
-    }
-
-    @Override
-    protected void onBufferEnd() {
-        clearStatusMsg();
     }
 
     public PlaybackController getPlaybackController() {
