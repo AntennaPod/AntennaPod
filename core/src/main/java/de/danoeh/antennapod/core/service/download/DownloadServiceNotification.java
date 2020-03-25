@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class DownloadServiceNotification {
     private static final String TAG = "DownloadSvcNotification";
     private static final int REPORT_ID = 3;
+    private static final int AUTO_REPORT_ID = 4;
 
     private final Context context;
     private NotificationCompat.Builder notificationCompatBuilder;
@@ -123,6 +124,7 @@ public class DownloadServiceNotification {
             String channelId;
             int titleId;
             int iconId;
+            int id;
             PendingIntent intent;
             if (failedDownloads == 0) {
                 // We are generating an auto-download report
@@ -130,11 +132,13 @@ public class DownloadServiceNotification {
                 titleId = R.string.auto_download_report_title;
                 iconId = R.drawable.stat_notify_sync;
                 intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
+                id = AUTO_REPORT_ID;
             } else {
                 channelId = NotificationUtils.CHANNEL_ID_ERROR;
                 titleId = R.string.download_report_title;
                 iconId = R.drawable.stat_notify_sync_error;
                 intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
+                id = REPORT_ID;
             }
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
@@ -148,7 +152,7 @@ public class DownloadServiceNotification {
                 builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             }
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(REPORT_ID, builder.build());
+            nm.notify(id, builder.build());
         } else {
             Log.d(TAG, "No report is created");
         }
