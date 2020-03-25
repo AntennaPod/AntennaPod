@@ -43,9 +43,7 @@ public class ID3Reader {
             onNoTagHeaderFound();
         } else {
             rc = onStartTagHeader(tagHeader);
-            if (rc == ACTION_SKIP) {
-                onEndTag();
-            } else {
+            if (rc != ACTION_SKIP) {
                 while (readerPosition < tagHeader.getSize()) {
                     FrameHeader frameHeader = createFrameHeader(readChars(input, HEADER_LENGTH));
                     if (checkForNullString(frameHeader.getId())) {
@@ -59,8 +57,8 @@ public class ID3Reader {
                         skipBytes(input, frameHeader.getSize());
                     }
                 }
-                onEndTag();
             }
+            onEndTag();
         }
     }
 

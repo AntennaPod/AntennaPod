@@ -372,7 +372,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItemForFeed(Feed feed) {
         MediaDescriptionCompat.Builder builder = new MediaDescriptionCompat.Builder()
-                .setMediaId("FeedId:" + Long.toString(feed.getId()))
+                .setMediaId("FeedId:" + feed.getId())
                 .setTitle(feed.getTitle())
                 .setDescription(feed.getDescription())
                 .setSubtitle(feed.getCustomTitle());

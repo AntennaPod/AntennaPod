@@ -45,13 +45,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 /**
- * @see HttpDownloaderTest for the test of actual download (and saving the file)
+ * @see HttpDownloaderTest for the test of actual download (and saving the file).
  */
 @RunWith(AndroidJUnit4.class)
 public class DownloadServiceTest {
-
-    private CountDownLatch latch = null;
-    private Feed testFeed = null;
     private FeedMedia testMedia11 = null;
 
     private DownloaderFactory origFactory = null;
@@ -61,7 +58,7 @@ public class DownloadServiceTest {
         EspressoTestUtils.clearDatabase();
         EspressoTestUtils.clearPreferences();
         origFactory = DownloadService.getDownloaderFactory();
-        testFeed = setUpTestFeeds();
+        Feed testFeed = setUpTestFeeds();
         testMedia11 = testFeed.getItemAtIndex(0).getMedia();
     }
 

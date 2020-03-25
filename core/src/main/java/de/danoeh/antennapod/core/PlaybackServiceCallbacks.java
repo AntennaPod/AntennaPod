@@ -26,9 +26,4 @@ public interface PlaybackServiceCallbacks {
      * finishes.
      */
     boolean useQueue();
-
-    /**
-     * Returns a drawable resource that is used for the notification of the playback service.
-     */
-    int getNotificationIconResource(Context context);
 }

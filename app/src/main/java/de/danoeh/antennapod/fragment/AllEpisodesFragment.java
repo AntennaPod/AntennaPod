@@ -25,7 +25,6 @@ import java.util.Set;
  * supports swiping to mark as read.
  */
 public class AllEpisodesFragment extends EpisodesListFragment {
-    public static final String TAG = "AllEpisodesFragment";
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
 

@@ -27,10 +27,4 @@
         android:focusableInTouchMode="true"
         android:cursorVisible="true"/>
 
-    <CheckBox
-        android:id="@+id/chkSaveUsernamePassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/save_username_password_label"/>
 </LinearLayout>

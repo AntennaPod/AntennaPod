@@ -41,8 +41,7 @@ public class FeedItemMenuHandler {
      * @param selectedItem     The FeedItem for which the menu is supposed to be prepared
      * @return Returns true if selectedItem is not null.
      */
-    public static boolean onPrepareMenu(Menu menu,
-                                        FeedItem selectedItem) {
+    public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem) {
         if (menu == null || selectedItem == null) {
             return false;
         }
@@ -146,15 +145,13 @@ public class FeedItemMenuHandler {
     }
 
     /**
-     * The same method as onPrepareMenu(MenuInterface, FeedItem, boolean, QueueAccess), but lets the
+     * The same method as {@link #onPrepareMenu(Menu, FeedItem)}, but lets the
      * caller also specify a list of menu items that should not be shown.
      *
      * @param excludeIds Menu item that should be excluded
      * @return true if selectedItem is not null.
      */
-    public static boolean onPrepareMenu(Menu menu,
-                                        FeedItem selectedItem,
-                                        int... excludeIds) {
+    public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem, int... excludeIds) {
         if (menu == null || selectedItem == null ) {
             return false;
         }

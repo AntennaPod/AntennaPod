@@ -37,7 +37,7 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
 public class Timeline {
     private static final String TAG = "Timeline";
 
-    private static final Pattern TIMECODE_LINK_REGEX = Pattern.compile("antennapod://timecode/((\\d+))");
+    private static final Pattern TIMECODE_LINK_REGEX = Pattern.compile("antennapod://timecode/(\\d+)");
     private static final String TIMECODE_LINK = "<a class=\"timecode\" href=\"antennapod://timecode/%d\">%s</a>";
     private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b((\\d+):)?(\\d+):(\\d{2})\\b");
     private static final Pattern LINE_BREAK_REGEX = Pattern.compile("<br */?>");

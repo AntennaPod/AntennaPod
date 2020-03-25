@@ -199,14 +199,14 @@ public class GpodnetEpisodeAction {
     }
 
     public String writeToString() {
-        return this.podcast + "\t" +
-                this.episode + "\t" +
-                this.deviceId + "\t" +
-                this.action + "\t" +
-                this.timestamp.getTime() + "\t" +
-                String.valueOf(this.started) + "\t" +
-                String.valueOf(this.position) + "\t" +
-                String.valueOf(this.total);
+        return this.podcast + "\t"
+                + this.episode + "\t"
+                + this.deviceId + "\t"
+                + this.action + "\t"
+                + this.timestamp.getTime() + "\t"
+                + this.started + "\t"
+                + this.position + "\t"
+                + this.total;
     }
 
     /**

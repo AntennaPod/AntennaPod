@@ -200,10 +200,10 @@ public class FeedSettingsFragment extends Fragment {
         private void setupAuthentificationPreference() {
             findPreference("authentication").setOnPreferenceClickListener(preference -> {
                 new AuthenticationDialog(getContext(),
-                        R.string.authentication_label, true, false,
+                        R.string.authentication_label, true,
                         feedPreferences.getUsername(), feedPreferences.getPassword()) {
                     @Override
-                    protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+                    protected void onConfirmed(String username, String password) {
                         feedPreferences.setUsername(username);
                         feedPreferences.setPassword(password);
                         feed.savePreferences();

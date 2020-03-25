@@ -93,7 +93,7 @@ public class DBWriter {
     private static boolean deleteFeedMediaSynchronous(
             @NonNull Context context, @NonNull FeedMedia media) {
         Log.i(TAG, String.format("Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
-                media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
+                media.getId(), media.getEpisodeTitle(), media.isDownloaded()));
         if (media.isDownloaded()) {
             // delete downloaded media file
             File mediaFile = new File(media.getFile_url());
