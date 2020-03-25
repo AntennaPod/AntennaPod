@@ -177,7 +177,7 @@ public class DBWriterTest {
         assertTrue(queue.size() != 0);
 
         DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId());
-        Awaitility.await().until(() -> dest.exists() == false);
+        Awaitility.await().until(() -> !dest.exists());
         media = DBReader.getFeedMedia(media.getId());
         assertNotNull(media);
         assertFalse(dest.exists());
@@ -797,7 +797,7 @@ public class DBWriterTest {
     ) {
         List<FeedItem> queue = DBReader.getQueue();
         List<Long> itemIdsActualList = toItemIds(queue);
-        List<Long> itemIdsExpectedList = new ArrayList<Long>(itemIdsExpected.length);
+        List<Long> itemIdsExpectedList = new ArrayList<>(itemIdsExpected.length);
         for (long id : itemIdsExpected) {
             itemIdsExpectedList.add(id);
         }
@@ -806,7 +806,7 @@ public class DBWriterTest {
     }
 
     private static List<Long> toItemIds(List<FeedItem> items) {
-        List<Long> itemIds = new ArrayList<Long>(items.size());
+        List<Long> itemIds = new ArrayList<>(items.size());
         for(FeedItem item : items) {
             itemIds.add(item.getId());
         }

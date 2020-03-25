@@ -24,6 +24,7 @@ public class PlaybackSpeedIndicatorView extends View {
     private float degreePerFrame = 2;
     private float paddingArc = 20;
     private float paddingIndicator = 10;
+    private RectF arcBounds = new RectF();
 
     public PlaybackSpeedIndicatorView(Context context) {
         super(context);
@@ -100,7 +101,7 @@ public class PlaybackSpeedIndicatorView extends View {
         canvas.drawPath(trianglePath, indicatorPaint);
 
         arcPaint.setStrokeWidth(getHeight() / 15f);
-        RectF arcBounds = new RectF(paddingArc, paddingArc, getWidth() - paddingArc, getHeight() - paddingArc);
+        arcBounds.set(paddingArc, paddingArc, getWidth() - paddingArc, getHeight() - paddingArc);
         canvas.drawArc(arcBounds, -180 - 45, 90 + 45 + angle - PADDING_ANGLE, false, arcPaint);
         canvas.drawArc(arcBounds, -90 + PADDING_ANGLE + angle, 90 + 45 - PADDING_ANGLE - angle, false, arcPaint);
 

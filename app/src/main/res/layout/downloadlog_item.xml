@@ -21,7 +21,8 @@
             android:layout_marginStart="@dimen/listitem_threeline_textleftpadding"
             android:textSize="40dp"
             android:gravity="center"
-            tools:text="X"/>
+            tools:text="X"
+            tools:ignore="SpUsage"/>
 
     <LinearLayout
             android:layout_width="0dp"

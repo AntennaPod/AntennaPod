@@ -96,8 +96,7 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
     private void setParallelDownloadsText(int downloads) {
         final Resources res = getActivity().getResources();
 
-        String s = Integer.toString(downloads)
-                + res.getString(R.string.parallel_downloads_suffix);
+        String s = downloads + res.getString(R.string.parallel_downloads_suffix);
         findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS).setSummary(s);
     }
 
