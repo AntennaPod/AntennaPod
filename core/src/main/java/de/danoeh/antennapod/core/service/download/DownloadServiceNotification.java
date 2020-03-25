@@ -145,7 +145,7 @@ public class DownloadServiceNotification {
                 // We are generating an auto-download report
                 channelId = NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD;
                 titleId = R.string.auto_download_report_title;
-                iconId = R.drawable.stat_notify_sync;
+                iconId = R.drawable.auto_download_complete;
                 intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
                 id = AUTO_REPORT_ID;
                 StringBuilder sb = new StringBuilder();
