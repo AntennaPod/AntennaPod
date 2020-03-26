@@ -77,7 +77,7 @@ public class HttpDownloaderTest {
 
     private Downloader download(String url, String title, boolean expectedResult, boolean deleteExisting, String username, String password, boolean deleteOnFail) {
         FeedFile feedFile = setupFeedFile(url, title, deleteExisting);
-        DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, feedFile.getTypeAsInt(), username, password, deleteOnFail, null);
+        DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, feedFile.getTypeAsInt(), username, password, deleteOnFail, null, false);
         Downloader downloader = new HttpDownloader(request);
         downloader.call();
         DownloadStatus status = downloader.getResult();
@@ -113,7 +113,7 @@ public class HttpDownloaderTest {
     public void testCancel() {
         final String url = httpServer.getBaseUrl() + "/delay/3";
         FeedFileImpl feedFile = setupFeedFile(url, "delay", true);
-        final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getFile_url(), url, "delay", 0, feedFile.getTypeAsInt()));
+        final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getFile_url(), url, "delay", 0, feedFile.getTypeAsInt(), null, null, true, null, false));
         Thread t = new Thread() {
             @Override
             public void run() {

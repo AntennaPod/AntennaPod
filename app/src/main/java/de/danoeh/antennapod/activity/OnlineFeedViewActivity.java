@@ -238,7 +238,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         feed.setFile_url(fileUrl);
         final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
                 feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password,
-                true, null);
+                true, null, true);
 
         download = Observable.fromCallable(() -> {
                     feeds = DBReader.getFeedList();

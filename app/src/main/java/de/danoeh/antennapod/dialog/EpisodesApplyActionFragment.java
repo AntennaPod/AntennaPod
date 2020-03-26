@@ -449,7 +449,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             }
         }
         try {
-            DownloadRequester.getInstance().downloadMedia(getActivity(), toDownload.toArray(new FeedItem[0]));
+            DownloadRequester.getInstance().downloadMedia(getActivity(), true, toDownload.toArray(new FeedItem[0]));
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());

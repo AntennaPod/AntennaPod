@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
@@ -19,6 +20,7 @@ import java.util.List;
 public class DownloadServiceNotification {
     private static final String TAG = "DownloadSvcNotification";
     private static final int REPORT_ID = 3;
+    private static final int AUTO_REPORT_ID = 4;
 
     private final Context context;
     private NotificationCompat.Builder notificationCompatBuilder;
@@ -91,12 +93,26 @@ public class DownloadServiceNotification {
         return TextUtils.join("\n", lines);
     }
 
+    private static String createAutoDownloadNotificationContent(List<DownloadStatus> statuses) {
+        int length = statuses.size();
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < length; i++) {
+            sb.append("• ").append(statuses.get(i).getTitle());
+            if (i != length - 1) {
+                sb.append("\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
     /**
      * Creates a notification at the end of the service lifecycle to notify the
      * user about the number of completed downloads. A report will only be
      * created if there is at least one failed download excluding images
      */
-    public void updateReport(List<DownloadStatus> reportQueue) {
+    public void updateReport(List<DownloadStatus> reportQueue, boolean showAutoDownloadReport) {
         // check if report should be created
         boolean createReport = false;
         int successfulDownloads = 0;
@@ -107,34 +123,53 @@ public class DownloadServiceNotification {
         for (DownloadStatus status : reportQueue) {
             if (status.isSuccessful()) {
                 successfulDownloads++;
+                createReport |= showAutoDownloadReport && !status.isInitiatedByUser() && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA;
             } else if (!status.isCancelled()) {
-                createReport = true;
                 failedDownloads++;
+                createReport = true;
             }
         }
 
         if (createReport) {
             Log.d(TAG, "Creating report");
+
             // create notification object
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
-                    NotificationUtils.CHANNEL_ID_ERROR)
-                    .setTicker(context.getString(R.string.download_report_title))
-                    .setContentTitle(context.getString(R.string.download_report_content_title))
-                    .setContentText(
-                            String.format(
-                                    context.getString(R.string.download_report_content),
-                                    successfulDownloads, failedDownloads)
-                    )
-                    .setSmallIcon(R.drawable.stat_notify_sync_error)
-                    .setContentIntent(
-                            ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context)
-                    )
-                    .setAutoCancel(true);
+            String channelId;
+            int titleId;
+            int iconId;
+            int id;
+            String content;
+            PendingIntent intent;
+            if (failedDownloads == 0) {
+                // We are generating an auto-download report
+                channelId = NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD;
+                titleId = R.string.auto_download_report_title;
+                iconId = R.drawable.auto_download_complete;
+                intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
+                id = AUTO_REPORT_ID;
+                content = createAutoDownloadNotificationContent(reportQueue);
+            } else {
+                channelId = NotificationUtils.CHANNEL_ID_ERROR;
+                titleId = R.string.download_report_title;
+                iconId = R.drawable.stat_notify_sync_error;
+                intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
+                id = REPORT_ID;
+                content = String.format(context.getString(R.string.download_report_content), successfulDownloads, failedDownloads);
+            }
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
+            builder.setTicker(context.getString(titleId))
+                   .setContentTitle(context.getString(titleId))
+                   .setContentText(content)
+                   .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
+                   .setSmallIcon(iconId)
+                   .setContentIntent(intent)
+                   .setAutoCancel(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
             }
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            nm.notify(REPORT_ID, builder.build());
+            nm.notify(id, builder.build());
         } else {
             Log.d(TAG, "No report is created");
         }

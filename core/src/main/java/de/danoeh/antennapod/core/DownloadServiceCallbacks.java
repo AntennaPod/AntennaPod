@@ -42,9 +42,19 @@ public interface DownloadServiceCallbacks {
     PendingIntent getReportNotificationContentIntent(Context context);
 
     /**
+     * Returns a PendingIntent for notification that notifies the user about the episodes that have been automatically
+     * downloaded.
+     * <p/>
+     * The PendingIntent takes users to an activity where they can look at their episode queue.
+     *
+     * @return A non-null PendingIntent for the notification or null if shouldCreateReport()==false
+     */
+    PendingIntent getAutoDownloadReportNotificationContentIntent(Context context);
+
+    /**
      * Returns true if the DownloadService should create a report that shows the number of failed
      * downloads when the service shuts down.
-     * */
+     */
     boolean shouldCreateReport();
 }
 

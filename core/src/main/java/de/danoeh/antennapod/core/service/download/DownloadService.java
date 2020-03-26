@@ -205,9 +205,10 @@ public class DownloadService extends Service {
         Log.d(TAG, "Service shutting down");
         isRunning = false;
 
+        boolean showAutoDownloadReport = UserPreferences.showAutoDownloadReport();
         if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()
-                && UserPreferences.showDownloadReport()) {
-            notificationManager.updateReport(reportQueue);
+                && (UserPreferences.showDownloadReport() || showAutoDownloadReport)) {
+            notificationManager.updateReport(reportQueue, showAutoDownloadReport);
             reportQueue.clear();
         }
 
