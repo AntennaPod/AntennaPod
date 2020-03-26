@@ -265,7 +265,11 @@ public class AudioPlayerFragment extends Fragment implements
 
             @Override
             public void onBufferUpdate(float progress) {
-                sbPosition.setSecondaryProgress((int) (progress * sbPosition.getMax()));
+                if (isStreaming()) {
+                    sbPosition.setSecondaryProgress((int) (progress * sbPosition.getMax()));
+                } else {
+                    sbPosition.setSecondaryProgress(0);
+                }
             }
 
             @Override
