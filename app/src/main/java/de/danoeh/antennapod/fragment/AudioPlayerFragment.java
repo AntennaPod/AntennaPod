@@ -246,7 +246,7 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private PlaybackController newPlaybackController() {
-        return new PlaybackController(getActivity(), false) {
+        return new PlaybackController(getActivity()) {
 
             @Override
             public void setupGUI() {

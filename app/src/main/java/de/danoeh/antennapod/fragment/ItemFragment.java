@@ -175,7 +175,7 @@ public class ItemFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        controller = new PlaybackController(getActivity(), false);
+        controller = new PlaybackController(getActivity());
         controller.init();
     }
 

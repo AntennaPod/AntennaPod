@@ -93,7 +93,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private Disposable disposable;
 
     private PlaybackController newPlaybackController() {
-        return new PlaybackController(this, false) {
+        return new PlaybackController(this) {
 
             @Override
             public void setupGUI() {
@@ -151,11 +151,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
 
             @Override
-            public void onServiceQueried() {
-                MediaplayerActivity.this.onServiceQueried();
-            }
-
-            @Override
             public void onShutdownNotification() {
                 finish();
             }
@@ -195,10 +190,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     private void onPlaybackSpeedChange() {
         updatePlaybackSpeedButtonText();
-    }
-
-    private void onServiceQueried() {
-        supportInvalidateOptionsMenu();
     }
 
     void chooseTheme() {
@@ -648,31 +639,33 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private float prog;
 
     @Override
-    public void onProgressChanged(SeekBar seekBar,int progress, boolean fromUser) {
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (controller == null || txtvLength == null) {
             return;
         }
-        prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser, txtvPosition);
-        if (showTimeLeft && prog != 0) {
+        if (fromUser) {
+            prog = progress / ((float) seekBar.getMax());
             int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
-            int timeLeft = converter.convert(duration - (int) (prog * duration));
-            String length = "-" + Converter.getDurationStringLong(timeLeft);
-            txtvLength.setText(length);
+            int position = converter.convert((int) (prog * duration));
+            txtvPosition.setText(Converter.getDurationStringLong(position));
+
+            if (showTimeLeft) {
+                int timeLeft = converter.convert(duration - (int) (prog * duration));
+                txtvLength.setText("-" + Converter.getDurationStringLong(timeLeft));
+            }
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        if (controller != null) {
-            controller.onSeekBarStartTrackingTouch(seekBar);
-        }
+
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (controller != null) {
-            controller.onSeekBarStopTrackingTouch(seekBar, prog);
+            controller.seekTo((int) (prog * controller.getDuration()));
         }
     }
 
