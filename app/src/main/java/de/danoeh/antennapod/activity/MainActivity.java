@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -28,7 +27,6 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -127,23 +125,25 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior = (LockableBottomSheetBehavior) BottomSheetBehavior.from(bottomSheet);
         sheetBehavior.setPeekHeight((int) getResources().getDimension(R.dimen.external_player_height));
         sheetBehavior.setHideable(false);
-        sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View view, int state) {
-
-            }
-
-            @Override
-            public void onSlide(@NonNull View view, float slideOffset) {
-                AudioPlayerFragment audioPlayer =
-                        (AudioPlayerFragment) getSupportFragmentManager().findFragmentByTag(AudioPlayerFragment.TAG);
-                float condensedSlideOffset = Math.max(0.0f, Math.min(0.1f, slideOffset - 0.5f)) / 0.1f;
-                audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
-                audioPlayer.getExternalPlayerHolder().setVisibility(
-                        condensedSlideOffset > 0.99f ? View.GONE : View.VISIBLE);
-            }
-        });
+        sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
+
+    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
+            new BottomSheetBehavior.BottomSheetCallback() {
+        @Override
+        public void onStateChanged(@NonNull View view, int state) {
+        }
+
+        @Override
+        public void onSlide(@NonNull View view, float slideOffset) {
+            AudioPlayerFragment audioPlayer = (AudioPlayerFragment) getSupportFragmentManager()
+                    .findFragmentByTag(AudioPlayerFragment.TAG);
+            float condensedSlideOffset = Math.max(0.0f, Math.min(0.1f, slideOffset - 0.5f)) / 0.1f;
+            audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
+            audioPlayer.getExternalPlayerHolder().setVisibility(
+                    condensedSlideOffset > 0.99f ? View.GONE : View.VISIBLE);
+        }
+    };
 
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
@@ -406,8 +406,9 @@ public class MainActivity extends CastEnabledActivity {
             } else if (feedId > 0) {
                 loadFeedFragmentById(feedId, args);
             }
-        } else if (intent.hasExtra(EXTRA_OPEN_PLAYER)) {
+        } else if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            bottomSheetCallback.onSlide(null, 1.0f);
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));
