@@ -313,7 +313,7 @@ public class EpisodesApplyActionFragment extends Fragment {
                 }
         }
         if (resId != 0) {
-            Snackbar.make(getActivity().findViewById(R.id.content), resId, Snackbar.LENGTH_SHORT)
+            Snackbar.make(getActivity().findViewById(android.R.id.content), resId, Snackbar.LENGTH_SHORT)
                     .show();
             return true;
         } else {
@@ -469,7 +469,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void close(@PluralsRes int msgId, int numItems) {
         if (numItems > 0) {
-            Snackbar.make(getActivity().findViewById(R.id.content),
+            Snackbar.make(getActivity().findViewById(android.R.id.content),
                     getResources().getQuantityString(msgId, numItems, numItems),
                     Snackbar.LENGTH_LONG
                     )

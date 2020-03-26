@@ -225,14 +225,6 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     /**
-     * Returns the number of FeedItems.
-     *
-     */
-    public int getNumOfItems() {
-        return items.size();
-    }
-
-    /**
      * Returns the item at the specified index.
      *
      */

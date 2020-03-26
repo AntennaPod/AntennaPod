@@ -48,7 +48,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.List;
 
 public class NavDrawerFragment extends Fragment implements AdapterView.OnItemClickListener,
-        AdapterView.OnItemLongClickListener {
+        AdapterView.OnItemLongClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     @VisibleForTesting
     public static final String PREF_LAST_FRAGMENT_TAG = "prefLastFragmentTag";
     @VisibleForTesting
@@ -88,6 +88,8 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         root.findViewById(R.id.nav_settings).setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), PreferenceActivity.class));
         });
+        getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .registerOnSharedPreferenceChangeListener(this);
         return root;
     }
 
@@ -124,6 +126,8 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         if (disposable != null) {
             disposable.dispose();
         }
+        getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -192,7 +196,6 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                             } else {
                                 showMainActivity(EpisodesFragment.TAG);
                             }
-                            saveLastNavFragment(getContext(), EpisodesFragment.TAG);
                         }
                     }
                 };
@@ -371,7 +374,6 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 } else {
                     showMainActivity(tag);
                 }
-                saveLastNavFragment(getContext(), tag);
             } else {
                 int pos = position - navAdapter.getSubscriptionOffset();
                 long feedId = navDrawerData.feeds.get(pos).getId();
@@ -382,10 +384,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
                     startActivity(intent);
                 }
-                saveLastNavFragment(getContext(), String.valueOf(feedId));
             }
-            selectedNavListIndex = position;
-            navAdapter.notifyDataSetChanged();
         }
     }
 
@@ -417,5 +416,13 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueFragment.TAG);
         Log.d(TAG, "getLastNavFragment() -> " + lastFragment);
         return lastFragment;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (PREF_LAST_FRAGMENT_TAG.equals(key)) {
+            updateSelection();
+            navAdapter.notifyDataSetChanged();
+        }
     }
 }

@@ -18,6 +18,7 @@ public class CircularProgressBar extends View {
     private float percentage = 0;
     private float targetPercentage = 0;
     private Object tag = null;
+    private final RectF bounds = new RectF();
 
     public CircularProgressBar(Context context) {
         super(context);
@@ -70,7 +71,7 @@ public class CircularProgressBar extends View {
         float padding = getHeight() * 0.07f;
         paintBackground.setStrokeWidth(getHeight() * 0.02f);
         paintProgress.setStrokeWidth(padding);
-        RectF bounds = new RectF(padding, padding, getWidth() - padding, getHeight() - padding);
+        bounds.set(padding, padding, getWidth() - padding, getHeight() - padding);
         canvas.drawArc(bounds, 0, 360, false, paintBackground);
 
         if (percentage > EPSILON && 1 - percentage > EPSILON) {

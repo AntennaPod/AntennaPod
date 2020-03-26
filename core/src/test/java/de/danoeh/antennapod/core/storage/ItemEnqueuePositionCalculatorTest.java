@@ -120,10 +120,6 @@ public class ItemEnqueuePositionCalculatorTest {
             return ItemEnqueuePositionCalculatorTest.getCurrentlyPlaying(idCurrentlyPlaying);
         }
 
-        private static Playable externalMedia() {
-            return new ExternalMedia("http://example.com/episode.mp3", MediaType.AUDIO);
-        }
-
         private static final long ID_CURRENTLY_PLAYING_NULL = -1L;
         private static final long ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA = -9999L;
 

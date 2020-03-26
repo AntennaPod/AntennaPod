@@ -38,13 +38,6 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
         return statisticsData.size() + 1;
     }
 
-    public StatisticsItem getItem(int position) {
-        if (position == 0) {
-            return null;
-        }
-        return statisticsData.get(position - 1);
-    }
-
     @Override
     public int getItemViewType(int position) {
         return position == 0 ? TYPE_HEADER : TYPE_FEED;

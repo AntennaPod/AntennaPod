@@ -216,11 +216,11 @@ public class PlaybackServiceTaskManager {
      * @throws java.lang.IllegalArgumentException if waitingTime <= 0
      */
     public synchronized void setSleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
-        if(waitingTime <= 0) {
+        if (waitingTime <= 0) {
             throw new IllegalArgumentException("Waiting time <= 0");
         }
 
-        Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime) + " milliseconds");
+        Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
         if (isSleepTimerActive()) {
             sleepTimerFuture.cancel(true);
         }

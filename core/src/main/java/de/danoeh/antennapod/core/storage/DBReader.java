@@ -160,12 +160,12 @@ public final class DBReader {
     }
 
     /**
-     * Loads the list of FeedItems for a certain Feed-object. This method should NOT be used if the FeedItems are not
-     * used. In order to get information ABOUT the list of FeedItems, consider using {@link #getFeedStatisticsList()} instead.
+     * Loads the list of FeedItems for a certain Feed-object.
+     * This method should NOT be used if the FeedItems are not used.
      *
      * @param feed The Feed whose items should be loaded
      * @return A list with the FeedItems of the Feed. The Feed-attribute of the FeedItems will already be set correctly.
-     * The method does NOT change the items-attribute of the feed.
+     *         The method does NOT change the items-attribute of the feed.
      */
     public static List<FeedItem> getFeedItemList(final Feed feed) {
         Log.d(TAG, "getFeedItemList() called with: " + "feed = [" + feed + "]");
@@ -273,8 +273,7 @@ public final class DBReader {
      * Loads the IDs of the FeedItems in the queue. This method should be preferred over
      * {@link #getQueue()} if the FeedItems of the queue are not needed.
      *
-     * @return A list of IDs sorted by the same order as the queue. The caller can wrap the returned
-     * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
+     * @return A list of IDs sorted by the same order as the queue.
      */
     public static LongList getQueueIDList() {
         Log.d(TAG, "getQueueIDList() called");
@@ -307,8 +306,7 @@ public final class DBReader {
      * Loads a list of the FeedItems in the queue. If the FeedItems of the queue are not used directly, consider using
      * {@link #getQueueIDList()} instead.
      *
-     * @return A list of FeedItems sorted by the same order as the queue. The caller can wrap the returned
-     * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
+     * @return A list of FeedItems sorted by the same order as the queue.
      */
     @NonNull
     public static List<FeedItem> getQueue() {
@@ -537,34 +535,6 @@ public final class DBReader {
             }
             Collections.sort(downloadLog, new DownloadStatusComparator());
             return downloadLog;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            adapter.close();
-        }
-    }
-
-    /**
-     * Loads the FeedItemStatistics objects of all Feeds in the database. This method should be preferred over
-     * {@link #getFeedItemList(Feed)} if only metadata about
-     * the FeedItems is needed.
-     *
-     * @return A list of FeedItemStatistics objects sorted alphabetically by their Feed's title.
-     */
-    public static List<FeedItemStatistics> getFeedStatisticsList() {
-        Log.d(TAG, "getFeedStatisticsList() called");
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getFeedStatisticsCursor();
-            List<FeedItemStatistics> result = new ArrayList<>(cursor.getCount());
-            while (cursor.moveToNext()) {
-                FeedItemStatistics fis = FeedItemStatistics.fromCursor(cursor);
-                result.add(fis);
-            }
-            return result;
         } finally {
             if (cursor != null) {
                 cursor.close();

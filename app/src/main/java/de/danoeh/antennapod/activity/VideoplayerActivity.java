@@ -171,20 +171,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
     }
 
-    @Override
-    protected void postStatusMsg(int resId, boolean showToast) {
-        if (resId == R.string.player_preparing_msg) {
-            progressIndicator.setVisibility(View.VISIBLE);
-        } else {
-            progressIndicator.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    @Override
-    protected void clearStatusMsg() {
-        progressIndicator.setVisibility(View.INVISIBLE);
-    }
-
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (PictureInPictureUtil.isInPictureInPictureMode(this)) {
@@ -292,16 +278,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
             }
             return;
         }
-        if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
-            Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
-            destroyingDueToReload = true;
-            finish();
-            startActivity(new Intent(this, AudioplayerActivity.class));
-        } else if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
+        if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
             Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
             destroyingDueToReload = true;
             finish();
-            startActivity(new Intent(this, CastplayerActivity.class));
+            startActivity(new Intent(this, MainActivity.class).putExtra(MainActivity.EXTRA_OPEN_PLAYER, true));
         }
     }
 

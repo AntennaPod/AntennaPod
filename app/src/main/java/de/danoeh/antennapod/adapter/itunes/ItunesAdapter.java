@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 
@@ -83,7 +85,8 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .fitCenter()
+                    .transforms(new FitCenter(),
+                            new RoundedCorners((int) (4 * context.getResources().getDisplayMetrics().density)))
                     .dontAnimate())
                 .into(viewHolder.coverView);
 

@@ -26,9 +26,11 @@ import java.util.concurrent.TimeoutException;
 import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
+import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Class intended to work along PlaybackService and provide support for different flavors.
@@ -106,7 +108,7 @@ public class PlaybackServiceFlavorHelper {
         }
         switch (code) {
             case RemotePSMP.CAST_ERROR:
-                callback.sendNotificationBroadcast(PlaybackService.NOTIFICATION_TYPE_SHOW_TOAST, resourceId);
+                EventBus.getDefault().post(new MessageEvent(context.getString(resourceId)));
                 return true;
             case RemotePSMP.CAST_ERROR_PRIORITY_HIGH:
                 Toast.makeText(context, resourceId, Toast.LENGTH_SHORT).show();

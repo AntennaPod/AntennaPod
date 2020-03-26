@@ -3,7 +3,7 @@
 
     <dimen name="widget_margin">0dp</dimen>
     <dimen name="thumbnail_length">70dp</dimen>
-    <dimen name="external_player_height">56dp</dimen>
+    <dimen name="external_player_height">64dp</dimen>
     <dimen name="enc_icons_size">20dp</dimen>
     <dimen name="text_size_micro">12sp</dimen>
     <dimen name="text_size_small">14sp</dimen>

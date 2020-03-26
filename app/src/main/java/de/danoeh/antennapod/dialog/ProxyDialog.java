@@ -84,16 +84,16 @@ public class ProxyDialog {
                 String host = etHost.getText().toString();
                 String port = etPort.getText().toString();
                 String username = etUsername.getText().toString();
-                if(TextUtils.isEmpty(username)) {
+                if (TextUtils.isEmpty(username)) {
                     username = null;
                 }
                 String password = etPassword.getText().toString();
-                if(TextUtils.isEmpty(password)) {
+                if (TextUtils.isEmpty(password)) {
                     password = null;
                 }
                 int portValue = 0;
-                if(!TextUtils.isEmpty(port)) {
-                    portValue = Integer.valueOf(port);
+                if (!TextUtils.isEmpty(port)) {
+                    portValue = Integer.parseInt(port);
                 }
                 if (Proxy.Type.valueOf(type) == Proxy.Type.SOCKS) {
                     proxy = ProxyConfig.socks(host, portValue, username, password);
@@ -257,8 +257,8 @@ public class ProxyDialog {
             String username = etUsername.getText().toString();
             String password = etPassword.getText().toString();
             int portValue = 8080;
-            if(!TextUtils.isEmpty(port)) {
-                portValue = Integer.valueOf(port);
+            if (!TextUtils.isEmpty(port)) {
+                portValue = Integer.parseInt(port);
             }
             SocketAddress address = InetSocketAddress.createUnresolved(host, portValue);
             Proxy.Type proxyType = Proxy.Type.valueOf(type.toUpperCase());
@@ -268,7 +268,7 @@ public class ProxyDialog {
                     .proxy(proxy);
             builder.interceptors().clear();
             OkHttpClient client = builder.build();
-            if(!TextUtils.isEmpty(username)) {
+            if (!TextUtils.isEmpty(username)) {
                 String credentials = Credentials.basic(username, password);
                 client.interceptors().add(chain -> {
                     Request request = chain.request().newBuilder()

@@ -113,6 +113,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         listView = findViewById(R.id.listview);
         progressBar = findViewById(R.id.progressBar);
 
+        findViewById(R.id.transparentBackground).setOnClickListener(v -> finish());
+        findViewById(R.id.card).setOnClickListener(null);
+
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
@@ -615,7 +618,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         private final String feedUrl;
 
         FeedViewAuthenticationDialog(Context context, int titleRes, String feedUrl) {
-            super(context, titleRes, true, false, null, null);
+            super(context, titleRes, true, null, null);
             this.feedUrl = feedUrl;
         }
 
@@ -626,7 +629,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+        protected void onConfirmed(String username, String password) {
             startFeedDownload(feedUrl, username, password);
         }
     }

@@ -57,6 +57,7 @@ public class OpmlImportActivity extends AppCompatActivity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "Received result");
         if (resultCode == RESULT_CANCELED) {
             Log.d(TAG, "Activity was cancelled");

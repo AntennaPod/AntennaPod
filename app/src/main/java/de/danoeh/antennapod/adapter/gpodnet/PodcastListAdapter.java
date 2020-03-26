@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import org.apache.commons.lang3.StringUtils;
 
@@ -57,7 +59,9 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
+                            .transforms(new FitCenter(),
+                                    new RoundedCorners((int) (4 * convertView.getContext()
+                                            .getResources().getDisplayMetrics().density)))
                         .dontAnimate())
                     .into(holder.image);
         }

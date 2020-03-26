@@ -53,11 +53,6 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     }
 
     @Override
-    public void onFeedParsed(Context context, Feed feed) {
-        // do nothing
-    }
-
-    @Override
     public boolean shouldCreateReport() {
         return true;
     }

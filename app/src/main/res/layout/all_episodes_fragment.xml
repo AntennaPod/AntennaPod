@@ -64,7 +64,6 @@
             android:layout_height="16dp"
             android:gravity="center_horizontal"
             android:indeterminateOnly="true"
-            android:layout_centerInParent="true"
             tools:background="@android:color/holo_red_light" />
 
         <TextView

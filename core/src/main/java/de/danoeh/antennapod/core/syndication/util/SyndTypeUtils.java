@@ -37,21 +37,6 @@ public class SyndTypeUtils {
 		}
 	}
 
-
-	/**
-	 * Should be used if mime-type of enclosure tag is not supported. This
-	 * method will check if the mime-type of the file extension is supported. If
-	 * the type is not supported, this method will return null.
-	 */
-	public static String getValidMimeTypeFromUrl(String url) {
-		String type = getMimeTypeFromUrl(url);
-		if (enclosureTypeValid(type)) {
-			return type;
-		} else {
-			return null;
-		}
-	}
-
 	/**
 	 * Should be used if mime-type of enclosure tag is not supported. This
 	 * method will return the mime-type of the file extension.

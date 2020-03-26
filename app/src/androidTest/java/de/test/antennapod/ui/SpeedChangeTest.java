@@ -7,12 +7,14 @@ import android.preference.PreferenceManager;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.IgnoreOnCi;
@@ -34,6 +36,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
+import static de.test.antennapod.NthMatcher.first;
+import static org.hamcrest.Matchers.allOf;
 
 /**
  * User interface tests for changing the playback speed.
@@ -43,10 +47,10 @@ import static de.test.antennapod.EspressoTestUtils.waitForView;
 public class SpeedChangeTest {
 
     @Rule
-    public ActivityTestRule<AudioplayerActivity> activityRule
-            = new ActivityTestRule<>(AudioplayerActivity.class, false, false);
+    public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class, false, false);
     private UITestUtils uiTestUtils;
     private String[] availableSpeeds;
+    private PlaybackController controller;
 
     @Before
     public void setUp() throws Exception {
@@ -70,7 +74,10 @@ public class SpeedChangeTest {
         UserPreferences.setPlaybackSpeedArray(availableSpeeds);
 
         EspressoTestUtils.tryKillPlaybackService();
-        activityRule.launchActivity(new Intent());
+        activityRule.launchActivity(new Intent().putExtra(MainActivity.EXTRA_OPEN_PLAYER, true));
+        controller = new PlaybackController(activityRule.getActivity(), true);
+        controller.init();
+        controller.getMedia(); // To load media
     }
 
     @After
@@ -86,21 +93,21 @@ public class SpeedChangeTest {
     @Test
     public void testChangeSpeedPlaying() {
         onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
-        onView(withId(R.id.butPlay)).perform(click());
+        controller.playPause();
         Awaitility.await().atMost(5, TimeUnit.SECONDS).until(()
-                -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PLAYING);
+                -> controller.getStatus() == PlayerStatus.PLAYING);
         clickThroughSpeeds();
     }
 
     @Test
     public void testChangeSpeedPaused() {
         onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
-        onView(withId(R.id.butPlay)).perform(click());
+        controller.playPause();
         Awaitility.await().atMost(5, TimeUnit.SECONDS).until(()
-                -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PLAYING);
-        onView(withId(R.id.butPlay)).perform(click());
+                -> controller.getStatus() == PlayerStatus.PLAYING);
+        controller.playPause();
         Awaitility.await().atMost(5, TimeUnit.SECONDS).until(()
-                -> activityRule.getActivity().getPlaybackController().getStatus() == PlayerStatus.PAUSED);
+                -> controller.getStatus() == PlayerStatus.PAUSED);
         clickThroughSpeeds();
     }
 

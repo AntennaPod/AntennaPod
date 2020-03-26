@@ -124,7 +124,6 @@ public class PlaybackServiceMediaPlayerTest {
     }
 
     private Playable writeTestPlayable(String downloadUrl, String fileUrl) {
-        final Context c = getInstrumentation().getTargetContext();
         Feed f = new Feed(0, null, "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
         FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, VolumeAdaptionSetting.OFF, null, null);
         f.setPreferences(prefs);

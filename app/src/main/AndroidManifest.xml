@@ -74,31 +74,6 @@
         </activity>
 
         <activity
-            android:name=".activity.AudioplayerActivity"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity"/>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="file"/>
-                <data android:mimeType="audio/*"/>
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".activity.CastplayerActivity"
-            android:launchMode="singleTop">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity"/>
-        </activity>
-
-        <activity
             android:name=".activity.DownloadAuthenticationActivity"
             android:launchMode="singleInstance"/>
 
