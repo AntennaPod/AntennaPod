@@ -374,13 +374,6 @@ public class PreferencesTest {
         clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> enableAutodownloadOnBattery == UserPreferences.isEnableAutodownloadOnBattery());
-        final boolean enableWifiFilter = UserPreferences.isEnableAutodownloadWifiFilter();
-        clickPreference(R.string.pref_autodl_wifi_filter_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> enableWifiFilter != UserPreferences.isEnableAutodownloadWifiFilter());
-        clickPreference(R.string.pref_autodl_wifi_filter_title);
-        Awaitility.await().atMost(1000, MILLISECONDS)
-                .until(() -> enableWifiFilter == UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
     @Test
