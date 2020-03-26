@@ -78,6 +78,11 @@ public class ChaptersFragment extends Fragment {
             }
 
             @Override
+            public void setupGUI() {
+                ChaptersFragment.this.loadMediaInfo();
+            }
+
+            @Override
             public void onPositionObserverUpdate() {
                 adapter.notifyDataSetChanged();
             }

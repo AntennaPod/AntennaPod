@@ -104,6 +104,10 @@ public class CoverFragment extends Fragment {
                 return true;
             }
 
+            @Override
+            public void setupGUI() {
+                CoverFragment.this.loadMediaInfo();
+            }
         };
         controller.init();
         loadMediaInfo();
