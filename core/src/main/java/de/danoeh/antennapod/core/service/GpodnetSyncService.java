@@ -329,7 +329,7 @@ public class GpodnetSyncService extends SafeJobIntentService {
                 .setContentTitle(title)
                 .setContentText(description)
                 .setContentIntent(activityIntent)
-                .setSmallIcon(R.drawable.stat_notify_sync_error)
+                .setSmallIcon(R.drawable.ic_notification_sync_error)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build();

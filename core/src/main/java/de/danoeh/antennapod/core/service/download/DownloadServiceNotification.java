@@ -34,7 +34,7 @@ public class DownloadServiceNotification {
         notificationCompatBuilder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
                 .setOngoing(true)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(context))
-                .setSmallIcon(R.drawable.stat_notify_sync);
+                .setSmallIcon(R.drawable.ic_notification_sync);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationCompatBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         }
@@ -144,14 +144,14 @@ public class DownloadServiceNotification {
                 // We are generating an auto-download report
                 channelId = NotificationUtils.CHANNEL_ID_AUTO_DOWNLOAD;
                 titleId = R.string.auto_download_report_title;
-                iconId = R.drawable.auto_download_complete;
+                iconId = R.drawable.ic_notification_auto_download_complete;
                 intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
                 id = AUTO_REPORT_ID;
                 content = createAutoDownloadNotificationContent(reportQueue);
             } else {
                 channelId = NotificationUtils.CHANNEL_ID_ERROR;
                 titleId = R.string.download_report_title;
-                iconId = R.drawable.stat_notify_sync_error;
+                iconId = R.drawable.ic_notification_sync_error;
                 intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
                 id = REPORT_ID;
                 content = String.format(context.getString(R.string.download_report_content), successfulDownloads, failedDownloads);
