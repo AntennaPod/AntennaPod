@@ -16,7 +16,6 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class DownloadServiceNotification {
     private static final String TAG = "DownloadSvcNotification";
@@ -148,11 +147,6 @@ public class DownloadServiceNotification {
                 iconId = R.drawable.auto_download_complete;
                 intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
                 id = AUTO_REPORT_ID;
-                StringBuilder sb = new StringBuilder();
-                for (DownloadStatus status: reportQueue) {
-                    sb.append("A");
-                    sb.append("\n");
-                }
                 content = createAutoDownloadNotificationContent(reportQueue);
             } else {
                 channelId = NotificationUtils.CHANNEL_ID_ERROR;
