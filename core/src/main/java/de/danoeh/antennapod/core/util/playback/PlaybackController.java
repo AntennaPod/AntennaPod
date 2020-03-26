@@ -743,6 +743,10 @@ public class PlaybackController {
         }
     }
 
+    public boolean isStreaming() {
+        return playbackService != null && playbackService.isStreaming();
+    }
+
     private void initServiceNotRunning() {
         if (getPlayButton() == null) {
             return;
