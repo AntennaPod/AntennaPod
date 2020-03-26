@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -559,7 +560,7 @@ public class UserPreferences {
     }
 
     public static boolean isEnableAutodownloadWifiFilter() {
-        return prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
+        return Build.VERSION.SDK_INT < 29 && prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
 
     public static int getImageCacheSize() {
