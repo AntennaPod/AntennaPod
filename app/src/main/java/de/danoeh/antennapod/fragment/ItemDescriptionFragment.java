@@ -145,6 +145,10 @@ public class ItemDescriptionFragment extends Fragment {
                 return true;
             }
 
+            @Override
+            public void setupGUI() {
+                ItemDescriptionFragment.this.load();
+            }
         };
         controller.init();
         load();
