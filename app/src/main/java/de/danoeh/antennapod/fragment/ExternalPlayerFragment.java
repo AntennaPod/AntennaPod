@@ -90,7 +90,7 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     private PlaybackController setupPlaybackController() {
-        return new PlaybackController(getActivity(), true) {
+        return new PlaybackController(getActivity()) {
 
             @Override
             public void onPositionObserverUpdate() {

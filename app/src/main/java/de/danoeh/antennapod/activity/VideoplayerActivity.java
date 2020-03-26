@@ -247,11 +247,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             Log.d(TAG, "Videoview holder created");
             videoSurfaceCreated = true;
             if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
-                if (controller.serviceAvailable()) {
-                    controller.setVideoSurface(holder);
-                } else {
-                    Log.e(TAG, "Couldn't attach surface to mediaplayer - reference to service was null");
-                }
+                controller.setVideoSurface(holder);
             }
             setupVideoAspectRatio();
         }
