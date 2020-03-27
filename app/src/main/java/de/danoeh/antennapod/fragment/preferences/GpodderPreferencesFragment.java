@@ -11,7 +11,7 @@ import android.widget.Toast;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.core.service.GpodnetSyncService;
+import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 
@@ -51,10 +51,10 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
 
     private final SharedPreferences.OnSharedPreferenceChangeListener gpoddernetListener =
             (sharedPreferences, key) -> {
-                if (GpodnetPreferences.PREF_LAST_SYNC_ATTEMPT_TIMESTAMP.equals(key)) {
-                    updateLastGpodnetSyncReport(GpodnetPreferences.getLastSyncAttemptResult(),
-                            GpodnetPreferences.getLastSyncAttemptTimestamp());
-                }
+                //if (GpodnetPreferences.PREF_LAST_SYNC_ATTEMPT_TIMESTAMP.equals(key)) {
+                //    updateLastGpodnetSyncReport(GpodnetPreferences.getLastSyncAttemptResult(),
+                //            GpodnetPreferences.getLastSyncAttemptTimestamp());
+                //}
             };
 
     private void setupGpodderScreen() {
@@ -75,21 +75,13 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 });
         findPreference(PREF_GPODNET_SYNC).setOnPreferenceClickListener(preference -> {
-                    GpodnetSyncService.sendSyncIntent(getActivity().getApplicationContext());
-                    Toast toast = Toast.makeText(getActivity(), R.string.pref_gpodnet_sync_started,
-                            Toast.LENGTH_SHORT);
-                    toast.show();
+                    SyncService.sync(getActivity().getApplicationContext());
+                    Toast.makeText(getActivity(), R.string.pref_gpodnet_sync_started, Toast.LENGTH_SHORT).show();
                     return true;
                 });
         findPreference(PREF_GPODNET_FORCE_FULL_SYNC).setOnPreferenceClickListener(preference -> {
-                    GpodnetPreferences.setLastSubscriptionSyncTimestamp(0L);
-                    GpodnetPreferences.setLastEpisodeActionsSyncTimestamp(0L);
-                    GpodnetPreferences.setLastSyncAttempt(false, 0);
-                    updateLastGpodnetSyncReport(false, 0);
-                    GpodnetSyncService.sendSyncIntent(getActivity().getApplicationContext());
-                    Toast toast = Toast.makeText(getActivity(), R.string.pref_gpodnet_sync_started,
-                            Toast.LENGTH_SHORT);
-                    toast.show();
+                    SyncService.fullSync(getContext());
+                    Toast.makeText(getActivity(), R.string.pref_gpodnet_sync_started, Toast.LENGTH_SHORT).show();
                     return true;
                 });
         findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(preference -> {
@@ -119,8 +111,8 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
             String summary = String.format(format, GpodnetPreferences.getUsername(),
                     GpodnetPreferences.getDeviceID());
             findPreference(PREF_GPODNET_LOGOUT).setSummary(Html.fromHtml(summary));
-            updateLastGpodnetSyncReport(GpodnetPreferences.getLastSyncAttemptResult(),
-                    GpodnetPreferences.getLastSyncAttemptTimestamp());
+            //updateLastGpodnetSyncReport(GpodnetPreferences.getLastSyncAttemptResult(),
+            //        GpodnetPreferences.getLastSyncAttemptTimestamp());
         } else {
             findPreference(PREF_GPODNET_LOGOUT).setSummary(null);
             updateLastGpodnetSyncReport(false, 0);

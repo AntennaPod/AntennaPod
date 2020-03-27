@@ -14,7 +14,6 @@ class ClientConfigurator {
         ClientConfig.USER_AGENT = "AntennaPod/" + BuildConfig.VERSION_NAME;
         ClientConfig.applicationCallbacks = new ApplicationCallbacksImpl();
         ClientConfig.downloadServiceCallbacks = new DownloadServiceCallbacksImpl();
-        ClientConfig.gpodnetCallbacks = new GpodnetCallbacksImpl();
         ClientConfig.playbackServiceCallbacks = new PlaybackServiceCallbacksImpl();
         ClientConfig.dbTasksCallbacks = new DBTasksCallbacksImpl();
         ClientConfig.castCallbacks = new CastCallbackImpl();

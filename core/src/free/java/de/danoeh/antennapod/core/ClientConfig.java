@@ -30,8 +30,6 @@ public class ClientConfig {
 
     public static PlaybackServiceCallbacks playbackServiceCallbacks;
 
-    public static GpodnetCallbacks gpodnetCallbacks;
-
     public static DBTasksCallbacks dbTasksCallbacks;
 
     public static CastCallbacks castCallbacks;

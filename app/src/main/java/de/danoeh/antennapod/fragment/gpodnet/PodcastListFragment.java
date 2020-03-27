@@ -27,10 +27,11 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.gpodnet.PodcastListAdapter;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
 
 /**
  * Displays a list of GPodnetPodcast-Objects in a GridView
@@ -117,16 +118,12 @@ public abstract class PodcastListFragment extends Fragment {
             protected List<GpodnetPodcast> doInBackground(Void... params) {
                 GpodnetService service = null;
                 try {
-                    service = new GpodnetService();
+                    service = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetPreferences.getHostname());
                     return loadPodcastData(service);
                 } catch (GpodnetServiceException e) {
                     exception = e;
                     e.printStackTrace();
                     return null;
-                } finally {
-                    if (service != null) {
-                        service.shutdown();
-                    }
                 }
             }
 

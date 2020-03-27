@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.gpoddernet;
+package de.danoeh.antennapod.core.sync.gpoddernet;
 
 class GpodnetServiceBadStatusCodeException extends GpodnetServiceException {
     private static final long serialVersionUID = 1L;

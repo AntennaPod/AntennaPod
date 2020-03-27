@@ -26,9 +26,10 @@
             </intent-filter>
         </service>
         <service
-            android:name=".service.GpodnetSyncService"
+            android:name=".sync.SyncService"
             android:permission="android.permission.BIND_JOB_SERVICE"
-            android:enabled="true" />
+            android:enabled="true"
+            android:exported="false" />
 
         <receiver
             android:name=".receiver.MediaButtonReceiver"

@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -25,6 +24,8 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.model.EpisodeAction;
 
 public class FeedMedia extends FeedFile implements Playable {
     private static final String TAG = "FeedMedia";
@@ -502,17 +503,14 @@ public class FeedMedia extends FeedFile implements Playable {
 
     private void postPlaybackTasks(Context context, boolean completed) {
         if (item != null) {
-            // gpodder play action
-            if (startPosition >= 0 && (completed || startPosition < position) &&
-                    GpodnetPreferences.loggedIn()) {
-                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.PLAY)
-                        .currentDeviceId()
+            if (startPosition >= 0 && (completed || startPosition < position) && GpodnetPreferences.loggedIn()) {
+                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.PLAY)
                         .currentTimestamp()
                         .started(startPosition / 1000)
                         .position((completed ? duration : position) / 1000)
                         .total(duration / 1000)
                         .build();
-                GpodnetPreferences.enqueueEpisodeAction(action);
+                SyncService.enqueueEpisodeAction(context, action);
             }
         }
     }

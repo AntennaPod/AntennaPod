@@ -1,22 +1,21 @@
-package de.danoeh.antennapod.core.gpoddernet.model;
+package de.danoeh.antennapod.core.sync.model;
 
 
 import androidx.annotation.NonNull;
 
 import java.util.List;
 
-public class GpodnetEpisodeActionGetResponse {
+public class EpisodeActionChanges {
 
-    private final List<GpodnetEpisodeAction> episodeActions;
+    private final List<EpisodeAction> episodeActions;
     private final long timestamp;
 
-    public GpodnetEpisodeActionGetResponse(@NonNull List<GpodnetEpisodeAction> episodeActions,
-                                           long timestamp) {
+    public EpisodeActionChanges(@NonNull List<EpisodeAction> episodeActions, long timestamp) {
         this.episodeActions = episodeActions;
         this.timestamp = timestamp;
     }
 
-    public List<GpodnetEpisodeAction> getEpisodeActions() {
+    public List<EpisodeAction> getEpisodeActions() {
         return this.episodeActions;
     }
 
@@ -26,7 +25,7 @@ public class GpodnetEpisodeActionGetResponse {
 
     @Override
     public String toString() {
-        return "GpodnetEpisodeActionGetResponse{" +
+        return "EpisodeActionGetResponse{" +
                 "episodeActions=" + episodeActions +
                 ", timestamp=" + timestamp +
                 '}';

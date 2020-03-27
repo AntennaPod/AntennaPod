@@ -3,15 +3,15 @@ package de.danoeh.antennapod.fragment.gpodnet;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetTag;
 import org.apache.commons.lang3.Validate;
 
-import java.util.List;
-
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
+
+import java.util.List;
 
 /**
  * Shows all podcasts from gpodder.net that belong to a specific tag.

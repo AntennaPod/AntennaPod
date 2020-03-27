@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import androidx.test.runner.AndroidJUnit4;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetDevice;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetDevice;
+import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetTag;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,7 +31,7 @@ public class GPodnetServiceTest {
 
     @Before
     public void setUp() {
-        service = new GpodnetService();
+        service = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetService.DEFAULT_BASE_HOST);
     }
 
     private void authenticate() throws GpodnetServiceException {
@@ -42,7 +43,7 @@ public class GPodnetServiceTest {
         authenticate();
         ArrayList<String> l = new ArrayList<>();
         l.add("http://bitsundso.de/feed");
-        service.uploadSubscriptions(USER, "radio", l);
+        service.uploadSubscriptions("radio", l);
     }
 
     @Test
@@ -51,7 +52,7 @@ public class GPodnetServiceTest {
         ArrayList<String> l = new ArrayList<>();
         l.add("http://bitsundso.de/feed");
         l.add("http://gamesundso.de/feed");
-        service.uploadSubscriptions(USER, "radio", l);
+        service.uploadSubscriptions( "radio", l);
     }
 
     @Test
@@ -61,41 +62,40 @@ public class GPodnetServiceTest {
         List<String> subscriptions = Arrays.asList(URLS[0], URLS[1]);
         List<String> removed = singletonList(URLS[0]);
         List<String> added = Arrays.asList(URLS[2], URLS[3]);
-        service.uploadSubscriptions(USER, "radio", subscriptions);
-        service.uploadChanges(USER, "radio", added, removed);
+        service.uploadSubscriptions("radio", subscriptions);
+        service.uploadChanges("radio", added, removed);
     }
 
     @Test
     public void testGetSubscriptionChanges() throws GpodnetServiceException {
         authenticate();
-        service.getSubscriptionChanges(USER, "radio", 1362322610L);
+        service.getSubscriptionChanges("radio", 1362322610L);
     }
 
     @Test
     public void testGetSubscriptionsOfUser()
             throws GpodnetServiceException {
         authenticate();
-        service.getSubscriptionsOfUser(USER);
+        service.getSubscriptionsOfUser();
     }
 
     @Test
     public void testGetSubscriptionsOfDevice()
             throws GpodnetServiceException {
         authenticate();
-        service.getSubscriptionsOfDevice(USER, "radio");
+        service.getSubscriptionsOfDevice("radio");
     }
 
     @Test
     public void testConfigureDevices() throws GpodnetServiceException {
         authenticate();
-        service.configureDevice(USER, "foo", "This is an updated caption",
-                GpodnetDevice.DeviceType.LAPTOP);
+        service.configureDevice("foo", "This is an updated caption",  GpodnetDevice.DeviceType.LAPTOP);
     }
 
     @Test
     public void testGetDevices() throws GpodnetServiceException {
         authenticate();
-        service.getDevices(USER);
+        service.getDevices();
     }
 
     @Test

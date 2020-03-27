@@ -1,30 +1,27 @@
-package de.danoeh.antennapod.core.gpoddernet.model;
+package de.danoeh.antennapod.core.sync.gpoddernet.model;
 
 import androidx.collection.ArrayMap;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
 
-public class GpodnetEpisodeActionPostResponse {
-
-    /**
-     * timestamp/ID that can be used for requesting changes since this upload.
-     */
-    public final long timestamp;
-
+/**
+ * Object returned by {@link GpodnetService} in uploadChanges method.
+ */
+public class GpodnetUploadChangesResponse extends UploadChangesResponse {
     /**
      * URLs that should be updated. The key of the map is the original URL, the value of the map
      * is the sanitized URL.
      */
-    private final Map<String, String> updatedUrls;
+    public final Map<String, String> updatedUrls;
 
-    private GpodnetEpisodeActionPostResponse(long timestamp, Map<String, String> updatedUrls) {
-        this.timestamp = timestamp;
+    public GpodnetUploadChangesResponse(long timestamp, Map<String, String> updatedUrls) {
+        super(timestamp);
         this.updatedUrls = updatedUrls;
     }
 
@@ -34,21 +31,23 @@ public class GpodnetEpisodeActionPostResponse {
      *
      * @throws org.json.JSONException If the method could not parse the JSONObject.
      */
-    public static GpodnetEpisodeActionPostResponse fromJSONObject(String objectString) throws JSONException {
+    public static GpodnetUploadChangesResponse fromJSONObject(String objectString) throws JSONException {
         final JSONObject object = new JSONObject(objectString);
         final long timestamp = object.getLong("timestamp");
+        Map<String, String> updatedUrls = new ArrayMap<>();
         JSONArray urls = object.getJSONArray("update_urls");
-        Map<String, String> updatedUrls = new ArrayMap<>(urls.length());
         for (int i = 0; i < urls.length(); i++) {
             JSONArray urlPair = urls.getJSONArray(i);
             updatedUrls.put(urlPair.getString(0), urlPair.getString(1));
         }
-        return new GpodnetEpisodeActionPostResponse(timestamp, updatedUrls);
+        return new GpodnetUploadChangesResponse(timestamp, updatedUrls);
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return "GpodnetUploadChangesResponse{" +
+                "timestamp=" + timestamp +
+                ", updatedUrls=" + updatedUrls +
+                '}';
     }
 }
-
