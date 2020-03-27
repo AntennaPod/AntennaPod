@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Opdater abonnementer</string>
-  <string name="feeds_label">Feeds</string>
   <string name="statistics_label">Statistik</string>
   <string name="add_feed_label">Tilføj podcast</string>
   <string name="episodes_label">Udsendelser</string>
@@ -31,6 +30,7 @@
   <string name="statistics_mode_normal">Beregn den varighed som faktisk blev afspillet. Afspilning af en udsendelse to gange tæller dobbelt, mens en markering som værende afspillet ikke tælles med.</string>
   <string name="statistics_mode_count_all">Opsummer alle podcasts markeret som afspillet</string>
   <string name="statistics_speed_not_counted">Bemærk: Afspilningshastigheden har ingen betydning</string>
+  <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Åbn menu</string>
   <string name="drawer_close">Luk menu</string>
@@ -95,13 +95,6 @@
     <item quantity="one">1 dag efter færdig afspilning</item>
     <item quantity="other">%d dage efter færdig afspilning</item>
   </plurals>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">Webadresse for feed</string>
-  <string name="etxtFeedurlHint">www.example.com/feed</string>
-  <string name="txtvfeedurl_label">Tilføj podcast via webadresse</string>
-  <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
-  <string name="discover">Opdag</string>
-  <string name="discover_more">mere »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som afspillet</string>
   <string name="mark_all_read_msg">Marker alle udsendelser som afspillet</string>
@@ -119,13 +112,11 @@
   <string name="share_link_with_position_label">Del webadresse for udsendelse med position</string>
   <string name="share_file_label">Del fil</string>
   <string name="share_website_url_label">Del webstedets adresse</string>
-  <string name="share_feed_url_label">Del webadresse for feedet</string>
   <string name="share_item_url_label">Del webadresse for mediefil</string>
   <string name="share_item_url_with_position_label">Del webadresse for mediefil med position</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du ønsker at slette podcasten \"%1$s\" og ALLE dens udsendelser (inklusive overførte udsendelser)</string>
   <string name="feed_remover_msg">Fjerner podcast</string>
   <string name="load_complete_feed">Opdater komplet podcast</string>
-  <string name="batch_edit">Masseredigering</string>
   <string name="select_all_above">Vælg alt ovenfor</string>
   <string name="select_all_below">Vælg alt nedenfor</string>
   <string name="hide_unplayed_episodes_label">Uafspillede</string>
@@ -268,6 +259,7 @@
   <string name="clear_queue_confirmation_msg">Bekræft venligst at du vil rydde ALLE udsendelser fra køen</string>
   <string name="sort_old_to_new">Gamle til nye</string>
   <string name="sort_new_to_old">Nye til gamle</string>
+  <string name="time_left_label">Tid tilbage:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
@@ -323,7 +315,6 @@
   <string name="playback_pref">Afspilning</string>
   <string name="network_pref">Netværk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Opdateringsinterval eller -klokkeslæt</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Angiv et tidsinterval eller et bestemt klokkeslæt hvor feedene skal opdateres automatisk</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Du kan indstille et <i>interval</i> som \"hver anden time\", indstille et bestemt <i>klokkeslæt</i> som \"7:00\", eller <i>slå</i> automatiske opdateringer helt <i>fra</i>.\n\n<small>Bemærk: Opdateringstider er ikke eksakte. Du kan opleve en kort forsinkelse.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Slå fra</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Indstil interval</string>
@@ -441,43 +432,28 @@
   <string name="about_pref">Om</string>
   <string name="translators">Oversættere</string>
   <!--Search-->
-  <string name="search_hint">Søg efter udsendelser</string>
-  <string name="found_in_shownotes_label">Fundet i beskrivelse</string>
-  <string name="found_in_chapters_label">Fundet i kapitler</string>
-  <string name="found_in_authors_label">Fundet i forfatter(e)</string>
-  <string name="found_in_feeds_label">Fundet i podcast</string>
   <string name="search_status_no_results">Fandt ingen resultater</string>
   <string name="search_label">Søg</string>
-  <string name="found_in_title_label">Fundet i titel</string>
   <string name="no_results_for_query">Ingen resultater fundet for \"%1$s\"</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">Valgmulighed %1$d</string>
-  <string name="opml_import_explanation_1">Vælg en bestemt filsti fra det lokale filsystem.</string>
-  <string name="opml_import_explanation_3">Mange apps som Gmail, Dropbox, Google Drive og de fleste filhåndteringsprogrammer kan <i>åbne</i> OPML-filer <i>med</i> AntennaPod.</string>
+  <!--import and export-->
   <string name="opml_import_label">OPML-import</string>
-  <string name="reading_opml_label">Indlæser OPML-fil</string>
   <string name="opml_reader_error">Der opstod en fejl, da OPML-dokumentet blev forsøgt indlæst</string>
   <string name="opml_import_error_no_file">Ingen fil valgt!</string>
   <string name="select_all_label">Vælg alle</string>
   <string name="deselect_all_label">Fravælg alle</string>
-  <string name="choose_file_from_filesystem">Fra lokalt filsystem</string>
   <string name="opml_export_label">OPML eksport</string>
   <string name="html_export_label">HTML-eksport</string>
-  <string name="exporting_label">Eksporterer…</string>
   <string name="export_error_label">Eksportfejl</string>
   <string name="export_success_title">Eksport lykkedes</string>
   <string name="export_success_sum">Den eksporterede fil blev skrevet til:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Adgang til eksternt lager er påkrævet for at læse OPML-filen</string>
+  <string name="import_select_file">Vælg fil til import</string>
+  <string name="import_ok">Importen lykkedes.\n\nTryk venligst OK for at genstarte AntennaPod</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Indstil søvntimer</string>
   <string name="disable_sleeptimer_label">Slå søvntimer fra</string>
-  <string name="enter_time_here_label">Vælg tid</string>
   <string name="sleep_timer_label">Søvn timer</string>
-  <string name="time_left_label">Tid tilbage:\u0020</string>
   <string name="time_dialog_invalid_input">Ugyldig indtastning: tid skal være et heltal</string>
-  <string name="timer_about_to_expire_label"><b>Når timeren er ved at udløbe:</b></string>
-  <string name="shake_to_reset_label">Ryst for at nulstille timer</string>
-  <string name="timer_vibration_label">Vibrer</string>
   <string name="time_seconds">sekunder</string>
   <string name="time_minutes">minutter</string>
   <string name="time_hours">timer</string>
@@ -495,7 +471,6 @@
   </plurals>
   <string name="auto_enable_label">Slå automatisk til</string>
   <string name="sleep_timer_enabled_label">Søvntimer slået til</string>
-  <string name="sleep_timer_disabled_label">Søvntimer slået fra</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIER</string>
   <string name="gpodnet_toplist_header">TOP-PODCASTS</string>
@@ -581,7 +556,9 @@
   <string name="search_podcast_hint">Søg efter podcast ...</string>
   <string name="search_itunes_label">Søg i iTunes</string>
   <string name="search_fyyd_label">Søg i fyyd</string>
-  <string name="advanced_search">Avanceret søgning</string>
+  <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
+  <string name="discover">Opdag</string>
+  <string name="discover_more">mere »</string>
   <string name="filter">Filtrér</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
@@ -637,13 +614,6 @@
   <string name="proxy_host_invalid_error">Vært er ikke en gyldig IP-adresse eller et gyldigt domæne</string>
   <string name="proxy_port_invalid_error">Port ikke gyldig</string>
   <!--Subscriptions fragment-->
-  <!--Database import/export-->
-  <string name="import_export">Database-import/eksport</string>
-  <string name="label_import">Import</string>
-  <string name="label_export">Eksport</string>
-  <string name="import_select_file">Vælg fil til import</string>
-  <string name="export_ok">Eksport lykkedes.</string>
-  <string name="import_ok">Importen lykkedes.\n\nTryk venligst OK for at genstarte AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Afspil på …</string>
   <string name="cast_disconnect_label">Afbryd cast-sessionen</string>
@@ -651,7 +621,6 @@
   <string name="cast_failed_to_play">Kunne ikke starte afspilning af medie</string>
   <string name="cast_failed_to_stop">Kunne ikke stoppe afspilning af medie</string>
   <string name="cast_failed_to_pause">Kunne ikke sætte afspilning af medie på pause</string>
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Kunne ikke indstille lydstyrken</string>
   <string name="cast_failed_no_connection">Der er ingen forbindelse til cast-enheden</string>
   <string name="cast_failed_no_connection_trans">Forbindelsen til cast-enheden er mistet. Appen forsøger at genskabe forbindelsen, om muligt. Vent venligst et par sekunder og prøv igen.</string>
@@ -665,7 +634,6 @@
   <string name="notification_channel_downloading_description">Vises samtidig med den hentes.</string>
   <string name="notification_channel_playing">Spiller nu</string>
   <string name="notification_channel_error">Fejl</string>
-  <string name="import_bad_file">Ugyldig/ødelagt fil</string>
   <!--Widget settings-->
   <string name="widget_opacity">Ugennemsigtighed</string>
 </resources>

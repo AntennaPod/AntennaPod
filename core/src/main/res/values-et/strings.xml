@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Uuenda tellimusi</string>
-  <string name="feeds_label">Uudisvood</string>
   <string name="statistics_label">Statistika</string>
   <string name="add_feed_label">Lisa taskuhääling</string>
   <string name="episodes_label">Saated</string>
@@ -33,6 +32,7 @@
   <string name="statistics_speed_not_counted">Märkus: taasesituse kiirust ei arvestata kunagi.</string>
   <string name="statistics_reset_data">Lähtesta statistika andmed</string>
   <string name="statistics_reset_data_msg">See lähtestab kõigi esitatud saadete kuulamise pikkuse ajaloo. Kas oled kindel, et tahad jätkata?</string>
+  <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Ava menüü</string>
   <string name="drawer_close">Sulge menüü</string>
@@ -98,13 +98,6 @@
     <item quantity="other">%d päeva pärast lõpetamist</item>
   </plurals>
   <string name="num_selected_label">%d valitud</string>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">Uudisvoo URL</string>
-  <string name="etxtFeedurlHint">www.example.com/feed</string>
-  <string name="txtvfeedurl_label">Lisa taskuhääling URL-iga</string>
-  <string name="browse_gpoddernet_label">Sirvi gpodder.net-i</string>
-  <string name="discover">Avasta</string>
-  <string name="discover_more">veel »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Märgi kuulatuks</string>
   <string name="mark_all_read_msg">Märgi kõik saated kuulatuks</string>
@@ -124,13 +117,11 @@
   <string name="share_link_with_position_label">Jaga saate linki koos asukohaga</string>
   <string name="share_file_label">Jaga faili</string>
   <string name="share_website_url_label">Jaga veebilehe linki</string>
-  <string name="share_feed_url_label">Jaga uudisvoo linki</string>
   <string name="share_item_url_label">Jaga meediafaili linki</string>
   <string name="share_item_url_with_position_label">Jaga meediafaili linki koos asukohaga</string>
   <string name="feed_delete_confirmation_msg">Palun kinnita, et tahad kustutada taskuhäälingu \"%1$s\" ja KÕIK selle saated (ka allalaaditud saated).</string>
   <string name="feed_remover_msg">Taskuhäälingu eemaldamine</string>
   <string name="load_complete_feed">Värskenda kogu taskuhääling</string>
-  <string name="batch_edit">Korraga muutmine</string>
   <string name="select_all_above">Vali kõik ülemised</string>
   <string name="select_all_below">Vali kõik alumised</string>
   <string name="hide_unplayed_episodes_label">Esitamata</string>
@@ -280,6 +271,7 @@
   <string name="clear_queue_confirmation_msg">Palun kinnita, et tahad puhastada järjekorra KÕIGIST selles olevatest saadetest</string>
   <string name="sort_old_to_new">Vanemad enne</string>
   <string name="sort_new_to_old">Uuemad enne</string>
+  <string name="time_left_label">Aega jäänud:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Laadi plugin alla</string>
   <string name="no_playback_plugin_title">Pluginat pole paigaldatud</string>
@@ -345,7 +337,6 @@
   <string name="playback_pref">Esitamine</string>
   <string name="network_pref">Võrk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Uuendamise intervall või kellaaeg</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Määra intervall või kindel aeg päevas, millal voogusid automaatselt värskendatakse</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Sa võid määrata <i>intervalli</i>, näiteks \"iga 2 tunni järel\", või määrata <i>millal päeva jooksul</i>, näiteks \"7:00\" või <i>keelata</i> automaatsed uuendused täielikult.\n\n<small>Pane tähele: uuendamise ajad ei ole täpsed. Võib esineda väike viivitus.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Lülita välja</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Määra intervall</string>
@@ -360,7 +351,6 @@
   <string name="pref_stream_over_download_sum">Loeteludes kuvatakse allalaadimise asemel voogedastuse nuppu.</string>
   <string name="pref_mobileUpdate_title">Uuendamine üle andmeside</string>
   <string name="pref_mobileUpdate_sum">Vali, mis peaks olema lubatud andmeside kaudu</string>
-  <string name="pref_mobileUpdate_refresh">Voo värskendamine</string>
   <string name="pref_mobileUpdate_images">Kaanepildid</string>
   <string name="pref_mobileUpdate_auto_download">Automaatne allalaadimine</string>
   <string name="pref_mobileUpdate_episode_download">Saate allalaadimine</string>
@@ -378,8 +368,6 @@
   <string name="pref_automatic_download_sum">Saadete automaatse allalaadimise seadistamine.</string>
   <string name="pref_autodl_wifi_filter_title">Luba Wifi filter</string>
   <string name="pref_autodl_wifi_filter_sum">Luba automaatne allalaadimine ainult valitud Wifi võrkudes.</string>
-  <string name="autodl_wifi_filter_permission_title">Vaja on õiguseid</string>
-  <string name="autodl_wifi_filter_permission_message">Asukoha lubamine on vajalik Wifi filtri jaoks. Loa andmiseks koputa.</string>
   <string name="pref_automatic_download_on_battery_title">Allalaadimine, kui seade ei lae</string>
   <string name="pref_automatic_download_on_battery_sum">Luba automaatne allalaadimine ka siis, kui seade pole laadimas</string>
   <string name="pref_parallel_downloads_title">Samaaegsed allalaadimised</string>
@@ -412,7 +400,6 @@
   <string name="pref_gpodnet_notifications_sum">See seadistus ei rakendu autentimise vigadele.</string>
   <string name="pref_playback_speed_title">Esitamise kiirused</string>
   <string name="pref_playback_speed_sum">Muuda, millised valikud on audio esitamisel kiiruste loendis</string>
-  <string name="pref_feed_playback_speed_sum">Millise kiirusega alustatakse selle voo saadete heli esitamist</string>
   <string name="pref_playback_time_respects_speed_title">Meedia info kohandamine esituse kiirusega</string>
   <string name="pref_playback_time_respects_speed_sum">Kuvatav asukoht ja kestus kohandatakse esituse kiiruse järgi</string>
   <string name="pref_fast_forward">Edasi kerimise hüpe</string>
@@ -442,7 +429,6 @@
   <string name="pref_smart_mark_as_played_disabled">Välja lülitatud</string>
   <string name="pref_image_cache_size_title">Piltide vahemälu suurus</string>
   <string name="pref_image_cache_size_sum">Piltide jaoks kasutatava vahemälu suurus</string>
-  <string name="view_mailing_list">Vaata meililisti</string>
   <string name="bug_report_title">Raporteeri veast</string>
   <string name="open_bug_tracker">Ava vigade loetelu</string>
   <string name="copy_to_clipboard">Kopeeri lõikelauale</string>
@@ -489,43 +475,28 @@
   <string name="licenses">Litsentsid</string>
   <string name="licenses_summary">AntennaPod kasutab teiste suurepärast tarkvara</string>
   <!--Search-->
-  <string name="search_hint">Otsi saateid</string>
-  <string name="found_in_shownotes_label">Leitud saate märkmetest</string>
-  <string name="found_in_chapters_label">Leitud peatükkidest</string>
-  <string name="found_in_authors_label">Leiti autorite hulgast</string>
-  <string name="found_in_feeds_label">Leiti saadete hulgast</string>
   <string name="search_status_no_results">Ei leitud midagi</string>
   <string name="search_label">Otsi</string>
-  <string name="found_in_title_label">Leitud pealkirjast</string>
   <string name="no_results_for_query">\"%1$s\" otsimine ei andnud tulemusi</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">Valik %1$d</string>
-  <string name="opml_import_explanation_1">Vali failisüsteemist konkreetne kaust.</string>
-  <string name="opml_import_explanation_3">Paljud rakendused nagu Google Mail, Dropbox, Google Drive ja enamik failihaldureid oskavad <i>avada</i> OPML faile AntennaPodiga.</string>
+  <!--import and export-->
   <string name="opml_import_label">OPML import</string>
-  <string name="reading_opml_label">OPML faili lugemine</string>
   <string name="opml_reader_error">OPML dokumendi lugemisel tekkis tõrge:</string>
   <string name="opml_import_error_no_file">Ühtegi faili pole valitud!</string>
   <string name="select_all_label">Vali kõik</string>
   <string name="deselect_all_label">Ära vali midagi</string>
-  <string name="choose_file_from_filesystem">Kohalikust failisüsteemist</string>
   <string name="opml_export_label">OPML eksport</string>
   <string name="html_export_label">HTML eksport</string>
-  <string name="exporting_label">Eksportimine...</string>
   <string name="export_error_label">Viga eksportimisel</string>
   <string name="export_success_title">Eksportimine edukas</string>
   <string name="export_success_sum">Eksporditud fail salvestati asukohta:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML faili lugemiseks on vajalik ligipääs välisele salvestusruumile</string>
+  <string name="import_select_file">Vali fail, mida importida</string>
+  <string name="import_ok">Importimine edukas.\n\nAntennaPodi taaskäivitamiseks vajuta OK</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Määra unetaimer</string>
   <string name="disable_sleeptimer_label">Keela unetaimer</string>
-  <string name="enter_time_here_label">Sisesta aeg</string>
   <string name="sleep_timer_label">Unetaimer</string>
-  <string name="time_left_label">Aega jäänud:\u0020</string>
   <string name="time_dialog_invalid_input">Vigane sisend, aeg peab olema täisarv</string>
-  <string name="timer_about_to_expire_label"><b>Kui taimer on lõppemas:</b></string>
-  <string name="shake_to_reset_label">Raputa taimeri nullimiseks</string>
-  <string name="timer_vibration_label">Vibreeri</string>
   <string name="time_seconds">sekundit</string>
   <string name="time_minutes">minutit</string>
   <string name="time_hours">tundi</string>
@@ -543,7 +514,6 @@
   </plurals>
   <string name="auto_enable_label">Automaatne kustutamine</string>
   <string name="sleep_timer_enabled_label">Unetaimer on sisse lülitatud</string>
-  <string name="sleep_timer_disabled_label">Unetaimer on välja lülitatud</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGOORIAD</string>
   <string name="gpodnet_toplist_header">POPULAARSED</string>
@@ -622,7 +592,6 @@
   <string name="episode_filters_exclude">Jäta välja</string>
   <string name="episode_filters_hint">Üksikud sõnad \n\"Mitu sõna\"</string>
   <string name="keep_updated">Hoia uuendatuna</string>
-  <string name="keep_updated_summary">Kaasa see voog kui (automaatselt) värskendatakse kõiki voogusid</string>
   <string name="auto_download_disabled_globally">Automaatne allalaadimine on keelatud AntennaPodi peamistes seadetes</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Andmebaasi uuendamine</string>
@@ -632,7 +601,9 @@
   <string name="search_podcast_hint">Otsi taskuhäälingut...</string>
   <string name="search_itunes_label">Otsi iTunest</string>
   <string name="search_fyyd_label">Search fyyd-ist</string>
-  <string name="advanced_search">Täpsem otsing</string>
+  <string name="browse_gpoddernet_label">Sirvi gpodder.net-i</string>
+  <string name="discover">Avasta</string>
+  <string name="discover_more">veel »</string>
   <string name="filter">Filter</string>
   <!--Episodes apply actions-->
   <string name="all_label">Kõik</string>
@@ -690,14 +661,6 @@
   <string name="proxy_port_invalid_error">Port pole korrektne</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Tulpade arv</string>
-  <!--Database import/export-->
-  <string name="import_export">Andmebaasi importimine/eksportimine</string>
-  <string name="import_export_warning">See eksperimentaalne funktsioon võimaldab tellimused ja esitatud saadete loetelu kanda üle teise seadmesse.\n\nEksporditud andmebaase saab importida ainult AntennaPodi samasse versiooni. Muul juhul annab see ettearvamatu tulemuse.\n\nPärast importimist võivad saated paista nagu oleksid allalaaditud, kuigi ei ole. Et AntennaPod sellest aru saaks, tuleb vajutada esitamise nupule.</string>
-  <string name="label_import">Impordi</string>
-  <string name="label_export">Ekspordi</string>
-  <string name="import_select_file">Vali fail, mida importida</string>
-  <string name="export_ok">Eksportimine edukas.</string>
-  <string name="import_ok">Importimine edukas.\n\nAntennaPodi taaskäivitamiseks vajuta OK</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Esita...</string>
   <string name="cast_disconnect_label">Katkesta kaugesitus</string>
@@ -705,7 +668,6 @@
   <string name="cast_failed_to_play">Meedia esitamise alustamine nurjus</string>
   <string name="cast_failed_to_stop">Meedia esitamise peatamine nurjus</string>
   <string name="cast_failed_to_pause">Meedia esitamise pausimine nurjus</string>
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Helivaljuse määramine nurjus</string>
   <string name="cast_failed_no_connection">Kaugseadmega pole ühendust</string>
   <string name="cast_failed_no_connection_trans">Ühendus kaugseadmega on katkenud. Rakendus püüab ühenduse taastada. Palun oota mõned sekundid ja proovi uuesti.</string>
@@ -722,7 +684,6 @@
   <string name="notification_channel_playing_description">Võimaldab esitust juhtida. See on saate kuulamise ajal peamine teade.</string>
   <string name="notification_channel_error">Vead</string>
   <string name="notification_channel_error_description">Näidatakse, kui miski läks valesti, näiteks allalaadimine või gpodderiga sükroonimine nurjus.</string>
-  <string name="import_bad_file">Vigane/rikutud fail</string>
   <!--Widget settings-->
   <string name="widget_create_button">Lisa vidin</string>
   <string name="widget_opacity">Läbipaistvus</string>

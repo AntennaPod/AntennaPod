@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">購読を更新</string>
-  <string name="feeds_label">フィード</string>
   <string name="statistics_label">統計情報</string>
   <string name="add_feed_label">フィードを追加</string>
   <string name="episodes_label">エピソード</string>
@@ -33,6 +32,7 @@
   <string name="statistics_speed_not_counted">注意: 再生速度は考慮されません。</string>
   <string name="statistics_reset_data">統計情報のデータをリセット</string>
   <string name="statistics_reset_data_msg">これにより、すべてのエピソードを再生した期間の履歴が消去されます。 続行しますか?</string>
+  <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">メニューを開く</string>
   <string name="drawer_close">メニューを閉じる</string>
@@ -96,13 +96,6 @@
     <item quantity="other">完了 %d 日後</item>
   </plurals>
   <string name="num_selected_label">%d 選択</string>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">フィードURL</string>
-  <string name="etxtFeedurlHint">フィードまたはWebサイトのURL</string>
-  <string name="txtvfeedurl_label">URLでポッドキャストを追加</string>
-  <string name="browse_gpoddernet_label">gpodder.netを参照</string>
-  <string name="discover">発見</string>
-  <string name="discover_more">さらに »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">すべて再生済としてマーク</string>
   <string name="mark_all_read_msg">すべてのエピソードを再生済にしました</string>
@@ -122,13 +115,11 @@
   <string name="share_link_with_position_label">エピソード URL を位置と共に共有</string>
   <string name="share_file_label">ファイルを共有</string>
   <string name="share_website_url_label">ウェブサイト URLを共有</string>
-  <string name="share_feed_url_label">フィード URLを共有</string>
   <string name="share_item_url_label">メディアファイル URLを共有</string>
   <string name="share_item_url_with_position_label">メディアファイル URL を位置と共に共有</string>
   <string name="feed_delete_confirmation_msg">ポッドキャスト \"%1$s\" とすべての（ダウンロード済を含む）エピソードを削除することを確認してください。</string>
   <string name="feed_remover_msg">ポッドキャストを削除しています</string>
   <string name="load_complete_feed">ポッドキャストをすべて更新</string>
-  <string name="batch_edit">一括編集</string>
   <string name="select_all_above">上のすべてを選択</string>
   <string name="select_all_below">下のすべてを選択</string>
   <string name="hide_unplayed_episodes_label">未再生</string>
@@ -271,6 +262,7 @@
   <string name="clear_queue_confirmation_msg">クリアする、キューに含まれるすべてのエピソードを確認してください。</string>
   <string name="sort_old_to_new">古いものから新しいもの</string>
   <string name="sort_new_to_old">新しいものから古いもの</string>
+  <string name="time_left_label">残り時間:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">プラグインをダウンロード</string>
   <string name="no_playback_plugin_title">プラグイン はインストールされていません</string>
@@ -337,7 +329,6 @@
   <string name="playback_pref">再生</string>
   <string name="network_pref">ネットワーク</string>
   <string name="pref_autoUpdateIntervallOrTime_title">間隔または時間を更新</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">自動的にフィードを更新する間隔または時間を指定してください</string>
   <string name="pref_autoUpdateIntervallOrTime_message">\"2 時間ごと\" のような <i>間隔</i> 、\"7:00 AM\" のような特定の <i>時間</i> 、または自動更新を完全に <i>無効</i> にセットすることができます。\n\n<small>ご注意ください: 更新時間は正確ではありません。少し遅延が発生する可能性があります。</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">無効</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">間隔をセット</string>
@@ -352,7 +343,6 @@
   <string name="pref_stream_over_download_sum">ダウンロードボタンの代わりにストリームボタンをリストに表示します。</string>
   <string name="pref_mobileUpdate_title">モバイル更新</string>
   <string name="pref_mobileUpdate_sum">モバイルデータ接続時に許可するものを選択します</string>
-  <string name="pref_mobileUpdate_refresh">フィード更新</string>
   <string name="pref_mobileUpdate_images">カバー画像</string>
   <string name="pref_mobileUpdate_auto_download">自動ダウンロード</string>
   <string name="pref_mobileUpdate_episode_download">エピソードのダウンロード</string>
@@ -370,8 +360,6 @@
   <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを構成します。</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fiフィルターを有効にする</string>
   <string name="pref_autodl_wifi_filter_sum">選択したWi-Fiネットワークに対してのみ自動ダウンロードを許可します。</string>
-  <string name="autodl_wifi_filter_permission_title">アクセス許可が必要です</string>
-  <string name="autodl_wifi_filter_permission_message">Wi-Fi フィルターには位置情報のアクセス許可が必要です。 タップして許可を付与します。</string>
   <string name="pref_automatic_download_on_battery_title">充電中以外の時にダウンロード</string>
   <string name="pref_automatic_download_on_battery_sum">バッテリーを充電していない時に自動ダウンロードを許可します</string>
   <string name="pref_parallel_downloads_title">パラレル ダウンロード</string>
@@ -404,7 +392,6 @@
   <string name="pref_gpodnet_notifications_sum">この設定は、認証エラーには適用されません。</string>
   <string name="pref_playback_speed_title">再生速度</string>
   <string name="pref_playback_speed_sum">可変速度音声再生に使用可能な速度をカスタマイズします</string>
-  <string name="pref_feed_playback_speed_sum">このフィードでエピソードのオーディオ再生を開始するときに使用する速度</string>
   <string name="pref_playback_time_respects_speed_title">メディア情報を再生速度に調整</string>
   <string name="pref_playback_time_respects_speed_sum">表示される位置と時間が再生速度に調整されます</string>
   <string name="pref_fast_forward">早送りのスキップ時間</string>
@@ -434,7 +421,6 @@
   <string name="pref_smart_mark_as_played_disabled">無効</string>
   <string name="pref_image_cache_size_title">画像キャッシュサイズ</string>
   <string name="pref_image_cache_size_sum">画像のディスクキャッシュのサイズ。</string>
-  <string name="view_mailing_list">メーリングリストを表示</string>
   <string name="bug_report_title">バグを報告</string>
   <string name="open_bug_tracker">バグトラッカーを開く</string>
   <string name="copy_to_clipboard">クリップボードにコピー</string>
@@ -481,43 +467,28 @@
   <string name="licenses">ライセンス</string>
   <string name="licenses_summary">AntennaPod は他の優れたソフトウェアを使用しています</string>
   <!--Search-->
-  <string name="search_hint">エピソードの検索</string>
-  <string name="found_in_shownotes_label">ショーノートで見つかりました</string>
-  <string name="found_in_chapters_label">チャプターで見つかりました</string>
-  <string name="found_in_authors_label">作者で見つかりました</string>
-  <string name="found_in_feeds_label">ポッドキャストで見つかりました</string>
   <string name="search_status_no_results">見つかりませんでした</string>
   <string name="search_label">検索</string>
-  <string name="found_in_title_label">タイトルで見つかりました</string>
   <string name="no_results_for_query">\"%1$s\" の結果は見つかりませんでした</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">オプション %1$d</string>
-  <string name="opml_import_explanation_1">ローカルのファイルシステムから指定するファイルパスを選択してください。</string>
-  <string name="opml_import_explanation_3">Google メール、Dropbox、Google ドライブ、および多くのファイルマネージャーなどのアプリケーションで、AntennaPod <i>の</i> OPML ファイルを <i>開く</i> ことができます。</string>
+  <!--import and export-->
   <string name="opml_import_label">OPMLインポート</string>
-  <string name="reading_opml_label">OPMLファイルを読み込み中</string>
   <string name="opml_reader_error">OPMLドキュメントの読み込み中にエラーが発生しました:</string>
   <string name="opml_import_error_no_file">ファイルが選択されていません!</string>
   <string name="select_all_label">すべてを選択</string>
   <string name="deselect_all_label">選択解除</string>
-  <string name="choose_file_from_filesystem">ローカル ファイルシステムから</string>
   <string name="opml_export_label">OPMLエクスポート</string>
   <string name="html_export_label">HTML エクスポート</string>
-  <string name="exporting_label">エクスポート中…</string>
   <string name="export_error_label">エクスポートエラー</string>
   <string name="export_success_title">エクスポートしました</string>
   <string name="export_success_sum">エクスポートしたファイルを書き込みました:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">OPML ファイルを読み込むために、外部ストレージへのアクセスが必要です</string>
+  <string name="import_select_file">インポートするファイルを選択してください</string>
+  <string name="import_ok">インポートが成功しました。\n\nOKを押してAntennaPodを再起動してください。</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">スリープタイマーをセット</string>
   <string name="disable_sleeptimer_label">スリープタイマーを無効にする</string>
-  <string name="enter_time_here_label">時間を入力</string>
   <string name="sleep_timer_label">スリープタイマー</string>
-  <string name="time_left_label">残り時間:\u0020</string>
   <string name="time_dialog_invalid_input">入力が正しくありません、時間は数字で入力してください</string>
-  <string name="timer_about_to_expire_label"><b>タイマーが期限切れになるとき:</b></string>
-  <string name="shake_to_reset_label">振るとタイマーをリセット</string>
-  <string name="timer_vibration_label">振動</string>
   <string name="time_seconds">秒</string>
   <string name="time_minutes">分</string>
   <string name="time_hours">時間</string>
@@ -532,7 +503,6 @@
   </plurals>
   <string name="auto_enable_label">自動有効化</string>
   <string name="sleep_timer_enabled_label">スリープタイマーを有効にしました</string>
-  <string name="sleep_timer_disabled_label">スリープタイマーを無効にしました</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">カテゴリー</string>
   <string name="gpodnet_toplist_header">トップ ボッドキャスト</string>
@@ -611,7 +581,6 @@
   <string name="episode_filters_exclude">含まない</string>
   <string name="episode_filters_hint">単一の単語 \n\"複数の 単語\"</string>
   <string name="keep_updated">更新済を保持</string>
-  <string name="keep_updated_summary">すべてのフィードを (自動)更新する時にこのフィードを含めます</string>
   <string name="auto_download_disabled_globally">メインの AntennaPod 設定で自動ダウンロードが無効になっています</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">データベースをアップグレードしています</string>
@@ -621,7 +590,9 @@
   <string name="search_podcast_hint">ポッドキャストの検索…</string>
   <string name="search_itunes_label">iTunes を検索</string>
   <string name="search_fyyd_label">fyydを検索</string>
-  <string name="advanced_search">高度な検索</string>
+  <string name="browse_gpoddernet_label">gpodder.netを参照</string>
+  <string name="discover">発見</string>
+  <string name="discover_more">さらに »</string>
   <string name="filter">フィルター</string>
   <!--Episodes apply actions-->
   <string name="all_label">すべて</string>
@@ -679,14 +650,6 @@
   <string name="proxy_port_invalid_error">ポートが正しくありません</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">カラムの数</string>
-  <!--Database import/export-->
-  <string name="import_export">データベースのインポート/エクスポート</string>
-  <string name="import_export_warning">この実験的な機能を使用すると、サブスクリプションと再生したエピソードを別のデバイスに転送できます。\n\nエクスポートされたデータベースは、同じバージョンのAntennaPodを使用する場合にのみインポートできます。 それ以外の場合、この機能は予期しない動作につながります。\n\nインポートした後、エピソードはダウンロードされたものとして表示されることがあります。 エピソードの再生ボタンを押すだけで、AntennaPodがこれを検出します。</string>
-  <string name="label_import">インポート</string>
-  <string name="label_export">エクスポート</string>
-  <string name="import_select_file">インポートするファイルを選択してください</string>
-  <string name="export_ok">エクスポートしました。</string>
-  <string name="import_ok">インポートが成功しました。\n\nOKを押してAntennaPodを再起動してください。</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">…で再生</string>
   <string name="cast_disconnect_label">キャストセッションを切断</string>
@@ -694,7 +657,6 @@
   <string name="cast_failed_to_play">メディア再生の開始に失敗しました</string>
   <string name="cast_failed_to_stop">メディア再生の停止に失敗しました</string>
   <string name="cast_failed_to_pause">メディア再生の一時停止に失敗しました</string>
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">音量の設定に失敗しました</string>
   <string name="cast_failed_no_connection">キャストデバイスへの接続が存在しません</string>
   <string name="cast_failed_no_connection_trans">キャストデバイスへの接続が失われました。可能な場合、アプリケーションは接続を再確立しようとします。数秒待ってから、もう一度お試しください。</string>
@@ -711,7 +673,6 @@
   <string name="notification_channel_playing_description">再生をコントロールできます。これはポッドキャスト再生中のメイン通知です。</string>
   <string name="notification_channel_error">エラー</string>
   <string name="notification_channel_error_description">ダウンロードや gpodder の同期に失敗した場合など、何か問題が発生した場合に表示されます。</string>
-  <string name="import_bad_file">無効/破損ファイル</string>
   <!--Widget settings-->
   <string name="widget_settings">ウィジェット設定</string>
   <string name="widget_create_button">ウィジェットを作成</string>

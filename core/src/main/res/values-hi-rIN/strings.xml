@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">सब्स्क्रिप्शन्स का अद्यतन </string>
-  <string name="feeds_label">फिड्स</string>
   <string name="statistics_label">आंकड़े</string>
   <string name="add_feed_label">पॉडकास्ट जोड़ें</string>
   <string name="episodes_label">एपिसोड</string>
@@ -29,6 +28,7 @@
   <string name="statistics_details_dialog">%2$d में से %1$d एपिसोड शुरू किए गए है.\n\n%4$s में से %3$sपूरे हुए है। </string>
   <string name="statistics_mode_normal">वास्तव में चलाई गयी अवधि की गणना करें। दो बार चलने पर दो बार गिना जायेगा, जबकि चल चूका सा चिह्नितो को नही गिना जायेगा।</string>
   <string name="statistics_speed_not_counted">सूचना: प्लेबैक गति को कभी भी ध्यान में नहीं रखा जाता है।</string>
+  <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">मेन्यू खोलें</string>
   <string name="drawer_close">मेन्यू बंद करें</string>
@@ -89,11 +89,6 @@
     <item quantity="one">समाप्ति के 1 दिन बाद</item>
     <item quantity="other">समाप्ति के %d दिन बाद</item>
   </plurals>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">यूआरएल फ़ीड</string>
-  <string name="etxtFeedurlHint">www.example.com/feed</string>
-  <string name="txtvfeedurl_label">यूआरएल द्वारा पॉडकास्ट जोड़ें</string>
-  <string name="browse_gpoddernet_label">gpodder.net ब्राउज़ करें</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">पढ़ने के रूप में सभी को चिह्नित करें</string>
   <string name="show_info_label">जानकारी दिखाएँ</string>
@@ -106,12 +101,10 @@
   <string name="share_link_label">एपिसोड URL शेयर करे</string>
   <string name="share_link_with_position_label">स्थान के साथ एपिसोड URL शेयर करे</string>
   <string name="share_file_label">फाइल शेयर करे</string>
-  <string name="share_feed_url_label">फीड URL शेयर करे</string>
   <string name="share_item_url_label">मीडिया फाइल शेयर करे</string>
   <string name="share_item_url_with_position_label"> स्थान के साथ मीडिया फाइल शेयर करे</string>
   <string name="feed_remover_msg">पॉडकास्ट हटाया जारहा है</string>
   <string name="load_complete_feed">सारे पॉडकास्ट को रिफ्रेश करें</string>
-  <string name="batch_edit">जत्था संपादित करें</string>
   <string name="hide_unplayed_episodes_label">नहीं चलाए गए</string>
   <string name="hide_paused_episodes_label">रोके गए</string>
   <string name="hide_played_episodes_label">चलाए गए</string>
@@ -213,6 +206,7 @@
   <string name="ascending">आरोही</string>
   <string name="descending">अवरोही</string>
   <string name="clear_queue_confirmation_msg">कृपया पुष्टि करें कि आप सारे एपिसोड के इस कतार को हटाना चाहते हैं</string>
+  <string name="time_left_label">समय बचा है:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">प्लगइन डाउनलोड करें</string>
   <string name="no_playback_plugin_title">प्लगइन स्थापित नहीं हुआ</string>
@@ -271,13 +265,10 @@
   <!--About screen-->
   <string name="about_pref">के बारे में</string>
   <!--Search-->
-  <string name="found_in_chapters_label">अध्यायों में मिला</string>
   <string name="search_status_no_results">कोई परिणाम नहीं मिले</string>
   <string name="search_label">खोज</string>
-  <string name="found_in_title_label">शीर्षक में मिला</string>
-  <!--OPML import and export-->
+  <!--import and export-->
   <string name="opml_import_label">OPML आयात</string>
-  <string name="reading_opml_label">OPML फ़ाइल पढ़ना</string>
   <string name="select_all_label">सभी का चयन करें</string>
   <string name="deselect_all_label">सभी का चयन रद्द करें</string>
   <string name="opml_export_label">OPML निर्यात</string>
@@ -285,9 +276,7 @@
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">स्लीप टाइमर सेट</string>
   <string name="disable_sleeptimer_label">स्लीप टाइमर अक्षम</string>
-  <string name="enter_time_here_label">समय दर्ज करें</string>
   <string name="sleep_timer_label">स्लीप टाइमर</string>
-  <string name="time_left_label">समय बचा है:\u0020</string>
   <string name="time_dialog_invalid_input">अवैध इनपुट, समय को पूर्णांक में डालें</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">श्रेणियाँ</string>
@@ -337,15 +326,14 @@
   <!--Progress information-->
   <!--AntennaPodSP-->
   <!--Add podcast fragment-->
+  <string name="browse_gpoddernet_label">gpodder.net ब्राउज़ करें</string>
   <!--Episodes apply actions-->
   <!--Sort-->
   <!--Rating dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
   <!--Subscriptions fragment-->
-  <!--Database import/export-->
   <!--Casting-->
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <!--Notification channels-->
   <!--Widget settings-->
 </resources>
