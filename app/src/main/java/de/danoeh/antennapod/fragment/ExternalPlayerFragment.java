@@ -2,7 +2,6 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +10,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
@@ -34,8 +32,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 /**
- * Fragment which is supposed to be displayed outside of the MediaplayerActivity
- * if the PlaybackService is running
+ * Fragment which is supposed to be displayed outside of the MediaplayerActivity.
  */
 public class ExternalPlayerFragment extends Fragment {
     public static final String TAG = "ExternalPlayerFragment";
@@ -43,8 +40,8 @@ public class ExternalPlayerFragment extends Fragment {
     private ImageView imgvCover;
     private TextView txtvTitle;
     private ImageButton butPlay;
-    private TextView mFeedName;
-    private ProgressBar mProgressBar;
+    private TextView feedName;
+    private ProgressBar progressBar;
     private PlaybackController controller;
     private Disposable disposable;
 
@@ -59,8 +56,8 @@ public class ExternalPlayerFragment extends Fragment {
         imgvCover = root.findViewById(R.id.imgvCover);
         txtvTitle = root.findViewById(R.id.txtvTitle);
         butPlay = root.findViewById(R.id.butPlay);
-        mFeedName = root.findViewById(R.id.txtvAuthor);
-        mProgressBar = root.findViewById(R.id.episodeProgress);
+        feedName = root.findViewById(R.id.txtvAuthor);
+        progressBar = root.findViewById(R.id.episodeProgress);
 
         root.findViewById(R.id.fragmentLayout).setOnClickListener(v -> {
             Log.d(TAG, "layoutInfo was clicked");
@@ -114,12 +111,12 @@ public class ExternalPlayerFragment extends Fragment {
 
             @Override
             public void onShutdownNotification() {
-                playbackDone();
+                ((MainActivity) getActivity()).setPlayerVisible(false);
             }
 
             @Override
             public void onPlaybackEnd() {
-                playbackDone();
+                ((MainActivity) getActivity()).setPlayerVisible(false);
             }
         };
     }
@@ -171,22 +168,6 @@ public class ExternalPlayerFragment extends Fragment {
         }
     }
 
-    private void playbackDone() {
-        clearUi();
-        if (controller != null) {
-            controller.release();
-        }
-        controller = setupPlaybackController();
-        if (butPlay != null) {
-            butPlay.setOnClickListener(v -> {
-                if (controller != null) {
-                    controller.playPause();
-                }
-            });
-        }
-        controller.init();
-    }
-
     private boolean loadMediaInfo() {
         Log.d(TAG, "Loading media info");
         if (controller == null) {
@@ -209,47 +190,36 @@ public class ExternalPlayerFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> updateUi((Playable) media),
                         error -> Log.e(TAG, Log.getStackTraceString(error)),
-                        this::clearUi);
+                        () -> ((MainActivity) getActivity()).setPlayerVisible(false));
         return true;
     }
 
-    private void clearUi() {
-        if (txtvTitle == null || mFeedName == null || mProgressBar == null || butPlay == null) {
+    private void updateUi(Playable media) {
+        if (media == null) {
             return;
         }
-        txtvTitle.setText(R.string.no_media_playing_label);
-        mFeedName.setText("");
-        butPlay.setVisibility(View.GONE);
-        mProgressBar.setProgress(0);
-        Glide.with(getActivity()).clear(imgvCover);
-        ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
-    }
+        ((MainActivity) getActivity()).setPlayerVisible(true);
+        txtvTitle.setText(media.getEpisodeTitle());
+        feedName.setText(media.getFeedTitle());
+        onPositionObserverUpdate();
 
-    private void updateUi(Playable media) {
-        if (media != null) {
-            txtvTitle.setText(media.getEpisodeTitle());
-            mFeedName.setText(media.getFeedTitle());
-            onPositionObserverUpdate();
+        Glide.with(getActivity())
+                .load(ImageResourceUtils.getImageLocation(media))
+                .apply(new RequestOptions()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .fitCenter()
+                    .dontAnimate())
+                .into(imgvCover);
 
-            Glide.with(getActivity())
-                    .load(ImageResourceUtils.getImageLocation(media))
-                    .apply(new RequestOptions()
-                        .placeholder(R.color.light_gray)
-                        .error(R.color.light_gray)
-                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
-                        .dontAnimate())
-                    .into(imgvCover);
-            if (controller != null && controller.isPlayingVideoLocally()) {
-                butPlay.setVisibility(View.GONE);
-                ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
-                ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
-            } else {
-                butPlay.setVisibility(View.VISIBLE);
-                ((MainActivity) getActivity()).getBottomSheet().setLocked(false);
-            }
+        if (controller != null && controller.isPlayingVideoLocally()) {
+            butPlay.setVisibility(View.GONE);
+            ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
+            ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
-            Log.w(TAG, "loadMediaInfo was called while the media object of playbackService was null!");
+            butPlay.setVisibility(View.VISIBLE);
+            ((MainActivity) getActivity()).getBottomSheet().setLocked(false);
         }
     }
 
@@ -264,7 +234,7 @@ public class ExternalPlayerFragment extends Fragment {
                 || controller.getDuration() == PlaybackService.INVALID_TIME) {
             return;
         }
-        mProgressBar.setProgress((int)
+        progressBar.setProgress((int)
                 ((double) controller.getPosition() / controller.getDuration() * 100));
     }
 }
