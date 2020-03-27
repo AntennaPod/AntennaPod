@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/episode_actions"
         android:menuCategory="container"
-        android:title="@string/batch_edit"
+        android:title="@string/multi_select"
         android:icon="?attr/checkbox_multiple"
-        custom:showAsAction="always">
-    </item>
-
+        app:showAsAction="ifRoom" />
 </menu>

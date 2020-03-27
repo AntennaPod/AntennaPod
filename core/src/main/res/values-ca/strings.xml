@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Actualitzar subscripcions</string>
-  <string name="feeds_label">Canals</string>
   <string name="statistics_label">Estadístiques</string>
   <string name="add_feed_label">Afegeix podcast</string>
   <string name="episodes_label">Episodis</string>
@@ -31,6 +30,7 @@
   <string name="statistics_mode_normal">Calcula el temps que realment s\'ha reproduït. La reproducció repetida es comptarà repetides vegades, mentre que no es tindrà en compte si s\'ha marcat com a reproduït.  </string>
   <string name="statistics_mode_count_all">Suma tots els podcasts marcats com a reproduïts</string>
   <string name="statistics_speed_not_counted">Avís: la velocitat de reproducció mai no es té en compte.</string>
+  <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Obre menú</string>
   <string name="drawer_close">Tanca menú</string>
@@ -91,11 +91,7 @@
     <item quantity="one">1 dia després d\'acabar</item>
     <item quantity="other">%d dies després d\'acabar</item>
   </plurals>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">Enllaç del canal</string>
-  <string name="etxtFeedurlHint">URL, canal o lloc web</string>
-  <string name="txtvfeedurl_label">Afegeix podcast amb l\'URL</string>
-  <string name="browse_gpoddernet_label">Navega gpodder.net</string>
+  <string name="num_selected_label">%d sel·leccionat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
   <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
@@ -111,13 +107,11 @@
   <string name="share_link_label">Comparteix l\'adreça de l\'episodi</string>
   <string name="share_link_with_position_label">Comparteix l\'adreça de l\'episodi i la posició</string>
   <string name="share_file_label">Comparteix el fitxer</string>
-  <string name="share_feed_url_label">Comparteix l\'adreça del canal</string>
   <string name="share_item_url_label">Comparteix l\'adreça del fitxer multimèdia</string>
   <string name="share_item_url_with_position_label">Comparteix l\'adreça del fitxer multimèdia i la posició</string>
   <string name="feed_delete_confirmation_msg">Si us plau, confirmeu que voleu eliminar el podcast \"%1$s\" i tots els seus episodis (fins i tot els ja baixats).</string>
   <string name="feed_remover_msg">Eliminant podcast</string>
   <string name="load_complete_feed">Refrescar tot el podcast</string>
-  <string name="batch_edit">Editar lot</string>
   <string name="hide_unplayed_episodes_label">Per reproduir</string>
   <string name="hide_paused_episodes_label">Pausat</string>
   <string name="hide_played_episodes_label">Reproduit</string>
@@ -227,6 +221,7 @@
   <string name="ascending">Ascendent</string>
   <string name="descending">Descendent</string>
   <string name="clear_queue_confirmation_msg">Si us plau, confirma que vols suprimir tots els episodis de la cua</string>
+  <string name="time_left_label">Temps restant:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Baixa el connector</string>
   <string name="no_playback_plugin_title">Connector no instal·lat</string>
@@ -246,6 +241,7 @@
   <string name="appearance">Aparença</string>
   <string name="external_elements">Elements externs</string>
   <string name="interruptions">Interrupcions</string>
+  <string name="preference_search_hint">Cerca…</string>
   <string name="media_player">Reproductor multimèdia</string>
   <string name="pref_episode_cleanup_title">Neteja l\'episodi</string>
   <string name="pref_episode_cleanup_summary">Els episodis que no es troben a la cua i no són preferits seran candidats a ser suprimits si l\'Auto Descàrrega necessita espai per a nous episodis</string>
@@ -267,7 +263,6 @@
   <string name="playback_pref">Reproducció</string>
   <string name="network_pref">Xarxa</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Actualitza interval o horari del dia</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Especifica un interval o una hora concreta del dia per actualitzar els canals de forma automàtica</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Pots establir un <i>interval</i> com ara \"cada 2 hores\", establir una <i>hora del dia</i> com ara \"7:00 AM\" o <i>disactiva</i> l\'actualització automàtica del conjunt.\n\n<small>Tingues en compte que les actualitzacions no són exactes i pot donar-se una breu demora.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Desactivar</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Establir interval</string>
@@ -359,43 +354,28 @@
   <!--About screen-->
   <string name="about_pref">Quant a</string>
   <!--Search-->
-  <string name="search_hint">Cerca episodis</string>
-  <string name="found_in_shownotes_label">Troba a les notes dels canals</string>
-  <string name="found_in_chapters_label">Trobat als capítols</string>
-  <string name="found_in_authors_label">Trobat a autor/s</string>
-  <string name="found_in_feeds_label">Trobat a un podcast</string>
   <string name="search_status_no_results">No s\'ha trobat cap resultat</string>
   <string name="search_label">Cerca</string>
-  <string name="found_in_title_label">Trobat al títol</string>
   <string name="no_results_for_query">No s\'han trobat resultats per \"%1$s\"</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">Opció %1$d</string>
-  <string name="opml_import_explanation_1">Tria una ruta de fitxer específic del sistema de fitxers local.</string>
-  <string name="opml_import_explanation_3">Algunes aplicacions com Google Mail, Dropbox, Google Drive i la majoria dels administradors d\'arxius pot <i>obrir</i> arxius OPML <i>amb</i> AntennaPod.</string>
+  <!--import and export-->
   <string name="opml_import_label">Importació d\'OPML</string>
-  <string name="reading_opml_label">S\'està llegint el fitxer OPML</string>
   <string name="opml_reader_error">S\'ha produït un error en llegir el document OPML: </string>
   <string name="opml_import_error_no_file">Cap fitxer seleccionat!</string>
   <string name="select_all_label">Selecciona-ho tot</string>
   <string name="deselect_all_label">Deselecciona-ho tot</string>
-  <string name="choose_file_from_filesystem">Des de sistema d\'arxius local</string>
   <string name="opml_export_label">Exportació OPML</string>
   <string name="html_export_label">Exporta HTML</string>
-  <string name="exporting_label">Exportant...</string>
   <string name="export_error_label">Error d\'exportació</string>
   <string name="export_success_title">Exportació correcta</string>
   <string name="export_success_sum">S\'ha exportat el fitxer a:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Per llegir arxius OPML és necessari accés a la memòria externa</string>
+  <string name="import_select_file">Tria un fitxer per a importar</string>
+  <string name="import_ok">S\'ha importat amb èxit.\n\nPremeu D\'acord per a reiniciar l\'AntennaPod.</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Defineix un temporitzador</string>
   <string name="disable_sleeptimer_label">Desactiva el temporitzador</string>
-  <string name="enter_time_here_label">Introduïu l\'hora</string>
   <string name="sleep_timer_label">Temporitzador</string>
-  <string name="time_left_label">Temps restant:\u0020</string>
   <string name="time_dialog_invalid_input">L\'entrada no és vàlida, ja que el temps ha de ser un nombre i no ho és</string>
-  <string name="timer_about_to_expire_label"><b>Quan el temporitzador està a punt d\'expirar:</b></string>
-  <string name="shake_to_reset_label">Agita per reiniciar el temporitzador</string>
-  <string name="timer_vibration_label">Vibra</string>
   <string name="time_seconds">segons</string>
   <string name="time_minutes">minuts</string>
   <string name="time_hours">hores</string>
@@ -413,7 +393,6 @@
   </plurals>
   <string name="auto_enable_label">Autohabilita</string>
   <string name="sleep_timer_enabled_label">Temporitzador habilitat</string>
-  <string name="sleep_timer_disabled_label">Temporitzador deshabilitat</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIES</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -494,8 +473,12 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
   <!--Add podcast fragment-->
+  <string name="search_podcast_hint">Cerca podcast…</string>
   <string name="search_itunes_label">Cerca a iTunes</string>
   <string name="search_fyyd_label">Cerca a fyyd</string>
+  <string name="browse_gpoddernet_label">Navega gpodder.net</string>
+  <string name="discover">Descobreix</string>
+  <string name="discover_more">més »</string>
   <string name="filter">Filtra</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tot</string>
@@ -551,14 +534,6 @@
   <string name="proxy_host_invalid_error">El host no és una adreça IP o domini vàlid</string>
   <string name="proxy_port_invalid_error">El port no és vàlid</string>
   <!--Subscriptions fragment-->
-  <!--Database import/export-->
-  <string name="import_export">Importa/exporta la base de dades</string>
-  <string name="import_export_warning">Podeu fer servir aquesta funcionalitat experimental per a transferir les vostres subscripcions i episodis reproduïts a un altre dispositiu.\n\nNomés podreu importar la base de dades fent servir la mateixa versió de l\'AntennaPod. En cas contrari, aquesta funcionalitat es comportarà de forma imprevisible.\n\nDesprés d\'importar-los, els episodis es poden mostrar com a baixats tot i no estar disponibles. Premeu el botó per a reproduir-los per a que l\'AntennaPod ho detecti.</string>
-  <string name="label_import">Importa</string>
-  <string name="label_export">Exporta</string>
-  <string name="import_select_file">Tria un fitxer per a importar</string>
-  <string name="export_ok">Exportació correcta.</string>
-  <string name="import_ok">S\'ha importat amb èxit.\n\nPremeu D\'acord per a reiniciar l\'AntennaPod.</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproduir a...</string>
   <string name="cast_disconnect_label">Desconnectar la sessió de difusió </string>
@@ -566,7 +541,6 @@
   <string name="cast_failed_to_play">Error en començar la reproducció del medi</string>
   <string name="cast_failed_to_stop">Error en aturar la reproducció del medi</string>
   <string name="cast_failed_to_pause">Error en pausar la reproducció del medi</string>
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Error en establir el volum</string>
   <string name="cast_failed_no_connection">No hi ha cap connexió amb el dispositiu de difusió </string>
   <string name="cast_failed_no_connection_trans">S\'ha perdut la connexió amb el dispositiu de difusió. L\'aplicació està tractant de restablir la connexió, si això és possible. Espereu uns segons i torneu-ho a provar.</string>

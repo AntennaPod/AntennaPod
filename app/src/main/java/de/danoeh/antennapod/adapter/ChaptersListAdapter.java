@@ -1,74 +1,57 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import android.text.Layout;
-import android.text.Selection;
-import android.text.Spannable;
-import android.text.Spanned;
-import android.text.style.ClickableSpan;
-import android.text.util.Linkify;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
-public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
-
-    private static final String TAG = "ChapterListAdapter";
-
+public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapter.ChapterHolder> {
     private Playable media;
-
-    private int defaultTextColor;
     private final Callback callback;
+    private final Context context;
+    private int currentChapterIndex = -1;
+    private boolean hasImages = false;
 
-    public ChaptersListAdapter(Context context, int textViewResourceId, Callback callback) {
-        super(context, textViewResourceId);
+    public ChaptersListAdapter(Context context, Callback callback) {
         this.callback = callback;
+        this.context = context;
     }
 
     public void setMedia(Playable media) {
         this.media = media;
+        hasImages = false;
+        if (media.getChapters() != null) {
+            for (Chapter chapter : media.getChapters()) {
+                if (!ignoreChapter(chapter) && !TextUtils.isEmpty(chapter.getImageUrl())) {
+                    hasImages = true;
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
-    @NonNull
+
     @Override
-    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
-        Holder holder;
-
+    public void onBindViewHolder(@NonNull ChapterHolder holder, int position) {
         Chapter sc = getItem(position);
-
-        // Inflate Layout
-        if (convertView == null) {
-            holder = new Holder();
-            LayoutInflater inflater = (LayoutInflater) getContext()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            convertView = inflater.inflate(R.layout.simplechapter_item, parent, false);
-            holder.view = convertView;
-            holder.title = convertView.findViewById(R.id.txtvTitle);
-            defaultTextColor = holder.title.getTextColors().getDefaultColor();
-            holder.start = convertView.findViewById(R.id.txtvStart);
-            holder.link = convertView.findViewById(R.id.txtvLink);
-            holder.duration = convertView.findViewById(R.id.txtvDuration);
-            holder.butPlayChapter = convertView.findViewById(R.id.butPlayChapter);
-            convertView.setTag(holder);
-        } else {
-            holder = (Holder) convertView.getTag();
-
-        }
-
         holder.title.setText(sc.getTitle());
         holder.start.setText(Converter.getDurationStringLong((int) sc
                 .getStart()));
@@ -79,92 +62,58 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
         } else {
             duration = media.getDuration() - sc.getStart();
         }
-        holder.duration.setText(getContext().getString(R.string.chapter_duration,
+        holder.duration.setText(context.getString(R.string.chapter_duration,
                 Converter.getDurationStringLong((int) duration)));
 
-        if (sc.getLink() != null) {
+        if (sc.getLink() == null) {
+            holder.link.setVisibility(View.GONE);
+        } else {
             holder.link.setVisibility(View.VISIBLE);
             holder.link.setText(sc.getLink());
-            Linkify.addLinks(holder.link, Linkify.WEB_URLS);
-        } else {
-            holder.link.setVisibility(View.GONE);
+            holder.link.setOnClickListener(v -> IntentUtils.openInBrowser(context, sc.getLink()));
         }
-        holder.link.setMovementMethod(null);
-        holder.link.setOnTouchListener((v, event) -> {
-            // from
-            // http://stackoverflow.com/questions/7236840/android-textview-linkify-intercepts-with-parent-view-gestures
-            TextView widget = (TextView) v;
-            Object text = widget.getText();
-            if (text instanceof Spanned) {
-                Spannable buffer = (Spannable) text;
-
-                int action = event.getAction();
-
-                if (action == MotionEvent.ACTION_UP
-                        || action == MotionEvent.ACTION_DOWN) {
-                    int x = (int) event.getX();
-                    int y = (int) event.getY();
-
-                    x -= widget.getTotalPaddingLeft();
-                    y -= widget.getTotalPaddingTop();
-
-                    x += widget.getScrollX();
-                    y += widget.getScrollY();
-
-                    Layout layout = widget.getLayout();
-                    int line = layout.getLineForVertical(y);
-                    int off = layout.getOffsetForHorizontal(line, x);
-
-                    ClickableSpan[] link = buffer.getSpans(off, off,
-                            ClickableSpan.class);
-
-                    if (link.length != 0) {
-                        if (action == MotionEvent.ACTION_UP) {
-                            link[0].onClick(widget);
-                        } else if (action == MotionEvent.ACTION_DOWN) {
-                            Selection.setSelection(buffer,
-                                    buffer.getSpanStart(link[0]),
-                                    buffer.getSpanEnd(link[0]));
-                        }
-                        return true;
-                    }
-                }
-
-            }
-
-            return false;
-
-        });
-        holder.butPlayChapter.setOnClickListener(v -> {
+        holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.av_play));
+        holder.secondaryActionButton.setOnClickListener(v -> {
             if (callback != null) {
                 callback.onPlayChapterButtonClicked(position);
             }
         });
 
-        Chapter current = ChapterUtils.getCurrentChapter(media);
-        if (current == sc) {
-            int playingBackGroundColor = ThemeUtils.getColorFromAttr(getContext(), R.attr.currently_playing_background);
-            holder.view.setBackgroundColor(playingBackGroundColor);
+        if (position == currentChapterIndex) {
+            int playingBackGroundColor = ThemeUtils.getColorFromAttr(context, R.attr.currently_playing_background);
+            holder.itemView.setBackgroundColor(playingBackGroundColor);
         } else {
-            holder.view.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
-            holder.title.setTextColor(defaultTextColor);
-            holder.start.setTextColor(defaultTextColor);
+            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
         }
 
-        return convertView;
+        if (hasImages) {
+            holder.image.setVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(sc.getImageUrl())) {
+                Glide.with(context).clear(holder.image);
+            } else {
+                Glide.with(context)
+                        .load(EmbeddedChapterImage.getModelFor(media, position))
+                        .apply(new RequestOptions()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .dontAnimate()
+                                .transforms(new FitCenter(), new RoundedCorners((int)
+                                        (4 * context.getResources().getDisplayMetrics().density))))
+                        .into(holder.image);
+            }
+        } else {
+            holder.image.setVisibility(View.GONE);
+        }
     }
 
-    static class Holder {
-        View view;
-        TextView title;
-        TextView start;
-        TextView link;
-        TextView duration;
-        ImageButton butPlayChapter;
+    @NonNull
+    @Override
+    public ChapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        return new ChapterHolder(inflater.inflate(R.layout.simplechapter_item, parent, false));
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         if (media == null || media.getChapters() == null) {
             return 0;
         }
@@ -178,11 +127,36 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
         return counter;
     }
 
+    static class ChapterHolder extends RecyclerView.ViewHolder {
+        final TextView title;
+        final TextView start;
+        final TextView link;
+        final TextView duration;
+        final ImageView image;
+        final View secondaryActionButton;
+        final ImageView secondaryActionIcon;
+
+        public ChapterHolder(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.txtvTitle);
+            start = itemView.findViewById(R.id.txtvStart);
+            link = itemView.findViewById(R.id.txtvLink);
+            image = itemView.findViewById(R.id.imgvCover);
+            duration = itemView.findViewById(R.id.txtvDuration);
+            secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
+            secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
+        }
+    }
+
+    public void notifyChapterChanged(int newChapterIndex) {
+        currentChapterIndex = newChapterIndex;
+        notifyDataSetChanged();
+    }
+
     private boolean ignoreChapter(Chapter c) {
         return media.getDuration() > 0 && media.getDuration() < c.getStart();
     }
 
-    @Override
     public Chapter getItem(int position) {
         int i = 0;
         for (Chapter chapter : media.getChapters()) {
@@ -194,7 +168,7 @@ public class ChaptersListAdapter extends ArrayAdapter<Chapter> {
                 }
             }
         }
-        return super.getItem(position);
+        return null;
     }
 
     public interface Callback {

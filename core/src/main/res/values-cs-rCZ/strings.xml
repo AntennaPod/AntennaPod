@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Aktualizovat sbírky</string>
-  <string name="feeds_label">Kanály</string>
   <string name="statistics_label">Statistiky</string>
   <string name="add_feed_label">Přidat podcast</string>
   <string name="episodes_label">Epizody</string>
@@ -27,6 +26,7 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Celkový čas poslechnutých podcastů:</string>
   <string name="statistics_details_dialog">%1$d z %2$d započatých epizod.\n\nPřehraných %3$s z %4$s.</string>
+  <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Otevřít menu</string>
   <string name="drawer_close">Zavřít menu</string>
@@ -88,12 +88,6 @@
     <item quantity="many">%d dnů po dokončení</item>
     <item quantity="other">%d dnů po dokončení</item>
   </plurals>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">URL kanálu</string>
-  <string name="etxtFeedurlHint">URL nebo webová stránka kanálu</string>
-  <string name="txtvfeedurl_label">Přidat podcast pomocí URL</string>
-  <string name="browse_gpoddernet_label">Prohledávat gpodder.net</string>
-  <string name="discover_more">více »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Označit vše jako poslechnuté</string>
   <string name="mark_all_read_msg">Všechny epizody označeny jako poslechnuté</string>
@@ -105,7 +99,6 @@
   <string name="share_link_label">Sdílet URL epizody</string>
   <string name="share_link_with_position_label">Sdílet URL epizody s časovou značkou</string>
   <string name="share_file_label">Sdílet soubor</string>
-  <string name="share_feed_url_label">Sdílet URL kanálu</string>
   <string name="share_item_url_label">Sdílet URL souboru</string>
   <string name="share_item_url_with_position_label">Sdílet URL souboru s časovou značkou</string>
   <string name="feed_remover_msg">Odstraňování podcastu</string>
@@ -221,6 +214,7 @@
   <string name="clear_queue_confirmation_msg">Potvrďte prosím, že chcete vyčistit tuto frontu a VŠECHNY v ní obsažené epizody</string>
   <string name="sort_old_to_new">Od nejstaršího po nejnovější</string>
   <string name="sort_new_to_old">Od nejnovějšího po nejstarší</string>
+  <string name="time_left_label">Zbývající čas:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Stáhnout modul</string>
   <string name="no_playback_plugin_title">Modul není nainstalován</string>
@@ -258,7 +252,6 @@
   <string name="playback_pref">Přehrávání</string>
   <string name="network_pref">Síť</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Aktualizovat interval nebo čas v průběhu dne</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Udat interval nebo přesný čas v průběhu dne pro automatickou aktualizaci kanálů</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Můžete nastavit <i>interval</i> jako třeba \"každé 2 hodiny\", nastavit specifický <i>čas v průběhu dne</i> jako \"7:00\" nebo úplně <i>vypnout</i> automatické aktualizace.\n\n<small>Mějte na paměti: Časy aktualizací nejsou přesné. Možná zaznamenáte krátká zpoždění.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Vypnout</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Nastavit interval</string>
@@ -341,42 +334,28 @@
   <!--About screen-->
   <string name="about_pref">O aplikaci</string>
   <!--Search-->
-  <string name="search_hint">Hledat epizody</string>
-  <string name="found_in_shownotes_label">Nalezeno v poznámkách pořadu</string>
-  <string name="found_in_chapters_label">Nalezeno v kapitolách</string>
-  <string name="found_in_feeds_label">Nalezeno v podcastech</string>
   <string name="search_status_no_results">Žádné výsledky</string>
   <string name="search_label">Vyhledat</string>
-  <string name="found_in_title_label">Nalezeno v názvu</string>
   <string name="no_results_for_query">Nebyly nalezeny žádné výsledky pro \"%1$s\"</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">Možnost %1$d</string>
-  <string name="opml_import_explanation_1">Vybrat umístění v místním souborovém systému.</string>
-  <string name="opml_import_explanation_3">Mnoho aplikací jako třeba Google Mail, Dropbox, Google Drive a většina správců souborů umí <i>otevřít</i> OPML soubory <i>v aplikaci</i> AntennaPod.</string>
+  <!--import and export-->
   <string name="opml_import_label">OPML import</string>
-  <string name="reading_opml_label">Načítání OPML souboru</string>
   <string name="opml_reader_error">Došlo k chybě při čtení OPML dokumentu:</string>
   <string name="opml_import_error_no_file">Nebyl vybrán žádný soubor!</string>
   <string name="select_all_label">Označit vše</string>
   <string name="deselect_all_label">Zrušit výběr</string>
-  <string name="choose_file_from_filesystem">Z místního souborového systému</string>
   <string name="opml_export_label">OPML export</string>
   <string name="html_export_label">HTML export</string>
-  <string name="exporting_label">Export</string>
   <string name="export_error_label">Chyba exportu</string>
   <string name="export_success_title">Export úspěšný</string>
   <string name="export_success_sum">Exportovaný soubor zapsán do:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Pro přečtení OPML souboru je vyžadován  přístup k externímu úložišti</string>
+  <string name="import_select_file">Vybrat soubor pro import</string>
+  <string name="import_ok">Import úspěšný.\n\nPotvrďte restart AntennaPod tlačítkem OK</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Nastavit časovač vypnutí</string>
   <string name="disable_sleeptimer_label">Deaktivovat časovač vypnutí</string>
-  <string name="enter_time_here_label">Zadejte čas</string>
   <string name="sleep_timer_label">Časovač vypnutí</string>
-  <string name="time_left_label">Zbývající čas:\u0020</string>
   <string name="time_dialog_invalid_input">Neplatný vstup, musí být zadáno celé číslo</string>
-  <string name="timer_about_to_expire_label"><b>Těsně před vypršením časovače:</b></string>
-  <string name="shake_to_reset_label">Potřesením vynulovat časovač</string>
-  <string name="timer_vibration_label">Vibrovat</string>
   <string name="time_seconds">sekund</string>
   <string name="time_minutes">minut</string>
   <string name="time_hours">hodin</string>
@@ -400,7 +379,6 @@
   </plurals>
   <string name="auto_enable_label">Automaticky zapnout</string>
   <string name="sleep_timer_enabled_label">Časovač vypnutí povolen</string>
-  <string name="sleep_timer_disabled_label">Časovač vypnutí zakázán</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
@@ -483,6 +461,8 @@
   <!--Add podcast fragment-->
   <string name="search_itunes_label">Prohledat iTunes</string>
   <string name="search_fyyd_label">Prohledat fyyd</string>
+  <string name="browse_gpoddernet_label">Prohledávat gpodder.net</string>
+  <string name="discover_more">více »</string>
   <string name="filter">Filtr</string>
   <!--Episodes apply actions-->
   <string name="all_label">Vše</string>
@@ -538,13 +518,6 @@
   <string name="proxy_host_invalid_error">Host není platná IP nebo doména</string>
   <string name="proxy_port_invalid_error">Neplatný port</string>
   <!--Subscriptions fragment-->
-  <!--Database import/export-->
-  <string name="import_export">Import/export databáze</string>
-  <string name="label_import">Importovat</string>
-  <string name="label_export">Expotovat</string>
-  <string name="import_select_file">Vybrat soubor pro import</string>
-  <string name="export_ok">Export úspěšný</string>
-  <string name="import_ok">Import úspěšný.\n\nPotvrďte restart AntennaPod tlačítkem OK</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Přehrát na...</string>
   <string name="cast_disconnect_label">Odpojit sezení vysílání</string>
@@ -552,7 +525,6 @@
   <string name="cast_failed_to_play">Selhalo spuštění přehrávání média</string>
   <string name="cast_failed_to_stop">Selhalo zastavení přehrávání média</string>
   <string name="cast_failed_to_pause">Selhalo pozastavení přehrávání média</string>
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Selhalo nastavení hlasitosti</string>
   <string name="cast_failed_no_connection">Není dostupné připojení k přehrávacímu přístroji</string>
   <string name="cast_failed_no_connection_trans">Došlo ke ztrátě připojení k přehrávacímu přístroji. Aplikace se pokouší znovu připojit, pokud to bude možné. Počkejte několik sekund a zkuste znovu.</string>

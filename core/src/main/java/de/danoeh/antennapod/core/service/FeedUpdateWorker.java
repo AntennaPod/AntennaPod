@@ -31,7 +31,7 @@ public class FeedUpdateWorker extends Worker {
         ClientConfig.initialize(getApplicationContext());
 
         if (NetworkUtils.networkAvailable() && NetworkUtils.isFeedRefreshAllowed()) {
-            DBTasks.refreshAllFeeds(getApplicationContext());
+            DBTasks.refreshAllFeeds(getApplicationContext(), false);
         } else {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
         }

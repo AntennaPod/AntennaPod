@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
-    <!-- Activitiy and fragment titles -->
+    <!-- Activity and fragment titles -->
     <string name="app_name" translate="false">AntennaPod</string>
     <string name="provider_authority" translate="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update Subscriptions</string>
-    <string name="feeds_label">Feeds</string>
+    <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
     <string name="episodes_label">Episodes</string>
@@ -29,6 +29,8 @@
     <string name="gpodnet_auth_label">gpodder.net Login</string>
     <string name="episode_cache_full_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
+    <string name="playback_statistics_label">Playback</string>
+    <string name="download_statistics_label">Downloads</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of podcasts played:</string>
@@ -39,6 +41,9 @@
     <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
     <string name="statistics_reset_data">Reset statistics data</string>
     <string name="statistics_reset_data_msg">This will erase the history of duration played for all episodes. Are you sure you want to proceed?</string>
+
+    <!-- Download Statistics fragment -->
+    <string name="total_size_downloaded_podcasts">Total size of downloaded podcasts:</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
@@ -91,6 +96,11 @@
     <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
     <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
     <string name="auto_delete_label">Auto Delete Episode</string>
+    <string name="feed_volume_reduction">Volume Reduction</string>
+    <string name="feed_volume_reduction_summary">Turn down volume for episodes of this feed: \%s</string>
+    <string name="feed_volume_reduction_off">Off</string>
+    <string name="feed_volume_reduction_light">Light</string>
+    <string name="feed_volume_reduction_heavy">Heavy</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
     <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
@@ -109,14 +119,6 @@
     </plurals>
     <string name="num_selected_label">%d selected</string>
     <string name="loading_more">Loading more…</string>
-
-    <!-- 'Add Feed' Activity labels -->
-    <string name="feedurl_label">Feed URL</string>
-    <string name="etxtFeedurlHint">www.example.com/feed</string>
-    <string name="txtvfeedurl_label">Add Podcast by URL</string>
-    <string name="browse_gpoddernet_label">Browse gpodder.net</string>
-    <string name="discover">Discover</string>
-    <string name="discover_more">more »</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -137,13 +139,13 @@
     <string name="share_link_with_position_label">Share Episode URL with Position</string>
     <string name="share_file_label">Share File</string>
     <string name="share_website_url_label">Share Website URL</string>
-    <string name="share_feed_url_label">Share Feed URL</string>
+    <string name="share_feed_url_label">Share Podcast URL</string>
     <string name="share_item_url_label">Share Media File URL</string>
     <string name="share_item_url_with_position_label">Share Media File URL with Position</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
-    <string name="batch_edit">Batch edit</string>
+    <string name="multi_select">Multi select</string>
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
@@ -180,11 +182,15 @@
     <string name="removed_new_flag_label">Removed \"new\" flag</string>
     <string name="mark_read_label">Mark as played</string>
     <string name="marked_as_read_label">Marked as played</string>
+    <string name="mark_read_no_media_label">Mark as read</string>
+    <string name="marked_as_read_no_media_label">Marked as read</string>
+    <string name="play_this_to_seek_position">To jump to positions, you need to play the episode</string>
     <plurals name="marked_read_batch_label">
         <item quantity="one">%d episode marked as played.</item>
         <item quantity="other">%d episodes marked as played.</item>
     </plurals>
     <string name="mark_unread_label">Mark as unplayed</string>
+    <string name="mark_unread_label_no_media">Mark as unread</string>
     <plurals name="marked_unread_batch_label">
         <item quantity="one">%d episode marked as unplayed.</item>
         <item quantity="other">%d episodes marked as unplayed.</item>
@@ -231,6 +237,7 @@
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
+    <string name="auto_download_report_title">Auto-downloads completed</string>
     <string name="download_report_content_title">Download Report</string>
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
@@ -268,12 +275,14 @@
     <string name="playback_error_server_died">Server died</string>
     <string name="playback_error_unsupported">Unsupported media type</string>
     <string name="playback_error_timeout">Operation timed out</string>
+    <string name="playback_error_source">Unable to access media file</string>
     <string name="playback_error_unknown">Unknown Error</string>
     <string name="no_media_playing_label">No media playing</string>
     <string name="position_default_label" translate="false">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
     <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
+    <string name="error_file_not_found">File not found</string>
 
     <!-- Queue operations -->
     <string name="lock_queue">Lock Queue</string>
@@ -299,6 +308,7 @@
     <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
     <string name="sort_old_to_new">Old to new</string>
     <string name="sort_new_to_old">New to old</string>
+    <string name="time_left_label">Time left:\u0020</string>
 
     <!--  Variable Speed -->
     <string name="download_plugin_label">Download Plugin</string>
@@ -332,11 +342,11 @@
 
     <!-- Preferences -->
     <string name="storage_pref">Storage</string>
-    <string name="storage_sum">Episode auto delete, Export, Import</string>
+    <string name="storage_sum">Episode auto delete, Import, Export</string>
     <string name="project_pref">Project</string>
     <string name="queue_label">Queue</string>
     <string name="integrations_label">Integrations</string>
-    <string name="integrations_sum">External services</string>
+    <string name="integrations_sum">Synchronization</string>
     <string name="automation">Automation</string>
     <string name="download_pref_details">Details</string>
     <string name="import_export_pref">Import/Export</string>
@@ -372,7 +382,7 @@
     <string name="network_pref">Network</string>
     <string name="network_pref_sum">Update interval, Download controls, Mobile data</string>
     <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>
-    <string name="pref_autoUpdateIntervallOrTime_sum">Specify an interval or a specific time of day to refresh the feeds automatically</string>
+    <string name="pref_autoUpdateIntervallOrTime_sum">Specify an interval or a specific time of day to refresh the podcasts automatically</string>
     <string name="pref_autoUpdateIntervallOrTime_message">You can set an <i>interval</i> like \"every 2 hours\", set a specific <i>time of day</i> like \"7:00 AM\" or <i>disable</i> automatic updates altogether.\n\n<small>Please note: Update times are inexact. You may encounter a short delay.</small></string>
     <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
     <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
@@ -387,7 +397,7 @@
     <string name="pref_stream_over_download_sum">Display stream button instead of download button in lists.</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Select what should be allowed over the mobile data connection</string>
-    <string name="pref_mobileUpdate_refresh">Feed refresh</string>
+    <string name="pref_mobileUpdate_refresh">Podcast refresh</string>
     <string name="pref_mobileUpdate_images">Cover images</string>
     <string name="pref_mobileUpdate_auto_download">Auto download</string>
     <string name="pref_mobileUpdate_episode_download">Episode download</string>
@@ -406,8 +416,6 @@
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
-    <string name="autodl_wifi_filter_permission_title">Permission required</string>
-    <string name="autodl_wifi_filter_permission_message">Location permission is required for Wi-Fi filter. Tap to grant the permission.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_parallel_downloads_title">Parallel Downloads</string>
@@ -440,7 +448,7 @@
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
-    <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this feed</string>
+    <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
     <string name="pref_playback_time_respects_speed_title">Adjust media info to playback speed</string>
     <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
     <string name="pref_fast_forward">Fast Forward Skip Time</string>
@@ -461,6 +469,8 @@
     <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
     <string name="pref_showDownloadReport_title">Show Download Report</string>
     <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
+    <string name="pref_showAutoDownloadReport_title">Show Auto Download Report</string>
+    <string name="pref_showAutoDownloadReport_sum">Show a notification for automatically downloaded episodes.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_enqueue_location_title">Enqueue Location</string>
     <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
@@ -470,9 +480,10 @@
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
-    <string name="view_mailing_list">View mailing list</string>
+    <string name="visit_user_forum">User forum</string>
     <string name="bug_report_title">Report bug</string>
     <string name="open_bug_tracker">Open bug tracker</string>
+    <string name="export_logs">Export logs</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="experimental_pref">Experimental</string>
@@ -521,45 +532,45 @@
     <string name="licenses_summary">AntennaPod uses other great software</string>
 
     <!-- Search -->
-    <string name="search_hint">Search for episodes</string>
-    <string name="found_in_shownotes_label">Found in show notes</string>
-    <string name="found_in_chapters_label">Found in chapters</string>
-    <string name="found_in_authors_label">Found in author(s)</string>
-    <string name="found_in_feeds_label">Found in podcast</string>
     <string name="search_status_no_results">No results were found</string>
     <string name="search_label">Search</string>
-    <string name="found_in_title_label">Found in title</string>
     <string name="no_results_for_query">No results were found for \"%1$s\"</string>
 
-    <!-- OPML import and export -->
-    <string name="opml_import_option">Option %1$d</string>
-    <string name="opml_import_explanation_1">Choose a specific file path from the local filesystem.</string>
-    <string name="opml_import_explanation_3">Many applications like Google Mail, Dropbox, Google Drive and most file managers can <i>open</i> OPML files <i>with</i> AntennaPod.</string>
+    <!-- import and export -->
+    <string name="import_export_summary">Move subscriptions and queue to another device</string>
+    <string name="database">Database</string>
+    <string name="opml">OPML</string>
+    <string name="html">HTML</string>
+    <string name="html_export_summary">Show your subscriptions to a friend</string>
+    <string name="opml_export_summary">Transfer your subscriptions to another podcast app</string>
+    <string name="opml_import_summary">Import your subscriptions from another podcast app</string>
+    <string name="database_export_summary">Transfer subscriptions, listened episodes and queue to AntennaPod on another device</string>
+    <string name="database_import_summary">Import AntennaPod database from another device</string>
     <string name="opml_import_label">OPML Import</string>
-    <string name="reading_opml_label">Reading OPML file</string>
     <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
     <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
-    <string name="choose_file_from_filesystem">From local filesystem</string>
     <string name="opml_export_label">OPML export</string>
     <string name="html_export_label">HTML export</string>
-    <string name="exporting_label">Exporting&#8230;</string>
+    <string name="database_export_label">Database export</string>
+    <string name="database_import_label">Database import</string>
+    <string name="please_wait">Please wait&#8230;</string>
     <string name="export_error_label">Export error</string>
     <string name="export_success_title">Export successful</string>
     <string name="export_success_sum">The exported file was written to:\n\n%1$s</string>
     <string name="opml_import_ask_read_permission">Access to external storage is required to read the OPML file</string>
+    <string name="import_select_file">Select file to import</string>
+    <string name="import_ok">Import successful.\n\nPlease press OK to restart AntennaPod</string>
+    <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>
 
     <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
-    <string name="enter_time_here_label">Enter time</string>
     <string name="sleep_timer_label">Sleep timer</string>
-    <string name="time_left_label">Time left:\u0020</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
-    <string name="timer_about_to_expire_label"><b>When timer is about to expire:</b></string>
-    <string name="shake_to_reset_label">Shake to reset timer</string>
-    <string name="timer_vibration_label">Vibrate</string>
+    <string name="shake_to_reset_label">Shake to reset</string>
+    <string name="timer_vibration_label">Vibrate shortly before end</string>
     <string name="time_seconds">seconds</string>
     <string name="time_minutes">minutes</string>
     <string name="time_hours">hours</string>
@@ -577,7 +588,6 @@
     </plurals>
     <string name="auto_enable_label">Auto-enable</string>
     <string name="sleep_timer_enabled_label">Sleep timer enabled</string>
-    <string name="sleep_timer_disabled_label">Sleep timer disabled</string>
 
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
@@ -641,6 +651,7 @@
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribing_label">Subscribing&#8230;</string>
+    <string name="preview_episode">Preview</string>
 
     <!-- Content descriptions for image buttons -->
     <string name="rewind_label">Rewind</string>
@@ -663,7 +674,7 @@
     <string name="episode_filters_exclude">Exclude</string>
     <string name="episode_filters_hint">Single words \n\"Multiple Words\"</string>
     <string name="keep_updated">Keep Updated</string>
-    <string name="keep_updated_summary">Include this feed when (auto-)refreshing all feeds</string>
+    <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
 
     <!-- Progress information -->
@@ -676,7 +687,12 @@
     <string name="search_podcast_hint">Search podcast…</string>
     <string name="search_itunes_label">Search iTunes</string>
     <string name="search_fyyd_label">Search fyyd</string>
-    <string name="advanced_search">Advanced search</string>
+    <string name="advanced">Advanced</string>
+    <string name="add_podcast_by_url">Add Podcast by URL</string>
+    <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
+    <string name="browse_gpoddernet_label">Browse gpodder.net</string>
+    <string name="discover">Discover</string>
+    <string name="discover_more">more »</string>
 
     <string name="filter">Filter</string>
     
@@ -742,15 +758,6 @@
     <!-- Subscriptions fragment -->
     <string name="subscription_num_columns">Number of columns</string>
 
-    <!-- Database import/export -->
-    <string name="import_export">Database import/export</string>
-    <string name="import_export_warning">This experimental function can be used to transfer your subscriptions and played episodes to another device.\n\nExported databases can only be imported when using the same version of AntennaPod. Otherwise, this function will lead to unexpected behavior.\n\nAfter importing, episodes might be displayed as downloaded even though they are not. Just press the play button of the episodes to make AntennaPod detect this.</string>
-    <string name="label_import">Import</string>
-    <string name="label_export">Export</string>
-    <string name="import_select_file">Select file to import</string>
-    <string name="export_ok">Export successful.</string>
-    <string name="import_ok">Import successful.\n\nPlease press OK to restart AntennaPod</string>
-
     <!-- Casting -->
     <string name="cast_media_route_menu_title">Play on&#8230;</string>
     <string name="cast_disconnect_label">Disconnect the cast session</string>
@@ -758,7 +765,6 @@
     <string name="cast_failed_to_play">Failed to start the playback of media</string>
     <string name="cast_failed_to_stop">Failed to stop the playback of media</string>
     <string name="cast_failed_to_pause">Failed to pause the playback of media</string>
-    <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
     <string name="cast_failed_setting_volume">Failed to set the volume</string>
     <string name="cast_failed_no_connection">No connection to the cast device is present</string>
     <string name="cast_failed_no_connection_trans">Connection to the cast device has been lost. Application is trying to re-establish the connection, if possible. Please wait for a few seconds and try again.</string>
@@ -776,7 +782,8 @@
     <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
     <string name="notification_channel_error">Errors</string>
     <string name="notification_channel_error_description">Shown if something went wrong, for example if download or gpodder sync fails.</string>
-    <string name="import_bad_file">Invalid/corrupt file</string>
+    <string name="notification_channel_auto_download">Auto Downloads</string>
+    <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
 
     <!-- Widget settings -->
     <string name="widget_settings">Widget settings</string>

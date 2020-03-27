@@ -13,19 +13,19 @@
             android:key="prefScreenInterface"
             android:title="@string/user_interface_label"
             android:summary="@string/user_interface_sum"
-            android:icon="?attr/ic_cellphone_text" />
+            android:icon="?attr/ic_appearance" />
 
     <Preference
             android:key="prefScreenPlayback"
             android:title="@string/playback_pref"
             android:summary="@string/playback_pref_sum"
-            android:icon="?attr/av_play" />
+            android:icon="?attr/ic_settings_playback" />
 
     <Preference
             android:key="prefScreenNetwork"
             android:title="@string/network_pref"
             android:summary="@string/network_pref_sum"
-            android:icon="?attr/ic_swap" />
+            android:icon="?attr/ic_network" />
 
     <Preference
             android:key="prefScreenIntegrations"
@@ -51,7 +51,7 @@
             android:icon="?attr/ic_questionmark" />
         <Preference
             android:key="prefViewMailingList"
-            android:title="@string/view_mailing_list"
+            android:title="@string/visit_user_forum"
             android:icon="?attr/ic_chat" />
         <Preference
             android:key="prefSendBugReport"

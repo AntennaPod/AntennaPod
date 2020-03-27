@@ -1,0 +1,31 @@
+AntennaPod on taskuhäälingu haldur ja esitaja, millega saad kohese ligipääsu miljonitele tasuta ja tasulistele saadetele nii ise- kui suurtegijatelt nagu BBC, NPR ja CNN. Lisa, impordi ja ekspordi nende voogusid ilma muredeta kasutades iTunes'i taskuhäälingute andmebaasi, OPML fail või lihtsalt RSS URL-e.
+Laadi alla, voogedasta või lisa kuulamise järjekorda saateid ning naudi neid täpselt nii, nagu sina tahad, kasutades muudetavat taasesituse kiirust, peatükkide tuge ja unetaimerit.
+Säästa pingutuselt, aku kestuselt ja mobiilse andmeside kasutuselt võimekate automatiseerimise vahenditega saadete allalaadimiseks (määra millal, mis sagedusega ja millistest WiFi võrkudes) ning kustutamiseks (vastavalt sinu lemmikutele ja viivituse sätetele).
+
+Kuna AntennaPod on tehtud taskuhäälingu entusiastide poolt, on AntennaPod vaba selle sõna igas tähenduses: vaba lähtekoodiga, tasuta ja ilma mingi reklaamita.
+
+<b>Impordi, korrasta ja kuula</b>
+• Halda esitust kust tahes: avaekraani vidina abil, süsteemi teate kaudu või kõrvaklappide või bluetoothi nuppude abil
+• Lisa ja impordi voogusid iTunesi ja gPodder.net kaustadest, OPML failidest ja RSS või Atom linkide kaudu
+• Naudi kuulamist just sinu moodi tänu muudetavale esituskiirusele, peatükkide toele, meeldejäetavale asukohale ning unetaimerile (raputamine, valjuse vähendamine)
+• Ligipääs parooliga kaitstud voogudele ja saadetele
+
+<b>Talleta ja jaga, et avaldada tunnustust</b>
+• Talleta parimatest parimaid märkides saateid lemmikuteks
+• Leia see üks saade otsides esitatute ajaloost pealkirjade või kirjelduste järgi
+• Jaga saateid ja voogusid suurepäraste sotsiaalmeedia ja e-posti valikute abil, gPodder.neti kaudu ja OPML failide abil
+
+<b>Oma kontrolli</b>
+• Võta kontroll automaatse allalaadimise üle enda kätte: vali vood, keela mobiilivõrk, vali õiged WiFi võrgud, ütle, kui telefon peaks allalaadimise ajal laadima või määra millal ja kui tihti saateid alla laadida
+• Halda ruumikasutust, määrates mitu saadet varuks hoida, luba nutikas kustutamine ja failide eelistatud asukoha määramine
+• Kohanda keskonnaga heleda ja tumeda kujundusega
+• Varunda oma tellimused gPodder.net keskkonda ja OPML faili eksportides
+
+<b>Liitu AntennaPodi kogukonnaga!</b>
+AntennaPod on vabatahtlike poolt aktiivselt arendamisel. Ka sina võid anda oma osa, kirjutades koodi või andes tagasisidet!
+
+GitHub on koht, kus esitada uute võimaluste soove, vearaporteid ja kooditäiendusi:
+https://www.github.com/AntennaPod/AntennaPod
+
+Transifex on koht, kus saab aidata tõlgetega:
+https://www.transifex.com/antennapod/antennapod

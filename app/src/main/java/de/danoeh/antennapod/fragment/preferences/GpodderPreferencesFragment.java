@@ -63,27 +63,25 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_GPODNET_SETLOGIN_INFORMATION)
                 .setOnPreferenceClickListener(preference -> {
                     AuthenticationDialog dialog = new AuthenticationDialog(activity,
-                            R.string.pref_gpodnet_setlogin_information_title, false, false, GpodnetPreferences.getUsername(),
+                            R.string.pref_gpodnet_setlogin_information_title, false, GpodnetPreferences.getUsername(),
                             null) {
 
                         @Override
-                        protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+                        protected void onConfirmed(String username, String password) {
                             GpodnetPreferences.setPassword(password);
                         }
                     };
                     dialog.show();
                     return true;
                 });
-        findPreference(PREF_GPODNET_SYNC).
-                setOnPreferenceClickListener(preference -> {
+        findPreference(PREF_GPODNET_SYNC).setOnPreferenceClickListener(preference -> {
                     GpodnetSyncService.sendSyncIntent(getActivity().getApplicationContext());
                     Toast toast = Toast.makeText(getActivity(), R.string.pref_gpodnet_sync_started,
                             Toast.LENGTH_SHORT);
                     toast.show();
                     return true;
                 });
-        findPreference(PREF_GPODNET_FORCE_FULL_SYNC).
-                setOnPreferenceClickListener(preference -> {
+        findPreference(PREF_GPODNET_FORCE_FULL_SYNC).setOnPreferenceClickListener(preference -> {
                     GpodnetPreferences.setLastSubscriptionSyncTimestamp(0L);
                     GpodnetPreferences.setLastEpisodeActionsSyncTimestamp(0L);
                     GpodnetPreferences.setLastSyncAttempt(false, 0);
@@ -94,17 +92,16 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
                     toast.show();
                     return true;
                 });
-        findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(
-                preference -> {
+        findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(preference -> {
                     GpodnetPreferences.logout();
                     Toast toast = Toast.makeText(activity, R.string.pref_gpodnet_logout_toast, Toast.LENGTH_SHORT);
                     toast.show();
                     updateGpodnetPreferenceScreen();
                     return true;
                 });
-        findPreference(PREF_GPODNET_HOSTNAME).setOnPreferenceClickListener(
-                preference -> {
-                    GpodnetSetHostnameDialog.createDialog(activity).setOnDismissListener(dialog -> updateGpodnetPreferenceScreen());
+        findPreference(PREF_GPODNET_HOSTNAME).setOnPreferenceClickListener(preference -> {
+                    GpodnetSetHostnameDialog.createDialog(activity).setOnDismissListener(
+                            dialog -> updateGpodnetPreferenceScreen());
                     return true;
                 });
     }

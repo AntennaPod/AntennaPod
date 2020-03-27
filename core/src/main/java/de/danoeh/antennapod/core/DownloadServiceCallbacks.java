@@ -3,11 +3,10 @@ package de.danoeh.antennapod.core;
 import android.app.PendingIntent;
 import android.content.Context;
 
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 
 /**
- * Callbacks for the DownloadService of the core module
+ * Callbacks for the DownloadService of the core module.
  */
 public interface DownloadServiceCallbacks {
 
@@ -43,16 +42,19 @@ public interface DownloadServiceCallbacks {
     PendingIntent getReportNotificationContentIntent(Context context);
 
     /**
-     * Called by the FeedSyncThread after a feed has been downloaded and parsed.
+     * Returns a PendingIntent for notification that notifies the user about the episodes that have been automatically
+     * downloaded.
+     * <p/>
+     * The PendingIntent takes users to an activity where they can look at their episode queue.
      *
-     * @param feed The non-null feed that has been parsed.
+     * @return A non-null PendingIntent for the notification or null if shouldCreateReport()==false
      */
-    void onFeedParsed(Context context, Feed feed);
+    PendingIntent getAutoDownloadReportNotificationContentIntent(Context context);
 
     /**
      * Returns true if the DownloadService should create a report that shows the number of failed
      * downloads when the service shuts down.
-     * */
+     */
     boolean shouldCreateReport();
 }
 

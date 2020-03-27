@@ -121,8 +121,9 @@ public class StorageErrorActivity extends AppCompatActivity {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK &&
-                requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK
+                && requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
             String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
 
             File path;
@@ -131,19 +132,19 @@ public class StorageErrorActivity extends AppCompatActivity {
             } else {
                 path = getExternalFilesDir(null);
             }
-            if(path == null) {
+            if (path == null) {
                 return;
             }
             String message = null;
-            if(!path.exists()) {
+            if (!path.exists()) {
                 message = String.format(getString(R.string.folder_does_not_exist_error), dir);
-            } else if(!path.canRead()) {
+            } else if (!path.canRead()) {
                 message = String.format(getString(R.string.folder_not_readable_error), dir);
-            } else if(!path.canWrite()) {
+            } else if (!path.canWrite()) {
                 message = String.format(getString(R.string.folder_not_writable_error), dir);
             }
 
-            if(message == null) {
+            if (message == null) {
                 Log.d(TAG, "Setting data folder: " + dir);
                 UserPreferences.setDataFolder(dir);
                 leaveErrorState();

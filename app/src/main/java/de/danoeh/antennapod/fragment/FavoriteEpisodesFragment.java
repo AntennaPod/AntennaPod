@@ -10,12 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.AllEpisodesRecycleAdapter;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -29,11 +29,6 @@ public class FavoriteEpisodesFragment extends EpisodesListFragment {
 
     private static final String TAG = "FavoriteEpisodesFrag";
     private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
-
-    @Override
-    protected boolean showOnlyNewEpisodes() {
-        return true;
-    }
 
     @Override
     protected String getPrefName() {
@@ -63,8 +58,8 @@ public class FavoriteEpisodesFragment extends EpisodesListFragment {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                AllEpisodesRecycleAdapter.Holder holder = (AllEpisodesRecycleAdapter.Holder) viewHolder;
-                Log.d(TAG, String.format("remove(%s)", holder.getItemId()));
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) viewHolder;
+                Log.d(TAG, String.format("remove(%s)", holder.getFeedItem().getId()));
 
                 if (disposable != null) {
                     disposable.dispose();

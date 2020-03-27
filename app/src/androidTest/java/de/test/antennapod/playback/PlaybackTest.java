@@ -228,7 +228,7 @@ public class PlaybackTest {
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
         Matcher<View> allEpisodesMatcher = allOf(withId(android.R.id.list), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
-        onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.butSecondaryAction)));
+        onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.secondaryActionButton)));
 
         FeedMedia media = episodes.get(0).getMedia();
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
@@ -244,7 +244,7 @@ public class PlaybackTest {
 
         Matcher<View> queueMatcher = allOf(withId(R.id.recyclerView), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(queueMatcher, 1000));
-        onView(queueMatcher).perform(actionOnItemAtPosition(itemIdx, clickChildViewWithId(R.id.butSecondaryAction)));
+        onView(queueMatcher).perform(actionOnItemAtPosition(itemIdx, clickChildViewWithId(R.id.secondaryActionButton)));
 
         FeedMedia media = queue.get(itemIdx).getMedia();
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(

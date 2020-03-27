@@ -1,13 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Оновити підписки</string>
-  <string name="feeds_label">Канали</string>
   <string name="statistics_label">Статистика</string>
   <string name="add_feed_label">Додати подкаст</string>
   <string name="episodes_label">Епізоди</string>
   <string name="all_episodes_short_label">Всі</string>
-  <string name="new_episodes_label">Нові</string>
+  <string name="new_episodes_label">Новий</string>
   <string name="favorite_episodes_label">Улюблені</string>
   <string name="new_label">Нові</string>
   <string name="settings_label">Налаштування</string>
@@ -18,9 +17,9 @@
   <string name="subscriptions_label">Підписки</string>
   <string name="subscriptions_list_label">Перелік підписок</string>
   <string name="cancel_download_label">Скасувати\nзавантаження</string>
-  <string name="playback_history_label">Історія відтворення</string>
+  <string name="playback_history_label">Історія</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Синхронизація з іншими пристроями</string>
+  <string name="gpodnet_summary">Синхронізація з іншими пристроями</string>
   <string name="gpodnet_auth_label">Автентифікуватися на gpodder.net</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Розмір кешу можна збільшити в налаштуваннях.</string>
@@ -31,6 +30,9 @@
   <string name="statistics_mode_normal">Обчислити тривалість дійсно прослуханого. Прослухане двічі враховується двічі, але просто позначене як прослухане не враховується </string>
   <string name="statistics_mode_count_all">Підсумувати всі подкасти позначені як прослухані</string>
   <string name="statistics_speed_not_counted">Зауваження: Швидкість програвання не береться до уваги.</string>
+  <string name="statistics_reset_data">Cкинути статистику</string>
+  <string name="statistics_reset_data_msg">Це зітре історію тривалості відтворення всіх епізодів. Ви впевнені, що хочете продовжити?</string>
+  <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
@@ -100,11 +102,6 @@
     <item quantity="other">%d днів після закінчення</item>
   </plurals>
   <string name="num_selected_label">%d помічено</string>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">Посилання на канал</string>
-  <string name="etxtFeedurlHint">Посилання на канал чи сторінку</string>
-  <string name="txtvfeedurl_label">Додати подкаст за URL</string>
-  <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Позначити всі як відтворені</string>
   <string name="mark_all_read_msg">Позначено всі епізоди як відтворені</string>
@@ -117,16 +114,15 @@
   <string name="rename_feed_label">Перейменувати подкаст</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_label">Поділитися…</string>
-  <string name="share_link_label">Поділитись посиланням на епізод</string>
-  <string name="share_link_with_position_label">Поділіться посиланням на епізод з позицією відтворення</string>
-  <string name="share_file_label">Поділитись файлом</string>
-  <string name="share_feed_url_label">Поділитись посиланням на канал</string>
-  <string name="share_item_url_label">Поділитись посиланням на медіа-файл</string>
-  <string name="share_item_url_with_position_label">Поділитись посиланням на медіа-файл з позицією відтворення</string>
+  <string name="share_link_label">Поділитися URL на епізод</string>
+  <string name="share_link_with_position_label">Поділитися URL на епізод з позицією відтворення</string>
+  <string name="share_file_label">Поділитися файлом</string>
+  <string name="share_website_url_label">Поділитися URL на сайт</string>
+  <string name="share_item_url_label">Поділитися URL на медіа-файл</string>
+  <string name="share_item_url_with_position_label">Поділитися URL на медіа-файл з позицією відтворення</string>
   <string name="feed_delete_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте видалити подкаст \"%1$s\" і ВСІ його епізоди (разом з завантаженими).</string>
   <string name="feed_remover_msg">Видалення подкасту</string>
   <string name="load_complete_feed">Оновити весь подкаст</string>
-  <string name="batch_edit">Групове редагування</string>
   <string name="select_all_above">Вибрати все вище</string>
   <string name="select_all_below">Вибрати все нижче</string>
   <string name="hide_unplayed_episodes_label">Невідтворені</string>
@@ -245,6 +241,7 @@
   <string name="confirm_mobile_download_dialog_title">Підтвердження завантажень через мобільні мережі</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">Завантаження через мобільні мережі вимкнено в налаштуваннях.\n\nВибрати додавання епізоду до черги чи тимчасове завантаження?\n\n<small>Ваш вибір буде дійсним 10 хвилин.</small></string>
   <string name="confirm_mobile_download_dialog_message">Завантаження через мобільні мережі вимкнено в налаштуваннях.\n\nУвімкнути тимчасово?\n\n<small>Ваш вибір буде дійсним 10 хвилин.</small></string>
+  <string name="confirm_mobile_streaming_button_always">Завжди дозволяти</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Лише додати до черги</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Увімкнути тимчасово</string>
   <!--Mediaplayer messages-->
@@ -254,6 +251,7 @@
   <string name="player_ready_msg">Готов</string>
   <string name="player_seeking_msg">Шукаю</string>
   <string name="playback_error_server_died">Сервер помер</string>
+  <string name="playback_error_unsupported">Тип медіа не підтримується</string>
   <string name="playback_error_unknown">Невідома помилка</string>
   <string name="no_media_playing_label">Немає що грати</string>
   <string name="player_buffering_msg">Буферізую</string>
@@ -264,6 +262,7 @@
   <string name="unlock_queue">Розблокувати чергу</string>
   <string name="queue_locked">Чергу заблоковано</string>
   <string name="queue_unlocked">Чергу розблоковано</string>
+  <string name="checkbox_do_not_show_again">Більше не показувати</string>
   <string name="clear_queue_label">Очистити чергу</string>
   <string name="undo">Скасувати</string>
   <string name="move_to_top_label">Догори</string>
@@ -278,6 +277,9 @@
   <string name="ascending">За зростанням</string>
   <string name="descending">За спаданням</string>
   <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте вилучити всі епізоди з черги.</string>
+  <string name="sort_old_to_new">Спочатку старіші</string>
+  <string name="sort_new_to_old">Спочатку новіші</string>
+  <string name="time_left_label">Залишилось:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити додаток</string>
   <string name="no_playback_plugin_title">Додаток не встановлено</string>
@@ -301,7 +303,10 @@
   <string name="no_new_episodes_label">Коли з’являться нові епізоди, іх буде показано тут.</string>
   <string name="no_fav_episodes_head_label">Немає улюблених епізодів</string>
   <string name="no_fav_episodes_label">Ви можете додавати епізоди до улюблених за допомогою довгого натискання.</string>
-  <string name="no_chapters_label">В цьому епізоді немає розділів.</string>
+  <string name="no_chapters_head_label">Немає глав</string>
+  <string name="no_chapters_label">В цьому епізоді немає глав.</string>
+  <string name="no_subscriptions_head_label">Немає підписок</string>
+  <string name="no_subscriptions_label">Щоб підписатись на подкаст, натисніть на значок плюса нижче</string>
   <!--Preferences-->
   <string name="storage_pref">Зберігання</string>
   <string name="project_pref">Проект</string>
@@ -314,6 +319,9 @@
   <string name="appearance">Вигляд</string>
   <string name="external_elements">Зовнішні елементи</string>
   <string name="interruptions">Тимчасові паузи</string>
+  <string name="preference_search_hint">Пошук...</string>
+  <string name="preference_search_no_results">Немає результатів</string>
+  <string name="preference_search_clear_history">Очистити історію</string>
   <string name="media_player">Медіа програвач</string>
   <string name="pref_episode_cleanup_title">Очищення епізодів</string>
   <string name="pref_episode_cleanup_summary">Епізоди що не знаходяться в черзі та не помічені як улюблені можуть бути видалені якщо Автозавантажувач потребуватиме місце для нових епізодів.</string>
@@ -336,7 +344,6 @@
   <string name="playback_pref">Відтворення</string>
   <string name="network_pref">Мережа</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Частота оновлень або оновлення в зазначений час</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Вкажіть інтервал або певний час доби, щоб оновити канали автоматично</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Можливо встановити <i>інтервал</i> як то \"кожні 2 години\", встановити <i>час дня</i> як то \"7:00\" або повністю <i>вимкнути</i> автоматичне оновлення.\n\n<small>Зверніть увагу: Часи оновлення не є точними. Можливі короткі затримки.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Вимкнути</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Інтервал</string>
@@ -365,6 +372,9 @@
   <string name="pref_automatic_download_on_battery_sum">Дозволити автозавантаження коли зарядний пристрій не підключений</string>
   <string name="pref_parallel_downloads_title">Паралельні завантаження</string>
   <string name="pref_episode_cache_title">Кеш епізодів</string>
+  <string name="pref_episode_cover_title">Використовувати обкладинку епізоду</string>
+  <string name="pref_episode_cover_summary">Відображати обкладинку епізоду замість обкладинки подкаста, якщо вона відрізняється.</string>
+  <string name="pref_theme_title_use_system">Використовувати системну тему</string>
   <string name="pref_theme_title_light">Світла</string>
   <string name="pref_theme_title_dark">Темна</string>
   <string name="pref_theme_title_trueblack">Чорна (для AMOLED)</string>
@@ -408,14 +418,21 @@
   <string name="pref_showDownloadReport_title">Показати звіт про завантаження</string>
   <string name="pref_showDownloadReport_sum">У разі помилки при завантаженні створити детальний звіт про помилку.</string>
   <string name="pref_expand_notify_unsupport_toast">Android до версії 4.1 не підтримує розширені повідомлення.</string>
+  <string name="pref_enqueue_location_sum">Додати епізоди до: %1$s</string>
+  <string name="enqueue_location_after_current">Після поточного епізоду</string>
   <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
   <string name="pref_image_cache_size_title">Розмір кеша зображень</string>
   <string name="pref_image_cache_size_sum">Розмір дискового кеша для зображень.</string>
+  <string name="bug_report_title">Повідомити про помилку</string>
+  <string name="open_bug_tracker">Відкрити трекер помилок</string>
+  <string name="copy_to_clipboard">Копіювати</string>
+  <string name="copied_to_clipboard">Скопійовано</string>
   <string name="experimental_pref">Експериментальні</string>
   <string name="pref_media_player_message">Оберіть медіа плеєр для програвання файлів</string>
   <string name="pref_current_value">Поточне значення: %1$s</string>
   <string name="pref_proxy_title">Проксі</string>
   <string name="pref_proxy_sum">Застосувати проксі сервер</string>
+  <string name="pref_faq">Часті питання</string>
   <string name="pref_no_browser_found">Веб браузер не знайдено.</string>
   <string name="pref_cast_title">Підтримка для Chromecast</string>
   <string name="pref_cast_message_play_flavor">Включити підтримку програвання на таких пристроях як Chromecast або Android TV</string>
@@ -443,44 +460,37 @@
   <string name="pref_delete_removes_from_queue_sum">Автоматично видаляти епізод із черги, коли він буде видалений.</string>
   <!--About screen-->
   <string name="about_pref">Про програму</string>
+  <string name="antennapod_version">Версія AntennaPod</string>
+  <string name="developers">Розробники</string>
+  <string name="developers_summary">Кожен може допомогти AntennaPod стати краще</string>
+  <string name="translators">Перекладачі</string>
+  <string name="translators_summary">Переклади створюються користувачами AntennaPod за допомогою Transifex</string>
+  <string name="privacy_policy">Політика конфіденційності</string>
+  <string name="licenses">Ліцензії</string>
+  <string name="licenses_summary">AntennaPod використовує інше чудове програмне забезпечення</string>
   <!--Search-->
-  <string name="search_hint">Пошук епізодів</string>
-  <string name="found_in_shownotes_label">Знайдено в нотатках епізода</string>
-  <string name="found_in_chapters_label">Знайдено в главах</string>
-  <string name="found_in_authors_label">Знайдено в авторах</string>
-  <string name="found_in_feeds_label">Знайдено в подкасті</string>
   <string name="search_status_no_results">Жодних результатів немає</string>
   <string name="search_label">Пошук</string>
-  <string name="found_in_title_label">Знайдено у назві</string>
   <string name="no_results_for_query">Нічого не знайдено за запитом \"%1$s\"</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">Варіант %1$d</string>
-  <string name="opml_import_explanation_1">Виберіть шлях до файлу з локальної файлової системи.</string>
-  <string name="opml_import_explanation_3">Багато додатків, таких як Google Mail, Dropbox, Google Drive та більшість файлових менеджерів, здатні <i>відкривати</i> OPML файли <i>за допомогою</i> AntennaPod.</string>
-  <string name="opml_import_label">Імпорт OPML</string>
-  <string name="reading_opml_label">Читаємо OPML файл</string>
+  <!--import and export-->
+  <string name="opml_import_label">OPML імпорт</string>
   <string name="opml_reader_error">Помилка при читанні документа OPML:</string>
   <string name="opml_import_error_no_file">Жодного файлу не обрано!</string>
   <string name="select_all_label">Обрати все</string>
   <string name="deselect_all_label">Убрати виділення</string>
-  <string name="choose_file_from_filesystem">З локальної файлової системи</string>
   <string name="opml_export_label">OPML экспорт</string>
   <string name="html_export_label">Експорт до HTML</string>
-  <string name="exporting_label">Експортується…</string>
   <string name="export_error_label">Помилка експорту</string>
   <string name="export_success_title">Успішний експорт</string>
   <string name="export_success_sum">Файл було записано в:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Щоб прочитати файл OPML потрібен доступ до зовнішнього носія</string>
+  <string name="import_select_file">Обрати файл для імпорту</string>
+  <string name="import_ok">Імпорт пройшов успішно.\n\nБудь ласка, натисніть ОК щоб перезапустити AntennaPod</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Таймер сну</string>
   <string name="disable_sleeptimer_label">Вимкнути засинання</string>
-  <string name="enter_time_here_label">Встановити час</string>
   <string name="sleep_timer_label">Таймер сну</string>
-  <string name="time_left_label">Залишилось:\u0020</string>
   <string name="time_dialog_invalid_input">Помилка вводу, час повинен бути цілим</string>
-  <string name="timer_about_to_expire_label"><b>Коли таймер добігає кінця:</b></string>
-  <string name="shake_to_reset_label">Струснути для перезапуска таймера</string>
-  <string name="timer_vibration_label">Вібрувати</string>
   <string name="time_seconds">секунд</string>
   <string name="time_minutes">хвилин</string>
   <string name="time_hours">годин</string>
@@ -504,7 +514,6 @@
   </plurals>
   <string name="auto_enable_label">Увімкнути автоматично</string>
   <string name="sleep_timer_enabled_label">Таймер сну увімкнено</string>
-  <string name="sleep_timer_disabled_label">Таймер сну вимкнено</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
   <string name="gpodnet_toplist_header">ТОП ПОДКАСТІВ</string>
@@ -536,12 +545,14 @@
   <string name="gpodnetsync_error_descr">Трапилась помилка при сінхронизації:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Успішно</string>
   <string name="gpodnetsync_pref_report_failed">Невдало</string>
+  <string name="gpodnetsync_username_characters_error">Імена користувачів можуть містити лише літери, цифри, дефіси та підкреслення.</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Обрати папку:</string>
   <string name="create_folder_label">Нова папка</string>
   <string name="choose_data_directory">Обрати папку</string>
   <string name="choose_data_directory_message">Оберіть, будь ласка, базовий каталог даних. AntennaPod створить відповідні підрозділи.</string>
   <string name="choose_data_directory_permission_rationale">Для зміни папки зберігання даних потрібен доступ до зовнішнього носія</string>
+  <string name="choose_data_directory_available_space">%1$s з %2$s вільно</string>
   <string name="create_folder_msg">Створити папку з ім\'ям \"%1$s\"?</string>
   <string name="create_folder_success">Створена нова папка</string>
   <string name="create_folder_error_no_write_access">Не можу записати в цю папку</string>
@@ -560,6 +571,7 @@
   <string name="pref_restart_required">Для застосування змін потрібно перезапустити AntennaPod</string>
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
+  <string name="subscribing_label">Підписка...</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Перемотка назад</string>
   <string name="fast_forward_label">Перемотка вперед</string>
@@ -580,13 +592,18 @@
   <string name="episode_filters_exclude">Виключити</string>
   <string name="episode_filters_hint">Окремі слова \n\"Кілька слів\"</string>
   <string name="keep_updated">Підтримувати оновленим</string>
+  <string name="auto_download_disabled_globally">Автозавантаження вимкнено в налаштуваннях AntennaPod</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Оновлення бази даних</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <!--Add podcast fragment-->
+  <string name="search_podcast_hint">Шукати подкаст...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
   <string name="search_fyyd_label">Шукати в fyyd</string>
+  <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
+  <string name="discover">Знайдіть канали</string>
+  <string name="discover_more">більше »</string>
   <string name="filter">Фільтр</string>
   <!--Episodes apply actions-->
   <string name="all_label">Всі</string>
@@ -644,14 +661,6 @@
   <string name="proxy_port_invalid_error">Порт недійсний</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Кількість стовпців</string>
-  <!--Database import/export-->
-  <string name="import_export">Імпортувати/Експортувати базу данних</string>
-  <string name="import_export_warning">Ця експериментальна функція використовується для перенесення ваших підписок та вже прослуханих епізодів до іншого пристрою.\n\nЕкспортована база даних може бути імпортована тією ж самою версією AntennaPod. Інакше, результат може бути непередбаченим.\n\nПісля імпортування, епізоди можуть відображатися як завантажені, навіть якщо вони такими не є.  Просто натисніть кнопку відтворення епізодів, щоб AntennaPod виявив це.</string>
-  <string name="label_import">Імпортувати</string>
-  <string name="label_export">Експортувати</string>
-  <string name="import_select_file">Обрати файл для імпорту</string>
-  <string name="export_ok">Успішний експорт</string>
-  <string name="import_ok">Імпорт пройшов успішно.\n\nБудь ласка, натисніть ОК щоб перезапустити AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Грати на…</string>
   <string name="cast_disconnect_label">Від’єднатись від пристрою програвання</string>
@@ -659,7 +668,6 @@
   <string name="cast_failed_to_play">Помилка програвання файла</string>
   <string name="cast_failed_to_stop">Помилка спроби зупинки програвання</string>
   <string name="cast_failed_to_pause">Помилка спроби призупинення програвання</string>
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Помилка встановлення гучності</string>
   <string name="cast_failed_no_connection">Немає з’єднання з пристроєм програвання</string>
   <string name="cast_failed_no_connection_trans">Зв’язок з пристроєм програвання втрачено. Програма намагається поновити з\'єднання, якщо це можливо. Будь ласка зачекайте кілька секунд і спробуйте знов.</string>
@@ -677,4 +685,7 @@
   <string name="notification_channel_error">Помилки</string>
   <string name="notification_channel_error_description">Відображається, якщо щось пішло не так, наприклад, якщо не вдалося завантажити або синхронізувати з gpodder.</string>
   <!--Widget settings-->
+  <string name="widget_settings">Налаштування віджету</string>
+  <string name="widget_create_button">Створити віджет</string>
+  <string name="widget_opacity">Непрозорість</string>
 </resources>

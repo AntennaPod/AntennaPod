@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.widget.SearchView;
@@ -34,7 +36,7 @@ import de.danoeh.antennapod.menuhandler.MenuItemUtils;
  * Displays a list of GPodnetPodcast-Objects in a GridView
  */
 public abstract class PodcastListFragment extends Fragment {
-
+    public static final String ARGUMENT_HIDE_TOOLBAR = "hideToolbar";
     private static final String TAG = "PodcastListFragment";
 
     private GridView gridView;
@@ -76,6 +78,13 @@ public abstract class PodcastListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.gpodnet_podcast_list, container, false);
+        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        if (getArguments() == null || !getArguments().getBoolean(ARGUMENT_HIDE_TOOLBAR, false)) {
+            toolbar.setTitle(R.string.gpodnet_main_label);
+            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        } else {
+            toolbar.setVisibility(View.GONE);
+        }
 
         gridView = root.findViewById(R.id.gridView);
         progressBar = root.findViewById(R.id.progressBar);

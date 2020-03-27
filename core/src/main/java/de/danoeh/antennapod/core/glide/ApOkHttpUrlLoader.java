@@ -1,39 +1,30 @@
 package de.danoeh.antennapod.core.glide;
 
+import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.bumptech.glide.integration.okhttp3.OkHttpStreamFetcher;
 import com.bumptech.glide.load.Options;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-
 import com.bumptech.glide.load.model.MultiModelLoaderFactory;
 import com.bumptech.glide.signature.ObjectKey;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.service.download.HttpDownloader;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
-import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
  */
 class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
-
-    private static final String TAG = ApOkHttpUrlLoader.class.getSimpleName();
 
     /**
      * The default factory for {@link ApOkHttpUrlLoader}s.
@@ -49,7 +40,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                     if (internalClient == null) {
                         OkHttpClient.Builder builder = AntennapodHttpClient.newBuilder();
                         builder.interceptors().add(new NetworkAllowanceInterceptor());
-                        builder.interceptors().add(new BasicAuthenticationInterceptor());
+                        builder.cache(null); // Handled by Glide
                         internalClient = builder.build();
                     }
                 }
@@ -109,8 +100,9 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
     private static class NetworkAllowanceInterceptor implements Interceptor {
 
+        @NonNull
         @Override
-        public Response intercept(Chain chain) throws IOException {
+        public Response intercept(@NonNull Chain chain) throws IOException {
             if (NetworkUtils.isImageAllowed()) {
                 return chain.proceed(chain.request());
             } else {
@@ -123,48 +115,5 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
                         .build();
             }
         }
-
     }
-
-    private static class BasicAuthenticationInterceptor implements Interceptor {
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            String url = request.url().toString();
-            String authentication = DBReader.getImageAuthentication(url);
-
-            if(TextUtils.isEmpty(authentication)) {
-                Log.d(TAG, "no credentials for '" + url + "'");
-                return chain.proceed(request);
-            }
-
-            // add authentication
-            String[] auth = authentication.split(":");
-            if (auth.length != 2) {
-                Log.d(TAG, "Invalid credentials for '" + url + "'");
-                return chain.proceed(request);
-            }
-
-            String credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "ISO-8859-1");
-            Request newRequest = request
-                    .newBuilder()
-                    .addHeader("Authorization", credentials)
-                    .build();
-            Log.d(TAG, "Basic authentication with ISO-8859-1 encoding");
-            Response response = chain.proceed(newRequest);
-            if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "UTF-8");
-                newRequest = request
-                        .newBuilder()
-                        .addHeader("Authorization", credentials)
-                        .build();
-                Log.d(TAG, "Basic authentication with UTF-8 encoding");
-                return chain.proceed(newRequest);
-            } else {
-                return response;
-            }
-        }
-    }
-
 }

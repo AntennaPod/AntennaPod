@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
-import androidx.appcompat.app.AlertDialog;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +14,22 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AlertDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
-
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.fragment.AddFeedFragment;
+import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
+import de.danoeh.antennapod.fragment.NavDrawerFragment;
+import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -29,20 +37,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
-import de.danoeh.antennapod.fragment.DownloadsFragment;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.NewEpisodesFragment;
-import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
-import de.danoeh.antennapod.fragment.QueueFragment;
-import de.danoeh.antennapod.fragment.SubscriptionFragment;
 
 /**
  * BaseAdapter for the navigation drawer
@@ -86,7 +80,7 @@ public class NavListAdapter extends BaseAdapter
     }
 
     private void loadItems() {
-        List<String> newTags = new ArrayList<>(Arrays.asList(MainActivity.NAV_DRAWER_TAGS));
+        List<String> newTags = new ArrayList<>(Arrays.asList(NavDrawerFragment.NAV_DRAWER_TAGS));
         List<String> hiddenFragments = UserPreferences.getHiddenDrawerItems();
         newTags.removeAll(hiddenFragments);
 
@@ -106,13 +100,13 @@ public class NavListAdapter extends BaseAdapter
     }
 
     public String getLabel(String tag) {
-        int index = ArrayUtils.indexOf(MainActivity.NAV_DRAWER_TAGS, tag);
+        int index = ArrayUtils.indexOf(NavDrawerFragment.NAV_DRAWER_TAGS, tag);
         return titles[index];
     }
 
     private Drawable getDrawable(String tag) {
         Activity context = activity.get();
-        if(context == null) {
+        if (context == null) {
             return null;
         }
         int icon;
@@ -120,13 +114,7 @@ public class NavListAdapter extends BaseAdapter
             case QueueFragment.TAG:
                 icon = R.attr.stat_playlist;
                 break;
-            case NewEpisodesFragment.TAG:
-                icon = R.attr.ic_new;
-                break;
             case EpisodesFragment.TAG:
-                icon = R.attr.feed;
-                break;
-            case AllEpisodesFragment.TAG:
                 icon = R.attr.feed;
                 break;
             case DownloadsFragment.TAG:
@@ -214,17 +202,13 @@ public class NavListAdapter extends BaseAdapter
             v = getFeedView(position, convertView, parent);
         }
         if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
-            TextView txtvTitle = v.findViewById(R.id.txtvTitle);
             TypedValue typedValue = new TypedValue();
 
             if (position == itemAccess.getSelectedItemIndex()) {
-                txtvTitle.setTypeface(null, Typeface.BOLD);
-                v.getContext().getTheme().resolveAttribute(de.danoeh.antennapod.core.R.attr.drawer_activated_color, typedValue, true);
+                v.getContext().getTheme().resolveAttribute(R.attr.drawer_activated_color, typedValue, true);
                 v.setBackgroundResource(typedValue.resourceId);
-
             } else {
-                txtvTitle.setTypeface(null, Typeface.NORMAL);
-                v.getContext().getTheme().resolveAttribute(de.danoeh.antennapod.core.R.attr.nav_drawer_background, typedValue, true);
+                v.getContext().getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true);
                 v.setBackgroundResource(typedValue.resourceId);
             }
         }
@@ -368,11 +352,6 @@ public class NavListAdapter extends BaseAdapter
         if(counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
             holder.count.setText(String.valueOf(counter));
-            if (itemAccess.getSelectedItemIndex() == position) {
-                holder.count.setTypeface(null, Typeface.BOLD);
-            } else {
-                holder.count.setTypeface(null, Typeface.NORMAL);
-            }
         } else {
             holder.count.setVisibility(View.GONE);
         }

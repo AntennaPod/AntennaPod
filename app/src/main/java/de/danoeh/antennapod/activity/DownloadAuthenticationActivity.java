@@ -41,12 +41,8 @@ public class DownloadAuthenticationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
+        setTheme(UserPreferences.getNoTitleTheme());
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
 
         setContentView(R.layout.download_authentication_activity);
         TextView txtvDescription = findViewById(R.id.txtvDescription);

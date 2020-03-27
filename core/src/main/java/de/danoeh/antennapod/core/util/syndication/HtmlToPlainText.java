@@ -57,7 +57,7 @@ public class HtmlToPlainText {
      * Use this method to determine if a given text has any HTML tag
      *
      * @param str String to be tested for presence of HTML content
-     * @return <b>True</b> if text contains any HTML tags</br><b>False</b> is no HTML tag is found
+     * @return <b>True</b> if text contains any HTML tags<br /><b>False</b> is no HTML tag is found
      */
     private static boolean isHtml(String str) {
         final String HTML_TAG_PATTERN = "<(\"[^\"]*\"|'[^']*'|[^'\">])*>";
@@ -89,14 +89,11 @@ public class HtmlToPlainText {
             String name = node.nodeName();
             if (node instanceof TextNode) {
                 append(((TextNode) node).text()); // TextNodes carry all user-readable text in the DOM.
-            }
-            else if (name.equals("li")) {
+            } else if (name.equals("li")) {
                 append("\n * ");
-            }
-            else if (name.equals("dt")) {
+            } else if (name.equals("dt")) {
                 append("  ");
-            }
-            else if (StringUtil.in(name, "p", "h1", "h2", "h3", "h4", "h5", "tr")) {
+            } else if (StringUtil.in(name, "p", "h1", "h2", "h3", "h4", "h5", "tr")) {
                 append("\n");
             }
         }

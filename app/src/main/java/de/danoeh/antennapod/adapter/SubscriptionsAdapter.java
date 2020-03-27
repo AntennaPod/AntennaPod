@@ -98,7 +98,6 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
                 .withUri(feed.getImageLocation())
                 .withPlaceholderView(holder.feedTitle)
                 .withCoverView(holder.imageView)
-                .withError(R.color.light_gray)
                 .load();
 
         return convertView;

@@ -14,6 +14,7 @@ public class NotificationUtils {
     public static final String CHANNEL_ID_DOWNLOADING = "downloading";
     public static final String CHANNEL_ID_PLAYING = "playing";
     public static final String CHANNEL_ID_ERROR = "error";
+    public static final String CHANNEL_ID_AUTO_DOWNLOAD = "auto_download";
 
     public static void createChannels(Context context) {
         if (android.os.Build.VERSION.SDK_INT < 26) {
@@ -26,6 +27,7 @@ public class NotificationUtils {
             mNotificationManager.createNotificationChannel(createChannelDownloading(context));
             mNotificationManager.createNotificationChannel(createChannelPlaying(context));
             mNotificationManager.createNotificationChannel(createChannelError(context));
+            mNotificationManager.createNotificationChannel(createChannelAutoDownload(context));
         }
     }
 
@@ -60,6 +62,14 @@ public class NotificationUtils {
         NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_ERROR,
                 c.getString(R.string.notification_channel_error), NotificationManager.IMPORTANCE_HIGH);
         mChannel.setDescription(c.getString(R.string.notification_channel_error_description));
+        return mChannel;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static NotificationChannel createChannelAutoDownload(Context c) {
+        NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_AUTO_DOWNLOAD,
+                c.getString(R.string.notification_channel_auto_download), NotificationManager.IMPORTANCE_DEFAULT);
+        mChannel.setDescription(c.getString(R.string.notification_channel_episode_auto_download));
         return mChannel;
     }
 }

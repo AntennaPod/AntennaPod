@@ -16,6 +16,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment;
+import de.danoeh.antennapod.fragment.preferences.ImportExportPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.IntegrationsPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.MainPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.NetworkPreferencesFragment;
@@ -59,6 +60,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             prefFragment = new NetworkPreferencesFragment();
         } else if (screen == R.xml.preferences_storage) {
             prefFragment = new StoragePreferencesFragment();
+        } else if (screen == R.xml.preferences_import_export) {
+            prefFragment = new ImportExportPreferencesFragment();
         } else if (screen == R.xml.preferences_autodownload) {
             prefFragment = new AutoDownloadPreferencesFragment();
         } else if (screen == R.xml.preferences_gpodder) {
@@ -79,6 +82,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                 return R.string.playback_pref;
             case R.xml.preferences_storage:
                 return R.string.storage_pref;
+            case R.xml.preferences_import_export:
+                return R.string.import_export_pref;
             case R.xml.preferences_user_interface:
                 return R.string.user_interface_label;
             case R.xml.preferences_integrations:

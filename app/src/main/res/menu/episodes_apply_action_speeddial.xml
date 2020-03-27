@@ -6,7 +6,7 @@
          visually it will be shown at the bottom of the list of actions.
       -->
     <item android:id="@+id/delete_batch"
-        android:icon="?attr/content_discard"
+        android:icon="?attr/ic_delete"
         android:title="@string/delete_episode_label"
         />
     <item android:id="@+id/download_batch"

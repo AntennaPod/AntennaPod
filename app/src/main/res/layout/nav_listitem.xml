@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/listitem_iconwithtext_height"
-                android:foreground="?attr/selectableItemBackground"
-                tools:background="@android:color/darker_gray">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/listitem_iconwithtext_height"
+        android:foreground="?attr/selectableItemBackground" >
 
     <ImageView
         android:id="@+id/imgvCover"
@@ -24,8 +23,7 @@
         android:layout_marginStart="@dimen/listitem_icon_leftpadding"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
-        tools:src="@drawable/ic_new_releases_white_24dp"
-        tools:background="@android:color/holo_green_dark"/>
+        tools:src="@drawable/ic_download_black"/>
 
 
     <TextView
@@ -44,9 +42,7 @@
         android:layout_marginEnd="48dp"
         android:layout_toRightOf="@id/imgvCover"
         android:layout_toEndOf="@id/imgvCover"
-        tools:text="Navigation item title"
-        tools:background="@android:color/holo_green_dark"
-        />
+        tools:text="Navigation item title" />
 
     <TextView
         android:id="@+id/txtvCount"
@@ -62,6 +58,5 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        tools:text="23"
-        tools:background="@android:color/holo_green_dark"/>
+        tools:text="23" />
 </RelativeLayout>

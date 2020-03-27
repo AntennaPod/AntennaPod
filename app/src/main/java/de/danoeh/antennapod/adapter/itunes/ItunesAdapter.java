@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 
@@ -65,13 +67,16 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
             viewHolder = (PodcastViewHolder) view.getTag();
         }
 
-        //Set the title
+        // Set the title
         viewHolder.titleView.setText(podcast.title);
-        if(podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
-            viewHolder.urlView.setText(podcast.feedUrl);
-            viewHolder.urlView.setVisibility(View.VISIBLE);
+        if (podcast.author != null && ! podcast.author.trim().isEmpty()) {
+            viewHolder.authorView.setText(podcast.author);
+            viewHolder.authorView.setVisibility(View.VISIBLE);
+        } else if (podcast.feedUrl != null && !podcast.feedUrl.contains("itunes.apple.com")) {
+            viewHolder.authorView.setText(podcast.feedUrl);
+            viewHolder.authorView.setVisibility(View.VISIBLE);
         } else {
-            viewHolder.urlView.setVisibility(View.GONE);
+            viewHolder.authorView.setVisibility(View.GONE);
         }
 
         //Update the empty imageView with the image from the feed
@@ -80,7 +85,8 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .fitCenter()
+                    .transforms(new FitCenter(),
+                            new RoundedCorners((int) (4 * context.getResources().getDisplayMetrics().density)))
                     .dontAnimate())
                 .into(viewHolder.coverView);
 
@@ -103,7 +109,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
          */
         final TextView titleView;
 
-        final TextView urlView;
+        final TextView authorView;
 
 
         /**
@@ -113,7 +119,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
         PodcastViewHolder(View view){
             coverView = view.findViewById(R.id.imgvCover);
             titleView = view.findViewById(R.id.txtvTitle);
-            urlView = view.findViewById(R.id.txtvUrl);
+            authorView = view.findViewById(R.id.txtvAuthor);
         }
     }
 }

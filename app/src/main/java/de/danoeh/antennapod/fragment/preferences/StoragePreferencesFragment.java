@@ -1,62 +1,32 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
-import androidx.documentfile.provider.DocumentFile;
-import androidx.appcompat.app.AlertDialog;
-import androidx.preference.PreferenceFragmentCompat;
 import android.util.Log;
-
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
-import de.danoeh.antennapod.activity.ImportExportActivity;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.asynctask.DocumentFileExportWorker;
-import de.danoeh.antennapod.asynctask.ExportWorker;
-import de.danoeh.antennapod.core.export.ExportWriter;
-import de.danoeh.antennapod.core.export.html.HtmlWriter;
-import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import java.io.File;
-import java.util.List;
 
 public class StoragePreferencesFragment extends PreferenceFragmentCompat {
     private static final String TAG = "StoragePrefFragment";
-    private static final String PREF_OPML_EXPORT = "prefOpmlExport";
-    private static final String PREF_OPML_IMPORT = "prefOpmlImport";
-    private static final String PREF_HTML_EXPORT = "prefHtmlExport";
-    private static final String IMPORT_EXPORT = "importExport";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
+    private static final String PREF_IMPORT_EXPORT = "prefImportExport";
     private static final String[] EXTERNAL_STORAGE_PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE };
     private static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 41;
-    private static final int CHOOSE_OPML_EXPORT_PATH = 1;
-    private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds.opml";
-    private static final String CONTENT_TYPE_OPML = "text/x-opml";
-    private static final int CHOOSE_HTML_EXPORT_PATH = 2;
-    private static final String DEFAULT_HTML_OUTPUT_NAME = "antennapod-feeds.html";
-    private static final String CONTENT_TYPE_HTML = "text/html";
-    private Disposable disposable;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -76,51 +46,20 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         setDataFolderText();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (disposable != null) {
-            disposable.dispose();
-        }
-    }
-
     private void setupStorageScreen() {
         final Activity activity = getActivity();
-
-        findPreference(IMPORT_EXPORT).setOnPreferenceClickListener(
-                preference -> {
-                    activity.startActivity(new Intent(activity, ImportExportActivity.class));
-                    return true;
-                }
-        );
-        findPreference(PREF_OPML_EXPORT).setOnPreferenceClickListener(
-                preference -> {
-                    openOpmlExportPathPicker();
-                    return true;
-                }
-        );
-        findPreference(PREF_HTML_EXPORT).setOnPreferenceClickListener(
-                preference -> {
-                    openHtmlExportPathPicker();
-                    return true;
-                });
-        findPreference(PREF_OPML_IMPORT).setOnPreferenceClickListener(
-                preference -> {
-                    activity.startActivity(new Intent(activity, OpmlImportFromPathActivity.class));
-                    return true;
-                });
         findPreference(PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
                 preference -> {
-                    if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT &&
-                            Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT
+                            && Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
                         showChooseDataFolderDialog();
                     } else {
                         int readPermission = ActivityCompat.checkSelfPermission(
                                 activity, Manifest.permission.READ_EXTERNAL_STORAGE);
                         int writePermission = ActivityCompat.checkSelfPermission(
                                 activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        if (readPermission == PackageManager.PERMISSION_GRANTED &&
-                                writePermission == PackageManager.PERMISSION_GRANTED) {
+                        if (readPermission == PackageManager.PERMISSION_GRANTED
+                                && writePermission == PackageManager.PERMISSION_GRANTED) {
                             openDirectoryChooser();
                         } else {
                             requestPermission();
@@ -129,19 +68,18 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 }
         );
-        findPreference(PREF_CHOOSE_DATA_DIR)
-                .setOnPreferenceClickListener(
-                        preference -> {
-                            if (Build.VERSION.SDK_INT >= 19) {
-                                showChooseDataFolderDialog();
-                            } else {
-                                Intent intent = new Intent(activity, DirectoryChooserActivity.class);
-                                activity.startActivityForResult(intent,
-                                        DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
-                            }
-                            return true;
-                        }
-                );
+        findPreference(PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
+                preference -> {
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        showChooseDataFolderDialog();
+                    } else {
+                        Intent intent = new Intent(activity, DirectoryChooserActivity.class);
+                        activity.startActivityForResult(intent,
+                                DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
+                    }
+                    return true;
+                }
+        );
         findPreference(UserPreferences.PREF_IMAGE_CACHE_SIZE).setOnPreferenceChangeListener(
                 (preference, o) -> {
                     if (o instanceof String) {
@@ -158,74 +96,16 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
                     return false;
                 }
         );
-    }
-
-    private boolean export(ExportWriter exportWriter) {
-        return export(exportWriter, null);
-    }
-
-    private boolean export(ExportWriter exportWriter, final Uri uri) {
-        Context context = getActivity();
-        final ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(context.getString(R.string.exporting_label));
-        progressDialog.setIndeterminate(true);
-        progressDialog.show();
-        if (uri == null) {
-            Observable<File> observable = new ExportWorker(exportWriter).exportObservable();
-            disposable = observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(output -> {
-                        Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
-                                context.getString(R.string.provider_authority), output);
-                        showExportSuccessDialog(context.getString(R.string.export_success_sum, output.toString()), fileUri);
-                    }, this::showExportErrorDialog, progressDialog::dismiss);
-        } else {
-            Observable<DocumentFile> observable = new DocumentFileExportWorker(exportWriter, context, uri).exportObservable();
-            disposable = observable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(output -> {
-                        showExportSuccessDialog(context.getString(R.string.export_success_sum, output.getUri()), output.getUri());
-                    }, this::showExportErrorDialog, progressDialog::dismiss);
-        }
-        return true;
-    }
-
-    private void showExportSuccessDialog(final String message, final Uri streamUri) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext())
-                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-        alert.setTitle(R.string.export_success_title);
-        alert.setMessage(message);
-        alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label));
-            sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
-            sendIntent.setType("text/plain");
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                        .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        findPreference(PREF_IMPORT_EXPORT).setOnPreferenceClickListener(
+                preference -> {
+                    ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_import_export);
+                    return true;
                 }
-            }
-            getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
-        });
-        alert.create().show();
+        );
     }
 
-    private void showExportErrorDialog(final Throwable error) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext())
-                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-        alert.setTitle(R.string.export_error_label);
-        alert.setMessage(error.getMessage());
-        alert.show();
-    }
-
-    @SuppressLint("NewApi")
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK &&
-                requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+        if (resultCode == Activity.RESULT_OK && requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
             String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
 
             File path;
@@ -255,23 +135,12 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
                 ab.show();
             }
         }
-
-        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_OPML_EXPORT_PATH) {
-            Uri uri = data.getData();
-            export(new OpmlWriter(), uri);
-        }
-
-        if (resultCode == Activity.RESULT_OK && requestCode == CHOOSE_HTML_EXPORT_PATH) {
-            Uri uri = data.getData();
-            export(new HtmlWriter(), uri);
-        }
     }
 
     private void setDataFolderText() {
         File f = UserPreferences.getDataFolder(null);
         if (f != null) {
-            findPreference(PREF_CHOOSE_DATA_DIR)
-                    .setSummary(f.getAbsolutePath());
+            findPreference(PREF_CHOOSE_DATA_DIR).setSummary(f.getAbsolutePath());
         }
     }
 
@@ -284,50 +153,6 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         Activity activity = getActivity();
         Intent intent = new Intent(activity, DirectoryChooserActivity.class);
         activity.startActivityForResult(intent, DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
-    }
-
-    private void openOpmlExportPathPicker() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType(CONTENT_TYPE_OPML)
-                    .putExtra(Intent.EXTRA_TITLE, DEFAULT_OPML_OUTPUT_NAME);
-
-            // Creates an implicit intent to launch a file manager which lets
-            // the user choose a specific directory to export to.
-            try {
-                startActivityForResult(intentPickAction, CHOOSE_OPML_EXPORT_PATH);
-                return;
-            } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "No activity found. Should never happen...");
-            }
-        }
-
-        // If we are using a SDK lower than API 21 or the implicit intent failed
-        // fallback to the legacy export process
-        export(new OpmlWriter());
-    }
-
-    private void openHtmlExportPathPicker() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            Intent intentPickAction = new Intent(Intent.ACTION_CREATE_DOCUMENT)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-                    .setType(CONTENT_TYPE_HTML)
-                    .putExtra(Intent.EXTRA_TITLE, DEFAULT_HTML_OUTPUT_NAME);
-
-            // Creates an implicit intent to launch a file manager which lets
-            // the user choose a specific directory to export to.
-            try {
-                startActivityForResult(intentPickAction, CHOOSE_HTML_EXPORT_PATH);
-                return;
-            } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "No activity found. Should never happen...");
-            }
-        }
-
-        // If we are using a SDK lower than API 21 or the implicit intent failed
-        // fallback to the legacy export process
-        export(new HtmlWriter());
     }
 
     private void showChooseDataFolderDialog() {

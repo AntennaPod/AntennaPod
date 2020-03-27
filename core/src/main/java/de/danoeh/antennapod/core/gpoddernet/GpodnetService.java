@@ -554,9 +554,8 @@ public class GpodnetService {
         }.start();
     }
 
-    private String executeRequest(@NonNull Request.Builder requestB)
-            throws GpodnetServiceException {
-        Request request = requestB.header("User-Agent", ClientConfig.USER_AGENT).build();
+    private String executeRequest(@NonNull Request.Builder requestB) throws GpodnetServiceException {
+        Request request = requestB.build();
         String responseString = null;
         Response response = null;
         ResponseBody body = null;
@@ -584,7 +583,7 @@ public class GpodnetService {
                     "request and credentials must not be null");
         }
 
-        Request request = requestB.header("User-Agent", ClientConfig.USER_AGENT).build();
+        Request request = requestB.build();
         String result = null;
         ResponseBody body = null;
         try {
@@ -689,8 +688,20 @@ public class GpodnetService {
             website = (String) websiteObj;
         }
         String mygpoLink = object.getString("mygpo_link");
-        return new GpodnetPodcast(url, title, description, subscribers,
-                logoUrl, website, mygpoLink);
+
+        String author = null;
+        Object authorObj = object.opt("author");
+        if (authorObj != null && authorObj instanceof String) {
+            author = (String) authorObj;
+        }
+        return new GpodnetPodcast(url,
+                title,
+                description,
+                subscribers,
+                logoUrl,
+                website,
+                mygpoLink,
+                author);
     }
 
     private List<GpodnetDevice> readDeviceListFromJSONArray(@NonNull JSONArray array)

@@ -1,133 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/feed_image_bg"
-    tools:context="de.danoeh.antennapod.activity.MainActivity"
-    tools:background="@android:color/darker_gray">
-
-    <ImageView
-        android:id="@+id/imgvBackground"
-        style="@style/BigBlurryBackground"
+<LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/feeditemlist_header_height" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imgvCover"
-        android:layout_width="@dimen/thumbnail_length_onlinefeedview"
-        android:layout_height="@dimen/thumbnail_length_onlinefeedview"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/cover_label"
-        tools:src="@drawable/ic_antenna"
-        tools:background="@android:color/holo_green_dark"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center_vertical">
 
-    <ImageButton
-        android:id="@+id/butShowInfo"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/show_info_label"
-        android:src="@drawable/ic_info_white_24dp"
-        tools:background="@android:color/holo_green_dark"/>
+        <ImageView
+                android:id="@+id/imgvCover"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/cover_label"
+                tools:src="@drawable/ic_antenna"
+                tools:background="@android:color/holo_green_dark"/>
 
-    <ImageButton
-        android:id="@+id/butShowSettings"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/show_feed_settings_label"
-        android:src="@drawable/ic_settings_white_24dp"
-        tools:background="@android:color/holo_green_dark"
-        android:layout_below="@+id/butShowInfo"
-        android:layout_marginBottom="16dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <TextView
+                    android:id="@+id/txtvTitle"
+                    style="@style/AntennaPod.TextView.Heading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:shadowColor="@color/black"
+                    android:shadowRadius="2"
+                    android:textColor="@color/white"
+                    tools:text="Podcast title"
+                    tools:background="@android:color/holo_green_dark"/>
+
+            <TextView
+                    android:id="@+id/txtvAuthor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:shadowColor="@color/black"
+                    android:shadowRadius="2"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="Podcast author"
+                    tools:background="@android:color/holo_green_dark"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <ImageButton
+                        android:id="@+id/butShowInfo"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:contentDescription="@string/show_info_label"
+                        app:srcCompat="@drawable/ic_info_white"
+                        tools:background="@android:color/holo_green_dark"
+                        android:layout_marginLeft="-8dp"
+                        android:layout_marginStart="-8dp"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        tools:visibility="visible"
+                        android:padding="8dp"/>
+
+                <ImageButton
+                        android:id="@+id/butShowSettings"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="?attr/selectableItemBackground"
+                        android:contentDescription="@string/show_feed_settings_label"
+                        app:srcCompat="@drawable/ic_settings_white"
+                        tools:background="@android:color/holo_green_dark"
+                        android:scaleType="fitXY"
+                        android:visibility="invisible"
+                        tools:visibility="visible"
+                        android:padding="8dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/txtvTitle"
-        style="@style/AntennaPod.TextView.Heading"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_toLeftOf="@id/butShowInfo"
-        android:layout_toStartOf="@id/butShowInfo"
-        android:layout_toRightOf="@id/imgvCover"
-        android:layout_toEndOf="@id/imgvCover"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:shadowColor="@color/black"
-        android:shadowRadius="3"
-        android:textColor="@color/white"
-        tools:text="Podcast title"
-        tools:background="@android:color/holo_green_dark" />
-
-    <TextView
-        android:id="@+id/txtvAuthor"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvTitle"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_toLeftOf="@id/butShowSettings"
-        android:layout_toStartOf="@id/butShowSettings"
-        android:layout_toRightOf="@id/imgvCover"
-        android:layout_toEndOf="@id/imgvCover"
-        android:ellipsize="end"
-        android:lines="1"
-        android:shadowColor="@color/black"
-        android:shadowRadius="3"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_small"
-        tools:text="Podcast author"
-        tools:background="@android:color/holo_green_dark"/>
+            android:id="@+id/txtvInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:background="?attr/colorPrimary"
+            android:visibility="gone"
+            android:gravity="center"
+            tools:visibility="visible"
+            tools:text="(i) Information"/>
 
     <com.joanzapata.iconify.widget.IconTextView
-        android:id="@+id/txtvFailure"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imgvBackground"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:background="@color/download_failed_red"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        android:text="@string/refresh_failed_msg"
-        tools:text="(!) Last refresh failed"
-        />
-
-    <TextView
-        android:id="@+id/txtvInformation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imgvBackground"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:text="(i) Information"
-        />
-
-</RelativeLayout>
+            android:id="@+id/txtvFailure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:background="@color/download_failed_red"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:text="@string/refresh_failed_msg"
+            tools:visibility="visible"
+            tools:text="(!) Last refresh failed"/>
+</LinearLayout>

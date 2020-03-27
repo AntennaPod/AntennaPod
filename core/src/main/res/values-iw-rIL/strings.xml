@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">עדכון מינויים</string>
-  <string name="feeds_label">הזנות</string>
+  <string name="feeds_label">פודקאסטים</string>
   <string name="statistics_label">סטטיסטיקה</string>
   <string name="add_feed_label">הוספת פודקאסט</string>
   <string name="episodes_label">פרקים</string>
@@ -24,6 +24,8 @@
   <string name="gpodnet_auth_label">כניסה אל gpodder.net</string>
   <string name="episode_cache_full_title">מטמון הפרקים מלא</string>
   <string name="episode_cache_full_message">מטמון הפרקים התמלא. ניתן להגדיל את גודל המטמון בהגדרות.</string>
+  <string name="playback_statistics_label">נגינה</string>
+  <string name="download_statistics_label">הורדות</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">זמן ניגון הפודקאסטים הכולל:</string>
   <string name="statistics_details_dialog">%1$d מתוך %2$d פרקים החלו.\n\nנוגנו %3$s מתוך %4$s.</string>
@@ -33,6 +35,8 @@
   <string name="statistics_speed_not_counted">לתשומת לבך: אין התייחסות למהירות הנגינה.</string>
   <string name="statistics_reset_data">איפוס נתונים סטטיסטיים</string>
   <string name="statistics_reset_data_msg">פעולה זו תמחק את משך הנגינה של כל הפרקים. להמשיך?</string>
+  <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">סך גודל הפודקאסטים שהתקבלו:</string>
   <!--Main activity-->
   <string name="drawer_open">פתיחת תפריט</string>
   <string name="drawer_close">סגירת תפריט</string>
@@ -81,6 +85,11 @@
   <string name="auto_download_apply_to_items_title">החלה על פרקים קודמים</string>
   <string name="auto_download_apply_to_items_message">הגדרות ה<i>הורדה האוטומטית</i> החדשות יחולו אוטומטית על פרקים חדשים.\nלהחיל אותן גם על פרקים שפורסמו בעבר?</string>
   <string name="auto_delete_label">מחיקת פרק באופן אוטומטי</string>
+  <string name="feed_volume_reduction">הנמכת עצמת שמע</string>
+  <string name="feed_volume_reduction_summary">להנמיך את עצמת השמע עבור פרקים בהזנה זו: \%s</string>
+  <string name="feed_volume_reduction_off">כבוי</string>
+  <string name="feed_volume_reduction_light">טיפה</string>
+  <string name="feed_volume_reduction_heavy">מאוד</string>
   <string name="parallel_downloads_suffix">\u0020הורדות במקביל</string>
   <string name="feed_auto_download_global">בררת מחדל גלובלית</string>
   <string name="feed_auto_download_always">תמיד</string>
@@ -102,13 +111,7 @@
     <item quantity="other">%d ימים לאחר סיום </item>
   </plurals>
   <string name="num_selected_label">%d נבחרו</string>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">כתובת הזנה</string>
-  <string name="etxtFeedurlHint">www.example.com/feed</string>
-  <string name="txtvfeedurl_label">הוספת פודקאסט לפי כתובת</string>
-  <string name="browse_gpoddernet_label">עיון ב־gpodder.net</string>
-  <string name="discover">עיון</string>
-  <string name="discover_more">עוד »</string>
+  <string name="loading_more">נטענים עוד…</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">לסמן הכול כנוגנו</string>
   <string name="mark_all_read_msg">לסמן את כל הפרקים כנוגנו</string>
@@ -128,13 +131,12 @@
   <string name="share_link_with_position_label">שיתוף כתובת הפרק עם מיקום</string>
   <string name="share_file_label">שיתוף כתובת</string>
   <string name="share_website_url_label">שיתוף כתובת אתר</string>
-  <string name="share_feed_url_label">שיתוף כתובת הזנה</string>
+  <string name="share_feed_url_label">שיתוף כתובת הפודקאסט</string>
   <string name="share_item_url_label">שיתוף כתובת קובץ המדיה</string>
   <string name="share_item_url_with_position_label">שיתוף כתובת קובץ המדיה עם מיקום</string>
   <string name="feed_delete_confirmation_msg">נא לאשר שרצונך הוא למחוק את הפודקאסט „%1$s” על כל פרקיו (לרבות הפרקים שכבר הורדת).</string>
   <string name="feed_remover_msg">הפודקאסט מוסר</string>
   <string name="load_complete_feed">רענון מלא של הפודקאסט</string>
-  <string name="batch_edit">עריכה כמותית</string>
   <string name="select_all_above">בחירת כל אלו שלעיל</string>
   <string name="select_all_below">בחירת כל אלו שלהלן</string>
   <string name="hide_unplayed_episodes_label">לא נוגן</string>
@@ -149,6 +151,7 @@
   <string name="filtered_label">מסונן</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} הרענון האחרון נכשל</string>
   <string name="open_podcast">פתיחת פודקאסט</string>
+  <string name="please_wait_for_data">נא להמתין לסיום טעינת הנתונים</string>
   <!--actions on feeditems-->
   <string name="download_label">הורדה</string>
   <plurals name="downloading_batch_label">
@@ -173,6 +176,9 @@
   <string name="removed_new_flag_label">הוסר הסימון „חדש”</string>
   <string name="mark_read_label">סימון כנצפה</string>
   <string name="marked_as_read_label">סימון כנוגן</string>
+  <string name="mark_read_no_media_label">סימון כנקרא</string>
+  <string name="marked_as_read_no_media_label">סומן כנקרא</string>
+  <string name="play_this_to_seek_position">כדי לקפוץ למיקומים, עליך לנגן את הפרק</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">פרק אחד סומן שנוגן.</item>
     <item quantity="two">%d פרקים סומנו שנוגנו.</item>
@@ -180,6 +186,7 @@
     <item quantity="other">%d פרקים סומנו שנוגנו.</item>
   </plurals>
   <string name="mark_unread_label">סימון כלא נוגן</string>
+  <string name="mark_unread_label_no_media">סימון כלא נקרא</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">פרק אחד סומן שטרם נוגן.</item>
     <item quantity="two">%d פרקים סומנו שטרם נוגנו.</item>
@@ -269,6 +276,7 @@
   <string name="playback_error_server_died">השרת לא מגיב</string>
   <string name="playback_error_unsupported">אין תמיכה בסוג המדיה הזה</string>
   <string name="playback_error_timeout">הזמן שהוקצב לפעולה תם</string>
+  <string name="playback_error_source">לא ניתן לגשת לקובץ המדיה</string>
   <string name="playback_error_unknown">שגיאה לא ידועה</string>
   <string name="no_media_playing_label">אין מדיה מתנגנת</string>
   <string name="player_buffering_msg">החוצץ מתמלא</string>
@@ -298,6 +306,7 @@
   <string name="clear_queue_confirmation_msg">נא לאשר את פינוי התור מכל הפרקים שבו</string>
   <string name="sort_old_to_new">חדש לישן</string>
   <string name="sort_new_to_old">ישן לחדש</string>
+  <string name="time_left_label">זמן שנותר:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">הורדת תוסף</string>
   <string name="no_playback_plugin_title">תוסף לא מותקן</string>
@@ -328,9 +337,11 @@
   <string name="no_subscriptions_label">כדי להירשם לפודקאסט, יש ללחוץ על סימן הפלוס שלהלן.</string>
   <!--Preferences-->
   <string name="storage_pref">אחסון</string>
+  <string name="storage_sum">מחיקה אוטומטית של פרקים, ייבוא, ייצוא</string>
   <string name="project_pref">מיזם</string>
   <string name="queue_label">תור</string>
   <string name="integrations_label">שילובים</string>
+  <string name="integrations_sum">סנכרון</string>
   <string name="automation">אוטומציה</string>
   <string name="download_pref_details">פרטים</string>
   <string name="import_export_pref">ייבוא/ייצוא</string>
@@ -362,9 +373,11 @@
   <string name="pref_favorite_keeps_episodes_sum">להשאיר פרקים שסומנו כמועדפים</string>
   <string name="pref_favorite_keeps_episodes_title">להשאיר פרקים מועדפים</string>
   <string name="playback_pref">ניגון</string>
+  <string name="playback_pref_sum">שליטה דרך האוזניות, מרחקי דילוג, תור</string>
   <string name="network_pref">רשת</string>
+  <string name="network_pref_sum">מרווחי עדכון, פקדי הורדה, תקשורת נתונים סלולרית</string>
   <string name="pref_autoUpdateIntervallOrTime_title">זמן בין עדכונים או מועד ביום</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">נא לציין הפרש זמן או מועד ביום לרענון ההזנות אוטומטית</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">נא לציין הפרש זמן או מועד ביום לרענון פודקאסטים אוטומטית</string>
   <string name="pref_autoUpdateIntervallOrTime_message">ניתן להגדיר <i>הפרש זמן</i> כגון „כל שעתיים”, להגדיר <i>מועד ביום</i> כגון „7:00” או <i>להשבית</i> עדכונים אוטומטיים לאלתר.\n\n<small>לתשומת לבך: מועדי העדכון אינם מדויקים. יתכן עיכוב קל בפעולות.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">השבתה</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">הגדרת הפרש זמן</string>
@@ -379,12 +392,13 @@
   <string name="pref_stream_over_download_sum">הצגת כפתור הזרמה במקום כפתור הורדה ברשימות.</string>
   <string name="pref_mobileUpdate_title">עדכון דרך רשת סלולרית</string>
   <string name="pref_mobileUpdate_sum">לבחור מה מותר דרך חיבור רשת סלולרית</string>
-  <string name="pref_mobileUpdate_refresh">רענון הזנה</string>
+  <string name="pref_mobileUpdate_refresh">רענון פודקאסטים</string>
   <string name="pref_mobileUpdate_images">תמונות נושא</string>
   <string name="pref_mobileUpdate_auto_download">הורדה אוטומטית</string>
   <string name="pref_mobileUpdate_episode_download">הורדת פרקים</string>
   <string name="pref_mobileUpdate_streaming">הזרמה</string>
   <string name="user_interface_label">מנשק משתמש</string>
+  <string name="user_interface_sum">מראה, סדר מינויים, מסך נעילה</string>
   <string name="pref_set_theme_title">בחירת ערכת עיצוב</string>
   <string name="pref_nav_drawer_items_title">הגדרת פריטי מגירת ניווט</string>
   <string name="pref_nav_drawer_items_sum">החלפת הפריטים שמופיעים במגירת הניווט.</string>
@@ -397,8 +411,6 @@
   <string name="pref_automatic_download_sum">הגדרת הורדה אטומטית של פרקים.</string>
   <string name="pref_autodl_wifi_filter_title">הפעלת סינון רשתות אלחוטיות</string>
   <string name="pref_autodl_wifi_filter_sum">לאפשר הורדה אוטומטית רק דרך רשתות אלחוטיות נבחרות.</string>
-  <string name="autodl_wifi_filter_permission_title">נדרשת הרשאה</string>
-  <string name="autodl_wifi_filter_permission_message">נדרשת הרשאת מיקום כדי לסנן רשתות אלחוטיות. יש לגעת כדי להעניק את ההרשאה.</string>
   <string name="pref_automatic_download_on_battery_title">להוריד שלא בזמן טעינה</string>
   <string name="pref_automatic_download_on_battery_sum">לאפשר הורדה אוטומטית כאשר הסוללה אינה בטעינה</string>
   <string name="pref_parallel_downloads_title">הורדות במקביל</string>
@@ -431,7 +443,7 @@
   <string name="pref_gpodnet_notifications_sum">הגדרה זו אינה חלה על שגיאות אימות.</string>
   <string name="pref_playback_speed_title">מהירויות ניגון</string>
   <string name="pref_playback_speed_sum">בחירת המהירויות הזמינות למהירות נגינה משתנה</string>
-  <string name="pref_feed_playback_speed_sum">המהירות שתחול על פרקים בהזנה זו כשאלו מתחילים להתנגן</string>
+  <string name="pref_feed_playback_speed_sum">המהירות שתחול על פרקים בפודקאסט זה כשאלו מתחילים להתנגן</string>
   <string name="pref_playback_time_respects_speed_title">להתאים את פרטי המדיה למהירות הנגינה</string>
   <string name="pref_playback_time_respects_speed_sum">המיקום המוצג והמשך מותאמים למהירות הנגינה</string>
   <string name="pref_fast_forward">זמן דילוג בהאצה קדימה</string>
@@ -461,9 +473,10 @@
   <string name="pref_smart_mark_as_played_disabled">מושבת</string>
   <string name="pref_image_cache_size_title">גודל מטמון התמונות</string>
   <string name="pref_image_cache_size_sum">הנפח בכונן שעשוי לשמש למטמון של תמונות.</string>
-  <string name="view_mailing_list">צפייה ברשימת הדיוור</string>
+  <string name="visit_user_forum">פורום המשתמשים</string>
   <string name="bug_report_title">דיווח על תקלה</string>
   <string name="open_bug_tracker">פתיחת מערכת מעקב התקלות</string>
+  <string name="export_logs">ייצוא יומני נגינה</string>
   <string name="copy_to_clipboard">העתקה ללוח הגזירים</string>
   <string name="copied_to_clipboard">הועתק ללוח הגזירים</string>
   <string name="experimental_pref">ניסיוני</string>
@@ -508,43 +521,43 @@
   <string name="licenses">רישיונות</string>
   <string name="licenses_summary">היישומון אנטנהפּוֹד משתמש בתכניות נהדרות נוספות</string>
   <!--Search-->
-  <string name="search_hint">חיפוש אחר פרקים</string>
-  <string name="found_in_shownotes_label">נמצא בהערות הפרק</string>
-  <string name="found_in_chapters_label">נמצא בפרקים</string>
-  <string name="found_in_authors_label">נמצא בין היוצרים</string>
-  <string name="found_in_feeds_label">נמצא בפודקאסט</string>
   <string name="search_status_no_results">לא נמצאו תוצאות</string>
   <string name="search_label">חיפוש</string>
-  <string name="found_in_title_label">נמצא בכותרת</string>
   <string name="no_results_for_query">לא נמצאו תוצאות עבור „%1$s”</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">אפשרות %1$d</string>
-  <string name="opml_import_explanation_1">נא לבחור נתיב קובץ מסוים ממערכת הקבצים המקומית.</string>
-  <string name="opml_import_explanation_3">יישומים רבים כגון Google Mail,‏ Dropbox,‏ Google Drive ורוב מנהלי הקבצים יכולים <i>לפתוח</i> קובצי OPML <i>עם</i> אנטנה־פּוֹד.</string>
+  <!--import and export-->
+  <string name="import_export_summary">העברת מינויים ותור למכשיר אחר</string>
+  <string name="database">מסד נתונים</string>
+  <string name="opml">OPML</string>
+  <string name="html">HTML</string>
+  <string name="html_export_summary">הצגת המינויים שלך לחבר</string>
+  <string name="opml_export_summary">העברת המינויים שלך ליישומון פודקאסטים אחר</string>
+  <string name="opml_import_summary">ייבוא המינויים שלך מיישומון פודקאסטים אחר</string>
+  <string name="database_export_summary">העברת מינויים, פרקים להם האזנת ותור נגינה לאנטנה־פ‎וֹד במכשיר אחר</string>
+  <string name="database_import_summary">ייבוא מסד הנתונים של אנטנה־פ‎וֹד ממכשיר אחר</string>
   <string name="opml_import_label">ייבוא OPML</string>
-  <string name="reading_opml_label">קריאת קובץ OPML</string>
   <string name="opml_reader_error">אירעה שגיאה בעת קריאת מסמך ה־OPML:</string>
   <string name="opml_import_error_no_file">לא נבחר קובץ!</string>
   <string name="select_all_label">בחירת הכול</string>
   <string name="deselect_all_label">ביטול הבחירה</string>
-  <string name="choose_file_from_filesystem">ממערכת הקבצים המקומית</string>
   <string name="opml_export_label">ייצוא OPML</string>
   <string name="html_export_label">ייצוא HTML</string>
-  <string name="exporting_label">מתבצע ייצוא…</string>
+  <string name="database_export_label">ייצוא מסד הנתונים</string>
+  <string name="database_import_label">ייבוא מסד נתונים</string>
+  <string name="please_wait">נא להמתין…</string>
   <string name="export_error_label">שגיאת ייצוא</string>
   <string name="export_success_title">הייצוא הצליח</string>
   <string name="export_success_sum">הקובץ שייוצא נכתב אל:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">נדרשת גישה לאחסון חיצוני כדי לקרוא את קובץ ה־OPML</string>
+  <string name="import_select_file">בחירת קובץ לייבוא</string>
+  <string name="import_ok">הייבוא הצליח.\n\nנא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
+  <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של אנטנה־פ‎וֹד</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">הגדרת מתזמן שינה</string>
   <string name="disable_sleeptimer_label">השבתת מתזמן שינה</string>
-  <string name="enter_time_here_label">הגדרת שעה</string>
   <string name="sleep_timer_label">מתזמן שינה</string>
-  <string name="time_left_label">זמן שנותר:\u0020</string>
   <string name="time_dialog_invalid_input">קלט שגוי, השעה חייב להיות מספר שלם וחיובי</string>
-  <string name="timer_about_to_expire_label"><b>כאשר ספירת המתזמן עומדת להסתיים:</b></string>
-  <string name="shake_to_reset_label">לשקשק כדי לאפס את המתזמן</string>
-  <string name="timer_vibration_label">לרטוט</string>
+  <string name="shake_to_reset_label">יש לנער כדי לאפס</string>
+  <string name="timer_vibration_label">להפעיל רטט קל לפני הסיום</string>
   <string name="time_seconds">שניות</string>
   <string name="time_minutes">דקות</string>
   <string name="time_hours">שעות</string>
@@ -568,7 +581,6 @@
   </plurals>
   <string name="auto_enable_label">הפעלה אוטומטית</string>
   <string name="sleep_timer_enabled_label">מתזמן השינה פעיל</string>
-  <string name="sleep_timer_disabled_label">מתזמן השינה מושבת</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">קטגוריות</string>
   <string name="gpodnet_toplist_header">פודקאסטים מובילים</string>
@@ -647,7 +659,7 @@
   <string name="episode_filters_exclude">להחריג</string>
   <string name="episode_filters_hint">מילים בודדות \n\"אוסף מילים\"</string>
   <string name="keep_updated">לשמור על עדכניות</string>
-  <string name="keep_updated_summary">לכלול את ההזנה בעת רענון (אוטומטי) של כל ההזנות</string>
+  <string name="keep_updated_summary">לכלול את הפודקאסט בעת רענון (אוטומטי) של כל הפודקאסטים</string>
   <string name="auto_download_disabled_globally">הורדה אוטומטית מושבתת בהגדרות הראשיות של אנטנה־פּוֹד</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">מסד הנתונים משתדרג</string>
@@ -657,7 +669,9 @@
   <string name="search_podcast_hint">חיפוש פודקאסט…</string>
   <string name="search_itunes_label">חיפוש ב־iTunes</string>
   <string name="search_fyyd_label">בחיפוש ב־fyyd</string>
-  <string name="advanced_search">חיפוש מתקדם</string>
+  <string name="browse_gpoddernet_label">עיון ב־gpodder.net</string>
+  <string name="discover">עיון</string>
+  <string name="discover_more">עוד »</string>
   <string name="filter">מסנן</string>
   <!--Episodes apply actions-->
   <string name="all_label">הכול</string>
@@ -715,14 +729,6 @@
   <string name="proxy_port_invalid_error">הפתחה אינה תקנית</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">מספר העמודות</string>
-  <!--Database import/export-->
-  <string name="import_export">ייבוא/ייצוא מסד נתונים</string>
-  <string name="import_export_warning">תכונה ניסיונית זו יכולה לשמש לטובת העברת המינויים והפרקים שניגנת להתקן אחר.\n\nניתן לייבא מסדי נתונים שיוצאו רק לאותה הגרסה של אנטנה־פּוֹד. אחרת, תכונה זו עשויה לגרור התנהגות בלתי צפויה.\n\nלאחר הייבוא, יתכן שחלק מהפרקים יופיעו כאילו כבר הורדת אותם למרות שבפועל לא עשית זאת. עליך פשוט ללחוץ על כפתור הנגינה של הפרקים כדי שאנטנה־פּוֹד יוכל לזהות זאת.</string>
-  <string name="label_import">ייבוא</string>
-  <string name="label_export">ייצוא</string>
-  <string name="import_select_file">בחירת קובץ לייבוא</string>
-  <string name="export_ok">הייצוא הצליח.</string>
-  <string name="import_ok">הייבוא הצליח.\n\nנא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">ניגון דרך…</string>
   <string name="cast_disconnect_label">ניתוק השידור</string>
@@ -730,7 +736,6 @@
   <string name="cast_failed_to_play">התחלת נגינת המדיה נכשלה</string>
   <string name="cast_failed_to_stop">עצירת נגינת המדיה נכשלה</string>
   <string name="cast_failed_to_pause">השהיית נגינת המדיה נכשלה</string>
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">הגדרת עצמת השמע נכשלה</string>
   <string name="cast_failed_no_connection">אין חיבור להתקן שידור</string>
   <string name="cast_failed_no_connection_trans">החיבור להתקן שידור אבד. היישומון מנסה להתחבר שוב, אם ניתן. נא להמתין מספר שניות ואז לנסות שוב.</string>
@@ -747,7 +752,6 @@
   <string name="notification_channel_playing_description">מאשר לשלוט בנגינה. זאת ההתראה הראשית שמופיעה בעת נגינת פודקאסט.</string>
   <string name="notification_channel_error">שגיאות</string>
   <string name="notification_channel_error_description">מופיעות אם משהו משתבש, למשל אם הורדה או סנכרון מול gpodder נכשלים.</string>
-  <string name="import_bad_file">קובץ לא תקין/פגום</string>
   <!--Widget settings-->
   <string name="widget_settings">הגדרות וידג׳ט</string>
   <string name="widget_create_button">יצירת וידג׳</string>

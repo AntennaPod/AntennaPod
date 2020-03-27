@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/new_folder_item"
         android:title="@string/create_folder_label"
-        android:icon="?attr/ic_create_new_folder"
-        custom:showAsAction="ifRoom|withText" />
+        app:icon="?attr/content_new"
+        app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/set_to_default_folder_item"
         android:title="@string/set_to_default_folder"
-        custom:showAsAction="collapseActionView" />
+        app:showAsAction="collapseActionView" />
 
 </menu>

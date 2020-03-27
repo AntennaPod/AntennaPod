@@ -14,17 +14,15 @@ public class FastBlurTransformation extends BitmapTransformation {
 
     private static final String TAG = FastBlurTransformation.class.getSimpleName();
 
-    private static final int STACK_BLUR_RADIUS = 1;
-    private static final int BLUR_IMAGE_WIDTH = 150;
+    private static final int STACK_BLUR_RADIUS = 5;
 
     public FastBlurTransformation() {
         super();
     }
 
     @Override
-    protected Bitmap transform(BitmapPool pool, Bitmap source,
-                               int outWidth, int outHeight) {
-        int targetWidth = BLUR_IMAGE_WIDTH;
+    protected Bitmap transform(BitmapPool pool, Bitmap source, int outWidth, int outHeight) {
+        int targetWidth = outWidth / 3;
         int targetHeight = (int) (1.0 * outHeight * targetWidth / outWidth);
         Bitmap resized = ThumbnailUtils.extractThumbnail(source, targetWidth, targetHeight);
         Bitmap result = fastBlur(resized, STACK_BLUR_RADIUS);
@@ -33,6 +31,16 @@ public class FastBlurTransformation extends BitmapTransformation {
             return source;
         }
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof FastBlurTransformation;
+    }
+
+    @Override
+    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+        messageDigest.update(TAG.getBytes());
     }
 
     private static Bitmap fastBlur(Bitmap bitmap, int radius) {
@@ -80,9 +88,9 @@ public class FastBlurTransformation extends BitmapTransformation {
         int wh = w * h;
         int div = radius + radius + 1;
 
-        int r[] = new int[wh];
-        int g[] = new int[wh];
-        int b[] = new int[wh];
+        int[] r = new int[wh];
+        int[] g = new int[wh];
+        int[] b = new int[wh];
         int rsum;
         int gsum;
         int bsum;
@@ -93,11 +101,11 @@ public class FastBlurTransformation extends BitmapTransformation {
         int yp;
         int yi;
         int yw;
-        int vmin[] = new int[Math.max(w, h)];
+        int[] vmin = new int[Math.max(w, h)];
 
         int divsum = (div + 1) >> 1;
         divsum *= divsum;
-        int dv[] = new int[256 * divsum];
+        int[] dv = new int[256 * divsum];
         for (i = 0; i < 256 * divsum; i++) {
             dv[i] = (i / divsum);
         }
@@ -225,8 +233,8 @@ public class FastBlurTransformation extends BitmapTransformation {
             yi = x;
             stackpointer = radius;
             for (y = 0; y < h; y++) {
-                // Preserve alpha channel: ( 0xff000000 & pix[yi] )
-                pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16) | (dv[gsum] << 8) | dv[bsum];
+                // Set alpha to 1
+                pix[yi] = 0xff000000 | (dv[rsum] << 16) | (dv[gsum] << 8) | dv[bsum];
 
                 rsum -= routsum;
                 gsum -= goutsum;
@@ -272,10 +280,5 @@ public class FastBlurTransformation extends BitmapTransformation {
         }
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
         return bitmap;
-    }
-
-    @Override
-    public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
-        messageDigest.update(TAG.getBytes());
     }
 }

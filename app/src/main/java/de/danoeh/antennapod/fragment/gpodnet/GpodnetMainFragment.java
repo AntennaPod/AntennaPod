@@ -1,18 +1,16 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.google.android.material.tabs.TabLayout;
 import de.danoeh.antennapod.R;
 
 /**
@@ -20,73 +18,50 @@ import de.danoeh.antennapod.R;
  */
 public class GpodnetMainFragment extends Fragment {
 
-    private static final String TAG = "GpodnetMainFragment";
-
-    private static final String PREF_LAST_TAB_POSITION = "tab_position";
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
+        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.gpodnet_main_label);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        viewPager = root.findViewById(R.id.viewpager);
-        GpodnetPagerAdapter pagerAdapter = new GpodnetPagerAdapter(getChildFragmentManager(), getResources());
+        ViewPager viewPager = root.findViewById(R.id.viewpager);
+        GpodnetPagerAdapter pagerAdapter = new GpodnetPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 
         // Give the TabLayout the ViewPager
-        tabLayout = root.findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout = root.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         return root;
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        // save our tab selection
-        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PREF_LAST_TAB_POSITION, tabLayout.getSelectedTabPosition());
-        editor.apply();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // restore our last position
-        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
-        viewPager.setCurrentItem(lastPosition);
-    }
-
     public class GpodnetPagerAdapter extends FragmentPagerAdapter {
-
-
         private static final int NUM_PAGES = 2;
         private static final int POS_TOPLIST = 0;
         private static final int POS_TAGS = 1;
         private static final int POS_SUGGESTIONS = 2;
 
-        final Resources resources;
-
-        public GpodnetPagerAdapter(FragmentManager fm, Resources resources) {
+        public GpodnetPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.resources = resources;
         }
 
         @Override
         public Fragment getItem(int i) {
+            Bundle arguments = new Bundle();
+            arguments.putBoolean(PodcastListFragment.ARGUMENT_HIDE_TOOLBAR, true);
             switch (i) {
                 case POS_TAGS:
                     return new TagListFragment();
                 case POS_TOPLIST:
-                    return new PodcastTopListFragment();
+                    PodcastListFragment topListFragment = new PodcastTopListFragment();
+                    topListFragment.setArguments(arguments);
+                    return topListFragment;
                 case POS_SUGGESTIONS:
-                    return new SuggestionListFragment();
+                    PodcastListFragment suggestionsFragment = new SuggestionListFragment();
+                    suggestionsFragment.setArguments(arguments);
+                    return suggestionsFragment;
                 default:
                     return null;
             }

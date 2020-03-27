@@ -18,9 +18,7 @@ public class NthMatcher {
             @Override
             public boolean matches(final Object item) {
                 if (matcher.matches(item)) {
-                    if (count.incrementAndGet() == index) {
-                        return true;
-                    }
+                    return count.incrementAndGet() == index;
                 }
                 return false;
             }

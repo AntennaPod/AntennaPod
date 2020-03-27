@@ -7,14 +7,8 @@ import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.UiThread;
-import androidx.core.app.NavUtils;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,29 +19,23 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.UiThread;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import org.apache.commons.lang3.StringUtils;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -73,6 +61,16 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Downloads a feed from a feed URL and parses it. Subclasses can display the
@@ -115,6 +113,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         listView = findViewById(R.id.listview);
         progressBar = findViewById(R.id.progressBar);
 
+        findViewById(R.id.transparentBackground).setOnClickListener(v -> finish());
+        findViewById(R.id.card).setOnClickListener(null);
+
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
             feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
@@ -126,11 +127,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         if (feedUrl == null) {
             Log.e(TAG, "feedUrl is null.");
-            new AlertDialog.Builder(OnlineFeedViewActivity.this).
-                    setNeutralButton(android.R.string.ok,
-                    (dialog, which) -> finish()).
-                    setTitle(R.string.error_label).
-                    setMessage(R.string.null_value_podcast_error).create().show();
+            new AlertDialog.Builder(OnlineFeedViewActivity.this)
+                    .setNeutralButton(android.R.string.ok, (dialog, which) -> finish())
+                    .setTitle(R.string.error_label)
+                    .setMessage(R.string.null_value_podcast_error)
+                    .show();
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
             setLoadingLayout();
@@ -230,17 +231,18 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, null);
         if (username != null && password != null) {
-            feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, username, password));
+            feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF, username, password));
         }
         String fileUrl = new File(getExternalCacheDir(),
                 FileNameGenerator.generateFileName(feed.getDownload_url())).toString();
         feed.setFile_url(fileUrl);
         final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
                 feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password,
-                true, null);
+                true, null, true);
 
         download = Observable.fromCallable(() -> {
                     feeds = DBReader.getFeedList();
+                    ClientConfig.installSslProvider(this);
                     downloader = new HttpDownloader(request);
                     downloader.call();
                     return downloader.getResult();
@@ -368,13 +370,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         findViewById(R.id.feedDisplay).setVisibility(View.VISIBLE);
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
-        listView.setSelector(android.R.color.transparent);
-        listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
         ImageView cover = findViewById(R.id.imgvCover);
         ImageView headerBackground = findViewById(R.id.imgvBackground);
-        findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
-        findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         headerBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
         TextView title = findViewById(R.id.txtvTitle);
         TextView author = findViewById(R.id.txtvAuthor);
@@ -382,6 +380,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         View header = View.inflate(this, R.layout.onlinefeedview_header, null);
         listView.addHeaderView(header);
+        listView.setSelector(android.R.color.transparent);
+        listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
+
         TextView description = header.findViewById(R.id.txtvDescription);
 
         subscribeButton = findViewById(R.id.butSubscribe);
@@ -577,6 +578,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             titles.add(urlsMap.get(url));
         }
 
+        if (urls.size() == 1) {
+            // Skip dialog and display the item directly
+            resetIntent(urls.get(0), titles.get(0));
+            startFeedDownload(urls.get(0), null, null);
+            return true;
+        }
+
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(OnlineFeedViewActivity.this, R.layout.ellipsize_start_listitem, R.id.txtvTitle, titles);
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
             String selectedUrl = urls.get(which);
@@ -610,7 +618,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         private final String feedUrl;
 
         FeedViewAuthenticationDialog(Context context, int titleRes, String feedUrl) {
-            super(context, titleRes, true, false, null, null);
+            super(context, titleRes, true, null, null);
             this.feedUrl = feedUrl;
         }
 
@@ -621,7 +629,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+        protected void onConfirmed(String username, String password) {
             startFeedDownload(feedUrl, username, password);
         }
     }

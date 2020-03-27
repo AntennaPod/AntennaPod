@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.apache.commons.lang3.Validate;
-
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.receiver.SPAReceiver;
 
@@ -21,7 +19,6 @@ public class SPAUtil {
 
     private SPAUtil() {
     }
-
 
     /**
      * Sends an ACTION_SP_APPS_QUERY_FEEDS intent to all AntennaPod Single Purpose apps.
@@ -51,19 +48,6 @@ public class SPAUtil {
             return true;
         } else {
             return false;
-        }
-    }
-
-    /**
-     * Resets all preferences created by this class. Should only be used for debug purposes.
-     */
-    public static void resetSPAPreferences(Context c) {
-        if (BuildConfig.DEBUG) {
-            Validate.notNull(c);
-            SharedPreferences.Editor editor = PreferenceManager
-                    .getDefaultSharedPreferences(c.getApplicationContext()).edit();
-            editor.putBoolean(PREF_HAS_QUERIED_SP_APPS, false);
-            editor.apply();
         }
     }
 }

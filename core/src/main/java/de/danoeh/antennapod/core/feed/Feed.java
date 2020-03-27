@@ -171,7 +171,7 @@ public class Feed extends FeedFile implements ImageResource {
      */
     public Feed(String url, String lastUpdate, String title, String username, String password) {
         this(url, lastUpdate, title);
-        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, username, password);
+        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF, username, password);
     }
 
     public static Feed fromCursor(Cursor cursor) {
@@ -222,14 +222,6 @@ public class Feed extends FeedFile implements ImageResource {
         FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
         feed.setPreferences(preferences);
         return feed;
-    }
-
-    /**
-     * Returns the number of FeedItems.
-     *
-     */
-    public int getNumOfItems() {
-        return items.size();
     }
 
     /**

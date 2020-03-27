@@ -38,6 +38,7 @@ public class IntentUtils {
     public static void openInBrowser(Context context, String url) {
         try {
             Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(myIntent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, R.string.pref_no_browser_found, Toast.LENGTH_LONG).show();

@@ -9,11 +9,6 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!-- ACCESS_FINE_LOCATION is needed only on Android 10+,
-        for Automatic Download Wifi filter's UI, which uses
-        WifiManager.WifiManager.getConfiguredNetworks()
-      -->
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"

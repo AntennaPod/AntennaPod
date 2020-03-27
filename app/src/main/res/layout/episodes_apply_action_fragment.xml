@@ -4,17 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_alignParentTop="true"
+        app:navigationIcon="?homeAsUpIndicator"
+        android:id="@+id/toolbar"/>
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/toolbar"
         android:layout_marginTop="0dp" />
 
     <com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:id="@+id/fabSDOverlay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar" />
     <!-- The FAB SpeedDial
          1. MUST be placed at the bottom of the layout xml to ensure it is at the front,
             clickable on Pre-Lollipop devices (that do not support elevation).

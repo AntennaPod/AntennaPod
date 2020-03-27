@@ -12,7 +12,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -49,6 +48,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
+    public static final int VERSION = 1090000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -69,7 +69,6 @@ public class PodDBAdapter {
     public static final String KEY_POSITION = "position";
     public static final String KEY_SIZE = "filesize";
     public static final String KEY_MIME_TYPE = "mime_type";
-    public static final String KEY_IMAGE = "image";
     public static final String KEY_IMAGE_URL = "image_url";
     public static final String KEY_FEED = "feed";
     public static final String KEY_MEDIA = "media";
@@ -97,6 +96,7 @@ public class PodDBAdapter {
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
     public static final String KEY_KEEP_UPDATED = "keep_updated";
     public static final String KEY_AUTO_DELETE_ACTION = "auto_delete_action";
+    public static final String KEY_FEED_VOLUME_ADAPTION = "feed_volume_adaption";
     public static final String KEY_PLAYED_DURATION = "played_duration";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
@@ -144,7 +144,8 @@ public class PodDBAdapter {
             + KEY_SORT_ORDER + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
-            + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ")";
+            + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
+            + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -181,7 +182,7 @@ public class PodDBAdapter {
     private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
             + TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
-            + KEY_LINK + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
+            + KEY_LINK + " TEXT," + KEY_IMAGE_URL + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
 
     // SQL Statements for creating indexes
     static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
@@ -241,6 +242,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_SORT_ORDER,
             TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_ADAPTION,
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED
@@ -282,10 +284,13 @@ public class PodDBAdapter {
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
      */
     private static final String SEL_FI_SMALL_STR;
+    private static final String FEED_SEL_STD_STR;
 
     static {
         String selFiSmall = Arrays.toString(FEEDITEM_SEL_FI_SMALL);
         SEL_FI_SMALL_STR = selFiSmall.substring(1, selFiSmall.length() - 1);
+        String selFeedSmall = Arrays.toString(FEED_SEL_STD);
+        FEED_SEL_STD_STR = selFeedSmall.substring(1, selFeedSmall.length() - 1);
     }
 
     /**
@@ -403,6 +408,7 @@ public class PodDBAdapter {
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
         values.put(KEY_KEEP_UPDATED, prefs.getKeepUpdated());
         values.put(KEY_AUTO_DELETE_ACTION, prefs.getAutoDeleteAction().ordinal());
+        values.put(KEY_FEED_VOLUME_ADAPTION, prefs.getVolumeAdaptionSetting().toInteger());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
@@ -667,6 +673,7 @@ public class PodDBAdapter {
             values.put(KEY_START, chapter.getStart());
             values.put(KEY_FEEDITEM, item.getId());
             values.put(KEY_LINK, chapter.getLink());
+            values.put(KEY_IMAGE_URL, chapter.getImageUrl());
             values.put(KEY_CHAPTER_TYPE, chapter.getChapterType());
             if (chapter.getId() == 0) {
                 chapter.setId(db.insert(TABLE_NAME_SIMPLECHAPTERS, null, values));
@@ -1271,21 +1278,29 @@ public class PodDBAdapter {
         }
 
         String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " LEFT JOIN " + TABLE_NAME_SIMPLECHAPTERS
-                + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM
-                + "=" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
-                + " LEFT JOIN " + TABLE_NAME_FEEDS
-                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED
-                + "=" + TABLE_NAME_FEEDS + "." + KEY_ID
                 + " WHERE " + queryFeedId + " AND ("
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_CONTENT_ENCODED + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEEDS + "." + KEY_AUTHOR + " LIKE '%" + preparedQuery + "%' OR "
-                + TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER + " LIKE '%" + preparedQuery + "%'"
+                + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_CONTENT_ENCODED + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_TITLE + " LIKE '%" + preparedQuery + "%'"
                 + ") ORDER BY " + KEY_PUBDATE + " DESC "
-                + "LIMIT 500";
+                + "LIMIT 300";
+        return db.rawQuery(query, null);
+    }
+
+    /**
+     * Searches for the given query in various values of all feeds.
+     *
+     * @return A cursor with all search results in SEL_FI_EXTRA selection.
+     */
+    public Cursor searchFeeds(String searchQuery) {
+        String preparedQuery = prepareSearchQuery(searchQuery);
+        String query = "SELECT " + FEED_SEL_STD_STR + " FROM " + TABLE_NAME_FEEDS + " WHERE "
+                + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_CUSTOM_TITLE + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_AUTHOR + " LIKE '%" + preparedQuery + "%' OR "
+                + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' "
+                + "ORDER BY " + KEY_TITLE + " ASC "
+                + "LIMIT 300";
         return db.rawQuery(query, null);
     }
 
@@ -1333,11 +1348,6 @@ public class PodDBAdapter {
      * Helper class for opening the Antennapod database.
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
-
-        private static final int VERSION = 1070401;
-
-        private final Context context;
-
         /**
          * Constructor.
          *
@@ -1345,10 +1355,8 @@ public class PodDBAdapter {
          * @param name    Name of the database
          * @param factory to use for creating cursor objects
          */
-        public PodDBHelper(final Context context, final String name,
-                           final CursorFactory factory) {
+        public PodDBHelper(final Context context, final String name, final CursorFactory factory) {
             super(context, name, factory, VERSION, new PodDbErrorHandler());
-            this.context = context;
         }
 
         @Override
@@ -1367,14 +1375,11 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
-
         }
 
         @Override
-        public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
-                              final int newVersion) {
-            Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
-                    + newVersion + ".");
+        public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
+            Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
         }
     }

@@ -1,77 +1,45 @@
 package de.danoeh.antennapod.core.export.html;
 
-import android.text.TextUtils;
+import android.content.Context;
 import android.util.Log;
-import android.util.Xml;
-
-import org.xmlpull.v1.XmlSerializer;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
-
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.feed.Feed;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
+import java.util.List;
+import org.apache.commons.io.IOUtils;
 
 /** Writes HTML documents. */
 public class HtmlWriter implements ExportWriter {
-
     private static final String TAG = "HtmlWriter";
-    private static final String ENCODING = "UTF-8";
-    private static final String HTML_TITLE = "AntennaPod Subscriptions";
 
     /**
      * Takes a list of feeds and a writer and writes those into an HTML
      * document.
-     *
-     * @throws IOException
-     * @throws IllegalStateException
-     * @throws IllegalArgumentException
      */
     @Override
-    public void writeDocument(List<Feed> feeds, Writer writer)
+    public void writeDocument(List<Feed> feeds, Writer writer, Context context)
             throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
-        XmlSerializer xs = Xml.newSerializer();
-        xs.setFeature(HtmlSymbols.XML_FEATURE_INDENT_OUTPUT, true);
-        xs.setOutput(writer);
 
-        xs.startDocument(ENCODING, false);
-        xs.startTag(null, HtmlSymbols.HTML);
-        xs.startTag(null, HtmlSymbols.HEAD);
-        xs.startTag(null, HtmlSymbols.TITLE);
-        xs.text(HTML_TITLE);
-        xs.endTag(null, HtmlSymbols.TITLE);
-        xs.endTag(null, HtmlSymbols.HEAD);
+        InputStream templateStream = context.getAssets().open("html-export-template.html");
+        String template = IOUtils.toString(templateStream, "UTF-8");
+        String[] templateParts = template.split("\\{FEEDS\\}");
 
-        xs.startTag(null, HtmlSymbols.BODY);
-        xs.startTag(null, HtmlSymbols.HEADING);
-        xs.text(HTML_TITLE);
-        xs.endTag(null, HtmlSymbols.HEADING);
-        xs.startTag(null, HtmlSymbols.ORDERED_LIST);
+        writer.append(templateParts[0]);
         for (Feed feed : feeds) {
-            xs.startTag(null, HtmlSymbols.LIST_ITEM);
-            xs.text(feed.getTitle());
-            if (!TextUtils.isEmpty(feed.getLink())) {
-                xs.text(" [");
-                xs.startTag(null, HtmlSymbols.LINK);
-                xs.attribute(null, HtmlSymbols.LINK_DESTINATION, feed.getLink());
-                xs.text("Website");
-                xs.endTag(null, HtmlSymbols.LINK);
-                xs.text("]");
-            }
-            xs.text(" [");
-            xs.startTag(null, HtmlSymbols.LINK);
-            xs.attribute(null, HtmlSymbols.LINK_DESTINATION, feed.getDownload_url());
-            xs.text("Feed");
-            xs.endTag(null, HtmlSymbols.LINK);
-            xs.text("]");
-            xs.endTag(null, HtmlSymbols.LIST_ITEM);
+            writer.append("<li><div><img src=\"");
+            writer.append(feed.getImageUrl());
+            writer.append("\" /><p>");
+            writer.append(feed.getTitle());
+            writer.append(" <span><a href=\"");
+            writer.append(feed.getLink());
+            writer.append("\">Website</a> • <a href=\"");
+            writer.append(feed.getDownload_url());
+            writer.append("\">Feed</a></span></p></div></li>\n");
         }
-        xs.endTag(null, HtmlSymbols.ORDERED_LIST);
-        xs.endTag(null, HtmlSymbols.BODY);
-        xs.endTag(null, HtmlSymbols.HTML);
-        xs.endDocument();
+        writer.append(templateParts[1]);
         Log.d(TAG, "Finished writing document");
     }
 

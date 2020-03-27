@@ -1,182 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical">
+        android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:focusableInTouchMode="true"
-            android:padding="8dp">
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:title="@string/add_feed_label"
+            app:navigationIcon="?homeAsUpIndicator"
+            android:id="@+id/toolbar"/>
 
-        <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp"
-                android:elevation="16dp"
-                android:layout_margin="8dp">
+                android:orientation="horizontal">
 
-            <LinearLayout
+            <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:contentDescription="@string/search_podcast_hint"
+                    app:srcCompat="?attr/action_search"
+                    android:id="@+id/search_icon"
+                    android:scaleType="center"/>
+
+            <EditText
+                    android:id="@+id/combinedFeedSearchBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
+                    android:importantForAutofill="no"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:hint="@string/search_podcast_hint"
+                    android:background="@null"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:focusableInTouchMode="true"
+                android:padding="16dp">
+
+            <fragment
+                    android:id="@+id/quickFeedDiscovery"
+                    android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="@string/advanced"
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="?android:attr/textColorPrimary"/>
 
-                <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:contentDescription="@string/search_podcast_hint"
-                        app:srcCompat="?attr/action_search"
-                        android:id="@+id/search_icon"
-                        android:scaleType="center"/>
-
-                <EditText
-                        android:id="@+id/combinedFeedSearchBox"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:inputType="text"
-                        android:imeOptions="actionSearch"
-                        android:importantForAutofill="no"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginLeft="0dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
-                        android:hint="@string/search_podcast_hint"
-                        android:background="@null"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <fragment
-                android:id="@+id/quickFeedDiscovery"
-                android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"/>
-
-        <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp"
-                android:elevation="8dp"
-                android:layout_margin="8dp">
-
-            <LinearLayout
+            <TextView
+                    android:id="@+id/btn_add_via_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:orientation="vertical">
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="?attr/content_new"
+                    app:drawableLeftCompat="?attr/content_new"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:clickable="true"
+                    android:text="@string/add_podcast_by_url"/>
 
-                <TextView
-                        android:id="@+id/txtvFeedurl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/txtvfeedurl_label"
-                        android:textSize="18sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginStart="4dp"
-                        android:textColor="?android:attr/textColorPrimary"/>
-
-                <EditText
-                        android:id="@+id/etxtFeedurl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:cursorVisible="true"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:hint="@string/etxtFeedurlHint"
-                        android:inputType="textUri"/>
-
-                <Button
-                        android:id="@+id/butConfirm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:text="@string/confirm_label"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="4dp"
-                android:elevation="8dp"
-                android:layout_margin="8dp">
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
+            <TextView
+                    android:id="@+id/btn_search_itunes"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal">
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="?attr/action_search"
+                    app:drawableLeftCompat="?attr/action_search"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:clickable="true"
+                    android:text="@string/search_itunes_label"/>
 
-                <LinearLayout
-                        android:id="@+id/advanced_search"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:padding="8dp"
-                        android:background="?android:attr/selectableItemBackground">
+            <TextView
+                    android:id="@+id/btn_search_fyyd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="?attr/action_search"
+                    app:drawableLeftCompat="?attr/action_search"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:clickable="true"
+                    android:text="@string/search_fyyd_label"/>
 
-                    <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/advanced_search"
-                            app:srcCompat="?attr/action_search"
-                            android:scaleType="center"
-                            android:layout_marginBottom="4dp"/>
+            <TextView
+                    android:id="@+id/btn_search_gpodder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="?attr/action_search"
+                    app:drawableLeftCompat="?attr/action_search"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:clickable="true"
+                    android:text="@string/browse_gpoddernet_label"/>
 
-                    <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/advanced_search"
-                            android:textAlignment="center"
-                            android:textColor="?android:attr/textColorPrimary"/>
-                </LinearLayout>
-
-                <LinearLayout
-                        android:id="@+id/btn_opml_import"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal"
-                        android:padding="8dp"
-                        android:background="?android:attr/selectableItemBackground">
-
-                    <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="match_parent"
-                            android:contentDescription="@string/opml_import_label"
-                            app:srcCompat="?attr/av_download"
-                            android:scaleType="center"
-                            android:layout_marginBottom="4dp"/>
-
-                    <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/opml_import_label"
-                            android:textAlignment="center"
-                            android:textColor="?android:attr/textColorPrimary"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-
-</ScrollView>
+            <TextView
+                    android:id="@+id/btn_opml_import"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="?attr/av_download"
+                    app:drawableLeftCompat="?attr/av_download"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:clickable="true"
+                    android:text="@string/opml_import_label"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

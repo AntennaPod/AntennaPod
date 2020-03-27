@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.dialog.RatingDialog;
+import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
 import org.hamcrest.Matcher;
@@ -31,7 +32,9 @@ import java.util.concurrent.TimeoutException;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
@@ -70,8 +73,7 @@ public class EspressoTestUtils {
                     }
 
                     uiController.loopMainThreadForAtLeast(50);
-                }
-                while (System.currentTimeMillis() < endTime);
+                } while (System.currentTimeMillis() < endTime);
 
                 // timeout happens
                 throw new PerformException.Builder()
@@ -116,8 +118,8 @@ public class EspressoTestUtils {
         String[] sharedPreferencesFileNames = new File(root, "shared_prefs").list();
         for (String fileName : sharedPreferencesFileNames) {
             System.out.println("Cleared database: " + fileName);
-            InstrumentationRegistry.getTargetContext().
-                    getSharedPreferences(fileName.replace(".xml", ""), Context.MODE_PRIVATE).edit().clear().commit();
+            InstrumentationRegistry.getTargetContext().getSharedPreferences(
+                    fileName.replace(".xml", ""), Context.MODE_PRIVATE).edit().clear().commit();
         }
     }
 
@@ -132,9 +134,10 @@ public class EspressoTestUtils {
     }
 
     public static void setLastNavFragment(String tag) {
-        InstrumentationRegistry.getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE)
+        InstrumentationRegistry.getTargetContext().getSharedPreferences(
+                NavDrawerFragment.PREF_NAME, Context.MODE_PRIVATE)
                 .edit()
-                .putString(MainActivity.PREF_LAST_FRAGMENT_TAG, tag)
+                .putString(NavDrawerFragment.PREF_LAST_FRAGMENT_TAG, tag)
                 .commit();
     }
 
@@ -191,5 +194,9 @@ public class EspressoTestUtils {
             e.printStackTrace();
         }
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+    }
+
+    public static Matcher<View> actionBarOverflow() {
+        return allOf(isDisplayed(), withContentDescription("More options"));
     }
 }

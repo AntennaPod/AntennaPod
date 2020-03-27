@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.asynctask;
 
+import android.content.Context;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
@@ -25,15 +26,17 @@ public class ExportWorker {
 
     private final @NonNull ExportWriter exportWriter;
     private final @NonNull File output;
+    private final Context context;
 
-    public ExportWorker(@NonNull ExportWriter exportWriter) {
+    public ExportWorker(@NonNull ExportWriter exportWriter, Context context) {
         this(exportWriter, new File(UserPreferences.getDataFolder(EXPORT_DIR),
-                DEFAULT_OUTPUT_NAME + "." + exportWriter.fileExtension()));
+                DEFAULT_OUTPUT_NAME + "." + exportWriter.fileExtension()), context);
     }
 
-    private ExportWorker(@NonNull ExportWriter exportWriter, @NonNull File output) {
+    private ExportWorker(@NonNull ExportWriter exportWriter, @NonNull File output, Context context) {
         this.exportWriter = exportWriter;
         this.output = output;
+        this.context = context;
     }
 
     public Observable<File> exportObservable() {
@@ -45,7 +48,7 @@ public class ExportWorker {
             OutputStreamWriter writer = null;
             try {
                 writer = new OutputStreamWriter(new FileOutputStream(output), LangUtils.UTF_8);
-                exportWriter.writeDocument(DBReader.getFeedList(), writer);
+                exportWriter.writeDocument(DBReader.getFeedList(), writer, context);
                 subscriber.onNext(output);
             } catch (IOException e) {
                 subscriber.onError(e);

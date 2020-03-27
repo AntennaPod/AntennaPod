@@ -120,10 +120,6 @@ public class ItemEnqueuePositionCalculatorTest {
             return ItemEnqueuePositionCalculatorTest.getCurrentlyPlaying(idCurrentlyPlaying);
         }
 
-        private static Playable externalMedia() {
-            return new ExternalMedia("http://example.com/episode.mp3", MediaType.AUDIO);
-        }
-
         private static final long ID_CURRENTLY_PLAYING_NULL = -1L;
         private static final long ID_CURRENTLY_PLAYING_NOT_FEEDMEDIA = -9999L;
 
@@ -226,9 +222,7 @@ public class ItemEnqueuePositionCalculatorTest {
         private static FeedItem setAsDownloading(int id, DownloadStateProvider stubDownloadStateProvider,
                                                  boolean isDownloading) {
             FeedItem item = createFeedItem(id);
-            FeedMedia media =
-                    new FeedMedia(item, "http://download.url.net/" + id
-                            , 100000 + id, "audio/mp3");
+            FeedMedia media = new FeedMedia(item, "http://download.url.net/" + id, 100000 + id, "audio/mp3");
             media.setId(item.getId());
             item.setMedia(media);
             return setAsDownloading(item, stubDownloadStateProvider, isDownloading);

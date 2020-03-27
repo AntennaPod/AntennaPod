@@ -13,26 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.collection.ArrayMap;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -42,6 +33,12 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.SortOrder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class EpisodesApplyActionFragment extends Fragment {
 
@@ -55,6 +52,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     public static final int ACTION_DELETE = 32;
     private static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
             | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
+    private Toolbar toolbar;
 
     /**
      * Specify an action (defined by #flag) 's UI bindings.
@@ -76,20 +74,15 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private final List<? extends ActionBinding> actionBindings;
-
-    private ListView mListView;
-    private ArrayAdapter<String> mAdapter;
-
-    private SpeedDialView mSpeedDialView;
-    @NonNull
-    private CharSequence actionBarTitleOriginal = "";
-
-    private final Map<Long,FeedItem> idMap = new ArrayMap<>();
+    private final Map<Long, FeedItem> idMap = new ArrayMap<>();
     private final List<FeedItem> episodes = new ArrayList<>();
     private int actions;
     private final List<String> titles = new ArrayList<>();
     private final LongList checkedIds = new LongList();
 
+    private ListView mListView;
+    private ArrayAdapter<String> mAdapter;
+    private SpeedDialView mSpeedDialView;
     private MenuItem mSelectToggle;
 
     public EpisodesApplyActionFragment() {
@@ -116,7 +109,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     public static EpisodesApplyActionFragment newInstance(List<FeedItem> items, int actions) {
         EpisodesApplyActionFragment f = new EpisodesApplyActionFragment();
         f.episodes.addAll(items);
-        for(FeedItem episode : items) {
+        for (FeedItem episode : items) {
             f.idMap.put(episode.getId(), episode);
         }
         f.actions = actions;
@@ -137,7 +130,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
         mListView = view.findViewById(android.R.id.list);
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        mListView.setOnItemClickListener((ListView, view1, position, rowId) -> {
+        mListView.setOnItemClickListener((listView, view1, position, rowId) -> {
             long id = episodes.get(position).getId();
             if (checkedIds.contains(id)) {
                 checkedIds.remove(id);
@@ -177,8 +170,8 @@ public class EpisodesApplyActionFragment extends Fragment {
         mAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.simple_list_item_multiple_choice_on_start, titles);
         mListView.setAdapter(mAdapter);
-
-        saveActionBarTitle(); // needed when we dynamically change the title based on selection
+        toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         // Init action UI (via a FAB Speed Dial)
         mSpeedDialView = view.findViewById(R.id.fabSD);
@@ -206,16 +199,8 @@ public class EpisodesApplyActionFragment extends Fragment {
             }
             return true;
         });
-
-        showSpeedDialIfAnyChecked();
-
+        refreshCheckboxes();
         return view;
-    }
-
-    @Override
-    public void onStop() {
-        restoreActionBarTitle(); // it might have been changed to "N selected". Restore original.
-        super.onStop();
     }
 
     private void showSpeedDialIfAnyChecked() {
@@ -245,7 +230,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu (Menu menu) {
+    public void onPrepareOptionsMenu(Menu menu) {
         // Prepare icon for select toggle button
 
         int[] icon = new int[1];
@@ -327,8 +312,8 @@ public class EpisodesApplyActionFragment extends Fragment {
                     return true;
                 }
         }
-        if(resId != 0) {
-            Snackbar.make(getActivity().findViewById(R.id.content), resId, Snackbar.LENGTH_SHORT)
+        if (resId != 0) {
+            Snackbar.make(getActivity().findViewById(android.R.id.content), resId, Snackbar.LENGTH_SHORT)
                     .show();
             return true;
         } else {
@@ -345,7 +330,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void checkAll() {
         for (FeedItem episode : episodes) {
-            if(!checkedIds.contains(episode.getId())) {
+            if (!checkedIds.contains(episode.getId())) {
                 checkedIds.add(episode.getId());
             }
         }
@@ -359,12 +344,12 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void checkPlayed(boolean isPlayed) {
         for (FeedItem episode : episodes) {
-            if(episode.isPlayed() == isPlayed) {
-                if(!checkedIds.contains(episode.getId())) {
+            if (episode.isPlayed() == isPlayed) {
+                if (!checkedIds.contains(episode.getId())) {
                     checkedIds.add(episode.getId());
                 }
             } else {
-                if(checkedIds.contains(episode.getId())) {
+                if (checkedIds.contains(episode.getId())) {
                     checkedIds.remove(episode.getId());
                 }
             }
@@ -374,12 +359,12 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void checkDownloaded(boolean isDownloaded) {
         for (FeedItem episode : episodes) {
-            if(episode.hasMedia() && episode.getMedia().isDownloaded() == isDownloaded) {
-                if(!checkedIds.contains(episode.getId())) {
+            if (episode.hasMedia() && episode.getMedia().isDownloaded() == isDownloaded) {
+                if (!checkedIds.contains(episode.getId())) {
                     checkedIds.add(episode.getId());
                 }
             } else {
-                if(checkedIds.contains(episode.getId())) {
+                if (checkedIds.contains(episode.getId())) {
                     checkedIds.remove(episode.getId());
                 }
             }
@@ -389,7 +374,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void checkQueued(boolean isQueued) {
         for (FeedItem episode : episodes) {
-            if(episode.isTagged(FeedItem.TAG_QUEUE) == isQueued) {
+            if (episode.isTagged(FeedItem.TAG_QUEUE) == isQueued) {
                 checkedIds.add(episode.getId());
             } else {
                 checkedIds.remove(episode.getId());
@@ -400,7 +385,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void checkWithMedia() {
         for (FeedItem episode : episodes) {
-            if(episode.hasMedia()) {
+            if (episode.hasMedia()) {
                 checkedIds.add(episode.getId());
             } else {
                 checkedIds.remove(episode.getId());
@@ -411,7 +396,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void refreshTitles() {
         titles.clear();
-        for(FeedItem episode : episodes) {
+        for (FeedItem episode : episodes) {
             titles.add(episode.getTitle());
         }
         mAdapter.notifyDataSetChanged();
@@ -425,40 +410,19 @@ public class EpisodesApplyActionFragment extends Fragment {
         }
         ActivityCompat.invalidateOptionsMenu(EpisodesApplyActionFragment.this.getActivity());
         showSpeedDialIfAnyChecked();
-        updateActionBarTitle();
-    }
-
-    private void saveActionBarTitle() {
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            CharSequence title = actionBar.getTitle();
-            if (title == null) {
-                title = "";
-            }
-            actionBarTitleOriginal = title;
-        }
-    }
-
-    private void restoreActionBarTitle() {
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(actionBarTitleOriginal);
-        }
-    }
-
-    private void updateActionBarTitle() {
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            CharSequence title = checkedIds.size() > 0 ?
-                    getString(R.string.num_selected_label, checkedIds.size()) :
-                    actionBarTitleOriginal;
-            actionBar.setTitle(title);
-        }
+        toolbar.setTitle(getString(R.string.num_selected_label, checkedIds.size()));
     }
 
     private void queueChecked() {
-        DBWriter.addQueueItem(getActivity(), true, checkedIds.toArray());
-        close(R.plurals.added_to_queue_batch_label, checkedIds.size());
+        // Check if an episode actually contains any media files before adding it to queue
+        LongList toQueue = new LongList(checkedIds.size());
+        for (FeedItem episode : episodes) {
+            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
+                toQueue.add(episode.getId());
+            }
+        }
+        DBWriter.addQueueItem(getActivity(), true, toQueue.toArray());
+        close(R.plurals.added_to_queue_batch_label, toQueue.size());
     }
 
     private void removeFromQueueChecked() {
@@ -479,13 +443,13 @@ public class EpisodesApplyActionFragment extends Fragment {
     private void downloadChecked() {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
-        for(FeedItem episode : episodes) {
-            if(checkedIds.contains(episode.getId()) && episode.hasMedia()) {
+        for (FeedItem episode : episodes) {
+            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
                 toDownload.add(episode);
             }
         }
         try {
-            DownloadRequester.getInstance().downloadMedia(getActivity(), toDownload.toArray(new FeedItem[0]));
+            DownloadRequester.getInstance().downloadMedia(getActivity(), true, toDownload.toArray(new FeedItem[0]));
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
@@ -494,9 +458,9 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void deleteChecked() {
-        for(long id : checkedIds.toArray()) {
+        for (long id : checkedIds.toArray()) {
             FeedItem episode = idMap.get(id);
-            if(episode.hasMedia()) {
+            if (episode.hasMedia()) {
                 DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());
             }
         }
@@ -505,11 +469,11 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void close(@PluralsRes int msgId, int numItems) {
         if (numItems > 0) {
-            Snackbar.make(getActivity().findViewById(R.id.content),
+            Snackbar.make(getActivity().findViewById(android.R.id.content),
                     getResources().getQuantityString(msgId, numItems, numItems),
                     Snackbar.LENGTH_LONG
                     )
-                    .setAction(android.R.string.ok, v -> {})
+                    .setAction(android.R.string.ok, v -> { })
                     .show();
         }
         getActivity().getSupportFragmentManager().popBackStack();

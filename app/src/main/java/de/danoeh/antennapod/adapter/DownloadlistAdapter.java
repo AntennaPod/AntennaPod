@@ -5,23 +5,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.view.CircularProgressBar;
 
 public class DownloadlistAdapter extends BaseAdapter {
 
     private final ItemAccess itemAccess;
     private final Context context;
 
-    public DownloadlistAdapter(Context context,
-                               ItemAccess itemAccess) {
+    public DownloadlistAdapter(Context context, ItemAccess itemAccess) {
         super();
         this.context = context;
         this.itemAccess = itemAccess;
@@ -47,47 +49,44 @@ public class DownloadlistAdapter extends BaseAdapter {
         Holder holder;
         Downloader downloader = getItem(position);
         DownloadRequest request = downloader.getDownloadRequest();
-        // Inflate layout
         if (convertView == null) {
             holder = new Holder();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.downloadlist_item, parent, false);
             holder.title = convertView.findViewById(R.id.txtvTitle);
-            holder.downloaded = convertView
-                    .findViewById(R.id.txtvDownloaded);
-            holder.percent = convertView
-                    .findViewById(R.id.txtvPercent);
-            holder.progbar = convertView
-                    .findViewById(R.id.progProgress);
-            holder.butSecondary = convertView
-                    .findViewById(R.id.butSecondaryAction);
-
+            holder.status = convertView.findViewById(R.id.txtvStatus);
+            holder.secondaryActionButton = convertView.findViewById(R.id.secondaryActionButton);
+            holder.secondaryActionIcon = convertView.findViewById(R.id.secondaryActionIcon);
+            holder.secondaryActionProgress = convertView.findViewById(R.id.secondaryActionProgress);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
 
         holder.title.setText(request.getTitle());
+        holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.navigation_cancel));
+        holder.secondaryActionButton.setTag(downloader);
+        holder.secondaryActionButton.setOnClickListener(butSecondaryListener);
+        holder.secondaryActionProgress.setPercentage(0, request);
 
-        holder.progbar.setIndeterminate(request.getSoFar() <= 0);
-
-        String strDownloaded = Converter.byteToString(request.getSoFar());
-        if (request.getSize() != DownloadStatus.SIZE_UNKNOWN) {
-            strDownloaded += " / " + Converter.byteToString(request.getSize());
-            holder.percent.setText(request.getProgressPercent() + "%");
-            holder.progbar.setProgress(request.getProgressPercent());
-            holder.percent.setVisibility(View.VISIBLE);
-        } else {
-            holder.progbar.setProgress(0);
-            holder.percent.setVisibility(View.INVISIBLE);
+        String status = "";
+        if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            status += context.getString(R.string.download_type_feed);
+        } else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+            status += context.getString(R.string.download_type_media);
         }
-
-        holder.downloaded.setText(strDownloaded);
-
-        holder.butSecondary.setFocusable(false);
-        holder.butSecondary.setTag(downloader);
-        holder.butSecondary.setOnClickListener(butSecondaryListener);
+        status += " · ";
+        if (request.getSoFar() <= 0) {
+            status += context.getString(R.string.download_pending);
+        } else {
+            status += Converter.byteToString(request.getSoFar());
+            if (request.getSize() != DownloadStatus.SIZE_UNKNOWN) {
+                status += " / " + Converter.byteToString(request.getSize());
+                holder.secondaryActionProgress.setPercentage(
+                        0.01f * Math.max(1, request.getProgressPercent()), request);
+            }
+        }
+        holder.status.setText(status);
 
         return convertView;
     }
@@ -102,10 +101,10 @@ public class DownloadlistAdapter extends BaseAdapter {
 
     static class Holder {
         TextView title;
-        TextView downloaded;
-        TextView percent;
-        ProgressBar progbar;
-        ImageButton butSecondary;
+        TextView status;
+        View secondaryActionButton;
+        ImageView secondaryActionIcon;
+        CircularProgressBar secondaryActionProgress;
     }
 
     public interface ItemAccess {

@@ -1,61 +1,85 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.ListFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
+import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
+import de.danoeh.antennapod.adapter.actionbutton.DeleteActionButton;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_ADD_TO_QUEUE;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
 
 /**
- * Displays all running downloads and provides a button to delete them
+ * Displays all completed downloads and provides a button to delete them.
  */
-public class CompletedDownloadsFragment extends ListFragment {
+public class CompletedDownloadsFragment extends Fragment {
 
     private static final String TAG = CompletedDownloadsFragment.class.getSimpleName();
 
     private List<FeedItem> items = new ArrayList<>();
-    private DownloadedEpisodesListAdapter listAdapter;
+    private CompletedDownloadsListAdapter adapter;
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
     private Disposable disposable;
+    private EmptyViewHandler emptyView;
 
     @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
-        addVerticalPadding();
-        addEmptyView();
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
+        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.GONE);
 
-        listAdapter = new DownloadedEpisodesListAdapter(getActivity(), itemAccess);
-        setListAdapter(listAdapter);
-        setListShown(false);
+        recyclerView = root.findViewById(R.id.recyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setVisibility(View.GONE);
+        adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
+        recyclerView.setAdapter(adapter);
+        progressBar = root.findViewById(R.id.progLoading);
+
+        addEmptyView();
         EventBus.getDefault().register(this);
+        return root;
     }
 
     @Override
@@ -67,6 +91,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
+        setHasOptionsMenu(true);
         loadItems();
     }
 
@@ -76,14 +101,6 @@ public class CompletedDownloadsFragment extends ListFragment {
         if (disposable != null) {
             disposable.dispose();
         }
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        position -= l.getHeaderViewsCount();
-        long[] ids = FeedItemUtil.getIds(items);
-        ((MainActivity) requireActivity()).loadChildFragment(ItemPagerFragment.newInstance(ids, position));
     }
 
     @Override
@@ -103,41 +120,66 @@ public class CompletedDownloadsFragment extends ListFragment {
         return false;
     }
 
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        FeedItem selectedItem = adapter.getSelectedItem();
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at current position was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+        return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
+    }
+
     private void addEmptyView() {
-        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
+        emptyView = new EmptyViewHandler(getActivity());
         emptyView.setIcon(R.attr.av_download);
         emptyView.setTitle(R.string.no_comp_downloads_head_label);
         emptyView.setMessage(R.string.no_comp_downloads_label);
-        emptyView.attachToListView(getListView());
+        emptyView.attachToRecyclerView(recyclerView);
     }
 
-    private void addVerticalPadding() {
-        final ListView lv = getListView();
-        lv.setClipToPadding(false);
-        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
-        lv.setPadding(0, vertPadding, 0, vertPadding);
-    }
 
-    private final DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
-        @Override
-        public int getCount() {
-            return items.size();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (items == null) {
+            return;
+        } else if (adapter == null) {
+            loadItems();
+            return;
         }
-
-        @Override
-        public FeedItem getItem(int position) {
-            if (0 <= position && position < items.size()) {
-                return items.get(position);
-            } else {
-                return null;
+        for (int i = 0, size = event.items.size(); i < size; i++) {
+            FeedItem item = event.items.get(i);
+            int pos = FeedItemUtil.indexOfItemWithId(items, item.getId());
+            if (pos >= 0) {
+                items.remove(pos);
+                if (item.getMedia().isDownloaded()) {
+                    items.add(pos, item);
+                    adapter.notifyItemChangedCompat(pos);
+                } else {
+                    adapter.notifyItemRemoved(pos);
+                }
             }
         }
+    }
 
-        @Override
-        public void onFeedItemSecondaryAction(FeedItem item) {
-            DBWriter.deleteFeedMediaOfItem(requireActivity(), item.getMedia().getId());
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (adapter != null) {
+            for (int i = 0; i < adapter.getItemCount(); i++) {
+                EpisodeItemViewHolder holder = (EpisodeItemViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+                if (holder != null && holder.isCurrentlyPlayingItem()) {
+                    holder.notifyPlaybackPositionUpdated(event);
+                    break;
+                }
+            }
         }
-    };
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPlayerStatusChanged(PlayerStatusEvent event) {
+        loadItems();
+    }
 
     @Subscribe
     public void onDownloadLogChanged(DownloadLogEvent event) {
@@ -153,18 +195,30 @@ public class CompletedDownloadsFragment extends ListFragment {
         if (disposable != null) {
             disposable.dispose();
         }
+        progressBar.setVisibility(View.VISIBLE);
+        emptyView.hide();
         disposable = Observable.fromCallable(DBReader::getDownloadedItems)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     items = result;
-                    onItemsLoaded();
+                    adapter.updateItems(result);
+                    requireActivity().invalidateOptionsMenu();
+                    progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    private void onItemsLoaded() {
-        setListShown(true);
-        listAdapter.notifyDataSetChanged();
-        requireActivity().invalidateOptionsMenu();
+    private static class CompletedDownloadsListAdapter extends EpisodeItemListAdapter {
+
+        public CompletedDownloadsListAdapter(MainActivity mainActivity) {
+            super(mainActivity);
+        }
+
+        @Override
+        public void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+            super.onBindViewHolder(holder, pos);
+            DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
+            actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
+        }
     }
 }

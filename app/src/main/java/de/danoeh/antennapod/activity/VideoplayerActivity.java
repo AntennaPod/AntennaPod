@@ -98,7 +98,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    public void onUserLeaveHint () {
+    public void onUserLeaveHint() {
         if (!PictureInPictureUtil.isInPictureInPictureMode(this) && UserPreferences.getVideoBackgroundBehavior()
                 == UserPreferences.VideoBackgroundBehavior.PICTURE_IN_PICTURE) {
             compatEnterPictureInPicture();
@@ -169,20 +169,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
             Log.d(TAG, "Videosurface already created, setting videosurface now");
             controller.setVideoSurface(videoview.getHolder());
         }
-    }
-
-    @Override
-    protected void postStatusMsg(int resId, boolean showToast) {
-        if (resId == R.string.player_preparing_msg) {
-            progressIndicator.setVisibility(View.VISIBLE);
-        } else {
-            progressIndicator.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    @Override
-    protected void clearStatusMsg() {
-        progressIndicator.setVisibility(View.INVISIBLE);
     }
 
     private final View.OnTouchListener onVideoviewTouched = (v, event) -> {
@@ -261,11 +247,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             Log.d(TAG, "Videoview holder created");
             videoSurfaceCreated = true;
             if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
-                if (controller.serviceAvailable()) {
-                    controller.setVideoSurface(holder);
-                } else {
-                    Log.e(TAG, "Couldn't attach surface to mediaplayer - reference to service was null");
-                }
+                controller.setVideoSurface(holder);
             }
             setupVideoAspectRatio();
         }
@@ -292,16 +274,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
             }
             return;
         }
-        if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
-            Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
-            destroyingDueToReload = true;
-            finish();
-            startActivity(new Intent(this, AudioplayerActivity.class));
-        } else if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
+        if (notificationCode == PlaybackService.EXTRA_CODE_CAST) {
             Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
             destroyingDueToReload = true;
             finish();
-            startActivity(new Intent(this, CastplayerActivity.class));
+            startActivity(new Intent(this, MainActivity.class).putExtra(MainActivity.EXTRA_OPEN_PLAYER, true));
         }
     }
 
@@ -382,6 +359,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (PictureInPictureUtil.supportsPictureInPicture(this)) {
             menu.findItem(R.id.player_go_to_picture_in_picture).setVisible(true);
         }
+        menu.findItem(R.id.audio_controls).setIcon(R.drawable.ic_sliders_white);
         return true;
     }
 

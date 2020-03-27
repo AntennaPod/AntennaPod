@@ -18,8 +18,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 1080008
-        versionName "1.8.0-RC8"
+        versionCode 1080195
+        versionName "1.8.1"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         generatedDensities = []
@@ -141,6 +141,7 @@ dependencies {
     implementation "androidx.preference:preference:1.1.0"
     implementation "androidx.gridlayout:gridlayout:1.0.0"
     implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
     implementation "androidx.media:media:1.1.0"
     implementation "com.google.android.material:material:1.0.0"
     annotationProcessor "androidx.annotation:annotation:1.1.0"
@@ -161,11 +162,10 @@ dependencies {
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
     implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
-    implementation "com.githang:viewpagerindicator:2.5.1@aar"
     implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
     implementation 'com.leinardi.android:speed-dial:3.0.0'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
-    implementation 'com.github.mfietz:fyydlin:v0.4.2'
+    implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"

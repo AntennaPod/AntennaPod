@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import org.apache.commons.lang3.StringUtils;
 
@@ -44,7 +46,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
             holder.image = convertView.findViewById(R.id.imgvCover);
             holder.title = convertView.findViewById(R.id.txtvTitle);
             holder.subscribers = convertView.findViewById(R.id.txtvSubscribers);
-            holder.url = convertView.findViewById(R.id.txtvUrl);
+            holder.author = convertView.findViewById(R.id.txtvAuthor);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -57,14 +59,16 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                        .fitCenter()
+                            .transforms(new FitCenter(),
+                                    new RoundedCorners((int) (4 * convertView.getContext()
+                                            .getResources().getDisplayMetrics().density)))
                         .dontAnimate())
                     .into(holder.image);
         }
 
         holder.title.setText(podcast.getTitle());
         holder.subscribers.setText(String.valueOf(podcast.getSubscribers()));
-        holder.url.setText(podcast.getUrl());
+        holder.author.setText(podcast.getAuthor());
 
         return convertView;
     }
@@ -73,6 +77,6 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
         ImageView image;
         TextView title;
         TextView subscribers;
-        TextView url;
+        TextView author;
     }
 }

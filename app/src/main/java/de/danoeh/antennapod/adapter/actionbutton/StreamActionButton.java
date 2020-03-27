@@ -8,15 +8,13 @@ import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
-
-import static de.danoeh.antennapod.core.service.playback.PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE;
+import de.danoeh.antennapod.dialog.StreamingConfirmationDialog;
 
 public class StreamActionButton extends ItemActionButton {
 
-    StreamActionButton(FeedItem item) {
+    public StreamActionButton(FeedItem item) {
         super(item);
     }
 
@@ -29,10 +27,6 @@ public class StreamActionButton extends ItemActionButton {
     @Override
     @AttrRes
     public int getDrawable() {
-        FeedMedia media = item.getMedia();
-        if (media != null && media.isCurrentlyPlaying()) {
-            return R.attr.av_pause;
-        }
         return R.attr.action_stream;
     }
 
@@ -42,23 +36,14 @@ public class StreamActionButton extends ItemActionButton {
         if (media == null) {
             return;
         }
-
-        if (media.isPlaying()) {
-            togglePlayPause(context, media);
-        } else {
-            DBTasks.playMedia(context, media, false, true, true);
+        if (!NetworkUtils.isStreamingAllowed()) {
+            new StreamingConfirmationDialog(context, media).show();
+            return;
         }
-    }
-
-    private void togglePlayPause(Context context, FeedMedia media) {
-        if (media.isCurrentlyPlaying()) {
-            IntentUtils.sendLocalBroadcast(context, ACTION_PAUSE_PLAY_CURRENT_EPISODE);
-        } else {
-            new PlaybackServiceStarter(context, media)
-                    .callEvenIfRunning(true)
-                    .startWhenPrepared(true)
-                    .shouldStream(true)
-                    .start();
-        }
+        new PlaybackServiceStarter(context, media)
+                .callEvenIfRunning(true)
+                .startWhenPrepared(true)
+                .shouldStream(true)
+                .start();
     }
 }

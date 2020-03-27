@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Uaktualnij subskrypcje</string>
-  <string name="feeds_label">Kanały</string>
+  <string name="feeds_label">Podcasty</string>
   <string name="statistics_label">Statystyki</string>
   <string name="add_feed_label">Dodaj podcast</string>
   <string name="episodes_label">Odcinki</string>
@@ -24,8 +24,10 @@
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <string name="episode_cache_full_title">Pełna pamięć cache</string>
   <string name="episode_cache_full_message">Limit pamięci cache został osiągnięty. Możesz zwiększyć pojemność cache w ustawieniach aplikacji.</string>
+  <string name="playback_statistics_label">Odtwarzanie</string>
+  <string name="download_statistics_label">Pobrane</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Całkowity czas trwania podcastów:</string>
+  <string name="total_time_listened_to_podcasts">Całkowity czas odtwarzania podcastów:</string>
   <string name="statistics_details_dialog">%1$d z %2$d odcinków rozpoczęto.\n\nZagrano %3$s z %4$s.</string>
   <string name="statistics_mode">Tryb statystyk</string>
   <string name="statistics_mode_normal">Oblicz łączny czas rzeczywistego odtwarzania. Dwukrotne odtworzenie będzie policzone ale zaznaczenie jako odtworzone nie będzie policzone.</string>
@@ -33,6 +35,8 @@
   <string name="statistics_speed_not_counted">Powiadomienie: Prędkość odtwarzania nigdy nie jest uwzględniana.</string>
   <string name="statistics_reset_data">Resetuj statystyki</string>
   <string name="statistics_reset_data_msg">Operacja skasuje historię długości odtwarzania wszystkich odcinków. Czy na pewno chcesz kontynuować?</string>
+  <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Całkowita wielkość pobranych podcastów:</string>
   <!--Main activity-->
   <string name="drawer_open">Otwórz menu</string>
   <string name="drawer_close">Zamknij menu</string>
@@ -81,6 +85,11 @@
   <string name="auto_download_apply_to_items_title">Zastosuj do poprzednich odcinków</string>
   <string name="auto_download_apply_to_items_message">Nowe ustawienie <i>automatycznego pobierania</i> zostanie zastosowane do nowych odcinków.\n Czy chcesz zastosować je także do odcinków opublikowanych wcześniej?</string>
   <string name="auto_delete_label">Automatyczne usuwanie odcinków</string>
+  <string name="feed_volume_reduction">Redukcja głośności</string>
+  <string name="feed_volume_reduction_summary">Zmniejsz głośność odcinków kanału: \%s</string>
+  <string name="feed_volume_reduction_off">Wyłączona</string>
+  <string name="feed_volume_reduction_light">Średnia</string>
+  <string name="feed_volume_reduction_heavy">Silna</string>
   <string name="parallel_downloads_suffix">\u0020równoległych pobierań</string>
   <string name="feed_auto_download_global">Globalnie domyślnie</string>
   <string name="feed_auto_download_always">Zawsze</string>
@@ -102,13 +111,6 @@
     <item quantity="other">%d dni po odtworzeniu</item>
   </plurals>
   <string name="num_selected_label">zaznaczono %d</string>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">Adres kanału</string>
-  <string name="etxtFeedurlHint">Adres URL kanału lub strony internetowej</string>
-  <string name="txtvfeedurl_label">Dodaj podcast przez adres</string>
-  <string name="browse_gpoddernet_label">Przeglądaj gpodder.net</string>
-  <string name="discover">Odkryj</string>
-  <string name="discover_more">więcej »</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Oznacz wszystkie jako odtworzone</string>
   <string name="mark_all_read_msg">Wszystkie odcinki zaznaczono jako odtworzone</string>
@@ -128,13 +130,11 @@
   <string name="share_link_with_position_label">Udostępnij adres URL odcinka z aktualną pozycją</string>
   <string name="share_file_label">Udostępnij plik</string>
   <string name="share_website_url_label">Udostępnij adres URL</string>
-  <string name="share_feed_url_label">Udostępnij adres kanału</string>
   <string name="share_item_url_label">Udostępnij adres URL odcinka</string>
   <string name="share_item_url_with_position_label">Udostępnij adres URL odcinka z pozycją</string>
   <string name="feed_delete_confirmation_msg">Potwierdź, że chcesz usunąć kanał \"%1$s\" oraz WSZYSTKIE jego odcinki (również te pobrane).</string>
   <string name="feed_remover_msg">Usuwanie podcastu</string>
   <string name="load_complete_feed">Odśwież cały podcast</string>
-  <string name="batch_edit">Edycja grupowa</string>
   <string name="select_all_above">Zaznacz wszystkie powyżej</string>
   <string name="select_all_below">Zaznacz wszystkie poniżej</string>
   <string name="hide_unplayed_episodes_label">Nieodtworzone</string>
@@ -299,9 +299,11 @@
   <string name="clear_queue_confirmation_msg">Potwierdź usunięcie WSZYSTKICH pozycji z kolejki</string>
   <string name="sort_old_to_new">od najstarszych</string>
   <string name="sort_new_to_old">od najnowszych</string>
+  <string name="time_left_label">Pozostały czas:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Pobierz wtyczkę</string>
   <string name="no_playback_plugin_title">Wtyczka nie zainstalowana</string>
+  <string name="no_playback_plugin_or_sonic_msg">Aby używać zmiennej prędkości odtwarzania, zalecamy używanie wbudowanego odtwarzacza Sonic.</string>
   <string name="set_playback_speed_label">Prędkość odtwarzania</string>
   <string name="enable_sonic">Włącz Sonic</string>
   <!--Empty list labels-->
@@ -364,12 +366,11 @@
   <string name="playback_pref">Odtwarzanie</string>
   <string name="network_pref">Sieć</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Częstotliwość aktualizacji lub Czas dnia</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Określ częstotliwość albo konkretny czas dnia automatycznego odświeżania kanałów lub je wyłącz</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Możesz ustawić <i>częstotliwość</i> na przykład \"co 2 godziny\", ustawić konretny <i>czas dnia</i> na przykład \"7:00\" albo <i>wyłączyć</i> automatyczne aktualizacje.\n\n<small>Uwaga: Czas aktualizacji nie jest ścisły. Możesz napotkać małe opóźnienia.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Możesz ustawić <i>częstotliwość</i> na przykład \"co 2 godziny\", ustawić konkretny <i>czas dnia</i> na przykład \"7:00\" albo <i>wyłączyć</i> automatyczne aktualizacje.\n\n<small>Uwaga: Czas aktualizacji nie jest ścisły. Możesz napotkać małe opóźnienia.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Zablokuj</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Ustaw częstotliwość</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Ustaw czas dnia</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">każdy %1$s</string>
+  <string name="pref_autoUpdateIntervallOrTime_every">co %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">o %1$s</string>
   <string name="pref_followQueue_title">Odtwarzanie ciągłe</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Słuchawki odłączone</string>
@@ -379,7 +380,6 @@
   <string name="pref_stream_over_download_sum">Wyświetlaj na listach przycisk streamowania zamiast przycisku pobierania.</string>
   <string name="pref_mobileUpdate_title">Aktualizacje mobilne</string>
   <string name="pref_mobileUpdate_sum">Wybierz co ma być dozwolone przy połączeniu poprzez sieć komórkową</string>
-  <string name="pref_mobileUpdate_refresh">Odświeżanie kanałów</string>
   <string name="pref_mobileUpdate_images">Okładki</string>
   <string name="pref_mobileUpdate_auto_download">Automatyczne pobieranie</string>
   <string name="pref_mobileUpdate_episode_download">Pobieranie odcinków</string>
@@ -397,8 +397,6 @@
   <string name="pref_automatic_download_sum">Skonfiguruj automatyczne pobieranie odcinków.</string>
   <string name="pref_autodl_wifi_filter_title">Włącz filtr Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Zezwól na automatyczne pobieranie tylko dla określonych sieci Wi-Fi.</string>
-  <string name="autodl_wifi_filter_permission_title">Wymagane uprawnienie</string>
-  <string name="autodl_wifi_filter_permission_message">Wymagane jest zezwolenie na dostęp do lokalizacji, aby filtrować Wi-Fi. Naciśnij, aby zezwolić.</string>
   <string name="pref_automatic_download_on_battery_title">Pobieraj, gdy nie ładuje</string>
   <string name="pref_automatic_download_on_battery_sum">Zezwól na automatyczne pobieranie, gdy bateria nie jest ładowana.</string>
   <string name="pref_parallel_downloads_title">Liczba równoległych pobierań</string>
@@ -431,7 +429,6 @@
   <string name="pref_gpodnet_notifications_sum">To ustawienie nie dotyczy błędów autoryzacji.</string>
   <string name="pref_playback_speed_title">Prędkość odtwarzania</string>
   <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania audio o zmiennej prędkości</string>
-  <string name="pref_feed_playback_speed_sum">Prędkość używana przy starcie odtwarzania dla odcinków z tego kanału.</string>
   <string name="pref_playback_time_respects_speed_title">Dostosuj informacje do prędkości odtwarzania</string>
   <string name="pref_playback_time_respects_speed_sum">Wyświetlana pozycja i czas trwania są dostosowane do prędkości odtwarzania</string>
   <string name="pref_fast_forward">Szybkie przewijanie do przodu</string>
@@ -461,7 +458,6 @@
   <string name="pref_smart_mark_as_played_disabled">Wyłączone</string>
   <string name="pref_image_cache_size_title">Pamięć podręczna obrazów</string>
   <string name="pref_image_cache_size_sum">Rozmiar przestrzeni na dysku dla pamięci podręcznej obrazów</string>
-  <string name="view_mailing_list">Zobacz listę mailingową</string>
   <string name="bug_report_title">Zgłoś błąd</string>
   <string name="open_bug_tracker">Otwórz bugtracker</string>
   <string name="copy_to_clipboard">Kopiuj do schowka</string>
@@ -508,43 +504,28 @@
   <string name="licenses">Licencje</string>
   <string name="licenses_summary">AntennaPod używa różnego świetnego oprogramowania/bibliotek</string>
   <!--Search-->
-  <string name="search_hint">Szukaj odcinków</string>
-  <string name="found_in_shownotes_label">Znalezione w notatkach dotyczących show</string>
-  <string name="found_in_chapters_label">Znaleziono w rozdziałach</string>
-  <string name="found_in_authors_label">Znaleziono wśród autorów</string>
-  <string name="found_in_feeds_label">Znaleziono w podcastach</string>
   <string name="search_status_no_results">Brak wyników</string>
   <string name="search_label">Szukaj</string>
-  <string name="found_in_title_label">Znaleziono w tytułach</string>
   <string name="no_results_for_query">Brak wyników dla \"%1$s\"</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">Opcja %1$d</string>
-  <string name="opml_import_explanation_1">Wybierz konkretą ścieżkę z lokalnego systemu plików.</string>
-  <string name="opml_import_explanation_3">Wiele aplikacji takich jak Google Mail, Dropbox, Google Drive i większość menedżerów plików potrafi <i>otworzyć</i>pliki OPML <i>przy użyciu</i>AntennaPod</string>
+  <!--import and export-->
   <string name="opml_import_label">Import OPML</string>
-  <string name="reading_opml_label">Odczytuję plik OPML</string>
   <string name="opml_reader_error">Wystąpił błąd podczas odczytywania pliku OPML:</string>
   <string name="opml_import_error_no_file">Nie wbrano pliku!</string>
   <string name="select_all_label">Zaznacz wszystko</string>
   <string name="deselect_all_label">Odznacz wszystko</string>
-  <string name="choose_file_from_filesystem">Z lokalnego systemu plików</string>
   <string name="opml_export_label">Eksport OPML</string>
   <string name="html_export_label">Eksport HTML</string>
-  <string name="exporting_label">Eksportowanie...</string>
   <string name="export_error_label">Błąd eksportu</string>
   <string name="export_success_title">Export zakończony powodzeniem</string>
   <string name="export_success_sum">Wyeksportowany plik został zapisany w:\n\n %1$s</string>
   <string name="opml_import_ask_read_permission">Dostęp do zewnętrznej pamięci jest potrzebny do odczytywania plików OPML</string>
+  <string name="import_select_file">Wybierz plik do Importowania</string>
+  <string name="import_ok">Import zakończony powodzeniem.\n\nNaciśnij OK aby zrestartować AntennaPod</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ustaw czas do wyłączenia</string>
   <string name="disable_sleeptimer_label">Wyłącz wyłącznik czasowy</string>
-  <string name="enter_time_here_label">Podaj czas</string>
   <string name="sleep_timer_label">Wyłącznik czasowy</string>
-  <string name="time_left_label">Pozostały czas:\u0020</string>
   <string name="time_dialog_invalid_input">Błąd wpisu, czas musi być liczbą całkowitą</string>
-  <string name="timer_about_to_expire_label"><b>Kiedy odliczanie dobiega końca:</b></string>
-  <string name="shake_to_reset_label">Potrząśnij, aby zresetować odliczanie</string>
-  <string name="timer_vibration_label">Wibruj</string>
   <string name="time_seconds">sekund</string>
   <string name="time_minutes">minut</string>
   <string name="time_hours">godzin</string>
@@ -568,7 +549,6 @@
   </plurals>
   <string name="auto_enable_label">Automaczyne włączenie</string>
   <string name="sleep_timer_enabled_label">Wyłącznik czasowy włączony</string>
-  <string name="sleep_timer_disabled_label">Wyłącznik czasowy wyłączony</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
@@ -648,7 +628,6 @@ https://gpodder.net/register/</string>
   <string name="episode_filters_exclude">Wyłączając</string>
   <string name="episode_filters_hint">Pojedyncze słowa \n\"Kilka słów\"</string>
   <string name="keep_updated">Utrzymuj zaktualizowane</string>
-  <string name="keep_updated_summary">Uwzględnij ten kanał przy (automatycznym) odświeżaniu wszystkich kanałów</string>
   <string name="auto_download_disabled_globally">Automatyczne pobieranie jest wyłączone w globalnych ustawieniach AntennaPod</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Aktualizacja bazy danych</string>
@@ -658,7 +637,9 @@ https://gpodder.net/register/</string>
   <string name="search_podcast_hint">Szukaj podcast…</string>
   <string name="search_itunes_label">Szukaj w iTunes</string>
   <string name="search_fyyd_label">Szukaj w fyyd</string>
-  <string name="advanced_search">Zaawansowane wyszukiwanie</string>
+  <string name="browse_gpoddernet_label">Przeglądaj gpodder.net</string>
+  <string name="discover">Odkryj</string>
+  <string name="discover_more">więcej »</string>
   <string name="filter">Filtruj</string>
   <!--Episodes apply actions-->
   <string name="all_label">Wszystkie</string>
@@ -716,14 +697,6 @@ https://gpodder.net/register/</string>
   <string name="proxy_port_invalid_error">Błędny port</string>
   <!--Subscriptions fragment-->
   <string name="subscription_num_columns">Liczba kolumn</string>
-  <!--Database import/export-->
-  <string name="import_export">Import/Export bazy danych</string>
-  <string name="import_export_warning">Ta eksperymentalna funkcja może zostać użyta do przeniesienia Twoich subskrypcji i już obejrzanych odcinków na inne urządzenie.\n\n Wyeksportowana baza może zostać zaimportowana jedynie taką samą wersją programu AntennaPod. W innym przypadku może to spowodować nieprzewidziane zachowanie programu.\n\n Po zaimportowaniu, odcinki mogą być pokazane jako pobrane pomimo tego iż nie zostały pobrane. Wystarczy kliknąć odtwórz odcinek aby AntennaPod wykrył poprawny stan pliku.</string>
-  <string name="label_import">Import</string>
-  <string name="label_export">Export</string>
-  <string name="import_select_file">Wybierz plik do Importowania</string>
-  <string name="export_ok">Export zakończony powodzeniem</string>
-  <string name="import_ok">Import zakończony powodzeniem.\n\nNaciśnij OK aby zrestartować AntennaPod</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Odtwarzaj na...</string>
   <string name="cast_disconnect_label">Rozłącz sesję</string>
@@ -731,7 +704,6 @@ https://gpodder.net/register/</string>
   <string name="cast_failed_to_play">Wystąpił błąd podczas uruchamiania odtwarzania</string>
   <string name="cast_failed_to_stop">Wystąpił błąd podczas zatrzymywania odtwarzania</string>
   <string name="cast_failed_to_pause">Wystąpił błąd podczas pauzowania odtwarzania</string>
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_setting_volume">Wystąpił błąd podczas zmiany poziomu głośności</string>
   <string name="cast_failed_no_connection">Brak połączenia z urządzeniem nadającym</string>
   <string name="cast_failed_no_connection_trans">Połączenie z urządzeniem nadającym zostało przerwane. Aplikacja próbuje przywrócić połączenie, jeśli jest to możliwe. Proszę poczekać kilka sekund i spróbować ponownie.</string>
@@ -748,8 +720,8 @@ https://gpodder.net/register/</string>
   <string name="notification_channel_playing_description">Pozwala na kontrolowanie odtwarzania. To jest główne powiadomienie, które zobaczysz podczas odtwarzania podcastu.</string>
   <string name="notification_channel_error">Błędy</string>
   <string name="notification_channel_error_description">Pokazywane gdy coś pójdzie nie tak, na przykład jeśli nie powiedzie się pobieranie lub synchronizacja z gpodder.</string>
-  <string name="import_bad_file">Nieprawidłowy/uszkodzony plik</string>
   <!--Widget settings-->
+  <string name="widget_settings">Ustawienia widżetu</string>
   <string name="widget_create_button">Dodaj widżet</string>
   <string name="widget_opacity">Nieprzezroczystość</string>
 </resources>

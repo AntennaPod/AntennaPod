@@ -1,27 +1,36 @@
 package de.danoeh.antennapod.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
-
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays the cover and the title of a FeedItem.
@@ -36,6 +45,8 @@ public class CoverFragment extends Fragment {
     private ImageView imgvCover;
     private PlaybackController controller;
     private Disposable disposable;
+    private int displayedChapterIndex = -2;
+    private Playable media;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,30 +64,27 @@ public class CoverFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Maybe.create(emitter -> {
-                    Playable media = controller.getMedia();
-                    if (media != null) {
-                        emitter.onSuccess(media);
-                    } else {
-                        emitter.onComplete();
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> displayMediaInfo((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+        disposable = Maybe.<Playable>create(emitter -> {
+            Playable media = controller.getMedia();
+            if (media != null) {
+                emitter.onSuccess(media);
+            } else {
+                emitter.onComplete();
+            }
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(media -> {
+            this.media = media;
+            displayMediaInfo(media);
+        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
         txtvPodcastTitle.setText(media.getFeedTitle());
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
-        Glide.with(this)
-                .load(ImageResourceUtils.getImageLocation(media))
-                .apply(new RequestOptions()
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .dontAnimate()
-                    .fitCenter())
-                .into(imgvCover);
+        displayedChapterIndex = -2; // Force refresh
+        displayCoverImage(media.getPosition());
     }
 
     @Override
@@ -89,16 +97,21 @@ public class CoverFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        controller = new PlaybackController(getActivity(), false) {
+        controller = new PlaybackController(getActivity()) {
             @Override
             public boolean loadMediaInfo() {
                 CoverFragment.this.loadMediaInfo();
                 return true;
             }
 
+            @Override
+            public void setupGUI() {
+                CoverFragment.this.loadMediaInfo();
+            }
         };
         controller.init();
         loadMediaInfo();
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -106,6 +119,44 @@ public class CoverFragment extends Fragment {
         super.onStop();
         controller.release();
         controller = null;
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(PlaybackPositionEvent event) {
+        if (media == null) {
+            return;
+        }
+        displayCoverImage(event.getPosition());
+    }
+
+    private void displayCoverImage(int position) {
+        int chapter = ChapterUtils.getCurrentChapterIndex(media, position);
+        if (chapter != displayedChapterIndex) {
+            displayedChapterIndex = chapter;
+
+            RequestBuilder<Drawable> cover = Glide.with(this)
+                    .load(ImageResourceUtils.getImageLocation(media))
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                            .dontAnimate()
+                            .transforms(new FitCenter(),
+                                    new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))));
+            if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
+                cover.into(imgvCover);
+            } else {
+                Glide.with(this)
+                        .load(EmbeddedChapterImage.getModelFor(media, chapter))
+                        .apply(new RequestOptions()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .dontAnimate()
+                                .transforms(new FitCenter(),
+                                        new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))))
+                        .thumbnail(cover)
+                        .error(cover)
+                        .into(imgvCover);
+            }
+        }
     }
 
     @Override

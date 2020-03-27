@@ -9,6 +9,7 @@ import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
 import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
+import org.apache.commons.io.input.CountingInputStream;
 
 /**
  * Reads the ID3 Tag of a given file. In order to use this class, you should
@@ -33,21 +34,18 @@ public class ID3Reader {
     ID3Reader() {
     }
 
-    public final void readInputStream(InputStream input) throws IOException,
-            ID3ReaderException {
+    public final void readInputStream(CountingInputStream input) throws IOException, ID3ReaderException {
         int rc;
         readerPosition = 0;
-        char[] tagHeaderSource = readBytes(input, HEADER_LENGTH);
+        char[] tagHeaderSource = readChars(input, HEADER_LENGTH);
         tagHeader = createTagHeader(tagHeaderSource);
         if (tagHeader == null) {
             onNoTagHeaderFound();
         } else {
             rc = onStartTagHeader(tagHeader);
-            if (rc == ACTION_SKIP) {
-                onEndTag();
-            } else {
+            if (rc != ACTION_SKIP) {
                 while (readerPosition < tagHeader.getSize()) {
-                    FrameHeader frameHeader = createFrameHeader(readBytes(input, HEADER_LENGTH));
+                    FrameHeader frameHeader = createFrameHeader(readChars(input, HEADER_LENGTH));
                     if (checkForNullString(frameHeader.getId())) {
                         break;
                     }
@@ -59,8 +57,8 @@ public class ID3Reader {
                         skipBytes(input, frameHeader.getSize());
                     }
                 }
-                onEndTag();
             }
+            onEndTag();
         }
     }
 
@@ -84,11 +82,10 @@ public class ID3Reader {
     }
 
     /**
-     * Read a certain number of bytes from the given input stream. This method
+     * Read a certain number of chars from the given input stream. This method
      * changes the readerPosition-attribute.
      */
-    char[] readBytes(InputStream input, int number)
-            throws IOException, ID3ReaderException {
+    char[] readChars(InputStream input, int number) throws IOException, ID3ReaderException {
         char[] header = new char[number];
         for (int i = 0; i < number; i++) {
             int b = input.read();
@@ -168,7 +165,7 @@ public class ID3Reader {
     protected int readString(StringBuilder buffer, InputStream input, int max) throws IOException,
             ID3ReaderException {
         if (max > 0) {
-            char[] encoding = readBytes(input, 1);
+            char[] encoding = readChars(input, 1);
             max--;
 
             if (encoding[0] == ENCODING_UTF16_WITH_BOM || encoding[0] == ENCODING_UTF16_WITHOUT_BOM) {
@@ -230,8 +227,7 @@ public class ID3Reader {
         return ACTION_SKIP;
     }
 
-    int onStartFrameHeader(FrameHeader header, InputStream input)
-            throws IOException, ID3ReaderException {
+    int onStartFrameHeader(FrameHeader header, CountingInputStream input) throws IOException, ID3ReaderException {
         return ACTION_SKIP;
     }
 

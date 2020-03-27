@@ -160,12 +160,12 @@ public final class DBReader {
     }
 
     /**
-     * Loads the list of FeedItems for a certain Feed-object. This method should NOT be used if the FeedItems are not
-     * used. In order to get information ABOUT the list of FeedItems, consider using {@link #getFeedStatisticsList()} instead.
+     * Loads the list of FeedItems for a certain Feed-object.
+     * This method should NOT be used if the FeedItems are not used.
      *
      * @param feed The Feed whose items should be loaded
      * @return A list with the FeedItems of the Feed. The Feed-attribute of the FeedItems will already be set correctly.
-     * The method does NOT change the items-attribute of the feed.
+     *         The method does NOT change the items-attribute of the feed.
      */
     public static List<FeedItem> getFeedItemList(final Feed feed) {
         Log.d(TAG, "getFeedItemList() called with: " + "feed = [" + feed + "]");
@@ -273,8 +273,7 @@ public final class DBReader {
      * Loads the IDs of the FeedItems in the queue. This method should be preferred over
      * {@link #getQueue()} if the FeedItems of the queue are not needed.
      *
-     * @return A list of IDs sorted by the same order as the queue. The caller can wrap the returned
-     * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
+     * @return A list of IDs sorted by the same order as the queue.
      */
     public static LongList getQueueIDList() {
         Log.d(TAG, "getQueueIDList() called");
@@ -307,8 +306,7 @@ public final class DBReader {
      * Loads a list of the FeedItems in the queue. If the FeedItems of the queue are not used directly, consider using
      * {@link #getQueueIDList()} instead.
      *
-     * @return A list of FeedItems sorted by the same order as the queue. The caller can wrap the returned
-     * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
+     * @return A list of FeedItems sorted by the same order as the queue.
      */
     @NonNull
     public static List<FeedItem> getQueue() {
@@ -546,34 +544,6 @@ public final class DBReader {
     }
 
     /**
-     * Loads the FeedItemStatistics objects of all Feeds in the database. This method should be preferred over
-     * {@link #getFeedItemList(Feed)} if only metadata about
-     * the FeedItems is needed.
-     *
-     * @return A list of FeedItemStatistics objects sorted alphabetically by their Feed's title.
-     */
-    public static List<FeedItemStatistics> getFeedStatisticsList() {
-        Log.d(TAG, "getFeedStatisticsList() called");
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getFeedStatisticsCursor();
-            List<FeedItemStatistics> result = new ArrayList<>(cursor.getCount());
-            while (cursor.moveToNext()) {
-                FeedItemStatistics fis = FeedItemStatistics.fromCursor(cursor);
-                result.add(fis);
-            }
-            return result;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-            adapter.close();
-        }
-    }
-
-    /**
      * Loads a specific Feed from the database.
      *
      * @param feedId The ID of the Feed
@@ -689,7 +659,7 @@ public final class DBReader {
      * Returns credentials based on image URL
      *
      * @param imageUrl The URL of the image
-     * @return Credentials in format "<Username>:<Password>", empty String if no authorization given
+     * @return Credentials in format "Username:Password", empty String if no authorization given
      */
     public static String getImageAuthentication(final String imageUrl) {
         Log.d(TAG, "getImageAuthentication() called with: " + "imageUrl = [" + imageUrl + "]");
@@ -795,9 +765,7 @@ public final class DBReader {
     }
 
     private static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getSimpleChaptersOfFeedItemCursor(item);
+        try (Cursor cursor = adapter.getSimpleChaptersOfFeedItemCursor(item)) {
             int chaptersCount = cursor.getCount();
             if (chaptersCount == 0) {
                 item.setChapters(null);
@@ -805,14 +773,7 @@ public final class DBReader {
             }
             item.setChapters(new ArrayList<>(chaptersCount));
             while (cursor.moveToNext()) {
-                Chapter chapter = Chapter.fromCursor(cursor, item);
-                if (chapter != null) {
-                    item.getChapters().add(chapter);
-                }
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
+                item.getChapters().add(Chapter.fromCursor(cursor));
             }
         }
     }
@@ -866,19 +827,15 @@ public final class DBReader {
     }
 
     /**
-     * Searches the DB for statistics
+     * Searches the DB for statistics.
      *
-     * @param sortByCountAll If true, the statistic items will be sorted according to the
-     *                       countAll calculation time
-     * @return The StatisticsInfo object
+     * @return The list of statistics objects
      */
     @NonNull
-    public static StatisticsData getStatistics(boolean sortByCountAll) {
+    public static List<StatisticsItem> getStatistics() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        long totalTimeCountAll = 0;
-        long totalTime = 0;
         List<StatisticsItem> feedTime = new ArrayList<>();
 
         List<Feed> feeds = getFeedList();
@@ -889,6 +846,7 @@ public final class DBReader {
             long episodes = 0;
             long episodesStarted = 0;
             long episodesStartedIncludingMarked = 0;
+            long totalDownloadSize = 0;
             List<FeedItem> items = getFeed(feed.getId()).getItems();
             for (FeedItem item : items) {
                 FeedMedia media = item.getMedia();
@@ -913,95 +871,20 @@ public final class DBReader {
                 }
 
                 feedTotalTime += media.getDuration() / 1000;
+
+                if (media.isDownloaded()) {
+                    totalDownloadSize = totalDownloadSize + media.getSize();
+                }
+
                 episodes++;
             }
             feedTime.add(new StatisticsItem(
                     feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-                    episodesStarted, episodesStartedIncludingMarked));
-            totalTime += feedPlayedTime;
-            totalTimeCountAll += feedPlayedTimeCountAll;
-        }
-
-        if (sortByCountAll) {
-            Collections.sort(feedTime, (item1, item2) ->
-                    compareLong(item1.timePlayedCountAll, item2.timePlayedCountAll));
-        } else {
-            Collections.sort(feedTime, (item1, item2) ->
-                    compareLong(item1.timePlayed, item2.timePlayed));
+                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize));
         }
 
         adapter.close();
-        return new StatisticsData(totalTime, totalTimeCountAll, feedTime);
-    }
-
-    /**
-     * Compares two {@code long} values. Long.compare() is not available before API 19
-     *
-     * @return 0 if long1 = long2, less than 0 if long1 &lt; long2,
-     * and greater than 0 if long1 &gt; long2.
-     */
-    private static int compareLong(long long1, long long2) {
-        if (long1 > long2) {
-            return -1;
-        } else if (long1 < long2) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    public static class StatisticsData {
-        /**
-         * Simply sums up time of podcasts that are marked as played
-         */
-        public final long totalTimeCountAll;
-
-        /**
-         * Respects speed, listening twice, ...
-         */
-        public final long totalTime;
-
-        public final List<StatisticsItem> feedTime;
-
-        public StatisticsData(long totalTime, long totalTimeCountAll, List<StatisticsItem> feedTime) {
-            this.totalTime = totalTime;
-            this.totalTimeCountAll = totalTimeCountAll;
-            this.feedTime = feedTime;
-        }
-    }
-
-    public static class StatisticsItem {
-        public final Feed feed;
-        public final long time;
-
-        /**
-         * Respects speed, listening twice, ...
-         */
-        public final long timePlayed;
-        /**
-         * Simply sums up time of podcasts that are marked as played
-         */
-        public final long timePlayedCountAll;
-        public final long episodes;
-        /**
-         * Episodes that are actually played
-         */
-        public final long episodesStarted;
-        /**
-         * All episodes that are marked as played (or have position != 0)
-         */
-        public final long episodesStartedIncludingMarked;
-
-        public StatisticsItem(Feed feed, long time, long timePlayed, long timePlayedCountAll,
-                              long episodes, long episodesStarted, long episodesStartedIncludingMarked) {
-            this.feed = feed;
-            this.time = time;
-            this.timePlayed = timePlayed;
-            this.timePlayedCountAll = timePlayedCountAll;
-            this.episodes = episodes;
-            this.episodesStarted = episodesStarted;
-            this.episodesStartedIncludingMarked = episodesStartedIncludingMarked;
-        }
+        return feedTime;
     }
 
     /**

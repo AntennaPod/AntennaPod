@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -16,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Flavors;
@@ -24,6 +27,9 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Displays information about a list of FeedItems.
@@ -31,16 +37,6 @@ import io.reactivex.schedulers.Schedulers;
 public class ItemPagerFragment extends Fragment {
     private static final String ARG_FEEDITEMS = "feeditems";
     private static final String ARG_FEEDITEM_POS = "feeditem_pos";
-
-    /**
-     * Creates a new instance of an ItemPagerFragment.
-     *
-     * @param feeditem The ID of the FeedItem that should be displayed.
-     * @return The ItemFragment instance
-     */
-    public static ItemPagerFragment newInstance(long feeditem) {
-        return newInstance(new long[] { feeditem }, 0);
-    }
 
     /**
      * Creates a new instance of an ItemPagerFragment.
@@ -73,6 +69,9 @@ public class ItemPagerFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_pager_fragment, container, false);
+        Toolbar toolbar = layout.findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
         int feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
@@ -104,12 +103,14 @@ public class ItemPagerFragment extends Fragment {
             }
         });
 
+        EventBus.getDefault().register(this);
         return layout;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
         }
@@ -135,23 +136,12 @@ public class ItemPagerFragment extends Fragment {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
-        if (Flavors.FLAVOR == Flavors.PLAY) {
-            ((CastEnabledActivity) getActivity()).requestCastButton(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        }
         inflater.inflate(R.menu.feeditem_options, menu);
-
-        FeedItemMenuHandler.MenuInterface popupMenuInterface = (id, visible) -> {
-            MenuItem item = menu.findItem(id);
-            if (item != null) {
-                item.setVisible(visible);
-            }
-        };
-
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item);
+            FeedItemMenuHandler.onPrepareMenu(menu, item);
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item,
+            FeedItemMenuHandler.onPrepareMenu(menu, item,
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }
@@ -164,6 +154,17 @@ public class ItemPagerFragment extends Fragment {
                 return true;
             default:
                 return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(FeedItemEvent event) {
+        for (FeedItem item : event.items) {
+            if (this.item != null && this.item.getId() == item.getId()) {
+                this.item = item;
+                getActivity().invalidateOptionsMenu();
+                return;
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -60,6 +61,7 @@ public class UserPreferences {
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     private static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
+    private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
@@ -236,12 +238,12 @@ public class UserPreferences {
     }
 
     public static int getFeedOrder() {
-        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "0");
+        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "" + FEED_ORDER_COUNTER);
         return Integer.parseInt(value);
     }
 
     public static int getFeedCounterSetting() {
-        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "0");
+        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "" + FEED_COUNTER_SHOW_NEW);
         return Integer.parseInt(value);
     }
 
@@ -290,6 +292,10 @@ public class UserPreferences {
      */
     public static boolean showDownloadReport() {
         return prefs.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
+    }
+
+    public static boolean showAutoDownloadReport() {
+        return prefs.getBoolean(PREF_SHOW_AUTO_DOWNLOAD_REPORT, false);
     }
 
     public static boolean enqueueDownloadedEpisodes() {
@@ -389,7 +395,7 @@ public class UserPreferences {
             return Float.parseFloat(prefs.getString(PREF_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            UserPreferences.setPlaybackSpeed("1.00");
+            UserPreferences.setPlaybackSpeed(1.0f);
             return 1.0f;
         }
     }
@@ -399,7 +405,7 @@ public class UserPreferences {
             return Float.parseFloat(prefs.getString(PREF_VIDEO_PLAYBACK_SPEED, "1.00"));
         } catch (NumberFormatException e) {
             Log.e(TAG, Log.getStackTraceString(e));
-            UserPreferences.setVideoPlaybackSpeed("1.00");
+            UserPreferences.setVideoPlaybackSpeed(1.0f);
             return 1.0f;
         }
     }
@@ -408,7 +414,7 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
     }
 
-    public static String[] getPlaybackSpeedArray() {
+    public static float[] getPlaybackSpeedArray() {
         return readPlaybackSpeedArray(prefs.getString(PREF_PLAYBACK_SPEED_ARRAY, null));
     }
 
@@ -554,7 +560,7 @@ public class UserPreferences {
     }
 
     public static boolean isEnableAutodownloadWifiFilter() {
-        return prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
+        return Build.VERSION.SDK_INT < 29 && prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
     }
 
     public static int getImageCacheSize() {
@@ -638,15 +644,15 @@ public class UserPreferences {
              .apply();
     }
 
-    public static void setPlaybackSpeed(String speed) {
+    public static void setPlaybackSpeed(float speed) {
         prefs.edit()
-             .putString(PREF_PLAYBACK_SPEED, speed)
+             .putString(PREF_PLAYBACK_SPEED, String.valueOf(speed))
              .apply();
     }
 
-    public static void setVideoPlaybackSpeed(String speed) {
+    public static void setVideoPlaybackSpeed(float speed) {
         prefs.edit()
-                .putString(PREF_VIDEO_PLAYBACK_SPEED, speed)
+                .putString(PREF_VIDEO_PLAYBACK_SPEED, String.valueOf(speed))
                 .apply();
     }
 
@@ -769,24 +775,22 @@ public class UserPreferences {
         }
     }
 
-    private static String[] readPlaybackSpeedArray(String valueFromPrefs) {
-        String[] selectedSpeeds = null;
-        // If this preference hasn't been set yet, return the default options
-        if (valueFromPrefs == null) {
-            selectedSpeeds = new String[] { "0.75", "1.00", "1.25", "1.50", "1.75", "2.00" };
-        } else {
+    private static float[] readPlaybackSpeedArray(String valueFromPrefs) {
+        if (valueFromPrefs != null) {
             try {
                 JSONArray jsonArray = new JSONArray(valueFromPrefs);
-                selectedSpeeds = new String[jsonArray.length()];
+                float[] selectedSpeeds = new float[jsonArray.length()];
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    selectedSpeeds[i] = jsonArray.getString(i);
+                    selectedSpeeds[i] = (float) jsonArray.getDouble(i);
                 }
+                return selectedSpeeds;
             } catch (JSONException e) {
                 Log.e(TAG, "Got JSON error when trying to get speeds from JSONArray");
                 e.printStackTrace();
             }
         }
-        return selectedSpeeds;
+        // If this preference hasn't been set yet, return the default options
+        return new float[] { 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f };
     }
 
     public static String getMediaPlayer() {
@@ -805,14 +809,6 @@ public class UserPreferences {
         prefs.edit().putString(PREF_MEDIA_PLAYER, "sonic").apply();
     }
 
-    public static void enableExoplayer() {
-        prefs.edit().putString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER).apply();
-    }
-
-    public static void enableBuiltin() {
-        prefs.edit().putString(PREF_MEDIA_PLAYER, "builtin").apply();
-    }
-
     public static boolean stereoToMono() {
         return prefs.getBoolean(PREF_STEREO_TO_MONO, false);
     }
@@ -824,11 +820,11 @@ public class UserPreferences {
     }
 
     public static VideoBackgroundBehavior getVideoBackgroundBehavior() {
-        switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "stop")) {
+        switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "pip")) {
             case "stop": return VideoBackgroundBehavior.STOP;
             case "pip": return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
             case "continue": return VideoBackgroundBehavior.CONTINUE_PLAYING;
-            default: return VideoBackgroundBehavior.STOP;
+            default: return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
         }
     }
 

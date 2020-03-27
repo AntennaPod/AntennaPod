@@ -25,7 +25,6 @@ import java.util.Set;
  * supports swiping to mark as read.
  */
 public class AllEpisodesFragment extends EpisodesListFragment {
-    public static final String TAG = "AllEpisodesFragment";
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
 
@@ -36,11 +35,6 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         feedItemFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
-    }
-
-    @Override
-    protected boolean showOnlyNewEpisodes() {
-        return false;
     }
 
     @Override
@@ -67,7 +61,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.filter_items).setVisible(true);
-        menu.findItem(R.id.mark_all_read_item).setVisible(!episodes.isEmpty());
+        menu.findItem(R.id.mark_all_read_item).setVisible(true);
     }
 
     @Override

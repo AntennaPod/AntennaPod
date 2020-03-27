@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy and fragment titles-->
+  <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Abonelikleri güncelle</string>
-  <string name="feeds_label">Beslemeler</string>
   <string name="statistics_label">İstatistikler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
   <string name="episodes_label">Bölümler</string>
@@ -27,6 +26,7 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Toplam cep yayını çalma zamanı:</string>
   <string name="statistics_mode">İstatistik modu</string>
+  <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Münüyü aç</string>
   <string name="drawer_close">Menüyü kapat</string>
@@ -87,11 +87,6 @@
     <item quantity="one">Bittikten 1 gün sonra</item>
     <item quantity="other">Bittikten %d gün sonra</item>
   </plurals>
-  <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">Besleme Adresi</string>
-  <string name="etxtFeedurlHint">www.example.com/feed</string>
-  <string name="txtvfeedurl_label">URL ile cep yayını ekle</string>
-  <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hepsini oynatıldı olarak işaretle</string>
   <string name="mark_all_read_msg">Tüm bölümleri oynatıldı olarak işaretle</string>
@@ -107,13 +102,10 @@
   <string name="share_link_label">Bölüm Adresini paylaş</string>
   <string name="share_link_with_position_label">Bölüm Adresini Konumla birlikte paylaş</string>
   <string name="share_file_label">Dosyayı paylaş</string>
-  <string name="share_feed_url_label">Besleme Adresini Paylaş</string>
   <string name="share_item_url_label">Medya Dosyası URL\'si Paylaş</string>
   <string name="share_item_url_with_position_label">Medya dosyasının adresini pozisyon ile birlikte paylaş</string>
-  <string name="feed_delete_confirmation_msg">Lütfen bu Cepyayını ve bu Cepyayınına ait indirilmiş BÜTÜN bölümleri silme isteğinizi onaylayın.</string>
   <string name="feed_remover_msg">Cepyayını kaldırılıyor</string>
   <string name="load_complete_feed">Tüm Cepyayınını yenile</string>
-  <string name="batch_edit">Toplu düzenleme</string>
   <string name="select_all_above">Üsttekilerin tümünü seç</string>
   <string name="select_all_below">Alttakilerin tümünü seç</string>
   <string name="hide_unplayed_episodes_label">Oynatılmadı</string>
@@ -224,6 +216,7 @@
   <string name="ascending">Artan</string>
   <string name="descending">Azalan</string>
   <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
+  <string name="time_left_label">Kalan süre:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Eklentiyi İndir</string>
   <string name="no_playback_plugin_title">Eklenti Yüklenmedi</string>
@@ -265,7 +258,6 @@
   <string name="playback_pref">Çalma</string>
   <string name="network_pref">Ağ</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Güncelleme Aralığı veya Belirli Zamanı</string>
-  <string name="pref_autoUpdateIntervallOrTime_sum">Beslemelerin otomatik olarak güncellenmesi için bir zaman aralığı veya belirli bir saat ayarlayın</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Otomatik güncelleştirmelerin yapılması için \"her 2 saatte bir\" gibi <i>aralık</i>, \"07:00\" gibi \"belirli saat\" ayarlayabilirsiniz veya <i>devre dışı</i> bırakabilirsiniz.\n\n<small>Not: Güncelleme zamanları kesin değildir, kısa gecikmeler yaşanabilir.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Devre dışı</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Aralık ayarla</string>
@@ -321,31 +313,19 @@
   <!--About screen-->
   <string name="about_pref">Hakkında</string>
   <!--Search-->
-  <string name="found_in_chapters_label">Kısımlarda bulundu</string>
   <string name="search_status_no_results">Sonuç bulunamadı</string>
   <string name="search_label">Ara</string>
-  <string name="found_in_title_label">Başlıkta bulundu</string>
-  <!--OPML import and export-->
-  <string name="opml_import_option">Seçenek %1$d</string>
-  <string name="opml_import_explanation_1">Yerel dosya sisteminden belirli bir yol seçin.</string>
-  <string name="opml_import_explanation_3">Google Mail, Dropbox, Google Drive gibi birçok uygulama ve çoğu dosya yöneticisi OPML dosyalarını AntennaPod <i>ile</i> <i>açabilir.</i></string>
+  <!--import and export-->
   <string name="opml_import_label">OPML içe aktar</string>
-  <string name="reading_opml_label">OPML dosyası okunuyor</string>
   <string name="select_all_label">Hepsini seç</string>
   <string name="deselect_all_label">Tüm seçimleri geri al</string>
-  <string name="choose_file_from_filesystem">Yerel dosya sisteminden</string>
   <string name="opml_export_label">OPML dışa aktar</string>
   <string name="export_error_label">Dışa aktarma hatası</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Zamanlayıcıyı ayarla</string>
   <string name="disable_sleeptimer_label">Zamanlayıcıyı devre dışı bırak</string>
-  <string name="enter_time_here_label">Zamanı gir</string>
   <string name="sleep_timer_label">Zamanlayıcı</string>
-  <string name="time_left_label">Kalan süre:\u0020</string>
   <string name="time_dialog_invalid_input">Geçersiz giriş, zaman bir tam sayı olmalıdır</string>
-  <string name="timer_about_to_expire_label"><b>Zamanlayıcı süresi dolduğunda:</b></string>
-  <string name="shake_to_reset_label">Zamanyacıyı sıfırlamak için salla</string>
-  <string name="timer_vibration_label">Titret</string>
   <string name="time_seconds">saniye</string>
   <string name="time_minutes">dakika</string>
   <string name="time_hours">saat</string>
@@ -432,6 +412,7 @@
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <!--Add podcast fragment-->
   <string name="search_itunes_label">iTunes\'da Arama</string>
+  <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tümü</string>
   <string name="selected_all_label">Tüm Bölümler Seçildi</string>
@@ -465,9 +446,7 @@
   <string name="proxy_test_successful">Test başarılı</string>
   <string name="proxy_test_failed">Test başarısız</string>
   <!--Subscriptions fragment-->
-  <!--Database import/export-->
   <!--Casting-->
-  <!--<string name="cast_failed_to_connect">Could not connect to the device</string>-->
   <string name="cast_failed_seek">Yayın aygıtındaki yeni pozisyona erişilemedi</string>
   <!--Notification channels-->
   <!--Widget settings-->

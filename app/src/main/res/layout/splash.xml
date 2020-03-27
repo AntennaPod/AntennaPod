@@ -9,6 +9,6 @@
             android:layout_height="24dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="36dp"
+            android:layout_marginBottom="96dp"
             android:id="@+id/progressBar"/>
 </RelativeLayout>

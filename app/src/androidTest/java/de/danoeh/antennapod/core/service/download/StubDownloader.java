@@ -1,8 +1,7 @@
 package de.danoeh.antennapod.core.service.download;
 
 import androidx.annotation.NonNull;
-
-import de.danoeh.antennapod.core.util.Consumer;
+import androidx.core.util.Consumer;
 
 public class StubDownloader extends Downloader {
 

@@ -30,12 +30,16 @@ public class FeedItemEvent {
         return new FeedItemEvent(Action.DELETE_MEDIA, items);
     }
 
+    public static FeedItemEvent deletedMedia(FeedItem... items) {
+        return deletedMedia(Arrays.asList(items));
+    }
+
     public static FeedItemEvent updated(List<FeedItem> items) {
         return new FeedItemEvent(Action.UPDATE, items);
     }
 
     public static FeedItemEvent updated(FeedItem... items) {
-        return new FeedItemEvent(Action.UPDATE, Arrays.asList(items));
+        return updated(Arrays.asList(items));
     }
 
     @Override

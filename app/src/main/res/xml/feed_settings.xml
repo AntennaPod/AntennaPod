@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:key="feedSettingsScreen">
 
     <SwitchPreference
             android:key="keepUpdated"
@@ -23,10 +24,19 @@
     <ListPreference
             android:entries="@array/spnAutoDeleteItems"
             android:entryValues="@array/spnAutoDeleteValues"
-            android:icon="?attr/content_discard"
+            android:icon="?attr/ic_delete"
             android:title="@string/auto_delete_label"
             android:summary="@string/feed_auto_download_global"
             android:key="autoDelete"/>
+
+    <ListPreference
+            android:entries="@array/spnVolumeReductionItems"
+            android:entryValues="@array/spnVolumeReductionValues"
+            android:icon="?attr/ic_volume_adaption"
+            android:summary="@string/feed_volume_reduction_summary"
+            android:title="@string/feed_volume_reduction"
+            android:defaultValue="off"
+            android:key="volumeReduction"/>
 
     <PreferenceCategory android:title="@string/auto_download_settings_label">
         <SwitchPreference

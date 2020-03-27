@@ -29,59 +29,42 @@ public class DownloadRequest implements Parcelable {
     private long size;
     private int statusMsg;
     private boolean mediaEnqueued;
+    private boolean initiatedByUser;
 
-    public DownloadRequest(@NonNull String destination,
-                           @NonNull String source,
-                           @NonNull String title,
-                           long feedfileId,
-                           int feedfileType,
-                           String username,
-                           String password,
-                           boolean deleteOnFailure,
-                           Bundle arguments) {
+    public DownloadRequest(@NonNull String destination, @NonNull String source, @NonNull String title, long feedfileId,
+                           int feedfileType, String username, String password, boolean deleteOnFailure,
+                           Bundle arguments, boolean initiatedByUser) {
+        this(destination, source, title, feedfileId, feedfileType, null, deleteOnFailure, username, password, false,
+             arguments, initiatedByUser);
+    }
 
+    private DownloadRequest(Builder builder) {
+        this(builder.destination, builder.source, builder.title, builder.feedfileId, builder.feedfileType,
+             builder.lastModified, builder.deleteOnFailure, builder.username, builder.password, false,
+             builder.arguments != null ? builder.arguments : new Bundle(), builder.initiatedByUser);
+    }
+
+    private DownloadRequest(Parcel in) {
+        this(in.readString(), in.readString(), in.readString(), in.readLong(), in.readInt(), in.readString(),
+             in.readByte() > 0, nullIfEmpty(in.readString()), nullIfEmpty(in.readString()), in.readByte() > 0,
+             in.readBundle(), in.readByte() > 0);
+    }
+
+    private DownloadRequest(String destination, String source, String title, long feedfileId, int feedfileType,
+                            String lastModified, boolean deleteOnFailure, String username, String password,
+                            boolean mediaEnqueued, Bundle arguments, boolean initiatedByUser) {
         this.destination = destination;
         this.source = source;
         this.title = title;
         this.feedfileId = feedfileId;
         this.feedfileType = feedfileType;
+        this.lastModified = lastModified;
+        this.deleteOnFailure = deleteOnFailure;
         this.username = username;
         this.password = password;
-        this.deleteOnFailure = deleteOnFailure;
-        this.mediaEnqueued = false;
-        this.arguments = (arguments != null) ? arguments : new Bundle();
-    }
-
-    public DownloadRequest(String destination, String source, String title,
-                           long feedfileId, int feedfileType) {
-        this(destination, source, title, feedfileId, feedfileType, null, null, true, null);
-    }
-
-    private DownloadRequest(Builder builder) {
-        this.destination = builder.destination;
-        this.source = builder.source;
-        this.title = builder.title;
-        this.feedfileId = builder.feedfileId;
-        this.feedfileType = builder.feedfileType;
-        this.username = builder.username;
-        this.password = builder.password;
-        this.lastModified = builder.lastModified;
-        this.deleteOnFailure = builder.deleteOnFailure;
-        this.arguments = (builder.arguments != null) ? builder.arguments : new Bundle();
-    }
-
-    private DownloadRequest(Parcel in) {
-        destination = in.readString();
-        source = in.readString();
-        title = in.readString();
-        feedfileId = in.readLong();
-        feedfileType = in.readInt();
-        lastModified = in.readString();
-        deleteOnFailure = (in.readByte() > 0);
-        username = nullIfEmpty(in.readString());
-        password = nullIfEmpty(in.readString());
-        mediaEnqueued = (in.readByte() > 0);
-        arguments = in.readBundle();
+        this.mediaEnqueued = mediaEnqueued;
+        this.arguments = arguments;
+        this.initiatedByUser = initiatedByUser;
     }
 
     @Override
@@ -107,6 +90,7 @@ public class DownloadRequest implements Parcelable {
         dest.writeString(nonNullString(password));
         dest.writeByte((mediaEnqueued) ? (byte) 1 : 0);
         dest.writeBundle(arguments);
+        dest.writeByte(initiatedByUser ? (byte) 1 : 0);
     }
 
     private static String nonNullString(String str) {
@@ -153,6 +137,7 @@ public class DownloadRequest implements Parcelable {
         if (username != null ? !username.equals(that.username) : that.username != null)
             return false;
         if (mediaEnqueued != that.mediaEnqueued) return false;
+        if (initiatedByUser != that.initiatedByUser) return false;
         return true;
     }
 
@@ -258,6 +243,10 @@ public class DownloadRequest implements Parcelable {
         return mediaEnqueued;
     }
 
+    public boolean isInitiatedByUser() {
+        return initiatedByUser;
+    }
+
     /**
      * Set to true if the media is enqueued because of this download.
      * The state is helpful if the download is cancelled, and undoing the enqueue is needed.
@@ -281,13 +270,15 @@ public class DownloadRequest implements Parcelable {
         private final long feedfileId;
         private final int feedfileType;
         private Bundle arguments;
+        private boolean initiatedByUser;
 
-        public Builder(@NonNull String destination, @NonNull FeedFile item) {
+        public Builder(@NonNull String destination, @NonNull FeedFile item, boolean initiatedByUser) {
             this.destination = destination;
             this.source = URLChecker.prepareURL(item.getDownload_url());
             this.title = item.getHumanReadableIdentifier();
             this.feedfileId = item.getId();
             this.feedfileType = item.getTypeAsInt();
+            this.initiatedByUser = initiatedByUser;
         }
 
         public Builder deleteOnFailure(boolean deleteOnFailure) {

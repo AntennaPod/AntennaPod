@@ -31,20 +31,9 @@
             android:key="prefDeleteRemovesFromQueue"
             android:summary="@string/pref_delete_removes_from_queue_sum"
             android:title="@string/pref_delete_removes_from_queue_title"/>
-
-    <PreferenceCategory android:title="@string/import_export_pref">
-        <Preference
-                android:key="prefOpmlExport"
-                android:title="@string/opml_export_label"/>
-        <Preference
-                android:key="prefOpmlImport"
-                android:title="@string/opml_import_label"/>
-        <Preference
-                android:key="prefHtmlExport"
-                android:title="@string/html_export_label"/>
-        <Preference
-                android:key="importExport"
-                search:keywords="@string/import_export_search_keywords"
-                android:title="@string/import_export"/>
-    </PreferenceCategory>
+    <Preference
+            android:title="@string/import_export_pref"
+            android:summary="@string/import_export_summary"
+            android:key="prefImportExport"
+            search:ignore="true"/>
 </PreferenceScreen>

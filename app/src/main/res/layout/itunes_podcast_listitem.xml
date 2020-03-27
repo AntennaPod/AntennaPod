@@ -18,8 +18,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/cover_label"
         android:cropToPadding="true"
@@ -33,7 +31,9 @@
         android:layout_toRightOf="@id/imgvCover"
         android:layout_toEndOf="@id/imgvCover"
         android:layout_centerVertical="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp">
 
         <TextView
             android:id="@+id/txtvTitle"
@@ -45,7 +45,7 @@
             tools:text="Podcast title" />
 
         <TextView
-            android:id="@+id/txtvUrl"
+            android:id="@+id/txtvAuthor"
             style="android:style/TextAppearance.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             android:textColor="?android:attr/textColorSecondary"
             android:ellipsize="middle"
             android:maxLines="2"
-            tools:text="http://www.example.com/feed"
+            tools:text="author"
             tools:background="@android:color/holo_green_dark"/>
 
     </LinearLayout>

@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/more_content_list_footer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/selectableItemBackground">
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:background="?android:attr/windowBackground"
+    android:gravity="center"
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/imgExpand"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="center"
-        android:layout_margin="16dp"
         android:contentDescription="@string/load_next_page_label"
-        android:src="?attr/navigation_expand" />
+        app:srcCompat="?attr/ic_load_more" />
 
     <ProgressBar
         android:id="@+id/progBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:indeterminateOnly="true"
         android:visibility="gone" />
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/load_next_page_label"
+        android:textColor="?android:attr/textColorPrimary"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"/>
+
+</LinearLayout>

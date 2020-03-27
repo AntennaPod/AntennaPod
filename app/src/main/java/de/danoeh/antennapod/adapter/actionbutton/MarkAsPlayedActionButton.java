@@ -9,16 +9,16 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
-class MarkAsPlayedActionButton extends ItemActionButton {
+public class MarkAsPlayedActionButton extends ItemActionButton {
 
-    MarkAsPlayedActionButton(FeedItem item) {
+    public MarkAsPlayedActionButton(FeedItem item) {
         super(item);
     }
 
     @Override
     @StringRes
     public int getLabel() {
-        return R.string.mark_read_label;
+        return (item.hasMedia() ? R.string.mark_read_label : R.string.mark_read_no_media_label);
     }
 
     @Override

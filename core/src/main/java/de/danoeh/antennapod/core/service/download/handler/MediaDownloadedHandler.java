@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import java.io.File;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
@@ -50,6 +51,7 @@ public class MediaDownloadedHandler implements Runnable {
         boolean broadcastUnreadStateUpdate = media.getItem() != null && media.getItem().isNew();
         media.setDownloaded(true);
         media.setFile_url(request.getDestination());
+        media.setSize(new File(request.getDestination()).length());
         media.checkEmbeddedPicture(); // enforce check
 
         // check if file has chapters
@@ -94,7 +96,7 @@ public class MediaDownloadedHandler implements Runnable {
         } catch (ExecutionException e) {
             Log.e(TAG, "ExecutionException in MediaHandlerThread: " + e.getMessage());
             updatedStatus = new DownloadStatus(media, media.getEpisodeTitle(),
-                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
+                    DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage(), request.isInitiatedByUser());
         }
 
         if (GpodnetPreferences.loggedIn() && item != null) {

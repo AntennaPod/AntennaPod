@@ -139,19 +139,19 @@ public class FeedHandlerTest {
 
     @Test
     public void testRSS2Basic() throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
-        Feed f1 = createTestFeed(10, false, true, true);
+        Feed f1 = createTestFeed(10, true);
         Feed f2 = runFeedTest(f1, new RSS2Generator(), "UTF-8", RSS2Generator.FEATURE_WRITE_GUID);
         feedValid(f1, f2, Feed.TYPE_RSS2);
     }
 
     @Test
     public void testAtomBasic() throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
-        Feed f1 = createTestFeed(10, false, true, true);
+        Feed f1 = createTestFeed(10, true);
         Feed f2 = runFeedTest(f1, new AtomGenerator(), "UTF-8", 0);
         feedValid(f1, f2, Feed.TYPE_ATOM1);
     }
 
-    private Feed createTestFeed(int numItems, boolean withImage, boolean withFeedMedia, boolean withChapters) {
+    private Feed createTestFeed(int numItems, boolean withFeedMedia) {
         Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
                 "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed", "http://example.com/picture", file.getAbsolutePath(),
                 "http://example.com/feed", true);
