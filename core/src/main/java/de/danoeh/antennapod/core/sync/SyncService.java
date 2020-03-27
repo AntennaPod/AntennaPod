@@ -10,12 +10,19 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.SafeJobIntentService;
 import androidx.core.util.Pair;
+import androidx.work.Constraints;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.Worker;
+import androidx.work.WorkerParameters;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -29,7 +36,6 @@ import de.danoeh.antennapod.core.sync.model.ISyncService;
 import de.danoeh.antennapod.core.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.core.sync.model.SyncServiceException;
 import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
-import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,8 +45,9 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
-public class SyncService extends SafeJobIntentService {
+public class SyncService extends Worker {
     private static final String PREF_NAME = "SyncService";
     private static final String PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP = "last_sync_timestamp";
     private static final String PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP = "last_episode_actions_sync_timestamp";
@@ -49,21 +56,20 @@ public class SyncService extends SafeJobIntentService {
     private static final String PREF_QUEUED_EPISODE_ACTIONS = "sync_queued_episode_actions";
     private static final String PREF_LAST_SYNC_ATTEMPT_TIMESTAMP = "last_sync_attempt_timestamp";
     private static final String TAG = "SyncService";
-    private static final int JOB_ID = -17000;
+    private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final Object lock = new Object();
     private static boolean syncPending = false;
 
     private ISyncService syncServiceImpl;
 
-    @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetService.DEFAULT_BASE_HOST);
+    public SyncService(@NonNull Context context, @NonNull WorkerParameters params) {
+        super(context, params);
+    }
 
-        if (!NetworkUtils.networkAvailable()) {
-            stopForeground(true);
-            stopSelf();
-            return;
-        }
+    @Override
+    @NonNull
+    public Result doWork() {
+        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetService.DEFAULT_BASE_HOST);
 
         try {
             // Leave some time, so other actions can be queued
@@ -79,12 +85,15 @@ public class SyncService extends SafeJobIntentService {
             syncEpisodeActions();
             syncServiceImpl.logout();
             clearErrorNotifications();
+            return Result.success();
         } catch (SyncServiceException e) {
             e.printStackTrace();
             updateErrorNotification(e);
+            return Result.failure();
+        } finally {
+            getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                    .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
         }
-        getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
     }
 
     public static void clearQueue(Context context) {
@@ -148,7 +157,19 @@ public class SyncService extends SafeJobIntentService {
     public static void sync(Context context) {
         if (!syncPending) {
             syncPending = true;
-            enqueueWork(context, SyncService.class, JOB_ID, new Intent());
+
+            Constraints.Builder constraints = new Constraints.Builder();
+            if (UserPreferences.isAllowMobileFeedRefresh()) {
+                constraints.setRequiredNetworkType(NetworkType.CONNECTED);
+            } else {
+                constraints.setRequiredNetworkType(NetworkType.UNMETERED);
+            }
+
+            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(SyncService.class)
+                    .setConstraints(constraints.build())
+                    .setInitialDelay(0L, TimeUnit.MILLISECONDS)
+                    .build();
+            WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
         } else {
             Log.d(TAG, "Ignored sync: Job already enqueued");
         }
@@ -169,7 +190,7 @@ public class SyncService extends SafeJobIntentService {
     private List<EpisodeAction> getQueuedEpisodeActions() {
         ArrayList<EpisodeAction> actions = new ArrayList<>();
         try {
-            SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             String json = prefs.getString(PREF_QUEUED_EPISODE_ACTIONS, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
@@ -184,7 +205,7 @@ public class SyncService extends SafeJobIntentService {
     private List<String> getQueuedRemovedFeeds() {
         ArrayList<String> actions = new ArrayList<>();
         try {
-            SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             String json = prefs.getString(PREF_QUEUED_FEEDS_REMOVED, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
@@ -199,7 +220,7 @@ public class SyncService extends SafeJobIntentService {
     private List<String> getQueuedAddedFeeds() {
         ArrayList<String> actions = new ArrayList<>();
         try {
-            SharedPreferences prefs = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             String json = prefs.getString(PREF_QUEUED_FEEDS_ADDED, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
@@ -212,7 +233,7 @@ public class SyncService extends SafeJobIntentService {
     }
 
     private void syncSubscriptions() throws SyncServiceException {
-        final long lastSync = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        final long lastSync = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .getLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0);
         final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
         SubscriptionChanges subscriptionChanges = syncServiceImpl.getSubscriptionChanges(lastSync);
@@ -226,7 +247,7 @@ public class SyncService extends SafeJobIntentService {
             if (!URLChecker.containsUrl(localSubscriptions, downloadUrl) && !queuedRemovedFeeds.contains(downloadUrl)) {
                 Feed feed = new Feed(downloadUrl, null);
                 try {
-                    DownloadRequester.getInstance().downloadFeed(this, feed);
+                    DownloadRequester.getInstance().downloadFeed(getApplicationContext(), feed);
                 } catch (DownloadRequestException e) {
                     e.printStackTrace();
                 }
@@ -236,7 +257,7 @@ public class SyncService extends SafeJobIntentService {
         // remove subscription if not just subscribed (again)
         for (String downloadUrl : subscriptionChanges.getRemoved()) {
             if (!queuedAddedFeeds.contains(downloadUrl)) {
-                DBTasks.removeFeedWithDownloadUrl(this, downloadUrl);
+                DBTasks.removeFeedWithDownloadUrl(getApplicationContext(), downloadUrl);
             }
         }
 
@@ -254,19 +275,19 @@ public class SyncService extends SafeJobIntentService {
             synchronized (lock) {
                 UploadChangesResponse uploadResponse = syncServiceImpl
                     .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
-                getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                         .putString(PREF_QUEUED_FEEDS_ADDED, "[]").apply();
-                getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                         .putString(PREF_QUEUED_FEEDS_REMOVED, "[]").apply();
                 newTimeStamp = uploadResponse.timestamp;
             }
         }
-        getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+        getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                 .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, newTimeStamp).apply();
     }
 
     private void syncEpisodeActions() throws SyncServiceException {
-        final long lastSync = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        final long lastSync = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .getLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0);
         EpisodeActionChanges getResponse = syncServiceImpl.getEpisodeActionChanges(lastSync);
         long newTimeStamp = getResponse.getTimestamp();
@@ -281,11 +302,11 @@ public class SyncService extends SafeJobIntentService {
                 UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
                 newTimeStamp = postResponse.timestamp;
                 Log.d(TAG, "Upload episode response: " + postResponse);
-                getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+                getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                         .putString(PREF_QUEUED_EPISODE_ACTIONS, "[]").apply();
             }
         }
-        getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+        getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                 .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, newTimeStamp).apply();
     }
 
@@ -356,26 +377,32 @@ public class SyncService extends SafeJobIntentService {
     }
 
     private void clearErrorNotifications() {
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager nm = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(R.id.notification_gpodnet_sync_error);
         nm.cancel(R.id.notification_gpodnet_sync_autherror);
     }
 
     private void updateErrorNotification(SyncServiceException exception) {
         Log.d(TAG, "Posting error notification");
-        final String description = getString(R.string.gpodnetsync_error_descr) + exception.getMessage();
+        final String description = getApplicationContext().getString(R.string.gpodnetsync_error_descr)
+                + exception.getMessage();
 
-        Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_ERROR)
-                .setContentTitle(getString(R.string.gpodnetsync_error_title))
+        Intent intent = getApplicationContext().getPackageManager().getLaunchIntentForPackage(
+                getApplicationContext().getPackageName());
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification = new NotificationCompat.Builder(getApplicationContext(),
+                NotificationUtils.CHANNEL_ID_ERROR)
+                .setContentTitle(getApplicationContext().getString(R.string.gpodnetsync_error_title))
                 .setContentText(description)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_notification_sync_error)
                 .setAutoCancel(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build();
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager nm = (NotificationManager) getApplicationContext()
+                .getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(R.id.notification_gpodnet_sync_error, notification);
     }
 }
