@@ -2,7 +2,7 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_list_grey600_24dp"
+        android:icon="@drawable/ic_playlist_black"
         android:shortcutId="queue"
         android:shortcutShortLabel="@string/queue_label">
         <intent
@@ -20,7 +20,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_feed_grey600_24dp"
+        android:icon="@drawable/ic_feed_black"
         android:shortcutId="episodes"
         android:shortcutShortLabel="@string/episodes_label">
         <intent
@@ -38,7 +38,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_folder_grey600_24dp"
+        android:icon="@drawable/ic_folder_black"
         android:shortcutId="subscriptions"
         android:shortcutShortLabel="@string/subscriptions_label">
         <intent
@@ -56,7 +56,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_refresh_grey600_24dp"
+        android:icon="@drawable/ic_refresh_black"
         android:shortcutId="refresh"
         android:shortcutShortLabel="@string/refresh_label">
         <intent
