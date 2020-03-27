@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -176,6 +178,15 @@ public class MainActivity extends CastEnabledActivity {
 
     public LockableBottomSheetBehavior getBottomSheet() {
         return sheetBehavior;
+    }
+
+    public void setPlayerVisible(boolean visible) {
+        getBottomSheet().setLocked(!visible);
+        FrameLayout mainView = findViewById(R.id.main_view);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mainView.getLayoutParams();
+        params.setMargins(0, 0, 0, visible ? (int) getResources().getDimension(R.dimen.external_player_height) : 0);
+        mainView.setLayoutParams(params);
+        findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     public void loadFragment(String tag, Bundle args) {
