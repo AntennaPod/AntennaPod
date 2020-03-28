@@ -52,6 +52,9 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void syncStatusChanged(SyncServiceEvent event) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
         if (event.getMessageResId() == R.string.sync_status_error
                 || event.getMessageResId() == R.string.sync_status_success) {
             updateLastGpodnetSyncReport(SyncService.isLastSyncSuccessful(getContext()),
@@ -117,7 +120,6 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
                     SyncService.getLastSyncAttempt(getContext()));
         } else {
             findPreference(PREF_GPODNET_LOGOUT).setSummary(null);
-            updateLastGpodnetSyncReport(false, 0);
         }
         findPreference(PREF_GPODNET_HOSTNAME).setSummary(GpodnetPreferences.getHostname());
     }

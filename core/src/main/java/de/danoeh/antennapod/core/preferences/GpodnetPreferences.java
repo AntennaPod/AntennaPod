@@ -34,16 +34,6 @@ public class GpodnetPreferences {
         return ClientConfig.applicationCallbacks.getApplicationInstance().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    public static void registerOnSharedPreferenceChangeListener(
-            SharedPreferences.OnSharedPreferenceChangeListener listener) {
-        getPreferences().registerOnSharedPreferenceChangeListener(listener);
-    }
-
-    public static void unregisterOnSharedPreferenceChangeListener(
-            SharedPreferences.OnSharedPreferenceChangeListener listener) {
-        getPreferences().unregisterOnSharedPreferenceChangeListener(listener);
-    }
-
     private static synchronized void ensurePreferencesLoaded() {
         if (!preferencesLoaded) {
             SharedPreferences prefs = getPreferences();

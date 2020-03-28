@@ -342,8 +342,8 @@ public class GpodnetAuthenticationActivity extends AppCompatActivity {
         final Button back = view.findViewById(R.id.butGoMainscreen);
 
         sync.setOnClickListener(v -> {
-            SyncService.sync(GpodnetAuthenticationActivity.this);
             finish();
+            SyncService.sync(getApplicationContext());
         });
         back.setOnClickListener(v -> {
             Intent intent = new Intent(GpodnetAuthenticationActivity.this, MainActivity.class);

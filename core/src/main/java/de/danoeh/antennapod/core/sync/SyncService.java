@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.collection.ArrayMap;
 import androidx.core.app.NotificationCompat;
 import androidx.core.util.Pair;
+import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
@@ -23,6 +24,7 @@ import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -71,27 +73,30 @@ public class SyncService extends Worker {
     @Override
     @NonNull
     public Result doWork() {
+        if (!GpodnetPreferences.loggedIn()) {
+            return Result.success();
+        }
         syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetService.DEFAULT_BASE_HOST);
         SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .edit();
         prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
         try {
             syncServiceImpl.login();
-            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_subscriptions));
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
             syncSubscriptions();
-            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_episodes));
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes));
             syncEpisodeActions();
             syncServiceImpl.logout();
             clearErrorNotifications();
-            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_success));
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_success));
             prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, true).apply();
             return Result.success();
         } catch (SyncServiceException e) {
-            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_error));
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_error));
             prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false).apply();
             e.printStackTrace();
             updateErrorNotification(e);
-            return Result.failure();
+            return Result.retry();
         }
     }
 
@@ -156,7 +161,7 @@ public class SyncService extends Worker {
     public static void sync(Context context) {
         OneTimeWorkRequest workRequest = getWorkRequest().build();
         WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-        EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_started));
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 
     public static void fullSync(Context context) {
@@ -169,9 +174,10 @@ public class SyncService extends Worker {
         }
         OneTimeWorkRequest workRequest = getWorkRequest()
                 .setInitialDelay(0L, TimeUnit.SECONDS)
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.MINUTES)
                 .build();
         WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-        EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_started));
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 
     private static OneTimeWorkRequest.Builder getWorkRequest() {
@@ -307,7 +313,7 @@ public class SyncService extends Worker {
         // upload local actions
         List<EpisodeAction> queuedEpisodeActions = getQueuedEpisodeActions();
         if (lastSync == 0) {
-            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_upload_played));
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_upload_played));
             List<FeedItem> readItems = DBReader.getPlayedItems();
             Log.d(TAG, "First sync. Upload state for all " + readItems.size() + " played episodes");
             for (FeedItem item : readItems) {
