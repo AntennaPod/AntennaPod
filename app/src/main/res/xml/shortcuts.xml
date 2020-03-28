@@ -12,9 +12,6 @@
             <extra
                 android:name="fragment_tag"
                 android:value="QueueFragment" />
-            <extra
-                android:name="nav_type"
-                android:value="0" />
         </intent>
     </shortcut>
 
@@ -30,9 +27,6 @@
             <extra
                 android:name="fragment_tag"
                 android:value="EpisodesFragment" />
-            <extra
-                android:name="nav_type"
-                android:value="0" />
         </intent>
     </shortcut>
 
@@ -48,9 +42,6 @@
             <extra
                 android:name="fragment_tag"
                 android:value="SubscriptionFragment" />
-            <extra
-                android:name="nav_type"
-                android:value="0" />
         </intent>
     </shortcut>
 
