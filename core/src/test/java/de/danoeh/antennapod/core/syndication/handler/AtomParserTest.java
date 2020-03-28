@@ -38,7 +38,6 @@ public class AtomParserTest {
             assertEquals("http://example.com/item-" + i, item.getItemIdentifier());
             assertEquals("item-" + i, item.getTitle());
             assertNull(item.getDescription());
-            assertNull(item.getContentEncoded());
             assertEquals("http://example.com/items/" + i, item.getLink());
             assertEquals(new Date(i * 60000), item.getPubDate());
             assertNull(item.getPaymentLink());
