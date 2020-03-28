@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.sync.gpoddernet;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetDevice;
@@ -42,8 +43,10 @@ import java.util.List;
  * Communicates with the gpodder.net service.
  */
 public class GpodnetService implements ISyncService {
+    public static final String TAG = "GpodnetService";
     public static final String DEFAULT_BASE_HOST = "gpodder.net";
     private static final String BASE_SCHEME = "https";
+    private static final int UPLOAD_BULK_SIZE = 30;
     private static final MediaType TEXT = MediaType.parse("plain/text; charset=utf-8");
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final String baseHost;
@@ -415,12 +418,24 @@ public class GpodnetService implements ISyncService {
     @Override
     public UploadChangesResponse uploadEpisodeActions(List<EpisodeAction> episodeActions) throws SyncServiceException {
         requireLoggedIn();
+        UploadChangesResponse response = null;
+        for (int i = 0; i < episodeActions.size(); i += UPLOAD_BULK_SIZE) {
+            response = uploadEpisodeActionsPartial(episodeActions,
+                    i, Math.min(episodeActions.size(), i + UPLOAD_BULK_SIZE));
+        }
+        return response;
+    }
+
+    private UploadChangesResponse uploadEpisodeActionsPartial(List<EpisodeAction> episodeActions, int from, int to)
+            throws SyncServiceException {
         try {
+            Log.d(TAG, "Uploading partial actions " + from + " to " + to + " of " + episodeActions.size());
             URL url = new URI(BASE_SCHEME, baseHost, String.format(
                     "/api/2/episodes/%s.json", username), null).toURL();
 
             final JSONArray list = new JSONArray();
-            for (EpisodeAction episodeAction : episodeActions) {
+            for (int i = from; i < to; i++) {
+                EpisodeAction episodeAction = episodeActions.get(i);
                 JSONObject obj = episodeAction.writeToJSONObject();
                 if (obj != null) {
                     obj.put("device", GpodnetPreferences.getDeviceID());
@@ -437,7 +452,6 @@ public class GpodnetService implements ISyncService {
             e.printStackTrace();
             throw new SyncServiceException(e);
         }
-
     }
 
     /**

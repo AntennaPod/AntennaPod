@@ -441,8 +441,6 @@
     <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
     <string name="pref_gpodnet_full_sync_title">Full sync now</string>
     <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
-    <string name="pref_gpodnet_sync_sum_last_sync_line">Last sync attempt: %1$s (%2$s)</string>
-    <string name="pref_gpodnet_sync_started">Sync started</string>
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_gpodnet_notifications_title">Show sync error notifications</string>
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
@@ -535,6 +533,14 @@
     <string name="search_status_no_results">No results were found</string>
     <string name="search_label">Search</string>
     <string name="no_results_for_query">No results were found for \"%1$s\"</string>
+
+    <!-- Synchronization -->
+    <string name="sync_status_started">Sync started</string>
+    <string name="sync_status_episodes">Synchronizing episodes…</string>
+    <string name="sync_status_upload_played">Uploading played status…</string>
+    <string name="sync_status_subscriptions">Synchronizing subscriptions…</string>
+    <string name="sync_status_success">Synchronization successful</string>
+    <string name="sync_status_error">Synchronization failed</string>
 
     <!-- import and export -->
     <string name="import_export_summary">Move subscriptions and queue to another device</string>

@@ -19,6 +19,7 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -39,6 +40,7 @@ import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -55,6 +57,7 @@ public class SyncService extends Worker {
     private static final String PREF_QUEUED_FEEDS_REMOVED = "sync_removed";
     private static final String PREF_QUEUED_EPISODE_ACTIONS = "sync_queued_episode_actions";
     private static final String PREF_LAST_SYNC_ATTEMPT_TIMESTAMP = "last_sync_attempt_timestamp";
+    private static final String PREF_LAST_SYNC_ATTEMPT_SUCCESS = "last_sync_attempt_success";
     private static final String TAG = "SyncService";
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final Object lock = new Object();
@@ -69,20 +72,26 @@ public class SyncService extends Worker {
     @NonNull
     public Result doWork() {
         syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetService.DEFAULT_BASE_HOST);
+        SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .edit();
+        prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
         try {
             syncServiceImpl.login();
+            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_subscriptions));
             syncSubscriptions();
+            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_episodes));
             syncEpisodeActions();
             syncServiceImpl.logout();
             clearErrorNotifications();
+            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_success));
+            prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, true).apply();
             return Result.success();
         } catch (SyncServiceException e) {
+            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_error));
+            prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false).apply();
             e.printStackTrace();
             updateErrorNotification(e);
             return Result.failure();
-        } finally {
-            getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
-                    .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
         }
     }
 
@@ -145,18 +154,9 @@ public class SyncService extends Worker {
     }
 
     public static void sync(Context context) {
-        Constraints.Builder constraints = new Constraints.Builder();
-        if (UserPreferences.isAllowMobileFeedRefresh()) {
-            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
-        } else {
-            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
-        }
-
-        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(SyncService.class)
-                .setConstraints(constraints.build())
-                .setInitialDelay(5L, TimeUnit.SECONDS) // Give it some time, so other actions can be queued
-                .build();
+        OneTimeWorkRequest workRequest = getWorkRequest().build();
         WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_started));
     }
 
     public static void fullSync(Context context) {
@@ -167,9 +167,35 @@ public class SyncService extends Worker {
                     .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
                     .apply();
         }
-        sync(context);
+        OneTimeWorkRequest workRequest = getWorkRequest()
+                .setInitialDelay(0L, TimeUnit.SECONDS)
+                .build();
+        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_started));
     }
 
+    private static OneTimeWorkRequest.Builder getWorkRequest() {
+        Constraints.Builder constraints = new Constraints.Builder();
+        if (UserPreferences.isAllowMobileFeedRefresh()) {
+            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
+        } else {
+            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
+        }
+
+        return new OneTimeWorkRequest.Builder(SyncService.class)
+                .setConstraints(constraints.build())
+                .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
+    }
+
+    public static boolean isLastSyncSuccessful(Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false);
+    }
+
+    public static long getLastSyncAttempt(Context context) {
+        return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0);
+    }
 
     private List<EpisodeAction> getQueuedEpisodeActions() {
         ArrayList<EpisodeAction> actions = new ArrayList<>();
@@ -281,6 +307,7 @@ public class SyncService extends Worker {
         // upload local actions
         List<EpisodeAction> queuedEpisodeActions = getQueuedEpisodeActions();
         if (lastSync == 0) {
+            EventBus.getDefault().post(new SyncServiceEvent(R.string.sync_status_upload_played));
             List<FeedItem> readItems = DBReader.getPlayedItems();
             Log.d(TAG, "First sync. Upload state for all " + readItems.size() + " played episodes");
             for (FeedItem item : readItems) {
@@ -300,7 +327,8 @@ public class SyncService extends Worker {
         }
         if (queuedEpisodeActions.size() > 0) {
             synchronized (lock) {
-                Log.d(TAG, "Uploading actions: " + StringUtils.join(queuedEpisodeActions, ", "));
+                Log.d(TAG, "Uploading " + queuedEpisodeActions.size() + " actions: "
+                        + StringUtils.join(queuedEpisodeActions, ", "));
                 UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
                 newTimeStamp = postResponse.timestamp;
                 Log.d(TAG, "Upload episode response: " + postResponse);

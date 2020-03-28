@@ -10,10 +10,15 @@ import android.text.format.DateUtils;
 import android.widget.Toast;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 
 public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
@@ -34,28 +39,27 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
     public void onStart() {
         super.onStart();
         ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.gpodnet_main_label);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        GpodnetPreferences.registerOnSharedPreferenceChangeListener(gpoddernetListener);
         updateGpodnetPreferenceScreen();
+        EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        GpodnetPreferences.unregisterOnSharedPreferenceChangeListener(gpoddernetListener);
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle("");
     }
 
-    private final SharedPreferences.OnSharedPreferenceChangeListener gpoddernetListener =
-            (sharedPreferences, key) -> {
-                //if (GpodnetPreferences.PREF_LAST_SYNC_ATTEMPT_TIMESTAMP.equals(key)) {
-                //    updateLastGpodnetSyncReport(GpodnetPreferences.getLastSyncAttemptResult(),
-                //            GpodnetPreferences.getLastSyncAttemptTimestamp());
-                //}
-            };
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void syncStatusChanged(SyncServiceEvent event) {
+        if (event.getMessageResId() == R.string.sync_status_error
+                || event.getMessageResId() == R.string.sync_status_success) {
+            updateLastGpodnetSyncReport(SyncService.isLastSyncSuccessful(getContext()),
+                    SyncService.getLastSyncAttempt(getContext()));
+        } else {
+            ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(event.getMessageResId());
+        }
+    }
 
     private void setupGpodderScreen() {
         final Activity activity = getActivity();
@@ -76,12 +80,10 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
                 });
         findPreference(PREF_GPODNET_SYNC).setOnPreferenceClickListener(preference -> {
                     SyncService.sync(getActivity().getApplicationContext());
-                    Toast.makeText(getActivity(), R.string.pref_gpodnet_sync_started, Toast.LENGTH_SHORT).show();
                     return true;
                 });
         findPreference(PREF_GPODNET_FORCE_FULL_SYNC).setOnPreferenceClickListener(preference -> {
                     SyncService.fullSync(getContext());
-                    Toast.makeText(getActivity(), R.string.pref_gpodnet_sync_started, Toast.LENGTH_SHORT).show();
                     return true;
                 });
         findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(preference -> {
@@ -106,13 +108,13 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_GPODNET_FORCE_FULL_SYNC).setEnabled(loggedIn);
         findPreference(PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
         findPreference(PREF_GPODNET_NOTIFICATIONS).setEnabled(loggedIn);
-        if(loggedIn) {
+        if (loggedIn) {
             String format = getActivity().getString(R.string.pref_gpodnet_login_status);
             String summary = String.format(format, GpodnetPreferences.getUsername(),
                     GpodnetPreferences.getDeviceID());
             findPreference(PREF_GPODNET_LOGOUT).setSummary(Html.fromHtml(summary));
-            //updateLastGpodnetSyncReport(GpodnetPreferences.getLastSyncAttemptResult(),
-            //        GpodnetPreferences.getLastSyncAttemptTimestamp());
+            updateLastGpodnetSyncReport(SyncService.isLastSyncSuccessful(getContext()),
+                    SyncService.getLastSyncAttempt(getContext()));
         } else {
             findPreference(PREF_GPODNET_LOGOUT).setSummary(null);
             updateLastGpodnetSyncReport(false, 0);
@@ -121,20 +123,10 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void updateLastGpodnetSyncReport(boolean successful, long lastTime) {
-        Preference sync = findPreference(PREF_GPODNET_SYNC);
-        if (lastTime != 0) {
-            sync.setSummary(getActivity().getString(R.string.pref_gpodnet_sync_changes_sum) + "\n" +
-                    getActivity().getString(R.string.pref_gpodnet_sync_sum_last_sync_line,
-                            getActivity().getString(successful ?
-                                    R.string.gpodnetsync_pref_report_successful :
-                                    R.string.gpodnetsync_pref_report_failed),
-                            DateUtils.getRelativeDateTimeString(getActivity(),
-                                    lastTime,
-                                    DateUtils.MINUTE_IN_MILLIS,
-                                    DateUtils.WEEK_IN_MILLIS,
-                                    DateUtils.FORMAT_SHOW_TIME)));
-        } else {
-            sync.setSummary(getActivity().getString(R.string.pref_gpodnet_sync_changes_sum));
-        }
+        String status = String.format("%1$s (%2$s)", getString(successful
+                        ? R.string.gpodnetsync_pref_report_successful : R.string.gpodnetsync_pref_report_failed),
+                        DateUtils.getRelativeDateTimeString(getContext(),
+                        lastTime, DateUtils.MINUTE_IN_MILLIS, DateUtils.WEEK_IN_MILLIS, DateUtils.FORMAT_SHOW_TIME));
+        ((PreferenceActivity) getActivity()).getSupportActionBar().setSubtitle(status);
     }
 }
