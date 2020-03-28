@@ -82,7 +82,7 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 });
         findPreference(PREF_GPODNET_SYNC).setOnPreferenceClickListener(preference -> {
-                    SyncService.sync(getActivity().getApplicationContext());
+                    SyncService.syncImmediately(getActivity().getApplicationContext());
                     return true;
                 });
         findPreference(PREF_GPODNET_FORCE_FULL_SYNC).setOnPreferenceClickListener(preference -> {

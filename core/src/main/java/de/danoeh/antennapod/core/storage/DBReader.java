@@ -364,7 +364,6 @@ public final class DBReader {
             cursor = adapter.getPlayedItemsCursor();
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
-            Collections.sort(items, new FeedItemPubdateComparator());
             return items;
         } finally {
             if (cursor != null) {
@@ -656,8 +655,16 @@ public final class DBReader {
         }
     }
 
+    /**
+     * Loads a specific FeedItem from the database.
+     *
+     * @param podcastUrl the corresponding feed's url
+     * @param episodeUrl the feed item's url
+     * @return The FeedItem or null if the FeedItem could not be found.
+     *          Does NOT load additional attributes like feed or queue state.
+     */
     @Nullable
-    private static FeedItem getFeedItem(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
+    private static FeedItem getFeedItemByUrl(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
         Cursor cursor = null;
         try {
@@ -666,15 +673,10 @@ public final class DBReader {
                 return null;
             }
             List<FeedItem> list = extractItemlistFromCursor(adapter, cursor);
-            FeedItem item = null;
             if (!list.isEmpty()) {
-                item = list.get(0);
-                loadAdditionalFeedItemListData(list);
-                if (item.hasChapters()) {
-                    loadChaptersOfFeedItem(adapter, item);
-                }
+                return list.get(0);
             }
-            return item;
+            return null;
         } finally {
             if (cursor != null) {
                 cursor.close();
@@ -729,16 +731,16 @@ public final class DBReader {
      *
      * @param podcastUrl the corresponding feed's url
      * @param episodeUrl the feed item's url
-     * @return The FeedItem or null if the FeedItem could not be found. All FeedComponent-attributes
-     * as well as chapter marks of the FeedItem will also be loaded from the database.
+     * @return The FeedItem or null if the FeedItem could not be found.
+     *          Does NOT load additional attributes like feed or queue state.
      */
-    public static FeedItem getFeedItem(final String podcastUrl, final String episodeUrl) {
+    public static FeedItem getFeedItemByUrl(final String podcastUrl, final String episodeUrl) {
         Log.d(TAG, "getFeedItem() called with: " + "podcastUrl = [" + podcastUrl + "], episodeUrl = [" + episodeUrl + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try {
-            return getFeedItem(podcastUrl, episodeUrl, adapter);
+            return getFeedItemByUrl(podcastUrl, episodeUrl, adapter);
         } finally {
             adapter.close();
         }

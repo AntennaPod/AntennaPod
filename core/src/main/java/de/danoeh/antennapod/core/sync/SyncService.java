@@ -84,7 +84,6 @@ public class SyncService extends Worker {
             syncServiceImpl.login();
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_subscriptions));
             syncSubscriptions();
-            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes));
             syncEpisodeActions();
             syncServiceImpl.logout();
             clearErrorNotifications();
@@ -94,7 +93,7 @@ public class SyncService extends Worker {
         } catch (SyncServiceException e) {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_error));
             prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false).apply();
-            e.printStackTrace();
+            Log.e(TAG, Log.getStackTraceString(e));
             updateErrorNotification(e);
             return Result.retry();
         }
@@ -160,6 +159,14 @@ public class SyncService extends Worker {
 
     public static void sync(Context context) {
         OneTimeWorkRequest workRequest = getWorkRequest().build();
+        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+    }
+
+    public static void syncImmediately(Context context) {
+        OneTimeWorkRequest workRequest = getWorkRequest()
+                .setInitialDelay(0L, TimeUnit.SECONDS)
+                .build();
         WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
@@ -305,12 +312,14 @@ public class SyncService extends Worker {
     private void syncEpisodeActions() throws SyncServiceException {
         final long lastSync = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .getLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0);
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes_download));
         EpisodeActionChanges getResponse = syncServiceImpl.getEpisodeActionChanges(lastSync);
         long newTimeStamp = getResponse.getTimestamp();
         List<EpisodeAction> remoteActions = getResponse.getEpisodeActions();
         processEpisodeActions(remoteActions);
 
         // upload local actions
+        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_episodes_upload));
         List<EpisodeAction> queuedEpisodeActions = getQueuedEpisodeActions();
         if (lastSync == 0) {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_upload_played));
@@ -327,7 +336,6 @@ public class SyncService extends Worker {
                         .position(media.getDuration() / 1000)
                         .total(media.getDuration() / 1000)
                         .build();
-                Log.d(TAG, "Played state: " + played.toString());
                 queuedEpisodeActions.add(played);
             }
         }
@@ -370,7 +378,7 @@ public class SyncService extends Worker {
             Log.d(TAG, "Processing action: " + action.toString());
             switch (action.getAction()) {
                 case NEW:
-                    FeedItem newItem = DBReader.getFeedItem(action.getPodcast(), action.getEpisode());
+                    FeedItem newItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
                     if (newItem != null) {
                         DBWriter.markItemPlayed(newItem, FeedItem.UNPLAYED, true);
                     } else {
@@ -401,20 +409,21 @@ public class SyncService extends Worker {
             }
         }
 
+        List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : mostRecentPlayAction.values()) {
-            FeedItem playItem = DBReader.getFeedItem(action.getPodcast(), action.getEpisode());
+            FeedItem playItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
             Log.d(TAG, "Most recent play action: " + action.toString());
             if (playItem != null) {
                 FeedMedia media = playItem.getMedia();
                 media.setPosition(action.getPosition() * 1000);
-                DBWriter.setFeedMedia(media);
                 if (playItem.getMedia().hasAlmostEnded()) {
                     Log.d(TAG, "Marking as played");
-                    DBWriter.markItemPlayed(playItem, FeedItem.PLAYED, true);
-                    DBWriter.addItemToPlaybackHistory(playItem.getMedia());
+                    playItem.setPlayed(true);
                 }
+                updatedItems.add(playItem);
             }
         }
+        DBWriter.setItemList(updatedItems);
     }
 
     private void clearErrorNotifications() {

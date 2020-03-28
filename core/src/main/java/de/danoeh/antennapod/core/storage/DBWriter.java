@@ -743,6 +743,15 @@ public class DBWriter {
         });
     }
 
+    public static Future<?> setItemList(final List<FeedItem> items) {
+        return dbExec.submit(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedItemlist(items);
+            adapter.close();
+        });
+    }
+
     /**
      * Saves a FeedMedia object in the database. This method will save all attributes of the FeedMedia object. The
      * contents of FeedComponent-attributes (e.g. the FeedMedia's 'item'-attribute) will not be saved.

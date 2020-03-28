@@ -437,9 +437,9 @@
     <string name="pref_gpodnet_logout_toast">Logout was successful</string>
     <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
-    <string name="pref_gpodnet_sync_changes_title">Sync changes now</string>
+    <string name="pref_gpodnet_sync_changes_title">Synchronize now</string>
     <string name="pref_gpodnet_sync_changes_sum">Sync subscription and episode state changes with gpodder.net.</string>
-    <string name="pref_gpodnet_full_sync_title">Full sync now</string>
+    <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
     <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_gpodnet_notifications_title">Show sync error notifications</string>
@@ -536,7 +536,8 @@
 
     <!-- Synchronization -->
     <string name="sync_status_started">Sync started</string>
-    <string name="sync_status_episodes">Synchronizing episodes…</string>
+    <string name="sync_status_episodes_upload">Uploading episode changes…</string>
+    <string name="sync_status_episodes_download">Downloading episode changes…</string>
     <string name="sync_status_upload_played">Uploading played status…</string>
     <string name="sync_status_subscriptions">Synchronizing subscriptions…</string>
     <string name="sync_status_success">Synchronization successful</string>
