@@ -183,7 +183,7 @@ public class EpisodeAction {
 
     @Override
     public String toString() {
-        return "GpodnetEpisodeAction{" +
+        return "EpisodeAction{" +
                 "podcast='" + podcast + '\'' +
                 ", episode='" + episode + '\'' +
                 ", action=" + action +

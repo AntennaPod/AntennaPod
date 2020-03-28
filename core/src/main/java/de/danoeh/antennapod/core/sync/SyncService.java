@@ -58,7 +58,6 @@ public class SyncService extends Worker {
     private static final String TAG = "SyncService";
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
     private static final Object lock = new Object();
-    private static boolean syncPending = false;
 
     private ISyncService syncServiceImpl;
 
@@ -70,15 +69,6 @@ public class SyncService extends Worker {
     @NonNull
     public Result doWork() {
         syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetService.DEFAULT_BASE_HOST);
-
-        try {
-            // Leave some time, so other actions can be queued
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        syncPending = false;
         try {
             syncServiceImpl.login();
             syncSubscriptions();
@@ -155,24 +145,18 @@ public class SyncService extends Worker {
     }
 
     public static void sync(Context context) {
-        if (!syncPending) {
-            syncPending = true;
-
-            Constraints.Builder constraints = new Constraints.Builder();
-            if (UserPreferences.isAllowMobileFeedRefresh()) {
-                constraints.setRequiredNetworkType(NetworkType.CONNECTED);
-            } else {
-                constraints.setRequiredNetworkType(NetworkType.UNMETERED);
-            }
-
-            OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(SyncService.class)
-                    .setConstraints(constraints.build())
-                    .setInitialDelay(0L, TimeUnit.MILLISECONDS)
-                    .build();
-            WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        Constraints.Builder constraints = new Constraints.Builder();
+        if (UserPreferences.isAllowMobileFeedRefresh()) {
+            constraints.setRequiredNetworkType(NetworkType.CONNECTED);
         } else {
-            Log.d(TAG, "Ignored sync: Job already enqueued");
+            constraints.setRequiredNetworkType(NetworkType.UNMETERED);
         }
+
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(SyncService.class)
+                .setConstraints(constraints.build())
+                .setInitialDelay(5L, TimeUnit.SECONDS) // Give it some time, so other actions can be queued
+                .build();
+        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
     }
 
     public static void fullSync(Context context) {
@@ -296,6 +280,24 @@ public class SyncService extends Worker {
 
         // upload local actions
         List<EpisodeAction> queuedEpisodeActions = getQueuedEpisodeActions();
+        if (lastSync == 0) {
+            List<FeedItem> readItems = DBReader.getPlayedItems();
+            Log.d(TAG, "First sync. Upload state for all " + readItems.size() + " played episodes");
+            for (FeedItem item : readItems) {
+                FeedMedia media = item.getMedia();
+                if (media == null) {
+                    continue;
+                }
+                EpisodeAction played = new EpisodeAction.Builder(item, EpisodeAction.PLAY)
+                        .currentTimestamp()
+                        .started(media.getDuration() / 1000)
+                        .position(media.getDuration() / 1000)
+                        .total(media.getDuration() / 1000)
+                        .build();
+                Log.d(TAG, "Played state: " + played.toString());
+                queuedEpisodeActions.add(played);
+            }
+        }
         if (queuedEpisodeActions.size() > 0) {
             synchronized (lock) {
                 Log.d(TAG, "Uploading actions: " + StringUtils.join(queuedEpisodeActions, ", "));
@@ -312,9 +314,11 @@ public class SyncService extends Worker {
 
 
     private synchronized void processEpisodeActions(List<EpisodeAction> remoteActions) {
+        Log.d(TAG, "Processing " + remoteActions.size() + " actions");
         if (remoteActions.size() == 0) {
             return;
         }
+
         Map<Pair<String, String>, EpisodeAction> localMostRecentPlayAction = new ArrayMap<>();
         for (EpisodeAction action : getQueuedEpisodeActions()) {
             Pair<String, String> key = new Pair<>(action.getPodcast(), action.getEpisode());
@@ -329,6 +333,7 @@ public class SyncService extends Worker {
         // make sure more recent local actions are not overwritten by older remote actions
         Map<Pair<String, String>, EpisodeAction> mostRecentPlayAction = new ArrayMap<>();
         for (EpisodeAction action : remoteActions) {
+            Log.d(TAG, "Processing action: " + action.toString());
             switch (action.getAction()) {
                 case NEW:
                     FeedItem newItem = DBReader.getFeedItem(action.getPodcast(), action.getEpisode());
@@ -364,11 +369,13 @@ public class SyncService extends Worker {
 
         for (EpisodeAction action : mostRecentPlayAction.values()) {
             FeedItem playItem = DBReader.getFeedItem(action.getPodcast(), action.getEpisode());
+            Log.d(TAG, "Most recent play action: " + action.toString());
             if (playItem != null) {
                 FeedMedia media = playItem.getMedia();
                 media.setPosition(action.getPosition() * 1000);
                 DBWriter.setFeedMedia(media);
                 if (playItem.getMedia().hasAlmostEnded()) {
+                    Log.d(TAG, "Marking as played");
                     DBWriter.markItemPlayed(playItem, FeedItem.PLAYED, true);
                     DBWriter.addItemToPlaybackHistory(playItem.getMedia());
                 }

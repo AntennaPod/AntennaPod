@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.sync.model.EpisodeAction;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
@@ -335,6 +336,32 @@ public final class DBReader {
         Cursor cursor = null;
         try {
             cursor = adapter.getDownloadedItemsCursor();
+            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
+            loadAdditionalFeedItemListData(items);
+            Collections.sort(items, new FeedItemPubdateComparator());
+            return items;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            adapter.close();
+        }
+    }
+
+    /**
+     * Loads a list of FeedItems whose episode has been played.
+     *
+     * @return A list of FeedItems whose episdoe has been played.
+     */
+    @NonNull
+    public static List<FeedItem> getPlayedItems() {
+        Log.d(TAG, "getPlayedItems() called");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        Cursor cursor = null;
+        try {
+            cursor = adapter.getPlayedItemsCursor();
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             Collections.sort(items, new FeedItemPubdateComparator());
