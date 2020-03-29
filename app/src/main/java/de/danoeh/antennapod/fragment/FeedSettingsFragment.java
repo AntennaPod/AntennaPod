@@ -164,7 +164,6 @@ public class FeedSettingsFragment extends Fragment {
         private void setupFeedAutoSkipPreference() {
             findPreference("skipping").setOnPreferenceClickListener(preference -> {
                 new FeedPreferenceSkipDialog(getContext(),
-                        R.string.pref_feed_skip,
                         feedPreferences.getFeedSkipIntro(),
                         feedPreferences.getFeedSkipEnding()) {
                     @Override

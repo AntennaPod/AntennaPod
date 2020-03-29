@@ -12,10 +12,10 @@ import de.danoeh.antennapod.R;
  */
 public abstract class FeedPreferenceSkipDialog extends AlertDialog.Builder {
 
-    public FeedPreferenceSkipDialog(Context context, int titleRes, int skipIntroInitialValue,
+    public FeedPreferenceSkipDialog(Context context, int skipIntroInitialValue,
                                 int skipEndInitialValue) {
         super(context);
-        setTitle(titleRes);
+        setTitle(R.string.pref_feed_skip);
         View rootView = View.inflate(context, R.layout.feed_pref_skip_dialog, null);
         setView(rootView);
 
