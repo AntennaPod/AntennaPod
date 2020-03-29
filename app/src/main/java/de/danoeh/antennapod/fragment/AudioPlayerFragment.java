@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -29,6 +31,7 @@ import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -374,6 +377,7 @@ public class AudioPlayerFragment extends Fragment implements
         int duration = converter.convert(event.getDuration());
         int remainingTime = converter.convert(event.getDuration() - event.getPosition());
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
+
         if (currentPosition == PlaybackService.INVALID_TIME || duration == PlaybackService.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
@@ -386,6 +390,24 @@ public class AudioPlayerFragment extends Fragment implements
         }
         float progress = ((float) event.getPosition()) / event.getDuration();
         sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+        Playable media = controller.getMedia();
+        if (media instanceof FeedMedia)  {
+            FeedMedia feedMedia = (FeedMedia) media;
+            FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+            int skipEnd = preferences.getFeedSkipEnding();
+            if (skipEnd > 0 && remainingTime < skipEnd * 1000) {
+                Log.d(TAG, "Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
+                String skipMesg = getActivity().getString(de.danoeh.antennapod.core.R.string.pref_feed_skip_ending) + " " +
+                        skipEnd + " " +
+                        getActivity().getString(de.danoeh.antennapod.core.R.string.time_seconds);
+                Toast toast = Toast.makeText(getActivity(), skipMesg,
+                        Toast.LENGTH_LONG);
+                toast.show();
+                IntentUtils.sendLocalBroadcast(getActivity(), PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
+            } else {
+                Log.d(TAG, "Not Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
+            }
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

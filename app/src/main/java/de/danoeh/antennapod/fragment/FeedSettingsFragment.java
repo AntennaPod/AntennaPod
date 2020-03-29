@@ -143,6 +143,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupAuthentificationPreference();
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
+                        setupFeedAutoSkipPreference();
 
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();

@@ -335,30 +335,30 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                         media.getLastPlayedTime());
                     seekToSync(newPosition);
                 } else {
+                    String skipMesg = "";
+                    String skipIntroMesg = "";
                     if (playerStatus == PlayerStatus.PREPARED && media.getPosition() == 0) {
-                        String skipMesg = "";
+                        if (skipIntro > 0) {
+                            int duration = getDuration();
+                            if (skipIntro * 1000 < duration) {
+                                seekToSync(skipIntro * 1000);
+                                skipIntroMesg = context.getString(R.string.pref_feed_skip_intro) + " " +
+                                        skipIntro + " " +
+                                        context.getString(R.string.time_seconds);
+                            }
+                        }
                         if (skipEnd > 0) {
                             int duration = getDuration();
                             if (skipEnd * 1000 < duration) {
-                                media.setDuration(duration - skipEnd * 1000);
                                 skipMesg = context.getString(R.string.pref_feed_skip_ending) + " " +
                                         skipEnd + " " +
                                         context.getString(R.string.time_seconds);
                             }
                         }
-                        if (skipIntro > 0) {
-                            int duration = getDuration();
-                            if (skipIntro * 1000 < duration) {
-                                seekToSync(skipIntro * 1000);
-                                String skipIntroMesg = context.getString(R.string.pref_feed_skip_intro) + " " +
-                                        skipIntro + " " +
-                                        context.getString(R.string.time_seconds);
-                                if (skipMesg != "") {
-                                    skipMesg = skipIntroMesg + "\n" + skipMesg;
-                                } else {
-                                    skipMesg = skipIntroMesg;
-                                }
-                            }
+                        if (skipMesg != "") {
+                            skipMesg = skipIntroMesg + "\n" + skipMesg;
+                        } else {
+                            skipMesg = skipIntroMesg;
                         }
                         if (skipMesg != "") {
                             Toast toast = Toast.makeText(context, skipMesg,
