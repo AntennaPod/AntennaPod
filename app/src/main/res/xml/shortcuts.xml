@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_playlist_shortcut"
+        android:shortcutId="queue"
+        android:shortcutShortLabel="@string/queue_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="de.danoeh.antennapod.activity.MainActivity"
+            android:targetPackage="${applicationId}">
+            <extra
+                android:name="fragment_tag"
+                android:value="QueueFragment" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_feed_shortcut"
+        android:shortcutId="episodes"
+        android:shortcutShortLabel="@string/episodes_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="de.danoeh.antennapod.activity.MainActivity"
+            android:targetPackage="${applicationId}">
+            <extra
+                android:name="fragment_tag"
+                android:value="EpisodesFragment" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_folder_shortcut"
+        android:shortcutId="subscriptions"
+        android:shortcutShortLabel="@string/subscriptions_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="de.danoeh.antennapod.activity.MainActivity"
+            android:targetPackage="${applicationId}">
+            <extra
+                android:name="fragment_tag"
+                android:value="SubscriptionFragment" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_refresh_shortcut"
+        android:shortcutId="refresh"
+        android:shortcutShortLabel="@string/refresh_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="de.danoeh.antennapod.activity.MainActivity"
+            android:targetPackage="${applicationId}">
+            <extra
+                android:name="refresh_on_start"
+                android:value="true" />
+        </intent>
+    </shortcut>
+</shortcuts>

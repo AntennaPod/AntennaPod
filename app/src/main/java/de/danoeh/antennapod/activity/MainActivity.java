@@ -30,6 +30,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
@@ -64,6 +65,7 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_OPEN_PLAYER = "open_player";
+    public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
 
     private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
 
@@ -407,10 +409,15 @@ public class MainActivity extends CastEnabledActivity {
 
     private void handleNavIntent() {
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(EXTRA_FRAGMENT_TAG)) {
+        if (intent.hasExtra(EXTRA_FEED_ID) || intent.hasExtra(EXTRA_FRAGMENT_TAG) || intent.hasExtra(EXTRA_REFRESH_ON_START)) {
             Log.d(TAG, "handleNavIntent()");
             String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
+            boolean refreshOnStart = intent.getBooleanExtra(EXTRA_REFRESH_ON_START, false);
+            if (refreshOnStart) {
+                AutoUpdateManager.runImmediate(this);
+            }
+
             long feedId = intent.getLongExtra(EXTRA_FEED_ID, 0);
             if (tag != null) {
                 loadFragment(tag, args);
