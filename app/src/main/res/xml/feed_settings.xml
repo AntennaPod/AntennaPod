@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:key="feedSettingsScreen">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="feedSettingsScreen">
 
     <SwitchPreference
             android:key="keepUpdated"
@@ -20,6 +20,11 @@
             android:icon="?attr/ic_settings_speed"
             android:title="@string/playback_speed"
             android:summary="@string/pref_feed_playback_speed_sum"/>
+
+    <Preference
+        android:key="skipping"
+        android:summary="@string/pref_feed_skip_sum"
+        android:title="@string/pref_feed_skip" />
 
     <ListPreference
             android:entries="@array/spnAutoDeleteItems"

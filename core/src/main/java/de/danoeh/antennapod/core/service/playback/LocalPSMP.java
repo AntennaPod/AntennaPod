@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
@@ -11,6 +12,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
 
 import org.antennapod.audio.MediaPlayer;
 
@@ -26,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -317,12 +320,54 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 float rightVolume = UserPreferences.getRightVolume();
                 setVolume(leftVolume, rightVolume);
 
+                int skipIntro = 0;
+                int skipEnd = 0;
+                if (media instanceof FeedMedia) {
+                    FeedMedia feedMedia = (FeedMedia) media;
+                    FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+                    skipIntro = preferences.getFeedSkipIntro();
+                    skipEnd = preferences.getFeedSkipEnding();
+                }
+
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                     int newPosition = RewindAfterPauseUtils.calculatePositionWithRewind(
                         media.getPosition(),
                         media.getLastPlayedTime());
                     seekToSync(newPosition);
+                } else {
+                    if (playerStatus == PlayerStatus.PREPARED && media.getPosition() == 0) {
+                        String skipMesg = "";
+                        if (skipEnd > 0) {
+                            int duration = getDuration();
+                            if (skipEnd * 1000 < duration) {
+                                media.setDuration(duration - skipEnd * 1000);
+                                skipMesg = context.getString(R.string.pref_feed_skip_ending) + " " +
+                                        skipEnd + " " +
+                                        context.getString(R.string.time_seconds);
+                            }
+                        }
+                        if (skipIntro > 0) {
+                            int duration = getDuration();
+                            if (skipIntro * 1000 < duration) {
+                                seekToSync(skipIntro * 1000);
+                                String skipIntroMesg = context.getString(R.string.pref_feed_skip_intro) + " " +
+                                        skipIntro + " " +
+                                        context.getString(R.string.time_seconds);
+                                if (skipMesg != "") {
+                                    skipMesg = skipIntroMesg + "\n" + skipMesg;
+                                } else {
+                                    skipMesg = skipIntroMesg;
+                                }
+                            }
+                        }
+                        if (skipMesg != "") {
+                            Toast toast = Toast.makeText(context, skipMesg,
+                                    Toast.LENGTH_LONG);
+                            toast.show();
+                        }
+                    }
                 }
+
                 mediaPlayer.start();
 
                 setPlayerStatus(PlayerStatus.PLAYING, media);
@@ -438,6 +483,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             Log.d(TAG, "Setting duration of media");
             media.setDuration(mediaPlayer.getDuration());
         }
+
         setPlayerStatus(PlayerStatus.PREPARED, media);
 
         if (startWhenPrepared) {

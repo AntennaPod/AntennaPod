@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
+import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -157,6 +158,23 @@ public class FeedSettingsFragment extends Fragment {
             if (disposable != null) {
                 disposable.dispose();
             }
+        }
+
+        private void setupFeedAutoSkipPreference() {
+            findPreference("skipping").setOnPreferenceClickListener(preference -> {
+                new FeedPreferenceSkipDialog(getContext(),
+                        R.string.pref_feed_skip,
+                        feedPreferences.getFeedSkipIntro(),
+                        feedPreferences.getFeedSkipEnding()) {
+                    @Override
+                    protected void onConfirmed(int skipIntro, int skipEnd) {
+                        feedPreferences.setFeedSkipIntro(skipIntro);
+                        feedPreferences.setFeedSkipEnding(skipEnd);
+                        feed.savePreferences();
+                    }
+                }.show();
+                return false;
+            });
         }
 
         private void setupPlaybackSpeedPreference() {
