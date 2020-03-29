@@ -31,7 +31,8 @@
             android:layout_alignParentTop="true"
             android:background="?android:attr/windowBackground"
             tools:layout_height="@dimen/external_player_height"
-            tools:background="@android:color/holo_green_light" />
+            tools:background="@android:color/holo_green_light"
+            android:elevation="8dp"/>
 
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
