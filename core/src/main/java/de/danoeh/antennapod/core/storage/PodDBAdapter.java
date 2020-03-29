@@ -48,7 +48,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 1091000;
+    public static final int VERSION = 1090001;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -1389,12 +1389,6 @@ public class PodDBAdapter {
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to " + newVersion + ".");
             DBUpgrader.upgrade(db, oldVersion, newVersion);
-            if (oldVersion == 1090000) {
-                db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS +
-                        " ADD COLUMN " + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0;");
-                db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS +
-                        " ADD COLUMN " + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0;");
-            }
         }
     }
 }
