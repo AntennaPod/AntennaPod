@@ -72,3 +72,11 @@ workflows:
             - run:
                 name: Checkstyle
                 command: ./gradlew checkstyle
+            - run:
+                name: Diff-Checkstyle
+                command: |
+                  git fetch origin develop
+                  branchBaseCommit=`git merge-base origin/develop HEAD`
+                  echo "Comparing to $branchBaseCommit"
+                  curl -s -L https://github.com/yangziwen/diff-checkstyle/releases/download/0.0.4/diff-checkstyle.jar > diff-checkstyle.jar
+                  java -Dconfig_loc=config/checkstyle -jar diff-checkstyle.jar -c config/checkstyle/checkstyle-new-code.xml --git-dir . --base-rev $branchBaseCommit
