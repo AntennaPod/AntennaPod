@@ -56,6 +56,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -496,6 +497,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return Service.START_NOT_STICKY;
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+                skipIntro(playable);
             } else {
                 Log.d(TAG, "Did not handle intent to PlaybackService: " + intent);
                 Log.d(TAG, "Extras: " + intent.getExtras());
@@ -503,6 +505,38 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         return Service.START_NOT_STICKY;
+    }
+
+    private void skipIntro(Playable playable) {
+
+        int skipIntro = 0;
+        int skipEnd = 0;
+        if (! (playable instanceof FeedMedia)) { return ; }
+
+        if (playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+            skipIntro = preferences.getFeedSkipIntro();
+            skipEnd = preferences.getFeedSkipEnding();
+        }
+
+        String skipIntroMesg = "";
+        Context context = getApplicationContext();
+        if (skipIntro > 0) {
+            int duration = getDuration();
+            if (skipIntro * 1000 < duration) {
+                mediaPlayer.seekTo(skipIntro * 1000);
+                // TODO TT
+                skipIntroMesg = context.getString(R.string.pref_feed_skip_intro) + " " +
+                        skipIntro + " " +
+                        context.getString(R.string.time_seconds);
+            }
+        }
+        if (skipIntroMesg != "") {
+            Toast toast = Toast.makeText(context, skipIntroMesg,
+                    Toast.LENGTH_LONG);
+            toast.show();
+        }
     }
 
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
