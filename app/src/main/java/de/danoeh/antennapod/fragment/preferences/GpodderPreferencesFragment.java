@@ -82,25 +82,25 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 });
         findPreference(PREF_GPODNET_SYNC).setOnPreferenceClickListener(preference -> {
-                    SyncService.syncImmediately(getActivity().getApplicationContext());
-                    return true;
-                });
+            SyncService.syncImmediately(getActivity().getApplicationContext());
+            return true;
+        });
         findPreference(PREF_GPODNET_FORCE_FULL_SYNC).setOnPreferenceClickListener(preference -> {
-                    SyncService.fullSync(getContext());
-                    return true;
-                });
+            SyncService.fullSync(getContext());
+            return true;
+        });
         findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(preference -> {
-                    GpodnetPreferences.logout();
-                    Toast toast = Toast.makeText(activity, R.string.pref_gpodnet_logout_toast, Toast.LENGTH_SHORT);
-                    toast.show();
-                    updateGpodnetPreferenceScreen();
-                    return true;
-                });
+            GpodnetPreferences.logout();
+            Toast toast = Toast.makeText(activity, R.string.pref_gpodnet_logout_toast, Toast.LENGTH_SHORT);
+            toast.show();
+            updateGpodnetPreferenceScreen();
+            return true;
+        });
         findPreference(PREF_GPODNET_HOSTNAME).setOnPreferenceClickListener(preference -> {
-                    GpodnetSetHostnameDialog.createDialog(activity).setOnDismissListener(
-                            dialog -> updateGpodnetPreferenceScreen());
-                    return true;
-                });
+            GpodnetSetHostnameDialog.createDialog(activity).setOnDismissListener(
+                    dialog -> updateGpodnetPreferenceScreen());
+            return true;
+        });
     }
 
     private void updateGpodnetPreferenceScreen() {

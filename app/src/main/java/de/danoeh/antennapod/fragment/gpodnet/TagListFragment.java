@@ -92,7 +92,8 @@ public class TagListFragment extends ListFragment {
 
             @Override
             protected List<GpodnetTag> doInBackground(Void... params) {
-                GpodnetService service = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetPreferences.getHostname());
+                GpodnetService service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                        GpodnetPreferences.getHostname());
                 try {
                     return service.getTopTags(COUNT);
                 } catch (GpodnetServiceException e) {

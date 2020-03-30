@@ -25,9 +25,9 @@ public class EpisodeActionChanges {
 
     @Override
     public String toString() {
-        return "EpisodeActionGetResponse{" +
-                "episodeActions=" + episodeActions +
-                ", timestamp=" + timestamp +
-                '}';
+        return "EpisodeActionGetResponse{"
+                + "episodeActions=" + episodeActions
+                + ", timestamp=" + timestamp
+                + '}';
     }
 }

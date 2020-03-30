@@ -148,7 +148,7 @@ public class SyncService extends Worker {
                 SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                 String json = prefs.getString(PREF_QUEUED_EPISODE_ACTIONS, "[]");
                 JSONArray queue = new JSONArray(json);
-                queue.put(action.writeToJSONObject());
+                queue.put(action.writeToJsonObject());
                 prefs.edit().putString(PREF_QUEUED_EPISODE_ACTIONS, queue.toString()).apply();
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -217,7 +217,7 @@ public class SyncService extends Worker {
             String json = prefs.getString(PREF_QUEUED_EPISODE_ACTIONS, "[]");
             JSONArray queue = new JSONArray(json);
             for (int i = 0; i < queue.length(); i++) {
-                actions.add(EpisodeAction.readFromJSONObject(queue.getJSONObject(i)));
+                actions.add(EpisodeAction.readFromJsonObject(queue.getJSONObject(i)));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -297,7 +297,7 @@ public class SyncService extends Worker {
 
             synchronized (lock) {
                 UploadChangesResponse uploadResponse = syncServiceImpl
-                    .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
+                        .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
                 getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                         .putString(PREF_QUEUED_FEEDS_ADDED, "[]").apply();
                 getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
@@ -405,6 +405,9 @@ public class SyncService extends Worker {
                     break;
                 case DELETE:
                     // NEVER EVER call DBWriter.deleteFeedMediaOfItem() here, leads to an infinite loop
+                    break;
+                default:
+                    Log.e(TAG, "Unknown action: " + action);
                     break;
             }
         }

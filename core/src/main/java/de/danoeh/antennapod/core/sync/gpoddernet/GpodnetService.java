@@ -109,7 +109,7 @@ public class GpodnetService implements ISyncService {
             String response = executeRequest(request);
 
             JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJSONArray(jsonArray);
+            return readPodcastListFromJsonArray(jsonArray);
 
         } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
@@ -134,7 +134,7 @@ public class GpodnetService implements ISyncService {
             String response = executeRequest(request);
 
             JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJSONArray(jsonArray);
+            return readPodcastListFromJsonArray(jsonArray);
 
         } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
@@ -165,7 +165,7 @@ public class GpodnetService implements ISyncService {
             String response = executeRequest(request);
 
             JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJSONArray(jsonArray);
+            return readPodcastListFromJsonArray(jsonArray);
         } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
@@ -191,7 +191,7 @@ public class GpodnetService implements ISyncService {
             String response = executeRequest(request);
 
             JSONArray jsonArray = new JSONArray(response);
-            return readPodcastListFromJSONArray(jsonArray);
+            return readPodcastListFromJsonArray(jsonArray);
 
         } catch (JSONException | MalformedURLException e) {
             e.printStackTrace();
@@ -216,7 +216,7 @@ public class GpodnetService implements ISyncService {
             Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
             JSONArray devicesArray = new JSONArray(response);
-            return readDeviceListFromJSONArray(devicesArray);
+            return readDeviceListFromJsonArray(devicesArray);
         } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
@@ -393,7 +393,7 @@ public class GpodnetService implements ISyncService {
 
             String response = executeRequest(request);
             JSONObject changes = new JSONObject(response);
-            return readSubscriptionChangesFromJSONObject(changes);
+            return readSubscriptionChangesFromJsonObject(changes);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             throw new IllegalStateException(e);
@@ -436,7 +436,7 @@ public class GpodnetService implements ISyncService {
             final JSONArray list = new JSONArray();
             for (int i = from; i < to; i++) {
                 EpisodeAction episodeAction = episodeActions.get(i);
-                JSONObject obj = episodeAction.writeToJSONObject();
+                JSONObject obj = episodeAction.writeToJsonObject();
                 if (obj != null) {
                     obj.put("device", GpodnetPreferences.getDeviceID());
                     list.put(obj);
@@ -474,7 +474,7 @@ public class GpodnetService implements ISyncService {
 
             String response = executeRequest(request);
             JSONObject json = new JSONObject(response);
-            return readEpisodeActionsFromJSONObject(json);
+            return readEpisodeActionsFromJsonObject(json);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             throw new IllegalStateException(e);
@@ -570,15 +570,15 @@ public class GpodnetService implements ISyncService {
         }
     }
 
-    private List<GpodnetPodcast> readPodcastListFromJSONArray(@NonNull JSONArray array) throws JSONException {
+    private List<GpodnetPodcast> readPodcastListFromJsonArray(@NonNull JSONArray array) throws JSONException {
         List<GpodnetPodcast> result = new ArrayList<>(array.length());
         for (int i = 0; i < array.length(); i++) {
-            result.add(readPodcastFromJSONObject(array.getJSONObject(i)));
+            result.add(readPodcastFromJsonObject(array.getJSONObject(i)));
         }
         return result;
     }
 
-    private GpodnetPodcast readPodcastFromJSONObject(JSONObject object) throws JSONException {
+    private GpodnetPodcast readPodcastFromJsonObject(JSONObject object) throws JSONException {
         String url = object.getString("url");
 
         String title;
@@ -623,15 +623,15 @@ public class GpodnetService implements ISyncService {
         return new GpodnetPodcast(url, title, description, subscribers, logoUrl, website, mygpoLink, author);
     }
 
-    private List<GpodnetDevice> readDeviceListFromJSONArray(@NonNull JSONArray array) throws JSONException {
+    private List<GpodnetDevice> readDeviceListFromJsonArray(@NonNull JSONArray array) throws JSONException {
         List<GpodnetDevice> result = new ArrayList<>(array.length());
         for (int i = 0; i < array.length(); i++) {
-            result.add(readDeviceFromJSONObject(array.getJSONObject(i)));
+            result.add(readDeviceFromJsonObject(array.getJSONObject(i)));
         }
         return result;
     }
 
-    private GpodnetDevice readDeviceFromJSONObject(JSONObject object) throws JSONException {
+    private GpodnetDevice readDeviceFromJsonObject(JSONObject object) throws JSONException {
         String id = object.getString("id");
         String caption = object.getString("caption");
         String type = object.getString("type");
@@ -639,7 +639,7 @@ public class GpodnetService implements ISyncService {
         return new GpodnetDevice(id, caption, type, subscriptions);
     }
 
-    private SubscriptionChanges readSubscriptionChangesFromJSONObject(@NonNull JSONObject object)
+    private SubscriptionChanges readSubscriptionChangesFromJsonObject(@NonNull JSONObject object)
             throws JSONException {
 
         List<String> added = new LinkedList<>();
@@ -664,7 +664,7 @@ public class GpodnetService implements ISyncService {
         return new SubscriptionChanges(added, removed, timestamp);
     }
 
-    private EpisodeActionChanges readEpisodeActionsFromJSONObject(@NonNull JSONObject object)
+    private EpisodeActionChanges readEpisodeActionsFromJsonObject(@NonNull JSONObject object)
             throws JSONException {
 
         List<EpisodeAction> episodeActions = new ArrayList<>();
@@ -673,7 +673,7 @@ public class GpodnetService implements ISyncService {
         JSONArray jsonActions = object.getJSONArray("actions");
         for (int i = 0; i < jsonActions.length(); i++) {
             JSONObject jsonAction = jsonActions.getJSONObject(i);
-            EpisodeAction episodeAction = EpisodeAction.readFromJSONObject(jsonAction);
+            EpisodeAction episodeAction = EpisodeAction.readFromJsonObject(jsonAction);
             if (episodeAction != null) {
                 episodeActions.add(episodeAction);
             }

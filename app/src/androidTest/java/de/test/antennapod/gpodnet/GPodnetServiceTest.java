@@ -52,7 +52,7 @@ public class GPodnetServiceTest {
         ArrayList<String> l = new ArrayList<>();
         l.add("http://bitsundso.de/feed");
         l.add("http://gamesundso.de/feed");
-        service.uploadSubscriptions( "radio", l);
+        service.uploadSubscriptions("radio", l);
     }
 
     @Test

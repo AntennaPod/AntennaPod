@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.sync.model;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.core.util.ObjectsCompat;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.util.DateUtils;
 import org.json.JSONException;
@@ -45,7 +46,7 @@ public class EpisodeAction {
      * @param object JSON representation
      * @return episode action object, or null if mandatory values are missing
      */
-    public static EpisodeAction readFromJSONObject(JSONObject object) {
+    public static EpisodeAction readFromJsonObject(JSONObject object) {
         String podcast = object.optString("podcast", null);
         String episode = object.optString("episode", null);
         String actionString = object.optString("action", null);
@@ -98,7 +99,7 @@ public class EpisodeAction {
     }
 
     /**
-     * Returns the position (in seconds) at which the client started playback
+     * Returns the position (in seconds) at which the client started playback.
      *
      * @return start position (in seconds)
      */
@@ -107,7 +108,7 @@ public class EpisodeAction {
     }
 
     /**
-     * Returns the position (in seconds) at which the client stopped playback
+     * Returns the position (in seconds) at which the client stopped playback.
      *
      * @return stop position (in seconds)
      */
@@ -126,21 +127,18 @@ public class EpisodeAction {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || !(o instanceof EpisodeAction)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof EpisodeAction)) {
+            return false;
+        }
 
         EpisodeAction that = (EpisodeAction) o;
-
-        if (started != that.started) return false;
-        if (position != that.position) return false;
-        if (total != that.total) return false;
-        if (podcast != null ? !podcast.equals(that.podcast) : that.podcast != null) return false;
-        if (episode != null ? !episode.equals(that.episode) : that.episode != null) return false;
-        //if (deviceId != null ? !deviceId.equals(that.deviceId) : that.deviceId != null)
-        //    return false;
-        if (action != that.action) return false;
-        return !(timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null);
-
+        return started == that.started && position == that.position && total == that.total && action != that.action
+                && ObjectsCompat.equals(podcast, that.podcast)
+                && ObjectsCompat.equals(episode, that.episode)
+                && ObjectsCompat.equals(timestamp, that.timestamp);
     }
 
     @Override
@@ -156,11 +154,11 @@ public class EpisodeAction {
     }
 
     /**
-     * Returns a JSON object representation of this object
+     * Returns a JSON object representation of this object.
      *
      * @return JSON object representation, or null if the object is invalid
      */
-    public JSONObject writeToJSONObject() {
+    public JSONObject writeToJsonObject() {
         JSONObject obj = new JSONObject();
         try {
             obj.putOpt("podcast", this.podcast);
@@ -183,15 +181,15 @@ public class EpisodeAction {
 
     @Override
     public String toString() {
-        return "EpisodeAction{" +
-                "podcast='" + podcast + '\'' +
-                ", episode='" + episode + '\'' +
-                ", action=" + action +
-                ", timestamp=" + timestamp +
-                ", started=" + started +
-                ", position=" + position +
-                ", total=" + total +
-                '}';
+        return "EpisodeAction{"
+                + "podcast='" + podcast + '\''
+                + ", episode='" + episode + '\''
+                + ", action=" + action
+                + ", timestamp=" + timestamp
+                + ", started=" + started
+                + ", position=" + position
+                + ", total=" + total
+                + '}';
     }
 
     public enum Action {
