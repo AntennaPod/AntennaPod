@@ -510,14 +510,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void skipIntro(Playable playable) {
 
         int skipIntro = 0;
-        int skipEnd = 0;
-        if (! (playable instanceof FeedMedia)) { return ; }
+        if (! (playable instanceof FeedMedia)) { return; }
+        if (playable.getLastPlayedTime() > 0) { return; }
 
         if (playable instanceof FeedMedia) {
             FeedMedia feedMedia = (FeedMedia) playable;
             FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
             skipIntro = preferences.getFeedSkipIntro();
-            skipEnd = preferences.getFeedSkipEnding();
         }
 
         String skipIntroMesg = "";
@@ -526,10 +525,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             int duration = getDuration();
             if (skipIntro * 1000 < duration) {
                 mediaPlayer.seekTo(skipIntro * 1000);
-                // TODO TT
-                skipIntroMesg = context.getString(R.string.pref_feed_skip_intro) + " " +
-                        skipIntro + " " +
-                        context.getString(R.string.time_seconds);
+                skipIntroMesg = String.format(context.getString(R.string.pref_feed_skip_intro_toast),
+                        skipIntro,
+                        context.getString(R.string.time_seconds));
             }
         }
         if (skipIntroMesg != "") {
@@ -710,6 +708,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void positionSaverTick() {
             saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
+
+            skipIfMetEnding();
         }
 
         @Override
@@ -1069,6 +1069,32 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         intent.putExtra(EXTRA_NOTIFICATION_CODE, code);
         intent.setPackage(getPackageName());
         sendBroadcast(intent);
+    }
+
+    private void skipIfMetEnding() {
+        Playable playable = mediaPlayer.getPlayable();
+        if (! (playable instanceof FeedMedia)) { return; }
+
+        int duration = getDuration();
+        int remainingTime = duration - getCurrentPosition();
+
+        FeedMedia feedMedia = (FeedMedia) playable;
+        FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+        int skipEnd = preferences.getFeedSkipEnding();
+        if (skipEnd > 0 && remainingTime < skipEnd * 1000) {
+            Log.d(TAG, "skipIfMetEnding: Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
+            Context context = getApplicationContext();
+            String skipMesg = String.format(context.getString(R.string.pref_feed_skip_ending_toast),
+                    skipEnd,
+                    context.getString(R.string.time_seconds));
+            Toast toast = Toast.makeText(context, skipMesg,
+                    Toast.LENGTH_LONG);
+            toast.show();
+
+            mediaPlayer.skip();
+        } else {
+           Log.d(TAG, "skipIfMetEnding: Not at ending yet " + remainingTime / 1000 + " end at " + skipEnd);
+        }
     }
 
     /**
