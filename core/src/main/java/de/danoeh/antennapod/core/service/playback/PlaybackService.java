@@ -532,12 +532,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast,
                         skipIntro,
                         context.getString(R.string.time_seconds));
+                Toast toast = Toast.makeText(context, skipIntroMesg,
+                        Toast.LENGTH_LONG);
+                toast.show();
             }
-        }
-        if (skipIntroMesg != "") {
-            Toast toast = Toast.makeText(context, skipIntroMesg,
-                    Toast.LENGTH_LONG);
-            toast.show();
         }
     }
 
