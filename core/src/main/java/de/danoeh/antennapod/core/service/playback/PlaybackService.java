@@ -508,10 +508,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void skipIntro(Playable playable) {
-
         int skipIntro = 0;
-        if (! (playable instanceof FeedMedia)) { return; }
-        if (playable.getLastPlayedTime() > 0) { return; }
+        if (! (playable instanceof FeedMedia)) {
+            return;
+        }
+
+        if (playable.getLastPlayedTime() > 0) {
+            return;
+        }
 
         if (playable instanceof FeedMedia) {
             FeedMedia feedMedia = (FeedMedia) playable;
@@ -1073,7 +1077,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void skipIfMetEnding() {
         Playable playable = mediaPlayer.getPlayable();
-        if (! (playable instanceof FeedMedia)) { return; }
+        if (! (playable instanceof FeedMedia)) {
+            return;
+        }
 
         int duration = getDuration();
         int remainingTime = duration - getCurrentPosition();
