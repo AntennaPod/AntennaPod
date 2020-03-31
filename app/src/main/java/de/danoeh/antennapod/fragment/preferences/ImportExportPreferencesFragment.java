@@ -84,7 +84,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private String dateStampFilename(String fname) {
-       return String.format(fname,
+        return String.format(fname,
                 new SimpleDateFormat("yyyy-MM-dd")
                        .format(new Date()));
     }
