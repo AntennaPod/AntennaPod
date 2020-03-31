@@ -32,7 +32,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -465,9 +464,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         int duration = converter.convert(controller.getDuration());
         int remainingTime = converter.convert(
                 controller.getDuration() - controller.getPosition());
-
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
-
         if (currentPosition == PlaybackService.INVALID_TIME ||
                 duration == PlaybackService.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
@@ -480,24 +477,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             txtvLength.setText(Converter.getDurationStringLong(duration));
         }
         updateProgressbarPosition(currentPosition, duration);
-        Playable media = controller.getMedia();
-        if (media instanceof FeedMedia)  {
-            FeedMedia feedMedia = (FeedMedia) media;
-            FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
-            int skipEnd = preferences.getFeedSkipEnding();
-            if (skipEnd > 0 && remainingTime < skipEnd * 1000) {
-                Log.d(TAG, "Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
-                String skipMesg = MediaplayerActivity.this.getString(de.danoeh.antennapod.core.R.string.pref_feed_skip_ending) + " " +
-                        skipEnd + " " +
-                        MediaplayerActivity.this.getString(de.danoeh.antennapod.core.R.string.time_seconds);
-                Toast toast = Toast.makeText(MediaplayerActivity.this, skipMesg,
-                        Toast.LENGTH_LONG);
-                toast.show();
-                IntentUtils.sendLocalBroadcast(MediaplayerActivity.this, PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
-            } else {
-                Log.d(TAG, "Not Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
-            }
-        }
     }
 
     private void updateProgressbarPosition(int position, int duration) {
