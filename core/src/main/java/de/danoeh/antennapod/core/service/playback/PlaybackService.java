@@ -525,7 +525,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             int duration = getDuration();
             if (skipIntro * 1000 < duration) {
                 mediaPlayer.seekTo(skipIntro * 1000);
-                skipIntroMesg = String.format(context.getString(R.string.pref_feed_skip_intro_toast),
+                skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast),
                         skipIntro,
                         context.getString(R.string.time_seconds));
             }
@@ -1084,7 +1084,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (skipEnd > 0 && remainingTime < skipEnd * 1000) {
             Log.d(TAG, "skipIfMetEnding: Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
             Context context = getApplicationContext();
-            String skipMesg = String.format(context.getString(R.string.pref_feed_skip_ending_toast),
+            String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast,
                     skipEnd,
                     context.getString(R.string.time_seconds));
             Toast toast = Toast.makeText(context, skipMesg,

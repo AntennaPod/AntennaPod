@@ -32,9 +32,5 @@ public abstract class FeedPreferenceSkipDialog extends AlertDialog.Builder {
                 Integer.valueOf(etxtSkipEnd.getText().toString())));
     }
 
-    protected void onCancelled() {
-
-    }
-
     protected abstract void onConfirmed(int skipIntro, int skipEnd);
 }
