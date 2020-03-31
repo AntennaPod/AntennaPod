@@ -35,7 +35,6 @@ import io.reactivex.schedulers.Schedulers;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -47,16 +46,16 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String PREF_DATABASE_IMPORT = "prefDatabaseImport";
     private static final String PREF_DATABASE_EXPORT = "prefDatabaseExport";
-    private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds.%s.opml";
+    private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds-%s.opml";
     private static final String CONTENT_TYPE_OPML = "text/x-opml";
-    private static final String DEFAULT_HTML_OUTPUT_NAME = "antennapod-feeds.%s.html";
+    private static final String DEFAULT_HTML_OUTPUT_NAME = "antennapod-feeds-%s.html";
     private static final String CONTENT_TYPE_HTML = "text/html";
     private static final int REQUEST_CODE_CHOOSE_OPML_EXPORT_PATH = 1;
     private static final int REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH = 2;
     private static final int REQUEST_CODE_CHOOSE_HTML_EXPORT_PATH = 3;
     private static final int REQUEST_CODE_RESTORE_DATABASE = 4;
     private static final int REQUEST_CODE_BACKUP_DATABASE = 5;
-    private static final String DATABASE_EXPORT_FILENAME = "AntennaPodBackup.%s.db";
+    private static final String DATABASE_EXPORT_FILENAME = "AntennaPodBackup-%s.db";
     private Disposable disposable;
     private ProgressDialog progressDialog;
 
