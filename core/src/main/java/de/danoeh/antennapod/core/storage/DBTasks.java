@@ -17,8 +17,8 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -123,9 +123,7 @@ public final class DBTasks {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         prefs.edit().putLong(PREF_LAST_REFRESH, System.currentTimeMillis()).apply();
 
-        if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
-            GpodnetSyncService.sendSyncIntent(context);
-        }
+        SyncService.sync(context);
         // Note: automatic download of episodes will be done but not here.
         // Instead it is done after all feeds have been refreshed (asynchronously),
         // in DownloadService.onDestroy()

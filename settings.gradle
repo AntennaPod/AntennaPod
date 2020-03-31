@@ -1,2 +1,1 @@
-include ':app'
-include ':core'
+include ':app', ':sync', ':core'

@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.discovery;
 
-import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -14,9 +16,9 @@ import java.util.List;
 public class GpodnetPodcastSearcher implements PodcastSearcher {
     public Single<List<PodcastSearchResult>> search(String query) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
-            GpodnetService service = null;
             try {
-                service = new GpodnetService();
+                GpodnetService service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                        GpodnetPreferences.getHostname());
                 List<GpodnetPodcast> gpodnetPodcasts = service.searchPodcasts(query, 0);
                 List<PodcastSearchResult> results = new ArrayList<>();
                 for (GpodnetPodcast podcast : gpodnetPodcasts) {
@@ -26,10 +28,6 @@ public class GpodnetPodcastSearcher implements PodcastSearcher {
             } catch (GpodnetServiceException e) {
                 e.printStackTrace();
                 subscriber.onError(e);
-            } finally {
-                if (service != null) {
-                    service.shutdown();
-                }
             }
         })
         .subscribeOn(Schedulers.io())

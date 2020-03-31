@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
             android:key="prefGpodderSettings"
             android:title="@string/gpodnet_main_label"
+            app:icon="@drawable/gpodder_icon"
             android:summary="@string/gpodnet_summary" />
 
 </PreferenceScreen>

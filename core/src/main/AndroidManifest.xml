@@ -25,10 +25,6 @@
                 <action android:name="android.media.browse.MediaBrowserService"/>
             </intent-filter>
         </service>
-        <service
-            android:name=".service.GpodnetSyncService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:enabled="true" />
 
         <receiver
             android:name=".receiver.MediaButtonReceiver"

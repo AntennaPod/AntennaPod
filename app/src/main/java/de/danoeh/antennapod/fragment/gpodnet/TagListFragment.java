@@ -13,15 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.gpodnet.TagListAdapter;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.sync.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetTag;
+
+import java.util.List;
 
 public class TagListFragment extends ListFragment {
     private static final int COUNT = 50;
@@ -91,15 +92,14 @@ public class TagListFragment extends ListFragment {
 
             @Override
             protected List<GpodnetTag> doInBackground(Void... params) {
-                GpodnetService service = new GpodnetService();
+                GpodnetService service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
+                        GpodnetPreferences.getHostname());
                 try {
                     return service.getTopTags(COUNT);
                 } catch (GpodnetServiceException e) {
                     e.printStackTrace();
                     exception = e;
                     return null;
-                } finally {
-                    service.shutdown();
                 }
             }
 

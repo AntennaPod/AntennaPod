@@ -13,13 +13,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
+
+import java.util.List;
 
 /**
  * Adapter for displaying a list of GPodnetPodcast-Objects.

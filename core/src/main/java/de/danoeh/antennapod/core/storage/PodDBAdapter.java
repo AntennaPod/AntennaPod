@@ -1023,6 +1023,15 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public Cursor getPlayedItemsCursor() {
+        final String query = "SELECT " + SEL_FI_SMALL_STR
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_MEDIA
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + "=" + FeedItem.PLAYED;
+        return db.rawQuery(query, null);
+    }
+
     /**
      * Returns a cursor which contains feed media objects with a playback
      * completion date in ascending order.

@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -34,7 +36,6 @@ import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -118,11 +119,10 @@ public class DBWriter {
             // Gpodder: queue delete action for synchronization
             if (GpodnetPreferences.loggedIn()) {
                 FeedItem item = media.getItem();
-                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DELETE)
-                        .currentDeviceId()
+                EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DELETE)
                         .currentTimestamp()
                         .build();
-                GpodnetPreferences.enqueueEpisodeAction(action);
+                SyncService.enqueueEpisodeAction(context, action);
             }
         }
         EventBus.getDefault().post(FeedItemEvent.deletedMedia(Collections.singletonList(media.getItem())));
@@ -169,9 +169,7 @@ public class DBWriter {
                 adapter.removeFeed(feed);
                 adapter.close();
 
-                if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
-                    GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
-                }
+                SyncService.enqueueFeedRemoved(context, feed.getDownload_url());
                 EventBus.getDefault().post(new FeedListUpdateEvent(feed));
 
                 // we assume we also removed download log entries for the feed or its media files.
@@ -727,10 +725,8 @@ public class DBWriter {
             adapter.setCompleteFeed(feeds);
             adapter.close();
 
-            if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
-                for (Feed feed : feeds) {
-                    GpodnetPreferences.addAddedFeed(feed.getDownload_url());
-                }
+            for (Feed feed : feeds) {
+                SyncService.enqueueFeedAdded(context, feed.getDownload_url());
             }
 
             BackupManager backupManager = new BackupManager(context);
@@ -743,6 +739,15 @@ public class DBWriter {
             PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             adapter.setCompleteFeed(feeds);
+            adapter.close();
+        });
+    }
+
+    public static Future<?> setItemList(final List<FeedItem> items) {
+        return dbExec.submit(() -> {
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.setFeedItemlist(items);
             adapter.close();
         });
     }

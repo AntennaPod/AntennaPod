@@ -12,14 +12,14 @@ import java.util.concurrent.ExecutionException;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.model.EpisodeAction;
 import org.greenrobot.eventbus.EventBus;
 
 /**
@@ -99,12 +99,11 @@ public class MediaDownloadedHandler implements Runnable {
                     DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage(), request.isInitiatedByUser());
         }
 
-        if (GpodnetPreferences.loggedIn() && item != null) {
-            GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DOWNLOAD)
-                    .currentDeviceId()
+        if (item != null) {
+            EpisodeAction action = new EpisodeAction.Builder(item, EpisodeAction.DOWNLOAD)
                     .currentTimestamp()
                     .build();
-            GpodnetPreferences.enqueueEpisodeAction(action);
+            SyncService.enqueueEpisodeAction(context, action);
         }
     }
 

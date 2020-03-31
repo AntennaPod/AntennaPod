@@ -1,17 +1,17 @@
-package de.danoeh.antennapod.core.gpoddernet.model;
+package de.danoeh.antennapod.core.sync.model;
 
 import androidx.annotation.NonNull;
 
 import java.util.List;
 
-public class GpodnetSubscriptionChange {
+public class SubscriptionChanges {
     private final List<String> added;
     private final List<String> removed;
     private final long timestamp;
 
-    public GpodnetSubscriptionChange(@NonNull List<String> added,
-                                     @NonNull List<String> removed,
-                                     long timestamp) {
+    public SubscriptionChanges(@NonNull List<String> added,
+                               @NonNull List<String> removed,
+                               long timestamp) {
         this.added = added;
         this.removed = removed;
         this.timestamp = timestamp;
@@ -19,7 +19,7 @@ public class GpodnetSubscriptionChange {
 
     @Override
     public String toString() {
-        return "GpodnetSubscriptionChange [added=" + added.toString()
+        return "SubscriptionChange [added=" + added.toString()
                 + ", removed=" + removed.toString() + ", timestamp="
                 + timestamp + "]";
     }

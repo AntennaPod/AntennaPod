@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import de.danoeh.antennapod.core.sync.SyncService;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,9 +43,7 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.handler.FailedDownloadHandler;
 import de.danoeh.antennapod.core.service.download.handler.FeedSyncTask;
 import de.danoeh.antennapod.core.service.download.handler.MediaDownloadedHandler;
@@ -234,11 +233,7 @@ public class DownloadService extends Service {
 
         // if this was the initial gpodder sync, i.e. we just synced the feeds successfully,
         // it is now time to sync the episode actions
-        if (GpodnetPreferences.loggedIn() &&
-                GpodnetPreferences.getLastSubscriptionSyncTimestamp() > 0 &&
-                GpodnetPreferences.getLastEpisodeActionsSyncTimestamp() == 0) {
-            GpodnetSyncService.sendSyncActionsIntent(this);
-        }
+        SyncService.sync(this);
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
@@ -554,7 +549,7 @@ public class DownloadService extends Service {
     }
 
     /**
-     * Check if there's something else to download, otherwise stop
+     * Check if there's something else to download, otherwise stop.
      */
     private void queryDownloads() {
         Log.d(TAG, numberOfDownloads.get() + " downloads left");
@@ -562,7 +557,11 @@ public class DownloadService extends Service {
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
             stopSelf();
-            notificationUpdater.run();
+            if (notificationUpdater != null) {
+                notificationUpdater.run();
+            } else {
+                Log.d(TAG, "Skipping notification update");
+            }
         } else {
             setupNotificationUpdater();
             Notification notification = notificationManager.updateNotifications(

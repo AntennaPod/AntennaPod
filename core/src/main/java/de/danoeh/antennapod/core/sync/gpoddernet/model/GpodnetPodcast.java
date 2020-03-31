@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.gpoddernet.model;
+package de.danoeh.antennapod.core.sync.gpoddernet.model;
 
 import androidx.annotation.NonNull;
 

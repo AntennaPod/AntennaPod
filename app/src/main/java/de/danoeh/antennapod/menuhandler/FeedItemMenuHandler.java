@@ -12,13 +12,13 @@ import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.sync.SyncService;
+import de.danoeh.antennapod.core.sync.model.EpisodeAction;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
@@ -191,14 +191,13 @@ public class FeedItemMenuHandler {
                     FeedMedia media = selectedItem.getMedia();
                     // not all items have media, Gpodder only cares about those that do
                     if (media != null) {
-                        GpodnetEpisodeAction actionPlay = new GpodnetEpisodeAction.Builder(selectedItem, Action.PLAY)
-                                .currentDeviceId()
+                        EpisodeAction actionPlay = new EpisodeAction.Builder(selectedItem, EpisodeAction.PLAY)
                                 .currentTimestamp()
                                 .started(media.getDuration() / 1000)
                                 .position(media.getDuration() / 1000)
                                 .total(media.getDuration() / 1000)
                                 .build();
-                        GpodnetPreferences.enqueueEpisodeAction(actionPlay);
+                        SyncService.enqueueEpisodeAction(context, actionPlay);
                     }
                 }
                 break;
@@ -206,11 +205,10 @@ public class FeedItemMenuHandler {
                 selectedItem.setPlayed(false);
                 DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
                 if (GpodnetPreferences.loggedIn() && selectedItem.getMedia() != null) {
-                    GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, Action.NEW)
-                            .currentDeviceId()
+                    EpisodeAction actionNew = new EpisodeAction.Builder(selectedItem, EpisodeAction.NEW)
                             .currentTimestamp()
                             .build();
-                    GpodnetPreferences.enqueueEpisodeAction(actionNew);
+                    SyncService.enqueueEpisodeAction(context, actionNew);
                 }
                 break;
             case R.id.add_to_queue_item:
