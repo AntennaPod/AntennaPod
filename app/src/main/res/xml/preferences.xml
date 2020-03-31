@@ -28,9 +28,9 @@
             android:icon="?attr/ic_network" />
 
     <Preference
-            android:key="prefScreenIntegrations"
-            android:title="@string/integrations_label"
-            android:summary="@string/integrations_sum"
+            android:key="prefScreenGpodder"
+            android:title="@string/synchronization_pref"
+            android:summary="@string/synchronization_sum"
             android:icon="?attr/ic_unfav" />
 
     <Preference

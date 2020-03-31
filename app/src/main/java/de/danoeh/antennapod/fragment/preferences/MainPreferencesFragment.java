@@ -17,7 +17,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SCREEN_USER_INTERFACE = "prefScreenInterface";
     private static final String PREF_SCREEN_PLAYBACK = "prefScreenPlayback";
     private static final String PREF_SCREEN_NETWORK = "prefScreenNetwork";
-    private static final String PREF_SCREEN_INTEGRATIONS = "prefScreenIntegrations";
+    private static final String PREF_SCREEN_GPODDER = "prefScreenGpodder";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
     private static final String PREF_FAQ = "prefFaq";
     private static final String PREF_VIEW_MAILING_LIST = "prefViewMailingList";
@@ -51,8 +51,8 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_network);
             return true;
         });
-        findPreference(PREF_SCREEN_INTEGRATIONS).setOnPreferenceClickListener(preference -> {
-            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_integrations);
+        findPreference(PREF_SCREEN_GPODDER).setOnPreferenceClickListener(preference -> {
+            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_gpodder);
             return true;
         });
         findPreference(PREF_SCREEN_STORAGE).setOnPreferenceClickListener(preference -> {
@@ -89,7 +89,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void setupSearch() {
-        SearchPreference searchPreference = (SearchPreference) findPreference("searchPreference");
+        SearchPreference searchPreference = findPreference("searchPreference");
         SearchConfiguration config = searchPreference.getSearchConfiguration();
         config.setActivity((AppCompatActivity) getActivity());
         config.setFragmentContainerViewId(R.id.content);
@@ -111,7 +111,6 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                 .addBreadcrumb(R.string.automation)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_autodownload));
         config.index(R.xml.preferences_gpodder)
-                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_integrations))
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_gpodder));
     }
 }
