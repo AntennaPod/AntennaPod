@@ -529,7 +529,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             int duration = getDuration();
             if (skipIntro * 1000 < duration) {
                 mediaPlayer.seekTo(skipIntro * 1000);
-                skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast),
+                skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast,
                         skipIntro,
                         context.getString(R.string.time_seconds));
             }

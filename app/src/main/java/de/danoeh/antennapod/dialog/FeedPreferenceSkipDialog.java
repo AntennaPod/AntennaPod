@@ -25,7 +25,6 @@ public abstract class FeedPreferenceSkipDialog extends AlertDialog.Builder {
         etxtSkipIntro.setText(String.valueOf(skipIntroInitialValue));
         etxtSkipEnd.setText(String.valueOf(skipEndInitialValue));
 
-        setOnCancelListener(dialog -> onCancelled());
         setNegativeButton(R.string.cancel_label, null);
         setPositiveButton(R.string.confirm_label, (dialog, which)
                 -> onConfirmed(Integer.valueOf(etxtSkipIntro.getText().toString()),
