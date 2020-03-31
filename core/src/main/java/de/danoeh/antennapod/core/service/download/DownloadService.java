@@ -549,7 +549,7 @@ public class DownloadService extends Service {
     }
 
     /**
-     * Check if there's something else to download, otherwise stop
+     * Check if there's something else to download, otherwise stop.
      */
     private void queryDownloads() {
         Log.d(TAG, numberOfDownloads.get() + " downloads left");
@@ -557,7 +557,11 @@ public class DownloadService extends Service {
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
             stopSelf();
-            notificationUpdater.run();
+            if (notificationUpdater != null) {
+                notificationUpdater.run();
+            } else {
+                Log.d(TAG, "Skipping notification update");
+            }
         } else {
             setupNotificationUpdater();
             Notification notification = notificationManager.updateNotifications(
