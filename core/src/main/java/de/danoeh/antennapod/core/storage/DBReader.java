@@ -21,7 +21,6 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.sync.model.EpisodeAction;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
@@ -204,45 +203,15 @@ public final class DBReader {
     @NonNull
     private static List<FeedItem> extractItemlistFromCursor(PodDBAdapter adapter, Cursor cursor) {
         List<FeedItem> result = new ArrayList<>(cursor.getCount());
-
-        LongList itemIds = new LongList(cursor.getCount());
         if (cursor.moveToFirst()) {
+            int indexMediaId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_MEDIA_ID);
             do {
                 FeedItem item = FeedItem.fromCursor(cursor);
                 result.add(item);
-                itemIds.add(item.getId());
-            } while (cursor.moveToNext());
-            Map<Long, FeedMedia> medias = getFeedMedia(adapter, itemIds);
-            for (FeedItem item : result) {
-                FeedMedia media = medias.get(item.getId());
-                item.setMedia(media);
-                if (media != null) {
-                    media.setItem(item);
+                if (!cursor.isNull(indexMediaId)) {
+                    item.setMedia(FeedMedia.fromCursor(cursor));
                 }
-            }
-        }
-        return result;
-    }
-
-    private static Map<Long, FeedMedia> getFeedMedia(PodDBAdapter adapter, LongList itemIds) {
-        List<String> ids = new ArrayList<>(itemIds.size());
-        for (long item : itemIds.toArray()) {
-            ids.add(String.valueOf(item));
-        }
-
-        Map<Long, FeedMedia> result = new ArrayMap<>(itemIds.size());
-        Cursor cursor = adapter.getFeedMediaCursor(ids.toArray(new String[0]));
-        try {
-            if (cursor.moveToFirst()) {
-                do {
-                    int index = cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
-                    long itemId = cursor.getLong(index);
-                    FeedMedia media = FeedMedia.fromCursor(cursor);
-                    result.put(itemId, media);
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            cursor.close();
+            } while (cursor.moveToNext());
         }
         return result;
     }
@@ -747,17 +716,17 @@ public final class DBReader {
     }
 
     /**
-     * Loads additional information about a FeedItem, e.g. shownotes
+     * Loads shownotes information about a FeedItem.
      *
      * @param item The FeedItem
      */
-    public static void loadExtraInformationOfFeedItem(final FeedItem item) {
-        Log.d(TAG, "loadExtraInformationOfFeedItem() called with: " + "item = [" + item + "]");
+    public static void loadDescriptionOfFeedItem(final FeedItem item) {
+        Log.d(TAG, "loadDescriptionOfFeedItem() called with: " + "item = [" + item + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor cursor = null;
         try {
-            cursor = adapter.getExtraInformationOfItem(item);
+            cursor = adapter.getDescriptionOfItem(item);
             if (cursor.moveToFirst()) {
                 int indexDescription = cursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION);
                 String description = cursor.getString(indexDescription);

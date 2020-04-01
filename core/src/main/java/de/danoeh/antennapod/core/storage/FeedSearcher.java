@@ -27,6 +27,7 @@ public class FeedSearcher {
             itemSearchTask.run();
             return itemSearchTask.get();
         } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
             return Collections.emptyList();
         }
     }
@@ -38,6 +39,7 @@ public class FeedSearcher {
             feedSearchTask.run();
             return feedSearchTask.get();
         } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
             return Collections.emptyList();
         }
     }

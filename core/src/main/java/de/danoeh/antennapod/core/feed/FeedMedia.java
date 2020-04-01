@@ -98,17 +98,17 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public static FeedMedia fromCursor(Cursor cursor) {
-        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
-        int indexPlaybackCompletionDate = cursor.getColumnIndex(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE);
-        int indexDuration = cursor.getColumnIndex(PodDBAdapter.KEY_DURATION);
-        int indexPosition = cursor.getColumnIndex(PodDBAdapter.KEY_POSITION);
-        int indexSize = cursor.getColumnIndex(PodDBAdapter.KEY_SIZE);
-        int indexMimeType = cursor.getColumnIndex(PodDBAdapter.KEY_MIME_TYPE);
-        int indexFileUrl = cursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL);
-        int indexDownloadUrl = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL);
-        int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
-        int indexPlayedDuration = cursor.getColumnIndex(PodDBAdapter.KEY_PLAYED_DURATION);
-        int indexLastPlayedTime = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_PLAYED_TIME);
+        int indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_MEDIA_ID);
+        int indexPlaybackCompletionDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE);
+        int indexDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DURATION);
+        int indexPosition = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_POSITION);
+        int indexSize = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_SIZE);
+        int indexMimeType = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_MIME_TYPE);
+        int indexFileUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FILE_URL);
+        int indexDownloadUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_URL);
+        int indexDownloaded = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOADED);
+        int indexPlayedDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYED_DURATION);
+        int indexLastPlayedTime = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME);
 
         long mediaId = cursor.getLong(indexId);
         Date playbackCompletionDate = null;
