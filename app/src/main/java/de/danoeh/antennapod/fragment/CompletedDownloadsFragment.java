@@ -13,9 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -31,6 +28,7 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -55,7 +53,7 @@ public class CompletedDownloadsFragment extends Fragment {
 
     private List<FeedItem> items = new ArrayList<>();
     private CompletedDownloadsListAdapter adapter;
-    private RecyclerView recyclerView;
+    private EpisodeItemListRecyclerView recyclerView;
     private ProgressBar progressBar;
     private Disposable disposable;
     private EmptyViewHandler emptyView;
@@ -68,10 +66,7 @@ public class CompletedDownloadsFragment extends Fragment {
         toolbar.setVisibility(View.GONE);
 
         recyclerView = root.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         recyclerView.setVisibility(View.GONE);
         adapter = new CompletedDownloadsListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
@@ -215,8 +210,7 @@ public class CompletedDownloadsFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-            super.onBindViewHolder(holder, pos);
+        public void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             DeleteActionButton actionButton = new DeleteActionButton(getItem(pos));
             actionButton.configure(holder.secondaryActionButton, holder.secondaryActionIcon, getActivity());
         }

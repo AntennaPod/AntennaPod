@@ -15,7 +15,6 @@ import com.joanzapata.iconify.Iconify;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
-import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
 import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;

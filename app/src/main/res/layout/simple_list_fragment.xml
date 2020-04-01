@@ -11,7 +11,7 @@
             android:layout_alignParentTop="true"
             android:id="@+id/toolbar"/>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"

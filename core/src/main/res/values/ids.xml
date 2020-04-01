@@ -24,4 +24,5 @@
     <item name="notification_gpodnet_sync_autherror" type="id"/>
     <item name="undobar_button" type="id"/>
     <item name="undobar_message" type="id"/>
+    <item name="episode_item_view_holder" type="id"/>
 </resources>

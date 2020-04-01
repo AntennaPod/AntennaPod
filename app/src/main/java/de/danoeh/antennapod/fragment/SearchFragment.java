@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -18,7 +17,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -35,6 +33,7 @@ import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -59,8 +58,7 @@ public class SearchFragment extends Fragment {
     private Disposable disposable;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyViewHandler;
-    private RecyclerView recyclerView;
-    private RecyclerView recyclerViewFeeds;
+    private EpisodeItemListRecyclerView recyclerView;
     private List<FeedItem> results;
 
     /**
@@ -117,15 +115,12 @@ public class SearchFragment extends Fragment {
         progressBar = layout.findViewById(R.id.progressBar);
 
         recyclerView = layout.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         recyclerView.setVisibility(View.GONE);
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
 
-        recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
+        RecyclerView recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);

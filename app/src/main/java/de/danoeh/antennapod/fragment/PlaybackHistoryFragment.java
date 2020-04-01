@@ -16,9 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -34,6 +31,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -51,7 +49,7 @@ public class PlaybackHistoryFragment extends Fragment {
     private List<FeedItem> playbackHistory;
     private PlaybackHistoryListAdapter adapter;
     private Disposable disposable;
-    private RecyclerView recyclerView;
+    private EpisodeItemListRecyclerView recyclerView;
     private EmptyViewHandler emptyView;
     private ProgressBar progressBar;
 
@@ -71,10 +69,7 @@ public class PlaybackHistoryFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         recyclerView = root.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         recyclerView.setVisibility(View.GONE);
         adapter = new PlaybackHistoryListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
@@ -246,8 +241,7 @@ public class PlaybackHistoryFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-            super.onBindViewHolder(holder, pos);
+        protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
             // played items shouldn't be transparent for this fragment since, *all* items
             // in this fragment will, by definition, be played. So it serves no purpose and can make
             // it harder to read.

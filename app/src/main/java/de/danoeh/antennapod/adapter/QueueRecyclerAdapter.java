@@ -35,8 +35,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
 
     @Override
     @SuppressLint("ClickableViewAccessibility")
-    public void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
-        super.onBindViewHolder(holder, pos);
+    protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
         View.OnTouchListener startDragTouchListener = (v1, event) -> {
             if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
                 Log.d(TAG, "startDrag()");
@@ -56,7 +55,6 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
         }
 
         holder.isInQueue.setVisibility(View.GONE);
-        holder.hideSeparatorIfNecessary();
     }
 
     @Override

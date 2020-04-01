@@ -23,6 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
@@ -74,6 +75,7 @@ public class MainActivity extends CastEnabledActivity {
     private ActionBarDrawerToggle drawerToggle;
     private LockableBottomSheetBehavior sheetBehavior;
     private long lastBackButtonPressTime = 0;
+    private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
 
     @NonNull
     public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
@@ -89,6 +91,7 @@ public class MainActivity extends CastEnabledActivity {
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
+        recycledViewPool.setMaxRecycledViews(R.id.episode_item_view_holder, 25);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
@@ -189,6 +192,10 @@ public class MainActivity extends CastEnabledActivity {
         params.setMargins(0, 0, 0, visible ? (int) getResources().getDimension(R.dimen.external_player_height) : 0);
         mainView.setLayoutParams(params);
         findViewById(R.id.audioplayerFragment).setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public RecyclerView.RecycledViewPool getRecycledViewPool() {
+        return recycledViewPool;
     }
 
     public void loadFragment(String tag, Bundle args) {
