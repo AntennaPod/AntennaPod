@@ -186,7 +186,7 @@ public class QueueFragment extends Fragment {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventMainThread(DownloadEvent event) {
-        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        Log.d(TAG, "onEventMainThread() called with DownloadEvent");
         DownloaderUpdate update = event.update;
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
             getActivity().invalidateOptionsMenu();
