@@ -8,12 +8,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -74,7 +75,7 @@ public class ItemDescriptionFragment extends Fragment {
         if (webViewLoader != null) {
             webViewLoader.dispose();
         }
-        webViewLoader = Observable.fromCallable(this::loadData)
+        webViewLoader = Maybe.fromCallable(this::loadData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
@@ -84,10 +85,14 @@ public class ItemDescriptionFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    @NonNull
+    @Nullable
     private String loadData() {
-        Timeline timeline = new Timeline(getActivity(), controller.getMedia());
-        return timeline.processShownotes();
+        if (controller.getMedia() != null) {
+            Timeline timeline = new Timeline(getActivity(), controller.getMedia());
+            return timeline.processShownotes();
+        } else {
+            return null;
+        }
     }
 
     @Override

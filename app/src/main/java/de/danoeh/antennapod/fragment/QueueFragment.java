@@ -18,11 +18,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.google.android.material.snackbar.Snackbar;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.QueueRecyclerAdapter;
@@ -49,6 +47,7 @@ import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
+import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -71,7 +70,7 @@ public class QueueFragment extends Fragment {
     public static final String TAG = "QueueFragment";
 
     private TextView infoBar;
-    private RecyclerView recyclerView;
+    private EpisodeItemListRecyclerView recyclerView;
     private QueueRecyclerAdapter recyclerAdapter;
     private EmptyViewHandler emptyView;
     private ProgressBar progLoading;
@@ -81,15 +80,11 @@ public class QueueFragment extends Fragment {
     private boolean isUpdatingFeeds = false;
 
     private static final String PREFS = "QueueFragment";
-    private static final String PREF_SCROLL_POSITION = "scroll_position";
-    private static final String PREF_SCROLL_OFFSET = "scroll_offset";
     private static final String PREF_SHOW_LOCK_WARNING = "show_lock_warning";
 
     private Disposable disposable;
-    private LinearLayoutManager layoutManager;
     private ItemTouchHelper itemTouchHelper;
     private SharedPreferences prefs;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +107,7 @@ public class QueueFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        saveScrollPosition();
+        recyclerView.saveScrollPosition(QueueFragment.TAG);
     }
 
     @Override
@@ -159,7 +154,7 @@ public class QueueFragment extends Fragment {
             case MOVED:
                 return;
         }
-        saveScrollPosition();
+        recyclerView.saveScrollPosition(QueueFragment.TAG);
         onFragmentLoaded(false);
     }
 
@@ -229,30 +224,6 @@ public class QueueFragment extends Fragment {
         loadItems(false);
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
             getActivity().supportInvalidateOptionsMenu();
-        }
-    }
-
-    private void saveScrollPosition() {
-        int firstItem = layoutManager.findFirstVisibleItemPosition();
-        View firstItemView = layoutManager.findViewByPosition(firstItem);
-        float topOffset;
-        if(firstItemView == null) {
-            topOffset = 0;
-        } else {
-            topOffset = firstItemView.getTop();
-        }
-
-        prefs.edit()
-                .putInt(PREF_SCROLL_POSITION, firstItem)
-                .putFloat(PREF_SCROLL_OFFSET, topOffset)
-                .apply();
-    }
-
-    private void restoreScrollPosition() {
-        int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
-        float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
-        if (position > 0 || offset > 0) {
-            layoutManager.scrollToPositionWithOffset(position, (int) offset);
         }
     }
 
@@ -480,9 +451,7 @@ public class QueueFragment extends Fragment {
         if (animator instanceof SimpleItemAnimator) {
             ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         registerForContextMenu(recyclerView);
 
         itemTouchHelper = new ItemTouchHelper(
@@ -598,7 +567,7 @@ public class QueueFragment extends Fragment {
         }
 
         if (restoreScrollPosition) {
-            restoreScrollPosition();
+            recyclerView.restoreScrollPosition(QueueFragment.TAG);
         }
 
         // we need to refresh the options menu because it sometimes

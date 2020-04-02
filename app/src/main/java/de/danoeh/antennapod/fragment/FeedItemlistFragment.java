@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -31,7 +30,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.widget.IconTextView;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -66,6 +64,7 @@ import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import io.reactivex.Observable;
@@ -90,7 +89,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private MoreContentListFooterUtil nextPageLoader;
 
     private ProgressBar progressBar;
-    private RecyclerView recyclerView;
+    private EpisodeItemListRecyclerView recyclerView;
     private TextView txtvTitle;
     private IconTextView txtvFailure;
     private ImageView imgvBackground;
@@ -144,10 +143,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         recyclerView = root.findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         recyclerView.setVisibility(View.GONE);
 
         progressBar = root.findViewById(R.id.progLoading);
@@ -193,16 +189,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int deltaX, int deltaY) {
-                super.onScrolled(recyclerView, deltaX, deltaY);
-
-                int visibleEpisodeCount = recyclerView.getChildCount();
-                int totalEpisodeCount = recyclerView.getLayoutManager().getItemCount();
-                int firstVisibleEpisode = layoutManager.findFirstVisibleItemPosition();
-
-                boolean isAtBottom = (totalEpisodeCount - visibleEpisodeCount) <= (firstVisibleEpisode + 3);
+            public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
+                super.onScrolled(view, deltaX, deltaY);
                 boolean hasMorePages = feed != null && feed.isPaged() && feed.getNextPageLink() != null;
-                nextPageLoader.getRoot().setVisibility((isAtBottom && hasMorePages) ? View.VISIBLE : View.GONE);
+                nextPageLoader.getRoot().setVisibility(
+                        (recyclerView.isScrolledToBottom() && hasMorePages) ? View.VISIBLE : View.GONE);
             }
         });
 
@@ -556,12 +547,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             super(mainActivity);
         }
 
-        @NonNull
         @Override
-        public EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            EpisodeItemViewHolder viewHolder = super.onCreateViewHolder(parent, viewType);
-            viewHolder.coverHolder.setVisibility(View.GONE);
-            return viewHolder;
+        protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+            holder.coverHolder.setVisibility(View.GONE);
         }
     }
 }

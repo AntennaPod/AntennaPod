@@ -42,14 +42,25 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         notifyDataSetChanged();
     }
 
+    @Override
+    public final int getItemViewType(int position) {
+        return R.id.episode_item_view_holder;
+    }
+
     @NonNull
     @Override
-    public EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public final EpisodeItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new EpisodeItemViewHolder(mainActivityRef.get(), parent);
     }
 
     @Override
-    public void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+    public final void onBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+        // Reset state of recycled views
+        holder.coverHolder.setVisibility(View.VISIBLE);
+        holder.dragHandle.setVisibility(View.GONE);
+
+        beforeBindViewHolder(holder, pos);
+
         FeedItem item = episodes.get(pos);
         holder.bind(item);
         holder.itemView.setOnLongClickListener(v -> {
@@ -65,7 +76,14 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
             }
         });
         holder.itemView.setOnCreateContextMenuListener(this);
+        afterBindViewHolder(holder, pos);
         holder.hideSeparatorIfNecessary();
+    }
+
+    protected void beforeBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+    }
+
+    protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
     }
 
     /**

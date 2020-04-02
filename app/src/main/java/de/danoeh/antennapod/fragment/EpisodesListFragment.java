@@ -1,12 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 import android.util.Log;
@@ -20,13 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
-
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -61,18 +57,15 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class EpisodesListFragment extends Fragment {
 
     public static final String TAG = "EpisodesListFragment";
-    private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
-    private static final String PREF_SCROLL_POSITION = "scroll_position";
-    private static final String PREF_SCROLL_OFFSET = "scroll_offset";
-
     protected static final int EPISODES_PER_PAGE = 150;
-    private static final int VISIBLE_EPISODES_SCROLL_THRESHOLD = 5;
     protected int page = 1;
+    protected boolean isLoadingMore = false;
+    protected boolean hasMoreItems = true;
 
-    RecyclerView recyclerView;
+    EpisodeItemListRecyclerView recyclerView;
     EpisodeItemListAdapter listAdapter;
     ProgressBar progLoading;
-    View loadingMore;
+    View loadingMoreView;
     EmptyViewHandler emptyView;
 
     @NonNull
@@ -81,11 +74,10 @@ public abstract class EpisodesListFragment extends Fragment {
     private volatile boolean isUpdatingFeeds;
     private boolean isMenuVisible = true;
     protected Disposable disposable;
-    private LinearLayoutManager layoutManager;
     protected TextView txtvInformation;
 
     String getPrefName() {
-        return DEFAULT_PREF_NAME;
+        return TAG;
     }
 
     @Override
@@ -105,7 +97,7 @@ public abstract class EpisodesListFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        saveScrollPosition();
+        recyclerView.saveScrollPosition(getPrefName());
         unregisterForContextMenu(recyclerView);
     }
 
@@ -115,37 +107,6 @@ public abstract class EpisodesListFragment extends Fragment {
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
-        }
-    }
-
-    private void saveScrollPosition() {
-        int firstItem = layoutManager.findFirstVisibleItemPosition();
-        View firstItemView = layoutManager.findViewByPosition(firstItem);
-        float topOffset;
-        if (firstItemView == null) {
-            topOffset = 0;
-        } else {
-            topOffset = firstItemView.getTop();
-        }
-
-        SharedPreferences prefs = getActivity().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PREF_SCROLL_POSITION, firstItem);
-        editor.putFloat(PREF_SCROLL_OFFSET, topOffset);
-        editor.apply();
-    }
-
-    private void restoreScrollPosition() {
-        SharedPreferences prefs = getActivity().getSharedPreferences(getPrefName(), Context.MODE_PRIVATE);
-        int position = prefs.getInt(PREF_SCROLL_POSITION, 0);
-        float offset = prefs.getFloat(PREF_SCROLL_OFFSET, 0.0f);
-        if (position > 0 || offset > 0) {
-            layoutManager.scrollToPositionWithOffset(position, (int) offset);
-            // restore once, then forget
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt(PREF_SCROLL_POSITION, 0);
-            editor.putFloat(PREF_SCROLL_OFFSET, 0.0f);
-            editor.apply();
         }
     }
 
@@ -241,12 +202,9 @@ public abstract class EpisodesListFragment extends Fragment {
         View root = inflater.inflate(R.layout.all_episodes_fragment, container, false);
         txtvInformation = root.findViewById(R.id.txtvInformation);
 
-        layoutManager = new LinearLayoutManager(getActivity());
         recyclerView = root.findViewById(android.R.id.list);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
         recyclerView.setVisibility(View.GONE);
+        recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
         setupLoadMoreScrollListener();
 
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
@@ -256,7 +214,7 @@ public abstract class EpisodesListFragment extends Fragment {
 
         progLoading = root.findViewById(R.id.progLoading);
         progLoading.setVisibility(View.VISIBLE);
-        loadingMore = root.findViewById(R.id.loadingMore);
+        loadingMoreView = root.findViewById(R.id.loadingMore);
 
         emptyView = new EmptyViewHandler(getContext());
         emptyView.attachToRecyclerView(recyclerView);
@@ -272,33 +230,10 @@ public abstract class EpisodesListFragment extends Fragment {
 
     private void setupLoadMoreScrollListener() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            /* Total number of episodes after last load */
-            private int previousTotalEpisodes = 0;
-
-            /* True if loading more episodes is still in progress */
-            private boolean isLoadingMore = true;
-
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int deltaX, int deltaY) {
-                super.onScrolled(recyclerView, deltaX, deltaY);
-
-                int visibleEpisodeCount = recyclerView.getChildCount();
-                int totalEpisodeCount = recyclerView.getLayoutManager().getItemCount();
-                int firstVisibleEpisode = layoutManager.findFirstVisibleItemPosition();
-
-                /* Determine if loading more episodes has finished */
-                if (isLoadingMore) {
-                    if (totalEpisodeCount > previousTotalEpisodes) {
-                        isLoadingMore = false;
-                        previousTotalEpisodes = totalEpisodeCount;
-                    }
-                }
-
-                /* Determine if the user scrolled to the bottom and loading more episodes is not already in progress */
-                if (!isLoadingMore && (totalEpisodeCount - visibleEpisodeCount)
-                        <= (firstVisibleEpisode + VISIBLE_EPISODES_SCROLL_THRESHOLD)) {
-
+            public void onScrolled(@NonNull RecyclerView view, int deltaX, int deltaY) {
+                super.onScrolled(view, deltaX, deltaY);
+                if (!isLoadingMore && hasMoreItems && recyclerView.isScrolledToBottom()) {
                     /* The end of the list has been reached. Load more data. */
                     page++;
                     loadMoreItems();
@@ -312,26 +247,35 @@ public abstract class EpisodesListFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        loadingMore.setVisibility(View.VISIBLE);
+        isLoadingMore = true;
+        loadingMoreView.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(this::loadMoreData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
-                    loadingMore.setVisibility(View.GONE);
-                    progLoading.setVisibility(View.GONE);
+                    if (data.size() < EPISODES_PER_PAGE) {
+                        hasMoreItems = false;
+                    }
                     episodes.addAll(data);
                     onFragmentLoaded(episodes);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)),
+                    () -> {
+                        recyclerView.post(() -> isLoadingMore = false); // Make sure to not always load 2 pages at once
+                        progLoading.setVisibility(View.GONE);
+                        loadingMoreView.setVisibility(View.GONE);
+                    });
     }
 
     protected void onFragmentLoaded(List<FeedItem> episodes) {
+        boolean restoreScrollPosition = listAdapter.getItemCount() == 0;
         if (episodes.size() == 0) {
             createRecycleAdapter(recyclerView, emptyView);
         } else {
             listAdapter.updateItems(episodes);
         }
-
-        restoreScrollPosition();
+        if (restoreScrollPosition) {
+            recyclerView.restoreScrollPosition(getPrefName());
+        }
         if (isMenuVisible && isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
             requireActivity().invalidateOptionsMenu();
         }
@@ -431,6 +375,7 @@ public abstract class EpisodesListFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     progLoading.setVisibility(View.GONE);
+                    hasMoreItems = true;
                     episodes = data;
                     onFragmentLoaded(episodes);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
