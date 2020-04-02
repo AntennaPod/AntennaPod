@@ -122,12 +122,6 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        onPositionObserverUpdate();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         controller = setupPlaybackController();

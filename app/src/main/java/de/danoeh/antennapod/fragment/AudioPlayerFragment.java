@@ -46,6 +46,10 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.view.PagerIndicatorView;
 import de.danoeh.antennapod.view.PlaybackSpeedIndicatorView;
+import io.reactivex.Maybe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -84,6 +88,7 @@ public class AudioPlayerFragment extends Fragment implements
     private ProgressBar progressIndicator;
 
     private PlaybackController controller;
+    private Disposable disposable;
     private boolean showTimeLeft;
 
     @Override
@@ -95,7 +100,6 @@ public class AudioPlayerFragment extends Fragment implements
         toolbar.setNavigationOnClickListener(v ->
                 ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED));
         toolbar.setOnMenuItemClickListener(this);
-        setupOptionsMenu();
 
         ExternalPlayerFragment externalPlayerFragment = new ExternalPlayerFragment();
         getFragmentManager().beginTransaction()
@@ -219,7 +223,7 @@ public class AudioPlayerFragment extends Fragment implements
             PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(newSpeed);
             UserPreferences.setPlaybackSpeed(newSpeed);
             controller.setPlaybackSpeed(newSpeed);
-            updateUi();
+            loadMediaInfo();
         });
         butPlaybackSpeed.setOnLongClickListener(v -> {
             VariableSpeedDialog.showDialog(getContext());
@@ -229,13 +233,13 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
-    protected void updatePlaybackSpeedButton() {
+    protected void updatePlaybackSpeedButton(Playable media) {
         if (butPlaybackSpeed == null || controller == null) {
             return;
         }
         float speed = 1.0f;
         if (controller.canSetPlaybackSpeed()) {
-            speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(controller.getMedia());
+            speed = PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
         }
         String speedStr = new DecimalFormat("0.00").format(speed);
         txtvPlaybackSpeed.setText(speedStr);
@@ -245,12 +249,31 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
+    private void loadMediaInfo() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+        disposable = Maybe.create(emitter -> {
+            Playable media = controller.getMedia();
+            if (media != null) {
+                emitter.onSuccess(media);
+            } else {
+                emitter.onComplete();
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> updateUi((Playable) media),
+                        error -> Log.e(TAG, Log.getStackTraceString(error)),
+                        () -> updateUi(null));
+    }
+
     private PlaybackController newPlaybackController() {
         return new PlaybackController(getActivity()) {
 
             @Override
             public void setupGUI() {
-                updateUi();
+                AudioPlayerFragment.this.loadMediaInfo();
             }
 
             @Override
@@ -289,7 +312,7 @@ public class AudioPlayerFragment extends Fragment implements
 
             @Override
             public void onSleepTimerUpdate() {
-                setupOptionsMenu();
+                AudioPlayerFragment.this.loadMediaInfo();
             }
 
             @Override
@@ -299,7 +322,7 @@ public class AudioPlayerFragment extends Fragment implements
 
             @Override
             public boolean loadMediaInfo() {
-                updateUi();
+                AudioPlayerFragment.this.loadMediaInfo();
                 return true;
             }
 
@@ -315,25 +338,25 @@ public class AudioPlayerFragment extends Fragment implements
 
             @Override
             public void onPlaybackSpeedChange() {
-                updatePlaybackSpeedButton();
+                updatePlaybackSpeedButton(getMedia());
             }
 
             @Override
             public void onSetSpeedAbilityChanged() {
-                updatePlaybackSpeedButton();
+                updatePlaybackSpeedButton(getMedia());
             }
         };
     }
 
-    private void updateUi() {
+    private void updateUi(Playable media) {
         if (controller == null) {
             return;
         }
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
-        updatePlaybackSpeedButton();
-        setupOptionsMenu();
+        updatePlaybackSpeedButton(media);
+        setupOptionsMenu(media);
 
-        if (controller.getMedia() != null) {
+        if (media != null) {
             List<Chapter> chapters = controller.getMedia().getChapters();
             boolean hasChapters = chapters != null && !chapters.isEmpty();
             pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
@@ -351,7 +374,7 @@ public class AudioPlayerFragment extends Fragment implements
         super.onStart();
         controller = newPlaybackController();
         controller.init();
-        updateUi();
+        loadMediaInfo();
         EventBus.getDefault().register(this);
     }
 
@@ -361,6 +384,9 @@ public class AudioPlayerFragment extends Fragment implements
         controller.release();
         controller = null;
         EventBus.getDefault().unregister(this);
+        if (disposable != null) {
+            disposable.dispose();
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -390,7 +416,7 @@ public class AudioPlayerFragment extends Fragment implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void favoritesChanged(FavoritesEvent event) {
-        setupOptionsMenu();
+        AudioPlayerFragment.this.loadMediaInfo();
     }
 
     @Override
@@ -426,14 +452,13 @@ public class AudioPlayerFragment extends Fragment implements
         }
     }
 
-    public void setupOptionsMenu() {
+    public void setupOptionsMenu(Playable media) {
         if (toolbar.getMenu().size() == 0) {
             toolbar.inflateMenu(R.menu.mediaplayer);
         }
         if (controller == null) {
             return;
         }
-        Playable media = controller.getMedia();
         boolean isFeedMedia = media instanceof FeedMedia;
         toolbar.getMenu().findItem(R.id.open_feed_item).setVisible(isFeedMedia);
         if (isFeedMedia) {
