@@ -140,17 +140,17 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     }
 
     public static FeedItem fromCursor(Cursor cursor) {
-        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
-        int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
-        int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
-        int indexPubDate = cursor.getColumnIndex(PodDBAdapter.KEY_PUBDATE);
-        int indexPaymentLink = cursor.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK);
-        int indexFeedId = cursor.getColumnIndex(PodDBAdapter.KEY_FEED);
-        int indexHasChapters = cursor.getColumnIndex(PodDBAdapter.KEY_HAS_CHAPTERS);
-        int indexRead = cursor.getColumnIndex(PodDBAdapter.KEY_READ);
-        int indexItemIdentifier = cursor.getColumnIndex(PodDBAdapter.KEY_ITEM_IDENTIFIER);
-        int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
-        int indexImageUrl = cursor.getColumnIndex(PodDBAdapter.KEY_IMAGE_URL);
+        int indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_ITEM_ID);
+        int indexTitle = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_TITLE);
+        int indexLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LINK);
+        int indexPubDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PUBDATE);
+        int indexPaymentLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PAYMENT_LINK);
+        int indexFeedId = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED);
+        int indexHasChapters = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HAS_CHAPTERS);
+        int indexRead = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_READ);
+        int indexItemIdentifier = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_ITEM_IDENTIFIER);
+        int indexAutoDownload = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_AUTO_DOWNLOAD);
+        int indexImageUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IMAGE_URL);
 
         long id = cursor.getInt(indexId);
         String title = cursor.getString(indexTitle);
@@ -359,7 +359,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     public Callable<String> loadShownotes() {
         return () -> {
             if (contentEncoded == null || description == null) {
-                DBReader.loadExtraInformationOfFeedItem(FeedItem.this);
+                DBReader.loadDescriptionOfFeedItem(FeedItem.this);
             }
             if (TextUtils.isEmpty(contentEncoded)) {
                 return description;
