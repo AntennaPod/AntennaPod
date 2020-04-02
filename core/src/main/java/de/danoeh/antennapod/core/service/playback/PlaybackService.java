@@ -497,7 +497,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return Service.START_NOT_STICKY;
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
-                skipIntro(playable);
             } else {
                 Log.d(TAG, "Did not handle intent to PlaybackService: " + intent);
                 Log.d(TAG, "Extras: " + intent.getExtras());
@@ -507,13 +506,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return Service.START_NOT_STICKY;
     }
 
-    private void skipIntro(Playable playable) {
+    private void skipIntroPref(Playable playable) {
         int skipIntro = 0;
         if (! (playable instanceof FeedMedia)) {
-            return;
-        }
-
-        if (playable.getLastPlayedTime() > 0) {
             return;
         }
 
@@ -523,13 +518,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             skipIntro = preferences.getFeedSkipIntro();
         }
 
-        String skipIntroMesg = "";
         Context context = getApplicationContext();
-        if (skipIntro > 0) {
+        if (skipIntro > 0 && playable.getPosition() < skipIntro * 1000) {
             int duration = getDuration();
             if (skipIntro * 1000 < duration) {
+                Log.d(TAG, "skipIntroPref " + playable.getEpisodeTitle());
                 mediaPlayer.seekTo(skipIntro * 1000);
-                skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast,
+                String skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast,
                         skipIntro,
                         context.getString(R.string.time_seconds));
                 Toast toast = Toast.makeText(context, skipIntroMesg,
@@ -710,8 +705,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void positionSaverTick() {
             saveCurrentPosition(true, null, PlaybackServiceMediaPlayer.INVALID_TIME);
-
-            skipIfMetEnding();
         }
 
         @Override
@@ -791,7 +784,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case PLAYING:
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     setupNotification(newInfo);
-                    setupPositionUpdater();
+                    setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
@@ -882,6 +875,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             taskManager.startWidgetUpdater();
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
+            } else {
+                skipIntro(playable);
             }
             playable.onPlaybackStart();
             taskManager.startPositionSaver();
@@ -1073,7 +1068,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         sendBroadcast(intent);
     }
 
-    private void skipIfMetEnding() {
+    private void skipEndingPref() {
         Playable playable = mediaPlayer.getPlayable();
         if (! (playable instanceof FeedMedia)) {
             return;
@@ -1086,7 +1081,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
         int skipEnd = preferences.getFeedSkipEnding();
         if (skipEnd > 0 && remainingTime < skipEnd * 1000) {
-            Log.d(TAG, "skipIfMetEnding: Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
+            Log.d(TAG, "skipEndingPref: Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
             Context context = getApplicationContext();
             String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast,
                     skipEnd,
@@ -1097,7 +1092,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             mediaPlayer.skip();
         } else {
-           Log.d(TAG, "skipIfMetEnding: Not at ending yet " + remainingTime / 1000 + " end at " + skipEnd);
+           Log.d(TAG, "skipEndingPref: Not at ending yet " + remainingTime / 1000 + " end at " + skipEnd);
         }
     }
 
@@ -1654,7 +1649,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return mediaPlayer.getVideoSize();
     }
 
-    private void setupPositionUpdater() {
+    private void setupPositionObserver() {
         if (positionEventTimer != null) {
             positionEventTimer.dispose();
         }
@@ -1670,6 +1665,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                 getSystemService(NOTIFICATION_SERVICE);
                         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
                     }
+                    skipEndingPref();
                 });
     }
 
