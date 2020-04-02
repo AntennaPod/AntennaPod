@@ -15,7 +15,6 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -87,12 +86,11 @@ public class ItemDescriptionFragment extends Fragment {
 
     @Nullable
     private String loadData() {
-        if (controller.getMedia() != null) {
-            Timeline timeline = new Timeline(getActivity(), controller.getMedia());
-            return timeline.processShownotes();
-        } else {
+        if (controller.getMedia() == null) {
             return null;
         }
+        Timeline timeline = new Timeline(getActivity(), controller.getMedia());
+        return timeline.processShownotes();
     }
 
     @Override
@@ -143,9 +141,6 @@ public class ItemDescriptionFragment extends Fragment {
         controller = new PlaybackController(getActivity()) {
             @Override
             public boolean loadMediaInfo() {
-                if (getMedia() == null) {
-                    return false;
-                }
                 load();
                 return true;
             }
