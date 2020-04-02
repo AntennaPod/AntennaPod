@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
-import android.text.TextUtils;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -14,7 +13,6 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadServiceNotification {
@@ -64,33 +62,36 @@ public class DownloadServiceNotification {
     }
 
     private static String compileNotificationString(List<Downloader> downloads) {
-        List<String> lines = new ArrayList<>(downloads.size());
-        for (Downloader downloader : downloads) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < downloads.size(); i++) {
+            Downloader downloader = downloads.get(i);
             if (downloader.cancelled) {
                 continue;
             }
-            StringBuilder line = new StringBuilder("• ");
+            stringBuilder.append("• ");
             DownloadRequest request = downloader.getDownloadRequest();
             switch (request.getFeedfileType()) {
                 case Feed.FEEDFILETYPE_FEED:
                     if (request.getTitle() != null) {
-                        line.append(request.getTitle());
+                        stringBuilder.append(request.getTitle());
                     }
                     break;
                 case FeedMedia.FEEDFILETYPE_FEEDMEDIA:
                     if (request.getTitle() != null) {
-                        line.append(request.getTitle())
+                        stringBuilder.append(request.getTitle())
                                 .append(" (")
                                 .append(request.getProgressPercent())
                                 .append("%)");
                     }
                     break;
                 default:
-                    line.append("Unknown: ").append(request.getFeedfileType());
+                    stringBuilder.append("Unknown: ").append(request.getFeedfileType());
             }
-            lines.add(line.toString());
+            if (i != downloads.size()) {
+                stringBuilder.append("\n");
+            }
         }
-        return TextUtils.join("\n", lines);
+        return stringBuilder.toString();
     }
 
     private static String createAutoDownloadNotificationContent(List<DownloadStatus> statuses) {

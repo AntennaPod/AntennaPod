@@ -20,9 +20,15 @@ public class DateUtils {
 
     private DateUtils(){}
 
-	private static final String TAG = "DateUtils";
+    private static final String TAG = "DateUtils";
 
     private static final TimeZone defaultTimezone = TimeZone.getTimeZone("GMT");
+    private static final SimpleDateFormat dateFormatParser = new SimpleDateFormat("", Locale.US);
+
+    static {
+        dateFormatParser.setLenient(false);
+        dateFormatParser.setTimeZone(defaultTimezone);
+    }
 
     public static Date parse(final String input) {
         if (input == null) {
@@ -92,16 +98,12 @@ public class DateUtils {
                 "EEE d MMM yyyy HH:mm:ss 'GMT'Z (z)"
         };
 
-        SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);
-        parser.setLenient(false);
-        parser.setTimeZone(defaultTimezone);
-
         ParsePosition pos = new ParsePosition(0);
         for (String pattern : patterns) {
-            parser.applyPattern(pattern);
+            dateFormatParser.applyPattern(pattern);
             pos.setIndex(0);
             try {
-                Date result = parser.parse(date, pos);
+                Date result = dateFormatParser.parse(date, pos);
                 if (result != null && pos.getIndex() == date.length()) {
                     return result;
                 }
@@ -111,7 +113,7 @@ public class DateUtils {
         }
 
         // if date string starts with a weekday, try parsing date string without it
-        if(date.matches("^\\w+, .*$")) {
+        if (date.matches("^\\w+, .*$")) {
             return parse(date.substring(date.indexOf(',') + 1));
         }
 

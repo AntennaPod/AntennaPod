@@ -63,6 +63,7 @@ public class DBWriter {
     static {
         dbExec = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r);
+            t.setName("DatabaseExecutor");
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         });
