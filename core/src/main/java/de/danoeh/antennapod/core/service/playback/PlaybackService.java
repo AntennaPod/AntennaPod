@@ -876,7 +876,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
             } else {
-                skipIntro(playable);
+                skipIntroPref(playable);
             }
             playable.onPlaybackStart();
             taskManager.startPositionSaver();
