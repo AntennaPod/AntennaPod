@@ -44,8 +44,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-
 /**
  * Communicates with the playback service. GUI classes should use this class to
  * control playback instead of communicating with the PlaybackService directly.
@@ -53,17 +51,12 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 public class PlaybackController {
 
     private static final String TAG = "PlaybackController";
-
     private static final int INVALID_TIME = -1;
 
     private final Activity activity;
-
     private PlaybackService playbackService;
     private Playable media;
     private PlayerStatus status = PlayerStatus.STOPPED;
-
-    private final ScheduledThreadPoolExecutor schedExecutor;
-    private static final int SCHED_EX_POOLSIZE = 1;
 
     private boolean mediaInfoLoaded = false;
     private boolean released = false;
@@ -74,15 +67,7 @@ public class PlaybackController {
     private Disposable mediaLoader;
 
     public PlaybackController(@NonNull Activity activity) {
-
         this.activity = activity;
-        schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
-                r -> {
-                    Thread t = new Thread(r);
-                    t.setPriority(Thread.MIN_PRIORITY);
-                    return t;
-                }, (r, executor) -> Log.w(TAG, "Rejected execution of runnable in schedExecutor")
-        );
     }
 
     /**
@@ -155,7 +140,6 @@ public class PlaybackController {
         } catch (IllegalArgumentException e) {
             // ignore
         }
-        schedExecutor.shutdownNow();
         media = null;
         released = true;
 
