@@ -28,9 +28,9 @@ public abstract class FeedPreferenceSkipDialog extends AlertDialog.Builder {
 
         setNegativeButton(R.string.cancel_label, null);
         setPositiveButton(R.string.confirm_label, (dialog, which)
-                -> onConfirmed(Integer.valueOf(etxtSkipIntro.getText().toString()),
-                Integer.valueOf(etxtSkipEnd.getText().toString())));
+                -> onConfirmed(etxtSkipIntro.getText().toString(),
+                               etxtSkipEnd.getText().toString()));
     }
 
-    protected abstract void onConfirmed(int skipIntro, int skipEnd);
+    protected abstract void onConfirmed(String skipIntro, String skipEnd);
 }
