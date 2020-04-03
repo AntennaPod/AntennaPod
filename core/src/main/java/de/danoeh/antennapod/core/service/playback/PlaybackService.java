@@ -506,27 +506,23 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return Service.START_NOT_STICKY;
     }
 
-    private void skipIntroPref(Playable playable) {
-        int skipIntro = 0;
+    private void skipIntro(Playable playable) {
         if (! (playable instanceof FeedMedia)) {
             return;
         }
 
-        if (playable instanceof FeedMedia) {
-            FeedMedia feedMedia = (FeedMedia) playable;
-            FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
-            skipIntro = preferences.getFeedSkipIntro();
-        }
+        FeedMedia feedMedia = (FeedMedia) playable;
+        FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+        int skipIntro = preferences.getFeedSkipIntro();
 
         Context context = getApplicationContext();
         if (skipIntro > 0 && playable.getPosition() < skipIntro * 1000) {
             int duration = getDuration();
             if (skipIntro * 1000 < duration) {
-                Log.d(TAG, "skipIntroPref " + playable.getEpisodeTitle());
+                Log.d(TAG, "skipIntro " + playable.getEpisodeTitle());
                 mediaPlayer.seekTo(skipIntro * 1000);
                 String skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast,
-                        skipIntro,
-                        context.getString(R.string.time_seconds));
+                        skipIntro);
                 Toast toast = Toast.makeText(context, skipIntroMesg,
                         Toast.LENGTH_LONG);
                 toast.show();
@@ -876,7 +872,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
             } else {
-                skipIntroPref(playable);
+                skipIntro(playable);
             }
             playable.onPlaybackStart();
             taskManager.startPositionSaver();
@@ -1068,7 +1064,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         sendBroadcast(intent);
     }
 
-    private void skipEndingPref() {
+    private void skipEnding() {
         Playable playable = mediaPlayer.getPlayable();
         if (! (playable instanceof FeedMedia)) {
             return;
@@ -1080,19 +1076,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         FeedMedia feedMedia = (FeedMedia) playable;
         FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
         int skipEnd = preferences.getFeedSkipEnding();
-        if (skipEnd > 0 && remainingTime < skipEnd * 1000) {
-            Log.d(TAG, "skipEndingPref: Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
+        if (skipEnd > 0 &&
+            skipEnd < playable.getDuration() &&
+            remainingTime < skipEnd * 1000) {
+            Log.d(TAG, "skipEnding: Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
             Context context = getApplicationContext();
             String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast,
-                    skipEnd,
-                    context.getString(R.string.time_seconds));
+                    skipEnd);
             Toast toast = Toast.makeText(context, skipMesg,
                     Toast.LENGTH_LONG);
             toast.show();
 
             mediaPlayer.skip();
         } else {
-           Log.d(TAG, "skipEndingPref: Not at ending yet " + remainingTime / 1000 + " end at " + skipEnd);
+           Log.d(TAG, "skipEnding: Not at ending yet " + remainingTime + " end at " + skipEnd * 1000);
         }
     }
 
@@ -1665,7 +1662,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                 getSystemService(NOTIFICATION_SERVICE);
                         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
                     }
-                    skipEndingPref();
+                    skipEnding();
                 });
     }
 

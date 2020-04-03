@@ -453,8 +453,8 @@
     <string name="pref_feed_skip_sum">Skip introductions and ending credits.</string>
     <string name="pref_feed_skip_ending">Skip last</string>
     <string name="pref_feed_skip_intro">Skip first</string>
-    <string name="pref_feed_skip_ending_toast">Skipped last %d %s</string>
-    <string name="pref_feed_skip_intro_toast">Skipped first %d %s</string>
+    <string name="pref_feed_skip_ending_toast">Skipped last %d seconds</string>
+    <string name="pref_feed_skip_intro_toast">Skipped first %d seconds</string>
     <string name="pref_playback_time_respects_speed_title">Adjust media info to playback speed</string>
     <string name="pref_playback_time_respects_speed_sum">Displayed position and duration are adapted to playback speed</string>
     <string name="pref_fast_forward">Fast Forward Skip Time</string>
