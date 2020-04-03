@@ -590,9 +590,6 @@ public final class DBReader {
                 if (!list.isEmpty()) {
                     item = list.get(0);
                     loadAdditionalFeedItemListData(list);
-                    if (item.hasChapters()) {
-                        loadChaptersOfFeedItem(adapter, item);
-                    }
                 }
             }
             return item;
@@ -608,8 +605,7 @@ public final class DBReader {
      * than one FeedItem because this method might query the database several times for each item.
      *
      * @param itemId The ID of the FeedItem
-     * @return The FeedItem or null if the FeedItem could not be found. All FeedComponent-attributes
-     * as well as chapter marks of the FeedItem will also be loaded from the database.
+     * @return The FeedItem or null if the FeedItem could not be found.
      */
     @Nullable
     public static FeedItem getFeedItem(final long itemId) {

@@ -18,7 +18,6 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:foreground="?android:windowContentOverlay"
-            android:layout_marginBottom="@dimen/external_player_height"
             tools:background="@android:color/holo_red_dark" />
 
         <FrameLayout
@@ -27,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?android:attr/windowBackground"
+            android:visibility="gone"
             app:layout_behavior="de.danoeh.antennapod.view.LockableBottomSheetBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
