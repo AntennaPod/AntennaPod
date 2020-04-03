@@ -113,6 +113,9 @@ public class SyncService extends Worker {
     }
 
     public static void enqueueFeedAdded(Context context, String downloadUrl) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
         synchronized (lock) {
             try {
                 SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -128,6 +131,9 @@ public class SyncService extends Worker {
     }
 
     public static void enqueueFeedRemoved(Context context, String downloadUrl) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
         synchronized (lock) {
             try {
                 SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -143,6 +149,9 @@ public class SyncService extends Worker {
     }
 
     public static void enqueueEpisodeAction(Context context, EpisodeAction action) {
+        if (!GpodnetPreferences.loggedIn()) {
+            return;
+        }
         synchronized (lock) {
             try {
                 SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
