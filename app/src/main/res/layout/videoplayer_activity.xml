@@ -60,6 +60,14 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/skip_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:padding="64dp"
+        android:layout_gravity="center"/>
+
     <LinearLayout
         android:id="@+id/overlay"
         android:layout_width="match_parent"
