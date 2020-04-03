@@ -148,15 +148,7 @@ public class PlaybackController {
         } catch (IllegalArgumentException e) {
             // ignore
         }
-
-        if(serviceBinder != null) {
-            serviceBinder.dispose();
-        }
-        try {
-            activity.unbindService(mConnection);
-        } catch (IllegalArgumentException e) {
-            // ignore
-        }
+        unbind();
 
         try {
             activity.unregisterReceiver(shutdownReceiver);
@@ -171,6 +163,18 @@ public class PlaybackController {
             EventBus.getDefault().unregister(this);
             eventsRegistered = false;
         }
+    }
+
+    private void unbind() {
+        if (serviceBinder != null) {
+            serviceBinder.dispose();
+        }
+        try {
+            activity.unbindService(mConnection);
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        initialized = false;
     }
 
     /**
@@ -256,6 +260,7 @@ public class PlaybackController {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             playbackService = null;
+            initialized = false;
             Log.d(TAG, "Disconnected from Service");
         }
     };
@@ -328,13 +333,11 @@ public class PlaybackController {
     };
 
     private final BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (playbackService != null) {
-                if (TextUtils.equals(intent.getAction(),
-                        PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
-                    release();
+                if (TextUtils.equals(intent.getAction(), PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+                    unbind();
                     onShutdownNotification();
                 }
             }

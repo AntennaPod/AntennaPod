@@ -172,17 +172,10 @@ public class ExternalPlayerFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
-        disposable = Maybe.create(emitter -> {
-                    Playable media = controller.getMedia();
-                    if (media != null) {
-                        emitter.onSuccess(media);
-                    } else {
-                        emitter.onComplete();
-                    }
-                })
+        disposable = Maybe.fromCallable(() -> controller.getMedia())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> updateUi((Playable) media),
+                .subscribe(this::updateUi,
                         error -> Log.e(TAG, Log.getStackTraceString(error)),
                         () -> ((MainActivity) getActivity()).setPlayerVisible(false));
         return true;
