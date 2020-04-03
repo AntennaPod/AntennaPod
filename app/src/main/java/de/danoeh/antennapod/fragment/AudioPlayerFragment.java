@@ -102,7 +102,7 @@ public class AudioPlayerFragment extends Fragment implements
         toolbar.setOnMenuItemClickListener(this);
 
         ExternalPlayerFragment externalPlayerFragment = new ExternalPlayerFragment();
-        getFragmentManager().beginTransaction()
+        getChildFragmentManager().beginTransaction()
                 .replace(R.id.playerFragment, externalPlayerFragment, ExternalPlayerFragment.TAG)
                 .commit();
 
@@ -127,7 +127,7 @@ public class AudioPlayerFragment extends Fragment implements
         sbPosition.setOnSeekBarChangeListener(this);
 
         pager = root.findViewById(R.id.pager);
-        AudioPlayerPagerAdapter pagerAdapter = new AudioPlayerPagerAdapter(getFragmentManager());
+        AudioPlayerPagerAdapter pagerAdapter = new AudioPlayerPagerAdapter(getChildFragmentManager());
         pager.setAdapter(pagerAdapter);
         // Required for getChildAt(int) in ViewPagerBottomSheetBehavior to return the correct page
         pager.setOffscreenPageLimit(NUM_CONTENT_FRAGMENTS);
@@ -355,12 +355,10 @@ public class AudioPlayerFragment extends Fragment implements
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton(media);
         setupOptionsMenu(media);
+    }
 
-        if (media != null) {
-            List<Chapter> chapters = controller.getMedia().getChapters();
-            boolean hasChapters = chapters != null && !chapters.isEmpty();
-            pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
-        }
+    public void setHasChapters(boolean hasChapters) {
+        pageIndicator.setDisabledPage(hasChapters ? -1 : 2);
     }
 
     @Override
