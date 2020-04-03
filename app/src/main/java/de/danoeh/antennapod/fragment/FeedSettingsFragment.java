@@ -167,7 +167,7 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.getFeedSkipIntro(),
                         feedPreferences.getFeedSkipEnding()) {
                     @Override
-                    protected void onConfirmed(String skipIntroStr, String skipEndStr) {
+                    protected void onConfirmed(String skipIntroStr, String skipEndingStr) {
 
                         int skipIntro;
                         int skipEnding;
@@ -178,7 +178,7 @@ public class FeedSettingsFragment extends Fragment {
                         }
 
                         try {
-                            skipEnding = Integer.parseInt(skipIntroStr);
+                            skipEnding = Integer.parseInt(skipEndingStr);
                         } catch (NumberFormatException e) {
                             skipEnding = 0;
                         }

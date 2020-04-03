@@ -1078,8 +1078,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         int skipEnd = preferences.getFeedSkipEnding();
         if (skipEnd > 0 &&
             skipEnd < playable.getDuration() &&
-            remainingTime < skipEnd * 1000) {
-            Log.d(TAG, "skipEnding: Skipping the remaining " + remainingTime / 1000 + " " + skipEnd );
+            (remainingTime - (skipEnd * 1000) > 0) &&
+            ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
+            Log.d(TAG, "skipEnding: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());
             Context context = getApplicationContext();
             String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast,
                     skipEnd);
@@ -1089,7 +1090,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             mediaPlayer.skip();
         } else {
-           Log.d(TAG, "skipEnding: Not at ending yet " + remainingTime + " end at " + skipEnd * 1000);
+           Log.d(TAG, "skipEnding: Not at ending yet " + remainingTime + " diff " + (remainingTime - (skipEnd * 1000)) + " skipEnd " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed() * 1000);
         }
     }
 
