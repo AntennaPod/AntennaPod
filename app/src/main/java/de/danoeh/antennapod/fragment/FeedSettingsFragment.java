@@ -17,6 +17,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -171,6 +172,11 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setFeedSkipIntro(skipIntro);
                         feedPreferences.setFeedSkipEnding(skipEnding);
                         feed.savePreferences();
+                        EventBus.getDefault().post(
+                                new SkipIntroEndingChangedEvent(feedPreferences.getFeedSkipIntro(),
+                                        feedPreferences.getFeedSkipEnding(),
+                                        feed.getId()));
+
                     }
                 }.show();
                 return false;

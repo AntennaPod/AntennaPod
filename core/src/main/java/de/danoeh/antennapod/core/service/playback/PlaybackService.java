@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -50,6 +51,7 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -1510,12 +1512,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void volumeAdaptionChanged(VolumeAdaptionChangedEvent event) {
         PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, event.getFeedId(), event.getVolumeAdaptionSetting());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void speedPresetChanged(SpeedPresetChangedEvent event) {
         if (getPlayable() instanceof FeedMedia) {
             if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
@@ -1523,6 +1527,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
                 } else {
                     setSpeed(event.getSpeed());
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void skipIntroEndingPresetChanged(SkipIntroEndingChangedEvent event) {
+        if (getPlayable() instanceof FeedMedia) {
+            if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
+                if (event.getSkipEnding() != 0) {
+                   FeedPreferences feedPreferences
+                           = ((FeedMedia) getPlayable()).getItem().getFeed().getPreferences();
+                   feedPreferences.setFeedSkipIntro(event.getSkipIntro());
+                   feedPreferences.setFeedSkipEnding(event.getSkipEnding());
+
                 }
             }
         }
