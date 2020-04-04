@@ -8,6 +8,8 @@ import androidx.annotation.StringRes;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.dialog.StreamingConfirmationDialog;
@@ -45,5 +47,9 @@ public class StreamActionButton extends ItemActionButton {
                 .startWhenPrepared(true)
                 .shouldStream(true)
                 .start();
+
+        if (media.getMediaType() == MediaType.VIDEO) {
+            context.startActivity(PlaybackService.getPlayerActivityIntent(context));
+        }
     }
 }
