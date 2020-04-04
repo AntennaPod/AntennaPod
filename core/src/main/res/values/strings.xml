@@ -727,8 +727,6 @@
     <string name="sort_date_old_new">Date (Old \u2192 New)</string>
     <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
     <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
-    <string name="sort_episode_title_a_z">Episode title (A \u2192 Z)</string>
-    <string name="sort_episode_title_z_a">Episode title (Z \u2192 A)</string>
 
     <string name="sort_q_title_a_z">A \u2192 Z</string>
     <string name="sort_q_title_z_a">Z \u2192 A</string>
