@@ -339,4 +339,11 @@ public class RemoteMedia implements Playable {
                 .append(itemIdentifier)
                 .toHashCode();
     }
+
+    public Boolean hasAutoSkippedEnding() {
+        return false;
+    }
+    public void setAutoSkippedEnding(Boolean skipped) {
+        // noop
+    }
 }

@@ -1024,6 +1024,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             media.onPlaybackPause(getApplicationContext());
         }
 
+        if (playable.hasAutoSkippedEnding()) {
+            ended = true;
+        }
+
         if (item != null) {
             if (ended || smartMarkAsPlayed
                     || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
@@ -1088,6 +1092,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     Toast.LENGTH_LONG);
             toast.show();
 
+            playable.setAutoSkippedEnding(true);
             mediaPlayer.skip();
         } else {
            Log.d(TAG, "skipEnding: Not at ending yet " + remainingTime + " diff " + (remainingTime - (skipEnd * 1000)) + " skipEnd " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed() * 1000);

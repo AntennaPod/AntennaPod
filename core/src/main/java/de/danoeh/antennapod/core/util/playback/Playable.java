@@ -172,6 +172,9 @@ public interface Playable extends Parcelable,
 
     void setChapters(List<Chapter> chapters);
 
+    public Boolean hasAutoSkippedEnding();
+    public void setAutoSkippedEnding(Boolean skipped);
+
     /**
      * Provides utility methods for Playable objects.
      */
