@@ -14,7 +14,7 @@ import de.danoeh.antennapod.R;
 public abstract class FeedPreferenceSkipDialog extends AlertDialog.Builder {
 
     public FeedPreferenceSkipDialog(Context context, int skipIntroInitialValue,
-                                int skipEndInitialValue) {
+                                    int skipEndInitialValue) {
         super(context);
         setTitle(R.string.pref_feed_skip);
         View rootView = View.inflate(context, R.layout.feed_pref_skip_dialog, null);
@@ -28,9 +28,23 @@ public abstract class FeedPreferenceSkipDialog extends AlertDialog.Builder {
 
         setNegativeButton(R.string.cancel_label, null);
         setPositiveButton(R.string.confirm_label, (dialog, which)
-                -> onConfirmed(etxtSkipIntro.getText().toString(),
-                               etxtSkipEnd.getText().toString()));
+                -> {
+            int skipIntro;
+            int skipEnding;
+            try {
+                skipIntro = Integer.parseInt(etxtSkipIntro.getText().toString());
+            } catch (NumberFormatException e) {
+                skipIntro = 0;
+            }
+
+            try {
+                skipEnding = Integer.parseInt(etxtSkipEnd.getText().toString());
+            } catch (NumberFormatException e) {
+                skipEnding = 0;
+            }
+            onConfirmed(skipIntro, skipEnding);
+        });
     }
 
-    protected abstract void onConfirmed(String skipIntro, String skipEnd);
+    protected abstract void onConfirmed(int skipIntro, int skipEndig);
 }
