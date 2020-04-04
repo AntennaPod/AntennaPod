@@ -44,6 +44,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Communicates with the playback service. GUI classes should use this class to
  * control playback instead of communicating with the PlaybackService directly.
@@ -624,6 +627,26 @@ public class PlaybackController {
     public void setDownmix(boolean enable) {
         if (playbackService != null) {
             playbackService.setDownmix(enable);
+        }
+    }
+
+    public List<String> getAudioTracks() {
+        if (playbackService == null) {
+            return Collections.emptyList();
+        }
+        return playbackService.getAudioTracks();
+    }
+
+    public int getSelectedAudioTrack() {
+        if (playbackService == null) {
+            return -1;
+        }
+        return playbackService.getSelectedAudioTrack();
+    }
+
+    public void setAudioTrack(int track) {
+        if (playbackService != null) {
+            playbackService.setAudioTrack(track);
         }
     }
 

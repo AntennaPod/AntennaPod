@@ -16,6 +16,9 @@ import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConn
 import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
 
 import de.danoeh.antennapod.core.cast.MediaInfoCreator;
+
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -600,6 +603,19 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
             media = playable;
             remoteMedia = remoteVersion(playable);
         }
+    }
+
+    @Override
+    public List<String> getAudioTracks() {
+        return Collections.emptyList();
+    }
+
+    public void setAudioTrack(int track) {
+
+    }
+
+    public int getSelectedAudioTrack() {
+        return -1;
     }
 
     @Override

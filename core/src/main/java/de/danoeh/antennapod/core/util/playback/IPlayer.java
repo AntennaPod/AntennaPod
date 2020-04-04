@@ -4,48 +4,54 @@ import android.content.Context;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IPlayer {
 
-	boolean canSetSpeed();
+    boolean canSetSpeed();
 
-	boolean canDownmix();
+    boolean canDownmix();
 
+    int getCurrentPosition();
 
-	int getCurrentPosition();
+    float getCurrentSpeedMultiplier();
 
-	float getCurrentSpeedMultiplier();
+    int getDuration();
 
-	int getDuration();
+    boolean isPlaying();
 
-	boolean isPlaying();
+    void pause();
 
-	void pause();
+    void prepare() throws IllegalStateException, IOException;
 
-	void prepare() throws IllegalStateException, IOException;
+    void release();
 
-	void release();
+    void reset();
 
-	void reset();
+    void seekTo(int msec);
 
-	void seekTo(int msec);
+    void setAudioStreamType(int streamtype);
 
-	void setAudioStreamType(int streamtype);
-
-	void setDataSource(String path) throws IllegalStateException, IOException,
+    void setDataSource(String path) throws IllegalStateException, IOException,
             IllegalArgumentException, SecurityException;
 
-	void setDisplay(SurfaceHolder sh);
+    void setDisplay(SurfaceHolder sh);
 
-	void setPlaybackParams(float speed, boolean skipSilence);
+    void setPlaybackParams(float speed, boolean skipSilence);
 
-	void setDownmix(boolean enable);
+    void setDownmix(boolean enable);
 
-	void setVolume(float left, float right);
+    void setVolume(float left, float right);
 
-	void start();
+    void start();
 
-	void stop();
+    void stop();
 
     void setWakeMode(Context context, int mode);
+
+    List<String> getAudioTracks();
+
+    void setAudioTrack(int track);
+
+    int getSelectedAudioTrack();
 }
