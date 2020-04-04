@@ -9,6 +9,7 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SeekParameters;
@@ -17,7 +18,13 @@ import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.ui.DefaultTrackNameProvider;
+import com.google.android.exoplayer2.ui.TrackNameProvider;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
@@ -30,6 +37,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import org.antennapod.audio.MediaPlayer;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ExoPlayerWrapper implements IPlayer {
@@ -45,11 +55,11 @@ public class ExoPlayerWrapper implements IPlayer {
     private MediaPlayer.OnBufferingUpdateListener bufferingUpdateListener;
     private PlaybackParameters playbackParameters;
     private MediaPlayer.OnInfoListener infoListener;
-
+    private DefaultTrackSelector trackSelector;
 
     ExoPlayerWrapper(Context context) {
         this.context = context;
-        exoPlayer = createPlayer();
+        createPlayer();
         playbackParameters = exoPlayer.getPlaybackParameters();
         bufferingUpdateDisposable = Observable.interval(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -60,16 +70,17 @@ public class ExoPlayerWrapper implements IPlayer {
                 });
     }
 
-    private SimpleExoPlayer createPlayer() {
+    private void createPlayer() {
         DefaultLoadControl.Builder loadControl = new DefaultLoadControl.Builder();
         loadControl.setBufferDurationsMs(30000, 120000,
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         loadControl.setBackBuffer(UserPreferences.getRewindSecs() * 1000 + 500, true);
-        SimpleExoPlayer p = ExoPlayerFactory.newSimpleInstance(context, new DefaultRenderersFactory(context),
-                new DefaultTrackSelector(), loadControl.createDefaultLoadControl());
-        p.setSeekParameters(SeekParameters.EXACT);
-        p.addListener(new Player.EventListener() {
+        trackSelector = new DefaultTrackSelector();
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(context, new DefaultRenderersFactory(context),
+                trackSelector, loadControl.createDefaultLoadControl());
+        exoPlayer.setSeekParameters(SeekParameters.EXACT);
+        exoPlayer.addListener(new Player.EventListener() {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 if (audioCompletionListener != null && playbackState == Player.STATE_ENDED) {
@@ -93,7 +104,6 @@ public class ExoPlayerWrapper implements IPlayer {
                 audioSeekCompleteListener.onSeekComplete(null);
             }
         });
-        return p;
     }
 
     @Override
@@ -154,7 +164,7 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void reset() {
         exoPlayer.release();
-        exoPlayer = createPlayer();
+        createPlayer();
     }
 
     @Override
@@ -224,6 +234,67 @@ public class ExoPlayerWrapper implements IPlayer {
     @Override
     public void stop() {
         exoPlayer.stop();
+    }
+
+    @Override
+    public List<String> getAudioTracks() {
+        List<String> trackNames = new ArrayList<>();
+        TrackNameProvider trackNameProvider = new DefaultTrackNameProvider(context.getResources());
+        for (Format format : getFormats()) {
+            trackNames.add(trackNameProvider.getTrackName(format));
+        }
+        return trackNames;
+    }
+
+    private List<Format> getFormats() {
+        List<Format> formats = new ArrayList<>();
+        MappingTrackSelector.MappedTrackInfo trackInfo = trackSelector.getCurrentMappedTrackInfo();
+        if (trackInfo == null) {
+            return Collections.emptyList();
+        }
+        TrackGroupArray trackGroups = trackInfo.getTrackGroups(getAudioRendererIndex());
+        for (int i = 0; i < trackGroups.length; i++) {
+            formats.add(trackGroups.get(i).getFormat(0));
+        }
+        return formats;
+    }
+
+    @Override
+    public void setAudioTrack(int track) {
+        MappingTrackSelector.MappedTrackInfo trackInfo = trackSelector.getCurrentMappedTrackInfo();
+        if (trackInfo == null) {
+            return;
+        }
+        TrackGroupArray trackGroups = trackInfo.getTrackGroups(getAudioRendererIndex());
+        DefaultTrackSelector.SelectionOverride override = new DefaultTrackSelector.SelectionOverride(track, 0);
+        DefaultTrackSelector.ParametersBuilder params = trackSelector.buildUponParameters()
+                .setSelectionOverride(getAudioRendererIndex(), trackGroups, override);
+        trackSelector.setParameters(params);
+    }
+
+    private int getAudioRendererIndex() {
+        for (int i = 0; i < exoPlayer.getRendererCount(); i++) {
+            if (exoPlayer.getRendererType(i) == C.TRACK_TYPE_AUDIO) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int getSelectedAudioTrack() {
+        TrackSelectionArray trackSelections = exoPlayer.getCurrentTrackSelections();
+        List<Format> availableFormats = getFormats();
+        for (int i = 0; i < trackSelections.length; i++) {
+            TrackSelection track = trackSelections.get(i);
+            if (track == null) {
+                continue;
+            }
+            if (availableFormats.contains(track.getSelectedFormat())) {
+                return availableFormats.indexOf(track.getSelectedFormat());
+            }
+        }
+        return -1;
     }
 
     void setOnCompletionListener(MediaPlayer.OnCompletionListener audioCompletionListener) {

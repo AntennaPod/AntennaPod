@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -229,6 +230,12 @@ public abstract class PlaybackServiceMediaPlayer {
     public abstract Playable getPlayable();
 
     protected abstract void setPlayable(Playable playable);
+
+    public abstract List<String> getAudioTracks();
+
+    public abstract void setAudioTrack(int track);
+
+    public abstract int getSelectedAudioTrack();
 
     public void skip() {
         endPlayback(false, true, true, true);

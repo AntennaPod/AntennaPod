@@ -2,6 +2,8 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
@@ -16,6 +18,8 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+
+import java.util.List;
 
 public class PlaybackControlsDialog extends DialogFragment {
     private static final String ARGUMENT_IS_PLAYING_VIDEO = "isPlayingVideo";
@@ -43,6 +47,7 @@ public class PlaybackControlsDialog extends DialogFragment {
             @Override
             public void setupGUI() {
                 setupUi();
+                setupAudioTracks();
             }
         };
         controller.init();
@@ -195,6 +200,23 @@ public class PlaybackControlsDialog extends DialogFragment {
             if (controller != null) {
                 controller.setDownmix(isChecked);
             }
+        });
+    }
+
+    private void setupAudioTracks() {
+        List<String> audioTracks = controller.getAudioTracks();
+        int selectedAudioTrack = controller.getSelectedAudioTrack();
+        final Button butAudioTracks = dialog.findViewById(R.id.audio_tracks);
+        if (audioTracks.size() < 2 || selectedAudioTrack < 0) {
+            butAudioTracks.setVisibility(View.GONE);
+            return;
+        }
+
+        butAudioTracks.setVisibility(View.VISIBLE);
+        butAudioTracks.setText(audioTracks.get(selectedAudioTrack));
+        butAudioTracks.setOnClickListener(v -> {
+            controller.setAudioTrack((selectedAudioTrack + 1) % audioTracks.size());
+            new Handler().postDelayed(this::setupAudioTracks, 500);
         });
     }
 

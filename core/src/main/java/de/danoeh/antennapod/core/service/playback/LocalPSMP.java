@@ -17,6 +17,7 @@ import org.antennapod.audio.MediaPlayer;
 import java.io.File;
 import java.io.IOException;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
@@ -826,6 +827,18 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     @Override
     protected void setPlayable(Playable playable) {
         media = playable;
+    }
+
+    public List<String> getAudioTracks() {
+        return mediaPlayer.getAudioTracks();
+    }
+
+    public void setAudioTrack(int track) {
+        mediaPlayer.setAudioTrack(track);
+    }
+
+    public int getSelectedAudioTrack() {
+        return mediaPlayer.getSelectedAudioTrack();
     }
 
     private void createMediaPlayer() {

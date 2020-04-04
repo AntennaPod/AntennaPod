@@ -42,6 +42,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -1580,6 +1581,26 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             return INVALID_TIME;
         }
         return mediaPlayer.getPosition();
+    }
+
+    public List<String> getAudioTracks() {
+        if (mediaPlayer == null) {
+            return Collections.emptyList();
+        }
+        return mediaPlayer.getAudioTracks();
+    }
+
+    public int getSelectedAudioTrack() {
+        if (mediaPlayer == null) {
+            return -1;
+        }
+        return mediaPlayer.getSelectedAudioTrack();
+    }
+
+    public void setAudioTrack(int track) {
+        if (mediaPlayer != null) {
+            mediaPlayer.setAudioTrack(track);
+        }
     }
 
     public boolean isStreaming() {
