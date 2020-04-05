@@ -133,6 +133,7 @@
   <string name="feed_delete_confirmation_msg">Por favor, confirme que quere eliminar o podcast \"%1$s\" e TODOS os seus episodios (incluídos os xa descargados).</string>
   <string name="feed_remover_msg">Eliminando o podcast</string>
   <string name="load_complete_feed">Actualizar o podcast completo</string>
+  <string name="multi_select">Selección múltiple</string>
   <string name="select_all_above">Seleccionar todo arriba</string>
   <string name="select_all_below">Seleccionar todo debaixo</string>
   <string name="hide_unplayed_episodes_label">Non reproducido</string>
@@ -222,6 +223,7 @@
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nDesactivouse a <i>Descarga Automática</i> para este elemento</string>
   <string name="download_report_title">Descargas completadas con erro(s)</string>
+  <string name="auto_download_report_title">Descarga automática completada</string>
   <string name="download_report_content_title">Informe da descarga</string>
   <string name="download_error_malformed_url">URL mal formada</string>
   <string name="download_error_io_error">Fallo IO</string>
@@ -264,6 +266,7 @@
   <string name="player_buffering_msg">Almacenando</string>
   <string name="player_go_to_picture_in_picture">Modo imaxe-en-imaxe</string>
   <string name="unknown_media_key">AntennaPod - chave de medios descoñecida: %1$d</string>
+  <string name="error_file_not_found">Non se atopa o ficheiro</string>
   <!--Queue operations-->
   <string name="lock_queue">Bloquear a cola</string>
   <string name="unlock_queue">Desbloquear a cola</string>
@@ -446,6 +449,8 @@
   <string name="pref_lockscreen_background_sum">Establecer o fondo de pantalla de bloqueo coa imaxe do episodio actual. Como consecuencia, esto tamén mostrará a imaxe en aplicacións de terceiros.</string>
   <string name="pref_showDownloadReport_title">Mostrar informe de descarga</string>
   <string name="pref_showDownloadReport_sum">Si falla a descarga, xerar un informe que informe dos detalles do fallo.</string>
+  <string name="pref_showAutoDownloadReport_title">Mostra informe de descarga automática</string>
+  <string name="pref_showAutoDownloadReport_sum">Mostra unha notificación para os episodios descargados automáticamente.</string>
   <string name="pref_expand_notify_unsupport_toast">As versións de Android anteriores a 4.1 non teñen soporte para notificacións expandidas.</string>
   <string name="pref_enqueue_location_title">Situación na cola</string>
   <string name="pref_enqueue_location_sum">Engadir episodios a: %1$s</string>
@@ -615,6 +620,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Subscribir</string>
   <string name="subscribing_label">Subscribindo...</string>
+  <string name="preview_episode">Vista previa</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Rebobinar</string>
   <string name="fast_forward_label">Avance rápido</string>
@@ -645,6 +651,8 @@
   <string name="search_podcast_hint">Buscar podcast...</string>
   <string name="search_itunes_label">Buscar en iTunes</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
+  <string name="advanced">Avanzado</string>
+  <string name="add_podcast_by_url">Engadir Podcast por URL</string>
   <string name="browse_gpoddernet_label">Buscar en gpodder.net</string>
   <string name="discover">Descubrir</string>
   <string name="discover_more">máis »</string>
@@ -728,6 +736,8 @@
   <string name="notification_channel_playing_description">Permite controlar a reprodución. Esta é a notificación principal que verá mentras reproduce un podcast.</string>
   <string name="notification_channel_error">Fallos</string>
   <string name="notification_channel_error_description">Mostrado si algo falla, por exemplo si a descarga ou a sincronización con gpodder fallan.</string>
+  <string name="notification_channel_auto_download">Descargas Automáticas</string>
+  <string name="notification_channel_episode_auto_download">Mostrado cando os episodios se descargaron automáticamente.</string>
   <!--Widget settings-->
   <string name="widget_settings">Axustes do Widget</string>
   <string name="widget_create_button">Crear widget</string>

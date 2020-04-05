@@ -137,6 +137,7 @@
   <string name="feed_delete_confirmation_msg">נא לאשר שרצונך הוא למחוק את הפודקאסט „%1$s” על כל פרקיו (לרבות הפרקים שכבר הורדת).</string>
   <string name="feed_remover_msg">הפודקאסט מוסר</string>
   <string name="load_complete_feed">רענון מלא של הפודקאסט</string>
+  <string name="multi_select">לבחור מגוון</string>
   <string name="select_all_above">בחירת כל אלו שלעיל</string>
   <string name="select_all_below">בחירת כל אלו שלהלן</string>
   <string name="hide_unplayed_episodes_label">לא נוגן</string>
@@ -238,6 +239,7 @@
   <string name="download_canceled_msg">הורדה בוטלה</string>
   <string name="download_canceled_autodownload_enabled_msg">ההורדה בוטלה\nה<i>הורדה האוטומטית</i> הושבתה עבור פריט זה</string>
   <string name="download_report_title">הורדות הושלמו עם שגיאה אחת או יותר</string>
+  <string name="auto_download_report_title">ההורדות האוטומטיות הושלמו</string>
   <string name="download_report_content_title">דוח הורדה</string>
   <string name="download_error_malformed_url">כתובת שגויה</string>
   <string name="download_error_io_error">שגיאת קלט פלט</string>
@@ -282,6 +284,7 @@
   <string name="player_buffering_msg">החוצץ מתמלא</string>
   <string name="player_go_to_picture_in_picture">מצב תמונה בתוך תמונה</string>
   <string name="unknown_media_key">אנטנה־פּוֹד - מפתח מדיה לא ידוע: %1$d</string>
+  <string name="error_file_not_found">הקובץ לא נמצא</string>
   <!--Queue operations-->
   <string name="lock_queue">נעילת תור</string>
   <string name="unlock_queue">שחרור תור</string>
@@ -464,6 +467,8 @@
   <string name="pref_lockscreen_background_sum">הגדרת רקע מסך הנעילה לתמונה של הפרק שמתנגן כעת. כתופעת לוואי, התמונה תופיע גם ביישומי צד שלישי.</string>
   <string name="pref_showDownloadReport_title">הצגת דוח הורדה</string>
   <string name="pref_showDownloadReport_sum">אם ההורדה נכשלת, יש ליצר דוח שמציג את פרטי הכשל.</string>
+  <string name="pref_showAutoDownloadReport_title">הצגת דוח הורדה אוטומטית</string>
+  <string name="pref_showAutoDownloadReport_sum">להציג הודעה לפרקים שהתקבלו אוטומטית.</string>
   <string name="pref_expand_notify_unsupport_toast">גרסאות Android שקדמו ל־4.1 אינן תומכות בהתרעות מתרחבות.</string>
   <string name="pref_enqueue_location_title">הוספת המיקום לתור</string>
   <string name="pref_enqueue_location_sum">הוספת פרקים אל: %1$s</string>
@@ -639,6 +644,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">הרשמה</string>
   <string name="subscribing_label">מתבצע רישום…</string>
+  <string name="preview_episode">תצוגה מקדימה</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">חזרה לאחור</string>
   <string name="fast_forward_label">הרצה קדימה</string>
@@ -669,6 +675,8 @@
   <string name="search_podcast_hint">חיפוש פודקאסט…</string>
   <string name="search_itunes_label">חיפוש ב־iTunes</string>
   <string name="search_fyyd_label">בחיפוש ב־fyyd</string>
+  <string name="advanced">מתקדם</string>
+  <string name="add_podcast_by_url">הוספת פודקאסט לפי כתובת</string>
   <string name="browse_gpoddernet_label">עיון ב־gpodder.net</string>
   <string name="discover">עיון</string>
   <string name="discover_more">עוד »</string>
@@ -752,6 +760,8 @@
   <string name="notification_channel_playing_description">מאשר לשלוט בנגינה. זאת ההתראה הראשית שמופיעה בעת נגינת פודקאסט.</string>
   <string name="notification_channel_error">שגיאות</string>
   <string name="notification_channel_error_description">מופיעות אם משהו משתבש, למשל אם הורדה או סנכרון מול gpodder נכשלים.</string>
+  <string name="notification_channel_auto_download">הורדות אוטומטיות</string>
+  <string name="notification_channel_episode_auto_download">מופיע כאשר פרקים התקבלו אוטומטית.</string>
   <!--Widget settings-->
   <string name="widget_settings">הגדרות וידג׳ט</string>
   <string name="widget_create_button">יצירת וידג׳</string>

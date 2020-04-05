@@ -503,7 +503,7 @@
   <string name="translators_summary">Übersetzungen werden von Nutzern auf Transifex erstellt</string>
   <string name="privacy_policy">Datenschutzrichtlinie</string>
   <string name="licenses">Lizenzen</string>
-  <string name="licenses_summary">AntennaPod verwendet tolle andere Software</string>
+  <string name="licenses_summary">AntennaPod verwendet nützliche andere Software</string>
   <!--Search-->
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
   <string name="search_label">Suchen</string>

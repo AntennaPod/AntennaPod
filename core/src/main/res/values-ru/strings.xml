@@ -137,6 +137,7 @@
   <string name="feed_delete_confirmation_msg">Подтвердите, что хотите удалить подкаст «%1$s» и все его эпизоды (включая загруженные).</string>
   <string name="feed_remover_msg">Подкаст удаляется</string>
   <string name="load_complete_feed">Обновить весь подкаст</string>
+  <string name="multi_select">Выбор из нескольких вариантов</string>
   <string name="select_all_above">Выбрать все выше</string>
   <string name="select_all_below">Выбрать все ниже</string>
   <string name="hide_unplayed_episodes_label">Непрослушанное</string>
@@ -238,6 +239,7 @@
   <string name="download_canceled_msg">Загрузка отменена</string>
   <string name="download_canceled_autodownload_enabled_msg">Загрузка отменена\n <i>Автозагрузка</i> отключена для этого выпуска</string>
   <string name="download_report_title">Загрузки завершились с ошибкой</string>
+  <string name="auto_download_report_title">Автозагрузка выполнена</string>
   <string name="download_report_content_title">Отчёт о загрузках</string>
   <string name="download_error_malformed_url">Неправильная ссылка</string>
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
@@ -282,6 +284,7 @@
   <string name="player_buffering_msg">Буферизация</string>
   <string name="player_go_to_picture_in_picture">Картинка в картинке</string>
   <string name="unknown_media_key">AntennaPod - неизвестный ключ носителя: %1$d</string>
+  <string name="error_file_not_found">Файл не найден</string>
   <!--Queue operations-->
   <string name="lock_queue">Заблокировать очередь</string>
   <string name="unlock_queue">Разблокировать очередь</string>
@@ -464,6 +467,8 @@
   <string name="pref_lockscreen_background_sum">Изменяет фон экрана блокировки на обложку выпуска. Кроме того показывает обложку в сторонних приложениях.</string>
   <string name="pref_showDownloadReport_title">Показывать отчёт о загрузках</string>
   <string name="pref_showDownloadReport_sum">Если загрузка не удаётся, показывать отчёт с подробностями об ошибке.</string>
+  <string name="pref_showAutoDownloadReport_title">Показывать отчет об автозагрузке</string>
+  <string name="pref_showAutoDownloadReport_sum">Показывать уведомление для автоматически загруженных эпизодов</string>
   <string name="pref_expand_notify_unsupport_toast">Версии Android ниже 4.1 не поддерживают расширенные уведомления.</string>
   <string name="pref_enqueue_location_title">Размещение в очереди</string>
   <string name="pref_enqueue_location_sum">Добавлять выпуски %1$s</string>
@@ -641,6 +646,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
   <string name="subscribing_label">Подписка оформляется…</string>
+  <string name="preview_episode">Предпросмотр</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Назад</string>
   <string name="fast_forward_label">Вперёд</string>
@@ -671,6 +677,8 @@
   <string name="search_podcast_hint">Искать подкаст...</string>
   <string name="search_itunes_label">Поиск в iTunes</string>
   <string name="search_fyyd_label">Поиск в fyyd</string>
+  <string name="advanced">Дополнительные</string>
+  <string name="add_podcast_by_url">Добавить подкаст по адресу</string>
   <string name="browse_gpoddernet_label">Просмотр gpodder.net</string>
   <string name="discover">Найти каналы</string>
   <string name="discover_more">ещё »</string>
@@ -754,6 +762,8 @@
   <string name="notification_channel_playing_description">Позволяет управлять воспроизведением. Основное уведомление, показывается при воспроизведении подкаста.</string>
   <string name="notification_channel_error">Ошибки</string>
   <string name="notification_channel_error_description">Показывается если что-то пошло не так, к примеру, неудавшаяся загрузка или синхронизация с gpodder.</string>
+  <string name="notification_channel_auto_download">Автозагрузка</string>
+  <string name="notification_channel_episode_auto_download">Показывается, когда новые выпуски были автоматически загружены</string>
   <!--Widget settings-->
   <string name="widget_settings">Настройки виджета</string>
   <string name="widget_create_button">Создать виджет</string>

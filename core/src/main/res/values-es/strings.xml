@@ -133,6 +133,7 @@
   <string name="feed_delete_confirmation_msg">Confirme que quiere borrar el pódcast \"%1$s\" y TODOS los episodios (incluidos los descargados).</string>
   <string name="feed_remover_msg">Eliminando el pódcast</string>
   <string name="load_complete_feed">Actualizar el pódcast completo</string>
+  <string name="multi_select">Multi selección</string>
   <string name="select_all_above">Seleccionar todo lo anterior</string>
   <string name="select_all_below">Seleccionar todo lo siguiente</string>
   <string name="hide_unplayed_episodes_label">No reproducidos</string>
@@ -222,6 +223,7 @@
   <string name="download_canceled_msg">Descarga cancelada</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nSe desactivó la <i>descarga automática</i> en este elemento</string>
   <string name="download_report_title">Descargas completadas con error(es)</string>
+  <string name="auto_download_report_title">Auto-descargas completadas</string>
   <string name="download_report_content_title">Informe de descargas</string>
   <string name="download_error_malformed_url">URL con formato incorrecto</string>
   <string name="download_error_io_error">Error de E/S</string>
@@ -264,6 +266,7 @@
   <string name="player_buffering_msg">Almacenando</string>
   <string name="player_go_to_picture_in_picture">Modo picture-in-picture</string>
   <string name="unknown_media_key">AntennaPod - Tecla multimedia desconocida: %1$d</string>
+  <string name="error_file_not_found">Archivo no encontrado</string>
   <!--Queue operations-->
   <string name="lock_queue">Bloquear cola</string>
   <string name="unlock_queue">Desbloquear cola</string>
@@ -446,6 +449,8 @@
   <string name="pref_lockscreen_background_sum">Establecer el fondo de pantalla de bloqueo desde la imagen del episodio. Como efecto secundario, esto también mostrarán las imagen de aplicaciones de terceros.</string>
   <string name="pref_showDownloadReport_title">Mostrar informe de descarga</string>
   <string name="pref_showDownloadReport_sum">Si la descarga falla, generar un informe con los detalles del fallo</string>
+  <string name="pref_showAutoDownloadReport_title">Mostrar Informe de Auto Descarga</string>
+  <string name="pref_showAutoDownloadReport_sum">Mostrar una notificación de los episodios descargados automáticamente.</string>
   <string name="pref_expand_notify_unsupport_toast">Las versiones de Android anteriores a la 4.1 no soportan notificaciones expandidas</string>
   <string name="pref_enqueue_location_title">Añadir a la cola en cierta ubicación</string>
   <string name="pref_enqueue_location_sum">Añadir episodios a: %1$s</string>
@@ -615,6 +620,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Suscribirse</string>
   <string name="subscribing_label">Suscribiendo...</string>
+  <string name="preview_episode">Vista Previa</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Retroceso</string>
   <string name="fast_forward_label">Avance</string>
@@ -645,6 +651,8 @@
   <string name="search_podcast_hint">Buscar podcast...</string>
   <string name="search_itunes_label">Buscar en iTunes</string>
   <string name="search_fyyd_label">Buscar en fyyd</string>
+  <string name="advanced">Avanzado</string>
+  <string name="add_podcast_by_url">Añadir Podcast por URL</string>
   <string name="browse_gpoddernet_label">Explorar en gpodder.net</string>
   <string name="discover">Descubrir</string>
   <string name="discover_more">más »</string>
@@ -728,6 +736,8 @@
   <string name="notification_channel_playing_description">Permite controlar la reproducción. Es la notificación principal que se ve mientras se reproduce un pódcast.</string>
   <string name="notification_channel_error">Errores</string>
   <string name="notification_channel_error_description">Muestra si algo salió mal, por ejemplo, si falla la descarga o la sincronización de gpodder</string>
+  <string name="notification_channel_auto_download">Descargas automáticas</string>
+  <string name="notification_channel_episode_auto_download">Mostrar cuándo los episodios se han descargado automáticamente.</string>
   <!--Widget settings-->
   <string name="widget_settings">Configuraciones del Widget</string>
   <string name="widget_create_button">Crear widget</string>

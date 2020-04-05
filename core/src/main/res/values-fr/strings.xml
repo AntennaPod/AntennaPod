@@ -133,6 +133,7 @@
   <string name="feed_delete_confirmation_msg">Confirmer que vous voulez supprimer le podcast \"%1$s\" et TOUS ses épisodes téléchargés.</string>
   <string name="feed_remover_msg">Podcast en cours de suppression</string>
   <string name="load_complete_feed">Mettre à jour tout le podcast</string>
+  <string name="multi_select">Sélection multiple</string>
   <string name="select_all_above">Sélectionner avec ceux au-dessus</string>
   <string name="select_all_below">Sélectionner avec ceux en-dessous</string>
   <string name="hide_unplayed_episodes_label">Non lu</string>
@@ -222,6 +223,7 @@
   <string name="download_canceled_msg">Téléchargement annulé</string>
   <string name="download_canceled_autodownload_enabled_msg">Téléchargement annulé\n <i>Téléchargement Automatique</i> désactivé pour cet élément</string>
   <string name="download_report_title">Téléchargements terminés avec des erreurs</string>
+  <string name="auto_download_report_title">Téléchargement automatique terminé</string>
   <string name="download_report_content_title">Rapport des téléchargements</string>
   <string name="download_error_malformed_url">Lien incorrecte</string>
   <string name="download_error_io_error">Erreur d\'E/S</string>
@@ -264,6 +266,7 @@
   <string name="player_buffering_msg">Mise en mémoire</string>
   <string name="player_go_to_picture_in_picture">Mode Picture-in-Picture</string>
   <string name="unknown_media_key">AntennaPod - Touche média inconnue : %1$d</string>
+  <string name="error_file_not_found">Fichier non trouvé</string>
   <!--Queue operations-->
   <string name="lock_queue">Verrouiller la liste de lecture</string>
   <string name="unlock_queue">Déverrouiller la liste de lecture</string>
@@ -446,6 +449,8 @@
   <string name="pref_lockscreen_background_sum">Placer l\'image de l’épisode en arrière plan de l\'écran de verrouillage. Cela aura aussi pour effet de montrer l\'image dans les autres applications.</string>
   <string name="pref_showDownloadReport_title">Afficher le rapport de téléchargements</string>
   <string name="pref_showDownloadReport_sum">Si les téléchargements échouent, générer un rapport détaillé des échecs.</string>
+  <string name="pref_showAutoDownloadReport_title">Montrer le rapport de téléchargement automatique</string>
+  <string name="pref_showAutoDownloadReport_sum">Afficher une notification pour les épisodes téléchargés automatiquement.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
   <string name="pref_enqueue_location_title">Emplacement des épisodes téléchargés</string>
   <string name="pref_enqueue_location_sum">Ajouter les épisodes : %1$s</string>
@@ -615,6 +620,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">S\'abonner</string>
   <string name="subscribing_label">Abonnement en cours...</string>
+  <string name="preview_episode">Preview</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Saut arrière</string>
   <string name="fast_forward_label">Saut avant</string>
@@ -645,6 +651,8 @@
   <string name="search_podcast_hint">Trouver un podcast...</string>
   <string name="search_itunes_label">Chercher sur iTunes</string>
   <string name="search_fyyd_label">Chercher sur fyyd</string>
+  <string name="advanced">Avancé</string>
+  <string name="add_podcast_by_url">Ajouter un podcast à partir de son lien</string>
   <string name="browse_gpoddernet_label">Chercher sur gpodder.net</string>
   <string name="discover">Découvrir</string>
   <string name="discover_more">plus »</string>
@@ -728,6 +736,8 @@
   <string name="notification_channel_playing_description">Permet de contrôler la lecture. C\'est la notification principale pendant la lecture d\'un podcast.</string>
   <string name="notification_channel_error">Erreurs</string>
   <string name="notification_channel_error_description">S\'affiche en cas de problème. Par exemple, un téléchargement ou une synchronisation qui échoue.</string>
+  <string name="notification_channel_auto_download">Téléchargement automatique</string>
+  <string name="notification_channel_episode_auto_download">S\'affiche lorsque des épisodes ont été téléchargés automatiquement.</string>
   <!--Widget settings-->
   <string name="widget_settings">Préférences des widgets</string>
   <string name="widget_create_button">Créer un widget</string>

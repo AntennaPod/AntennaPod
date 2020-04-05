@@ -133,6 +133,7 @@
   <string name="feed_delete_confirmation_msg">Bevestig dat je de podcast \'%1$s\' en ALLE bijbehorende (gedownloade) afleveringen wilt verwijderen.</string>
   <string name="feed_remover_msg">Podcast verwijderen</string>
   <string name="load_complete_feed">Gehele podcast verversen</string>
+  <string name="multi_select">Meerdere selecteren</string>
   <string name="select_all_above">Alles hierboven selecteren</string>
   <string name="select_all_below">Alles hieronder selecteren</string>
   <string name="hide_unplayed_episodes_label">Niet afgespeeld</string>
@@ -222,7 +223,8 @@
   <string name="download_canceled_msg">Download afgebroken</string>
   <string name="download_canceled_autodownload_enabled_msg">Download afgebroken\n<i>Automatisch downloaden</i> uitgeschakeld voor deze aflevering</string>
   <string name="download_report_title">Downloads afgerond, maar met fout(en)</string>
-  <string name="download_report_content_title">Downloadlogboek</string>
+  <string name="auto_download_report_title">Automatisch downloaden afgerond</string>
+  <string name="download_report_content_title">Downloadverslag</string>
   <string name="download_error_malformed_url">Onjuist opgemaakte url</string>
   <string name="download_error_io_error">In-/Uitvoerfout</string>
   <string name="download_error_request_error">Opvraagfout</string>
@@ -264,6 +266,7 @@
   <string name="player_buffering_msg">Bezig met bufferen</string>
   <string name="player_go_to_picture_in_picture">Beeld-in-beeldmodus</string>
   <string name="unknown_media_key">AntennaPod - onbekende mediatoets: %1$d</string>
+  <string name="error_file_not_found">Bestand niet aangetroffen</string>
   <!--Queue operations-->
   <string name="lock_queue">Wachtrij vergrendelen</string>
   <string name="unlock_queue">Wachtrij ontgrendelen</string>
@@ -444,8 +447,10 @@
   <string name="pref_compact_notification_buttons_dialog_error">Je kunt maximaal %1$d knoppen kiezen.</string>
   <string name="pref_lockscreen_background_title">Achtergrondafbeelding vergrendelscherm</string>
   <string name="pref_lockscreen_background_sum">Toon de afbeelding van de huidige aflevering op het vergrendelscherm. Hierdoor is de afbeelding ook beschikbaar voor andere apps.</string>
-  <string name="pref_showDownloadReport_title">Downloadrapportage tonen</string>
-  <string name="pref_showDownloadReport_sum">Genereer een rapport met foutdetails als downloads mislukken.</string>
+  <string name="pref_showDownloadReport_title">Downloadverslag tonen</string>
+  <string name="pref_showDownloadReport_sum">Stel een verslag op met foutdetails als downloads mislukken.</string>
+  <string name="pref_showAutoDownloadReport_title">Downloadverslag tonen</string>
+  <string name="pref_showAutoDownloadReport_sum">Toon een melding bij automatisch gedownloade afleveringen.</string>
   <string name="pref_expand_notify_unsupport_toast">Android-versies lager dan 4.1 ondersteunen geen knoppen op meldingen.</string>
   <string name="pref_enqueue_location_title">Wachtrijlocatie</string>
   <string name="pref_enqueue_location_sum">Afleveringen toevoegen aan: %1$s</string>
@@ -615,6 +620,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Abonneren</string>
   <string name="subscribing_label">Bezig met abonneren...</string>
+  <string name="preview_episode">Voorvertoning</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Terugspoelen</string>
   <string name="fast_forward_label">Vooruitspoelen</string>
@@ -645,6 +651,8 @@
   <string name="search_podcast_hint">Podcast zoeken...</string>
   <string name="search_itunes_label">iTunes doorzoeken</string>
   <string name="search_fyyd_label">Fyyd doorzoeken</string>
+  <string name="advanced">Geavanceerd</string>
+  <string name="add_podcast_by_url">Podcast toevoegen middels url</string>
   <string name="browse_gpoddernet_label">Verken gpodder.net</string>
   <string name="discover">Ontdekken</string>
   <string name="discover_more">meer »</string>
@@ -728,6 +736,8 @@
   <string name="notification_channel_playing_description">Hiermee kun je het afspelen bedienen. Dit is de voornaamste melding tijdens het afspelen van een podcast.</string>
   <string name="notification_channel_error">Foutmeldingen</string>
   <string name="notification_channel_error_description">Wordt getoond als er iets is misgegaan, bijvoorbeeld bij het downloaden of synchroniseren.</string>
+  <string name="notification_channel_auto_download">Automatisch downloaden</string>
+  <string name="notification_channel_episode_auto_download">Wordt getoond als afleveringen automatisch zijn gedownload.</string>
   <!--Widget settings-->
   <string name="widget_settings">Widgetinstellingen</string>
   <string name="widget_create_button">Widget maken</string>

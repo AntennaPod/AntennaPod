@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Opdater abonnementer</string>
+  <string name="feeds_label">Podcasts</string>
   <string name="statistics_label">Statistik</string>
   <string name="add_feed_label">Tilføj podcast</string>
   <string name="episodes_label">Udsendelser</string>
@@ -23,6 +24,8 @@
   <string name="gpodnet_auth_label">Login til gpodder.net</string>
   <string name="episode_cache_full_title">Mellemlageret for udsendelser er fuldt</string>
   <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for udsendelser. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
+  <string name="playback_statistics_label">Afspilning</string>
+  <string name="download_statistics_label">Overførsler</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Samlet varighed for afspillede podcasts:</string>
   <string name="statistics_details_dialog">%1$d af %2$d udsendelser startet.\n\nAfspillet %3$s af %4$s.</string>
@@ -30,7 +33,10 @@
   <string name="statistics_mode_normal">Beregn den varighed som faktisk blev afspillet. Afspilning af en udsendelse to gange tæller dobbelt, mens en markering som værende afspillet ikke tælles med.</string>
   <string name="statistics_mode_count_all">Opsummer alle podcasts markeret som afspillet</string>
   <string name="statistics_speed_not_counted">Bemærk: Afspilningshastigheden har ingen betydning</string>
+  <string name="statistics_reset_data">Nulstil statistik</string>
+  <string name="statistics_reset_data_msg">Dette vil slette historikken over hvor meget der er afspillet af alle udsendelser.</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Total størrelse af overførte podcasts:</string>
   <!--Main activity-->
   <string name="drawer_open">Åbn menu</string>
   <string name="drawer_close">Luk menu</string>
@@ -79,6 +85,11 @@
   <string name="auto_download_apply_to_items_title">Anvend på tidligere udsendelser</string>
   <string name="auto_download_apply_to_items_message">Den nye <i>Automatisk overførsel</i>-indstilling vil automatisk blive anvendt på nye udsendelser.\nVil du også anvende den på tidligere udsendelser?</string>
   <string name="auto_delete_label">Slet udsendelser automatisk</string>
+  <string name="feed_volume_reduction">Lydstyrkereduktion</string>
+  <string name="feed_volume_reduction_summary">Skru ned for lydstyrken for udsendelser i dette feed: \%s</string>
+  <string name="feed_volume_reduction_off">Fra</string>
+  <string name="feed_volume_reduction_light">Lidt</string>
+  <string name="feed_volume_reduction_heavy">Meget</string>
   <string name="parallel_downloads_suffix">\u0020parallelle overførsler</string>
   <string name="feed_auto_download_global">Global standard</string>
   <string name="feed_auto_download_always">Altid</string>
@@ -95,12 +106,16 @@
     <item quantity="one">1 dag efter færdig afspilning</item>
     <item quantity="other">%d dage efter færdig afspilning</item>
   </plurals>
+  <string name="num_selected_label">%d valgt</string>
+  <string name="loading_more">Indlæser mere ...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som afspillet</string>
   <string name="mark_all_read_msg">Marker alle udsendelser som afspillet</string>
   <string name="mark_all_read_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser som værende afspillet.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Bekræft venligst at du ønsker at markere alle udsendelser i denne podcast som værende afspillet.</string>
   <string name="remove_all_new_flags_label">Fjern alle \"ny\"-markeringer</string>
   <string name="removed_all_new_flags_msg">Fjernede alle \"ny\"-markeringer</string>
+  <string name="remove_all_new_flags_confirmation_msg">Bekræft venligst at du ønsker at fjerne \"ny\"-flaget fra alle udsendelser.</string>
   <string name="show_info_label">Vis information</string>
   <string name="show_feed_settings_label">Vis podcast-indstillinger</string>
   <string name="feed_info_label">Podcast-info</string>
@@ -149,19 +164,26 @@
   </plurals>
   <string name="remove_new_flag_label">Fjern \"ny\"-markering</string>
   <string name="removed_new_flag_label">Fjernet \"ny\"-markering</string>
-  <string name="mark_read_label">Marker som læst</string>
+  <string name="mark_read_label">Marker som afspillet</string>
   <string name="marked_as_read_label">Markeret som afspillet</string>
+  <string name="mark_read_no_media_label">Marker som læst</string>
+  <string name="marked_as_read_no_media_label">Markeret som læst</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d udsendelse markeret som afspillet.</item>
     <item quantity="other">%d udsendelser markeret som afspillet.</item>
   </plurals>
   <string name="mark_unread_label">Marker som uafspillet</string>
+  <string name="mark_unread_label_no_media">Marker som ulæst</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d udsendelse markeret som uafspillet.</item>
     <item quantity="other">%d udsendelser markeret som uafspillede.</item>
   </plurals>
   <string name="add_to_queue_label">Føj til kø</string>
   <string name="added_to_queue_label">Føjet til kø</string>
+  <plurals name="added_to_queue_batch_label">
+    <item quantity="one">%d udsendelse føjet til køen.</item>
+    <item quantity="other">%d udsendelser føjet til køen.</item>
+  </plurals>
   <string name="remove_from_queue_label">Fjern fra kø</string>
   <plurals name="removed_from_queue_batch_label">
     <item quantity="one">%d udsendelse fjernet fra køen.</item>
@@ -197,6 +219,7 @@
   <string name="download_canceled_msg">Overførsel annulleret</string>
   <string name="download_canceled_autodownload_enabled_msg">Overførsel annulleret\n<i>Automatisk overførsel</i> blev slået fra for dette element</string>
   <string name="download_report_title">Overførsler afsluttet med fejl</string>
+  <string name="auto_download_report_title">Automatiske overførsler fuldført</string>
   <string name="download_report_content_title">Rapport over overførsler</string>
   <string name="download_error_malformed_url">Webadresse er forkert udformet</string>
   <string name="download_error_io_error">Læse- eller skrivefejl</string>
@@ -231,11 +254,14 @@
   <string name="player_seeking_msg">Søger</string>
   <string name="playback_error_server_died">Server døde</string>
   <string name="playback_error_unsupported">Kan ikke afspille denne medietype</string>
+  <string name="playback_error_timeout">Handlingen annulleret fordi den tog for lang tid</string>
+  <string name="playback_error_source">Kunne ikke tilgå mediefil</string>
   <string name="playback_error_unknown">Ukendt fejl</string>
   <string name="no_media_playing_label">Ingen medier afspiller</string>
   <string name="player_buffering_msg">Henter data til buffer</string>
   <string name="player_go_to_picture_in_picture">Billed-i-billed-tilstand</string>
   <string name="unknown_media_key">AntennaPod - Ukendt medienøgle: %1$d</string>
+  <string name="error_file_not_found">Fil ikke fundet</string>
   <!--Queue operations-->
   <string name="lock_queue">Lås kø</string>
   <string name="unlock_queue">Lås kø op</string>
