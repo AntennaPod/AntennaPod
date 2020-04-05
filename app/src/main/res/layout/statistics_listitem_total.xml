@@ -13,16 +13,17 @@
         android:layout_marginRight="8dp"
         android:maxWidth="800dp"
         android:minWidth="460dp"
-        android:layout_marginEnd="8dp" />
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/total_description"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginStart="96"
+        android:layout_marginEnd="96"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
+        android:textAlignment="center"
         android:maxLines="3"
         android:layout_above="@id/total_time"
         android:textSize="14sp" />
