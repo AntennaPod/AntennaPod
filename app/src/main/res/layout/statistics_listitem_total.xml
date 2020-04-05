@@ -19,11 +19,10 @@
         android:id="@+id/total_description"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginEnd="96dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
         android:textAlignment="center"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="56dp"
         android:maxLines="3"
         android:layout_above="@id/total_time"
         android:textSize="14sp" />
