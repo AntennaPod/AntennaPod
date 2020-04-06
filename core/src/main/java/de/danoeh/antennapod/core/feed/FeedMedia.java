@@ -61,9 +61,6 @@ public class FeedMedia extends FeedFile implements Playable {
     /* Used for loading item when restoring from parcel. */
     private long itemID;
 
-    /* Whether this playable has auto skipped the ending */
-    private Boolean autoSkippedEnding = false;
-
     public FeedMedia(FeedItem i, String download_url, long size,
                      String mime_type) {
         super(null, download_url, false);
@@ -614,12 +611,5 @@ public class FeedMedia extends FeedFile implements Playable {
             return o.equals(this);
         }
         return super.equals(o);
-    }
-
-    public Boolean hasAutoSkippedEnding() {
-        return autoSkippedEnding;
-    }
-    public void setAutoSkippedEnding(Boolean skipped) {
-        autoSkippedEnding = skipped;
     }
 }

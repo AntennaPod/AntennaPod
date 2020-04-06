@@ -261,11 +261,4 @@ public class ExternalMedia implements Playable {
             return null;
         }
     }
-
-    public Boolean hasAutoSkippedEnding() {
-        return false;
-    }
-    public void setAutoSkippedEnding(Boolean skipped) {
-        // noop
-    }
 }

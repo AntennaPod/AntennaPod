@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.service.playback;
 
-import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -212,6 +211,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private PlaybackServiceStateManager stateManager;
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
+
+    FeedMedia autoSkippedFeedMedia;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -1026,7 +1027,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             media.onPlaybackPause(getApplicationContext());
         }
 
-        if (playable.hasAutoSkippedEnding()) {
+        if (autoSkippedFeedMedia != null && autoSkippedFeedMedia.getId() == media.getId()) {
             ended = true;
         }
 
@@ -1070,7 +1071,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         sendBroadcast(intent);
     }
 
-    private void skipEnding() {
+    private void skipEndingIfNecessary() {
         Playable playable = mediaPlayer.getPlayable();
         if (! (playable instanceof FeedMedia)) {
             return;
@@ -1082,24 +1083,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         FeedMedia feedMedia = (FeedMedia) playable;
         FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
         int skipEnd = preferences.getFeedSkipEnding();
-        if (skipEnd > 0 &&
-            skipEnd < playable.getDuration() &&
-            (remainingTime - (skipEnd * 1000) > 0) &&
-            ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
-            Log.d(TAG, "skipEnding: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());
+        if (skipEnd > 0
+                && skipEnd < playable.getDuration()
+                && (remainingTime - (skipEnd * 1000) > 0)
+                && ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
+            Log.d(TAG, "skipEndingIfNecessary: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());
             Context context = getApplicationContext();
-            String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast,
-                    skipEnd);
-            Toast toast = Toast.makeText(context, skipMesg,
-                    Toast.LENGTH_LONG);
+            String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast, skipEnd);
+            Toast toast = Toast.makeText(context, skipMesg, Toast.LENGTH_LONG);
             toast.show();
 
-            playable.setAutoSkippedEnding(true);
+            this.autoSkippedFeedMedia = feedMedia;
             mediaPlayer.skip();
-        } else {
-           Log.d(TAG, "skipEnding: Not at ending yet " + remainingTime + " diff " + (remainingTime - (skipEnd * 1000)) + " skipEnd " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed() * 1000);
         }
-    }
+   }
 
     /**
      * Updates the Media Session for the corresponding status.
@@ -1688,7 +1685,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                 getSystemService(NOTIFICATION_SERVICE);
                         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
                     }
-                    skipEnding();
+                    skipEndingIfNecessary();
                 });
     }
 
