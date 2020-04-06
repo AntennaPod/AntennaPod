@@ -180,8 +180,8 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         builder.setMessage(R.string.database_import_warning);
 
         // add a button
-        builder.setNegativeButton("NO", null);
-        builder.setPositiveButton("Replace", (dialog, which) -> {
+        builder.setNegativeButton(R.string.no, null);
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                     if (Build.VERSION.SDK_INT >= 19) {
                         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                         intent.setType("*/*");
@@ -196,8 +196,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         );
 
         // create and show the alert dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        builder.show();
     }
 
     private void showDatabaseImportSuccessDialog() {
