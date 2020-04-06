@@ -561,6 +561,7 @@
     <string name="html_export_label">HTML export</string>
     <string name="database_export_label">Database export</string>
     <string name="database_import_label">Database import</string>
+    <string name="database_import_warning">Importing a database will replace all of your current subscriptions and playing history.  You should export your current database as a backup.  Do you want to replace?</string>
     <string name="please_wait">Please wait&#8230;</string>
     <string name="export_error_label">Export error</string>
     <string name="export_success_title">Export successful</string>
