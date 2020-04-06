@@ -73,6 +73,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden"
             android:launchMode="singleTask"
             android:label="@string/app_name">
         </activity>
