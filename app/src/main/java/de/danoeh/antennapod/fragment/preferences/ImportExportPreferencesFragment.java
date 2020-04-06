@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -173,16 +174,29 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void importDatabase() {
-        if (Build.VERSION.SDK_INT >= 19) {
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.setType("*/*");
-            startActivityForResult(intent, REQUEST_CODE_RESTORE_DATABASE);
-        } else {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("*/*");
-            startActivityForResult(Intent.createChooser(intent,
-                    getString(R.string.import_select_file)), REQUEST_CODE_RESTORE_DATABASE);
-        }
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.database_import_label);
+        builder.setMessage(R.string.database_import_warning);
+
+        // add a button
+        builder.setNegativeButton(R.string.no, null);
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+                    if (Build.VERSION.SDK_INT >= 19) {
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.setType("*/*");
+                        startActivityForResult(intent, REQUEST_CODE_RESTORE_DATABASE);
+                    } else {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("*/*");
+                        startActivityForResult(Intent.createChooser(intent,
+                                getString(R.string.import_select_file)), REQUEST_CODE_RESTORE_DATABASE);
+                    }
+                }
+        );
+
+        // create and show the alert dialog
+        builder.show();
     }
 
     private void showDatabaseImportSuccessDialog() {
