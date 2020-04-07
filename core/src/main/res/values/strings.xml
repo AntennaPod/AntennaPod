@@ -728,14 +728,12 @@
     <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
     <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
 
-    <string name="sort_q_title_a_z">A \u2192 Z</string>
-    <string name="sort_q_title_z_a">Z \u2192 A</string>
-    <string name="sort_q_date_new_old">New \u2192 Old</string>
-    <string name="sort_q_date_old_new">Old \u2192 New</string>
-    <string name="sort_q_duration_short_long">Short \u2192 Long</string>
-    <string name="sort_q_duration_long_short">Long \u2192 Short</string>
-    <string name="sort_q_episode_title_a_z">A \u2192 Z</string>
-    <string name="sort_q_episode_title_z_a">Z \u2192 A</string>
+    <string name="sort_a_z">A \u2192 Z</string>
+    <string name="sort_z_a">Z \u2192 A</string>
+    <string name="sort_new_old">New \u2192 Old</string>
+    <string name="sort_old_new">Old \u2192 New</string>
+    <string name="sort_short_long">Short \u2192 Long</string>
+    <string name="sort_long_short">Long \u2192 Short</string>
 
     <!-- Rating dialog -->
     <string name="rating_title">Like AntennaPod?</string>
