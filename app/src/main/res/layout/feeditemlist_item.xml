@@ -18,15 +18,14 @@
             android:minWidth="4dp">
         <ImageView
                 android:id="@+id/drag_handle"
-                android:layout_width="24dp"
+                android:layout_width="16dp"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/drag_handle_content_description"
-                android:scaleType="center"
+                android:scaleType="fitCenter"
                 android:src="?attr/dragview_background"
-                android:paddingEnd="8dp"
-                android:paddingRight="8dp"
-                android:visibility="gone"
-                tools:src="@drawable/ic_drag_vertical_grey600_48dp"
+                android:paddingEnd="4dp"
+                android:paddingRight="4dp"
+                tools:src="@drawable/ic_drag_darktheme"
                 tools:background="@android:color/holo_green_dark"/>
 
     </LinearLayout>
