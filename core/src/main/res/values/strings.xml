@@ -305,8 +305,6 @@
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
     <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
-    <string name="sort_old_to_new">Old to new</string>
-    <string name="sort_new_to_old">New to old</string>
     <string name="time_left_label">Time left:\u0020</string>
 
     <!--  Variable Speed -->
@@ -730,6 +728,13 @@
     <string name="sort_date_old_new">Date (Old \u2192 New)</string>
     <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
     <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
+
+    <string name="sort_a_z">A \u2192 Z</string>
+    <string name="sort_z_a">Z \u2192 A</string>
+    <string name="sort_new_old">New \u2192 Old</string>
+    <string name="sort_old_new">Old \u2192 New</string>
+    <string name="sort_short_long">Short \u2192 Long</string>
+    <string name="sort_long_short">Long \u2192 Short</string>
 
     <!-- Rating dialog -->
     <string name="rating_title">Like AntennaPod?</string>
