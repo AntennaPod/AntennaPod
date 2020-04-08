@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * BaseAdapter for the navigation drawer
@@ -246,19 +247,19 @@ public class NavListAdapter extends BaseAdapter
         if (tag.equals(QueueFragment.TAG)) {
             int queueSize = itemAccess.getQueueSize();
             if (queueSize > 0) {
-                holder.count.setText(String.valueOf(queueSize));
+                holder.count.setText(String.format(Locale.getDefault(), "%d", queueSize));
                 holder.count.setVisibility(View.VISIBLE);
             }
         } else if (tag.equals(EpisodesFragment.TAG)) {
             int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
-                holder.count.setText(String.valueOf(unreadItems));
+                holder.count.setText(String.format(Locale.getDefault(), "%d", unreadItems));
                 holder.count.setVisibility(View.VISIBLE);
             }
         } else if (tag.equals(SubscriptionFragment.TAG)) {
             int sum = itemAccess.getFeedCounterSum();
             if (sum > 0) {
-                holder.count.setText(String.valueOf(sum));
+                holder.count.setText(String.format(Locale.getDefault(), "%d", sum));
                 holder.count.setVisibility(View.VISIBLE);
             }
         } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
@@ -351,7 +352,7 @@ public class NavListAdapter extends BaseAdapter
         int counter = itemAccess.getFeedCounter(feed.getId());
         if(counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
-            holder.count.setText(String.valueOf(counter));
+            holder.count.setText(String.format(Locale.getDefault(), "%d", counter));
         } else {
             holder.count.setVisibility(View.GONE);
         }
