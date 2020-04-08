@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -685,7 +686,7 @@ public class DBWriterTest {
                 if (from == to) {
                     continue;
                 }
-                Log.d(TAG, String.format("testMoveQueueItem: From=%d, To=%d", from, to));
+                Log.d(TAG, String.format(Locale.US, "testMoveQueueItem: From=%d, To=%d", from, to));
                 final long fromID = feed.getItems().get(from).getId();
 
                 adapter = PodDBAdapter.getInstance();

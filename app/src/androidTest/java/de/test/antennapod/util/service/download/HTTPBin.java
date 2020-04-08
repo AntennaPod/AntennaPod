@@ -19,6 +19,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.zip.GZIPOutputStream;
@@ -88,7 +89,8 @@ public class HTTPBin extends NanoHTTPD {
 
         String[] segments = session.getUri().split("/");
         if (segments.length < 3) {
-            Log.w(TAG, String.format("Invalid number of URI segments: %d %s", segments.length, Arrays.toString(segments)));
+            Log.w(TAG, String.format(Locale.US, "Invalid number of URI segments: %d %s",
+                    segments.length, Arrays.toString(segments)));
             get404Error();
         }
 

@@ -1520,7 +1520,7 @@ public class CastManager extends BaseCastManager implements OnFailedListener {
     private void onQueueUpdated(List<MediaQueueItem> queueItems, MediaQueueItem item,
                                 int repeatMode, boolean shuffle) {
         Log.d(TAG, "onQueueUpdated() reached");
-        Log.d(TAG, String.format("Queue Items size: %d, Item: %s, Repeat Mode: %d, Shuffle: %s",
+        Log.d(TAG, String.format(Locale.US, "Queue Items size: %d, Item: %s, Repeat Mode: %d, Shuffle: %s",
                 queueItems == null ? 0 : queueItems.size(), item, repeatMode, shuffle));
         if (queueItems != null) {
             mediaQueue = new MediaQueue(new CopyOnWriteArrayList<>(queueItems), item, shuffle,
