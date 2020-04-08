@@ -38,7 +38,7 @@
         <item name="navigation_up">@drawable/navigation_up</item>
         <item name="stat_playlist">@drawable/ic_playlist_black</item>
         <item name="type_video">@drawable/ic_videocam_black_24dp</item>
-        <item name="dragview_background">@drawable/ic_drag_vertical_grey600_48dp</item>
+        <item name="dragview_background">@drawable/ic_drag_lighttheme</item>
         <item name="drawer_activated_color">@color/highlight_light</item>
         <item name="ic_history">@drawable/ic_history_black</item>
         <item name="ic_folder">@drawable/ic_folder_black</item>
@@ -108,7 +108,7 @@
         <item name="navigation_up">@drawable/navigation_up_dark</item>
         <item name="stat_playlist">@drawable/ic_playlist_white</item>
         <item name="type_video">@drawable/ic_videocam_white_24dp</item>
-        <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
+        <item name="dragview_background">@drawable/ic_drag_darktheme</item>
         <item name="drawer_activated_color">@color/highlight_dark</item>
         <item name="ic_history">@drawable/ic_history_white</item>
         <item name="ic_folder">@drawable/ic_folder_white</item>
@@ -145,7 +145,6 @@
 
     <style name="Theme.Base.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.Dark">
         <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
-        <item name="dragview_background">@drawable/ic_drag_vertical_white_48dp</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_black</item>
         <item name="drawer_activated_color">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
