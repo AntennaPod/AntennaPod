@@ -431,6 +431,7 @@ public class MainActivity extends CastEnabledActivity {
             } else if (feedId > 0) {
                 loadFeedFragmentById(feedId, args);
             }
+            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             bottomSheetCallback.onSlide(null, 1.0f);
