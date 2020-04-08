@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
 import de.danoeh.antennapod.R;
 
 public class EpisodesFragment extends Fragment {
@@ -27,7 +31,7 @@ public class EpisodesFragment extends Fragment {
 
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private ViewPager2 viewPager;
 
     //Mandatory Constructor
     public EpisodesFragment() {
@@ -46,11 +50,25 @@ public class EpisodesFragment extends Fragment {
         toolbar.setTitle(R.string.episodes_label);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         viewPager = rootView.findViewById(R.id.viewpager);
-        viewPager.setAdapter(new EpisodesPagerAdapter());
+        viewPager.setAdapter(new EpisodesPagerAdapter(this));
 
         // Give the TabLayout the ViewPager
         tabLayout = rootView.findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case POS_ALL_EPISODES:
+                    tab.setText(R.string.all_episodes_short_label);
+                    break;
+                case POS_NEW_EPISODES:
+                    tab.setText(R.string.new_episodes_label);
+                    break;
+                case POS_FAV_EPISODES:
+                    tab.setText(R.string.favorite_episodes_label);
+                    break;
+            }
+        }).attach();
+
         return rootView;
     }
 
@@ -74,15 +92,15 @@ public class EpisodesFragment extends Fragment {
         viewPager.setCurrentItem(lastPosition);
     }
 
-    public class EpisodesPagerAdapter extends FragmentPagerAdapter {
+    public class EpisodesPagerAdapter extends FragmentStateAdapter {
 
-        public EpisodesPagerAdapter() {
-            super(getChildFragmentManager());
+        EpisodesPagerAdapter(@NonNull Fragment fragment) {
+            super(fragment);
         }
 
-        @Override
         @NonNull
-        public Fragment getItem(int position) {
+        @Override
+        public Fragment createFragment(int position) {
             switch (position) {
                 case 0:
                     return new NewEpisodesFragment();
@@ -94,22 +112,8 @@ public class EpisodesFragment extends Fragment {
         }
 
         @Override
-        public int getCount() {
+        public int getItemCount() {
             return TOTAL_COUNT;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case POS_ALL_EPISODES:
-                    return getString(R.string.all_episodes_short_label);
-                case POS_NEW_EPISODES:
-                    return getString(R.string.new_episodes_label);
-                case POS_FAV_EPISODES:
-                    return getString(R.string.favorite_episodes_label);
-                default:
-                    return super.getPageTitle(position);
-            }
         }
     }
 }

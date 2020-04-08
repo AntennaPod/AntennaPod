@@ -49,11 +49,10 @@ public class StatisticsFragment extends Fragment {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case POS_LISTENED_HOURS:
-                    tab.setText(getString(R.string.playback_statistics_label));
+                    tab.setText(R.string.playback_statistics_label);
                     break;
-                default:
                 case POS_SPACE_TAKEN:
-                    tab.setText(getString(R.string.download_statistics_label));
+                    tab.setText(R.string.download_statistics_label);
                     break;
             }
         }).attach();
