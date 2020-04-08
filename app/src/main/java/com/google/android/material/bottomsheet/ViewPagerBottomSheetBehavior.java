@@ -4,8 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.core.view.ViewCompat;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.lang.ref.WeakReference;
 
@@ -31,8 +32,8 @@ public class ViewPagerBottomSheetBehavior<V extends View> extends BottomSheetBeh
             return view;
         }
 
-        if (view instanceof ViewPager) {
-            ViewPager viewPager = (ViewPager) view;
+        if (view instanceof ViewPager2) {
+            ViewPager2 viewPager = (ViewPager2) view;
             View currentViewPagerChild = viewPager.getChildAt(viewPager.getCurrentItem());
             if (currentViewPagerChild != null) {
                 return findScrollingChild(currentViewPagerChild);
