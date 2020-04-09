@@ -45,10 +45,11 @@ import java.util.Locale;
 public class NavListAdapter extends BaseAdapter
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final int VIEW_TYPE_COUNT = 3;
-    public static final int VIEW_TYPE_NAV = 0;
-    public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
-    private static final int VIEW_TYPE_SUBSCRIPTION = 2;
+    private static final int VIEW_TYPE_COUNT = 4;
+    private static final int VIEW_TYPE_HEADER = 0;
+    public static final int VIEW_TYPE_NAV = 1;
+    public static final int VIEW_TYPE_SECTION_DIVIDER = 2;
+    private static final int VIEW_TYPE_SUBSCRIPTION = 3;
 
     /**
      * a tag used as a placeholder to indicate if the subscription list should be displayed or not
@@ -156,8 +157,10 @@ public class NavListAdapter extends BaseAdapter
     @Override
     public Object getItem(int position) {
         int viewType = getItemViewType(position);
-        if (viewType == VIEW_TYPE_NAV) {
-            return getLabel(tags.get(position));
+        if (viewType == VIEW_TYPE_HEADER) {
+            return "";
+        } else if (viewType == VIEW_TYPE_NAV) {
+            return getLabel(tags.get(position - 1));
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
             return "";
         } else {
@@ -172,7 +175,9 @@ public class NavListAdapter extends BaseAdapter
 
     @Override
     public int getItemViewType(int position) {
-        if (0 <= position && position < tags.size()) {
+        if (position == 0) {
+            return VIEW_TYPE_HEADER;
+        } else if (position < tags.size() + 1) {
             return VIEW_TYPE_NAV;
         } else if (position < getSubscriptionOffset()) {
             return VIEW_TYPE_SECTION_DIVIDER;
@@ -187,7 +192,7 @@ public class NavListAdapter extends BaseAdapter
     }
 
     public int getSubscriptionOffset() {
-        return tags.size() > 0 ? tags.size() + 1 : 0;
+        return (tags.size() > 0 ? tags.size() + 1 : 0) + 1;
     }
 
 
@@ -195,7 +200,9 @@ public class NavListAdapter extends BaseAdapter
     public View getView(int position, View convertView, ViewGroup parent) {
         int viewType = getItemViewType(position);
         View v = null;
-        if (viewType == VIEW_TYPE_NAV) {
+        if (viewType == VIEW_TYPE_HEADER) {
+            v = getHeaderView(convertView, parent);
+        } else if (viewType == VIEW_TYPE_NAV) {
             v = getNavView((String) getItem(position), position, convertView, parent);
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
             v = getSectionDividerView(convertView, parent);
@@ -218,17 +225,14 @@ public class NavListAdapter extends BaseAdapter
 
     private View getNavView(String title, int position, View convertView, ViewGroup parent) {
         Activity context = activity.get();
-        if(context == null) {
+        if (context == null) {
             return null;
         }
         NavHolder holder;
         if (convertView == null) {
             holder = new NavHolder();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
-
             holder.image = convertView.findViewById(R.id.imgvCover);
             holder.title = convertView.findViewById(R.id.txtvTitle);
             holder.count = convertView.findViewById(R.id.txtvCount);
@@ -243,7 +247,7 @@ public class NavListAdapter extends BaseAdapter
         holder.count.setVisibility(View.GONE);
         holder.count.setOnClickListener(null);
 
-        String tag = tags.get(position);
+        String tag = tags.get(position - 1);
         if (tag.equals(QueueFragment.TAG)) {
             int queueSize = itemAccess.getQueueSize();
             if (queueSize > 0) {
@@ -262,11 +266,10 @@ public class NavListAdapter extends BaseAdapter
                 holder.count.setText(String.format(Locale.getDefault(), "%d", sum));
                 holder.count.setVisibility(View.VISIBLE);
             }
-        } else if(tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
+        } else if (tag.equals(DownloadsFragment.TAG) && UserPreferences.isEnableAutodownload()) {
             int epCacheSize = UserPreferences.getEpisodeCacheSize();
             // don't count episodes that can be reclaimed
-            int spaceUsed = itemAccess.getNumberOfDownloadedItems() -
-                    itemAccess.getReclaimableItems();
+            int spaceUsed = itemAccess.getNumberOfDownloadedItems() - itemAccess.getReclaimableItems();
 
             if (epCacheSize > 0 && spaceUsed >= epCacheSize) {
                 holder.count.setText("{md-disc-full 150%}");
@@ -282,21 +285,30 @@ public class NavListAdapter extends BaseAdapter
             }
         }
 
-        holder.image.setImageDrawable(getDrawable(tags.get(position)));
+        holder.image.setImageDrawable(getDrawable(tags.get(position - 1)));
 
+        return convertView;
+    }
+
+    private View getHeaderView(View convertView, ViewGroup parent) {
+        Activity context = activity.get();
+        if (context == null) {
+            return null;
+        }
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.nav_header, parent, false);
+        convertView.setEnabled(false);
+        convertView.setOnClickListener(null);
         return convertView;
     }
 
     private View getSectionDividerView(View convertView, ViewGroup parent) {
         Activity context = activity.get();
-        if(context == null) {
+        if (context == null) {
             return null;
         }
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
-
         convertView.setEnabled(false);
         convertView.setOnClickListener(null);
 
@@ -305,7 +317,7 @@ public class NavListAdapter extends BaseAdapter
 
     private View getFeedView(int position, View convertView, ViewGroup parent) {
         Activity context = activity.get();
-        if(context == null) {
+        if (context == null) {
             return null;
         }
         int feedPos = position - getSubscriptionOffset();
@@ -340,7 +352,7 @@ public class NavListAdapter extends BaseAdapter
 
         holder.title.setText(feed.getTitle());
 
-        if(feed.hasLastUpdateFailed()) {
+        if (feed.hasLastUpdateFailed()) {
             RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
             p.addRule(RelativeLayout.LEFT_OF, R.id.itxtvFailure);
             holder.failure.setVisibility(View.VISIBLE);
@@ -350,7 +362,7 @@ public class NavListAdapter extends BaseAdapter
             holder.failure.setVisibility(View.GONE);
         }
         int counter = itemAccess.getFeedCounter(feed.getId());
-        if(counter > 0) {
+        if (counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
             holder.count.setText(String.format(Locale.getDefault(), "%d", counter));
         } else {

@@ -14,7 +14,7 @@
     <!-- Theme colors -->
     <color name="primary_light">#FFFFFF</color>
     <color name="primary_darktheme">#303030</color>
-    <color name="highlight_light">#DDDDDD</color>
+    <color name="highlight_light">#E5E5E5</color>
     <color name="highlight_dark">#414141</color>
     <color name="highlight_trueblack">#414141</color>
 

@@ -97,7 +97,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         String lastNavFragment = getLastNavFragment(getContext());
         int tagIndex = navAdapter.getTags().indexOf(lastNavFragment);
         if (tagIndex >= 0) {
-            selectedNavListIndex = tagIndex;
+            selectedNavListIndex = tagIndex + 1;
         } else if (StringUtils.isNumeric(lastNavFragment)) { // last fragment was not a list, but a feed
             long feedId = Long.parseLong(lastNavFragment);
             if (navDrawerData != null) {
@@ -368,7 +368,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         int viewType = parent.getAdapter().getItemViewType(position);
         if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
             if (position < navAdapter.getSubscriptionOffset()) {
-                String tag = navAdapter.getTags().get(position);
+                String tag = navAdapter.getTags().get(position - 1);
                 if (getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).loadFragment(tag, null);
                 } else {
@@ -390,7 +390,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position < navAdapter.getTags().size()) {
+        if (position < navAdapter.getTags().size() + 1) {
             showDrawerPreferencesDialog();
             return true;
         } else {
