@@ -58,6 +58,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Locale;
 
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DOWNLOAD;
@@ -578,7 +579,8 @@ public class QueueFragment extends Fragment {
     }
 
     private void refreshInfoBar() {
-        String info = queue.size() + getString(R.string.episodes_suffix);
+        String info = String.format(Locale.getDefault(), "%d%s",
+                queue.size(), getString(R.string.episodes_suffix));
         if (queue.size() > 0) {
             long timeLeft = 0;
             for (FeedItem item : queue) {
