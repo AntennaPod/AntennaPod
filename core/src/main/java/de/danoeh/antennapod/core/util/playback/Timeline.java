@@ -193,7 +193,7 @@ public class Timeline {
 
                 String replacementText = group;
                 if (time < playableDuration) {
-                    replacementText = String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
+                    replacementText = String.format(Locale.US, TIMECODE_LINK, time, group);
                 }
 
                 matcherForElement.appendReplacement(buffer, replacementText);

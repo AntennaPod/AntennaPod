@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PlaybackControlsDialog extends DialogFragment {
     private static final String ARGUMENT_IS_PLAYING_VIDEO = "isPlayingVideo";
@@ -99,7 +100,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         final TextView txtvPlaybackSpeed = dialog.findViewById(R.id.txtvPlaybackSpeed);
         float currentSpeed = getCurrentSpeed();
 
-        txtvPlaybackSpeed.setText(String.format("%.2fx", currentSpeed));
+        txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", currentSpeed));
         barPlaybackSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -114,7 +115,7 @@ public class PlaybackControlsDialog extends DialogFragment {
                         UserPreferences.setPlaybackSpeed(playbackSpeed);
                     }
 
-                    String speedStr = String.format("%.2fx", playbackSpeed);
+                    String speedStr = String.format(Locale.getDefault(), "%.2fx", playbackSpeed);
                     txtvPlaybackSpeed.setText(speedStr);
                 } else if (fromUser) {
                     float speed = getCurrentSpeed();

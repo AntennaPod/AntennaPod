@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.QueueEvent;
@@ -89,13 +90,13 @@ public class UITestUtils {
         out.close();
         int id = server.serveFile(feedFile);
         Assert.assertTrue(id != -1);
-        return String.format("%s/files/%d", server.getBaseUrl(), id);
+        return String.format(Locale.US, "%s/files/%d", server.getBaseUrl(), id);
     }
 
     private String hostFile(File file) {
         int id = server.serveFile(file);
         Assert.assertTrue(id != -1);
-        return String.format("%s/files/%d", server.getBaseUrl(), id);
+        return String.format(Locale.US, "%s/files/%d", server.getBaseUrl(), id);
     }
 
     private File newMediaFile(String name) throws IOException {

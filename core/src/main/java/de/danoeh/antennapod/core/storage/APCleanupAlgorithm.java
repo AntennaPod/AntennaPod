@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -72,7 +73,7 @@ public class APCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         int counter = delete.size();
 
 
-        Log.i(TAG, String.format(
+        Log.i(TAG, String.format(Locale.US,
                 "Auto-delete deleted %d episodes (%d requested)", counter,
                 numberOfEpisodesToDelete));
 

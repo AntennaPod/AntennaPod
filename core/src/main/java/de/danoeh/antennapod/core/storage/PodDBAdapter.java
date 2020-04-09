@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -425,7 +426,7 @@ public class PodDBAdapter {
 
     public void setFeedItemFilter(long feedId, Set<String> filterValues) {
         String valuesList = TextUtils.join(",", filterValues);
-        Log.d(TAG, String.format(
+        Log.d(TAG, String.format(Locale.US,
                 "setFeedItemFilter() called with: feedId = [%d], filterValues = [%s]", feedId, valuesList));
         ContentValues values = new ContentValues();
         values.put(KEY_HIDE, valuesList);
@@ -782,7 +783,7 @@ public class PodDBAdapter {
     }
 
     private boolean isItemInFavorites(FeedItem item) {
-        String query = String.format("SELECT %s from %s WHERE %s=%d",
+        String query = String.format(Locale.US, "SELECT %s from %s WHERE %s=%d",
                 KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
         Cursor c = db.rawQuery(query, null);
         int count = c.getCount();
@@ -1031,7 +1032,7 @@ public class PodDBAdapter {
 
         return db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
-                null, String.format("%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
+                null, String.format(Locale.US, "%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
     }
 
     public final Cursor getSingleFeedMediaCursor(long id) {
