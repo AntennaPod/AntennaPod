@@ -61,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:clickable="true"
             android:layoutDirection="ltr"
             android:orientation="vertical">
 
