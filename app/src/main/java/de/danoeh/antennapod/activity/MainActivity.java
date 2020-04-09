@@ -310,6 +310,15 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetCallback.onSlide(null, 1.0f);
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
