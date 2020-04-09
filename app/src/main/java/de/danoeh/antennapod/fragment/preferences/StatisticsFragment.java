@@ -54,6 +54,8 @@ public class StatisticsFragment extends Fragment {
                 case POS_SPACE_TAKEN:
                     tab.setText(R.string.download_statistics_label);
                     break;
+                default:
+                    break;
             }
         }).attach();
 

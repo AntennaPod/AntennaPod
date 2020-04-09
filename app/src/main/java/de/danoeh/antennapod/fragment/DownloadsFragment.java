@@ -62,6 +62,8 @@ public class DownloadsFragment extends Fragment {
                 case POS_LOG:
                     tab.setText(R.string.downloads_log_label);
                     break;
+                default:
+                    break;
             }
         }).attach();
 

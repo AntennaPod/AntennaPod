@@ -66,6 +66,8 @@ public class EpisodesFragment extends Fragment {
                 case POS_FAV_EPISODES:
                     tab.setText(R.string.favorite_episodes_label);
                     break;
+                default:
+                    break;
             }
         }).attach();
 
