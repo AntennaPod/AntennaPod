@@ -535,14 +535,14 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             } else {
                 builder.setMessage(R.string.error_msg_prefix);
             }
-            builder.setNeutralButton(android.R.string.ok,
+            builder.setPositiveButton(android.R.string.ok,
                     (dialog, which) -> dialog.cancel()
             );
-            builder.setOnCancelListener(dialog -> {
+            builder.setOnDismissListener(dialog -> {
                 setResult(RESULT_ERROR);
                 finish();
             });
-            if(dialog != null && dialog.isShowing()) {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = builder.show();
