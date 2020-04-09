@@ -699,6 +699,7 @@
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
     <string name="discover">Discover</string>
     <string name="discover_more">more »</string>
+    <string name="search_powered_by">Search powered by %1$s</string>
 
     <string name="filter">Filter</string>
     

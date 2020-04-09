@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +40,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         View root = inflater.inflate(R.layout.quick_feed_discovery, container, false);
         View discoverMore = root.findViewById(R.id.discover_more);
         discoverMore.setOnClickListener(v ->
-                ((MainActivity) getActivity()).loadChildFragment(new ItunesSearchFragment()));
+                ((MainActivity) getActivity()).loadChildFragment(new DiscoveryFragment()));
 
         discoverGridLayout = root.findViewById(R.id.discover_grid);
         progressBar = root.findViewById(R.id.discover_progress_bar);

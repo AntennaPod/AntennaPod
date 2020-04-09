@@ -45,4 +45,9 @@ public class FyydPodcastSearcher implements PodcastSearcher {
     public boolean urlNeedsLookup(String url) {
         return false;
     }
+
+    @Override
+    public String getName() {
+        return "Fyyd";
+    }
 }

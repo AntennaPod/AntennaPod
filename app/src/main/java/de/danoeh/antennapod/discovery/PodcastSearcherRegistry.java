@@ -15,8 +15,9 @@ public class PodcastSearcherRegistry {
     public static List<SearcherInfo> getSearchProviders() {
         if (searchProviders == null) {
             searchProviders = new ArrayList<>();
-            searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 1.f));
+            searchProviders.add(new SearcherInfo(new CombinedSearcher(), 1.f));
             searchProviders.add(new SearcherInfo(new ItunesPodcastSearcher(), 1.f));
+            searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 1.f));
             searchProviders.add(new SearcherInfo(new GpodnetPodcastSearcher(), 0.0f));
         }
         return searchProviders;
@@ -24,7 +25,8 @@ public class PodcastSearcherRegistry {
 
     public static Single<String> lookupUrl(String url) {
         for (PodcastSearcherRegistry.SearcherInfo searchProviderInfo : getSearchProviders()) {
-            if (searchProviderInfo.searcher.urlNeedsLookup(url)) {
+            if (searchProviderInfo.searcher.getClass() != CombinedSearcher.class
+                    && searchProviderInfo.searcher.urlNeedsLookup(url)) {
                 return searchProviderInfo.searcher.lookupUrl(url);
             }
         }
@@ -33,7 +35,8 @@ public class PodcastSearcherRegistry {
 
     public static boolean urlNeedsLookup(String url) {
         for (PodcastSearcherRegistry.SearcherInfo searchProviderInfo : getSearchProviders()) {
-            if (searchProviderInfo.searcher.urlNeedsLookup(url)) {
+            if (searchProviderInfo.searcher.getClass() != CombinedSearcher.class
+                    && searchProviderInfo.searcher.urlNeedsLookup(url)) {
                 return true;
             }
         }
@@ -41,8 +44,8 @@ public class PodcastSearcherRegistry {
     }
 
     public static class SearcherInfo {
-        final PodcastSearcher searcher;
-        final float weight;
+        public final PodcastSearcher searcher;
+        public final float weight;
 
         public SearcherInfo(PodcastSearcher searcher, float weight) {
             this.searcher = searcher;

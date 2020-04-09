@@ -96,4 +96,9 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
     public boolean urlNeedsLookup(String url) {
         return url.contains("itunes.apple.com");
     }
+
+    @Override
+    public String getName() {
+        return "iTunes";
+    }
 }

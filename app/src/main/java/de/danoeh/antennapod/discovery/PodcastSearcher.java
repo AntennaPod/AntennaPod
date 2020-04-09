@@ -11,4 +11,6 @@ public interface PodcastSearcher {
     Single<String> lookupUrl(String resultUrl);
 
     boolean urlNeedsLookup(String resultUrl);
+
+    String getName();
 }

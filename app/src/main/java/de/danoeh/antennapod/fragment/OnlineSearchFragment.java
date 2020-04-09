@@ -20,22 +20,25 @@ import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
-import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.discovery.PodcastSearcher;
+import de.danoeh.antennapod.discovery.PodcastSearcherRegistry;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FyydSearchFragment extends Fragment {
+public class OnlineSearchFragment extends Fragment {
 
     private static final String TAG = "FyydSearchFragment";
+    private static final String ARG_SEARCHER = "searcher";
+    private static final String ARG_QUERY = "query";
 
     /**
      * Adapter responsible with the search results
      */
     private ItunesAdapter adapter;
+    private PodcastSearcher searchProvider;
     private GridView gridView;
     private ProgressBar progressBar;
     private TextView txtvError;
@@ -48,10 +51,23 @@ public class FyydSearchFragment extends Fragment {
     private List<PodcastSearchResult> searchResults;
     private Disposable disposable;
 
+    public static OnlineSearchFragment newInstance(Class<? extends PodcastSearcher> searchProvider) {
+        return newInstance(searchProvider, null);
+    }
+
+    public static OnlineSearchFragment newInstance(Class<? extends PodcastSearcher> searchProvider, String query) {
+        OnlineSearchFragment fragment = new OnlineSearchFragment();
+        Bundle arguments = new Bundle();
+        arguments.putString(ARG_SEARCHER, searchProvider.getName());
+        arguments.putString(ARG_QUERY, query);
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+
     /**
      * Constructor
      */
-    public FyydSearchFragment() {
+    public OnlineSearchFragment() {
         // Required empty public constructor
     }
 
@@ -59,11 +75,20 @@ public class FyydSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        for (PodcastSearcherRegistry.SearcherInfo info : PodcastSearcherRegistry.getSearchProviders()) {
+            if (info.searcher.getClass().getName().equals(getArguments().getString(ARG_SEARCHER))) {
+                searchProvider = info.searcher;
+                break;
+            }
+        }
+        if (searchProvider == null) {
+            throw new IllegalArgumentException("Podcast searcher not found");
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
@@ -83,6 +108,7 @@ public class FyydSearchFragment extends Fragment {
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
 
+        txtvEmpty.setText(getString(R.string.search_powered_by, searchProvider.getName()));
         return root;
     }
 
@@ -98,10 +124,10 @@ public class FyydSearchFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.itunes_search, menu);
+        inflater.inflate(R.menu.online_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        sv.setQueryHint(getString(R.string.search_fyyd_label));
+        sv.setQueryHint(getString(R.string.search_podcast_hint));
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -115,7 +141,7 @@ public class FyydSearchFragment extends Fragment {
                 return false;
             }
         });
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 return true;
@@ -127,7 +153,12 @@ public class FyydSearchFragment extends Fragment {
                 return true;
             }
         });
-        MenuItemCompat.expandActionView(searchItem);
+        searchItem.expandActionView();
+
+        if (getArguments().getString(ARG_QUERY, null) != null) {
+            sv.setQuery(getArguments().getString(ARG_QUERY, null), true);
+        }
+
     }
 
     private void search(String query) {
@@ -135,26 +166,23 @@ public class FyydSearchFragment extends Fragment {
             disposable.dispose();
         }
         showOnlyProgressBar();
-
-        FyydPodcastSearcher searcher = new FyydPodcastSearcher();
-        disposable = searcher.search(query).subscribe(result -> {
+        disposable = searchProvider.search(query).subscribe(result -> {
             searchResults = result;
             progressBar.setVisibility(View.GONE);
-
             adapter.clear();
             adapter.addAll(searchResults);
             adapter.notifyDataSetInvalidated();
             gridView.setVisibility(!searchResults.isEmpty() ? View.VISIBLE : View.GONE);
             txtvEmpty.setVisibility(searchResults.isEmpty() ? View.VISIBLE : View.GONE);
-
+            txtvEmpty.setText(getString(R.string.no_results_for_query, query));
         }, error -> {
-            Log.e(TAG, Log.getStackTraceString(error));
-            progressBar.setVisibility(View.GONE);
-            txtvError.setText(error.toString());
-            txtvError.setVisibility(View.VISIBLE);
-            butRetry.setOnClickListener(v -> search(query));
-            butRetry.setVisibility(View.VISIBLE);
-        });
+                Log.e(TAG, Log.getStackTraceString(error));
+                progressBar.setVisibility(View.GONE);
+                txtvError.setText(error.toString());
+                txtvError.setVisibility(View.VISIBLE);
+                butRetry.setOnClickListener(v -> search(query));
+                butRetry.setVisibility(View.VISIBLE);
+            });
     }
 
     private void showOnlyProgressBar() {

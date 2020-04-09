@@ -1,8 +1,7 @@
 package de.danoeh.antennapod.discovery;
 
-import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
 public class CombinedSearcher implements PodcastSearcher {
     private static final String TAG = "CombinedSearcher";
 
-    public CombinedSearcher(Context context) {
+    public CombinedSearcher() {
     }
 
     public Single<List<PodcastSearchResult>> search(String query) {
@@ -31,7 +30,7 @@ public class CombinedSearcher implements PodcastSearcher {
             PodcastSearcherRegistry.SearcherInfo searchProviderInfo
                     = PodcastSearcherRegistry.getSearchProviders().get(i);
             PodcastSearcher searcher = searchProviderInfo.searcher;
-            if (searchProviderInfo.weight <= 0.00001f) {
+            if (searchProviderInfo.weight <= 0.00001f || searcher.getClass() == CombinedSearcher.class) {
                 latch.countDown();
                 continue;
             }
@@ -101,5 +100,19 @@ public class CombinedSearcher implements PodcastSearcher {
     @Override
     public boolean urlNeedsLookup(String url) {
         return PodcastSearcherRegistry.urlNeedsLookup(url);
+    }
+
+    @Override
+    public String getName() {
+        ArrayList<String> names = new ArrayList<>();
+        for (int i = 0; i < PodcastSearcherRegistry.getSearchProviders().size(); i++) {
+            PodcastSearcherRegistry.SearcherInfo searchProviderInfo
+                    = PodcastSearcherRegistry.getSearchProviders().get(i);
+            PodcastSearcher searcher = searchProviderInfo.searcher;
+            if (searchProviderInfo.weight > 0.00001f && searcher.getClass() != CombinedSearcher.class) {
+                names.add(searcher.getName());
+            }
+        }
+        return TextUtils.join(", ", names);
     }
 }

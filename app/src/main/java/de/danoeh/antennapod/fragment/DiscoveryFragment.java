@@ -2,45 +2,36 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.widget.SearchView;
-import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
+import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
+import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
-import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import io.reactivex.disposables.Disposable;
-
-//Searches iTunes store for given string and displays results in a list
-public class ItunesSearchFragment extends Fragment {
+/**
+ * Searches iTunes store for top podcasts and displays results in a list.
+ */
+public class DiscoveryFragment extends Fragment {
 
     private static final String TAG = "ItunesSearchFragment";
 
-
     /**
-     * Adapter responsible with the search results
+     * Adapter responsible with the search results.
      */
     private ItunesAdapter adapter;
     private GridView gridView;
@@ -50,7 +41,7 @@ public class ItunesSearchFragment extends Fragment {
     private TextView txtvEmpty;
 
     /**
-     * List of podcasts retreived from the search
+     * List of podcasts retreived from the search.
      */
     private List<PodcastSearchResult> searchResults;
     private List<PodcastSearchResult> topList;
@@ -76,10 +67,7 @@ public class ItunesSearchFragment extends Fragment {
         }
     }
 
-    /**
-     * Constructor
-     */
-    public ItunesSearchFragment() {
+    public DiscoveryFragment() {
         // Required empty public constructor
     }
 
@@ -128,43 +116,6 @@ public class ItunesSearchFragment extends Fragment {
         adapter = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.itunes_search, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
-        sv.setQueryHint(getString(R.string.search_itunes_label));
-        sv.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                search(s);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                if (searchResults != null) {
-                    searchResults = null;
-                    updateData(topList);
-                }
-                return true;
-            }
-        });
-    }
-
     private void loadToplist() {
         if (disposable != null) {
             disposable.dispose();
@@ -176,43 +127,17 @@ public class ItunesSearchFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.loadToplist(25)
-                .subscribe(podcasts -> {
-                    progressBar.setVisibility(View.GONE);
-                    topList = podcasts;
-                    updateData(topList);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                    progressBar.setVisibility(View.GONE);
-                    txtvError.setText(error.toString());
-                    txtvError.setVisibility(View.VISIBLE);
-                    butRetry.setOnClickListener(v -> loadToplist());
-                    butRetry.setVisibility(View.VISIBLE);
-                });
-    }
-
-    private void search(String query) {
-        if (disposable != null) {
-            disposable.dispose();
-        }
-        gridView.setVisibility(View.GONE);
-        txtvError.setVisibility(View.GONE);
-        butRetry.setVisibility(View.GONE);
-        txtvEmpty.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-
-        ItunesPodcastSearcher searcher = new ItunesPodcastSearcher();
-        disposable = searcher.search(query).subscribe(podcasts -> {
+        disposable = loader.loadToplist(25).subscribe(podcasts -> {
             progressBar.setVisibility(View.GONE);
-            updateData(podcasts);
+            topList = podcasts;
+            updateData(topList);
         }, error -> {
-            Log.e(TAG, Log.getStackTraceString(error));
-            progressBar.setVisibility(View.GONE);
-            txtvError.setText(error.toString());
-            txtvError.setVisibility(View.VISIBLE);
-            butRetry.setOnClickListener(v -> search(query));
-            butRetry.setVisibility(View.VISIBLE);
-        });
+                Log.e(TAG, Log.getStackTraceString(error));
+                progressBar.setVisibility(View.GONE);
+                txtvError.setText(error.toString());
+                txtvError.setVisibility(View.VISIBLE);
+                butRetry.setOnClickListener(v -> loadToplist());
+                butRetry.setVisibility(View.VISIBLE);
+            });
     }
-
 }

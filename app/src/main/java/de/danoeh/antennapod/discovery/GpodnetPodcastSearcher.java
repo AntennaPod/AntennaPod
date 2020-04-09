@@ -43,4 +43,9 @@ public class GpodnetPodcastSearcher implements PodcastSearcher {
     public boolean urlNeedsLookup(String url) {
         return false;
     }
+
+    @Override
+    public String getName() {
+        return "Gpodder.net";
+    }
 }
