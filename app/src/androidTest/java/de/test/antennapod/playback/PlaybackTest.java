@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.view.KeyEvent;
 import android.view.View;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -13,6 +12,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.IgnoreOnCi;
 import de.test.antennapod.ui.UITestUtils;
@@ -71,6 +72,7 @@ public class PlaybackTest {
     public String playerToUse;
     private UITestUtils uiTestUtils;
     protected Context context;
+    private PlaybackController controller;
 
     @Parameterized.Parameters(name = "{0}")
     public static Collection<Object[]> initParameters() {
@@ -96,6 +98,14 @@ public class PlaybackTest {
         activityTestRule.finishActivity();
         EspressoTestUtils.tryKillPlaybackService();
         uiTestUtils.tearDown();
+        if (controller != null) {
+            controller.release();
+        }
+    }
+
+    private void setupPlaybackController() {
+        controller = new PlaybackController(activityTestRule.getActivity());
+        controller.init();
     }
 
     @Test
@@ -103,9 +113,10 @@ public class PlaybackTest {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
         activityTestRule.launchActivity(new Intent());
+        setupPlaybackController();
         playFromQueue(0);
-        Awaitility.await().atMost(5, TimeUnit.SECONDS).until(
-                () -> uiTestUtils.getPlaybackController(getActivity()).getStatus() == PlayerStatus.INITIALIZED);
+        Awaitility.await().atMost(5, TimeUnit.SECONDS)
+                .until(() -> controller.getStatus() == PlayerStatus.INITIALIZED);
     }
 
     @Test
@@ -120,9 +131,9 @@ public class PlaybackTest {
 
         playFromQueue(0);
         Awaitility.await().atMost(2, TimeUnit.SECONDS).until(
-                () -> first.getMedia().equals(uiTestUtils.getCurrentMedia()));
+                () -> first.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
         Awaitility.await().atMost(6, TimeUnit.SECONDS).until(
-                () -> second.getMedia().equals(uiTestUtils.getCurrentMedia()));
+                () -> second.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
     }
 
 
@@ -152,6 +163,7 @@ public class PlaybackTest {
 
         uiTestUtils.addLocalFeedData(true);
         activityTestRule.launchActivity(new Intent());
+        setupPlaybackController();
 
         final int fiIdx = 0;
         final FeedItem feedItem = DBReader.getQueue().get(fiIdx);
@@ -161,11 +173,11 @@ public class PlaybackTest {
         // let playback run a bit then pause
         Awaitility.await()
                 .atMost(1000, MILLISECONDS)
-                .until(() -> PlayerStatus.PLAYING == uiTestUtils.getPlaybackController(getActivity()).getStatus());
+                .until(() -> PlayerStatus.PLAYING == controller.getStatus());
         pauseEpisode();
         Awaitility.await()
                 .atMost(1000, MILLISECONDS)
-                .until(() -> PlayerStatus.PAUSED == uiTestUtils.getPlaybackController(getActivity()).getStatus());
+                .until(() -> PlayerStatus.PAUSED == controller.getStatus());
 
         assertThat("Ensure even with smart mark as play, after pause, the item remains in the queue.",
                 DBReader.getQueue(), hasItems(feedItem));
@@ -232,7 +244,7 @@ public class PlaybackTest {
 
         FeedMedia media = episodes.get(0).getMedia();
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
-                () -> media.equals(uiTestUtils.getCurrentMedia()));
+                () -> media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
     }
 
     /**
@@ -248,7 +260,7 @@ public class PlaybackTest {
 
         FeedMedia media = queue.get(itemIdx).getMedia();
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
-                () -> media.equals(uiTestUtils.getCurrentMedia()));
+                () -> media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
 
     }
 
@@ -265,15 +277,15 @@ public class PlaybackTest {
         startLocalPlayback();
         FeedMedia media = episodes.get(0).getMedia();
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
-                () -> media.equals(uiTestUtils.getCurrentMedia()));
+                () -> media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
 
         Awaitility.await().atMost(5, TimeUnit.SECONDS).until(
-                () -> !media.equals(uiTestUtils.getCurrentMedia()));
+                () -> media.getId() != PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
 
         startLocalPlayback();
 
         Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
-                () -> media.equals(uiTestUtils.getCurrentMedia()));
+                () -> media.getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
     }
 
     protected void doTestSmartMarkAsPlayed_Skip_ForEpisode(int itemIdxNegAllowed) throws Exception {

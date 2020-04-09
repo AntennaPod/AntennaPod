@@ -1,14 +1,20 @@
 package de.test.antennapod.ui;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
-
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.event.QueueEvent;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.test.antennapod.util.service.download.HTTPBin;
+import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.junit.Assert;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,19 +24,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.core.event.QueueEvent;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
-import de.test.antennapod.util.service.download.HTTPBin;
-import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
-import org.greenrobot.eventbus.EventBus;
-import org.junit.Assert;
 
 /**
  * Utility methods for UI tests.
@@ -198,17 +191,6 @@ public class UITestUtils {
         adapter.close();
         EventBus.getDefault().post(new FeedListUpdateEvent(hostedFeeds));
         EventBus.getDefault().post(QueueEvent.setQueue(queue));
-    }
-
-    public PlaybackController getPlaybackController(MainActivity mainActivity) {
-        ExternalPlayerFragment fragment = (ExternalPlayerFragment) mainActivity.getSupportFragmentManager()
-                .findFragmentByTag(ExternalPlayerFragment.TAG);
-        return fragment.getPlaybackControllerTestingOnly();
-    }
-
-    public FeedMedia getCurrentMedia() {
-        Playable playable = Playable.PlayableUtils.createInstanceFromPreferences(context);
-        return (FeedMedia) playable;
     }
 
     public void setMediaFileName(String filename) {

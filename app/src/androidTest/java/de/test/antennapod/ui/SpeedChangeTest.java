@@ -83,6 +83,7 @@ public class SpeedChangeTest {
     @After
     public void tearDown() throws Exception {
         uiTestUtils.tearDown();
+        controller.release();
     }
 
     @Test
