@@ -89,7 +89,6 @@ public class AddFeedFragment extends Fragment {
     private void addUrl(String url) {
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, url);
-        intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, getString(R.string.add_feed_label));
         startActivity(intent);
     }
 

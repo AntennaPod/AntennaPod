@@ -2,7 +2,6 @@ package de.danoeh.antennapod.discovery;
 
 import android.content.Context;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
@@ -23,12 +22,11 @@ import java.util.List;
 
 public class ItunesPodcastSearcher implements PodcastSearcher {
     private static final String ITUNES_API_URL = "https://itunes.apple.com/search?media=podcast&term=%s";
-    private final Context context;
 
-    public ItunesPodcastSearcher(Context context) {
-        this.context = context;
+    public ItunesPodcastSearcher() {
     }
 
+    @Override
     public Single<List<PodcastSearchResult>> search(String query) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
             String encodedQuery;
@@ -56,11 +54,12 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
                     for (int i = 0; i < j.length(); i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
                         PodcastSearchResult podcast = PodcastSearchResult.fromItunes(podcastJson);
-                        podcasts.add(podcast);
+                        if (podcast.feedUrl != null) {
+                            podcasts.add(podcast);
+                        }
                     }
                 } else {
-                    String prefix = context.getString(R.string.error_msg_prefix);
-                    subscriber.onError(new IOException(prefix + response));
+                    subscriber.onError(new IOException(response.toString()));
                 }
             } catch (IOException | JSONException e) {
                 subscriber.onError(e);
@@ -69,5 +68,32 @@ public class ItunesPodcastSearcher implements PodcastSearcher {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Single<String> lookupUrl(String url) {
+        return Single.create(emitter -> {
+            OkHttpClient client = AntennapodHttpClient.getHttpClient();
+            Request.Builder httpReq = new Request.Builder().url(url);
+            try {
+                Response response = client.newCall(httpReq.build()).execute();
+                if (response.isSuccessful()) {
+                    String resultString = response.body().string();
+                    JSONObject result = new JSONObject(resultString);
+                    JSONObject results = result.getJSONArray("results").getJSONObject(0);
+                    String feedUrl = results.getString("feedUrl");
+                    emitter.onSuccess(feedUrl);
+                } else {
+                    emitter.onError(new IOException(response.toString()));
+                }
+            } catch (IOException | JSONException e) {
+                emitter.onError(e);
+            }
+        });
+    }
+
+    @Override
+    public boolean urlNeedsLookup(String url) {
+        return url.contains("itunes.apple.com");
     }
 }

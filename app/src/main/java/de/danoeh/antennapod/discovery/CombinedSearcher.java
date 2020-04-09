@@ -19,25 +19,22 @@ import java.util.concurrent.CountDownLatch;
 public class CombinedSearcher implements PodcastSearcher {
     private static final String TAG = "CombinedSearcher";
 
-    private final List<Pair<PodcastSearcher, Float>> searchProviders = new ArrayList<>();
-
     public CombinedSearcher(Context context) {
-        addProvider(new FyydPodcastSearcher(), 1.f);
-        addProvider(new ItunesPodcastSearcher(context), 1.f);
-        //addProvider(new GpodnetPodcastSearcher(), 0.6f);
-    }
-
-    private void addProvider(PodcastSearcher provider, float priority) {
-        searchProviders.add(new Pair<>(provider, priority));
     }
 
     public Single<List<PodcastSearchResult>> search(String query) {
         ArrayList<Disposable> disposables = new ArrayList<>();
-        List<List<PodcastSearchResult>> singleResults = new ArrayList<>(Collections.nCopies(searchProviders.size(), null));
-        CountDownLatch latch = new CountDownLatch(searchProviders.size());
-        for (int i = 0; i < searchProviders.size(); i++) {
-            Pair<PodcastSearcher, Float> searchProviderInfo = searchProviders.get(i);
-            PodcastSearcher searcher = searchProviderInfo.first;
+        List<List<PodcastSearchResult>> singleResults = new ArrayList<>(
+                Collections.nCopies(PodcastSearcherRegistry.getSearchProviders().size(), null));
+        CountDownLatch latch = new CountDownLatch(PodcastSearcherRegistry.getSearchProviders().size());
+        for (int i = 0; i < PodcastSearcherRegistry.getSearchProviders().size(); i++) {
+            PodcastSearcherRegistry.SearcherInfo searchProviderInfo
+                    = PodcastSearcherRegistry.getSearchProviders().get(i);
+            PodcastSearcher searcher = searchProviderInfo.searcher;
+            if (searchProviderInfo.weight <= 0.00001f) {
+                latch.countDown();
+                continue;
+            }
             final int index = i;
             disposables.add(searcher.search(query).subscribe(e -> {
                         singleResults.set(index, e);
@@ -56,7 +53,9 @@ public class CombinedSearcher implements PodcastSearcher {
         })
                 .doOnDispose(() -> {
                     for (Disposable disposable : disposables) {
-                        disposable.dispose();
+                        if (disposable != null) {
+                            disposable.dispose();
+                        }
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -67,7 +66,7 @@ public class CombinedSearcher implements PodcastSearcher {
         HashMap<String, Float> resultRanking = new HashMap<>();
         HashMap<String, PodcastSearchResult> urlToResult = new HashMap<>();
         for (int i = 0; i < singleResults.size(); i++) {
-            float providerPriority = searchProviders.get(i).second;
+            float providerPriority = PodcastSearcherRegistry.getSearchProviders().get(i).weight;
             List<PodcastSearchResult> providerResults = singleResults.get(i);
             if (providerResults == null) {
                 continue;
@@ -92,5 +91,15 @@ public class CombinedSearcher implements PodcastSearcher {
             results.add(urlToResult.get(res.getKey()));
         }
         return results;
+    }
+
+    @Override
+    public Single<String> lookupUrl(String url) {
+        return PodcastSearcherRegistry.lookupUrl(url);
+    }
+
+    @Override
+    public boolean urlNeedsLookup(String url) {
+        return PodcastSearcherRegistry.urlNeedsLookup(url);
     }
 }

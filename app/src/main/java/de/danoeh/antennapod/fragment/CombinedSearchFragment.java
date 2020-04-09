@@ -77,7 +77,6 @@ public class CombinedSearchFragment extends Fragment {
             PodcastSearchResult podcast = searchResults.get(position);
             Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
             intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
-            intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, podcast.title);
             startActivity(intent);
         });
         progressBar = root.findViewById(R.id.progressBar);

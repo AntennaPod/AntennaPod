@@ -105,27 +105,9 @@ public class ItunesSearchFragment extends Fragment {
             if (podcast.feedUrl == null) {
                 return;
             }
-            gridView.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-            disposable = loader.getFeedUrl(podcast)
-                    .subscribe(feedUrl -> {
-                        progressBar.setVisibility(View.GONE);
-                        gridView.setVisibility(View.VISIBLE);
-                        Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-                        intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, feedUrl);
-                        intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, "iTunes");
-                        startActivity(intent);
-                    }, error -> {
-                        Log.e(TAG, Log.getStackTraceString(error));
-                        progressBar.setVisibility(View.GONE);
-                        gridView.setVisibility(View.VISIBLE);
-                        String prefix = getString(R.string.error_msg_prefix);
-                        new AlertDialog.Builder(getActivity())
-                                .setMessage(prefix + " " + error.getMessage())
-                                .setPositiveButton(android.R.string.ok, null)
-                                .show();
-                    });
+            Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
+            intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
+            startActivity(intent);
         });
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
@@ -219,7 +201,7 @@ public class ItunesSearchFragment extends Fragment {
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
-        ItunesPodcastSearcher searcher = new ItunesPodcastSearcher(getContext());
+        ItunesPodcastSearcher searcher = new ItunesPodcastSearcher();
         disposable = searcher.search(query).subscribe(podcasts -> {
             progressBar.setVisibility(View.GONE);
             updateData(podcasts);
