@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -88,7 +89,8 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         holder.feedTitle.setVisibility(View.VISIBLE);
         int count = itemAccess.getFeedCounter(feed.getId());
         if(count > 0) {
-            holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
+            holder.count.setPrimaryText(String.format(Locale.getDefault(), "%d",
+                    itemAccess.getFeedCounter(feed.getId())));
             holder.count.setVisibility(View.VISIBLE);
         } else {
             holder.count.setVisibility(View.GONE);
