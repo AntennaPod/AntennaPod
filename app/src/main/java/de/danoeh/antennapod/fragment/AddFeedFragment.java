@@ -19,6 +19,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.discovery.CombinedSearcher;
+import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
+import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
 
 /**
@@ -40,9 +43,9 @@ public class AddFeedFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
 
         root.findViewById(R.id.btn_search_itunes).setOnClickListener(v
-                -> activity.loadChildFragment(new ItunesSearchFragment()));
+                -> activity.loadChildFragment(OnlineSearchFragment.newInstance(ItunesPodcastSearcher.class)));
         root.findViewById(R.id.btn_search_fyyd).setOnClickListener(v
-                -> activity.loadChildFragment(new FyydSearchFragment()));
+                -> activity.loadChildFragment(OnlineSearchFragment.newInstance(FyydPodcastSearcher.class)));
         root.findViewById(R.id.btn_search_gpodder).setOnClickListener(v
                 -> activity.loadChildFragment(new GpodnetMainFragment()));
 
@@ -89,7 +92,6 @@ public class AddFeedFragment extends Fragment {
     private void addUrl(String url) {
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, url);
-        intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, getString(R.string.add_feed_label));
         startActivity(intent);
     }
 
@@ -100,12 +102,7 @@ public class AddFeedFragment extends Fragment {
             addUrl(query);
             return;
         }
-
-        Bundle bundle = new Bundle();
-        bundle.putString(CombinedSearchFragment.ARGUMENT_QUERY, query);
-        CombinedSearchFragment fragment = new CombinedSearchFragment();
-        fragment.setArguments(bundle);
-        activity.loadChildFragment(fragment);
+        activity.loadChildFragment(OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
     }
 
     @Override

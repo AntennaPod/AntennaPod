@@ -104,7 +104,6 @@ public abstract class PodcastListFragment extends Fragment {
         Log.d(TAG, "Selected podcast: " + selection.toString());
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, selection.getUrl());
-        intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, getString(R.string.gpodnet_main_label));
         startActivity(intent);
     }
 

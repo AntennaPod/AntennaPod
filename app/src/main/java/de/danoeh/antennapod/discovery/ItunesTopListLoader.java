@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
@@ -44,35 +43,6 @@ public class ItunesTopListLoader {
             }
             List<PodcastSearchResult> podcasts = parseFeed(feedString);
             emitter.onSuccess(podcasts);
-        })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Single<String> getFeedUrl(PodcastSearchResult podcast) {
-        if (!podcast.feedUrl.contains("itunes.apple.com")) {
-            return Single.just(podcast.feedUrl)
-                    .observeOn(AndroidSchedulers.mainThread());
-        }
-        return Single.create((SingleOnSubscribe<String>) emitter -> {
-            OkHttpClient client = AntennapodHttpClient.getHttpClient();
-            Request.Builder httpReq = new Request.Builder()
-                    .url(podcast.feedUrl);
-            try {
-                Response response = client.newCall(httpReq.build()).execute();
-                if (response.isSuccessful()) {
-                    String resultString = response.body().string();
-                    JSONObject result = new JSONObject(resultString);
-                    JSONObject results = result.getJSONArray("results").getJSONObject(0);
-                    String feedUrl = results.getString("feedUrl");
-                    emitter.onSuccess(feedUrl);
-                } else {
-                    String prefix = context.getString(R.string.error_msg_prefix);
-                    emitter.onError(new IOException(prefix + response));
-                }
-            } catch (IOException | JSONException e) {
-                emitter.onError(e);
-            }
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
