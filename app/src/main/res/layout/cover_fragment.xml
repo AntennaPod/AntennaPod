@@ -1,63 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="8dp"
     android:gravity="center">
-
-    <LinearLayout
-        android:id="@+id/imgCoverLayout"
-        android:layout_centerInParent="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_above="@+id/txtvPodcastTitle"
-        >
 
     <de.danoeh.antennapod.view.SquareImageView
         android:id="@+id/imgvCover"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:contentDescription="@string/cover_label"
+        android:scaleType="fitCenter"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
-        android:gravity="center_horizontal"
-        android:contentDescription="@string/cover_label"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="centerInside"
         android:transitionName="coverTransition"
-        squareImageView:direction="height"
-        tools:src="@android:drawable/sym_def_app_icon" />
-    </LinearLayout>
+        tools:src="@android:drawable/sym_def_app_icon"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        squareImageView:direction="minimum" />
 
     <TextView
         android:id="@+id/txtvPodcastTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:ellipsize="end"
-        android:textAlignment="center"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:maxLines="2"
+        android:layout_marginTop="16dp"
         android:textColor="?android:attr/textColorSecondary"
         android:textIsSelectable="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
         tools:text="Podcast" />
 
     <TextView
         android:id="@+id/txtvEpisodeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:ellipsize="end"
-        android:textAlignment="center"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:maxLines="2"
         android:textColor="?android:attr/textColorPrimary"
         android:textIsSelectable="true"
-        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="8dp"
         tools:text="Episode" />
 
-</RelativeLayout>
+</LinearLayout>
