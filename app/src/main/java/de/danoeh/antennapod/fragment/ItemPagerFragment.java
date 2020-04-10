@@ -85,7 +85,7 @@ public class ItemPagerFragment extends Fragment {
         int newId = ViewCompat.generateViewId();
         pager.setId(newId);
         pager.setAdapter(new ItemPagerAdapter(this));
-        pager.setCurrentItem(feedItemPos);
+        pager.setCurrentItem(feedItemPos, false);
         loadItem(feedItems[feedItemPos]);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
