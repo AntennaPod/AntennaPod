@@ -9,7 +9,7 @@ function generateText() {
 function simplePhone() {
     generateText "$1"
     convert templates/phone.png \
-        $2 -geometry +306+989 -composite \
+        $2 -geometry +306+992 -composite \
         /tmp/text.png -geometry +0+0 -composite \
         $3
 }
@@ -30,24 +30,31 @@ function generateScreenshots() {
 
     simplePhone "$text0" raw/$language/00.png output/$language/00.png
     simplePhone "$text1" raw/$language/01.png output/$language/01.png
-    simplePhone "$text2" raw/$language/02.png output/$language/02.png
+    simplePhone "$text2" raw/$language/02.png output/$language/03.png
     generateText "$text3"
     convert templates/twophones.png \
-        templates/twophones-a.png -geometry +0+0 -composite \
-        raw/$language/03a.png -geometry +119+984 -composite \
+        templates/twophones-a.png -geometry +0+10 -composite \
+        raw/$language/03a.png -geometry +119+992 -composite \
         templates/twophones-b.png -geometry +0+0 -composite \
         raw/$language/03b.png -geometry +479+1540 -composite \
         /tmp/text.png -geometry +0+0 -composite \
-        output/$language/03.png
+        output/$language/02.png
     simplePhone "$text4" raw/$language/04.png output/$language/04.png
     simplePhone "$text5" raw/$language/05.png output/$language/05.png
     addLayer templates/suggestions.png output/$language/05.png
+    mogrify -resize 1120 output/$language/*.png
     optipng output/$language/*.png
 }
 
 mkdir output 2>/dev/null
 
-generateScreenshots "de-DE"
-generateScreenshots "en-US"
+generateScreenshots "de-DE" &
+pids[0]=$!
+generateScreenshots "en-US" &
+pids[1]=$!
+
+for pid in ${pids[*]}; do
+    wait $pid
+done
 
 rm /tmp/text.png
