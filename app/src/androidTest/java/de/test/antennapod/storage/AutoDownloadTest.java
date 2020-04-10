@@ -1,15 +1,20 @@
 package de.test.antennapod.storage;
 
 import android.content.Context;
-import android.content.Intent;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
-
-import androidx.test.platform.app.InstrumentationRegistry;
+import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.DBTasksCallbacks;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.test.antennapod.EspressoTestUtils;
+import de.test.antennapod.ui.UITestUtils;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
 import org.junit.After;
@@ -17,21 +22,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.DBTasksCallbacks;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.test.antennapod.ui.UITestUtils;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.Assert.assertTrue;
@@ -100,13 +90,12 @@ public class AutoDownloadTest {
             // ensure that currently playing has been advanced to the next one by this point.
             Awaitility.await("advanced to the next episode")
                     .atMost(6000, MILLISECONDS) // the test mp3 media is 3-second long. twice should be enough
-                    .until(() -> item1.equals(stubDownloadAlgorithm.getCurrentlyPlayingAtDownload()));
+                    .until(() -> item1.getMedia().getId() == stubDownloadAlgorithm.getCurrentlyPlayingAtDownload());
         } catch (ConditionTimeoutException cte) {
-            FeedItem actual = stubDownloadAlgorithm.getCurrentlyPlayingAtDownload();
+            long actual = stubDownloadAlgorithm.getCurrentlyPlayingAtDownload();
             fail("when auto download is triggered, the next episode should be playing: ("
                     + item1.getId() + ", "  + item1.getTitle() + ") . "
-                    + "Actual playing: ("
-                    + (actual == null ? "" : actual.getId() + ", " + actual.getTitle()) + ")"
+                    + "Actual playing: (" + actual + ")"
             );
         }
 
@@ -121,15 +110,7 @@ public class AutoDownloadTest {
                 .start();
         Awaitility.await("episode is playing")
                 .atMost(2000, MILLISECONDS)
-                .until(() -> item.equals(getCurrentlyPlaying()));
-    }
-
-    private FeedItem getCurrentlyPlaying() {
-        Playable playable = Playable.PlayableUtils.createInstanceFromPreferences(context);
-        if (playable == null) {
-            return null;
-        }
-        return ((FeedMedia) playable).getItem();
+                .until(() -> item.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
     }
 
     private void useDownloadAlgorithm(final AutomaticDownloadAlgorithm downloadAlgorithm) {
@@ -146,23 +127,21 @@ public class AutoDownloadTest {
         };
     }
 
-    private class StubDownloadAlgorithm implements AutomaticDownloadAlgorithm {
-        @Nullable
-        private FeedItem currentlyPlaying;
+    private static class StubDownloadAlgorithm implements AutomaticDownloadAlgorithm {
+        private long currentlyPlaying = -1;
 
         @Override
         public Runnable autoDownloadUndownloadedItems(Context context) {
             return () -> {
-                if (currentlyPlaying == null) {
-                    currentlyPlaying = getCurrentlyPlaying();
+                if (currentlyPlaying == -1) {
+                    currentlyPlaying = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
                 } else {
                     throw new AssertionError("Stub automatic download should be invoked once and only once");
                 }
             };
         }
 
-        @Nullable
-        FeedItem getCurrentlyPlayingAtDownload() {
+        long getCurrentlyPlayingAtDownload() {
             return currentlyPlaying;
         }
     }
