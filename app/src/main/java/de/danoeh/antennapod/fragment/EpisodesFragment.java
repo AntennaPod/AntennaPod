@@ -74,7 +74,7 @@ public class EpisodesFragment extends Fragment {
         // restore our last position
         SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
         int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
-        viewPager.setCurrentItem(lastPosition);
+        viewPager.setCurrentItem(lastPosition, false);
 
         return rootView;
     }
