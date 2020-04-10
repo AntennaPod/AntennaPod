@@ -59,7 +59,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.1.0"
     implementation "androidx.preference:preference:1.1.0"
     annotationProcessor "androidx.annotation:annotation:1.1.0"
-    implementation "android.arch.work:work-runtime:$workManagerVersion"
+    implementation "androidx.work:work-runtime:$workManagerVersion"
     implementation "androidx.media:media:1.1.0"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
