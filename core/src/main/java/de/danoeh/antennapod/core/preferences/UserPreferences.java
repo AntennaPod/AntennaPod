@@ -695,7 +695,7 @@ public class UserPreferences {
              .apply();
         // when updating with an interval, we assume the user wants
         // to update *now* and then every 'hours' interval thereafter.
-        AutoUpdateManager.restartUpdateAlarm();
+        AutoUpdateManager.restartUpdateAlarm(context);
     }
 
     /**
@@ -705,14 +705,14 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
              .apply();
-        AutoUpdateManager.restartUpdateAlarm();
+        AutoUpdateManager.restartUpdateAlarm(context);
     }
 
-    public static void disableAutoUpdate() {
+    public static void disableAutoUpdate(Context context) {
         prefs.edit()
                 .putString(PREF_UPDATE_INTERVAL, "0")
                 .apply();
-        AutoUpdateManager.disableAutoUpdate();
+        AutoUpdateManager.disableAutoUpdate(context);
     }
 
     public static boolean gpodnetNotificationsEnabled() {

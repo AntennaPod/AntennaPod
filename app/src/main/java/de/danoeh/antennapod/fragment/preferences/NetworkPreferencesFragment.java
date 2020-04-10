@@ -148,7 +148,7 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
             timePickerDialog.show();
         });
         builder.setNeutralButton(R.string.pref_autoUpdateIntervallOrTime_Disable, (dialog, which) -> {
-            UserPreferences.disableAutoUpdate();
+            UserPreferences.disableAutoUpdate(context);
             setUpdateIntervalText();
         });
         builder.show();
