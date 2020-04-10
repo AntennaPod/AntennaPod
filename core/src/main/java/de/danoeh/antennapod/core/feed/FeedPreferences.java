@@ -55,7 +55,7 @@ public class FeedPreferences {
         this.password = password;
         this.filter = filter;
         this.feedPlaybackSpeed = feedPlaybackSpeed;
-        this.feedSkipIntro= feedSkipIntro;
+        this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
     }
 
@@ -228,11 +228,19 @@ public class FeedPreferences {
         feedPlaybackSpeed = playbackSpeed;
     }
 
-    public void setFeedSkipIntro(int skipIntro) { feedSkipIntro = skipIntro; }
+    public void setFeedSkipIntro(int skipIntro) {
+        feedSkipIntro = skipIntro;
+    }
 
-    public int getFeedSkipIntro() { return feedSkipIntro; }
+    public int getFeedSkipIntro() {
+        return feedSkipIntro;
+    }
 
-    public void setFeedSkipEnding(int skipEnding) { feedSkipEnding = skipEnding; }
+    public void setFeedSkipEnding(int skipEnding) {
+        feedSkipEnding = skipEnding;
+    }
 
-    public int getFeedSkipEnding() { return feedSkipEnding; }
+    public int getFeedSkipEnding() {
+        return feedSkipEnding;
+    }
 }

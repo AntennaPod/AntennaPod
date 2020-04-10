@@ -212,7 +212,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
 
-    FeedMedia autoSkippedFeedMedia;
+    private long autoSkippedFeedMediaId = -1;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -1027,7 +1027,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             media.onPlaybackPause(getApplicationContext());
         }
 
-        if (autoSkippedFeedMedia != null && autoSkippedFeedMedia.getId() == media.getId()) {
+        if (autoSkippedFeedMediaId >= 0 && autoSkippedFeedMediaId == media.getId()) {
             ended = true;
         }
 
@@ -1093,7 +1093,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Toast toast = Toast.makeText(context, skipMesg, Toast.LENGTH_LONG);
             toast.show();
 
-            this.autoSkippedFeedMedia = feedMedia;
+            this.autoSkippedFeedMediaId = feedMedia.getItem().getId();
             mediaPlayer.skip();
         }
    }
