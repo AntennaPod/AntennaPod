@@ -32,7 +32,7 @@ public class AutoUpdateManager {
 
     /**
      * Start / restart periodic auto feed refresh
-     * @param context
+     * @param context Context
      */
     public static void restartUpdateAlarm(Context context) {
         if (UserPreferences.isAutoUpdateDisabled()) {
@@ -82,7 +82,8 @@ public class AutoUpdateManager {
                 .setInitialDelay(triggerAtMillis, TimeUnit.MILLISECONDS)
                 .build();
 
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE,
+                ExistingWorkPolicy.REPLACE, workRequest);
     }
 
     /**
@@ -90,7 +91,7 @@ public class AutoUpdateManager {
      *
      * Callers from UI should use {@link #runImmediate(Context)}, as it will guarantee
      * the refresh be run immediately.
-     * @param context
+     * @param context Context
      */
     public static void runOnce(Context context) {
         Log.d(TAG, "Run auto update once, as soon as OS allows.");
@@ -104,7 +105,8 @@ public class AutoUpdateManager {
                 )
                 .build();
 
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE_ONCE, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE_ONCE,
+                ExistingWorkPolicy.REPLACE, workRequest);
 
     }
 
