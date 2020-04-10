@@ -282,7 +282,7 @@ public class RemoteMedia implements Playable {
         dest.writeString(imageUrl);
         dest.writeString(feedLink);
         dest.writeString(mimeType);
-        dest.writeLong(pubDate.getTime());
+        dest.writeLong((pubDate != null) ? pubDate.getTime() : 0);
         dest.writeString(notes);
         dest.writeInt(duration);
         dest.writeInt(position);
