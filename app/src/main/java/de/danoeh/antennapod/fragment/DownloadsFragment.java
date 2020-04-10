@@ -67,6 +67,11 @@ public class DownloadsFragment extends Fragment {
             }
         }).attach();
 
+        // restore our last position
+        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
+        viewPager.setCurrentItem(lastPosition);
+
         return root;
     }
 
@@ -87,16 +92,6 @@ public class DownloadsFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_LAST_TAB_POSITION, tabLayout.getSelectedTabPosition());
         editor.apply();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // restore our last position
-        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
-        viewPager.setCurrentItem(lastPosition);
     }
 
     public static class DownloadsPagerAdapter extends FragmentStateAdapter {

@@ -71,6 +71,11 @@ public class EpisodesFragment extends Fragment {
             }
         }).attach();
 
+        // restore our last position
+        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
+        viewPager.setCurrentItem(lastPosition);
+
         return rootView;
     }
 
@@ -82,16 +87,6 @@ public class EpisodesFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PREF_LAST_TAB_POSITION, tabLayout.getSelectedTabPosition());
         editor.apply();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // restore our last position
-        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
-        viewPager.setCurrentItem(lastPosition);
     }
 
     static class EpisodesPagerAdapter extends FragmentStateAdapter {
