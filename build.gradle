@@ -46,7 +46,7 @@ project.ext {
     minSdkVersion = 16
     targetSdkVersion = 28
 
-    workManagerVersion = "1.0.1"
+    workManagerVersion = "2.3.4"
     espressoVersion = "3.2.0"
     awaitilityVersion = "3.1.6"
     commonsioVersion = "2.5"
