@@ -57,11 +57,11 @@ public class EpisodesFragment extends Fragment {
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
-                case POS_ALL_EPISODES:
-                    tab.setText(R.string.all_episodes_short_label);
-                    break;
                 case POS_NEW_EPISODES:
                     tab.setText(R.string.new_episodes_label);
+                    break;
+                case POS_ALL_EPISODES:
+                    tab.setText(R.string.all_episodes_short_label);
                     break;
                 case POS_FAV_EPISODES:
                     tab.setText(R.string.favorite_episodes_label);
@@ -94,7 +94,7 @@ public class EpisodesFragment extends Fragment {
         viewPager.setCurrentItem(lastPosition);
     }
 
-    public class EpisodesPagerAdapter extends FragmentStateAdapter {
+    static class EpisodesPagerAdapter extends FragmentStateAdapter {
 
         EpisodesPagerAdapter(@NonNull Fragment fragment) {
             super(fragment);
@@ -104,11 +104,12 @@ public class EpisodesFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
             switch (position) {
-                case 0:
+                case POS_NEW_EPISODES:
                     return new NewEpisodesFragment();
-                case 1:
+                case POS_ALL_EPISODES:
                     return new AllEpisodesFragment();
                 default:
+                case POS_FAV_EPISODES:
                     return new FavoriteEpisodesFragment();
             }
         }

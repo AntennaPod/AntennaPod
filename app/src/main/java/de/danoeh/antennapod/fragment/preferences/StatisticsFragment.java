@@ -80,10 +80,10 @@ public class StatisticsFragment extends Fragment {
         @Override
         public Fragment createFragment(int position) {
             switch (position) {
-                case 0:
+                case POS_LISTENED_HOURS:
                     return new PlaybackStatisticsFragment();
                 default:
-                case 1:
+                case POS_SPACE_TAKEN:
                     return new DownloadStatisticsFragment();
             }
         }
