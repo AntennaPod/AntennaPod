@@ -131,7 +131,7 @@ public class AudioPlayerFragment extends Fragment implements
         pager = root.findViewById(R.id.pager);
         pager.setAdapter(new AudioPlayerPagerAdapter(this));
         // Required for getChildAt(int) in ViewPagerBottomSheetBehavior to return the correct page
-        // pager.setOffscreenPageLimit(NUM_CONTENT_FRAGMENTS);
+        pager.setOffscreenPageLimit((int) NUM_CONTENT_FRAGMENTS);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
