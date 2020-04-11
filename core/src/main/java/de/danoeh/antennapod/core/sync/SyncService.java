@@ -168,7 +168,7 @@ public class SyncService extends Worker {
 
     public static void sync(Context context) {
         OneTimeWorkRequest workRequest = getWorkRequest().build();
-        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 
@@ -176,7 +176,7 @@ public class SyncService extends Worker {
         OneTimeWorkRequest workRequest = getWorkRequest()
                 .setInitialDelay(0L, TimeUnit.SECONDS)
                 .build();
-        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 
@@ -192,7 +192,7 @@ public class SyncService extends Worker {
                 .setInitialDelay(0L, TimeUnit.SECONDS)
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.MINUTES)
                 .build();
-        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
         EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
     }
 

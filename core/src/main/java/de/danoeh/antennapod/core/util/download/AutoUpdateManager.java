@@ -32,24 +32,25 @@ public class AutoUpdateManager {
 
     /**
      * Start / restart periodic auto feed refresh
+     * @param context Context
      */
-    public static void restartUpdateAlarm() {
+    public static void restartUpdateAlarm(Context context) {
         if (UserPreferences.isAutoUpdateDisabled()) {
-            disableAutoUpdate();
+            disableAutoUpdate(context);
         } else if (UserPreferences.isAutoUpdateTimeOfDay()) {
             int[] timeOfDay = UserPreferences.getUpdateTimeOfDay();
             Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
-            restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
+            restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1], context);
         } else {
             long milliseconds = UserPreferences.getUpdateInterval();
-            restartUpdateIntervalAlarm(milliseconds);
+            restartUpdateIntervalAlarm(milliseconds, context);
         }
     }
 
     /**
      * Sets the interval in which the feeds are refreshed automatically
      */
-    private static void restartUpdateIntervalAlarm(long intervalMillis) {
+    private static void restartUpdateIntervalAlarm(long intervalMillis, Context context) {
         Log.d(TAG, "Restarting update alarm.");
 
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(FeedUpdateWorker.class,
@@ -57,14 +58,14 @@ public class AutoUpdateManager {
                 .setConstraints(getConstraints())
                 .build();
 
-        WorkManager.getInstance().enqueueUniquePeriodicWork(
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 WORK_ID_FEED_UPDATE, ExistingPeriodicWorkPolicy.REPLACE, workRequest);
     }
 
     /**
      * Sets time of day the feeds are refreshed automatically
      */
-    private static void restartUpdateTimeOfDayAlarm(int hoursOfDay, int minute) {
+    private static void restartUpdateTimeOfDayAlarm(int hoursOfDay, int minute, Context context) {
         Log.d(TAG, "Restarting update alarm.");
 
         Calendar now = Calendar.getInstance();
@@ -81,7 +82,8 @@ public class AutoUpdateManager {
                 .setInitialDelay(triggerAtMillis, TimeUnit.MILLISECONDS)
                 .build();
 
-        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_FEED_UPDATE, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE,
+                ExistingWorkPolicy.REPLACE, workRequest);
     }
 
     /**
@@ -89,8 +91,9 @@ public class AutoUpdateManager {
      *
      * Callers from UI should use {@link #runImmediate(Context)}, as it will guarantee
      * the refresh be run immediately.
+     * @param context Context
      */
-    public static void runOnce() {
+    public static void runOnce(Context context) {
         Log.d(TAG, "Run auto update once, as soon as OS allows.");
 
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(FeedUpdateWorker.class)
@@ -102,7 +105,8 @@ public class AutoUpdateManager {
                 )
                 .build();
 
-        WorkManager.getInstance().enqueueUniqueWork(WORK_ID_FEED_UPDATE_ONCE, ExistingWorkPolicy.REPLACE, workRequest);
+        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_FEED_UPDATE_ONCE,
+                ExistingWorkPolicy.REPLACE, workRequest);
 
     }
 
@@ -110,7 +114,7 @@ public class AutoUpdateManager {
      /**
      * Run auto feed refresh once in background immediately, using its own thread.
      *
-     * Callers where the additional threads is not suitable should use {@link #runOnce()}
+     * Callers where the additional threads is not suitable should use {@link #runOnce(Context)}
      */
     public static void runImmediate(@NonNull Context context) {
         Log.d(TAG, "Run auto update immediately in background.");
@@ -119,8 +123,8 @@ public class AutoUpdateManager {
         }, "ManualRefreshAllFeeds").start();
     }
 
-    public static void disableAutoUpdate() {
-        WorkManager.getInstance().cancelUniqueWork(WORK_ID_FEED_UPDATE);
+    public static void disableAutoUpdate(Context context) {
+        WorkManager.getInstance(context).cancelUniqueWork(WORK_ID_FEED_UPDATE);
     }
 
     private static Constraints getConstraints() {

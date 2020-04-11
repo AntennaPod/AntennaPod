@@ -24,7 +24,7 @@ public class PreferenceUpgrader {
         int newVersion = BuildConfig.VERSION_CODE;
 
         if (oldVersion != newVersion) {
-            AutoUpdateManager.restartUpdateAlarm();
+            AutoUpdateManager.restartUpdateAlarm(context);
 
             upgrade(oldVersion);
             upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
