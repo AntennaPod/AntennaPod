@@ -317,7 +317,7 @@ public class NavListAdapter extends BaseAdapter
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.nav_feedlistitem, parent, false);
+            convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
 
             holder.image = convertView.findViewById(R.id.imgvCover);
             holder.title = convertView.findViewById(R.id.txtvTitle);

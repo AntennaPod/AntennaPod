@@ -18,7 +18,6 @@
         android:adjustViewBounds="true"
         android:cropToPadding="true"
         android:scaleType="centerInside"
-        android:padding="4dp"
         android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
         android:layout_marginStart="@dimen/listitem_icon_leftpadding"
         android:layout_marginTop="4dp"
@@ -44,13 +43,31 @@
         android:layout_toEndOf="@id/imgvCover"
         tools:text="Navigation item title" />
 
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/itxtvFailure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/txtvCount"
+        android:layout_toStartOf="@id/txtvCount"
+        android:layout_marginLeft="@dimen/list_vertical_padding"
+        android:layout_marginStart="@dimen/list_vertical_padding"
+        android:layout_alignWithParentIfMissing="true"
+        android:lines="1"
+        android:text="{fa-exclamation-circle}"
+        android:textColor="@color/download_failed_red"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        tools:text="!"
+        tools:background="@android:color/holo_green_dark"/>
+
     <TextView
         android:id="@+id/txtvCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lines="1"
         android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_navdrawer"
+        android:textSize="14sp"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
         android:layout_marginRight="@dimen/listitem_icon_rightpadding"
