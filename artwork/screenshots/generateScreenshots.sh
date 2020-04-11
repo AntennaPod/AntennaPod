@@ -2,7 +2,7 @@
 
 function generateText() {
     echo "$1"
-    convert -size 1698x750 xc:none -gravity Center -pointsize 150 -fill white -font Lato-Regular \
+    convert -size 1698x750 xc:none -gravity Center -pointsize 130 -fill white -font Lato-Regular \
         -annotate 0 "$1" /tmp/text.png
 }
 
@@ -42,19 +42,13 @@ function generateScreenshots() {
     simplePhone "$text4" raw/$language/04.png output/$language/04.png
     simplePhone "$text5" raw/$language/05.png output/$language/05.png
     addLayer templates/suggestions.png output/$language/05.png
-    mogrify -resize 1120 output/$language/*.png
-    optipng output/$language/*.png
+    mogrify -resize 1120 "output/$language/*.png"
 }
 
 mkdir output 2>/dev/null
 
-generateScreenshots "de-DE" &
-pids[0]=$!
-generateScreenshots "en-US" &
-pids[1]=$!
-
-for pid in ${pids[*]}; do
-    wait $pid
-done
+generateScreenshots "de-DE"
+generateScreenshots "en-US"
+generateScreenshots "nl-NL"
 
 rm /tmp/text.png
