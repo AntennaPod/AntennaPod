@@ -12,7 +12,7 @@ a {
      font-style: normal;
      text-decoration: none;
      font-weight: normal;
-     color: #00A8DF;
+     color: %s;
 }
 a.timecode {
      color: #669900;

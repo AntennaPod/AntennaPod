@@ -55,6 +55,7 @@
     <attr name="drawer_activated_color" format="color"/>
     <attr name="batch_edit_fab_icon" format="reference"/>
     <attr name="action_icon_color" format="color"/>
+    <attr name="scrollbar_thumb" format="reference"/>
 
     <declare-styleable name="SquareImageView">
         <attr name="direction" format="enum">

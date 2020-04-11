@@ -7,11 +7,10 @@
 
     <style name="Theme.Base.AntennaPod.Light" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primary_light</item>
-        <item name="colorAccent">@color/holo_blue_light</item>
+        <item name="colorAccent">@color/accent_light</item>
         <item name="progressBarTheme">@style/ProgressBarLight</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="android:windowBackground">@color/primary_light</item>
-        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Light</item>
         <item name="storage">@drawable/ic_storage_black</item>
         <item name="ic_network">@drawable/ic_network_black</item>
         <item name="statistics">@drawable/ic_statistics_black</item>
@@ -67,6 +66,7 @@
         <item name="currently_playing_background">@color/highlight_light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="action_icon_color">@color/black</item>
+        <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -74,14 +74,13 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dark" parent="Theme.AppCompat">
-        <item name="colorAccent">@color/holo_blue_dark</item>
+        <item name="colorAccent">@color/accent_dark</item>
         <item name="colorPrimary">@color/primary_darktheme</item>
         <item name="colorPrimaryDark">@color/primary_darktheme</item>
         <item name="android:windowBackground">@color/primary_darktheme</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
-        <item name="alertDialogTheme">@style/AntennaPod.Dialog.Dark</item>
         <item name="storage">@drawable/ic_storage_white</item>
         <item name="ic_network">@drawable/ic_network_white</item>
         <item name="statistics">@drawable/ic_statistics_white</item>
@@ -137,6 +136,7 @@
         <item name="currently_playing_background">@color/highlight_dark</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="action_icon_color">@color/white</item>
+        <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
@@ -144,7 +144,6 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.Dark">
-        <item name="progressBarTheme">@style/ProgressBarTrueBlack</item>
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_black</item>
         <item name="drawer_activated_color">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
@@ -267,22 +266,14 @@
 
     <style name="AntennaPod.TextView.UnreadIndicator" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">@dimen/text_size_micro</item>
-        <item name="android:textColor">@color/new_indicator_green</item>
+        <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:text">@string/new_label</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
     <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">@color/antennapod_blue</item>
+        <item name="colorButtonNormal">?attr/colorAccent</item>
         <item name="textAllCaps">false</item>
-    </style>
-
-    <style name="AntennaPod.Dialog.Light" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/holo_blue_light</item>
-    </style>
-
-    <style name="AntennaPod.Dialog.Dark" parent="Theme.AppCompat.Dialog">
-        <item name="colorAccent">@color/holo_blue_dark</item>
     </style>
 
     <style name="BigBlurryBackground">
@@ -303,17 +294,12 @@
         <item name="android:progressDrawable">@drawable/progress_bar_horizontal_dark</item>
     </style>
 
-    <style name="ProgressBarTrueBlack">
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/progress_bar_horizontal_trueblack</item>
-    </style>
-
     <style name="FastScrollRecyclerView" parent="android:Widget">
         <item name="android:scrollbars">none</item>
         <item name="fastScrollEnabled">true</item>
-        <item name="fastScrollHorizontalThumbDrawable">@drawable/scrollbar_thumb</item>
+        <item name="fastScrollHorizontalThumbDrawable">?attr/scrollbar_thumb</item>
         <item name="fastScrollHorizontalTrackDrawable">@drawable/scrollbar_track</item>
-        <item name="fastScrollVerticalThumbDrawable">@drawable/scrollbar_thumb</item>
+        <item name="fastScrollVerticalThumbDrawable">?attr/scrollbar_thumb</item>
         <item name="fastScrollVerticalTrackDrawable">@drawable/scrollbar_track</item>
     </style>
 
