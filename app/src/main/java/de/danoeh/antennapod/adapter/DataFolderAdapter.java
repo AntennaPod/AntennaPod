@@ -2,15 +2,17 @@ package de.danoeh.antennapod.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.widget.ProgressBar;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +20,6 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.dialog.ChooseDataFolderDialog;
 
@@ -48,8 +49,9 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         StoragePath storagePath = entries.get(position);
-        String freeSpace = Converter.byteToString(storagePath.getAvailableSpace());
-        String totalSpace = Converter.byteToString(storagePath.getTotalSpace());
+        Context context = holder.root.getContext();
+        String freeSpace = Formatter.formatShortFileSize(context, storagePath.getAvailableSpace());
+        String totalSpace = Formatter.formatShortFileSize(context, storagePath.getTotalSpace());
 
         holder.path.setText(storagePath.getShortPath());
         holder.size.setText(String.format(freeSpaceString, freeSpace, totalSpace));

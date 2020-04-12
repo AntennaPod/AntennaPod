@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.text.format.Formatter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.view.CircularProgressBar;
 
@@ -79,9 +79,9 @@ public class DownloadlistAdapter extends BaseAdapter {
         if (request.getSoFar() <= 0) {
             status += context.getString(R.string.download_pending);
         } else {
-            status += Converter.byteToString(request.getSoFar());
+            status += Formatter.formatShortFileSize(context, request.getSoFar());
             if (request.getSize() != DownloadStatus.SIZE_UNKNOWN) {
-                status += " / " + Converter.byteToString(request.getSize());
+                status += " / " + Formatter.formatShortFileSize(context, request.getSize());
                 holder.secondaryActionProgress.setPercentage(
                         0.01f * Math.max(1, request.getProgressPercent()), request);
             }
