@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,7 +71,7 @@ import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REM
 public class QueueFragment extends Fragment {
     public static final String TAG = "QueueFragment";
 
-    private TextView infoBar;
+    private Toolbar toolbar;
     private EpisodeItemListRecyclerView recyclerView;
     private QueueRecyclerAdapter recyclerAdapter;
     private EmptyViewHandler emptyView;
@@ -445,8 +446,8 @@ public class QueueFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
-        infoBar = root.findViewById(R.id.info_bar);
+        toolbar = root.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         recyclerView = root.findViewById(R.id.recyclerView);
         RecyclerView.ItemAnimator animator = recyclerView.getItemAnimator();
         if (animator instanceof SimpleItemAnimator) {
@@ -597,7 +598,7 @@ public class QueueFragment extends Fragment {
             info += getString(R.string.time_left_label);
             info += Converter.getDurationStringLocalized(getActivity(), timeLeft);
         }
-        infoBar.setText(info);
+        toolbar.setSubtitle(info);
     }
 
     private void loadItems(final boolean restoreScrollPosition) {
