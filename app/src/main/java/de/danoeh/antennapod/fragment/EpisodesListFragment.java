@@ -83,7 +83,6 @@ public abstract class EpisodesListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        setHasOptionsMenu(true);
         EventBus.getDefault().register(this);
         loadItems();
     }
@@ -91,6 +90,7 @@ public abstract class EpisodesListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        setHasOptionsMenu(true);
         registerForContextMenu(recyclerView);
     }
 
