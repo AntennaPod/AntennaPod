@@ -9,9 +9,12 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.core.text.TextUtilsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
+
+import java.util.Locale;
 
 public class PagerIndicatorView extends View {
     private final Paint paint = new Paint();
@@ -56,11 +59,13 @@ public class PagerIndicatorView extends View {
                 invalidate();
             }
         });
+        boolean isLocaleRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
+                == ViewCompat.LAYOUT_DIRECTION_RTL;
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 PagerIndicatorView.this.position = position + positionOffset;
-                if (ViewCompat.getLayoutDirection(pager) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+                if (isLocaleRtl) {
                     PagerIndicatorView.this.position = numPages - 1 - PagerIndicatorView.this.position;
                 }
                 invalidate();
