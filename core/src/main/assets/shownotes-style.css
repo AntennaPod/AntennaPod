@@ -24,7 +24,7 @@ img, iframe {
      height: auto;
 }
 body {
-     margin: %dpx %dpx %dpx %dpx;
+     padding: %dpx %dpx %dpx %dpx;
 }
 p#apNoShownotes {
     position: fixed;
