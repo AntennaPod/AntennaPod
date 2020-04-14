@@ -10,6 +10,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -27,6 +28,7 @@ import de.test.antennapod.ui.UITestUtils;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,6 +56,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -191,6 +194,18 @@ public class PlaybackTest {
         activityTestRule.launchActivity(new Intent());
         DBWriter.clearQueue().get();
         startLocalPlayback();
+    }
+
+    @Test
+    public void testPlayingItemAddsToQueue() throws Exception {
+        uiTestUtils.addLocalFeedData(true);
+        activityTestRule.launchActivity(new Intent());
+        DBWriter.clearQueue().get();
+        List<FeedItem> queue = DBReader.getQueue();
+        assertEquals(0, queue.size());
+        startLocalPlayback();
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(
+                () -> 1 == DBReader.getQueue().size());
     }
 
     @Test
