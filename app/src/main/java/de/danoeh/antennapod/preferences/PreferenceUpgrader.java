@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
@@ -25,6 +26,7 @@ public class PreferenceUpgrader {
 
         if (oldVersion != newVersion) {
             AutoUpdateManager.restartUpdateAlarm(context);
+            CrashReportWriter.getFile().delete();
 
             upgrade(oldVersion);
             upgraderPrefs.edit().putInt(PREF_CONFIGURED_VERSION, newVersion).apply();
