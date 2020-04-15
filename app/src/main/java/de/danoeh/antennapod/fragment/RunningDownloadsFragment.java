@@ -1,8 +1,15 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.res.TypedArray;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.ListFragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,7 +47,7 @@ public class RunningDownloadsFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        setHasOptionsMenu(true);
         // add padding
         final ListView lv = getListView();
         lv.setClipToPadding(false);
@@ -74,6 +81,39 @@ public class RunningDownloadsFragment extends ListFragment {
     public void onDestroy() {
         super.onDestroy();
         setListAdapter(null);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem clearHistory = menu.add(Menu.NONE, R.id.action_bar_refresh, Menu.CATEGORY_CONTAINER, R.string.refresh_label);
+        MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.navigation_refresh});
+        clearHistory.setIcon(drawables.getDrawable(0));
+        drawables.recycle();
+    }
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.action_bar_refresh);
+        if (menuItem != null) {
+            menuItem.setVisible(true);
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (!super.onOptionsItemSelected(item)) {
+            switch (item.getItemId()) {
+                case R.id.action_bar_refresh:
+                    DownloadEvent event=DownloadEvent.refresh(downloaderList);
+                    onEvent(event);
+                    return true;
+                default:
+                    return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
