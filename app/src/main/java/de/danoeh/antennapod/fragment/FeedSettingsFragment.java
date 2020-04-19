@@ -101,6 +101,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
         private static final CharSequence PREF_SCREEN = "feedSettingsScreen";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
+        private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final DecimalFormat SPEED_FORMAT =
                 new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
@@ -163,7 +164,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupFeedAutoSkipPreference() {
-            findPreference("skipping").setOnPreferenceClickListener(preference -> {
+            findPreference(PREF_AUTO_SKIP).setOnPreferenceClickListener(preference -> {
                 new FeedPreferenceSkipDialog(getContext(),
                         feedPreferences.getFeedSkipIntro(),
                         feedPreferences.getFeedSkipEnding()) {
