@@ -51,6 +51,8 @@
         android:layout_toStartOf="@id/txtvCount"
         android:layout_marginLeft="@dimen/list_vertical_padding"
         android:layout_marginStart="@dimen/list_vertical_padding"
+        android:layout_marginRight="@dimen/list_vertical_padding"
+        android:layout_marginEnd="@dimen/list_vertical_padding"
         android:layout_alignWithParentIfMissing="true"
         android:lines="1"
         android:text="{fa-exclamation-circle}"
