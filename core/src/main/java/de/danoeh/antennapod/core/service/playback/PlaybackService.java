@@ -497,6 +497,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return Service.START_NOT_STICKY;
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+                addPlayableToQueue(playable);
             } else {
                 Log.d(TAG, "Did not handle intent to PlaybackService: " + intent);
                 Log.d(TAG, "Extras: " + intent.getExtras());
@@ -652,6 +653,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaPlayer.playMediaObject(playable, PlaybackPreferences.getCurrentEpisodeIsStream(), true, true);
             stateManager.validStartCommandWasReceived();
             PlaybackService.this.updateMediaSessionMetadata(playable);
+            addPlayableToQueue(playable);
         } else {
             stateManager.stopService();
         }
@@ -1636,6 +1638,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     }
 
+    private void addPlayableToQueue(Playable playable) {
+        if (playable instanceof FeedMedia) {
+            long itemId = ((FeedMedia) playable).getId();
+            DBWriter.addQueueItem(this, false, false, itemId);
+        }
+    }
+
     private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
 
         private static final String TAG = "MediaSessionCompat";
@@ -1658,6 +1667,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             FeedMedia p = DBReader.getFeedMedia(Long.parseLong(mediaId));
             if (p != null) {
                 mediaPlayer.playMediaObject(p, !p.localFileAvailable(), true, true);
+                addPlayableToQueue(p);
             }
         }
 
@@ -1669,6 +1679,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
                 mediaPlayer.playMediaObject(media, !media.localFileAvailable(), true, true);
+                addPlayableToQueue(media);
                 return;
             }
             onPlay();
