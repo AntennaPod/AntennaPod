@@ -67,6 +67,12 @@ project.ext {
     iconifyVersion = "2.2.2"
     audioPlayerVersion = "v2.0.0"
 
+    // Only used for free builds. This version should be updated regularly.
+    conscryptVersion = "2.4.0"
+    // Alternatively one can just use:
+    //  conscryptVersion = "latest.release"
+    // but it will mess up reproducible builds.
+
     // Google Play build
     wearableSupportVersion = "2.6.0"
 
