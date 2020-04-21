@@ -17,6 +17,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -28,6 +29,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
+import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -99,6 +101,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
         private static final CharSequence PREF_SCREEN = "feedSettingsScreen";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
+        private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final DecimalFormat SPEED_FORMAT =
                 new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
@@ -142,6 +145,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupAuthentificationPreference();
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
+                        setupFeedAutoSkipPreference();
 
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
@@ -157,6 +161,26 @@ public class FeedSettingsFragment extends Fragment {
             if (disposable != null) {
                 disposable.dispose();
             }
+        }
+
+        private void setupFeedAutoSkipPreference() {
+            findPreference(PREF_AUTO_SKIP).setOnPreferenceClickListener(preference -> {
+                new FeedPreferenceSkipDialog(getContext(),
+                        feedPreferences.getFeedSkipIntro(),
+                        feedPreferences.getFeedSkipEnding()) {
+                    @Override
+                    protected void onConfirmed(int skipIntro, int skipEnding) {
+                        feedPreferences.setFeedSkipIntro(skipIntro);
+                        feedPreferences.setFeedSkipEnding(skipEnding);
+                        feed.savePreferences();
+                        EventBus.getDefault().post(
+                                new SkipIntroEndingChangedEvent(feedPreferences.getFeedSkipIntro(),
+                                        feedPreferences.getFeedSkipEnding(),
+                                        feed.getId()));
+                    }
+                }.show();
+                return false;
+            });
         }
 
         private void setupPlaybackSpeedPreference() {
