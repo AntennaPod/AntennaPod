@@ -151,16 +151,15 @@ public class AntennapodHttpClient {
             }
         }
 
-        // The Free flavor bundles a modern conscrypt (security provider), so CustomSslSocketFactory
-        // is only used to make sure that modern protocols (TLSv1.3 and TLSv1.2) are enabled and
-        // that old, deprecated, protocols (like SSLv3, TLSv1.0 and TLSv1.1) are disabled.
         if (Flavors.FLAVOR == Flavors.FREE) {
+            // The Free flavor bundles a modern conscrypt (security provider), so CustomSslSocketFactory
+            // is only used to make sure that modern protocols (TLSv1.3 and TLSv1.2) are enabled and
+            // that old, deprecated, protocols (like SSLv3, TLSv1.0 and TLSv1.1) are disabled.
             builder.sslSocketFactory(new CustomSslSocketFactory(), trustManager());
-        }
-        // The Play flavor can not be assumed to have a modern security provider, so for Android
-        // older than 5.0 CustomSslSocketFactory is used to enable all possible protocols (modern
-        // and deprecated). And we explicitly enable deprecated cipher suites disabled by default.
-        else if (Build.VERSION.SDK_INT < 21) {
+        } else if (Build.VERSION.SDK_INT < 21) {
+            // The Play flavor can not be assumed to have a modern security provider, so for Android
+            // older than 5.0 CustomSslSocketFactory is used to enable all possible protocols (modern
+            // and deprecated). And we explicitly enable deprecated cipher suites disabled by default.
             builder.sslSocketFactory(new CustomSslSocketFactory(), trustManager());
 
             // workaround for Android 4.x for certain web sites.
@@ -225,12 +224,11 @@ public class AntennapodHttpClient {
             try {
                 SSLContext sslContext;
 
-                // Free flavor (bundles modern conscrypt): support for TLSv1.3 is guaranteed.
                 if (Flavors.FLAVOR == Flavors.FREE) {
+                    // Free flavor (bundles modern conscrypt): support for TLSv1.3 is guaranteed.
                     sslContext = SSLContext.getInstance("TLSv1.3");
-                }
-                // Play flavor (security provider can vary): only TLSv1.2 is guaranteed.
-                else {
+                } else {
+                    // Play flavor (security provider can vary): only TLSv1.2 is guaranteed.
                     sslContext = SSLContext.getInstance("TLSv1.2");
                 }
 
@@ -288,15 +286,14 @@ public class AntennapodHttpClient {
         }
 
         private void configureSocket(SSLSocket s) {
-            // Free flavor (bundles modern conscrypt): TLSv1.3 and modern cipher suites are
-            // guaranteed. Protocols older than TLSv1.2 are now deprecated and can be disabled.
             if (Flavors.FLAVOR == Flavors.FREE) {
-                s.setEnabledProtocols(new String[] { "TLSv1.3", "TLSv1.2" } );
-            }
-            // Play flavor (security provider can vary): only TLSv1.2 is guaranteed, supported
-            // cipher suites may vary. Old protocols might be necessary to keep things working.
-            else {
-                s.setEnabledProtocols(new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" } );
+                // Free flavor (bundles modern conscrypt): TLSv1.3 and modern cipher suites are
+                // guaranteed. Protocols older than TLSv1.2 are now deprecated and can be disabled.
+                s.setEnabledProtocols(new String[] { "TLSv1.3", "TLSv1.2" });
+            } else {
+                // Play flavor (security provider can vary): only TLSv1.2 is guaranteed, supported
+                // cipher suites may vary. Old protocols might be necessary to keep things working.
+                s.setEnabledProtocols(new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" });
             }
         }
 
