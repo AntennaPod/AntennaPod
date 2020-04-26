@@ -20,7 +20,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
         Log.d(TAG, "Received intent");
         ClientConfig.initialize(context);
 
-        AutoUpdateManager.runOnce();
+        AutoUpdateManager.runOnce(context);
     }
 
 }

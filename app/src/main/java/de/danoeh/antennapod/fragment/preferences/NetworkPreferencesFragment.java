@@ -15,6 +15,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
@@ -96,7 +97,8 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
     private void setParallelDownloadsText(int downloads) {
         final Resources res = getActivity().getResources();
 
-        String s = downloads + res.getString(R.string.parallel_downloads_suffix);
+        String s = String.format(Locale.getDefault(), "%d%s",
+                downloads, res.getString(R.string.parallel_downloads_suffix));
         findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS).setSummary(s);
     }
 
@@ -146,7 +148,7 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
             timePickerDialog.show();
         });
         builder.setNeutralButton(R.string.pref_autoUpdateIntervallOrTime_Disable, (dialog, which) -> {
-            UserPreferences.disableAutoUpdate();
+            UserPreferences.disableAutoUpdate(context);
             setUpdateIntervalText();
         });
         builder.show();

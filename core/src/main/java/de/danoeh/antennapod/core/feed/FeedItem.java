@@ -411,11 +411,12 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     }
 
     /**
-     * Returns the image of this item or the image of the feed if this item does
-     * not have its own image.
+     * Returns the image of this item, as specified in the feed.
+     * To load the image that can be displayed to the user, use {@link #getImageLocation},
+     * which also considers embedded pictures or the feed picture if no other picture is present.
      */
     public String getImageUrl() {
-        return (imageUrl != null) ? imageUrl : feed.getImageUrl();
+        return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {

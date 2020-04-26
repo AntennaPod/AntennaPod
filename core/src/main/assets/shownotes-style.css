@@ -12,7 +12,7 @@ a {
      font-style: normal;
      text-decoration: none;
      font-weight: normal;
-     color: #00A8DF;
+     color: %s;
 }
 a.timecode {
      color: #669900;
@@ -24,7 +24,7 @@ img, iframe {
      height: auto;
 }
 body {
-     margin: %dpx %dpx %dpx %dpx;
+     padding: %dpx %dpx %dpx %dpx;
 }
 p#apNoShownotes {
     position: fixed;

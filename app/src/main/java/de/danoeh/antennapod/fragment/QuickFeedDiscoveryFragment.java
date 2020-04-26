@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +40,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         View root = inflater.inflate(R.layout.quick_feed_discovery, container, false);
         View discoverMore = root.findViewById(R.id.discover_more);
         discoverMore.setOnClickListener(v ->
-                ((MainActivity) getActivity()).loadChildFragment(new ItunesSearchFragment()));
+                ((MainActivity) getActivity()).loadChildFragment(new DiscoveryFragment()));
 
         discoverGridLayout = root.findViewById(R.id.discover_grid);
         progressBar = root.findViewById(R.id.discover_progress_bar);
@@ -106,23 +105,8 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         if (podcast.feedUrl == null) {
             return;
         }
-        view.setAlpha(0.5f);
-        ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.getFeedUrl(podcast)
-                .subscribe(feedUrl -> {
-                    view.setAlpha(1f);
-                    Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
-                    intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, feedUrl);
-                    intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, getString(R.string.add_feed_label));
-                    startActivity(intent);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                    view.setAlpha(1f);
-                    String prefix = getString(R.string.error_msg_prefix);
-                    new AlertDialog.Builder(getActivity())
-                            .setMessage(prefix + " " + error.getMessage())
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show();
-                });
+        Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
+        intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
+        startActivity(intent);
     }
 }

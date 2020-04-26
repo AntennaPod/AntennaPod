@@ -35,12 +35,14 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
         PrintWriter out = null;
         try {
             out = new PrintWriter(new FileWriter(path));
-            out.println("[ Crash info ]");
+            out.println("## Crash info");
             out.println("Time: " + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
             out.println("AntennaPod version: " + BuildConfig.VERSION_NAME);
             out.println();
-            out.println("[ StackTrace ]");
+            out.println("## StackTrace");
+            out.println("```");
             ex.printStackTrace(out);
+            out.println("```");
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
@@ -50,12 +52,12 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
     }
 
     public static String getSystemInfo() {
-        return "[ Environment ]" +
-                "\nAndroid version: " + Build.VERSION.RELEASE +
-                "\nOS version: " + System.getProperty("os.version") +
-                "\nAntennaPod version: " + BuildConfig.VERSION_NAME +
-                "\nModel: " + Build.MODEL +
-                "\nDevice: " + Build.DEVICE +
-                "\nProduct: " + Build.PRODUCT;
+        return "## Environment"
+                + "\nAndroid version: " + Build.VERSION.RELEASE
+                + "\nOS version: " + System.getProperty("os.version")
+                + "\nAntennaPod version: " + BuildConfig.VERSION_NAME
+                + "\nModel: " + Build.MODEL
+                + "\nDevice: " + Build.DEVICE
+                + "\nProduct: " + Build.PRODUCT;
     }
 }

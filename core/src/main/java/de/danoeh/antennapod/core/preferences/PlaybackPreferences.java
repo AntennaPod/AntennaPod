@@ -33,14 +33,16 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
      * Contains the id of the currently playing FeedMedia object or
      * NO_MEDIA_PLAYING if the currently playing media is no FeedMedia object.
      */
-    private static final String PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID = "de.danoeh.antennapod.preferences.lastPlayedFeedMediaId";
+    private static final String PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID
+            = "de.danoeh.antennapod.preferences.lastPlayedFeedMediaId";
 
     /**
      * Type of the media object that is currently being played. This preference
      * is set to NO_MEDIA_PLAYING after playback has been completed and is set
      * as soon as the 'play' button is pressed.
      */
-    private static final String PREF_CURRENTLY_PLAYING_MEDIA = "de.danoeh.antennapod.preferences.currentlyPlayingMedia";
+    private static final String PREF_CURRENTLY_PLAYING_MEDIA_TYPE
+            = "de.danoeh.antennapod.preferences.currentlyPlayingMedia";
 
     /**
      * True if last played media was streamed.
@@ -61,7 +63,8 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
      * A temporary playback speed which overrides the per-feed playback speed for the currently playing
      * media. Considered unset if set to SPEED_USE_GLOBAL;
      */
-    private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED = "de.danoeh.antennapod.preferences.temporaryPlaybackSpeed";
+    private static final String PREF_CURRENTLY_PLAYING_TEMPORARY_PLAYBACK_SPEED
+            = "de.danoeh.antennapod.preferences.temporaryPlaybackSpeed";
 
 
     /**
@@ -102,21 +105,21 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         }
     }
 
-	public static long getCurrentlyPlayingMedia() {
-		return prefs.getLong(PREF_CURRENTLY_PLAYING_MEDIA, NO_MEDIA_PLAYING);
-	}
+    public static long getCurrentlyPlayingMediaType() {
+        return prefs.getLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, NO_MEDIA_PLAYING);
+    }
 
-	public static long getCurrentlyPlayingFeedMediaId() {
-		return prefs.getLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
-	}
+    public static long getCurrentlyPlayingFeedMediaId() {
+        return prefs.getLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
+    }
 
-	public static boolean getCurrentEpisodeIsStream() {
-		return prefs.getBoolean(PREF_CURRENT_EPISODE_IS_STREAM, true);
-	}
+    public static boolean getCurrentEpisodeIsStream() {
+        return prefs.getBoolean(PREF_CURRENT_EPISODE_IS_STREAM, true);
+    }
 
-	public static boolean getCurrentEpisodeIsVideo() {
-		return prefs.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
-	}
+    public static boolean getCurrentEpisodeIsVideo() {
+        return prefs.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
+    }
 
     public static int getCurrentPlayerStatus() {
         return prefs.getInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
@@ -128,7 +131,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
 
     public static void writeNoMediaPlaying() {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA, NO_MEDIA_PLAYING);
+        editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, NO_MEDIA_PLAYING);
         editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, NO_MEDIA_PLAYING);
         editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
         editor.putInt(PREF_CURRENT_PLAYER_STATUS, PLAYER_STATUS_OTHER);
@@ -142,13 +145,13 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
         if (playable == null) {
             writeNoMediaPlaying();
         } else {
-            editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA, playable.getPlayableType());
+            editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA_TYPE, playable.getPlayableType());
             editor.putBoolean(PREF_CURRENT_EPISODE_IS_STREAM, stream);
             editor.putBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, playable.getMediaType() == MediaType.VIDEO);
             if (playable instanceof FeedMedia) {
-                FeedMedia fMedia = (FeedMedia) playable;
-                editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, fMedia.getItem().getFeed().getId());
-                editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, fMedia.getId());
+                FeedMedia feedMedia = (FeedMedia) playable;
+                editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, feedMedia.getItem().getFeed().getId());
+                editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, feedMedia.getId());
             } else {
                 editor.putLong(PREF_CURRENTLY_PLAYING_FEED_ID, NO_MEDIA_PLAYING);
                 editor.putLong(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);

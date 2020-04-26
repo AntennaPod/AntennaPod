@@ -35,4 +35,19 @@ public class FyydPodcastSearcher implements PodcastSearcher {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Single<String> lookupUrl(String url) {
+        return Single.just(url);
+    }
+
+    @Override
+    public boolean urlNeedsLookup(String url) {
+        return false;
+    }
+
+    @Override
+    public String getName() {
+        return "Fyyd";
+    }
 }

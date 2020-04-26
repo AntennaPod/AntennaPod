@@ -39,7 +39,7 @@ public class FeedUpdateWorker extends Worker {
         if (!isRunOnce && UserPreferences.isAutoUpdateTimeOfDay()) {
             // WorkManager does not allow to set specific time for repeated tasks.
             // We repeatedly schedule a OneTimeWorkRequest instead.
-            AutoUpdateManager.restartUpdateAlarm();
+            AutoUpdateManager.restartUpdateAlarm(getApplicationContext());
         }
 
         return Result.success();

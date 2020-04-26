@@ -404,6 +404,7 @@ public class DBReaderTest {
         List<Feed> feeds = saveFeedlist(1, 1, false, true, NUM_CHAPTERS);
         FeedItem item1 = feeds.get(0).getItems().get(0);
         FeedItem item2 = DBReader.getFeedItem(item1.getId());
+        DBReader.loadChaptersOfFeedItem(item2);
         assertTrue(item2.hasChapters());
         assertEquals(item1.getChapters(), item2.getChapters());
     }

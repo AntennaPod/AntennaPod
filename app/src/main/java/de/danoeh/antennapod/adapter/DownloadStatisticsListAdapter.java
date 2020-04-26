@@ -1,13 +1,13 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.text.format.Formatter;
+
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
-import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.view.PieChartView;
-
-import java.util.List;
 
 /**
  * Adapter for the download statistics list.
@@ -25,7 +25,7 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     String getHeaderValue() {
-        return Converter.byteToString((long) pieChartData.getSum());
+        return Formatter.formatShortFileSize(context, (long) pieChartData.getSum());
     }
 
     @Override
@@ -40,7 +40,7 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item) {
-        holder.value.setText(Converter.byteToString(item.totalDownloadSize));
+        holder.value.setText(Formatter.formatShortFileSize(context, item.totalDownloadSize));
     }
 
 }

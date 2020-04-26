@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -46,7 +47,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 1090000;
+    public static final int VERSION = 1090001;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -108,6 +109,8 @@ public class PodDBAdapter {
     public static final String KEY_INCLUDE_FILTER = "include_filter";
     public static final String KEY_EXCLUDE_FILTER = "exclude_filter";
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
+    public static final String KEY_FEED_SKIP_INTRO = "feed_skip_intro";
+    public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
 
     // Table names
     static final String TABLE_NAME_FEEDS = "Feeds";
@@ -143,7 +146,9 @@ public class PodDBAdapter {
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
-            + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0)";
+            + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0,"
+            + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
+            + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -243,7 +248,9 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_FEED_VOLUME_ADAPTION,
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED
+            TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING
     };
 
     /**
@@ -420,12 +427,14 @@ public class PodDBAdapter {
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
+        values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
+        values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
     public void setFeedItemFilter(long feedId, Set<String> filterValues) {
         String valuesList = TextUtils.join(",", filterValues);
-        Log.d(TAG, String.format(
+        Log.d(TAG, String.format(Locale.US,
                 "setFeedItemFilter() called with: feedId = [%d], filterValues = [%s]", feedId, valuesList));
         ContentValues values = new ContentValues();
         values.put(KEY_HIDE, valuesList);
@@ -782,7 +791,7 @@ public class PodDBAdapter {
     }
 
     private boolean isItemInFavorites(FeedItem item) {
-        String query = String.format("SELECT %s from %s WHERE %s=%d",
+        String query = String.format(Locale.US, "SELECT %s from %s WHERE %s=%d",
                 KEY_ID, TABLE_NAME_FAVORITES, KEY_FEEDITEM, item.getId());
         Cursor c = db.rawQuery(query, null);
         int count = c.getCount();
@@ -1031,7 +1040,7 @@ public class PodDBAdapter {
 
         return db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
-                null, String.format("%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
+                null, String.format(Locale.US, "%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
     }
 
     public final Cursor getSingleFeedMediaCursor(long id) {

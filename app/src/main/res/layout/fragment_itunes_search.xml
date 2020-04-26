@@ -36,7 +36,6 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:visibility="gone"
         android:text="@string/search_status_no_results" />
 
     <ProgressBar

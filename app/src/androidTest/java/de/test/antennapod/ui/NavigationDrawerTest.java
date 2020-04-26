@@ -183,7 +183,7 @@ public class NavigationDrawerTest {
         onView(first(withText(R.string.queue_label))).perform(longClick());
         for (int i = 0; i < titles.length; i++) {
             String title = titles[i];
-            onView(first(withText(title))).perform(click());
+            onView(allOf(withText(title), isDisplayed())).perform(click());
 
             if (i == 3) {
                 onView(withId(R.id.select_dialog_listview)).perform(swipeUp());

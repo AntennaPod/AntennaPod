@@ -37,7 +37,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        app:backgroundColor="@color/antennapod_blue"
+        app:backgroundColor="?attr/colorAccent"
         app:corner="rightTop"
         app:primaryText="Test"
         app:primaryTextColor="@color/white"

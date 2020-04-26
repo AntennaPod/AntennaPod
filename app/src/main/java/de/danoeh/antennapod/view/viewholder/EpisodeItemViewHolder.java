@@ -2,6 +2,7 @@ package de.danoeh.antennapod.view.viewholder;
 
 import android.os.Build;
 import android.text.Layout;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.joanzapata.iconify.Iconify;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
@@ -153,14 +157,14 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (media.getSize() > 0) {
-            size.setText(Converter.byteToString(media.getSize()));
+            size.setText(Formatter.formatShortFileSize(activity, media.getSize()));
         } else if (NetworkUtils.isEpisodeHeadDownloadAllowed() && !media.checkedOnSizeButUnknown()) {
             size.setText("{fa-spinner}");
             Iconify.addIcons(size);
             NetworkUtils.getFeedMediaSizeObservable(media).subscribe(
                     sizeValue -> {
                         if (sizeValue > 0) {
-                            size.setText(Converter.byteToString(sizeValue));
+                            size.setText(Formatter.formatShortFileSize(activity, sizeValue));
                         } else {
                             size.setText("");
                         }

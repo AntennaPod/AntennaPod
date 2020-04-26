@@ -209,7 +209,7 @@ public class FeedMedia extends FeedFile implements Playable {
      * currently being played.
      */
     public boolean isPlaying() {
-        return PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
+        return PlaybackPreferences.getCurrentlyPlayingMediaType() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
                 && PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == id;
     }
 

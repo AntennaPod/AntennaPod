@@ -210,10 +210,6 @@ public class ExternalPlayerFragment extends Fragment {
         }
     }
 
-    public PlaybackController getPlaybackControllerTestingOnly() {
-        return controller;
-    }
-
     private void onPositionObserverUpdate() {
         if (controller == null) {
             return;

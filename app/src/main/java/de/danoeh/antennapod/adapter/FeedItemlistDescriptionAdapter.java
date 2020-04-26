@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.RemoteMedia;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -67,16 +70,28 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
                 return;
             }
             Playable playable = new RemoteMedia(item);
+            if (PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA) {
+                PlaybackPreferences.writeNoMediaPlaying();
+                IntentUtils.sendLocalBroadcast(getContext(), PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
+                holder.preview.setText(R.string.preview_episode);
+                return;
+            }
+
             if (!NetworkUtils.isStreamingAllowed()) {
                 new StreamingConfirmationDialog(getContext(), playable).show();
                 return;
             }
+
             new PlaybackServiceStarter(getContext(), playable)
                     .shouldStream(true)
                     .startWhenPrepared(true)
                     .callEvenIfRunning(true)
                     .start();
-            getContext().startActivity(PlaybackService.getPlayerActivityIntent(getContext(), playable));
+            holder.preview.setText(R.string.stop_playback);
+
+            if (playable.getMediaType() == MediaType.VIDEO) {
+                getContext().startActivity(PlaybackService.getPlayerActivityIntent(getContext(), playable));
+            }
         });
         convertView.setOnClickListener(v -> {
             if (holder.description.getTag() == Boolean.TRUE) {
@@ -85,8 +100,14 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
                 holder.description.setTag(Boolean.FALSE);
             } else {
                 holder.description.setMaxLines(2000);
-                holder.preview.setVisibility(View.VISIBLE);
                 holder.description.setTag(Boolean.TRUE);
+
+                holder.preview.setVisibility(item.getMedia() != null ? View.VISIBLE : View.GONE);
+                if (PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA) {
+                    holder.preview.setText(R.string.stop_playback);
+                } else {
+                    holder.preview.setText(R.string.preview_episode);
+                }
             }
         });
         return convertView;

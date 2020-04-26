@@ -51,12 +51,14 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
+import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
 import de.danoeh.antennapod.core.event.settings.SpeedPresetChangedEvent;
 import de.danoeh.antennapod.core.event.settings.VolumeAdaptionChangedEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -210,6 +212,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private PlaybackServiceStateManager stateManager;
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
+
+    private long autoSkippedFeedMediaId = -1;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -497,6 +501,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return Service.START_NOT_STICKY;
                 }
                 mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+                addPlayableToQueue(playable);
             } else {
                 Log.d(TAG, "Did not handle intent to PlaybackService: " + intent);
                 Log.d(TAG, "Extras: " + intent.getExtras());
@@ -504,6 +509,30 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         return Service.START_NOT_STICKY;
+    }
+
+    private void skipIntro(Playable playable) {
+        if (! (playable instanceof FeedMedia)) {
+            return;
+        }
+
+        FeedMedia feedMedia = (FeedMedia) playable;
+        FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+        int skipIntro = preferences.getFeedSkipIntro();
+
+        Context context = getApplicationContext();
+        if (skipIntro > 0 && playable.getPosition() < skipIntro * 1000) {
+            int duration = getDuration();
+            if (skipIntro * 1000 < duration) {
+                Log.d(TAG, "skipIntro " + playable.getEpisodeTitle());
+                mediaPlayer.seekTo(skipIntro * 1000);
+                String skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast,
+                        skipIntro);
+                Toast toast = Toast.makeText(context, skipIntroMesg,
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
     }
 
     private void displayStreamingNotAllowedNotification(Intent originalIntent) {
@@ -652,6 +681,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             mediaPlayer.playMediaObject(playable, PlaybackPreferences.getCurrentEpisodeIsStream(), true, true);
             stateManager.validStartCommandWasReceived();
             PlaybackService.this.updateMediaSessionMetadata(playable);
+            addPlayableToQueue(playable);
         } else {
             stateManager.stopService();
         }
@@ -756,7 +786,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case PLAYING:
                     PlaybackPreferences.writePlayerStatus(mediaPlayer.getPlayerStatus());
                     setupNotification(newInfo);
-                    setupPositionUpdater();
+                    setupPositionObserver();
                     stateManager.validStartCommandWasReceived();
                     // set sleep timer if auto-enabled
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
@@ -847,6 +877,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             taskManager.startWidgetUpdater();
             if (position != PlaybackServiceMediaPlayer.INVALID_TIME) {
                 playable.setPosition(position);
+            } else {
+                skipIntro(playable);
             }
             playable.onPlaybackStart();
             taskManager.startPositionSaver();
@@ -998,6 +1030,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             media.onPlaybackPause(getApplicationContext());
         }
 
+        if (autoSkippedFeedMediaId >= 0 && autoSkippedFeedMediaId == media.getId()) {
+            ended = true;
+        }
+
         if (item != null) {
             if (ended || smartMarkAsPlayed
                     || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
@@ -1037,6 +1073,33 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         intent.setPackage(getPackageName());
         sendBroadcast(intent);
     }
+
+    private void skipEndingIfNecessary() {
+        Playable playable = mediaPlayer.getPlayable();
+        if (! (playable instanceof FeedMedia)) {
+            return;
+        }
+
+        int duration = getDuration();
+        int remainingTime = duration - getCurrentPosition();
+
+        FeedMedia feedMedia = (FeedMedia) playable;
+        FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+        int skipEnd = preferences.getFeedSkipEnding();
+        if (skipEnd > 0
+                && skipEnd < playable.getDuration()
+                && (remainingTime - (skipEnd * 1000) > 0)
+                && ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
+            Log.d(TAG, "skipEndingIfNecessary: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());
+            Context context = getApplicationContext();
+            String skipMesg = context.getString(R.string.pref_feed_skip_ending_toast, skipEnd);
+            Toast toast = Toast.makeText(context, skipMesg, Toast.LENGTH_LONG);
+            toast.show();
+
+            this.autoSkippedFeedMediaId = feedMedia.getItem().getId();
+            mediaPlayer.skip();
+        }
+   }
 
     /**
      * Updates the Media Session for the corresponding status.
@@ -1449,12 +1512,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     };
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void volumeAdaptionChanged(VolumeAdaptionChangedEvent event) {
         PlaybackVolumeUpdater playbackVolumeUpdater = new PlaybackVolumeUpdater();
         playbackVolumeUpdater.updateVolumeIfNecessary(mediaPlayer, event.getFeedId(), event.getVolumeAdaptionSetting());
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
     public void speedPresetChanged(SpeedPresetChangedEvent event) {
         if (getPlayable() instanceof FeedMedia) {
             if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
@@ -1462,6 +1527,22 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     setSpeed(UserPreferences.getPlaybackSpeed(getPlayable().getMediaType()));
                 } else {
                     setSpeed(event.getSpeed());
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    @SuppressWarnings("unused")
+    public void skipIntroEndingPresetChanged(SkipIntroEndingChangedEvent event) {
+        if (getPlayable() instanceof FeedMedia) {
+            if (((FeedMedia) getPlayable()).getItem().getFeed().getId() == event.getFeedId()) {
+                if (event.getSkipEnding() != 0) {
+                   FeedPreferences feedPreferences
+                           = ((FeedMedia) getPlayable()).getItem().getFeed().getPreferences();
+                   feedPreferences.setFeedSkipIntro(event.getSkipIntro());
+                   feedPreferences.setFeedSkipEnding(event.getSkipEnding());
+
                 }
             }
         }
@@ -1611,7 +1692,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         return mediaPlayer.getVideoSize();
     }
 
-    private void setupPositionUpdater() {
+    private void setupPositionObserver() {
         if (positionEventTimer != null) {
             positionEventTimer.dispose();
         }
@@ -1627,12 +1708,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                                 getSystemService(NOTIFICATION_SERVICE);
                         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
                     }
+                    skipEndingIfNecessary();
                 });
     }
 
     private void cancelPositionObserver() {
         if (positionEventTimer != null) {
             positionEventTimer.dispose();
+        }
+    }
+
+    private void addPlayableToQueue(Playable playable) {
+        if (playable instanceof FeedMedia) {
+            long itemId = ((FeedMedia) playable).getId();
+            DBWriter.addQueueItem(this, false, false, itemId);
         }
     }
 
@@ -1658,6 +1747,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             FeedMedia p = DBReader.getFeedMedia(Long.parseLong(mediaId));
             if (p != null) {
                 mediaPlayer.playMediaObject(p, !p.localFileAvailable(), true, true);
+                addPlayableToQueue(p);
             }
         }
 
@@ -1669,6 +1759,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             if (results.size() > 0 && results.get(0).getMedia() != null) {
                 FeedMedia media = results.get(0).getMedia();
                 mediaPlayer.playMediaObject(media, !media.localFileAvailable(), true, true);
+                addPlayableToQueue(media);
                 return;
             }
             onPlay();

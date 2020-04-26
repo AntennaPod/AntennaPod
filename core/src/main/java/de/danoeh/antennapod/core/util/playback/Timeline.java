@@ -53,12 +53,8 @@ public class Timeline {
         this.shownotesProvider = shownotesProvider;
 
         noShownotesLabel = context.getString(R.string.no_shownotes_label);
-
-        TypedArray res = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.textColorPrimary});
-        @ColorInt int col = res.getColor(0, 0);
-        final String colorPrimary = "rgba(" + Color.red(col) + "," + Color.green(col) + ","
-                + Color.blue(col) + "," + (Color.alpha(col) / 255.0) + ")";
-        res.recycle();
+        final String colorPrimary = colorToHtml(context, android.R.attr.textColorPrimary);
+        final String colorAccent = colorToHtml(context, R.attr.colorAccent);
         final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
                 context.getResources().getDisplayMetrics());
         String styleString = "";
@@ -68,7 +64,17 @@ public class Timeline {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        webviewStyle = String.format(Locale.getDefault(), styleString, colorPrimary, margin, margin, margin, margin);
+        webviewStyle = String.format(Locale.US, styleString, colorPrimary, colorAccent,
+                margin, margin, margin, margin);
+    }
+
+    private String colorToHtml(Context context, int colorAttr) {
+        TypedArray res = context.getTheme().obtainStyledAttributes(new int[]{colorAttr});
+        @ColorInt int col = res.getColor(0, 0);
+        final String color = "rgba(" + Color.red(col) + "," + Color.green(col) + ","
+                + Color.blue(col) + "," + (Color.alpha(col) / 255.0) + ")";
+        res.recycle();
+        return color;
     }
 
     /**
@@ -193,7 +199,7 @@ public class Timeline {
 
                 String replacementText = group;
                 if (time < playableDuration) {
-                    replacementText = String.format(Locale.getDefault(), TIMECODE_LINK, time, group);
+                    replacementText = String.format(Locale.US, TIMECODE_LINK, time, group);
                 }
 
                 matcherForElement.appendReplacement(buffer, replacementText);

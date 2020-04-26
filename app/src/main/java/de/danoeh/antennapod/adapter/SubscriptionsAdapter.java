@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+
+import androidx.core.text.TextUtilsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.lang.ref.WeakReference;
+import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -86,9 +90,17 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         holder.feedTitle.setText(feed.getTitle());
         holder.imageView.setContentDescription(feed.getTitle());
         holder.feedTitle.setVisibility(View.VISIBLE);
+
+        // Fix TriangleLabelView corner for RTL
+        if (TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
+                == ViewCompat.LAYOUT_DIRECTION_RTL) {
+            holder.count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
+        }
+
         int count = itemAccess.getFeedCounter(feed.getId());
         if(count > 0) {
-            holder.count.setPrimaryText(String.valueOf(itemAccess.getFeedCounter(feed.getId())));
+            holder.count.setPrimaryText(String.format(Locale.getDefault(), "%d",
+                    itemAccess.getFeedCounter(feed.getId())));
             holder.count.setVisibility(View.VISIBLE);
         } else {
             holder.count.setVisibility(View.GONE);

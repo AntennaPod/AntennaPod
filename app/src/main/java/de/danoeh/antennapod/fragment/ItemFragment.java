@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.ObjectsCompat;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -137,7 +138,8 @@ public class ItemFragment extends Fragment {
         }
         webvDescription = layout.findViewById(R.id.webvDescription);
         webvDescription.setTimecodeSelectedListener(time -> {
-            if (controller != null && item.getMedia().getIdentifier().equals(controller.getMedia().getIdentifier())) {
+            if (controller != null && item.getMedia() != null && controller.getMedia() != null
+                    && ObjectsCompat.equals(item.getMedia().getIdentifier(), controller.getMedia().getIdentifier())) {
                 controller.seekTo(time);
             } else {
                 Snackbar.make(getView(), R.string.play_this_to_seek_position, Snackbar.LENGTH_LONG).show();

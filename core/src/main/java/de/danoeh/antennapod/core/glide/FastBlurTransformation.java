@@ -14,7 +14,7 @@ public class FastBlurTransformation extends BitmapTransformation {
 
     private static final String TAG = FastBlurTransformation.class.getSimpleName();
 
-    private static final int STACK_BLUR_RADIUS = 5;
+    private static final int STACK_BLUR_RADIUS = 10;
 
     public FastBlurTransformation() {
         super();

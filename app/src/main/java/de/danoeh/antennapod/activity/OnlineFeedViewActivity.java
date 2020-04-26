@@ -57,6 +57,7 @@ import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.discovery.PodcastSearcherRegistry;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -84,7 +85,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     public static final String ARG_FEEDURL = "arg.feedurl";
     // Optional argument: specify a title for the actionbar.
-    public static final String ARG_TITLE = "title";
     private static final int RESULT_ERROR = 2;
     private static final String TAG = "OnlineFeedViewActivity";
     private volatile List<Feed> feeds;
@@ -127,11 +127,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         if (feedUrl == null) {
             Log.e(TAG, "feedUrl is null.");
-            new AlertDialog.Builder(OnlineFeedViewActivity.this)
-                    .setNeutralButton(android.R.string.ok, (dialog, which) -> finish())
-                    .setTitle(R.string.error_label)
-                    .setMessage(R.string.null_value_podcast_error)
-                    .show();
+            showNoPodcastFoundError();
         } else {
             Log.d(TAG, "Activity was started with url " + feedUrl);
             setLoadingLayout();
@@ -140,11 +136,24 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 feedUrl = feedUrl.replaceFirst("((www.)?(subscribeonandroid.com/))", "");
             }
             if (savedInstanceState == null) {
-                startFeedDownload(feedUrl, null, null);
+                lookupUrlAndDownload(feedUrl, null, null);
             } else {
-                startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"));
+                lookupUrlAndDownload(feedUrl, savedInstanceState.getString("username"),
+                        savedInstanceState.getString("password"));
             }
         }
+    }
+
+    private void showNoPodcastFoundError() {
+        new AlertDialog.Builder(OnlineFeedViewActivity.this)
+                .setNeutralButton(android.R.string.ok, (dialog, which) -> finish())
+                .setTitle(R.string.error_label)
+                .setMessage(R.string.null_value_podcast_error)
+                .setOnDismissListener(dialog1 -> {
+                    setResult(RESULT_ERROR);
+                    finish();
+                })
+                .show();
     }
 
     /**
@@ -198,10 +207,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
     }
 
-    private void resetIntent(String url, String title) {
+    private void resetIntent(String url) {
         Intent intent = new Intent();
         intent.putExtra(ARG_FEEDURL, url);
-        intent.putExtra(ARG_TITLE, title);
         setIntent(intent);
     }
 
@@ -224,6 +232,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void lookupUrlAndDownload(String url, String username, String password) {
+        download = PodcastSearcherRegistry.lookupUrl(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(lookedUpUrl -> startFeedDownload(lookedUpUrl, username, password),
+                        error -> {
+                            showNoPodcastFoundError();
+                            Log.e(TAG, Log.getStackTraceString(error));
+                        });
     }
 
     private void startFeedDownload(String url, String username, String password) {
@@ -535,14 +554,14 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             } else {
                 builder.setMessage(R.string.error_msg_prefix);
             }
-            builder.setNeutralButton(android.R.string.ok,
+            builder.setPositiveButton(android.R.string.ok,
                     (dialog, which) -> dialog.cancel()
             );
-            builder.setOnCancelListener(dialog -> {
+            builder.setOnDismissListener(dialog -> {
                 setResult(RESULT_ERROR);
                 finish();
             });
-            if(dialog != null && dialog.isShowing()) {
+            if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
             }
             dialog = builder.show();
@@ -580,7 +599,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         if (urls.size() == 1) {
             // Skip dialog and display the item directly
-            resetIntent(urls.get(0), titles.get(0));
+            resetIntent(urls.get(0));
             startFeedDownload(urls.get(0), null, null);
             return true;
         }
@@ -589,7 +608,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         DialogInterface.OnClickListener onClickListener = (dialog, which) -> {
             String selectedUrl = urls.get(which);
             dialog.dismiss();
-            resetIntent(selectedUrl, titles.get(which));
+            resetIntent(selectedUrl);
             FeedPreferences prefs = feed.getPreferences();
             if(prefs != null) {
                 startFeedDownload(selectedUrl, prefs.getUsername(), prefs.getPassword());
