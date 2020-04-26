@@ -14,7 +14,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ eventBusIndex : 'de.danoeh.antennapod.core.ApCoreEventBusIndex' ]
+                arguments = [eventBusIndex: 'de.danoeh.antennapod.core.ApCoreEventBusIndex']
             }
         }
     }
@@ -52,15 +52,15 @@ android {
             dimension "market"
         }
     }
-
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "androidx.preference:preference:1.1.0"
-    annotationProcessor "androidx.annotation:annotation:1.1.0"
+    annotationProcessor 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.media:media:1.1.0'
+    implementation 'androidx.preference:preference:1.1.1'
     implementation "androidx.work:work-runtime:$workManagerVersion"
-    implementation "androidx.media:media:1.1.0"
+
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
@@ -82,7 +82,7 @@ dependencies {
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
         playApi "com.google.android.libraries.cast.companionlibrary:ccl:$castCompanionLibVer"
-        api "androidx.mediarouter:mediarouter:1.0.0"
+        api 'androidx.mediarouter:mediarouter:1.0.0'
         playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
         api "com.google.android.support:wearable:$wearableSupportVersion"
     } else {
