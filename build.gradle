@@ -6,8 +6,8 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.5'
+        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:1.0.2'
         classpath 'de.timfreiheit.resourceplaceholders:placeholders:0.3'
     }
 }
@@ -71,10 +71,6 @@ project.ext {
     castCompanionLibVer = "2.9.1"
     playServicesVersion = "8.4.0"
     wearableSupportVersion = "2.4.0"
-}
-
-wrapper {
-    gradleVersion = "4.10.2"
 }
 
 // free build hack: common functions

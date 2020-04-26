@@ -4,8 +4,6 @@ plugins {
     id('com.github.triplet.play') version '2.3.0' apply false
 }
 
-import org.apache.tools.ant.filters.ReplaceTokens
-
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
