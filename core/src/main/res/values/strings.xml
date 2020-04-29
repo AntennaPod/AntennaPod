@@ -116,7 +116,9 @@
         <item quantity="one">1 day after finishing</item>
         <item quantity="other">%d days after finishing</item>
     </plurals>
-    <string name="num_selected_label">%d selected</string>
+    <plurals name="num_selected_label">
+        <item quantity="other">%d selected</item>
+    </plurals>
     <string name="loading_more">Loading more…</string>
 
     <!-- Actions on feeds -->
