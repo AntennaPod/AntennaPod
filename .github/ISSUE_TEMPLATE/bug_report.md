@@ -32,7 +32,7 @@ If you are experiencing a crash, including the stacktrace will likely get it fix
 1. Than that
 1. Then
 
-**Environment**: [Settings you have changed, e.g. Auto Download. "Unusual" devices you use, e.g. Bluetooth headphones. Do you still use Prestissimo? Did you select another media player?]
+**Environment**: [Settings you have changed, e.g. Auto Download. "Unusual" devices you use, e.g. Bluetooth headphones. Did you select another media player?]
 
 **Stacktrace/Logcat**: 
 ```
