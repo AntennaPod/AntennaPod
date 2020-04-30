@@ -20,7 +20,7 @@ jobs:
       with:
         api-level: 28
         disable-animations: true
-        script: zsh .github/workflows/runTests.sh
+        script: ./gradlew connectedPlayDebugAndroidTest -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi
     - uses: actions/upload-artifact@v1
       if: failure()
       with:
