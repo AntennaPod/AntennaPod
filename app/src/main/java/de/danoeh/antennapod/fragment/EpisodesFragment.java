@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
 import de.danoeh.antennapod.R;
 
 public class EpisodesFragment extends Fragment {
@@ -27,7 +31,7 @@ public class EpisodesFragment extends Fragment {
 
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private ViewPager2 viewPager;
 
     //Mandatory Constructor
     public EpisodesFragment() {
@@ -46,11 +50,32 @@ public class EpisodesFragment extends Fragment {
         toolbar.setTitle(R.string.episodes_label);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         viewPager = rootView.findViewById(R.id.viewpager);
-        viewPager.setAdapter(new EpisodesPagerAdapter());
+        viewPager.setAdapter(new EpisodesPagerAdapter(this));
 
         // Give the TabLayout the ViewPager
         tabLayout = rootView.findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case POS_NEW_EPISODES:
+                    tab.setText(R.string.new_episodes_label);
+                    break;
+                case POS_ALL_EPISODES:
+                    tab.setText(R.string.all_episodes_short_label);
+                    break;
+                case POS_FAV_EPISODES:
+                    tab.setText(R.string.favorite_episodes_label);
+                    break;
+                default:
+                    break;
+            }
+        }).attach();
+
+        // restore our last position
+        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
+        viewPager.setCurrentItem(lastPosition, false);
+
         return rootView;
     }
 
@@ -64,52 +89,29 @@ public class EpisodesFragment extends Fragment {
         editor.apply();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    static class EpisodesPagerAdapter extends FragmentStateAdapter {
 
-        // restore our last position
-        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
-        viewPager.setCurrentItem(lastPosition);
-    }
-
-    public class EpisodesPagerAdapter extends FragmentPagerAdapter {
-
-        public EpisodesPagerAdapter() {
-            super(getChildFragmentManager());
+        EpisodesPagerAdapter(@NonNull Fragment fragment) {
+            super(fragment);
         }
 
-        @Override
         @NonNull
-        public Fragment getItem(int position) {
+        @Override
+        public Fragment createFragment(int position) {
             switch (position) {
-                case 0:
+                case POS_NEW_EPISODES:
                     return new NewEpisodesFragment();
-                case 1:
+                case POS_ALL_EPISODES:
                     return new AllEpisodesFragment();
                 default:
+                case POS_FAV_EPISODES:
                     return new FavoriteEpisodesFragment();
             }
         }
 
         @Override
-        public int getCount() {
+        public int getItemCount() {
             return TOTAL_COUNT;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case POS_ALL_EPISODES:
-                    return getString(R.string.all_episodes_short_label);
-                case POS_NEW_EPISODES:
-                    return getString(R.string.new_episodes_label);
-                case POS_FAV_EPISODES:
-                    return getString(R.string.favorite_episodes_label);
-                default:
-                    return super.getPageTitle(position);
-            }
         }
     }
 }
