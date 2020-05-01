@@ -118,7 +118,7 @@ public class FeedHandlerTest {
                     assertEquals(media.getMime_type(), parsedMedia.getMime_type());
                 }
 
-                assertEquals(item.getImageUrl(), parsedFeed.getImageUrl());
+                assertEquals(feed.getImageUrl(), item.getImageLocation());
 
                 if (item.getChapters() != null) {
                     assertNotNull(parsedItem.getChapters());

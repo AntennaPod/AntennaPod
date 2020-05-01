@@ -100,8 +100,8 @@ public class CastUtils {
                 metadata.putString(MediaMetadata.KEY_SUBTITLE, subtitle);
             }
 
-            if (!TextUtils.isEmpty(feedItem.getImageUrl())) {
-                metadata.addImage(new WebImage(Uri.parse(feedItem.getImageUrl())));
+            if (!TextUtils.isEmpty(feedItem.getImageLocation())) {
+                metadata.addImage(new WebImage(Uri.parse(feedItem.getImageLocation())));
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(media.getItem().getPubDate());
