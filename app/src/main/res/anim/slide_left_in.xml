@@ -4,5 +4,6 @@
     <translate
         android:fromXDelta="-100%" android:toXDelta="0%"
         android:fromYDelta="0%" android:toYDelta="0%"
-        android:duration="@android:integer/config_mediumAnimTime"/>
+        android:duration="@integer/fragment_transition_duration"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator" />
 </set>
