@@ -410,7 +410,8 @@ public class EpisodesApplyActionFragment extends Fragment {
         }
         ActivityCompat.invalidateOptionsMenu(EpisodesApplyActionFragment.this.getActivity());
         showSpeedDialIfAnyChecked();
-        toolbar.setTitle(getString(R.string.num_selected_label, checkedIds.size()));
+        toolbar.setTitle(getResources().getQuantityString(R.plurals.num_selected_label,
+                checkedIds.size(), checkedIds.size()));
     }
 
     private void queueChecked() {
