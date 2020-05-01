@@ -24,5 +24,17 @@ jobs:
     - uses: actions/upload-artifact@v1
       if: failure()
       with:
-        name: test-report
+        name: Espresso-test-report
         path: app/build/reports/androidTests/connected/flavors/PLAY/
+    - name: Unit test
+      run: ./gradlew :core:testPlayDebugUnitTest
+    - name: checkstyle
+      run: ./gradlew checkstyle
+# Sorry, lint is crashing
+#    - name: Final checks
+#      run: ./gradlew check --stacktrace
+#    - uses: actions/upload-artifact@v1
+#      if: failure()
+#      with:
+#        name: Lint-report
+#        path: ./**/build/reports/lint-results.html
