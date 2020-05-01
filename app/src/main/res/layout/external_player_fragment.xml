@@ -27,7 +27,8 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
-                android:scaleType="centerCrop"
+                android:maxWidth="96dp"
+                android:scaleType="fitCenter"
                 tools:src="@tools:sample/avatars"/>
 
 

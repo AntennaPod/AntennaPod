@@ -13,20 +13,28 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.DecimalFormat;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -50,12 +58,6 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.text.DecimalFormat;
-import java.util.List;
 
 /**
  * Shows the audio player.
@@ -73,7 +75,7 @@ public class AudioPlayerFragment extends Fragment implements
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
     TextView txtvPlaybackSpeed;
-    private ViewPager pager;
+    private ViewPager2 pager;
     private PagerIndicatorView pageIndicator;
     private TextView txtvPosition;
     private TextView txtvLength;
@@ -127,11 +129,10 @@ public class AudioPlayerFragment extends Fragment implements
         sbPosition.setOnSeekBarChangeListener(this);
 
         pager = root.findViewById(R.id.pager);
-        AudioPlayerPagerAdapter pagerAdapter = new AudioPlayerPagerAdapter(getChildFragmentManager());
-        pager.setAdapter(pagerAdapter);
+        pager.setAdapter(new AudioPlayerPagerAdapter(this));
         // Required for getChildAt(int) in ViewPagerBottomSheetBehavior to return the correct page
-        pager.setOffscreenPageLimit(NUM_CONTENT_FRAGMENTS);
-        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        pager.setOffscreenPageLimit((int) NUM_CONTENT_FRAGMENTS);
+        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 pager.post(() -> ((MainActivity) getActivity()).getBottomSheet().updateScrollingChild());
@@ -502,30 +503,30 @@ public class AudioPlayerFragment extends Fragment implements
         return false;
     }
 
-    private static class AudioPlayerPagerAdapter extends FragmentPagerAdapter {
+    private static class AudioPlayerPagerAdapter extends FragmentStateAdapter {
         private static final String TAG = "AudioPlayerPagerAdapter";
 
-        public AudioPlayerPagerAdapter(FragmentManager fm) {
-            super(fm);
+        public AudioPlayerPagerAdapter(@NonNull Fragment fragment) {
+            super(fragment);
         }
 
+        @NonNull
         @Override
-        public Fragment getItem(int position) {
+        public Fragment createFragment(int position) {
             Log.d(TAG, "getItem(" + position + ")");
             switch (position) {
                 case POS_COVER:
                     return new CoverFragment();
                 case POS_DESCR:
                     return new ItemDescriptionFragment();
+                default:
                 case POS_CHAPTERS:
                     return new ChaptersFragment();
-                default:
-                    return null;
             }
         }
 
         @Override
-        public int getCount() {
+        public int getItemCount() {
             return NUM_CONTENT_FRAGMENTS;
         }
     }

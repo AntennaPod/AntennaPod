@@ -2,18 +2,20 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
 
@@ -29,10 +31,11 @@ public class DownloadsFragment extends Fragment {
     public static final int POS_RUNNING = 0;
     private static final int POS_COMPLETED = 1;
     public static final int POS_LOG = 2;
+    private static final int TOTAL_COUNT = 3;
 
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
 
-    private ViewPager viewPager;
+    private ViewPager2 viewPager;
     private TabLayout tabLayout;
 
     @Override
@@ -44,12 +47,30 @@ public class DownloadsFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         viewPager = root.findViewById(R.id.viewpager);
-        DownloadsPagerAdapter pagerAdapter = new DownloadsPagerAdapter(getChildFragmentManager(), getResources());
-        viewPager.setAdapter(pagerAdapter);
+        viewPager.setAdapter(new DownloadsPagerAdapter(this));
 
         // Give the TabLayout the ViewPager
         tabLayout = root.findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case POS_RUNNING:
+                    tab.setText(R.string.downloads_running_label);
+                    break;
+                case POS_COMPLETED:
+                    tab.setText(R.string.downloads_completed_label);
+                    break;
+                case POS_LOG:
+                    tab.setText(R.string.downloads_log_label);
+                    break;
+                default:
+                    break;
+            }
+        }).attach();
+
+        // restore our last position
+        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
+        viewPager.setCurrentItem(lastPosition, false);
 
         return root;
     }
@@ -73,56 +94,29 @@ public class DownloadsFragment extends Fragment {
         editor.apply();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    public static class DownloadsPagerAdapter extends FragmentStateAdapter {
 
-        // restore our last position
-        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
-        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
-        viewPager.setCurrentItem(lastPosition);
-    }
-
-    public static class DownloadsPagerAdapter extends FragmentPagerAdapter {
-
-        final Resources resources;
-
-        public DownloadsPagerAdapter(FragmentManager fm, Resources resources) {
-            super(fm);
-            this.resources = resources;
+        DownloadsPagerAdapter(@NonNull Fragment fragment) {
+            super(fragment);
         }
 
+        @NonNull
         @Override
-        public Fragment getItem(int position) {
+        public Fragment createFragment(int position) {
             switch (position) {
                 case POS_RUNNING:
                     return new RunningDownloadsFragment();
                 case POS_COMPLETED:
                     return new CompletedDownloadsFragment();
+                default:
                 case POS_LOG:
                     return new DownloadLogFragment();
-                default:
-                    return null;
             }
         }
 
         @Override
-        public int getCount() {
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case POS_RUNNING:
-                    return resources.getString(R.string.downloads_running_label);
-                case POS_COMPLETED:
-                    return resources.getString(R.string.downloads_completed_label);
-                case POS_LOG:
-                    return resources.getString(R.string.downloads_log_label);
-                default:
-                    return super.getPageTitle(position);
-            }
+        public int getItemCount() {
+            return TOTAL_COUNT;
         }
     }
 }

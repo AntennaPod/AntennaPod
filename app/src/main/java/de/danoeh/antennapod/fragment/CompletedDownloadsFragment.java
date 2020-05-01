@@ -86,8 +86,13 @@ public class CompletedDownloadsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        setHasOptionsMenu(true);
         loadItems();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setHasOptionsMenu(true);
     }
 
     @Override

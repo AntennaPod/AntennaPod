@@ -51,6 +51,12 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if (disposable != null) {
@@ -61,8 +67,6 @@ public class DownloadLogFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
-
         // add padding
         final ListView lv = getListView();
         lv.setClipToPadding(false);
