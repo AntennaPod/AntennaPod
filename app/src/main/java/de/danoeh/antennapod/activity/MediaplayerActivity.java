@@ -62,6 +62,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.NumberFormat;
+
 
 /**
  * Provides general features which are both needed for playing audio and video
@@ -555,13 +557,13 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         butRev = findViewById(R.id.butRev);
         txtvRev = findViewById(R.id.txtvRev);
         if (txtvRev != null) {
-            txtvRev.setText(String.valueOf(UserPreferences.getRewindSecs()));
+            txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         }
         butPlay = findViewById(R.id.butPlay);
         butFF = findViewById(R.id.butFF);
         txtvFF = findViewById(R.id.txtvFF);
         if (txtvFF != null) {
-            txtvFF.setText(String.valueOf(UserPreferences.getFastForwardSecs()));
+            txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
         }
         butSkip = findViewById(R.id.butSkip);
 
