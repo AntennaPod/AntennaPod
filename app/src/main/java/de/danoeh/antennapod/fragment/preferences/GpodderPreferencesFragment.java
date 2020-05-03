@@ -8,6 +8,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import android.text.Html;
 import android.text.format.DateUtils;
 import android.widget.Toast;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.event.SyncServiceEvent;
@@ -91,8 +92,7 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
         });
         findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(preference -> {
             GpodnetPreferences.logout();
-            Toast toast = Toast.makeText(activity, R.string.pref_gpodnet_logout_toast, Toast.LENGTH_SHORT);
-            toast.show();
+            Snackbar.make(getView(), R.string.pref_gpodnet_logout_toast, Snackbar.LENGTH_LONG).show();
             updateGpodnetPreferenceScreen();
             return true;
         });

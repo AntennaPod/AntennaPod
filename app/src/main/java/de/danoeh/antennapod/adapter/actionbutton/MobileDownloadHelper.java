@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
@@ -42,14 +41,12 @@ class MobileDownloadHelper {
     private static void addToQueue(Context context, FeedItem item) {
         addToQueueTimestamp = System.currentTimeMillis();
         DBWriter.addQueueItem(context, item);
-        Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
     }
 
     private static void downloadFeedItems(Context context, FeedItem item) {
         allowMobileDownloadTimestamp = System.currentTimeMillis();
         try {
             DownloadRequester.getInstance().downloadMedia(context, true, item);
-            Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());

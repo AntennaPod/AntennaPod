@@ -366,8 +366,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             DBWriter.addFavoriteItem(feedItem);
                             isFavorite = true;
                             invalidateOptionsMenu();
-                            Toast.makeText(this, R.string.added_to_favorites, Toast.LENGTH_SHORT)
-                                 .show();
                         }
                         break;
                     case R.id.remove_from_favorites_item:
@@ -375,8 +373,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                             DBWriter.removeFavoriteItem(feedItem);
                             isFavorite = false;
                             invalidateOptionsMenu();
-                            Toast.makeText(this, R.string.removed_from_favorites, Toast.LENGTH_SHORT)
-                                    .show();
                         }
                         break;
                     case R.id.disable_sleeptimer_item: // Fall-through

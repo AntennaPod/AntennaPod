@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import de.danoeh.antennapod.activity.MainActivity;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -108,10 +109,9 @@ public class RunningDownloadsFragment extends ListFragment {
                     && UserPreferences.isEnableAutodownload()) {
                 FeedMedia media = DBReader.getFeedMedia(downloadRequest.getFeedfileId());
                 DBWriter.setFeedItemAutoDownload(media.getItem(), false);
-                Toast.makeText(getActivity(), R.string.download_canceled_autodownload_enabled_msg,
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getActivity(), R.string.download_canceled_msg, Toast.LENGTH_SHORT).show();
+
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                        R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_SHORT);
             }
         }
     };

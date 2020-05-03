@@ -37,8 +37,6 @@ public class CancelDownloadActionButton extends ItemActionButton {
         if (UserPreferences.isEnableAutodownload()) {
             DBWriter.setFeedItemAutoDownload(media.getItem(), false);
             Toast.makeText(context, R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(context, R.string.download_canceled_msg, Toast.LENGTH_LONG).show();
         }
     }
 }
