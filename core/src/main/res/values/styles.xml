@@ -18,6 +18,7 @@
         <item name="currently_playing_background">@color/highlight_light</item>
         <item name="action_icon_color">@color/black</item>
         <item name="drawer_activated_color">@color/highlight_light</item>
+        <item name="android:textAllCaps">false</item>
 
         <item name="storage">@drawable/ic_storage_black</item>
         <item name="ic_network">@drawable/ic_network_black</item>
@@ -90,6 +91,7 @@
         <item name="master_switch_background">@color/master_switch_background_dark</item>
         <item name="currently_playing_background">@color/highlight_dark</item>
         <item name="action_icon_color">@color/white</item>
+        <item name="android:textAllCaps">false</item>
 
         <item name="storage">@drawable/ic_storage_white</item>
         <item name="ic_network">@drawable/ic_network_white</item>
