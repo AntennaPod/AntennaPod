@@ -415,12 +415,17 @@ public class MainActivity extends CastEnabledActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        View parentLayout = findViewById(R.id.drawer_layout);
-        Snackbar snackbar = Snackbar.make(parentLayout, event.message, Snackbar.LENGTH_SHORT);
+
+        Snackbar snackbar;
+        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+            snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_SHORT);
+        } else {
+            snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_SHORT);
+            snackbar.show();
+        }
         if (event.action != null) {
             snackbar.setAction(getString(R.string.undo), v -> event.action.run());
         }
-        snackbar.show();
     }
 
     private void handleNavIntent() {
@@ -453,5 +458,23 @@ public class MainActivity extends CastEnabledActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+    }
+
+    public Snackbar showSnackbarAbovePlayer(int text, int duration) {
+        Snackbar s = Snackbar.make(findViewById(R.id.main_view), text, duration);
+        if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
+            s.setAnchorView(findViewById(R.id.audioplayerFragment));
+        }
+        s.show();
+        return s;
+    }
+
+    public Snackbar showSnackbarAbovePlayer(String text, int duration) {
+        Snackbar s = Snackbar.make(findViewById(R.id.main_view), text, duration);
+        if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
+            s.setAnchorView(findViewById(R.id.audioplayerFragment));
+        }
+        s.show();
+        return s;
     }
 }

@@ -16,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import androidx.core.util.Consumer;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.Converter;
@@ -115,7 +116,9 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
-                Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG).show();
+                Snackbar s = Snackbar.make(this, R.string.copied_url_msg, Snackbar.LENGTH_LONG);
+                ViewCompat.setElevation(s.getView(), 100);
+                s.show();
                 break;
             case R.id.go_to_position_item:
                 if (Timeline.isTimecodeLink(selectedUrl) && timecodeSelectedListener != null) {

@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -388,11 +389,9 @@ public class QueueFragment extends Fragment {
             recyclerAdapter.setLocked(locked);
         }
         if (locked) {
-            Snackbar.make(getActivity().findViewById(android.R.id.content),
-                    R.string.queue_locked, Snackbar.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
         } else {
-            Snackbar.make(getActivity().findViewById(android.R.id.content),
-                    R.string.queue_unlocked, Snackbar.LENGTH_SHORT).show();
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -497,16 +496,16 @@ public class QueueFragment extends Fragment {
                     final boolean isRead = item.isPlayed();
                     DBWriter.markItemPlayed(FeedItem.PLAYED, false, item.getId());
                     DBWriter.removeQueueItem(getActivity(), true, item);
-                    Snackbar snackbar = Snackbar.make(root, getString(item.hasMedia()
-                            ? R.string.marked_as_read_label : R.string.marked_as_read_no_media_label),
-                            Snackbar.LENGTH_LONG);
-                    snackbar.setAction(getString(R.string.undo), v -> {
-                        DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
-                        if(!isRead) {
-                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-                        }
-                    });
-                    snackbar.show();
+
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                            item.hasMedia() ? R.string.marked_as_read_label : R.string.marked_as_read_no_media_label,
+                            Snackbar.LENGTH_LONG)
+                            .setAction(getString(R.string.undo), v -> {
+                                DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
+                                if (!isRead) {
+                                    DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
+                                }
+                            });
                 }
 
                 @Override
