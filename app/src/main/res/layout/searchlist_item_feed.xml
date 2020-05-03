@@ -14,6 +14,7 @@
             android:elevation="4dp"
             android:outlineProvider="bounds"
             android:foreground="?android:attr/selectableItemBackground"
+            android:background="?android:attr/windowBackground"
             squareImageView:direction="height" />
 
 </LinearLayout>

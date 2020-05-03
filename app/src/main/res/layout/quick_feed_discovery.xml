@@ -25,8 +25,8 @@
                 android:minHeight="0dp"
                 android:minWidth="0dp"
                 android:text="@string/discover_more"
-                android:id="@+id/discover_more"
-                style="?android:attr/buttonBarButtonStyle"/>
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:id="@+id/discover_more"/>
     </LinearLayout>
 
     <RelativeLayout
