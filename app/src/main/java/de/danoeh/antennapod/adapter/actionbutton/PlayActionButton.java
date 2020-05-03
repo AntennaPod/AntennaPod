@@ -46,7 +46,7 @@ public class PlayActionButton extends ItemActionButton {
                 .start();
 
         if (media.getMediaType() == MediaType.VIDEO) {
-            context.startActivity(PlaybackService.getPlayerActivityIntent(context));
+            context.startActivity(PlaybackService.getPlayerActivityIntent(context, media));
         }
     }
 }
