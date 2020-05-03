@@ -91,7 +91,7 @@ public class FeedInfoFragment extends Fragment {
                 android.content.ClipboardManager cm = (android.content.ClipboardManager) getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE);
                 cm.setPrimaryClip(clipData);
-                Snackbar.make(getView(), R.string.copied_url_msg, Snackbar.LENGTH_SHORT).show();
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_url_msg, Snackbar.LENGTH_SHORT);
             }
         }
     };
