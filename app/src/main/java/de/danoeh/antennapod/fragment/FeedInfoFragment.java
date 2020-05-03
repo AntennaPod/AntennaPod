@@ -234,7 +234,8 @@ public class FeedInfoFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (feed == null) {
-            Toast.makeText(getContext(), R.string.please_wait_for_data, Toast.LENGTH_LONG).show();
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                    R.string.please_wait_for_data, Toast.LENGTH_LONG);
             return super.onOptionsItemSelected(item);
         }
         boolean handled = false;

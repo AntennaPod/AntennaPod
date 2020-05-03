@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -141,7 +142,7 @@ public class SleepTimerDialog extends DialogFragment {
         Button setButton = content.findViewById(R.id.setSleeptimerButton);
         setButton.setOnClickListener(v -> {
             if (!PlaybackService.isRunning) {
-                Toast.makeText(getContext(), R.string.no_media_playing_label, Toast.LENGTH_LONG).show();
+                Snackbar.make(content, R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
             }
             try {
                 savePreferences();

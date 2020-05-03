@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.text.Layout;
@@ -18,6 +19,7 @@ import com.joanzapata.iconify.widget.IconButton;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -35,10 +37,10 @@ import de.danoeh.antennapod.view.viewholder.DownloadItemViewHolder;
 public class DownloadLogAdapter extends BaseAdapter {
     private static final String TAG = "DownloadLogAdapter";
 
-    private final Context context;
+    private final Activity context;
     private final ItemAccess itemAccess;
 
-    public DownloadLogAdapter(Context context, ItemAccess itemAccess) {
+    public DownloadLogAdapter(Activity context, ItemAccess itemAccess) {
         super();
         this.itemAccess = itemAccess;
         this.context = context;
@@ -116,7 +118,8 @@ public class DownloadLogAdapter extends BaseAdapter {
                         }
                         try {
                             DownloadRequester.getInstance().downloadMedia(context, true, media.getItem());
-                            Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
+                            ((MainActivity) context).showSnackbarAbovePlayer(
+                                    R.string.status_downloading_label, Toast.LENGTH_SHORT);
                         } catch (DownloadRequestException e) {
                             e.printStackTrace();
                             DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
