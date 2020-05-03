@@ -556,6 +556,9 @@
   <string name="import_select_file">בחירת קובץ לייבוא</string>
   <string name="import_ok">הייבוא הצליח.\n\nנא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
   <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של אנטנה־פ‎וֹד</string>
+  <string name="favorites">מועדפים</string>
+  <string name="favorites_export_label">ייצוא מועדפים</string>
+  <string name="favorites_export_summary">ייצוא פרקים מועדפים לקובץ</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">הגדרת מתזמן שינה</string>
   <string name="disable_sleeptimer_label">השבתת מתזמן שינה</string>

@@ -208,10 +208,6 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         builder.show();
     }
 
-    private void importFavorites() {
-        // TODO implement
-    }
-
     private void showDatabaseImportSuccessDialog() {
         AlertDialog.Builder d = new AlertDialog.Builder(getContext());
         d.setMessage(R.string.import_ok);

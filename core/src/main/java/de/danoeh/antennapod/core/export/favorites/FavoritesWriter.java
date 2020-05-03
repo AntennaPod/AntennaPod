@@ -35,7 +35,7 @@ public class FavoritesWriter implements ExportWriter {
         String template = IOUtils.toString(templateStream, "UTF-8");
         String[] templateParts = template.split("\\{FAVORITES\\}");
 
-        Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(getFavorites(feeds));
+        Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(getFavorites());
 
         writer.append(templateParts[0]);
         writer.append("<ul>");
@@ -60,7 +60,7 @@ public class FavoritesWriter implements ExportWriter {
         Log.d(TAG, "Finished writing document");
     }
 
-    private List<FeedItem> getFavorites(List<Feed> feeds) {
+    private List<FeedItem> getFavorites() {
         int page = 0;
 
         List<FeedItem> favoritesPage = DBReader.getFavoriteItemsList(page, PAGE_LIMIT);
@@ -79,7 +79,8 @@ public class FavoritesWriter implements ExportWriter {
             favoritesPage = DBReader.getFavoriteItemsList(page * PAGE_LIMIT, PAGE_LIMIT);
         }
 
-        Collections.sort(favoritesList, (lhs, rhs) -> lhs.getPubDate().compareTo(rhs.getPubDate()));
+        // sort in descending order
+        Collections.sort(favoritesList, (lhs, rhs) -> rhs.getPubDate().compareTo(lhs.getPubDate()));
 
         return favoritesList;
     }
@@ -114,14 +115,13 @@ public class FavoritesWriter implements ExportWriter {
     }
 
     private void writeFavoriteItem(Writer writer, FeedItem item) throws IOException {
-        writer.append("<li><span>[");
-        writer.append(DATE_FORMAT.format(item.getPubDate()));
-        writer.append("] <a href=\"");
-        writer.append(item.getLink());
-        writer.append("\">");
+        writer.append("<li><span>");
         writer.append(item.getTitle().trim());
-        writer.append("</a>");
-        writer.append("</span></li>\n");
+        writer.append("<br>\n[<a href=\"");
+        writer.append(item.getLink());
+        writer.append("\">Website</a>] • [<a href=\"");
+        writer.append(item.getMedia().getDownload_url());
+        writer.append("\">Media</a>]</span></li>\n");
     }
 
     @Override
