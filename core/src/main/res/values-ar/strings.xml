@@ -135,12 +135,6 @@
   <string name="exporting_label">جار التصدير ...</string>
   <string name="export_error_label">حدث خطأ أثناء التصدير</string>
   <string name="export_success_title">تم التصدير بنجاح</string>
-
-  <!--Favorites import and export-->
-  <string name="favorites">المفضلات</string>
-  <string name="favorites_export_label">تصدير المفضلات</string>
-  <string name="favorites_export_summary">تصدير المفضلات الى ملف</string>
-
   <!--Sleep timer-->
   <string name="enter_time_here_label">أدخل التوقيت</string>
   <string name="timer_vibration_label">تشغيل الهزاز</string>
