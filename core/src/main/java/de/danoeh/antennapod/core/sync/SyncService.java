@@ -41,6 +41,8 @@ import de.danoeh.antennapod.core.sync.model.SyncServiceException;
 import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
@@ -50,6 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SyncService extends Worker {
     private static final String PREF_NAME = "SyncService";
@@ -62,7 +65,7 @@ public class SyncService extends Worker {
     private static final String PREF_LAST_SYNC_ATTEMPT_SUCCESS = "last_sync_attempt_success";
     private static final String TAG = "SyncService";
     private static final String WORK_ID_SYNC = "SyncServiceWorkId";
-    private static final Object lock = new Object();
+    private static final ReentrantLock lock = new ReentrantLock();
 
     private ISyncService syncServiceImpl;
 
@@ -100,23 +103,22 @@ public class SyncService extends Worker {
     }
 
     public static void clearQueue(Context context) {
-        synchronized (lock) {
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
+        executeLockedAsync(() ->
+                context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                     .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
                     .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
                     .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
                     .putString(PREF_QUEUED_EPISODE_ACTIONS, "[]")
                     .putString(PREF_QUEUED_FEEDS_ADDED, "[]")
                     .putString(PREF_QUEUED_FEEDS_REMOVED, "[]")
-                    .apply();
-        }
+                    .apply());
     }
 
     public static void enqueueFeedAdded(Context context, String downloadUrl) {
         if (!GpodnetPreferences.loggedIn()) {
             return;
         }
-        synchronized (lock) {
+        executeLockedAsync(() -> {
             try {
                 SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                 String json = prefs.getString(PREF_QUEUED_FEEDS_ADDED, "[]");
@@ -126,15 +128,15 @@ public class SyncService extends Worker {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        sync(context);
+            sync(context);
+        });
     }
 
     public static void enqueueFeedRemoved(Context context, String downloadUrl) {
         if (!GpodnetPreferences.loggedIn()) {
             return;
         }
-        synchronized (lock) {
+        executeLockedAsync(() -> {
             try {
                 SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                 String json = prefs.getString(PREF_QUEUED_FEEDS_REMOVED, "[]");
@@ -144,15 +146,15 @@ public class SyncService extends Worker {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        sync(context);
+            sync(context);
+        });
     }
 
     public static void enqueueEpisodeAction(Context context, EpisodeAction action) {
         if (!GpodnetPreferences.loggedIn()) {
             return;
         }
-        synchronized (lock) {
+        executeLockedAsync(() -> {
             try {
                 SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                 String json = prefs.getString(PREF_QUEUED_EPISODE_ACTIONS, "[]");
@@ -162,8 +164,8 @@ public class SyncService extends Worker {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        sync(context);
+            sync(context);
+        });
     }
 
     public static void sync(Context context) {
@@ -181,19 +183,20 @@ public class SyncService extends Worker {
     }
 
     public static void fullSync(Context context) {
-        synchronized (lock) {
+        executeLockedAsync(() -> {
             context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                     .putLong(PREF_LAST_SUBSCRIPTION_SYNC_TIMESTAMP, 0)
                     .putLong(PREF_LAST_EPISODE_ACTIONS_SYNC_TIMESTAMP, 0)
                     .putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, 0)
                     .apply();
-        }
-        OneTimeWorkRequest workRequest = getWorkRequest()
-                .setInitialDelay(0L, TimeUnit.SECONDS)
-                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.MINUTES)
-                .build();
-        WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
-        EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+
+            OneTimeWorkRequest workRequest = getWorkRequest()
+                    .setInitialDelay(0L, TimeUnit.SECONDS)
+                    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.MINUTES)
+                    .build();
+            WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
+            EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
+        });
     }
 
     private static OneTimeWorkRequest.Builder getWorkRequest() {
@@ -207,6 +210,30 @@ public class SyncService extends Worker {
         return new OneTimeWorkRequest.Builder(SyncService.class)
                 .setConstraints(constraints.build())
                 .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
+    }
+
+    /**
+     * Take the lock and execute runnable (to prevent changes to preferences being lost when enqueueing while sync is
+     * in progress). If the lock is free, the runnable is directly executed in the calling thread to prevent overhead.
+     */
+    private static void executeLockedAsync(Runnable runnable) {
+        if (lock.tryLock()) {
+            try {
+                runnable.run();
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            Completable.fromRunnable(() -> {
+                lock.lock();
+                try {
+                    runnable.run();
+                } finally {
+                    lock.unlock();
+                }
+            }).subscribeOn(Schedulers.io())
+                .subscribe();
+        }
     }
 
     public static boolean isLastSyncSuccessful(Context context) {
@@ -304,7 +331,8 @@ public class SyncService extends Worker {
             Log.d(TAG, "Added: " + StringUtils.join(queuedAddedFeeds, ", "));
             Log.d(TAG, "Removed: " + StringUtils.join(queuedRemovedFeeds, ", "));
 
-            synchronized (lock) {
+            lock.lock();
+            try {
                 UploadChangesResponse uploadResponse = syncServiceImpl
                         .uploadSubscriptionChanges(queuedAddedFeeds, queuedRemovedFeeds);
                 getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
@@ -312,6 +340,8 @@ public class SyncService extends Worker {
                 getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                         .putString(PREF_QUEUED_FEEDS_REMOVED, "[]").apply();
                 newTimeStamp = uploadResponse.timestamp;
+            } finally {
+                lock.unlock();
             }
         }
         getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
@@ -349,7 +379,8 @@ public class SyncService extends Worker {
             }
         }
         if (queuedEpisodeActions.size() > 0) {
-            synchronized (lock) {
+            lock.lock();
+            try {
                 Log.d(TAG, "Uploading " + queuedEpisodeActions.size() + " actions: "
                         + StringUtils.join(queuedEpisodeActions, ", "));
                 UploadChangesResponse postResponse = syncServiceImpl.uploadEpisodeActions(queuedEpisodeActions);
@@ -357,6 +388,8 @@ public class SyncService extends Worker {
                 Log.d(TAG, "Upload episode response: " + postResponse);
                 getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
                         .putString(PREF_QUEUED_EPISODE_ACTIONS, "[]").apply();
+            } finally {
+                lock.unlock();
             }
         }
         getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit()
