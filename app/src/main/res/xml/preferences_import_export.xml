@@ -27,17 +27,14 @@
                 android:summary="@string/opml_import_summary"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/favorites">
-        <Preference
-            android:key="prefFavoritesExport"
-            android:title="@string/favorites_export_label"
-            android:summary="@string/favorites_export_summary"/>
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/html">
         <Preference
                 android:key="prefHtmlExport"
                 android:title="@string/html_export_label"
                 android:summary="@string/html_export_summary"/>
+        <Preference
+                android:key="prefFavoritesExport"
+                android:title="@string/favorites_export_label"
+                android:summary="@string/favorites_export_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>

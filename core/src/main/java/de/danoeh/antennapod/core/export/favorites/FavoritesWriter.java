@@ -30,9 +30,10 @@ public class FavoritesWriter implements ExportWriter {
             throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
 
-        InputStream templateStream = context.getAssets().open("favorites-export-template.html");
+        InputStream templateStream = context.getAssets().open("html-export-template.html");
         String template = IOUtils.toString(templateStream, "UTF-8");
-        String[] templateParts = template.split("\\{FAVORITES\\}");
+        template = template.replaceAll("\\{TITLE\\}", "Favorites");
+        String[] templateParts = template.split("\\{FEEDS\\}");
 
         Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(getFavorites());
 
@@ -45,7 +46,7 @@ public class FavoritesWriter implements ExportWriter {
             writer.append("<li><div>");
             writeFeed(writer, favorites.get(0).getFeed());
 
-            writer.append("<ul>");
+            writer.append("<ul style=\"text-align:left\">");
             for (FeedItem item : favorites) {
                 writeFavoriteItem(writer, item);
             }
@@ -62,21 +63,13 @@ public class FavoritesWriter implements ExportWriter {
     private List<FeedItem> getFavorites() {
         int page = 0;
 
-        List<FeedItem> favoritesPage = DBReader.getFavoriteItemsList(page, PAGE_LIMIT);
         List<FeedItem> favoritesList = new ArrayList<>();
-
-        while (!favoritesPage.isEmpty()) {
-            favoritesList.addAll(favoritesPage);
-
-            // save a DB call if there are no more items to fetch
-            if (favoritesPage.size() < PAGE_LIMIT) {
-                break;
-            }
-
-            ++page;
-
+        List<FeedItem> favoritesPage;
+        do {
             favoritesPage = DBReader.getFavoriteItemsList(page * PAGE_LIMIT, PAGE_LIMIT);
-        }
+            favoritesList.addAll(favoritesPage);
+            ++page;
+        } while (!favoritesPage.isEmpty() && favoritesPage.size() == PAGE_LIMIT);
 
         // sort in descending order
         Collections.sort(favoritesList, (lhs, rhs) -> rhs.getPubDate().compareTo(lhs.getPubDate()));

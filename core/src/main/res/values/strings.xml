@@ -576,8 +576,7 @@
     <string name="import_select_file">Select file to import</string>
     <string name="import_ok">Import successful.\n\nPlease press OK to restart AntennaPod</string>
     <string name="import_no_downgrade">This database was exported with a newer version of AntennaPod. Your current installation does not yet know how to handle this file.</string>
-    <string name="favorites">Favorites</string>
-    <string name="favorites_export_label">Favorites Export</string>
+    <string name="favorites_export_label">Favorites export</string>
     <string name="favorites_export_summary">Export saved favorites to file</string>
 
     <!-- Sleep timer -->
