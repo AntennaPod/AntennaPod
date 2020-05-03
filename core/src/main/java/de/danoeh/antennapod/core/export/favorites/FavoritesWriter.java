@@ -8,7 +8,6 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,15 +19,15 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 
-/** Writes saved favorites to file */
+/** Writes saved favorites to file. */
 public class FavoritesWriter implements ExportWriter {
     private static final String TAG = "FavoritesWriter";
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
     private static final int PAGE_LIMIT = 100;
 
     @Override
-    public void writeDocument(List<Feed> feeds, Writer writer, Context context) throws IllegalArgumentException, IllegalStateException, IOException {
+    public void writeDocument(List<Feed> feeds, Writer writer, Context context)
+            throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
 
         InputStream templateStream = context.getAssets().open("favorites-export-template.html");
@@ -85,6 +84,12 @@ public class FavoritesWriter implements ExportWriter {
         return favoritesList;
     }
 
+    /**
+     * Group favorite episodes by feed, sorting them by publishing date in descending order.
+     *
+     * @param favoritesList {@code List} of all favorite episodes.
+     * @return A {@code Map} favorite episodes, keyed by feed ID.
+     */
     private Map<Long, List<FeedItem>> getFeedMap(List<FeedItem> favoritesList) {
         Map<Long, List<FeedItem>> feedMap = new TreeMap<>();
 
