@@ -13,6 +13,12 @@
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library
+        name="Android Jetpack"
+        author="Google"
+        website="https://developer.android.com/jetpack"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
+    <library
         name="Apache Commons"
         author="The Apache Software Foundation"
         website="http://commons.apache.org/"
@@ -66,6 +72,12 @@
         website="https://github.com/Templarian/MaterialDesign"
         license="SIL Open Font, Version 1.1"
         licenseText="LICENSE_SIL.txt" />
+    <library
+        name="Material Components"
+        author="Google"
+        website="https://github.com/material-components/material-components-android"
+        license="Apache 2.0"
+        licenseText="LICENSE_APACHE-2.0.txt" />
     <library
         name="OkHttp"
         author="Square"

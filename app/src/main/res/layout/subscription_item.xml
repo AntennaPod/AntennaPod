@@ -11,7 +11,7 @@
         android:id="@+id/imgvCover"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
         tools:src="@mipmap/ic_launcher_round"
         squareImageView:direction="width"/>
 
@@ -37,9 +37,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        app:backgroundColor="?attr/colorAccent"
+        app:backgroundColor="?attr/colorSecondary"
         app:corner="rightTop"
         app:primaryText="Test"
-        app:primaryTextColor="@color/white"
+        app:primaryTextColor="?attr/colorOnSecondary"
         app:primaryTextSize="12sp" />
 </RelativeLayout>

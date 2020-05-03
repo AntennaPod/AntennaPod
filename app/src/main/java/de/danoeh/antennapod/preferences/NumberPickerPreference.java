@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.preferences;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import android.text.InputFilter;
 import android.util.AttributeSet;

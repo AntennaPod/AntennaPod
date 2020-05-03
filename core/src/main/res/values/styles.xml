@@ -5,12 +5,20 @@
         <!-- Room for API dependent attributes -->
     </style>
 
-    <style name="Theme.Base.AntennaPod.Light" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/primary_light</item>
+    <style name="Theme.Base.AntennaPod.Light" parent="Theme.MaterialComponents.Light">
+        <item name="colorPrimary">@color/accent_light</item>
         <item name="colorAccent">@color/accent_light</item>
+        <item name="colorSecondary">@color/accent_light</item>
+        <item name="colorOnSecondary">@color/white</item>
         <item name="progressBarTheme">@style/ProgressBarLight</item>
-        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
-        <item name="android:windowBackground">@color/primary_light</item>
+        <item name="colorPrimaryDark">@color/accent_light</item>
+        <item name="android:windowBackground">@color/background_light</item>
+        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Light</item>
+        <item name="master_switch_background">@color/master_switch_background_light</item>
+        <item name="currently_playing_background">@color/highlight_light</item>
+        <item name="action_icon_color">@color/black</item>
+        <item name="drawer_activated_color">@color/highlight_light</item>
+
         <item name="storage">@drawable/ic_storage_black</item>
         <item name="ic_network">@drawable/ic_network_black</item>
         <item name="statistics">@drawable/ic_statistics_black</item>
@@ -38,7 +46,6 @@
         <item name="stat_playlist">@drawable/ic_playlist_black</item>
         <item name="type_video">@drawable/ic_videocam_black_24dp</item>
         <item name="dragview_background">@drawable/ic_drag_lighttheme</item>
-        <item name="drawer_activated_color">@color/highlight_light</item>
         <item name="ic_history">@drawable/ic_history_black</item>
         <item name="ic_folder">@drawable/ic_folder_black</item>
         <item name="ic_settings_playback">@drawable/ic_av_play_black_24dp</item>
@@ -62,10 +69,6 @@
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
         <item name="ic_key">@drawable/ic_key_black</item>
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_black</item>
-        <item name="master_switch_background">@color/master_switch_background_light</item>
-        <item name="currently_playing_background">@color/highlight_light</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="action_icon_color">@color/black</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
     </style>
 
@@ -73,14 +76,21 @@
         <!-- Room for API dependent attributes -->
     </style>
 
-    <style name="Theme.Base.AntennaPod.Dark" parent="Theme.AppCompat">
+    <style name="Theme.Base.AntennaPod.Dark" parent="Theme.MaterialComponents">
         <item name="colorAccent">@color/accent_dark</item>
-        <item name="colorPrimary">@color/primary_darktheme</item>
-        <item name="colorPrimaryDark">@color/primary_darktheme</item>
-        <item name="android:windowBackground">@color/primary_darktheme</item>
+        <item name="colorSecondary">@color/accent_dark</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorPrimary">@color/accent_dark</item>
+        <item name="colorPrimaryDark">@color/background_darktheme</item>
+        <item name="android:windowBackground">@color/background_darktheme</item>
+        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Dark</item>
         <item name="colorControlNormal">@color/white</item>
-        <item name="buttonStyle">@style/Widget.AntennaPod.Button</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
+        <item name="drawer_activated_color">@color/highlight_dark</item>
+        <item name="master_switch_background">@color/master_switch_background_dark</item>
+        <item name="currently_playing_background">@color/highlight_dark</item>
+        <item name="action_icon_color">@color/white</item>
+
         <item name="storage">@drawable/ic_storage_white</item>
         <item name="ic_network">@drawable/ic_network_white</item>
         <item name="statistics">@drawable/ic_statistics_white</item>
@@ -108,7 +118,6 @@
         <item name="stat_playlist">@drawable/ic_playlist_white</item>
         <item name="type_video">@drawable/ic_videocam_white_24dp</item>
         <item name="dragview_background">@drawable/ic_drag_darktheme</item>
-        <item name="drawer_activated_color">@color/highlight_dark</item>
         <item name="ic_history">@drawable/ic_history_white</item>
         <item name="ic_folder">@drawable/ic_folder_white</item>
         <item name="ic_settings_playback">@drawable/ic_av_play_white_24dp</item>
@@ -132,10 +141,6 @@
         <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
         <item name="ic_key">@drawable/ic_key_white</item>
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_white</item>
-        <item name="master_switch_background">@color/master_switch_background_dark</item>
-        <item name="currently_playing_background">@color/highlight_dark</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="action_icon_color">@color/white</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
     </style>
 
@@ -143,44 +148,30 @@
         <!-- Room for API dependent attributes -->
     </style>
 
-    <style name="Theme.Base.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.Dark">
-        <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_black</item>
+    <style name="Theme.Base.AntennaPod.TrueBlack" parent="Theme.AntennaPod.Dark">
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Black</item>
         <item name="drawer_activated_color">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
         <item name="android:colorBackground">@color/black</item>
         <item name="android:windowBackground">@color/black</item>
         <item name="android:actionBarStyle">@color/black</item>
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/black</item>
     </style>
 
-
-    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.Base.AntennaPod.Light.NoTitle">
-        <!-- Room for API dependent attributes -->
-    </style>
-
-    <style name="Theme.Base.AntennaPod.Light.NoTitle" parent="Theme.Base.AntennaPod.Light">
+    <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AntennaPod.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.Base.AntennaPod.Dark.NoTitle">
-        <!-- Room for API dependent attributes -->
-    </style>
-
-    <style name="Theme.Base.AntennaPod.Dark.NoTitle" parent="Theme.Base.AntennaPod.Dark">
+    <style name="Theme.AntennaPod.Dark.NoTitle" parent="Theme.AntennaPod.Dark">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="Theme.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.TrueBlack.NoTitle">
-        <!-- Room for API dependent attributes -->
-    </style>
-
-    <style name="Theme.Base.AntennaPod.TrueBlack.NoTitle" parent="Theme.Base.AntennaPod.TrueBlack">
+    <style name="Theme.AntennaPod.TrueBlack.NoTitle" parent="Theme.AntennaPod.TrueBlack">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
@@ -208,7 +199,7 @@
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
-    <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.Base.AntennaPod.TrueBlack">
+    <style name="Theme.AntennaPod.TrueBlack.Translucent" parent="Theme.AntennaPod.TrueBlack">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:background">@android:color/transparent</item>
@@ -224,11 +215,7 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="Theme.AntennaPod.Splash" parent="Theme.Base.AntennaPod.Splash">
-        <!-- Room for API dependent attributes -->
-    </style>
-
-    <style name="Theme.Base.AntennaPod.Splash" parent="Theme.AppCompat.NoActionBar">
+    <style name="Theme.AntennaPod.Splash" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
         <item name="colorPrimary">@color/ic_launcher_background</item>
         <item name="colorPrimaryDark">@color/ic_launcher_background</item>
@@ -271,11 +258,6 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="Widget.AntennaPod.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">?attr/colorAccent</item>
-        <item name="textAllCaps">false</item>
-    </style>
-
     <style name="BigBlurryBackground">
         <item name="android:scaleType">centerCrop</item>
         <!-- <item name="android:tint">@color/image_readability_tint</item> -->
@@ -303,4 +285,15 @@
         <item name="fastScrollVerticalTrackDrawable">@drawable/scrollbar_track</item>
     </style>
 
+    <style name="Widget.AntennaPod.ActionBar.Light" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+        <item name="background">@color/background_light</item>
+    </style>
+
+    <style name="Widget.AntennaPod.ActionBar.Dark" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+        <item name="background">@color/background_darktheme</item>
+    </style>
+
+    <style name="Widget.AntennaPod.ActionBar.Black" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+        <item name="background">@color/black</item>
+    </style>
 </resources>
