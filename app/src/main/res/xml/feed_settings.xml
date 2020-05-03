@@ -22,7 +22,7 @@
             android:summary="@string/pref_feed_playback_speed_sum"/>
 
     <Preference
-            android:key="skipping"
+            android:key="feedAutoSkip"
             android:summary="@string/pref_feed_skip_sum"
             android:title="@string/pref_feed_skip" />
 
