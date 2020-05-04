@@ -2,11 +2,18 @@ package de.danoeh.antennapod.core.util;
 
 import android.text.TextUtils;
 
+import androidx.annotation.VisibleForTesting;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 
 /** Generates valid filenames for a given string. */
 public class FileNameGenerator {
+    @VisibleForTesting
+    public static final int MAX_FILENAME_LENGTH = 255; // Limited by ext4
+    private static final int MD5_HEX_LENGTH = 32;
 
     private static final char[] validChars =
             ("abcdefghijklmnopqrstuvwxyz"
@@ -36,8 +43,11 @@ public class FileNameGenerator {
         String filename = buf.toString().trim();
         if (TextUtils.isEmpty(filename)) {
             return randomString(8);
+        } else if (filename.length() >= MAX_FILENAME_LENGTH) {
+            return filename.substring(0, MAX_FILENAME_LENGTH - MD5_HEX_LENGTH - 1) + "_" + md5(filename);
+        } else {
+            return filename;
         }
-        return filename;
     }
 
     private static String randomString(int length) {
@@ -46,5 +56,19 @@ public class FileNameGenerator {
             sb.append(validChars[(int) (Math.random() * validChars.length)]);
         }
         return sb.toString();
+    }
+
+    private static String md5(String md5) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(md5.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : array) {
+                sb.append(Integer.toHexString((b & 0xFF) | 0x100).substring(1, 3));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            return null;
+        }
     }
 }
