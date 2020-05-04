@@ -24,6 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import com.google.android.material.snackbar.Snackbar;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -302,13 +303,15 @@ public class AudioPlayerFragment extends Fragment implements
                 final AlertDialog.Builder errorDialog = new AlertDialog.Builder(getContext());
                 errorDialog.setTitle(R.string.error_label);
                 errorDialog.setMessage(MediaPlayerError.getErrorString(getContext(), code));
-                errorDialog.setNeutralButton(android.R.string.ok,
-                        (dialog, which) -> {
-                            dialog.dismiss();
-                            ((MainActivity) getActivity()).getBottomSheet()
-                                    .setState(BottomSheetBehavior.STATE_COLLAPSED);
-                        }
-                );
+                errorDialog.setPositiveButton(android.R.string.ok, (dialog, which) ->
+                        ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED));
+                if (!UserPreferences.useExoplayer()) {
+                    errorDialog.setNeutralButton(R.string.media_player_switch_to_exoplayer, (dialog, which) -> {
+                        UserPreferences.enableExoplayer();
+                        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                                R.string.media_player_switched_to_exoplayer, Snackbar.LENGTH_LONG);
+                    });
+                }
                 errorDialog.create().show();
             }
 
