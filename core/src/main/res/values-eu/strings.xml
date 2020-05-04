@@ -133,6 +133,7 @@
   <string name="feed_delete_confirmation_msg">Mesedez berretsi \"%1$s\" podcasta eta bere saio \"guztiak\" (deskargatutako saioak barne) ezabatu nahi dituzula.</string>
   <string name="feed_remover_msg">Podcasta ezabatzen</string>
   <string name="load_complete_feed">Eguneratu osatutako podcasta</string>
+  <string name="multi_select">Hautaketa anitza</string>
   <string name="select_all_above">Aukeratu dena goian</string>
   <string name="select_all_below">Aukeratu dena behean</string>
   <string name="hide_unplayed_episodes_label">Ikusi gabe</string>
@@ -222,6 +223,7 @@
   <string name="download_canceled_msg">Deskarga ezeztatua</string>
   <string name="download_canceled_autodownload_enabled_msg">Deskarga ezeztatua\aktibatu da <i>Auto deskarga</i> elementu honetan</string>
   <string name="download_report_title">Deskargak osatu dira errorea(k) d(it)uela</string>
+  <string name="auto_download_report_title">Deskargatu automatikoak osatuta</string>
   <string name="download_report_content_title">Deskargen txostena</string>
   <string name="download_error_malformed_url">URL-ren formatu okerra</string>
   <string name="download_error_io_error">E/S errorea</string>
@@ -264,6 +266,7 @@
   <string name="player_buffering_msg">Biltegiratzen</string>
   <string name="player_go_to_picture_in_picture">Picture-in-picture modua</string>
   <string name="unknown_media_key">AntennaPod - Media tekla ezezaguna: %1$d</string>
+  <string name="error_file_not_found">Ez da artxibategirik aurkitu</string>
   <!--Queue operations-->
   <string name="lock_queue">Ilara blokeatu</string>
   <string name="unlock_queue">Ilara desblokeatu</string>
@@ -448,6 +451,8 @@
   <string name="pref_lockscreen_background_sum">Ezarri saioaren irudia blokeo pantailarako atzealdea moduan. Horren eraginez, hirugarrenen aplikazio irudiak ere azalduko dira.</string>
   <string name="pref_showDownloadReport_title">Deskarga txostena erakutsi</string>
   <string name="pref_showDownloadReport_sum">Deskargak huts egiten badu, sortu txostena akatsaren xehetasunekin.</string>
+  <string name="pref_showAutoDownloadReport_title">Deskarga automatikoen txostena erakutsi</string>
+  <string name="pref_showAutoDownloadReport_sum">Erakutsi automatikoki deskargatutako saioen  jakinarazpen bat.</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 aurreko bertsioek ez dituzte zabaldutako jakinarazpenak jasaten</string>
   <string name="pref_enqueue_location_title">Ilaran gehitu kokalekuan</string>
   <string name="pref_enqueue_location_sum">Saioak hemen gehitu: %1$s</string>
@@ -617,6 +622,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">Eman izena</string>
   <string name="subscribing_label">Harpidetzen...</string>
+  <string name="preview_episode">Aurretiko ikuspegia</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Atzera egin</string>
   <string name="fast_forward_label">Aurrera egin</string>
@@ -647,6 +653,8 @@
   <string name="search_podcast_hint">Bilatu podcasta</string>
   <string name="search_itunes_label">Bilatu itunes-en</string>
   <string name="search_fyyd_label">Bilatu fyyd-en</string>
+  <string name="advanced">Aurreratua</string>
+  <string name="add_podcast_by_url">Gehitu podcaasta URL bidez</string>
   <string name="browse_gpoddernet_label">Bilatu gpodder.net-en bilatu</string>
   <string name="discover">Aurkitu</string>
   <string name="discover_more">gehiago »</string>
@@ -730,6 +738,8 @@
   <string name="notification_channel_playing_description">Erreprodukzioa kontrolatzeko aukera ematen du. Podcast bat erreproduzitzen den bitartean ikusten den jakinarazpen nagusia da.</string>
   <string name="notification_channel_error">Erroreak</string>
   <string name="notification_channel_error_description">Zerbait gaizki atera den erakusten du, adibidez, gpodder deskargak edo sinkronizazioak huts egiten duen.</string>
+  <string name="notification_channel_auto_download">Deskarga automatikoak</string>
+  <string name="notification_channel_episode_auto_download">Pasarteak automatikoki deskargatu direnean erakusten da.</string>
   <!--Widget settings-->
   <string name="widget_settings">Widget ezarpenak</string>
   <string name="widget_create_button">widget-a sortu</string>
