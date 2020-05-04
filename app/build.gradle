@@ -182,12 +182,11 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
 }
 
-if (project.hasProperty("antennaPodServiceAccountEmail")) {
+if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
     apply plugin: 'com.github.triplet.play'
     play {
         track = 'alpha'
-        serviceAccountEmail = antennaPodServiceAccountEmail
-        serviceAccountCredentials = file(antennaPodPk12File)
+        serviceAccountCredentials = file(antennaPodPlayPublisherCredentials)
     }
 }
 
