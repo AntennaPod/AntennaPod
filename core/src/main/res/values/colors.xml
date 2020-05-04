@@ -12,8 +12,8 @@
     <color name="feed_image_bg">#50000000</color>
 
     <!-- Theme colors -->
-    <color name="primary_light">#FFFFFF</color>
-    <color name="primary_darktheme">#303030</color>
+    <color name="background_light">#FFFFFF</color>
+    <color name="background_darktheme">#303030</color>
     <color name="highlight_light">#DDDDDD</color>
     <color name="highlight_dark">#414141</color>
     <color name="highlight_trueblack">#414141</color>

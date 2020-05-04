@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.ListFragment;
 import androidx.core.view.MenuItemCompat;
 import android.util.Log;

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -68,9 +69,8 @@ public class FavoriteEpisodesFragment extends EpisodesListFragment {
                 if (item != null) {
                     DBWriter.removeFavoriteItem(item);
 
-                    Snackbar snackbar = Snackbar.make(root, getString(R.string.removed_item), Snackbar.LENGTH_LONG);
-                    snackbar.setAction(getString(R.string.undo), v -> DBWriter.addFavoriteItem(item));
-                    snackbar.show();
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.removed_item, Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.undo), v -> DBWriter.addFavoriteItem(item));
                 }
             }
         };

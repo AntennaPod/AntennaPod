@@ -249,7 +249,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             if (feed == null) {
-                Toast.makeText(getContext(), R.string.please_wait_for_data, Toast.LENGTH_LONG).show();
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                        R.string.please_wait_for_data, Toast.LENGTH_LONG);
                 return true;
             }
             try {

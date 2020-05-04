@@ -23,6 +23,7 @@ public class PagerIndicatorView extends View {
     private int disabledPage = -1;
     private int circleColor = 0;
     private int circleColorHighlight = -1;
+    private boolean isLocaleRtl = false;
 
     public PagerIndicatorView(Context context) {
         super(context);
@@ -40,6 +41,9 @@ public class PagerIndicatorView extends View {
     }
 
     private void setup() {
+        isLocaleRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
+                == ViewCompat.LAYOUT_DIRECTION_RTL;
+
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
 
@@ -48,6 +52,14 @@ public class PagerIndicatorView extends View {
         circleColorHighlight = a.getColor(0, 0xffffffff);
         circleColor = (Integer) new ArgbEvaluator().evaluate(0.8f, 0x00ffffff, circleColorHighlight);
         a.recycle();
+    }
+
+    /**
+     * Visual and logical position distinction only happens in RTL locales (e.g. Persian)
+     * where pages positions are flipped thus it does nothing in LTR locales (e.g. English)
+     */
+    private float logicalPositionToVisual(float position) {
+        return isLocaleRtl ? numPages - 1 - position : position;
     }
 
     public void setViewPager(ViewPager2 pager) {
@@ -59,22 +71,18 @@ public class PagerIndicatorView extends View {
                 invalidate();
             }
         });
-        boolean isLocaleRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
-                == ViewCompat.LAYOUT_DIRECTION_RTL;
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                PagerIndicatorView.this.position = position + positionOffset;
-                if (isLocaleRtl) {
-                    PagerIndicatorView.this.position = numPages - 1 - PagerIndicatorView.this.position;
-                }
+                PagerIndicatorView.this.position = logicalPositionToVisual(
+                        position + positionOffset);
                 invalidate();
             }
         });
     }
 
     public void setDisabledPage(int disabledPage) {
-        this.disabledPage = disabledPage;
+        this.disabledPage = (int) logicalPositionToVisual(disabledPage);
         invalidate();
     }
 

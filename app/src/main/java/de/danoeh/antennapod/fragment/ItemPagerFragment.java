@@ -86,6 +86,7 @@ public class ItemPagerFragment extends Fragment {
         pager.setId(newId);
         pager.setAdapter(new ItemPagerAdapter(this));
         pager.setCurrentItem(feedItemPos, false);
+        pager.setOffscreenPageLimit(1);
         loadItem(feedItems[feedItemPos]);
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override

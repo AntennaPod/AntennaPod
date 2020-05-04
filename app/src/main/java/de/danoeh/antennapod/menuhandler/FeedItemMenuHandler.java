@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
@@ -290,14 +291,14 @@ public class FeedItemMenuHandler {
             }
         };
 
-        Snackbar snackbar = Snackbar.make(fragment.getView(), fragment.getString(R.string.removed_new_flag_label),
-                Snackbar.LENGTH_LONG);
-        snackbar.setAction(fragment.getString(R.string.undo), v -> {
-            DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
-            // don't forget to cancel the thing that's going to remove the media
-            h.removeCallbacks(r);
-        });
-        snackbar.show();
+
+        Snackbar snackbar = ((MainActivity) fragment.getActivity()).showSnackbarAbovePlayer(
+                R.string.removed_new_flag_label, Snackbar.LENGTH_LONG)
+                .setAction(fragment.getString(R.string.undo), v -> {
+                    DBWriter.markItemPlayed(FeedItem.NEW, item.getId());
+                    // don't forget to cancel the thing that's going to remove the media
+                    h.removeCallbacks(r);
+                });
         h.postDelayed(r, (int) Math.ceil(snackbar.getDuration() * 1.05f));
     }
 

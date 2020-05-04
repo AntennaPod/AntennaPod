@@ -1,3 +1,4 @@
 <resources>
   <integer name="episode_cache_size_unlimited">-1</integer>
+  <integer name="fragment_transition_duration">300</integer>
 </resources>

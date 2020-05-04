@@ -60,6 +60,7 @@ dependencies {
     implementation 'androidx.media:media:1.1.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation "androidx.work:work-runtime:$workManagerVersion"
+    implementation 'com.google.android.material:material:1.1.0'
 
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
@@ -85,12 +86,13 @@ dependencies {
         api 'androidx.mediarouter:mediarouter:1.0.0'
         playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
         api "com.google.android.support:wearable:$wearableSupportVersion"
+        compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
     }
 
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:1.10.19'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"

@@ -29,6 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
@@ -124,8 +125,8 @@ public class AudioPlayerFragment extends Fragment implements
         setupLengthTextView();
         setupControlButtons();
         setupPlaybackSpeedButton();
-        txtvRev.setText(String.valueOf(UserPreferences.getRewindSecs()));
-        txtvFF.setText(String.valueOf(UserPreferences.getFastForwardSecs()));
+        txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
+        txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
         sbPosition.setOnSeekBarChangeListener(this);
 
         pager = root.findViewById(R.id.pager);

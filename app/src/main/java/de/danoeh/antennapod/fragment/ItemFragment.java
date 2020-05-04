@@ -142,7 +142,8 @@ public class ItemFragment extends Fragment {
                     && ObjectsCompat.equals(item.getMedia().getIdentifier(), controller.getMedia().getIdentifier())) {
                 controller.seekTo(time);
             } else {
-                Snackbar.make(getView(), R.string.play_this_to_seek_position, Snackbar.LENGTH_LONG).show();
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.play_this_to_seek_position,
+                        Snackbar.LENGTH_LONG);
             }
         });
         registerForContextMenu(webvDescription);

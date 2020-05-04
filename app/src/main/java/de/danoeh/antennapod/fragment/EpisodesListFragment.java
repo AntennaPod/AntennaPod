@@ -146,7 +146,8 @@ public abstract class EpisodesListFragment extends Fragment {
                         public void onConfirmButtonPressed(DialogInterface dialog) {
                             dialog.dismiss();
                             DBWriter.markAllItemsRead();
-                            Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
+                            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                                    R.string.mark_all_read_msg, Toast.LENGTH_SHORT);
                         }
                     };
                     markAllReadConfirmationDialog.createNewDialog().show();
@@ -160,7 +161,8 @@ public abstract class EpisodesListFragment extends Fragment {
                         public void onConfirmButtonPressed(DialogInterface dialog) {
                             dialog.dismiss();
                             DBWriter.removeAllNewFlags();
-                            Toast.makeText(getActivity(), R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT).show();
+                            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                                    R.string.removed_all_new_flags_msg, Toast.LENGTH_SHORT);
                         }
                     };
                     removeAllNewFlagsConfirmationDialog.createNewDialog().show();

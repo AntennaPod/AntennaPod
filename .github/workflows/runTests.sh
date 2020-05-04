@@ -1,3 +1,7 @@
+#!/bin/zsh
+
+set -o pipefail
+
 runTests() {
     ./gradlew connectedPlayDebugAndroidTest \
         -Pandroid.testInstrumentationRunnerArguments.notAnnotation=de.test.antennapod.IgnoreOnCi \

@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.AlertDialog;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.collection.ArrayMap;
@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -313,8 +314,7 @@ public class EpisodesApplyActionFragment extends Fragment {
                 }
         }
         if (resId != 0) {
-            Snackbar.make(getActivity().findViewById(android.R.id.content), resId, Snackbar.LENGTH_SHORT)
-                    .show();
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(resId, Snackbar.LENGTH_SHORT);
             return true;
         } else {
             return false;
@@ -470,12 +470,8 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void close(@PluralsRes int msgId, int numItems) {
         if (numItems > 0) {
-            Snackbar.make(getActivity().findViewById(android.R.id.content),
-                    getResources().getQuantityString(msgId, numItems, numItems),
-                    Snackbar.LENGTH_LONG
-                    )
-                    .setAction(android.R.string.ok, v -> { })
-                    .show();
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                    getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
         }
         getActivity().getSupportFragmentManager().popBackStack();
     }
