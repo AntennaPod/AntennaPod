@@ -2,8 +2,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Oppdater abonnementer</string>
+  <string name="feeds_label">Podkaster</string>
   <string name="statistics_label">Statistikk</string>
-  <string name="add_feed_label">Legg til podcast</string>
+  <string name="add_feed_label">Legg til podkast</string>
   <string name="episodes_label">Episoder</string>
   <string name="all_episodes_short_label">Alle</string>
   <string name="new_episodes_label">Nye</string>
@@ -23,15 +24,18 @@
   <string name="gpodnet_auth_label">gpodder.net-innlogging</string>
   <string name="episode_cache_full_title">Hurtigbuffer for episoder er full</string>
   <string name="episode_cache_full_message">Grensen for størrelse på hurtigbuffer er nådd. Du kan øke størrelsen på hurtigbuffer i instillingene.</string>
+  <string name="playback_statistics_label">Avspilling</string>
   <string name="download_statistics_label">Nedlastinger</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Sum av avspilte podcaster:</string>
   <string name="statistics_details_dialog">Startet %1$d av %2$d episoder.\n\nAvspilt %3$s av %4$s.</string>
   <string name="statistics_mode">Statistikk modus</string>
   <string name="statistics_mode_normal">Kalkuler faktisk avspilt varighet. Dobbel avspilling telles to ganger, mens markering som avspilt telles ikke</string>
+  <string name="statistics_speed_not_counted">Merk: Avspillingshastighet tas aldri med i betraktningen.</string>
   <string name="statistics_reset_data">Tilbakestille statistikkdata</string>
   <string name="statistics_reset_data_msg">Dette vil slette historikk om varighet som er spilt for alle episoder. Er du sikker på at du vil fortsette?</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Total størrelse på nedlastede podkaster:</string>
   <!--Main activity-->
   <string name="drawer_open">Åpne menyen</string>
   <string name="drawer_close">Lukk menyen</string>
@@ -81,8 +85,12 @@
   <string name="auto_download_apply_to_items_message">Den nye <i>Automatisk nedlasting</i>-innstillingen vil automatisk aktiveres for nye episoder.\nØnsker du å aktivere den for tidligere utgitte episoder også?</string>
   <string name="auto_delete_label">Slett episode automatisk</string>
   <string name="feed_volume_reduction">Volumreduksjon</string>
+  <string name="feed_volume_reduction_summary">Skru ned volumet for episoder av denne strømmen: \%s</string>
   <string name="feed_volume_reduction_off">Av</string>
+  <string name="feed_volume_reduction_light">Lys</string>
+  <string name="feed_volume_reduction_heavy">Tung</string>
   <string name="parallel_downloads_suffix">\u0020samtidige nedlastinger</string>
+  <string name="feed_auto_download_global">Global standard</string>
   <string name="feed_auto_download_always">Alltid</string>
   <string name="feed_auto_download_never">Aldri</string>
   <string name="send_label">Send ...</string>
@@ -98,9 +106,22 @@
   <string name="mark_all_read_label">Marker alle som avspilt</string>
   <string name="mark_all_read_msg">Marker alle episoder som avspilt</string>
   <string name="mark_all_read_confirmation_msg">Vennligst bekreft at du ønsker å markere alle episoder som avspilt.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Bekreft at du ønsker å markere alle episoder i denne podkasten som avspilt.</string>
   <string name="show_info_label">Vis informasjon</string>
+  <string name="show_feed_settings_label">Vis podkastinnstillinger</string>
+  <string name="feed_info_label">Podkastinfo</string>
+  <string name="feed_settings_label">Podkastinnstillinger</string>
+  <string name="rename_feed_label">Gi nytt navn til podkast</string>
+  <string name="remove_feed_label">Fjern podkast</string>
   <string name="share_label">Del ...</string>
+  <string name="share_link_label">Del episodens URL</string>
+  <string name="share_link_with_position_label">Del episodens URL med posisjon</string>
   <string name="share_file_label">Del fil</string>
+  <string name="share_website_url_label">Del nettsidens URL</string>
+  <string name="share_feed_url_label">Del podkastens URL</string>
+  <string name="share_item_url_label">Del mediafilens URL</string>
+  <string name="share_item_url_with_position_label">Del mediafilens URL med posisjon</string>
+  <string name="feed_remover_msg">Fjerner podkast</string>
   <string name="hide_unplayed_episodes_label">Ikke avspilt</string>
   <string name="hide_paused_episodes_label">Pauset</string>
   <string name="hide_played_episodes_label">Avspilt</string>

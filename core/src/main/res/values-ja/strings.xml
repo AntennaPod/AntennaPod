@@ -123,12 +123,12 @@
   <string name="select_all_above">上のすべてを選択</string>
   <string name="select_all_below">下のすべてを選択</string>
   <string name="hide_unplayed_episodes_label">未再生</string>
-  <string name="hide_paused_episodes_label">一時停止しました</string>
-  <string name="hide_played_episodes_label">再生しました</string>
-  <string name="hide_queued_episodes_label">キューに入れました</string>
-  <string name="hide_not_queued_episodes_label">キューに入っていません</string>
-  <string name="hide_downloaded_episodes_label">ダウンロードしました</string>
-  <string name="hide_not_downloaded_episodes_label">ダウンロードしていません</string>
+  <string name="hide_paused_episodes_label">一時停止中</string>
+  <string name="hide_played_episodes_label">再生済み</string>
+  <string name="hide_queued_episodes_label">キューに追加済</string>
+  <string name="hide_not_queued_episodes_label">キューに未追加</string>
+  <string name="hide_downloaded_episodes_label">ダウンロード済</string>
+  <string name="hide_not_downloaded_episodes_label">未ダウンロード</string>
   <string name="hide_has_media_label">メディアあり</string>
   <string name="hide_is_favorite_label">お気に入り</string>
   <string name="filtered_label">フィルターしました</string>
@@ -180,7 +180,7 @@
   <string name="removed_item">アイテムを削除しました</string>
   <!--Download messages and labels-->
   <string name="download_successful">完成</string>
-  <string name="download_pending">ダウンロードは保留中</string>
+  <string name="download_pending">ダウンロード保留中</string>
   <string name="download_running">ダウンロード実行中</string>
   <string name="download_error_details">詳細</string>
   <string name="download_error_details_message">%1$s \n\nファイル URL:\n%2$s</string>
@@ -457,7 +457,7 @@
   <string name="pref_delete_removes_from_queue_title">キューから削除済を削除</string>
   <string name="pref_delete_removes_from_queue_sum">削除した時に、自動的にキューからエピソードを削除します</string>
   <!--About screen-->
-  <string name="about_pref">について</string>
+  <string name="about_pref">AntennaPodについて</string>
   <string name="antennapod_version">AntennaPod バージョン</string>
   <string name="developers">開発者</string>
   <string name="developers_summary">誰でも AntennaPod の改善に貢献できます</string>
@@ -627,7 +627,7 @@
   <string name="rating_later_label">後で確認する</string>
   <string name="rating_now_label">もちろん、します!</string>
   <!--Audio controls-->
-  <string name="audio_controls">自動コントロール</string>
+  <string name="audio_controls">オーディオコントロール</string>
   <string name="playback_speed">再生速度</string>
   <string name="volume">音量</string>
   <string name="left_short">左</string>

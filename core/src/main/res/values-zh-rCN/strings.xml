@@ -64,7 +64,7 @@
   <string name="yes">是</string>
   <string name="no">否</string>
   <string name="reset">重置</string>
-  <string name="author_label">作者</string>
+  <string name="author_label">作者(们)</string>
   <string name="language_label">语言</string>
   <string name="url_label">链接地址</string>
   <string name="cover_label">图片</string>
@@ -130,7 +130,8 @@
   <string name="share_item_url_with_position_label">分享带播放位置的媒体文件地址</string>
   <string name="feed_delete_confirmation_msg">请确认您想删除播客“1%1$s” 及其所有节目(包括已经下载的）</string>
   <string name="feed_remover_msg">正在移除播客</string>
-  <string name="load_complete_feed">刷新整档博客</string>
+  <string name="load_complete_feed">刷新所有播客</string>
+  <string name="multi_select">多选</string>
   <string name="select_all_above">选中上面所有</string>
   <string name="select_all_below">选中下面所有</string>
   <string name="hide_unplayed_episodes_label">未播放</string>
@@ -214,6 +215,7 @@
   <string name="download_canceled_msg">已取消下载</string>
   <string name="download_canceled_autodownload_enabled_msg">已取消下载\n对该曲目禁用<i>自动下载</i></string>
   <string name="download_report_title">下载完成</string>
+  <string name="auto_download_report_title">自动下载完成</string>
   <string name="download_report_content_title">下载报告</string>
   <string name="download_error_malformed_url">畸形 URL</string>
   <string name="download_error_io_error">IO 错误</string>
@@ -255,6 +257,7 @@
   <string name="player_buffering_msg">缓冲中</string>
   <string name="player_go_to_picture_in_picture">画中画模式</string>
   <string name="unknown_media_key">AntennaPod - 未知媒体密钥: %1$d</string>
+  <string name="error_file_not_found">文件未找到</string>
   <!--Queue operations-->
   <string name="lock_queue">锁定播放列表</string>
   <string name="unlock_queue">解锁播放列表</string>
@@ -410,7 +413,7 @@
   <string name="pref_gpodnet_sync_changes_sum">和gpodder.net同步订阅和节目状态</string>
   <string name="pref_gpodnet_full_sync_title">立即完整同步</string>
   <string name="pref_gpodnet_full_sync_sum">与gpodder.net同步所有订阅和节目状态</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">最后同步尝试于：%1$s（%2$s）</string>
+  <string name="pref_gpodnet_sync_sum_last_sync_line">最后同步尝试于：%1$s (%2$s)</string>
   <string name="pref_gpodnet_sync_started">已开始同步</string>
   <string name="pref_gpodnet_login_status"><![CDATA[在设备 <i>%2$s</i> 上以 <i>%1$s</i> 身份登录]]></string>
   <string name="pref_gpodnet_notifications_title">显示同步失败的提示信息</string>
@@ -438,6 +441,8 @@
   <string name="pref_lockscreen_background_sum">将锁屏背景设置为当前播放节目的封面图（潜在的副作用是图片可能会在出现在第三方应用中）。</string>
   <string name="pref_showDownloadReport_title">显示下载报告</string>
   <string name="pref_showDownloadReport_sum">如果下载失败，生成一份显示详细失败信息的报告。</string>
+  <string name="pref_showAutoDownloadReport_title">显示自动下载报告</string>
+  <string name="pref_showAutoDownloadReport_sum">显示有关自动下载的剧集的通知。</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 之前不支持扩展通知。</string>
   <string name="pref_enqueue_location_title">排队位置</string>
   <string name="pref_enqueue_location_sum">添加音频至：%1$s</string>
@@ -604,6 +609,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">订阅</string>
   <string name="subscribing_label">订阅中...</string>
+  <string name="preview_episode">预览</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">回放</string>
   <string name="fast_forward_label">快进</string>
@@ -622,6 +628,7 @@
   <string name="episode_filters_description">条款列表曾用于确定是否应在自动下载时包含或排除剧集</string>
   <string name="episode_filters_include">包含</string>
   <string name="episode_filters_exclude">排除</string>
+  <string name="episode_filters_hint">单个单词  \n“多个单词”</string>
   <string name="keep_updated">保持最新</string>
   <string name="keep_updated_summary">（自动）刷新所有播客时包括此播客 </string>
   <string name="auto_download_disabled_globally">AntennaPod主设置中已禁用自动下载</string>
@@ -633,6 +640,8 @@
   <string name="search_podcast_hint">搜索播客……</string>
   <string name="search_itunes_label">搜索 iTunes</string>
   <string name="search_fyyd_label">搜索 fydd</string>
+  <string name="advanced">高级</string>
+  <string name="add_podcast_by_url">通过URL添加播客</string>
   <string name="browse_gpoddernet_label">浏览 gpodder.net</string>
   <string name="discover">发现</string>
   <string name="discover_more">更多</string>
@@ -716,6 +725,8 @@
   <string name="notification_channel_playing_description">允许控制回放。这是播放播客时您所见的主通知。</string>
   <string name="notification_channel_error">错误</string>
   <string name="notification_channel_error_description">发生错误时显示，比如下载或与gpodder的同步失败</string>
+  <string name="notification_channel_auto_download">自动下载</string>
+  <string name="notification_channel_episode_auto_download">当节目已自动下载时显示。</string>
   <!--Widget settings-->
   <string name="widget_settings">小部件设置</string>
   <string name="widget_create_button">创建小部件</string>

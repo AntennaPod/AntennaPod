@@ -27,7 +27,7 @@
   <string name="playback_statistics_label">Lecture</string>
   <string name="download_statistics_label">Téléchargements</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Temps d\'écoute total</string>
+  <string name="total_time_listened_to_podcasts">Durée totale d\'écoute :</string>
   <string name="statistics_details_dialog">%1$d épisodes sur %2$d commencés.\n\nLu %3$s sur %4$s.</string>
   <string name="statistics_mode">Type de statistiques</string>
   <string name="statistics_mode_normal">Calculer la durée réellement écoutée. Les épisodes écoutés deux fois comptent double alors que ceux simplement marqués lus ne sont pas comptés</string>
@@ -36,7 +36,7 @@
   <string name="statistics_reset_data">Réinitialiser les statistiques </string>
   <string name="statistics_reset_data_msg">L\'information des temps de lecture va être effacée. Etes-vous sûr de vouloir continuer ?</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Taille des podcasts téléchargés :</string>
+  <string name="total_size_downloaded_podcasts">Volume total des podcasts téléchargés :</string>
   <!--Main activity-->
   <string name="drawer_open">Ouvrir le menu</string>
   <string name="drawer_close">Fermer le menu</string>
@@ -85,11 +85,11 @@
   <string name="auto_download_apply_to_items_title">Appliquer aux épisodes précédents</string>
   <string name="auto_download_apply_to_items_message">Le nouveau paramètre <i>Téléchargement Automatique</i> sera automatiquement appliqué sur chaque nouvel épisode.\nVoulez-vous faire de même avec les épisodes précédents ?</string>
   <string name="auto_delete_label">Suppression automatique des épisodes</string>
-  <string name="feed_volume_reduction">Gestion du volume</string>
-  <string name="feed_volume_reduction_summary">Réduction du volume pour ce podcast :\%s</string>
-  <string name="feed_volume_reduction_off">Aucune</string>
-  <string name="feed_volume_reduction_light">Légère</string>
-  <string name="feed_volume_reduction_heavy">Forte</string>
+  <string name="feed_volume_reduction">Réduction du volume</string>
+  <string name="feed_volume_reduction_summary">Réduction du volume pour les épisodes de ce podcast : \%s</string>
+  <string name="feed_volume_reduction_off">pas de réduction</string>
+  <string name="feed_volume_reduction_light">faible</string>
+  <string name="feed_volume_reduction_heavy">importante</string>
   <string name="parallel_downloads_suffix">\u0020téléchargements parallèles</string>
   <string name="feed_auto_download_global">Option par défaut</string>
   <string name="feed_auto_download_always">Toujours</string>
@@ -171,7 +171,7 @@
   <string name="marked_as_read_label">Les épisodes ont été marqués comme lus</string>
   <string name="mark_read_no_media_label">Marquer comme lu</string>
   <string name="marked_as_read_no_media_label">Marqué comme lu</string>
-  <string name="play_this_to_seek_position">Pour changer la position de lecture vous devez lire l\'épisode</string>
+  <string name="play_this_to_seek_position">Pour changer la position l\'épisode doit être en cours de lecture</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d épisode marqué comme lu.</item>
     <item quantity="other">%d épisodes marqués comme lus.</item>
@@ -322,7 +322,7 @@
   <string name="no_subscriptions_label">Pour vous abonner à un podcast appuyer sur le bouton +.</string>
   <!--Preferences-->
   <string name="storage_pref">Stockage</string>
-  <string name="storage_sum">Suppression automatique, Import, Export</string>
+  <string name="storage_sum">Suppression automatique, importation, exportation</string>
   <string name="project_pref">Projet</string>
   <string name="queue_label">Liste de lecture</string>
   <string name="integrations_label">Intégrations</string>
@@ -358,9 +358,9 @@
   <string name="pref_favorite_keeps_episodes_sum">Garder les épisodes marqués comme favoris</string>
   <string name="pref_favorite_keeps_episodes_title">Garder les épisodes favoris</string>
   <string name="playback_pref">Lecture</string>
-  <string name="playback_pref_sum">Contrôles du casque, Durée des sauts, Liste de lecture</string>
+  <string name="playback_pref_sum">Contrôles du casque, durée des sauts, liste de lecture</string>
   <string name="network_pref">Réseau</string>
-  <string name="network_pref_sum">Intervalle / Heure de mise à jour, Contrôle des téléchargements, Utilisation de la connexion mobile</string>
+  <string name="network_pref_sum">Intervalle / Heure de mise à jour, contrôle des téléchargements, utilisation de la connexion mobile</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalle / Heure de mise à jour</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des podcasts</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez définir un <i>intervalle</i> comme \"toutes les 2 heures\" ou une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note: les heures de mise à jour ne sont pas précises. Vous pouvez avoir un petit délai.</small></string>
@@ -383,7 +383,7 @@
   <string name="pref_mobileUpdate_episode_download">Téléchargement d\'épisodes</string>
   <string name="pref_mobileUpdate_streaming">Streaming</string>
   <string name="user_interface_label">Interface utilisateur</string>
-  <string name="user_interface_sum">Apparence, Ordre des abonnements, Ecran de verrouillage</string>
+  <string name="user_interface_sum">Apparence, ordre des abonnements, écran de verrouillage</string>
   <string name="pref_set_theme_title">Choisir un thème</string>
   <string name="pref_nav_drawer_items_title">Changer les éléments du volet de navigation</string>
   <string name="pref_nav_drawer_items_sum">Choisir quels éléments apparaissent dans le volet de navigation</string>
@@ -449,7 +449,7 @@
   <string name="pref_lockscreen_background_sum">Placer l\'image de l’épisode en arrière plan de l\'écran de verrouillage. Cela aura aussi pour effet de montrer l\'image dans les autres applications.</string>
   <string name="pref_showDownloadReport_title">Afficher le rapport de téléchargements</string>
   <string name="pref_showDownloadReport_sum">Si les téléchargements échouent, générer un rapport détaillé des échecs.</string>
-  <string name="pref_showAutoDownloadReport_title">Montrer le rapport de téléchargement automatique</string>
+  <string name="pref_showAutoDownloadReport_title">Rapport de téléchargement automatique</string>
   <string name="pref_showAutoDownloadReport_sum">Afficher une notification pour les épisodes téléchargés automatiquement.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
   <string name="pref_enqueue_location_title">Emplacement des épisodes téléchargés</string>
@@ -539,8 +539,8 @@
   <string name="import_ok">Import réussi.\n\nAppuyer sur OK pour redémarrer AntennaPod</string>
   <string name="import_no_downgrade">La base de donnée a été exportée avec une version plus récente d\'AntennaPod. L\'application actuelle ne sait pas comment l\'importer.</string>
   <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Activation du minuteur d\'arrêt</string>
-  <string name="disable_sleeptimer_label">Désactiver le minuteur d\'arrêt</string>
+  <string name="set_sleeptimer_label">Activer le minuteur</string>
+  <string name="disable_sleeptimer_label">Désactiver le minuteur</string>
   <string name="sleep_timer_label">Minuteur d\'arrêt</string>
   <string name="time_dialog_invalid_input">Entrée invalide, la durée doit être un nombre entier</string>
   <string name="shake_to_reset_label">Secouer pour redémarrer</string>
@@ -620,7 +620,7 @@
   <!--Online feed view-->
   <string name="subscribe_label">S\'abonner</string>
   <string name="subscribing_label">Abonnement en cours...</string>
-  <string name="preview_episode">Preview</string>
+  <string name="preview_episode">Préécouter</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Saut arrière</string>
   <string name="fast_forward_label">Saut avant</string>

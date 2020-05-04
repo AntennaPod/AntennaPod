@@ -415,6 +415,8 @@
   <string name="pref_lockscreen_background_sum">Sæt baggrunden på låseskærmen til billedet for den aktuelle udsendelse. Som en sidevirkning vil det også vise billedet i tredjepartsapps.</string>
   <string name="pref_showDownloadReport_title">Vis rapport over overførsler</string>
   <string name="pref_showDownloadReport_sum">Lav en rapport, som viser detaljer om fejlene, hvis overførsler fejler</string>
+  <string name="pref_showAutoDownloadReport_title">Vis rapport over automatiske overførsler</string>
+  <string name="pref_showAutoDownloadReport_sum">Vis en notifikation for automatisk overførte udsendelser</string>
   <string name="pref_expand_notify_unsupport_toast">Android-versioner før 4.1 understøtter ikke udvidede notifikationer.</string>
   <string name="pref_enqueue_location_title">Placering i kø</string>
   <string name="pref_enqueue_location_sum">Føj udsendelser til: %1$s</string>
