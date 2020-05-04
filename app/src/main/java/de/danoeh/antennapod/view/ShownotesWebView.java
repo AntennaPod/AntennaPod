@@ -165,4 +165,11 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
     public void setPageFinishedListener(Runnable pageFinishedListener) {
         this.pageFinishedListener = pageFinishedListener;
     }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(Math.max(getMeasuredWidth(), getMinimumWidth()),
+                Math.max(getMeasuredHeight(), getMinimumHeight()));
+    }
 }
