@@ -1,11 +1,12 @@
-name: Android Emulator test
+name: Android Emulator
 
 on:
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  build:
+  integration-tests:
+    name: "Integration Tests"
     runs-on: macOS-latest
     steps:
     - uses: actions/checkout@v1

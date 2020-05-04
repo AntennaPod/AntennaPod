@@ -1,0 +1,46 @@
+name: "Static Analysis"
+on: [pull_request]
+
+jobs:
+  wrapper-validation:
+    name: "Gradle Wrapper Validation"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gradle/wrapper-validation-action@v1
+
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Run Lint
+      run: ./gradlew lint
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: Lint-report
+        path: ./**/build/reports/lint-results.html
+
+  checkstyle:
+    name: "Checkstyle"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Run Checkstyle
+      run: ./gradlew checkstyle
+    - name: Run Diff-Checkstyle
+      run: |
+        git fetch origin develop
+        branchBaseCommit=`git merge-base origin/develop HEAD`
+        echo "Comparing to $branchBaseCommit"
+        curl -s -L https://github.com/yangziwen/diff-checkstyle/releases/download/0.0.4/diff-checkstyle.jar > diff-checkstyle.jar
+        java -Dconfig_loc=config/checkstyle -jar diff-checkstyle.jar -c config/checkstyle/checkstyle-new-code.xml --git-dir . --base-rev $branchBaseCommit
