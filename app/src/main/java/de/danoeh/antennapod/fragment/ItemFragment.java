@@ -11,18 +11,25 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.TextUtilsCompat;
 import androidx.core.util.ObjectsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.snackbar.Snackbar;
+import com.skydoves.balloon.ArrowOrientation;
+import com.skydoves.balloon.Balloon;
+import com.skydoves.balloon.BalloonAnimation;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.actionbutton.CancelDownloadActionButton;
@@ -43,11 +50,14 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.preferences.UsageStatistics;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
@@ -61,6 +71,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Displays information about a FeedItem and actions.
@@ -158,9 +169,58 @@ public class ItemFragment extends Fragment {
         butAction2Icon = layout.findViewById(R.id.butAction2Icon);
         butAction1Text = layout.findViewById(R.id.butAction1Text);
         butAction2Text = layout.findViewById(R.id.butAction2Text);
-        butAction1.setOnClickListener(v -> actionButton1.onClick(getContext()));
-        butAction2.setOnClickListener(v -> actionButton2.onClick(getContext()));
+
+        butAction1.setOnClickListener(v -> {
+            if (actionButton1 instanceof StreamActionButton && !UserPreferences.isStreamOverDownload()
+                    && UsageStatistics.hasSignificantBiasTo(UsageStatistics.ACTION_STREAM)) {
+                showOnDemandConfigBalloon(true);
+                return;
+            }
+            actionButton1.onClick(getContext());
+        });
+        butAction2.setOnClickListener(v -> {
+            if (actionButton2 instanceof DownloadActionButton && UserPreferences.isStreamOverDownload()
+                    && UsageStatistics.hasSignificantBiasTo(UsageStatistics.ACTION_DOWNLOAD)) {
+                showOnDemandConfigBalloon(false);
+                return;
+            }
+            actionButton2.onClick(getContext());
+        });
         return layout;
+    }
+
+    private void showOnDemandConfigBalloon(boolean offerStreaming) {
+        boolean isLocaleRtl = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault())
+                == ViewCompat.LAYOUT_DIRECTION_RTL;
+        Balloon balloon = new Balloon.Builder(getContext())
+                .setArrowOrientation(ArrowOrientation.TOP)
+                .setArrowPosition(0.25f + ((isLocaleRtl ^ offerStreaming) ? 0f : 0.5f))
+                .setWidthRatio(1.0f)
+                .isRtlSupport(true)
+                .setBackgroundColor(ThemeUtils.getColorFromAttr(getContext(), R.attr.colorSecondary))
+                .setBalloonAnimation(BalloonAnimation.OVERSHOOT)
+                .setLayout(R.layout.popup_bubble_view)
+                .setDismissWhenTouchOutside(true)
+                .setLifecycleOwner(this)
+                .build();
+        Button positiveButton = balloon.getContentView().findViewById(R.id.balloon_button_positive);
+        Button negativeButton = balloon.getContentView().findViewById(R.id.balloon_button_negative);
+        TextView message = balloon.getContentView().findViewById(R.id.balloon_message);
+        message.setText(offerStreaming
+                ? R.string.on_demand_config_stream_text : R.string.on_demand_config_download_text);
+        positiveButton.setOnClickListener(v1 -> {
+            UserPreferences.setStreamOverDownload(offerStreaming);
+            // Update all visible lists to reflect new streaming action button
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                    R.string.on_demand_config_setting_changed, Snackbar.LENGTH_SHORT);
+            balloon.dismiss();
+        });
+        negativeButton.setOnClickListener(v1 -> {
+            UsageStatistics.askAgainLater(UsageStatistics.ACTION_STREAM); // Type does not matter. Both are silenced.
+            balloon.dismiss();
+        });
+        balloon.showAlignBottom(butAction1, 0, (int) (-12 * getResources().getDisplayMetrics().density));
     }
 
     @Override

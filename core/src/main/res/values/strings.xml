@@ -810,4 +810,9 @@
     <string name="widget_settings">Widget settings</string>
     <string name="widget_create_button">Create widget</string>
     <string name="widget_opacity">Opacity</string>
+
+    <!-- On-Demand configuration -->
+    <string name="on_demand_config_setting_changed">Setting updated successfully.</string>
+    <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
+    <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
 </resources>

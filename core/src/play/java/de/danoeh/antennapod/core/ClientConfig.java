@@ -10,6 +10,7 @@ import com.google.android.gms.security.ProviderInstaller;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -51,6 +52,7 @@ public class ClientConfig {
         }
         PodDBAdapter.init(context);
         UserPreferences.init(context);
+        UsageStatistics.init(context);
         PlaybackPreferences.init(context);
         NetworkUtils.init(context);
         // Don't initialize Cast-related logic unless it is enabled, to avoid the unnecessary

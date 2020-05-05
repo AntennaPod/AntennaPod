@@ -11,6 +11,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
@@ -63,6 +64,7 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_PLAYBACK_PREFER_STREAMING).setOnPreferenceChangeListener((preference, newValue) -> {
             // Update all visible lists to reflect new streaming action button
             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+            UsageStatistics.askAgainLater(UsageStatistics.ACTION_STREAM);
             return true;
         });
 
