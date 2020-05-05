@@ -1,16 +1,17 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,11 +53,13 @@ public class CoverFragment extends Fragment {
     private Disposable disposable;
     private int displayedChapterIndex = -2;
     private Playable media;
+    private int orientation = Configuration.ORIENTATION_UNDEFINED;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
+
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
@@ -139,7 +142,6 @@ public class CoverFragment extends Fragment {
         int chapter = ChapterUtils.getCurrentChapterIndex(media, position);
         if (chapter != displayedChapterIndex) {
             displayedChapterIndex = chapter;
-
             RequestBuilder<Drawable> cover = Glide.with(this)
                     .load(ImageResourceUtils.getImageLocation(media))
                     .apply(new RequestOptions()
@@ -148,12 +150,6 @@ public class CoverFragment extends Fragment {
                             .transforms(new FitCenter(),
                                     new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))));
 
-            if (this.getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                int parentHeight = root.getHeight();
-                //imgvCover.getLayoutParams().width = parentHeight - 80;
-                //imgvCover.getLayoutParams().height = parentHeight - 80;
-                imgvCover.requestLayout();
-            }
 
             if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
                 cover.into(imgvCover);
@@ -176,11 +172,17 @@ public class CoverFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast.makeText(this.getContext(), "landscape", Toast.LENGTH_SHORT).show();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast.makeText(this.getContext(), "portrait", Toast.LENGTH_SHORT).show();
+        if (orientation != newConfig.orientation) {
+            try {
+                orientation = newConfig.orientation;
+                getFragmentManager().beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .add(getId(), CoverFragment.class.newInstance()).commit();
+            } catch (Exception e) {
+                Log.d(TAG, "onConfigurationChanged " + e.toString());
+                Toast.makeText(this.getContext(), "ERROR " + e.toString(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
