@@ -1000,8 +1000,12 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_TIME_RESPECTS_SPEED, false);
     }
 
-    public static boolean streamOverDownload() {
+    public static boolean isStreamOverDownload() {
         return prefs.getBoolean(PREF_STREAM_OVER_DOWNLOAD, false);
+    }
+
+    public static void setStreamOverDownload(boolean stream) {
+        prefs.edit().putBoolean(PREF_STREAM_OVER_DOWNLOAD, stream).apply();
     }
 
     /**

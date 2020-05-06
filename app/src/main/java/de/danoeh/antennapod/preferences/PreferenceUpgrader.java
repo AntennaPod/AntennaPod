@@ -77,7 +77,7 @@ public class PreferenceUpgrader {
             }
 
             UserPreferences.setQueueLocked(false);
-            prefs.edit().putBoolean(UserPreferences.PREF_STREAM_OVER_DOWNLOAD, false).apply();
+            UserPreferences.setStreamOverDownload(false);
 
             if (!prefs.contains(UserPreferences.PREF_ENQUEUE_LOCATION)) {
                 final String keyOldPrefEnqueueFront = "prefQueueAddToFront";

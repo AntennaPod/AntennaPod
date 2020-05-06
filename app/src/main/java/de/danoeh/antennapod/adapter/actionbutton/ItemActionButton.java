@@ -7,7 +7,6 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import android.view.View;
-import android.widget.ImageButton;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -47,7 +46,7 @@ public abstract class ItemActionButton {
             return new PlayActionButton(item);
         } else if (isDownloadingMedia) {
             return new CancelDownloadActionButton(item);
-        } else if (UserPreferences.streamOverDownload() && allowStream) {
+        } else if (UserPreferences.isStreamOverDownload() && allowStream) {
             return new StreamActionButton(item);
         } else if (MobileDownloadHelper.userAllowedMobileDownloads()
                 || !MobileDownloadHelper.userChoseAddToQueue() || isInQueue) {

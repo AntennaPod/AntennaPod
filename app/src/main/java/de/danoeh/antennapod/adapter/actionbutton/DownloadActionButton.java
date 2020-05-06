@@ -12,6 +12,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -49,6 +50,8 @@ public class DownloadActionButton extends ItemActionButton {
         if (media == null || shouldNotDownload(media)) {
             return;
         }
+
+        UsageStatistics.logAction(UsageStatistics.ACTION_DOWNLOAD);
 
         if (NetworkUtils.isEpisodeDownloadAllowed() || MobileDownloadHelper.userAllowedMobileDownloads()) {
             downloadEpisode(context);

@@ -9,6 +9,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
@@ -38,6 +39,8 @@ public class StreamActionButton extends ItemActionButton {
         if (media == null) {
             return;
         }
+        UsageStatistics.logAction(UsageStatistics.ACTION_STREAM);
+
         if (!NetworkUtils.isStreamingAllowed()) {
             new StreamingConfirmationDialog(context, media).show();
             return;
