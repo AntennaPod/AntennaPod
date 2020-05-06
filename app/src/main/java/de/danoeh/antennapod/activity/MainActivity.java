@@ -68,8 +68,6 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
 
-    private static final String SAVE_BACKSTACK_COUNT = "backstackCount";
-
     private DrawerLayout drawerLayout;
     private View navDrawer;
     private ActionBarDrawerToggle drawerToggle;
@@ -100,12 +98,7 @@ public class MainActivity extends CastEnabledActivity {
         fm.addOnBackStackChangedListener(() ->
                 drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0));
 
-        FragmentTransaction transaction = fm.beginTransaction();
-
-        Fragment mainFragment = fm.findFragmentByTag(MAIN_FRAGMENT_TAG);
-        if (mainFragment != null) {
-            transaction.replace(R.id.main_view, mainFragment);
-        } else {
+        if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
             String lastFragment = NavDrawerFragment.getLastNavFragment(this);
             if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {
                 loadFragment(lastFragment, null);
@@ -120,6 +113,8 @@ public class MainActivity extends CastEnabledActivity {
                 }
             }
         }
+
+        FragmentTransaction transaction = fm.beginTransaction();
         NavDrawerFragment navDrawerFragment = new NavDrawerFragment();
         transaction.replace(R.id.navDrawerFragment, navDrawerFragment, NavDrawerFragment.TAG);
         AudioPlayerFragment audioPlayerFragment = new AudioPlayerFragment();
@@ -159,6 +154,7 @@ public class MainActivity extends CastEnabledActivity {
                 R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
+        drawerToggle.setDrawerIndicatorEnabled(getSupportFragmentManager().getBackStackEntryCount() == 0);
         super.setSupportActionBar(toolbar);
     }
 
@@ -301,12 +297,6 @@ public class MainActivity extends CastEnabledActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(SAVE_BACKSTACK_COUNT, getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override
