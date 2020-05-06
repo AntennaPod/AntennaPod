@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.8.1
+-------------
+* Enabled picture-in-picture for video podcasts by default (by @ByteHamster)
+* Fixed podcast discovery not showing local trends (by @tonytamsf)
+* Various bug fixes and improvements (by @ByteHamster)
+
 Version 1.8.0
 -------------
 * Added per-feed playback speed setting (by @spacecowboy)
