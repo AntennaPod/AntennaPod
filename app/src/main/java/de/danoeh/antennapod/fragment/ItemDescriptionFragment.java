@@ -47,6 +47,17 @@ public class ItemDescriptionFragment extends Fragment {
             // Restoring the scroll position might not always work
             webvDescription.postDelayed(ItemDescriptionFragment.this::restoreFromPreference, 50);
         });
+
+        root.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right,
+                    int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (root.getMeasuredHeight() != webvDescription.getMinimumHeight()) {
+                    webvDescription.setMinimumHeight(root.getMeasuredHeight());
+                }
+                root.removeOnLayoutChangeListener(this);
+            }
+        });
         registerForContextMenu(webvDescription);
         return root;
     }
