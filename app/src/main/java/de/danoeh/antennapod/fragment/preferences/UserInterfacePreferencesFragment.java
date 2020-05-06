@@ -35,11 +35,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
         findPreference(UserPreferences.PREF_THEME)
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
-                            Intent i = new Intent(getActivity(), MainActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            getActivity().finish();
-                            startActivity(i);
+                            getActivity().recreate();
                             return true;
                         }
                 );

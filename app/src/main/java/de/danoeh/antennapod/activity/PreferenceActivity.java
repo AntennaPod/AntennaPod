@@ -28,6 +28,8 @@ import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragmen
  * PreferenceController.
  */
 public class PreferenceActivity extends AppCompatActivity implements SearchPreferenceResultListener {
+    private static final String FRAGMENT_TAG = "tag_preferences";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
@@ -44,8 +46,11 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                 ViewGroup.LayoutParams.MATCH_PARENT));
         setContentView(root);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content, new MainPreferencesFragment()).commit();
-
+        if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content, new MainPreferencesFragment(), FRAGMENT_TAG)
+                    .commit();
+        }
     }
 
     private PreferenceFragmentCompat getPreferenceScreen(int screen) {

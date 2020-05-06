@@ -74,6 +74,7 @@ public class MainActivity extends CastEnabledActivity {
     private LockableBottomSheetBehavior sheetBehavior;
     private long lastBackButtonPressTime = 0;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
+    private int lastTheme = 0;
 
     @NonNull
     public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
@@ -85,7 +86,8 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getNoTitleTheme());
+        lastTheme = UserPreferences.getNoTitleTheme();
+        setTheme(lastTheme);
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
@@ -313,11 +315,12 @@ public class MainActivity extends CastEnabledActivity {
         super.onStart();
         EventBus.getDefault().register(this);
         RatingDialog.init(this);
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+        if (lastTheme != UserPreferences.getNoTitleTheme()) {
+            // Nav drawer is empty for half a second after recreating. Don't confuse users with that.
+            drawerLayout.closeDrawer(navDrawer);
+            recreate();
+        }
     }
 
     @Override
