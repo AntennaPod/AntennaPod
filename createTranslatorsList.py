@@ -31,7 +31,7 @@ for lang in r.json():
             langName = lang['language_code']
             print('\033[91mLanguage code not found:' + langCode + '\033[0m')
 
-    joinedTranslators = ', '.join(langContributers).replace(';', '');
+    joinedTranslators = ', '.join(langContributers).replace(';', '')
     contributorsFile.write(langName + ": " + joinedTranslators + '\n')
     csvFile.write(langName + ';' + joinedTranslators + '\n')
     print(langName + ';' + joinedTranslators)
