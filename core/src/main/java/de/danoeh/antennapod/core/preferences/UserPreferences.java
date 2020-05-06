@@ -809,6 +809,10 @@ public class UserPreferences {
         prefs.edit().putString(PREF_MEDIA_PLAYER, "sonic").apply();
     }
 
+    public static void enableExoplayer() {
+        prefs.edit().putString(PREF_MEDIA_PLAYER, PREF_MEDIA_PLAYER_EXOPLAYER).apply();
+    }
+
     public static boolean stereoToMono() {
         return prefs.getBoolean(PREF_STEREO_TO_MONO, false);
     }
