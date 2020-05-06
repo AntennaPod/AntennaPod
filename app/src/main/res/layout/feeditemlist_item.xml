@@ -42,7 +42,7 @@
             android:layout_marginRight="@dimen/listitem_threeline_textleftpadding"
             android:layout_marginEnd="@dimen/listitem_threeline_textleftpadding"
             android:id="@+id/coverHolder"
-            app:cardBackgroundColor="#33777777"
+            app:cardBackgroundColor="@color/non_square_icon_background"
             app:cardCornerRadius="4dp"
             app:cardElevation="0dp">
 

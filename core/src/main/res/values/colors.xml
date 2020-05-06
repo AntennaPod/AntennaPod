@@ -17,6 +17,7 @@
     <color name="highlight_light">#DDDDDD</color>
     <color name="highlight_dark">#414141</color>
     <color name="highlight_trueblack">#414141</color>
+    <color name="non_square_icon_background">#22777777</color>
 
     <color name="accent_light">#0078C2</color>
     <color name="accent_dark">#5C9DFF</color>
