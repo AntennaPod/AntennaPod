@@ -145,7 +145,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void showNoPodcastFoundError() {
-        new AlertDialog.Builder(OnlineFeedViewActivity.this)
+        runOnUiThread(() -> new AlertDialog.Builder(OnlineFeedViewActivity.this)
                 .setNeutralButton(android.R.string.ok, (dialog, which) -> finish())
                 .setTitle(R.string.error_label)
                 .setMessage(R.string.null_value_podcast_error)
@@ -153,7 +153,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                     setResult(RESULT_ERROR);
                     finish();
                 })
-                .show();
+                .show());
     }
 
     /**
