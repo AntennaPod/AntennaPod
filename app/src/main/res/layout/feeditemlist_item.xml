@@ -17,12 +17,13 @@
     <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:id="@+id/left_padding"
             android:minWidth="4dp">
         <ImageView
                 android:id="@+id/drag_handle"
                 android:layout_width="16dp"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/drag_handle_content_description"
+                android:importantForAccessibility="no"
                 android:scaleType="fitCenter"
                 android:src="?attr/dragview_background"
                 android:paddingStart="0dp"
@@ -65,7 +66,7 @@
                     android:layout_width="@dimen/thumbnail_length_queue_item"
                     android:layout_height="@dimen/thumbnail_length_queue_item"
                     android:layout_centerVertical="true"
-                    android:contentDescription="@string/cover_label"
+                    android:importantForAccessibility="no"
                     tools:src="@tools:sample/avatars"/>
 
         </RelativeLayout>
@@ -104,6 +105,7 @@
                     android:layout_height="14sp"
                     app:srcCompat="?attr/type_video"
                     tools:srcCompat="@drawable/ic_videocam_black_24dp"
+                    android:contentDescription="@string/media_type_video_label"
                     android:id="@+id/ivIsVideo"/>
 
             <ImageView
@@ -111,6 +113,7 @@
                     android:layout_height="14sp"
                     app:srcCompat="?attr/ic_unfav"
                     tools:srcCompat="@drawable/ic_star_black"
+                    android:contentDescription="@string/is_favorite_label"
                     android:id="@+id/isFavorite"/>
 
             <ImageView
@@ -118,6 +121,7 @@
                     android:layout_height="14sp"
                     app:srcCompat="?attr/stat_playlist"
                     tools:srcCompat="@drawable/ic_playlist_black"
+                    android:contentDescription="@string/in_queue_label"
                     android:id="@+id/ivInPlaylist"/>
 
             <TextView
@@ -160,12 +164,19 @@
                     tools:text="10 MB"/>
 
         </LinearLayout>
+
+        <!--
+            Warning: android:contentDescription is set to an empty string.
+            The title is read as contentDescription of left_padding to have it read first.
+            Keep this in mind when changing the order of this layout!
+        -->
         <TextView
                 android:id="@+id/txtvTitle"
                 style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:text="@sample/episodes.json/data/title"
+                android:importantForAccessibility="no"
                 android:ellipsize="end"
                 tools:background="@android:color/holo_blue_light"/>
 

@@ -70,6 +70,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -288,6 +289,7 @@ public class ItemFragment extends Fragment {
         if (item.getPubDate() != null) {
             String pubDateStr = DateUtils.formatAbbrev(getActivity(), item.getPubDate());
             txtvPublished.setText(pubDateStr);
+            txtvPublished.setContentDescription(DateUtils.formatForAccessibility(getContext(), item.getPubDate()));
         }
 
         Glide.with(getActivity())
@@ -321,6 +323,8 @@ public class ItemFragment extends Fragment {
         } else {
             if (media.getDuration() > 0) {
                 txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
+                txtvDuration.setContentDescription(
+                        Converter.getDurationStringLocalized(getContext(), media.getDuration()));
             }
             if (media.isCurrentlyPlaying()) {
                 actionButton1 = new PauseActionButton(item);

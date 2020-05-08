@@ -21,10 +21,9 @@
                 android:layout_height="100dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
-                android:contentDescription="@string/cover_label"
+                android:importantForAccessibility="no"
                 tools:src="@drawable/ic_antenna"
                 tools:background="@android:color/holo_green_dark"/>
-
 
         <LinearLayout
                 android:layout_width="match_parent"

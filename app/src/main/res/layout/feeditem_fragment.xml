@@ -25,7 +25,7 @@
                 android:layout_width="@dimen/thumbnail_length_queue_item"
                 android:layout_height="@dimen/thumbnail_length_queue_item"
                 android:layout_gravity="center_vertical"
-                android:contentDescription="@string/cover_label"
+                android:contentDescription="@string/open_podcast"
                 android:foreground="?attr/selectableItemBackground"
                 tools:src="@tools:sample/avatars" />
 
@@ -42,6 +42,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
+                    android:importantForAccessibility="no"
                     tools:text="Podcast title"
                     tools:background="@android:color/holo_green_dark" />
 
@@ -77,6 +78,7 @@
                         android:layout_marginStart="4dp"
                         android:layout_marginRight="4dp"
                         android:layout_marginEnd="4dp"
+                        android:importantForAccessibility="no"
                         android:text="·"
                         tools:background="@android:color/holo_blue_light" />
 

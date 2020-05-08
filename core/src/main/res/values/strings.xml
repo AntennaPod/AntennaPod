@@ -217,6 +217,7 @@
     <string name="deactivate_auto_download">Deactivate Auto Download</string>
     <string name="reset_position">Reset Playback Position</string>
     <string name="removed_item">Item removed</string>
+    <string name="no_items_selected">No items selected</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
@@ -676,8 +677,12 @@
     <string name="navigate_upwards_label">Navigate upwards</string>
     <string name="status_downloading_label">Episode is being downloaded</string>
     <string name="in_queue_label">Episode is in the queue</string>
+    <string name="is_favorite_label">Episode is marked as favorite</string>
     <string name="drag_handle_content_description">Drag to change the position of this item</string>
     <string name="load_next_page_label">Load next page</string>
+    <string name="switch_pages">Switch pages</string>
+    <string name="position">Position: %1$s</string>
+    <string name="apply_action">Apply action</string>
 
     <!-- Feed information screen -->
     <string name="authentication_label">Authentication</string>

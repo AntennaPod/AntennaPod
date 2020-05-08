@@ -13,13 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:contentDescription="@string/cover_label"
         android:scaleType="fitCenter"
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:transitionName="coverTransition"
         tools:src="@android:drawable/sym_def_app_icon"
         android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:importantForAccessibility="no"
         squareImageView:direction="minimum" />
 
     <TextView

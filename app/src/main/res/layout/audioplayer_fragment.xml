@@ -22,6 +22,7 @@
             android:layout_marginTop="-12dp"
             android:padding="4dp"
             android:layout_below="@id/toolbar"
+            android:contentDescription="@string/switch_pages"
             android:layout_centerHorizontal="true"/>
 
     <FrameLayout

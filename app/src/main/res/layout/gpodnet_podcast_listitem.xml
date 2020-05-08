@@ -20,7 +20,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/cover_label"
+            android:importantForAccessibility="no"
             android:cropToPadding="true"
             android:scaleType="fitXY"
             tools:src="@drawable/ic_antenna"

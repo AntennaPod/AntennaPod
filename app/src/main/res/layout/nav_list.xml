@@ -13,6 +13,7 @@
         android:layout_alignParentBottom="true"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/settings_label"
+        android:accessibilityTraversalBefore="@id/nav_list"
         android:orientation="horizontal"
         android:focusable="true">
 
@@ -25,7 +26,7 @@
             android:layout_marginStart="@dimen/listitem_icon_leftpadding"
             android:layout_marginTop="4dp"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/cover_label"
+            android:importantForAccessibility="no"
             android:cropToPadding="true"
             android:padding="8dp"
             android:scaleType="centerCrop"
