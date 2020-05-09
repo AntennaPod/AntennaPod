@@ -143,7 +143,7 @@ public class AudioPlayerFragment extends Fragment implements
         pageIndicator = root.findViewById(R.id.page_indicator);
         pageIndicator.setViewPager(pager);
         pageIndicator.setOnClickListener(v ->
-                pager.setCurrentItem((pager.getCurrentItem() + 1) % pager.getChildCount()));
+                pager.setCurrentItem((pager.getCurrentItem() + 1) % NUM_CONTENT_FRAGMENTS));
         return root;
     }
 
