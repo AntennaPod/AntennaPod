@@ -20,7 +20,6 @@
         android:contentDescription="@string/cover_label"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:foregroundGravity="left"
-        android:padding="8dp"
         android:transitionName="coverTransition"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
