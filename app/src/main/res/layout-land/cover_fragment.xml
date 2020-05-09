@@ -17,6 +17,7 @@
         android:layout_marginLeft="88dp"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="16dp"
+        android:padding="8dp"
         android:contentDescription="@string/cover_label"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:foregroundGravity="left"
