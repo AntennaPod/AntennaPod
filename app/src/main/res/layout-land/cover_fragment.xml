@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
+
 
     <de.danoeh.antennapod.view.SquareImageView
         android:id="@+id/imgvCover"
-        android:layout_width=""
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_vertical"
         android:contentDescription="@string/cover_label"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="centerCrop"
+        android:gravity="start"
         android:transitionName="coverTransition"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/layout"
+        app:layout_constraintStart_toStartOf="parent"
         squareImageView:direction="minimum"
         tools:src="@android:drawable/sym_def_app_icon" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        >
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/imgvCover">
 
         <TextView
             android:id="@+id/txtvPodcastTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/txtvEpisodeTitle"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
             android:gravity="center_horizontal"
@@ -50,18 +47,15 @@
             android:id="@+id/txtvEpisodeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:ellipsize="end"
+            android:gravity="bottom|center_horizontal"
             android:maxLines="2"
             android:textAlignment="center"
             android:textColor="?android:attr/textColorPrimary"
             android:textIsSelectable="true"
-            tools:text="Episode"
-            android:gravity="center_horizontal" />
-    </RelativeLayout>
+            tools:text="Episode" />
 
-</LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
