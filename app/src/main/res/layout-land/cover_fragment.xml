@@ -25,7 +25,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         squareImageView:direction="minimum"
-        tools:src="@android:drawable/sym_def_app_icon" />
+        tools:src="@android:drawable/sym_def_app_icon"
+        android:layout_marginStart="88dp" />
 
     <LinearLayout
         android:id="@+id/layout"
