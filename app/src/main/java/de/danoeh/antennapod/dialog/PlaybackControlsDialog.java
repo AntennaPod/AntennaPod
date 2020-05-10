@@ -80,7 +80,7 @@ public class PlaybackControlsDialog extends DialogFragment {
 
     private void setupUi() {
         final SeekBar barPlaybackSpeed = dialog.findViewById(R.id.playback_speed);
-        final Button butDecSpeed = dialog.findViewById(R.id.butDecSpeed);
+        final TextView butDecSpeed = dialog.findViewById(R.id.butDecSpeed);
         butDecSpeed.setOnClickListener(v -> {
             if (controller != null && controller.canSetPlaybackSpeed()) {
                 barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 2);
@@ -88,7 +88,7 @@ public class PlaybackControlsDialog extends DialogFragment {
                 VariableSpeedDialog.showGetPluginDialog(getContext());
             }
         });
-        final Button butIncSpeed = (Button) dialog.findViewById(R.id.butIncSpeed);
+        final TextView butIncSpeed = dialog.findViewById(R.id.butIncSpeed);
         butIncSpeed.setOnClickListener(v -> {
             if (controller != null && controller.canSetPlaybackSpeed()) {
                 barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 2);

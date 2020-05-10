@@ -50,21 +50,15 @@
                 android:id="@+id/butCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:textColor="?attr/colorAccent"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text="@string/cancel_label"/>
+                android:text="@string/cancel_label"
+                style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
         <Button
                 android:id="@+id/butConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:textColor="?attr/colorAccent"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:text="@string/confirm_label"/>
+                android:text="@string/confirm_label"
+                style="@style/Widget.MaterialComponents.Button.TextButton"/>
     </LinearLayout>
 
 </LinearLayout>
