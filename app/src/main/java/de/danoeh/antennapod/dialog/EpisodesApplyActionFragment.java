@@ -185,6 +185,21 @@ public class EpisodesApplyActionFragment extends Fragment {
             }
         }
 
+        mSpeedDialView.setOnChangeListener(new SpeedDialView.OnChangeListener() {
+            @Override
+            public boolean onMainActionSelected() {
+                return false;
+            }
+
+            @Override
+            public void onToggleChanged(boolean open) {
+                if (open && checkedIds.size() == 0) {
+                    ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.no_items_selected,
+                            Snackbar.LENGTH_SHORT);
+                    mSpeedDialView.close();
+                }
+            }
+        });
         mSpeedDialView.setOnActionSelectedListener(actionItem -> {
             ActionBinding selectedBinding = null;
             for (ActionBinding binding : actionBindings) {
@@ -202,16 +217,6 @@ public class EpisodesApplyActionFragment extends Fragment {
         });
         refreshCheckboxes();
         return view;
-    }
-
-    private void showSpeedDialIfAnyChecked() {
-        if (checkedIds.size() > 0) {
-            if (!mSpeedDialView.isShown()) {
-                mSpeedDialView.show();
-            }
-        } else {
-            mSpeedDialView.hide(); // hide() also handles UI, e.g., overlay properly.
-        }
     }
 
     @Override
@@ -409,7 +414,6 @@ public class EpisodesApplyActionFragment extends Fragment {
             mListView.setItemChecked(i, checked);
         }
         ActivityCompat.invalidateOptionsMenu(EpisodesApplyActionFragment.this.getActivity());
-        showSpeedDialIfAnyChecked();
         toolbar.setTitle(getResources().getQuantityString(R.plurals.num_selected_label,
                 checkedIds.size(), checkedIds.size()));
     }

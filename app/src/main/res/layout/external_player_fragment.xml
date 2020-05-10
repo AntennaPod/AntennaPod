@@ -22,7 +22,7 @@
 
         <ImageView
                 android:id="@+id/imgvCover"
-                android:contentDescription="@string/cover_label"
+                android:contentDescription="@string/media_player"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"

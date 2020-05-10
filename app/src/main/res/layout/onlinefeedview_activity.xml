@@ -56,7 +56,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
-                            android:contentDescription="@string/cover_label"
+                            android:importantForAccessibility="no"
                             tools:src="@drawable/ic_antenna"/>
 
                     <TextView

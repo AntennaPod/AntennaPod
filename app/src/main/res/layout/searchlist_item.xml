@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
         android:layout_marginStart="@dimen/listitem_threeline_horizontalpadding"
-        android:contentDescription="@string/cover_label"
+        android:importantForAccessibility="no"
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_antenna"
         tools:background="@android:color/holo_green_dark"/>

@@ -7,11 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.joanzapata.iconify.Iconify;
@@ -57,6 +61,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     public final ImageView secondaryActionIcon;
     private final CircularProgressBar secondaryActionProgress;
     private final TextView separatorIcons;
+    private final View leftPadding;
     public final CardView coverHolder;
 
     private final MainActivity activity;
@@ -87,6 +92,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         coverHolder = itemView.findViewById(R.id.coverHolder);
+        leftPadding = itemView.findViewById(R.id.left_padding);
         itemView.setTag(this);
     }
 
@@ -94,7 +100,9 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         this.item = item;
         placeholder.setText(item.getFeed().getTitle());
         title.setText(item.getTitle());
+        leftPadding.setContentDescription(item.getTitle());
         pubDate.setText(DateUtils.formatAbbrev(activity, item.getPubDate()));
+        pubDate.setContentDescription(DateUtils.formatForAccessibility(activity, item.getPubDate()));
         isNew.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         isFavorite.setVisibility(item.isTagged(FeedItem.TAG_FAVORITE) ? View.VISIBLE : View.GONE);
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
@@ -128,6 +136,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         isVideo.setVisibility(media.getMediaType() == MediaType.VIDEO ? View.VISIBLE : View.GONE);
         duration.setVisibility(media.getDuration() > 0 ? View.VISIBLE : View.GONE);
         duration.setText(Converter.getDurationStringLong(media.getDuration()));
+        duration.setContentDescription(activity.getString(R.string.chapter_duration,
+                Converter.getDurationStringLocalized(activity, media.getDuration())));
 
         if (media.isCurrentlyPlaying()) {
             container.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
@@ -149,6 +159,8 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             int progress = (int) (100.0 * media.getPosition() / media.getDuration());
             progressBar.setProgress(progress);
             position.setText(Converter.getDurationStringLong(media.getPosition()));
+            position.setContentDescription(activity.getString(R.string.position,
+                    Converter.getDurationStringLocalized(activity, media.getPosition())));
             progressBar.setVisibility(View.VISIBLE);
             position.setVisibility(View.VISIBLE);
         } else {

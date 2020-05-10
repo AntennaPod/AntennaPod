@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/imgvCover"
-        android:contentDescription="@string/cover_label"
+        android:importantForAccessibility="no"
         android:layout_width="@dimen/thumbnail_length_navlist"
         android:layout_height="@dimen/thumbnail_length_navlist"
         android:layout_alignParentLeft="true"

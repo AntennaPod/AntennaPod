@@ -12,7 +12,7 @@
 
     <ImageView
             android:id="@+id/imgvCover"
-            android:contentDescription="@string/cover_label"
+            android:importantForAccessibility="no"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"

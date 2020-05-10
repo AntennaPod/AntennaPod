@@ -73,11 +73,13 @@ public class DownloadLogAdapter extends BaseAdapter {
         if (status.isSuccessful()) {
             holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_success_green));
             holder.icon.setText("{fa-check-circle}");
+            holder.icon.setContentDescription(context.getString(R.string.download_successful));
             holder.secondaryActionButton.setVisibility(View.INVISIBLE);
             holder.reason.setVisibility(View.GONE);
         } else {
             holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_failed_red));
             holder.icon.setText("{fa-times-circle}");
+            holder.icon.setContentDescription(context.getString(R.string.error_label));
             String reasonText = status.getReason().getErrorString(context);
             if (status.getReasonDetailed() != null) {
                 reasonText += ": " + status.getReasonDetailed();

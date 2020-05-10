@@ -24,6 +24,7 @@
         android:id="@+id/fabSDOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:importantForAccessibility="no"
         android:layout_below="@id/toolbar" />
     <!-- The FAB SpeedDial
          1. MUST be placed at the bottom of the layout xml to ensure it is at the front,
@@ -51,7 +52,8 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            />
+            android:accessibilityTraversalBefore="@android:id/list"
+            android:contentDescription="@string/apply_action" />
     </ScrollView>
 
 </RelativeLayout>
