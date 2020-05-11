@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import android.app.Activity;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -181,7 +177,6 @@ public class CoverFragment extends Fragment {
                         .add(getId(), CoverFragment.class.newInstance()).commit();
             } catch (Exception e) {
                 Log.d(TAG, "onConfigurationChanged " + e.toString());
-                Toast.makeText(this.getContext(), "ERROR " + e.toString(), Toast.LENGTH_LONG).show();
             }
         }
     }
