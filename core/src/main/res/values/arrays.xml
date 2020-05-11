@@ -269,6 +269,64 @@
         <item>is_favorite</item>
     </string-array>
 
+    <string-array name="episode_filter_state_options">
+        <item>@string/filter_no_filter</item>
+        <item>@string/hide_unplayed_episodes_label</item>
+        <item>@string/hide_paused_episodes_label</item>
+        <item>@string/hide_played_episodes_label</item>
+    </string-array>
+
+    <string-array name="episode_filter_state_values">
+        <item>no_filter</item>
+        <item>unplayed</item>
+        <item>paused</item>
+        <item>played</item>
+    </string-array>
+
+    <string-array name="episode_filter_queue_options">
+        <item>@string/filter_no_filter</item>
+        <item>@string/hide_queued_episodes_label</item>
+        <item>@string/hide_not_queued_episodes_label</item>
+    </string-array>
+
+    <string-array name="episode_filter_queue_values">
+        <item>no_filter</item>
+        <item>queued</item>
+        <item>not_queued</item>
+    </string-array>
+
+    <string-array name="episode_filter_download_options">
+        <item>@string/filter_no_filter</item>
+        <item>@string/hide_downloaded_episodes_label</item>
+        <item>@string/hide_not_downloaded_episodes_label</item>
+    </string-array>
+
+    <string-array name="episode_filter_download_values">
+        <item>no_filter</item>
+        <item>downloaded</item>
+        <item>not_downloaded</item>
+    </string-array>
+
+    <string-array name="episode_filter_favorite_options">
+        <item>@string/filter_no_filter</item>
+        <item>@string/hide_is_favorite_label</item>
+    </string-array>
+
+    <string-array name="episode_filter_favorite_values">
+        <item>no_filter</item>
+        <item>is_favorite</item>
+    </string-array>
+
+    <string-array name="episode_filter_media_options">
+        <item>@string/filter_no_filter</item>
+        <item>@string/hide_has_media_label</item>
+    </string-array>
+
+    <string-array name="episode_filter_media_values">
+        <item>no_filter</item>
+        <item>has_media</item>
+    </string-array>
+
     <!-- sort for podcast screen, not for queue -->
     <string-array name="feed_episodes_sort_options">
         <item>@string/sort_date_new_old</item>

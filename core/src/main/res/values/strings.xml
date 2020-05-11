@@ -219,6 +219,10 @@
     <string name="removed_item">Item removed</string>
     <string name="no_items_selected">No items selected</string>
 
+    <!-- Filter dialog -->
+    <string name="filter_playback_state">Playback state</string>
+    <string name="filter_no_filter">Not filtered</string>
+
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
     <string name="download_pending">Download pending</string>
