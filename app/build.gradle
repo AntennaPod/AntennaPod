@@ -1,10 +1,8 @@
 plugins {
     id('com.android.application')
     id('com.getkeepsafe.dexcount')
-    id('com.github.triplet.play') version '2.3.0' apply false
+    id('com.github.triplet.play') version '2.7.5' apply false
 }
-
-import org.apache.tools.ant.filters.ReplaceTokens
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -18,21 +16,22 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2000001
-        versionName "2.0.0-alpha1"
+        versionCode 2000002
+        versionName "2.0.0-alpha2"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        generatedDensities = []
+        vectorDrawables.generatedDensities = []
 
         def commit = "Unknown commit"
         try {
             commit = "git rev-parse --short HEAD".execute().text.trim()
-        } catch (Exception ignore) { }
+        } catch (Exception ignore) {
+        }
         buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ eventBusIndex : 'de.danoeh.antennapod.ApEventBusIndex' ]
+                arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
             }
         }
     }
@@ -75,12 +74,12 @@ android {
             // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication . 
             // See Issue #2813
             multiDexEnabled true
-            
+
             dexcount {
                 if (project.hasProperty("enableDexcountInDebug")) {
                     runOnEachPackage enableDexcountInDebug.toBoolean()
                 } else { // default to not running dexcount
-                    runOnEachPackage false                 
+                    runOnEachPackage false
                 }
             }
         }
@@ -138,16 +137,19 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
-    implementation "androidx.appcompat:appcompat:1.1.0"
-    implementation "androidx.preference:preference:1.1.0"
-    implementation "androidx.gridlayout:gridlayout:1.0.0"
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
-    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
-    implementation "androidx.media:media:1.1.0"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    annotationProcessor 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation 'androidx.media:media:1.1.0'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation "androidx.work:work-runtime:$workManagerVersion"
-    implementation "com.google.android.material:material:1.1.0"
-    annotationProcessor "androidx.annotation:annotation:1.1.0"
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
@@ -166,13 +168,14 @@ dependencies {
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
     implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
     implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
-    implementation 'com.leinardi.android:speed-dial:3.0.0'
+    implementation 'com.leinardi.android:speed-dial:3.1.1'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
+    implementation "com.github.skydoves:balloon:1.1.5"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
-    androidTestImplementation 'com.nanohttpd:nanohttpd-webserver:2.1.1'
+    androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
@@ -181,12 +184,11 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.2.0'
 }
 
-if (project.hasProperty("antennaPodServiceAccountEmail")) {
+if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
     apply plugin: 'com.github.triplet.play'
     play {
         track = 'alpha'
-        serviceAccountEmail = antennaPodServiceAccountEmail
-        serviceAccountCredentials = file(antennaPodPk12File)
+        serviceAccountCredentials = file(antennaPodPlayPublisherCredentials)
     }
 }
 
