@@ -3,39 +3,37 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/sort_items"
-        android:icon="?attr/ic_sort"
-        android:menuCategory="container"
-        android:title="@string/sort"
-        custom:showAsAction="always">
-    </item>
-    <item
-        android:id="@+id/filter_items"
-        android:icon="?attr/ic_filter"
-        android:menuCategory="container"
-        android:title="@string/filter"
-        custom:showAsAction="always">
-    </item>
-    <item
-        android:id="@+id/refresh_item"
-        android:icon="?attr/navigation_refresh"
-        android:menuCategory="container"
-        android:title="@string/refresh_label"
-        custom:showAsAction="always">
-    </item>
-    <item
-        android:id="@+id/refresh_complete_item"
-        android:menuCategory="container"
-        android:title="@string/load_complete_feed"
-        custom:showAsAction="collapseActionView">
-    </item>
-
-    <item
         android:id="@+id/action_search"
         android:icon="?attr/action_search"
         custom:showAsAction="always|collapseActionView"
         custom:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="@string/search_label"/>
+
+    <item
+        android:id="@+id/refresh_item"
+        android:icon="?attr/navigation_refresh"
+        android:menuCategory="container"
+        android:title="@string/refresh_label"
+        custom:showAsAction="always" />
+
+    <item
+        android:id="@+id/refresh_complete_item"
+        android:menuCategory="container"
+        android:title="@string/load_complete_feed"
+        custom:showAsAction="collapseActionView" />
+
+    <item
+        android:id="@+id/sort_items"
+        android:icon="?attr/ic_sort"
+        android:menuCategory="container"
+        android:title="@string/sort"
+        custom:showAsAction="collapseActionView" />
+    <item
+        android:id="@+id/filter_items"
+        android:icon="?attr/ic_filter"
+        android:menuCategory="container"
+        android:title="@string/filter"
+        custom:showAsAction="collapseActionView" />
 
     <item
         android:id="@+id/episode_actions"
@@ -52,17 +50,24 @@
         android:title="@string/visit_website_label"
         android:visible="true">
     </item>
+
     <item
-        android:id="@+id/share_link_item"
-        android:menuCategory="container"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/share_website_url_label">
-    </item>
-    <item
-        android:id="@+id/share_download_url_item"
-        android:menuCategory="container"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/share_feed_url_label">
+            android:menuCategory="container"
+            custom:showAsAction="never"
+            android:title="@string/share_label">
+        <menu>
+            <item
+                android:id="@+id/share_link_item"
+                android:menuCategory="container"
+                custom:showAsAction="collapseActionView"
+                android:title="@string/share_website_url_label" />
+
+            <item
+                android:id="@+id/share_download_url_item"
+                android:menuCategory="container"
+                custom:showAsAction="collapseActionView"
+                android:title="@string/share_feed_url_label" />
+        </menu>
     </item>
 
     <item
