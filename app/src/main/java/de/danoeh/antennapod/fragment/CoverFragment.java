@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
@@ -47,11 +49,13 @@ public class CoverFragment extends Fragment {
     private Disposable disposable;
     private int displayedChapterIndex = -2;
     private Playable media;
+    private int orientation = Configuration.ORIENTATION_UNDEFINED;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setRetainInstance(true);
+
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
@@ -134,7 +138,6 @@ public class CoverFragment extends Fragment {
         int chapter = ChapterUtils.getCurrentChapterIndex(media, position);
         if (chapter != displayedChapterIndex) {
             displayedChapterIndex = chapter;
-
             RequestBuilder<Drawable> cover = Glide.with(this)
                     .load(ImageResourceUtils.getImageLocation(media))
                     .apply(new RequestOptions()
@@ -142,6 +145,8 @@ public class CoverFragment extends Fragment {
                             .dontAnimate()
                             .transforms(new FitCenter(),
                                     new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))));
+
+
             if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
                 cover.into(imgvCover);
             } else {
@@ -155,6 +160,23 @@ public class CoverFragment extends Fragment {
                         .thumbnail(cover)
                         .error(cover)
                         .into(imgvCover);
+            }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (orientation != newConfig.orientation) {
+            try {
+                orientation = newConfig.orientation;
+                getFragmentManager().beginTransaction()
+                        .detach(this)
+                        .attach(this)
+                        .add(getId(), CoverFragment.class.newInstance()).commit();
+            } catch (Exception e) {
+                Log.d(TAG, "onConfigurationChanged " + e.toString());
             }
         }
     }
