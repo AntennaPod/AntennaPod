@@ -41,18 +41,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-            <Button
+            <TextView
                 android:id="@+id/butDecSpeed"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:gravity="center"
                 android:text="-"
+                android:clickable="true"
+                android:focusable="true"
                 android:textStyle="bold"
-                android:textColor="?attr/colorAccent"
                 android:textSize="24sp"
-                android:background="?attr/selectableItemBackgroundBorderless" />
+                android:textColor="?attr/colorSecondary"
+                android:contentDescription="@string/decrease_volume"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <SeekBar
                 android:id="@+id/playback_speed"
@@ -61,16 +65,18 @@
                 android:max="70"
                 android:layout_weight="1" />
 
-            <Button
+            <TextView
                 android:id="@+id/butIncSpeed"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:minWidth="0dp"
                 android:gravity="center"
                 android:text="+"
+                android:clickable="true"
+                android:focusable="true"
                 android:textStyle="bold"
-                android:textColor="?attr/colorAccent"
                 android:textSize="24sp"
+                android:textColor="?attr/colorSecondary"
+                android:contentDescription="@string/increase_volume"
                 android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
 
