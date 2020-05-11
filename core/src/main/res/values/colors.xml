@@ -13,14 +13,16 @@
 
     <!-- Theme colors -->
     <color name="background_light">#FFFFFF</color>
-    <color name="background_darktheme">#303030</color>
-    <color name="highlight_light">#DDDDDD</color>
-    <color name="highlight_dark">#414141</color>
-    <color name="highlight_trueblack">#414141</color>
+    <color name="background_elevated_light">#EFEEEE</color>
+    <color name="background_darktheme">#21272b</color>
+    <color name="background_elevated_darktheme">#2D3337</color>
+    <color name="highlight_light">#46C6C6C6</color>
+    <color name="highlight_dark">#43707070</color>
+    <color name="highlight_trueblack">#43707070</color>
     <color name="non_square_icon_background">#22777777</color>
 
     <color name="accent_light">#0078C2</color>
-    <color name="accent_dark">#5C9DFF</color>
+    <color name="accent_dark">#3D8BFF</color>
     <color name="ic_launcher_background">#008AB8</color>
 
     <color name="master_switch_background_light">#DDDDDD</color>

@@ -30,9 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:background="?android:attr/windowBackground"
+            android:background="?attr/background_elevated"
             tools:layout_height="@dimen/external_player_height"
-            tools:background="@android:color/holo_green_light"
             android:elevation="8dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
@@ -42,7 +41,6 @@
             android:layout_above="@id/playtime_layout"
             android:layout_below="@id/toolbar"
             android:foreground="?android:windowContentOverlay"
-            tools:background="@android:color/holo_orange_light"
             android:layout_marginBottom="12dp"/>
 
     <SeekBar
@@ -54,8 +52,7 @@
             android:layout_above="@id/playtime_layout"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layoutDirection="ltr"
-            tools:background="@android:color/holo_green_dark"/>
+            android:layoutDirection="ltr" />
 
     <LinearLayout
             android:id="@+id/playtime_layout"
@@ -83,8 +80,7 @@
                     android:layout_marginStart="16dp"
                     android:text="@string/position_default_label"
                     android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="@dimen/text_size_micro"
-                    tools:background="@android:color/holo_green_dark"/>
+                    android:textSize="@dimen/text_size_micro"/>
 
             <TextView
                     android:id="@+id/txtvLength"
@@ -97,8 +93,7 @@
                     android:text="@string/position_default_label"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="@dimen/text_size_micro"
-                    android:background="?android:attr/selectableItemBackground"
-                    tools:background="@android:color/holo_green_dark"/>
+                    android:background="?android:attr/selectableItemBackground"/>
 
         </RelativeLayout>
 
@@ -106,8 +101,7 @@
                 android:id="@+id/player_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                tools:background="@android:color/holo_purple">
+                android:layout_marginBottom="24dp">
 
             <ImageButton
                     android:id="@+id/butPlay"
@@ -124,8 +118,7 @@
                     android:contentDescription="@string/pause_label"
                     app:srcCompat="?attr/av_play"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_play_white_24dp"
-                    tools:background="@android:color/holo_green_dark"/>
+                    tools:srcCompat="@drawable/ic_av_play_white_24dp"/>
 
             <de.danoeh.antennapod.view.CircularProgressBar
                     android:layout_width="@dimen/audioplayer_playercontrols_length_big"
@@ -159,8 +152,7 @@
                     android:contentDescription="@string/rewind_label"
                     app:srcCompat="?attr/av_rewind"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_fast_rewind_white_48dp"
-                    tools:background="@android:color/holo_blue_dark"/>
+                    tools:srcCompat="@drawable/ic_av_fast_rewind_white_48dp"/>
 
             <TextView
                     android:id="@+id/txtvRev"
@@ -186,9 +178,7 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/set_playback_speed_label"
-                    tools:srcCompat="@drawable/ic_playback_speed_white"
-                    tools:visibility="gone"
-                    tools:background="@android:color/holo_green_dark"/>
+                    tools:srcCompat="@drawable/ic_playback_speed_white"/>
 
             <TextView
                     android:id="@+id/txtvPlaybackSpeed"
@@ -218,8 +208,7 @@
                     android:contentDescription="@string/fast_forward_label"
                     app:srcCompat="?attr/av_fast_forward"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/ic_av_fast_forward_white_48dp"
-                    tools:background="@android:color/holo_blue_dark"/>
+                    tools:srcCompat="@drawable/ic_av_fast_forward_white_48dp"/>
 
             <TextView
                     android:id="@+id/txtvFF"
@@ -247,8 +236,7 @@
                     android:scaleType="fitCenter"
                     app:srcCompat="?attr/av_skip"
                     android:contentDescription="@string/skip_episode_label"
-                    tools:srcCompat="@drawable/ic_av_skip_white_48dp"
-                    tools:background="@android:color/holo_green_dark"/>
+                    tools:srcCompat="@drawable/ic_av_skip_white_48dp"/>
         </RelativeLayout>
 
     </LinearLayout>

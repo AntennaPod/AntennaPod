@@ -14,6 +14,7 @@
         <item name="colorPrimaryDark">@color/accent_light</item>
         <item name="android:windowBackground">@color/background_light</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Light</item>
+        <item name="background_elevated">@color/background_elevated_light</item>
         <item name="master_switch_background">@color/master_switch_background_light</item>
         <item name="currently_playing_background">@color/highlight_light</item>
         <item name="action_icon_color">@color/black</item>
@@ -85,6 +86,7 @@
         <item name="colorPrimaryDark">@color/background_darktheme</item>
         <item name="android:windowBackground">@color/background_darktheme</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Dark</item>
+        <item name="background_elevated">@color/background_elevated_darktheme</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="progressBarTheme">@style/ProgressBarDark</item>
         <item name="drawer_activated_color">@color/highlight_dark</item>
@@ -159,6 +161,7 @@
         <item name="android:colorBackground">@color/black</item>
         <item name="android:windowBackground">@color/black</item>
         <item name="android:actionBarStyle">@color/black</item>
+        <item name="background_elevated">@color/black</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AntennaPod.Light">

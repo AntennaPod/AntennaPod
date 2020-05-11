@@ -56,6 +56,7 @@
     <attr name="batch_edit_fab_icon" format="reference"/>
     <attr name="action_icon_color" format="color"/>
     <attr name="scrollbar_thumb" format="reference"/>
+    <attr name="background_elevated" format="color"/>
 
     <declare-styleable name="SquareImageView">
         <attr name="direction" format="enum">
