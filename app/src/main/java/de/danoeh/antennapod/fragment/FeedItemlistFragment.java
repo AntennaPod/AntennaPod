@@ -323,7 +323,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         activity.loadChildFragment(ItemPagerFragment.newInstance(ids, position));
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(FeedEvent event) {
         Log.d(TAG, "onEvent() called with: " + "event = [" + event + "]");
         if (event.feedId == feedID) {
