@@ -130,7 +130,7 @@ public class NSRSS20 extends Namespace {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));
             } else if (URL.equals(top) && IMAGE.equals(second) && CHANNEL.equals(third)) {
                 // prefer itunes:image
-                if (state.getFeed() != null) {
+                if (state.getFeed() != null && state.getFeed().getImageUrl() == null) {
                     state.getFeed().setImageUrl(content);
                 }
             } else if (DESCR.equals(localName)) {
