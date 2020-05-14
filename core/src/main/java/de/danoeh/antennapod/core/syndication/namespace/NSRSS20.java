@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.syndication.namespace;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.syndication.util.SyndStringUtils;
 import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -98,7 +99,8 @@ public class NSRSS20 extends Namespace {
             }
             state.setCurrentItem(null);
         } else if (state.getTagstack().size() >= 2 && state.getContentBuf() != null) {
-            String content = state.getContentBuf().toString();
+            String contentRaw = state.getContentBuf().toString();
+            String content = SyndStringUtils.trimAllWhitespace(contentRaw);
             SyndElement topElement = state.getTagstack().peek();
             String top = topElement.getName();
             SyndElement secondElement = state.getSecondTag();
@@ -110,15 +112,14 @@ public class NSRSS20 extends Namespace {
             if (GUID.equals(top) && ITEM.equals(second)) {
                 // some feed creators include an empty or non-standard guid-element in their feed,
                 // which should be ignored
-                if (!TextUtils.isEmpty(content) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setItemIdentifier(content);
+                if (!TextUtils.isEmpty(contentRaw) && state.getCurrentItem() != null) {
+                    state.getCurrentItem().setItemIdentifier(contentRaw);
                 }
             } else if (TITLE.equals(top)) {
-                String title = content.trim();
                 if (ITEM.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setTitle(title);
+                    state.getCurrentItem().setTitle(content);
                 } else if (CHANNEL.equals(second) && state.getFeed() != null) {
-                    state.getFeed().setTitle(title);
+                    state.getFeed().setTitle(content);
                 }
             } else if (LINK.equals(top)) {
                 if (CHANNEL.equals(second) && state.getFeed() != null) {
