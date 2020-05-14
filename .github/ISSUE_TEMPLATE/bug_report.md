@@ -17,7 +17,7 @@ If the bug only seems to occur with a certain podcast, please include the URL of
 
 If possible, add instructions on how to reproduce the bug.
 
-If possible, add a logfile to your post. This is especially useful if the bug makes the application crash. You can create logfiles with apps like `aLogcat`. Just launch `alogcat`, then start AntennaPod and reproduce the bug. aLogcat should now display information about the bug when you start it. AntennaPod also has an `export logs` feature.
+If possible, add a logfile to your post. This is especially useful if the bug makes the application crash. AntennaPod has an `export logs` feature for this.
 
 Usually, you can take a screenshot of your smartphone by pressing *Power* + *Volume down* for a few seconds.
 
@@ -26,17 +26,24 @@ You don't need to adhere to the template strictly. Feel free to leave out inform
 If you are experiencing a crash, including the stacktrace will likely get it fixed sooner.
 -->
 
-**App version**: 1.x (state whether from Google Play/F-Droid/Custom built APK)
+<!-- READ THIS: The latest version may be different depending on your device. You can find the version in AntennaPod's settings. -->
+**App version**: x.y.z (state whether from Google Play/F-Droid/Custom built APK)
+
 
 **Android version**: 5.x (Please mention if you are using a custom rom!)
 
+
 **Device model**:
+
 
 **Expected behaviour**:
 
+
 **Current behaviour**:
 
+
 **First occurred**: (e.g. about x days/weeks ago)
+
 
 **Steps to reproduce**:
 1. This
@@ -44,7 +51,9 @@ If you are experiencing a crash, including the stacktrace will likely get it fix
 3. Then this
 4. Etc.
 
+
 **Environment**: (Settings you have changed (e.g. Auto Download). "Unusual" devices you use (e.g. Bluetooth headphones). Did you select another media player?)
+
 
 **Stacktrace/Logcat**: 
 ```

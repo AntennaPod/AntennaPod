@@ -18,10 +18,14 @@ Give a brief explanation about the problem that may currently exist and how your
 Try to be as specific as possible. Please not only explain what the feature does, but also how. If your request is about (or includes) changing or extending the UI, describe what the UI would look like and how the user would interact with it.
 -->
 
-**App version**: 1.x (state whether from Google Play/F-Droid/Custom built APK)
+<!-- READ THIS: The latest version may be different depending on your device. You can find the version in AntennaPod's settings. -->
+**App version**: x.y.z (state whether from Google Play/F-Droid/Custom built APK)
 
-**Problem you may be having**:
+
+**Problem you may be having, or feature you want**:
+
 
 **Suggested solution**:
+
 
 **Screenshots / Drawings / Technical details**:
