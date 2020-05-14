@@ -9,11 +9,6 @@
         android:background="?attr/selectableItemBackground"
         android:orientation="vertical">
 
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/dividerHorizontal" />
-
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -29,6 +24,7 @@
                 android:cropToPadding="true"
                 android:maxWidth="96dp"
                 android:scaleType="fitCenter"
+                android:background="@color/non_square_icon_background"
                 tools:src="@tools:sample/avatars"/>
 
 

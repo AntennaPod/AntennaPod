@@ -20,7 +20,7 @@
             android:layout_centerVertical="true"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             tools:src="@drawable/ic_antenna"
             tools:background="@android:color/holo_green_dark"/>
 
