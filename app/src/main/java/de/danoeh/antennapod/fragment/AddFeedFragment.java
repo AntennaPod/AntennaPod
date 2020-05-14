@@ -98,7 +98,7 @@ public class AddFeedFragment extends Fragment {
     private void performSearch() {
         String query = combinedFeedSearchBox.getText().toString();
 
-        if (query.startsWith("http")) {
+        if (query.matches("http[s]?://.*")) {
             addUrl(query);
             return;
         }
