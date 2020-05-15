@@ -18,8 +18,12 @@ import de.danoeh.antennapod.asynctask.OpmlImportWorker;
 import de.danoeh.antennapod.core.export.opml.OpmlElement;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.LangUtils;
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -130,7 +134,12 @@ public class OpmlImportActivity extends AppCompatActivity {
     /** Starts the import process. */
     private void startImport() {
         try {
-            Reader reader = new InputStreamReader(getContentResolver().openInputStream(uri), LangUtils.UTF_8);
+            InputStream opmlFileStream = getContentResolver().openInputStream(uri);
+            BOMInputStream bomInputStream = new BOMInputStream(opmlFileStream);
+            ByteOrderMark bom = bomInputStream.getBOM();
+            String charsetName = (bom == null) ? "UTF-8" : bom.getCharsetName();
+            Reader reader = new InputStreamReader(bomInputStream, charsetName);
+
             OpmlImportWorker importWorker = new OpmlImportWorker(this, reader) {
 
                 @Override
