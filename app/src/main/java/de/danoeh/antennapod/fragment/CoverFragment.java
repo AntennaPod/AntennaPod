@@ -2,17 +2,23 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -54,13 +60,14 @@ public class CoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setRetainInstance(true);
+        setRetainInstance(false);
 
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> onPlayPause());
+
         return root;
     }
 
@@ -164,6 +171,7 @@ public class CoverFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -171,12 +179,12 @@ public class CoverFragment extends Fragment {
         if (orientation != newConfig.orientation) {
             try {
                 orientation = newConfig.orientation;
+                getFragmentManager().beginTransaction().remove(this).commit();
                 getFragmentManager().beginTransaction()
-                        .detach(this)
-                        .attach(this)
-                        .add(getId(), CoverFragment.class.newInstance()).commit();
+                        .replace(R.id.cover_fragment_container, CoverFragment.class.newInstance())
+                        .commitAllowingStateLoss();
             } catch (Exception e) {
-                Log.d(TAG, "onConfigurationChanged " + e.toString());
+                Log.e(TAG, "onConfigurationChanged " + e.toString());
             }
         }
     }

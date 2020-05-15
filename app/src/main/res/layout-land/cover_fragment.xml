@@ -1,79 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:squareImageView="http://schemas.android.com/apk/de.danoeh.antennapod"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <de.danoeh.antennapod.view.SquareImageView
-        android:id="@+id/imgvCover"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="16dp"
-        android:padding="1dp"
-        android:contentDescription="@string/cover_label"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:foregroundGravity="left"
-        android:transitionName="coverTransition"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/layout"
-        app:layout_constraintHorizontal_bias="0.50"
-        app:layout_constraintHorizontal_weight=".5"
-        app:layout_constraintStart_toStartOf="parent"
-        squareImageView:direction="minimum"
-        tools:src="@android:drawable/sym_def_app_icon" />
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cover_fragment_container"
+    android:layout_width="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight=".5"
-        app:layout_constraintStart_toEndOf="@+id/imgvCover"
-        app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/cover_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txtvPodcastTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:layout_marginBottom="8dp"
-            android:singleLine="false"
-            android:gravity="center_horizontal"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textIsSelectable="true"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/txtvEpisodeTitle"
-            tools:text="Podcast" />
-
-        <TextView
-            android:id="@+id/txtvEpisodeTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:layout_marginTop="8dp"
-            android:scrollHorizontally="false"
-            android:gravity="center_horizontal"
-            android:singleLine="false"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textIsSelectable="true"
+        <de.danoeh.antennapod.view.SquareImageView
+            android:id="@+id/imgvCover"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="16dp"
+            android:padding="1dp"
+            android:contentDescription="@string/cover_label"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:orientation="horizontal"
+            android:foregroundGravity="right"
+            android:transitionName="coverTransition"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="Episode" />
+            app:layout_constraintEnd_toStartOf="@+id/layout"
+            app:layout_constraintHorizontal_bias="0.50"
+            app:layout_constraintHorizontal_weight=".5"
+            app:layout_constraintStart_toStartOf="parent"
+            squareImageView:direction="minimum"
+            tools:src="@android:drawable/sym_def_app_icon" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight=".5"
+            app:layout_constraintStart_toEndOf="@+id/imgvCover"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/txtvPodcastTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:layout_marginBottom="8dp"
+                android:singleLine="false"
+                android:gravity="left"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textIsSelectable="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/txtvEpisodeTitle"
+                tools:text="Podcast" />
+
+            <TextView
+                android:id="@+id/txtvEpisodeTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:layout_marginTop="8dp"
+                android:scrollHorizontally="false"
+                android:gravity="left"
+                android:singleLine="false"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textIsSelectable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="Episode" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
