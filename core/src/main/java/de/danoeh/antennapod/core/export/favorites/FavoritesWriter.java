@@ -38,22 +38,18 @@ public class FavoritesWriter implements ExportWriter {
         Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(getFavorites());
 
         writer.append(templateParts[0]);
-        writer.append("<ul>");
 
         for (Long feedId : favoriteByFeed.keySet()) {
             List<FeedItem> favorites = favoriteByFeed.get(feedId);
-
             writer.append("<li><div>");
             writeFeed(writer, favorites.get(0).getFeed());
 
-            writer.append("<ul style=\"text-align:left\">");
+            writer.append("<ul>");
             for (FeedItem item : favorites) {
                 writeFavoriteItem(writer, item);
             }
             writer.append("</ul></div></li>\n");
         }
-
-        writer.append("</ul>");
 
         writer.append(templateParts[1]);
 
@@ -113,13 +109,13 @@ public class FavoritesWriter implements ExportWriter {
     }
 
     private void writeFavoriteItem(Writer writer, FeedItem item) throws IOException {
-        writer.append("<li><span>");
+        writer.append("<li><div style=\"border-top: 1px solid #eee8e8; padding: 0px; box-shadow: none\"><span>");
         writer.append(item.getTitle().trim());
-        writer.append("<br>\n[<a href=\"");
+        writer.append("<br>\n<a href=\"");
         writer.append(item.getLink());
-        writer.append("\">Website</a>] • [<a href=\"");
+        writer.append("\">Website</a> • <a href=\"");
         writer.append(item.getMedia().getDownload_url());
-        writer.append("\">Media</a>]</span></li>\n");
+        writer.append("\">Media</a></span><div></li>\n");
     }
 
     @Override
