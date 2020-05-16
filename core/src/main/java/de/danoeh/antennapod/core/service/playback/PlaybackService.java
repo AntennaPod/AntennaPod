@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
@@ -847,6 +848,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return true;
                 case MediaPlayer.MEDIA_INFO_BUFFERING_END:
                     sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
+
+                    Playable playable = getPlayable();
+                    if (getPlayable() instanceof FeedMedia
+                            && playable.getDuration() <= 0 && mediaPlayer.getDuration() > 0) {
+                        // Playable is being streamed and does not have a duration specified in the feed
+                        playable.setDuration(mediaPlayer.getDuration());
+                        DBWriter.setFeedMedia((FeedMedia) playable);
+                        updateMediaSessionMetadata(playable);
+                        setupNotification(playable);
+                    }
+
                     return true;
                 default:
                     return flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
