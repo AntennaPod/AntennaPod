@@ -10,17 +10,19 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        multiDexEnabled false
-        vectorDrawables.useSupportLibrary true
         // Version code schema:
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
         versionCode 2000002
         versionName "2.0.0-alpha2"
+
+        multiDexEnabled false
+        vectorDrawables.useSupportLibrary true
+        vectorDrawables.generatedDensities = []
+
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables.generatedDensities = []
 
         def commit = "Unknown commit"
         try {
@@ -62,16 +64,14 @@ android {
     }
 
     buildTypes {
-        def STRING = "String"
-
         debug {
             applicationIdSuffix ".debug"
             resValue "string", "provider_authority", "de.danoeh.antennapod.debug.provider"
 
-            // debug build has method count over 64k single-dex threshold. 
-            // For building debug build to use on Android < 21 (pre-Android 5) devices, 
+            // debug build has method count over 64k single-dex threshold.
+            // For building debug build to use on Android < 21 (pre-Android 5) devices,
             // you need to manually change class
-            // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication . 
+            // de.danoeh.antennapod.PodcastApp to extend MultiDexApplication .
             // See Issue #2813
             multiDexEnabled true
 
@@ -138,18 +138,17 @@ dependencies {
         System.out.println("app: free build hack, skipping some dependencies")
     }
 
-    annotationProcessor 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    annotationProcessor "androidx.annotation:annotation:$annotationVersion"
+    implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation 'androidx.media:media:1.1.0'
-    implementation 'androidx.preference:preference:1.1.1'
+    implementation "androidx.media:media:$mediaVersion"
+    implementation "androidx.preference:preference:$preferenceVersion"
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.1.0-alpha01'
     implementation "androidx.work:work-runtime:$workManagerVersion"
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation "com.google.android.material:material:$googleMaterialVersion"
 
-    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
     implementation "org.apache.commons:commons-lang3:$commonslangVersion"
     implementation "commons-io:commons-io:$commonsioVersion"
     implementation "org.jsoup:jsoup:$jsoupVersion"
@@ -165,13 +164,15 @@ dependencies {
 
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    implementation "com.yqritc:recyclerview-flexibledivider:$recyclerviewFlexibledividerVersion"
-    implementation "com.github.shts:TriangleLabelView:$triangleLabelViewVersion"
+    implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
+    implementation 'com.github.shts:TriangleLabelView:1.1.2'
     implementation 'com.leinardi.android:speed-dial:3.1.1'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
-    implementation "com.github.skydoves:balloon:1.1.5"
+    implementation 'com.github.skydoves:balloon:1.1.5'
+
+    compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
     androidTestImplementation 'com.nanohttpd:nanohttpd:2.1.1'
@@ -179,8 +180,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation "androidx.test:runner:$runnerVersion"
+    androidTestImplementation "androidx.test:rules:$rulesVersion"
 }
 
 if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
