@@ -179,8 +179,8 @@ public class CoverFragment extends Fragment {
         if (orientation != newConfig.orientation) {
             try {
                 orientation = newConfig.orientation;
-                getFragmentManager().beginTransaction().remove(this).commit();
                 getFragmentManager().beginTransaction()
+                        .remove(this)
                         .replace(R.id.cover_fragment_container, CoverFragment.class.newInstance())
                         .commitAllowingStateLoss();
             } catch (Exception e) {
