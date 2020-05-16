@@ -224,7 +224,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public boolean hasAlmostEnded() {
         int smartMarkAsPlayedSecs = UserPreferences.getSmartMarkAsPlayedSecs();
-        return this.position >= this.duration - smartMarkAsPlayedSecs * 1000;
+        return this.duration > 0 && this.position >= this.duration - smartMarkAsPlayedSecs * 1000;
     }
 
     @Override

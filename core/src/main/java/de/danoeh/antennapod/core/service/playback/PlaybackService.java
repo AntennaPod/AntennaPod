@@ -48,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
@@ -523,7 +524,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Context context = getApplicationContext();
         if (skipIntro > 0 && playable.getPosition() < skipIntro * 1000) {
             int duration = getDuration();
-            if (skipIntro * 1000 < duration) {
+            if (skipIntro * 1000 < duration || duration <= 0) {
                 Log.d(TAG, "skipIntro " + playable.getEpisodeTitle());
                 mediaPlayer.seekTo(skipIntro * 1000);
                 String skipIntroMesg = context.getString(R.string.pref_feed_skip_intro_toast,
@@ -847,6 +848,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     return true;
                 case MediaPlayer.MEDIA_INFO_BUFFERING_END:
                     sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
+
+                    Playable playable = getPlayable();
+                    if (getPlayable() instanceof FeedMedia
+                            && playable.getDuration() <= 0 && mediaPlayer.getDuration() > 0) {
+                        // Playable is being streamed and does not have a duration specified in the feed
+                        playable.setDuration(mediaPlayer.getDuration());
+                        DBWriter.setFeedMedia((FeedMedia) playable);
+                        updateMediaSessionMetadata(playable);
+                        setupNotification(playable);
+                    }
+
                     return true;
                 default:
                     return flavorHelper.onMediaPlayerInfo(PlaybackService.this, code, resourceId);
@@ -1087,7 +1099,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
         int skipEnd = preferences.getFeedSkipEnding();
         if (skipEnd > 0
-                && skipEnd < playable.getDuration()
+                && skipEnd < getDuration()
                 && (remainingTime - (skipEnd * 1000) > 0)
                 && ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
             Log.d(TAG, "skipEndingIfNecessary: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());

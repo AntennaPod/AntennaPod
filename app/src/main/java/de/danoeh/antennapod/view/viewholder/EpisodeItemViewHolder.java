@@ -7,15 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityEvent;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.joanzapata.iconify.Iconify;
@@ -201,6 +197,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
         position.setText(Converter.getDurationStringLong(event.getPosition()));
         duration.setText(Converter.getDurationStringLong(event.getDuration()));
+        duration.setVisibility(View.VISIBLE); // Even if the duration was previously unknown, it is now known
     }
 
     /**
