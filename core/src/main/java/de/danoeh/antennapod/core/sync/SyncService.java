@@ -97,7 +97,10 @@ public class SyncService extends Worker {
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_error));
             prefs.putBoolean(PREF_LAST_SYNC_ATTEMPT_SUCCESS, false).apply();
             Log.e(TAG, Log.getStackTraceString(e));
-            updateErrorNotification(e);
+            if (getRunAttemptCount() % 3 == 2) {
+                // Do not spam users with notification and retry before notifying
+                updateErrorNotification(e);
+            }
             return Result.retry();
         }
     }
@@ -192,7 +195,6 @@ public class SyncService extends Worker {
 
             OneTimeWorkRequest workRequest = getWorkRequest()
                     .setInitialDelay(0L, TimeUnit.SECONDS)
-                    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 1, TimeUnit.MINUTES)
                     .build();
             WorkManager.getInstance(context).enqueueUniqueWork(WORK_ID_SYNC, ExistingWorkPolicy.REPLACE, workRequest);
             EventBus.getDefault().postSticky(new SyncServiceEvent(R.string.sync_status_started));
@@ -209,6 +211,7 @@ public class SyncService extends Worker {
 
         return new OneTimeWorkRequest.Builder(SyncService.class)
                 .setConstraints(constraints.build())
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.MINUTES)
                 .setInitialDelay(5L, TimeUnit.SECONDS); // Give it some time, so other actions can be queued
     }
 
