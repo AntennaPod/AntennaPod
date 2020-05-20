@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -38,47 +39,10 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <de.danoeh.antennapod.view.PlaybackSpeedSeekBar
+            android:id="@+id/speed_seek_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:id="@+id/butDecSpeed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:gravity="center"
-                android:text="-"
-                android:clickable="true"
-                android:focusable="true"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:textColor="?attr/colorSecondary"
-                android:contentDescription="@string/decrease_speed"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
-
-            <SeekBar
-                android:id="@+id/playback_speed"
-                android:layout_width="0dp"
-                android:layout_height="32dp"
-                android:max="70"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/butIncSpeed"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:gravity="center"
-                android:text="+"
-                android:clickable="true"
-                android:focusable="true"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:textColor="?attr/colorSecondary"
-                android:contentDescription="@string/increase_speed"
-                android:background="?attr/selectableItemBackgroundBorderless" />
-        </LinearLayout>
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:layout_width="wrap_content"

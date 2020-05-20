@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import androidx.annotation.StringRes;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -31,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -46,7 +44,6 @@ import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
 
@@ -235,12 +232,10 @@ public class PreferencesTest {
     @Test
     public void testPlaybackSpeeds() {
         clickPreference(R.string.playback_pref);
-        clickPreference(R.string.media_player);
-        onView(withText(R.string.media_player_exoplayer)).perform(click());
-        clickPreference(R.string.pref_playback_speed_title);
-        onView(isRoot()).perform(waitForView(withText("0.50"), 1000));
-        onView(withText("0.50")).check(matches(isDisplayed()));
-        onView(withText(R.string.cancel_label)).perform(click());
+        clickPreference(R.string.playback_speed);
+        onView(isRoot()).perform(waitForView(withText("0.75"), 1000));
+        onView(withText("0.75")).check(matches(isDisplayed()));
+        onView(withText(R.string.close_label)).perform(click());
     }
 
     @Test

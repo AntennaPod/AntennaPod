@@ -11,27 +11,21 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.view.PlaybackSpeedSeekBar;
 
 import java.util.List;
 import java.util.Locale;
 
 public class PlaybackControlsDialog extends DialogFragment {
-    private static final String ARGUMENT_IS_PLAYING_VIDEO = "isPlayingVideo";
-
     private PlaybackController controller;
     private AlertDialog dialog;
-    private boolean isPlayingVideo;
 
-    public static PlaybackControlsDialog newInstance(boolean isPlayingVideo) {
+    public static PlaybackControlsDialog newInstance() {
         Bundle arguments = new Bundle();
-        arguments.putBoolean(ARGUMENT_IS_PLAYING_VIDEO, isPlayingVideo);
         PlaybackControlsDialog dialog = new PlaybackControlsDialog();
         dialog.setArguments(arguments);
         return dialog;
@@ -65,8 +59,6 @@ public class PlaybackControlsDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        isPlayingVideo = getArguments() != null && getArguments().getBoolean(ARGUMENT_IS_PLAYING_VIDEO);
-
         dialog = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.audio_controls)
                 .setView(R.layout.audio_controls)
@@ -79,68 +71,18 @@ public class PlaybackControlsDialog extends DialogFragment {
     }
 
     private void setupUi() {
-        final SeekBar barPlaybackSpeed = dialog.findViewById(R.id.playback_speed);
-        final TextView butDecSpeed = dialog.findViewById(R.id.butDecSpeed);
-        butDecSpeed.setOnClickListener(v -> {
-            if (controller != null && controller.canSetPlaybackSpeed()) {
-                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() - 2);
-            } else {
-                VariableSpeedDialog.showGetPluginDialog(getContext());
-            }
-        });
-        final TextView butIncSpeed = dialog.findViewById(R.id.butIncSpeed);
-        butIncSpeed.setOnClickListener(v -> {
-            if (controller != null && controller.canSetPlaybackSpeed()) {
-                barPlaybackSpeed.setProgress(barPlaybackSpeed.getProgress() + 2);
-            } else {
-                VariableSpeedDialog.showGetPluginDialog(getContext());
-            }
-        });
-
         final TextView txtvPlaybackSpeed = dialog.findViewById(R.id.txtvPlaybackSpeed);
-        float currentSpeed = getCurrentSpeed();
 
-        txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", currentSpeed));
-        barPlaybackSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (controller != null && controller.canSetPlaybackSpeed()) {
-                    float playbackSpeed = (progress + 10) / 20.0f;
-                    controller.setPlaybackSpeed(playbackSpeed);
+        PlaybackSpeedSeekBar speedSeekBar = dialog.findViewById(R.id.speed_seek_bar);
+        speedSeekBar.setController(controller);
+        speedSeekBar.setProgressChangedListener(speed
+                -> txtvPlaybackSpeed.setText(String.format(Locale.getDefault(), "%.2fx", speed)));
 
-                    PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(playbackSpeed);
-                    if (isPlayingVideo) {
-                        UserPreferences.setVideoPlaybackSpeed(playbackSpeed);
-                    } else {
-                        UserPreferences.setPlaybackSpeed(playbackSpeed);
-                    }
-
-                    String speedStr = String.format(Locale.getDefault(), "%.2fx", playbackSpeed);
-                    txtvPlaybackSpeed.setText(speedStr);
-                } else if (fromUser) {
-                    float speed = getCurrentSpeed();
-                    barPlaybackSpeed.post(() -> barPlaybackSpeed.setProgress(Math.round((20 * speed) - 10)));
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                if (controller != null && !controller.canSetPlaybackSpeed()) {
-                    VariableSpeedDialog.showGetPluginDialog(getContext());
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-        barPlaybackSpeed.setProgress(Math.round((20 * currentSpeed) - 10));
-
-        final SeekBar barLeftVolume = (SeekBar) dialog.findViewById(R.id.volume_left);
+        final SeekBar barLeftVolume = dialog.findViewById(R.id.volume_left);
         barLeftVolume.setProgress(UserPreferences.getLeftVolumePercentage());
-        final SeekBar barRightVolume = (SeekBar) dialog.findViewById(R.id.volume_right);
+        final SeekBar barRightVolume = dialog.findViewById(R.id.volume_right);
         barRightVolume.setProgress(UserPreferences.getRightVolumePercentage());
-        final CheckBox stereoToMono = (CheckBox) dialog.findViewById(R.id.stereo_to_mono);
+        final CheckBox stereoToMono = dialog.findViewById(R.id.stereo_to_mono);
         stereoToMono.setChecked(UserPreferences.stereoToMono());
         if (controller != null && !controller.canDownmix()) {
             stereoToMono.setEnabled(false);
@@ -219,14 +161,5 @@ public class PlaybackControlsDialog extends DialogFragment {
             controller.setAudioTrack((selectedAudioTrack + 1) % audioTracks.size());
             new Handler().postDelayed(this::setupAudioTracks, 500);
         });
-    }
-
-    private float getCurrentSpeed() {
-        Playable media = null;
-        if (controller != null) {
-            media = controller.getMedia();
-        }
-
-        return PlaybackSpeedUtils.getCurrentPlaybackSpeed(media);
     }
 }
