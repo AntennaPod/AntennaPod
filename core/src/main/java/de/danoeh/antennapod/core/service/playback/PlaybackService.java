@@ -792,8 +792,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     // set sleep timer if auto-enabled
                     if (newInfo.oldPlayerStatus != null && newInfo.oldPlayerStatus != PlayerStatus.SEEKING
                             && SleepTimerPreferences.autoEnable() && !sleepTimerActive()) {
-                        setSleepTimer(SleepTimerPreferences.timerMillis(), SleepTimerPreferences.shakeToReset(),
-                                SleepTimerPreferences.vibrate());
+                        setSleepTimer(SleepTimerPreferences.timerMillis());
                         EventBus.getDefault().post(new MessageEvent(getString(R.string.sleep_timer_enabled_label),
                                 PlaybackService.this::disableSleepTimer));
                     }
@@ -1067,9 +1066,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
     }
 
-    public void setSleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
+    public void setSleepTimer(long waitingTime) {
         Log.d(TAG, "Setting sleep timer to " + waitingTime + " milliseconds");
-        taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
+        taskManager.setSleepTimer(waitingTime);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
     }
 

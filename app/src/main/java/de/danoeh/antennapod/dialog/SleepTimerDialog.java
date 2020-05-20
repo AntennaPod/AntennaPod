@@ -2,9 +2,8 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -14,7 +13,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
@@ -36,9 +34,6 @@ public class SleepTimerDialog extends DialogFragment {
 
     private EditText etxtTime;
     private Spinner spTimeUnit;
-    private CheckBox cbShakeToReset;
-    private CheckBox cbVibrate;
-    private CheckBox chAutoEnable;
     private LinearLayout timeSetup;
     private LinearLayout timeDisplay;
     private TextView time;
@@ -85,33 +80,15 @@ public class SleepTimerDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.sleep_timer_label);
         builder.setView(content);
-        builder.setPositiveButton(android.R.string.ok, null);
+        builder.setPositiveButton(R.string.close_label, null);
 
         etxtTime = content.findViewById(R.id.etxtTime);
         spTimeUnit = content.findViewById(R.id.spTimeUnit);
-        cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
-        cbVibrate = content.findViewById(R.id.cbVibrate);
-        chAutoEnable = content.findViewById(R.id.chAutoEnable);
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
         time = content.findViewById(R.id.time);
 
-        AlertDialog dialog = builder.create();
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
-        etxtTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(s.length() > 0);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-        });
         etxtTime.postDelayed(() -> {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
@@ -127,12 +104,21 @@ public class SleepTimerDialog extends DialogFragment {
         spTimeUnit.setAdapter(spinnerAdapter);
         spTimeUnit.setSelection(SleepTimerPreferences.lastTimerTimeUnit());
 
+        CheckBox cbShakeToReset = content.findViewById(R.id.cbShakeToReset);
+        CheckBox cbVibrate = content.findViewById(R.id.cbVibrate);
+        CheckBox chAutoEnable = content.findViewById(R.id.chAutoEnable);
+
         cbShakeToReset.setChecked(SleepTimerPreferences.shakeToReset());
         cbVibrate.setChecked(SleepTimerPreferences.vibrate());
         chAutoEnable.setChecked(SleepTimerPreferences.autoEnable());
 
+        cbShakeToReset.setOnCheckedChangeListener((buttonView, isChecked)
+                -> SleepTimerPreferences.setShakeToReset(isChecked));
+        cbVibrate.setOnCheckedChangeListener((buttonView, isChecked)
+                -> SleepTimerPreferences.setVibrate(isChecked));
         chAutoEnable.setOnCheckedChangeListener((compoundButton, isChecked)
-                ->  SleepTimerPreferences.setAutoEnable(isChecked));
+                -> SleepTimerPreferences.setAutoEnable(isChecked));
+
         Button disableButton = content.findViewById(R.id.disableSleeptimerButton);
         disableButton.setOnClickListener(v -> {
             if (controller != null) {
@@ -143,27 +129,20 @@ public class SleepTimerDialog extends DialogFragment {
         setButton.setOnClickListener(v -> {
             if (!PlaybackService.isRunning) {
                 Snackbar.make(content, R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
+                return;
             }
             try {
-                savePreferences();
+                SleepTimerPreferences.setLastTimer(etxtTime.getText().toString(), spTimeUnit.getSelectedItemPosition());
                 long time = SleepTimerPreferences.timerMillis();
                 if (controller != null) {
-                    controller.setSleepTimer(time, cbShakeToReset.isChecked(), cbVibrate.isChecked());
+                    controller.setSleepTimer(time);
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(), R.string.time_dialog_invalid_input, Toast.LENGTH_LONG).show();
+                Snackbar.make(content, R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
             }
         });
-        return dialog;
-    }
-
-    private void savePreferences() {
-        SleepTimerPreferences.setLastTimer(etxtTime.getText().toString(),
-                spTimeUnit.getSelectedItemPosition());
-        SleepTimerPreferences.setShakeToReset(cbShakeToReset.isChecked());
-        SleepTimerPreferences.setVibrate(cbVibrate.isChecked());
-        SleepTimerPreferences.setAutoEnable(chAutoEnable.isChecked());
+        return builder.create();
     }
 
     private void updateTime() {
