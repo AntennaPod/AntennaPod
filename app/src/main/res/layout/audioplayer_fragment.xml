@@ -43,16 +43,13 @@
             android:foreground="?android:windowContentOverlay"
             android:layout_marginBottom="12dp"/>
 
-    <SeekBar
-            android:id="@+id/sbPosition"
+    <ImageView
             android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:max="500"
-            tools:progress="100"
-            android:layout_above="@id/playtime_layout"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layoutDirection="ltr" />
+            android:layout_height="8dp"
+            android:layout_alignBottom="@id/pager"
+            android:src="@drawable/bg_gradient"
+            app:tint="?android:attr/windowBackground"
+            android:importantForAccessibility="no"/>
 
     <LinearLayout
             android:id="@+id/playtime_layout"
@@ -63,12 +60,22 @@
             android:layoutDirection="ltr"
             android:orientation="vertical">
 
+        <SeekBar
+                android:id="@+id/sbPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="500"
+                tools:progress="100"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+
         <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:layout_marginBottom="4dp">
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp">
 
             <TextView
                     android:id="@+id/txtvPosition"
