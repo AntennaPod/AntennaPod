@@ -32,17 +32,20 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -51,9 +54,11 @@ import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
 import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
+import de.danoeh.antennapod.core.util.playback.RemoteMedia;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
@@ -99,6 +104,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private ListView listView;
     private Button subscribeButton;
     private ProgressBar progressBar;
+    private Button stopPreviewButton;
 
     private Disposable download;
     private Disposable parser;
@@ -405,6 +411,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         TextView description = header.findViewById(R.id.txtvDescription);
 
         subscribeButton = findViewById(R.id.butSubscribe);
+        stopPreviewButton = findViewById(R.id.butStopPreview);
 
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
@@ -447,6 +454,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 didPressSubscribe = true;
                 handleUpdatedFeedStatus(feed);
             }
+        });
+
+        stopPreviewButton.setOnClickListener(v -> {
+            PlaybackPreferences.writeNoMediaPlaying();
+            IntentUtils.sendLocalBroadcast(this, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
         });
 
         final int MAX_LINES_COLLAPSED = 10;
@@ -566,6 +578,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
             dialog = builder.show();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void playbackStateChanged(PlayerStatusEvent event) {
+        boolean isPlayingPreview =
+                PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA;
+        stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
     }
 
     /**
