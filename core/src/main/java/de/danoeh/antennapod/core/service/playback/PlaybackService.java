@@ -1720,7 +1720,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private void addPlayableToQueue(Playable playable) {
         if (playable instanceof FeedMedia) {
-            long itemId = ((FeedMedia) playable).getId();
+            long itemId = ((FeedMedia) playable).getItem().getId();
             DBWriter.addQueueItem(this, false, false, itemId);
         }
     }
