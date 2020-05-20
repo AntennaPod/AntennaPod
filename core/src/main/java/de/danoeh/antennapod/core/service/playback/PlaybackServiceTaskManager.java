@@ -7,6 +7,7 @@ import android.os.Vibrator;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -215,7 +216,7 @@ public class PlaybackServiceTaskManager {
      *
      * @throws java.lang.IllegalArgumentException if waitingTime <= 0
      */
-    public synchronized void setSleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
+    public synchronized void setSleepTimer(long waitingTime) {
         if (waitingTime <= 0) {
             throw new IllegalArgumentException("Waiting time <= 0");
         }
@@ -224,7 +225,7 @@ public class PlaybackServiceTaskManager {
         if (isSleepTimerActive()) {
             sleepTimerFuture.cancel(true);
         }
-        sleepTimer = new SleepTimer(waitingTime, shakeToReset, vibrate);
+        sleepTimer = new SleepTimer(waitingTime);
         sleepTimerFuture = schedExecutor.schedule(sleepTimer, 0, TimeUnit.MILLISECONDS);
     }
 
@@ -361,17 +362,13 @@ public class PlaybackServiceTaskManager {
         private static final long NOTIFICATION_THRESHOLD = 10000;
         private final long waitingTime;
         private long timeLeft;
-        private final boolean shakeToReset;
-        private final boolean vibrate;
         private ShakeListener shakeListener;
         private final Handler handler;
 
-        public SleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
+        public SleepTimer(long waitingTime) {
             super();
             this.waitingTime = waitingTime;
             this.timeLeft = waitingTime;
-            this.shakeToReset = shakeToReset;
-            this.vibrate = vibrate;
 
             if (UserPreferences.useExoplayer() && Looper.myLooper() == Looper.getMainLooper()) {
                 // Run callbacks in main thread so they can call ExoPlayer methods themselves
@@ -409,13 +406,13 @@ public class PlaybackServiceTaskManager {
 
                 if (timeLeft < NOTIFICATION_THRESHOLD && !notifiedAlmostExpired) {
                     Log.d(TAG, "Sleep timer is about to expire");
-                    if (vibrate) {
+                    if (SleepTimerPreferences.vibrate()) {
                         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                         if (v != null) {
                             v.vibrate(500);
                         }
                     }
-                    if (shakeListener == null && shakeToReset) {
+                    if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
                         shakeListener = new ShakeListener(context, this);
                     }
                     postCallback(callback::onSleepTimerAlmostExpired);
@@ -442,7 +439,7 @@ public class PlaybackServiceTaskManager {
 
         public void restart() {
             postCallback(() -> {
-                setSleepTimer(waitingTime, shakeToReset, vibrate);
+                setSleepTimer(waitingTime);
                 callback.onSleepTimerReset();
             });
             if (shakeListener != null) {

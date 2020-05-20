@@ -409,13 +409,7 @@ public class MainActivity extends CastEnabledActivity {
     public void onEventMainThread(MessageEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
 
-        Snackbar snackbar;
-        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-            snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_SHORT);
-        } else {
-            snackbar = Snackbar.make(findViewById(android.R.id.content), event.message, Snackbar.LENGTH_SHORT);
-            snackbar.show();
-        }
+        Snackbar snackbar = showSnackbarAbovePlayer(event.message, Snackbar.LENGTH_SHORT);
         if (event.action != null) {
             snackbar.setAction(getString(R.string.undo), v -> event.action.run());
         }
@@ -453,21 +447,21 @@ public class MainActivity extends CastEnabledActivity {
         setIntent(intent);
     }
 
-    public Snackbar showSnackbarAbovePlayer(int text, int duration) {
-        Snackbar s = Snackbar.make(findViewById(R.id.main_view), text, duration);
-        if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
-            s.setAnchorView(findViewById(R.id.audioplayerFragment));
+    public Snackbar showSnackbarAbovePlayer(CharSequence text, int duration) {
+        Snackbar s;
+        if (getBottomSheet().getState() == BottomSheetBehavior.STATE_COLLAPSED) {
+            s = Snackbar.make(findViewById(R.id.main_view), text, duration);
+            if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
+                s.setAnchorView(findViewById(R.id.audioplayerFragment));
+            }
+        } else {
+            s = Snackbar.make(findViewById(android.R.id.content), text, duration);
         }
         s.show();
         return s;
     }
 
-    public Snackbar showSnackbarAbovePlayer(String text, int duration) {
-        Snackbar s = Snackbar.make(findViewById(R.id.main_view), text, duration);
-        if (findViewById(R.id.audioplayerFragment).getVisibility() == View.VISIBLE) {
-            s.setAnchorView(findViewById(R.id.audioplayerFragment));
-        }
-        s.show();
-        return s;
+    public Snackbar showSnackbarAbovePlayer(int text, int duration) {
+        return showSnackbarAbovePlayer(getResources().getText(text), duration);
     }
 }
