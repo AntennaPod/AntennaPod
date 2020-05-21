@@ -88,7 +88,6 @@ public class PlaybackTest {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
-        EspressoTestUtils.makeNotFirstRun();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().putString(UserPreferences.PREF_MEDIA_PLAYER, playerToUse).apply();

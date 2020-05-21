@@ -55,7 +55,6 @@ public class SpeedChangeTest {
     @Before
     public void setUp() throws Exception {
         EspressoTestUtils.clearPreferences();
-        EspressoTestUtils.makeNotFirstRun();
         EspressoTestUtils.clearDatabase();
         EspressoTestUtils.setLastNavFragment(QueueFragment.TAG);
 

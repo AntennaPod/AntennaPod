@@ -51,7 +51,6 @@ public class MainActivityTest {
     @Before
     public void setUp() throws IOException {
         EspressoTestUtils.clearPreferences();
-        EspressoTestUtils.makeNotFirstRun();
         EspressoTestUtils.clearDatabase();
 
         mActivityRule.launchActivity(new Intent());
