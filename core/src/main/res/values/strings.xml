@@ -117,6 +117,7 @@
         <item quantity="other">%d days after finishing</item>
     </plurals>
     <plurals name="num_selected_label">
+        <item quantity="one">%d selected</item>
         <item quantity="other">%d selected</item>
     </plurals>
     <string name="loading_more">Loading more…</string>
