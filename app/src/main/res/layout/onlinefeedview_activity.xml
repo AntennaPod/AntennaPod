@@ -124,6 +124,17 @@
                         android:focusable="false"
                         android:text="@string/subscribe_label"/>
 
+                <Button
+                        android:id="@+id/butStopPreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:focusable="false"
+                        android:text="@string/stop_preview"
+                        android:visibility="gone" />
+
                 <ListView
                         android:id="@+id/listview"
                         android:layout_width="match_parent"

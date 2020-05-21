@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        style="?android:attr/buttonBarButtonStyle"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:text="@string/preview_episode"/>
 
 </RelativeLayout>
