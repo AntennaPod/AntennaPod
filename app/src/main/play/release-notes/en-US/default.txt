@@ -1,11 +1,7 @@
-Version 2.0.0 alpha 2
-- Skip intro and ending per feed (by @tonytamsf)
-- Right-to-left language improvements (by @ebraminio)
-- Theme tweaks (by @ByteHamster)
-- Bug fixes and improvements
+This is a beta release for version 2.0.0. We would love to read your thoughts in our forum (link on the settings screen).
 
-Version 2.0.0 alpha 1
 - Brand new user interface (by @ByteHamster)
 - Support for chapter images (only new episodes, by @ByteHamster)
+- Skip intro and ending per feed (by @tonytamsf)
 - Option to show notifications after episodes have been auto-downloaded (by @shortspider)
-- Bug fixes and improvements (by @tonytamsf, @JessieVela, @ByteHamster)
+- Bug fixes and improvements (by @ebraminio, @tonytamsf, @JessieVela, @ByteHamster and more)
