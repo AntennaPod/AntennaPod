@@ -38,22 +38,23 @@ public final class URLChecker {
      */
     public static String prepareURL(@NonNull String url) {
         url = url.trim();
-        if (url.startsWith("feed://")) {
+        String lowerCaseUrl = url.toLowerCase(); // protocol names are case insensitive
+        if (lowerCaseUrl.startsWith("feed://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing feed:// with http://");
             return url.replaceFirst("feed://", "http://");
-        } else if (url.startsWith("pcast://")) {
+        } else if (lowerCaseUrl.startsWith("pcast://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast://");
             return prepareURL(url.substring("pcast://".length()));
-        } else if (url.startsWith("pcast:")) {
+        } else if (lowerCaseUrl.startsWith("pcast:")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast:");
             return prepareURL(url.substring("pcast:".length()));
-        } else if (url.startsWith("itpc")) {
+        } else if (lowerCaseUrl.startsWith("itpc")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing itpc:// with http://");
             return url.replaceFirst("itpc://", "http://");
-        } else if (url.startsWith(AP_SUBSCRIBE)) {
+        } else if (lowerCaseUrl.startsWith(AP_SUBSCRIBE)) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Removing antennapod-subscribe://");
             return prepareURL(url.substring(AP_SUBSCRIBE.length()));
-        } else if (!(url.startsWith("http://") || url.startsWith("https://"))) {
+        } else if (!(lowerCaseUrl.startsWith("http://") || lowerCaseUrl.startsWith("https://"))) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Adding http:// at the beginning of the URL");
             return "http://" + url;
         } else {
