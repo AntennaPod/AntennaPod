@@ -63,7 +63,6 @@ public class NavigationDrawerTest {
         uiTestUtils.setup();
 
         EspressoTestUtils.clearPreferences();
-        EspressoTestUtils.makeNotFirstRun();
         EspressoTestUtils.clearDatabase();
     }
 

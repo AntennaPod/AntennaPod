@@ -42,7 +42,6 @@ public class TextOnlyFeedsTest {
     @Before
     public void setUp() throws IOException {
         EspressoTestUtils.clearPreferences();
-        EspressoTestUtils.makeNotFirstRun();
         EspressoTestUtils.clearDatabase();
 
         uiTestUtils = new UITestUtils(InstrumentationRegistry.getInstrumentation().getTargetContext());

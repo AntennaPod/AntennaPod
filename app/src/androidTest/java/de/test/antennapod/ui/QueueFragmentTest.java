@@ -36,7 +36,6 @@ public class QueueFragmentTest {
     @Before
     public void setUp() {
         EspressoTestUtils.clearPreferences();
-        EspressoTestUtils.makeNotFirstRun();
         EspressoTestUtils.clearDatabase();
         EspressoTestUtils.setLastNavFragment(QueueFragment.TAG);
         activityRule.launchActivity(new Intent());

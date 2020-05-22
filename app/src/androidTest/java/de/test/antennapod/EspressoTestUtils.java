@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
+import androidx.preference.PreferenceManager;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.espresso.PerformException;
 import androidx.test.espresso.UiController;
@@ -16,6 +17,7 @@ import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -121,12 +123,15 @@ public class EspressoTestUtils {
             InstrumentationRegistry.getTargetContext().getSharedPreferences(
                     fileName.replace(".xml", ""), Context.MODE_PRIVATE).edit().clear().commit();
         }
-    }
 
-    public static void makeNotFirstRun() {
         InstrumentationRegistry.getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE)
                 .edit()
                 .putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false)
+                .commit();
+
+        PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext())
+                .edit()
+                .putString(UserPreferences.PREF_UPDATE_INTERVAL, "0")
                 .commit();
 
         RatingDialog.init(InstrumentationRegistry.getTargetContext());

@@ -64,7 +64,6 @@ public class PlaybackServiceMediaPlayerTest {
     public void setUp() throws Exception {
         assertionError = null;
         EspressoTestUtils.clearPreferences();
-        EspressoTestUtils.makeNotFirstRun();
         EspressoTestUtils.clearDatabase();
 
         final Context context = getInstrumentation().getTargetContext();
