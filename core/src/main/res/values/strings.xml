@@ -674,8 +674,8 @@
     <!-- Content descriptions for image buttons -->
     <string name="rewind_label">Rewind</string>
     <string name="fast_forward_label">Fast forward</string>
-    <string name="increase_volume">Increase volume</string>
-    <string name="decrease_volume">Decrease volume</string>
+    <string name="increase_speed">Increase speed</string>
+    <string name="decrease_speed">Decrease speed</string>
     <string name="media_type_audio_label">Audio</string>
     <string name="media_type_video_label">Video</string>
     <string name="navigate_upwards_label">Navigate upwards</string>
