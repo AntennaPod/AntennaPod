@@ -25,15 +25,25 @@ public class FavoritesWriter implements ExportWriter {
 
     private static final int PAGE_LIMIT = 100;
 
+    private static final String FAVORITE_TEMPLATE = "html-export-fatorites-item-template.html";
+    private static final String FEED_TEMPLATE = "html-export-feed-template.html";
+    private static final String UTF_8 = "UTF-8";
+
     @Override
     public void writeDocument(List<Feed> feeds, Writer writer, Context context)
             throws IllegalArgumentException, IllegalStateException, IOException {
         Log.d(TAG, "Starting to write document");
 
         InputStream templateStream = context.getAssets().open("html-export-template.html");
-        String template = IOUtils.toString(templateStream, "UTF-8");
+        String template = IOUtils.toString(templateStream, UTF_8);
         template = template.replaceAll("\\{TITLE\\}", "Favorites");
         String[] templateParts = template.split("\\{FEEDS\\}");
+
+        InputStream favTemplateStream = context.getAssets().open(FAVORITE_TEMPLATE);
+        String favTemplate = IOUtils.toString(favTemplateStream, UTF_8);
+
+        InputStream feedTemplateStream = context.getAssets().open(FEED_TEMPLATE);
+        String feedTemplate = IOUtils.toString(feedTemplateStream, UTF_8);
 
         Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(getFavorites());
 
@@ -41,12 +51,12 @@ public class FavoritesWriter implements ExportWriter {
 
         for (Long feedId : favoriteByFeed.keySet()) {
             List<FeedItem> favorites = favoriteByFeed.get(feedId);
-            writer.append("<li><div>");
-            writeFeed(writer, favorites.get(0).getFeed());
+            writer.append("<li><div>\n");
+            writeFeed(writer, favorites.get(0).getFeed(), feedTemplate);
 
-            writer.append("<ul>");
+            writer.append("<ul>\n");
             for (FeedItem item : favorites) {
-                writeFavoriteItem(writer, item);
+                writeFavoriteItem(writer, item, favTemplate);
             }
             writer.append("</ul></div></li>\n");
         }
@@ -96,26 +106,23 @@ public class FavoritesWriter implements ExportWriter {
         return feedMap;
     }
 
-    private void writeFeed(Writer writer, Feed feed) throws IOException {
-        writer.append("<img src=\"");
-        writer.append(feed.getImageUrl());
-        writer.append("\" /><p>");
-        writer.append(feed.getTitle());
-        writer.append(" <span><a href=\"");
-        writer.append(feed.getLink());
-        writer.append("\">Website</a> • <a href=\"");
-        writer.append(feed.getDownload_url());
-        writer.append("\">Feed</a></span></p>");
+    private void writeFeed(Writer writer, Feed feed, String feedTemplate) throws IOException {
+        String feedInfo = feedTemplate
+                .replaceAll("\\{FEED_IMG\\}", feed.getImageUrl())
+                .replaceAll("\\{FEED_TITLE\\}", feed.getTitle())
+                .replaceAll("\\{FEED_LINK\\}", feed.getLink())
+                .replaceAll("\\{FEED_WEBSITE\\}", feed.getDownload_url());
+
+        writer.append(feedInfo);
     }
 
-    private void writeFavoriteItem(Writer writer, FeedItem item) throws IOException {
-        writer.append("<li><div style=\"border-top: 1px solid #eee8e8; padding: 0px; box-shadow: none\"><span>");
-        writer.append(item.getTitle().trim());
-        writer.append("<br>\n<a href=\"");
-        writer.append(item.getLink());
-        writer.append("\">Website</a> • <a href=\"");
-        writer.append(item.getMedia().getDownload_url());
-        writer.append("\">Media</a></span><div></li>\n");
+    private void writeFavoriteItem(Writer writer, FeedItem item, String favoriteTemplate) throws IOException {
+        String favItem = favoriteTemplate
+                .replaceAll("\\{FAV_TITLE\\}", item.getTitle().trim())
+                .replaceAll("\\{FAV_WEBSITE\\}", item.getLink())
+                .replaceAll("\\{FAV_MEDIA\\}", item.getMedia().getDownload_url());
+
+        writer.append(favItem);
     }
 
     @Override
