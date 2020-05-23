@@ -55,7 +55,7 @@
                 android:textStyle="bold"
                 android:textSize="24sp"
                 android:textColor="?attr/colorSecondary"
-                android:contentDescription="@string/decrease_volume"
+                android:contentDescription="@string/decrease_speed"
                 android:background="?attr/selectableItemBackgroundBorderless"/>
 
             <SeekBar
@@ -76,7 +76,7 @@
                 android:textStyle="bold"
                 android:textSize="24sp"
                 android:textColor="?attr/colorSecondary"
-                android:contentDescription="@string/increase_volume"
+                android:contentDescription="@string/increase_speed"
                 android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
 
