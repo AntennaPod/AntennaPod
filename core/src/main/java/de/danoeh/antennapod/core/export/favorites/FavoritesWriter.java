@@ -25,7 +25,7 @@ public class FavoritesWriter implements ExportWriter {
 
     private static final int PAGE_LIMIT = 100;
 
-    private static final String FAVORITE_TEMPLATE = "html-export-fatorites-item-template.html";
+    private static final String FAVORITE_TEMPLATE = "html-export-favorites-item-template.html";
     private static final String FEED_TEMPLATE = "html-export-feed-template.html";
     private static final String UTF_8 = "UTF-8";
 
@@ -108,19 +108,19 @@ public class FavoritesWriter implements ExportWriter {
 
     private void writeFeed(Writer writer, Feed feed, String feedTemplate) throws IOException {
         String feedInfo = feedTemplate
-                .replaceAll("\\{FEED_IMG\\}", feed.getImageUrl())
-                .replaceAll("\\{FEED_TITLE\\}", feed.getTitle())
-                .replaceAll("\\{FEED_LINK\\}", feed.getLink())
-                .replaceAll("\\{FEED_WEBSITE\\}", feed.getDownload_url());
+                .replace("{FEED_IMG}", feed.getImageUrl())
+                .replace("{FEED_TITLE}", feed.getTitle())
+                .replace("{FEED_LINK}", feed.getLink())
+                .replace("{FEED_WEBSITE}", feed.getDownload_url());
 
         writer.append(feedInfo);
     }
 
     private void writeFavoriteItem(Writer writer, FeedItem item, String favoriteTemplate) throws IOException {
         String favItem = favoriteTemplate
-                .replaceAll("\\{FAV_TITLE\\}", item.getTitle().trim())
-                .replaceAll("\\{FAV_WEBSITE\\}", item.getLink())
-                .replaceAll("\\{FAV_MEDIA\\}", item.getMedia().getDownload_url());
+                .replace("{FAV_TITLE}", item.getTitle().trim())
+                .replace("{FAV_WEBSITE}", item.getLink())
+                .replace("{FAV_MEDIA}", item.getMedia().getDownload_url());
 
         writer.append(favItem);
     }
