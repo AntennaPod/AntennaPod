@@ -91,7 +91,7 @@
                 android:gravity="center_vertical">
 
             <TextView
-                    android:text="@string/new_episodes_label"
+                    android:text="@string/new_label"
                     style="@style/AntennaPod.TextView.UnreadIndicator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

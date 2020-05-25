@@ -259,7 +259,6 @@
     <style name="AntennaPod.TextView.UnreadIndicator" parent="@android:style/TextAppearance.Small">
         <item name="android:textSize">@dimen/text_size_micro</item>
         <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:text">@string/new_label</item>
         <item name="android:textAllCaps">true</item>
     </style>
 
