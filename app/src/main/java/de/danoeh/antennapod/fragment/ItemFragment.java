@@ -39,6 +39,7 @@ import de.danoeh.antennapod.adapter.actionbutton.ItemActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.MarkAsPlayedActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.PauseActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.PlayActionButton;
+import de.danoeh.antennapod.adapter.actionbutton.PlayLocalActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.StreamActionButton;
 import de.danoeh.antennapod.adapter.actionbutton.VisitWebsiteActionButton;
 import de.danoeh.antennapod.core.event.DownloadEvent;
@@ -328,6 +329,8 @@ public class ItemFragment extends Fragment {
             }
             if (media.isCurrentlyPlaying()) {
                 actionButton1 = new PauseActionButton(item);
+            } else if (item.getFeed().isLocalFeed()) {
+                actionButton1 = new PlayLocalActionButton(item);
             } else if (media.isDownloaded()) {
                 actionButton1 = new PlayActionButton(item);
             } else {
