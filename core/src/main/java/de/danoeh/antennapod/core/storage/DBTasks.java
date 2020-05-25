@@ -16,6 +16,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.sync.SyncService;
@@ -241,7 +242,12 @@ public final class DBTasks {
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
-        DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force, initiatedByUser);
+
+        if (f.isLocalFeed()) {
+            new Thread(() -> LocalFeedUpdater.updateFeed(f, context)).start();
+        } else {
+            DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force, initiatedByUser);
+        }
     }
 
     /**

@@ -718,6 +718,9 @@
     <string name="discover">Discover</string>
     <string name="discover_more">more »</string>
     <string name="search_powered_by">Search powered by %1$s</string>
+    <string name="add_local_folder">Add local folder</string>
+    <string name="add_local_folder_success">Adding local folder succeeded</string>
+    <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
 
     <string name="filter">Filter</string>
     

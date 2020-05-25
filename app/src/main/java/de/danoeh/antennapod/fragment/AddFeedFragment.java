@@ -14,15 +14,21 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.discovery.CombinedSearcher;
 import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
 import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
+
+import java.util.Collections;
 
 /**
  * Provides actions for adding new podcast subscriptions.
@@ -31,6 +37,7 @@ public class AddFeedFragment extends Fragment {
 
     public static final String TAG = "AddFeedFragment";
     private static final int REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH = 1;
+    private static final int REQUEST_CODE_ADD_LOCAL_FOLDER = 2;
 
     private EditText combinedFeedSearchBox;
     private MainActivity activity;
@@ -57,13 +64,21 @@ public class AddFeedFragment extends Fragment {
         root.findViewById(R.id.btn_add_via_url).setOnClickListener(v
                 -> showAddViaUrlDialog());
 
-        View butOpmlImport = root.findViewById(R.id.btn_opml_import);
-        butOpmlImport.setOnClickListener(v -> {
+        root.findViewById(R.id.btn_opml_import).setOnClickListener(v -> {
             try {
                 Intent intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
                 intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
                 intentGetContentAction.setType("*/*");
                 startActivityForResult(intentGetContentAction, REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "No activity found. Should never happen...");
+            }
+        });
+        root.findViewById(R.id.btn_add_local_folder).setOnClickListener(v -> {
+            try {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivityForResult(intent, REQUEST_CODE_ADD_LOCAL_FOLDER);
             } catch (ActivityNotFoundException e) {
                 Log.e(TAG, "No activity found. Should never happen...");
             }
@@ -127,6 +142,25 @@ public class AddFeedFragment extends Fragment {
             Intent intent = new Intent(getContext(), OpmlImportActivity.class);
             intent.setData(uri);
             startActivity(intent);
+        } else if (requestCode == REQUEST_CODE_ADD_LOCAL_FOLDER) {
+            try {
+                getActivity().getContentResolver()
+                        .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
+                if (documentFile == null) {
+                    throw new IllegalArgumentException("Unable to retrieve document tree");
+                }
+                Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, documentFile.getName());
+                dirFeed.setDescription(getString(R.string.local_feed_description));
+                dirFeed.setItems(Collections.emptyList());
+                DBTasks.forceRefreshFeed(getContext(), dirFeed, true);
+                ((MainActivity) getActivity())
+                        .showSnackbarAbovePlayer(R.string.add_local_folder_success, Snackbar.LENGTH_SHORT);
+            } catch (Exception e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+                ((MainActivity) getActivity())
+                        .showSnackbarAbovePlayer(e.getLocalizedMessage(), Snackbar.LENGTH_LONG);
+            }
         }
     }
 }
