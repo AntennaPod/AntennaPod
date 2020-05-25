@@ -3,11 +3,13 @@ package de.danoeh.antennapod.core.feed;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import androidx.documentfile.provider.DocumentFile;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 
 import java.util.ArrayList;
@@ -46,12 +48,12 @@ public class LocalFeedUpdater {
 
         List<FeedItem> newItems = feed.getItems();
         for (DocumentFile f : mediaFiles) {
-            FeedItem found = feedContainsFile(feed, f.getName());
-            if (found != null) {
-                //TODO make sure the media has not changed (type, duration)
+            FeedItem oldItem = feedContainsFile(feed, f.getName());
+            FeedItem newItem = createFeedItem(feed, f, context);
+            if (oldItem == null) {
+                newItems.add(newItem);
             } else {
-                FeedItem item = createFeedItem(feed, f, context);
-                newItems.add(item);
+                oldItem.updateFromOther(newItem);
             }
         }
 
@@ -78,15 +80,21 @@ public class LocalFeedUpdater {
     }
 
     private static FeedItem createFeedItem(Feed feed, DocumentFile file, Context context) {
-        //create item
-        long globalId = 0;
-        Date date = new Date();
         String uuid = UUID.randomUUID().toString();
-        FeedItem item = new FeedItem(globalId, file.getName(), uuid, file.getName(), date, FeedItem.UNPLAYED, feed);
+        FeedItem item = new FeedItem(0, file.getName(), uuid, file.getName(), new Date(),
+                FeedItem.UNPLAYED, feed);
         item.setAutoDownload(false);
 
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(context, file.getUri());
+        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+        if (!TextUtils.isEmpty(title)) {
+            item.setTitle(title);
+        }
+
         //add the media to the item
-        long duration = getFileDuration(file, context);
+        long duration = Long.parseLong(durationStr);
         long size = file.length();
         FeedMedia media = new FeedMedia(0, item, (int) duration, 0, size, file.getType(),
                 file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
@@ -100,12 +108,5 @@ public class LocalFeedUpdater {
                 DownloadError.ERROR_IO_ERROR, false, reasonDetailed, true);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
-    }
-
-    private static long getFileDuration(DocumentFile f, Context context) {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(context, f.getUri());
-        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        return Long.parseLong(durationStr);
     }
 }

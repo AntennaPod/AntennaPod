@@ -23,6 +23,7 @@ import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.discovery.CombinedSearcher;
 import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
 import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
@@ -153,6 +154,7 @@ public class AddFeedFragment extends Fragment {
                 Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, documentFile.getName());
                 dirFeed.setDescription(getString(R.string.local_feed_description));
                 dirFeed.setItems(Collections.emptyList());
+                dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
                 DBTasks.forceRefreshFeed(getContext(), dirFeed, true);
                 ((MainActivity) getActivity())
                         .showSnackbarAbovePlayer(R.string.add_local_folder_success, Snackbar.LENGTH_SHORT);
