@@ -375,7 +375,7 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void loadChapterMarks() {
+    public void loadChapterMarks(Context context) {
         if (item == null && itemID != 0) {
             item = DBReader.getFeedItem(itemID);
         }
@@ -386,10 +386,10 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item.hasChapters()) {
             DBReader.loadChaptersOfFeedItem(item);
         } else {
-            if(localFileAvailable()) {
+            if (localFileAvailable()) {
                 ChapterUtils.loadChaptersFromFileUrl(this);
             } else {
-                ChapterUtils.loadChaptersFromStreamUrl(this);
+                ChapterUtils.loadChaptersFromStreamUrl(this, context);
             }
             if (item.getChapters() != null) {
                 DBWriter.setFeedItem(item);

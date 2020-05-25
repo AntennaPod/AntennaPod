@@ -103,7 +103,7 @@ public class ExternalMedia implements Playable {
     }
 
     @Override
-    public void loadChapterMarks() {
+    public void loadChapterMarks(Context context) {
 
     }
 

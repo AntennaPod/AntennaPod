@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.core.util;
 
+import android.content.Context;
+import android.net.Uri;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
-import java.util.zip.CheckedOutputStream;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -13,7 +13,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
@@ -49,10 +48,10 @@ public class ChapterUtils {
         return chapters.size() - 1;
     }
 
-    public static void loadChaptersFromStreamUrl(Playable media) {
-        ChapterUtils.readID3ChaptersFromPlayableStreamUrl(media);
+    public static void loadChaptersFromStreamUrl(Playable media, Context context) {
+        ChapterUtils.readID3ChaptersFromPlayableStreamUrl(media, context);
         if (media.getChapters() == null) {
-            ChapterUtils.readOggChaptersFromPlayableStreamUrl(media);
+            ChapterUtils.readOggChaptersFromPlayableStreamUrl(media, context);
         }
     }
 
@@ -71,7 +70,7 @@ public class ChapterUtils {
      * Uses the download URL of a media object of a feeditem to read its ID3
      * chapters.
      */
-    private static void readID3ChaptersFromPlayableStreamUrl(Playable p) {
+    private static void readID3ChaptersFromPlayableStreamUrl(Playable p, Context context) {
         if (p == null || p.getStreamUrl() == null) {
             Log.e(TAG, "Unable to read ID3 chapters: media or download URL was null");
             return;
@@ -79,8 +78,8 @@ public class ChapterUtils {
         Log.d(TAG, "Reading id3 chapters from item " + p.getEpisodeTitle());
         CountingInputStream in = null;
         try {
-            URL url = new URL(p.getStreamUrl());
-            in = new CountingInputStream(url.openStream());
+            Uri uri = Uri.parse(p.getStreamUrl());
+            in = new CountingInputStream(context.getContentResolver().openInputStream(uri));
             List<Chapter> chapters = readChaptersFrom(in);
             if (!chapters.isEmpty()) {
                 p.setChapters(chapters);
@@ -142,14 +141,14 @@ public class ChapterUtils {
         return chapters;
     }
 
-    private static void readOggChaptersFromPlayableStreamUrl(Playable media) {
+    private static void readOggChaptersFromPlayableStreamUrl(Playable media, Context context) {
         if (media == null || !media.streamAvailable()) {
             return;
         }
         InputStream input = null;
         try {
-            URL url = new URL(media.getStreamUrl());
-            input = url.openStream();
+            Uri uri = Uri.parse(media.getStreamUrl());
+            input = context.getContentResolver().openInputStream(uri);
             if (input != null) {
                 readOggChaptersFromInputStream(media, input);
             }

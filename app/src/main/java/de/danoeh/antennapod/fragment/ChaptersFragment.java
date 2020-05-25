@@ -128,7 +128,7 @@ public class ChaptersFragment extends Fragment {
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                media.loadChapterMarks();
+                media.loadChapterMarks(getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
