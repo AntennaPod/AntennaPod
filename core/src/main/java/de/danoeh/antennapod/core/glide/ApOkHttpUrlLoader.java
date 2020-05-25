@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.glide;
 
+import android.content.ContentResolver;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+ * {@see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader}.
  */
 class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
@@ -94,8 +95,9 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     }
 
     @Override
-    public boolean handles(@NonNull String s) {
-        return true;
+    public boolean handles(@NonNull String model) {
+        // Leave content URIs to Glide's default loaders
+        return !TextUtils.isEmpty(model) && !model.startsWith(ContentResolver.SCHEME_CONTENT);
     }
 
     private static class NetworkAllowanceInterceptor implements Interceptor {
