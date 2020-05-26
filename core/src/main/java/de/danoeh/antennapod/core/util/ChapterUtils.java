@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
@@ -78,8 +80,13 @@ public class ChapterUtils {
         Log.d(TAG, "Reading id3 chapters from item " + p.getEpisodeTitle());
         CountingInputStream in = null;
         try {
-            Uri uri = Uri.parse(p.getStreamUrl());
-            in = new CountingInputStream(context.getContentResolver().openInputStream(uri));
+            if (p.getStreamUrl().startsWith(ContentResolver.SCHEME_CONTENT)) {
+                Uri uri = Uri.parse(p.getStreamUrl());
+                in = new CountingInputStream(context.getContentResolver().openInputStream(uri));
+            } else {
+                URL url = new URL(p.getStreamUrl());
+                in = new CountingInputStream(url.openStream());
+            }
             List<Chapter> chapters = readChaptersFrom(in);
             if (!chapters.isEmpty()) {
                 p.setChapters(chapters);
@@ -147,8 +154,13 @@ public class ChapterUtils {
         }
         InputStream input = null;
         try {
-            Uri uri = Uri.parse(media.getStreamUrl());
-            input = context.getContentResolver().openInputStream(uri);
+            if (media.getStreamUrl().startsWith(ContentResolver.SCHEME_CONTENT)) {
+                Uri uri = Uri.parse(media.getStreamUrl());
+                input = context.getContentResolver().openInputStream(uri);
+            } else {
+                URL url = new URL(media.getStreamUrl());
+                input = url.openStream();
+            }
             if (input != null) {
                 readOggChaptersFromInputStream(media, input);
             }

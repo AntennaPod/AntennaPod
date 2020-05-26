@@ -311,9 +311,9 @@ public class PlaybackServiceTaskManager {
 
         if (media.getChapters() == null) {
             Completable.create(emitter -> {
-                        media.loadChapterMarks(context);
-                        emitter.onComplete();
-                    })
+                media.loadChapterMarks(context);
+                emitter.onComplete();
+            })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> callback.onChapterLoaded(media));
