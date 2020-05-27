@@ -97,7 +97,7 @@ public class ItemDescriptionFragment extends Fragment {
 
     @Nullable
     private String loadData() {
-        if (controller != null && controller.getMedia() == null) {
+        if (controller == null || controller.getMedia() == null) {
             return null;
         }
         Timeline timeline = new Timeline(getActivity(), controller.getMedia());
