@@ -18,6 +18,11 @@
     <!-- Notifications need unique IDs to update/cancel them -->
     <item name="notification_gpodnet_sync_error" type="id"/>
     <item name="notification_gpodnet_sync_autherror" type="id"/>
+    <item name="notification_downloading" type="id"/>
+    <item name="notification_download_report" type="id"/>
+    <item name="notification_auto_download_report" type="id"/>
+    <item name="notification_playing" type="id"/>
+    <item name="notification_streaming_confirmation" type="id"/>
 
     <!-- PendingIntent objects that use the same action but different extras need to use a unique request code -->
     <item name="pending_intent_download_service_notification" type="id"/>

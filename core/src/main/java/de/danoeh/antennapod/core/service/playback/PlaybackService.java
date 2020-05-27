@@ -204,9 +204,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private static volatile boolean isCasting = false;
 
-    private static final int NOTIFICATION_ID = 1;
-    private static final int NOTIFICATION_ID_STREAMING = 2;
-
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
     private PlaybackServiceFlavorHelper flavorHelper;
@@ -271,7 +268,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         stateManager = new PlaybackServiceStateManager(this);
         notificationBuilder = new PlaybackServiceNotificationBuilder(this);
-        stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
 
         registerReceiver(autoStateUpdated, new IntentFilter("com.google.android.gms.car.media.STATUS"));
         registerReceiver(headsetDisconnected, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
@@ -334,7 +331,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (notificationBuilder.getPlayerStatus() == PlayerStatus.PLAYING) {
             notificationBuilder.setPlayerStatus(PlayerStatus.STOPPED);
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+            notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
         }
         stateManager.stopForeground(!UserPreferences.isPersistNotify());
         isRunning = false;
@@ -450,9 +447,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         super.onStartCommand(intent, flags, startId);
         Log.d(TAG, "OnStartCommand called");
 
-        stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
+        stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.cancel(NOTIFICATION_ID_STREAMING);
+        notificationManager.cancel(R.id.notification_streaming_confirmation);
 
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
         final boolean castDisconnect = intent.getBooleanExtra(EXTRA_CAST_DISCONNECT, false);
@@ -578,7 +575,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         pendingIntentAlwaysAllow)
                 .setAutoCancel(true);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(NOTIFICATION_ID_STREAMING, builder.build());
+        notificationManager.notify(R.id.notification_streaming_confirmation, builder.build());
     }
 
     /**
@@ -1293,7 +1290,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
         startForegroundIfPlaying(playerStatus);
 
         if (!notificationBuilder.isIconCached()) {
@@ -1301,7 +1298,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 Log.d(TAG, "Loading notification icon");
                 notificationBuilder.loadIcon();
                 if (!Thread.currentThread().isInterrupted()) {
-                    notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                    notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
                 }
             });
             notificationSetupThread.start();
@@ -1313,12 +1310,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         if (stateManager.hasReceivedValidStartCommand()) {
             if (isCasting || status == PlayerStatus.PLAYING || status == PlayerStatus.PREPARING
                     || status == PlayerStatus.SEEKING) {
-                stateManager.startForeground(NOTIFICATION_ID, notificationBuilder.build());
+                stateManager.startForeground(R.id.notification_playing, notificationBuilder.build());
                 Log.d(TAG, "foreground");
             } else {
                 stateManager.stopForeground(false);
                 NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-                notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
             }
         }
     }
@@ -1721,7 +1718,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         notificationBuilder.updatePosition(getCurrentPosition(), getCurrentPlaybackSpeed());
                         NotificationManager notificationManager = (NotificationManager)
                                 getSystemService(NOTIFICATION_SERVICE);
-                        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+                        notificationManager.notify(R.id.notification_playing, notificationBuilder.build());
                     }
                     skipEndingIfNecessary();
                 });
