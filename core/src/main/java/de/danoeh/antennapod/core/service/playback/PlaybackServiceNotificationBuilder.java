@@ -131,7 +131,7 @@ public class PlaybackServiceNotificationBuilder {
             }
         } else {
             notification.setContentTitle(context.getString(R.string.app_name));
-            notification.setContentText("Service is running");
+            notification.setContentText("Loading. If this does not go away, play any episode and contact us.");
         }
 
         notification.setContentIntent(getPlayerActivityPendingIntent());
