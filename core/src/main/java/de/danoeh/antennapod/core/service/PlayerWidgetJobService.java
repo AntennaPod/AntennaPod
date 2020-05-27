@@ -103,12 +103,8 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
         int[] widgetIds = manager.getAppWidgetIds(playerWidget);
         RemoteViews views = new RemoteViews(getPackageName(), R.layout.player_widget);
-        PendingIntent startMediaplayer = PendingIntent.getActivity(this, 0,
-                PlaybackService.getPlayerActivityIntent(this), 0);
-
-        final PendingIntent startAppPending = PendingIntent.getActivity(this, 0,
-                PlaybackService.getPlayerActivityIntent(this),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        final PendingIntent startMediaPlayer = PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
+                PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);
 
         boolean nothingPlaying = false;
         Playable media;
@@ -122,7 +118,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         }
 
         if (media != null) {
-            views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
+            views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
 
             try {
                 Bitmap icon = null;
@@ -170,8 +166,8 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
         if (nothingPlaying) {
             // start the app if they click anything
-            views.setOnClickPendingIntent(R.id.layout_left, startAppPending);
-            views.setOnClickPendingIntent(R.id.butPlay, startAppPending);
+            views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
+            views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);

@@ -542,9 +542,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         intentAllowThisTime.putExtra(EXTRA_ALLOW_STREAM_THIS_TIME, true);
         PendingIntent pendingIntentAllowThisTime;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            pendingIntentAllowThisTime = PendingIntent.getForegroundService(this, 0, intentAllowThisTime,  PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentAllowThisTime = PendingIntent.getForegroundService(this,
+                    R.id.pending_intent_allow_stream_this_time, intentAllowThisTime, PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            pendingIntentAllowThisTime = PendingIntent.getService(this, 0, intentAllowThisTime,  PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentAllowThisTime = PendingIntent.getService(this,
+                    R.id.pending_intent_allow_stream_this_time, intentAllowThisTime, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         Intent intentAlwaysAllow = new Intent(intentAllowThisTime);
@@ -552,12 +554,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         intentAlwaysAllow.putExtra(EXTRA_ALLOW_STREAM_ALWAYS, true);
         PendingIntent pendingIntentAlwaysAllow;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            pendingIntentAlwaysAllow = PendingIntent.getForegroundService(this, 0, intentAlwaysAllow,  PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentAlwaysAllow = PendingIntent.getForegroundService(this,
+                    R.id.pending_intent_allow_stream_always, intentAlwaysAllow,  PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
-            pendingIntentAlwaysAllow = PendingIntent.getService(this, 0, intentAlwaysAllow,  PendingIntent.FLAG_UPDATE_CURRENT);
+            pendingIntentAlwaysAllow = PendingIntent.getService(this,
+                    R.id.pending_intent_allow_stream_always, intentAlwaysAllow,  PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID_USER_ACTION)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
+                NotificationUtils.CHANNEL_ID_USER_ACTION)
                 .setSmallIcon(R.drawable.ic_stream_white)
                 .setContentTitle(getString(R.string.confirm_mobile_streaming_notification_title))
                 .setContentText(getString(R.string.confirm_mobile_streaming_notification_message))
@@ -1238,9 +1243,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
             if (!Thread.currentThread().isInterrupted() && stateManager.hasReceivedValidStartCommand()) {
-                mediaSession.setSessionActivity(PendingIntent.getActivity(this, 0,
-                        PlaybackService.getPlayerActivityIntent(this),
-                        PendingIntent.FLAG_UPDATE_CURRENT));
+                mediaSession.setSessionActivity(PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
+                        PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT));
                 try {
                     mediaSession.setMetadata(builder.build());
                 } catch (OutOfMemoryError e) {
