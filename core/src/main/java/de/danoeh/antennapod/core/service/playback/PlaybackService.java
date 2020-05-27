@@ -79,6 +79,7 @@ import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
@@ -304,18 +305,16 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             npe.printStackTrace();
         }
 
-        List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
-        try {
+        Single.<List<MediaSessionCompat.QueueItem>>create(emitter -> {
+            List<MediaSessionCompat.QueueItem> queueItems = new ArrayList<>();
             for (FeedItem feedItem : taskManager.getQueue()) {
                 if (feedItem.getMedia() != null) {
                     MediaDescriptionCompat mediaDescription = feedItem.getMedia().getMediaItem().getDescription();
                     queueItems.add(new MediaSessionCompat.QueueItem(mediaDescription, feedItem.getId()));
                 }
             }
-            mediaSession.setQueue(queueItems);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            emitter.onSuccess(queueItems);
+        }).subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
 
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
         mediaSession.setActive(true);
