@@ -91,7 +91,7 @@ public class MainActivity extends CastEnabledActivity {
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
-        recycledViewPool.setMaxRecycledViews(R.id.episode_item_view_holder, 25);
+        recycledViewPool.setMaxRecycledViews(R.id.view_type_episode_item, 25);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);

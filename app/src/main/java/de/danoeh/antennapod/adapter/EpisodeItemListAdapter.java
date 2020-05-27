@@ -44,7 +44,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
 
     @Override
     public final int getItemViewType(int position) {
-        return R.id.episode_item_view_holder;
+        return R.id.view_type_episode_item;
     }
 
     @NonNull
