@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,9 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -47,6 +52,7 @@ public class CoverFragment extends Fragment {
     private Disposable disposable;
     private int displayedChapterIndex = -2;
     private Playable media;
+    private int orientation = Configuration.ORIENTATION_UNDEFINED;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +64,11 @@ public class CoverFragment extends Fragment {
         imgvCover = root.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> onPlayPause());
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        configureForOrientation(getResources().getConfiguration().orientation);
     }
 
     private void loadMediaInfo() {
@@ -72,12 +83,12 @@ public class CoverFragment extends Fragment {
                 emitter.onComplete();
             }
         })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(media -> {
-            this.media = media;
-            displayMediaInfo(media);
-        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> {
+                    this.media = media;
+                    displayMediaInfo(media);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
@@ -157,6 +168,31 @@ public class CoverFragment extends Fragment {
                         .into(imgvCover);
             }
         }
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (orientation != newConfig.orientation) {
+            orientation = newConfig.orientation;
+            configureForOrientation(orientation);
+        }
+    }
+
+    private void configureForOrientation(int orientation) {
+        View textContainer = getView().findViewById(R.id.cover_fragment_text_container);
+        LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mainContainer.setOrientation(LinearLayout.VERTICAL);
+            params.weight = 0;
+        } else {
+            mainContainer.setOrientation(LinearLayout.HORIZONTAL);
+            params.weight = 1;
+        }
+        textContainer.setLayoutParams(params);
     }
 
     @Override
