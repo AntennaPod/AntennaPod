@@ -2,22 +2,17 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
@@ -56,11 +51,13 @@ public class CoverFragment extends Fragment {
     private int displayedChapterIndex = -2;
     private Playable media;
     private int orientation = Configuration.ORIENTATION_UNDEFINED;
+    private int prev_layout_id;
+    static CoverFragment _prev = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setRetainInstance(false);
+        setRetainInstance(true);
 
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
@@ -68,6 +65,7 @@ public class CoverFragment extends Fragment {
         imgvCover = root.findViewById(R.id.imgvCover);
         imgvCover.setOnClickListener(v -> onPlayPause());
 
+        Log.d(TAG, "onCreateView");
         return root;
     }
 
@@ -176,12 +174,21 @@ public class CoverFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        CoverFragment next;
         if (orientation != newConfig.orientation) {
             try {
+                Log.d(TAG, "onConfigurationChanged " + newConfig.orientation);
                 orientation = newConfig.orientation;
-                getFragmentManager().beginTransaction()
-                        .remove(this)
-                        .replace(R.id.cover_fragment_container, CoverFragment.class.newInstance())
+                if (_prev == null) {
+                    next = CoverFragment.class.newInstance();
+                } else {
+                   next = _prev;
+                }
+                _prev = this;
+                //getParentFragmentManager().beginTransaction().remove(this).commitNow();
+                getParentFragmentManager().beginTransaction()
+                        .remove(_prev)
+                        .add(R.id.cover_fragment_container, next)
                         .commitAllowingStateLoss();
             } catch (Exception e) {
                 Log.e(TAG, "onConfigurationChanged " + e.toString());
