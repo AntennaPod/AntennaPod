@@ -305,7 +305,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             return false;
         }
         Playable media = controller.getMedia();
-        boolean isFeedMedia = media != null && (media instanceof FeedMedia);
+        boolean isFeedMedia = (media instanceof FeedMedia);
 
         menu.findItem(R.id.open_feed_item).setVisible(isFeedMedia); // FeedMedia implies it belongs to a Feed
 
