@@ -121,7 +121,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
 
             try {
-                Bitmap icon = null;
+                Bitmap icon;
                 int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
                 icon = Glide.with(PlayerWidgetJobService.this)
                         .asBitmap()

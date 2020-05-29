@@ -194,7 +194,7 @@ public class NavListAdapter extends BaseAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         int viewType = getItemViewType(position);
-        View v = null;
+        View v;
         if (viewType == VIEW_TYPE_NAV) {
             v = getNavView((String) getItem(position), position, convertView, parent);
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {

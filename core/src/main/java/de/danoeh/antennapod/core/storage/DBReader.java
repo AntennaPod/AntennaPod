@@ -582,7 +582,7 @@ public final class DBReader {
     }
 
     private static String getImageAuthentication(final String imageUrl, PodDBAdapter adapter) {
-        String credentials = null;
+        String credentials;
         try (Cursor cursor = adapter.getImageAuthenticationCursor(imageUrl)) {
             if (cursor.moveToFirst()) {
                 String username = cursor.getString(0);

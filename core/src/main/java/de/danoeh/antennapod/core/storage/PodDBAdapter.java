@@ -1218,7 +1218,7 @@ public class PodDBAdapter {
     public Cursor searchItems(long feedID, String searchQuery) {
         String preparedQuery = prepareSearchQuery(searchQuery);
 
-        String queryFeedId = "";
+        String queryFeedId;
         if (feedID != 0) {
             // search items in specific feed
             queryFeedId = KEY_FEED + " = " + feedID;

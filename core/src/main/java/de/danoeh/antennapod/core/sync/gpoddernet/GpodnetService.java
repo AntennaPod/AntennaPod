@@ -519,8 +519,8 @@ public class GpodnetService implements ISyncService {
 
     private String executeRequest(@NonNull Request.Builder requestB) throws GpodnetServiceException {
         Request request = requestB.build();
-        String responseString = null;
-        Response response = null;
+        String responseString;
+        Response response;
         ResponseBody body = null;
         try {
 
