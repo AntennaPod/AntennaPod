@@ -419,7 +419,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 e.printStackTrace();
             }
         } else if (parentId.startsWith("FeedId:")) {
-            Long feedId = Long.parseLong(parentId.split(":")[1]);
+            long feedId = Long.parseLong(parentId.split(":")[1]);
             List<FeedItem> feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
             for (FeedItem feedItem : feedItems) {
                 if (feedItem.getMedia() != null && feedItem.getMedia().getMediaItem() != null) {
