@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Anuluj pobieranie</string>
   <string name="playback_history_label">Historia odtwarzania</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Synchronizuj z innymi urządzeniami</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <string name="episode_cache_full_title">Pełna pamięć cache</string>
   <string name="episode_cache_full_message">Limit pamięci cache został osiągnięty. Możesz zwiększyć pojemność cache w ustawieniach aplikacji.</string>
@@ -86,7 +85,6 @@
   <string name="auto_download_apply_to_items_message">Nowe ustawienie <i>automatycznego pobierania</i> zostanie zastosowane do nowych odcinków.\n Czy chcesz zastosować je także do odcinków opublikowanych wcześniej?</string>
   <string name="auto_delete_label">Automatyczne usuwanie odcinków</string>
   <string name="feed_volume_reduction">Redukcja głośności</string>
-  <string name="feed_volume_reduction_summary">Zmniejsz głośność odcinków kanału: \%s</string>
   <string name="feed_volume_reduction_off">Wyłączona</string>
   <string name="feed_volume_reduction_light">Średnia</string>
   <string name="feed_volume_reduction_heavy">Silna</string>
@@ -110,7 +108,6 @@
     <item quantity="many">%d dni po odtworzeniu</item>
     <item quantity="other">%d dni po odtworzeniu</item>
   </plurals>
-  <string name="num_selected_label">zaznaczono %d</string>
   <string name="loading_more">Ładowanie więcej...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Oznacz wszystkie jako odtworzone</string>
@@ -308,8 +305,6 @@
   <string name="ascending">Rosnąco</string>
   <string name="descending">Malejąco</string>
   <string name="clear_queue_confirmation_msg">Potwierdź usunięcie WSZYSTKICH pozycji z kolejki</string>
-  <string name="sort_old_to_new">od najstarszych</string>
-  <string name="sort_new_to_old">od najnowszych</string>
   <string name="time_left_label">Pozostały czas:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Pobierz wtyczkę</string>
@@ -344,8 +339,6 @@
   <string name="storage_sum">Automatyczne kasowanie odcinków, Import, Eksport</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Kolejka</string>
-  <string name="integrations_label">Integracje</string>
-  <string name="integrations_sum">Synchronizacja</string>
   <string name="automation">Automatyzacja</string>
   <string name="download_pref_details">Szczegóły</string>
   <string name="import_export_pref">Import/Eksport</string>
@@ -436,12 +429,8 @@
   <string name="pref_gpodnet_logout_toast">Wylogowanie się powiodło</string>
   <string name="pref_gpodnet_setlogin_information_title">Zmień informacje logowania</string>
   <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
-  <string name="pref_gpodnet_sync_changes_title">Zsynchronizuj zmiany teraz</string>
   <string name="pref_gpodnet_sync_changes_sum">Synchronizuj subskrypcje oraz stan odcinków z pomocą gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Wykonaj pełną synchronizację teraz</string>
   <string name="pref_gpodnet_full_sync_sum">Synchronizuj wszystkie subskrypcje oraz stan odcinków z pomocą gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Ostatnia próba synchronizacji: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synchronizacja uruchomiona</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Zalogowano jako <i>%1$s</i> na urządzeniu <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Pokaż powiadomienia błędów synchronizacji</string>
   <string name="pref_gpodnet_notifications_sum">To ustawienie nie dotyczy błędów autoryzacji.</string>
@@ -530,6 +519,7 @@
   <string name="search_status_no_results">Brak wyników</string>
   <string name="search_label">Szukaj</string>
   <string name="no_results_for_query">Brak wyników dla \"%1$s\"</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="import_export_summary">Przenieś subskrypcje i kolejkę na inne urządzenie</string>
   <string name="database">Baza danych</string>
@@ -768,4 +758,5 @@ https://gpodder.net/register/</string>
   <string name="widget_settings">Ustawienia widżetu</string>
   <string name="widget_create_button">Dodaj widżet</string>
   <string name="widget_opacity">Nieprzezroczystość</string>
+  <!--On-Demand configuration-->
 </resources>

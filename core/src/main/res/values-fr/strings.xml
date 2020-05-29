@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Annuler les téléchargements</string>
   <string name="playback_history_label">Journal de lecture</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Synchroniser avec d\'autres appareils</string>
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>
   <string name="episode_cache_full_title">L\'emplacement pour stocker les épisodes est plein</string>
   <string name="episode_cache_full_message">Le nombre maximal d\'épisodes téléchargés a été atteint. Vous pouvez changer ce nombre dans les paramètres.</string>
@@ -28,7 +27,7 @@
   <string name="download_statistics_label">Téléchargements</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Durée totale d\'écoute :</string>
-  <string name="statistics_details_dialog">%1$d épisodes sur %2$d commencés.\n\nLu %3$s sur %4$s.</string>
+  <string name="statistics_details_dialog">%1$d épisodes démarrés sur %2$d\n\npour un temps de lecture de %3$s sur %4$s.</string>
   <string name="statistics_mode">Type de statistiques</string>
   <string name="statistics_mode_normal">Calculer la durée réellement écoutée. Les épisodes écoutés deux fois comptent double alors que ceux simplement marqués lus ne sont pas comptés</string>
   <string name="statistics_mode_count_all">Additionner tous les podcasts marqués comme lus</string>
@@ -86,7 +85,7 @@
   <string name="auto_download_apply_to_items_message">Le nouveau paramètre <i>Téléchargement Automatique</i> sera automatiquement appliqué sur chaque nouvel épisode.\nVoulez-vous faire de même avec les épisodes précédents ?</string>
   <string name="auto_delete_label">Suppression automatique des épisodes</string>
   <string name="feed_volume_reduction">Réduction du volume</string>
-  <string name="feed_volume_reduction_summary">Réduction du volume pour les épisodes de ce podcast : \%s</string>
+  <string name="feed_volume_reduction_summary">Réduction du volume pour les épisodes de ce podcast : %1$s</string>
   <string name="feed_volume_reduction_off">pas de réduction</string>
   <string name="feed_volume_reduction_light">faible</string>
   <string name="feed_volume_reduction_heavy">importante</string>
@@ -106,7 +105,10 @@
     <item quantity="one">1 jour après avoir été écouté</item>
     <item quantity="other">%d jours après avoir été écouté</item>
   </plurals>
-  <string name="num_selected_label">%d sélectionné(s)</string>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d sélectionné</item>
+    <item quantity="other">%d sélectionnés</item>
+  </plurals>
   <string name="loading_more">Chargement...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marquer tous les épisodes comme lus</string>
@@ -158,7 +160,7 @@
   <string name="play_label">Lire</string>
   <string name="pause_label">Pause</string>
   <string name="stream_label">Streaming</string>
-  <string name="delete_label">Effacer</string>
+  <string name="delete_label">Supprimer</string>
   <string name="delete_failed">Suppression du fichier impossible. Redémarrer pourrait aider.</string>
   <string name="delete_episode_label">Suppression de l\'épisode</string>
   <plurals name="deleted_episode_batch_label">
@@ -203,6 +205,7 @@
   <string name="deactivate_auto_download">Désactiver téléchargement automatique</string>
   <string name="reset_position">Réinitialiser la position de lecture</string>
   <string name="removed_item">Élément retiré</string>
+  <string name="no_items_selected">Rien n\'a été sélectionné</string>
   <!--Download messages and labels-->
   <string name="download_successful">terminé</string>
   <string name="download_pending">Téléchargement en attente</string>
@@ -289,8 +292,6 @@
   <string name="ascending">Ordre croissant</string>
   <string name="descending">Ordre décroissant</string>
   <string name="clear_queue_confirmation_msg">Veuillez confirmer que vous voulez bien supprimer TOUS les épisodes de la liste de lecture</string>
-  <string name="sort_old_to_new">Ancien à récent</string>
-  <string name="sort_new_to_old">Récent à ancien</string>
   <string name="time_left_label">Durée restante :\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Télécharger une extension</string>
@@ -325,8 +326,8 @@
   <string name="storage_sum">Suppression automatique, importation, exportation</string>
   <string name="project_pref">Projet</string>
   <string name="queue_label">Liste de lecture</string>
-  <string name="integrations_label">Intégrations</string>
-  <string name="integrations_sum">Synchronisation</string>
+  <string name="synchronization_pref">Synchronisation</string>
+  <string name="synchronization_sum">Utiliser gpodder.net pour synchroniser avec d\'autres appareils</string>
   <string name="automation">Automatisation</string>
   <string name="download_pref_details">Détails</string>
   <string name="import_export_pref">Importation / Exportation</string>
@@ -351,7 +352,7 @@
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
   <string name="pref_auto_delete_title">Suppression automatique</string>
-  <string name="pref_smart_mark_as_played_sum">Les épisodes seront marqués comme lus même s\'il reste quelques secondes à écouter</string>
+  <string name="pref_smart_mark_as_played_sum">Les épisodes seront marqués comme lus même s\'il reste quelques secondes pour les finir</string>
   <string name="pref_smart_mark_as_played_title">Marquer comme lu intelligemment</string>
   <string name="pref_skip_keeps_episodes_sum">Garder les épisodes quand ils sont passés</string>
   <string name="pref_skip_keeps_episodes_title">Garder les épisodes passés</string>
@@ -363,7 +364,7 @@
   <string name="network_pref_sum">Intervalle / Heure de mise à jour, contrôle des téléchargements, utilisation de la connexion mobile</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalle / Heure de mise à jour</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des podcasts</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez définir un <i>intervalle</i> comme \"toutes les 2 heures\" ou une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note: les heures de mise à jour ne sont pas précises. Vous pouvez avoir un petit délai.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez définir un <i>intervalle</i> comme \"toutes les 2 heures\" ou une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note : les heures de mise à jour ne sont pas précises. Il peut y avoir un petit délai.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Désactiver</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Intervalle</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Heure</string>
@@ -374,7 +375,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Connexion des écouteurs</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Connexion du Bluetooth</string>
   <string name="pref_stream_over_download_title">Préférer le streaming</string>
-  <string name="pref_stream_over_download_sum">Afficher dans les listes le bouton du streaming au lieu de celui du téléchargement.</string>
+  <string name="pref_stream_over_download_sum">Afficher dans les listes le bouton du streaming au lieu de celui du téléchargement</string>
   <string name="pref_mobileUpdate_title">Utilisation de la connexion mobile</string>
   <string name="pref_mobileUpdate_sum">Choisir ce qui est autorisé lorsque la connexion mobile est utilisée</string>
   <string name="pref_mobileUpdate_refresh">Mise à jour des podcasts</string>
@@ -419,18 +420,22 @@
   <string name="pref_gpodnet_setlogin_information_sum">Modifier les information de connexion pour votre compte gpodder.net</string>
   <string name="pref_gpodnet_sync_changes_title">Synchroniser maintenant</string>
   <string name="pref_gpodnet_sync_changes_sum">Synchroniser l\'état des abonnements et des épisodes avec gpodder.net</string>
-  <string name="pref_gpodnet_full_sync_title">Tout synchroniser maintenant</string>
+  <string name="pref_gpodnet_full_sync_title">Forcer une synchronisation totale</string>
   <string name="pref_gpodnet_full_sync_sum">Synchroniser tous les abonnements et tous les états des épisodes avec gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Dernière tentative de synchronisation : %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synchronisation démarrée</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Connecté comme <i>%1$s</i> avec l\'appareil <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Notification des erreurs de synchronisation</string>
   <string name="pref_gpodnet_notifications_sum">Ce paramètre ne s\'applique pas aux erreurs d\'authentification.</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture audio</string>
   <string name="pref_feed_playback_speed_sum">Vitesse de lecture par défaut pour les épisodes de ce podcast</string>
+  <string name="pref_feed_skip">Saut automatique</string>
+  <string name="pref_feed_skip_sum">Sauter le début et la fin des épisodes</string>
+  <string name="pref_feed_skip_ending">Sauter à la fin</string>
+  <string name="pref_feed_skip_intro">Sauter au début</string>
+  <string name="pref_feed_skip_ending_toast">%d dernières secondes sautées</string>
+  <string name="pref_feed_skip_intro_toast">%d premières secondes sautées</string>
   <string name="pref_playback_time_respects_speed_title">Ajuster les informations en fonction la vitesse de lecture</string>
-  <string name="pref_playback_time_respects_speed_sum">La position et la durée affichée tiendront compte de la vitesse de lecture.</string>
+  <string name="pref_playback_time_respects_speed_sum">La position et la durée affichée tiendront compte de la vitesse de lecture</string>
   <string name="pref_fast_forward">Durée du saut avant</string>
   <string name="pref_fast_forward_sum">Nombre de secondes à sauter quand le bouton \"saut avant\" est pressé</string>
   <string name="pref_rewind">Durée du saut arrière</string>
@@ -447,9 +452,9 @@
   <string name="pref_compact_notification_buttons_dialog_error">Vous ne pouvez pas choisir plus de %1$d éléments.</string>
   <string name="pref_lockscreen_background_title">Changer l’arrière plan de l\'écran de verrouillage</string>
   <string name="pref_lockscreen_background_sum">Placer l\'image de l’épisode en arrière plan de l\'écran de verrouillage. Cela aura aussi pour effet de montrer l\'image dans les autres applications.</string>
-  <string name="pref_showDownloadReport_title">Afficher le rapport de téléchargements</string>
+  <string name="pref_showDownloadReport_title">Afficher le rapport des téléchargements</string>
   <string name="pref_showDownloadReport_sum">Si les téléchargements échouent, générer un rapport détaillé des échecs.</string>
-  <string name="pref_showAutoDownloadReport_title">Rapport de téléchargement automatique</string>
+  <string name="pref_showAutoDownloadReport_title">Rapport du téléchargement automatique</string>
   <string name="pref_showAutoDownloadReport_sum">Afficher une notification pour les épisodes téléchargés automatiquement.</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
   <string name="pref_enqueue_location_title">Emplacement des épisodes téléchargés</string>
@@ -479,6 +484,8 @@
   <string name="pref_enqueue_downloaded_title">Ajouter à la liste après téléchargement</string>
   <string name="pref_enqueue_downloaded_summary">Mettre les épisodes dans la la liste de lecture après téléchargement</string>
   <string name="media_player_builtin">Lecteur natif d\'Android</string>
+  <string name="media_player_switch_to_exoplayer">Utiliser ExoPlayer pour la lecture</string>
+  <string name="media_player_switched_to_exoplayer">Lecteur changé pour ExoPlayer</string>
   <string name="pref_skip_silence_title">Supprimer les silences audios</string>
   <string name="pref_videoBehavior_title">Sorti du lecteur pendant une vidéo</string>
   <string name="pref_videoBehavior_sum">Définir ce qu\'il se passe si une vidéo est quittée pendant sa lecture</string>
@@ -496,7 +503,7 @@
   <string name="back_button_go_to_page">Aller à la page...</string>
   <string name="back_button_go_to_page_title">Sélectionner une page</string>
   <string name="pref_delete_removes_from_queue_title">Supprimer retire de la liste de lecture</string>
-  <string name="pref_delete_removes_from_queue_sum">Retirer de la liste de lecture les épisodes quand ils sont supprimés.</string>
+  <string name="pref_delete_removes_from_queue_sum">Retirer de la liste de lecture un épisode quand son fichier est supprimé.</string>
   <!--About screen-->
   <string name="about_pref">À propos</string>
   <string name="antennapod_version">Version d\'AntennaPod</string>
@@ -506,11 +513,19 @@
   <string name="translators_summary">La traduction est faite par les utilisateurs d\'AntennaPod sur Transifex</string>
   <string name="privacy_policy">Politique de confidentialité</string>
   <string name="licenses">Licences</string>
-  <string name="licenses_summary">AntennaPod s\'appuie sur d\'autres logiciels</string>
+  <string name="licenses_summary">AntennaPod utilise le code d\'autres logiciels</string>
   <!--Search-->
   <string name="search_status_no_results">Aucun résultat trouvé</string>
   <string name="search_label">Recherche</string>
   <string name="no_results_for_query">Aucun résultat trouvé pour \"%1$s\"</string>
+  <!--Synchronization-->
+  <string name="sync_status_started">Synchronisation démarrée</string>
+  <string name="sync_status_episodes_upload">Export des statuts des épisodes...</string>
+  <string name="sync_status_episodes_download">Import des statuts des épisodes...</string>
+  <string name="sync_status_upload_played">Export des statuts de lecture...</string>
+  <string name="sync_status_subscriptions">Synchronisation des abonnements...</string>
+  <string name="sync_status_success">Synchronisation réussie</string>
+  <string name="sync_status_error">Echec de la synchronisation</string>
   <!--import and export-->
   <string name="import_export_summary">Copier les abonnements et la liste de lecture sur un autre appareil</string>
   <string name="database">Base de données</string>
@@ -520,16 +535,17 @@
   <string name="opml_export_summary">Transférer vos abonnements à une autre application de podcasts</string>
   <string name="opml_import_summary">Importer les abonnements d\'une autre application de podcasts</string>
   <string name="database_export_summary">Transférer les abonnements, les épisodes écoutés et la liste de lecture sur un autre appareil</string>
-  <string name="database_import_summary">Importer une base de donnée AntennaPod d\'un autre appareil</string>
-  <string name="opml_import_label">Import OPML</string>
+  <string name="database_import_summary">Importer une base de données AntennaPod d\'un autre appareil</string>
+  <string name="opml_import_label">Importer un fichier OPML</string>
   <string name="opml_reader_error">Une erreur s\'est produite pendant la lecture du fichier OPML :</string>
   <string name="opml_import_error_no_file">Aucun fichier sélectionné !</string>
   <string name="select_all_label">Tout choisir</string>
   <string name="deselect_all_label">Ne rien choisir</string>
-  <string name="opml_export_label">Export OPML</string>
-  <string name="html_export_label">Export HTML</string>
-  <string name="database_export_label">Export de la base de données</string>
-  <string name="database_import_label">Import de la base de données</string>
+  <string name="opml_export_label">Exporter un fichier OPML</string>
+  <string name="html_export_label">Exporter un fichier HTML</string>
+  <string name="database_export_label">Exporter la base de données</string>
+  <string name="database_import_label">Importer la base de données</string>
+  <string name="database_import_warning">Importer une base de données remplacera tout vos abonnements et votre historique de lecture. Il est conseillé d\'exporter votre base de données actuelle pour avoir une sauvegarde. Confirmez-vous l\'import ?</string>
   <string name="please_wait">Merci de patienter...</string>
   <string name="export_error_label">Erreur d\'exportation</string>
   <string name="export_success_title">Export réussi</string>
@@ -537,7 +553,7 @@
   <string name="opml_import_ask_read_permission">L\'accès au stockage externe est requis pour lire le fichier OPML</string>
   <string name="import_select_file">Sélectionner le fichier à importer</string>
   <string name="import_ok">Import réussi.\n\nAppuyer sur OK pour redémarrer AntennaPod</string>
-  <string name="import_no_downgrade">La base de donnée a été exportée avec une version plus récente d\'AntennaPod. L\'application actuelle ne sait pas comment l\'importer.</string>
+  <string name="import_no_downgrade">La base de données a été exportée avec une version plus récente d\'AntennaPod. L\'application actuelle ne sait pas comment l\'importer.</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Activer le minuteur</string>
   <string name="disable_sleeptimer_label">Désactiver le minuteur</string>
@@ -615,28 +631,35 @@
   <string name="pref_pausePlaybackForFocusLoss_sum">Mettre en pause la lecture au lieu de baisser le volume quand une autre application joue un son</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Mettre en pause lors d\'interruptions</string>
   <string name="pref_resumeAfterCall_sum">Reprendre la lecture après un appel téléphonique</string>
-  <string name="pref_resumeAfterCall_title">Reprendre après appel</string>
+  <string name="pref_resumeAfterCall_title">Reprendre après un appel</string>
   <string name="pref_restart_required">AntennaPod doit être redémarré afin que ce changement prenne effet</string>
   <!--Online feed view-->
   <string name="subscribe_label">S\'abonner</string>
   <string name="subscribing_label">Abonnement en cours...</string>
-  <string name="preview_episode">Préécouter</string>
+  <string name="preview_episode">Prélecture</string>
+  <string name="stop_preview">Arrêter la prélecture</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Saut arrière</string>
   <string name="fast_forward_label">Saut avant</string>
+  <string name="increase_speed">Augmenter la vitesse</string>
+  <string name="decrease_speed">Diminuer la vitesse</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Vidéo</string>
   <string name="navigate_upwards_label">Naviguer vers le haut</string>
   <string name="status_downloading_label">L\'épisode est en train d\'être téléchargé</string>
   <string name="in_queue_label">L\'épisode est dans la liste de lecture</string>
+  <string name="is_favorite_label">L\'épisode a été ajouté aux favoris</string>
   <string name="drag_handle_content_description">Faire glisser pour changer la position de cet élément</string>
   <string name="load_next_page_label">Charger la page suivante</string>
+  <string name="switch_pages">Changer les pages</string>
+  <string name="position">Position : %1$s</string>
+  <string name="apply_action">Appliquer l\'action</string>
   <!--Feed information screen-->
   <string name="authentication_label">Authentification</string>
   <string name="authentication_descr">Identifiant et mot de passe pour ce podcast et ses épisodes.</string>
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
   <string name="episode_filters_label">Filtre d\'épisode</string>
-  <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou exclure des téléchargements automatiques</string>
+  <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou à exclure des téléchargements automatiques</string>
   <string name="episode_filters_include">Inclure</string>
   <string name="episode_filters_exclude">Exclure</string>
   <string name="episode_filters_hint">Mots uniques \n\"Liste de mots\"</string>
@@ -656,6 +679,7 @@
   <string name="browse_gpoddernet_label">Chercher sur gpodder.net</string>
   <string name="discover">Découvrir</string>
   <string name="discover_more">plus »</string>
+  <string name="search_powered_by">Recherche avec %1$s</string>
   <string name="filter">Filtrer</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tous</string>
@@ -683,6 +707,12 @@
   <string name="sort_date_old_new">Date (Ancien \u2192 Récent)</string>
   <string name="sort_duration_short_long">Durée (Courte \u2192 Longue)</string>
   <string name="sort_duration_long_short">Durée (Longue \u2192 Courte)</string>
+  <string name="sort_a_z">A \u2192 Z</string>
+  <string name="sort_z_a">Z \u2192 A</string>
+  <string name="sort_new_old">Récent \u2192 Ancien</string>
+  <string name="sort_old_new">Ancien \u2192 Récent</string>
+  <string name="sort_short_long">Court \u2192 Long</string>
+  <string name="sort_long_short">Long \u2192 Court</string>
   <!--Rating dialog-->
   <string name="rating_title">Vous aimez AntennaPod ?</string>
   <string name="rating_message">Nous vous serions reconnaissant de prendre un peu de temps pour noter AntennaPod.</string>
@@ -742,4 +772,8 @@
   <string name="widget_settings">Préférences des widgets</string>
   <string name="widget_create_button">Créer un widget</string>
   <string name="widget_opacity">Opacité</string>
+  <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">Paramètre mis à jour.</string>
+  <string name="on_demand_config_stream_text">Il semble que vous streamez beaucoup. Voulez-vous que la liste des épisodes montre le bouton de streaming ?</string>
+  <string name="on_demand_config_download_text">Il semble que vous téléchargez beaucoup. Voulez-vous que la liste des épisodes montre le bouton de téléchargement ?</string>
 </resources>

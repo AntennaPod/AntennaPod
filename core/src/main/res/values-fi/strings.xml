@@ -19,7 +19,6 @@
   <string name="cancel_download_label">Peruuta\nLataus</string>
   <string name="playback_history_label">Soittohistoria</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Synkronoi toisiin laitteisiin</string>
   <string name="gpodnet_auth_label">gpodder.net Kirjautuminen</string>
   <string name="episode_cache_full_title">Jaksojen välimuisti täynnä</string>
   <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa Asetuksissa.</string>
@@ -95,7 +94,6 @@
     <item quantity="one">1 päivä lataamisen jälkeen</item>
     <item quantity="other">%d päivää lataamisen jälkeen</item>
   </plurals>
-  <string name="num_selected_label">%d valittu</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Merkkaa kaikki soitetuksi</string>
   <string name="mark_all_read_msg">Merkkaa kaikki episodit soitetuiksi</string>
@@ -258,8 +256,6 @@
   <string name="ascending">Nouseva</string>
   <string name="descending">Laskeva</string>
   <string name="clear_queue_confirmation_msg">Varmista että haluat tyhjentää jonon KAIKISTA jaksoista</string>
-  <string name="sort_old_to_new">Vanhasta uuteen</string>
-  <string name="sort_new_to_old">Uudesta vanhaan</string>
   <string name="time_left_label">Aikaa jäljellä:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Lataa plugin</string>
@@ -290,7 +286,6 @@
   <string name="storage_pref">Tallennus</string>
   <string name="project_pref">Projekti</string>
   <string name="queue_label">Jono</string>
-  <string name="integrations_label">Integraatiot</string>
   <string name="automation">Automaatio</string>
   <string name="download_pref_details">Tietoja</string>
   <string name="import_export_pref">Tuo/Vie</string>
@@ -363,12 +358,8 @@
   <string name="pref_gpodnet_logout_toast">Uloskirjautuminen onnistui</string>
   <string name="pref_gpodnet_setlogin_information_title">Vaihda kirjautumistietoja</string>
   <string name="pref_gpodnet_setlogin_information_sum">Vaihda kirjautumistietoja gpodder.net tiliisi.</string>
-  <string name="pref_gpodnet_sync_changes_title">Synkronoi muutokset nyt</string>
   <string name="pref_gpodnet_sync_changes_sum">Synkronoi tilaukset ja jaksojen tilojen muutokset gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Täysi synkronointi nyt</string>
   <string name="pref_gpodnet_full_sync_sum">Synkronoi kaikki tilaukset ja jaksojen tilastot gpodder.net</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Viimeisin synkronointiyritys: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synkronointi aloitettu</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Kirjauduttu <i>%1$s</i> laitteella <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Näytä synkronointivirheet ilmoituksissa</string>
   <string name="pref_gpodnet_notifications_sum">Tämä asetus ei vaikuta autentikointivirheisiin.</string>
@@ -434,6 +425,7 @@
   <string name="search_status_no_results">Ei löydetty tuloksia</string>
   <string name="search_label">Etsi</string>
   <string name="no_results_for_query">Ei löydetty tuloksia \"%1$s\"</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">OPML tuonti</string>
   <string name="opml_reader_error">Virhe lukiessa OPML dokumenttia:</string>
@@ -640,4 +632,5 @@
   <string name="notification_channel_error">Virheet</string>
   <string name="notification_channel_error_description">Näytetään kun jotain meni vikaan, esimerkiksi jos lataus tai gpodder synkronointi epäonnistui.</string>
   <!--Widget settings-->
+  <!--On-Demand configuration-->
 </resources>

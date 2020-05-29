@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Avbryt\nNedladdning</string>
   <string name="playback_history_label">Uppspelningshistorik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Synkronisera med andra enheter</string>
   <string name="gpodnet_auth_label">Inloggning till gpodder.net</string>
   <string name="episode_cache_full_title">Episodcachen är full</string>
   <string name="episode_cache_full_message">Episodcachens gräns har nåtts. Du kan öka cachens storlek i inställningarna.</string>
@@ -86,7 +85,7 @@
   <string name="auto_download_apply_to_items_message">Den nya inställningen <i>Automatisk nedladdning</i> kommer automatiskt att appliceras på nya episoder.\nVill du även applicera det på tidigare publicerade episoder?</string>
   <string name="auto_delete_label">Automatisk episodborttagning</string>
   <string name="feed_volume_reduction">Volymreducering</string>
-  <string name="feed_volume_reduction_summary">Sänk volymen för episoder från detta flöde: \1%s</string>
+  <string name="feed_volume_reduction_summary">Sänk volymen för episoder i detta flöde: %1$s</string>
   <string name="feed_volume_reduction_off">Av</string>
   <string name="feed_volume_reduction_light">Lätt</string>
   <string name="feed_volume_reduction_heavy">Tungt</string>
@@ -106,7 +105,10 @@
     <item quantity="one">1 dag efter färdigspelad</item>
     <item quantity="other">%d dagar efter färdigspelad</item>
   </plurals>
-  <string name="num_selected_label">1%d valda</string>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d vald</item>
+    <item quantity="other">%d vald</item>
+  </plurals>
   <string name="loading_more">Laddar mer...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markera alla som spelade</string>
@@ -203,6 +205,7 @@
   <string name="deactivate_auto_download">Avaktivera automatisk nedladdning</string>
   <string name="reset_position">Nollställ uppspelningspositionen</string>
   <string name="removed_item">Borttagen</string>
+  <string name="no_items_selected">Inget valt</string>
   <!--Download messages and labels-->
   <string name="download_successful">lyckades</string>
   <string name="download_pending">Avvaktar nedladdning</string>
@@ -289,8 +292,6 @@
   <string name="ascending">Stigande</string>
   <string name="descending">Fallande</string>
   <string name="clear_queue_confirmation_msg">Bekräfta att du vill rensa kön från ALLA episoder.</string>
-  <string name="sort_old_to_new">Gammal till ny</string>
-  <string name="sort_new_to_old">Ny till gammal</string>
   <string name="time_left_label">Återstående tid:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Ladda ner tillägg</string>
@@ -325,8 +326,8 @@
   <string name="storage_sum">Automatisk episodradering, Import, Export</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Kö</string>
-  <string name="integrations_label">Integrationer</string>
-  <string name="integrations_sum">Synkronisering</string>
+  <string name="synchronization_pref">Synkronisering</string>
+  <string name="synchronization_sum">Synkronisera med andra enheter via gpodder.net</string>
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Importera/Exportera</string>
@@ -417,18 +418,22 @@
   <string name="pref_gpodnet_logout_toast">Utloggning lyckades</string>
   <string name="pref_gpodnet_setlogin_information_title">Ändra inloggningsinformation</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
-  <string name="pref_gpodnet_sync_changes_title">Synkronisera ändringar nu</string>
+  <string name="pref_gpodnet_sync_changes_title">Synkronisera nu</string>
   <string name="pref_gpodnet_sync_changes_sum">Synkronisera ändringar i prenumerationer och episodstatus med gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Full synkronisering nu</string>
+  <string name="pref_gpodnet_full_sync_title">Tvinga full synkronisering</string>
   <string name="pref_gpodnet_full_sync_sum">Synkronisera alla prenumerationer och episodstatus med gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Senaste synkroniseringsförsök: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synkronisering startad</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Inloggad som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Visa notifieringar om synkroniseringsfel</string>
   <string name="pref_gpodnet_notifications_sum">Denna inställning påverkar inte autentiseringsfel.</string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
   <string name="pref_feed_playback_speed_sum">Uppspelningshastigheten att använda för episoder i denna podcast</string>
+  <string name="pref_feed_skip">Automatisk överhoppning</string>
+  <string name="pref_feed_skip_sum">Hoppa över intron och outron.</string>
+  <string name="pref_feed_skip_ending">Hoppa över slut</string>
+  <string name="pref_feed_skip_intro">Hoppa över början</string>
+  <string name="pref_feed_skip_ending_toast">Hoppade över %d sista sekunderna</string>
+  <string name="pref_feed_skip_intro_toast">Hoppade över %d första sekunderna</string>
   <string name="pref_playback_time_respects_speed_title">Justera mediainfo till uppspelningshastigheten</string>
   <string name="pref_playback_time_respects_speed_sum">Visad position och totallängd anpassas till uppspelningshastigheten</string>
   <string name="pref_fast_forward">Snabbspolningslängd</string>
@@ -479,6 +484,8 @@
   <string name="pref_enqueue_downloaded_title">Köa Nedladdade</string>
   <string name="pref_enqueue_downloaded_summary">Lägg nedladdade episoder i uppspelningskön</string>
   <string name="media_player_builtin">Andriods inbyggda spelare</string>
+  <string name="media_player_switch_to_exoplayer">Byt till ExoPlayer</string>
+  <string name="media_player_switched_to_exoplayer">Bytte till ExpPlayer.</string>
   <string name="pref_skip_silence_title">Hoppa över tystnad i ljud</string>
   <string name="pref_videoBehavior_title">Vid avslutande av video</string>
   <string name="pref_videoBehavior_sum">Beteende när videouppspelning avslutas</string>
@@ -511,6 +518,14 @@
   <string name="search_status_no_results">Inga resultat hittades</string>
   <string name="search_label">Sök</string>
   <string name="no_results_for_query">Inga resultat hittades för \"%1$s\"</string>
+  <!--Synchronization-->
+  <string name="sync_status_started">Synkning startad</string>
+  <string name="sync_status_episodes_upload">Laddar upp episodändringar...</string>
+  <string name="sync_status_episodes_download">Laddar ner episodändringar...</string>
+  <string name="sync_status_upload_played">Laddar upp spelliststatus</string>
+  <string name="sync_status_subscriptions">Synkroniserar prenumerationer</string>
+  <string name="sync_status_success">Synkronisering lyckades</string>
+  <string name="sync_status_error">Synkronisering misslyckades</string>
   <!--import and export-->
   <string name="import_export_summary">Flytta prenumerationer och kö till annan enhet</string>
   <string name="database">Databas</string>
@@ -530,6 +545,7 @@
   <string name="html_export_label">HTML export</string>
   <string name="database_export_label">Databasexport</string>
   <string name="database_import_label">Databasimport</string>
+  <string name="database_import_warning">Importering av en databas kommer att ersätta alla dina befintliga prenumerationer och spelhistoriken. Du bör exportera din nuvarande databas som en backup. Vill du ersätta den?</string>
   <string name="please_wait">Vänta...</string>
   <string name="export_error_label">Exporteringsfel</string>
   <string name="export_success_title">Exporten lyckades</string>
@@ -621,16 +637,23 @@
   <string name="subscribe_label">Prenumerera</string>
   <string name="subscribing_label">Prenumererar...</string>
   <string name="preview_episode">Förhandsvisning</string>
+  <string name="stop_preview">Stoppa förhandsvisning</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Backa</string>
   <string name="fast_forward_label">Snabbspola</string>
+  <string name="increase_speed">Öka hastigheten</string>
+  <string name="decrease_speed">Sänk hastigheten</string>
   <string name="media_type_audio_label">Ljud</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Navigera upp</string>
   <string name="status_downloading_label">Episoden laddas ner</string>
   <string name="in_queue_label">Episoden är i kön</string>
+  <string name="is_favorite_label">Episoden är markerad som favorit</string>
   <string name="drag_handle_content_description">Dra för att ändra dess position</string>
   <string name="load_next_page_label">Ladda nästa sida</string>
+  <string name="switch_pages">Byt sida</string>
+  <string name="position">Position: %1$s</string>
+  <string name="apply_action">Utför åtgärd</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autentisering</string>
   <string name="authentication_descr">Byt ditt användarnamn och lösenord för den här podcasten och dess episoder.</string>
@@ -656,6 +679,7 @@
   <string name="browse_gpoddernet_label">Bläddra på gpodder.net</string>
   <string name="discover">Upptäck</string>
   <string name="discover_more">mer »</string>
+  <string name="search_powered_by">Sökt med %1$s</string>
   <string name="filter">Filtrera</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alla</string>
@@ -683,6 +707,12 @@
   <string name="sort_date_old_new">Datum (Gammal \u2192 Ny)</string>
   <string name="sort_duration_short_long">Längd (Kort \u2192 Lång)</string>
   <string name="sort_duration_long_short">Längd (Lång \u2192 Kort)</string>
+  <string name="sort_a_z">A \u2192 Ö</string>
+  <string name="sort_z_a">Ö \u2192 A</string>
+  <string name="sort_new_old">Ny \u2192 Gammal</string>
+  <string name="sort_old_new">Gammal \u2192 Ny</string>
+  <string name="sort_short_long">Kort \u2192 Lång</string>
+  <string name="sort_long_short">Kort \u2192 Kort</string>
   <!--Rating dialog-->
   <string name="rating_title">Gillar du AntennaPod?</string>
   <string name="rating_message">Vi skulle uppskatta om du tog dig tid att betygsätta AntennaPod.</string>
@@ -742,4 +772,8 @@
   <string name="widget_settings">Widgetinställningar</string>
   <string name="widget_create_button">Skapa widget</string>
   <string name="widget_opacity">Opacitet</string>
+  <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">Inställningen sparad.</string>
+  <string name="on_demand_config_stream_text">Det verkar som att du strömmar mycket. Vill du att episodlistan ska visa strömmningsknapparna?</string>
+  <string name="on_demand_config_download_text">Det verkar som at du laddar ner mycket. Vill du att episodlistan ska visa nedladdningsknapparna?</string>
 </resources>

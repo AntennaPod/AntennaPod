@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Отменить загрузку</string>
   <string name="playback_history_label">Архив</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Синхронизация с другими устройствами</string>
   <string name="gpodnet_auth_label">Войти на gpodder.net</string>
   <string name="episode_cache_full_title">Кэш выпусков заполнен</string>
   <string name="episode_cache_full_message">Достигнут предел кэша выпусков. Объём кэша можно увеличить в Настройках.</string>
@@ -86,7 +85,6 @@
   <string name="auto_download_apply_to_items_message">Новые настройки <i>Автозагрузки</i> будут автоматически применены к новым выпускам. \nХотите ли вы применить их к ранее опубликованным выпускам?</string>
   <string name="auto_delete_label">Автоматически удалить выпуск</string>
   <string name="feed_volume_reduction">Уменьшение громкости</string>
-  <string name="feed_volume_reduction_summary">Уменьшать громкость выпусков этого канала: \%s</string>
   <string name="feed_volume_reduction_off">Выключено</string>
   <string name="feed_volume_reduction_light">Слабое</string>
   <string name="feed_volume_reduction_heavy">Сильное</string>
@@ -110,7 +108,6 @@
     <item quantity="many">%d дней после прослушивания</item>
     <item quantity="other">%d дней после прослушивания</item>
   </plurals>
-  <string name="num_selected_label">выбрано: %d</string>
   <string name="loading_more">Загружается...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Отметить как прослушанное</string>
@@ -307,8 +304,6 @@
   <string name="ascending">По возрастанию</string>
   <string name="descending">По убыванию</string>
   <string name="clear_queue_confirmation_msg">Подтвердите, что хотите удалить из очереди все выпуски.</string>
-  <string name="sort_old_to_new">От старых к новым</string>
-  <string name="sort_new_to_old">От новых к старым</string>
   <string name="time_left_label">Осталось времени:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
@@ -343,8 +338,6 @@
   <string name="storage_sum">Автоматическое удаление выпусков, импорт, экспорт</string>
   <string name="project_pref">Проект</string>
   <string name="queue_label">Очередь</string>
-  <string name="integrations_label">Интеграция</string>
-  <string name="integrations_sum">Синхронизация</string>
   <string name="automation">Автоматизация</string>
   <string name="download_pref_details">Подробнее</string>
   <string name="import_export_pref">Импорт/экспорт</string>
@@ -435,12 +428,8 @@
   <string name="pref_gpodnet_logout_toast">Выход произведён успешно</string>
   <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
   <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Синхронизировать изменения</string>
   <string name="pref_gpodnet_sync_changes_sum">Синхронизировать изменения подписок и выпусков при помощи gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Синхронизировать полностью</string>
   <string name="pref_gpodnet_full_sync_sum">Синхронизировать состояния всех подписок и выпусков при помощи gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Предыдущая попытка синхронизации: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Синхронизация запущена</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Вход как <i>%1$s</i> с устройства <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Показывать уведомления об ошибках синхронизации</string>
   <string name="pref_gpodnet_notifications_sum">Не затрагивает ошибки авторизации.</string>
@@ -529,6 +518,7 @@
   <string name="search_status_no_results">Ничего не найдено</string>
   <string name="search_label">Поиск</string>
   <string name="no_results_for_query">По запросу «%1$s» ничего не найдено</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="import_export_summary">Перенести подписку и очередь на другое устройство</string>
   <string name="database">База данных</string>
@@ -768,4 +758,5 @@
   <string name="widget_settings">Настройки виджета</string>
   <string name="widget_create_button">Создать виджет</string>
   <string name="widget_opacity">Непрозрачность</string>
+  <!--On-Demand configuration-->
 </resources>

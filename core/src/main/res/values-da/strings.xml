@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Annuller\noverførsel</string>
   <string name="playback_history_label">Afspilningshistorik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Synkronisér med andre enheder</string>
   <string name="gpodnet_auth_label">Login til gpodder.net</string>
   <string name="episode_cache_full_title">Mellemlageret for udsendelser er fuldt</string>
   <string name="episode_cache_full_message">Der er ikke mere plads i mellemlageret for udsendelser. Du kan øge størrelsen på mellemlageret i Indstillinger.</string>
@@ -86,7 +85,6 @@
   <string name="auto_download_apply_to_items_message">Den nye <i>Automatisk overførsel</i>-indstilling vil automatisk blive anvendt på nye udsendelser.\nVil du også anvende den på tidligere udsendelser?</string>
   <string name="auto_delete_label">Slet udsendelser automatisk</string>
   <string name="feed_volume_reduction">Lydstyrkereduktion</string>
-  <string name="feed_volume_reduction_summary">Skru ned for lydstyrken for udsendelser i dette feed: \%s</string>
   <string name="feed_volume_reduction_off">Fra</string>
   <string name="feed_volume_reduction_light">Lidt</string>
   <string name="feed_volume_reduction_heavy">Meget</string>
@@ -106,7 +104,6 @@
     <item quantity="one">1 dag efter færdig afspilning</item>
     <item quantity="other">%d dage efter færdig afspilning</item>
   </plurals>
-  <string name="num_selected_label">%d valgt</string>
   <string name="loading_more">Indlæser mere ...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som afspillet</string>
@@ -283,8 +280,6 @@
   <string name="ascending">Stigende</string>
   <string name="descending">Faldende</string>
   <string name="clear_queue_confirmation_msg">Bekræft venligst at du vil rydde ALLE udsendelser fra køen</string>
-  <string name="sort_old_to_new">Gamle til nye</string>
-  <string name="sort_new_to_old">Nye til gamle</string>
   <string name="time_left_label">Tid tilbage:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent plugin</string>
@@ -310,7 +305,6 @@
   <string name="storage_pref">Lagring</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Kø</string>
-  <string name="integrations_label">Integrerede tjenester</string>
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Import/eksport</string>
@@ -386,12 +380,8 @@
   <string name="pref_gpodnet_logout_toast">Loggede ud</string>
   <string name="pref_gpodnet_setlogin_information_title">Ændr loginoplysninger</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ændr din gpodder.net-kontos loginoplysninger.</string>
-  <string name="pref_gpodnet_sync_changes_title">Synkroniser ændringer nu</string>
   <string name="pref_gpodnet_sync_changes_sum">Synkroniser tilstandsændringer for abonnementer og udsendelser med gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Fuld synkronisering nu</string>
   <string name="pref_gpodnet_full_sync_sum">Synkroniser tilstande for alle abonnementer og udsendelser med gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Sidste synkroniseringsforsøg: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synkronisering startet</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logget ind som <i>%1$s</i> med enheden <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Vis notifikationer med synkroniseringsfejl</string>
   <string name="pref_gpodnet_notifications_sum">Denne indstilling vedrører ikke godkendelsesfejl.</string>
@@ -463,6 +453,7 @@
   <string name="search_status_no_results">Fandt ingen resultater</string>
   <string name="search_label">Søg</string>
   <string name="no_results_for_query">Ingen resultater fundet for \"%1$s\"</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">OPML-import</string>
   <string name="opml_reader_error">Der opstod en fejl, da OPML-dokumentet blev forsøgt indlæst</string>
@@ -664,4 +655,5 @@
   <string name="notification_channel_error">Fejl</string>
   <!--Widget settings-->
   <string name="widget_opacity">Ugennemsigtighed</string>
+  <!--On-Demand configuration-->
 </resources>

@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Annulla\nil download</string>
   <string name="playback_history_label">Cronologia riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Sincronizza con altri dispositivi</string>
   <string name="gpodnet_auth_label">Accesso a gpodder.net</string>
   <string name="episode_cache_full_title">Cache degli episodi piena</string>
   <string name="episode_cache_full_message">Lo spazio di memoria della cache degli episodi è esaurito. Puoi aumentarlo nelle Impostazioni</string>
@@ -86,7 +85,6 @@
   <string name="auto_download_apply_to_items_message">L\'opzione <i>Download automatico</i> verrà applicata ai nuovi episodi.\nVuoi applicarla anche agli episodi precedenti?</string>
   <string name="auto_delete_label">Elimina episodi automaticamente</string>
   <string name="feed_volume_reduction">Riduzione del volume</string>
-  <string name="feed_volume_reduction_summary">Riduci il volume degli episodi di questo feed: \%s</string>
   <string name="feed_volume_reduction_off">Off</string>
   <string name="feed_volume_reduction_light">Leggero</string>
   <string name="feed_volume_reduction_heavy">Deciso</string>
@@ -106,7 +104,6 @@
     <item quantity="one">1 giorno dopo il completamento</item>
     <item quantity="other">%d giorni dopo il completamento</item>
   </plurals>
-  <string name="num_selected_label">%d selezionati</string>
   <string name="loading_more">Caricamento successivi...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Segna tutti come riprodotti</string>
@@ -289,8 +286,6 @@
   <string name="ascending">In ordine crescente</string>
   <string name="descending">In ordine decrescente</string>
   <string name="clear_queue_confirmation_msg">Per favore conferma che vuoi rimuovere dalla coda TUTTI gli episodi in essa presenti.</string>
-  <string name="sort_old_to_new">Dal meno recente</string>
-  <string name="sort_new_to_old">Dal più recente</string>
   <string name="time_left_label">Tempo residuo:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Scarica plugin</string>
@@ -325,8 +320,6 @@
   <string name="storage_sum">Eliminazione episodi, import, export</string>
   <string name="project_pref">Progetto</string>
   <string name="queue_label">Coda</string>
-  <string name="integrations_label">Integrazioni</string>
-  <string name="integrations_sum">Sincronizzazione</string>
   <string name="automation">Automazione</string>
   <string name="download_pref_details">Dettagli</string>
   <string name="import_export_pref">Importa/Esporta</string>
@@ -417,12 +410,8 @@
   <string name="pref_gpodnet_logout_toast">Logout effettuato</string>
   <string name="pref_gpodnet_setlogin_information_title">Cambia le informazioni di login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
-  <string name="pref_gpodnet_sync_changes_title">Esegui sincronizzazione delle modifiche</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronizza l\'iscrizione e lo stato dell\'episodio con gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Esegui sincronizzazione completa</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronizza le iscrizioni e lo stato di tutti gli episodi con gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Ultimo tentativo: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Sincronizzazione avviata</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Accesso come <i>%1$s</i> con il dispositivo <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Notifica gli errori di sincronizzazione</string>
   <string name="pref_gpodnet_notifications_sum">Non si applica agli errori di autenticazione.</string>
@@ -511,6 +500,7 @@
   <string name="search_status_no_results">Nessun risultato trovato</string>
   <string name="search_label">Ricerca</string>
   <string name="no_results_for_query">Nessun risultato trovato per \"%1$s\"</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="import_export_summary">Sposta le iscrizioni e la coda su un altro dispositivo.</string>
   <string name="database">Database</string>
@@ -742,4 +732,5 @@
   <string name="widget_settings">Impostazioni widget</string>
   <string name="widget_create_button">Crea widget</string>
   <string name="widget_opacity">Opacità</string>
+  <!--On-Demand configuration-->
 </resources>

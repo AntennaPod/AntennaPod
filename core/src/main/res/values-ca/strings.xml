@@ -19,7 +19,6 @@
   <string name="cancel_download_label">Cancel·la\nBaixada</string>
   <string name="playback_history_label">Historial de reproducció</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Sincronitzar amb altres dispositius</string>
   <string name="gpodnet_auth_label">Inici de sessió a gpodder.net</string>
   <string name="episode_cache_full_title">La memòria cau d\'episodis és plena</string>
   <string name="episode_cache_full_message">S\'ha arribat al límit de la memòria cau d\'episodis. Pots incrementar-ne la capacitat a la configuració.</string>
@@ -91,7 +90,6 @@
     <item quantity="one">1 dia després d\'acabar</item>
     <item quantity="other">%d dies després d\'acabar</item>
   </plurals>
-  <string name="num_selected_label">%d sel·leccionat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
   <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
@@ -234,7 +232,6 @@
   <string name="storage_pref">Emmagatzematge</string>
   <string name="project_pref">Projecte</string>
   <string name="queue_label">Cua</string>
-  <string name="integrations_label">Integracions</string>
   <string name="automation">Automatització</string>
   <string name="download_pref_details">Detalls</string>
   <string name="import_export_pref">Importa/Exporta</string>
@@ -304,12 +301,8 @@
   <string name="pref_gpodnet_logout_toast">Heu sortit de la sessió</string>
   <string name="pref_gpodnet_setlogin_information_title">Dades d\'inici de sessió</string>
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Sincronitza els canvis ara</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronitza amb gpodder.net les subscripcions i els estats dels episodis.</string>
-  <string name="pref_gpodnet_full_sync_title">Sincronitza per complet ara mateix</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronitza amb gpodder.net totes les subscripcions i els estats dels episodis.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Darrer intent de sincronització: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Sincronització en marxa</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Connectat com a <i>%1$s</i> amb el dispositiu <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Notifica els errors de sincronització</string>
   <string name="pref_gpodnet_notifications_sum">Aquest paràmetre no s\'aplica als errors d\'autenticació. </string>
@@ -357,6 +350,7 @@
   <string name="search_status_no_results">No s\'ha trobat cap resultat</string>
   <string name="search_label">Cerca</string>
   <string name="no_results_for_query">No s\'han trobat resultats per \"%1$s\"</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">Importació d\'OPML</string>
   <string name="opml_reader_error">S\'ha produït un error en llegir el document OPML: </string>
@@ -558,4 +552,5 @@
   <string name="notification_channel_error">Errors</string>
   <string name="notification_channel_error_description">Mostrar si quelcom va malament, per exemple si una baixada o sincronització fallen.</string>
   <!--Widget settings-->
+  <!--On-Demand configuration-->
 </resources>

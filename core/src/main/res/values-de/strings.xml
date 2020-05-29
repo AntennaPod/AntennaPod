@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Download abbrechen</string>
   <string name="playback_history_label">Zuletzt gespielt</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Mit anderen Geräten synchronisieren</string>
   <string name="gpodnet_auth_label">gpodder.net Anmeldung</string>
   <string name="episode_cache_full_title">Episodenspeicher voll</string>
   <string name="episode_cache_full_message">Der Episodenspeicher ist voll. Du kannst die Größe des Episodenspeichers in den Einstellungen erhöhen.</string>
@@ -86,7 +85,7 @@
   <string name="auto_download_apply_to_items_message">Die neue <i>Auto-Download</i>-Einstellung wird automatisch auf neue Episoden angewandt.\nMöchtest du sie auch auf schon veröffentlichte Episoden anwenden?</string>
   <string name="auto_delete_label">Episode automatisch löschen</string>
   <string name="feed_volume_reduction">Lautstärke reduzieren</string>
-  <string name="feed_volume_reduction_summary">Lautstärke reduzieren für Episoden aus diesem Feed: %s</string>
+  <string name="feed_volume_reduction_summary">Lautstärke reduzieren für Episoden aus diesem Podcast: %1$s</string>
   <string name="feed_volume_reduction_off">Aus</string>
   <string name="feed_volume_reduction_light">Schwach</string>
   <string name="feed_volume_reduction_heavy">Stark</string>
@@ -106,7 +105,10 @@
     <item quantity="one">1 Tag nachdem fertig gespielt</item>
     <item quantity="other">%d Tage nachdem fertig gespielt</item>
   </plurals>
-  <string name="num_selected_label">%d ausgewählt</string>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d ausgewählt</item>
+    <item quantity="other">%d ausgewählt</item>
+  </plurals>
   <string name="loading_more">Lade mehr...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Alle als gespielt markieren</string>
@@ -203,6 +205,7 @@
   <string name="deactivate_auto_download">Automatischen Download deaktivieren</string>
   <string name="reset_position">Wiedergabe-Position zurücksetzen</string>
   <string name="removed_item">Element entfernt</string>
+  <string name="no_items_selected">Keine Einträge ausgewählt</string>
   <!--Download messages and labels-->
   <string name="download_successful">erfolgreich</string>
   <string name="download_pending">Download anstehend</string>
@@ -266,6 +269,7 @@
   <string name="player_buffering_msg">Puffert</string>
   <string name="player_go_to_picture_in_picture">Bild-in-Bild-Modus</string>
   <string name="unknown_media_key">AntennaPod - Unbekannte Medientaste: %1$d</string>
+  <string name="error_file_not_found">Datei nicht gefunden</string>
   <!--Queue operations-->
   <string name="lock_queue">Warteschlange sperren</string>
   <string name="unlock_queue">Warteschlange entsperren</string>
@@ -288,8 +292,6 @@
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
   <string name="clear_queue_confirmation_msg">Bitte bestätige, dass ALLE Episoden aus der Warteschlange entfernt werden sollen</string>
-  <string name="sort_old_to_new">Alt zu neu</string>
-  <string name="sort_new_to_old">Neu zu alt</string>
   <string name="time_left_label">Zeit übrig:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin herunterladen</string>
@@ -324,8 +326,8 @@
   <string name="storage_sum">Automatisches Löschen von Episoden, Importieren, Exportieren</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Warteschlange</string>
-  <string name="integrations_label">Einbindungen</string>
-  <string name="integrations_sum">Synchronisierung</string>
+  <string name="synchronization_pref">Synchronisation</string>
+  <string name="synchronization_sum">Synchronisiere über gpodder.net mit anderen Geräten</string>
   <string name="automation">Automatisierung</string>
   <string name="download_pref_details">Details</string>
   <string name="import_export_pref">Import/Export</string>
@@ -416,18 +418,22 @@
   <string name="pref_gpodnet_logout_toast">Abmeldung war erfolgreich</string>
   <string name="pref_gpodnet_setlogin_information_title">Anmeldeinformationen ändern</string>
   <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net Profils</string>
-  <string name="pref_gpodnet_sync_changes_title">Jetzt Änderungen synchronisieren</string>
+  <string name="pref_gpodnet_sync_changes_title">Jetzt synchronisieren</string>
   <string name="pref_gpodnet_sync_changes_sum">Änderungen an Abonnement- und Episoden-Status mit gpodder.net synchronisieren.</string>
-  <string name="pref_gpodnet_full_sync_title">Jetzt komplett synchronisieren</string>
+  <string name="pref_gpodnet_full_sync_title">Komplette Synchronisation erzwingen</string>
   <string name="pref_gpodnet_full_sync_sum">Kompletten Abonnement- und Episoden-Status mit gpodder.net synchronisieren.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Letzter Synchronisierungsversuch: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synchronisation gestartet</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Eingeloggt als <i>%1$s</i> mit dem Gerät <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Zeige Benachrichtungen bei Synchronisierungsfehlern</string>
   <string name="pref_gpodnet_notifications_sum">Diese Einstellung gilt nicht für Authentifizierungsfehler.</string>
   <string name="pref_playback_speed_title">Wiedergabegeschwindigkeiten</string>
   <string name="pref_playback_speed_sum">Lege die verfügbaren Werte für die Veränderung der Wiedergabeschwindigkeit fest</string>
   <string name="pref_feed_playback_speed_sum">Abspielgeschwindigkeit für Episoden dieses Podcasts</string>
+  <string name="pref_feed_skip">Automatisches Überspringen</string>
+  <string name="pref_feed_skip_sum">Einleitung und Ende überspringen.</string>
+  <string name="pref_feed_skip_ending">Ende überspringen</string>
+  <string name="pref_feed_skip_intro">Anfang überspringen</string>
+  <string name="pref_feed_skip_ending_toast">Letzte %d Sekunden übersprungen</string>
+  <string name="pref_feed_skip_intro_toast">Erste %d Sekunden übersprungen</string>
   <string name="pref_playback_time_respects_speed_title">Medieninfo an Abspielgeschwindigkeit anpassen</string>
   <string name="pref_playback_time_respects_speed_sum">Abspielposition und Dauer werden auf Abspielgeschwindigkeit angepasst</string>
   <string name="pref_fast_forward">Vorspulzeit</string>
@@ -448,6 +454,8 @@
   <string name="pref_lockscreen_background_sum">Verwende das aktuelle Episodenbild als Lockscreen-Hintergrund. Es wird als Nebeneffekt auch in anderen Apps gezeigt.</string>
   <string name="pref_showDownloadReport_title">Zeige Download-Bericht</string>
   <string name="pref_showDownloadReport_sum">Wenn Downloads fehlschlagen, erstelle einen Bericht, der die Details des Fehlschlages beschreibt.</string>
+  <string name="pref_showAutoDownloadReport_title">Zeige Bericht über Automatische Downloads</string>
+  <string name="pref_showAutoDownloadReport_sum">Zeige eine Benachrichtigung für automatisch heruntergeladene Episoden.</string>
   <string name="pref_expand_notify_unsupport_toast">Android-Versionen vor 4.1 unterstützen keine erweiterten Benachrichtigungen.</string>
   <string name="pref_enqueue_location_title">Position beim Einreihen</string>
   <string name="pref_enqueue_location_sum">Füge Episoden %1$s hinzu</string>
@@ -476,6 +484,8 @@
   <string name="pref_enqueue_downloaded_title">Downloads einreihen</string>
   <string name="pref_enqueue_downloaded_summary">Füge heruntergeladene Episoden zur Warteschlange hinzu</string>
   <string name="media_player_builtin">Androids eingebauter Abspieler</string>
+  <string name="media_player_switch_to_exoplayer">Zu ExoPlayer wechseln</string>
+  <string name="media_player_switched_to_exoplayer">Zu ExoPlayer gewechselt.</string>
   <string name="pref_skip_silence_title">Stille im Ton überspringen</string>
   <string name="pref_videoBehavior_title">Beim Beenden von Videos</string>
   <string name="pref_videoBehavior_sum">Verhalten beim Verlassen der Video-Wiedergabe</string>
@@ -508,6 +518,14 @@
   <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
   <string name="search_label">Suchen</string>
   <string name="no_results_for_query">Es wurden keine Ergebnisse für \"%1$s\" gefunden</string>
+  <!--Synchronization-->
+  <string name="sync_status_started">Synchronisation gestartet</string>
+  <string name="sync_status_episodes_upload">Lade Episoden-Änderungen hoch…</string>
+  <string name="sync_status_episodes_download">Lade Episoden-Änderungen herunter…</string>
+  <string name="sync_status_upload_played">Lade Abspiel-Status hoch…</string>
+  <string name="sync_status_subscriptions">Synchronisiere Abonnements…</string>
+  <string name="sync_status_success">Synchronisation erfolgreich</string>
+  <string name="sync_status_error">Synchronisation fehlgeschlagen</string>
   <!--import and export-->
   <string name="import_export_summary">Abonnements und Warteschlange auf ein anderes Gerät übertragen</string>
   <string name="database">Datenbank</string>
@@ -527,6 +545,7 @@
   <string name="html_export_label">HTML Export</string>
   <string name="database_export_label">Datenbank exportieren</string>
   <string name="database_import_label">Datenbank importieren</string>
+  <string name="database_import_warning">Das Importieren einer Datenbank ersetzt alle Abonnements und abgespielte Episoden. Ein Export als Backup wird empfohlen. Möchtest du die Datenbank wirklich ersetzen?</string>
   <string name="please_wait">Bitte warten...</string>
   <string name="export_error_label">Exportfehler</string>
   <string name="export_success_title">Export erfolgreich</string>
@@ -618,16 +637,23 @@
   <string name="subscribe_label">Abonnieren</string>
   <string name="subscribing_label">Abonniere…</string>
   <string name="preview_episode">Vorschau</string>
+  <string name="stop_preview">Vorschau stoppen</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Zurückspulen</string>
   <string name="fast_forward_label">Vorspulen</string>
+  <string name="increase_speed">Geschwindigkeit erhöhen</string>
+  <string name="decrease_speed">Geschwindigkeit reduzieren</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Nach oben navigieren</string>
   <string name="status_downloading_label">Episode wird heruntergeladen</string>
   <string name="in_queue_label">Episode befindet sich in der Warteschlange</string>
+  <string name="is_favorite_label">Episode ist als Favorit markiert</string>
   <string name="drag_handle_content_description">Ziehe, um die Position dieses Objekts zu verändern</string>
   <string name="load_next_page_label">Nächste Seite laden</string>
+  <string name="switch_pages">Seiten wechseln</string>
+  <string name="position">Position: %1$s</string>
+  <string name="apply_action">Aktion anwenden</string>
   <!--Feed information screen-->
   <string name="authentication_label">Authentifizierung</string>
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
@@ -648,10 +674,12 @@
   <string name="search_podcast_hint">Podcast suchen…</string>
   <string name="search_itunes_label">iTunes durchsuchen</string>
   <string name="search_fyyd_label">fyyd durchsuchen</string>
+  <string name="advanced">Fortgeschritten</string>
   <string name="add_podcast_by_url">Podcast über URL hinzufügen</string>
   <string name="browse_gpoddernet_label">gpodder.net durchsuchen</string>
   <string name="discover">Entdecken</string>
   <string name="discover_more">mehr »</string>
+  <string name="search_powered_by">Suche bereitgestellt durch %1$s</string>
   <string name="filter">Filtern</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
@@ -679,6 +707,12 @@
   <string name="sort_date_old_new">Datum (alt \u2192 neu)</string>
   <string name="sort_duration_short_long">Dauer (kurz \u2192 lang)</string>
   <string name="sort_duration_long_short">Dauer (lang \u2192 kurz)</string>
+  <string name="sort_a_z">A \u2192 Z</string>
+  <string name="sort_z_a">Z \u2192 A</string>
+  <string name="sort_new_old">Neu \u2192 Alt</string>
+  <string name="sort_old_new">Alt \u2192 Neu</string>
+  <string name="sort_short_long">Kurz \u2192 Lang</string>
+  <string name="sort_long_short">Lang \u2192 Kurz</string>
   <!--Rating dialog-->
   <string name="rating_title">Gefällt dir AntennaPod?</string>
   <string name="rating_message">Wir würden uns freuen, wenn du dir kurz die Zeit nimmst, AntennaPod zu bewerten.</string>
@@ -732,8 +766,14 @@
   <string name="notification_channel_playing_description">Erlaubt es, die Wiedergabe zu steuern. Dies ist die Hauptbenachrichtigung, die du siehst, während ein Podcast abgespielt wird.</string>
   <string name="notification_channel_error">Fehler</string>
   <string name="notification_channel_error_description">Wird gezeigt, wenn etwas schief gegangen ist, etwa wenn das Herunterladen oder die gpodder-Synchronisierung fehlschlägt.</string>
+  <string name="notification_channel_auto_download">Automatische Downloads</string>
+  <string name="notification_channel_episode_auto_download">Wird angezeigt, wenn Episoden automatisch heruntergeladen worden sind.</string>
   <!--Widget settings-->
   <string name="widget_settings">Widget-Einstellungen</string>
   <string name="widget_create_button">Widget erstellen</string>
   <string name="widget_opacity">Deckkraft</string>
+  <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">Einstellung erfolgreich aktualisiert.</string>
+  <string name="on_demand_config_stream_text">Es sieht so aus als würdest du viel streamen. Möchtest du in Listen den Streamen-Button anzeigen?</string>
+  <string name="on_demand_config_download_text">Es sieht so aus als würdest du viel herunterladen. Möchtest du in Listen den Herunterladen-Button anzeigen?</string>
 </resources>

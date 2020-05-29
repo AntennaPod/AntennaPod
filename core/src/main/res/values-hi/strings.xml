@@ -19,7 +19,6 @@
   <string name="cancel_download_label">डाउनलोड रद्द करें</string>
   <string name="playback_history_label">प्लेबैक इतिहास</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">अन्य उपकरण के साथ समक्रमिक करें</string>
   <string name="gpodnet_auth_label">gpodder.net लॉगिन</string>
   <string name="episode_cache_full_title">एपिसोड कैश भर गया है</string>
   <string name="episode_cache_full_message">एपिसोड कैश सीमा तक पहुंच गया है। आप सेटिंग में कैश का आकार बढ़ा सकते हैं।</string>
@@ -267,6 +266,7 @@
   <!--Search-->
   <string name="search_status_no_results">कोई परिणाम नहीं मिले</string>
   <string name="search_label">खोज</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">OPML आयात</string>
   <string name="select_all_label">सभी का चयन करें</string>
@@ -336,4 +336,5 @@
   <!--Casting-->
   <!--Notification channels-->
   <!--Widget settings-->
+  <!--On-Demand configuration-->
 </resources>

@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Atualizar Assinaturas</string>
+  <string name="feeds_label">Podcasts</string>
   <string name="statistics_label">Estatísticas</string>
   <string name="add_feed_label">Adicionar Podcast</string>
   <string name="episodes_label">Episódios</string>
@@ -19,10 +20,10 @@
   <string name="cancel_download_label">Cancelar\nDownload</string>
   <string name="playback_history_label">Histórico de reprodução</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Sincronizar com outros dispositivos</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <string name="episode_cache_full_title">Cache de episódios cheio</string>
   <string name="episode_cache_full_message">O limite de cache de episódios foi alcançado. Você pode aumentar o tamanho do cache em Configurações.</string>
+  <string name="download_statistics_label">Downloads</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo total de podcasts reproduzidos:</string>
   <string name="statistics_details_dialog">%1$d de %2$d episódios iniciados.\n\nReproduzidos %3$s de %4$s.</string>
@@ -79,6 +80,8 @@
   <string name="auto_download_apply_to_items_title">Aplicar aos episódios anteriores</string>
   <string name="auto_download_apply_to_items_message">A nova configuração de <i>Download Automático</i> será aplicada automaticamente a novos episódios.\nVocê deseja aplicá-la aos episódios anteriores?</string>
   <string name="auto_delete_label">Apagar episódio automaticamente</string>
+  <string name="feed_volume_reduction_light">Leve</string>
+  <string name="feed_volume_reduction_heavy">Forte</string>
   <string name="parallel_downloads_suffix">\u0020 downloads paralelos</string>
   <string name="feed_auto_download_global">Padrão global</string>
   <string name="feed_auto_download_always">Sempre</string>
@@ -91,11 +94,15 @@
     <item quantity="one">1 dia depois de concluído</item>
     <item quantity="other">%d dias depois de concluído</item>
   </plurals>
+  <string name="loading_more">Carregando...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todos como reproduzidos</string>
   <string name="mark_all_read_msg">Marcar todos Episódios como reproduzidos</string>
   <string name="mark_all_read_confirmation_msg">Por favor, confirme que você deseja marcar todos os episódios como já reproduzidos.</string>
   <string name="mark_all_read_feed_confirmation_msg">Favor confirmar que deseja marcar todos os episódios nesse podcast como já ouvidos.</string>
+  <string name="remove_all_new_flags_label">Remover todas as etiquetas de \"novo\"</string>
+  <string name="removed_all_new_flags_msg">Todas as etiquetas de \"novo\" foram removidas</string>
+  <string name="remove_all_new_flags_confirmation_msg">Por favor confirme que você deseja remover as etiquetas de \"novo\" de todos os episódios.</string>
   <string name="show_info_label">Mostrar informação</string>
   <string name="show_feed_settings_label">Exibir configurações do podcast</string>
   <string name="feed_info_label">Informações do podcast</string>
@@ -106,11 +113,14 @@
   <string name="share_link_label">Compartilhar a URL do episódio</string>
   <string name="share_link_with_position_label">Compartilhar a URL do episódio com posição</string>
   <string name="share_file_label">Compartilhar arquivo</string>
+  <string name="share_website_url_label">Compartilhar link do site</string>
+  <string name="share_feed_url_label">Compartilhar link do podcast</string>
   <string name="share_item_url_label">Compartilhar a URL do arquivo de mídia</string>
   <string name="share_item_url_with_position_label">Compartilhar a URL do arquivo de mídia com posição</string>
   <string name="feed_delete_confirmation_msg">Confirme se deseja deletar o podcast \"%1$s\" e todos seus episódios (incluindo os baixados).</string>
   <string name="feed_remover_msg">Removendo podcast</string>
   <string name="load_complete_feed">Atualizar podcast completamente</string>
+  <string name="multi_select">Seleção múltipla</string>
   <string name="select_all_above">Selecionar tudo acima</string>
   <string name="select_all_below">Selecionar tudo abaixo</string>
   <string name="hide_unplayed_episodes_label">Não reproduzido</string>
@@ -141,13 +151,18 @@
     <item quantity="one">%d episódio apagado.</item>
     <item quantity="other">%d episódios apagados.</item>
   </plurals>
+  <string name="remove_new_flag_label">Remover etiqueta de \"novo\"</string>
+  <string name="removed_new_flag_label">Etiqueta de \"novo\" removida</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
   <string name="marked_as_read_label">Marcado como reproduzido</string>
+  <string name="mark_read_no_media_label">Marcar como reproduzido</string>
+  <string name="marked_as_read_no_media_label">Marcado como reproduzido</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episódio marcado como reproduzido.</item>
     <item quantity="other">%d episódios marcados como reproduzidos.</item>
   </plurals>
   <string name="mark_unread_label">Marcar como não reproduzido</string>
+  <string name="mark_unread_label_no_media">Marcar como não reproduzido</string>
   <plurals name="marked_unread_batch_label">
     <item quantity="one">%d episódio marcado como não reproduzido.</item>
     <item quantity="other">%d episódios marcados como não reproduzidos.</item>
@@ -260,7 +275,6 @@
   <string name="storage_pref">Armazenamento</string>
   <string name="project_pref">Projeto</string>
   <string name="queue_label">Fila</string>
-  <string name="integrations_label">Integrações</string>
   <string name="automation">Automação</string>
   <string name="download_pref_details">Detalhes</string>
   <string name="import_export_pref">Importar/Exportar</string>
@@ -330,12 +344,8 @@
   <string name="pref_gpodnet_logout_toast">Saiu com sucesso</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informações de login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Sincronizar alterações agora</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronizar as alterações de estado da inscrição e de episódios com o gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Sincronização total agora</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronizar os estados das inscrições e episódios com o gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Última tentativa de sincronização: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Sincronização iniciada</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Entrou como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Exibir notificações de erros de sincronismo</string>
   <string name="pref_gpodnet_notifications_sum">Essa configuração não se aplica a erros de autenticação.</string>
@@ -397,6 +407,7 @@
   <string name="search_status_no_results">Nenhum resultado encontrado</string>
   <string name="search_label">Pesquisar</string>
   <string name="no_results_for_query">Nenhum resultado para \"%1$s\"</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">Importação de OPML</string>
   <string name="opml_reader_error">Um erro ocorreu ao ler o documento OPML:</string>
@@ -596,4 +607,5 @@
   <string name="notification_channel_error">Erros</string>
   <string name="notification_channel_error_description">Exibido caso algo dê errado, por exemplo se houver falha no download ou na sincronização com o gpodder.</string>
   <!--Widget settings-->
+  <!--On-Demand configuration-->
 </resources>

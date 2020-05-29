@@ -19,7 +19,6 @@
   <string name="cancel_download_label">Скасувати\nзавантаження</string>
   <string name="playback_history_label">Історія</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Синхронізація з іншими пристроями</string>
   <string name="gpodnet_auth_label">Автентифікуватися на gpodder.net</string>
   <string name="episode_cache_full_title">Кеш епізодів заповнений</string>
   <string name="episode_cache_full_message">Досягнута межа розміру кешу епізодів. Розмір кешу можна збільшити в налаштуваннях.</string>
@@ -101,7 +100,6 @@
     <item quantity="many">%d днів після закінчення</item>
     <item quantity="other">%d днів після закінчення</item>
   </plurals>
-  <string name="num_selected_label">%d помічено</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Позначити всі як відтворені</string>
   <string name="mark_all_read_msg">Позначено всі епізоди як відтворені</string>
@@ -277,8 +275,6 @@
   <string name="ascending">За зростанням</string>
   <string name="descending">За спаданням</string>
   <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте вилучити всі епізоди з черги.</string>
-  <string name="sort_old_to_new">Спочатку старіші</string>
-  <string name="sort_new_to_old">Спочатку новіші</string>
   <string name="time_left_label">Залишилось:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити додаток</string>
@@ -311,7 +307,6 @@
   <string name="storage_pref">Зберігання</string>
   <string name="project_pref">Проект</string>
   <string name="queue_label">Черга</string>
-  <string name="integrations_label">Інтеграції</string>
   <string name="automation">Автоматизація</string>
   <string name="download_pref_details">Детально</string>
   <string name="import_export_pref">Імпорт/Експорт</string>
@@ -388,12 +383,8 @@
   <string name="pref_gpodnet_logout_toast">Успішно закрили доступ</string>
   <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
   <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Синхронізувати зміни негайно</string>
   <string name="pref_gpodnet_sync_changes_sum">Синхронізувати підписки та зміни стану епізодів з gpodder.net</string>
-  <string name="pref_gpodnet_full_sync_title">Виконати повну синхронізацію негайно</string>
   <string name="pref_gpodnet_full_sync_sum">Синхронізувати всі підписки та стан епізодів з gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Остання спроба синхронізації: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Cинхронізація почалась</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Ви увійшли як <i>%1$s</i> з пристрою <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Повідомляти про помилки синхронізації</string>
   <string name="pref_gpodnet_notifications_sum">Це налаштування не застосовується до помилок автентифікації.</string>
@@ -472,6 +463,7 @@
   <string name="search_status_no_results">Жодних результатів немає</string>
   <string name="search_label">Пошук</string>
   <string name="no_results_for_query">Нічого не знайдено за запитом \"%1$s\"</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">OPML імпорт</string>
   <string name="opml_reader_error">Помилка при читанні документа OPML:</string>
@@ -688,4 +680,5 @@
   <string name="widget_settings">Налаштування віджету</string>
   <string name="widget_create_button">Створити віджет</string>
   <string name="widget_opacity">Непрозорість</string>
+  <!--On-Demand configuration-->
 </resources>

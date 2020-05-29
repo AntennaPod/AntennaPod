@@ -20,7 +20,6 @@
   <string name="cancel_download_label">다운로드\n취소</string>
   <string name="playback_history_label">재생 기록</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">다른 장비와 동기화</string>
   <string name="gpodnet_auth_label">gpodder.net 로그인</string>
   <string name="episode_cache_full_title">에피소드 캐시 꽉 참</string>
   <string name="episode_cache_full_message">에피소드 캐시 한계값에 도달했습니다. 설정에서 캐시 크기를 늘릴 수 있습니다.</string>
@@ -86,7 +85,7 @@
   <string name="auto_download_apply_to_items_message">새로운 <i>자동 다운로드</i> 설정은 자동으로 새로운 에피소드에 적용됩니다. 예전 에피소드에도 적용하시겠습니까?</string>
   <string name="auto_delete_label">에피소드 자동 삭제</string>
   <string name="feed_volume_reduction">볼륨 줄이기</string>
-  <string name="feed_volume_reduction_summary">이 피드의 에피소드에 대해 볼륨을 줄이기: \%s</string>
+  <string name="feed_volume_reduction_summary">이 피드의 에피소드에 대해 볼륨을 줄이기: %1$s</string>
   <string name="feed_volume_reduction_off">끄기</string>
   <string name="feed_volume_reduction_light">가볍게</string>
   <string name="feed_volume_reduction_heavy">무겁게</string>
@@ -104,7 +103,9 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="other">재생이 끝나고 나서 %d일 뒤</item>
   </plurals>
-  <string name="num_selected_label">%d개 선택</string>
+  <plurals name="num_selected_label">
+    <item quantity="other">%d개 선택</item>
+  </plurals>
   <string name="loading_more">더 읽어들이기…</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">모두 재생했다고 표시</string>
@@ -195,6 +196,7 @@
   <string name="deactivate_auto_download">자동 다운로드 해제</string>
   <string name="reset_position">재생 위치 초기화</string>
   <string name="removed_item">항목 제거됨</string>
+  <string name="no_items_selected">선택 없음</string>
   <!--Download messages and labels-->
   <string name="download_successful">성공</string>
   <string name="download_pending">다운로드 지연 중</string>
@@ -280,8 +282,6 @@
   <string name="ascending">오름차순</string>
   <string name="descending">내림차순</string>
   <string name="clear_queue_confirmation_msg">내부의 모든 에피소드를 지울지 확인하십시오.</string>
-  <string name="sort_old_to_new">과거에서 최근</string>
-  <string name="sort_new_to_old">최근에서 과거</string>
   <string name="time_left_label">남은 시간:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">플러그인 다운로드</string>
@@ -316,8 +316,8 @@
   <string name="storage_sum">에피소드 자동 삭제, 가져오기, 내보내기</string>
   <string name="project_pref">프로젝트</string>
   <string name="queue_label">대기열</string>
-  <string name="integrations_label">연동 기능</string>
-  <string name="integrations_sum">동기화</string>
+  <string name="synchronization_pref">동기화</string>
+  <string name="synchronization_sum">gpodder.net 사용하는 다른 장비와 동기화</string>
   <string name="automation">자동</string>
   <string name="download_pref_details">자세히</string>
   <string name="import_export_pref">가져오기/내보내기</string>
@@ -408,18 +408,22 @@
   <string name="pref_gpodnet_logout_toast">로그아웃 성공</string>
   <string name="pref_gpodnet_setlogin_information_title">로그인 정보 바꾸기</string>
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net 계정의 로그인 정보를 바꿉니다.</string>
-  <string name="pref_gpodnet_sync_changes_title">변경 사항 지금 동기화</string>
+  <string name="pref_gpodnet_sync_changes_title">지금 동기화</string>
   <string name="pref_gpodnet_sync_changes_sum">gpodder.net의 구독과 에피소드 상태 변화를 동기화합니다.</string>
-  <string name="pref_gpodnet_full_sync_title">지금 전체 동기화</string>
+  <string name="pref_gpodnet_full_sync_title">전체 동기화 강제</string>
   <string name="pref_gpodnet_full_sync_sum">gpodder.net의 모든 구독과 에피소드 상태를 동기화합니다.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">최근 동기화 시도: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">동기화 시작함</string>
   <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> 사용자로 로그인, <i>%2$s</i> 장치]]></string>
   <string name="pref_gpodnet_notifications_title">동기화 오류 알림 표시</string>
   <string name="pref_gpodnet_notifications_sum">이 설정은 인증 오류에는 적용되지 않습니다.</string>
   <string name="pref_playback_speed_title">재생 속도</string>
   <string name="pref_playback_speed_sum">여러가지 오디오 재생 속도 직접 설정</string>
   <string name="pref_feed_playback_speed_sum">이 팟캐스트의 에피소드를 재생할 때 사용할 오디오 재생 속도</string>
+  <string name="pref_feed_skip">자동 건너뛰기</string>
+  <string name="pref_feed_skip_sum">소개 및 마지막 크레디트 건너뛰기</string>
+  <string name="pref_feed_skip_ending">마지막 건너뛰기</string>
+  <string name="pref_feed_skip_intro">처음 건너뛰기</string>
+  <string name="pref_feed_skip_ending_toast">마지막 %d초 건너뜀</string>
+  <string name="pref_feed_skip_intro_toast">처음 %d초 건너뜀</string>
   <string name="pref_playback_time_respects_speed_title">미디어 정보를 재생 속도에 맞게 조정</string>
   <string name="pref_playback_time_respects_speed_sum">재생 속도에 맞춰 재생 위치와 재생 시간을 표시합니다</string>
   <string name="pref_fast_forward">빠르게 감기 건너뛰기 시간</string>
@@ -470,6 +474,8 @@
   <string name="pref_enqueue_downloaded_title">다운로드한 항목 대기열에 추가</string>
   <string name="pref_enqueue_downloaded_summary">다운로드한 에피소드를 대기열에 추가</string>
   <string name="media_player_builtin">내장 안드로이드 플레이어</string>
+  <string name="media_player_switch_to_exoplayer">ExoPlayer로 전환</string>
+  <string name="media_player_switched_to_exoplayer">ExoPlayer로 전환함.</string>
   <string name="pref_skip_silence_title">오디오에서 묵음 구간 건너뛰기</string>
   <string name="pref_videoBehavior_title">기존 비디오에 대해</string>
   <string name="pref_videoBehavior_sum">비디오 재생을 떠날 때 동작</string>
@@ -502,6 +508,14 @@
   <string name="search_status_no_results">검색 결과가 없습니다</string>
   <string name="search_label">검색</string>
   <string name="no_results_for_query">\"%1$s\" 검색 결과가 없습니다</string>
+  <!--Synchronization-->
+  <string name="sync_status_started">동기화 시작함</string>
+  <string name="sync_status_episodes_upload">에피소드 변경 업로드 중...</string>
+  <string name="sync_status_episodes_download">에피소드 변경 다운로드 중...</string>
+  <string name="sync_status_upload_played">재생한 상태 업로드 중...</string>
+  <string name="sync_status_subscriptions">구독 정보 동기화 중...</string>
+  <string name="sync_status_success">동기화 성공</string>
+  <string name="sync_status_error">동기화 실패</string>
   <!--import and export-->
   <string name="import_export_summary">구독 목록 및 대기열을 다른 장치로 옮기기</string>
   <string name="database">데이터베이스</string>
@@ -521,6 +535,7 @@
   <string name="html_export_label">HTML 내보내기</string>
   <string name="database_export_label">데이터베이스 내보내기</string>
   <string name="database_import_label">데이터베이스 가져오기</string>
+  <string name="database_import_warning">데이터베이스 가져오기를 하면 모든 구독과 재생 히스토리가 가져온 내용으로 바뀝니다. 백업을 하려면 현재 데이터베이스를 내보내기 해야 합니다. 정말로 데이터베이스를 바꾸시겠습니까?</string>
   <string name="please_wait">기다리십시오…</string>
   <string name="export_error_label">내보내기 오류</string>
   <string name="export_success_title">내보내기 성공</string>
@@ -609,16 +624,23 @@
   <string name="subscribe_label">구독</string>
   <string name="subscribing_label">구독하는 중…</string>
   <string name="preview_episode">미리보기</string>
+  <string name="stop_preview">미리 보기 중지</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">뒤로 감기</string>
   <string name="fast_forward_label">앞으로 감기</string>
+  <string name="increase_speed">속도 증가</string>
+  <string name="decrease_speed">속도 감소</string>
   <string name="media_type_audio_label">오디오</string>
   <string name="media_type_video_label">비디오</string>
   <string name="navigate_upwards_label">위 단계로 이동</string>
   <string name="status_downloading_label">에피소드를 다운로드하는 중입니다</string>
   <string name="in_queue_label">에피소드가 대기열에 들어 있습니다</string>
+  <string name="is_favorite_label">에피소드를 좋아한다고 표시되었습니다</string>
   <string name="drag_handle_content_description">이 항목의 위치를 바꾸려면 드래그하십시오</string>
   <string name="load_next_page_label">다음 페이지 읽기</string>
+  <string name="switch_pages">페이지 전환</string>
+  <string name="position">위치: %1$s</string>
+  <string name="apply_action">동작 적용</string>
   <!--Feed information screen-->
   <string name="authentication_label">인증</string>
   <string name="authentication_descr">이 팟캐스트와 에피소드에 대한 사용자 이름과 비밀번호를 바꿉니다.</string>
@@ -644,6 +666,7 @@
   <string name="browse_gpoddernet_label">gpodder.net 둘러보기</string>
   <string name="discover">발견</string>
   <string name="discover_more">더 보기 »</string>
+  <string name="search_powered_by">검색 기능 제공 %1$s</string>
   <string name="filter">필터</string>
   <!--Episodes apply actions-->
   <string name="all_label">모두</string>
@@ -671,6 +694,12 @@
   <string name="sort_date_old_new">시각 (과거 \u2192 최근)</string>
   <string name="sort_duration_short_long">길이 (짧음 \u2192 김)</string>
   <string name="sort_duration_long_short">길이 (김 \u2192 짧음)</string>
+  <string name="sort_a_z">A \u2192 Z</string>
+  <string name="sort_z_a">Z \u2192 A</string>
+  <string name="sort_new_old">최근 \u2192 과거</string>
+  <string name="sort_old_new">과거 \u2192 최근</string>
+  <string name="sort_short_long">짧음 \u2192 김</string>
+  <string name="sort_long_short">김 \u2192 짧음</string>
   <!--Rating dialog-->
   <string name="rating_title">안테나팟이 마음에 드시나요?</string>
   <string name="rating_message">안테나팟을 평가하는데 시간을 잠깐 내주시면 감사하겠습니다.</string>
@@ -730,4 +759,8 @@
   <string name="widget_settings">위젯 설정</string>
   <string name="widget_create_button">위젯 만들기</string>
   <string name="widget_opacity">불투명 정도</string>
+  <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">성공적으로 설정 업데이트함.</string>
+  <string name="on_demand_config_stream_text">평소에 스트리밍을 많이 이용하는 것 같습니다. 에피소드 목록에서 스트리밍 버튼을 표시할까요?</string>
+  <string name="on_demand_config_download_text">평소에 다운로드를 많이 이용하는 것 같습니다. 에피소드 목록에서 다운로드 버튼을 표시할까요?</string>
 </resources>

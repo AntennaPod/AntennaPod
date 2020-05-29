@@ -19,7 +19,6 @@
   <string name="cancel_download_label">İndirmeyi İptal Et</string>
   <string name="playback_history_label">Çalma geçmişi</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Diğer cihazlarla senkronize et</string>
   <string name="gpodnet_auth_label">gpodder.net giriş</string>
   <string name="episode_cache_full_title">Bölüm önbelleği dolu</string>
   <string name="episode_cache_full_message">Bölüm önbelleği limitine ulaşıldı. Ayarlardan önbellek limitini arttırabilirsiniz. </string>
@@ -229,7 +228,6 @@
   <string name="storage_pref">Depolama</string>
   <string name="project_pref">Proje</string>
   <string name="queue_label">Kuyruk</string>
-  <string name="integrations_label">Entegrasyon</string>
   <string name="automation">Otomasyon</string>
   <string name="download_pref_details">Detaylar</string>
   <string name="import_export_pref">Al/Aktar</string>
@@ -315,6 +313,7 @@
   <!--Search-->
   <string name="search_status_no_results">Sonuç bulunamadı</string>
   <string name="search_label">Ara</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">OPML içe aktar</string>
   <string name="select_all_label">Hepsini seç</string>
@@ -450,4 +449,5 @@
   <string name="cast_failed_seek">Yayın aygıtındaki yeni pozisyona erişilemedi</string>
   <!--Notification channels-->
   <!--Widget settings-->
+  <!--On-Demand configuration-->
 </resources>
