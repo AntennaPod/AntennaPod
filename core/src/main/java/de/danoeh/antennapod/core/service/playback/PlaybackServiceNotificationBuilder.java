@@ -146,8 +146,8 @@ public class PlaybackServiceNotificationBuilder {
     }
 
     private PendingIntent getPlayerActivityPendingIntent() {
-        return PendingIntent.getActivity(context, 0, PlaybackService.getPlayerActivityIntent(context),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, R.id.pending_intent_player_activity,
+                PlaybackService.getPlayerActivityIntent(context), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void addActions(NotificationCompat.Builder notification, MediaSessionCompat.Token mediaSessionToken,
