@@ -345,8 +345,7 @@ public class DBWriterTest {
         }
 
 
-        List<FeedItem> queue = new ArrayList<>();
-        queue.addAll(feed.getItems());
+        List<FeedItem> queue = new ArrayList<>(feed.getItems());
         adapter.open();
         adapter.setQueue(queue);
 
