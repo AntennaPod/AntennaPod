@@ -1140,13 +1140,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case INITIALIZING:
                     state = PlaybackStateCompat.STATE_CONNECTING;
                     break;
-                case INITIALIZED:
-                case INDETERMINATE:
-                    state = PlaybackStateCompat.STATE_NONE;
-                    break;
                 case ERROR:
                     state = PlaybackStateCompat.STATE_ERROR;
                     break;
+                case INITIALIZED: // Deliberate fall-through
+                case INDETERMINATE:
                 default:
                     state = PlaybackStateCompat.STATE_NONE;
                     break;

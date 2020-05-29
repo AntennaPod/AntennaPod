@@ -136,6 +136,7 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyItemInserted(event.position);
                 break;
             case SET_QUEUE:
+            case SORTED: //Deliberate fall-through
                 queue = event.items;
                 recyclerAdapter.notifyDataSetChanged();
                 break;
@@ -147,10 +148,6 @@ public class QueueFragment extends Fragment {
                 break;
             case CLEARED:
                 queue.clear();
-                recyclerAdapter.notifyDataSetChanged();
-                break;
-            case SORTED:
-                queue = event.items;
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case MOVED:
