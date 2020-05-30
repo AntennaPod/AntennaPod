@@ -23,6 +23,7 @@
 
     <Preference
             android:key="feedAutoSkip"
+            android:icon="?attr/ic_settings_skip"
             android:summary="@string/pref_feed_skip_sum"
             android:title="@string/pref_feed_skip" />
 
