@@ -20,7 +20,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SCREEN_GPODDER = "prefScreenGpodder";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
     private static final String PREF_FAQ = "prefFaq";
-    private static final String PREF_VIEW_MAILING_LIST = "prefViewMailingList";
+    private static final String PREF_VIEW_FORUM = "prefViewForum";
     private static final String PREF_SEND_BUG_REPORT = "prefSendBugReport";
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
@@ -78,8 +78,8 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             IntentUtils.openInBrowser(getContext(), "https://antennapod.org/faq.html");
             return true;
         });
-        findPreference(PREF_VIEW_MAILING_LIST).setOnPreferenceClickListener(preference -> {
-            IntentUtils.openInBrowser(getContext(), "https://groups.google.com/forum/#!forum/antennapod");
+        findPreference(PREF_VIEW_FORUM).setOnPreferenceClickListener(preference -> {
+            IntentUtils.openInBrowser(getContext(), "https://forum.antennapod.org/");
             return true;
         });
         findPreference(PREF_SEND_BUG_REPORT).setOnPreferenceClickListener(preference -> {
