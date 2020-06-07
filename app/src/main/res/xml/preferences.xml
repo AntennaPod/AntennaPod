@@ -50,7 +50,7 @@
             android:title="@string/pref_faq"
             android:icon="?attr/ic_questionmark" />
         <Preference
-            android:key="prefViewMailingList"
+            android:key="prefViewForum"
             android:title="@string/visit_user_forum"
             android:icon="?attr/ic_chat" />
         <Preference
