@@ -311,12 +311,13 @@ public class PlaybackServiceTaskManager {
 
         if (media.getChapters() == null) {
             Completable.create(emitter -> {
-                        media.loadChapterMarks();
-                        emitter.onComplete();
-                    })
+                media.loadChapterMarks();
+                emitter.onComplete();
+            })
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> callback.onChapterLoaded(media));
+                    .subscribe(() -> callback.onChapterLoaded(media),
+                            throwable -> Log.d(TAG, "Error loading chapters: " + Log.getStackTraceString(throwable)));
         }
     }
 
