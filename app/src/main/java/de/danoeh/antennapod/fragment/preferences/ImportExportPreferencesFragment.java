@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment.preferences;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,10 +16,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.asynctask.DocumentFileExportWorker;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
@@ -212,13 +211,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         AlertDialog.Builder d = new AlertDialog.Builder(getContext());
         d.setMessage(R.string.import_ok);
         d.setCancelable(false);
-        d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
-            Intent intent = new Intent(getContext(), SplashActivity.class);
-            ComponentName cn = intent.getComponent();
-            Intent mainIntent = Intent.makeRestartActivityTask(cn);
-            startActivity(mainIntent);
-            Runtime.getRuntime().exit(0);
-        });
+        d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart());
         d.show();
     }
 
