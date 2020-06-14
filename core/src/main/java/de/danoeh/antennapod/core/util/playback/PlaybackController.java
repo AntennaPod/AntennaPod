@@ -508,6 +508,13 @@ public class PlaybackController {
                 playbackService.setStartWhenPrepared(true);
                 playbackService.prepare();
                 break;
+            default:
+                new PlaybackServiceStarter(activity, media)
+                        .startWhenPrepared(true)
+                        .streamIfLastWasStream()
+                        .start();
+                Log.w(TAG, "Play/Pause button was pressed and PlaybackService state was unknown");
+                break;
         }
     }
 

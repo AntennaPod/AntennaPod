@@ -77,7 +77,6 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        controller = setupPlaybackController();
         butPlay.setOnClickListener(v -> {
             if (controller != null) {
                 controller.playPause();
