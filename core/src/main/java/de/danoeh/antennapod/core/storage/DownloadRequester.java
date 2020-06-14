@@ -225,17 +225,19 @@ public class DownloadRequester implements DownloadStateProvider {
 
     /**
      * enqueue unsuccessful download for when retry is attempted.
+     *
      * @param request actual failed {@link DownloadRequest} object.
      */
-    public synchronized void addToUnsuccessfulDownload(DownloadRequest request){
+    public synchronized void addToUnsuccessfulDownload(DownloadRequest request) {
         unsuccessfulDownloads.add(request);
     }
 
     /**
      * indicator if app has any unsuccessful downloads.
+     *
      * @return unsuccessful downloads status.
      */
-    public boolean hasUnsuccessfulDownloads(){
+    public boolean hasUnsuccessfulDownloads() {
         return !unsuccessfulDownloads.isEmpty();
     }
 

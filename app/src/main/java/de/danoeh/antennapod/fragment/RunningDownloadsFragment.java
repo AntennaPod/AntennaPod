@@ -97,7 +97,7 @@ public class RunningDownloadsFragment extends ListFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        if(!isAdded()) {
+        if (!isAdded()) {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
@@ -121,9 +121,12 @@ public class RunningDownloadsFragment extends ListFragment {
     private void adjustStatusView() {
         if (hasUnsuccessfulDownloads != DownloadRequester.getInstance().hasUnsuccessfulDownloads()) {
             hasUnsuccessfulDownloads = DownloadRequester.getInstance().hasUnsuccessfulDownloads();
-            runningDownloadStatusView.setIcon(hasUnsuccessfulDownloads ? R.attr.navigation_refresh : R.attr.av_download);
-            runningDownloadStatusView.setTitle(hasUnsuccessfulDownloads ? R.string.downloads_failed_head_label : R.string.no_run_downloads_head_label);
-            runningDownloadStatusView.setMessage(DownloadRequester.getInstance().hasUnsuccessfulDownloads() ? R.string.downloads_failed_label : R.string.no_run_downloads_label);
+            runningDownloadStatusView.setIcon(hasUnsuccessfulDownloads
+                    ? R.attr.navigation_refresh : R.attr.av_download);
+            runningDownloadStatusView.setTitle(hasUnsuccessfulDownloads
+                    ? R.string.downloads_failed_head_label : R.string.no_run_downloads_head_label);
+            runningDownloadStatusView.setMessage(hasUnsuccessfulDownloads ?
+                    R.string.downloads_failed_label : R.string.no_run_downloads_label);
         }
     }
 
