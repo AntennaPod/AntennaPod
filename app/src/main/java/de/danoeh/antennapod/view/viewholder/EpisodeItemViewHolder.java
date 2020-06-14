@@ -39,7 +39,7 @@ import de.danoeh.antennapod.view.CircularProgressBar;
 public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "EpisodeItemViewHolder";
 
-    private final View container;
+    public final View container;
     public final ImageView dragHandle;
     private final TextView placeholder;
     private final ImageView cover;

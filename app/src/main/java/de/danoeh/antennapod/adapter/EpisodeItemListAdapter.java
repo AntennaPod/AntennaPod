@@ -86,6 +86,19 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
     protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
     }
 
+    @Override
+    public void onViewRecycled(@NonNull EpisodeItemViewHolder holder) {
+        super.onViewRecycled(holder);
+        // Set all listeners to null. This is required to prevent leaking fragments that have set a listener.
+        // Activity -> recycledViewPool -> EpisodeItemViewHolder -> Listener -> Fragment (can not be garbage collected)
+        holder.itemView.setOnClickListener(null);
+        holder.secondaryActionButton.setOnClickListener(null);
+        holder.dragHandle.setOnTouchListener(null);
+        holder.coverHolder.setOnTouchListener(null);
+        holder.container.setOnCreateContextMenuListener(null);
+        holder.container.setOnLongClickListener(null);
+    }
+
     /**
      * {@link #notifyItemChanged(int)} is final, so we can not override.
      * Calling {@link #notifyItemChanged(int)} may bind the item to a new ViewHolder and execute a transition.
