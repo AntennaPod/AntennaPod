@@ -60,6 +60,8 @@ public class DownloadRequester implements DownloadStateProvider {
 
     private final Map<String, DownloadRequest> downloads;
 
+    private List<DownloadRequest> unsuccessfulDownloads = new ArrayList<>();
+
     private DownloadRequester() {
         downloads = new ConcurrentHashMap<>();
     }
@@ -219,6 +221,33 @@ public class DownloadRequester implements DownloadStateProvider {
             throws DownloadRequestException {
         downloadMedia(true, context, initiatedByUser, feedItems);
 
+    }
+
+    /**
+     * enqueue unsuccessful download for when retry is attempted.
+     * @param request actual failed {@link DownloadRequest} object.
+     */
+    public synchronized void addToUnsuccessfulDownload(DownloadRequest request){
+        unsuccessfulDownloads.add(request);
+    }
+
+    /**
+     * indicator if app has any unsuccessful downloads.
+     * @return unsuccessful downloads status.
+     */
+    public boolean hasUnsuccessfulDownloads(){
+        return !unsuccessfulDownloads.isEmpty();
+    }
+
+    /**
+     * Attempts to retry {@link DownloadRequest} -s collected by addToUnsuccessfulDownload.
+     * @param context caller context
+     * @param initiatedByUser indicator if retry was initiated by user or not.
+     */
+    public synchronized void retryUnsuccessfulDownloads(@NonNull Context context, boolean initiatedByUser) {
+        DownloadRequest[] retryRequests = unsuccessfulDownloads.toArray(new DownloadRequest[0]);
+        unsuccessfulDownloads.clear();
+        download(context, initiatedByUser, retryRequests);
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)

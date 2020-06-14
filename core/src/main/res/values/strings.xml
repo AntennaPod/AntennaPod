@@ -268,6 +268,8 @@
     <string name="confirm_mobile_streaming_button_always">Always allow</string>
     <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
+    <string name="downloads_failed_head_label">Error while downloading</string>
+    <string name="downloads_failed_label">Check network settings and try refreshing downloads</string>
 
     <!-- Mediaplayer messages -->
     <string name="player_error_msg">Error!</string>

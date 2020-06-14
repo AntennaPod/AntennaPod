@@ -1,8 +1,13 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.ListFragment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,6 +30,7 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -37,6 +43,8 @@ public class RunningDownloadsFragment extends ListFragment {
 
     private DownloadlistAdapter adapter;
     private List<Downloader> downloaderList = new ArrayList<>();
+    private boolean hasUnsuccessfulDownloads = DownloadRequester.getInstance().hasUnsuccessfulDownloads();
+    private EmptyViewHandler runningDownloadStatusView;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -48,14 +56,15 @@ public class RunningDownloadsFragment extends ListFragment {
         final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
         lv.setPadding(0, vertPadding, 0, vertPadding);
 
+        setHasOptionsMenu(true);
         adapter = new DownloadlistAdapter(getActivity(), itemAccess);
         setListAdapter(adapter);
 
-        EmptyViewHandler emptyView = new EmptyViewHandler(getActivity());
-        emptyView.setIcon(R.attr.av_download);
-        emptyView.setTitle(R.string.no_run_downloads_head_label);
-        emptyView.setMessage(R.string.no_run_downloads_label);
-        emptyView.attachToListView(getListView());
+        runningDownloadStatusView = new EmptyViewHandler(getActivity());
+        runningDownloadStatusView.setIcon(R.attr.av_download);
+        runningDownloadStatusView.setTitle(R.string.no_run_downloads_head_label);
+        runningDownloadStatusView.setMessage(R.string.no_run_downloads_label);
+        runningDownloadStatusView.attachToListView(getListView());
 
     }
 
@@ -83,6 +92,39 @@ public class RunningDownloadsFragment extends ListFragment {
         DownloaderUpdate update = event.update;
         downloaderList = update.downloaders;
         adapter.notifyDataSetChanged();
+        adjustStatusView();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        if(!isAdded()) {
+            return;
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.running_downloads, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refresh_item:
+                DownloadRequester.getInstance().retryUnsuccessfulDownloads(getActivity(), true);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Changes empty view in background of running downloads list according to download failure status.
+     */
+    private void adjustStatusView() {
+        if (hasUnsuccessfulDownloads != DownloadRequester.getInstance().hasUnsuccessfulDownloads()) {
+            hasUnsuccessfulDownloads = DownloadRequester.getInstance().hasUnsuccessfulDownloads();
+            runningDownloadStatusView.setIcon(hasUnsuccessfulDownloads ? R.attr.navigation_refresh : R.attr.av_download);
+            runningDownloadStatusView.setTitle(hasUnsuccessfulDownloads ? R.string.downloads_failed_head_label : R.string.no_run_downloads_head_label);
+            runningDownloadStatusView.setMessage(DownloadRequester.getInstance().hasUnsuccessfulDownloads() ? R.string.downloads_failed_label : R.string.no_run_downloads_label);
+        }
     }
 
     private final DownloadlistAdapter.ItemAccess itemAccess = new DownloadlistAdapter.ItemAccess() {
