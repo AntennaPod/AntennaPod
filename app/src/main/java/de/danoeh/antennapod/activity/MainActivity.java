@@ -317,9 +317,8 @@ public class MainActivity extends CastEnabledActivity {
         RatingDialog.init(this);
 
         if (lastTheme != UserPreferences.getNoTitleTheme()) {
-            // Nav drawer is empty for half a second after recreating. Don't confuse users with that.
-            drawerLayout.closeDrawer(navDrawer);
-            recreate();
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
