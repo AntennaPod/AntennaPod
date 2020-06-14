@@ -125,8 +125,8 @@ public class RunningDownloadsFragment extends ListFragment {
                     ? R.attr.navigation_refresh : R.attr.av_download);
             runningDownloadStatusView.setTitle(hasUnsuccessfulDownloads
                     ? R.string.downloads_failed_head_label : R.string.no_run_downloads_head_label);
-            runningDownloadStatusView.setMessage(hasUnsuccessfulDownloads ?
-                    R.string.downloads_failed_label : R.string.no_run_downloads_label);
+            runningDownloadStatusView.setMessage(hasUnsuccessfulDownloads
+                    ? R.string.downloads_failed_label : R.string.no_run_downloads_label);
         }
     }
 
