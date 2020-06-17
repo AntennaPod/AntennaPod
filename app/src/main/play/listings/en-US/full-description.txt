@@ -24,8 +24,8 @@ Made by podcast-enthusiasts, AntennaPod is free in all senses of the word: open 
 <b>Join the AntennaPod community!</b>
 AntennaPod is under active development by volunteers. You can contribute too, with code or with comment!
 
-GitHub is the place to go for feature requests, bug reports and code contributions:
-https://www.github.com/AntennaPod/AntennaPod
+Our friendly forum members are happy to help with every question you have. You are invited to discuss features and podcasting in general, too.
+https://forum.antennapod.org/
 
 Transifex is the place to help with translations:
 https://www.transifex.com/antennapod/antennapod
