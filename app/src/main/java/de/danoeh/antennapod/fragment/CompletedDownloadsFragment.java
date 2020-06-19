@@ -181,12 +181,12 @@ public class CompletedDownloadsFragment extends Fragment {
         loadItems();
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDownloadLogChanged(DownloadLogEvent event) {
         loadItems();
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         loadItems();
     }
