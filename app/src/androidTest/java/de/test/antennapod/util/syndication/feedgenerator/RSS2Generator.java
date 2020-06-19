@@ -14,7 +14,7 @@ import de.danoeh.antennapod.core.util.DateUtils;
 /**
  * Creates RSS 2.0 feeds. See FeedGenerator for more information.
  */
-public class RSS2Generator implements FeedGenerator{
+public class RSS2Generator implements FeedGenerator {
 
     public static final long FEATURE_WRITE_GUID = 1;
 
@@ -111,9 +111,15 @@ public class RSS2Generator implements FeedGenerator{
             }
         }
 
+        writeAdditionalAttributes(xml);
+
         xml.endTag(null, "channel");
         xml.endTag(null, "rss");
 
         xml.endDocument();
+    }
+
+    protected void writeAdditionalAttributes(XmlSerializer xml) throws IOException {
+
     }
 }

@@ -1,13 +1,19 @@
 package de.test.antennapod.handler;
 
 import android.content.Context;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.filters.SmallTest;
+import androidx.test.platform.app.InstrumentationRegistry;
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
+import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
+import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,28 +22,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
-import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
-import de.test.antennapod.util.syndication.feedgenerator.AtomGenerator;
-import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
-import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for FeedHandler
+ * Tests for FeedHandler.
  */
-@SmallTest
-public class FeedHandlerTest {
+public abstract class FeedParserTestBase {
     private static final String FEEDS_DIR = "testfeeds";
 
     private File file = null;
@@ -45,7 +38,7 @@ public class FeedHandlerTest {
 
     @Before
     public void setUp() throws Exception {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         File destDir = context.getExternalFilesDir(FEEDS_DIR);
         assertNotNull(destDir);
 
@@ -68,7 +61,8 @@ public class FeedHandlerTest {
         outputStream = null;
     }
 
-    private Feed runFeedTest(Feed feed, FeedGenerator g, String encoding, long flags) throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
+    protected Feed runFeedTest(Feed feed, FeedGenerator g, String encoding, long flags)
+            throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
         g.writeFeed(feed, outputStream, encoding, flags);
         FeedHandler handler = new FeedHandler();
         Feed parsedFeed = new Feed(feed.getDownload_url(), feed.getLastUpdate());
@@ -78,7 +72,7 @@ public class FeedHandlerTest {
         return parsedFeed;
     }
 
-    private void feedValid(Feed feed, Feed parsedFeed, String feedType) {
+    protected void feedValid(Feed feed, Feed parsedFeed, String feedType) {
         assertEquals(feed.getTitle(), parsedFeed.getTitle());
         if (feedType.equals(Feed.TYPE_ATOM1)) {
             assertEquals(feed.getFeedIdentifier(), parsedFeed.getFeedIdentifier());
@@ -99,8 +93,9 @@ public class FeedHandlerTest {
                 FeedItem item = feed.getItems().get(i);
                 FeedItem parsedItem = parsedFeed.getItems().get(i);
 
-                if (item.getItemIdentifier() != null)
+                if (item.getItemIdentifier() != null) {
                     assertEquals(item.getItemIdentifier(), parsedItem.getItemIdentifier());
+                }
                 assertEquals(item.getTitle(), parsedItem.getTitle());
                 assertEquals(item.getDescription(), parsedItem.getDescription());
                 assertEquals(item.getContentEncoded(), parsedItem.getContentEncoded());
@@ -137,33 +132,19 @@ public class FeedHandlerTest {
         }
     }
 
-    @Test
-    public void testRSS2Basic() throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
-        Feed f1 = createTestFeed(10, true);
-        Feed f2 = runFeedTest(f1, new RSS2Generator(), "UTF-8", RSS2Generator.FEATURE_WRITE_GUID);
-        feedValid(f1, f2, Feed.TYPE_RSS2);
-    }
-
-    @Test
-    public void testAtomBasic() throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
-        Feed f1 = createTestFeed(10, true);
-        Feed f2 = runFeedTest(f1, new AtomGenerator(), "UTF-8", 0);
-        feedValid(f1, f2, Feed.TYPE_ATOM1);
-    }
-
-    private Feed createTestFeed(int numItems, boolean withFeedMedia) {
+    protected Feed createTestFeed(int numItems, boolean withFeedMedia) {
         Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
-                "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed", "http://example.com/picture", file.getAbsolutePath(),
-                "http://example.com/feed", true);
+                "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed",
+                "http://example.com/picture", file.getAbsolutePath(), "http://example.com/feed", true);
         feed.setItems(new ArrayList<>());
 
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "item-" + i, "http://example.com/item-" + i,
-                    "http://example.com/items/" + i, new Date(i*60000), FeedItem.UNPLAYED, feed);
+                    "http://example.com/items/" + i, new Date(i * 60000), FeedItem.UNPLAYED, feed);
             feed.getItems().add(item);
             if (withFeedMedia) {
-                item.setMedia(new FeedMedia(0, item, 4711, 0, 1024*1024, "audio/mp3", null, "http://example.com/media-" + i,
-                        false, null, 0, 0));
+                item.setMedia(new FeedMedia(0, item, 4711, 0, 1024 * 1024, "audio/mp3", null,
+                        "http://example.com/media-" + i, false, null, 0, 0));
             }
         }
 
