@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<de.danoeh.antennapod.view.RecursiveRadioGroup
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:clipChildren="true"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/filter_dialog_radioButton1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/filter_dialog_button_background_light"
+                android:textColor="@color/filter_dialog_button_text_light"
+                android:button="@android:color/transparent"
+                android:layout_marginRight="2dp"
+                android:layout_marginEnd="2dp"
+                android:checked="false"
+                android:foreground="?attr/selectableItemBackground"
+                android:tag=""
+                android:gravity="center" />
+
+            <RadioButton
+                android:id="@+id/filter_dialog_radioButton2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/filter_dialog_button_background_light"
+                android:textColor="@color/filter_dialog_button_text_light"
+                android:button="@android:color/transparent"
+                android:checked="false"
+                android:foreground="?attr/selectableItemBackground"
+                android:tag=""
+                android:gravity="center" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <RadioButton
+        android:id="@+id/filter_dialog_clear"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/ic_filter_close_light"
+        android:button="@android:color/transparent"
+        android:foreground="?attr/selectableItemBackground"
+        android:tag=""
+        android:checked="true" />
+
+</de.danoeh.antennapod.view.RecursiveRadioGroup>

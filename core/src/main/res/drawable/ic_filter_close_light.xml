@@ -10,9 +10,8 @@
         <shape android:shape="oval">
             <stroke
                 android:width="4dp"
-                android:color="@color/master_switch_background_light" />
+                android:color="@color/filter_dialog_button_clear" />
         </shape>
-
     </item>
 
     <!-- x -->
@@ -29,7 +28,7 @@
             <shape android:shape="line">
                 <stroke
                     android:width="4dp"
-                    android:color="@color/master_switch_background_light" />
+                    android:color="@color/filter_dialog_button_clear" />
             </shape>
         </rotate>
     </item>
@@ -47,9 +46,8 @@
             <shape android:shape="line">
                 <stroke
                     android:width="4dp"
-                    android:color="@color/master_switch_background_light" />
+                    android:color="@color/filter_dialog_button_clear" />
             </shape>
-
         </rotate>
     </item>
 
