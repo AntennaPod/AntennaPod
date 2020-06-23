@@ -14,14 +14,14 @@ import de.danoeh.antennapod.core.util.ShareUtils;
 public class ShareDialog {
 
     private static final String TAG = "ShareDialog";
-    private final Context context;
+    private final Context ctx;
     private AlertDialog dialog;
     private List<String> shareDialogOptions;
-    private String[] arrayItems;
+    private String[] items;
     private FeedItem item;
 
-    public ShareDialog(Context context, FeedItem item) {
-        this.context = context;
+    public ShareDialog(Context ctx, FeedItem item) {
+        this.ctx = ctx;
         this.item = item;
         shareDialogOptions = new ArrayList<>();
     }
@@ -29,22 +29,22 @@ public class ShareDialog {
     public AlertDialog createDialog() {
         setupOptions();
 
-        dialog = new AlertDialog.Builder(context)
+        dialog = new AlertDialog.Builder(ctx)
                 .setTitle(R.string.share_label)
-                .setItems(arrayItems, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int i) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        if(arrayItems[which].equals(context.getString(R.string.share_link_label))){
-                            ShareUtils.shareFeedItemLink(context, item);
-                        } else if(arrayItems[which].equals(context.getString(R.string.share_item_url_label))) {
-                            ShareUtils.shareFeedItemDownloadLink(context, item);
-                        } else if(arrayItems[which].equals(context.getString(R.string.share_link_with_position_label))) {
-                            ShareUtils.shareFeedItemLink(context, item, true);
-                        } else if(arrayItems[which].equals(context.getString(R.string.share_item_url_with_position_label))) {
-                            ShareUtils.shareFeedItemDownloadLink(context, item, true);
-                        } else if(arrayItems[which].equals(context.getString(R.string.share_file_label))) {
-                            ShareUtils.shareFeedItemFile(context, item.getMedia());
+                        if (items[i].equals(ctx.getString(R.string.share_link_label))) {
+                            ShareUtils.shareFeedItemLink(ctx, item);
+                        } else if (items[i].equals(ctx.getString(R.string.share_item_url_label))) {
+                            ShareUtils.shareFeedItemDownloadLink(ctx, item);
+                        } else if (items[i].equals(ctx.getString(R.string.share_link_with_position_label))) {
+                            ShareUtils.shareFeedItemLink(ctx, item, true);
+                        } else if (items[i].equals(ctx.getString(R.string.share_item_url_with_position_label))) {
+                            ShareUtils.shareFeedItemDownloadLink(ctx, item, true);
+                        } else if (items[i].equals(ctx.getString(R.string.share_file_label))) {
+                            ShareUtils.shareFeedItemFile(ctx, item.getMedia());
                         }
                     }
                 })
@@ -53,37 +53,37 @@ public class ShareDialog {
         return dialog;
     }
 
-    private void setupOptions(){
-        boolean hasMedia = item.getMedia() != null;
+    private void setupOptions() {
+        final boolean hasMedia = item.getMedia() != null;
 
-        shareDialogOptions.add(context.getString(R.string.share_link_label));
-        shareDialogOptions.add(context.getString(R.string.share_link_with_position_label));
-        shareDialogOptions.add(context.getString(R.string.share_item_url_label));
-        shareDialogOptions.add(context.getString(R.string.share_item_url_with_position_label));
-        shareDialogOptions.add(context.getString(R.string.share_file_label));
+        shareDialogOptions.add(ctx.getString(R.string.share_link_label));
+        shareDialogOptions.add(ctx.getString(R.string.share_link_with_position_label));
+        shareDialogOptions.add(ctx.getString(R.string.share_item_url_label));
+        shareDialogOptions.add(ctx.getString(R.string.share_item_url_with_position_label));
+        shareDialogOptions.add(ctx.getString(R.string.share_file_label));
 
         if (!ShareUtils.hasLinkToShare(item)) {
-            shareDialogOptions.remove(context.getString(R.string.share_link_label));
-            shareDialogOptions.remove(context.getString(R.string.share_link_with_position_label));
+            shareDialogOptions.remove(ctx.getString(R.string.share_link_label));
+            shareDialogOptions.remove(ctx.getString(R.string.share_link_with_position_label));
         }
 
         if (!hasMedia || item.getMedia().getDownload_url() == null) {
-            shareDialogOptions.remove(context.getString(R.string.share_item_url_label));
-            shareDialogOptions.remove(context.getString(R.string.share_item_url_with_position_label));
+            shareDialogOptions.remove(ctx.getString(R.string.share_item_url_label));
+            shareDialogOptions.remove(ctx.getString(R.string.share_item_url_with_position_label));
         }
 
-        if(!hasMedia || item.getMedia().getPosition() <= 0) {
-            shareDialogOptions.remove(context.getString(R.string.share_item_url_with_position_label));
-            shareDialogOptions.remove(context.getString(R.string.share_link_with_position_label));
+        if (!hasMedia || item.getMedia().getPosition() <= 0) {
+            shareDialogOptions.remove(ctx.getString(R.string.share_item_url_with_position_label));
+            shareDialogOptions.remove(ctx.getString(R.string.share_link_with_position_label));
         }
 
         boolean fileDownloaded = hasMedia && item.getMedia().fileExists();
-        if(!fileDownloaded){
-            shareDialogOptions.remove(context.getString(R.string.share_file_label));
+        if (!fileDownloaded) {
+            shareDialogOptions.remove(ctx.getString(R.string.share_file_label));
         }
 
         //  preparing the resulting shareOptions for dialog
-        arrayItems = new String[shareDialogOptions.size()];
-        shareDialogOptions.toArray(arrayItems);
+        items = new String[shareDialogOptions.size()];
+        shareDialogOptions.toArray(items);
     }
 }
