@@ -1,12 +1,9 @@
 package de.test.antennapod.handler;
 
 import androidx.test.filters.SmallTest;
-import androidx.test.runner.AndroidJUnit4;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.test.antennapod.util.syndication.feedgenerator.AtomGenerator;
-import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;

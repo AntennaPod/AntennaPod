@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.syndication.namespace.atom;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.syndication.util.SyndStringUtils;
 import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -163,12 +164,13 @@ public class NSAtom extends Namespace {
 
         if (state.getTagstack().size() >= 2) {
             AtomText textElement = null;
-            String content;
+            String contentRaw;
             if (state.getContentBuf() != null) {
-                content = state.getContentBuf().toString();
+                contentRaw = state.getContentBuf().toString();
             } else {
-                content = "";
+                contentRaw = "";
             }
+            String content = SyndStringUtils.trimAllWhitespace(contentRaw);
             SyndElement topElement = state.getTagstack().peek();
             String top = topElement.getName();
             SyndElement secondElement = state.getSecondTag();
@@ -181,9 +183,9 @@ public class NSAtom extends Namespace {
 
             if (ID.equals(top)) {
                 if (FEED.equals(second) && state.getFeed() != null) {
-                    state.getFeed().setFeedIdentifier(content);
+                    state.getFeed().setFeedIdentifier(contentRaw);
                 } else if (ENTRY.equals(second) && state.getCurrentItem() != null) {
-                    state.getCurrentItem().setItemIdentifier(content);
+                    state.getCurrentItem().setItemIdentifier(contentRaw);
                 }
             } else if (TITLE.equals(top) && textElement != null) {
                 if (FEED.equals(second) && state.getFeed() != null) {
