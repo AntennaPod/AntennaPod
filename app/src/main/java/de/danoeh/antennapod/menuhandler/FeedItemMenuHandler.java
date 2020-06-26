@@ -236,7 +236,8 @@ public class FeedItemMenuHandler {
                 IntentUtils.openInBrowser(context, FeedItemUtil.getLinkWithFallback(selectedItem));
                 break;
             case R.id.share_item:
-                new ShareDialog(context, selectedItem).show(((AppCompatActivity) context).getSupportFragmentManager(), "ShareEpisodeDialog");
+                new ShareDialog(context, selectedItem)
+                        .show(((AppCompatActivity) context).getSupportFragmentManager(), "ShareEpisodeDialog");
                 break;
             default:
                 Log.d(TAG, "Unknown menuItemId: " + menuItemId);

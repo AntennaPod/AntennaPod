@@ -112,6 +112,11 @@ public class UserPreferences {
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
 
+    // Dialogs
+    public static final String PREF_SHARE_EPISODE_WEBSITE = "prefShareEpisodeWebsite";
+    public static final String PREF_SHARE_EPISODE_MEDIA = "prefShareEpisodeMedia";
+    public static final String PREF_SHARE_EPISODE_START_AT = "prefShareEpisodeStartAt";
+
     // Mediaplayer
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
     public static final String PREF_MEDIA_PLAYER_EXOPLAYER = "exoplayer";
