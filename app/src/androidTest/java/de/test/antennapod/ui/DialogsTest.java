@@ -23,6 +23,8 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
@@ -56,10 +58,12 @@ public class DialogsTest {
 
         String url = "https://omny.fm/shows/silence-is-not-an-option/why-not-being-racist-is-not-enough";
 
-        onView(withId(R.id.btn_add_via_url)).perform(click());
+        onView(withId(R.id.btn_add_via_url)).perform(scrollTo()).perform(click());
         onView(withId(R.id.text)).perform(clearText(), typeText(url));
         onView(withText(R.string.confirm_label)).inRoot(isDialog())
                 .check(matches(isDisplayed()))
+                .perform(closeSoftKeyboard())
+                .perform(scrollTo())
                 .perform(click());
         Thread.sleep(5000);
         onView(withId(R.id.butSubscribe)).perform(click());
@@ -72,21 +76,22 @@ public class DialogsTest {
 
     @Test
     public void testShareDialogDisplayed() {
-        onView(withText(R.string.share_label)).perform(click());
-        onView(withText(R.string.share_episode_label)).check(matches(isDisplayed()));
+        onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
+        onView(allOf(isDisplayed(), withText(R.string.share_episode_label)));
     }
 
     @Test
     public void testShareDialogShareButton() throws InterruptedException {
-        onView(withText(R.string.share_label)).perform(click());
-        onView(withText(R.string.share_label)).check(matches(isDisplayed()));
-        onView(withText(R.string.share_label)).perform(click());
-        Thread.sleep(3000);
+        onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
+        onView(allOf(isDisplayed(), withText(R.string.share_label)));
+        Thread.sleep(1000);
+        onView(withText(R.string.share_episode_positive_label_button)).perform(scrollTo()).perform(click());
+        Thread.sleep(2000);
     }
 
     @Test
     public void testShareDialogCancelButton() {
-        onView(withText(R.string.share_label)).perform(click());
+        onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
         onView(withText(R.string.cancel_label)).check(matches(isDisplayed()));
     }
 

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -54,7 +55,7 @@ public class ShareDialog extends DialogFragment {
         setupOptions();
 
         builder
-                .setPositiveButton(R.string.share_label, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.share_episode_positive_label_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (radioEpisodeWebsite.isChecked()) {
@@ -107,6 +108,11 @@ public class ShareDialog extends DialogFragment {
 
             boolean radioMediaIsChecked = prefs.getBoolean(UserPreferences.PREF_SHARE_EPISODE_MEDIA, false);
             radioMediaFile.setChecked(radioMediaIsChecked);
+
+            if (!radioEpisodeWebsiteIsChecked && !radioMediaIsChecked) {
+                radioGroup.clearCheck();
+                radioEpisodeWebsite.setChecked(true);
+            }
         }
 
         boolean switchIsChecked = prefs.getBoolean(UserPreferences.PREF_SHARE_EPISODE_START_AT, false);
