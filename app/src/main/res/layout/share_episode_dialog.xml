@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="16dp">
+
+    <RadioGroup
+        android:id="@+id/share_dialog_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <RadioButton android:id="@+id/share_episode_website_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_dialog_episode_website_label"
+            android:checked="true"
+            />
+        <RadioButton android:id="@+id/share_media_file_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_dialog_media_file_label"
+            />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/share_dialog_include_label"/>
+
+    <Switch
+        android:id="@+id/share_start_at_timer_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_start_at_timer_dialog_label" />
+
+</LinearLayout>

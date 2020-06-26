@@ -765,6 +765,13 @@
     <string name="rating_later_label">Remind me later</string>
     <string name="rating_now_label">Sure, let\'s do this!</string>
 
+    <!-- Share epidose dialog -->
+    <string name="share_episode_label">Share…</string>
+    <string name="share_dialog_include_label">Include:</string>
+    <string name="share_start_at_timer_dialog_label">Start at (timer)</string>
+    <string name="share_dialog_media_file_label">Media file URL</string>
+    <string name="share_dialog_episode_website_label">Episode website</string>
+
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>
     <string name="playback_speed">Playback Speed</string>

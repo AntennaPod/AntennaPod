@@ -31,6 +31,7 @@ import java.text.NumberFormat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
@@ -390,8 +391,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         break;
                     case R.id.share_item:
                         if (feedItem != null) {
-                            ShareDialog shareDialog = new ShareDialog(getApplicationContext(), feedItem);
-                            shareDialog.createDialog().show();
+                            new ShareDialog(this, feedItem).show(((AppCompatActivity) this).getSupportFragmentManager(), "ShareEpisodeDialog");
                         }
                         break;
                     default:
