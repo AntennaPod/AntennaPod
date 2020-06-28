@@ -27,6 +27,10 @@ public class ShareDialog extends DialogFragment {
     private final Context ctx;
     private FeedItem item;
 
+    private static final String PREF_SHARE_EPISODE_WEBSITE = "prefShareEpisodeWebsite";
+    private static final String PREF_SHARE_EPISODE_MEDIA = "prefShareEpisodeMedia";
+    private static final String PREF_SHARE_EPISODE_START_AT = "prefShareEpisodeStartAt";
+
     private RadioGroup radioGroup;
     private RadioButton radioEpisodeWebsite;
     private RadioButton radioMediaFile;
@@ -36,7 +40,7 @@ public class ShareDialog extends DialogFragment {
     public ShareDialog(Context ctx, FeedItem item) {
         this.ctx = ctx;
         this.item = item;
-        prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        prefs = ctx.getSharedPreferences("SHARE_DIALOG_PREFS", Context.MODE_PRIVATE);
     }
 
     @NonNull
@@ -44,7 +48,7 @@ public class ShareDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View content = View.inflate(ctx, R.layout.share_episode_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        builder.setTitle(R.string.share_episode_label);
+        builder.setTitle(R.string.share_label);
         builder.setView(content);
 
         radioGroup = content.findViewById(R.id.share_dialog_radio_group);
@@ -59,25 +63,17 @@ public class ShareDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (radioEpisodeWebsite.isChecked()) {
-                            if (switchStartAt.isChecked()) {
-                                ShareUtils.shareFeedItemLink(ctx, item, true);
-                                prefs.edit().putBoolean(UserPreferences.PREF_SHARE_EPISODE_START_AT, true).apply();
-                            } else {
-                                ShareUtils.shareFeedItemLink(ctx, item);
-                                prefs.edit().putBoolean(UserPreferences.PREF_SHARE_EPISODE_START_AT, false).apply();
-                            }
-                            prefs.edit().putBoolean(UserPreferences.PREF_SHARE_EPISODE_WEBSITE, true).apply();
-                            prefs.edit().putBoolean(UserPreferences.PREF_SHARE_EPISODE_MEDIA, false).apply();
+                            ShareUtils.shareFeedItemLink(ctx, item, switchStartAt.isChecked());
+                            prefs.edit().putBoolean(PREF_SHARE_EPISODE_START_AT, switchStartAt.isChecked()).apply();
+
+                            prefs.edit().putBoolean(PREF_SHARE_EPISODE_WEBSITE, true).apply();
+                            prefs.edit().putBoolean(PREF_SHARE_EPISODE_MEDIA, false).apply();
                         } else {
-                            if (switchStartAt.isChecked()) {
-                                ShareUtils.shareFeedItemDownloadLink(ctx, item, true);
-                                prefs.edit().putBoolean(UserPreferences.PREF_SHARE_EPISODE_START_AT, true).apply();
-                            } else {
-                                ShareUtils.shareFeedItemDownloadLink(ctx, item);
-                                prefs.edit().putBoolean(UserPreferences.PREF_SHARE_EPISODE_START_AT, false).apply();
-                            }
-                            prefs.edit().putBoolean(UserPreferences.PREF_SHARE_EPISODE_MEDIA, true).apply();
-                            prefs.edit().putBoolean(UserPreferences.PREF_SHARE_EPISODE_WEBSITE, false).apply();
+                            ShareUtils.shareFeedItemLink(ctx, item, switchStartAt.isChecked());
+                            prefs.edit().putBoolean(PREF_SHARE_EPISODE_START_AT, switchStartAt.isChecked()).apply();
+
+                            prefs.edit().putBoolean(PREF_SHARE_EPISODE_WEBSITE, false).apply();
+                            prefs.edit().putBoolean(PREF_SHARE_EPISODE_MEDIA, true).apply();
                         }
                     }
                 })
@@ -103,10 +99,10 @@ public class ShareDialog extends DialogFragment {
         }
 
         if (radioEpisodeWebsite.getVisibility() == View.VISIBLE && radioMediaFile.getVisibility() == View.VISIBLE) {
-            boolean radioEpisodeWebsiteIsChecked = prefs.getBoolean(UserPreferences.PREF_SHARE_EPISODE_WEBSITE, false);
+            boolean radioEpisodeWebsiteIsChecked = prefs.getBoolean(PREF_SHARE_EPISODE_WEBSITE, false);
             radioEpisodeWebsite.setChecked(radioEpisodeWebsiteIsChecked);
 
-            boolean radioMediaIsChecked = prefs.getBoolean(UserPreferences.PREF_SHARE_EPISODE_MEDIA, false);
+            boolean radioMediaIsChecked = prefs.getBoolean(PREF_SHARE_EPISODE_MEDIA, false);
             radioMediaFile.setChecked(radioMediaIsChecked);
 
             if (!radioEpisodeWebsiteIsChecked && !radioMediaIsChecked) {
@@ -115,7 +111,7 @@ public class ShareDialog extends DialogFragment {
             }
         }
 
-        boolean switchIsChecked = prefs.getBoolean(UserPreferences.PREF_SHARE_EPISODE_START_AT, false);
+        boolean switchIsChecked = prefs.getBoolean(PREF_SHARE_EPISODE_START_AT, false);
         switchStartAt.setChecked(switchIsChecked);
     }
 }

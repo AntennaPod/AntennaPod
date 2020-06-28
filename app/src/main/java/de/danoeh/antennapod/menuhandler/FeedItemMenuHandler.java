@@ -237,7 +237,7 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.share_item:
                 new ShareDialog(context, selectedItem)
-                        .show(((AppCompatActivity) context).getSupportFragmentManager(), "ShareEpisodeDialog");
+                        .show((fragment.getActivity().getSupportFragmentManager()), "ShareEpisodeDialog");
                 break;
             default:
                 Log.d(TAG, "Unknown menuItemId: " + menuItemId);

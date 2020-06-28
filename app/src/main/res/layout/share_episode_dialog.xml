@@ -35,6 +35,6 @@
         android:id="@+id/share_start_at_timer_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/share_start_at_timer_dialog_label" />
+        android:text="@string/share_playback_position_dialog_label" />
 
 </LinearLayout>

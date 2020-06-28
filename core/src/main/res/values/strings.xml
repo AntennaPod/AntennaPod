@@ -766,10 +766,9 @@
     <string name="rating_now_label">Sure, let\'s do this!</string>
 
     <!-- Share episode dialog -->
-    <string name="share_episode_label">Share…</string>
     <string name="share_episode_positive_label_button">Share</string>
     <string name="share_dialog_include_label">Include:</string>
-    <string name="share_start_at_timer_dialog_label">Start at (timer)</string>
+    <string name="share_playback_position_dialog_label">Playback position</string>
     <string name="share_dialog_media_file_label">Media file URL</string>
     <string name="share_dialog_episode_website_label">Episode website</string>
 

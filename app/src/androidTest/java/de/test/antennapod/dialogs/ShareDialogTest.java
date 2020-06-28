@@ -1,24 +1,37 @@
-package de.test.antennapod.ui;
+package de.test.antennapod.dialogs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.test.antennapod.EspressoTestUtils;
+import de.test.antennapod.ui.UITestUtils;
+
+import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
@@ -27,7 +40,9 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
+import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
@@ -35,6 +50,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static de.test.antennapod.EspressoTestUtils.clickChildViewWithId;
+import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
+import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static de.test.antennapod.NthMatcher.first;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -44,55 +62,55 @@ import static org.hamcrest.CoreMatchers.endsWith;
  * User interface tests for queue fragment.
  */
 @RunWith(AndroidJUnit4.class)
-public class DialogsTest {
+public class ShareDialogTest {
 
     @Rule
     public IntentsTestRule<MainActivity> activityRule = new IntentsTestRule<>(MainActivity.class, false, false);
 
+    private UITestUtils uiTestUtils;
+    protected Context context;
+
     @Before
-    public void setUp() throws InterruptedException {
+    public void setUp() throws Exception {
+        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
-        EspressoTestUtils.setLastNavFragment(AddFeedFragment.TAG);
+        EspressoTestUtils.setLastNavFragment(EpisodesFragment.TAG);
+        uiTestUtils = new UITestUtils(context);
+        uiTestUtils.setup();
+        uiTestUtils.addLocalFeedData(true);
+
         activityRule.launchActivity(new Intent());
 
-        String url = "https://omny.fm/shows/silence-is-not-an-option/why-not-being-racist-is-not-enough";
+        openNavDrawer();
+        onDrawerItem(withText(R.string.episodes_label)).perform(click());
+        onView(isRoot()).perform(waitForView(withText(R.string.all_episodes_short_label), 1000));
+        onView(withText(R.string.all_episodes_short_label)).perform(click());
 
-        onView(withId(R.id.btn_add_via_url)).perform(scrollTo()).perform(click());
-        onView(withId(R.id.text)).perform(clearText(), typeText(url));
-        onView(withText(R.string.confirm_label)).inRoot(isDialog())
-                .check(matches(isDisplayed()))
-                .perform(closeSoftKeyboard())
-                .perform(scrollTo())
-                .perform(click());
-        Thread.sleep(5000);
-        onView(withId(R.id.butSubscribe)).perform(click());
-        Thread.sleep(5000);
-        onView(withId(R.id.recyclerView))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        Thread.sleep(3000);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
+        Matcher<View> allEpisodesMatcher = Matchers.allOf(withId(android.R.id.list), isDisplayed(), hasMinimumChildCount(2));
+        onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
+        onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, click()));
         onView(first(EspressoTestUtils.actionBarOverflow())).perform(click());
     }
 
     @Test
-    public void testShareDialogDisplayed() {
-        onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
-        onView(allOf(isDisplayed(), withText(R.string.share_episode_label)));
+    public void testShareDialogDisplayed() throws InterruptedException {
+        onView(withText(R.string.share_label)).perform(click());
+        onView(allOf(isDisplayed(), withText(R.string.share_label)));
     }
 
     @Test
     public void testShareDialogShareButton() throws InterruptedException {
         onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
         onView(allOf(isDisplayed(), withText(R.string.share_label)));
-        Thread.sleep(1000);
         onView(withText(R.string.share_episode_positive_label_button)).perform(scrollTo()).perform(click());
-        Thread.sleep(2000);
     }
 
     @Test
     public void testShareDialogCancelButton() {
         onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
-        onView(withText(R.string.cancel_label)).check(matches(isDisplayed()));
+        onView(withText(R.string.cancel_label)).check(matches(isDisplayed())).perform(scrollTo()).perform(click());
     }
 
 }
