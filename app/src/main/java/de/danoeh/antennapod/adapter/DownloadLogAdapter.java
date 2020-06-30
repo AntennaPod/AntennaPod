@@ -41,6 +41,8 @@ public class DownloadLogAdapter extends BaseAdapter {
     private final Activity context;
     private final ItemAccess itemAccess;
 
+    private final Handler retryStatusNotifyHandler = new Handler();
+
     public DownloadLogAdapter(Activity context, ItemAccess itemAccess) {
         super();
         this.itemAccess = itemAccess;
@@ -123,7 +125,7 @@ public class DownloadLogAdapter extends BaseAdapter {
         return holder.itemView;
     }
 
-    private void retryDownloadSingleItem(long itemId, boolean showToast){
+    private void retryDownloadSingleItem(long itemId, boolean showToast) {
         FeedMedia media = DBReader.getFeedMedia(itemId);
         if (media == null) {
             Log.e(TAG, "Could not find feed media for feed id: " + itemId);
@@ -172,7 +174,6 @@ public class DownloadLogAdapter extends BaseAdapter {
         DownloadStatus getItem(int position);
     }
 
-    private final Handler retryStatusNotifyHandler = new Handler();
     public void retryAll() {
         for (int i = 0; i < getCount(); i++) {
             DownloadStatus status = getItem(i);
