@@ -3,6 +3,7 @@ package de.danoeh.antennapod.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
 import android.text.Layout;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -113,25 +114,31 @@ public class DownloadLogAdapter extends BaseAdapter {
                 } else if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     holder.secondaryActionButton.setOnClickListener(v -> {
                         holder.secondaryActionButton.setVisibility(View.INVISIBLE);
-                        FeedMedia media = DBReader.getFeedMedia(status.getFeedfileId());
-                        if (media == null) {
-                            Log.e(TAG, "Could not find feed media for feed id: " + status.getFeedfileId());
-                            return;
-                        }
-                        try {
-                            DownloadRequester.getInstance().downloadMedia(context, true, media.getItem());
-                            ((MainActivity) context).showSnackbarAbovePlayer(
-                                    R.string.status_downloading_label, Toast.LENGTH_SHORT);
-                        } catch (DownloadRequestException e) {
-                            e.printStackTrace();
-                            DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
-                        }
+                        retryDownloadSingleItem(status.getFeedfileId(), true);
                     });
                 }
             }
         }
 
         return holder.itemView;
+    }
+
+    private void retryDownloadSingleItem(long itemId, boolean showToast){
+        FeedMedia media = DBReader.getFeedMedia(itemId);
+        if (media == null) {
+            Log.e(TAG, "Could not find feed media for feed id: " + itemId);
+            return;
+        }
+        try {
+            DownloadRequester.getInstance().downloadMedia(context, true, media.getItem());
+            if (showToast) {
+                ((MainActivity) context).showSnackbarAbovePlayer(
+                        R.string.status_downloading_label, Toast.LENGTH_SHORT);
+            }
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
+        }
     }
 
     private boolean newerWasSuccessful(int position, int feedTypeId, long id) {
@@ -163,6 +170,19 @@ public class DownloadLogAdapter extends BaseAdapter {
         int getCount();
 
         DownloadStatus getItem(int position);
+    }
+
+    private final Handler retryStatusNotifyHandler = new Handler();
+    public void retryAll() {
+        for (int i = 0; i < getCount(); i++) {
+            DownloadStatus status = getItem(i);
+            if (status != null && status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                retryDownloadSingleItem(status.getFeedfileId(), false);
+            }
+        }
+        ((MainActivity) context).showSnackbarAbovePlayer(
+                R.string.status_downloading_multiple_label, Toast.LENGTH_SHORT);
+        notifyDataSetChanged();
     }
 
 }

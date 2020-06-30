@@ -1,11 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Dialog;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.ListFragment;
-import androidx.core.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -155,11 +153,7 @@ public class DownloadLogFragment extends ListFragment {
             return;
         }
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-        MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.ic_delete});
-        clearHistory.setIcon(drawables.getDrawable(0));
-        drawables.recycle();
+        inflater.inflate(R.menu.download_log, menu);
     }
 
     @Override
@@ -177,6 +171,9 @@ public class DownloadLogFragment extends ListFragment {
             switch (item.getItemId()) {
                 case R.id.clear_history_item:
                     DBWriter.clearDownloadLog();
+                    return true;
+                case R.id.refresh_item:
+                    adapter.retryAll();
                     return true;
                 default:
                     return false;

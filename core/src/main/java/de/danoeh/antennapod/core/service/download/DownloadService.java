@@ -257,7 +257,6 @@ public class DownloadService extends Service {
                             queryDownloadsAsync();
                         });
                     } else {
-                        requester.addToUnsuccessfulDownload(downloader.request);
                         handleFailedDownload(downloader);
                         removeDownload(downloader);
                         numberOfDownloads.decrementAndGet();
