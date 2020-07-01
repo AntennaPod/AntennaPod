@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -81,13 +83,6 @@ public class ShareDialogTest {
     public void testShareDialogDisplayed() throws InterruptedException {
         onView(withText(R.string.share_label)).perform(click());
         onView(allOf(isDisplayed(), withText(R.string.share_label)));
-    }
-
-    @Test
-    public void testShareDialogShareButton() throws InterruptedException {
-        onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
-        onView(allOf(isDisplayed(), withText(R.string.share_label)));
-        onView(withText(R.string.share_episode_positive_label_button)).perform(scrollTo()).perform(click());
     }
 
     @Test

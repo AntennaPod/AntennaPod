@@ -59,7 +59,7 @@ public class ShareDialog extends DialogFragment {
         setupOptions();
 
         builder
-                .setPositiveButton(R.string.share_episode_positive_label_button, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.share_label, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         if (radioEpisodeWebsite.isChecked()) {
