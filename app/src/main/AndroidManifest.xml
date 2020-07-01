@@ -192,13 +192,6 @@
                 <data android:mimeType="video/*"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.DirectoryChooserActivity"
-            android:label="@string/choose_data_directory">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
-        </activity>
 
         <activity
             android:name=".activity.OnlineFeedViewActivity"
