@@ -65,11 +65,7 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
 
     @Override
     public int getItemCount() {
-        if (currentPath == null) {
-            return 0;
-        } else {
-            return entries.size();
-        }
+        return entries.size();
     }
 
     public void setDialog(Dialog dialog) {
