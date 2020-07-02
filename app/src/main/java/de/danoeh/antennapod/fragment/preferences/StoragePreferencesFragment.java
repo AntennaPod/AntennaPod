@@ -36,7 +36,10 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
     private void setupStorageScreen() {
         findPreference(PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
                 preference -> {
-                    showChooseDataFolderDialog();
+                    ChooseDataFolderDialog.showDialog(getContext(), path -> {
+                        UserPreferences.setDataFolder(path);
+                        setDataFolderText();
+                    });
                     return true;
                 }
         );
@@ -69,16 +72,5 @@ public class StoragePreferencesFragment extends PreferenceFragmentCompat {
         if (f != null) {
             findPreference(PREF_CHOOSE_DATA_DIR).setSummary(f.getAbsolutePath());
         }
-    }
-
-    private void showChooseDataFolderDialog() {
-        ChooseDataFolderDialog.showDialog(
-                getActivity(), new ChooseDataFolderDialog.RunnableWithString() {
-                    @Override
-                    public void run(final String folder) {
-                        UserPreferences.setDataFolder(folder);
-                        setDataFolderText();
-                    }
-                });
     }
 }

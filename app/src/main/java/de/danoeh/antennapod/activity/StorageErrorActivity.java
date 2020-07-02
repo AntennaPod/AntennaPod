@@ -28,7 +28,11 @@ public class StorageErrorActivity extends AppCompatActivity {
         setContentView(R.layout.storage_error);
 
         Button btnChooseDataFolder = findViewById(R.id.btnChooseDataFolder);
-        btnChooseDataFolder.setOnClickListener(v -> showChooseDataFolderDialog());
+        btnChooseDataFolder.setOnClickListener(v ->
+                ChooseDataFolderDialog.showDialog(this, path -> {
+                    UserPreferences.setDataFolder(path);
+                    leaveErrorState();
+                }));
     }
 
     @Override
@@ -49,18 +53,6 @@ public class StorageErrorActivity extends AppCompatActivity {
         } catch (IllegalArgumentException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
-    }
-
-    // see StoragePreferencesFragment.showChooseDataFolderDialog()
-    private void showChooseDataFolderDialog() {
-        ChooseDataFolderDialog.showDialog(
-                this, new ChooseDataFolderDialog.RunnableWithString() {
-                    @Override
-                    public void run(final String folder) {
-                        UserPreferences.setDataFolder(folder);
-                        leaveErrorState();
-                    }
-                });
     }
 
     private void leaveErrorState() {
