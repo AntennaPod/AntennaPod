@@ -78,7 +78,9 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
 
     private String getCurrentPath() {
         File dataFolder = UserPreferences.getDataFolder(null);
-        if (dataFolder != null) return dataFolder.getAbsolutePath();
+        if (dataFolder != null) {
+            return dataFolder.getAbsolutePath();
+        }
         return null;
     }
 
@@ -86,15 +88,19 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
         File[] mediaDirs = ContextCompat.getExternalFilesDirs(context, null);
         final List<StoragePath> entries = new ArrayList<>(mediaDirs.length);
         for (File dir : mediaDirs) {
-            if (isNotWritable(dir)) continue;
-
+            if (!isWritable(dir)) {
+                continue;
+            }
             entries.add(new StoragePath(dir.getAbsolutePath()));
+        }
+        if (entries.isEmpty() && isWritable(context.getFilesDir())) {
+            entries.add(new StoragePath(context.getFilesDir().getAbsolutePath()));
         }
         return entries;
     }
 
-    private boolean isNotWritable(File dir) {
-        return dir == null || !dir.exists() || !dir.canRead() || !dir.canWrite();
+    private boolean isWritable(File dir) {
+        return dir != null && dir.exists() && dir.canRead() && dir.canWrite();
     }
 
     private void selectAndDismiss(StoragePath storagePath) {
@@ -103,11 +109,11 @@ public class DataFolderAdapter extends RecyclerView.Adapter<DataFolderAdapter.Vi
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private View root;
-        private TextView path;
-        private TextView size;
-        private RadioButton radioButton;
-        private ProgressBar progressBar;
+        private final View root;
+        private final TextView path;
+        private final TextView size;
+        private final RadioButton radioButton;
+        private final ProgressBar progressBar;
 
         ViewHolder(View itemView) {
             super(itemView);
