@@ -74,6 +74,9 @@ public class FeedItemFilter {
                     break;
                 case "not_favorite":
                     showNotFavorite = true;
+                    break;
+                default:
+                    return;
             }
         }
     }
