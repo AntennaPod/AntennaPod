@@ -14,15 +14,19 @@ import de.danoeh.antennapod.core.util.DateUtils;
 /**
  * Creates RSS 2.0 feeds. See FeedGenerator for more information.
  */
-public class RSS2Generator implements FeedGenerator{
+public class Rss2Generator implements FeedGenerator {
 
     public static final long FEATURE_WRITE_GUID = 1;
 
     @Override
     public void writeFeed(Feed feed, OutputStream outputStream, String encoding, long flags) throws IOException {
-        if (feed == null) throw new IllegalArgumentException("feed = null");
-        if (outputStream == null) throw new IllegalArgumentException("outputStream = null");
-        if (encoding == null) throw new IllegalArgumentException("encoding = null");
+        if (feed == null) {
+            throw new IllegalArgumentException("feed = null");
+        } else if (outputStream == null) {
+            throw new IllegalArgumentException("outputStream = null");
+        } else if (encoding == null) {
+            throw new IllegalArgumentException("encoding = null");
+        }
 
         XmlSerializer xml = Xml.newSerializer();
         xml.setOutput(outputStream, encoding);
@@ -111,9 +115,15 @@ public class RSS2Generator implements FeedGenerator{
             }
         }
 
+        writeAdditionalAttributes(xml);
+
         xml.endTag(null, "channel");
         xml.endTag(null, "rss");
 
         xml.endDocument();
+    }
+
+    protected void writeAdditionalAttributes(XmlSerializer xml) throws IOException {
+
     }
 }

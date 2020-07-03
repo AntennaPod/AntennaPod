@@ -386,7 +386,7 @@
     <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
     <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
     <string name="pref_followQueue_title">Continuous Playback</string>
-    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones Disconnect</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
     <string name="pref_stream_over_download_title">Prefer Streaming</string>
