@@ -44,6 +44,7 @@ public class FeedItemFilter {
                     break;
                 case "paused":
                     showPaused = true;
+                    break;
                 case "not_paused":
                     showNotPaused = true;
                     break;
@@ -64,6 +65,7 @@ public class FeedItemFilter {
                     break;
                 case "has_media":
                     showHasMedia = true;
+                    break;
                 case "no_media":
                     showNoMedia = true;
                     break;
