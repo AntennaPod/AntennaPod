@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.VisibleForTesting;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -29,6 +30,7 @@ public class FileNameGenerator {
      * characters of the given string.
      */
     public static String generateFileName(String string) {
+        string = StringUtils.stripAccents(string);
         StringBuilder buf = new StringBuilder();
         for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
