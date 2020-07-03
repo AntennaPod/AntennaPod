@@ -5,14 +5,17 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+
 import androidx.appcompat.app.AlertDialog;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
 import de.danoeh.antennapod.view.RecursiveRadioGroup;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public abstract class FilterDialog {
 
@@ -47,7 +50,9 @@ public abstract class FilterDialog {
 
         for (String filterId : filterValues) {
             if (!TextUtils.isEmpty(filterId)) {
-                ((RadioButton) layout.findViewWithTag(filterId)).setChecked(true);
+                if (layout.findViewWithTag(filterId) != null) {
+                    ((RadioButton) layout.findViewWithTag(filterId)).setChecked(true);
+                }
             }
         }
 

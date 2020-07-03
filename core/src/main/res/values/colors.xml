@@ -28,4 +28,16 @@
     <color name="master_switch_background_light">#DDDDDD</color>
     <color name="master_switch_background_dark">#191919</color>
 
+    <!-- filter dialog -->
+    <color name="dialog_filter_button_inactive_dark">#757575</color>
+    <color name="dialog_filter_button_inactive_light">#DDDDDD</color>
+    <color name="dialog_filter_button_active_dark">#3D8BFF</color>
+    <color name="dialog_filter_button_active_light">#0078C2</color>
+
+    <color name="dialog_filter_clear_active_light">#46C6C6C6</color>
+    <color name="dialog_filter_clear_active_dark">#43707070</color>
+
+    <color name="dialog_filter_clear_inactive_light">#757575</color>
+    <color name="dialog_filter_clear_inactive_dark">#46C6C6C6</color>
+
 </resources>

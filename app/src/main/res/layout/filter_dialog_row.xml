@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.danoeh.antennapod.view.RecursiveRadioGroup
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<de.danoeh.antennapod.view.RecursiveRadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,29 +23,25 @@
                 android:id="@+id/filter_dialog_radioButton1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/filter_dialog_button_background_light"
-                android:textColor="@drawable/filter_dialog_button_text_light"
-                android:button="@android:color/transparent"
-                android:layout_marginRight="2dp"
                 android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="1"
+                android:background="?attr/filter_dialog_button_background"
+                android:button="@android:color/transparent"
                 android:checked="false"
-                android:foreground="?attr/selectableItemBackground"
-                android:tag=""
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@drawable/filter_dialog_button_text_light" />
 
             <RadioButton
                 android:id="@+id/filter_dialog_radioButton2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/filter_dialog_button_background_light"
-                android:textColor="@drawable/filter_dialog_button_text_light"
+                android:background="?attr/filter_dialog_button_background"
                 android:button="@android:color/transparent"
                 android:checked="false"
-                android:foreground="?attr/selectableItemBackground"
-                android:tag=""
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@drawable/filter_dialog_button_text_light" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -54,10 +49,8 @@
         android:id="@+id/filter_dialog_clear"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/filter_dialog_button_clear"
+        android:background="?attr/filter_dialog_button_clear"
         android:button="@android:color/transparent"
-        android:foreground="?attr/selectableItemBackground"
-        android:tag=""
         android:checked="true" />
 
 </de.danoeh.antennapod.view.RecursiveRadioGroup>

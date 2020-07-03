@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.AntennaPod.Light" parent="Theme.Base.AntennaPod.Light">
         <!-- Room for API dependent attributes -->
     </style>
 
     <style name="Theme.Base.AntennaPod.Light" parent="Theme.MaterialComponents.Light">
+        <item name="filter_dialog_button_background">
+            @drawable/filter_dialog_button_background_light
+        </item>
+        <item name="filter_dialog_button_clear">@drawable/filter_dialog_button_clear</item>
+        <item name="filter_dialog_clear_active">@color/dialog_filter_clear_active_light</item>
+        <item name="filter_dialog_clear_inactive">@color/dialog_filter_clear_inactive_light</item>
         <item name="colorPrimary">@color/accent_light</item>
         <item name="colorAccent">@color/accent_light</item>
         <item name="colorSecondary">@color/accent_light</item>
@@ -80,6 +86,12 @@
     </style>
 
     <style name="Theme.Base.AntennaPod.Dark" parent="Theme.MaterialComponents">
+        <item name="filter_dialog_button_background">
+            @drawable/filter_dialog_button_background_dark
+        </item>
+        <item name="filter_dialog_button_clear">@drawable/filter_dialog_button_clear</item>
+        <item name="filter_dialog_clear_active">@color/dialog_filter_clear_active_dark</item>
+        <item name="filter_dialog_clear_inactive">@color/dialog_filter_clear_inactive_dark</item>
         <item name="colorAccent">@color/accent_dark</item>
         <item name="colorSecondary">@color/accent_dark</item>
         <item name="colorOnSecondary">@color/black</item>
