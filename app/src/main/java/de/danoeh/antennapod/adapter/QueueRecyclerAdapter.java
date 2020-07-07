@@ -21,15 +21,22 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
 
     private final ItemTouchHelper itemTouchHelper;
     private boolean locked;
+    private boolean keepSorted;
 
     public QueueRecyclerAdapter(MainActivity mainActivity, ItemTouchHelper itemTouchHelper) {
         super(mainActivity);
         this.itemTouchHelper = itemTouchHelper;
         locked = UserPreferences.isQueueLocked();
+        keepSorted = UserPreferences.isQueueKeepSorted();
     }
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+        notifyDataSetChanged();
+    }
+
+    public void setKeepSorted(boolean keepSorted) {
+        this.keepSorted = keepSorted;
         notifyDataSetChanged();
     }
 
@@ -44,7 +51,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
             return false;
         };
 
-        if (locked) {
+        if (locked || keepSorted) {
             holder.dragHandle.setVisibility(View.GONE);
             holder.dragHandle.setOnTouchListener(null);
             holder.coverHolder.setOnTouchListener(null);

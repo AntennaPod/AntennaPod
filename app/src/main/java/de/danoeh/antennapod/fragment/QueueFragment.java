@@ -340,10 +340,10 @@ public class QueueFragment extends Fragment {
                         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
                         DBWriter.reorderQueue(sortOrder, true);
                         if (recyclerAdapter != null) {
-                            recyclerAdapter.setLocked(true);
+                            recyclerAdapter.setKeepSorted(true);
                         }
                     } else if (recyclerAdapter != null) {
-                        recyclerAdapter.setLocked(UserPreferences.isQueueLocked());
+                        recyclerAdapter.setKeepSorted(UserPreferences.isQueueKeepSorted());
                     }
                     getActivity().invalidateOptionsMenu();
                     return true;
@@ -515,7 +515,7 @@ public class QueueFragment extends Fragment {
 
                 @Override
                 public boolean isItemViewSwipeEnabled() {
-                    return true;
+                    return !UserPreferences.isQueueLocked();
                 }
 
                 @Override
