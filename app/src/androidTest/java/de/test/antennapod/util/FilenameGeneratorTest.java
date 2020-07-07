@@ -21,32 +21,28 @@ import static org.junit.Assert.assertTrue;
 @SmallTest
 public class FilenameGeneratorTest {
 
-    private static final String VALID1 = "abc abc";
-    private static final String INVALID1 = "ab/c: <abc";
-    private static final String INVALID2 = "abc abc ";
-
     public FilenameGeneratorTest() {
         super();
     }
 
     @Test
     public void testGenerateFileName() throws IOException {
-        String result = FileNameGenerator.generateFileName(VALID1);
-        assertEquals(result, VALID1);
+        String result = FileNameGenerator.generateFileName("abc abc");
+        assertEquals(result, "abc abc");
         createFiles(result);
     }
 
     @Test
     public void testGenerateFileName1() throws IOException {
-        String result = FileNameGenerator.generateFileName(INVALID1);
-        assertEquals(result, VALID1);
+        String result = FileNameGenerator.generateFileName("ab/c: <abc");
+        assertEquals(result, "abc abc");
         createFiles(result);
     }
 
     @Test
     public void testGenerateFileName2() throws IOException {
-        String result = FileNameGenerator.generateFileName(INVALID2);
-        assertEquals(result, VALID1);
+        String result = FileNameGenerator.generateFileName("abc abc ");
+        assertEquals(result, "abc abc");
         createFiles(result);
     }
 
@@ -60,6 +56,12 @@ public class FilenameGeneratorTest {
     public void testFeedTitleContainsDash() {
         String result = FileNameGenerator.generateFileName("Left - Right");
         assertEquals("Left - Right", result);
+    }
+
+    @Test
+    public void testFeedTitleContainsAccents() {
+        String result = FileNameGenerator.generateFileName("Äàáâãå");
+        assertEquals("Aaaaaa", result);
     }
 
     @Test
@@ -97,14 +99,6 @@ public class FilenameGeneratorTest {
         assertTrue(testFile.exists());
         testFile.delete();
         assertTrue(testFile.createNewFile());
-
-    }
-
-    @After
-    public void tearDown() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        File f = new File(context.getExternalCacheDir(), VALID1);
-        f.delete();
     }
 
 }
