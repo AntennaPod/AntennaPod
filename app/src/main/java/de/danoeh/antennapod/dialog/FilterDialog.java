@@ -50,9 +50,7 @@ public abstract class FilterDialog {
 
         for (String filterId : filterValues) {
             if (!TextUtils.isEmpty(filterId)) {
-                if (layout.findViewWithTag(filterId) != null) {
-                    ((RadioButton) layout.findViewWithTag(filterId)).setChecked(true);
-                }
+                ((RadioButton) layout.findViewWithTag(filterId)).setChecked(true);
             }
         }
 
@@ -66,6 +64,9 @@ public abstract class FilterDialog {
                 if (group.getCheckedButton() != null) {
                     filterValues.add((String) group.getCheckedButton().getTag());
                 }
+            }
+            if (filterValues.contains(null)) {
+                filterValues.clear();
             }
             updateFilter(filterValues);
         });

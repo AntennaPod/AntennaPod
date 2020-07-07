@@ -35,10 +35,9 @@ public class FeedItemFilter {
 
     public FeedItemFilter(String[] properties) {
         this.mProperties = properties;
-        Log.d("***xxx***", Arrays.toString(properties));
         for (String property : properties) {
             // see R.arrays.feed_filter_values
-            switch ("" + property) {
+            switch (property) {
                 case "unplayed":
                     showUnplayed = true;
                     break;
@@ -76,7 +75,7 @@ public class FeedItemFilter {
                     showNotFavorite = true;
                     break;
                 default:
-                    return;
+                    break;
             }
         }
     }
@@ -85,7 +84,7 @@ public class FeedItemFilter {
      * Run a list of feed items through the filter.
      */
     public List<FeedItem> filter(List<FeedItem> items) {
-        if (mProperties.length == 0) return items;
+        if(mProperties.length == 0) return items;
 
         List<FeedItem> result = new ArrayList<>();
 

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="filter_dialog_close" format="reference" />
+    <attr name="filter_dialog_text_active" format="reference" />
+    <attr name="filter_dialog_text_inactive" format="reference" />
     <attr name="filter_dialog_button_background" format="reference" />
-    <attr name="filter_dialog_button_clear" format="reference" />
     <attr name="filter_dialog_clear_active" format="reference" />
     <attr name="filter_dialog_clear_inactive" format="reference" />
     <attr name="action_about" format="reference" />

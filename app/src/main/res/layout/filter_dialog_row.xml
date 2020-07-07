@@ -30,7 +30,7 @@
                 android:button="@android:color/transparent"
                 android:checked="false"
                 android:gravity="center"
-                android:textColor="@drawable/filter_dialog_button_text_light" />
+                android:textColor="@color/filter_dialog_button_text" />
 
             <RadioButton
                 android:id="@+id/filter_dialog_radioButton2"
@@ -41,7 +41,7 @@
                 android:button="@android:color/transparent"
                 android:checked="false"
                 android:gravity="center"
-                android:textColor="@drawable/filter_dialog_button_text_light" />
+                android:textColor="@color/filter_dialog_button_text" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -49,7 +49,7 @@
         android:id="@+id/filter_dialog_clear"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="?attr/filter_dialog_button_clear"
+        android:background="@drawable/ic_filter_close"
         android:button="@android:color/transparent"
         android:checked="true" />
 

@@ -40,4 +40,7 @@
     <color name="dialog_filter_clear_inactive_light">#757575</color>
     <color name="dialog_filter_clear_inactive_dark">#46C6C6C6</color>
 
+    <color name="dialog_filter_text_active">#FFFFFF</color>
+    <color name="dialog_filter_text_inactive">#000000</color>
+
 </resources>

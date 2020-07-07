@@ -10,7 +10,7 @@
         <shape android:shape="oval">
             <stroke
                 android:width="4dp"
-                android:color="?attr/filter_dialog_clear_inactive" />
+                android:color="?attr/filter_dialog_close" />
         </shape>
     </item>
 
@@ -28,7 +28,7 @@
             <shape android:shape="line">
                 <stroke
                     android:width="4dp"
-                    android:color="?attr/filter_dialog_clear_inactive" />
+                    android:color="?attr/filter_dialog_close" />
             </shape>
         </rotate>
     </item>
@@ -46,7 +46,7 @@
             <shape android:shape="line">
                 <stroke
                     android:width="4dp"
-                    android:color="?attr/filter_dialog_clear_inactive" />
+                    android:color="?attr/filter_dialog_close" />
             </shape>
 
         </rotate>
