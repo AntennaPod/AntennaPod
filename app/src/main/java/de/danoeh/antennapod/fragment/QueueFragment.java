@@ -515,7 +515,7 @@ public class QueueFragment extends Fragment {
 
                 @Override
                 public boolean isItemViewSwipeEnabled() {
-                    return !UserPreferences.isQueueLocked();
+                    return true;
                 }
 
                 @Override
