@@ -15,7 +15,10 @@ import de.danoeh.antennapod.core.util.DownloadError;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class LocalFeedUpdater {
@@ -36,16 +39,20 @@ public class LocalFeedUpdater {
             feed.setItems(new ArrayList<>());
         }
         //make sure it is the latest 'version' of this feed from the db (all items etc)
-        feed = DBTasks.updateFeed(context, feed)[0];
+        feed = DBTasks.updateFeed(context, feed, false);
 
+        // list files in feed folder
         List<DocumentFile> mediaFiles = new ArrayList<>();
+        Set<String> mediaFileNames = new HashSet<>();
         for (DocumentFile file : documentFolder.listFiles()) {
             String mime = file.getType();
             if (mime != null && (mime.startsWith("audio/") || mime.startsWith("video/"))) {
                 mediaFiles.add(file);
+                mediaFileNames.add(file.getName());
             }
         }
 
+        // add new files to feed and update item data
         List<FeedItem> newItems = feed.getItems();
         for (DocumentFile f : mediaFiles) {
             FeedItem oldItem = feedContainsFile(feed, f.getName());
@@ -54,6 +61,15 @@ public class LocalFeedUpdater {
                 newItems.add(newItem);
             } else {
                 oldItem.updateFromOther(newItem);
+            }
+        }
+
+        // remove feed items without corresponding file
+        Iterator<FeedItem> it = newItems.iterator();
+        while (it.hasNext()) {
+            FeedItem feedItem = it.next();
+            if (!mediaFileNames.contains(feedItem.getLink())) {
+                it.remove();
             }
         }
 
@@ -66,7 +82,11 @@ public class LocalFeedUpdater {
             }
         }
 
-        DBTasks.updateFeed(context, feed);
+        // update items, delete items without existing file;
+        // only delete items if the folder contains at least one element to avoid accidentally
+        // deleting played state or position in case the folder is temporarily unavailable.
+        boolean removeUnlistedItems = (newItems.size() >= 1);
+        DBTasks.updateFeed(context, feed, removeUnlistedItems);
     }
 
     private static FeedItem feedContainsFile(Feed feed, String filename) {

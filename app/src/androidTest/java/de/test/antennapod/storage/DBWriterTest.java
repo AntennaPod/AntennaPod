@@ -422,6 +422,41 @@ public class DBWriterTest {
         adapter.close();
     }
 
+    @Test
+    public void testDeleteFeedItems() throws Exception {
+        Feed feed = new Feed("url", null, "title");
+        feed.setItems(new ArrayList<>());
+        feed.setImageUrl("url");
+
+        // create items
+        for (int i = 0; i < 10; i++) {
+            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), FeedItem.PLAYED, feed);
+            feed.getItems().add(item);
+        }
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        List<FeedItem> itemsToDelete = feed.getItems().subList(0, 2);
+        DBWriter.deleteFeedItems(getInstrumentation().getTargetContext(), itemsToDelete).get(TIMEOUT, TimeUnit.SECONDS);
+
+        adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        for (int i = 0; i < feed.getItems().size(); i++) {
+            FeedItem feedItem = feed.getItems().get(i);
+            Cursor c = adapter.getFeedItemCursor(String.valueOf(feedItem.getId()));
+            if (i < 2) {
+                assertEquals(0, c.getCount());
+            } else {
+                assertEquals(1, c.getCount());
+            }
+            c.close();
+        }
+        adapter.close();
+    }
+
     private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());

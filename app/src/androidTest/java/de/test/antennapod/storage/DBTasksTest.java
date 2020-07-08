@@ -29,6 +29,7 @@ import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -66,7 +67,7 @@ public class DBTasksTest {
         for (int i = 0; i < NUM_ITEMS; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed));
         }
-        Feed newFeed = DBTasks.updateFeed(context, feed)[0];
+        Feed newFeed = DBTasks.updateFeed(context, feed, false);
 
         assertTrue(newFeed == feed);
         assertTrue(feed.getId() != 0);
@@ -86,8 +87,8 @@ public class DBTasksTest {
         feed1.setItems(new ArrayList<>());
         feed2.setItems(new ArrayList<>());
 
-        Feed savedFeed1 = DBTasks.updateFeed(context, feed1)[0];
-        Feed savedFeed2 = DBTasks.updateFeed(context, feed2)[0];
+        Feed savedFeed1 = DBTasks.updateFeed(context, feed1, false);
+        Feed savedFeed2 = DBTasks.updateFeed(context, feed2, false);
 
         assertTrue(savedFeed1.getId() != savedFeed2.getId());
     }
@@ -122,7 +123,7 @@ public class DBTasksTest {
             feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.UNPLAYED, feed));
         }
 
-        final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
+        final Feed newFeed = DBTasks.updateFeed(context, feed, false);
         assertTrue(feed != newFeed);
 
         updatedFeedTest(newFeed, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
@@ -154,12 +155,33 @@ public class DBTasksTest {
         list.add(item);
         feed.setItems(list);
 
-        final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
+        final Feed newFeed = DBTasks.updateFeed(context, feed, false);
         assertTrue(feed != newFeed);
 
         final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         final FeedItem feedItemFromDB = feedFromDB.getItems().get(0);
         assertTrue("state: " + feedItemFromDB.getState(), feedItemFromDB.isNew());
+    }
+
+    @Test
+    public void testUpdateFeedRemoveUnlistedItems() {
+        final Feed feed = new Feed("url", null, "title");
+        feed.setItems(new ArrayList<>());
+        for (int i = 0; i < 10; i++) {
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
+        }
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // delete some items
+        feed.getItems().subList(0, 2).clear();
+        Feed newFeed = DBTasks.updateFeed(context, feed, true);
+        assertEquals(8, newFeed.getItems().size()); // 10 - 2 = 8 items
+
+        Feed feedFromDB = DBReader.getFeed(newFeed.getId());
+        assertEquals(8, feedFromDB.getItems().size()); // 10 - 2 = 8 items
     }
 
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
