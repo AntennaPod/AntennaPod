@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -340,10 +339,10 @@ public class QueueFragment extends Fragment {
                         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
                         DBWriter.reorderQueue(sortOrder, true);
                         if (recyclerAdapter != null) {
-                            recyclerAdapter.setKeepSorted(true);
+                            recyclerAdapter.updateDragDropEnabled();
                         }
                     } else if (recyclerAdapter != null) {
-                        recyclerAdapter.setKeepSorted(UserPreferences.isQueueKeepSorted());
+                        recyclerAdapter.updateDragDropEnabled();
                     }
                     getActivity().invalidateOptionsMenu();
                     return true;
@@ -386,7 +385,7 @@ public class QueueFragment extends Fragment {
         UserPreferences.setQueueLocked(locked);
         getActivity().supportInvalidateOptionsMenu();
         if (recyclerAdapter != null) {
-            recyclerAdapter.setLocked(locked);
+            recyclerAdapter.updateDragDropEnabled();
         }
         if (locked) {
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
