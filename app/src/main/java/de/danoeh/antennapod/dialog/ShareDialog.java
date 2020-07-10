@@ -81,8 +81,7 @@ public class ShareDialog extends DialogFragment {
                 }
                 prefs.edit().putBoolean(PREF_SHARE_EPISODE_START_AT, includePlaybackPosition).apply();
             }
-        })
-        .setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener() {
+        }).setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
             }

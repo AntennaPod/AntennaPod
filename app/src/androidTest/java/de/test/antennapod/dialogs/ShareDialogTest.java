@@ -79,13 +79,13 @@ public class ShareDialogTest {
 
     @Test
     public void testShareDialogDisplayed() throws InterruptedException {
-        onView(withText(R.string.share_label)).perform(click());
+        onView(withText(R.string.share_label_with_ellipses)).perform(click());
         onView(allOf(isDisplayed(), withText(R.string.share_label)));
     }
 
     @Test
     public void testShareDialogCancelButton() {
-        onView(withText(R.string.share_label)).perform(scrollTo()).perform(click());
+        onView(withText(R.string.share_label_with_ellipses)).perform(scrollTo()).perform(click());
         onView(withText(R.string.cancel_label)).check(matches(isDisplayed())).perform(scrollTo()).perform(click());
     }
 

@@ -62,6 +62,6 @@
         android:id="@+id/share_item"
         android:menuCategory="container"
         custom:showAsAction="never"
-        android:title="@string/share_label">
+        android:title="@string/share_label_with_ellipses">
     </item>
 </menu>

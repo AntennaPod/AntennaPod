@@ -71,7 +71,7 @@
     <item
         android:id="@+id/share_item"
         android:menuCategory="container"
-        android:title="@string/share_label">
+        android:title="@string/share_label_with_ellipses">
     </item>
 
     <item
