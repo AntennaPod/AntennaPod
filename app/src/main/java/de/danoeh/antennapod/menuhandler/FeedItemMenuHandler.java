@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -236,8 +235,8 @@ public class FeedItemMenuHandler {
                 IntentUtils.openInBrowser(context, FeedItemUtil.getLinkWithFallback(selectedItem));
                 break;
             case R.id.share_item:
-                new ShareDialog(context, selectedItem)
-                        .show((fragment.getActivity().getSupportFragmentManager()), "ShareEpisodeDialog");
+                ShareDialog shareDialog = ShareDialog.newInstance(selectedItem);
+                shareDialog.show((fragment.getActivity().getSupportFragmentManager()), "ShareEpisodeDialog");
                 break;
             default:
                 Log.d(TAG, "Unknown menuItemId: " + menuItemId);

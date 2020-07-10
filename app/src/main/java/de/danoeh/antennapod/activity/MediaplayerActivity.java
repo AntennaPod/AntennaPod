@@ -391,7 +391,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         break;
                     case R.id.share_item:
                         if (feedItem != null) {
-                            new ShareDialog(this, feedItem).show(getSupportFragmentManager(), "ShareEpisodeDialog");
+                            ShareDialog shareDialog = ShareDialog.newInstance(feedItem);
+                            shareDialog.show(getSupportFragmentManager(), "ShareEpisodeDialog");
                         }
                         break;
                     default:

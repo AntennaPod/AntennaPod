@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -43,7 +41,7 @@ import static de.test.antennapod.NthMatcher.first;
 import static org.hamcrest.CoreMatchers.allOf;
 
 /**
- * User interface tests for queue fragment.
+ * User interface tests for share dialog.
  */
 @RunWith(AndroidJUnit4.class)
 public class ShareDialogTest {

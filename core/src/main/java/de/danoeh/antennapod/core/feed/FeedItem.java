@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +25,7 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements ShownotesProvider, ImageResource {
+public class FeedItem extends FeedComponent implements ShownotesProvider, ImageResource, Serializable {
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
