@@ -38,6 +38,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -173,7 +174,7 @@ public class PlaybackServiceMediaPlayerTest {
             throw assertionError;
         assertTrue(res);
 
-        assertTrue(psmp.getPSMPInfo().playerStatus == PlayerStatus.INITIALIZED);
+        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
         assertFalse(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -214,7 +215,7 @@ public class PlaybackServiceMediaPlayerTest {
             throw assertionError;
         assertTrue(res);
 
-        assertTrue(psmp.getPSMPInfo().playerStatus == PlayerStatus.INITIALIZED);
+        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
         assertTrue(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -256,7 +257,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertTrue(psmp.getPSMPInfo().playerStatus == PlayerStatus.PREPARED);
+        assertSame(PlayerStatus.PREPARED, psmp.getPSMPInfo().playerStatus);
         callback.cancel();
 
         psmp.shutdown();
@@ -301,7 +302,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertTrue(psmp.getPSMPInfo().playerStatus == PlayerStatus.PLAYING);
+        assertSame(PlayerStatus.PLAYING, psmp.getPSMPInfo().playerStatus);
         callback.cancel();
         psmp.shutdown();
     }
@@ -339,7 +340,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertTrue(psmp.getPSMPInfo().playerStatus == PlayerStatus.INITIALIZED);
+        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
         assertFalse(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -378,7 +379,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertTrue(psmp.getPSMPInfo().playerStatus == PlayerStatus.INITIALIZED);
+        assertSame(PlayerStatus.INITIALIZED, psmp.getPSMPInfo().playerStatus);
         assertTrue(psmp.isStartWhenPrepared());
         callback.cancel();
         psmp.shutdown();
@@ -420,7 +421,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertTrue(psmp.getPSMPInfo().playerStatus == PlayerStatus.PREPARED);
+        assertSame(PlayerStatus.PREPARED, psmp.getPSMPInfo().playerStatus);
         callback.cancel();
         psmp.shutdown();
     }
@@ -465,7 +466,7 @@ public class PlaybackServiceMediaPlayerTest {
         if (assertionError != null)
             throw assertionError;
         assertTrue(res);
-        assertTrue(psmp.getPSMPInfo().playerStatus == PlayerStatus.PLAYING);
+        assertSame(PlayerStatus.PLAYING, psmp.getPSMPInfo().playerStatus);
         callback.cancel();
         psmp.shutdown();
     }

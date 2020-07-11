@@ -82,7 +82,7 @@ public class HttpDownloaderTest {
         downloader.call();
         DownloadStatus status = downloader.getResult();
         assertNotNull(status);
-        assertTrue(status.isSuccessful() == expectedResult);
+        assertEquals(expectedResult, status.isSuccessful());
         assertTrue(status.isDone());
         // the file should not exist if the download has failed and deleteExisting was true
         assertTrue(!deleteExisting || new File(feedFile.getFile_url()).exists() == expectedResult);
