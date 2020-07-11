@@ -29,12 +29,9 @@ Submit a pull request
 ---------------------
 - If you want to work on a feature that has been requested or fix a bug that has been reported on the "issues" page, add a comment to it so that other people know that you are working on it.
 - Fork the repository.
-- Almost all changes of AntennaPod are done on the `develop` branch. If a new version of AntennaPod is released, the `develop` branch is merged into `master`. As a result, the `master` branch probably doesn't contain the latest changes when you are reading this. Please make sure that you are branching from `develop`! Otherwise, there might be a lot of merge-conflicts when merging your changes into `develop` and therefore it might take longer to review your pull-request. Exceptions are changes in files like README.md, CONTRIBUTING.md, and other files that are not directly related to the source code.
-- If your pull request fixes a bug that has been reported or implements a feature that has been requested in another issue, try to mention it so that it can be closed once your pull request has been merged. If you use special keywords in the [commit comment](https://help.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) or [pull request text](https://github.blog/2013-05-14-closing-issues-via-pull-requests/), GitHub will close the issue(s) automatically when the changes land on the master branch.
-- Although not every part of AntennaPod's source code is fully documented yet, it would be very nice if you could add documentation to your changes if it is a larger pull request.
-- If possible, add unit tests for your pull request and make sure that they pass. Information on how to add unit tests and run them can be found here: (TODO)
-
-
-Improving this file
--------------------
-If you think this file needs clarification or additional information on certain topics, feel free to improve it via pull requests or by opening an issue.
+- Almost all changes of AntennaPod are done on the `develop` branch. If a new version of AntennaPod is released, the `develop` branch is merged into `master`. As a result, the `master` branch probably doesn't contain the latest changes when you are reading this. Please make sure that you are branching from `develop`! Otherwise, there might be a lot of merge-conflicts when merging your changes into `develop` and therefore it might take longer to review your pull-request. Exceptions are urgent issues that need to be fixed in the production version.
+- If your pull request fixes a bug that has been reported or implements a feature that has been requested in another issue, try to mention it in the message, so that it can be closed once your pull request has been merged. If you use special keywords in the [commit comment](https://help.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue) or [pull request text](https://github.blog/2013-05-14-closing-issues-via-pull-requests/), GitHub will close the issue(s) automatically.
+- If possible, add unit tests for your pull request and make sure that they pass.
+- Please do not upgrade dependencies or build tools unless you have a good reason for it. Doing so can easily introduce bugs that are hard to track down.
+- If you plan to do a change that touches many files (10+), please ask beforehand. This usually causes merge conflicts for other developers.
+- Please follow our code style. You can use Checkstyle within Android Studio using our [coniguration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle-new-code.xml).
