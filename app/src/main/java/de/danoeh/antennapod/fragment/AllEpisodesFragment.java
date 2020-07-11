@@ -45,13 +45,11 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
-            switch (item.getItemId()) {
-                case R.id.filter_items:
-                    showFilterDialog();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.filter_items) {
+                showFilterDialog();
+                return true;
             }
+            return false;
         } else {
             return true;
         }

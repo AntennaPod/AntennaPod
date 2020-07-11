@@ -171,13 +171,11 @@ public class PlaybackHistoryFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
-            switch (item.getItemId()) {
-                case R.id.clear_history_item:
-                    DBWriter.clearPlaybackHistory();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.clear_history_item) {
+                DBWriter.clearPlaybackHistory();
+                return true;
             }
+            return false;
         } else {
             return true;
         }
