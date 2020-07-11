@@ -227,12 +227,11 @@ public class ProxyDialog {
         if(required) {
             testSuccessful = false;
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.proxy_test_label);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
         } else {
             testSuccessful = true;
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(android.R.string.ok);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
         }
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
     }
 
     private void test() {
