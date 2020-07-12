@@ -68,9 +68,12 @@ public class FeedItemMenuHandler {
             setItemVisibility(menu, R.id.share_download_url_item, false);
             setItemVisibility(menu, R.id.share_download_url_with_position_item, false);
         }
-        if(!hasMedia || selectedItem.getMedia().getPosition() <= 0) {
+        if (!hasMedia || selectedItem.getMedia().getPosition() <= 0) {
             setItemVisibility(menu, R.id.share_download_url_with_position_item, false);
             setItemVisibility(menu, R.id.share_link_with_position_item, false);
+        }
+        if (selectedItem.getFeed().isLocalFeed()) {
+            setItemVisibility(menu, R.id.visit_website_item, false);
         }
 
         boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
