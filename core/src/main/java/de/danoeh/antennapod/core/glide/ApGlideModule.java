@@ -35,8 +35,10 @@ public class ApGlideModule extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        registry.replace(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
-        registry.append(EmbeddedChapterImage.class, ByteBuffer.class, new ChapterImageModelLoader.Factory());
+        registry.replace(String.class, InputStream.class, new MetadataRetrieverLoader.Factory(context));
+        registry.append(String.class, InputStream.class, new ApOkHttpUrlLoader.Factory());
         registry.append(String.class, InputStream.class, new StringLoader.StreamFactory());
+
+        registry.append(EmbeddedChapterImage.class, ByteBuffer.class, new ChapterImageModelLoader.Factory());
     }
 }

@@ -32,6 +32,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
+    public static final String FILENAME_PREFIX_EMBEDDED_COVER = "metadata-retriever:";
 
     public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
     private static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
@@ -557,7 +558,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item != null) {
             return item.getImageLocation();
         } else if (hasEmbeddedPicture()) {
-            return getLocalMediaUrl();
+            return FILENAME_PREFIX_EMBEDDED_COVER + getLocalMediaUrl();
         } else {
             return null;
         }

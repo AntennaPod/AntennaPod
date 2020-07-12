@@ -118,6 +118,7 @@ public class LocalFeedUpdater {
         long size = file.length();
         FeedMedia media = new FeedMedia(0, item, (int) duration, 0, size, file.getType(),
                 file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
+        media.setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
         item.setMedia(media);
 
         return item;

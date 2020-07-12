@@ -53,14 +53,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
          * Constructor for a new Factory that runs requests using a static singleton client.
          */
         Factory() {
-            this(getInternalClient());
-        }
-
-        /**
-         * Constructor for a new Factory that runs requests using given client.
-         */
-        Factory(OkHttpClient client) {
-            this.client = client;
+            this.client = getInternalClient();
         }
 
         @NonNull
@@ -84,14 +77,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     @Nullable
     @Override
     public LoadData<InputStream> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
-        if (TextUtils.isEmpty(model)) {
-            return null;
-        } else if (model.startsWith("/")) {
-            return new LoadData<>(new ObjectKey(model), new AudioCoverFetcher(model));
-        } else {
-            GlideUrl url = new GlideUrl(model);
-            return new LoadData<>(new ObjectKey(model), new OkHttpStreamFetcher(client, url));
-        }
+        return new LoadData<>(new ObjectKey(model), new OkHttpStreamFetcher(client, new GlideUrl(model)));
     }
 
     @Override
