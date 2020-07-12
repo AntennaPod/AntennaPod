@@ -51,9 +51,7 @@ public abstract class FilterDialog {
                 filterValues.remove(values[which]);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
-            updateFilter(filterValues);
-        });
+        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> updateFilter(filterValues));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
     }

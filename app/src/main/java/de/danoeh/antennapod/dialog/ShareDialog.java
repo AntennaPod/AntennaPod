@@ -2,7 +2,6 @@ package de.danoeh.antennapod.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -68,24 +67,17 @@ public class ShareDialog extends DialogFragment {
 
         setupOptions();
 
-        builder.setPositiveButton(R.string.share_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                boolean includePlaybackPosition = checkBoxStartAt.isChecked();
-                if (radioEpisodeWebsite.isChecked()) {
-                    ShareUtils.shareFeedItemLink(ctx, item, includePlaybackPosition);
-                    prefs.edit().putString(PREF_SHARE_DIALOG_OPTION, "website").apply();
-                } else {
-                    ShareUtils.shareFeedItemDownloadLink(ctx, item, includePlaybackPosition);
-                    prefs.edit().putString(PREF_SHARE_DIALOG_OPTION, "media").apply();
-                }
-                prefs.edit().putBoolean(PREF_SHARE_EPISODE_START_AT, includePlaybackPosition).apply();
+        builder.setPositiveButton(R.string.share_label, (dialog, id) -> {
+            boolean includePlaybackPosition = checkBoxStartAt.isChecked();
+            if (radioEpisodeWebsite.isChecked()) {
+                ShareUtils.shareFeedItemLink(ctx, item, includePlaybackPosition);
+                prefs.edit().putString(PREF_SHARE_DIALOG_OPTION, "website").apply();
+            } else {
+                ShareUtils.shareFeedItemDownloadLink(ctx, item, includePlaybackPosition);
+                prefs.edit().putString(PREF_SHARE_DIALOG_OPTION, "media").apply();
             }
-        }).setNegativeButton(R.string.cancel_label, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.dismiss();
-            }
-        });
+            prefs.edit().putBoolean(PREF_SHARE_EPISODE_START_AT, includePlaybackPosition).apply();
+        }).setNegativeButton(R.string.cancel_label, (dialog, id) -> dialog.dismiss());
 
         return builder.create();
     }
