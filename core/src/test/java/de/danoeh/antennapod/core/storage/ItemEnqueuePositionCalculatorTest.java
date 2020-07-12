@@ -28,6 +28,7 @@ import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocat
 import static de.danoeh.antennapod.core.util.CollectionTestUtil.concat;
 import static de.danoeh.antennapod.core.util.CollectionTestUtil.list;
 import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -249,7 +250,7 @@ public class ItemEnqueuePositionCalculatorTest {
         assertEquals(message, idsExpected, getIdList(queue));
     }
 
-    static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(Arrays.asList());
+    static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(emptyList());
 
     static final List<FeedItem> QUEUE_DEFAULT = 
             Collections.unmodifiableList(Arrays.asList(
