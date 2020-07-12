@@ -479,12 +479,9 @@ public class DownloadService extends Service {
             }
             handler.post(() -> {
                 downloads.add(downloader);
+                downloadExecutor.submit(downloader);
                 postDownloaders();
             });
-            // Needs to be done after postDownloaders() because otherwise,
-            // it might take long before the progress bar circle starts spinning
-            ClientConfig.installSslProvider(this);
-            handler.post(() -> downloadExecutor.submit(downloader));
         }
         handler.post(this::queryDownloads);
     }
