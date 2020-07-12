@@ -92,7 +92,7 @@ public class ChapterUtils {
                 p.setChapters(chapters);
             }
             Log.i(TAG, "Chapters loaded");
-        } catch (IOException | ID3ReaderException e) {
+        } catch (IOException | ID3ReaderException | IllegalArgumentException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             IOUtils.closeQuietly(in);
@@ -164,7 +164,7 @@ public class ChapterUtils {
             if (input != null) {
                 readOggChaptersFromInputStream(media, input);
             }
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             IOUtils.closeQuietly(input);
