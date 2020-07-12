@@ -168,7 +168,8 @@ public class DBTasksTest {
         final Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         for (int i = 0; i < 10; i++) {
-            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
+            feed.getItems().add(
+                    new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
         }
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

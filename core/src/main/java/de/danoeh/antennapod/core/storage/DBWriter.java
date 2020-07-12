@@ -168,7 +168,7 @@ public class DBWriter {
      */
     @NonNull
     public static Future<?> deleteFeedItems(@NonNull Context context, @NonNull List<FeedItem> items) {
-        return dbExec.submit(() -> deleteFeedItemsSynchronous(context, items) );
+        return dbExec.submit(() -> deleteFeedItemsSynchronous(context, items));
     }
 
     /**
