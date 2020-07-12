@@ -51,7 +51,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     private static final int ACTION_MARK_UNPLAYED = 8;
     public static final int ACTION_DOWNLOAD = 16;
     public static final int ACTION_DELETE = 32;
-    private static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
+    public static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
             | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
     private Toolbar toolbar;
 
@@ -101,10 +101,6 @@ public class EpisodesApplyActionFragment extends Fragment {
                 new ActionBinding(ACTION_DELETE,
                         R.id.delete_batch, this::deleteChecked)
                 );
-    }
-
-    public static EpisodesApplyActionFragment newInstance(List<FeedItem> items) {
-        return newInstance(items, ACTION_ALL);
     }
 
     public static EpisodesApplyActionFragment newInstance(List<FeedItem> items, int actions) {
@@ -449,7 +445,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
         for (FeedItem episode : episodes) {
-            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
+            if (checkedIds.contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
                 toDownload.add(episode);
             }
         }
@@ -473,10 +469,8 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void close(@PluralsRes int msgId, int numItems) {
-        if (numItems > 0) {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                    getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
-        }
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
         getActivity().getSupportFragmentManager().popBackStack();
     }
 
