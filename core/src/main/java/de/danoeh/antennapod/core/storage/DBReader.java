@@ -898,6 +898,15 @@ public final class DBReader {
         }
         final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
 
+        if (UserPreferences.getHideSubscriptionsWhereCounterIsZero()) {
+            for (int i = 0; i < feeds.size(); i++) {
+                if (feedCounters.get(feeds.get(i).getId()) <= 0) {
+                    feedCounters.delete(feeds.get(i).getId());
+                    feeds.remove(i);
+                }
+            }
+        }
+
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();
         if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
