@@ -32,6 +32,7 @@ import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.dialog.IconPollDialog;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
@@ -315,6 +316,7 @@ public class MainActivity extends CastEnabledActivity {
         super.onStart();
         EventBus.getDefault().register(this);
         RatingDialog.init(this);
+        IconPollDialog.showIfNeeded(this);
 
         if (lastTheme != UserPreferences.getNoTitleTheme()) {
             finish();

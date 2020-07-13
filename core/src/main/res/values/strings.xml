@@ -828,4 +828,10 @@
     <string name="on_demand_config_setting_changed">Setting updated successfully.</string>
     <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
     <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
+
+    <!-- New icon poll (temporary) -->
+    <string name="icon_poll_title">New icon</string>
+    <string name="icon_poll_message">Thank you for being a beta tester!\n\nTo celebrate the public release of version 2.0.0, we set up a vote for a new app icon. Vote now to help shape the future of AntennaPod!</string>
+    <string name="icon_poll_vote">Vote</string>
+    <string name="icon_poll_dont_vote">Accept other user\'s vote</string>
 </resources>
