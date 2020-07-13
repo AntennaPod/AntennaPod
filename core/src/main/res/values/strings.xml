@@ -527,7 +527,7 @@
     <string name="back_button_go_to_page_title">Select page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
-    <string name="pref_hide_subscriptions_where_counter_is_zero_title">Hide subscriptions where counter is 0</string>
+    <string name="pref_hide_subscriptions_where_counter_is_zero_title">Hide Finished Subscriptions</string>
     <string name="pref_hide_subscriptions_where_counter_is_zero_sum">Automatically hide all subscriptions where the counter is zero.</string>
 
     <!-- About screen -->

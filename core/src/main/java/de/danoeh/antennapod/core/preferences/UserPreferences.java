@@ -64,6 +64,7 @@ public class UserPreferences {
     private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
+    public static final String HIDE_SUBSCRIPTIONS_WHERE_COUNTER_IS_ZERO = "prefHideSubscriptionsWhereCounterIsZero";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -132,7 +133,6 @@ public class UserPreferences {
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
-    public static final String HIDE_SUBSCRIPTIONS_WHERE_COUNTER_IS_ZERO = "prefHideSubscriptionsWhereCounterIsZero";
 
     // Constants
     private static final int NOTIFICATION_BUTTON_REWIND = 0;
