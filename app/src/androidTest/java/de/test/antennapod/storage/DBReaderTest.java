@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -38,7 +38,7 @@ public class DBReaderTest {
     @Before
     public void setUp() throws Exception {
         // create new database
-        PodDBAdapter.init(InstrumentationRegistry.getTargetContext());
+        PodDBAdapter.init(InstrumentationRegistry.getInstrumentation().getTargetContext());
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();

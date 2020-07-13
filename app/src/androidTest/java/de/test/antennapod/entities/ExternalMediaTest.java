@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -36,7 +36,7 @@ public class ExternalMediaTest {
     }
 
     private SharedPreferences getDefaultSharedPrefs() {
-        return PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getTargetContext());
+        return PreferenceManager.getDefaultSharedPreferences(InstrumentationRegistry.getInstrumentation().getTargetContext());
     }
 
     @Test

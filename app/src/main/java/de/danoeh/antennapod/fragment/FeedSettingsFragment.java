@@ -66,7 +66,7 @@ public class FeedSettingsFragment extends Fragment {
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        getFragmentManager().beginTransaction()
+        getParentFragmentManager().beginTransaction()
                 .replace(R.id.settings_fragment_container,
                         FeedSettingsPreferenceFragment.newInstance(feedId), "settings_fragment")
                 .commitAllowingStateLoss();

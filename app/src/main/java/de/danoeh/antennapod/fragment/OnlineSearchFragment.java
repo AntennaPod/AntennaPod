@@ -126,7 +126,7 @@ public class OnlineSearchFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.online_search, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final SearchView sv = (SearchView) searchItem.getActionView();
         sv.setQueryHint(getString(R.string.search_podcast_hint));
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

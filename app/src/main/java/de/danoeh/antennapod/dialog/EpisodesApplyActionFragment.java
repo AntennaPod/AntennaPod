@@ -413,7 +413,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             boolean checked = checkedIds.contains(episode.getId());
             mListView.setItemChecked(i, checked);
         }
-        ActivityCompat.invalidateOptionsMenu(EpisodesApplyActionFragment.this.getActivity());
+        getActivity().invalidateOptionsMenu();
         toolbar.setTitle(getResources().getQuantityString(R.plurals.num_selected_label,
                 checkedIds.size(), checkedIds.size()));
     }

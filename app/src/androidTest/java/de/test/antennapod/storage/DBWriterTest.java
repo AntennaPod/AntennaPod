@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.core.util.Consumer;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
 
 import org.awaitility.Awaitility;
@@ -35,7 +35,6 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -57,7 +56,7 @@ public class DBWriterTest {
     public void tearDown() throws Exception {
         assertTrue(PodDBAdapter.deleteDatabase());
 
-        final Context context = InstrumentationRegistry.getTargetContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         File testDir = context.getExternalFilesDir(TEST_FOLDER);
         assertNotNull(testDir);
         for (File f : testDir.listFiles()) {
@@ -68,13 +67,13 @@ public class DBWriterTest {
     @Before
     public void setUp() throws Exception {
         // create new database
-        PodDBAdapter.init(InstrumentationRegistry.getTargetContext());
+        PodDBAdapter.init(InstrumentationRegistry.getInstrumentation().getTargetContext());
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
 
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putBoolean(UserPreferences.PREF_DELETE_REMOVES_FROM_QUEUE, true).commit();
 
@@ -117,7 +116,8 @@ public class DBWriterTest {
     @Test
     public void testDeleteFeedMediaOfItemFileExists()
             throws IOException, ExecutionException, InterruptedException, TimeoutException {
-        File dest = new File(getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
+        File dest = new File(InstrumentationRegistry
+                .getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
 
         assertTrue(dest.createNewFile());
 
@@ -138,7 +138,7 @@ public class DBWriterTest {
         assertTrue(media.getId() != 0);
         assertTrue(item.getId() != 0);
 
-        DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId())
+        DBWriter.deleteFeedMediaOfItem(InstrumentationRegistry.getInstrumentation().getTargetContext(), media.getId())
                 .get(TIMEOUT, TimeUnit.SECONDS);
         media = DBReader.getFeedMedia(media.getId());
         assertNotNull(media);
@@ -152,7 +152,8 @@ public class DBWriterTest {
             throws IOException, ExecutionException, InterruptedException, TimeoutException {
         assertTrue(UserPreferences.shouldDeleteRemoveFromQueue());
 
-        File dest = new File(getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
+        File dest = new File(InstrumentationRegistry
+                .getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
 
         assertTrue(dest.createNewFile());
 
@@ -178,7 +179,7 @@ public class DBWriterTest {
         queue = DBReader.getQueue();
         assertTrue(queue.size() != 0);
 
-        DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId());
+        DBWriter.deleteFeedMediaOfItem(InstrumentationRegistry.getInstrumentation().getTargetContext(), media.getId());
         Awaitility.await().until(() -> !dest.exists());
         media = DBReader.getFeedMedia(media.getId());
         assertNotNull(media);
@@ -191,7 +192,7 @@ public class DBWriterTest {
 
     @Test
     public void testDeleteFeed() throws ExecutionException, InterruptedException, IOException, TimeoutException {
-        File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
+        File destFolder = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
@@ -222,7 +223,8 @@ public class DBWriterTest {
             assertTrue(item.getMedia().getId() != 0);
         }
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(InstrumentationRegistry
+                .getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
         // check if files still exist
         for (File f : itemFiles) {
@@ -247,7 +249,7 @@ public class DBWriterTest {
 
     @Test
     public void testDeleteFeedNoItems() throws IOException, ExecutionException, InterruptedException, TimeoutException {
-        File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
+        File destFolder = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
@@ -261,7 +263,8 @@ public class DBWriterTest {
 
         assertTrue(feed.getId() != 0);
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(InstrumentationRegistry
+                .getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
         adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -273,7 +276,7 @@ public class DBWriterTest {
 
     @Test
     public void testDeleteFeedNoFeedMedia() throws IOException, ExecutionException, InterruptedException, TimeoutException {
-        File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
+        File destFolder = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
@@ -298,7 +301,8 @@ public class DBWriterTest {
             assertTrue(item.getId() != 0);
         }
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(InstrumentationRegistry
+                .getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
 
         adapter = PodDBAdapter.getInstance();
@@ -316,7 +320,7 @@ public class DBWriterTest {
 
     @Test
     public void testDeleteFeedWithQueueItems() throws ExecutionException, InterruptedException, TimeoutException {
-        File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
+        File destFolder = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
@@ -354,7 +358,8 @@ public class DBWriterTest {
         queueCursor.close();
 
         adapter.close();
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(InstrumentationRegistry
+                .getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
         adapter.open();
 
         Cursor c = adapter.getFeedCursor(feed.getId());
@@ -376,7 +381,7 @@ public class DBWriterTest {
 
     @Test
     public void testDeleteFeedNoDownloadedFiles() throws ExecutionException, InterruptedException, TimeoutException {
-        File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
+        File destFolder = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
         Feed feed = new Feed("url", null, "title");
@@ -404,7 +409,8 @@ public class DBWriterTest {
             assertTrue(item.getMedia().getId() != 0);
         }
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(InstrumentationRegistry
+                .getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
         adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -469,7 +475,7 @@ public class DBWriterTest {
     }
 
     private Feed queueTestSetupMultipleItems(final int numItems) throws InterruptedException, ExecutionException, TimeoutException {
-        final Context context = getInstrumentation().getTargetContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         UserPreferences.setEnqueueLocation(UserPreferences.EnqueueLocation.BACK);
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
@@ -498,7 +504,7 @@ public class DBWriterTest {
 
     @Test
     public void testAddQueueItemSingleItem() throws InterruptedException, ExecutionException, TimeoutException {
-        final Context context = getInstrumentation().getTargetContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
@@ -523,7 +529,7 @@ public class DBWriterTest {
 
     @Test
     public void testAddQueueItemSingleItemAlreadyInQueue() throws InterruptedException, ExecutionException, TimeoutException {
-        final Context context = getInstrumentation().getTargetContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
         FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
@@ -595,7 +601,7 @@ public class DBWriterTest {
     @Test
     public void testRemoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
         final int NUM_ITEMS = 10;
-        final Context context = getInstrumentation().getTargetContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Feed feed = createTestFeed(NUM_ITEMS);
 
         for (int removeIndex = 0; removeIndex < NUM_ITEMS; removeIndex++) {
@@ -631,7 +637,7 @@ public class DBWriterTest {
         //
         final int NUM_ITEMS = 5;
         final int NUM_IN_QUEUE = NUM_ITEMS - 1; // the last one not in queue for boundary condition
-        final Context context = getInstrumentation().getTargetContext();
+        final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         Feed feed = createTestFeed(NUM_ITEMS);
 
         List<FeedItem> itemsToAdd = feed.getItems().subList(0, NUM_IN_QUEUE);
