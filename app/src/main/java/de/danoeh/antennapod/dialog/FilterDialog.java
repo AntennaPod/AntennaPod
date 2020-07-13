@@ -62,11 +62,11 @@ public abstract class FilterDialog {
                 }
                 RecursiveRadioGroup group = (RecursiveRadioGroup) layout.getChildAt(i);
                 if (group.getCheckedButton() != null) {
-                    filterValues.add((String) group.getCheckedButton().getTag());
+                    String tag = (String) group.getCheckedButton().getTag();
+                    if (tag != null) { // Clear buttons use no tag
+                        filterValues.add((String) group.getCheckedButton().getTag());
+                    }
                 }
-            }
-            if (filterValues.contains(null)) {
-                filterValues.clear();
             }
             updateFilter(filterValues);
         });
