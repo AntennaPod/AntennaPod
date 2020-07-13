@@ -58,10 +58,8 @@
     <attr name="action_icon_color" format="color" />
     <attr name="scrollbar_thumb" format="reference" />
     <attr name="background_elevated" format="color" />
-    <attr name="filter_dialog_close" format="reference" />
+    <attr name="filter_dialog_clear" format="reference" />
     <attr name="filter_dialog_button_background" format="reference" />
-    <attr name="filter_dialog_clear_active" format="reference" />
-    <attr name="filter_dialog_clear_inactive" format="reference" />
 
     <declare-styleable name="SquareImageView">
         <attr name="direction" format="enum">

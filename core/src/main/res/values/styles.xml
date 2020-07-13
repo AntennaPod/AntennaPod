@@ -73,10 +73,7 @@
         <item name="ic_key">@drawable/ic_key_black</item>
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_black</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
-
-        <item name="filter_dialog_clear_active">@color/dialog_filter_clear_active_light</item>
-        <item name="filter_dialog_clear_inactive">@color/dialog_filter_clear_inactive_light</item>
-        <item name="filter_dialog_close">@color/filter_dialog_close</item>
+        <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
         <item name="filter_dialog_button_background">@color/filter_dialog_background_light</item>
     </style>
 
@@ -153,11 +150,8 @@
         <item name="ic_key">@drawable/ic_key_white</item>
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_white</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
-
-        <item name="filter_dialog_clear_active">@color/dialog_filter_clear_active_dark</item>
-        <item name="filter_dialog_clear_inactive">@color/dialog_filter_clear_inactive_dark</item>
-        <item name="filter_dialog_close">@color/filter_dialog_close</item>
-        <item name="filter_dialog_button_background">@color/filter_dialog_background_light</item>
+        <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
+        <item name="filter_dialog_button_background">@color/filter_dialog_background_dark</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
