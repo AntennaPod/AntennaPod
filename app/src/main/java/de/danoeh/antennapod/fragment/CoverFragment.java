@@ -53,6 +53,7 @@ public class CoverFragment extends Fragment {
     private int displayedChapterIndex = -2;
     private Playable media;
     private int orientation = Configuration.ORIENTATION_UNDEFINED;
+    private int _position = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -142,6 +143,7 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayCoverImage(int position) {
+        _position = position;
         int chapter = ChapterUtils.getCurrentChapterIndex(media, position);
         if (chapter != displayedChapterIndex) {
             displayedChapterIndex = chapter;
@@ -191,6 +193,9 @@ public class CoverFragment extends Fragment {
         } else {
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             params.weight = 1;
+        }
+        if (_position > -1) {
+            displayCoverImage(_position);
         }
         textContainer.setLayoutParams(params);
     }
