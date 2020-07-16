@@ -55,7 +55,6 @@ public class CoverFragment extends Fragment {
     private int displayedChapterIndex = -2;
     private Playable media;
     private int orientation = Configuration.ORIENTATION_UNDEFINED;
-    private int _position = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,8 +84,7 @@ public class CoverFragment extends Fragment {
             } else {
                 emitter.onComplete();
             }
-        })
-                .subscribeOn(Schedulers.io())
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(media -> {
                     this.media = media;
@@ -107,7 +105,6 @@ public class CoverFragment extends Fragment {
         // prevent memory leaks
         root = null;
     }
-
 
     @Override
     public void onStart() {
@@ -146,7 +143,6 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayCoverImage(int position) {
-        _position = position;
         int chapter = ChapterUtils.getCurrentChapterIndex(media, position);
         if (chapter != displayedChapterIndex) {
             displayedChapterIndex = chapter;
@@ -191,7 +187,6 @@ public class CoverFragment extends Fragment {
     }
 
     private void configureForOrientation(int orientation, Configuration newConfig) {
-        View textContainer = getView().findViewById(R.id.cover_fragment_text_container);
         LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             mainContainer.setOrientation(LinearLayout.VERTICAL);
@@ -206,12 +201,7 @@ public class CoverFragment extends Fragment {
                 imgvCover.getLayoutParams().width = imgvCover.getLayoutParams().height;
             }
         }
-        if (_position > -1) {
-            displayCoverImage(_position);
-        }
-        imgvCover.requestLayout();
     }
-
 
     @Override
     public void onDestroyView() {
