@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.ProgressBar;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -19,8 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
+
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.concurrent.Callable;
 
@@ -34,6 +39,7 @@ import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -42,6 +48,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.dialog.FeedFilterDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -49,9 +56,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Fragment for displaying feed subscriptions
@@ -68,6 +72,7 @@ public class SubscriptionFragment extends Fragment {
     private FloatingActionButton subscriptionAddButton;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
+    private View filterMsg;
 
     private int mPosition = -1;
     private boolean isUpdatingFeeds = false;
@@ -94,6 +99,9 @@ public class SubscriptionFragment extends Fragment {
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
+
+        filterMsg = root.findViewById(R.id.feed_filter_message);
+        filterMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
         return root;
     }
 
@@ -119,6 +127,9 @@ public class SubscriptionFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.refresh_item:
                 AutoUpdateManager.runImmediate(requireContext());
+                return true;
+            case R.id.subscriptions_filter:
+                FeedFilterDialog.showDialog(requireContext());
                 return true;
             case R.id.subscription_num_columns_2:
                 setColumnNumber(2);
@@ -198,6 +209,11 @@ public class SubscriptionFragment extends Fragment {
                     emptyView.updateVisibility();
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+
+        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE)
+            filterMsg.setVisibility(View.VISIBLE);
+        else
+            filterMsg.setVisibility(View.GONE);
     }
 
     @Override
@@ -280,7 +296,7 @@ public class SubscriptionFragment extends Fragment {
                     Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
                     remover.skipOnCompletion = true;
                     int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
-                    if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
+                    if (playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                         IntentUtils.sendLocalBroadcast(getContext(), PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
 
                     }

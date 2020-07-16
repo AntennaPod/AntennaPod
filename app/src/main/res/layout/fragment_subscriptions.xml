@@ -1,47 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="@string/subscriptions_label" />
+
+    <LinearLayout
+        android:id="@+id/feed_filter_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/filtered_label"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="@dimen/listitem_icon_leftpadding"
+            android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:importantForAccessibility="no"
+            android:padding="8dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_info_black"
+            app:tint="?android:attr/textColorSecondary"
+            tools:background="@android:color/holo_orange_dark"
+            tools:src="@android:drawable/sym_def_app_icon" />
+
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            android:layout_alignParentTop="true"
-            app:title="@string/subscriptions_label"
-            android:id="@+id/toolbar"/>
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/feed_is_filtered"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_small"
+            tools:background="@android:color/holo_green_light" />
+    </LinearLayout>
 
     <GridView
-            android:layout_below="@id/toolbar"
-            android:id="@+id/subscriptions_grid"
-            android:layout_width="match_parent"
-            android:numColumns="3"
-            android:horizontalSpacing="2dp"
-            android:verticalSpacing="2dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:paddingBottom="88dp"
-            android:clipToPadding="false"/>
+        android:id="@+id/subscriptions_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/feed_filter_message"
+        android:layout_gravity="center_horizontal"
+        android:clipToPadding="false"
+        android:horizontalSpacing="2dp"
+        android:numColumns="3"
+        android:paddingBottom="88dp"
+        android:verticalSpacing="2dp" />
 
     <ProgressBar
-            android:id="@+id/progLoading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:indeterminateOnly="true"
-            android:visibility="visible"/>
+        android:id="@+id/progLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateOnly="true"
+        android:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/subscriptions_add"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_margin="16dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:contentDescription="@string/add_feed_label"
-            app:srcCompat="@drawable/ic_add_white"/>
+        android:id="@+id/subscriptions_add"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add_feed_label"
+        app:srcCompat="@drawable/ic_add_white" />
 </RelativeLayout>
