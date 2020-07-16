@@ -54,7 +54,6 @@ public class CoverFragment extends Fragment {
     private Disposable disposable;
     private int displayedChapterIndex = -2;
     private Playable media;
-    private int orientation = Configuration.ORIENTATION_UNDEFINED;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,7 +69,7 @@ public class CoverFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        configureForOrientation(getResources().getConfiguration().orientation, getResources().getConfiguration());
+        configureForOrientation(getResources().getConfiguration());
     }
 
     private void loadMediaInfo() {
@@ -175,10 +174,7 @@ public class CoverFragment extends Fragment {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        if (orientation != newConfig.orientation) {
-            orientation = newConfig.orientation;
-        }
-        configureForOrientation(orientation, newConfig);
+        configureForOrientation(newConfig);
     }
 
     public float convertDpToPixel(float dp) {
@@ -186,9 +182,9 @@ public class CoverFragment extends Fragment {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    private void configureForOrientation(int orientation, Configuration newConfig) {
+    private void configureForOrientation(Configuration newConfig) {
         LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
-        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             mainContainer.setOrientation(LinearLayout.VERTICAL);
             if (newConfig.screenWidthDp > 0) {
                 imgvCover.getLayoutParams().width = (int) (convertDpToPixel(newConfig.screenWidthDp) * .80);
