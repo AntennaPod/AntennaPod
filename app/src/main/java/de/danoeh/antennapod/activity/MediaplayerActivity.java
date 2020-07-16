@@ -376,8 +376,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         new SleepTimerDialog().show(getSupportFragmentManager(), "SleepTimerDialog");
                         break;
                     case R.id.audio_controls:
-                        boolean isPlayingVideo = controller.getMedia().getMediaType() == MediaType.VIDEO;
-                        PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance(isPlayingVideo);
+                        PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
                         dialog.show(getSupportFragmentManager(), "playback_controls");
                         break;
                     case R.id.open_feed_item:

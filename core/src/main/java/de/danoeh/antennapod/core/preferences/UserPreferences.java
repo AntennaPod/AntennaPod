@@ -19,10 +19,14 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.IOException;
 import java.net.Proxy;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -414,7 +418,7 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_PLAYBACK_SKIP_SILENCE, false);
     }
 
-    public static float[] getPlaybackSpeedArray() {
+    public static List<Float> getPlaybackSpeedArray() {
         return readPlaybackSpeedArray(prefs.getString(PREF_PLAYBACK_SPEED_ARRAY, null));
     }
 
@@ -662,10 +666,13 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static void setPlaybackSpeedArray(String[] speeds) {
+    public static void setPlaybackSpeedArray(List<Float> speeds) {
+        DecimalFormatSymbols format = new DecimalFormatSymbols(Locale.US);
+        format.setDecimalSeparator('.');
+        DecimalFormat speedFormat = new DecimalFormat("0.00", format);
         JSONArray jsonArray = new JSONArray();
-        for (String speed : speeds) {
-            jsonArray.put(speed);
+        for (float speed : speeds) {
+            jsonArray.put(speedFormat.format(speed));
         }
         prefs.edit()
              .putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
@@ -775,13 +782,13 @@ public class UserPreferences {
         }
     }
 
-    private static float[] readPlaybackSpeedArray(String valueFromPrefs) {
+    private static List<Float> readPlaybackSpeedArray(String valueFromPrefs) {
         if (valueFromPrefs != null) {
             try {
                 JSONArray jsonArray = new JSONArray(valueFromPrefs);
-                float[] selectedSpeeds = new float[jsonArray.length()];
+                List<Float> selectedSpeeds = new ArrayList<>();
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    selectedSpeeds[i] = (float) jsonArray.getDouble(i);
+                    selectedSpeeds.add((float) jsonArray.getDouble(i));
                 }
                 return selectedSpeeds;
             } catch (JSONException e) {
@@ -790,7 +797,7 @@ public class UserPreferences {
             }
         }
         // If this preference hasn't been set yet, return the default options
-        return new float[] { 0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f };
+        return Arrays.asList(0.75f, 1.0f, 1.25f, 1.5f, 1.75f, 2.0f);
     }
 
     public static String getMediaPlayer() {

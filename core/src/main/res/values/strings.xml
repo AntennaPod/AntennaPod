@@ -311,8 +311,9 @@
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
     <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, we recommend to enable the built-in Sonic mediaplayer.</string>
-    <string name="set_playback_speed_label">Playback Speeds</string>
     <string name="enable_sonic">Enable Sonic</string>
+    <string name="speed_presets">Presets</string>
+    <string name="preset_already_exists">%1$.2fx is already saved as a preset.</string>
 
     <!-- Empty list labels -->
     <string name="no_items_header_label">No queued episodes</string>
@@ -441,8 +442,7 @@
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_gpodnet_notifications_title">Show sync error notifications</string>
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
-    <string name="pref_playback_speed_title">Playback Speeds</string>
-    <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
+    <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto Skip</string>
     <string name="pref_feed_skip_sum">Skip introductions and ending credits.</string>

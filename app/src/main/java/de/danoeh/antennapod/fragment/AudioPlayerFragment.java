@@ -13,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -21,17 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
 import com.google.android.material.snackbar.Snackbar;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -40,7 +30,6 @@ import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
@@ -60,6 +49,13 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.List;
 
 /**
  * Shows the audio player.
@@ -206,30 +202,29 @@ public class AudioPlayerFragment extends Fragment implements
                 VariableSpeedDialog.showGetPluginDialog(getContext());
                 return;
             }
-            float[] availableSpeeds = UserPreferences.getPlaybackSpeedArray();
+            List<Float> availableSpeeds = UserPreferences.getPlaybackSpeedArray();
             float currentSpeed = controller.getCurrentPlaybackSpeedMultiplier();
 
             int newSpeedIndex = 0;
-            while (newSpeedIndex < availableSpeeds.length && availableSpeeds[newSpeedIndex] < currentSpeed + EPSILON) {
+            while (newSpeedIndex < availableSpeeds.size()
+                    && availableSpeeds.get(newSpeedIndex) < currentSpeed + EPSILON) {
                 newSpeedIndex++;
             }
 
             float newSpeed;
-            if (availableSpeeds.length == 0) {
+            if (availableSpeeds.size() == 0) {
                 newSpeed = 1.0f;
-            } else if (newSpeedIndex == availableSpeeds.length) {
-                newSpeed = availableSpeeds[0];
+            } else if (newSpeedIndex == availableSpeeds.size()) {
+                newSpeed = availableSpeeds.get(0);
             } else {
-                newSpeed = availableSpeeds[newSpeedIndex];
+                newSpeed = availableSpeeds.get(newSpeedIndex);
             }
 
-            PlaybackPreferences.setCurrentlyPlayingTemporaryPlaybackSpeed(newSpeed);
-            UserPreferences.setPlaybackSpeed(newSpeed);
             controller.setPlaybackSpeed(newSpeed);
             loadMediaInfo();
         });
         butPlaybackSpeed.setOnLongClickListener(v -> {
-            VariableSpeedDialog.showDialog(getContext());
+            new VariableSpeedDialog().show(getChildFragmentManager(), null);
             return true;
         });
         butPlaybackSpeed.setVisibility(View.VISIBLE);
@@ -494,7 +489,7 @@ public class AudioPlayerFragment extends Fragment implements
                 new SleepTimerDialog().show(getChildFragmentManager(), "SleepTimerDialog");
                 return true;
             case R.id.audio_controls:
-                PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance(false);
+                PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance();
                 dialog.show(getChildFragmentManager(), "playback_controls");
                 return true;
             case R.id.open_feed_item:

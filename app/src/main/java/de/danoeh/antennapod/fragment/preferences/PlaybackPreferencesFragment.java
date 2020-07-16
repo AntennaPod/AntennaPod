@@ -45,7 +45,7 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         final Activity activity = getActivity();
 
         findPreference(PREF_PLAYBACK_SPEED_LAUNCHER).setOnPreferenceClickListener(preference -> {
-            VariableSpeedDialog.showDialog(activity);
+            new VariableSpeedDialog().show(getChildFragmentManager(), null);
             return true;
         });
         findPreference(PREF_PLAYBACK_REWIND_DELTA_LAUNCHER).setOnPreferenceClickListener(preference -> {
