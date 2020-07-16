@@ -3,6 +3,8 @@ package de.danoeh.antennapod.core.util;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class LongLongMapTest {
 
@@ -13,7 +15,7 @@ public class LongLongMapTest {
         assertEquals("LongLongMap{}", map.toString());
         assertEquals(0, map.get(42));
         assertEquals(-1, map.get(42, -1));
-        assertEquals(false, map.delete(42));
+        assertFalse(map.delete(42));
         assertEquals(-1, map.indexOfKey(42));
         assertEquals(-1, map.indexOfValue(42));
         assertEquals(1, map.hashCode());
@@ -29,7 +31,7 @@ public class LongLongMapTest {
         assertEquals(42, map.get(17, -1));
         assertEquals(0, map.indexOfKey(17));
         assertEquals(0, map.indexOfValue(42));
-        assertEquals(true, map.delete(17));
+        assertTrue(map.delete(17));
     }
 
     @Test
@@ -45,7 +47,7 @@ public class LongLongMapTest {
         assertEquals(1, map.indexOfKey(17));
         assertEquals(1, map.indexOfValue(42));
         for(int i=0; i < 100; i++) {
-            assertEquals(true, map.delete(i * 17));
+            assertTrue(map.delete(i * 17));
         }
     }
 

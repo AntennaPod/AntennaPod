@@ -70,7 +70,6 @@ public abstract class FilterDialog {
             }
             updateFilter(filterValues);
         });
-
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
     }

@@ -174,7 +174,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                getFragmentManager().popBackStack();
+                getParentFragmentManager().popBackStack();
                 return true;
             }
         });

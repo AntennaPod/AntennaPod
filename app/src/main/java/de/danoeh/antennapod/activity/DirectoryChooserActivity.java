@@ -113,7 +113,7 @@ public class DirectoryChooserActivity extends AppCompatActivity {
         });
 
         butNavUp.setOnClickListener(v -> {
-            File parent = null;
+            File parent;
             if (selectedDir != null
                     && (parent = selectedDir.getParentFile()) != null) {
                 changeDirectory(parent);

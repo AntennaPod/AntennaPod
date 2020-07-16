@@ -405,7 +405,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     private void updateSyncProgressBarVisibility() {
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
-            getActivity().supportInvalidateOptionsMenu();
+            getActivity().invalidateOptionsMenu();
         }
         if (!DownloadRequester.getInstance().isDownloadingFeeds()) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
@@ -427,7 +427,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         progressBar.setVisibility(View.GONE);
         adapter.updateItems(feed.getItems());
 
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
         updateSyncProgressBarVisibility();
     }
 

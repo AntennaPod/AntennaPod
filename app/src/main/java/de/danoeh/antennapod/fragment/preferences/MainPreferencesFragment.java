@@ -62,14 +62,14 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
 
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
-                    getFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment())
+                    getParentFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment())
                             .addToBackStack(getString(R.string.about_pref)).commit();
                     return true;
                 }
         );
         findPreference(STATISTICS).setOnPreferenceClickListener(
                 preference -> {
-                    getFragmentManager().beginTransaction().replace(R.id.content, new StatisticsFragment())
+                    getParentFragmentManager().beginTransaction().replace(R.id.content, new StatisticsFragment())
                             .addToBackStack(getString(R.string.statistics_label)).commit();
                     return true;
                 }

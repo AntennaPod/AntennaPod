@@ -153,7 +153,7 @@ public class PlaybackHistoryFragment extends Fragment {
         }
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-        MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        clearHistory.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.ic_delete});
         clearHistory.setIcon(drawables.getDrawable(0));
         drawables.recycle();
@@ -171,13 +171,11 @@ public class PlaybackHistoryFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
-            switch (item.getItemId()) {
-                case R.id.clear_history_item:
-                    DBWriter.clearPlaybackHistory();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.clear_history_item) {
+                DBWriter.clearPlaybackHistory();
+                return true;
             }
+            return false;
         } else {
             return true;
         }
@@ -196,18 +194,18 @@ public class PlaybackHistoryFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHistoryUpdated(PlaybackHistoryEvent event) {
         loadItems();
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems();
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     private void onFragmentLoaded() {
         adapter.notifyDataSetChanged();
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     private void loadItems() {

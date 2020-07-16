@@ -1,7 +1,7 @@
 package de.test.antennapod.service.playback;
 
 import android.content.Context;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.filters.LargeTest;
 
@@ -29,6 +29,7 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 import static de.test.antennapod.util.event.FeedItemEventListener.withFeedItemEventListener;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -92,9 +93,9 @@ public class PlaybackServiceTaskManagerTest {
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
         List<FeedItem> testQueue = pstm.getQueue();
         assertNotNull(testQueue);
-        assertTrue(queue.size() == testQueue.size());
+        assertEquals(testQueue.size(), queue.size());
         for (int i = 0; i < queue.size(); i++) {
-            assertTrue(queue.get(i).getId() == testQueue.get(i).getId());
+            assertEquals(testQueue.get(i).getId(), queue.get(i).getId());
         }
         pstm.shutdown();
     }
@@ -114,9 +115,9 @@ public class PlaybackServiceTaskManagerTest {
         assertNotNull(queue);
         testQueue = pstm.getQueue();
         assertNotNull(testQueue);
-        assertTrue(queue.size() == testQueue.size());
+        assertEquals(testQueue.size(), queue.size());
         for (int i = 0; i < queue.size(); i++) {
-            assertTrue(queue.get(i).getId() == testQueue.get(i).getId());
+            assertEquals(testQueue.get(i).getId(), queue.get(i).getId());
         }
         pstm.shutdown();
     }

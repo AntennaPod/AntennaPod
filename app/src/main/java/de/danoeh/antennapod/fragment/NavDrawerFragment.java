@@ -85,9 +85,8 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         registerForContextMenu(navList);
         updateSelection();
 
-        root.findViewById(R.id.nav_settings).setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), PreferenceActivity.class));
-        });
+        root.findViewById(R.id.nav_settings).setOnClickListener(v ->
+                startActivity(new Intent(getActivity(), PreferenceActivity.class)));
         getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .registerOnSharedPreferenceChangeListener(this);
         return root;

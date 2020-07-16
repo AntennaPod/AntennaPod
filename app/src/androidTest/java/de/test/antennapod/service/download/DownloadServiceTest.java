@@ -5,8 +5,8 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
-import androidx.test.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import de.test.antennapod.EspressoTestUtils;
 import org.awaitility.Awaitility;
@@ -81,7 +81,7 @@ public class DownloadServiceTest {
     @After
     public void tearDown() throws Exception {
         DownloadService.setDownloaderFactory(origFactory);
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         DownloadRequester.getInstance().cancelAllDownloads(context);
         context.stopService(new Intent(context, DownloadService.class));
         EspressoTestUtils.tryKillDownloadService();
@@ -106,9 +106,7 @@ public class DownloadServiceTest {
         // OPEN: Ideally, I'd like the download time long enough so that multiple in-progress DownloadEvents
         // are generated (to simulate typical download), but it'll make download time quite long (1-2 seconds)
         // to do so
-        DownloadService.setDownloaderFactory(new StubDownloaderFactory(50, downloadStatus -> {
-            downloadStatus.setSuccessful();
-        }));
+        DownloadService.setDownloaderFactory(new StubDownloaderFactory(50, DownloadStatus::setSuccessful));
 
         UserPreferences.setEnqueueDownloadedEpisodes(enqueueDownloaded);
         withFeedItemEventListener(feedItemEventListener -> {
@@ -117,7 +115,8 @@ public class DownloadServiceTest {
                 assertFalse("The media in test should not yet been downloaded",
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
 
-                DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry.getTargetContext(), true, testMedia11.getItem());
+                DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry
+                        .getInstrumentation().getTargetContext(), true, testMedia11.getItem());
                 Awaitility.await()
                         .atMost(5000, TimeUnit.MILLISECONDS)
                         .until(() -> feedItemEventListener.getEvents().size() >= numEventsExpected);
@@ -144,11 +143,10 @@ public class DownloadServiceTest {
     }
 
     private void doTestCancelDownload_UndoEnqueue(boolean itemAlreadyInQueue) throws Exception {
-        Context context = InstrumentationRegistry.getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         // let download take longer to ensure the test can cancel the download in time
-        DownloadService.setDownloaderFactory(new StubDownloaderFactory(30000, downloadStatus -> {
-            downloadStatus.setSuccessful();
-        }));
+        DownloadService.setDownloaderFactory(
+                new StubDownloaderFactory(30000, DownloadStatus::setSuccessful));
         UserPreferences.setEnqueueDownloadedEpisodes(true);
         UserPreferences.setEnableAutodownload(false);
 

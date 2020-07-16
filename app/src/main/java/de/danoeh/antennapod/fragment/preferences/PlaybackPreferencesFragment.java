@@ -116,7 +116,7 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
             if(x == 0) {
                 entries[x] = res.getString(R.string.pref_smart_mark_as_played_disabled);
             } else {
-                Integer v = Integer.parseInt(values[x]);
+                int v = Integer.parseInt(values[x]);
                 if(v < 60) {
                     entries[x] = res.getQuantityString(R.plurals.time_seconds_quantified, v, v);
                 } else {

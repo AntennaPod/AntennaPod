@@ -93,7 +93,7 @@ public class DownloadLogFragment extends ListFragment {
     private void onFragmentLoaded() {
         setListShown(true);
         adapter.notifyDataSetChanged();
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -156,7 +156,7 @@ public class DownloadLogFragment extends ListFragment {
         }
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-        MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        clearHistory.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.ic_delete});
         clearHistory.setIcon(drawables.getDrawable(0));
         drawables.recycle();

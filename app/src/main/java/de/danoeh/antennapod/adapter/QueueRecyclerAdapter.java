@@ -37,7 +37,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
     @SuppressLint("ClickableViewAccessibility")
     protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
         View.OnTouchListener startDragTouchListener = (v1, event) -> {
-            if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+            if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
                 Log.d(TAG, "startDrag()");
                 itemTouchHelper.startDrag(holder);
             }

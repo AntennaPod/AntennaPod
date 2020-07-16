@@ -491,11 +491,11 @@ public class AudioPlayerFragment extends Fragment implements
         switch (item.getItemId()) {
             case R.id.disable_sleeptimer_item: // Fall-through
             case R.id.set_sleeptimer_item:
-                new SleepTimerDialog().show(getFragmentManager(), "SleepTimerDialog");
+                new SleepTimerDialog().show(getChildFragmentManager(), "SleepTimerDialog");
                 return true;
             case R.id.audio_controls:
                 PlaybackControlsDialog dialog = PlaybackControlsDialog.newInstance(false);
-                dialog.show(getFragmentManager(), "playback_controls");
+                dialog.show(getChildFragmentManager(), "playback_controls");
                 return true;
             case R.id.open_feed_item:
                 if (feedItem != null) {

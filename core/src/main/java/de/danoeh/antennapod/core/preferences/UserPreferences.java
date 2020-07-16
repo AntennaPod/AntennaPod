@@ -826,8 +826,8 @@ public class UserPreferences {
     public static VideoBackgroundBehavior getVideoBackgroundBehavior() {
         switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "pip")) {
             case "stop": return VideoBackgroundBehavior.STOP;
-            case "pip": return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
             case "continue": return VideoBackgroundBehavior.CONTINUE_PLAYING;
+            case "pip": //Deliberate fall-through
             default: return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
         }
     }
@@ -977,11 +977,11 @@ public class UserPreferences {
 
     public static BackButtonBehavior getBackButtonBehavior() {
         switch (prefs.getString(PREF_BACK_BUTTON_BEHAVIOR, "default")) {
-            case "default": return BackButtonBehavior.DEFAULT;
             case "drawer": return BackButtonBehavior.OPEN_DRAWER;
             case "doubletap": return BackButtonBehavior.DOUBLE_TAP;
             case "prompt": return BackButtonBehavior.SHOW_PROMPT;
             case "page": return BackButtonBehavior.GO_TO_PAGE;
+            case "default": // Deliberate fall-through
             default: return BackButtonBehavior.DEFAULT;
         }
     }

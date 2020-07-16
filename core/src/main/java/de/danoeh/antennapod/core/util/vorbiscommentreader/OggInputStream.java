@@ -39,7 +39,7 @@ class OggInputStream extends InputStream {
 	private void readOggPage() throws IOException {
 		// find OggS
 		int[] buffer = new int[4];
-		int c = 0;
+		int c;
 		boolean isInOggS = false;
 		while ((c = input.read()) != -1) {
 			switch (c) {
