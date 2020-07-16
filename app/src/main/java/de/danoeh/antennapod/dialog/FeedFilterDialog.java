@@ -4,7 +4,11 @@ import android.content.Context;
 
 import androidx.appcompat.app.AlertDialog;
 
+import org.greenrobot.eventbus.EventBus;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class FeedFilterDialog {
@@ -26,7 +30,8 @@ public class FeedFilterDialog {
         dialog.setSingleChoiceItems(context.getResources().getStringArray(R.array.nav_drawer_feed_filter_options), selectedIndex, (d, which) -> {
             if (selectedIndex != which) {
                 UserPreferences.setFeedFilter(entryValues[which]);
-                //TODO Update Subscriptions
+                //Update subscriptions
+                EventBus.getDefault().post(new FeedListUpdateEvent(new Feed()));
             }
             d.dismiss();
         });
