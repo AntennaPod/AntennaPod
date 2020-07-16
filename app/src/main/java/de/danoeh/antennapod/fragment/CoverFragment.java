@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +71,7 @@ public class CoverFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        configureForOrientation(getResources().getConfiguration().orientation);
+        configureForOrientation(getResources().getConfiguration().orientation, getResources().getConfiguration());
     }
 
     private void loadMediaInfo() {
@@ -105,6 +107,7 @@ public class CoverFragment extends Fragment {
         // prevent memory leaks
         root = null;
     }
+
 
     @Override
     public void onStart() {
@@ -172,33 +175,43 @@ public class CoverFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
         if (orientation != newConfig.orientation) {
             orientation = newConfig.orientation;
-            configureForOrientation(orientation);
         }
+        configureForOrientation(orientation, newConfig);
     }
 
-    private void configureForOrientation(int orientation) {
+    public float convertDpToPixel(float dp) {
+        Context context = this.getActivity().getApplicationContext();
+        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    private void configureForOrientation(int orientation, Configuration newConfig) {
         View textContainer = getView().findViewById(R.id.cover_fragment_text_container);
         LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
             mainContainer.setOrientation(LinearLayout.VERTICAL);
-            params.weight = 0;
+            if (newConfig.screenWidthDp > 0) {
+                imgvCover.getLayoutParams().width = (int) (convertDpToPixel(newConfig.screenWidthDp) * .80);
+                imgvCover.getLayoutParams().height = imgvCover.getLayoutParams().width;
+            }
         } else {
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
-            params.weight = 1;
+            if (newConfig.screenHeightDp > 0) {
+                imgvCover.getLayoutParams().height = (int) (convertDpToPixel(newConfig.screenHeightDp) * .40);
+                imgvCover.getLayoutParams().width = imgvCover.getLayoutParams().height;
+            }
         }
         if (_position > -1) {
             displayCoverImage(_position);
         }
-        textContainer.setLayoutParams(params);
+        imgvCover.requestLayout();
     }
+
 
     @Override
     public void onDestroyView() {
