@@ -152,14 +152,9 @@
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
-    <string name="hide_paused_episodes_label">Paused</string>
-    <string name="hide_played_episodes_label">Played</string>
     <string name="hide_queued_episodes_label">Queued</string>
     <string name="hide_not_queued_episodes_label">Not queued</string>
-    <string name="hide_downloaded_episodes_label">Downloaded</string>
-    <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
     <string name="hide_has_media_label">Has media</string>
-    <string name="hide_is_favorite_label">Is favorite</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
     <string name="open_podcast">Open Podcast</string>
@@ -737,12 +732,22 @@
     <string name="selected_downloaded_label">Selected downloaded Episodes</string>
     <string name="not_downloaded_label">Not downloaded</string>
     <string name="selected_not_downloaded_label">Selected not downloaded Episodes</string>
-    <string name="queued_label">Queued</string>
     <string name="selected_queued_label">Selected queued Episodes</string>
-    <string name="not_queued_label">Not queued</string>
     <string name="selected_not_queued_label">Selected not queued Episodes</string>
-    <string name="has_media">Has media</string>
     <string name="selected_has_media_label">Selected episodes with media</string>
+
+    <string name="hide_is_favorite_label">Is favorite</string>
+    <string name="not_favorite">Not favorite</string>
+    <string name="hide_downloaded_episodes_label">Downloaded</string>
+    <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
+    <string name="queued_label">Queued</string>
+    <string name="not_queued_label">Not queued</string>
+    <string name="has_media">Has media</string>
+    <string name="no_media">No media</string>
+    <string name="hide_paused_episodes_label">Paused</string>
+    <string name="not_paused">Not paused</string>
+    <string name="hide_played_episodes_label">Played</string>
+    <string name="not_played">Not played</string>
 
     <!-- Sort  -->
     <string name="sort_title_a_z">Title (A \u2192 Z)</string>

@@ -245,30 +245,6 @@
         <item>exoplayer</item>
     </string-array>
 
-    <string-array name="episode_filter_options">
-        <item>@string/hide_unplayed_episodes_label</item>
-        <item>@string/hide_paused_episodes_label</item>
-        <item>@string/hide_played_episodes_label</item>
-        <item>@string/hide_queued_episodes_label</item>
-        <item>@string/hide_not_queued_episodes_label</item>
-        <item>@string/hide_downloaded_episodes_label</item>
-        <item>@string/hide_not_downloaded_episodes_label</item>
-        <item>@string/hide_has_media_label</item>
-        <item>@string/hide_is_favorite_label</item>
-    </string-array>
-
-    <string-array name="episode_filter_values">
-        <item>unplayed</item>
-        <item>paused</item>
-        <item>played</item>
-        <item>queued</item>
-        <item>not_queued</item>
-        <item>downloaded</item>
-        <item>not_downloaded</item>
-        <item>has_media</item>
-        <item>is_favorite</item>
-    </string-array>
-
     <!-- sort for podcast screen, not for queue -->
     <string-array name="feed_episodes_sort_options">
         <item>@string/sort_date_new_old</item>
