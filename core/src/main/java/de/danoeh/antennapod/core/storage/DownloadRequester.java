@@ -274,7 +274,7 @@ public class DownloadRequester implements DownloadStateProvider {
         }
 
         File dest;
-        if (feedmedia.getFile_url() != null) {
+        if (feedmedia.getFile_url() != null && new File(feedmedia.getFile_url()).exists()) {
             dest = new File(feedmedia.getFile_url());
         } else {
             dest = new File(getMediafilePath(feedmedia), getMediafilename(feedmedia));

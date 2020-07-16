@@ -68,7 +68,7 @@ public class ShownotesWebView extends WebView implements View.OnLongClickListene
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (Timeline.isTimecodeLink(url) && timecodeSelectedListener != null) {
-                    timecodeSelectedListener.accept(Timeline.getTimecodeLinkTime(selectedUrl));
+                    timecodeSelectedListener.accept(Timeline.getTimecodeLinkTime(url));
                 } else {
                     IntentUtils.openInBrowser(getContext(), url);
                 }

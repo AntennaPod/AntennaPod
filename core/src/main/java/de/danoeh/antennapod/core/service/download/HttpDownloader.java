@@ -65,11 +65,12 @@ public class HttpDownloader extends Downloader {
             final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
             Request.Builder httpReq = new Request.Builder().url(uri.toURL());
             httpReq.tag(request);
+            httpReq.cacheControl(new CacheControl.Builder().noStore().build());
+
             if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                 // set header explicitly so that okhttp doesn't do transparent gzip
                 Log.d(TAG, "addHeader(\"Accept-Encoding\", \"identity\")");
                 httpReq.addHeader("Accept-Encoding", "identity");
-                httpReq.cacheControl(new CacheControl.Builder().noStore().build());
             }
 
             if (!TextUtils.isEmpty(request.getLastModified())) {
