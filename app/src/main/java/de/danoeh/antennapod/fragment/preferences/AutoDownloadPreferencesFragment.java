@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment.preferences;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -85,6 +86,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
         return val == null ? "" : val;
     }
 
+    @SuppressLint("MissingPermission") // getConfiguredNetworks needs location permission starting with API 29
     private void buildAutodownloadSelectedNetworksPreference() {
         if (Build.VERSION.SDK_INT >= 29) {
             return;

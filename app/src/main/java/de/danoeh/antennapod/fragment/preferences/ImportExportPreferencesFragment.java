@@ -38,6 +38,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     private static final String TAG = "ImportExPrefFragment";
@@ -86,9 +87,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private String dateStampFilename(String fname) {
-        return String.format(fname,
-                new SimpleDateFormat("yyyy-MM-dd")
-                       .format(new Date()));
+        return String.format(fname, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date()));
     }
 
     private void setupStorageScreen() {

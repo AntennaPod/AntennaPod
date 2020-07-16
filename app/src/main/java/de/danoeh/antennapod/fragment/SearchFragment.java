@@ -124,7 +124,6 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
-        recyclerViewFeeds.setHasFixedSize(true);
         adapterFeeds = new FeedSearchResultAdapter((MainActivity) getActivity());
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
