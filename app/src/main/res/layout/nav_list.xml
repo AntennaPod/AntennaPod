@@ -107,13 +107,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/nav_bottom_bar"
-        android:layout_alignParentTop="true"
         android:choiceMode="singleChoice"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
+        android:layout_alignParentTop="true"
         android:dividerHeight="0dp"
-        android:paddingTop="8dp"
         android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="8dp"
         android:scrollbarStyle="outsideOverlay"
         tools:listitem="@layout/nav_listitem" />
 </RelativeLayout>
