@@ -7,8 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import org.greenrobot.eventbus.EventBus;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
-import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class FeedFilterDialog {
@@ -31,7 +30,7 @@ public class FeedFilterDialog {
             if (selectedIndex != which) {
                 UserPreferences.setFeedFilter(entryValues[which]);
                 //Update subscriptions
-                EventBus.getDefault().post(new FeedListUpdateEvent(new Feed()));
+                EventBus.getDefault().post(new UnreadItemsUpdateEvent());
             }
             d.dismiss();
         });
