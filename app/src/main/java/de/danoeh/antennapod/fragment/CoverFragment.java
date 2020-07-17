@@ -184,17 +184,21 @@ public class CoverFragment extends Fragment {
 
     private void configureForOrientation(Configuration newConfig) {
         LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
+        ViewGroup.LayoutParams params = imgvCover.getLayoutParams();
+
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             mainContainer.setOrientation(LinearLayout.VERTICAL);
             if (newConfig.screenWidthDp > 0) {
-                imgvCover.getLayoutParams().width = (int) (convertDpToPixel(newConfig.screenWidthDp) * .80);
-                imgvCover.getLayoutParams().height = imgvCover.getLayoutParams().width;
+                params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * .80);
+                params.height= params.width;
+                imgvCover.setLayoutParams(params);
             }
         } else {
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
-                imgvCover.getLayoutParams().height = (int) (convertDpToPixel(newConfig.screenHeightDp) * .40);
-                imgvCover.getLayoutParams().width = imgvCover.getLayoutParams().height;
+                params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * .40);
+                params.width = params.height;
+                imgvCover.setLayoutParams(params);
             }
         }
     }
