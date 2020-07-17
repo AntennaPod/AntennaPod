@@ -56,16 +56,16 @@
     </LinearLayout>
 
     <GridView
-        android:layout_below="@id/toolbar"
         android:id="@+id/subscriptions_grid"
         android:layout_width="match_parent"
-        android:numColumns="3"
-        android:horizontalSpacing="2dp"
-        android:verticalSpacing="2dp"
         android:layout_height="match_parent"
+        android:layout_below="@id/feed_filter_message"
         android:layout_gravity="center_horizontal"
+        android:clipToPadding="false"
+        android:horizontalSpacing="2dp"
+        android:numColumns="3"
         android:paddingBottom="88dp"
-        android:clipToPadding="false"/>
+        android:verticalSpacing="2dp" />
 
     <ProgressBar
         android:id="@+id/progLoading"
@@ -73,16 +73,16 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:indeterminateOnly="true"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/subscriptions_add"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_margin="16dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
         android:contentDescription="@string/add_feed_label"
-        app:srcCompat="@drawable/ic_add_white"/>
+        app:srcCompat="@drawable/ic_add_white" />
 </RelativeLayout>
