@@ -31,6 +31,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -98,8 +99,11 @@ public class MainActivity extends CastEnabledActivity {
 
         final FragmentManager fm = getSupportFragmentManager();
         fm.addOnBackStackChangedListener(() -> {
+            boolean showArrow = fm.getBackStackEntryCount() != 0;
             if (drawerToggle != null) { // Tablet layout does not have a drawer
-                drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0);
+                drawerToggle.setDrawerIndicatorEnabled(!showArrow);
+            } else if (getActionBar() != null) {
+                getActionBar().setDisplayHomeAsUpEnabled(showArrow);
             }
         });
 
@@ -161,6 +165,10 @@ public class MainActivity extends CastEnabledActivity {
             drawerLayout.addDrawerListener(drawerToggle);
             drawerToggle.syncState();
             drawerToggle.setDrawerIndicatorEnabled(getSupportFragmentManager().getBackStackEntryCount() == 0);
+        } else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            toolbar.setNavigationIcon(null);
+        } else {
+            toolbar.setNavigationIcon(ThemeUtils.getDrawableFromAttr(this, R.attr.homeAsUpIndicator));
         }
         super.setSupportActionBar(toolbar);
     }
