@@ -29,13 +29,10 @@
                 android:key="prefDrawerFeedIndicator"
                 android:summary="@string/pref_nav_drawer_feed_counter_sum"
                 android:defaultValue="1"/>
-        <ListPreference
-            android:entryValues="@array/nav_drawer_feed_filter_values"
-            android:entries="@array/nav_drawer_feed_filter_options"
+        <Preference
             android:title="@string/pref_filter_feed_title"
             android:key="prefFeedFilter"
-            android:summary="@string/pref_filter_feed_sum"
-            android:defaultValue="0"/>
+            android:summary="@string/pref_filter_feed_sum" />
         <SwitchPreference
                 android:title="@string/pref_episode_cover_title"
                 android:key="prefEpisodeCover"

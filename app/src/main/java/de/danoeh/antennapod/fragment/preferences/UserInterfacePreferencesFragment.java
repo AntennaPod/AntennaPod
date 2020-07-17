@@ -75,6 +75,12 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 });
 
+        findPreference(UserPreferences.PREF_FILTER_FEED)
+                .setOnPreferenceClickListener((preference -> {
+                    FeedFilterDialog.showDialog(requireContext());
+                    return true;
+                }));
+
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
         }

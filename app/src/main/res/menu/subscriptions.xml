@@ -4,10 +4,10 @@
 
     <item
         android:id="@+id/refresh_item"
-        android:icon="?attr/navigation_refresh"
-        android:menuCategory="container"
         android:title="@string/refresh_label"
-        custom:showAsAction="always" />
+        android:menuCategory="container"
+        custom:showAsAction="always"
+        android:icon="?attr/navigation_refresh"/>
 
     <item
         android:id="@+id/subscriptions_filter"
@@ -22,19 +22,19 @@
             <item
                 android:id="@+id/subscription_num_columns_2"
                 android:checkable="true"
-                android:title="2" />
+                android:title="2"/>
             <item
                 android:id="@+id/subscription_num_columns_3"
                 android:checkable="true"
-                android:title="3" />
+                android:title="3"/>
             <item
                 android:id="@+id/subscription_num_columns_4"
                 android:checkable="true"
-                android:title="4" />
+                android:title="4"/>
             <item
                 android:id="@+id/subscription_num_columns_5"
                 android:checkable="true"
-                android:title="5" />
+                android:title="5"/>
         </menu>
     </item>
 </menu>

@@ -119,10 +119,11 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
             }
         }
         navAdapter.notifyDataSetChanged();
-        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE)
+        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
             filteredMsg.setVisibility(View.VISIBLE);
-        else
+        } else {
             filteredMsg.setVisibility(View.GONE);
+        }
     }
 
     @Override

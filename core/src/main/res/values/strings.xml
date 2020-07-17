@@ -527,9 +527,9 @@
     <string name="back_button_go_to_page_title">Select page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
-    <string name="pref_filter_feed_title">Set Subscription Filter</string>
-    <string name="pref_filter_feed_sum">Filter your subscriptions-screen</string>
-    <string name="hide_subscriptions_where_counter_is_zero">Hide Subscriptions where counter is zero</string>
+    <string name="pref_filter_feed_title">Subscription Filter</string>
+    <string name="pref_filter_feed_sum">Filter your subscriptions screen</string>
+    <string name="hide_subscriptions_where_counter_is_zero">Hide if counter is zero</string>
     <string name="feed_is_filtered">Your subscriptions are filtered.</string>
 
     <!-- About screen -->
