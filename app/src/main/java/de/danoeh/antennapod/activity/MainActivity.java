@@ -68,9 +68,9 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
 
-    private DrawerLayout drawerLayout;
+    private @Nullable DrawerLayout drawerLayout;
+    private @Nullable ActionBarDrawerToggle drawerToggle;
     private View navDrawer;
-    private ActionBarDrawerToggle drawerToggle;
     private LockableBottomSheetBehavior sheetBehavior;
     private long lastBackButtonPressTime = 0;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
@@ -97,8 +97,11 @@ public class MainActivity extends CastEnabledActivity {
         navDrawer = findViewById(R.id.navDrawerFragment);
 
         final FragmentManager fm = getSupportFragmentManager();
-        fm.addOnBackStackChangedListener(() ->
-                drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0));
+        fm.addOnBackStackChangedListener(() -> {
+            if (drawerToggle != null) { // Tablet layout does not have a drawer
+                drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0);
+            }
+        });
 
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
             String lastFragment = NavDrawerFragment.getLastNavFragment(this);
@@ -151,12 +154,14 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
-        drawerLayout.removeDrawerListener(drawerToggle);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-                R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerToggle.syncState();
-        drawerToggle.setDrawerIndicatorEnabled(getSupportFragmentManager().getBackStackEntryCount() == 0);
+        if (drawerLayout != null) { // Tablet layout does not have a drawer
+            drawerLayout.removeDrawerListener(drawerToggle);
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
+                    R.string.drawer_open, R.string.drawer_close);
+            drawerLayout.addDrawerListener(drawerToggle);
+            drawerToggle.syncState();
+            drawerToggle.setDrawerIndicatorEnabled(getSupportFragmentManager().getBackStackEntryCount() == 0);
+        }
         super.setSupportActionBar(toolbar);
     }
 
@@ -164,7 +169,11 @@ public class MainActivity extends CastEnabledActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
             loadFragment(AddFeedFragment.TAG, null);
-            new Handler().postDelayed(() -> drawerLayout.openDrawer(navDrawer), 1500);
+            new Handler().postDelayed(() -> {
+                if (drawerLayout != null) { // Tablet layout does not have a drawer
+                    drawerLayout.openDrawer(navDrawer);
+                }
+            }, 1500);
 
             // for backward compatibility, we only change defaults for fresh installs
             UserPreferences.setUpdateInterval(12);
@@ -258,7 +267,10 @@ public class MainActivity extends CastEnabledActivity {
         // not commit anything in an AsyncTask, but that's a bigger
         // change than we want now.
         t.commitAllowingStateLoss();
-        drawerLayout.closeDrawer(navDrawer);
+
+        if (drawerLayout != null) { // Tablet layout does not have a drawer
+            drawerLayout.closeDrawer(navDrawer);
+        }
     }
 
     public void loadChildFragment(Fragment fragment, TransitionEffect transition) {
@@ -292,13 +304,17 @@ public class MainActivity extends CastEnabledActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
+        if (drawerToggle != null) { // Tablet layout does not have a drawer
+            drawerToggle.syncState();
+        }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToggle.onConfigurationChanged(newConfig);
+        if (drawerToggle != null) { // Tablet layout does not have a drawer
+            drawerToggle.onConfigurationChanged(newConfig);
+        }
     }
 
     @Override
@@ -351,7 +367,7 @@ public class MainActivity extends CastEnabledActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
+        if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) { // Tablet layout does not have a drawer
             return true;
         } else if (item.getItemId() == android.R.id.home) {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -374,7 +390,9 @@ public class MainActivity extends CastEnabledActivity {
         } else {
             switch (UserPreferences.getBackButtonBehavior()) {
                 case OPEN_DRAWER:
-                    drawerLayout.openDrawer(navDrawer);
+                    if (drawerLayout != null) { // Tablet layout does not have drawer
+                        drawerLayout.openDrawer(navDrawer);
+                    }
                     break;
                 case SHOW_PROMPT:
                     new AlertDialog.Builder(this)
