@@ -190,7 +190,7 @@ public class CoverFragment extends Fragment {
             mainContainer.setOrientation(LinearLayout.VERTICAL);
             if (newConfig.screenWidthDp > 0) {
                 params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * .80);
-                params.height= params.width;
+                params.height = params.width;
                 imgvCover.setLayoutParams(params);
             }
         } else {
