@@ -26,6 +26,7 @@
         android:clipToPadding="false"
         android:paddingTop="@dimen/list_vertical_padding"
         android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingHorizontal="@dimen/additional_horizontal_spacing"
         android:layout_above="@id/loadingMore"
         tools:itemCount="13"
         tools:listitem="@layout/feeditemlist_item" />

@@ -36,6 +36,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/additional_horizontal_spacing"
+        android:clipToPadding="false"
         android:layout_below="@id/divider" />
 
     <ProgressBar
