@@ -1,16 +1,23 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -60,6 +67,11 @@ public class CoverFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        configureForOrientation(getResources().getConfiguration());
+    }
+
     private void loadMediaInfo() {
         if (disposable != null) {
             disposable.dispose();
@@ -71,13 +83,12 @@ public class CoverFragment extends Fragment {
             } else {
                 emitter.onComplete();
             }
-        })
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(media -> {
-            this.media = media;
-            displayMediaInfo(media);
-        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(media -> {
+                    this.media = media;
+                    displayMediaInfo(media);
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
@@ -155,6 +166,39 @@ public class CoverFragment extends Fragment {
                         .thumbnail(cover)
                         .error(cover)
                         .into(imgvCover);
+            }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        configureForOrientation(newConfig);
+    }
+
+    public float convertDpToPixel(float dp) {
+        Context context = this.getActivity().getApplicationContext();
+        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    private void configureForOrientation(Configuration newConfig) {
+        LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
+        ViewGroup.LayoutParams params = imgvCover.getLayoutParams();
+
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mainContainer.setOrientation(LinearLayout.VERTICAL);
+            if (newConfig.screenWidthDp > 0) {
+                params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * .80);
+                params.height = params.width;
+                imgvCover.setLayoutParams(params);
+            }
+        } else {
+            mainContainer.setOrientation(LinearLayout.HORIZONTAL);
+            if (newConfig.screenHeightDp > 0) {
+                params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * .40);
+                params.width = params.height;
+                imgvCover.setLayoutParams(params);
             }
         }
     }
