@@ -16,8 +16,7 @@
             android:layout_height="match_parent"
             android:paddingHorizontal="@dimen/additional_horizontal_spacing"
             android:layout_below="@id/toolbar"
-            android:id="@+id/recyclerView"
-            android:clipToPadding="false"/>
+            android:id="@+id/recyclerView"/>
 
     <ProgressBar
             android:id="@+id/progLoading"

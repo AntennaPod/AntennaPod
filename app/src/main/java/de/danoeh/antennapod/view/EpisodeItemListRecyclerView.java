@@ -2,6 +2,7 @@ package de.danoeh.antennapod.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -39,6 +40,14 @@ public class EpisodeItemListRecyclerView extends RecyclerView {
         setLayoutManager(layoutManager);
         setHasFixedSize(true);
         addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
+        setClipToPadding(false);
+    }
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        int horizontalSpacing = (int) getResources().getDimension(R.dimen.additional_horizontal_spacing);
+        setPadding(horizontalSpacing, getPaddingTop(), horizontalSpacing, getPaddingBottom());
     }
 
     public void saveScrollPosition(String tag) {

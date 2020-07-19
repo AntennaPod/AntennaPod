@@ -23,7 +23,6 @@
         android:layout_below="@+id/txtvInformation"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        android:clipToPadding="false"
         android:paddingTop="@dimen/list_vertical_padding"
         android:paddingBottom="@dimen/list_vertical_padding"
         android:paddingHorizontal="@dimen/additional_horizontal_spacing"
