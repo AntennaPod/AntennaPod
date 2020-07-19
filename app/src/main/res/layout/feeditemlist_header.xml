@@ -6,6 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/headerContainer"
+        android:paddingHorizontal="@dimen/additional_horizontal_spacing"
         android:orientation="vertical">
 
     <LinearLayout

@@ -69,6 +69,7 @@ public class FeedInfoFragment extends Fragment {
     private TextView txtvUrl;
     private TextView txtvAuthorHeader;
     private ImageView imgvBackground;
+    private View infoContainer;
     private View header;
     private Menu optionsMenu;
     private ToolbarIconTintManager iconTintManager;
@@ -124,6 +125,7 @@ public class FeedInfoFragment extends Fragment {
         txtvAuthorHeader = root.findViewById(R.id.txtvAuthor);
         imgvBackground = root.findViewById(R.id.imgvBackground);
         header = root.findViewById(R.id.headerContainer);
+        infoContainer = root.findViewById(R.id.infoContainer);
         root.findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
         root.findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
@@ -164,6 +166,8 @@ public class FeedInfoFragment extends Fragment {
         super.onConfigurationChanged(newConfig);
         int horizontalSpacing = (int) getResources().getDimension(R.dimen.additional_horizontal_spacing);
         header.setPadding(horizontalSpacing, header.getPaddingTop(), horizontalSpacing, header.getPaddingBottom());
+        infoContainer.setPadding(horizontalSpacing, infoContainer.getPaddingTop(),
+                horizontalSpacing, infoContainer.getPaddingBottom());
     }
 
     private void showFeed() {
