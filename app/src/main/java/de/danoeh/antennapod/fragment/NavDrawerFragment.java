@@ -199,7 +199,8 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                         }
                     }
                 };
-                int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg : R.string.feed_delete_confirmation_msg;
+                int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg
+                        : R.string.feed_delete_confirmation_msg;
                 ConfirmationDialog conDialog = new ConfirmationDialog(getContext(),
                         R.string.remove_feed_label,
                         getString(messageId, feed.getTitle())) {

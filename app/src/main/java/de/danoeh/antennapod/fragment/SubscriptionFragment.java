@@ -270,7 +270,8 @@ public class SubscriptionFragment extends Fragment {
             }
         };
 
-        int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg : R.string.feed_delete_confirmation_msg;
+        int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg
+                : R.string.feed_delete_confirmation_msg;
         String message = getString(messageId, feed.getTitle());
         ConfirmationDialog dialog = new ConfirmationDialog(getContext(), R.string.remove_feed_label, message) {
             @Override

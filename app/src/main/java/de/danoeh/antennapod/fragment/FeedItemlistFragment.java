@@ -279,7 +279,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                                     ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
                                 }
                             };
-                            int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg : R.string.feed_delete_confirmation_msg;
+                            int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg
+                                    : R.string.feed_delete_confirmation_msg;
                             ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
                                     R.string.remove_feed_label,
                                     getString(messageId, feed.getTitle())) {
