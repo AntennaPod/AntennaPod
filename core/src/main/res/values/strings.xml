@@ -405,7 +405,7 @@
     <string name="pref_mobileUpdate_episode_download">Episode download</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">User Interface</string>
-    <string name="user_interface_sum">Appearance, Subscription order, Lockscreen</string>
+    <string name="user_interface_sum">Appearance, Subscriptions, Lockscreen</string>
     <string name="pref_set_theme_title">Select Theme</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
