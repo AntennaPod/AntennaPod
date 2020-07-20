@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.LongList;
 
 import static de.danoeh.antennapod.core.feed.FeedItem.TAG_FAVORITE;
 
 public class FeedItemFilter {
+    public static String UNINIT = "uninit";
 
     private final String[] mProperties;
 
@@ -34,6 +36,10 @@ public class FeedItemFilter {
     }
 
     public FeedItemFilter(String[] properties) {
+        if(properties.length == 1 && properties[0].equals(UNINIT)){
+            properties = TextUtils.split(UserPreferences.getDefaultItemFilter(), ",");
+        }
+
         this.mProperties = properties;
         for (String property : properties) {
             // see R.arrays.feed_filter_values

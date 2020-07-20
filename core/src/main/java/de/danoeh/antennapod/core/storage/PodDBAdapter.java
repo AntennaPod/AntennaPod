@@ -28,6 +28,7 @@ import java.util.Set;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -397,7 +398,7 @@ public class PodDBAdapter {
         if (feed.getItemFilter() != null && feed.getItemFilter().getValues().length > 0) {
             values.put(KEY_HIDE, TextUtils.join(",", feed.getItemFilter().getValues()));
         } else {
-            values.put(KEY_HIDE, "");
+            values.put(KEY_HIDE, FeedItemFilter.UNINIT);
         }
         values.put(KEY_SORT_ORDER, toCodeString(feed.getSortOrder()));
         values.put(KEY_LAST_UPDATE_FAILED, feed.hasLastUpdateFailed());

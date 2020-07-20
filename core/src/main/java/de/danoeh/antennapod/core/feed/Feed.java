@@ -124,7 +124,7 @@ public class Feed extends FeedFile implements ImageResource {
         if(filter != null) {
             this.itemfilter = new FeedItemFilter(filter);
         } else {
-            this.itemfilter = new FeedItemFilter(new String[0]);
+            this.itemfilter = new FeedItemFilter(FeedItemFilter.UNINIT);
         }
         setSortOrder(sortOrder);
         this.lastUpdateFailed = lastUpdateFailed;

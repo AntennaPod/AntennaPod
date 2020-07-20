@@ -69,6 +69,9 @@ public class UserPreferences {
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
 
+    public static final String PREF_DEFAULT_ITEM_FILTER = "prefDefaultItemFilter";
+    private static final String PREF_DEFAULT_ITEM_SORT = "prefDefaultItemSort";
+
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
 
@@ -1057,6 +1060,16 @@ public class UserPreferences {
         }
         prefs.edit()
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
+                .apply();
+    }
+
+    public static String getDefaultItemFilter(){
+        return prefs.getString(PREF_DEFAULT_ITEM_FILTER, "");
+    }
+
+    public static void setDefaultItemFilter(String value){
+        prefs.edit()
+                .putString(PREF_DEFAULT_ITEM_FILTER, value)
                 .apply();
     }
 }

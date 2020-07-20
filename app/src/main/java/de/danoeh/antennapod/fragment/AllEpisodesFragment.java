@@ -28,13 +28,13 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     private static final String PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_FILTER = "filter";
 
-    private static FeedItemFilter feedItemFilter = new FeedItemFilter("");
+    private static FeedItemFilter feedItemFilter = new FeedItemFilter(FeedItemFilter.UNINIT);
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        feedItemFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
+        feedItemFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, FeedItemFilter.UNINIT));
     }
 
     @Override

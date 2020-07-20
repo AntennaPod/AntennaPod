@@ -11,11 +11,16 @@ import android.widget.ListView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.Set;
 
 public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
 
@@ -74,6 +79,18 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     builder.create().show();
                     return true;
                 });
+
+        findPreference(UserPreferences.PREF_DEFAULT_ITEM_FILTER)
+                .setOnPreferenceClickListener((preference -> {
+                    FilterDialog filterDialog = new FilterDialog(requireContext(), new FeedItemFilter(UserPreferences.getDefaultItemFilter())) {
+                        @Override
+                        protected void updateFilter(Set<String> filterValues) {
+                            UserPreferences.setDefaultItemFilter(StringUtils.join(filterValues, ","));
+                        }
+                    };
+                    filterDialog.openDialog();
+                    return true;
+                }));
 
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
