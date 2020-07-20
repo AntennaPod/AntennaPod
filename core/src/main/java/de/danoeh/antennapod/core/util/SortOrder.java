@@ -45,7 +45,7 @@ public enum SortOrder {
     public static SortOrder parseWithDefault(String value, SortOrder defaultValue) {
         try {
             return valueOf(value);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             return defaultValue;
         }
     }

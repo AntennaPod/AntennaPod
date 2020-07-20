@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.SortOrder;
@@ -539,6 +540,9 @@ public class Feed extends FeedFile implements ImageResource {
         if (sortOrder != null && sortOrder.scope != SortOrder.Scope.INTRA_FEED) {
             throw new IllegalArgumentException("The specified sortOrder " + sortOrder
                     + " is invalid. Only those with INTRA_FEED scope are allowed.");
+        }
+        if(sortOrder == null){
+            sortOrder = UserPreferences.getDefaultSortOrder();
         }
         this.sortOrder = sortOrder;
     }

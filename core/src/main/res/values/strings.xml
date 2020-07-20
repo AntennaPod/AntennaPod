@@ -522,9 +522,11 @@
     <string name="back_button_go_to_page_title">Select page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
-    <string name="pref_set_default_feed_filter_title">Default Feed Filter</string>
-    <string name="pref_set_default_feed_filter_sum">Set a default filter for all new podcasts</string>
     <string name="pref_category_feeds">Feeds</string>
+    <string name="pref_set_default_feed_filter_title">Default Feed Filter</string>
+    <string name="pref_set_default_feed_filter_sum">Set a default filter for all new podcasts.</string>
+    <string name="pref_set_default_feed_sort_order_title">Default Feed Sort Order</string>
+    <string name="pref_set_default_feed_sort_order_sum">Set a default order for all items of your new podcasts.</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>

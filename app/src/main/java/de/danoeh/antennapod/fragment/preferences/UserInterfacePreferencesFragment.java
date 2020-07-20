@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceFragmentCompat;
 import android.widget.ListView;
@@ -14,7 +16,9 @@ import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.dialog.FilterDialog;
+import de.danoeh.antennapod.dialog.IntraFeedSortDialog;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -81,7 +85,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                 });
 
         findPreference(UserPreferences.PREF_DEFAULT_ITEM_FILTER)
-                .setOnPreferenceClickListener((preference -> {
+                .setOnPreferenceClickListener(preference -> {
                     FilterDialog filterDialog = new FilterDialog(requireContext(), new FeedItemFilter(UserPreferences.getDefaultItemFilter())) {
                         @Override
                         protected void updateFilter(Set<String> filterValues) {
@@ -90,7 +94,19 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     };
                     filterDialog.openDialog();
                     return true;
-                }));
+                });
+
+        findPreference(UserPreferences.PREF_DEFAULT_ITEM_SORT)
+                .setOnPreferenceClickListener(preference -> {
+                    IntraFeedSortDialog sortDialog = new IntraFeedSortDialog(requireContext(), UserPreferences.getDefaultSortOrder()) {
+                        @Override
+                        protected void updateSort(@NonNull SortOrder sortOrder) {
+                            UserPreferences.setDefaultSortOrder(sortOrder);
+                        }
+                    };
+                    sortDialog.openDialog();
+                    return true;
+                });
 
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);
