@@ -722,7 +722,7 @@
     <!-- Episodes apply actions -->
     <string name="all_label">All</string>
     <string name="selected_all_label">Selected all Episodes</string>
-    <string name="none_label">None</string>
+    <string name="select_none_label">None</string>
     <string name="deselected_all_label">Deselected all Episodes</string>
     <string name="played_label">Played</string>
     <string name="selected_played_label">Selected played Episodes</string>
