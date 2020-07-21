@@ -50,10 +50,15 @@ public class NSMedia extends Namespace {
 
             boolean isDefault = "true".equals(defaultStr);
 
-            if (MEDIUM_AUDIO.equals(medium) || MEDIUM_VIDEO.equals(medium)) {
+            if (MEDIUM_AUDIO.equals(medium)) {
                 validTypeMedia = true;
+                type = "audio/*";
+            } else if (MEDIUM_VIDEO.equals(medium)) {
+                validTypeMedia = true;
+                type = "video/*";
             } else if (MEDIUM_IMAGE.equals(medium)) {
                 validTypeImage = true;
+                type = "image/*";
             } else {
                 if (type == null) {
                     type = SyndTypeUtils.getMimeTypeFromUrl(url);
