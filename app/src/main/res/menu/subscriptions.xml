@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/refresh_item"
-        android:title="@string/refresh_label"
-        android:menuCategory="container"
-        custom:showAsAction="always"
-        android:icon="?attr/navigation_refresh"/>
+            android:id="@+id/refresh_item"
+            android:title="@string/refresh_label"
+            android:menuCategory="container"
+            custom:showAsAction="always"
+            android:icon="?attr/navigation_refresh"/>
+
 
     <item
         android:id="@+id/subscriptions_filter"
         android:title="@string/filter"
         custom:showAsAction="never" />
-
     <item
-        android:id="@+id/subscription_num_columns"
-        android:title="@string/subscription_num_columns"
-        custom:showAsAction="never">
+            android:id="@+id/subscription_num_columns"
+            android:title="@string/subscription_num_columns"
+            custom:showAsAction="never">
         <menu>
             <item
-                android:id="@+id/subscription_num_columns_2"
-                android:checkable="true"
-                android:title="2"/>
+                    android:id="@+id/subscription_num_columns_2"
+                    android:checkable="true"
+                    android:title="2"/>
             <item
-                android:id="@+id/subscription_num_columns_3"
-                android:checkable="true"
-                android:title="3"/>
+                    android:id="@+id/subscription_num_columns_3"
+                    android:checkable="true"
+                    android:title="3"/>
             <item
-                android:id="@+id/subscription_num_columns_4"
-                android:checkable="true"
-                android:title="4"/>
+                    android:id="@+id/subscription_num_columns_4"
+                    android:checkable="true"
+                    android:title="4"/>
             <item
-                android:id="@+id/subscription_num_columns_5"
-                android:checkable="true"
-                android:title="5"/>
+                    android:id="@+id/subscription_num_columns_5"
+                    android:checkable="true"
+                    android:title="5"/>
         </menu>
     </item>
 </menu>
