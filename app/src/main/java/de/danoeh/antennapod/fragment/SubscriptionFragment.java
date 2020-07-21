@@ -210,10 +210,11 @@ public class SubscriptionFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
-        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE)
+        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
             filterMsg.setVisibility(View.VISIBLE);
-        else
+        } else {
             filterMsg.setVisibility(View.GONE);
+        }
     }
 
     @Override

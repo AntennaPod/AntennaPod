@@ -239,7 +239,7 @@
     </string-array>
 
     <string-array name="nav_drawer_feed_filter_options">
-        <item>@string/none_label</item>
+        <item>@string/no_filter_label</item>
         <item>@string/hide_subscriptions_where_counter_is_zero</item>
     </string-array>
 

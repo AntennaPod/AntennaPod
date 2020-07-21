@@ -900,7 +900,7 @@ public final class DBReader {
 
         int feedFilter = UserPreferences.getFeedFilter();
         if (feedFilter == UserPreferences.FEED_FILTER_COUNTER_ZERO) {
-            for (int i = 0; i < feeds.size(); i++) {
+            for (int i = feeds.size() - 1; i >= 0; i--) {
                 if (feedCounters.get(feeds.get(i).getId()) <= 0) {
                     feedCounters.delete(feeds.get(i).getId());
                     feeds.remove(i);
