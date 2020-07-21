@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
-
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -12,6 +12,7 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.ProviderInstallerInterceptor;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -64,6 +65,18 @@ public class ClientConfig {
         } else {
             Log.v(TAG, "Cast is disabled. All Cast-related initialization will be skipped.");
         }
+        ProviderInstaller.installIfNeededAsync(context, new ProviderInstaller.ProviderInstallListener() {
+            @Override
+            public void onProviderInstalled() {
+                Log.e(TAG, "onProviderInstalled");
+            }
+
+            @Override
+            public void onProviderInstallFailed(int i, Intent intent) {
+                Log.e(TAG, "onProviderInstallFailed");
+            }
+        });
+        ProviderInstallerInterceptor.installer = () -> installSslProvider(context);
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
