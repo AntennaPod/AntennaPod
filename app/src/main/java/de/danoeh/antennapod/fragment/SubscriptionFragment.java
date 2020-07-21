@@ -90,7 +90,7 @@ public class SubscriptionFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
-        subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, 3));
+        subscriptionGridLayout.setNumColumns(prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns()));
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
@@ -102,7 +102,7 @@ public class SubscriptionFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.subscriptions, menu);
 
-        int columns = prefs.getInt(PREF_NUM_COLUMNS, 3);
+        int columns = prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns());
         menu.findItem(R.id.subscription_num_columns_2).setChecked(columns == 2);
         menu.findItem(R.id.subscription_num_columns_3).setChecked(columns == 3);
         menu.findItem(R.id.subscription_num_columns_4).setChecked(columns == 4);
@@ -198,6 +198,10 @@ public class SubscriptionFragment extends Fragment {
                     emptyView.updateVisibility();
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+    }
+
+    private int getDefaultNumOfColumns() {
+        return getResources().getInteger(R.integer.subscriptions_default_num_of_columns);
     }
 
     @Override

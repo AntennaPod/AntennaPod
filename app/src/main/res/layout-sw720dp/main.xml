@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/drawer_layout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="InconsistentLayout">
-    <!-- InconsistentLayout: Tablet layout does not have a drawer -->
+        android:layout_height="match_parent">
+
+    <FrameLayout
+            android:id="@+id/navDrawerFragment"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:orientation="vertical" />
+
+    <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/overview_coordinator_layout"
@@ -33,13 +43,4 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <FrameLayout
-            android:id="@+id/navDrawerFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_gravity="start"
-            android:orientation="vertical" />
-
-</androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>

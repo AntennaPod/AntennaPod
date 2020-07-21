@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.util.Log;
@@ -98,6 +99,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private TextView txtvAuthor;
     private ImageButton butShowInfo;
     private ImageButton butShowSettings;
+    private View header;
     private Menu optionsMenu;
     private ToolbarIconTintManager iconTintManager;
 
@@ -155,6 +157,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         butShowSettings = root.findViewById(R.id.butShowSettings);
         txtvInformation = root.findViewById(R.id.txtvInformation);
         txtvFailure = root.findViewById(R.id.txtvFailure);
+        header = root.findViewById(R.id.headerContainer);
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
 
@@ -243,6 +246,13 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed != null) {
             FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        int horizontalSpacing = (int) getResources().getDimension(R.dimen.additional_horizontal_spacing);
+        header.setPadding(horizontalSpacing, header.getPaddingTop(), horizontalSpacing, header.getPaddingBottom());
     }
 
     @Override

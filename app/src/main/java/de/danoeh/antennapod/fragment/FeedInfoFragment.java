@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,9 +48,6 @@ import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 /**
  * Displays information about a feed.
@@ -71,6 +69,8 @@ public class FeedInfoFragment extends Fragment {
     private TextView txtvUrl;
     private TextView txtvAuthorHeader;
     private ImageView imgvBackground;
+    private View infoContainer;
+    private View header;
     private Menu optionsMenu;
     private ToolbarIconTintManager iconTintManager;
 
@@ -124,6 +124,8 @@ public class FeedInfoFragment extends Fragment {
         txtvTitle = root.findViewById(R.id.txtvTitle);
         txtvAuthorHeader = root.findViewById(R.id.txtvAuthor);
         imgvBackground = root.findViewById(R.id.imgvBackground);
+        header = root.findViewById(R.id.headerContainer);
+        infoContainer = root.findViewById(R.id.infoContainer);
         root.findViewById(R.id.butShowInfo).setVisibility(View.INVISIBLE);
         root.findViewById(R.id.butShowSettings).setVisibility(View.INVISIBLE);
         // https://github.com/bumptech/glide/issues/529
@@ -157,6 +159,15 @@ public class FeedInfoFragment extends Fragment {
                     feed = result;
                     showFeed();
                 }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        int horizontalSpacing = (int) getResources().getDimension(R.dimen.additional_horizontal_spacing);
+        header.setPadding(horizontalSpacing, header.getPaddingTop(), horizontalSpacing, header.getPaddingBottom());
+        infoContainer.setPadding(horizontalSpacing, infoContainer.getPaddingTop(),
+                horizontalSpacing, infoContainer.getPaddingBottom());
     }
 
     private void showFeed() {
