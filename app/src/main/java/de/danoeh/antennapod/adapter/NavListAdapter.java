@@ -23,6 +23,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.dialog.FeedFilterDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
@@ -295,10 +296,15 @@ public class NavListAdapter extends BaseAdapter
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
-
-        convertView.setEnabled(false);
-        convertView.setOnClickListener(null);
+        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
+            convertView = inflater.inflate(R.layout.nav_section_filter_divider, parent, false);
+            convertView.setEnabled(true);
+            convertView.setOnClickListener((l) -> FeedFilterDialog.showDialog(context));
+        } else {
+            convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
+            convertView.setEnabled(false);
+            convertView.setOnClickListener(null);
+        }
 
         return convertView;
     }

@@ -74,16 +74,12 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     private int position = -1;
     private NavListAdapter navAdapter;
     private Disposable disposable;
-    private View filteredMsg;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.nav_list, container, false);
-
-        filteredMsg = root.findViewById(R.id.nav_filter_message);
-        filteredMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
 
         ListView navList = root.findViewById(R.id.nav_list);
         navAdapter = new NavListAdapter(itemAccess, getActivity());
@@ -119,11 +115,6 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
             }
         }
         navAdapter.notifyDataSetChanged();
-        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
-            filteredMsg.setVisibility(View.VISIBLE);
-        } else {
-            filteredMsg.setVisibility(View.GONE);
-        }
     }
 
     @Override
