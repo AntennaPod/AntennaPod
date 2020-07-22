@@ -21,12 +21,14 @@ public class FeedFilterDialog {
         int selected = UserPreferences.getFeedFilter();
         String[] entryValues = context.getResources().getStringArray(R.array.nav_drawer_feed_filter_values);
         for (int i = 0; i < entryValues.length; i++) {
-            if (Integer.parseInt(entryValues[i]) == selected)
+            if (Integer.parseInt(entryValues[i]) == selected) {
                 selectedIndexTemp = i;
+            }
         }
 
         final int selectedIndex = selectedIndexTemp;
-        dialog.setSingleChoiceItems(context.getResources().getStringArray(R.array.nav_drawer_feed_filter_options), selectedIndex, (d, which) -> {
+        String[] items = context.getResources().getStringArray(R.array.nav_drawer_feed_filter_options);
+        dialog.setSingleChoiceItems(items, selectedIndex, (d, which) -> {
             if (selectedIndex != which) {
                 UserPreferences.setFeedFilter(entryValues[which]);
                 //Update subscriptions

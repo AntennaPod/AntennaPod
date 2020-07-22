@@ -528,11 +528,10 @@
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
     <string name="pref_filter_feed_title">Subscription Filter</string>
-    <string name="pref_filter_feed_sum">Filter your subscriptions screen</string>
+    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
     <string name="hide_subscriptions_where_counter_is_zero">Hide if counter is zero</string>
     <string name="no_filter_label">None</string>
     <string name="feed_is_filtered">Your subscriptions are filtered.</string>
-    <string name="subscriptions">Subscriptions</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>

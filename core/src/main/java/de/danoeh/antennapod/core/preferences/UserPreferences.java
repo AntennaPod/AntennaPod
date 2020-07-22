@@ -1061,7 +1061,7 @@ public class UserPreferences {
         return Integer.parseInt(value);
     }
 
-    public static void setFeedFilter(String value){
+    public static void setFeedFilter(String value) {
         prefs.edit()
                 .putString(PREF_FILTER_FEED, value)
                 .commit();
