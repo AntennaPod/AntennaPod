@@ -199,11 +199,11 @@ public class NavListAdapter extends BaseAdapter
         if (viewType == VIEW_TYPE_NAV) {
             v = getNavView((String) getItem(position), position, convertView, parent);
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-            v = getSectionDividerView(parent);
+            v = getSectionDividerView(convertView, parent);
         } else {
             v = getFeedView(position, convertView, parent);
         }
-        if (v != null && (viewType != VIEW_TYPE_SECTION_DIVIDER || UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE)) {
+        if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TypedValue typedValue = new TypedValue();
 
             if (position == itemAccess.getSelectedItemIndex()) {
@@ -288,7 +288,7 @@ public class NavListAdapter extends BaseAdapter
         return convertView;
     }
 
-    private View getSectionDividerView(ViewGroup parent) {
+    private View getSectionDividerView(View convertView, ViewGroup parent) {
         Activity context = activity.get();
         if(context == null) {
             return null;
@@ -296,10 +296,10 @@ public class NavListAdapter extends BaseAdapter
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View convertView;
         if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
             convertView = inflater.inflate(R.layout.nav_section_filter_divider, parent, false);
             convertView.setEnabled(true);
+            convertView.setOnClickListener((l) -> FeedFilterDialog.showDialog(context));
         } else {
             convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
             convertView.setEnabled(false);

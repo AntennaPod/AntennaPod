@@ -370,10 +370,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         int viewType = parent.getAdapter().getItemViewType(position);
-        if (viewType == NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
-            FeedFilterDialog.showDialog(requireContext());
-        }
-        else {
+        if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
             if (position < navAdapter.getSubscriptionOffset()) {
                 String tag = navAdapter.getTags().get(position);
                 if (getActivity() instanceof MainActivity) {
