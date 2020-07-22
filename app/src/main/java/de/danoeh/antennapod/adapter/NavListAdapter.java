@@ -299,11 +299,9 @@ public class NavListAdapter extends BaseAdapter
         if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
             convertView = inflater.inflate(R.layout.nav_section_filter_divider, parent, false);
             convertView.setEnabled(true);
-            convertView.setOnClickListener((l) -> FeedFilterDialog.showDialog(context));
         } else {
             convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
             convertView.setEnabled(false);
-            convertView.setOnClickListener(null);
         }
 
         return convertView;

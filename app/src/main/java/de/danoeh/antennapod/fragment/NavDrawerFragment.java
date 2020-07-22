@@ -389,6 +389,8 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     startActivity(intent);
                 }
             }
+        } else {
+            FeedFilterDialog.showDialog(requireContext());
         }
     }
 

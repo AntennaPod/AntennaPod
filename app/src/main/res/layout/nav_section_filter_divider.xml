@@ -9,7 +9,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_centerVertical="true"
         android:background="?android:attr/listDivider"
         tools:background="@android:color/holo_red_dark"/>
 
@@ -17,10 +16,8 @@
         android:id="@+id/nav_filter_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/filtered_label"
-        android:focusable="true"
         android:orientation="horizontal"
         android:visibility="visible">
 
