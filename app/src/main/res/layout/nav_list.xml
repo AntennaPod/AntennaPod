@@ -69,6 +69,5 @@
         android:dividerHeight="0dp"
         android:paddingBottom="@dimen/list_vertical_padding"
         android:paddingTop="8dp"
-        android:scrollbarStyle="outsideOverlay"
-        tools:listitem="@layout/nav_listitem" />
+        android:scrollbarStyle="outsideOverlay" />
 </RelativeLayout>
