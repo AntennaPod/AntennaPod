@@ -22,7 +22,6 @@
         android:layout_below="@id/toolbar"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/filtered_label"
-        android:focusable="true"
         android:orientation="horizontal"
         android:visibility="gone">
 
