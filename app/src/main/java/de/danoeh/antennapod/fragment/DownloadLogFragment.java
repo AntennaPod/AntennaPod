@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.ListFragment;
-import androidx.core.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +19,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -119,10 +123,17 @@ public class DownloadLogFragment extends ListFragment {
             message = status.getReasonDetailed();
         }
 
+        String messageFull = getString(R.string.download_error_details_message, message, url);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.download_error_details);
-        builder.setMessage(getString(R.string.download_error_details_message, message, url));
+        builder.setMessage(messageFull);
         builder.setPositiveButton(android.R.string.ok, null);
+        builder.setNeutralButton(R.string.copy_to_clipboard, (dialog, which) -> {
+            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText(getString(R.string.download_error_details), messageFull);
+            clipboard.setPrimaryClip(clip);
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT);
+        });
         Dialog dialog = builder.show();
         ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
     }
