@@ -2,19 +2,13 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.LightingColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -474,10 +468,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
                     filterDialog.openDialog();
                 });
-                //SelectableItemBackground but makes background transparent
-//                TypedValue outValue = new TypedValue();
-//                requireContext().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
-//                txtvInformation.setBackgroundResource(outValue.resourceId);
                 txtvInformation.setVisibility(View.VISIBLE);
             } else {
                 txtvInformation.setVisibility(View.GONE);
