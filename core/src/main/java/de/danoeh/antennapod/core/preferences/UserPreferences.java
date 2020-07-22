@@ -632,8 +632,7 @@ public class UserPreferences {
     }
 
     public static boolean isQueueLocked() {
-        return prefs.getBoolean(PREF_QUEUE_LOCKED, false)
-                || isQueueKeepSorted();
+        return prefs.getBoolean(PREF_QUEUE_LOCKED, false);
     }
 
     public static void setFastForwardSecs(int secs) {

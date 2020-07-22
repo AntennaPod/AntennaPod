@@ -20,16 +20,17 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
     private static final String TAG = "QueueRecyclerAdapter";
 
     private final ItemTouchHelper itemTouchHelper;
-    private boolean locked;
+    private boolean dragDropEnabled;
+
 
     public QueueRecyclerAdapter(MainActivity mainActivity, ItemTouchHelper itemTouchHelper) {
         super(mainActivity);
         this.itemTouchHelper = itemTouchHelper;
-        locked = UserPreferences.isQueueLocked();
+        dragDropEnabled = ! (UserPreferences.isQueueKeepSorted() || UserPreferences.isQueueLocked());
     }
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
+    public void updateDragDropEnabled() {
+        dragDropEnabled = ! (UserPreferences.isQueueKeepSorted() || UserPreferences.isQueueLocked());
         notifyDataSetChanged();
     }
 
@@ -44,7 +45,7 @@ public class QueueRecyclerAdapter extends EpisodeItemListAdapter {
             return false;
         };
 
-        if (locked) {
+        if (!dragDropEnabled) {
             holder.dragHandle.setVisibility(View.GONE);
             holder.dragHandle.setOnTouchListener(null);
             holder.coverHolder.setOnTouchListener(null);
