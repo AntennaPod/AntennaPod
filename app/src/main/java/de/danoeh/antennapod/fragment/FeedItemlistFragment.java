@@ -53,6 +53,7 @@ import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
@@ -61,6 +62,7 @@ import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
+import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
@@ -78,6 +80,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Displays a list of FeedItems.
@@ -464,6 +467,17 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 }
                 txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
+                txtvInformation.setOnClickListener((l) -> {
+                    FilterDialog filterDialog = new FilterDialog(requireContext(), feed.getItemFilter()) {
+                        @Override
+                        protected void updateFilter(Set<String> filterValues) {
+                            feed.setItemFilter(filterValues.toArray(new String[0]));
+                            DBWriter.setFeedItemsFilter(feed.getId(), filterValues);
+                        }
+                    };
+
+                    filterDialog.openDialog();
+                });
                 txtvInformation.setVisibility(View.VISIBLE);
             } else {
                 txtvInformation.setVisibility(View.GONE);
