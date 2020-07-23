@@ -711,10 +711,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onSleepTimerAlmostExpired() {
-            float leftVolume = 0.1f * UserPreferences.getLeftVolume();
-            float rightVolume = 0.1f * UserPreferences.getRightVolume();
+        public void onSleepTimerAlmostExpired(long timeLeft) {
+            float multiplicator = (float) timeLeft/PlaybackServiceTaskManager.SleepTimer.NOTIFICATION_THRESHOLD;
+            if(multiplicator<0.1f){
+                multiplicator = 0.1f;
+            }
+            float leftVolume = multiplicator * UserPreferences.getLeftVolume();
+            float rightVolume = multiplicator * UserPreferences.getRightVolume();
             mediaPlayer.setVolume(leftVolume, rightVolume);
+            Log.d(TAG, "Volume set to: " + leftVolume);
         }
 
         @Override

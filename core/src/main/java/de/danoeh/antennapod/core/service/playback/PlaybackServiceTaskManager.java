@@ -360,7 +360,8 @@ public class PlaybackServiceTaskManager {
     class SleepTimer implements Runnable {
         private static final String TAG = "SleepTimer";
         private static final long UPDATE_INTERVAL = 1000L;
-        private static final long NOTIFICATION_THRESHOLD = 10000;
+        public static final long NOTIFICATION_THRESHOLD = 10000;
+        private boolean hasVibrated = false;
         private final long waitingTime;
         private long timeLeft;
         private ShakeListener shakeListener;
@@ -405,19 +406,21 @@ public class PlaybackServiceTaskManager {
                 timeLeft -= now - lastTick;
                 lastTick = now;
 
-                if (timeLeft < NOTIFICATION_THRESHOLD && !notifiedAlmostExpired) {
+                if (timeLeft < NOTIFICATION_THRESHOLD) {
                     Log.d(TAG, "Sleep timer is about to expire");
-                    if (SleepTimerPreferences.vibrate()) {
+                    if (SleepTimerPreferences.vibrate() && !hasVibrated) {
                         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                         if (v != null) {
                             v.vibrate(500);
+                            hasVibrated = true;
                         }
                     }
                     if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
                         shakeListener = new ShakeListener(context, this);
                     }
-                    postCallback(callback::onSleepTimerAlmostExpired);
-                    notifiedAlmostExpired = true;
+                    Runnable r = () -> callback.onSleepTimerAlmostExpired(timeLeft);
+                    postCallback(r);
+                    //notifiedAlmostExpired = true;
                 }
                 if (timeLeft <= 0) {
                     Log.d(TAG, "Sleep timer expired");
@@ -425,6 +428,7 @@ public class PlaybackServiceTaskManager {
                         shakeListener.pause();
                         shakeListener = null;
                     }
+                    hasVibrated = false;
                     if (!Thread.currentThread().isInterrupted()) {
                         postCallback(callback::onSleepTimerExpired);
                     } else {
@@ -461,7 +465,7 @@ public class PlaybackServiceTaskManager {
     public interface PSTMCallback {
         void positionSaverTick();
 
-        void onSleepTimerAlmostExpired();
+        void onSleepTimerAlmostExpired(long timeLeft);
 
         void onSleepTimerExpired();
 
