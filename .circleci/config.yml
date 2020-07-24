@@ -39,6 +39,10 @@ workflows:
             - run:
                 name: Build debug
                 command: ./gradlew assembleDebug -PdisablePreDex
+            - store_artifacts:
+                name: Uploading apk artifact
+                path: app/build/outputs/apk/play/debug/app-play-debug.apk
+                destination: app-play-debug.apk
             - run:
                 name: Execute debug unit tests
                 command: ./gradlew :core:testPlayDebugUnitTest -PdisablePreDex
