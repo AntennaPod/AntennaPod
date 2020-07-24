@@ -172,7 +172,7 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onSleepTimerAlmostExpired() {
+            public void onSleepTimerAlmostExpired(long timeLeft) {
 
             }
 
@@ -233,7 +233,7 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onSleepTimerAlmostExpired() {
+            public void onSleepTimerAlmostExpired(long timeLeft) {
 
             }
 
@@ -330,7 +330,7 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onSleepTimerAlmostExpired() {
+            public void onSleepTimerAlmostExpired(long timeLeft) {
 
             }
 
@@ -376,7 +376,7 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onSleepTimerAlmostExpired() {
+            public void onSleepTimerAlmostExpired(long timeLeft) {
 
             }
 
@@ -434,7 +434,7 @@ public class PlaybackServiceTaskManagerTest {
         }
 
         @Override
-        public void onSleepTimerAlmostExpired() {
+        public void onSleepTimerAlmostExpired(long timeLeft) {
 
         }
 
