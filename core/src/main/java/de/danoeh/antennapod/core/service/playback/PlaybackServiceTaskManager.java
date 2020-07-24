@@ -391,7 +391,6 @@ public class PlaybackServiceTaskManager {
         @Override
         public void run() {
             Log.d(TAG, "Starting");
-            boolean notifiedAlmostExpired = false;
             long lastTick = System.currentTimeMillis();
             while (timeLeft > 0) {
                 try {
@@ -418,9 +417,7 @@ public class PlaybackServiceTaskManager {
                     if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
                         shakeListener = new ShakeListener(context, this);
                     }
-                    Runnable r = () -> callback.onSleepTimerAlmostExpired(timeLeft);
-                    postCallback(r);
-                    //notifiedAlmostExpired = true;
+                    postCallback(() -> callback.onSleepTimerAlmostExpired(timeLeft));
                 }
                 if (timeLeft <= 0) {
                     Log.d(TAG, "Sleep timer expired");
