@@ -1,16 +1,14 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
+
 import androidx.documentfile.provider.DocumentFile;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.DateUtils;
-import de.danoeh.antennapod.core.util.DownloadError;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +18,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.DownloadError;
 
 public class LocalFeedUpdater {
 
@@ -81,12 +84,25 @@ public class LocalFeedUpdater {
                 break;
             }
         }
+        if (StringUtils.isBlank(feed.getImageUrl())) {
+            // set default feed image
+            feed.setImageUrl(getDefaultIconUrl(context));
+        }
 
         // update items, delete items without existing file;
         // only delete items if the folder contains at least one element to avoid accidentally
         // deleting played state or position in case the folder is temporarily unavailable.
         boolean removeUnlistedItems = (newItems.size() >= 1);
         DBTasks.updateFeed(context, feed, removeUnlistedItems);
+    }
+
+    /**
+     * Returns the URL of the default icon for a local feed. The URL refers to an app resource file.
+     */
+    public static String getDefaultIconUrl(Context context) {
+        return ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                + context.getPackageName() + "/"
+                + "raw/folder";
     }
 
     private static FeedItem feedContainsFile(Feed feed, String filename) {

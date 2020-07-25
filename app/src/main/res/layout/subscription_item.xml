@@ -21,7 +21,7 @@
         android:id="@+id/txtvTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_gray"
+        android:background="@color/feed_text_bg"
         android:layout_alignLeft="@+id/imgvCover"
         android:layout_alignRight="@+id/imgvCover"
         android:layout_alignStart="@+id/imgvCover"
