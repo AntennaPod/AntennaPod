@@ -104,7 +104,7 @@ public class CompletedDownloadsFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.downloads_completed, menu);
         menu.findItem(R.id.episode_actions).setVisible(items.size() > 0);
