@@ -295,7 +295,7 @@ public class SubscriptionFragment extends Fragment {
                     Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
                     remover.skipOnCompletion = true;
                     int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
-                    if ( playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
+                    if(playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
                         IntentUtils.sendLocalBroadcast(getContext(), PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
 
                     }
