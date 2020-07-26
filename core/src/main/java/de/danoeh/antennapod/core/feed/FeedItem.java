@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
@@ -482,6 +484,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
      */
     public void removeTag(String tag) { tags.remove(tag); }
 
+    @NonNull
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);

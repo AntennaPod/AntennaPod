@@ -28,8 +28,9 @@ import org.apache.commons.io.IOUtils;
 public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapterImage, ByteBuffer> {
 
     public static class Factory implements ModelLoaderFactory<EmbeddedChapterImage, ByteBuffer> {
+        @NonNull
         @Override
-        public ModelLoader<EmbeddedChapterImage, ByteBuffer> build(MultiModelLoaderFactory unused) {
+        public ModelLoader<EmbeddedChapterImage, ByteBuffer> build(@NonNull MultiModelLoaderFactory unused) {
             return new ChapterImageModelLoader();
         }
 
@@ -41,12 +42,15 @@ public final class ChapterImageModelLoader implements ModelLoader<EmbeddedChapte
 
     @Nullable
     @Override
-    public LoadData<ByteBuffer> buildLoadData(EmbeddedChapterImage model, int width, int height, Options options) {
+    public LoadData<ByteBuffer> buildLoadData(@NonNull EmbeddedChapterImage model,
+                                              int width,
+                                              int height,
+                                              @NonNull Options options) {
         return new LoadData<>(new ObjectKey(model), new EmbeddedImageFetcher(model));
     }
 
     @Override
-    public boolean handles(EmbeddedChapterImage model) {
+    public boolean handles(@NonNull EmbeddedChapterImage model) {
         return true;
     }
 
