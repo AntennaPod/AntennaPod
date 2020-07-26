@@ -206,7 +206,6 @@ task copyLicense(type: Copy) {
     rename { String fileName ->
         fileName + ".txt"
     }
-    outputs.upToDateWhen { false }
 }
 
 preBuild.dependsOn copyLicense
