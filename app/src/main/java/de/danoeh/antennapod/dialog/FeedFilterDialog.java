@@ -14,7 +14,6 @@ public class FeedFilterDialog {
     public static void showDialog(Context context) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setTitle(context.getString(R.string.pref_filter_feed_title));
-        dialog.setPositiveButton(null, null);
         dialog.setNegativeButton(android.R.string.cancel, (d, listener) -> d.dismiss());
 
         int selectedIndexTemp = 0;
