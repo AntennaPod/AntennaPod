@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -100,9 +101,10 @@ public class LocalFeedUpdater {
      * Returns the URL of the default icon for a local feed. The URL refers to an app resource file.
      */
     public static String getDefaultIconUrl(Context context) {
+        String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
         return ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                + context.getPackageName() + "/"
-                + "raw/folder";
+                + context.getPackageName() + "/raw/"
+                + resourceEntryName;
     }
 
     private static FeedItem feedContainsFile(Feed feed, String filename) {
