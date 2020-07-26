@@ -15,6 +15,8 @@ import com.bumptech.glide.request.target.CustomViewTarget;
 import java.lang.ref.WeakReference;
 
 import com.bumptech.glide.request.transition.Transition;
+
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
@@ -105,8 +107,13 @@ public class CoverLoader {
         @Override
         public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
             TextView txtvPlaceholder = placeholder.get();
-            if (txtvPlaceholder != null && !textAndImageCombined) {
-                txtvPlaceholder.setVisibility(View.INVISIBLE);
+            if (txtvPlaceholder != null) {
+                if (textAndImageCombined) {
+                    int bgColor = txtvPlaceholder.getContext().getResources().getColor(R.color.feed_text_bg);
+                    txtvPlaceholder.setBackgroundColor(bgColor);
+                } else {
+                    txtvPlaceholder.setVisibility(View.INVISIBLE);
+                }
             }
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(resource);
