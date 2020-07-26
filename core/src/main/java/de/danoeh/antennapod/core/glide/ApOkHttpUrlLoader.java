@@ -83,7 +83,9 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     @Override
     public boolean handles(@NonNull String model) {
         // Leave content URIs to Glide's default loaders
-        return !TextUtils.isEmpty(model) && !model.startsWith(ContentResolver.SCHEME_CONTENT);
+        return !TextUtils.isEmpty(model)
+                && !model.startsWith(ContentResolver.SCHEME_CONTENT)
+                && !model.startsWith(ContentResolver.SCHEME_ANDROID_RESOURCE);
     }
 
     private static class NetworkAllowanceInterceptor implements Interceptor {
