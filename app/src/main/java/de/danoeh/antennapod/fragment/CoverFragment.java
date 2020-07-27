@@ -128,6 +128,10 @@ public class CoverFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+
+        if (disposable != null) {
+            disposable.dispose();
+        }
         controller.release();
         controller = null;
         EventBus.getDefault().unregister(this);
@@ -200,15 +204,6 @@ public class CoverFragment extends Fragment {
                 params.width = params.height;
                 imgvCover.setLayoutParams(params);
             }
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        if (disposable != null) {
-            disposable.dispose();
         }
     }
 

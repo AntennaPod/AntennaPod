@@ -66,9 +66,6 @@ public class ItemDescriptionFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "Fragment destroyed");
-        if (webViewLoader != null) {
-            webViewLoader.dispose();
-        }
         if (webvDescription != null) {
             webvDescription.removeAllViews();
             webvDescription.destroy();
@@ -168,6 +165,10 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+
+        if (webViewLoader != null) {
+            webViewLoader.dispose();
+        }
         controller.release();
         controller = null;
     }
