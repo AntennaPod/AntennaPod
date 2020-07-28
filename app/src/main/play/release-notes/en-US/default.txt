@@ -1,1 +1,1 @@
-Added poll for new icon in preparation for version 2.0.0
+Removed poll for new icon. Thank you for participating!
