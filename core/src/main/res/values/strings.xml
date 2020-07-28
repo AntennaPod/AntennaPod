@@ -776,10 +776,4 @@
     <string name="widget_settings">Widget settings</string>
     <string name="widget_create_button">Create widget</string>
     <string name="widget_opacity">Opacity</string>
-
-    <!-- New icon poll (temporary) -->
-    <string name="icon_poll_title">New icon</string>
-    <string name="icon_poll_message">Thank you for using AntennaPod!\n\nTo celebrate the public release of version 2.0.0, we set up a vote for a new app icon. Vote now to help shape the future of AntennaPod!</string>
-    <string name="icon_poll_vote">Vote</string>
-    <string name="icon_poll_dont_vote">Accept other user\'s vote</string>
 </resources>

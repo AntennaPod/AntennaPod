@@ -60,7 +60,6 @@ import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Flavors;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.dialog.IconPollDialog;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -490,8 +489,6 @@ public class MainActivity extends CastEnabledActivity implements NavDrawerActivi
         super.onStart();
         EventBus.getDefault().register(this);
         RatingDialog.init(this);
-
-        IconPollDialog.showIfNeeded(this);
     }
 
     @Override

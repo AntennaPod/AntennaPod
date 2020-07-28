@@ -19,7 +19,6 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.dialog.IconPollDialog;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
@@ -126,11 +125,6 @@ public class EspressoTestUtils {
         InstrumentationRegistry.getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE)
                 .edit()
                 .putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false)
-                .commit();
-
-        InstrumentationRegistry.getTargetContext().getSharedPreferences(IconPollDialog.PREFS_NAME, Context.MODE_PRIVATE)
-                .edit()
-                .putBoolean(IconPollDialog.KEY_DIALOG_ALLOWED, false)
                 .commit();
 
         RatingDialog.init(InstrumentationRegistry.getTargetContext());
