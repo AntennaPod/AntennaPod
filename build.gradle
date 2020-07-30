@@ -17,7 +17,7 @@ allprojects {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 
     gradle.projectsEvaluated {
@@ -65,7 +65,7 @@ project.ext {
     eventbusVersion = "3.2.0"
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
-    iconifyVersion = "2.2.2"
+    iconifyVersion = "3.0.1-SNAPSHOT"
     audioPlayerVersion = "v2.0.0"
 
     // Google Play build

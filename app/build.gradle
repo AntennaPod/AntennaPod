@@ -169,8 +169,8 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
-    implementation 'com.blackboardtheory:android-iconify-fontawesome:3.0.1-SNAPSHOT'
-    implementation 'com.blackboardtheory:android-iconify-material:3.0.1-SNAPSHOT'
+    implementation "com.blackboardtheory:android-iconify-fontawesome:$iconifyVersion"
+    implementation "com.blackboardtheory:android-iconify-material:$iconifyVersion"
     implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     implementation 'com.github.shts:TriangleLabelView:1.1.2'
     implementation 'com.leinardi.android:speed-dial:3.1.1'
