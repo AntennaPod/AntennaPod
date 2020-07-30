@@ -67,7 +67,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         super.onFragmentLoaded(episodes);
 
         if (feedItemFilter.getValues().length > 0) {
-            txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+            txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
             Iconify.addIcons(txtvInformation);
             txtvInformation.setVisibility(View.VISIBLE);
         } else {
