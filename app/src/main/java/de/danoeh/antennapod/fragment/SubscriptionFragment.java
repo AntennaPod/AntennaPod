@@ -70,7 +70,7 @@ public class SubscriptionFragment extends Fragment {
     private FloatingActionButton subscriptionAddButton;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
-    private View filterMsg;
+    private View feedsFilteredMsg;
 
     private int mPosition = -1;
     private boolean isUpdatingFeeds = false;
@@ -98,8 +98,8 @@ public class SubscriptionFragment extends Fragment {
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
 
-        filterMsg = root.findViewById(R.id.feed_filter_message);
-        filterMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
+        feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
+        feedsFilteredMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
         return root;
     }
 
@@ -209,9 +209,9 @@ public class SubscriptionFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
         if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
-            filterMsg.setVisibility(View.VISIBLE);
+            feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
-            filterMsg.setVisibility(View.GONE);
+            feedsFilteredMsg.setVisibility(View.GONE);
         }
     }
 
