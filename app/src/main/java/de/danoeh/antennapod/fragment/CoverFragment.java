@@ -189,7 +189,7 @@ public class CoverFragment extends Fragment {
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             mainContainer.setOrientation(LinearLayout.VERTICAL);
             if (newConfig.screenWidthDp > 0) {
-                params.width= (int) Math.min(convertDpToPixel(newConfig.screenWidthDp) * .50,
+                params.width = (int) Math.min(convertDpToPixel(newConfig.screenWidthDp) * .50,
                         convertDpToPixel(newConfig.screenHeightDp) * .40);
                 params.height = params.width;
                 imgvCover.setLayoutParams(params);
