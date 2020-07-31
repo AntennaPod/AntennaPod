@@ -466,7 +466,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
                     p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
                 }
-                txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+                txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
                 txtvInformation.setOnClickListener((l) -> {
                     FilterDialog filterDialog = new FilterDialog(requireContext(), feed.getItemFilter()) {
