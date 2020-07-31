@@ -189,14 +189,16 @@ public class CoverFragment extends Fragment {
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             mainContainer.setOrientation(LinearLayout.VERTICAL);
             if (newConfig.screenWidthDp > 0) {
-                params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * .80);
+                params.width= (int) Math.min(convertDpToPixel(newConfig.screenWidthDp) * .50,
+                        convertDpToPixel(newConfig.screenHeightDp) * .40);
                 params.height = params.width;
                 imgvCover.setLayoutParams(params);
             }
         } else {
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
-                params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * .40);
+                params.height = (int) Math.min(convertDpToPixel(newConfig.screenHeightDp) * .40,
+                        convertDpToPixel(newConfig.screenWidthDp) * .50);
                 params.width = params.height;
                 imgvCover.setLayoutParams(params);
             }
