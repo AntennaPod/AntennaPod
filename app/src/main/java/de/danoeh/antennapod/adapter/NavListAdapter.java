@@ -295,12 +295,17 @@ public class NavListAdapter extends BaseAdapter
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
+        TextView feedsFilteredMsg = convertView.findViewById(R.id.nav_feeds_filtered_message);
+
         if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
-            convertView = inflater.inflate(R.layout.nav_section_filter_item, parent, false);
             convertView.setEnabled(true);
+            feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.feed_is_filtered));
+            Iconify.addIcons(feedsFilteredMsg);
+            feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
-            convertView = inflater.inflate(R.layout.nav_section_divider_item, parent, false);
             convertView.setEnabled(false);
+            feedsFilteredMsg.setVisibility(View.GONE);
         }
 
         return convertView;

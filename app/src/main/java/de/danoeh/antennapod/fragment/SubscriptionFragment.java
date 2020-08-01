@@ -19,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.joanzapata.iconify.Iconify;
 
 import java.util.concurrent.Callable;
 
@@ -70,7 +72,7 @@ public class SubscriptionFragment extends Fragment {
     private FloatingActionButton subscriptionAddButton;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
-    private View feedsFilteredMsg;
+    private TextView feedsFilteredMsg;
 
     private int mPosition = -1;
     private boolean isUpdatingFeeds = false;
@@ -209,6 +211,8 @@ public class SubscriptionFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
         if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
+            feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.feed_is_filtered));
+            Iconify.addIcons(feedsFilteredMsg);
             feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
             feedsFilteredMsg.setVisibility(View.GONE);

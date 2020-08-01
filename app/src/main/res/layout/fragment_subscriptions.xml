@@ -1,70 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:title="@string/subscriptions_label" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            android:layout_alignParentTop="true"
+            app:title="@string/subscriptions_label"
+            android:id="@+id/toolbar"/>
 
-    <LinearLayout
+    <TextView
         android:id="@+id/feeds_filtered_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/filtered_label"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:importantForAccessibility="no"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_info_black"
-            app:tint="?android:attr/textColorSecondary"
-            tools:background="@android:color/holo_orange_dark"
-            tools:src="@android:drawable/sym_def_app_icon" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/feed_is_filtered"
-            android:textColor="?android:attr/textColorSecondary"
-            android:textSize="@dimen/text_size_small"
-            tools:background="@android:color/holo_green_light" />
-    </LinearLayout>
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="start"
+        android:paddingStart="10dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="6dp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small" />
 
     <GridView
-        android:id="@+id/subscriptions_grid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/feeds_filtered_message"
-        android:layout_gravity="center_horizontal"
-        android:clipToPadding="false"
-        android:horizontalSpacing="2dp"
-        android:numColumns="3"
-        android:paddingBottom="88dp"
-        android:verticalSpacing="2dp" />
+            android:layout_below="@id/feeds_filtered_message"
+            android:id="@+id/subscriptions_grid"
+            android:layout_width="match_parent"
+            android:numColumns="3"
+            android:horizontalSpacing="2dp"
+            android:verticalSpacing="2dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="88dp"
+            android:clipToPadding="false"/>
 
     <ProgressBar
             android:id="@+id/progLoading"
