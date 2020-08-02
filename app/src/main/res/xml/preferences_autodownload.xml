@@ -6,6 +6,7 @@
     <de.danoeh.antennapod.preferences.MasterSwitchPreference
             android:key="prefEnableAutoDl"
             android:title="@string/pref_automatic_download_title"
+            android:summary="@string/pref_automatic_download_explanation"
             search:summary="@string/pref_automatic_download_sum"
             android:defaultValue="false"/>
     <ListPreference

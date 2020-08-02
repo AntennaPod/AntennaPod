@@ -412,6 +412,7 @@
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic Download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
+    <string name="pref_automatic_download_explanation">Will automaticlly download new episodes up to the configured \'Episode Cache\' limit. It will not download old, but still unplayed episodes and therefore cannot be used to clear a backlog of episodes. You can turn it off per-feed in the subscription settings.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
