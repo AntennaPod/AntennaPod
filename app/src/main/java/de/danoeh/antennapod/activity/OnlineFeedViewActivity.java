@@ -561,13 +561,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.error_label);
             if (errorMsg != null) {
-                builder.setMessage(getString(R.string.error_msg_prefix) + errorMsg);
+                builder.setMessage(errorMsg);
             } else {
-                builder.setMessage(R.string.error_msg_prefix);
+                builder.setMessage(R.string.download_error_error_unknown);
             }
-            builder.setPositiveButton(android.R.string.ok,
-                    (dialog, which) -> dialog.cancel()
-            );
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
             builder.setOnDismissListener(dialog -> {
                 setResult(RESULT_ERROR);
                 finish();
