@@ -15,18 +15,18 @@
             android:id="@+id/toolbar"/>
 
     <TextView
-        android:id="@+id/feeds_filtered_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:background="?android:attr/selectableItemBackground"
-        android:gravity="start"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="8dp"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size_small" />
+            android:id="@+id/feeds_filtered_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="start"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_small" />
 
     <GridView
             android:layout_below="@id/feeds_filtered_message"
