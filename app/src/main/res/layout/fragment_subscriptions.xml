@@ -21,10 +21,10 @@
         android:layout_below="@id/toolbar"
         android:background="?android:attr/selectableItemBackground"
         android:gravity="start"
-        android:paddingStart="10dp"
+        android:paddingStart="8dp"
         android:paddingTop="4dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="6dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="@dimen/text_size_small" />
 
