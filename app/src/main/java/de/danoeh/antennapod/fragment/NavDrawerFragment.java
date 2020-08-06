@@ -386,7 +386,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     startActivity(intent);
                 }
             }
-        } else {
+        } else if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE && navAdapter.showSubscriptionList) {
             FeedFilterDialog.showDialog(requireContext());
         }
     }

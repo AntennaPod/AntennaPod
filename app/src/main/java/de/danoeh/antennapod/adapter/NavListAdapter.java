@@ -61,7 +61,7 @@ public class NavListAdapter extends BaseAdapter
 
     private final ItemAccess itemAccess;
     private final WeakReference<Activity> activity;
-    private boolean showSubscriptionList = true;
+    public boolean showSubscriptionList = true;
 
     public NavListAdapter(ItemAccess itemAccess, Activity context) {
         this.itemAccess = itemAccess;
@@ -298,7 +298,7 @@ public class NavListAdapter extends BaseAdapter
         convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
         TextView feedsFilteredMsg = convertView.findViewById(R.id.nav_feeds_filtered_message);
 
-        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
+        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE && showSubscriptionList) {
             convertView.setEnabled(true);
             feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(feedsFilteredMsg);
