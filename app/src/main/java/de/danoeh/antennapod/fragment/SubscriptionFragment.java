@@ -211,7 +211,7 @@ public class SubscriptionFragment extends Fragment {
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
         if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
-            feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.feed_is_filtered));
+            feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(feedsFilteredMsg);
             feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {

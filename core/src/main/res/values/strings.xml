@@ -531,7 +531,7 @@
     <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
     <string name="hide_subscriptions_where_counter_is_zero">Hide if counter is zero</string>
     <string name="no_filter_label">None</string>
-    <string name="feed_is_filtered">Your subscriptions are filtered.</string>
+    <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>

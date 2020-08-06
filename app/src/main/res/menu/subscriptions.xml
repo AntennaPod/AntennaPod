@@ -11,9 +11,9 @@
 
 
     <item
-        android:id="@+id/subscriptions_filter"
-        android:title="@string/filter"
-        custom:showAsAction="never" />
+            android:id="@+id/subscriptions_filter"
+            android:title="@string/filter"
+            custom:showAsAction="never" />
     <item
             android:id="@+id/subscription_num_columns"
             android:title="@string/subscription_num_columns"

@@ -300,7 +300,7 @@ public class NavListAdapter extends BaseAdapter
 
         if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
             convertView.setEnabled(true);
-            feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.feed_is_filtered));
+            feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(feedsFilteredMsg);
             feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
