@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +99,7 @@ public class MainActivity extends CastEnabledActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
-        navDrawer.getLayoutParams().width = (int) (getScreenWidth() * getDefaultNavDrawerScreenPercentage());
+        setNavDrawerSize();
 
         final FragmentManager fm = getSupportFragmentManager();
         fm.addOnBackStackChangedListener(() -> {
@@ -325,7 +327,19 @@ public class MainActivity extends CastEnabledActivity {
         if (drawerToggle != null) { // Tablet layout does not have a drawer
             drawerToggle.onConfigurationChanged(newConfig);
         }
-        navDrawer.getLayoutParams().width = (int) (getScreenWidth() * getDefaultNavDrawerScreenPercentage());
+        setNavDrawerSize();
+    }
+
+    private void setNavDrawerSize() {
+        float screenPercent = getResources().getInteger(R.integer.nav_drawer_screen_size_percent) * 0.01f;
+        int width = (int) (getScreenWidth() * screenPercent);
+        int maxWidth = (int) dpInPx(getResources().getInteger(R.integer.nav_drawer_max_screen_size_dp));
+
+        if (width > maxWidth) {
+            width = maxWidth;
+        }
+
+        navDrawer.getLayoutParams().width = width;
     }
 
     private int getScreenWidth() {
@@ -334,8 +348,13 @@ public class MainActivity extends CastEnabledActivity {
         return displayMetrics.widthPixels;
     }
 
-    private float getDefaultNavDrawerScreenPercentage() {
-        return getResources().getInteger(R.integer.nav_drawer_screen_size_percent) * 0.01f;
+    private float dpInPx(int dp) {
+        Resources r = getResources();
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                r.getDisplayMetrics()
+        );
     }
 
     @Override
