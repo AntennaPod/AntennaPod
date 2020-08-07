@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -97,7 +96,6 @@ public class MainActivity extends CastEnabledActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
-        navDrawer.getLayoutParams().width = (int) (getScreenWidth() * getDefaultNavDrawerScreenPercentage());
 
         final FragmentManager fm = getSupportFragmentManager();
         fm.addOnBackStackChangedListener(() -> {
@@ -325,17 +323,6 @@ public class MainActivity extends CastEnabledActivity {
         if (drawerToggle != null) { // Tablet layout does not have a drawer
             drawerToggle.onConfigurationChanged(newConfig);
         }
-        navDrawer.getLayoutParams().width = (int) (getScreenWidth() * getDefaultNavDrawerScreenPercentage());
-    }
-
-    private int getScreenWidth() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics.widthPixels;
-    }
-
-    private float getDefaultNavDrawerScreenPercentage() {
-        return getResources().getInteger(R.integer.nav_drawer_screen_size_percent) * 0.01f;
     }
 
     @Override
