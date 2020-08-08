@@ -15,6 +15,8 @@ import com.bumptech.glide.request.target.CustomViewTarget;
 import java.lang.ref.WeakReference;
 
 import com.bumptech.glide.request.transition.Transition;
+
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
@@ -23,6 +25,7 @@ public class CoverLoader {
     private String fallbackUri;
     private TextView txtvPlaceholder;
     private ImageView imgvCover;
+    private boolean textAndImageCombined;
     private MainActivity activity;
 
     public CoverLoader(MainActivity activity) {
@@ -49,6 +52,19 @@ public class CoverLoader {
         return this;
     }
 
+    /**
+     * Set cover text and if it should be shown even if there is a cover image.
+     *
+     * @param placeholderView      Cover text.
+     * @param textAndImageCombined Show cover text even if there is a cover image?
+     */
+    @NonNull
+    public CoverLoader withPlaceholderView(@NonNull TextView placeholderView, boolean textAndImageCombined) {
+        this.txtvPlaceholder = placeholderView;
+        this.textAndImageCombined = textAndImageCombined;
+        return this;
+    }
+
     public void load() {
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
@@ -65,20 +81,22 @@ public class CoverLoader {
                     .apply(options));
         }
 
-        builder.into(new CoverTarget(txtvPlaceholder, imgvCover));
+        builder.into(new CoverTarget(txtvPlaceholder, imgvCover, textAndImageCombined));
     }
 
     static class CoverTarget extends CustomViewTarget<ImageView, Drawable> {
         private final WeakReference<TextView> placeholder;
         private final WeakReference<ImageView> cover;
+        private boolean textAndImageCombined;
 
-        public CoverTarget(TextView txtvPlaceholder, ImageView imgvCover) {
+        public CoverTarget(TextView txtvPlaceholder, ImageView imgvCover, boolean textAndImageCombined) {
             super(imgvCover);
             if (txtvPlaceholder != null) {
                 txtvPlaceholder.setVisibility(View.VISIBLE);
             }
             placeholder = new WeakReference<>(txtvPlaceholder);
             cover = new WeakReference<>(imgvCover);
+            this.textAndImageCombined = textAndImageCombined;
         }
 
         @Override
@@ -90,7 +108,12 @@ public class CoverLoader {
         public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
             TextView txtvPlaceholder = placeholder.get();
             if (txtvPlaceholder != null) {
-                txtvPlaceholder.setVisibility(View.INVISIBLE);
+                if (textAndImageCombined) {
+                    int bgColor = txtvPlaceholder.getContext().getResources().getColor(R.color.feed_text_bg);
+                    txtvPlaceholder.setBackgroundColor(bgColor);
+                } else {
+                    txtvPlaceholder.setVisibility(View.INVISIBLE);
+                }
             }
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(resource);

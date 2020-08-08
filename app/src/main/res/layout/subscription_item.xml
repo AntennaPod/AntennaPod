@@ -21,7 +21,7 @@
         android:id="@+id/txtvTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_gray"
+        android:background="@color/non_square_icon_background"
         android:layout_alignLeft="@+id/imgvCover"
         android:layout_alignRight="@+id/imgvCover"
         android:layout_alignStart="@+id/imgvCover"
@@ -30,6 +30,7 @@
         android:layout_alignBottom="@+id/imgvCover"
         android:ellipsize="end"
         android:gravity="center"
+        android:textColor="?android:attr/textColorPrimary"
         tools:text="@string/app_name" />
 
     <jp.shts.android.library.TriangleLabelView
