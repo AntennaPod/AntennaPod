@@ -331,15 +331,13 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private void setNavDrawerSize() {
+        if (isTablet())
+            return;
         float screenPercent = getResources().getInteger(R.integer.nav_drawer_screen_size_percent) * 0.01f;
         int width = (int) (getScreenWidth() * screenPercent);
-        int maxWidth = (int) dpInPx(getResources().getInteger(R.integer.nav_drawer_max_screen_size_dp));
+        int maxWidth = (int) getResources().getDimension(R.dimen.nav_drawer_max_screen_size);
 
-        if (width > maxWidth) {
-            width = maxWidth;
-        }
-
-        navDrawer.getLayoutParams().width = width;
+        navDrawer.getLayoutParams().width = Math.min(width, maxWidth);
     }
 
     private int getScreenWidth() {
@@ -348,13 +346,10 @@ public class MainActivity extends CastEnabledActivity {
         return displayMetrics.widthPixels;
     }
 
-    private float dpInPx(int dp) {
-        Resources r = getResources();
-        return TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                r.getDisplayMetrics()
-        );
+    private boolean isTablet() {
+        return (getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @Override
