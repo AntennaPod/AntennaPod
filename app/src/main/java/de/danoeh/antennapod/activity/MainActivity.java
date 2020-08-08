@@ -331,8 +331,9 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private void setNavDrawerSize() {
-        if (isTablet())
+        if (isTablet()) {
             return;
+        }
         float screenPercent = getResources().getInteger(R.integer.nav_drawer_screen_size_percent) * 0.01f;
         int width = (int) (getScreenWidth() * screenPercent);
         int maxWidth = (int) getResources().getDimension(R.dimen.nav_drawer_max_screen_size);
