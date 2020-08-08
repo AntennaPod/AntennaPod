@@ -331,7 +331,7 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     private void setNavDrawerSize() {
-        if (isTablet()) {
+        if (drawerToggle == null) { // Tablet layout does not have a drawer
             return;
         }
         float screenPercent = getResources().getInteger(R.integer.nav_drawer_screen_size_percent) * 0.01f;
@@ -345,12 +345,6 @@ public class MainActivity extends CastEnabledActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics.widthPixels;
-    }
-
-    private boolean isTablet() {
-        return (getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @Override
