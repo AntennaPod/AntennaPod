@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,6 +99,7 @@ public class MainActivity extends CastEnabledActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navDrawer = findViewById(R.id.navDrawerFragment);
+        setNavDrawerSize();
 
         final FragmentManager fm = getSupportFragmentManager();
         fm.addOnBackStackChangedListener(() -> {
@@ -323,6 +327,24 @@ public class MainActivity extends CastEnabledActivity {
         if (drawerToggle != null) { // Tablet layout does not have a drawer
             drawerToggle.onConfigurationChanged(newConfig);
         }
+        setNavDrawerSize();
+    }
+
+    private void setNavDrawerSize() {
+        if (drawerToggle == null) { // Tablet layout does not have a drawer
+            return;
+        }
+        float screenPercent = getResources().getInteger(R.integer.nav_drawer_screen_size_percent) * 0.01f;
+        int width = (int) (getScreenWidth() * screenPercent);
+        int maxWidth = (int) getResources().getDimension(R.dimen.nav_drawer_max_screen_size);
+
+        navDrawer.getLayoutParams().width = Math.min(width, maxWidth);
+    }
+
+    private int getScreenWidth() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
     }
 
     @Override
