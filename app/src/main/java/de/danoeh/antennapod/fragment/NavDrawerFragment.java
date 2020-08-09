@@ -36,6 +36,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.dialog.FeedFilterDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -384,6 +385,9 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     startActivity(intent);
                 }
             }
+        } else if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE
+                && navAdapter.showSubscriptionList) {
+            FeedFilterDialog.showDialog(requireContext());
         }
     }
 

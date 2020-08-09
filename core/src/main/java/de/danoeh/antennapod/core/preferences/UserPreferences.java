@@ -68,6 +68,7 @@ public class UserPreferences {
     private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
+    public static final String PREF_FILTER_FEED = "prefFeedFilter";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -150,6 +151,8 @@ public class UserPreferences {
     public static final int FEED_COUNTER_SHOW_UNPLAYED = 2;
     public static final int FEED_COUNTER_SHOW_NONE = 3;
     public static final int FEED_COUNTER_SHOW_DOWNLOADED = 4;
+    public static final int FEED_FILTER_NONE = 0;
+    public static final int FEED_FILTER_COUNTER_ZERO = 1;
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -1058,4 +1061,16 @@ public class UserPreferences {
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
                 .apply();
     }
+
+    public static int getFeedFilter() {
+        String value = prefs.getString(PREF_FILTER_FEED, "" + FEED_FILTER_NONE);
+        return Integer.parseInt(value);
+    }
+
+    public static void setFeedFilter(String value) {
+        prefs.edit()
+                .putString(PREF_FILTER_FEED, value)
+                .commit();
+    }
+
 }

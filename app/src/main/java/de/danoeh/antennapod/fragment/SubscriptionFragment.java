@@ -19,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.joanzapata.iconify.Iconify;
 
 import java.util.concurrent.Callable;
 
@@ -34,6 +36,7 @@ import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -42,6 +45,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.dialog.FeedFilterDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -68,6 +72,7 @@ public class SubscriptionFragment extends Fragment {
     private FloatingActionButton subscriptionAddButton;
     private ProgressBar progressBar;
     private EmptyViewHandler emptyView;
+    private TextView feedsFilteredMsg;
 
     private int mPosition = -1;
     private boolean isUpdatingFeeds = false;
@@ -94,6 +99,9 @@ public class SubscriptionFragment extends Fragment {
         registerForContextMenu(subscriptionGridLayout);
         subscriptionAddButton = root.findViewById(R.id.subscriptions_add);
         progressBar = root.findViewById(R.id.progLoading);
+
+        feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
+        feedsFilteredMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
         return root;
     }
 
@@ -119,6 +127,9 @@ public class SubscriptionFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.refresh_item:
                 AutoUpdateManager.runImmediate(requireContext());
+                return true;
+            case R.id.subscriptions_filter:
+                FeedFilterDialog.showDialog(requireContext());
                 return true;
             case R.id.subscription_num_columns_2:
                 setColumnNumber(2);
@@ -198,6 +209,14 @@ public class SubscriptionFragment extends Fragment {
                     emptyView.updateVisibility();
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+
+        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
+            feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.subscriptions_are_filtered));
+            Iconify.addIcons(feedsFilteredMsg);
+            feedsFilteredMsg.setVisibility(View.VISIBLE);
+        } else {
+            feedsFilteredMsg.setVisibility(View.GONE);
+        }
     }
 
     private int getDefaultNumOfColumns() {

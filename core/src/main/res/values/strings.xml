@@ -401,7 +401,7 @@
     <string name="pref_mobileUpdate_episode_download">Episode download</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">User Interface</string>
-    <string name="user_interface_sum">Appearance, Subscription order, Lockscreen</string>
+    <string name="user_interface_sum">Appearance, Subscriptions, Lockscreen</string>
     <string name="pref_set_theme_title">Select Theme</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
@@ -522,6 +522,11 @@
     <string name="back_button_go_to_page_title">Select page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
+    <string name="pref_filter_feed_title">Subscription Filter</string>
+    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
+    <string name="hide_subscriptions_where_counter_is_zero">Hide if counter is zero</string>
+    <string name="no_filter_label">None</string>
+    <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>

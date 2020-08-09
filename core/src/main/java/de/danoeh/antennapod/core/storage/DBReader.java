@@ -801,6 +801,16 @@ public final class DBReader {
         }
         final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
 
+        int feedFilter = UserPreferences.getFeedFilter();
+        if (feedFilter == UserPreferences.FEED_FILTER_COUNTER_ZERO) {
+            for (int i = feeds.size() - 1; i >= 0; i--) {
+                if (feedCounters.get(feeds.get(i).getId()) <= 0) {
+                    feedCounters.delete(feeds.get(i).getId());
+                    feeds.remove(i);
+                }
+            }
+        }
+
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();
         if (feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
