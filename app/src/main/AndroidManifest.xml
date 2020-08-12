@@ -217,21 +217,6 @@
                 <data android:pathPattern=".*\\.atom"/>
             </intent-filter>
 
-            <!-- Feedburner URLs -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="feeds.feedburner.com"/>
-                <data android:host="feedproxy.google.com"/>
-                <data android:host="feeds2.feedburner.com"/>
-                <data android:host="feedsproxy.google.com"/>
-            </intent-filter>
-
             <!-- Files with mimeType rss/xml/atom -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
