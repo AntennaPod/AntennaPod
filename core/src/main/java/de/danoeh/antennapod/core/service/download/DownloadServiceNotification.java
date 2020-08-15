@@ -17,8 +17,6 @@ import java.util.List;
 
 public class DownloadServiceNotification {
     private static final String TAG = "DownloadSvcNotification";
-    private static final int REPORT_ID = 3;
-    private static final int AUTO_REPORT_ID = 4;
 
     private final Context context;
     private NotificationCompat.Builder notificationCompatBuilder;
@@ -147,14 +145,14 @@ public class DownloadServiceNotification {
                 titleId = R.string.auto_download_report_title;
                 iconId = R.drawable.ic_notification_auto_download_complete;
                 intent = ClientConfig.downloadServiceCallbacks.getAutoDownloadReportNotificationContentIntent(context);
-                id = AUTO_REPORT_ID;
+                id = R.id.notification_auto_download_report;
                 content = createAutoDownloadNotificationContent(reportQueue);
             } else {
                 channelId = NotificationUtils.CHANNEL_ID_ERROR;
                 titleId = R.string.download_report_title;
                 iconId = R.drawable.ic_notification_sync_error;
                 intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
-                id = REPORT_ID;
+                id = R.id.notification_download_report;
                 content = String.format(context.getString(R.string.download_report_content), successfulDownloads, failedDownloads);
             }
 

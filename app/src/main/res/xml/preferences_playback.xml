@@ -67,7 +67,7 @@
         <Preference
                 android:key="prefPlaybackSpeedLauncher"
                 android:summary="@string/pref_playback_speed_sum"
-                android:title="@string/pref_playback_speed_title"/>
+                android:title="@string/playback_speed"/>
         <SwitchPreference
                 android:defaultValue="false"
                 android:key="prefPlaybackTimeRespectsSpeed"

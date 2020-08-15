@@ -14,8 +14,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2000003
-        versionName "2.0.0-RC3"
+        versionCode 2000007
+        versionName "2.0.0-RC7"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
@@ -98,7 +98,14 @@ android {
     }
 
     lintOptions {
-        abortOnError false
+        disable 'ObsoleteLintCustomCheck', 'CheckResult', 'UnusedAttribute', 'BatteryLife', 'InflateParams',
+                'GradleDependency', 'RestrictedApi', 'TrustAllX509TrustManager', 'ExportedReceiver', 'AllowBackup',
+                'StaticFieldLeak', 'UseCompoundDrawables', 'NestedWeights', 'Overdraw', 'UselessParent', 'TextFields',
+                'AlwaysShowAction', 'Autofill', 'ClickableViewAccessibility', 'ContentDescription',
+                'KeyboardInaccessibleWidget', 'LabelFor', 'SetTextI18n', 'HardcodedText', 'RelativeOverlap',
+                'RtlCompat', 'RtlHardcoded', 'MissingMediaBrowserServiceIntentFilter'
+        warningsAsErrors true
+        abortOnError true
     }
 
     compileOptions {
@@ -182,6 +189,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
     androidTestImplementation "androidx.test:runner:$runnerVersion"
     androidTestImplementation "androidx.test:rules:$rulesVersion"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 }
 
 if (project.hasProperty("antennaPodPlayPublisherCredentials")) {
@@ -198,7 +206,6 @@ task copyLicense(type: Copy) {
     rename { String fileName ->
         fileName + ".txt"
     }
-    outputs.upToDateWhen { false }
 }
 
 preBuild.dependsOn copyLicense

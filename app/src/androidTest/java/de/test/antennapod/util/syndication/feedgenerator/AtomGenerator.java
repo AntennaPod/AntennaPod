@@ -15,7 +15,7 @@ import de.danoeh.antennapod.core.util.DateUtils;
 /**
  * Creates Atom feeds. See FeedGenerator for more information.
  */
-public class AtomGenerator implements FeedGenerator{
+public class AtomGenerator implements FeedGenerator {
 
     private static final String NS_ATOM = "http://www.w3.org/2005/Atom";
 
@@ -119,7 +119,13 @@ public class AtomGenerator implements FeedGenerator{
             }
         }
 
+        writeAdditionalAttributes(xml);
+
         xml.endTag(null, "feed");
         xml.endDocument();
+    }
+
+    protected void writeAdditionalAttributes(XmlSerializer xml) throws IOException {
+
     }
 }

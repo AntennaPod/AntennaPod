@@ -3,9 +3,7 @@ package de.danoeh.antennapod.fragment.preferences;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -18,13 +16,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.snackbar.Snackbar;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.asynctask.DocumentFileExportWorker;
 import de.danoeh.antennapod.asynctask.ExportWorker;
 import de.danoeh.antennapod.core.export.ExportWriter;
+import de.danoeh.antennapod.core.export.favorites.FavoritesWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
 import de.danoeh.antennapod.core.storage.DatabaseExporter;
@@ -39,6 +38,7 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     private static final String TAG = "ImportExPrefFragment";
@@ -47,15 +47,18 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_HTML_EXPORT = "prefHtmlExport";
     private static final String PREF_DATABASE_IMPORT = "prefDatabaseImport";
     private static final String PREF_DATABASE_EXPORT = "prefDatabaseExport";
+    private static final String PREF_FAVORITE_EXPORT = "prefFavoritesExport";
     private static final String DEFAULT_OPML_OUTPUT_NAME = "antennapod-feeds-%s.opml";
     private static final String CONTENT_TYPE_OPML = "text/x-opml";
     private static final String DEFAULT_HTML_OUTPUT_NAME = "antennapod-feeds-%s.html";
     private static final String CONTENT_TYPE_HTML = "text/html";
+    private static final String DEFAULT_FAVORITES_OUTPUT_NAME = "antennapod-favorites-%s.html";
     private static final int REQUEST_CODE_CHOOSE_OPML_EXPORT_PATH = 1;
     private static final int REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH = 2;
     private static final int REQUEST_CODE_CHOOSE_HTML_EXPORT_PATH = 3;
     private static final int REQUEST_CODE_RESTORE_DATABASE = 4;
     private static final int REQUEST_CODE_BACKUP_DATABASE = 5;
+    private static final int REQUEST_CODE_CHOOSE_FAVORITES_EXPORT_PATH = 6;
     private static final String DATABASE_EXPORT_FILENAME = "AntennaPodBackup-%s.db";
     private Disposable disposable;
     private ProgressDialog progressDialog;
@@ -84,9 +87,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private String dateStampFilename(String fname) {
-        return String.format(fname,
-                new SimpleDateFormat("yyyy-MM-dd")
-                       .format(new Date()));
+        return String.format(fname, new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date()));
     }
 
     private void setupStorageScreen() {
@@ -123,6 +124,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_DATABASE_EXPORT).setOnPreferenceClickListener(
                 preference -> {
                     exportDatabase();
+                    return true;
+                });
+        findPreference(PREF_FAVORITE_EXPORT).setOnPreferenceClickListener(
+                preference -> {
+                    openExportPathPicker(CONTENT_TYPE_HTML, dateStampFilename(DEFAULT_FAVORITES_OUTPUT_NAME),
+                            REQUEST_CODE_CHOOSE_FAVORITES_EXPORT_PATH, new FavoritesWriter());
                     return true;
                 });
     }
@@ -203,13 +210,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         AlertDialog.Builder d = new AlertDialog.Builder(getContext());
         d.setMessage(R.string.import_ok);
         d.setCancelable(false);
-        d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
-            Intent intent = new Intent(getContext(), SplashActivity.class);
-            ComponentName cn = intent.getComponent();
-            Intent mainIntent = Intent.makeRestartActivityTask(cn);
-            startActivity(mainIntent);
-            Runtime.getRuntime().exit(0);
-        });
+        d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart());
         d.show();
     }
 
@@ -257,6 +258,8 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             exportWithWriter(new OpmlWriter(), uri);
         } else if (requestCode == REQUEST_CODE_CHOOSE_HTML_EXPORT_PATH) {
             exportWithWriter(new HtmlWriter(), uri);
+        } else if (requestCode == REQUEST_CODE_CHOOSE_FAVORITES_EXPORT_PATH) {
+            exportWithWriter(new FavoritesWriter(), uri);
         } else if (requestCode == REQUEST_CODE_RESTORE_DATABASE) {
             progressDialog.show();
             disposable = Completable.fromAction(() -> DatabaseExporter.importBackup(uri, getContext()))

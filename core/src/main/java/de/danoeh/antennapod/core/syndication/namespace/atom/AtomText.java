@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.core.syndication.namespace.atom;
 
-import android.os.Build;
-import android.text.Html;
+import androidx.core.text.HtmlCompat;
+
 import de.danoeh.antennapod.core.syndication.namespace.Namespace;
 import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
 
@@ -24,11 +24,7 @@ public class AtomText extends SyndElement {
         if (type == null) {
             return content;
         } else if (type.equals(TYPE_HTML)) {
-            if (Build.VERSION.SDK_INT >= 24) {
-                return Html.fromHtml(content, Html.FROM_HTML_MODE_LEGACY).toString();
-            } else {
-                return Html.fromHtml(content).toString();
-            }
+            return HtmlCompat.fromHtml(content, HtmlCompat.FROM_HTML_MODE_LEGACY).toString();
         } else if (type.equals(TYPE_XHTML)) {
             return content;
         } else { // Handle as text by default

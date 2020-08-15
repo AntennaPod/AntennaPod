@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Cancelar\ndescarga</string>
   <string name="playback_history_label">Histórico de reprodução</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Sincronizar com outros dispositivos.</string>
   <string name="gpodnet_auth_label">Dados gpodder.net</string>
   <string name="episode_cache_full_title">Cache de episódios cheia</string>
   <string name="episode_cache_full_message">Atingido o limite máximo de itens em cache. Pode aumentar o tamanho de cache nas definições.</string>
@@ -86,7 +85,7 @@
   <string name="auto_download_apply_to_items_message">A definição <i>Descarga automática</i> será aplicada a todos os novos episódios.\nGostaria de também a aplicar aos episódios anteriores?</string>
   <string name="auto_delete_label">Eliminar episódio automaticamente</string>
   <string name="feed_volume_reduction">Redução de volume</string>
-  <string name="feed_volume_reduction_summary">Reduzir volume para os episódios desta fonte: \%s</string>
+  <string name="feed_volume_reduction_summary">Diminuir volume para os episódios desta fonte: %1$s</string>
   <string name="feed_volume_reduction_off">Desligada</string>
   <string name="feed_volume_reduction_light">Ligeira</string>
   <string name="feed_volume_reduction_heavy">Intensa</string>
@@ -106,7 +105,10 @@
     <item quantity="one">1 dia depois de terminar</item>
     <item quantity="other">%d dias depois de terminar</item>
   </plurals>
-  <string name="num_selected_label">%d selecionado</string>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d selecionado</item>
+    <item quantity="other">%d selecionados</item>
+  </plurals>
   <string name="loading_more">Carregar mais...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar tudo como reproduzido</string>
@@ -203,6 +205,7 @@
   <string name="deactivate_auto_download">Desativar descarga automática</string>
   <string name="reset_position">Repor posição de reprodução</string>
   <string name="removed_item">Item removido</string>
+  <string name="no_items_selected">Nada selecionado</string>
   <!--Download messages and labels-->
   <string name="download_successful">sucesso</string>
   <string name="download_pending">Descarga pendente</string>
@@ -289,8 +292,6 @@
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
   <string name="clear_queue_confirmation_msg">Tem a certeza de que deseja remover todos os episódios da fila de reprodução?</string>
-  <string name="sort_old_to_new">Antigo para novo</string>
-  <string name="sort_new_to_old">Novo para antigo</string>
   <string name="time_left_label">Tempo restante:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Descarregar extra</string>
@@ -325,8 +326,8 @@
   <string name="storage_sum">Eliminação automática, importação e exportação</string>
   <string name="project_pref">Projeto</string>
   <string name="queue_label">Fila</string>
-  <string name="integrations_label">Integrações</string>
-  <string name="integrations_sum">Sincronização</string>
+  <string name="synchronization_pref">Sincronização</string>
+  <string name="synchronization_sum">Sincronizar com outros dispositivos via gpodder.net</string>
   <string name="automation">Automatização</string>
   <string name="download_pref_details">Detalhes</string>
   <string name="import_export_pref">Importar/Exportar</string>
@@ -417,18 +418,22 @@
   <string name="pref_gpodnet_logout_toast">Sessão terminada</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informação de acesso</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar a informação de acesso à sua conta gpodder.net</string>
-  <string name="pref_gpodnet_sync_changes_title">Sincronizar alterações</string>
+  <string name="pref_gpodnet_sync_changes_title">Sincronizar agora</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronizar subscrição e estado do episódio com o gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Sincronização total</string>
+  <string name="pref_gpodnet_full_sync_title">Impor sincronização total</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronizar todas as subscrições e estados dos episódios com o gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Última tentativa de sincronização: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Sincronização iniciada</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Sessão iniciada como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Mostrar erros de sincronização</string>
   <string name="pref_gpodnet_notifications_sum">Esta definição não é aplicável aos erros de autenticação.</string>
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
   <string name="pref_playback_speed_sum">Personalizar as velocidades de reprodução disponíveis.</string>
   <string name="pref_feed_playback_speed_sum">Velocidade utilizada para a reprodução áudio dos episódios deste podcast</string>
+  <string name="pref_feed_skip">Ignorar automaticamente</string>
+  <string name="pref_feed_skip_sum">Ignorar introduções e créditos finais.</string>
+  <string name="pref_feed_skip_ending">Ignorar os últimos</string>
+  <string name="pref_feed_skip_intro">Ignorar os primeiros</string>
+  <string name="pref_feed_skip_ending_toast">Últimos %d segundos ignorados</string>
+  <string name="pref_feed_skip_intro_toast">Primeiros %d segundos ignorados</string>
   <string name="pref_playback_time_respects_speed_title">Ajustar informações multimédia à velocidade de reprodução</string>
   <string name="pref_playback_time_respects_speed_sum">A posição e a duração serão ajustadas automaticamente à velocidade de reprodução.</string>
   <string name="pref_fast_forward">Tempo a avançar</string>
@@ -479,6 +484,8 @@
   <string name="pref_enqueue_downloaded_title">Colocar descargas na fila</string>
   <string name="pref_enqueue_downloaded_summary">Adicionar à fila os episódios descarregados.</string>
   <string name="media_player_builtin">Reprodutor nativo Android</string>
+  <string name="media_player_switch_to_exoplayer">Trocar para ExoPlayer</string>
+  <string name="media_player_switched_to_exoplayer">Trocou para ExoPlayer.</string>
   <string name="pref_skip_silence_title">Ignorar silêncio no áudio</string>
   <string name="pref_videoBehavior_title">Ao sair do vídeo</string>
   <string name="pref_videoBehavior_sum">Comportamento ao sair da reprodução do vídeo.</string>
@@ -511,6 +518,14 @@
   <string name="search_status_no_results">Nenhum resultado</string>
   <string name="search_label">Pesquisar</string>
   <string name="no_results_for_query">Não existem resultados para \"%1$s\"</string>
+  <!--Synchronization-->
+  <string name="sync_status_started">Sincronização iniciada</string>
+  <string name="sync_status_episodes_upload">Atualizar alterações nos episódios...</string>
+  <string name="sync_status_episodes_download">Descarregar alterações nos episódios...</string>
+  <string name="sync_status_upload_played">Carregar estado de reprodução...</string>
+  <string name="sync_status_subscriptions">Sincronizar subscrições...</string>
+  <string name="sync_status_success">Sincronização bem sucedida</string>
+  <string name="sync_status_error">Falha na sincronização</string>
   <!--import and export-->
   <string name="import_export_summary">Mover subscrições e fila de reprodução para outro dispositivo</string>
   <string name="database">Base de dados</string>
@@ -530,6 +545,7 @@
   <string name="html_export_label">Exportação HTML</string>
   <string name="database_export_label">Exportar base de dados</string>
   <string name="database_import_label">Importar base de dados</string>
+  <string name="database_import_warning">A importação de uma base de dados substitui as subscrições atuais e o histórico de reprodução. Deve efetuar um backup da base de dados atual. Substituir?</string>
   <string name="please_wait">Aguarde um pouco...</string>
   <string name="export_error_label">Erro de exportação</string>
   <string name="export_success_title">Exportação com sucesso</string>
@@ -621,16 +637,23 @@
   <string name="subscribe_label">Subscrever</string>
   <string name="subscribing_label">Subscrição em curso...</string>
   <string name="preview_episode">Antevisão</string>
+  <string name="stop_preview">Parar pré-visualização</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Recuo rápido</string>
   <string name="fast_forward_label">Avanço rápido</string>
+  <string name="increase_speed">Aumentar velocidade</string>
+  <string name="decrease_speed">Diminuir velocidade</string>
   <string name="media_type_audio_label">Áudio</string>
   <string name="media_type_video_label">Vídeo</string>
   <string name="navigate_upwards_label">Navegar para cima</string>
   <string name="status_downloading_label">A descarregar episódio</string>
   <string name="in_queue_label">Episódio está na fila</string>
+  <string name="is_favorite_label">Episódio marcado como favorito</string>
   <string name="drag_handle_content_description">Arraste para alterar a posição deste item</string>
   <string name="load_next_page_label">Carregar próxima página</string>
+  <string name="switch_pages">Trocar de páginas</string>
+  <string name="position">Posição: %1$s</string>
+  <string name="apply_action">Aplicar ação</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticação</string>
   <string name="authentication_descr">Altere o seu nome de utilizador e palavra-passe para este podcast e seus episódios</string>
@@ -656,6 +679,7 @@
   <string name="browse_gpoddernet_label">Procurar no gPodder.net</string>
   <string name="discover">Descobrir</string>
   <string name="discover_more">mais »</string>
+  <string name="search_powered_by">Disponibilizado por %1$s</string>
   <string name="filter">Filtro</string>
   <!--Episodes apply actions-->
   <string name="all_label">Todos</string>
@@ -683,6 +707,12 @@
   <string name="sort_date_old_new">Data (Antiga \u2192 Recente)</string>
   <string name="sort_duration_short_long">Duração (Curta \u2192 Longa)</string>
   <string name="sort_duration_long_short">Duração (Longa \u2192 Curta)</string>
+  <string name="sort_a_z">A \u2192 Z</string>
+  <string name="sort_z_a">Z \u2192 A</string>
+  <string name="sort_new_old">Novo \u2192 Antigo</string>
+  <string name="sort_old_new">Antigo \u2192 Novo</string>
+  <string name="sort_short_long">Curto \u2192 Longo</string>
+  <string name="sort_long_short">Longo \u2192 Curto</string>
   <!--Rating dialog-->
   <string name="rating_title">Gosta do AntennaPod?</string>
   <string name="rating_message">Gostaríamos que dispensasse algum tempo para avaliar o AntennaPod.</string>
@@ -742,4 +772,8 @@
   <string name="widget_settings">Definições do widget</string>
   <string name="widget_create_button">Criar widget</string>
   <string name="widget_opacity">Opacidade</string>
+  <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">Definições atualizadas com sucesso.</string>
+  <string name="on_demand_config_stream_text">Parece que você prefere as emissões. Deseja que a lista de episódios mostre os botões adequados?</string>
+  <string name="on_demand_config_download_text">Parece que você prefere as descargas. Deseja que a lista de episódios mostre os botões adequados?</string>
 </resources>

@@ -6,6 +6,7 @@ package de.danoeh.antennapod.core.util;
 public class InvalidFeedException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public InvalidFeedException() {
+    public InvalidFeedException(String message) {
+        super(message);
     }
 }

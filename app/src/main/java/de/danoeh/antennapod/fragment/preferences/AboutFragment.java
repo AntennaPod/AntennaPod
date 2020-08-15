@@ -28,12 +28,12 @@ public class AboutFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference("about_developers").setOnPreferenceClickListener((preference) -> {
-            getFragmentManager().beginTransaction().replace(R.id.content, new AboutDevelopersFragment())
+            getParentFragmentManager().beginTransaction().replace(R.id.content, new AboutDevelopersFragment())
                     .addToBackStack(getString(R.string.developers)).commit();
             return true;
         });
         findPreference("about_translators").setOnPreferenceClickListener((preference) -> {
-            getFragmentManager().beginTransaction().replace(R.id.content, new AboutTranslatorsFragment())
+            getParentFragmentManager().beginTransaction().replace(R.id.content, new AboutTranslatorsFragment())
                     .addToBackStack(getString(R.string.translators)).commit();
             return true;
         });
@@ -42,7 +42,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference("about_licenses").setOnPreferenceClickListener((preference) -> {
-            getFragmentManager().beginTransaction().replace(R.id.content, new AboutLicensesFragment())
+            getParentFragmentManager().beginTransaction().replace(R.id.content, new AboutLicensesFragment())
                     .addToBackStack(getString(R.string.translators)).commit();
             return true;
         });

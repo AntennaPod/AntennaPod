@@ -71,7 +71,7 @@
                 android:focusableInTouchMode="true"
                 android:padding="16dp">
 
-            <fragment
+            <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/quickFeedDiscovery"
                     android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment"
                     android:layout_width="match_parent"

@@ -146,9 +146,7 @@ public class ItemFragment extends Fragment {
         }
         txtvDuration = layout.findViewById(R.id.txtvDuration);
         txtvPublished = layout.findViewById(R.id.txtvPublished);
-        if (Build.VERSION.SDK_INT >= 14) { // ellipsize is causing problems on old versions, see #448
-            txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
-        }
+        txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         webvDescription = layout.findViewById(R.id.webvDescription);
         webvDescription.setTimecodeSelectedListener(time -> {
             if (controller != null && item.getMedia() != null && controller.getMedia() != null

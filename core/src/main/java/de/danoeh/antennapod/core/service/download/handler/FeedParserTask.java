@@ -49,10 +49,7 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         try {
             result = feedHandler.parseFeed(feed);
             Log.d(TAG, feed.getTitle() + " parsed");
-            if (!checkFeedData(feed)) {
-                throw new InvalidFeedException();
-            }
-
+            checkFeedData(feed);
         } catch (SAXException | IOException | ParserConfigurationException e) {
             successful = false;
             e.printStackTrace();
@@ -95,23 +92,17 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
     /**
      * Checks if the feed was parsed correctly.
      */
-    private boolean checkFeedData(Feed feed) {
+    private void checkFeedData(Feed feed) throws InvalidFeedException {
         if (feed.getTitle() == null) {
-            Log.e(TAG, "Feed has no title.");
-            return false;
+            throw new InvalidFeedException("Feed has no title");
         }
-        if (!hasValidFeedItems(feed)) {
-            Log.e(TAG, "Feed has invalid items");
-            return false;
-        }
-        return true;
+        checkFeedItems(feed);
     }
 
-    private boolean hasValidFeedItems(Feed feed) {
+    private void checkFeedItems(Feed feed) throws InvalidFeedException  {
         for (FeedItem item : feed.getItems()) {
             if (item.getTitle() == null) {
-                Log.e(TAG, "Item has no title");
-                return false;
+                throw new InvalidFeedException("Item has no title: " + item);
             }
             if (item.getPubDate() == null) {
                 Log.e(TAG, "Item has no pubDate. Using current time as pubDate");
@@ -121,7 +112,6 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
                 item.setPubDate(new Date());
             }
         }
-        return true;
     }
 
     public DownloadStatus getDownloadStatus() {

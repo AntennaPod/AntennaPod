@@ -9,7 +9,7 @@
   <string name="all_episodes_short_label">Alle</string>
   <string name="new_episodes_label">Nieuw</string>
   <string name="favorite_episodes_label">Favorieten</string>
-  <string name="new_label">Nieuwe</string>
+  <string name="new_label">Nieuw</string>
   <string name="settings_label">Instellingen</string>
   <string name="downloads_label">Downloads</string>
   <string name="downloads_running_label">Bezig</string>
@@ -20,7 +20,6 @@
   <string name="cancel_download_label">Download\nafbreken</string>
   <string name="playback_history_label">Afspeelgeschiedenis</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Synchroniseren met andere apparaten</string>
   <string name="gpodnet_auth_label">Inloggen op gpodder.net</string>
   <string name="episode_cache_full_title">Afleveringscache is vol</string>
   <string name="episode_cache_full_message">Het maximum aantal gecachete afleveringen is bereikt. Je kunt dit aantal verhogen in de instellingen.</string>
@@ -86,7 +85,7 @@
   <string name="auto_download_apply_to_items_message">De instelling voor <i>Automatisch downloaden</i> wordt automatisch toegepast op toekomstige afleveringen.\nWil je deze ook toepassen op eerder gepubliceerde afleveringen?</string>
   <string name="auto_delete_label">Aflevering automatisch verwijderen</string>
   <string name="feed_volume_reduction">Volumebeperking</string>
-  <string name="feed_volume_reduction_summary">Volume beperken van afleveringen uit deze feed: \%s</string>
+  <string name="feed_volume_reduction_summary">Volume verlagen voor afleveringen uit deze feed: %1$s</string>
   <string name="feed_volume_reduction_off">Uit</string>
   <string name="feed_volume_reduction_light">Gematigd</string>
   <string name="feed_volume_reduction_heavy">Aanzienlijk</string>
@@ -106,7 +105,10 @@
     <item quantity="one">1 dag na afronden</item>
     <item quantity="other">%d dagen na afronden</item>
   </plurals>
-  <string name="num_selected_label">%d geselecteerd</string>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d geselecteerd</item>
+    <item quantity="other">%d geselecteerd</item>
+  </plurals>
   <string name="loading_more">Bezig met laden...</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Alles als afgespeeld markeren</string>
@@ -203,6 +205,7 @@
   <string name="deactivate_auto_download">Automatisch downloaden uitschakelen</string>
   <string name="reset_position">Afspeelpositie herstellen</string>
   <string name="removed_item">Item verwijderd</string>
+  <string name="no_items_selected">Geen items geselecteerd</string>
   <!--Download messages and labels-->
   <string name="download_successful">voltooid</string>
   <string name="download_pending">Download staat in de wachtrij</string>
@@ -289,8 +292,6 @@
   <string name="ascending">Oplopend</string>
   <string name="descending">Aflopend</string>
   <string name="clear_queue_confirmation_msg">Bevestig dat je ALLE afleveringen wilt verwijderen uit de wachtrij</string>
-  <string name="sort_old_to_new">Oudste eerst</string>
-  <string name="sort_new_to_old">Nieuwste eerst</string>
   <string name="time_left_label">Resterende tijd:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Plug-in downloaden</string>
@@ -325,8 +326,8 @@
   <string name="storage_sum">Automatisch verwijderen, im- en exporteren</string>
   <string name="project_pref">Project</string>
   <string name="queue_label">Wachtrij</string>
-  <string name="integrations_label">Integraties</string>
-  <string name="integrations_sum">Synchronisatie</string>
+  <string name="synchronization_pref">Synchronisatie</string>
+  <string name="synchronization_sum">Synchroniseer met andere apparaten met behulp van gpodder.net</string>
   <string name="automation">Automatische acties</string>
   <string name="download_pref_details">Details</string>
   <string name="import_export_pref">Importeren/Exporteren</string>
@@ -417,18 +418,22 @@
   <string name="pref_gpodnet_logout_toast">Uitgelogd</string>
   <string name="pref_gpodnet_setlogin_information_title">Inloggegevens wijzigen</string>
   <string name="pref_gpodnet_setlogin_information_sum">Wijzig de inloggegevens van je gpodder.net-account.</string>
-  <string name="pref_gpodnet_sync_changes_title">Wijzigingen nu synchroniseren</string>
+  <string name="pref_gpodnet_sync_changes_title">Nu synchroniseren</string>
   <string name="pref_gpodnet_sync_changes_sum">Synchroniseer gewijzigde abonnementen en afleveringsstatussen met gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Nu alles synchroniseren</string>
+  <string name="pref_gpodnet_full_sync_title">Volledige synchronisatie afdwingen</string>
   <string name="pref_gpodnet_full_sync_sum">Synchroniseer alle abonnementen en afleveringsstatussen met gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Vorige synchronisatie:  %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synchroniseren gestart</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Ingelogd als <i>%1$s</i> met apparaat <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Melding tonen bij synchronisatiefouten</string>
   <string name="pref_gpodnet_notifications_sum">Deze instelling is niet van toepassing op inlogfouten.</string>
   <string name="pref_playback_speed_title">Afspeelsnelheden</string>
   <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele audio-afspeelsnelheid</string>
   <string name="pref_feed_playback_speed_sum">De te gebruiken snelheid bij het afspelen van afleveringen in deze podcast</string>
+  <string name="pref_feed_skip">Automatisch overslaan</string>
+  <string name="pref_feed_skip_sum">Sla introducties en aftitelingen over.</string>
+  <string name="pref_feed_skip_ending">Laatste overslaan</string>
+  <string name="pref_feed_skip_intro">Eerste overslaan</string>
+  <string name="pref_feed_skip_ending_toast">Laatste %d seconden overgeslagen</string>
+  <string name="pref_feed_skip_intro_toast">Eerste %d seconden overgeslagen</string>
   <string name="pref_playback_time_respects_speed_title">Media-informatie aanpassen aan afspeelsnelheid</string>
   <string name="pref_playback_time_respects_speed_sum">Getoonde positie en duur worden aangepast aan de afspeelsnelheid</string>
   <string name="pref_fast_forward">Snelheid van vooruitspoelen</string>
@@ -479,6 +484,8 @@
   <string name="pref_enqueue_downloaded_title">Gedownloade afleveringen in wachtrij</string>
   <string name="pref_enqueue_downloaded_summary">Voeg gedownloade afleveringen toe aan de wachtrij</string>
   <string name="media_player_builtin">Ingebouwde Android-speler</string>
+  <string name="media_player_switch_to_exoplayer">ExoPlayer gebruiken</string>
+  <string name="media_player_switched_to_exoplayer">Overgeschakeld naar ExoPlayer.</string>
   <string name="pref_skip_silence_title">Audiostiltes overslaan</string>
   <string name="pref_videoBehavior_title">Bij verlaten van video</string>
   <string name="pref_videoBehavior_sum">Wat te doen bij het verlaten van een spelende video</string>
@@ -511,6 +518,14 @@
   <string name="search_status_no_results">Er zijn geen resultaten gevonden</string>
   <string name="search_label">Zoeken</string>
   <string name="no_results_for_query">Geen resultaten gevonden voor  \"%1$s\"</string>
+  <!--Synchronization-->
+  <string name="sync_status_started">Synchronisatie gestart</string>
+  <string name="sync_status_episodes_upload">Afleveringswijzigingen aan het uploaden…</string>
+  <string name="sync_status_episodes_download">Afleveringswijzigingen aan het downloaden…</string>
+  <string name="sync_status_upload_played">Afspeelstatus aan het uploaden …</string>
+  <string name="sync_status_subscriptions">Abonnementen aan het synchroniseren…</string>
+  <string name="sync_status_success">Synchronisatie afgerond</string>
+  <string name="sync_status_error">Synchronisatie mislukt</string>
   <!--import and export-->
   <string name="import_export_summary">Abonnementen en wachtrij overzetten naar ander apparaat</string>
   <string name="database">Databank</string>
@@ -530,6 +545,7 @@
   <string name="html_export_label">HTML exporteren</string>
   <string name="database_export_label">Databank exporteren</string>
   <string name="database_import_label">Databank importeren</string>
+  <string name="database_import_warning">Als je een databank importeert, dan worden al je huidige abonnementen en afspeelgeschiedenis vervangen. Exporteer ter back-up je huidige databank. Weet je zeker dat je wilt doorgaan?</string>
   <string name="please_wait">Even geduld...</string>
   <string name="export_error_label">Exportfout</string>
   <string name="export_success_title">Geëxporteerd</string>
@@ -621,16 +637,23 @@
   <string name="subscribe_label">Abonneren</string>
   <string name="subscribing_label">Bezig met abonneren...</string>
   <string name="preview_episode">Voorvertoning</string>
+  <string name="stop_preview">Stop voorvertoning</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Terugspoelen</string>
   <string name="fast_forward_label">Vooruitspoelen</string>
+  <string name="increase_speed">Verhoog snelheid</string>
+  <string name="decrease_speed">Verlaag snelheid</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
   <string name="navigate_upwards_label">Navigeer naar boven</string>
   <string name="status_downloading_label">Aflevering wordt gedownload</string>
   <string name="in_queue_label">Aflevering staat in de wachtrij</string>
+  <string name="is_favorite_label">Aflevering als favoriet gemarkeerd</string>
   <string name="drag_handle_content_description">Versleep dit item om de positie te veranderen</string>
   <string name="load_next_page_label">Volgende pagina laden</string>
+  <string name="switch_pages">Van pagina wisselen</string>
+  <string name="position">Positie: %1$s</string>
+  <string name="apply_action">Toepassen</string>
   <!--Feed information screen-->
   <string name="authentication_label">Authenticatie</string>
   <string name="authentication_descr">Gebruikersnaam en wachtwoord wijzigen voor deze podcast en bijbehorende afleveringen.</string>
@@ -656,6 +679,7 @@
   <string name="browse_gpoddernet_label">Verken gpodder.net</string>
   <string name="discover">Ontdekken</string>
   <string name="discover_more">meer »</string>
+  <string name="search_powered_by">Zoeken via %1$s</string>
   <string name="filter">Filter</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
@@ -683,6 +707,12 @@
   <string name="sort_date_old_new">Datum (oud \u2192 nieuw)</string>
   <string name="sort_duration_short_long">Lengte (kort \u2192 lang)</string>
   <string name="sort_duration_long_short">Lengte (lang \u2192 kort)</string>
+  <string name="sort_a_z">A \u2192 Z</string>
+  <string name="sort_z_a">Z \u2192 A</string>
+  <string name="sort_new_old">Nieuw \u2192 Oud</string>
+  <string name="sort_old_new">Oud \u2192 Nieuw</string>
+  <string name="sort_short_long">Kort \u2192 Lang</string>
+  <string name="sort_long_short">Lang \u2192 Kort</string>
   <!--Rating dialog-->
   <string name="rating_title">Wat vind je van AntennaPod?</string>
   <string name="rating_message">We stellen het op prijs als je even de tijd neemt om AntennaPod te beoordelen.</string>
@@ -742,4 +772,8 @@
   <string name="widget_settings">Widgetinstellingen</string>
   <string name="widget_create_button">Widget maken</string>
   <string name="widget_opacity">Doorzichtigheid</string>
+  <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">De instelling is aangepast.</string>
+  <string name="on_demand_config_stream_text">Het lijkt er op dat je vaak streamt. Wil je streamknoppen tonen in de lijst met afleveringen?</string>
+  <string name="on_demand_config_download_text">Het lijkt er op dat je vaak dowloadt. Wil je downloadknoppen tonen in de lijst met afleveringen?</string>
 </resources>

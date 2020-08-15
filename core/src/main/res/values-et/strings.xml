@@ -19,7 +19,6 @@
   <string name="cancel_download_label">Tühista\nLaadi alla</string>
   <string name="playback_history_label">Esitamise ajalugu</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Süngi teiste seadmetega</string>
   <string name="gpodnet_auth_label">gpodder.net kasutajanimi</string>
   <string name="episode_cache_full_title">Saadete vahemälu on täis</string>
   <string name="episode_cache_full_message">Saadete vahemälu limiit on täis. Vahemälu limiiti saab suurendada seadete alt.</string>
@@ -97,7 +96,6 @@
     <item quantity="one">1 päev pärast lõpetamist</item>
     <item quantity="other">%d päeva pärast lõpetamist</item>
   </plurals>
-  <string name="num_selected_label">%d valitud</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Märgi kuulatuks</string>
   <string name="mark_all_read_msg">Märgi kõik saated kuulatuks</string>
@@ -269,8 +267,6 @@
   <string name="ascending">Kasvavalt</string>
   <string name="descending">Kahanevalt</string>
   <string name="clear_queue_confirmation_msg">Palun kinnita, et tahad puhastada järjekorra KÕIGIST selles olevatest saadetest</string>
-  <string name="sort_old_to_new">Vanemad enne</string>
-  <string name="sort_new_to_old">Uuemad enne</string>
   <string name="time_left_label">Aega jäänud:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Laadi plugin alla</string>
@@ -303,7 +299,6 @@
   <string name="storage_pref">Salvestusruum</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Järjekord</string>
-  <string name="integrations_label">Integratsioon</string>
   <string name="automation">Automaatika</string>
   <string name="download_pref_details">Üksikasjad</string>
   <string name="import_export_pref">Import/eksport</string>
@@ -389,12 +384,8 @@
   <string name="pref_gpodnet_logout_toast">Väljalogimine oli edukas</string>
   <string name="pref_gpodnet_setlogin_information_title">Muuda kasutajakonto infot</string>
   <string name="pref_gpodnet_setlogin_information_sum">Muuda oma gpodder.net konto sisselogimise andmeid.</string>
-  <string name="pref_gpodnet_sync_changes_title">Sünkrooni muudatused kohe</string>
   <string name="pref_gpodnet_sync_changes_sum">Sünkroniseeri oma tellimuste ja saadete olekute muutuseid gpodder.net-iga</string>
-  <string name="pref_gpodnet_full_sync_title">Täielik sünkroonimine kohe</string>
   <string name="pref_gpodnet_full_sync_sum">Sünkroniseeri kõiki tellimusi ja saate olekuid gpodder.net-iga.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Viimane sünkroniseerimise katse: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Sünkroonimine on käivitatud</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Sisseloginud kui <i>%1$s</i> seadmega <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Kuva sünkroniseerimise vigu teadaannetena</string>
   <string name="pref_gpodnet_notifications_sum">See seadistus ei rakendu autentimise vigadele.</string>
@@ -478,6 +469,7 @@
   <string name="search_status_no_results">Ei leitud midagi</string>
   <string name="search_label">Otsi</string>
   <string name="no_results_for_query">\"%1$s\" otsimine ei andnud tulemusi</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">OPML import</string>
   <string name="opml_reader_error">OPML dokumendi lugemisel tekkis tõrge:</string>
@@ -687,4 +679,5 @@
   <!--Widget settings-->
   <string name="widget_create_button">Lisa vidin</string>
   <string name="widget_opacity">Läbipaistvus</string>
+  <!--On-Demand configuration-->
 </resources>

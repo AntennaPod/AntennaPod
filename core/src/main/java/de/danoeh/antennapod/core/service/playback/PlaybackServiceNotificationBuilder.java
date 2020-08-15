@@ -131,7 +131,7 @@ public class PlaybackServiceNotificationBuilder {
             }
         } else {
             notification.setContentTitle(context.getString(R.string.app_name));
-            notification.setContentText("Service is running");
+            notification.setContentText("Loading. If this does not go away, play any episode and contact us.");
         }
 
         notification.setContentIntent(getPlayerActivityPendingIntent());
@@ -146,8 +146,8 @@ public class PlaybackServiceNotificationBuilder {
     }
 
     private PendingIntent getPlayerActivityPendingIntent() {
-        return PendingIntent.getActivity(context, 0, PlaybackService.getPlayerActivityIntent(context),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, R.id.pending_intent_player_activity,
+                PlaybackService.getPlayerActivityIntent(context), PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void addActions(NotificationCompat.Builder notification, MediaSessionCompat.Token mediaSessionToken,
@@ -183,15 +183,14 @@ public class PlaybackServiceNotificationBuilder {
             notification.addAction(R.drawable.ic_notification_pause, //pause action
                     context.getString(R.string.pause_label),
                     pauseButtonPendingIntent);
-            compactActionList.add(numActions++);
         } else {
             PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
                     KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
             notification.addAction(R.drawable.ic_notification_play, //play action
                     context.getString(R.string.play_label),
                     playButtonPendingIntent);
-            compactActionList.add(numActions++);
         }
+        compactActionList.add(numActions++);
 
         // ff follows play, then we have skip (if it's present)
         PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(

@@ -2,10 +2,10 @@ package de.test.antennapod.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.robotium.solo.Solo;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -20,7 +20,6 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
@@ -55,10 +54,10 @@ public class MainActivityTest {
 
         mActivityRule.launchActivity(new Intent());
 
-        uiTestUtils = new UITestUtils(InstrumentationRegistry.getTargetContext());
+        uiTestUtils = new UITestUtils(InstrumentationRegistry.getInstrumentation().getTargetContext());
         uiTestUtils.setup();
 
-        solo = new Solo(getInstrumentation(), mActivityRule.getActivity());
+        solo = new Solo(InstrumentationRegistry.getInstrumentation(), mActivityRule.getActivity());
     }
 
     @After

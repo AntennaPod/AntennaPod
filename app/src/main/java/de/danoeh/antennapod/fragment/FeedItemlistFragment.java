@@ -2,6 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
+import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +54,7 @@ import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
@@ -60,6 +63,7 @@ import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
+import de.danoeh.antennapod.dialog.FilterDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
@@ -77,6 +81,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Displays a list of FeedItems.
@@ -98,6 +103,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     private TextView txtvAuthor;
     private ImageButton butShowInfo;
     private ImageButton butShowSettings;
+    private View header;
     private Menu optionsMenu;
     private ToolbarIconTintManager iconTintManager;
 
@@ -155,6 +161,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         butShowSettings = root.findViewById(R.id.butShowSettings);
         txtvInformation = root.findViewById(R.id.txtvInformation);
         txtvFailure = root.findViewById(R.id.txtvFailure);
+        header = root.findViewById(R.id.headerContainer);
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
 
@@ -221,7 +228,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     };
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         if (!isAdded()) {
             return;
         }
@@ -239,14 +246,21 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         if (feed != null) {
             FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        int horizontalSpacing = (int) getResources().getDimension(R.dimen.additional_horizontal_spacing);
+        header.setPadding(horizontalSpacing, header.getPaddingTop(), horizontalSpacing, header.getPaddingBottom());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             if (feed == null) {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(
@@ -366,7 +380,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeed)) {
             updateSyncProgressBarVisibility();
         }
-        if (adapter != null && update.mediaIds.length > 0) {
+        if (adapter != null && update.mediaIds.length > 0 && feed != null) {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
                 if (pos >= 0) {
@@ -406,14 +420,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
-        if (event.contains(feed)) {
+        if (feed != null && event.contains(feed)) {
             updateUi();
         }
     }
 
     private void updateSyncProgressBarVisibility() {
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
-            getActivity().supportInvalidateOptionsMenu();
+            getActivity().invalidateOptionsMenu();
         }
         if (!DownloadRequester.getInstance().isDownloadingFeeds()) {
             nextPageLoader.getRoot().setVisibility(View.GONE);
@@ -433,9 +447,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-        adapter.updateItems(feed.getItems());
+        if (feed != null) {
+            adapter.updateItems(feed.getItems());
+        }
 
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
         updateSyncProgressBarVisibility();
     }
 
@@ -460,8 +476,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
                     p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
                 }
-                txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+                txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
+                txtvInformation.setOnClickListener((l) -> {
+                    FilterDialog filterDialog = new FilterDialog(requireContext(), feed.getItemFilter()) {
+                        @Override
+                        protected void updateFilter(Set<String> filterValues) {
+                            feed.setItemFilter(filterValues.toArray(new String[0]));
+                            DBWriter.setFeedItemsFilter(feed.getId(), filterValues);
+                        }
+                    };
+
+                    filterDialog.openDialog();
+                });
                 txtvInformation.setVisibility(View.VISIBLE);
             } else {
                 txtvInformation.setVisibility(View.GONE);
@@ -487,6 +514,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 FeedSettingsFragment fragment = FeedSettingsFragment.newInstance(feed);
                 ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
             }
+        });
+        txtvFailure.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_FRAGMENT_TAG, DownloadsFragment.TAG);
+            Bundle args = new Bundle();
+            args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
+            intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
+            startActivity(intent);
         });
         headerCreated = true;
     }

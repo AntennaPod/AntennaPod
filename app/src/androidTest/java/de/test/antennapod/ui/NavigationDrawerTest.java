@@ -1,10 +1,10 @@
 package de.test.antennapod.ui;
 
 import android.content.Intent;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -59,7 +59,7 @@ public class NavigationDrawerTest {
 
     @Before
     public void setUp() throws IOException {
-        uiTestUtils = new UITestUtils(InstrumentationRegistry.getTargetContext());
+        uiTestUtils = new UITestUtils(InstrumentationRegistry.getInstrumentation().getTargetContext());
         uiTestUtils.setup();
 
         EspressoTestUtils.clearPreferences();

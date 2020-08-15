@@ -44,7 +44,7 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
 
     @Override
     public final int getItemViewType(int position) {
-        return R.id.episode_item_view_holder;
+        return R.id.view_type_episode_item;
     }
 
     @NonNull
@@ -84,6 +84,19 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
     }
 
     protected void afterBindViewHolder(EpisodeItemViewHolder holder, int pos) {
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull EpisodeItemViewHolder holder) {
+        super.onViewRecycled(holder);
+        // Set all listeners to null. This is required to prevent leaking fragments that have set a listener.
+        // Activity -> recycledViewPool -> EpisodeItemViewHolder -> Listener -> Fragment (can not be garbage collected)
+        holder.itemView.setOnClickListener(null);
+        holder.secondaryActionButton.setOnClickListener(null);
+        holder.dragHandle.setOnTouchListener(null);
+        holder.coverHolder.setOnTouchListener(null);
+        holder.container.setOnCreateContextMenuListener(null);
+        holder.container.setOnLongClickListener(null);
     }
 
     /**

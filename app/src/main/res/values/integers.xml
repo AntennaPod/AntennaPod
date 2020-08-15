@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="subscriptions_default_num_of_columns">3</integer>
+    <integer name="nav_drawer_screen_size_percent">80</integer>
+</resources>

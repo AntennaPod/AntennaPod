@@ -32,6 +32,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.ProviderInstallerInterceptor;
 import de.danoeh.antennapod.core.service.UserAgentInterceptor;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import okhttp3.Cache;
@@ -116,6 +117,7 @@ public class AntennapodHttpClient {
             }
             return response;
         });
+        builder.interceptors().add(new ProviderInstallerInterceptor());
         builder.interceptors().add(new BasicAuthorizationInterceptor());
         builder.networkInterceptors().add(new UserAgentInterceptor());
 
@@ -154,8 +156,8 @@ public class AntennapodHttpClient {
 
             // workaround for Android 4.x for certain web sites.
             // see: https://github.com/square/okhttp/issues/4053#issuecomment-402579554
-            List<CipherSuite> cipherSuites = new ArrayList<>();
-            cipherSuites.addAll(ConnectionSpec.MODERN_TLS.cipherSuites());
+            List<CipherSuite> cipherSuites = new ArrayList<>(
+                    ConnectionSpec.MODERN_TLS.cipherSuites());
             cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA);
             cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA);
 

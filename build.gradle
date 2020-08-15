@@ -65,7 +65,7 @@ project.ext {
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
-    audioPlayerVersion = "v1.0.17"
+    audioPlayerVersion = "v2.0.0"
 
     // Google Play build
     wearableSupportVersion = "2.6.0"

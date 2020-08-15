@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -25,6 +25,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -70,7 +71,7 @@ public class SpeedChangeTest {
         List<FeedItem> queue = DBReader.getQueue();
         PlaybackPreferences.writeMediaPlaying(queue.get(0).getMedia(), PlayerStatus.PAUSED, false);
         availableSpeeds = new String[] {"1.00", "2.00", "3.00"};
-        UserPreferences.setPlaybackSpeedArray(availableSpeeds);
+        UserPreferences.setPlaybackSpeedArray(Arrays.asList(1.0f, 2.0f, 3.0f));
 
         EspressoTestUtils.tryKillPlaybackService();
         activityRule.launchActivity(new Intent().putExtra(MainActivity.EXTRA_OPEN_PLAYER, true));

@@ -1,6 +1,6 @@
 package de.test.antennapod.service.download;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;
 import android.util.Log;
 
@@ -51,7 +51,7 @@ public class HttpDownloaderTest {
     @Before
     public void setUp() throws Exception {
         UserPreferences.init(InstrumentationRegistry.getInstrumentation().getTargetContext());
-        destDir = InstrumentationRegistry.getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
+        destDir = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
         assertNotNull(destDir);
         assertTrue(destDir.exists());
         httpServer = new HTTPBin();
@@ -82,7 +82,7 @@ public class HttpDownloaderTest {
         downloader.call();
         DownloadStatus status = downloader.getResult();
         assertNotNull(status);
-        assertTrue(status.isSuccessful() == expectedResult);
+        assertEquals(expectedResult, status.isSuccessful());
         assertTrue(status.isDone());
         // the file should not exist if the download has failed and deleteExisting was true
         assertTrue(!deleteExisting || new File(feedFile.getFile_url()).exists() == expectedResult);

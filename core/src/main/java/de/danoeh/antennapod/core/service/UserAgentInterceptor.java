@@ -7,10 +7,6 @@ import okhttp3.Response;
 import java.io.IOException;
 
 public class UserAgentInterceptor implements Interceptor {
-
-    public UserAgentInterceptor() {
-    }
-
     @Override
     public Response intercept(Chain chain) throws IOException {
         return chain.proceed(chain.request().newBuilder()

@@ -39,6 +39,10 @@ workflows:
             - run:
                 name: Build debug
                 command: ./gradlew assembleDebug -PdisablePreDex
+            - store_artifacts:
+                name: Uploading apk artifact
+                path: app/build/outputs/apk/play/debug/app-play-debug.apk
+                destination: app-play-debug.apk
             - run:
                 name: Execute debug unit tests
                 command: ./gradlew :core:testPlayDebugUnitTest -PdisablePreDex
@@ -80,3 +84,13 @@ workflows:
                   echo "Comparing to $branchBaseCommit"
                   curl -s -L https://github.com/yangziwen/diff-checkstyle/releases/download/0.0.4/diff-checkstyle.jar > diff-checkstyle.jar
                   java -Dconfig_loc=config/checkstyle -jar diff-checkstyle.jar -c config/checkstyle/checkstyle-new-code.xml --git-dir . --base-rev $branchBaseCommit
+      - build:
+          name: Lint app
+          build-steps:
+            - run:
+                name: Lint app
+                command: ./gradlew app:lintPlayRelease
+            - store_artifacts:
+                name: Uploading lint reports
+                path: app/build/reports/lint-results-playRelease.html
+                destination: lint-results.html

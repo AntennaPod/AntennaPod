@@ -41,7 +41,7 @@ public final class URLChecker {
         String lowerCaseUrl = url.toLowerCase(); // protocol names are case insensitive
         if (lowerCaseUrl.startsWith("feed://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing feed:// with http://");
-            return url.replaceFirst("feed://", "http://");
+            return prepareURL(url.substring("feed://".length()));
         } else if (lowerCaseUrl.startsWith("pcast://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast://");
             return prepareURL(url.substring("pcast://".length()));
@@ -50,7 +50,7 @@ public final class URLChecker {
             return prepareURL(url.substring("pcast:".length()));
         } else if (lowerCaseUrl.startsWith("itpc")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing itpc:// with http://");
-            return url.replaceFirst("itpc://", "http://");
+            return prepareURL(url.substring("itpc://".length()));
         } else if (lowerCaseUrl.startsWith(AP_SUBSCRIBE)) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Removing antennapod-subscribe://");
             return prepareURL(url.substring(AP_SUBSCRIBE.length()));

@@ -124,7 +124,6 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
         recyclerViewFeeds.setLayoutManager(layoutManagerFeeds);
-        recyclerViewFeeds.setHasFixedSize(true);
         adapterFeeds = new FeedSearchResultAdapter((MainActivity) getActivity());
         recyclerViewFeeds.setAdapter(adapterFeeds);
 
@@ -174,7 +173,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                getFragmentManager().popBackStack();
+                getParentFragmentManager().popBackStack();
                 return true;
             }
         });
@@ -190,7 +189,7 @@ public class SearchFragment extends Fragment {
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         search();
     }

@@ -57,6 +57,13 @@ public class URLCheckerTest {
     }
 
     @Test
+    public void testItpcProtocolWithScheme() {
+        final String in = "itpc://https://example.com";
+        final String out = URLChecker.prepareURL(in);
+        assertEquals("https://example.com", out);
+    }
+
+    @Test
     public void testWhiteSpaceUrlShouldNotAppend() {
         final String in = "\n http://example.com \t";
         final String out = URLChecker.prepareURL(in);

@@ -20,7 +20,6 @@
   <string name="cancel_download_label">لغو\nبارگیری</string>
   <string name="playback_history_label">تاریخچه پخش</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">همگام‌سازی با دیگر دستگاه‌ها</string>
   <string name="gpodnet_auth_label">gpodder.net ورود</string>
   <string name="episode_cache_full_title">ظرفیت حافظه پنهان تکمیل شده است</string>
   <string name="episode_cache_full_message">حد مجاز تکمیل شده است. شما می‌توانید اندازه حافظه پنهان را در تنظیمات افزایش دهید.</string>
@@ -105,7 +104,6 @@
     <item quantity="one">%dروز بعد از اتمام</item>
     <item quantity="other">%dروز بعد از اتمام</item>
   </plurals>
-  <string name="num_selected_label">%d انتخاب شده</string>
   <string name="loading_more">بارگیری بیشتر…</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">علامت‌گذاری همه به‌عنوان پخش‌شده</string>
@@ -288,8 +286,6 @@
   <string name="ascending">صعودی</string>
   <string name="descending">نزولی</string>
   <string name="clear_queue_confirmation_msg">لطفاً تأیید کنید که می‌خواهید صف را از همهٔ قسمت‌های درونش پاک‌سازی کنید</string>
-  <string name="sort_old_to_new">قدیمی به جدید</string>
-  <string name="sort_new_to_old">جدید به قدیمی</string>
   <string name="time_left_label">زمان مانده:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">بارگیری افزایه</string>
@@ -324,8 +320,6 @@
   <string name="storage_sum">حذف خودکار قسمت، درون‌ریزی، برون‌ریزی</string>
   <string name="project_pref">پروژه</string>
   <string name="queue_label">صف</string>
-  <string name="integrations_label">یک‌پارچگی‌ها</string>
-  <string name="integrations_sum">هم‌گام‌سازی</string>
   <string name="automation">اتوماسیون</string>
   <string name="download_pref_details">جزئیات</string>
   <string name="import_export_pref">وارد/صادر کرد</string>
@@ -340,6 +334,10 @@
   <string name="media_player">پخش‌کننده رسانه</string>
   <string name="pref_episode_cleanup_title">پاک‌سازی قسمت</string>
   <string name="pref_episode_cleanup_summary">قسمت‌هایی که در صف موجود نیستند و در مورد علاقه هم نیستند باید واجد شرایط برای حذف باشد اگر بارگیری خودکار فضای بیشتری برای قسمت‌ها جدید می‌خواهد</string>
+  <string name="pref_pauseOnDisconnect_sum">متوقف‌سازی پخش هنگامی که هدفن‌ها یا بلوتوث قطع شود</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">ادامه پخش وقتی که هدفن‌ها دوباره متصل شود</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">ادامه پخش هنگامی که بلوتوث دوباره متصل شود</string>
+  <string name="pref_hardwareForwardButtonSkips_title">دکمه پرش‌های به جلو</string>
   <string name="pref_auto_delete_title">حذف خودکار</string>
   <string name="playback_pref">پخش</string>
   <string name="network_pref">شبکه</string>
@@ -388,6 +386,7 @@
   <!--Search-->
   <string name="search_status_no_results">نتیجه‌ای یافت نشد</string>
   <string name="search_label">جستجو</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="select_all_label">انتخاب همه</string>
   <string name="deselect_all_label">انتخاب هیچ</string>
@@ -479,4 +478,5 @@
   <!--Notification channels-->
   <string name="notification_channel_auto_download">بارگیری‌های خودکار</string>
   <!--Widget settings-->
+  <!--On-Demand configuration-->
 </resources>

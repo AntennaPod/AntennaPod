@@ -6,6 +6,8 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import android.util.Log;
 
+import java.net.URLConnection;
+import de.danoeh.antennapod.core.ClientConfig;
 import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -85,7 +87,9 @@ public class ChapterUtils {
                 in = new CountingInputStream(context.getContentResolver().openInputStream(uri));
             } else {
                 URL url = new URL(p.getStreamUrl());
-                in = new CountingInputStream(url.openStream());
+                URLConnection urlConnection = url.openConnection();
+                urlConnection.setRequestProperty("User-Agent", ClientConfig.USER_AGENT);
+                in = new CountingInputStream(urlConnection.getInputStream());
             }
             List<Chapter> chapters = readChaptersFrom(in);
             if (!chapters.isEmpty()) {
@@ -159,7 +163,9 @@ public class ChapterUtils {
                 input = context.getContentResolver().openInputStream(uri);
             } else {
                 URL url = new URL(media.getStreamUrl());
-                input = url.openStream();
+                URLConnection urlConnection = url.openConnection();
+                urlConnection.setRequestProperty("User-Agent", ClientConfig.USER_AGENT);
+                input = urlConnection.getInputStream();
             }
             if (input != null) {
                 readOggChaptersFromInputStream(media, input);

@@ -6,10 +6,25 @@ function generateText() {
         -annotate 0 "$1" /tmp/text.png
 }
 
+function generateTabletText() {
+    echo "$1"
+    convert -size 1730x350 xc:none -gravity Center -pointsize 80 -fill white -font Lato-Regular \
+        -annotate 0 "$1" /tmp/text.png
+}
+
 function simplePhone() {
     generateText "$1"
     convert templates/phone.png \
         $2 -geometry +306+992 -composite \
+        /tmp/text.png -geometry +0+0 -composite \
+        $3
+}
+
+function simpleTablet() {
+    generateTabletText "$1"
+    convert $2 -resize 1280 "/tmp/resized-image.png"
+    convert templates/tablet.png \
+        /tmp/resized-image.png -geometry +227+459 -composite \
         /tmp/text.png -geometry +0+0 -composite \
         $3
 }
@@ -27,6 +42,7 @@ function generateScreenshots() {
     text3=`cat raw/$language/texts.txt | head -4 | tail -1`
     text4=`cat raw/$language/texts.txt | head -5 | tail -1`
     text5=`cat raw/$language/texts.txt | head -6 | tail -1`
+    text6=`cat raw/$language/texts.txt | head -7 | tail -1`
 
     simplePhone "$text0" raw/$language/00.png output/$language/00.png
     simplePhone "$text1" raw/$language/01.png output/$language/01.png
@@ -42,7 +58,8 @@ function generateScreenshots() {
     simplePhone "$text4" raw/$language/04.png output/$language/04.png
     simplePhone "$text5" raw/$language/05.png output/$language/05.png
     addLayer templates/suggestions.png output/$language/05.png
-    mogrify -resize 1120 "output/$language/*.png"
+    simpleTablet "$text6" raw/$language/tablet.png output/$language/tablet.png
+    mogrify -resize 1120 "output/$language/0*.png"
 }
 
 mkdir output 2>/dev/null

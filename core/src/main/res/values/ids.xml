@@ -1,28 +1,36 @@
 <resources>
-
-    <item name="action_bar_refresh" type="id"/>
-    <item name="action_bar_add" type="id"/>
-    <item name="clear_queue_item" type="id"/>
+    <!-- Menu items -->
     <item name="select_all_item" type="id"/>
     <item name="deselect_all_item" type="id"/>
-    <item name="search_item" type="id"/>
-    <item name="enqueue_all_item" type="id"/>
-    <item name="download_all_item" type="id"/>
     <item name="clear_history_item" type="id"/>
     <item name="open_in_browser_item" type="id"/>
     <item name="copy_url_item" type="id"/>
     <item name="share_url_item" type="id"/>
     <item name="go_to_position_item" type="id"/>
-    <item name="organize_queue_item" type="id"/>
     <item name="drag_handle" type="id"/>
     <item name="skip_episode_item" type="id"/>
     <item name="move_to_top_item" type="id"/>
     <item name="move_to_bottom_item" type="id"/>
-    <item name="image_disk_cache_key" type="id"/>
-    <item name="imageloader_key" type="id"/>
+
+    <!-- View types -->
+    <item name="view_type_episode_item" type="id"/>
+
+    <!-- Notifications need unique IDs to update/cancel them -->
     <item name="notification_gpodnet_sync_error" type="id"/>
     <item name="notification_gpodnet_sync_autherror" type="id"/>
-    <item name="undobar_button" type="id"/>
-    <item name="undobar_message" type="id"/>
-    <item name="episode_item_view_holder" type="id"/>
+    <item name="notification_downloading" type="id"/>
+    <item name="notification_download_report" type="id"/>
+    <item name="notification_auto_download_report" type="id"/>
+    <item name="notification_playing" type="id"/>
+    <item name="notification_streaming_confirmation" type="id"/>
+
+    <!-- PendingIntent objects that use the same action but different extras need to use a unique request code -->
+    <item name="pending_intent_download_service_notification" type="id"/>
+    <item name="pending_intent_download_service_auth" type="id"/>
+    <item name="pending_intent_download_service_report" type="id"/>
+    <item name="pending_intent_download_service_autodownload_report" type="id"/>
+    <item name="pending_intent_allow_stream_always" type="id"/>
+    <item name="pending_intent_allow_stream_this_time" type="id"/>
+    <item name="pending_intent_player_activity" type="id"/>
+    <item name="pending_intent_sync_error" type="id"/>
 </resources>

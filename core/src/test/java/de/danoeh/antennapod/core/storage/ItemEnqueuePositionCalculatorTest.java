@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedMother;
@@ -27,6 +28,7 @@ import static de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocat
 import static de.danoeh.antennapod.core.util.CollectionTestUtil.concat;
 import static de.danoeh.antennapod.core.util.CollectionTestUtil.list;
 import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
+import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -248,13 +250,13 @@ public class ItemEnqueuePositionCalculatorTest {
         assertEquals(message, idsExpected, getIdList(queue));
     }
 
-    static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(Arrays.asList());
+    static final List<FeedItem> QUEUE_EMPTY = Collections.unmodifiableList(emptyList());
 
     static final List<FeedItem> QUEUE_DEFAULT = 
             Collections.unmodifiableList(Arrays.asList(
                     createFeedItem(11), createFeedItem(12), createFeedItem(13), createFeedItem(14)));
     static final List<Long> QUEUE_DEFAULT_IDS =
-            QUEUE_DEFAULT.stream().map(fi -> fi.getId()).collect(Collectors.toList());
+            QUEUE_DEFAULT.stream().map(FeedComponent::getId).collect(Collectors.toList());
 
 
     static Playable getCurrentlyPlaying(long idCurrentlyPlaying) {

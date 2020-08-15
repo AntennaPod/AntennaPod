@@ -32,5 +32,9 @@
                 android:key="prefHtmlExport"
                 android:title="@string/html_export_label"
                 android:summary="@string/html_export_summary"/>
+        <Preference
+                android:key="prefFavoritesExport"
+                android:title="@string/favorites_export_label"
+                android:summary="@string/favorites_export_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>

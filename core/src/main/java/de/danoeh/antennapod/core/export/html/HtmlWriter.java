@@ -25,6 +25,7 @@ public class HtmlWriter implements ExportWriter {
 
         InputStream templateStream = context.getAssets().open("html-export-template.html");
         String template = IOUtils.toString(templateStream, "UTF-8");
+        template = template.replaceAll("\\{TITLE\\}", "Subscriptions");
         String[] templateParts = template.split("\\{FEEDS\\}");
 
         writer.append(templateParts[0]);

@@ -19,7 +19,6 @@
   <string name="cancel_download_label">Zrušit stahování</string>
   <string name="playback_history_label">Historie přehrávání</string>
   <string name="gpodnet_main_label">gpodder.net</string>
-  <string name="gpodnet_summary">Synchronizovat s ostatními přístroji</string>
   <string name="gpodnet_auth_label">Login pro gpodder.net</string>
   <string name="episode_cache_full_title">Odkládací prostor pro epizody je plný</string>
   <string name="episode_cache_full_message">Došlo k zaplnění limitu odkládacího prostoru pro epizody. Můžete navýšit vyhrazený prostor v Nastavení.</string>
@@ -212,8 +211,6 @@
   <string name="ascending">Vzestupně</string>
   <string name="descending">Sestupně</string>
   <string name="clear_queue_confirmation_msg">Potvrďte prosím, že chcete vyčistit tuto frontu a VŠECHNY v ní obsažené epizody</string>
-  <string name="sort_old_to_new">Od nejstaršího po nejnovější</string>
-  <string name="sort_new_to_old">Od nejnovějšího po nejstarší</string>
   <string name="time_left_label">Zbývající čas:\u0020</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Stáhnout modul</string>
@@ -291,12 +288,8 @@
   <string name="pref_gpodnet_logout_toast">Úspěšně odhlášeno</string>
   <string name="pref_gpodnet_setlogin_information_title">Změna přihlašovacích údajů</string>
   <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
-  <string name="pref_gpodnet_sync_changes_title">Synchronizovat změny</string>
   <string name="pref_gpodnet_sync_changes_sum">Synchronizovat odběr a změny stavu epizody s gpodder.net.</string>
-  <string name="pref_gpodnet_full_sync_title">Plná synchronizace</string>
   <string name="pref_gpodnet_full_sync_sum">Synchronizovat všechny odběry a stav epizod s gpodder.net.</string>
-  <string name="pref_gpodnet_sync_sum_last_sync_line">Poslední pokus o synchronizaci: %1$s (%2$s)</string>
-  <string name="pref_gpodnet_sync_started">Synchronizace spuštěna</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Přihlášen jako <i>%1$s</i> z přístroje <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Zobrazovat upozornění na chyby synchronizace</string>
   <string name="pref_gpodnet_notifications_sum">Toto nastavení se netýká chyb přihlášení.</string>
@@ -337,6 +330,7 @@
   <string name="search_status_no_results">Žádné výsledky</string>
   <string name="search_label">Vyhledat</string>
   <string name="no_results_for_query">Nebyly nalezeny žádné výsledky pro \"%1$s\"</string>
+  <!--Synchronization-->
   <!--import and export-->
   <string name="opml_import_label">OPML import</string>
   <string name="opml_reader_error">Došlo k chybě při čtení OPML dokumentu:</string>
@@ -535,4 +529,5 @@
   <!--Notification channels-->
   <string name="notification_channel_downloading">Stahuji</string>
   <!--Widget settings-->
+  <!--On-Demand configuration-->
 </resources>
