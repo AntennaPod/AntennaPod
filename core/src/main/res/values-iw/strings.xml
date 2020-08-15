@@ -104,8 +104,8 @@
     <item quantity="other">%d שעות לאחר הסיום</item>
   </plurals>
   <plurals name="episode_cleanup_days_after_listening">
-    <item quantity="one">יום אחרי סיום</item>
-    <item quantity="two">%d ימים לאחר סיום </item>
+    <item quantity="one">יום לאחר סיום</item>
+    <item quantity="two">יומיים לאחר סיום </item>
     <item quantity="many">%d ימים לאחר סיום </item>
     <item quantity="other">%d ימים לאחר סיום </item>
   </plurals>
@@ -251,7 +251,7 @@
   <string name="download_error_request_error">שגיאת בקשה</string>
   <string name="download_error_db_access">שגיאת גישה למסד הנתונים</string>
   <plurals name="downloads_left">
-    <item quantity="one">נותרה הורדה %d</item>
+    <item quantity="one">נותרה הורדה אחת</item>
     <item quantity="two">נותרו %d הורדות</item>
     <item quantity="many">נותרו %d הורדות</item>
     <item quantity="other">נותרו %d הורדות</item>
@@ -286,7 +286,7 @@
   <string name="playback_error_source">לא ניתן לגשת לקובץ המדיה</string>
   <string name="playback_error_unknown">שגיאה לא ידועה</string>
   <string name="no_media_playing_label">אין מדיה מתנגנת</string>
-  <string name="player_buffering_msg">החוצץ מתמלא</string>
+  <string name="player_buffering_msg">המטמון מתמלא</string>
   <string name="player_go_to_picture_in_picture">מצב תמונה בתוך תמונה</string>
   <string name="unknown_media_key">אנטנה־פּוֹד - מפתח מדיה לא ידוע: %1$d</string>
   <string name="error_file_not_found">הקובץ לא נמצא</string>
@@ -526,14 +526,14 @@
   <string name="pref_delete_removes_from_queue_sum">הסרת פרק מהתור אוטומטית עם מחיקתו.</string>
   <!--About screen-->
   <string name="about_pref">על אודות</string>
-  <string name="antennapod_version">גרסת אנטנהפּוֹד</string>
+  <string name="antennapod_version">גרסת אנטנה־פּוֹד</string>
   <string name="developers">מפתחים</string>
-  <string name="developers_summary">כולם יכולים לסייע בשיפור אנטנהפּוֹד</string>
+  <string name="developers_summary">כולם יכולים לסייע בשיפור אנטנה־פּוֹד</string>
   <string name="translators">מתרגמים</string>
-  <string name="translators_summary">תרגומים נוצרים על ידי משתמשים של אנטנהפּוֹד בעזרת Transifex</string>
+  <string name="translators_summary">תרגומים נוצרים על ידי משתמשים של אנטנה־פּוֹד בעזרת Transifex</string>
   <string name="privacy_policy">מדיניות פרטיות</string>
   <string name="licenses">רישיונות</string>
-  <string name="licenses_summary">היישומון אנטנהפּוֹד משתמש בתכניות נהדרות נוספות</string>
+  <string name="licenses_summary">היישומון אנטנה־פּוֹד משתמש בתכניות נהדרות נוספות</string>
   <!--Search-->
   <string name="search_status_no_results">לא נמצאו תוצאות</string>
   <string name="search_label">חיפוש</string>

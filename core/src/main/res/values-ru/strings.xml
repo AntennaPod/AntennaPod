@@ -131,7 +131,7 @@
   <string name="share_feed_url_label">Поделиться ссылкой на канал</string>
   <string name="share_item_url_label">Поделиться ссылкой на файл</string>
   <string name="share_item_url_with_position_label">Поделиться ссылкой на файл с отметкой времени</string>
-  <string name="feed_delete_confirmation_msg">Подтвердите, что хотите удалить подкаст «%1$s» и все его эпизоды (включая загруженные).</string>
+  <string name="feed_delete_confirmation_msg">Подтвердите, что хотите удалить подкаст «%1$s» и все его выпуски (включая загруженные).</string>
   <string name="feed_remover_msg">Подкаст удаляется</string>
   <string name="load_complete_feed">Обновить весь подкаст</string>
   <string name="multi_select">Множественный выбор</string>
@@ -312,7 +312,7 @@
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <string name="enable_sonic">Включить Sonic</string>
   <!--Empty list labels-->
-  <string name="no_items_header_label">Нет эпизодов в очереди</string>
+  <string name="no_items_header_label">Нет выпусков в очереди</string>
   <string name="no_items_label">Добавьте выпуск, загрузив его, или после долгого нажатия на выпуск выберите «Добавить в очередь».</string>
   <string name="no_shownotes_label">Этот выпуск не содержит примечаний.</string>
   <string name="no_run_downloads_head_label">Нет запущенных загрузок</string>
@@ -338,10 +338,11 @@
   <string name="storage_sum">Автоматическое удаление выпусков, импорт, экспорт</string>
   <string name="project_pref">Проект</string>
   <string name="queue_label">Очередь</string>
+  <string name="synchronization_pref">Синхронизация</string>
   <string name="automation">Автоматизация</string>
   <string name="download_pref_details">Подробнее</string>
   <string name="import_export_pref">Импорт/экспорт</string>
-  <string name="import_export_search_keywords">резервирование, восстановление, сохранить, копия, бэкап, пропал</string>
+  <string name="import_export_search_keywords">резервирование, восстановление, резервная, копия, бекап, бэкап</string>
   <string name="appearance">Внешний вид</string>
   <string name="external_elements">Внешние органы управления</string>
   <string name="interruptions">Прерывания</string>
@@ -360,7 +361,7 @@
   <string name="pref_hardwarePreviousButtonRestarts_title">В начало кнопкой перемотки назад</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">При нажатии на физическую кнопку перемотки назад переходить к началу выпуска вместо перемотки назад</string>
   <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
-  <string name="pref_auto_delete_sum">Удалять эпизод после завершения воспроизведения</string>
+  <string name="pref_auto_delete_sum">Удалять выпуск после воспроизведения</string>
   <string name="pref_auto_delete_title">Автоматическое удаление</string>
   <string name="pref_smart_mark_as_played_sum">Отмечать выпуски как прослушанные, даже если до завершения остаётся некоторое время</string>
   <string name="pref_smart_mark_as_played_title">Отметка «Прослушанное» до окончания</string>
@@ -436,6 +437,7 @@
   <string name="pref_playback_speed_title">Скорости воспроизведения</string>
   <string name="pref_playback_speed_sum">Выбрать значения скорости, доступные при воспроизведении</string>
   <string name="pref_feed_playback_speed_sum">Скорость, с которой будут изначально воспроизводиться выпуски этого подкаста</string>
+  <string name="pref_feed_skip_intro_toast">Пропусить первые %d секунд</string>
   <string name="pref_playback_time_respects_speed_title">Подстройка метаданных под скорость воспроизведения</string>
   <string name="pref_playback_time_respects_speed_sum">Значения позиции и длительности зависят от скорости воспроизведения</string>
   <string name="pref_fast_forward">Интервал быстрой перемотки вперед</string>
@@ -457,7 +459,7 @@
   <string name="pref_showDownloadReport_title">Показывать отчёт о загрузках</string>
   <string name="pref_showDownloadReport_sum">Если загрузка не удаётся, показывать отчёт с подробностями об ошибке.</string>
   <string name="pref_showAutoDownloadReport_title">Показывать результаты автозагрузки</string>
-  <string name="pref_showAutoDownloadReport_sum">Показывать уведомление при автоматической загрузке эпизодов.</string>
+  <string name="pref_showAutoDownloadReport_sum">Показывать уведомление при автоматической загрузке выпусков</string>
   <string name="pref_expand_notify_unsupport_toast">Версии Android ниже 4.1 не поддерживают расширенные уведомления.</string>
   <string name="pref_enqueue_location_title">Размещение в очереди</string>
   <string name="pref_enqueue_location_sum">Добавлять выпуски %1$s</string>
@@ -465,8 +467,8 @@
   <string name="enqueue_location_front">в начало</string>
   <string name="enqueue_location_after_current">за текущим выпуском</string>
   <string name="pref_smart_mark_as_played_disabled">Отключено</string>
-  <string name="pref_image_cache_size_title">Размер кэша для изображений</string>
-  <string name="pref_image_cache_size_sum">Размер дискового кэша для изображений</string>
+  <string name="pref_image_cache_size_title">Размер кеша изображений</string>
+  <string name="pref_image_cache_size_sum">Размер дискового кеша изображений</string>
   <string name="visit_user_forum">Форум пользователей</string>
   <string name="bug_report_title">Сообщить об ошибке</string>
   <string name="open_bug_tracker">Перейти в систему отслеживания ошибок</string>
@@ -499,7 +501,7 @@
   <string name="back_button_double_tap">Выход двойным касанием</string>
   <string name="back_button_show_prompt">Подтверджение выхода</string>
   <string name="close_prompt">Уверены, что хотите закрыть AntennaPod?</string>
-  <string name="double_tap_toast">Нажмите кнопку \"Назад\" еще раз, чтобы выйти</string>
+  <string name="double_tap_toast">Нажмите кнопку  «Назад» ещё раз, чтобы выйти</string>
   <string name="back_button_go_to_page">Перейти к странице…</string>
   <string name="back_button_go_to_page_title">Выберите страницу</string>
   <string name="pref_delete_removes_from_queue_title">Убирать удаленные из очереди</string>
@@ -519,6 +521,8 @@
   <string name="search_label">Поиск</string>
   <string name="no_results_for_query">По запросу «%1$s» ничего не найдено</string>
   <!--Synchronization-->
+  <string name="sync_status_started">Синхронизация запущена</string>
+  <string name="sync_status_subscriptions">Синхронизация подписок ...</string>
   <!--import and export-->
   <string name="import_export_summary">Перенести подписку и очередь на другое устройство</string>
   <string name="database">База данных</string>
@@ -640,11 +644,14 @@
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Назад</string>
   <string name="fast_forward_label">Вперёд</string>
+  <string name="increase_speed">Увеличить скорость</string>
+  <string name="decrease_speed">Уменьшить скорость</string>
   <string name="media_type_audio_label">Аудио</string>
   <string name="media_type_video_label">Видео</string>
   <string name="navigate_upwards_label">Перейти выше</string>
   <string name="status_downloading_label">Выпуск загружается</string>
   <string name="in_queue_label">Выпуск в очереди</string>
+  <string name="is_favorite_label">Эпизод отмечен как избранный</string>
   <string name="drag_handle_content_description">Перетяните чтобы изменить позицию этого элемента</string>
   <string name="load_next_page_label">Загрузить следующую страницу</string>
   <!--Feed information screen-->
@@ -759,4 +766,5 @@
   <string name="widget_create_button">Создать виджет</string>
   <string name="widget_opacity">Непрозрачность</string>
   <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">Настройки успешно обновлены.</string>
 </resources>

@@ -85,6 +85,7 @@
   <string name="auto_download_apply_to_items_message">A beállított <i>Automatikus letöltés</i> az új epizódokra lesz érvényes.\nAlkalmazza a korábban közzétett epizódokra is?</string>
   <string name="auto_delete_label">Epizód automatikus törlése</string>
   <string name="feed_volume_reduction">Hangerőcsökkentés</string>
+  <string name="feed_volume_reduction_summary">Az ebbe a csatornába tartozó epizódok hangerejének csökkentése: %1$s</string>
   <string name="feed_volume_reduction_off">Ki</string>
   <string name="feed_volume_reduction_light">Enyhe</string>
   <string name="feed_volume_reduction_heavy">Erős</string>
@@ -103,6 +104,10 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">befejezés után 1 nappal</item>
     <item quantity="other">befejezés után %d nappal</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d kiválasztva</item>
+    <item quantity="other">%d kiválasztva</item>
   </plurals>
   <string name="loading_more">Továbbiak betöltése…</string>
   <!--Actions on feeds-->
@@ -200,6 +205,7 @@
   <string name="deactivate_auto_download">Automatikus letöltés kikapcsolása</string>
   <string name="reset_position">Lejátszási pozíció visszaállítása</string>
   <string name="removed_item">Elem eltávolítva</string>
+  <string name="no_items_selected">Nincs elem kiválasztva</string>
   <!--Download messages and labels-->
   <string name="download_successful">sikeres</string>
   <string name="download_pending">Letöltés várakozik</string>
@@ -320,6 +326,8 @@
   <string name="storage_sum">Epizódok automatikus törlése, importálása, exportálása</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Lejátszási sor</string>
+  <string name="synchronization_pref">Szinkronizálás</string>
+  <string name="synchronization_sum">Szinkronizáció más eszközökkel a gpodder.net segítségével</string>
   <string name="automation">Automatizálás</string>
   <string name="download_pref_details">Részletek</string>
   <string name="import_export_pref">Importálás/exportálás</string>
@@ -410,7 +418,9 @@
   <string name="pref_gpodnet_logout_toast">Kijelentkezés sikeres</string>
   <string name="pref_gpodnet_setlogin_information_title">Bejelentkezési adatok módosítása</string>
   <string name="pref_gpodnet_setlogin_information_sum">A gpodder.net fiókjához használt bejelentkezési adatok módosítása.</string>
+  <string name="pref_gpodnet_sync_changes_title">Szinkronizálás most</string>
   <string name="pref_gpodnet_sync_changes_sum">A feliratkozásai és epizódállapotainak szinkronizálása a gpodder.nettel.</string>
+  <string name="pref_gpodnet_full_sync_title">Teljes szinkronizáció kényszerítése</string>
   <string name="pref_gpodnet_full_sync_sum">Az összes feliratkozásának és epizódállapotainak szinkronizálása a gpodder.nettel.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Bejelentkezve mint <i>%1$s</i>, a(z) <i>%2$s</i> eszközzel]]></string>
   <string name="pref_gpodnet_notifications_title">Szinkronizálási hibaértesítések megjelenítése</string>
@@ -418,6 +428,10 @@
   <string name="pref_playback_speed_title">Lejátszási sebességek</string>
   <string name="pref_playback_speed_sum">A változó sebességű hanglejátszáshoz elérhető sebességek testreszabása</string>
   <string name="pref_feed_playback_speed_sum">A podcast epizódjainak indításakor használandó lejátszási sebesség</string>
+  <string name="pref_feed_skip">Automatikus kihagyás</string>
+  <string name="pref_feed_skip_sum">Bevezetők és lezárások kihagyása</string>
+  <string name="pref_feed_skip_ending_toast">Utolsó %d másodperc kihagyvas</string>
+  <string name="pref_feed_skip_intro_toast">Első %d másodperc kihagyva</string>
   <string name="pref_playback_time_respects_speed_title">Médiainformáció hozzáigazítása a lejátszási sebességhez</string>
   <string name="pref_playback_time_respects_speed_sum">A megjelenített pozíció és hossz a lejátszási sebességhez lesz igazítva</string>
   <string name="pref_fast_forward">Előretekerés mértéke</string>
@@ -468,6 +482,8 @@
   <string name="pref_enqueue_downloaded_title">Letöltött elemek sorbaállítása</string>
   <string name="pref_enqueue_downloaded_summary">Letöltött epizódok sorhoz adása</string>
   <string name="media_player_builtin">Beépített androidos lejátszó</string>
+  <string name="media_player_switch_to_exoplayer">Váltás az ExoPlayerre</string>
+  <string name="media_player_switched_to_exoplayer">Átváltva az ExoPlayerre.</string>
   <string name="pref_skip_silence_title">Csend kihagyása a hangokban</string>
   <string name="pref_videoBehavior_title">A videóból kilépéskor</string>
   <string name="pref_videoBehavior_sum">Viselkedés a videolejátszás elhagyásakor</string>

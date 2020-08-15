@@ -27,7 +27,7 @@
   <string name="download_statistics_label">Téléchargements</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Durée totale d\'écoute :</string>
-  <string name="statistics_details_dialog">%1$d épisodes démarrés sur %2$d\n\npour un temps de lecture de %3$s sur %4$s.</string>
+  <string name="statistics_details_dialog">%1$d épisodes démarrés sur %2$d\nsoit %3$s de lues sur %4$s.</string>
   <string name="statistics_mode">Type de statistiques</string>
   <string name="statistics_mode_normal">Calculer la durée réellement écoutée. Les épisodes écoutés deux fois comptent double alors que ceux simplement marqués lus ne sont pas comptés</string>
   <string name="statistics_mode_count_all">Additionner tous les podcasts marqués comme lus</string>
@@ -85,8 +85,8 @@
   <string name="auto_download_apply_to_items_message">Le nouveau paramètre <i>Téléchargement Automatique</i> sera automatiquement appliqué sur chaque nouvel épisode.\nVoulez-vous faire de même avec les épisodes précédents ?</string>
   <string name="auto_delete_label">Suppression automatique des épisodes</string>
   <string name="feed_volume_reduction">Réduction du volume</string>
-  <string name="feed_volume_reduction_summary">Réduction du volume pour les épisodes de ce podcast : %1$s</string>
-  <string name="feed_volume_reduction_off">pas de réduction</string>
+  <string name="feed_volume_reduction_summary">Réduction du volume des épisodes : %1$s</string>
+  <string name="feed_volume_reduction_off">aucune</string>
   <string name="feed_volume_reduction_light">faible</string>
   <string name="feed_volume_reduction_heavy">importante</string>
   <string name="parallel_downloads_suffix">\u0020téléchargements parallèles</string>
@@ -342,7 +342,7 @@
   <string name="media_player">Lecteur multimédia</string>
   <string name="pref_episode_cleanup_title">Nettoyage des épisodes</string>
   <string name="pref_episode_cleanup_summary">Les épisodes qui ne sont pas dans la liste de lecture et qui ne sont pas marqués comme favoris peuvent être supprimés si l\'espace est insuffisant pour le téléchargement automatique de nouveaux épisodes</string>
-  <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture lorsque le casque ou le bluetooth sont déconnectés</string>
+  <string name="pref_pauseOnDisconnect_sum">Interrompre la lecture quand les écouteurs ou le bluetooth sont déconnectés</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand des écouteurs sont branchés</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Reprendre la lecture quand le Bluetooth se reconnecte</string>
   <string name="pref_hardwareForwardButtonSkips_title">Le bouton \"saut avant\" saute l\'épisode</string>
@@ -364,7 +364,7 @@
   <string name="network_pref_sum">Intervalle / Heure de mise à jour, contrôle des téléchargements, utilisation de la connexion mobile</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Intervalle / Heure de mise à jour</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Indiquer un intervalle ou une heure spécifique de mise à jour des podcasts</string>
-  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez définir un <i>intervalle</i> comme \"toutes les 2 heures\" ou une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note : les heures de mise à jour ne sont pas précises. Il peut y avoir un petit délai.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Vous pouvez définir un <i>intervalle</i> comme \"toutes les 2 heures\" ou une <i>heure précise</i> comme \"7:00\" ou désactiver les mises à jours automatique.\n\n<small>Note : les heures de mise à jour ne sont pas précises. Il peut y avoir un décalage.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Désactiver</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Intervalle</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Heure</string>
@@ -427,7 +427,7 @@
   <string name="pref_gpodnet_notifications_sum">Ce paramètre ne s\'applique pas aux erreurs d\'authentification.</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Définir les vitesses disponibles lors de la lecture audio</string>
-  <string name="pref_feed_playback_speed_sum">Vitesse de lecture par défaut pour les épisodes de ce podcast</string>
+  <string name="pref_feed_playback_speed_sum">Vitesse de lecture par défaut des épisodes</string>
   <string name="pref_feed_skip">Saut automatique</string>
   <string name="pref_feed_skip_sum">Sauter le début et la fin des épisodes</string>
   <string name="pref_feed_skip_ending">Sauter à la fin</string>
@@ -656,7 +656,7 @@
   <string name="apply_action">Appliquer l\'action</string>
   <!--Feed information screen-->
   <string name="authentication_label">Authentification</string>
-  <string name="authentication_descr">Identifiant et mot de passe pour ce podcast et ses épisodes.</string>
+  <string name="authentication_descr">Identifiant et mot de passe pour ce podcast.</string>
   <string name="auto_download_settings_label">Préférence de téléchargement automatique</string>
   <string name="episode_filters_label">Filtre d\'épisode</string>
   <string name="episode_filters_description">Liste de mots permettant de décider si un épisode est à inclure ou à exclure des téléchargements automatiques</string>

@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -371,6 +372,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 String tag = navAdapter.getTags().get(position);
                 if (getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).loadFragment(tag, null);
+                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
                 } else {
                     showMainActivity(tag);
                 }
@@ -379,6 +381,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 long feedId = navDrawerData.feeds.get(pos).getId();
                 if (getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
+                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
                 } else {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
