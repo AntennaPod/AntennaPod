@@ -50,8 +50,6 @@ import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 public class UserPreferences {
     private UserPreferences(){}
 
-    private static final String IMPORT_DIR = "import/";
-
     private static final String TAG = "UserPreferences";
 
     // User Interface
@@ -168,7 +166,6 @@ public class UserPreferences {
         UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        createImportDirectory();
         createNoMediaFile();
     }
 
@@ -923,7 +920,6 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_DATA_FOLDER, dir)
              .apply();
-        createImportDirectory();
     }
 
     /**
@@ -939,24 +935,6 @@ public class UserPreferences {
                 e.printStackTrace();
             }
             Log.d(TAG, ".nomedia file created");
-        }
-    }
-
-    /**
-     * Creates the import directory if it doesn't exist and if storage is
-     * available
-     */
-    private static void createImportDirectory() {
-        File importDir = getDataFolder(IMPORT_DIR);
-        if (importDir != null) {
-            if (importDir.exists()) {
-                Log.d(TAG, "Import directory already exists");
-            } else {
-                Log.d(TAG, "Creating import directory");
-                importDir.mkdir();
-            }
-        } else {
-            Log.d(TAG, "Could not access external storage.");
         }
     }
 
