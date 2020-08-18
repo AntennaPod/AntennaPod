@@ -62,4 +62,15 @@
                 android:layout_height="wrap_content"/>
 
     </RelativeLayout>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorTertiary"
+            android:text="@string/discover_powered_by_itunes"
+            android:textSize="12sp"
+            android:layout_gravity="right|end"
+            android:paddingHorizontal="4dp"
+            android:textAlignment="textEnd"/>
+
 </LinearLayout>

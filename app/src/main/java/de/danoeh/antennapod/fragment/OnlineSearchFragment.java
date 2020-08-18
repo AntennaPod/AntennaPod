@@ -107,8 +107,8 @@ public class OnlineSearchFragment extends Fragment {
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
-
-        txtvEmpty.setText(getString(R.string.search_powered_by, searchProvider.getName()));
+        TextView txtvPoweredBy = root.findViewById(R.id.search_powered_by);
+        txtvPoweredBy.setText(getString(R.string.search_powered_by, searchProvider.getName()));
         return root;
     }
 

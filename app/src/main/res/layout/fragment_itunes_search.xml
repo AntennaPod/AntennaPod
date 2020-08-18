@@ -36,6 +36,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
+        android:visibility="gone"
         android:text="@string/search_status_no_results" />
 
     <ProgressBar
@@ -71,4 +72,17 @@
         tools:visibility="visible"
         tools:background="@android:color/holo_red_light" />
 
+    <TextView
+        android:id="@+id/search_powered_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorTertiary"
+        android:text="@string/discover_powered_by_itunes"
+        android:textSize="12sp"
+        android:padding="4dp"
+        android:background="?android:attr/windowBackground"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textAlignment="textEnd"/>
 </RelativeLayout>
