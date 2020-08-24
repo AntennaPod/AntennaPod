@@ -37,7 +37,8 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:logo="@mipmap/ic_launcher"
-        android:resizeableActivity="true">
+        android:resizeableActivity="true"
+        android:allowAudioPlaybackCapture="true">
 
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
