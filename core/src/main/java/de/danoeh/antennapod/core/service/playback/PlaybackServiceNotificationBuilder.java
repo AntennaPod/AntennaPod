@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Build;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import androidx.annotation.NonNull;
@@ -69,7 +70,7 @@ public class PlaybackServiceNotificationBuilder {
     }
 
     public void loadIcon() {
-        int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
+        int iconSize = context.getResources().getDimensionPixelSize(R.dimen.notification_big_image_size);
         try {
             icon = Glide.with(context)
                     .asBitmap()
@@ -116,7 +117,7 @@ public class PlaybackServiceNotificationBuilder {
                 NotificationUtils.CHANNEL_ID_PLAYING);
 
         if (playable != null) {
-            notification.setContentTitle(playable.getFeedTitle());
+            notification.setContentTitle(Html.fromHtml("<b>" + playable.getFeedTitle() + "</b>"));
             notification.setContentText(playable.getEpisodeTitle());
             addActions(notification, mediaSessionToken, playerStatus, isCasting);
 
@@ -139,6 +140,7 @@ public class PlaybackServiceNotificationBuilder {
         notification.setSmallIcon(R.drawable.ic_antenna);
         notification.setOngoing(false);
         notification.setOnlyAlertOnce(true);
+        notification.setShowWhen(false);
         notification.setPriority(UserPreferences.getNotifyPriority());
         notification.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         notification.setColor(NotificationCompat.COLOR_DEFAULT);
