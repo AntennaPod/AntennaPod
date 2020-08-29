@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Displays the 'crash report' screen
@@ -35,7 +37,11 @@ public class BugReportActivity extends AppCompatActivity {
 
         try {
             File crashFile = CrashReportWriter.getFile();
-            crashDetailsText += IOUtils.toString(new FileInputStream(crashFile), Charset.forName("UTF-8"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                crashDetailsText += IOUtils.toString(new FileInputStream(crashFile), StandardCharsets.UTF_8);
+            } else {
+                crashDetailsText += IOUtils.toString(new FileInputStream(crashFile), Charset.forName("UTF-8"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             crashDetailsText += "No crash report recorded";

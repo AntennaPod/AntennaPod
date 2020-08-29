@@ -1,11 +1,14 @@
 package de.danoeh.antennapod.core.util.id3reader;
 
+import android.os.Build;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
 import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
@@ -169,9 +172,21 @@ public class ID3Reader {
             max--;
 
             if (encoding[0] == ENCODING_UTF16_WITH_BOM || encoding[0] == ENCODING_UTF16_WITHOUT_BOM) {
-                return readUnicodeString(buffer, input, max, Charset.forName("UTF-16")) + 1; // take encoding byte into account
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    return readUnicodeString(buffer, input, max,
+                            StandardCharsets.UTF_16) + 1; // take encoding byte into account
+                } else {
+                    return readUnicodeString(buffer, input, max,
+                            Charset.forName("UTF-16")) + 1;
+                }
             } else if (encoding[0] == ENCODING_UTF8) {
-                return readUnicodeString(buffer, input, max, Charset.forName("UTF-8")) + 1; // take encoding byte into account
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    return readUnicodeString(buffer, input, max,
+                            StandardCharsets.UTF_8) + 1; // take encoding byte into account
+                } else {
+                    return readUnicodeString(buffer, input, max,
+                            Charset.forName("UTF-8")) + 1;
+                }
             } else {
                 return readISOString(buffer, input, max) + 1; // take encoding byte into account
             }

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,6 +19,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,7 +63,11 @@ public class Timeline {
         String styleString = "";
         try {
             InputStream templateStream = context.getAssets().open("shownotes-style.css");
-            styleString = IOUtils.toString(templateStream, "UTF-8");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                styleString = IOUtils.toString(templateStream, StandardCharsets.UTF_8);
+            } else {
+                styleString = IOUtils.toString(templateStream, Charset.forName("UTF-8"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

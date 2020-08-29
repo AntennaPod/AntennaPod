@@ -2,17 +2,19 @@ package de.danoeh.antennapod.asynctask;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.LangUtils;
 import io.reactivex.Observable;
 
 /**
@@ -47,7 +49,11 @@ public class ExportWorker {
         return Observable.create(subscriber -> {
             OutputStreamWriter writer = null;
             try {
-                writer = new OutputStreamWriter(new FileOutputStream(output), LangUtils.UTF_8);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    writer = new OutputStreamWriter(new FileOutputStream(output), StandardCharsets.UTF_8);
+                } else {
+                    writer = new OutputStreamWriter(new FileOutputStream(output), Charset.forName("UTF-8"));
+                }
                 exportWriter.writeDocument(DBReader.getFeedList(), writer, context);
                 subscriber.onNext(output);
             } catch (IOException e) {

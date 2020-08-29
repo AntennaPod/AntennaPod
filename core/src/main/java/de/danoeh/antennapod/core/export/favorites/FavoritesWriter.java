@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.export.favorites;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -8,6 +9,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +30,6 @@ public class FavoritesWriter implements ExportWriter {
 
     private static final String FAVORITE_TEMPLATE = "html-export-favorites-item-template.html";
     private static final String FEED_TEMPLATE = "html-export-feed-template.html";
-    private static final String UTF_8 = "UTF-8";
 
     @Override
     public void writeDocument(List<Feed> feeds, Writer writer, Context context)
@@ -35,15 +37,30 @@ public class FavoritesWriter implements ExportWriter {
         Log.d(TAG, "Starting to write document");
 
         InputStream templateStream = context.getAssets().open("html-export-template.html");
-        String template = IOUtils.toString(templateStream, UTF_8);
+        String template;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            template = IOUtils.toString(templateStream, StandardCharsets.UTF_8);
+        } else {
+            template = IOUtils.toString(templateStream, Charset.forName("UTF-8"));
+        }
         template = template.replaceAll("\\{TITLE\\}", "Favorites");
         String[] templateParts = template.split("\\{FEEDS\\}");
 
         InputStream favTemplateStream = context.getAssets().open(FAVORITE_TEMPLATE);
-        String favTemplate = IOUtils.toString(favTemplateStream, UTF_8);
+        String favTemplate;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            favTemplate = IOUtils.toString(favTemplateStream, StandardCharsets.UTF_8);
+        } else {
+            favTemplate = IOUtils.toString(favTemplateStream, Charset.forName("UTF-8"));
+        }
 
         InputStream feedTemplateStream = context.getAssets().open(FEED_TEMPLATE);
-        String feedTemplate = IOUtils.toString(feedTemplateStream, UTF_8);
+        String feedTemplate;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            feedTemplate = IOUtils.toString(feedTemplateStream, StandardCharsets.UTF_8);
+        } else {
+            feedTemplate = IOUtils.toString(feedTemplateStream, Charset.forName("UTF-8"));
+        }
 
         Map<Long, List<FeedItem>> favoriteByFeed = getFeedMap(getFavorites());
 

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util.vorbiscommentreader;
 
+import android.os.Build;
+
 import androidx.annotation.NonNull;
 import org.apache.commons.io.EndianUtils;
 import org.apache.commons.io.IOUtils;
@@ -9,6 +11,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public abstract class VorbisCommentReader {
     /** Length of first page in an ogg file in bytes. */
@@ -83,7 +86,12 @@ public abstract class VorbisCommentReader {
     private String readUtf8String(InputStream input, long length) throws IOException {
         byte[] buffer = new byte[(int) length];
         IOUtils.readFully(input, buffer);
-        Charset charset = Charset.forName("UTF-8");
+        Charset charset;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            charset = StandardCharsets.UTF_8;
+        } else {
+            charset = Charset.forName("UTF-8");
+        }
         return charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString();
     }
 

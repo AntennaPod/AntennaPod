@@ -1,12 +1,15 @@
 package de.danoeh.antennapod.core.export.html;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.feed.Feed;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
 
@@ -24,7 +27,12 @@ public class HtmlWriter implements ExportWriter {
         Log.d(TAG, "Starting to write document");
 
         InputStream templateStream = context.getAssets().open("html-export-template.html");
-        String template = IOUtils.toString(templateStream, "UTF-8");
+        String template;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            template = IOUtils.toString(templateStream, StandardCharsets.UTF_8);
+        } else {
+            template = IOUtils.toString(templateStream, Charset.forName("UTF-8"));
+        }
         template = template.replaceAll("\\{TITLE\\}", "Subscriptions");
         String[] templateParts = template.split("\\{FEEDS\\}");
 

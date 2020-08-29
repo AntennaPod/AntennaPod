@@ -5,6 +5,7 @@ import android.app.backup.BackupDataInputStream;
 import android.app.backup.BackupDataOutput;
 import android.app.backup.BackupHelper;
 import android.content.Context;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 
@@ -20,6 +21,8 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.DigestInputStream;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
@@ -34,7 +37,6 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.LangUtils;
 
 public class OpmlBackupAgent extends BackupAgentHelper {
     private static final String OPML_BACKUP_KEY = "opml";
@@ -72,10 +74,19 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
             try {
                 digester = MessageDigest.getInstance("MD5");
-                writer = new OutputStreamWriter(new DigestOutputStream(byteStream, digester),
-                        LangUtils.UTF_8);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    writer = new OutputStreamWriter(new DigestOutputStream(byteStream, digester),
+                            StandardCharsets.UTF_8);
+                } else {
+                    writer = new OutputStreamWriter(new DigestOutputStream(byteStream, digester),
+                            Charset.forName("UTF-8"));
+                }
             } catch (NoSuchAlgorithmException e) {
-                writer = new OutputStreamWriter(byteStream, LangUtils.UTF_8);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    writer = new OutputStreamWriter(byteStream, StandardCharsets.UTF_8);
+                } else {
+                    writer = new OutputStreamWriter(byteStream, Charset.forName("UTF-8"));
+                }
             }
 
             try {
@@ -137,10 +148,19 @@ public class OpmlBackupAgent extends BackupAgentHelper {
 
             try {
                 digester = MessageDigest.getInstance("MD5");
-                reader = new InputStreamReader(new DigestInputStream(data, digester),
-                        LangUtils.UTF_8);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    reader = new InputStreamReader(new DigestInputStream(data, digester),
+                            StandardCharsets.UTF_8);
+                } else {
+                    reader = new InputStreamReader(new DigestInputStream(data, digester),
+                            Charset.forName("UTF-8"));
+                }
             } catch (NoSuchAlgorithmException e) {
-                reader = new InputStreamReader(data, LangUtils.UTF_8);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    reader = new InputStreamReader(data, StandardCharsets.UTF_8);
+                } else {
+                    reader = new InputStreamReader(data, Charset.forName("UTF-8"));
+                }
             }
 
             try {

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.asynctask;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
@@ -9,10 +10,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.LangUtils;
 import io.reactivex.Observable;
 
 /**
@@ -44,7 +46,11 @@ public class DocumentFileExportWorker {
                 if (outputStream == null) {
                     throw new IOException();
                 }
-                writer = new OutputStreamWriter(outputStream, LangUtils.UTF_8);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+                } else {
+                    writer = new OutputStreamWriter(outputStream, Charset.forName("UTF-8"));
+                }
                 exportWriter.writeDocument(DBReader.getFeedList(), writer, context);
                 subscriber.onNext(output);
             } catch (IOException e) {

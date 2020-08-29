@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.sync.gpoddernet;
 
+import android.os.Build;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
@@ -34,6 +35,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -505,7 +507,12 @@ public class GpodnetService implements ISyncService {
         RequestBody requestBody = RequestBody.create(TEXT, "");
         Request request = new Request.Builder().url(url).post(requestBody).build();
         try {
-            String credential = Credentials.basic(username, password, Charset.forName("UTF-8"));
+            String credential;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                credential = Credentials.basic(username, password, StandardCharsets.UTF_8);
+            } else {
+                credential = Credentials.basic(username, password, Charset.forName("UTF-8"));
+            }
             Request authRequest = request.newBuilder().header("Authorization", credential).build();
             Response response = httpClient.newCall(authRequest).execute();
             checkStatusCode(response);
