@@ -372,7 +372,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeed)) {
             updateSyncProgressBarVisibility();
         }
-        if (adapter != null && update.mediaIds.length > 0) {
+        if (adapter != null && update.mediaIds.length > 0 && feed != null) {
             for (long mediaId : update.mediaIds) {
                 int pos = FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId);
                 if (pos >= 0) {
@@ -412,7 +412,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
-        if (event.contains(feed)) {
+        if (feed != null && event.contains(feed)) {
             updateUi();
         }
     }
@@ -439,7 +439,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         }
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
-        adapter.updateItems(feed.getItems());
+        if (feed != null) {
+            adapter.updateItems(feed.getItems());
+        }
 
         getActivity().invalidateOptionsMenu();
         updateSyncProgressBarVisibility();
@@ -466,7 +468,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                     RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
                     p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
                 }
-                txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+                txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
                 txtvInformation.setOnClickListener((l) -> {
                     FilterDialog filterDialog = new FilterDialog(requireContext(), feed.getItemFilter()) {

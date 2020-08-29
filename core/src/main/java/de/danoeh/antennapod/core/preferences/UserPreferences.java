@@ -50,8 +50,6 @@ import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 public class UserPreferences {
     private UserPreferences(){}
 
-    private static final String IMPORT_DIR = "import/";
-
     private static final String TAG = "UserPreferences";
 
     // User Interface
@@ -68,6 +66,7 @@ public class UserPreferences {
     private static final String PREF_SHOW_AUTO_DOWNLOAD_REPORT = "prefShowAutoDownloadReport";
     public static final String PREF_BACK_BUTTON_BEHAVIOR = "prefBackButtonBehavior";
     private static final String PREF_BACK_BUTTON_GO_TO_PAGE = "prefBackButtonGoToPage";
+    public static final String PREF_FILTER_FEED = "prefFeedFilter";
 
     public static final String PREF_QUEUE_KEEP_SORTED = "prefQueueKeepSorted";
     public static final String PREF_QUEUE_KEEP_SORTED_ORDER = "prefQueueKeepSortedOrder";
@@ -150,6 +149,8 @@ public class UserPreferences {
     public static final int FEED_COUNTER_SHOW_UNPLAYED = 2;
     public static final int FEED_COUNTER_SHOW_NONE = 3;
     public static final int FEED_COUNTER_SHOW_DOWNLOADED = 4;
+    public static final int FEED_FILTER_NONE = 0;
+    public static final int FEED_FILTER_COUNTER_ZERO = 1;
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -165,7 +166,6 @@ public class UserPreferences {
         UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        createImportDirectory();
         createNoMediaFile();
     }
 
@@ -920,7 +920,6 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_DATA_FOLDER, dir)
              .apply();
-        createImportDirectory();
     }
 
     /**
@@ -936,24 +935,6 @@ public class UserPreferences {
                 e.printStackTrace();
             }
             Log.d(TAG, ".nomedia file created");
-        }
-    }
-
-    /**
-     * Creates the import directory if it doesn't exist and if storage is
-     * available
-     */
-    private static void createImportDirectory() {
-        File importDir = getDataFolder(IMPORT_DIR);
-        if (importDir != null) {
-            if (importDir.exists()) {
-                Log.d(TAG, "Import directory already exists");
-            } else {
-                Log.d(TAG, "Creating import directory");
-                importDir.mkdir();
-            }
-        } else {
-            Log.d(TAG, "Could not access external storage.");
         }
     }
 
@@ -1058,4 +1039,16 @@ public class UserPreferences {
                 .putString(PREF_QUEUE_KEEP_SORTED_ORDER, sortOrder.name())
                 .apply();
     }
+
+    public static int getFeedFilter() {
+        String value = prefs.getString(PREF_FILTER_FEED, "" + FEED_FILTER_NONE);
+        return Integer.parseInt(value);
+    }
+
+    public static void setFeedFilter(String value) {
+        prefs.edit()
+                .putString(PREF_FILTER_FEED, value)
+                .commit();
+    }
+
 }

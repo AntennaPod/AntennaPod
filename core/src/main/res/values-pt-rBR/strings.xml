@@ -188,6 +188,7 @@
   <string name="deactivate_auto_download">Desativar download automático</string>
   <string name="reset_position">Resetar a Posição da Reprodução</string>
   <string name="removed_item">Item removido</string>
+  <string name="no_items_selected">Nenhum item selecionado</string>
   <!--Download messages and labels-->
   <string name="download_successful">com sucesso</string>
   <string name="download_pending">Download pendente</string>
@@ -229,6 +230,7 @@
   <string name="confirm_mobile_download_dialog_title">Confirmar Download utilizando dados móveis</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">O download utilizando plano de dados foi desabilitado nas configurações.\n\nVocê pode escolher entre apenas adicionar o episódio na fila ou você pode permitir o download temporáriamente.\n\n<small>Sua escolha será lembrada por 10 minutos.</small></string>
   <string name="confirm_mobile_download_dialog_message">O download sobre plano de dados foi desabilitado nas configurações.\n\n Você deseja permitir o download temporáriamente?\n\n<small>Sua escolha será lembrada por 10 minutos</small></string>
+  <string name="confirm_mobile_streaming_button_always">Sempre permitir</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Adicionar à fila</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permitir temporariamente</string>
   <!--Mediaplayer messages-->
@@ -243,16 +245,19 @@
   <string name="player_buffering_msg">Armazenando</string>
   <string name="player_go_to_picture_in_picture">Modo PIP</string>
   <string name="unknown_media_key">AntennaPod - Chave de mídia desconhecida: %1$d</string>
+  <string name="error_file_not_found">Arquivo não encontrado</string>
   <!--Queue operations-->
   <string name="lock_queue">Bloquear Fila</string>
   <string name="unlock_queue">Desbloquear Fila</string>
   <string name="queue_locked">Fila bloqueada</string>
   <string name="queue_unlocked">Fila desbloqueada</string>
+  <string name="checkbox_do_not_show_again">Não mostrar novamente</string>
   <string name="clear_queue_label">Limpar fila</string>
   <string name="undo">Desfazer</string>
   <string name="move_to_top_label">Mover para o topo</string>
   <string name="move_to_bottom_label">Mover para o fim</string>
   <string name="sort">Ordenar</string>
+  <string name="keep_sorted">Manter ordenação</string>
   <string name="date">Data</string>
   <string name="duration">Duração</string>
   <string name="episode_title">Titulo do Episodio</string>
@@ -269,6 +274,7 @@
   <string name="set_playback_speed_label">Velocidades de Reprodução</string>
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
+  <string name="no_items_header_label">Nenhum episódio na fila</string>
   <string name="no_shownotes_label">Este episódio não possui notas.</string>
   <string name="no_chapters_label">Este episódio não possui capítulos</string>
   <!--Preferences-->
@@ -583,6 +589,7 @@
   <string name="proxy_host_invalid_error">Host não possui um endereço de IP ou domínio válidos</string>
   <string name="proxy_port_invalid_error">Porta inválida</string>
   <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Número de colunas</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproduzir em...</string>
   <string name="cast_disconnect_label">Desconectar a sessão do cast</string>
@@ -607,5 +614,6 @@
   <string name="notification_channel_error">Erros</string>
   <string name="notification_channel_error_description">Exibido caso algo dê errado, por exemplo se houver falha no download ou na sincronização com o gpodder.</string>
   <!--Widget settings-->
+  <string name="widget_opacity">Opacidade</string>
   <!--On-Demand configuration-->
 </resources>

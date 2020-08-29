@@ -265,16 +265,15 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 true, null, true);
 
         download = Observable.fromCallable(() -> {
-                    feeds = DBReader.getFeedList();
-                    ClientConfig.installSslProvider(this);
-                    downloader = new HttpDownloader(request);
-                    downloader.call();
-                    return downloader.getResult();
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::checkDownloadResult,
-                        error -> Log.e(TAG, Log.getStackTraceString(error)));
+            feeds = DBReader.getFeedList();
+            downloader = new HttpDownloader(request);
+            downloader.call();
+            return downloader.getResult();
+        })
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(this::checkDownloadResult,
+                error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void checkDownloadResult(@NonNull DownloadStatus status) {
@@ -561,13 +560,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.error_label);
             if (errorMsg != null) {
-                builder.setMessage(getString(R.string.error_msg_prefix) + errorMsg);
+                builder.setMessage(errorMsg);
             } else {
-                builder.setMessage(R.string.error_msg_prefix);
+                builder.setMessage(R.string.download_error_error_unknown);
             }
-            builder.setPositiveButton(android.R.string.ok,
-                    (dialog, which) -> dialog.cancel()
-            );
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
             builder.setOnDismissListener(dialog -> {
                 setResult(RESULT_ERROR);
                 finish();

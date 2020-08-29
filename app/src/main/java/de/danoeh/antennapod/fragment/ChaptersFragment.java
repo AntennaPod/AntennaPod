@@ -92,17 +92,12 @@ public class ChaptersFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
 
         if (disposable != null) {
             disposable.dispose();
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
         controller.release();
         controller = null;
         EventBus.getDefault().unregister(this);

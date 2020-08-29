@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Päivitä tilaukset</string>
+  <string name="feeds_label">Podcastit</string>
   <string name="statistics_label">Tilastot</string>
   <string name="add_feed_label">Lisää Podcast</string>
   <string name="episodes_label">Jaksot</string>
@@ -22,6 +23,8 @@
   <string name="gpodnet_auth_label">gpodder.net Kirjautuminen</string>
   <string name="episode_cache_full_title">Jaksojen välimuisti täynnä</string>
   <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa Asetuksissa.</string>
+  <string name="playback_statistics_label">Toisto</string>
+  <string name="download_statistics_label">Lataukset</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Podcasteja soitettu yhteensä:</string>
   <string name="statistics_details_dialog">%1$d jakso %2$d:sta aloitettu.\n\nSoitettu %3$s jaksoa %4$s:sta.</string>
@@ -29,6 +32,8 @@
   <string name="statistics_mode_normal">Laske oikeasti soitettu aikamäärä. Uudelleensoitto lasketaan kahdesti, mutta soitetuksi merkattua ei lasketa.</string>
   <string name="statistics_mode_count_all">Laske yhteen kaikki soitetuksi merketatut podcastit</string>
   <string name="statistics_speed_not_counted">Huomio: Soittonopeutta ei lasketa mukaan.</string>
+  <string name="statistics_reset_data">Nollaa tilastotiedot</string>
+  <string name="statistics_reset_data_msg">Tämä poistaa kaikkien jaksojen soiton keston historian. Haluatko varmasti jatkaa?</string>
   <!--Download Statistics fragment-->
   <!--Main activity-->
   <string name="drawer_open">Avaa menu</string>

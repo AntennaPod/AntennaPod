@@ -36,6 +36,9 @@ public class UnsupportedFeedtypeException extends Exception {
         if (message != null) {
             return message;
         } else if (type == TypeGetter.Type.INVALID) {
+            if ("html".equals(rootElement)) {
+                return "The server returned a website, not a podcast feed";
+            }
             return "Invalid type";
         } else {
             return "Type " + type + " not supported";
