@@ -2,7 +2,7 @@ package de.test.antennapod.entities;
 
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;

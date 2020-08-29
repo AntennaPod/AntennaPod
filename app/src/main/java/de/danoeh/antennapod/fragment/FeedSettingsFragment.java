@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
@@ -322,7 +322,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupKeepUpdatedPreference() {
-            SwitchPreference pref = findPreference("keepUpdated");
+            SwitchPreferenceCompat pref = findPreference("keepUpdated");
 
             pref.setChecked(feedPreferences.getKeepUpdated());
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -336,7 +336,7 @@ public class FeedSettingsFragment extends Fragment {
 
         private void setupAutoDownloadGlobalPreference() {
             if (!UserPreferences.isEnableAutodownload()) {
-                SwitchPreference autodl = findPreference("autoDownload");
+                SwitchPreferenceCompat autodl = findPreference("autoDownload");
                 autodl.setChecked(false);
                 autodl.setEnabled(false);
                 autodl.setSummary(R.string.auto_download_disabled_globally);
@@ -345,7 +345,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupAutoDownloadPreference() {
-            SwitchPreference pref = findPreference("autoDownload");
+            SwitchPreferenceCompat pref = findPreference("autoDownload");
 
             pref.setEnabled(UserPreferences.isEnableAutodownload());
             if (UserPreferences.isEnableAutodownload()) {
