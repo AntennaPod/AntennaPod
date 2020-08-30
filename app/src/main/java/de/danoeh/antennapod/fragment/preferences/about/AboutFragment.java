@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.fragment.preferences.about;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -27,14 +27,9 @@ public class AboutFragment extends PreferenceFragmentCompat {
             Snackbar.make(getView(), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
             return true;
         });
-        findPreference("about_developers").setOnPreferenceClickListener((preference) -> {
-            getFragmentManager().beginTransaction().replace(R.id.content, new AboutDevelopersFragment())
-                    .addToBackStack(getString(R.string.developers)).commit();
-            return true;
-        });
-        findPreference("about_translators").setOnPreferenceClickListener((preference) -> {
-            getFragmentManager().beginTransaction().replace(R.id.content, new AboutTranslatorsFragment())
-                    .addToBackStack(getString(R.string.translators)).commit();
+        findPreference("about_contributors").setOnPreferenceClickListener((preference) -> {
+            getParentFragmentManager().beginTransaction().replace(R.id.content, new ContributorsPagerFragment())
+                    .addToBackStack(getString(R.string.contributors)).commit();
             return true;
         });
         findPreference("about_privacy_policy").setOnPreferenceClickListener((preference) -> {
@@ -42,7 +37,7 @@ public class AboutFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference("about_licenses").setOnPreferenceClickListener((preference) -> {
-            getFragmentManager().beginTransaction().replace(R.id.content, new AboutLicensesFragment())
+            getParentFragmentManager().beginTransaction().replace(R.id.content, new LicensesFragment())
                     .addToBackStack(getString(R.string.translators)).commit();
             return true;
         });

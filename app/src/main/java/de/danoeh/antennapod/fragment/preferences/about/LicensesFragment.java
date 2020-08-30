@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.fragment.preferences.about;
 
 import android.os.Bundle;
 import android.view.View;
@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class AboutLicensesFragment extends ListFragment {
+public class LicensesFragment extends ListFragment {
     private Disposable licensesLoader;
     private final ArrayList<LicenseItem> licenses = new ArrayList<>();
 
@@ -59,7 +59,7 @@ public class AboutLicensesFragment extends ListFragment {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
                 developers -> setListAdapter(new SimpleIconListAdapter<LicenseItem>(getContext(), developers)),
-                error -> Toast.makeText(getContext(), "Error while loading licenses", Toast.LENGTH_LONG).show()
+                error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
         );
 
     }
