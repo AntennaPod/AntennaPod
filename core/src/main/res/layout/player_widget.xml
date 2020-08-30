@@ -21,7 +21,7 @@
             android:layout_margin="12dp"
             android:background="?android:attr/selectableItemBackground"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_av_play_white_48dp" />
+            android:src="@drawable/ic_av_play_white_24dp" />
 
         <LinearLayout
             android:id="@+id/layout_left"

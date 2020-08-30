@@ -156,7 +156,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_pause_white_48dp);
                 views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
             } else {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
+                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_24dp);
                 views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
             }
             views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent());
