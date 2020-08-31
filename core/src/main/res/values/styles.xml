@@ -69,7 +69,7 @@
         <item name="ic_chat">@drawable/ic_chat_black</item>
         <item name="ic_bug">@drawable/ic_bug_black</item>
         <item name="ic_bookmark">@drawable/ic_bookmark_black_24dp</item>
-        <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_white</item>
+        <item name="batch_edit_fab_icon">@drawable/ic_fab_edit_black</item>
         <item name="ic_key">@drawable/ic_key_black</item>
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_black</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
