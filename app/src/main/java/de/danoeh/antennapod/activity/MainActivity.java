@@ -501,15 +501,25 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     /**
-     * Checks whether the activity was launched via a deep link.
+     *  Handles the incoming intent. If the activity was launched via a deep link,
+     *  passes the uri to handleDeeplink().
+     *
+     *  Added an SDK version check since the minimum SDK supported by AntennaPod is 16
+     *  and Object.equals(Obj1, Obj2) is only supported in API 19+.
      *
      * @param intent incoming intent
      */
     private void handleIntent(Intent intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (Objects.equals(intent.getAction(), Intent.ACTION_VIEW)) {
-                Uri uri = intent.getData();
-                if (uri != null) handleDeeplink(uri);
+        if (intent == null) return;
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+
+        if (Objects.equals(intent.getAction(), Intent.ACTION_VIEW)) {
+            Uri uri = intent.getData();
+            if (uri != null) {
+                handleDeeplink(uri);
             }
         }
     }
@@ -539,34 +549,34 @@ public class MainActivity extends CastEnabledActivity {
      * @param uri incoming deep link
      */
     private void handleDeeplink(Uri uri) {
-       if (uri == null) {
-           loadFragment(AddFeedFragment.TAG, null);
+        if (uri == null) {
            return;
-       }
+        }
 
         String feature = uri.getQueryParameter("featureName");
-        if(feature != null) {
-            feature = feature.toLowerCase();
-            switch (feature) {
-                case "downloads":
-                    loadFragment(DownloadsFragment.TAG, null);
-                    break;
-                case "history":
-                    loadFragment(PlaybackHistoryFragment.TAG, null);
-                    break;
-                case "episodes":
-                    loadFragment(EpisodesFragment.TAG, null);
-                    break;
-                case "queue":
-                    loadFragment(QueueFragment.TAG, null);
-                    break;
-                case "subscriptions":
-                    loadFragment(SubscriptionFragment.TAG, null);
-                    break;
-                default:
-                    loadFragment(AddFeedFragment.TAG, null);
-            }
+        if(feature == null) {
+            return;
         }
-        else loadFragment(AddFeedFragment.TAG, null);
+
+        feature = feature.toLowerCase();
+        switch (feature) {
+            case "downloads":
+                loadFragment(DownloadsFragment.TAG, null);
+                break;
+            case "history":
+                 loadFragment(PlaybackHistoryFragment.TAG, null);
+                 break;
+            case "episodes":
+                loadFragment(EpisodesFragment.TAG, null);
+                break;
+            case "queue":
+                loadFragment(QueueFragment.TAG, null);
+                break;
+            case "subscriptions":
+                loadFragment(SubscriptionFragment.TAG, null);
+                break;
+            default:
+                loadFragment(AddFeedFragment.TAG, null);
+        }
     }
 }

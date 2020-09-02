@@ -1,10 +1,26 @@
 <?xml version ="1.0" encoding ="utf-8"?>
+<!--  You can learn more about App Actions and how to use them in the documentation:
+https://developers.google.com/assistant/app/overview -->
+
 <actions>
     <action intentName="actions.intent.OPEN_APP_FEATURE">
+        <!-- TODO: Change URL to use the right path with the original package name -->
         <fulfillment urlTemplate="https://com.mborowiec.antennapod/main{?featureName}">
             <parameter-mapping
                 intentParameter="feature"
                 urlParameter="featureName" />
         </fulfillment>
+        <parameter name="feature">
+            <entity-set-reference entitySetId="featureEntitySet" />
+        </parameter>
     </action>
+
+    <entity-set entitySetId="featureEntitySet">
+        <entity identifier="QUEUE" name="Queue" />
+        <entity identifier="EPISODES" name="Episodes" />
+        <entity identifier="DOWNLOADS" name="Downloads" />
+        <entity identifier="SUBSCRIPTIONS" name="Subscriptions" />
+        <entity identifier="HISTORY" name="History" />
+    </entity-set>
+
 </actions>
