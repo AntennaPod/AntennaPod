@@ -184,22 +184,36 @@ public class CoverFragment extends Fragment {
 
     private void configureForOrientation(Configuration newConfig) {
         LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
-        ViewGroup.LayoutParams params = imgvCover.getLayoutParams();
+        LinearLayout textContainer = getView().findViewById(R.id.cover_fragment_text_container);
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imgvCover.getLayoutParams();
+        LinearLayout.LayoutParams textParams = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
+
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
+            double percentageWidth = 0.8;
+            if (ratio <= 1.7) {
+                percentageWidth = (ratio / 1.7) * percentageWidth * 0.8;
+            }
             mainContainer.setOrientation(LinearLayout.VERTICAL);
             if (newConfig.screenWidthDp > 0) {
-                params.width = (int) Math.min(convertDpToPixel(newConfig.screenWidthDp) * .50,
-                        convertDpToPixel(newConfig.screenHeightDp) * .40);
+                params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * percentageWidth);
                 params.height = params.width;
+                textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
         } else {
+            double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
+            double percentageHeight = 0.4;
+            if (ratio >= .50) {
+                percentageHeight = (0.5 / ratio) * percentageHeight;
+            }
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
-                params.height = (int) Math.min(convertDpToPixel(newConfig.screenHeightDp) * .40,
-                        convertDpToPixel(newConfig.screenWidthDp) * .50);
+                params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);
                 params.width = params.height;
+                textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
         }
