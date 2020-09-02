@@ -715,7 +715,7 @@
     <string name="search_itunes_label">Search iTunes</string>
     <string name="search_fyyd_label">Search fyyd</string>
     <string name="advanced">Advanced</string>
-    <string name="add_podcast_by_url">Add Podcast by URL</string>
+    <string name="add_podcast_by_url">Add Podcast by RSS address</string>
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
     <string name="discover">Discover</string>
