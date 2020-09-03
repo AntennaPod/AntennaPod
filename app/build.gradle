@@ -12,7 +12,6 @@ android {
     }
     
     lintOptions {
-        checkDependencies = true
         checkGeneratedSources = true
     }
 
