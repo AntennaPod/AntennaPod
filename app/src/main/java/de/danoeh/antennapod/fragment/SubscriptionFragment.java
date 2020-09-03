@@ -9,6 +9,8 @@ import android.widget.ProgressBar;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -102,6 +104,20 @@ public class SubscriptionFragment extends Fragment {
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
+
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swiperefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            AutoUpdateManager.runImmediate(requireContext());
+            new Thread(() -> {
+                try {
+                    Thread.sleep(800);
+                } catch (Exception ignore) {
+                }
+                getActivity().runOnUiThread(() -> {
+                    swipeRefreshLayout.setRefreshing(false);
+                });
+            }).start();
+        });
         return root;
     }
 
