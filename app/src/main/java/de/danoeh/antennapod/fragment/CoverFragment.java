@@ -200,15 +200,14 @@ public class CoverFragment extends Fragment {
             if (newConfig.screenWidthDp > 0) {
                 params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * percentageWidth);
                 params.height = params.width;
-                textParams.weight = 1;
+                textParams.weight = 0;
                 imgvCover.setLayoutParams(params);
             }
         } else {
             double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
             double percentageHeight = 0.4;
-            if (ratio >= .50) {
-                percentageHeight = (0.5 / ratio) * percentageHeight;
-            }
+            percentageHeight = (ratio / 0.5) * percentageHeight;
+
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
                 params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);
