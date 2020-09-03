@@ -400,7 +400,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         binding.listview.setSelector(android.R.color.transparent);
         binding.listview.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
-//        Confused to change this one using view binding or not, because there is just 1 element.
         TextView description = header.findViewById(R.id.txtvDescription);
 
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
