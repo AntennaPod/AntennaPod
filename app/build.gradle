@@ -10,6 +10,11 @@ android {
     viewBinding{
         enabled = true
     }
+    
+    lintOptions {
+        checkDependencies = true
+        checkGeneratedSources = true
+    }
 
     lintOptions {
         checkDependencies = true
