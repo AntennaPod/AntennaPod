@@ -29,13 +29,10 @@
             android:key="prefDrawerFeedOrder"
             android:summary="@string/pref_nav_drawer_feed_order_sum"
             android:defaultValue="0"/>
-        <ListPreference
-            android:entryValues="@array/nav_drawer_feed_counter_values"
-            android:entries="@array/nav_drawer_feed_counter_options"
+        <Preference
             android:title="@string/pref_nav_drawer_feed_counter_title"
             android:key="prefDrawerFeedIndicator"
-            android:summary="@string/pref_nav_drawer_feed_counter_sum"
-            android:defaultValue="1"/>
+            android:summary="@string/pref_nav_drawer_feed_counter_sum" />
         <Preference
             android:title="@string/pref_filter_feed_title"
             android:key="prefFeedFilter"

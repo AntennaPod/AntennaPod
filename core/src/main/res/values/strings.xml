@@ -723,7 +723,6 @@
     <string name="search_powered_by">Search powered by %1$s</string>
 
     <string name="filter">Filter</string>
-    <string name="sort_order">Sort order</string>
     
     <!-- Episodes apply actions -->
     <string name="all_label">All</string>

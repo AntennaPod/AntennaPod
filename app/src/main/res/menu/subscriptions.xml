@@ -16,7 +16,7 @@
             custom:showAsAction="never" />
     <item
             android:id="@+id/subscriptions_sort"
-            android:title="@string/sort_order"
+            android:title="@string/sort"
             custom:showAsAction="never" />
     <item
             android:id="@+id/subscription_num_columns"
