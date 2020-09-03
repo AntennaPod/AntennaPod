@@ -10,6 +10,11 @@ android {
     viewBinding{
         enabled = true
     }
+    
+    lintOptions {
+        checkDependencies = true
+        checkGeneratedSources = true
+    }
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
