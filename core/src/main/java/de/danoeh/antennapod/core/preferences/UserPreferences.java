@@ -55,7 +55,7 @@ public class UserPreferences {
     // User Interface
     public static final String PREF_THEME = "prefTheme";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
-    private static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
+    public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     private static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
@@ -244,6 +244,12 @@ public class UserPreferences {
     public static int getFeedOrder() {
         String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "" + FEED_ORDER_COUNTER);
         return Integer.parseInt(value);
+    }
+
+    public static void setFeedOrder(String selected) {
+        prefs.edit()
+                .putString(PREF_DRAWER_FEED_ORDER, selected)
+                .commit();
     }
 
     public static int getFeedCounterSetting() {
