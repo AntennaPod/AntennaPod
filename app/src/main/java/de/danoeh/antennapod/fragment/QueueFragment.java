@@ -384,9 +384,9 @@ public class QueueFragment extends Fragment {
         if (recyclerAdapter != null) {
             recyclerAdapter.updateDragDropEnabled();
         }
-        if (locked) {
+        if (locked && queue.size() == 0) {
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
-        } else {
+        } else if (!locked) {
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
         }
     }
