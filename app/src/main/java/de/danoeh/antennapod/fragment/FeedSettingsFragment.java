@@ -177,6 +177,7 @@ public class FeedSettingsFragment extends Fragment {
                                 new SkipIntroEndingChangedEvent(feedPreferences.getFeedSkipIntro(),
                                         feedPreferences.getFeedSkipEnding(),
                                         feed.getId()));
+                        closeKeyboard();
                     }
                 }.show();
                 return false;

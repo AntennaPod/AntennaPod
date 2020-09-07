@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.dialog;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
@@ -10,12 +12,13 @@ import de.danoeh.antennapod.R;
  * Displays a dialog with a username and password text field and an optional checkbox to save username and preferences.
  */
 public abstract class FeedPreferenceSkipDialog extends AlertDialog.Builder {
+    private View rootView;
 
     public FeedPreferenceSkipDialog(Context context, int skipIntroInitialValue,
                                     int skipEndInitialValue) {
         super(context);
         setTitle(R.string.pref_feed_skip);
-        View rootView = View.inflate(context, R.layout.feed_pref_skip_dialog, null);
+        rootView = View.inflate(context, R.layout.feed_pref_skip_dialog, null);
         setView(rootView);
 
         final EditText etxtSkipIntro = rootView.findViewById(R.id.etxtSkipIntro);
@@ -42,6 +45,11 @@ public abstract class FeedPreferenceSkipDialog extends AlertDialog.Builder {
             }
             onConfirmed(skipIntro, skipEnding);
         });
+    }
+
+    public void closeKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(rootView.getWindowToken(), 0);
     }
 
     protected abstract void onConfirmed(int skipIntro, int skipEndig);
