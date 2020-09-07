@@ -134,6 +134,7 @@ public class SubscriptionFragment extends Fragment {
                 return true;
             case R.id.subscriptions_sort:
                 FeedSortDialog.showDialog(requireContext());
+                return true;
             case R.id.subscription_num_columns_2:
                 setColumnNumber(2);
                 return true;
