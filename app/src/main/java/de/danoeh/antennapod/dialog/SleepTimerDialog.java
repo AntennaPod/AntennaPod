@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +33,7 @@ public class SleepTimerDialog extends DialogFragment {
     private PlaybackController controller;
     private Disposable timeUpdater;
 
+    private View content;
     private EditText etxtTime;
     private Spinner spTimeUnit;
     private LinearLayout timeSetup;
@@ -76,11 +78,11 @@ public class SleepTimerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View content = View.inflate(getContext(), R.layout.time_dialog, null);
+        content = View.inflate(getContext(), R.layout.time_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.sleep_timer_label);
         builder.setView(content);
-        builder.setPositiveButton(R.string.close_label, null);
+        builder.setPositiveButton(R.string.close_label, (view, which) -> closeKeyboard());
 
         etxtTime = content.findViewById(R.id.etxtTime);
         spTimeUnit = content.findViewById(R.id.spTimeUnit);
@@ -137,6 +139,7 @@ public class SleepTimerDialog extends DialogFragment {
                 if (controller != null) {
                     controller.setSleepTimer(time);
                 }
+                closeKeyboard();
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 Snackbar.make(content, R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
@@ -152,5 +155,10 @@ public class SleepTimerDialog extends DialogFragment {
         timeSetup.setVisibility(controller.sleepTimerActive() ? View.GONE : View.VISIBLE);
         timeDisplay.setVisibility(controller.sleepTimerActive() ? View.VISIBLE : View.GONE);
         time.setText(Converter.getDurationStringLong((int) controller.getSleepTimerTimeLeft()));
+    }
+
+    public void closeKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
     }
 }
