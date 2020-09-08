@@ -7,7 +7,7 @@ plugins {
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    viewBinding{
+    viewBinding {
         enabled = true
     }
     
