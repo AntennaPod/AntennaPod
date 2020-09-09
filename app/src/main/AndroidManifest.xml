@@ -83,6 +83,28 @@
             android:windowSoftInputMode="stateHidden"
             android:launchMode="singleTask"
             android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.mborowiec.antennapod"
+                    android:pathPrefix="/main"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.mborowiec.antennapod"
+                    android:pathPrefix="/search"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
 
         <activity

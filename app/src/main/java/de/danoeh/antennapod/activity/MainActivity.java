@@ -543,40 +543,55 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     /**
-     * Handles the incoming deep link and loads the relevant fragment.
-     * By default, opens the "Add Podcast" feature.
+     * Handles the deep link incoming via App Actions.
+     * Performs an in-app search or opens the relevant feature of the app
+     * depending on the query.
      *
      * @param uri incoming deep link
      */
     private void handleDeeplink(Uri uri) {
-        if (uri == null) {
+        if (uri == null || uri.getPath() == null) {
            return;
         }
 
-        String feature = uri.getQueryParameter("featureName");
-        if(feature == null) {
-            return;
-        }
+        switch (uri.getPath()) {
+            case "/search":
+                String query = uri.getQueryParameter("query");
+                if (query == null) {
+                    return;
+                }
 
-        feature = feature.toLowerCase();
-        switch (feature) {
-            case "downloads":
-                loadFragment(DownloadsFragment.TAG, null);
+                this.loadChildFragment(OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
                 break;
-            case "history":
-                 loadFragment(PlaybackHistoryFragment.TAG, null);
-                 break;
-            case "episodes":
-                loadFragment(EpisodesFragment.TAG, null);
+
+            case "/main":
+                String feature = uri.getQueryParameter("featureName");
+                if (feature == null) {
+                    return;
+                }
+
+                feature = feature.toLowerCase();
+                switch (feature) {
+                    case "downloads":
+                        loadFragment(DownloadsFragment.TAG, null);
+                        break;
+                    case "history":
+                        loadFragment(PlaybackHistoryFragment.TAG, null);
+                        break;
+                    case "episodes":
+                        loadFragment(EpisodesFragment.TAG, null);
+                        break;
+                    case "queue":
+                        loadFragment(QueueFragment.TAG, null);
+                        break;
+                    case "subscriptions":
+                        loadFragment(SubscriptionFragment.TAG, null);
+                        break;
+                    default:
+                        loadFragment(AddFeedFragment.TAG, null);
+                        break;
+                }
                 break;
-            case "queue":
-                loadFragment(QueueFragment.TAG, null);
-                break;
-            case "subscriptions":
-                loadFragment(SubscriptionFragment.TAG, null);
-                break;
-            default:
-                loadFragment(AddFeedFragment.TAG, null);
         }
     }
 }

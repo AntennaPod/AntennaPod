@@ -15,6 +15,15 @@ https://developers.google.com/assistant/app/overview -->
         </parameter>
     </action>
 
+    <action intentName="actions.intent.GET_THING">
+        <!-- TODO: Change URL to use the right path with the original package name -->
+        <fulfillment urlTemplate="https://com.mborowiec.antennapod/search{?query}">
+            <parameter-mapping
+                intentParameter="thing.name"
+                urlParameter="query"/>
+        </fulfillment>
+    </action>
+
     <entity-set entitySetId="featureEntitySet">
         <entity identifier="QUEUE" name="Queue" />
         <entity identifier="EPISODES" name="Episodes" />
