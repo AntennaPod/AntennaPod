@@ -189,10 +189,9 @@ public class CoverFragment extends Fragment {
 
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imgvCover.getLayoutParams();
         LinearLayout.LayoutParams textParams = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
-
+        double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
             double percentageWidth = 0.8;
             if (ratio <= SIXTEEN_BY_NINE) {
                 percentageWidth = (ratio / SIXTEEN_BY_NINE) * percentageWidth * 0.8;
@@ -205,10 +204,7 @@ public class CoverFragment extends Fragment {
                 imgvCover.setLayoutParams(params);
             }
         } else {
-            double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
-            double percentageHeight = 0.4;
-            percentageHeight = 2 * ratio * percentageHeight;
-
+            double percentageHeight = ratio * 0.8;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
                 params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);
