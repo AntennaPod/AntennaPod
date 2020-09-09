@@ -45,6 +45,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class CoverFragment extends Fragment {
 
     private static final String TAG = "CoverFragment";
+    static final double SIXTEEN_BY_NINE = 1.7;
 
     private View root;
     private TextView txtvPodcastTitle;
@@ -193,8 +194,8 @@ public class CoverFragment extends Fragment {
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
             double percentageWidth = 0.8;
-            if (ratio <= 1.7) {
-                percentageWidth = (ratio / 1.7) * percentageWidth * 0.8;
+            if (ratio <= SIXTEEN_BY_NINE) {
+                percentageWidth = (ratio / SIXTEEN_BY_NINE) * percentageWidth * 0.8;
             }
             mainContainer.setOrientation(LinearLayout.VERTICAL);
             if (newConfig.screenWidthDp > 0) {
@@ -206,7 +207,7 @@ public class CoverFragment extends Fragment {
         } else {
             double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
             double percentageHeight = 0.4;
-            percentageHeight = (ratio / 0.5) * percentageHeight;
+            percentageHeight = 2 * ratio * percentageHeight;
 
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
