@@ -4,8 +4,7 @@ https://developers.google.com/assistant/app/overview -->
 
 <actions>
     <action intentName="actions.intent.OPEN_APP_FEATURE">
-        <!-- TODO: Change URL to use the right path with the original package name -->
-        <fulfillment urlTemplate="https://com.mborowiec.antennapod/main{?featureName}">
+        <fulfillment urlTemplate="https://de.danoeh.antennapod/main{?featureName}">
             <parameter-mapping
                 intentParameter="feature"
                 urlParameter="featureName" />
@@ -16,8 +15,7 @@ https://developers.google.com/assistant/app/overview -->
     </action>
 
     <action intentName="actions.intent.GET_THING">
-        <!-- TODO: Change URL to use the right path with the original package name -->
-        <fulfillment urlTemplate="https://com.mborowiec.antennapod/search{?query}">
+        <fulfillment urlTemplate="https://de.danoeh.antennapod/search{?query}">
             <parameter-mapping
                 intentParameter="thing.name"
                 urlParameter="query"/>

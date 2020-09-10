@@ -90,7 +90,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="com.mborowiec.antennapod"
+                    android:host="de.danoeh.antennapod"
                     android:pathPrefix="/main"
                     android:scheme="https" />
             </intent-filter>
@@ -101,7 +101,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="com.mborowiec.antennapod"
+                    android:host="de.danoeh.antennapod"
                     android:pathPrefix="/search"
                     android:scheme="https" />
             </intent-filter>
