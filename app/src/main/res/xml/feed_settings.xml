@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="feedSettingsScreen">
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
             android:key="keepUpdated"
             android:icon="?attr/navigation_refresh"
             android:title="@string/keep_updated"
@@ -45,7 +45,7 @@
             android:key="volumeReduction"/>
 
     <PreferenceCategory android:title="@string/auto_download_settings_label">
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:key="autoDownload"
                 android:title="@string/auto_download_label"/>
         <Preference

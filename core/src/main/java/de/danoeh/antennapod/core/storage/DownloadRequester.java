@@ -340,7 +340,7 @@ public class DownloadRequester implements DownloadStateProvider {
     /**
      * Checks if feedfile is in the downloads list
      */
-    public synchronized boolean isDownloadingFile(FeedFile item) {
+    public synchronized boolean isDownloadingFile(@NonNull FeedFile item) {
         return item.getDownload_url() != null && downloads.containsKey(item.getDownload_url());
     }
 

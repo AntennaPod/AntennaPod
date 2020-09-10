@@ -45,20 +45,18 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
-            switch (item.getItemId()) {
-                case R.id.filter_items:
-                    showFilterDialog();
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.filter_items) {
+                showFilterDialog();
+                return true;
             }
+            return false;
         } else {
             return true;
         }
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.findItem(R.id.filter_items).setVisible(true);
         menu.findItem(R.id.mark_all_read_item).setVisible(true);
@@ -69,7 +67,7 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         super.onFragmentLoaded(episodes);
 
         if (feedItemFilter.getValues().length > 0) {
-            txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+            txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
             Iconify.addIcons(txtvInformation);
             txtvInformation.setVisibility(View.VISIBLE);
         } else {

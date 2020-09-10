@@ -6,6 +6,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @SmallTest
@@ -17,8 +18,8 @@ public class FeedFilterTest {
         FeedItem item = new FeedItem();
         item.setTitle("Hello world");
 
-        assertTrue(!filter.excludeOnly());
-        assertTrue(!filter.includeOnly());
+        assertFalse(filter.excludeOnly());
+        assertFalse(filter.includeOnly());
         assertEquals("", filter.getExcludeFilter());
         assertEquals("", filter.getIncludeFilter());
         assertTrue(filter.shouldAutoDownload(item));
@@ -34,12 +35,12 @@ public class FeedFilterTest {
         FeedItem item2 = new FeedItem();
         item2.setTitle("Don't include me");
 
-        assertTrue(!filter.excludeOnly());
+        assertFalse(filter.excludeOnly());
         assertTrue(filter.includeOnly());
         assertEquals("", filter.getExcludeFilter());
         assertEquals(includeFilter, filter.getIncludeFilter());
         assertTrue(filter.shouldAutoDownload(item));
-        assertTrue(!filter.shouldAutoDownload(item2));
+        assertFalse(filter.shouldAutoDownload(item2));
     }
 
     @Test
@@ -53,10 +54,10 @@ public class FeedFilterTest {
         item2.setTitle("Item2");
 
         assertTrue(filter.excludeOnly());
-        assertTrue(!filter.includeOnly());
+        assertFalse(filter.includeOnly());
         assertEquals(excludeFilter, filter.getExcludeFilter());
         assertEquals("", filter.getIncludeFilter());
-        assertTrue(!filter.shouldAutoDownload(item));
+        assertFalse(filter.shouldAutoDownload(item));
         assertTrue(filter.shouldAutoDownload(item2));
     }
 
@@ -73,12 +74,12 @@ public class FeedFilterTest {
         FeedItem item3 = new FeedItem();
         item3.setTitle("One two words");
 
-        assertTrue(!filter.excludeOnly());
+        assertFalse(filter.excludeOnly());
         assertTrue(filter.includeOnly());
         assertEquals("", filter.getExcludeFilter());
         assertEquals(includeFilter, filter.getIncludeFilter());
         assertTrue(filter.shouldAutoDownload(item));
-        assertTrue(!filter.shouldAutoDownload(item2));
+        assertFalse(filter.shouldAutoDownload(item2));
         assertTrue(filter.shouldAutoDownload(item3));
     }
 
@@ -96,12 +97,12 @@ public class FeedFilterTest {
         item3.setTitle("One two words");
 
         assertTrue(filter.excludeOnly());
-        assertTrue(!filter.includeOnly());
+        assertFalse(filter.includeOnly());
         assertEquals(excludeFilter, filter.getExcludeFilter());
         assertEquals("", filter.getIncludeFilter());
-        assertTrue(!filter.shouldAutoDownload(item));
+        assertFalse(filter.shouldAutoDownload(item));
         assertTrue(filter.shouldAutoDownload(item2));
-        assertTrue(!filter.shouldAutoDownload(item3));
+        assertFalse(filter.shouldAutoDownload(item3));
     }
 
     @Test
@@ -122,8 +123,8 @@ public class FeedFilterTest {
         assertTrue(filter.hasExcludeFilter());
         assertTrue(filter.hasIncludeFilter());
         assertTrue(filter.shouldAutoDownload(download));
-        assertTrue(!filter.shouldAutoDownload(doNotDownload));
-        assertTrue(!filter.shouldAutoDownload(doNotDownload2));
+        assertFalse(filter.shouldAutoDownload(doNotDownload));
+        assertFalse(filter.shouldAutoDownload(doNotDownload2));
     }
 
 }

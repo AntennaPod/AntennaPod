@@ -227,15 +227,14 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                Intent destIntent = new Intent(this, MainActivity.class);
-                if (NavUtils.shouldUpRecreateTask(this, destIntent)) {
-                    startActivity(destIntent);
-                } else {
-                    NavUtils.navigateUpFromSameTask(this);
-                }
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            Intent destIntent = new Intent(this, MainActivity.class);
+            if (NavUtils.shouldUpRecreateTask(this, destIntent)) {
+                startActivity(destIntent);
+            } else {
+                NavUtils.navigateUpFromSameTask(this);
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -606,9 +605,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
 
         final List<String> titles = new ArrayList<>();
-        final List<String> urls = new ArrayList<>();
 
-        urls.addAll(urlsMap.keySet());
+        final List<String> urls = new ArrayList<>(urlsMap.keySet());
         for (String url : urls) {
             titles.add(urlsMap.get(url));
         }

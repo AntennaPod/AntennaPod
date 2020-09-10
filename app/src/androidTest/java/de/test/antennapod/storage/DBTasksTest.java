@@ -2,7 +2,7 @@ package de.test.antennapod.storage;
 
 import android.content.Context;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.SmallTest;
 
 import org.junit.After;
@@ -29,6 +29,8 @@ import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -45,7 +47,7 @@ public class DBTasksTest {
 
     @Before
     public void setUp() throws Exception {
-        context = InstrumentationRegistry.getTargetContext();
+        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         // create new database
         PodDBAdapter.init(context);
@@ -68,7 +70,7 @@ public class DBTasksTest {
         }
         Feed newFeed = DBTasks.updateFeed(context, feed)[0];
 
-        assertTrue(newFeed == feed);
+        assertSame(feed, newFeed);
         assertTrue(feed.getId() != 0);
         for (FeedItem item : feed.getItems()) {
             assertFalse(item.isPlayed());
@@ -123,13 +125,13 @@ public class DBTasksTest {
         }
 
         final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
-        assertTrue(feed != newFeed);
+        assertNotSame(newFeed, feed);
 
         updatedFeedTest(newFeed, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
 
         final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         assertNotNull(feedFromDB);
-        assertTrue(feedFromDB.getId() == newFeed.getId());
+        assertEquals(newFeed.getId(), feedFromDB.getId());
         updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
     }
 
@@ -155,7 +157,7 @@ public class DBTasksTest {
         feed.setItems(list);
 
         final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
-        assertTrue(feed != newFeed);
+        assertNotSame(newFeed, feed);
 
         final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         final FeedItem feedItemFromDB = feedFromDB.getItems().get(0);
@@ -163,21 +165,21 @@ public class DBTasksTest {
     }
 
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
-        assertTrue(newFeed.getId() == feedID);
-        assertTrue(newFeed.getItems().size() == NUM_ITEMS_NEW + NUM_ITEMS_OLD);
+        assertEquals(feedID, newFeed.getId());
+        assertEquals(NUM_ITEMS_NEW + NUM_ITEMS_OLD, newFeed.getItems().size());
         Collections.reverse(newFeed.getItems());
         Date lastDate = new Date(0);
         for (int i = 0; i < NUM_ITEMS_OLD; i++) {
             FeedItem item = newFeed.getItems().get(i);
-            assertTrue(item.getFeed() == newFeed);
-            assertTrue(item.getId() == itemIDs.get(i));
+            assertSame(newFeed, item.getFeed());
+            assertEquals((long) itemIDs.get(i), item.getId());
             assertTrue(item.isPlayed());
             assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
             lastDate = item.getPubDate();
         }
         for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
             FeedItem item = newFeed.getItems().get(i);
-            assertTrue(item.getFeed() == newFeed);
+            assertSame(newFeed, item.getFeed());
             assertTrue(item.getId() != 0);
             assertFalse(item.isPlayed());
             assertTrue(item.getPubDate().getTime() >= lastDate.getTime());

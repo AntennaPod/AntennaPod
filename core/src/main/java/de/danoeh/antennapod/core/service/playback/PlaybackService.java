@@ -19,7 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
@@ -419,7 +419,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 e.printStackTrace();
             }
         } else if (parentId.startsWith("FeedId:")) {
-            Long feedId = Long.parseLong(parentId.split(":")[1]);
+            long feedId = Long.parseLong(parentId.split(":")[1]);
             List<FeedItem> feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
             for (FeedItem feedItem : feedItems) {
                 if (feedItem.getMedia() != null && feedItem.getMedia().getMediaItem() != null) {
@@ -711,9 +711,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onSleepTimerAlmostExpired() {
-            float leftVolume = 0.1f * UserPreferences.getLeftVolume();
-            float rightVolume = 0.1f * UserPreferences.getRightVolume();
+        public void onSleepTimerAlmostExpired(long timeLeft) {
+            final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
+            float multiplicator = multiplicators[Math.max(0, (int) timeLeft / 1000)];
+            Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
+            float leftVolume = multiplicator * UserPreferences.getLeftVolume();
+            float rightVolume = multiplicator * UserPreferences.getRightVolume();
             mediaPlayer.setVolume(leftVolume, rightVolume);
         }
 
@@ -1140,13 +1143,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case INITIALIZING:
                     state = PlaybackStateCompat.STATE_CONNECTING;
                     break;
-                case INITIALIZED:
-                case INDETERMINATE:
-                    state = PlaybackStateCompat.STATE_NONE;
-                    break;
                 case ERROR:
                     state = PlaybackStateCompat.STATE_ERROR;
                     break;
+                case INITIALIZED: // Deliberate fall-through
+                case INDETERMINATE:
                 default:
                     state = PlaybackStateCompat.STATE_NONE;
                     break;
@@ -1158,7 +1159,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         long capabilities = PlaybackStateCompat.ACTION_PLAY_PAUSE
                 | PlaybackStateCompat.ACTION_REWIND
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
-                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
+                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                | PlaybackStateCompat.ACTION_SEEK_TO;
 
         if (useSkipToPreviousForRewindInLockscreen()) {
             // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,

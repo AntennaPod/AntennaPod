@@ -12,6 +12,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.dialog.FeedFilterDialog;
+import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -74,6 +76,18 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                     builder.create().show();
                     return true;
                 });
+
+        findPreference(UserPreferences.PREF_FILTER_FEED)
+                .setOnPreferenceClickListener((preference -> {
+                    FeedFilterDialog.showDialog(requireContext());
+                    return true;
+                }));
+
+        findPreference(UserPreferences.PREF_DRAWER_FEED_ORDER)
+                .setOnPreferenceClickListener((preference -> {
+                    FeedSortDialog.showDialog(requireContext());
+                    return true;
+                }));
 
         if (Build.VERSION.SDK_INT >= 26) {
             findPreference(UserPreferences.PREF_EXPANDED_NOTIFICATION).setVisible(false);

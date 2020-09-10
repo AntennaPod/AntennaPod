@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="subscriptions_default_num_of_columns">5</integer>
+</resources>

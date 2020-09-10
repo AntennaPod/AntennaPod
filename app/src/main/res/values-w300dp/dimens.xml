@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="additional_horizontal_spacing">0dp</dimen>
+    <!--
+        Overwrites FAB library.
+        Increase FAB speed dial label's max width if the screen is wide enough
+        (300dp ~ 1.875 inch, devices with 3.5-inch screens have a width of ~ 1.9in
+        so the setup is applicable for most phones)
+     -->
+    <dimen name="sd_label_max_width" tools:ignore="MissingDefaultResource, UnusedResources">240dp</dimen>
+</resources>

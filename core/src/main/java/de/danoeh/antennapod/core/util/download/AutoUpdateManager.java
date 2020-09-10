@@ -118,9 +118,8 @@ public class AutoUpdateManager {
      */
     public static void runImmediate(@NonNull Context context) {
         Log.d(TAG, "Run auto update immediately in background.");
-        new Thread(() -> {
-            DBTasks.refreshAllFeeds(context.getApplicationContext(), true);
-        }, "ManualRefreshAllFeeds").start();
+        new Thread(() -> DBTasks.refreshAllFeeds(
+                context.getApplicationContext(), true), "ManualRefreshAllFeeds").start();
     }
 
     public static void disableAutoUpdate(Context context) {

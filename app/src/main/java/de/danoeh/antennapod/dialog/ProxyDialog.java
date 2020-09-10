@@ -23,6 +23,7 @@ import java.net.Proxy;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.R;
@@ -63,6 +64,8 @@ public class ProxyDialog {
 
     public Dialog show() {
         View content = View.inflate(context, R.layout.proxy_settings, null);
+        spType = content.findViewById(R.id.spType);
+
         dialog = new AlertDialog.Builder(context)
                 .setTitle(R.string.pref_proxy_title)
                 .setView(content)
@@ -76,7 +79,7 @@ public class ProxyDialog {
                 test();
                 return;
             }
-            String type = (String) ((Spinner) content.findViewById(R.id.spType)).getSelectedItem();
+            String type = (String) spType.getSelectedItem();
             ProxyConfig proxy;
             if (Proxy.Type.valueOf(type) == Proxy.Type.DIRECT) {
                 proxy = ProxyConfig.direct();
@@ -106,7 +109,6 @@ public class ProxyDialog {
             dialog.dismiss();
         });
 
-        spType = content.findViewById(R.id.spType);
         List<String> types = new ArrayList<>();
         types.add(Proxy.Type.DIRECT.name());
         types.add(Proxy.Type.HTTP.name());
@@ -227,12 +229,11 @@ public class ProxyDialog {
         if(required) {
             testSuccessful = false;
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(R.string.proxy_test_label);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
         } else {
             testSuccessful = true;
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setText(android.R.string.ok);
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
         }
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
     }
 
     private void test() {
@@ -261,7 +262,7 @@ public class ProxyDialog {
                 portValue = Integer.parseInt(port);
             }
             SocketAddress address = InetSocketAddress.createUnresolved(host, portValue);
-            Proxy.Type proxyType = Proxy.Type.valueOf(type.toUpperCase());
+            Proxy.Type proxyType = Proxy.Type.valueOf(type.toUpperCase(Locale.US));
             Proxy proxy = new Proxy(proxyType, address);
             OkHttpClient.Builder builder = AntennapodHttpClient.newBuilder()
                     .connectTimeout(10, TimeUnit.SECONDS)

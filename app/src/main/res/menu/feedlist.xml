@@ -52,18 +52,24 @@
         android:title="@string/visit_website_label"
         android:visible="true">
     </item>
+
     <item
-        android:id="@+id/share_link_item"
+        android:id="@+id/share_item"
         android:menuCategory="container"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/share_website_url_label">
+        custom:showAsAction="never"
+        android:title="@string/share_label_with_ellipses">
+        <menu>
+            <item
+                android:id="@+id/share_link_item"
+                android:title="@string/share_website_url_label">
+            </item>
+            <item
+                android:id="@+id/share_download_url_item"
+                android:title="@string/share_feed_url_label">
+            </item>
+        </menu>
     </item>
-    <item
-        android:id="@+id/share_download_url_item"
-        android:menuCategory="container"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/share_feed_url_label">
-    </item>
+
 
     <item
         android:id="@+id/rename_item"

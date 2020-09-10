@@ -136,12 +136,13 @@
     <string name="feed_settings_label">Podcast settings</string>
     <string name="rename_feed_label">Rename podcast</string>
     <string name="remove_feed_label">Remove podcast</string>
-    <string name="share_label">Share&#8230;</string>
+    <string name="share_label">Share</string>
+    <string name="share_label_with_ellipses">Share…</string>
     <string name="share_link_label">Share Episode URL</string>
     <string name="share_link_with_position_label">Share Episode URL with Position</string>
     <string name="share_file_label">Share File</string>
-    <string name="share_website_url_label">Share Website URL</string>
-    <string name="share_feed_url_label">Share Podcast URL</string>
+    <string name="share_website_url_label">Website address</string>
+    <string name="share_feed_url_label">Podcast feed URL</string>
     <string name="share_item_url_label">Share Media File URL</string>
     <string name="share_item_url_with_position_label">Share Media File URL with Position</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
@@ -151,14 +152,9 @@
     <string name="select_all_above">Select all above</string>
     <string name="select_all_below">Select all below</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
-    <string name="hide_paused_episodes_label">Paused</string>
-    <string name="hide_played_episodes_label">Played</string>
     <string name="hide_queued_episodes_label">Queued</string>
     <string name="hide_not_queued_episodes_label">Not queued</string>
-    <string name="hide_downloaded_episodes_label">Downloaded</string>
-    <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
     <string name="hide_has_media_label">Has media</string>
-    <string name="hide_is_favorite_label">Is favorite</string>
     <string name="filtered_label">Filtered</string>
     <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
     <string name="open_podcast">Open Podcast</string>
@@ -315,8 +311,9 @@
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
     <string name="no_playback_plugin_or_sonic_msg">For variable speed playback to work, we recommend to enable the built-in Sonic mediaplayer.</string>
-    <string name="set_playback_speed_label">Playback Speeds</string>
     <string name="enable_sonic">Enable Sonic</string>
+    <string name="speed_presets">Presets</string>
+    <string name="preset_already_exists">%1$.2fx is already saved as a preset.</string>
 
     <!-- Empty list labels -->
     <string name="no_items_header_label">No queued episodes</string>
@@ -391,7 +388,7 @@
     <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
     <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
     <string name="pref_followQueue_title">Continuous Playback</string>
-    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones Disconnect</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
     <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth Reconnect</string>
     <string name="pref_stream_over_download_title">Prefer Streaming</string>
@@ -404,7 +401,7 @@
     <string name="pref_mobileUpdate_episode_download">Episode download</string>
     <string name="pref_mobileUpdate_streaming">Streaming</string>
     <string name="user_interface_label">User Interface</string>
-    <string name="user_interface_sum">Appearance, Subscription order, Lockscreen</string>
+    <string name="user_interface_sum">Appearance, Subscriptions, Lockscreen</string>
     <string name="pref_set_theme_title">Select Theme</string>
     <string name="pref_nav_drawer_items_title">Set Navigation Drawer items</string>
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
@@ -445,8 +442,7 @@
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
     <string name="pref_gpodnet_notifications_title">Show sync error notifications</string>
     <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
-    <string name="pref_playback_speed_title">Playback Speeds</string>
-    <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
+    <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto Skip</string>
     <string name="pref_feed_skip_sum">Skip introductions and ending credits.</string>
@@ -526,6 +522,11 @@
     <string name="back_button_go_to_page_title">Select page</string>
     <string name="pref_delete_removes_from_queue_title">Delete removes from Queue</string>
     <string name="pref_delete_removes_from_queue_sum">Automatically remove an episode from the queue when it is deleted.</string>
+    <string name="pref_filter_feed_title">Subscription Filter</string>
+    <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
+    <string name="hide_subscriptions_where_counter_is_zero">Hide if counter is zero</string>
+    <string name="no_filter_label">None</string>
+    <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>
@@ -714,19 +715,20 @@
     <string name="search_itunes_label">Search iTunes</string>
     <string name="search_fyyd_label">Search fyyd</string>
     <string name="advanced">Advanced</string>
-    <string name="add_podcast_by_url">Add Podcast by URL</string>
+    <string name="add_podcast_by_url">Add Podcast by RSS address</string>
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
     <string name="discover">Discover</string>
     <string name="discover_more">more »</string>
-    <string name="search_powered_by">Search powered by %1$s</string>
+    <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
+    <string name="search_powered_by">Results by %1$s</string>
 
     <string name="filter">Filter</string>
     
     <!-- Episodes apply actions -->
     <string name="all_label">All</string>
     <string name="selected_all_label">Selected all Episodes</string>
-    <string name="none_label">None</string>
+    <string name="select_none_label">None</string>
     <string name="deselected_all_label">Deselected all Episodes</string>
     <string name="played_label">Played</string>
     <string name="selected_played_label">Selected played Episodes</string>
@@ -736,12 +738,22 @@
     <string name="selected_downloaded_label">Selected downloaded Episodes</string>
     <string name="not_downloaded_label">Not downloaded</string>
     <string name="selected_not_downloaded_label">Selected not downloaded Episodes</string>
-    <string name="queued_label">Queued</string>
     <string name="selected_queued_label">Selected queued Episodes</string>
-    <string name="not_queued_label">Not queued</string>
     <string name="selected_not_queued_label">Selected not queued Episodes</string>
-    <string name="has_media">Has media</string>
     <string name="selected_has_media_label">Selected episodes with media</string>
+
+    <string name="hide_is_favorite_label">Is favorite</string>
+    <string name="not_favorite">Not favorite</string>
+    <string name="hide_downloaded_episodes_label">Downloaded</string>
+    <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
+    <string name="queued_label">Queued</string>
+    <string name="not_queued_label">Not queued</string>
+    <string name="has_media">Has media</string>
+    <string name="no_media">No media</string>
+    <string name="hide_paused_episodes_label">Paused</string>
+    <string name="not_paused">Not paused</string>
+    <string name="hide_played_episodes_label">Played</string>
+    <string name="not_played">Not played</string>
 
     <!-- Sort  -->
     <string name="sort_title_a_z">Title (A \u2192 Z)</string>
@@ -764,6 +776,12 @@
     <string name="rating_never_label">Leave me alone</string>
     <string name="rating_later_label">Remind me later</string>
     <string name="rating_now_label">Sure, let\'s do this!</string>
+
+    <!-- Share episode dialog -->
+    <string name="share_dialog_include_label">Include:</string>
+    <string name="share_playback_position_dialog_label">Playback position</string>
+    <string name="share_dialog_media_file_label">Media file URL</string>
+    <string name="share_dialog_episode_website_label">Episode webpage</string>
 
     <!-- Audio controls -->
     <string name="audio_controls">Audio controls</string>

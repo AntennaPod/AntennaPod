@@ -23,6 +23,7 @@ public class EpisodeActionChanges {
         return this.timestamp;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "EpisodeActionGetResponse{"

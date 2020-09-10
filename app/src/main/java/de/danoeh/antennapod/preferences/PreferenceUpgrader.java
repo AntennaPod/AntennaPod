@@ -2,7 +2,7 @@ package de.danoeh.antennapod.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.CrashReportWriter;

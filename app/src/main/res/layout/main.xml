@@ -5,7 +5,9 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="InconsistentLayout">
+    <!-- InconsistentLayout: Tablet layout does not have a drawer -->
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/overview_coordinator_layout"
@@ -35,8 +37,6 @@
             android:id="@+id/navDrawerFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
             android:layout_gravity="start"
             android:orientation="vertical" />
 
