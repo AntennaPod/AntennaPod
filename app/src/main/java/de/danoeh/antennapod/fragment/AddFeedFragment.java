@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.discovery.CombinedSearcher;
 import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
@@ -83,6 +85,9 @@ public class AddFeedFragment extends Fragment {
             }
         });
         root.findViewById(R.id.btn_add_local_folder).setOnClickListener(v -> {
+            if (Build.VERSION.SDK_INT < 21) {
+                return;
+            }
             try {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -91,6 +96,9 @@ public class AddFeedFragment extends Fragment {
                 Log.e(TAG, "No activity found. Should never happen...");
             }
         });
+        if (Build.VERSION.SDK_INT < 21) {
+            root.findViewById(R.id.btn_add_local_folder).setVisibility(View.GONE);
+        }
         root.findViewById(R.id.search_icon).setOnClickListener(view -> performSearch());
         return root;
     }
@@ -151,25 +159,31 @@ public class AddFeedFragment extends Fragment {
             intent.setData(uri);
             startActivity(intent);
         } else if (requestCode == REQUEST_CODE_ADD_LOCAL_FOLDER) {
-            try {
-                getActivity().getContentResolver()
-                        .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
-                if (documentFile == null) {
-                    throw new IllegalArgumentException("Unable to retrieve document tree");
-                }
-                Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, documentFile.getName());
-                dirFeed.setDescription(getString(R.string.local_feed_description));
-                dirFeed.setItems(Collections.emptyList());
-                dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
-                DBTasks.forceRefreshFeed(getContext(), dirFeed, true);
-                ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(R.string.add_local_folder_success, Snackbar.LENGTH_SHORT);
-            } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
-                ((MainActivity) getActivity())
-                        .showSnackbarAbovePlayer(e.getLocalizedMessage(), Snackbar.LENGTH_LONG);
+            addLocalFolder(uri);
+        }
+    }
+
+    private void addLocalFolder(Uri uri) {
+        if (Build.VERSION.SDK_INT < 21) {
+            return;
+        }
+        try {
+            getActivity().getContentResolver()
+                    .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
+            if (documentFile == null) {
+                throw new IllegalArgumentException("Unable to retrieve document tree");
             }
+            Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, documentFile.getName());
+            dirFeed.setDescription(getString(R.string.local_feed_description));
+            dirFeed.setItems(Collections.emptyList());
+            dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
+            DBTasks.forceRefreshFeed(getContext(), dirFeed, true);
+            ((MainActivity) getActivity())
+                    .showSnackbarAbovePlayer(R.string.add_local_folder_success, Snackbar.LENGTH_SHORT);
+        } catch (DownloadRequestException | IllegalArgumentException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(e.getLocalizedMessage(), Snackbar.LENGTH_LONG);
         }
     }
 }
