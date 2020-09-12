@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.core.asynctask.ImageResource;

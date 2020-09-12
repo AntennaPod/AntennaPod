@@ -384,10 +384,12 @@ public class QueueFragment extends Fragment {
         if (recyclerAdapter != null) {
             recyclerAdapter.updateDragDropEnabled();
         }
-        if (locked) {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
-        } else {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
+        if (queue.size() == 0) {
+            if (locked) {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
+            } else {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
+            }
         }
     }
 

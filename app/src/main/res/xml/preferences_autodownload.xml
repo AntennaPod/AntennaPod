@@ -22,12 +22,12 @@
             android:title="@string/pref_episode_cleanup_title"
             android:summary="@string/pref_episode_cleanup_summary"
             android:entryValues="@array/episode_cleanup_values"/>
-    <SwitchPreference
+    <SwitchPreferenceCompat
             android:key="prefEnableAutoDownloadOnBattery"
             android:title="@string/pref_automatic_download_on_battery_title"
             android:summary="@string/pref_automatic_download_on_battery_sum"
             android:defaultValue="true"/>
-    <SwitchPreference
+    <SwitchPreferenceCompat
             android:key="prefEnableAutoDownloadWifiFilter"
             android:title="@string/pref_autodl_wifi_filter_title"
             android:summary="@string/pref_autodl_wifi_filter_sum"/>

@@ -22,6 +22,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_FAQ = "prefFaq";
     private static final String PREF_VIEW_FORUM = "prefViewForum";
     private static final String PREF_SEND_BUG_REPORT = "prefSendBugReport";
+    private static final String PREF_CATEGORY_PROJECT = "project";
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
 
@@ -30,6 +31,13 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         addPreferencesFromResource(R.xml.preferences);
         setupMainScreen();
         setupSearch();
+
+        // If you are writing a spin-off, please update the details on screens like "About" and "Report bug"
+        // and afterwards remove the following lines.
+        String packageName = getContext().getPackageName();
+        if (!"de.danoeh.antennapod".equals(packageName) && !"de.danoeh.antennapod.debug".equals(packageName)) {
+            findPreference(PREF_CATEGORY_PROJECT).setVisible(false);
+        }
     }
 
     @Override

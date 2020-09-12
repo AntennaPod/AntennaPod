@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -50,14 +50,12 @@ import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 public class UserPreferences {
     private UserPreferences(){}
 
-    private static final String IMPORT_DIR = "import/";
-
     private static final String TAG = "UserPreferences";
 
     // User Interface
     public static final String PREF_THEME = "prefTheme";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
-    private static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
+    public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
     private static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
@@ -168,7 +166,6 @@ public class UserPreferences {
         UserPreferences.context = context.getApplicationContext();
         UserPreferences.prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        createImportDirectory();
         createNoMediaFile();
     }
 
@@ -247,6 +244,12 @@ public class UserPreferences {
     public static int getFeedOrder() {
         String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "" + FEED_ORDER_COUNTER);
         return Integer.parseInt(value);
+    }
+
+    public static void setFeedOrder(String selected) {
+        prefs.edit()
+                .putString(PREF_DRAWER_FEED_ORDER, selected)
+                .commit();
     }
 
     public static int getFeedCounterSetting() {
@@ -923,7 +926,6 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_DATA_FOLDER, dir)
              .apply();
-        createImportDirectory();
     }
 
     /**
@@ -939,24 +941,6 @@ public class UserPreferences {
                 e.printStackTrace();
             }
             Log.d(TAG, ".nomedia file created");
-        }
-    }
-
-    /**
-     * Creates the import directory if it doesn't exist and if storage is
-     * available
-     */
-    private static void createImportDirectory() {
-        File importDir = getDataFolder(IMPORT_DIR);
-        if (importDir != null) {
-            if (importDir.exists()) {
-                Log.d(TAG, "Import directory already exists");
-            } else {
-                Log.d(TAG, "Creating import directory");
-                importDir.mkdir();
-            }
-        } else {
-            Log.d(TAG, "Could not access external storage.");
         }
     }
 

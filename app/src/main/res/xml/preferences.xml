@@ -44,7 +44,9 @@
             android:title="@string/statistics_label"
             android:icon="?attr/statistics" />
 
-    <PreferenceCategory android:title="@string/project_pref">
+    <PreferenceCategory
+            android:key="project"
+            android:title="@string/project_pref">
         <Preference
             android:key="prefFaq"
             android:title="@string/pref_faq"
