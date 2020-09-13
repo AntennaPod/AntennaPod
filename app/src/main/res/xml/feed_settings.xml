@@ -44,7 +44,9 @@
             android:defaultValue="off"
             android:key="volumeReduction"/>
 
-    <PreferenceCategory android:title="@string/auto_download_settings_label">
+    <PreferenceCategory
+            android:title="@string/auto_download_settings_label"
+            android:key="autoDownloadCategory">
         <SwitchPreferenceCompat
                 android:key="autoDownload"
                 android:title="@string/auto_download_label"/>
