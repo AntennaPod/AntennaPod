@@ -478,11 +478,11 @@ public final class DBTasks {
             resultFeed = savedFeed;
         }
 
-        adapter.close();
-
         try {
             if (savedFeed == null) {
                 DBWriter.addNewFeed(context, newFeed).get();
+                // Update with default values that are set in database
+                resultFeed = searchFeedByIdentifyingValueOrID(adapter, newFeed);
             } else {
                 DBWriter.setCompleteFeed(savedFeed).get();
             }
@@ -492,6 +492,8 @@ public final class DBTasks {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+
+        adapter.close();
 
         if (savedFeed != null) {
             EventBus.getDefault().post(new FeedListUpdateEvent(savedFeed));

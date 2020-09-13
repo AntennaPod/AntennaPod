@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -88,6 +89,15 @@ public class LocalFeedUpdater {
         if (StringUtils.isBlank(feed.getImageUrl())) {
             // set default feed image
             feed.setImageUrl(getDefaultIconUrl(context));
+        }
+        if (feed.getPreferences().getAutoDownload()) {
+            feed.getPreferences().setAutoDownload(false);
+            feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
+            try {
+                DBWriter.setFeedPreferences(feed.getPreferences()).get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         // update items, delete items without existing file;
