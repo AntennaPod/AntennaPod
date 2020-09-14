@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -137,6 +138,7 @@ public class SleepTimerDialog extends DialogFragment {
                 if (controller != null) {
                     controller.setSleepTimer(time);
                 }
+                closeKeyboard(content);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 Snackbar.make(content, R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
@@ -152,5 +154,10 @@ public class SleepTimerDialog extends DialogFragment {
         timeSetup.setVisibility(controller.sleepTimerActive() ? View.GONE : View.VISIBLE);
         timeDisplay.setVisibility(controller.sleepTimerActive() ? View.VISIBLE : View.GONE);
         time.setText(Converter.getDurationStringLong((int) controller.getSleepTimerTimeLeft()));
+    }
+
+    private void closeKeyboard(View content) {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
     }
 }
