@@ -56,6 +56,8 @@ import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -505,14 +507,15 @@ public class MainActivity extends CastEnabledActivity {
     /**
      *  Handles the incoming intent. If the activity was launched via a deep link,
      *  passes the uri to handleDeeplink().
-     *
      *  Added an SDK version check since the minimum SDK supported by AntennaPod is 16
      *  and Object.equals(Obj1, Obj2) is only supported in API 19+.
      *
      * @param intent incoming intent
      */
     private void handleIntent(Intent intent) {
-        if (intent == null) return;
+        if (intent == null) {
+            return;
+        }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return;
@@ -553,7 +556,7 @@ public class MainActivity extends CastEnabledActivity {
      */
     private void handleDeeplink(Uri uri) {
         if (uri == null || uri.getPath() == null) {
-           return;
+            return;
         }
 
         switch (uri.getPath()) {
@@ -572,7 +575,7 @@ public class MainActivity extends CastEnabledActivity {
                     return;
                 }
 
-                feature = feature.toLowerCase();
+                feature = feature.toLowerCase(Locale.getDefault());
                 switch (feature) {
                     case "downloads":
                         loadFragment(DownloadsFragment.TAG, null);
@@ -593,6 +596,8 @@ public class MainActivity extends CastEnabledActivity {
                         loadFragment(AddFeedFragment.TAG, null);
                         break;
                 }
+                break;
+            default:
                 break;
         }
     }
