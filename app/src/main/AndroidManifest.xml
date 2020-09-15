@@ -90,8 +90,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="de.danoeh.antennapod"
-                    android:pathPrefix="/main"
+                    android:host="antennapod.org"
+                    android:pathPrefix="/deeplink/main"
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
@@ -101,8 +101,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="de.danoeh.antennapod"
-                    android:pathPrefix="/search"
+                    android:host="antennapod.org"
+                    android:pathPrefix="/deeplink/search"
                     android:scheme="https" />
             </intent-filter>
         </activity>

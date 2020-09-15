@@ -4,7 +4,7 @@ https://developers.google.com/assistant/app/overview -->
 
 <actions>
     <action intentName="actions.intent.OPEN_APP_FEATURE">
-        <fulfillment urlTemplate="https://de.danoeh.antennapod/main{?featureName}">
+        <fulfillment urlTemplate="https://antennapod.org/deeplink/main{?featureName}">
             <parameter-mapping
                 intentParameter="feature"
                 urlParameter="featureName" />
@@ -15,7 +15,7 @@ https://developers.google.com/assistant/app/overview -->
     </action>
 
     <action intentName="actions.intent.GET_THING">
-        <fulfillment urlTemplate="https://de.danoeh.antennapod/search{?query}">
+        <fulfillment urlTemplate="https://antennapod.org/deeplink/search{?query}">
             <parameter-mapping
                 intentParameter="thing.name"
                 urlParameter="query"/>

@@ -560,7 +560,7 @@ public class MainActivity extends CastEnabledActivity {
         }
 
         switch (uri.getPath()) {
-            case "/search":
+            case "/deeplink/search":
                 String query = uri.getQueryParameter("query");
                 if (query == null) {
                     return;
@@ -569,7 +569,7 @@ public class MainActivity extends CastEnabledActivity {
                 this.loadChildFragment(OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
                 break;
 
-            case "/main":
+            case "/deeplink/main":
                 String feature = uri.getQueryParameter("featureName");
                 if (feature == null) {
                     return;
