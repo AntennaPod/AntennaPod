@@ -51,6 +51,7 @@ public class EpisodesFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         viewPager = rootView.findViewById(R.id.viewpager);
         viewPager.setAdapter(new EpisodesPagerAdapter(this));
+        viewPager.setOffscreenPageLimit(2);
 
         // Give the TabLayout the ViewPager
         tabLayout = rootView.findViewById(R.id.sliding_tabs);
