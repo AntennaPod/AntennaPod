@@ -7,17 +7,11 @@ plugins {
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    viewBinding{
+    viewBinding {
         enabled = true
-    }
-    
-    lintOptions {
-        checkDependencies = true
-        checkGeneratedSources = true
     }
 
     lintOptions {
-        checkDependencies = true
         checkGeneratedSources = true
     }
 

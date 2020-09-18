@@ -39,13 +39,13 @@
                         android:background="@color/feed_image_bg">
 
                     <ImageView
-                            android:id="@+id/imgvBackground"
+                            android:id="@+id/background"
                             style="@style/BigBlurryBackground"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/feeditemlist_header_height"/>
 
                     <ImageView
-                            android:id="@+id/imgvCover"
+                            android:id="@+id/cover"
                             android:layout_width="@dimen/thumbnail_length_onlinefeedview"
                             android:layout_height="@dimen/thumbnail_length_onlinefeedview"
                             android:layout_alignParentLeft="true"
@@ -60,7 +60,7 @@
                             tools:src="@drawable/ic_antenna"/>
 
                     <TextView
-                            android:id="@+id/txtvTitle"
+                            android:id="@+id/title"
                             style="@style/AntennaPod.TextView.Heading"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -73,8 +73,8 @@
                             android:layout_marginEnd="16dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@id/imgvCover"
-                            android:layout_toEndOf="@id/imgvCover"
+                            android:layout_toRightOf="@id/cover"
+                            android:layout_toEndOf="@id/cover"
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:shadowColor="@color/black"
@@ -83,10 +83,10 @@
                             tools:text="Podcast title"/>
 
                     <TextView
-                            android:id="@+id/txtvAuthor"
+                            android:id="@+id/author"
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/txtvTitle"
+                            android:layout_below="@id/title"
                             android:layout_marginBottom="16dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginStart="16dp"
@@ -94,8 +94,8 @@
                             android:layout_marginEnd="16dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@id/imgvCover"
-                            android:layout_toEndOf="@id/imgvCover"
+                            android:layout_toRightOf="@id/cover"
+                            android:layout_toEndOf="@id/cover"
                             android:ellipsize="end"
                             android:lines="1"
                             android:shadowColor="@color/black"
@@ -117,7 +117,7 @@
                         android:textSize="@dimen/text_size_micro"/>
 
                 <Button
-                        android:id="@+id/butSubscribe"
+                        android:id="@+id/subscribeButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="16dp"
@@ -125,7 +125,7 @@
                         android:text="@string/subscribe_label"/>
 
                 <Button
-                        android:id="@+id/butStopPreview"
+                        android:id="@+id/stopPreviewButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
@@ -136,7 +136,7 @@
                         android:visibility="gone" />
 
                 <ListView
-                        android:id="@+id/listview"
+                        android:id="@+id/listView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 

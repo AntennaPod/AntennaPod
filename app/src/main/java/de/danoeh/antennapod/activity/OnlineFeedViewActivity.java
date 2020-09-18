@@ -392,13 +392,13 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
 
-        binding.imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+        binding.background.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
         View header = View.inflate(this, R.layout.onlinefeedview_header, null);
 
-        binding.listview.addHeaderView(header);
-        binding.listview.setSelector(android.R.color.transparent);
-        binding.listview.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
+        binding.listView.addHeaderView(header);
+        binding.listView.setSelector(android.R.color.transparent);
+        binding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
         TextView description = header.findViewById(R.id.txtvDescription);
 
@@ -411,7 +411,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
                         .dontAnimate())
-                    .into(binding.imgvCover);
+                    .into(binding.cover);
             Glide.with(this)
                     .load(feed.getImageUrl())
                     .apply(new RequestOptions()
@@ -420,14 +420,14 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                             .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                             .transform(new FastBlurTransformation())
                             .dontAnimate())
-                    .into(binding.imgvBackground);
+                    .into(binding.background);
         }
 
-        binding.txtvTitle.setText(feed.getTitle());
-        binding.txtvAuthor.setText(feed.getAuthor());
+        binding.title.setText(feed.getTitle());
+        binding.author.setText(feed.getAuthor());
         description.setText(feed.getDescription());
 
-        binding.butSubscribe.setOnClickListener(v -> {
+        binding.subscribeButton.setOnClickListener(v -> {
             if (feedInFeedlist(feed)) {
                 openFeed();
             } else {
@@ -445,7 +445,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
         });
 
-        binding.butStopPreview.setOnClickListener(v -> {
+        binding.stopPreviewButton.setOnClickListener(v -> {
             PlaybackPreferences.writeNoMediaPlaying();
             IntentUtils.sendLocalBroadcast(this, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
         });
@@ -504,19 +504,19 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     private void handleUpdatedFeedStatus(Feed feed) {
-        if (binding.butSubscribe != null && feed != null) {
+        if (feed != null) {
             if (DownloadRequester.getInstance().isDownloadingFile(feed.getDownload_url())) {
-                binding.butSubscribe.setEnabled(false);
-                binding.butSubscribe.setText(R.string.subscribing_label);
+                binding.subscribeButton.setEnabled(false);
+                binding.subscribeButton.setText(R.string.subscribing_label);
             } else if (feedInFeedlist(feed)) {
-                binding.butSubscribe.setEnabled(true);
-                binding.butSubscribe.setText(R.string.open_podcast);
+                binding.subscribeButton.setEnabled(true);
+                binding.subscribeButton.setText(R.string.open_podcast);
                 if (didPressSubscribe) {
                     openFeed();
                 }
             } else {
-                binding.butSubscribe.setEnabled(true);
-                binding.butSubscribe.setText(R.string.subscribe_label);
+                binding.subscribeButton.setEnabled(true);
+                binding.subscribeButton.setText(R.string.subscribe_label);
             }
         }
     }
@@ -571,7 +571,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     public void playbackStateChanged(PlayerStatusEvent event) {
         boolean isPlayingPreview =
                 PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA;
-        binding.butStopPreview.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
+        binding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
     }
 
     /**
