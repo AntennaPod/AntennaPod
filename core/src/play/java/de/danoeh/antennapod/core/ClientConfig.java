@@ -12,7 +12,6 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.ProviderInstallerInterceptor;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -55,6 +54,7 @@ public class ClientConfig {
         UserPreferences.init(context);
         UsageStatistics.init(context);
         PlaybackPreferences.init(context);
+        installSslProvider(context);
         NetworkUtils.init(context);
         // Don't initialize Cast-related logic unless it is enabled, to avoid the unnecessary
         // Google Play Service usage.
@@ -65,18 +65,6 @@ public class ClientConfig {
         } else {
             Log.v(TAG, "Cast is disabled. All Cast-related initialization will be skipped.");
         }
-        ProviderInstaller.installIfNeededAsync(context, new ProviderInstaller.ProviderInstallListener() {
-            @Override
-            public void onProviderInstalled() {
-                Log.e(TAG, "onProviderInstalled");
-            }
-
-            @Override
-            public void onProviderInstallFailed(int i, Intent intent) {
-                Log.e(TAG, "onProviderInstallFailed");
-            }
-        });
-        ProviderInstallerInterceptor.installer = () -> installSslProvider(context);
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
         RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
@@ -84,7 +72,7 @@ public class ClientConfig {
         initialized = true;
     }
 
-    public static void installSslProvider(Context context) {
+    private static void installSslProvider(Context context) {
         try {
             ProviderInstaller.installIfNeeded(context);
         } catch (GooglePlayServicesRepairableException e) {
