@@ -551,6 +551,7 @@
   <string name="notification_channel_playing_description">Permet controlar la reproducció. Aquesta és la notificació principal que veureu durant la reproducció d\'un podcast.</string>
   <string name="notification_channel_error">Errors</string>
   <string name="notification_channel_error_description">Mostrar si quelcom va malament, per exemple si una baixada o sincronització fallen.</string>
+  <string name="search_podcastindex_label">Cerca a Podcastindex.org</string>
   <!--Widget settings-->
   <!--On-Demand configuration-->
 </resources>

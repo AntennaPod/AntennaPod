@@ -713,6 +713,7 @@
     <!-- Add podcast fragment -->
     <string name="search_podcast_hint">Search podcast…</string>
     <string name="search_itunes_label">Search iTunes</string>
+    <string name="search_podcastindex_label">Search Podcastindex.org</string>
     <string name="search_fyyd_label">Search fyyd</string>
     <string name="advanced">Advanced</string>
     <string name="add_podcast_by_url">Add Podcast by RSS address</string>
