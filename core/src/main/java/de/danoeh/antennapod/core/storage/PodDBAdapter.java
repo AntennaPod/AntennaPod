@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -593,6 +594,11 @@ public class PodDBAdapter {
      * @return the id of the entry
      */
     private long setFeedItem(FeedItem item, boolean saveFeed) {
+        if (item.getId() == 0 && item.getPubDate() == null) {
+            Log.e(TAG, "Newly saved item has no pubDate. Using current date as pubDate");
+            item.setPubDate(new Date());
+        }
+
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, item.getTitle());
         values.put(KEY_LINK, item.getLink());
