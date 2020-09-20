@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
@@ -82,23 +83,16 @@ public class ItemDescriptionFragment extends Fragment {
         if (webViewLoader != null) {
             webViewLoader.dispose();
         }
-        webViewLoader = Maybe.fromCallable(this::loadData)
-                .subscribeOn(Schedulers.io())
+        webViewLoader = Maybe.<String>create(emitter -> {
+            Timeline timeline = new Timeline(getActivity(), controller.getMedia());
+            emitter.onSuccess(timeline.processShownotes());
+        }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(data -> {
                     webvDescription.loadDataWithBaseURL("https://127.0.0.1", data, "text/html",
                             "utf-8", "about:blank");
                     Log.d(TAG, "Webview loaded");
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    @Nullable
-    private String loadData() {
-        if (controller == null || controller.getMedia() == null) {
-            return null;
-        }
-        Timeline timeline = new Timeline(getActivity(), controller.getMedia());
-        return timeline.processShownotes();
     }
 
     @Override
