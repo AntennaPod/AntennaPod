@@ -32,7 +32,6 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.ProviderInstallerInterceptor;
 import de.danoeh.antennapod.core.service.UserAgentInterceptor;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import okhttp3.Cache;
@@ -117,7 +116,6 @@ public class AntennapodHttpClient {
             }
             return response;
         });
-        builder.interceptors().add(new ProviderInstallerInterceptor());
         builder.interceptors().add(new BasicAuthorizationInterceptor());
         builder.networkInterceptors().add(new UserAgentInterceptor());
 

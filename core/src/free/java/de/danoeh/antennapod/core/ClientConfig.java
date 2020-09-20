@@ -45,6 +45,7 @@ public class ClientConfig {
         UserPreferences.init(context);
         UsageStatistics.init(context);
         PlaybackPreferences.init(context);
+        installSslProvider(context);
         NetworkUtils.init(context);
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
@@ -53,7 +54,7 @@ public class ClientConfig {
         initialized = true;
     }
 
-    public static void installSslProvider(Context context) {
+    private static void installSslProvider(Context context) {
         // ProviderInstaller is a closed-source Google library
     }
 }
