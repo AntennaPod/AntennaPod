@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.fragment.preferences.about;
 
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +19,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class AboutDevelopersFragment extends ListFragment {
+public class DevelopersFragment extends ListFragment {
     private Disposable developersLoader;
 
     @Override
@@ -44,7 +44,7 @@ public class AboutDevelopersFragment extends ListFragment {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
                 developers -> setListAdapter(new SimpleIconListAdapter<>(getContext(), developers)),
-                error -> Toast.makeText(getContext(), "Error while loading developers", Toast.LENGTH_LONG).show()
+                error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
         );
 
     }
@@ -55,11 +55,5 @@ public class AboutDevelopersFragment extends ListFragment {
         if (developersLoader != null) {
             developersLoader.dispose();
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.developers);
     }
 }

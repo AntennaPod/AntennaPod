@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.fragment.preferences;
+package de.danoeh.antennapod.fragment.preferences.about;
 
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +19,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class AboutTranslatorsFragment extends ListFragment {
+public class SpecialThanksFragment extends ListFragment {
     private Disposable translatorsLoader;
 
     @Override
@@ -31,11 +31,11 @@ public class AboutTranslatorsFragment extends ListFragment {
         translatorsLoader = Single.create((SingleOnSubscribe<ArrayList<SimpleIconListAdapter.ListItem>>) emitter -> {
             ArrayList<SimpleIconListAdapter.ListItem> translators = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    getContext().getAssets().open("translators.csv")));
+                    getContext().getAssets().open("special_thanks.csv")));
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
-                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], null));
+                translators.add(new SimpleIconListAdapter.ListItem(info[0], info[1], info[2]));
             }
             emitter.onSuccess(translators);
         })
@@ -43,7 +43,7 @@ public class AboutTranslatorsFragment extends ListFragment {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
                 translators -> setListAdapter(new SimpleIconListAdapter<>(getContext(), translators)),
-                error -> Toast.makeText(getContext(), "Error while loading translators", Toast.LENGTH_LONG).show()
+                error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show()
         );
 
     }
@@ -54,11 +54,5 @@ public class AboutTranslatorsFragment extends ListFragment {
         if (translatorsLoader != null) {
             translatorsLoader.dispose();
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.translators);
     }
 }
