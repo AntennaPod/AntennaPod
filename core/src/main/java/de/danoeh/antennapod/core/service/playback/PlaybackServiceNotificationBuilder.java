@@ -85,7 +85,7 @@ public class PlaybackServiceNotificationBuilder {
 
     private Bitmap getDefaultIcon() {
         if (defaultIcon == null) {
-            defaultIcon = getBitmap(context, R.drawable.notification_default_large_icon);
+            defaultIcon = getBitmap(context, R.mipmap.ic_launcher);
         }
         return defaultIcon;
     }
@@ -136,7 +136,7 @@ public class PlaybackServiceNotificationBuilder {
 
         notification.setContentIntent(getPlayerActivityPendingIntent());
         notification.setWhen(0);
-        notification.setSmallIcon(R.drawable.ic_antenna);
+        notification.setSmallIcon(R.drawable.ic_notification);
         notification.setOngoing(false);
         notification.setOnlyAlertOnce(true);
         notification.setPriority(UserPreferences.getNotifyPriority());
