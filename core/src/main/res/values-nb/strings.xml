@@ -28,7 +28,7 @@
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Sum av tid i avspilte podkaster:</string>
   <string name="statistics_details_dialog">Startet %1$d av %2$d episoder.\n\nAvspilt %3$s av %4$s.</string>
-  <string name="statistics_mode">Statistikk modus</string>
+  <string name="statistics_mode">Statistikkmodus</string>
   <string name="statistics_mode_normal">Beregn faktisk avspilt varighet. Dobbel avspilling telles to ganger, mens markering som avspilt telles ikke</string>
   <string name="statistics_mode_count_all">Oppsummer alle podkaster merket som avspilt</string>
   <string name="statistics_speed_not_counted">Merk: Avspillingshastighet tas aldri med i betraktningen.</string>
@@ -320,6 +320,7 @@
   <string name="storage_sum">Auto-slett episoder, importer, eksporter</string>
   <string name="project_pref">Prosjekt</string>
   <string name="queue_label">Kø</string>
+  <string name="synchronization_pref">Synkronisering</string>
   <string name="automation">Automasjon</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Importer/Eksporter</string>
@@ -490,9 +491,7 @@
   <string name="about_pref">Om</string>
   <string name="antennapod_version">AntennaPod versjon</string>
   <string name="developers">Utviklere</string>
-  <string name="developers_summary">Alle kan hjelpe til med å gjøre AntennaPod bedre</string>
   <string name="translators">Oversettere</string>
-  <string name="translators_summary">Oversettelser er laget av brukere av AntennaPod ved hjelp av Transifex</string>
   <string name="privacy_policy">Personvern</string>
   <string name="licenses">Lisenser</string>
   <string name="licenses_summary">AntennaPod bruker annen flott programvare</string>

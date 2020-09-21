@@ -452,9 +452,9 @@
   <string name="pref_compact_notification_buttons_dialog_error">Je kunt maximaal %1$d knoppen kiezen.</string>
   <string name="pref_lockscreen_background_title">Achtergrondafbeelding vergrendelscherm</string>
   <string name="pref_lockscreen_background_sum">Toon de afbeelding van de huidige aflevering op het vergrendelscherm. Hierdoor is de afbeelding ook beschikbaar voor andere apps.</string>
-  <string name="pref_showDownloadReport_title">Downloadverslag tonen</string>
+  <string name="pref_showDownloadReport_title">Toon downloadverslag</string>
   <string name="pref_showDownloadReport_sum">Stel een verslag op met foutdetails als downloads mislukken.</string>
-  <string name="pref_showAutoDownloadReport_title">Downloadverslag tonen</string>
+  <string name="pref_showAutoDownloadReport_title">Toon verslag automatische downloads</string>
   <string name="pref_showAutoDownloadReport_sum">Toon een melding bij automatisch gedownloade afleveringen.</string>
   <string name="pref_expand_notify_unsupport_toast">Android-versies lager dan 4.1 ondersteunen geen knoppen op meldingen.</string>
   <string name="pref_enqueue_location_title">Wachtrijlocatie</string>
@@ -507,10 +507,11 @@
   <!--About screen-->
   <string name="about_pref">Over AntennaPod</string>
   <string name="antennapod_version">AntennaPod-versie</string>
+  <string name="contributors">Bijdragers</string>
+  <string name="contributors_summary">Iedereen kan helpen AntennaPod te verbeteren middels programmeren, vertalen of het helpen van gebruikers op het forum</string>
   <string name="developers">Ontwikkelaars</string>
-  <string name="developers_summary">Iedereen kan helpen AntennaPod te verbeteren</string>
   <string name="translators">Vertalers</string>
-  <string name="translators_summary">De vertalingen zijn gedaan door AntennaPod-gebruikers op Transifex</string>
+  <string name="special_thanks">Met dank aan</string>
   <string name="privacy_policy">Privacybeleid</string>
   <string name="licenses">Licenties</string>
   <string name="licenses_summary">AntennaPod maakt gebruik van andere geweldige software</string>
@@ -554,6 +555,8 @@
   <string name="import_select_file">Kies een te importeren bestand</string>
   <string name="import_ok">Geïmporteerd.\n\nDruk op Oké om AntennaPod opnieuw te starten.</string>
   <string name="import_no_downgrade">Deze databank is geëxporteerd door een nieuwere versie van Antennapod. Je huidige versie weet nog niet hoe daar mee om te gaan.</string>
+  <string name="favorites_export_label">Favorieten exporteren</string>
+  <string name="favorites_export_summary">Exporteer opgeslagen favorieten naar een bestand</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Slaaptimer instellen</string>
   <string name="disable_sleeptimer_label">Slaaptimer uitschakelen</string>

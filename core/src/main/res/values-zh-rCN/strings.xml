@@ -129,7 +129,7 @@
   <string name="share_feed_url_label">分享播客URL</string>
   <string name="share_item_url_label">分享媒体文件地址</string>
   <string name="share_item_url_with_position_label">分享带播放位置的媒体文件地址</string>
-  <string name="feed_delete_confirmation_msg">请确认您想删除播客“1%1$s” 及其所有节目(包括已经下载的）</string>
+  <string name="feed_delete_confirmation_msg">请确认您想删除播客“%1$s” 及其所有节目(包括已经下载的）</string>
   <string name="feed_remover_msg">正在移除播客</string>
   <string name="load_complete_feed">刷新所有播客</string>
   <string name="multi_select">多选</string>
@@ -151,7 +151,7 @@
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <plurals name="downloading_batch_label">
-    <item quantity="other">正下载1%d个音频节目</item>
+    <item quantity="other">正下载%d个音频节目</item>
   </plurals>
   <string name="play_label">播放</string>
   <string name="pause_label">暂停</string>
@@ -160,7 +160,7 @@
   <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
   <string name="delete_episode_label">删除节目</string>
   <plurals name="deleted_episode_batch_label">
-    <item quantity="other">已删除1%d个节目</item>
+    <item quantity="other">已删除%d个节目</item>
   </plurals>
   <string name="remove_new_flag_label">移除“新的”标签</string>
   <string name="removed_new_flag_label">已移除“新的”标签</string>
@@ -170,21 +170,21 @@
   <string name="marked_as_read_no_media_label">已标为已读</string>
   <string name="play_this_to_seek_position">要跳转到某处，你需要播放这一集</string>
   <plurals name="marked_read_batch_label">
-    <item quantity="other">已将1%d个节目标记为已播放</item>
+    <item quantity="other">已将%d个节目标记为已播放</item>
   </plurals>
   <string name="mark_unread_label">标记未播放</string>
   <string name="mark_unread_label_no_media">标为未读</string>
   <plurals name="marked_unread_batch_label">
-    <item quantity="other">已将1%d个节目标记为未播放</item>
+    <item quantity="other">已将%d个节目标记为未播放</item>
   </plurals>
   <string name="add_to_queue_label">添加到播放列表</string>
   <string name="added_to_queue_label">已添加到播放列表</string>
   <plurals name="added_to_queue_batch_label">
-    <item quantity="other">已将1%d个节目添加到序列中</item>
+    <item quantity="other">已将%d个节目添加到序列中</item>
   </plurals>
   <string name="remove_from_queue_label">从播放列表中删除</string>
   <plurals name="removed_from_queue_batch_label">
-    <item quantity="other">已从序列中移除1%d个节目</item>
+    <item quantity="other">已从序列中移除%d个节目</item>
   </plurals>
   <string name="add_to_favorite_label">加入收藏</string>
   <string name="added_to_favorites">添加到收藏</string>
@@ -499,9 +499,7 @@
   <string name="about_pref">关于</string>
   <string name="antennapod_version">AntennaPod版本</string>
   <string name="developers">开发者</string>
-  <string name="developers_summary">每个人都可以帮助改进AntennaPod</string>
   <string name="translators">译者</string>
-  <string name="translators_summary">翻译由AntennPod用户使用Transifex创建</string>
   <string name="privacy_policy">隐私政策</string>
   <string name="licenses">许可证</string>
   <string name="licenses_summary">AntennaPod使用其他伟大的软件</string>
@@ -540,7 +538,7 @@
   <string name="please_wait">请等待...</string>
   <string name="export_error_label">导出出错</string>
   <string name="export_success_title">成功导出</string>
-  <string name="export_success_sum">导出文件被写入:\n\n 1%1$s</string>
+  <string name="export_success_sum">导出文件被写入:\n\n %1$s</string>
   <string name="opml_import_ask_read_permission">读取 OPML 文件需要访问外部存储的权限</string>
   <string name="import_select_file">选择导入文件</string>
   <string name="import_ok">成功导入，请按OK重启AntennaPod</string>
@@ -661,7 +659,7 @@
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">搜索播客……</string>
   <string name="search_itunes_label">搜索 iTunes</string>
-  <string name="search_fyyd_label">搜索 fydd</string>
+  <string name="search_fyyd_label">搜索 fyyd</string>
   <string name="advanced">高级</string>
   <string name="add_podcast_by_url">通过URL添加播客</string>
   <string name="browse_gpoddernet_label">浏览 gpodder.net</string>

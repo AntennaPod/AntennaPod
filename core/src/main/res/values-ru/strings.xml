@@ -510,9 +510,7 @@
   <string name="about_pref">О программе</string>
   <string name="antennapod_version">Версия AntennaPod</string>
   <string name="developers">Разработчики</string>
-  <string name="developers_summary">Любой может помочь улучшить AntennaPod</string>
   <string name="translators">Переводчики</string>
-  <string name="translators_summary">Перевод выполнен пользователями AntennaPod при помощи Transifex</string>
   <string name="privacy_policy">Политика конфиденциальности</string>
   <string name="licenses">Лицензии</string>
   <string name="licenses_summary">В AntennaPod используется другое отличное ПО</string>

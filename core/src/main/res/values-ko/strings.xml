@@ -498,9 +498,7 @@
   <string name="about_pref">정보</string>
   <string name="antennapod_version">안테나팟 버전</string>
   <string name="developers">개발자</string>
-  <string name="developers_summary">안테나팟을 더 낫게 만드는데 도움을 준 모든 분</string>
   <string name="translators">번역자</string>
-  <string name="translators_summary">번역은 안테나팟 사용자들이 Transifex를 사용해 만듭니다.</string>
   <string name="privacy_policy">개인 정보 정책</string>
   <string name="licenses">라이선스</string>
   <string name="licenses_summary">안테나팟은 여러가지 위대한 소프트웨어를 사용하고 있습니다</string>

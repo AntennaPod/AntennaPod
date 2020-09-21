@@ -453,9 +453,7 @@
   <string name="about_pref">Про програму</string>
   <string name="antennapod_version">Версія AntennaPod</string>
   <string name="developers">Розробники</string>
-  <string name="developers_summary">Кожен може допомогти AntennaPod стати краще</string>
   <string name="translators">Перекладачі</string>
-  <string name="translators_summary">Переклади створюються користувачами AntennaPod за допомогою Transifex</string>
   <string name="privacy_policy">Політика конфіденційності</string>
   <string name="licenses">Ліцензії</string>
   <string name="licenses_summary">AntennaPod використовує інше чудове програмне забезпечення</string>

@@ -507,10 +507,11 @@
   <!--About screen-->
   <string name="about_pref">Über</string>
   <string name="antennapod_version">AntennaPod-Version</string>
+  <string name="contributors">Beitragende</string>
+  <string name="contributors_summary">Jeder kann helfen, AntennaPod besser zu machen - durch Code, Übersetzungen oder durch Unterstützen anderer Nutzer in unserem Forum.</string>
   <string name="developers">Entwickler</string>
-  <string name="developers_summary">Jeder kann helfen, AntennaPod besser zu machen</string>
   <string name="translators">Übersetzer</string>
-  <string name="translators_summary">Übersetzungen werden von Nutzern auf Transifex erstellt</string>
+  <string name="special_thanks">Besonderen Dank</string>
   <string name="privacy_policy">Datenschutzrichtlinie</string>
   <string name="licenses">Lizenzen</string>
   <string name="licenses_summary">AntennaPod verwendet nützliche andere Software</string>
@@ -554,6 +555,8 @@
   <string name="import_select_file">Zu importierende Datei auswählen</string>
   <string name="import_ok">Import erfolgreich.\n\nBitte OK drücken, um AntennaPod neuzustarten</string>
   <string name="import_no_downgrade">Diese Datenbank wurde mit einer neueren Version von AntennaPod exportiert. Deine im Moment installierte Version kann die Datei leider nicht bearbeiten.</string>
+  <string name="favorites_export_label">Favoriten exportieren</string>
+  <string name="favorites_export_summary">Speichere Favoriten in einer Datei</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Timer einstellen</string>
   <string name="disable_sleeptimer_label">Schlummerfunktion deaktivieren</string>

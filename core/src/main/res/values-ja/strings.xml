@@ -481,9 +481,7 @@
   <string name="about_pref">AntennaPodについて</string>
   <string name="antennapod_version">AntennaPod バージョン</string>
   <string name="developers">開発者</string>
-  <string name="developers_summary">誰でも AntennaPod の改善に貢献できます</string>
   <string name="translators">翻訳者</string>
-  <string name="translators_summary">翻訳は、Transifex を使用してAntennaPod のユーザーが作成します</string>
   <string name="privacy_policy">プライバシーポリシー</string>
   <string name="licenses">ライセンス</string>
   <string name="licenses_summary">AntennaPod は他の優れたソフトウェアを使用しています</string>

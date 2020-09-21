@@ -487,7 +487,7 @@
   <string name="media_player_switch_to_exoplayer">Utiliser ExoPlayer pour la lecture</string>
   <string name="media_player_switched_to_exoplayer">Lecteur changé pour ExoPlayer</string>
   <string name="pref_skip_silence_title">Supprimer les silences audios</string>
-  <string name="pref_videoBehavior_title">Sorti du lecteur pendant une vidéo</string>
+  <string name="pref_videoBehavior_title">Sortie du lecteur pendant une vidéo</string>
   <string name="pref_videoBehavior_sum">Définir ce qu\'il se passe si une vidéo est quittée pendant sa lecture</string>
   <string name="stop_playback">Arrêter la lecture</string>
   <string name="continue_playback">Continuer la lecture</string>
@@ -507,10 +507,11 @@
   <!--About screen-->
   <string name="about_pref">À propos</string>
   <string name="antennapod_version">Version d\'AntennaPod</string>
+  <string name="contributors">Contributeurs</string>
+  <string name="contributors_summary">Tout le monde peut contribuer à l\'amélioration d\'AntennaPod - avec du code, des traductions ou en aidant les utilisateurs dans notre forum.</string>
   <string name="developers">Développeurs</string>
-  <string name="developers_summary">Tout le monde peut améliorer AntennaPod</string>
   <string name="translators">Traducteurs</string>
-  <string name="translators_summary">La traduction est faite par les utilisateurs d\'AntennaPod sur Transifex</string>
+  <string name="special_thanks">Remerciements spéciaux</string>
   <string name="privacy_policy">Politique de confidentialité</string>
   <string name="licenses">Licences</string>
   <string name="licenses_summary">AntennaPod utilise le code d\'autres logiciels</string>
@@ -554,6 +555,8 @@
   <string name="import_select_file">Sélectionner le fichier à importer</string>
   <string name="import_ok">Import réussi.\n\nAppuyer sur OK pour redémarrer AntennaPod</string>
   <string name="import_no_downgrade">La base de données a été exportée avec une version plus récente d\'AntennaPod. L\'application actuelle ne sait pas comment l\'importer.</string>
+  <string name="favorites_export_label">Exporter les favoris</string>
+  <string name="favorites_export_summary">Exporter les favoris dans un fichier</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Activer le minuteur</string>
   <string name="disable_sleeptimer_label">Désactiver le minuteur</string>
