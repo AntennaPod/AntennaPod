@@ -778,5 +778,4 @@
   <string name="on_demand_config_setting_changed">Konfigurazio eguneratua, arrakastaz.</string>
   <string name="on_demand_config_stream_text">Badirudi asko transmititzen duzula. Saio-zerrendek transmisio-botoiak erakustea nahi duzu?</string>
   <string name="on_demand_config_download_text">Badirudi asko deskargatzen duzula. Gertaera-zerrendek deskarga-botoiak erakustea nahi duzu?</string>
-  <string name="search_podcastindex_label">Bilatu Podcastindex-en</string>
 </resources>

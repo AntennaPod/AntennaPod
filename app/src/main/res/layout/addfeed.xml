@@ -143,18 +143,18 @@
                     android:text="@string/browse_gpoddernet_label"/>
 
             <TextView
-                android:id="@+id/btn_search_podcastindex"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="?attr/action_search"
-                app:drawableLeftCompat="?attr/action_search"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:textColor="?android:attr/textColorPrimary"
-                android:clickable="true"
-                android:text="@string/search_podcastindex_label"/>
+                    android:id="@+id/btn_search_podcastindex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="8dp"
+                    app:drawableStartCompat="?attr/action_search"
+                    app:drawableLeftCompat="?attr/action_search"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:clickable="true"
+                    android:text="@string/search_podcastindex_label"/>
 
             <TextView
                     android:id="@+id/btn_opml_import"

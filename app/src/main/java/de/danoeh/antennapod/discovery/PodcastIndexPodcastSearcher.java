@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import io.reactivex.Single;
@@ -27,8 +28,6 @@ import okhttp3.Response;
 
 public class PodcastIndexPodcastSearcher implements PodcastSearcher {
     private static final String PODCASTINDEX_API_URL = "https://api.podcastindex.org/api/1.0/search/byterm?q=%s";
-    private static final String API_KEY = "JRJPPWC6ZA7DKKTSU2R3";
-    private static final String API_SECRET = "7$$67JtrfkSYtAncGBEaJp$v$Y9$ZJUzYVy8GuBm";
 
     public PodcastIndexPodcastSearcher() {
     }
@@ -43,7 +42,7 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
             calendar.setTime(now);
             long secondsSinceEpoch = calendar.getTimeInMillis() / 1000L;
             String apiHeaderTime = String.valueOf(secondsSinceEpoch);
-            String data4Hash = API_KEY + API_SECRET + apiHeaderTime;
+            String data4Hash = BuildConfig.API_KEY + BuildConfig.API_SECRET + apiHeaderTime;
             String hashString = sha1(data4Hash);
 
             String encodedQuery;
@@ -59,7 +58,7 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             Request.Builder httpReq = new Request.Builder()
                     .addHeader("X-Auth-Date", apiHeaderTime)
-                    .addHeader("X-Auth-Key", API_KEY)
+                    .addHeader("X-Auth-Key", BuildConfig.API_KEY)
                     .addHeader("Authorization", hashString)
                     .addHeader("User-Agent", ClientConfig.USER_AGENT)
                     .url(formattedUrl);
@@ -110,14 +109,14 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
             messageDigest.update(clearString.getBytes("UTF-8"));
-            return byteArrayToString(messageDigest.digest());
+            return toHex(messageDigest.digest());
         } catch (Exception ignored) {
             ignored.printStackTrace();
             return null;
         }
     }
 
-    public static String byteArrayToString(byte[] bytes) {
+    public static String toHex(byte[] bytes) {
         StringBuilder buffer = new StringBuilder();
         for (byte b : bytes) {
             buffer.append(String.format(Locale.getDefault(), "%02x", b));

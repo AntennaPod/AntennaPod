@@ -764,5 +764,4 @@
   <string name="on_demand_config_setting_changed">成功更新设置</string>
   <string name="on_demand_config_stream_text">看起来你在线播放了很多节目。你想要剧集列表显示流按钮吗?</string>
   <string name="on_demand_config_download_text">看起来你下载了很多节目。你想要播放列表显示下载按钮吗?</string>
-  <string name="search_podcastindex_label">搜索 Podcastindex.org</string>
 </resources>
