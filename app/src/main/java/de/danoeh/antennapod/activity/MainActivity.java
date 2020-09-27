@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -33,6 +35,8 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
@@ -511,4 +515,35 @@ public class MainActivity extends CastEnabledActivity {
     public Snackbar showSnackbarAbovePlayer(int text, int duration) {
         return showSnackbarAbovePlayer(getResources().getText(text), duration);
     }
+
+    //Hardware keyboard support
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        Intent serviceIntent = new Intent(this, PlaybackService.class);
+        serviceIntent.putExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, true);
+
+        int customKeyCode = keyCode;
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_ENTER: //Fallthrough
+            case KeyEvent.KEYCODE_SPACE:
+                //Play/Pause
+                customKeyCode = KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE;
+                break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                //Go Back
+                customKeyCode = KeyEvent.KEYCODE_MEDIA_REWIND;
+                break;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                //Go Forward
+                customKeyCode = KeyEvent.KEYCODE_MEDIA_FAST_FORWARD;
+                break;
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+
+        serviceIntent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
+        ContextCompat.startForegroundService(this, serviceIntent);
+        return true;
+    }
+
 }
