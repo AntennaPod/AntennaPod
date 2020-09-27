@@ -122,7 +122,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         @Override
-        public RecyclerView onCreateRecyclerView (LayoutInflater inflater, ViewGroup parent, Bundle state) {
+        public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent, Bundle state) {
             final RecyclerView view = super.onCreateRecyclerView(inflater, parent, state);
             // To prevent transition animation because of summary update
             view.setItemAnimator(null);
