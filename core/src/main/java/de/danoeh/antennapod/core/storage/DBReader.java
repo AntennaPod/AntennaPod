@@ -143,6 +143,7 @@ public final class DBReader {
             Feed feed = feedIndex.get(item.getFeedId());
             if (feed == null) {
                 Log.w(TAG, "No match found for item with ID " + item.getId() + ". Feed ID was " + item.getFeedId());
+                feed = new Feed("", "", "Error: Item without feed");
             }
             item.setFeed(feed);
         }

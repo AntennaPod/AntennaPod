@@ -145,7 +145,7 @@
   <string name="hide_not_queued_episodes_label">Fora da cola</string>
   <string name="hide_downloaded_episodes_label">Descargado</string>
   <string name="hide_not_downloaded_episodes_label">Non descargado</string>
-  <string name="hide_has_media_label">Ten medios</string>
+  <string name="hide_has_media_label">Ten multimedia</string>
   <string name="hide_is_favorite_label">É favorito</string>
   <string name="filtered_label">Filtrado</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Erro na última actualización</string>
@@ -487,7 +487,7 @@
   <string name="media_player_switch_to_exoplayer">Cambiar a ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Cambiaches a ExoPlayer.</string>
   <string name="pref_skip_silence_title">Saltar silencio no Audio</string>
-  <string name="pref_videoBehavior_title">Ao saír do vídeo</string>
+  <string name="pref_videoBehavior_title">Ó saír do vídeo</string>
   <string name="pref_videoBehavior_sum">Comportamento cando saia do vídeo</string>
   <string name="stop_playback">Para a reprodución</string>
   <string name="continue_playback">Continuar a reprodución de audio</string>
@@ -507,10 +507,11 @@
   <!--About screen-->
   <string name="about_pref">Sobre</string>
   <string name="antennapod_version">Versión AntennaPod</string>
+  <string name="contributors">Colaboradoras</string>
+  <string name="contributors_summary">Calquera persoa pode axudar a mellorar AntennaPod - con código, traducións ou botando unha man no foro</string>
   <string name="developers">Desenvolvedoras</string>
-  <string name="developers_summary">Todas podemos axudar a mellorar AntennaPod</string>
   <string name="translators">Tradutores</string>
-  <string name="translators_summary">As traducións de AntennaPod realízanse utilizando Transifex</string>
+  <string name="special_thanks">Grazas especialmente a</string>
   <string name="privacy_policy">Política de privacidade</string>
   <string name="licenses">Licenzas</string>
   <string name="licenses_summary">AntennaPod toma como fonte outro software</string>
@@ -554,6 +555,8 @@
   <string name="import_select_file">Escolle o ficheiro a importar</string>
   <string name="import_ok">Importación correcta.\n\nPulse OK para reiniciar AntennaPod</string>
   <string name="import_no_downgrade">A base de datos foi exportada cunha versión máis recente de AntennaPod. A instalación actual non sabe como xestionar este ficheiro.</string>
+  <string name="favorites_export_label">Exportar favoritos</string>
+  <string name="favorites_export_summary">Exportar os favoritos a un ficheiro</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Establecer apagado automático</string>
   <string name="disable_sleeptimer_label">Desactivar o apagado automático</string>

@@ -510,9 +510,7 @@
   <string name="about_pref">Honi buruz</string>
   <string name="antennapod_version">AntennaPod bertsioa</string>
   <string name="developers">Garatzaileak</string>
-  <string name="developers_summary">Edonork lagun dezake AntennaPod hobetzen</string>
   <string name="translators">Itzultzaileak</string>
-  <string name="translators_summary">Itzulpenek AntennaPod erabiltzaile berriak sortzen dituzte Transifex erabiliz</string>
   <string name="privacy_policy">Pribatutasun politika</string>
   <string name="licenses">Baimenak</string>
   <string name="licenses_summary">AntennaPod-ek beste software ezin hobeak erabiltzen ditu</string>

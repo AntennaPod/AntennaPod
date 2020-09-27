@@ -51,6 +51,7 @@ public class DownloadsFragment extends Fragment {
 
         viewPager = root.findViewById(R.id.viewpager);
         viewPager.setAdapter(new DownloadsPagerAdapter(this));
+        viewPager.setOffscreenPageLimit(2);
 
         // Give the TabLayout the ViewPager
         tabLayout = root.findViewById(R.id.sliding_tabs);

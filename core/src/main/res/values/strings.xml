@@ -531,10 +531,11 @@
     <!-- About screen -->
     <string name="about_pref">About</string>
     <string name="antennapod_version">AntennaPod version</string>
+    <string name="contributors">Contributors</string>
+    <string name="contributors_summary">Everyone can help to make AntennaPod better - with code, translations or by helping users in our forum</string>
     <string name="developers">Developers</string>
-    <string name="developers_summary">Everyone can help to make AntennaPod better</string>
     <string name="translators">Translators</string>
-    <string name="translators_summary">Translations are created by users of AntennaPod using Transifex</string>
+    <string name="special_thanks">Special thanks</string>
     <string name="privacy_policy">Privacy policy</string>
     <string name="licenses">Licenses</string>
     <string name="licenses_summary">AntennaPod uses other great software</string>

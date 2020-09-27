@@ -508,9 +508,7 @@
   <string name="about_pref">Informazioni</string>
   <string name="antennapod_version">Versione di AntennaPod</string>
   <string name="developers">Sviluppatori</string>
-  <string name="developers_summary">Chiunque può contribuire a rendere AntennaPod migliore</string>
   <string name="translators">Traduttori</string>
-  <string name="translators_summary">Le traduzioni sono create dagli utenti di AntennaPod grazie a Transifex</string>
   <string name="privacy_policy">Privacy policy</string>
   <string name="licenses">Licenze</string>
   <string name="licenses_summary">AntennaPod usa altri ottimi software</string>

@@ -380,7 +380,6 @@
   <string name="antennapod_version">نسخه AntennaPod</string>
   <string name="developers">توسعه‌دهندگان</string>
   <string name="translators">مترجمان</string>
-  <string name="translators_summary">ترجمه‌ها به کمک کاربران AntennaPod و با استفاده از Transifex انجام شده‌اند</string>
   <string name="privacy_policy">سیاست حریم شخصی</string>
   <string name="licenses">پروانه‌ها</string>
   <!--Search-->

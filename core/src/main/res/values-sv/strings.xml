@@ -507,10 +507,11 @@
   <!--About screen-->
   <string name="about_pref">Om</string>
   <string name="antennapod_version">AntennaPod version</string>
+  <string name="contributors">Medverkare</string>
+  <string name="contributors_summary">Alla kan hjälpa till att göra AntennaPod bättre - med kod, översättningar eller genom att hjälpa användare i vårt forum.</string>
   <string name="developers">Utvecklare</string>
-  <string name="developers_summary">Alla kan hjälpa till att göra AntennaPod bättre</string>
   <string name="translators">Översättare</string>
-  <string name="translators_summary">Översättningar skapas av AntennaPods användare med hjälp av Transifex</string>
+  <string name="special_thanks">Speciellt tack</string>
   <string name="privacy_policy">Integritetspolicy</string>
   <string name="licenses">Licenser</string>
   <string name="licenses_summary">AntennaPod förlitar sig på annan bra programvara</string>
@@ -554,6 +555,8 @@
   <string name="import_select_file">Välj fil att importera</string>
   <string name="import_ok">Importen lyckades.\n\nTryck OK för att starta om AntennaPod</string>
   <string name="import_no_downgrade">Denna databas var exporterad med en nyare version av AntennaPod. Din nuvarande installation vet inte hur den ska hantera filen än.</string>
+  <string name="favorites_export_label">Favoritexport</string>
+  <string name="favorites_export_summary">Exportera sparade favoriter till fil</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ställ in sömntimer</string>
   <string name="disable_sleeptimer_label">Stäng av sömntimer</string>

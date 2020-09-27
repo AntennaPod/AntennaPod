@@ -31,7 +31,9 @@
   <string name="statistics_mode_normal">Calcular a duração que já foi tocada. Tocar das vezes é contado o dobro, enquanto marcar como tocada não é contado</string>
   <string name="statistics_mode_count_all">Somar todos os podcasts marcados como tocados</string>
   <string name="statistics_speed_not_counted">Nota: A velocidade de reprodução nunca é levada em conta.</string>
+  <string name="statistics_reset_data_msg">Isso ira apagar o histórico de reprodução de todos os episódios. Tem certeza que deseja continuar?</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Tamanho total dos episódios baixados.</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
@@ -276,6 +278,7 @@
   <!--Empty list labels-->
   <string name="no_items_header_label">Nenhum episódio na fila</string>
   <string name="no_shownotes_label">Este episódio não possui notas.</string>
+  <string name="no_run_downloads_head_label">Nenhum download em andamento</string>
   <string name="no_chapters_label">Este episódio não possui capítulos</string>
   <!--Preferences-->
   <string name="storage_pref">Armazenamento</string>
@@ -320,6 +323,7 @@
   <string name="pref_unpauseOnHeadsetReconnect_title">Fones de ouvido reconectados</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth reconectado</string>
   <string name="pref_mobileUpdate_title">Atualizações via Rede de Dados Celular</string>
+  <string name="pref_mobileUpdate_auto_download">Download automático</string>
   <string name="user_interface_label">Interface com usuário</string>
   <string name="pref_set_theme_title">Selecionar tema</string>
   <string name="pref_nav_drawer_items_title">Configurar itens da Gaveta de Navegação</string>
@@ -350,6 +354,7 @@
   <string name="pref_gpodnet_logout_toast">Saiu com sucesso</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informações de login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
+  <string name="pref_gpodnet_sync_changes_title">Sincronizar agora</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronizar as alterações de estado da inscrição e de episódios com o gpodder.net.</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronizar os estados das inscrições e episódios com o gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Entrou como <i>%1$s</i> com o dispositivo <i>%2$s</i>]]></string>
