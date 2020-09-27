@@ -55,16 +55,14 @@ public class DatabaseExporter {
                 src = new FileInputStream(currentDB).getChannel();
                 dst = outFileStream.getChannel();
                 long srcSize = src.size();
-                long oldDstSize = dst.size();
                 dst.transferFrom(src, 0, srcSize);
 
                 long newDstSize = dst.size();
-                long expected = srcSize + oldDstSize;
-                if (newDstSize < expected) {
+                if (newDstSize < srcSize) {
                     throw new IOException(String.format(
                             "Unable to write entire database. Expected to write %s, but wrote %s.",
-                            Formatter.formatShortFileSize(context, expected),
-                            Formatter.formatShortFileSize(context, newDstSize - oldDstSize)));
+                            Formatter.formatShortFileSize(context, srcSize),
+                            Formatter.formatShortFileSize(context, newDstSize)));
                 }
             } else {
                 throw new IOException("Can not access current database");
