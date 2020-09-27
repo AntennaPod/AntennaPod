@@ -64,9 +64,6 @@ public class FeedItemMenuHandler {
         if (!ShareUtils.hasLinkToShare(selectedItem)) {
             setItemVisibility(menu, R.id.visit_website_item, false);
         }
-        if (selectedItem.getFeed().isLocalFeed()) {
-            setItemVisibility(menu, R.id.visit_website_item, false);
-        }
 
         boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
 
@@ -104,6 +101,11 @@ public class FeedItemMenuHandler {
         setItemVisibility(menu, R.id.remove_from_favorites_item, isFavorite);
 
         setItemVisibility(menu, R.id.remove_item, fileDownloaded);
+
+        if (selectedItem.getFeed().isLocalFeed()) {
+            setItemVisibility(menu, R.id.visit_website_item, false);
+            setItemVisibility(menu, R.id.share_item, false);
+        }
 
         return true;
     }
