@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.service.playback;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.UiModeManager;
 import android.bluetooth.BluetoothA2dp;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -1182,6 +1184,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             // @see #setupNotification() for the method to create Androidv5+ lockscreen UI
             //   with notification (compact)
             capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
+        }
+
+        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
+            sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_REWIND,
+                        getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
+                        .build());
+            sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_FAST_FORWARD,
+                        getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
+                        .build());
         }
 
         sessionState.setActions(capabilities);
