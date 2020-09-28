@@ -8,7 +8,7 @@ jobs:
         type: steps
         default: []
     docker:
-      - image: circleci/android:api-28
+      - image: circleci/android:api-30
     working_directory: ~/AntennaPod
     environment:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'

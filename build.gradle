@@ -42,9 +42,9 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 28
+    compileSdkVersion = 30
     minSdkVersion = 16
-    targetSdkVersion = 28
+    targetSdkVersion = 30
 
     // AndroidX
     annotationVersion = "1.1.0"
