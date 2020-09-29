@@ -42,6 +42,9 @@ android {
 
     signingConfigs {
         releaseConfig {
+            v1SigningEnabled true
+            v2SigningEnabled true
+
             if (project.hasProperty("releaseStoreFile")) {
                 storeFile file(releaseStoreFile)
             } else {
