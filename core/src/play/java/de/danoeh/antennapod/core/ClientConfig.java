@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -15,7 +14,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.exception.RxJavaErrorHandlerSetup;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 import java.io.File;
@@ -67,7 +65,6 @@ public class ClientConfig {
         }
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
-        RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
         NotificationUtils.createChannels(context);
         initialized = true;
     }
