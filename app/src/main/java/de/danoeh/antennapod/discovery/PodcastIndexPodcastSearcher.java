@@ -42,7 +42,7 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
             calendar.setTime(now);
             long secondsSinceEpoch = calendar.getTimeInMillis() / 1000L;
             String apiHeaderTime = String.valueOf(secondsSinceEpoch);
-            String data4Hash = BuildConfig.API_KEY + BuildConfig.API_SECRET + apiHeaderTime;
+            String data4Hash = BuildConfig.PODCASTINDEX_API_KEY + BuildConfig.PODCASTINDEX_API_SECRET + apiHeaderTime;
             String hashString = sha1(data4Hash);
 
             String encodedQuery;
@@ -58,7 +58,7 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             Request.Builder httpReq = new Request.Builder()
                     .addHeader("X-Auth-Date", apiHeaderTime)
-                    .addHeader("X-Auth-Key", BuildConfig.API_KEY)
+                    .addHeader("X-Auth-Key", BuildConfig.PODCASTINDEX_API_KEY)
                     .addHeader("Authorization", hashString)
                     .addHeader("User-Agent", ClientConfig.USER_AGENT)
                     .url(formattedUrl);
@@ -105,7 +105,7 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
         return "Podcastindex.org";
     }
 
-    public static String sha1(String clearString) {
+    private static String sha1(String clearString) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-1");
             messageDigest.update(clearString.getBytes("UTF-8"));
@@ -116,7 +116,7 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
         }
     }
 
-    public static String toHex(byte[] bytes) {
+    private static String toHex(byte[] bytes) {
         StringBuilder buffer = new StringBuilder();
         for (byte b : bytes) {
             buffer.append(String.format(Locale.getDefault(), "%02x", b));
