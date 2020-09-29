@@ -45,11 +45,12 @@
             android:id="@+id/coverHolder"
             app:cardBackgroundColor="@color/non_square_icon_background"
             app:cardCornerRadius="4dp"
+            app:cardPreventCornerOverlap="false"
             app:cardElevation="0dp">
 
         <RelativeLayout
-                android:layout_width="@dimen/thumbnail_length_queue_item"
-                android:layout_height="@dimen/thumbnail_length_queue_item">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <TextView
                     android:id="@+id/txtvPlaceholder"
