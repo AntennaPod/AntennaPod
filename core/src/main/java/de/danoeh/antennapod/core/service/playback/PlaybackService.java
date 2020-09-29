@@ -35,6 +35,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+import android.webkit.URLUtil;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -482,7 +483,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (allowStreamAlways) {
                     UserPreferences.setAllowMobileStreaming(true);
                 }
-                if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
+                boolean localFeed = URLUtil.isContentUrl(playable.getStreamUrl());
+                if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime && !localFeed) {
                     displayStreamingNotAllowedNotification(intent);
                     PlaybackPreferences.writeNoMediaPlaying();
                     stateManager.stopService();
