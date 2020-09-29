@@ -109,7 +109,7 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
     private void buildSmartMarkAsPlayedPreference() {
         final Resources res = getActivity().getResources();
 
-        ListPreference pref = (ListPreference) findPreference(UserPreferences.PREF_SMART_MARK_AS_PLAYED_SECS);
+        ListPreference pref = findPreference(UserPreferences.PREF_SMART_MARK_AS_PLAYED_SECS);
         String[] values = res.getStringArray(R.array.smart_mark_as_played_values);
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {

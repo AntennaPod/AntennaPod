@@ -94,7 +94,7 @@ public class PlaybackControlsDialog extends DialogFragment {
             barRightVolume.setEnabled(false);
         }
 
-        final CheckBox skipSilence = (CheckBox) dialog.findViewById(R.id.skipSilence);
+        final CheckBox skipSilence = dialog.findViewById(R.id.skipSilence);
         skipSilence.setChecked(UserPreferences.isSkipSilence());
         if (!UserPreferences.useExoplayer()) {
             skipSilence.setEnabled(false);

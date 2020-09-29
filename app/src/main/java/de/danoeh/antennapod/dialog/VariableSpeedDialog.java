@@ -45,9 +45,8 @@ public class VariableSpeedDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.no_playback_plugin_title);
         builder.setMessage(R.string.no_playback_plugin_or_sonic_msg);
-        builder.setPositiveButton(R.string.enable_sonic, (dialog, which) -> {
-            UserPreferences.enableSonic();
-        });
+        builder.setPositiveButton(R.string.enable_sonic, (dialog, which) ->
+                UserPreferences.enableSonic());
         builder.setNeutralButton(R.string.close_label, null);
         builder.show();
     }

@@ -187,7 +187,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             videoControlsHider.stop();
 
             if (System.currentTimeMillis() - lastScreenTap < 300) {
-                if (event.getX() > v.getMeasuredWidth() / 2) {
+                if (event.getX() > v.getMeasuredWidth() / 2.0f) {
                     onFastForward();
                     showSkipAnimation(true);
                 } else {

@@ -335,10 +335,8 @@ public class QueueFragment extends Fragment {
                     if (keepSortedNew) {
                         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
                         DBWriter.reorderQueue(sortOrder, true);
-                        if (recyclerAdapter != null) {
-                            recyclerAdapter.updateDragDropEnabled();
-                        }
-                    } else if (recyclerAdapter != null) {
+                    }
+                    if (recyclerAdapter != null) {
                         recyclerAdapter.updateDragDropEnabled();
                     }
                     getActivity().invalidateOptionsMenu();
