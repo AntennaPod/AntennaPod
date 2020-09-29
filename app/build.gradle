@@ -30,6 +30,8 @@ android {
         } catch (Exception ignore) {
         }
         buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
+        buildConfigField "String", "PODCASTINDEX_API_KEY", '"JRJPPWC6ZA7DKKTSU2R3"'
+        buildConfigField "String", "PODCASTINDEX_API_SECRET", '"7$$67JtrfkSYtAncGBEaJp$v$Y9$ZJUzYVy8GuBm"'
 
         javaCompileOptions {
             annotationProcessorOptions {
