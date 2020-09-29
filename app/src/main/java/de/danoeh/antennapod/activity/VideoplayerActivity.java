@@ -102,6 +102,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             videoControlsHider.stop();
         }
+        progressIndicator.setVisibility(View.GONE); // Controller released; we will not receive buffering updates
     }
 
     @Override
