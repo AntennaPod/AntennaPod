@@ -386,6 +386,7 @@ public class AudioPlayerFragment extends Fragment implements
         super.onStop();
         controller.release();
         controller = null;
+        progressIndicator.setVisibility(View.GONE); // Controller released; we will not receive buffering updates
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();
