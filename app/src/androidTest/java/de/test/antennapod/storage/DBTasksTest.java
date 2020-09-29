@@ -70,7 +70,7 @@ public class DBTasksTest {
         }
         Feed newFeed = DBTasks.updateFeed(context, feed, false);
 
-        assertSame(feed, newFeed);
+        assertEquals(feed.getId(), newFeed.getId());
         assertTrue(feed.getId() != 0);
         for (FeedItem item : feed.getItems()) {
             assertFalse(item.isPlayed());
