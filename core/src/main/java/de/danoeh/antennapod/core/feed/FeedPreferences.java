@@ -42,7 +42,8 @@ public class FeedPreferences {
     }
 
     private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed) {
-        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting, username, password, new FeedFilter(), feedPlaybackSpeed, 0, 0);
+        this(feedID, autoDownload, keepUpdated, auto_delete_action, volumeAdaptionSetting,
+                username, password, filter, feedPlaybackSpeed, 0, 0);
     }
 
     private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding) {
