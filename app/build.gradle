@@ -14,8 +14,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2000095
-        versionName "2.0.0"
+        versionCode 2000195
+        versionName "2.0.1"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
