@@ -23,6 +23,7 @@
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <string name="episode_cache_full_title">Cache de episódios cheio</string>
   <string name="episode_cache_full_message">O limite de cache de episódios foi alcançado. Você pode aumentar o tamanho do cache em Configurações.</string>
+  <string name="playback_statistics_label">Reprodução</string>
   <string name="download_statistics_label">Downloads</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Tempo total de podcasts reproduzidos:</string>
@@ -31,6 +32,7 @@
   <string name="statistics_mode_normal">Calcular a duração que já foi tocada. Tocar das vezes é contado o dobro, enquanto marcar como tocada não é contado</string>
   <string name="statistics_mode_count_all">Somar todos os podcasts marcados como tocados</string>
   <string name="statistics_speed_not_counted">Nota: A velocidade de reprodução nunca é levada em conta.</string>
+  <string name="statistics_reset_data">Limpar dados de estatísticas</string>
   <string name="statistics_reset_data_msg">Isso ira apagar o histórico de reprodução de todos os episódios. Tem certeza que deseja continuar?</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Tamanho total dos episódios baixados.</string>
@@ -43,7 +45,7 @@
   <string name="drawer_feed_order_last_update">Ordenar por data de publicação</string>
   <string name="drawer_feed_order_most_played">Ordenar pelo número de episódios reproduzidos</string>
   <string name="drawer_feed_counter_new_unplayed">Número de episódios novos e não reproduzidos</string>
-  <string name="drawer_feed_counter_new">Numero de novos episódios</string>
+  <string name="drawer_feed_counter_new">Número de novos episódios</string>
   <string name="drawer_feed_counter_unplayed">Número de episódios não reproduzidos</string>
   <string name="drawer_feed_counter_downloaded">Número de episódios baixados</string>
   <string name="drawer_feed_counter_none">Nenhum</string>
@@ -82,6 +84,9 @@
   <string name="auto_download_apply_to_items_title">Aplicar aos episódios anteriores</string>
   <string name="auto_download_apply_to_items_message">A nova configuração de <i>Download Automático</i> será aplicada automaticamente a novos episódios.\nVocê deseja aplicá-la aos episódios anteriores?</string>
   <string name="auto_delete_label">Apagar episódio automaticamente</string>
+  <string name="feed_volume_reduction">Redução de Volume</string>
+  <string name="feed_volume_reduction_summary">Diminuir o volume para episódios deste feed: %1$s</string>
+  <string name="feed_volume_reduction_off">Desligar</string>
   <string name="feed_volume_reduction_light">Leve</string>
   <string name="feed_volume_reduction_heavy">Forte</string>
   <string name="parallel_downloads_suffix">\u0020 downloads paralelos</string>
@@ -92,9 +97,17 @@
   <string name="episode_cleanup_never">Nunca</string>
   <string name="episode_cleanup_queue_removal">Quando não está na fila</string>
   <string name="episode_cleanup_after_listening">Depois de concluído</string>
+  <plurals name="episode_cleanup_hours_after_listening">
+    <item quantity="one">1 hora após finalizar</item>
+    <item quantity="other">%d horas após finalizar</item>
+  </plurals>
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">1 dia depois de concluído</item>
     <item quantity="other">%d dias depois de concluído</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d selecionado</item>
+    <item quantity="other">%d selecionados</item>
   </plurals>
   <string name="loading_more">Carregando...</string>
   <!--Actions on feeds-->
@@ -137,11 +150,12 @@
   <string name="filtered_label">Filtrado</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Última Atualização falhou</string>
   <string name="open_podcast">Abrir Podcast</string>
+  <string name="please_wait_for_data">Por favor, aguarde até que os dados sejam carregados</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <plurals name="downloading_batch_label">
-    <item quantity="one">Baixar %d episódio.</item>
-    <item quantity="other">Baixar %d episódios.</item>
+    <item quantity="one">Baixando %d episódio.</item>
+    <item quantity="other">Baixando %d episódios.</item>
   </plurals>
   <string name="play_label">Reproduzir</string>
   <string name="pause_label">Pausar</string>
@@ -159,6 +173,7 @@
   <string name="marked_as_read_label">Marcado como reproduzido</string>
   <string name="mark_read_no_media_label">Marcar como reproduzido</string>
   <string name="marked_as_read_no_media_label">Marcado como reproduzido</string>
+  <string name="play_this_to_seek_position">Para pular para as posições, você precisa reproduzir o episódio</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episódio marcado como reproduzido.</item>
     <item quantity="other">%d episódios marcados como reproduzidos.</item>
@@ -211,6 +226,7 @@
   <string name="download_canceled_msg">Download cancelado</string>
   <string name="download_canceled_autodownload_enabled_msg">Download cancelado\nDesabilitado <i>Download Automático</i> para este item</string>
   <string name="download_report_title">Downloads finalizados com erro(s)</string>
+  <string name="auto_download_report_title">Download automático finalizado</string>
   <string name="download_report_content_title">Reportar Download</string>
   <string name="download_error_malformed_url">URL inválida</string>
   <string name="download_error_io_error">Erro de IO</string>
@@ -227,11 +243,14 @@
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Arquivo de mídia</string>
   <string name="download_request_error_dialog_message_prefix">Ocorreu um erro durante download do arquivo:\u0020</string>
+  <string name="null_value_podcast_error">Nenhum podcast foi fornecido para ser exibido.</string>
   <string name="authentication_notification_title">Autenticação requerida</string>
   <string name="authentication_notification_msg">O recurso que você solicitou requer um usuário e uma senha</string>
   <string name="confirm_mobile_download_dialog_title">Confirmar Download utilizando dados móveis</string>
   <string name="confirm_mobile_download_dialog_message_not_in_queue">O download utilizando plano de dados foi desabilitado nas configurações.\n\nVocê pode escolher entre apenas adicionar o episódio na fila ou você pode permitir o download temporáriamente.\n\n<small>Sua escolha será lembrada por 10 minutos.</small></string>
   <string name="confirm_mobile_download_dialog_message">O download sobre plano de dados foi desabilitado nas configurações.\n\n Você deseja permitir o download temporáriamente?\n\n<small>Sua escolha será lembrada por 10 minutos</small></string>
+  <string name="confirm_mobile_streaming_notification_title">Confirmar streaming móvel</string>
+  <string name="confirm_mobile_streaming_notification_message">O streaming pela conexão de dados móveis está desativado nas configurações. Toque para transmitir de qualquer maneira.</string>
   <string name="confirm_mobile_streaming_button_always">Sempre permitir</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Adicionar à fila</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Permitir temporariamente</string>
@@ -242,6 +261,9 @@
   <string name="player_ready_msg">Pronto</string>
   <string name="player_seeking_msg">Buscando</string>
   <string name="playback_error_server_died">Servidor morreu</string>
+  <string name="playback_error_unsupported">Tipo de mídia não suportado</string>
+  <string name="playback_error_timeout">Tempo da operação expirou</string>
+  <string name="playback_error_source">Não foi possível acessar o arquivo de mídia</string>
   <string name="playback_error_unknown">Erro desconhecido</string>
   <string name="no_media_playing_label">Nenhuma mídia tocando</string>
   <string name="player_buffering_msg">Armazenando</string>
@@ -253,6 +275,7 @@
   <string name="unlock_queue">Desbloquear Fila</string>
   <string name="queue_locked">Fila bloqueada</string>
   <string name="queue_unlocked">Fila desbloqueada</string>
+  <string name="queue_lock_warning">Se você bloquear a fila, não poderá mais deslizar ou reorganizar os episódios.</string>
   <string name="checkbox_do_not_show_again">Não mostrar novamente</string>
   <string name="clear_queue_label">Limpar fila</string>
   <string name="undo">Desfazer</string>
@@ -273,23 +296,49 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Download Plugin</string>
   <string name="no_playback_plugin_title">Plugin Não Instalado</string>
+  <string name="no_playback_plugin_or_sonic_msg">Para que a reprodução de velocidade variável funcione, recomendamos habilitar o reprodutor de mídia Sonic integrado.</string>
   <string name="set_playback_speed_label">Velocidades de Reprodução</string>
   <string name="enable_sonic">Habilitar Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Nenhum episódio na fila</string>
+  <string name="no_items_label">Adicione um episódio baixando-o ou mantenha pressionado um episódio e selecione \"Adicionar à fila\".</string>
   <string name="no_shownotes_label">Este episódio não possui notas.</string>
   <string name="no_run_downloads_head_label">Nenhum download em andamento</string>
+  <string name="no_run_downloads_label">Você pode baixar episódios na tela de detalhes do podcast.</string>
+  <string name="no_comp_downloads_head_label">Nenhum episódios baixado</string>
+  <string name="no_comp_downloads_label">Você pode baixar episódios na tela de detalhes do podcast.</string>
+  <string name="no_log_downloads_head_label">Sem registro de download</string>
+  <string name="no_log_downloads_label">Os logs de download aparecerão aqui quando disponíveis.</string>
+  <string name="no_history_head_label">Sem Histórico</string>
+  <string name="no_history_label">Depois de ouvir um episódio, ele aparecerá aqui.</string>
+  <string name="no_all_episodes_head_label">Nenhum Episódio</string>
+  <string name="no_all_episodes_label">Quando você adiciona um podcast, os episódios são mostrados aqui.</string>
+  <string name="no_new_episodes_head_label">Nenhum episódio novo</string>
+  <string name="no_new_episodes_label">Quando novos episódios chegarem, eles serão mostrados aqui.</string>
+  <string name="no_fav_episodes_head_label">Nenhum episódio favorito</string>
+  <string name="no_fav_episodes_label">Você pode adicionar episódios aos favoritos mantendo-os pressionados.</string>
+  <string name="no_chapters_head_label">Nenhum capítulo</string>
   <string name="no_chapters_label">Este episódio não possui capítulos</string>
+  <string name="no_subscriptions_head_label">Nenhuma assinatura</string>
+  <string name="no_subscriptions_label">Para assinar um podcast, pressione o ícone de adição abaixo.</string>
   <!--Preferences-->
   <string name="storage_pref">Armazenamento</string>
+  <string name="storage_sum">Exclusão automática de episódio, importação, exportação</string>
   <string name="project_pref">Projeto</string>
   <string name="queue_label">Fila</string>
+  <string name="synchronization_pref">Sincronização</string>
+  <string name="synchronization_sum">Sincroniza com outros dispositivos usando gpodder.net</string>
   <string name="automation">Automação</string>
   <string name="download_pref_details">Detalhes</string>
   <string name="import_export_pref">Importar/Exportar</string>
+  <string name="import_export_search_keywords">backup, cópia, restore, restaurar</string>
   <string name="appearance">Aparência</string>
   <string name="external_elements">Elementos externos</string>
   <string name="interruptions">Interrupções</string>
+  <string name="playback_control">Controle de reprodução</string>
+  <string name="preference_search_hint">Procurar...</string>
+  <string name="preference_search_no_results">Nenhum resultado</string>
+  <string name="preference_search_clear_history">Limpar histórico</string>
   <string name="media_player">Reprodutor de mídia</string>
   <string name="pref_episode_cleanup_title">Limpar Episódio</string>
   <string name="pref_episode_cleanup_summary">Episódios que não estão na fila e não estão nos favoritos podem ser removidos se o Download Automático precisar de espaço para novos episódios</string>
@@ -301,7 +350,7 @@
   <string name="pref_hardwarePreviousButtonRestarts_title">Botão anterior reinicia</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Reinicia a reprodução atual ao pressionar o botão físico anterior ao invés de retroceder</string>
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
-  <string name="pref_auto_delete_sum">Apagar os episódios quando a reprodução for concluída</string>
+  <string name="pref_auto_delete_sum">Remover episódio quando a reprodução for concluída</string>
   <string name="pref_auto_delete_title">Deletar automaticamente</string>
   <string name="pref_smart_mark_as_played_sum">Marcar episódios como reproduzidos mesmo que restem alguns segundos de reprodução</string>
   <string name="pref_smart_mark_as_played_title">Marcar automaticamente como reproduzido</string>
@@ -310,8 +359,11 @@
   <string name="pref_favorite_keeps_episodes_sum">Manter episódios marcados como Favoritos</string>
   <string name="pref_favorite_keeps_episodes_title">Manter episódios favoritos</string>
   <string name="playback_pref">Reprodução</string>
+  <string name="playback_pref_sum">Controles de fone de ouvido, intervalos para saltar, Fila</string>
   <string name="network_pref">Rede</string>
+  <string name="network_pref_sum">Intervalo de atualização, Controles de download, Dados móveis</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Atualizar intervalo ou momento do dia</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Especifique um intervalo ou uma hora específica do dia para atualizar os podcasts automaticamente</string>
   <string name="pref_autoUpdateIntervallOrTime_message">Você pode configurar um <i>intervalo</i> como \"cada 2 horas\", configurar um <i>horário do dia</i> específico como \"7:00 AM\" ou <i>desabilitar</i> atualizações automaticas completamente.\n\n<small>Observe: Horários de atualização não são precisos. Você deve considar um possível atraso.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Desabilitar</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Configurar Intervalo</string>
@@ -322,8 +374,15 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Fones de ouvido desconectados</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Fones de ouvido reconectados</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth reconectado</string>
+  <string name="pref_stream_over_download_title">Preferir streaming</string>
+  <string name="pref_stream_over_download_sum">Mostrar o botão de streaming ao invés do botão de download nas listas.</string>
   <string name="pref_mobileUpdate_title">Atualizações via Rede de Dados Celular</string>
+  <string name="pref_mobileUpdate_sum">Selecione o que deve ser permitido na conexão de dados móveis</string>
+  <string name="pref_mobileUpdate_refresh">Atualizar podcast</string>
+  <string name="pref_mobileUpdate_images">Imagens de capa</string>
   <string name="pref_mobileUpdate_auto_download">Download automático</string>
+  <string name="pref_mobileUpdate_episode_download">Download de episódios</string>
+  <string name="pref_mobileUpdate_streaming">Streaming</string>
   <string name="user_interface_label">Interface com usuário</string>
   <string name="pref_set_theme_title">Selecionar tema</string>
   <string name="pref_nav_drawer_items_title">Configurar itens da Gaveta de Navegação</string>

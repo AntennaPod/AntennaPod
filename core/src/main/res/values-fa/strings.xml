@@ -104,6 +104,10 @@
     <item quantity="one">%dروز بعد از اتمام</item>
     <item quantity="other">%dروز بعد از اتمام</item>
   </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d گزیده</item>
+    <item quantity="other">%dگزیده</item>
+  </plurals>
   <string name="loading_more">بارگیری بیشتر…</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">علامت‌گذاری همه به‌عنوان پخش‌شده</string>
@@ -346,6 +350,7 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">تنظیم زمان روز</string>
   <string name="user_interface_label">رابط کاربری</string>
   <string name="pref_set_theme_title">انتخاب پوسته</string>
+  <string name="pref_episode_cover_title">استفاده از عکس قسمت</string>
   <string name="pref_theme_title_light">روشن</string>
   <string name="pref_theme_title_dark">تاریک</string>
   <string name="pref_theme_title_trueblack">سیاه (مناسب AMOLED)</string>

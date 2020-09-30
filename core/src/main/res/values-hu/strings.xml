@@ -507,8 +507,11 @@
   <!--About screen-->
   <string name="about_pref">Névjegy</string>
   <string name="antennapod_version">AntennaPod verzió</string>
+  <string name="contributors">Közreműködők</string>
+  <string name="contributors_summary">Mindenki, aki segített az AntennaPod még jobbá tételében – kóddal, fordítással vagy a felhasználók segítésével a fórumon.</string>
   <string name="developers">Fejlesztők</string>
   <string name="translators">Fordítók</string>
+  <string name="special_thanks">Külön köszönet</string>
   <string name="privacy_policy">Adatvédelmi nyilatkozat</string>
   <string name="licenses">Licencek</string>
   <string name="licenses_summary">Az AntennaPod más remek szoftvereket használ</string>
@@ -552,13 +555,15 @@
   <string name="import_select_file">Importálandó fájl kiválasztása</string>
   <string name="import_ok">Importálás sikeres.\n\nNyomja meg az OK gombot az AntennaPod újraindításához</string>
   <string name="import_no_downgrade">Az adatbázis az AntennaPod egy újabb verziójából lett exportálva. A jelenlegi telepítése még nem tudja, hogyan kezelje ezt a fájlt.</string>
+  <string name="favorites_export_label">Kedvencek exportálása</string>
+  <string name="favorites_export_summary">Mentett kedvencek fájlba exportálása</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Alvási időzítő beállítása</string>
   <string name="disable_sleeptimer_label">Alvási időzítő letiltása</string>
   <string name="sleep_timer_label">Alvási időzít</string>
   <string name="time_dialog_invalid_input">Érvénytelen bemenet, az időnek egész számnak kell lennie</string>
   <string name="shake_to_reset_label">Rázás a visszaállításához</string>
-  <string name="timer_vibration_label">Rövid vibrálás a befejezés előtt</string>
+  <string name="timer_vibration_label">Rövid rezgés a befejezés előtt</string>
   <string name="time_seconds">másodperc</string>
   <string name="time_minutes">perc</string>
   <string name="time_hours">óra</string>

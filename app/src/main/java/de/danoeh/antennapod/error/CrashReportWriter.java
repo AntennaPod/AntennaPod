@@ -1,8 +1,9 @@
-package de.danoeh.antennapod;
+package de.danoeh.antennapod.error;
 
 import android.os.Build;
 import android.util.Log;
 
+import de.danoeh.antennapod.BuildConfig;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -31,6 +32,11 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable ex) {
+        write(ex);
+        defaultHandler.uncaughtException(thread, ex);
+    }
+
+    public static void write(Throwable exception) {
         File path = getFile();
         PrintWriter out = null;
         try {
@@ -41,14 +47,13 @@ public class CrashReportWriter implements Thread.UncaughtExceptionHandler {
             out.println();
             out.println("## StackTrace");
             out.println("```");
-            ex.printStackTrace(out);
+            exception.printStackTrace(out);
             out.println("```");
         } catch (IOException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             IOUtils.closeQuietly(out);
         }
-        defaultHandler.uncaughtException(thread, ex);
     }
 
     public static String getSystemInfo() {

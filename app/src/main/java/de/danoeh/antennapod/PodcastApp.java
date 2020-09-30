@@ -12,6 +12,8 @@ import com.joanzapata.iconify.fonts.MaterialModule;
 import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.error.CrashReportWriter;
+import de.danoeh.antennapod.error.RxJavaErrorHandlerSetup;
 import de.danoeh.antennapod.spa.SPAUtil;
 import org.greenrobot.eventbus.EventBus;
 
@@ -38,6 +40,7 @@ public class PodcastApp extends Application {
         super.onCreate();
 
         Thread.setDefaultUncaughtExceptionHandler(new CrashReportWriter());
+        RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
 
         if (BuildConfig.DEBUG) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder()
