@@ -507,8 +507,11 @@
   <!--About screen-->
   <string name="about_pref">Informazioni</string>
   <string name="antennapod_version">Versione di AntennaPod</string>
+  <string name="contributors">Contributori</string>
+  <string name="contributors_summary">Tutti possono contribuire a rendere AntennaPod migliore - programmando, traducendo o aiutando gli utenti nel nostro forum</string>
   <string name="developers">Sviluppatori</string>
   <string name="translators">Traduttori</string>
+  <string name="special_thanks">Ringraziamenti  speciali</string>
   <string name="privacy_policy">Privacy policy</string>
   <string name="licenses">Licenze</string>
   <string name="licenses_summary">AntennaPod usa altri ottimi software</string>
@@ -552,6 +555,8 @@
   <string name="import_select_file">Scegli file da importare</string>
   <string name="import_ok">Importazione eseguita.\n\nPremi OK per riavviare AntennaPod</string>
   <string name="import_no_downgrade">Questo database è stato esportato da una versione più recente di AntennaPod. La tua applicazione attuale non sa ancora come gestire questo file.</string>
+  <string name="favorites_export_label">Esporta preferiti</string>
+  <string name="favorites_export_summary">Esporta preferiti su file</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Imposta timer</string>
   <string name="disable_sleeptimer_label">Disabilita il timer di spegnimento</string>

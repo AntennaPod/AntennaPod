@@ -507,8 +507,11 @@
   <!--About screen-->
   <string name="about_pref">Info</string>
   <string name="antennapod_version">AntennaPodi versioon</string>
+  <string name="contributors">Kaastöölised</string>
+  <string name="contributors_summary">Igaüks võib aidata teha AntennaPodi paremaks - kirjutades koodi, tõlkides või aidates foorumis teisi kasutajaid</string>
   <string name="developers">Arendajad</string>
   <string name="translators">Tõlkijad</string>
+  <string name="special_thanks">Eritänu</string>
   <string name="privacy_policy">Privaatsus</string>
   <string name="licenses">Litsentsid</string>
   <string name="licenses_summary">AntennaPod kasutab teiste suurepärast tarkvara</string>
@@ -552,6 +555,8 @@
   <string name="import_select_file">Vali fail, mida importida</string>
   <string name="import_ok">Importimine edukas.\n\nAntennaPodi taaskäivitamiseks vajuta OK</string>
   <string name="import_no_downgrade">See andmebaas on eksporditud AntennaPodi uuemast versioonist. Sinu praegune äpp ei oska seda faili käsitseda.</string>
+  <string name="favorites_export_label">Lemmikute eksport</string>
+  <string name="favorites_export_summary">Ekspordi salvestatud lemmikud faili</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Määra unetaimer</string>
   <string name="disable_sleeptimer_label">Keela unetaimer</string>

@@ -498,8 +498,11 @@
   <!--About screen-->
   <string name="about_pref">关于</string>
   <string name="antennapod_version">AntennaPod版本</string>
+  <string name="contributors">贡献者</string>
+  <string name="contributors_summary">每个人都可以通过代码，翻译或通过帮助我们论坛中的用户来让AntennaPod变得更好</string>
   <string name="developers">开发者</string>
   <string name="translators">译者</string>
+  <string name="special_thanks">特别感谢</string>
   <string name="privacy_policy">隐私政策</string>
   <string name="licenses">许可证</string>
   <string name="licenses_summary">AntennaPod使用其他伟大的软件</string>
@@ -543,6 +546,8 @@
   <string name="import_select_file">选择导入文件</string>
   <string name="import_ok">成功导入，请按OK重启AntennaPod</string>
   <string name="import_no_downgrade">该数据库是使用较新版本的AntennaPod导出的。您当前安装的版本尚不知如何处理该文件。</string>
+  <string name="favorites_export_label">收藏导出</string>
+  <string name="favorites_export_summary">将保存的收藏夹导出到文件</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">设置休眠计时器</string>
   <string name="disable_sleeptimer_label">禁用休眠计时器</string>
