@@ -57,7 +57,7 @@ android {
         disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
                 "GradleDependency", "ParcelClassLoader", "Typos", "ExtraTranslation", "ImpliedQuantity",
                 "PluralsCandidate", "UnusedQuantity", "StringFormatCount", "TrustAllX509TrustManager",
-                "StaticFieldLeak", "TypographyEllipsis", "IconDensities", "IconDuplicates"
+                "StaticFieldLeak", "TypographyEllipsis", "IconDensities", "IconDuplicates", "CheckResult"
 
         warningsAsErrors true
         abortOnError true
