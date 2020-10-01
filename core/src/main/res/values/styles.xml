@@ -306,4 +306,14 @@
     <style name="Widget.AntennaPod.ActionBar.Black" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
         <item name="background">@color/black</item>
     </style>
+
+    <style name="AddPodcastTextView">
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:clickable">true</item>
+    </style>
+
 </resources>

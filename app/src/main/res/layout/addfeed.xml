@@ -87,87 +87,57 @@
                     android:textColor="?android:attr/textColorPrimary"/>
 
             <TextView
-                    android:id="@+id/btn_add_via_url"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
-                    app:drawableStartCompat="?attr/feed"
-                    app:drawableLeftCompat="?attr/feed"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:clickable="true"
-                    android:text="@string/add_podcast_by_url"/>
+                android:id="@+id/btn_add_via_url"
+                style="@style/AddPodcastTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_podcast_by_url"
+                app:drawableLeftCompat="?attr/feed"
+                app:drawableStartCompat="?attr/feed" />
 
             <TextView
-                    android:id="@+id/btn_search_itunes"
-                    android:layout_width="match_parent"
+                android:id="@+id/btn_search_itunes"
+                style="@style/AddPodcastTextView"
+                android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
                     app:drawableStartCompat="?attr/action_search"
                     app:drawableLeftCompat="?attr/action_search"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:clickable="true"
                     android:text="@string/search_itunes_label"/>
 
             <TextView
-                    android:id="@+id/btn_search_fyyd"
-                    android:layout_width="match_parent"
+                android:id="@+id/btn_search_fyyd"
+                style="@style/AddPodcastTextView"
+                android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
                     app:drawableStartCompat="?attr/action_search"
                     app:drawableLeftCompat="?attr/action_search"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:clickable="true"
                     android:text="@string/search_fyyd_label"/>
 
             <TextView
-                    android:id="@+id/btn_search_gpodder"
-                    android:layout_width="match_parent"
+                android:id="@+id/btn_search_gpodder"
+                style="@style/AddPodcastTextView"
+                android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
                     app:drawableStartCompat="?attr/action_search"
                     app:drawableLeftCompat="?attr/action_search"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:clickable="true"
                     android:text="@string/browse_gpoddernet_label"/>
 
             <TextView
-                    android:id="@+id/btn_search_podcastindex"
-                    android:layout_width="match_parent"
+                android:id="@+id/btn_search_podcastindex"
+                style="@style/AddPodcastTextView"
+                android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
                     app:drawableStartCompat="?attr/action_search"
                     app:drawableLeftCompat="?attr/action_search"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:clickable="true"
                     android:text="@string/search_podcastindex_label"/>
 
             <TextView
-                    android:id="@+id/btn_opml_import"
-                    android:layout_width="match_parent"
+                android:id="@+id/btn_opml_import"
+                style="@style/AddPodcastTextView"
+                android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
                     app:drawableStartCompat="?attr/av_download"
                     app:drawableLeftCompat="?attr/av_download"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:clickable="true"
                     android:text="@string/opml_import_label"/>
         </LinearLayout>
     </ScrollView>
