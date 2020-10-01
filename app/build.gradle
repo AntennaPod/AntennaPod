@@ -30,8 +30,14 @@ android {
         } catch (Exception ignore) {
         }
         buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
-        buildConfigField "String", "PODCASTINDEX_API_KEY", '"JRJPPWC6ZA7DKKTSU2R3"'
-        buildConfigField "String", "PODCASTINDEX_API_SECRET", '"7$$67JtrfkSYtAncGBEaJp$v$Y9$ZJUzYVy8GuBm"'
+
+        if (project.hasProperty("podcastindexApiKey")) {
+            buildConfigField "String", "PODCASTINDEX_API_KEY", '"' + podcastindexApiKey + '"'
+            buildConfigField "String", "PODCASTINDEX_API_SECRET", '"' + podcastindexApiSecret + '"'
+        } else {
+            buildConfigField "String", "PODCASTINDEX_API_KEY", '"XTMMQGA2YZ4WJUBYY4HK"'
+            buildConfigField "String", "PODCASTINDEX_API_SECRET", '"XAaAhk4^2YBsTE33vdbwbZNj82ZRLABDDqFdKe7x"'
+        }
 
         javaCompileOptions {
             annotationProcessorOptions {

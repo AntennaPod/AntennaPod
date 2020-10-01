@@ -249,7 +249,7 @@ public class UserPreferences {
     public static void setFeedOrder(String selected) {
         prefs.edit()
                 .putString(PREF_DRAWER_FEED_ORDER, selected)
-                .commit();
+                .apply();
     }
 
     public static int getFeedCounterSetting() {
@@ -1054,7 +1054,7 @@ public class UserPreferences {
     public static void setFeedFilter(String value) {
         prefs.edit()
                 .putString(PREF_FILTER_FEED, value)
-                .commit();
+                .apply();
     }
 
 }
