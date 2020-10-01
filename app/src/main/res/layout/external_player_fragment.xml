@@ -40,6 +40,7 @@
                     android:id="@+id/txtvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="260dp"
                     style="@style/Base.TextAppearance.AppCompat.Body1"
                     android:ellipsize="end"
                     android:maxLines="1"
@@ -49,6 +50,7 @@
                     android:id="@+id/txtvAuthor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="260dp"
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:textColor="?android:attr/textColorSecondary"
                     android:ellipsize="end"
@@ -58,15 +60,15 @@
 
 
         <ImageButton
-                android:id="@+id/butPlay"
-                android:layout_width="52dp"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/pause_label"
-                android:background="?attr/selectableItemBackground"
-                app:srcCompat="?attr/av_play"
-                android:scaleType="fitCenter"
-                android:padding="8dp"
-                tools:src="@drawable/ic_av_play_white_48dp"/>
+            android:id="@+id/butPlay"
+            android:layout_width="52dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/pause_label"
+            android:background="?attr/selectableItemBackground"
+            app:srcCompat="?attr/av_play"
+            android:scaleType="fitCenter"
+            android:padding="8dp"
+            tools:src="@drawable/ic_av_play_white_48dp"/>
 
     </LinearLayout>
 
