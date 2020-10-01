@@ -257,7 +257,6 @@ public final class DBTasks {
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public static List<? extends FeedItem> enqueueFeedItemsToDownload(final Context context,
                        List<? extends FeedItem> items) throws InterruptedException, ExecutionException {
         List<FeedItem> itemsToEnqueue = new ArrayList<>();

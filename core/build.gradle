@@ -52,6 +52,16 @@ android {
             dimension "market"
         }
     }
+
+    lintOptions {
+        disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
+                "GradleDependency", "ParcelClassLoader", "Typos", "ExtraTranslation", "ImpliedQuantity",
+                "PluralsCandidate", "UnusedQuantity", "StringFormatCount", "TrustAllX509TrustManager",
+                "StaticFieldLeak", "TypographyEllipsis", "IconDensities", "IconDuplicates"
+
+        warningsAsErrors true
+        abortOnError true
+    }
 }
 
 dependencies {
