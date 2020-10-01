@@ -547,7 +547,8 @@ public class MainActivity extends CastEnabledActivity {
                 } else {
                     if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {
                         //Unmute
-                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+                                audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
                     } else {
                         //Mute
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
@@ -556,11 +557,13 @@ public class MainActivity extends CastEnabledActivity {
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
                 //Raise volume
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
                 break;
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 //Raise volume
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
                 break;
             default:
                 return super.onKeyUp(keyCode, event);
