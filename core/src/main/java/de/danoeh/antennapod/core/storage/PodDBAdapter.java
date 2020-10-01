@@ -1243,15 +1243,16 @@ public class PodDBAdapter {
 
         for (int i = 0; i < queryWords.length; i++) {
             sb
+                    .append("(" )
                     .append(KEY_DESCRIPTION + " LIKE '%").append(queryWords[i])
                     .append("%' OR ")
                     .append(KEY_CONTENT_ENCODED).append(" LIKE '%").append(queryWords[i])
                     .append("%' OR ")
                     .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
-                    .append("%' ");
+                    .append("%') ");
 
             if (i != queryWords.length - 1) {
-                sb.append("OR ");
+                sb.append("AND ");
             }
         }
 
@@ -1273,6 +1274,7 @@ public class PodDBAdapter {
 
         for (int i = 0; i < queryWords.length; i++) {
             sb
+                    .append("(" )
                     .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
                     .append("%' OR ")
                     .append(KEY_CUSTOM_TITLE).append(" LIKE '%").append(queryWords[i])
@@ -1280,10 +1282,10 @@ public class PodDBAdapter {
                     .append(KEY_AUTHOR).append(" LIKE '%").append(queryWords[i])
                     .append("%' OR ")
                     .append(KEY_DESCRIPTION).append(" LIKE '%").append(queryWords[i])
-                    .append("%' ");
+                    .append("%') ");
 
             if (i != queryWords.length - 1) {
-                sb.append("OR ");
+                sb.append("AND ");
             }
         }
 
