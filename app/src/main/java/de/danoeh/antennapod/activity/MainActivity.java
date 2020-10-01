@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -522,7 +523,9 @@ public class MainActivity extends CastEnabledActivity {
         Intent serviceIntent = new Intent(this, PlaybackService.class);
         serviceIntent.putExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, true);
 
-        int customKeyCode = keyCode;
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        Integer customKeyCode = null;
+
         switch (keyCode) {
             case KeyEvent.KEYCODE_ENTER: //Fallthrough
             case KeyEvent.KEYCODE_SPACE:
@@ -537,12 +540,36 @@ public class MainActivity extends CastEnabledActivity {
                 //Go Forward
                 customKeyCode = KeyEvent.KEYCODE_MEDIA_FAST_FORWARD;
                 break;
+            case KeyEvent.KEYCODE_M:
+                //Mute/Unmute
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, 0);
+                } else {
+                    if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {
+                        //Unmute
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+                    } else {
+                        //Mute
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+                    }
+                }
+                break;
+            case KeyEvent.KEYCODE_DPAD_UP:
+                //Raise volume
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                break;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                //Raise volume
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                break;
             default:
                 return super.onKeyUp(keyCode, event);
         }
 
-        serviceIntent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
-        ContextCompat.startForegroundService(this, serviceIntent);
+        if (customKeyCode != null) {
+            serviceIntent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
         return true;
     }
 
