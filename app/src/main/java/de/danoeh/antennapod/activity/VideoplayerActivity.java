@@ -3,14 +3,18 @@ package de.danoeh.antennapod.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+
+import androidx.appcompat.view.menu.ActionMenuItem;
 import androidx.core.view.WindowCompat;
 import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
@@ -480,4 +484,96 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     }
 
+
+    //Hardware keyboard support
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        Float videoPercent = null;
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_ENTER: //Fallthrough
+            case KeyEvent.KEYCODE_SPACE:
+                //Play/Pause
+                onPlayPause();
+                toggleVideoControlsVisibility();
+                break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                //Go Back
+                onRewind();
+                break;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                //Go Forward
+                onFastForward();
+                break;
+            case KeyEvent.KEYCODE_M:
+                //Mute/Unmute
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, 0);
+                } else {
+                    if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {
+                        //Unmute
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+                    } else {
+                        //Mute
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+                    }
+                }
+                break;
+            case KeyEvent.KEYCODE_DPAD_UP:
+                //Raise volume
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                break;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                //Raise volume
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                break;
+            case KeyEvent.KEYCODE_ESCAPE:
+            case KeyEvent.KEYCODE_F:
+                //Exit fullscreen mode
+                onOptionsItemSelected(new ActionMenuItem(this, 0, android.R.id.home, 0, 0, ""));
+                break;
+            case KeyEvent.KEYCODE_P:
+                //Toggle picture-in-picture mode
+                compatEnterPictureInPicture();
+                break;
+            //Go to x% of video:
+            case KeyEvent.KEYCODE_0:
+                videoPercent = 0f;
+                break;
+            case KeyEvent.KEYCODE_1:
+                videoPercent = 0.1f;
+                break;
+            case KeyEvent.KEYCODE_2:
+                videoPercent = 0.2f;
+                break;
+            case KeyEvent.KEYCODE_3:
+                videoPercent = 0.3f;
+                break;
+            case KeyEvent.KEYCODE_4:
+                videoPercent = 0.4f;
+                break;
+            case KeyEvent.KEYCODE_5:
+                videoPercent = 0.5f;
+                break;
+            case KeyEvent.KEYCODE_6:
+                videoPercent = 0.6f;
+                break;
+            case KeyEvent.KEYCODE_7:
+                videoPercent = 0.7f;
+                break;
+            case KeyEvent.KEYCODE_8:
+                videoPercent = 0.8f;
+                break;
+            case KeyEvent.KEYCODE_9:
+                videoPercent = 0.9f;
+                break;
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+
+        if (videoPercent != null)
+            controller.seekTo((int) (videoPercent * controller.getDuration()));
+        return true;
+    }
 }
