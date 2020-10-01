@@ -501,10 +501,12 @@ public class VideoplayerActivity extends MediaplayerActivity {
             case KeyEvent.KEYCODE_DPAD_LEFT:
                 //Go Back
                 onRewind();
+                showSkipAnimation(false);
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 //Go Forward
                 onFastForward();
+                showSkipAnimation(true);
                 break;
             case KeyEvent.KEYCODE_M:
                 //Mute/Unmute
