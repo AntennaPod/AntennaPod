@@ -1,144 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:title="@string/add_feed_label"
-        app:navigationIcon="?homeAsUpIndicator"
-        android:id="@+id/toolbar"/>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
-
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:title="@string/add_feed_label"
+            app:navigationIcon="?homeAsUpIndicator"
+            android:id="@+id/toolbar"/>
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="4dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:contentDescription="@string/search_podcast_hint"
-                app:srcCompat="?attr/action_search"
-                android:id="@+id/search_icon"
-                android:scaleType="center"/>
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:contentDescription="@string/search_podcast_hint"
+                    app:srcCompat="?attr/action_search"
+                    android:id="@+id/search_icon"
+                    android:scaleType="center"/>
 
             <EditText
-                android:id="@+id/combinedFeedSearchBox"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="text"
-                android:imeOptions="actionSearch"
-                android:importantForAutofill="no"
-                android:layout_marginStart="0dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginEnd="8dp"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:hint="@string/search_podcast_hint"
-                android:background="@null"/>
+                    android:id="@+id/combinedFeedSearchBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
+                    android:importantForAutofill="no"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:hint="@string/search_podcast_hint"
+                    android:background="@null"/>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:focusableInTouchMode="true"
-            android:padding="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:focusableInTouchMode="true"
+                android:padding="16dp">
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/quickFeedDiscovery"
-                android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                    android:id="@+id/quickFeedDiscovery"
+                    android:name="de.danoeh.antennapod.fragment.QuickFeedDiscoveryFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/advanced"
-                android:textSize="18sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:textColor="?android:attr/textColorPrimary"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/advanced"
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="?android:attr/textColorPrimary"/>
 
             <TextView
-                android:id="@+id/btn_add_via_url"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:drawableStartCompat="?attr/feed"
-                app:drawableLeftCompat="?attr/feed"
-                style="@style/AddPodcastTextView"
-                android:text="@string/add_podcast_by_url"/>
+                    android:id="@+id/btn_add_via_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="?attr/feed"
+                    app:drawableLeftCompat="?attr/feed"
+                    style="@style/AddPodcastTextView"
+                    android:text="@string/add_podcast_by_url"/>
 
             <TextView
-                android:id="@+id/btn_search_itunes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:drawableStartCompat="?attr/action_search"
-                app:drawableLeftCompat="?attr/action_search"
-                style="@style/AddPodcastTextView"
-                android:text="@string/search_itunes_label"/>
+                    android:id="@+id/btn_search_itunes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="?attr/action_search"
+                    app:drawableLeftCompat="?attr/action_search"
+                    style="@style/AddPodcastTextView"
+                    android:text="@string/search_itunes_label"/>
 
             <TextView
-                android:id="@+id/btn_search_fyyd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:drawableStartCompat="?attr/action_search"
-                app:drawableLeftCompat="?attr/action_search"
-                style="@style/AddPodcastTextView"
-                android:text="@string/search_fyyd_label"/>
+                    android:id="@+id/btn_search_fyyd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="?attr/action_search"
+                    app:drawableLeftCompat="?attr/action_search"
+                    style="@style/AddPodcastTextView"
+                    android:text="@string/search_fyyd_label"/>
 
             <TextView
-                android:id="@+id/btn_search_gpodder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:drawableStartCompat="?attr/action_search"
-                app:drawableLeftCompat="?attr/action_search"
-                style="@style/AddPodcastTextView"
-                android:text="@string/browse_gpoddernet_label"/>
+                    android:id="@+id/btn_search_gpodder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="?attr/action_search"
+                    app:drawableLeftCompat="?attr/action_search"
+                    style="@style/AddPodcastTextView"
+                    android:text="@string/browse_gpoddernet_label"/>
 
             <TextView
-                android:id="@+id/btn_search_podcastindex"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:drawableStartCompat="?attr/action_search"
-                app:drawableLeftCompat="?attr/action_search"
-                style="@style/AddPodcastTextView"
-                android:text="@string/search_podcastindex_label"/>
+                    android:id="@+id/btn_search_podcastindex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="?attr/action_search"
+                    app:drawableLeftCompat="?attr/action_search"
+                    style="@style/AddPodcastTextView"
+                    android:text="@string/search_podcastindex_label"/>
 
             <TextView
-                android:id="@+id/btn_opml_import"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:drawableStartCompat="?attr/av_download"
-                app:drawableLeftCompat="?attr/av_download"
-                style="@style/AddPodcastTextView"
-                android:text="@string/opml_import_label"/>
+                    android:id="@+id/btn_opml_import"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:drawableStartCompat="?attr/av_download"
+                    app:drawableLeftCompat="?attr/av_download"
+                    style="@style/AddPodcastTextView"
+                    android:text="@string/opml_import_label"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
