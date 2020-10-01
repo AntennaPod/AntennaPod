@@ -670,7 +670,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void startPlayingFromPreferences() {
         Playable playable = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
         if (playable != null) {
-            if (PlaybackPreferences.getCurrentEpisodeIsStream() && !NetworkUtils.isStreamingAllowed()) {
+            boolean localFeed = URLUtil.isContentUrl(playable.getStreamUrl());
+            if (PlaybackPreferences.getCurrentEpisodeIsStream() && !NetworkUtils.isStreamingAllowed() && !localFeed) {
                 displayStreamingNotAllowedNotification(
                         new PlaybackServiceStarter(this, playable)
                                 .prepareImmediately(true)
@@ -959,7 +960,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()
-                && UserPreferences.isFollowQueue()) {
+                && UserPreferences.isFollowQueue() && !nextItem.getFeed().isLocalFeed()) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, nextItem.getMedia())
                     .prepareImmediately(true)
