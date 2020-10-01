@@ -1243,7 +1243,7 @@ public class PodDBAdapter {
 
         for (int i = 0; i < queryWords.length; i++) {
             sb
-                    .append("(" )
+                    .append("(")
                     .append(KEY_DESCRIPTION + " LIKE '%").append(queryWords[i])
                     .append("%' OR ")
                     .append(KEY_CONTENT_ENCODED).append(" LIKE '%").append(queryWords[i])
@@ -1274,7 +1274,7 @@ public class PodDBAdapter {
 
         for (int i = 0; i < queryWords.length; i++) {
             sb
-                    .append("(" )
+                    .append("(")
                     .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
                     .append("%' OR ")
                     .append(KEY_CUSTOM_TITLE).append(" LIKE '%").append(queryWords[i])
