@@ -102,7 +102,7 @@ public class PlaybackServiceTaskManager {
 
     private synchronized void loadQueue() {
         if (!isQueueLoaderActive()) {
-            queueFuture = schedExecutor.submit(DBReader::getQueue);
+            queueFuture = schedExecutor.submit(() -> DBReader.getQueue());
         }
     }
 
