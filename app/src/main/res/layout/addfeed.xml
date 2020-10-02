@@ -154,7 +154,7 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:textColor="?android:attr/textColorPrimary"
                     android:clickable="true"
-                    android:text="@string/opml_import_label"/>
+                    android:text="@string/opml_add_podcast_label"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
