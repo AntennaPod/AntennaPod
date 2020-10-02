@@ -541,22 +541,21 @@ public class MainActivity extends CastEnabledActivity {
                 //Raise volume
                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                         AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-                break;
+                return true;
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 //Raise volume
                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                         AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-                break;
-            default:
-                return super.onKeyUp(keyCode, event);
+                return true;
         }
 
         if (customKeyCode != null) {
             Intent intent = new Intent(this, PlaybackService.class);
             intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
             ContextCompat.startForegroundService(this, intent);
+            return true;
         }
-        return true;
+        return super.onKeyUp(keyCode, event);
     }
 
 }
