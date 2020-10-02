@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ProgressBar;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -108,15 +109,9 @@ public class SubscriptionFragment extends Fragment {
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swiperefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
-            new Thread(() -> {
-                try {
-                    Thread.sleep(800);
-                } catch (Exception ignore) {
-                }
-                getActivity().runOnUiThread(() -> {
-                    swipeRefreshLayout.setRefreshing(false);
-                });
-            }).start();
+            new Handler().postDelayed(() ->
+                            getActivity().runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false))
+                    , 800);
         });
         return root;
     }
