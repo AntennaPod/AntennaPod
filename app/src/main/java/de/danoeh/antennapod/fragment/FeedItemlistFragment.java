@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +27,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
@@ -205,6 +208,19 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
 
         EventBus.getDefault().register(this);
+
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            try {
+                DBTasks.forceRefreshFeed(requireContext(), feed, true);
+            } catch (DownloadRequestException e) {
+                e.printStackTrace();
+            }
+            new Handler().postDelayed(() ->
+                            getActivity().runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false))
+                    , 1000);
+        });
+
         loadItems();
         return root;
     }

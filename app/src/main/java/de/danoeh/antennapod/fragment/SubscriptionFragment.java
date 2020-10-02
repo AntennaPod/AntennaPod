@@ -106,12 +106,12 @@ public class SubscriptionFragment extends Fragment {
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
 
-        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swiperefresh);
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
             new Handler().postDelayed(() ->
                             getActivity().runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false))
-                    , 800);
+                    , 1000);
         });
         return root;
     }
