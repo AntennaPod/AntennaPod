@@ -1,11 +1,16 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.ListFragment;
-import androidx.core.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,14 +22,21 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
+import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -32,6 +44,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Shows the download log
@@ -43,6 +56,8 @@ public class DownloadLogFragment extends ListFragment {
     private List<DownloadStatus> downloadLog = new ArrayList<>();
     private DownloadLogAdapter adapter;
     private Disposable disposable;
+
+    private boolean isUpdatingFeeds = false;
 
     @Override
     public void onStart() {
@@ -65,7 +80,7 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // add padding
         final ListView lv = getListView();
@@ -93,11 +108,11 @@ public class DownloadLogFragment extends ListFragment {
     private void onFragmentLoaded() {
         setListShown(true);
         adapter.notifyDataSetChanged();
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
         DownloadStatus status = adapter.getItem(position);
@@ -119,10 +134,17 @@ public class DownloadLogFragment extends ListFragment {
             message = status.getReasonDetailed();
         }
 
+        String messageFull = getString(R.string.download_error_details_message, message, url);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.download_error_details);
-        builder.setMessage(getString(R.string.download_error_details_message, message, url));
+        builder.setMessage(messageFull);
         builder.setPositiveButton(android.R.string.ok, null);
+        builder.setNeutralButton(R.string.copy_to_clipboard, (dialog, which) -> {
+            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText(getString(R.string.download_error_details), messageFull);
+            clipboard.setPrimaryClip(clip);
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT);
+        });
         Dialog dialog = builder.show();
         ((TextView) dialog.findViewById(android.R.id.message)).setTextIsSelectable(true);
     }
@@ -150,20 +172,14 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!isAdded()) {
-            return;
-        }
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-        MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.ic_delete});
-        clearHistory.setIcon(drawables.getDrawable(0));
-        drawables.recycle();
+        inflater.inflate(R.menu.downloads_log, menu);
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem = menu.findItem(R.id.clear_history_item);
         if (menuItem != null) {
@@ -172,11 +188,14 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.clear_history_item:
                     DBWriter.clearDownloadLog();
+                    return true;
+                case R.id.refresh_item:
+                    AutoUpdateManager.runImmediate(requireContext());
                     return true;
                 default:
                     return false;
@@ -185,6 +204,17 @@ public class DownloadLogFragment extends ListFragment {
             return true;
         }
     }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(DownloadEvent event) {
+        Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
+        if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
+            getActivity().invalidateOptionsMenu();
+        }
+    }
+
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker =
+            () -> DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
 
     private void loadItems() {
         if (disposable != null) {

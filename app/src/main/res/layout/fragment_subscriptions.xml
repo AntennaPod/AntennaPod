@@ -14,8 +14,22 @@
             app:title="@string/subscriptions_label"
             android:id="@+id/toolbar"/>
 
-    <GridView
+    <TextView
+            android:id="@+id/feeds_filtered_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="start"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_small" />
+
+    <GridView
+            android:layout_below="@id/feeds_filtered_message"
             android:id="@+id/subscriptions_grid"
             android:layout_width="match_parent"
             android:numColumns="3"

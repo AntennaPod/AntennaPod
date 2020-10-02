@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.sync.model;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.util.DateUtils;
@@ -179,6 +180,7 @@ public class EpisodeAction {
         return obj;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "EpisodeAction{"

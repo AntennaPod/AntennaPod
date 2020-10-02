@@ -23,11 +23,15 @@
 
     <color name="accent_light">#0078C2</color>
     <color name="accent_dark">#3D8BFF</color>
+    <color name="icon_background_gradient_start">#0ba2ff</color>
+    <color name="icon_background_gradient_end">#0878ff</color>
 
     <color name="master_switch_background_light">#DDDDDD</color>
     <color name="master_switch_background_dark">#191919</color>
 
-    <color name="icon_background_gradient_start">#0ba2ff</color>
-    <color name="icon_background_gradient_end">#0878ff</color>
-
+    <!-- filter dialog -->
+    <color name="dialog_filter_clear_inactive_light">#666666</color>
+    <color name="dialog_filter_clear_inactive_dark">#bbbbbb</color>
+    <color name="dialog_filter_inactive_light">#eeeeee</color>
+    <color name="dialog_filter_inactive_dark">#555555</color>
 </resources>

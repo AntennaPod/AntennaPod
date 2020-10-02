@@ -220,7 +220,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.episodes_apply_action_options, menu);
 
@@ -236,7 +236,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         // Prepare icon for select toggle button
 
         int[] icon = new int[1];
@@ -413,7 +413,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             boolean checked = checkedIds.contains(episode.getId());
             mListView.setItemChecked(i, checked);
         }
-        ActivityCompat.invalidateOptionsMenu(EpisodesApplyActionFragment.this.getActivity());
+        getActivity().invalidateOptionsMenu();
         toolbar.setTitle(getResources().getQuantityString(R.plurals.num_selected_label,
                 checkedIds.size(), checkedIds.size()));
     }

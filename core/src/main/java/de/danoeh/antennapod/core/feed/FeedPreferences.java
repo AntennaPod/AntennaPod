@@ -38,11 +38,8 @@ public class FeedPreferences {
     private int feedSkipEnding;
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
-        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting, username, password, new FeedFilter(), SPEED_USE_GLOBAL);
-    }
-
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed) {
-        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting, username, password, new FeedFilter(), feedPlaybackSpeed, 0, 0);
+        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting,
+                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0);
     }
 
     private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding) {

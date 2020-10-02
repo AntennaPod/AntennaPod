@@ -72,19 +72,13 @@ public final class DBReader {
 
     @NonNull
     private static List<Feed> getFeedList(PodDBAdapter adapter) {
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getAllFeedsCursor();
+        try (Cursor cursor = adapter.getAllFeedsCursor()) {
             List<Feed> feeds = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 Feed feed = extractFeedFromCursorRow(cursor);
                 feeds.add(feed);
             }
             return feeds;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -96,18 +90,13 @@ public final class DBReader {
     public static List<String> getFeedListDownloadUrls() {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getFeedCursorDownloadUrls();
+        try (Cursor cursor = adapter.getFeedCursorDownloadUrls()) {
             List<String> result = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 result.add(cursor.getString(1));
             }
             return result;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -173,9 +162,7 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getAllItemsOfFeedCursor(feed);
+        try (Cursor cursor = adapter.getAllItemsOfFeedCursor(feed)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             Collections.sort(items, new FeedItemPubdateComparator());
             for (FeedItem item : items) {
@@ -183,9 +170,6 @@ public final class DBReader {
             }
             return items;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -227,16 +211,10 @@ public final class DBReader {
     @NonNull
     static List<FeedItem> getQueue(PodDBAdapter adapter) {
         Log.d(TAG, "getQueue()");
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getQueueCursor();
+        try (Cursor cursor = adapter.getQueueCursor()) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -258,18 +236,12 @@ public final class DBReader {
     }
 
     private static LongList getQueueIDList(PodDBAdapter adapter) {
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getQueueIDCursor();
+        try (Cursor cursor = adapter.getQueueIDCursor()) {
             LongList queueIds = new LongList(cursor.getCount());
             while (cursor.moveToNext()) {
                 queueIds.add(cursor.getLong(0));
             }
             return queueIds;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -303,17 +275,12 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getDownloadedItemsCursor();
+        try (Cursor cursor = adapter.getDownloadedItemsCursor()) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             Collections.sort(items, new FeedItemPubdateComparator());
             return items;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -329,16 +296,11 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getPlayedItemsCursor();
+        try (Cursor cursor = adapter.getPlayedItemsCursor()) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -356,16 +318,11 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getNewItemsCursor(offset, limit);
+        try (Cursor cursor = adapter.getNewItemsCursor(offset, limit)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -382,16 +339,11 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getFavoritesCursor(offset, limit);
+        try (Cursor cursor = adapter.getFavoritesCursor(offset, limit)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -401,18 +353,13 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getFavoritesCursor(0, Integer.MAX_VALUE);
+        try (Cursor cursor = adapter.getFavoritesCursor(0, Integer.MAX_VALUE)) {
             LongList favoriteIDs = new LongList(cursor.getCount());
             while (cursor.moveToNext()) {
                 favoriteIDs.add(cursor.getLong(0));
             }
             return favoriteIDs;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -429,16 +376,11 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit);
+        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -493,9 +435,7 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getDownloadLogCursor(DOWNLOAD_LOG_SIZE);
+        try (Cursor cursor = adapter.getDownloadLogCursor(DOWNLOAD_LOG_SIZE)) {
             List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 downloadLog.add(DownloadStatus.fromCursor(cursor));
@@ -503,9 +443,6 @@ public final class DBReader {
             Collections.sort(downloadLog, new DownloadStatusComparator());
             return downloadLog;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -522,9 +459,7 @@ public final class DBReader {
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId);
+        try (Cursor cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feedId)) {
             List<DownloadStatus> downloadLog = new ArrayList<>(cursor.getCount());
             while (cursor.moveToNext()) {
                 downloadLog.add(DownloadStatus.fromCursor(cursor));
@@ -532,9 +467,6 @@ public final class DBReader {
             Collections.sort(downloadLog, new DownloadStatusComparator());
             return downloadLog;
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -561,9 +493,7 @@ public final class DBReader {
     @Nullable
     static Feed getFeed(final long feedId, PodDBAdapter adapter) {
         Feed feed = null;
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getFeedCursor(feedId);
+        try (Cursor cursor = adapter.getFeedCursor(feedId)) {
             if (cursor.moveToNext()) {
                 feed = extractFeedFromCursorRow(cursor);
                 feed.setItems(getFeedItemList(feed));
@@ -571,10 +501,6 @@ public final class DBReader {
                 Log.e(TAG, "getFeed could not find feed with id " + feedId);
             }
             return feed;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -583,9 +509,7 @@ public final class DBReader {
         Log.d(TAG, "Loading feeditem with id " + itemId);
 
         FeedItem item = null;
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getFeedItemCursor(Long.toString(itemId));
+        try (Cursor cursor = adapter.getFeedItemCursor(Long.toString(itemId))) {
             if (cursor.moveToNext()) {
                 List<FeedItem> list = extractItemlistFromCursor(adapter, cursor);
                 if (!list.isEmpty()) {
@@ -594,10 +518,6 @@ public final class DBReader {
                 }
             }
             return item;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -632,9 +552,7 @@ public final class DBReader {
     @Nullable
     private static FeedItem getFeedItemByUrl(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
         Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getFeedItemCursor(podcastUrl, episodeUrl);
+        try (Cursor cursor = adapter.getFeedItemCursor(podcastUrl, episodeUrl)) {
             if (!cursor.moveToNext()) {
                 return null;
             }
@@ -643,10 +561,6 @@ public final class DBReader {
                 return list.get(0);
             }
             return null;
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
         }
     }
 
@@ -669,10 +583,8 @@ public final class DBReader {
     }
 
     private static String getImageAuthentication(final String imageUrl, PodDBAdapter adapter) {
-        String credentials = null;
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getImageAuthenticationCursor(imageUrl);
+        String credentials;
+        try (Cursor cursor = adapter.getImageAuthenticationCursor(imageUrl)) {
             if (cursor.moveToFirst()) {
                 String username = cursor.getString(0);
                 String password = cursor.getString(1);
@@ -683,10 +595,6 @@ public final class DBReader {
                 }
             } else {
                 credentials = "";
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
             }
         }
         return credentials;
@@ -721,9 +629,7 @@ public final class DBReader {
         Log.d(TAG, "loadDescriptionOfFeedItem() called with: " + "item = [" + item + "]");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        Cursor cursor = null;
-        try {
-            cursor = adapter.getDescriptionOfItem(item);
+        try (Cursor cursor = adapter.getDescriptionOfItem(item)) {
             if (cursor.moveToFirst()) {
                 int indexDescription = cursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION);
                 String description = cursor.getString(indexDescription);
@@ -733,9 +639,6 @@ public final class DBReader {
                 item.setContentEncoded(contentEncoded);
             }
         } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
             adapter.close();
         }
     }
@@ -898,6 +801,16 @@ public final class DBReader {
             feedIds[i] = feeds.get(i).getId();
         }
         final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
+
+        int feedFilter = UserPreferences.getFeedFilter();
+        if (feedFilter == UserPreferences.FEED_FILTER_COUNTER_ZERO) {
+            for (int i = feeds.size() - 1; i >= 0; i--) {
+                if (feedCounters.get(feeds.get(i).getId()) <= 0) {
+                    feedCounters.delete(feeds.get(i).getId());
+                    feeds.remove(i);
+                }
+            }
+        }
 
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();

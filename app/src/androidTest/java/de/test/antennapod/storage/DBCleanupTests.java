@@ -2,7 +2,7 @@ package de.test.antennapod.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -64,7 +64,7 @@ public class DBCleanupTests {
 
     @Before
     public void setUp() throws Exception {
-        context = InstrumentationRegistry.getTargetContext();
+        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         destFolder = new File(context.getCacheDir(), "DDCleanupTests");
         destFolder.mkdir();
         cleanupDestFolder(destFolder);

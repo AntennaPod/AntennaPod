@@ -54,7 +54,7 @@ class NestedScrollableHost extends FrameLayout {
         touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
-    private int touchSlop = 0;
+    private int touchSlop;
     private float initialX = 0f;
     private float initialY = 0f;
 

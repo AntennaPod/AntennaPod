@@ -190,7 +190,7 @@ public class HttpDownloader extends Downloader {
             }
 
             byte[] buffer = new byte[BUFFER_SIZE];
-            int count = 0;
+            int count;
             request.setStatusMsg(R.string.download_running);
             Log.d(TAG, "Getting size of download");
             request.setSize(responseBody.contentLength() + request.getSoFar());

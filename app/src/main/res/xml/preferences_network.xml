@@ -29,13 +29,13 @@
                 numberpicker:maxValue="50"
                 android:key="prefParallelDownloads"
                 android:title="@string/pref_parallel_downloads_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefShowDownloadReport"
                 android:summary="@string/pref_showDownloadReport_sum"
                 android:title="@string/pref_showDownloadReport_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefShowAutoDownloadReport"

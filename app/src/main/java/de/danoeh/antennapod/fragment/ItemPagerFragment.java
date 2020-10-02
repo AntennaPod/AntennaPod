@@ -140,13 +140,11 @@ public class ItemPagerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.open_podcast:
-                openPodcast();
-                return true;
-            default:
-                return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
+        if (menuItem.getItemId() == R.id.open_podcast) {
+            openPodcast();
+            return true;
         }
+        return FeedItemMenuHandler.onMenuItemClicked(this, menuItem.getItemId(), item);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

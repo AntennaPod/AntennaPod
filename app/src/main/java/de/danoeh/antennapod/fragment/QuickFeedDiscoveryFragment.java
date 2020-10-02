@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
@@ -33,6 +35,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     private FeedDiscoverAdapter adapter;
     private GridView discoverGridLayout;
     private TextView errorTextView;
+    private LinearLayout errorView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +47,10 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
 
         discoverGridLayout = root.findViewById(R.id.discover_grid);
         progressBar = root.findViewById(R.id.discover_progress_bar);
-        errorTextView = root.findViewById(R.id.discover_error);
+        errorView = root.findViewById(R.id.discover_error);
+        errorTextView = root.findViewById(R.id.discover_error_txtV);
+        Button errorRetry = root.findViewById(R.id.discover_error_retry_btn);
+        errorRetry.setOnClickListener((listener) -> loadToplist());
 
         adapter = new FeedDiscoverAdapter((MainActivity) getActivity());
         discoverGridLayout.setAdapter(adapter);
@@ -81,19 +87,19 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     private void loadToplist() {
         progressBar.setVisibility(View.VISIBLE);
         discoverGridLayout.setVisibility(View.INVISIBLE);
-        errorTextView.setVisibility(View.GONE);
+        errorView.setVisibility(View.GONE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         disposable = loader.loadToplist(NUM_SUGGESTIONS)
                 .subscribe(podcasts -> {
-                    errorTextView.setVisibility(View.GONE);
+                    errorView.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     discoverGridLayout.setVisibility(View.VISIBLE);
                     adapter.updateData(podcasts);
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
                     errorTextView.setText(error.getLocalizedMessage());
-                    errorTextView.setVisibility(View.VISIBLE);
+                    errorView.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                     discoverGridLayout.setVisibility(View.INVISIBLE);
                 });

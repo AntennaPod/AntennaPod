@@ -481,7 +481,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public void onPlaybackStart() {
-        startPosition = (position > 0) ? position : 0;
+        startPosition = Math.max(position, 0);
         playedDurationWhenStarted = played_duration;
     }
 

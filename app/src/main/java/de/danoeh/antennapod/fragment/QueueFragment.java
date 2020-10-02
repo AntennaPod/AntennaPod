@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -136,6 +135,7 @@ public class QueueFragment extends Fragment {
                 recyclerAdapter.notifyItemInserted(event.position);
                 break;
             case SET_QUEUE:
+            case SORTED: //Deliberate fall-through
                 queue = event.items;
                 recyclerAdapter.notifyDataSetChanged();
                 break;
@@ -147,10 +147,6 @@ public class QueueFragment extends Fragment {
                 break;
             case CLEARED:
                 queue.clear();
-                recyclerAdapter.notifyDataSetChanged();
-                break;
-            case SORTED:
-                queue = event.items;
                 recyclerAdapter.notifyDataSetChanged();
                 break;
             case MOVED:
@@ -216,7 +212,7 @@ public class QueueFragment extends Fragment {
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems(false);
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            getActivity().supportInvalidateOptionsMenu();
+            getActivity().invalidateOptionsMenu();
         }
     }
 
@@ -225,7 +221,7 @@ public class QueueFragment extends Fragment {
         // Sent when playback position is reset
         loadItems(false);
         if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
-            getActivity().supportInvalidateOptionsMenu();
+            getActivity().invalidateOptionsMenu();
         }
     }
 
@@ -339,11 +335,9 @@ public class QueueFragment extends Fragment {
                     if (keepSortedNew) {
                         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
                         DBWriter.reorderQueue(sortOrder, true);
-                        if (recyclerAdapter != null) {
-                            recyclerAdapter.setLocked(true);
-                        }
-                    } else if (recyclerAdapter != null) {
-                        recyclerAdapter.setLocked(UserPreferences.isQueueLocked());
+                    }
+                    if (recyclerAdapter != null) {
+                        recyclerAdapter.updateDragDropEnabled();
                     }
                     getActivity().invalidateOptionsMenu();
                     return true;
@@ -384,14 +378,16 @@ public class QueueFragment extends Fragment {
 
     private void setQueueLocked(boolean locked) {
         UserPreferences.setQueueLocked(locked);
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
         if (recyclerAdapter != null) {
-            recyclerAdapter.setLocked(locked);
+            recyclerAdapter.updateDragDropEnabled();
         }
-        if (locked) {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
-        } else {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
+        if (queue.size() == 0) {
+            if (locked) {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_locked, Snackbar.LENGTH_SHORT);
+            } else {
+                ((MainActivity) getActivity()).showSnackbarAbovePlayer(R.string.queue_unlocked, Snackbar.LENGTH_SHORT);
+            }
         }
     }
 
@@ -572,7 +568,7 @@ public class QueueFragment extends Fragment {
 
         // we need to refresh the options menu because it sometimes
         // needs data that may have just been loaded.
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
 
         refreshInfoBar();
     }

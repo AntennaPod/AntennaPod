@@ -184,7 +184,7 @@
                     android:layout_toStartOf="@id/butRev"
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/set_playback_speed_label"
+                    android:contentDescription="@string/playback_speed"
                     tools:srcCompat="@drawable/ic_playback_speed_white"/>
 
             <TextView

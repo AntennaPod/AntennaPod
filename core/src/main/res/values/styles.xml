@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.AntennaPod.Light" parent="Theme.Base.AntennaPod.Light">
         <!-- Room for API dependent attributes -->
@@ -73,6 +73,8 @@
         <item name="ic_key">@drawable/ic_key_black</item>
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_black</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
+        <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
+        <item name="filter_dialog_button_background">@drawable/filter_dialog_background_light</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -148,6 +150,8 @@
         <item name="ic_key">@drawable/ic_key_white</item>
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_white</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
+        <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
+        <item name="filter_dialog_button_background">@drawable/filter_dialog_background_dark</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
@@ -302,4 +306,14 @@
     <style name="Widget.AntennaPod.ActionBar.Black" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
         <item name="background">@color/black</item>
     </style>
+
+    <style name="AddPodcastTextView">
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:clickable">true</item>
+    </style>
+
 </resources>

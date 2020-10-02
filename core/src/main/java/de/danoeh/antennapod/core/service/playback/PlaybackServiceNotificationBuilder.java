@@ -183,15 +183,14 @@ public class PlaybackServiceNotificationBuilder {
             notification.addAction(R.drawable.ic_notification_pause, //pause action
                     context.getString(R.string.pause_label),
                     pauseButtonPendingIntent);
-            compactActionList.add(numActions++);
         } else {
             PendingIntent playButtonPendingIntent = getPendingIntentForMediaAction(
                     KeyEvent.KEYCODE_MEDIA_PLAY, numActions);
             notification.addAction(R.drawable.ic_notification_play, //play action
                     context.getString(R.string.play_label),
                     playButtonPendingIntent);
-            compactActionList.add(numActions++);
         }
+        compactActionList.add(numActions++);
 
         // ff follows play, then we have skip (if it's present)
         PendingIntent ffButtonPendingIntent = getPendingIntentForMediaAction(

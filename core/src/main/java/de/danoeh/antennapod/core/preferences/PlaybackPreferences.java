@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 
 import android.util.Log;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;

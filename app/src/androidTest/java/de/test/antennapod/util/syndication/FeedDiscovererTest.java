@@ -1,11 +1,12 @@
 package de.test.antennapod.util.syndication;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
@@ -29,7 +30,8 @@ public class FeedDiscovererTest {
     @Before
     public void setUp() throws Exception {
         fd = new FeedDiscoverer();
-        testDir = new File(InstrumentationRegistry.getTargetContext().getFilesDir(), "FeedDiscovererTest");
+        testDir = new File(InstrumentationRegistry
+                .getInstrumentation().getTargetContext().getFilesDir(), "FeedDiscovererTest");
         testDir.mkdir();
         assertTrue(testDir.exists());
     }
@@ -67,7 +69,7 @@ public class FeedDiscovererTest {
         } else {
             File testFile = new File(testDir, "feed");
             FileOutputStream out = new FileOutputStream(testFile);
-            IOUtils.write(html, out);
+            IOUtils.write(html, out, Charset.forName("UTF-8"));
             out.close();
             res = fd.findLinks(testFile, base);
         }

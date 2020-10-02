@@ -8,7 +8,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Format;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -76,9 +75,11 @@ public class ExoPlayerWrapper implements IPlayer {
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS,
                 DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS);
         loadControl.setBackBuffer(UserPreferences.getRewindSecs() * 1000 + 500, true);
-        trackSelector = new DefaultTrackSelector();
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(context, new DefaultRenderersFactory(context),
-                trackSelector, loadControl.createDefaultLoadControl());
+        trackSelector = new DefaultTrackSelector(context);
+        exoPlayer = new SimpleExoPlayer.Builder(context, new DefaultRenderersFactory(context))
+                .setTrackSelector(trackSelector)
+                .setLoadControl(loadControl.createDefaultLoadControl())
+                .build();
         exoPlayer.setSeekParameters(SeekParameters.EXACT);
         exoPlayer.addListener(new Player.EventListener() {
             @Override

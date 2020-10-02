@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -57,7 +58,7 @@ public class PlaybackServiceTaskManager {
     private ScheduledFuture<?> widgetUpdaterFuture;
     private ScheduledFuture<?> sleepTimerFuture;
     private volatile Future<List<FeedItem>> queueFuture;
-    private volatile Future<?> chapterLoaderFuture;
+    private volatile Disposable chapterLoaderFuture;
 
     private SleepTimer sleepTimer;
 
@@ -102,7 +103,7 @@ public class PlaybackServiceTaskManager {
 
     private synchronized void loadQueue() {
         if (!isQueueLoaderActive()) {
-            queueFuture = schedExecutor.submit(DBReader::getQueue);
+            queueFuture = schedExecutor.submit(() -> DBReader.getQueue());
         }
     }
 
@@ -289,28 +290,19 @@ public class PlaybackServiceTaskManager {
         }
     }
 
-    private synchronized void cancelChapterLoader() {
-        if (isChapterLoaderActive()) {
-            chapterLoaderFuture.cancel(true);
-        }
-    }
-
-    private synchronized boolean isChapterLoaderActive() {
-        return chapterLoaderFuture != null && !chapterLoaderFuture.isDone();
-    }
-
     /**
      * Starts a new thread that loads the chapter marks from a playable object. If another chapter loader is already active,
      * it will be cancelled first.
      * On completion, the callback's onChapterLoaded method will be called.
      */
     public synchronized void startChapterLoader(@NonNull final Playable media) {
-        if (isChapterLoaderActive()) {
-            cancelChapterLoader();
+        if (chapterLoaderFuture != null) {
+            chapterLoaderFuture.dispose();
+            chapterLoaderFuture = null;
         }
 
         if (media.getChapters() == null) {
-            Completable.create(emitter -> {
+            chapterLoaderFuture = Completable.create(emitter -> {
                 media.loadChapterMarks();
                 emitter.onComplete();
             })
@@ -330,7 +322,11 @@ public class PlaybackServiceTaskManager {
         cancelWidgetUpdater();
         disableSleepTimer();
         cancelQueueLoader();
-        cancelChapterLoader();
+
+        if (chapterLoaderFuture != null) {
+            chapterLoaderFuture.dispose();
+            chapterLoaderFuture = null;
+        }
     }
 
     /**
@@ -360,7 +356,8 @@ public class PlaybackServiceTaskManager {
     class SleepTimer implements Runnable {
         private static final String TAG = "SleepTimer";
         private static final long UPDATE_INTERVAL = 1000L;
-        private static final long NOTIFICATION_THRESHOLD = 10000;
+        public static final long NOTIFICATION_THRESHOLD = 10000;
+        private boolean hasVibrated = false;
         private final long waitingTime;
         private long timeLeft;
         private ShakeListener shakeListener;
@@ -390,7 +387,6 @@ public class PlaybackServiceTaskManager {
         @Override
         public void run() {
             Log.d(TAG, "Starting");
-            boolean notifiedAlmostExpired = false;
             long lastTick = System.currentTimeMillis();
             while (timeLeft > 0) {
                 try {
@@ -405,19 +401,19 @@ public class PlaybackServiceTaskManager {
                 timeLeft -= now - lastTick;
                 lastTick = now;
 
-                if (timeLeft < NOTIFICATION_THRESHOLD && !notifiedAlmostExpired) {
+                if (timeLeft < NOTIFICATION_THRESHOLD) {
                     Log.d(TAG, "Sleep timer is about to expire");
-                    if (SleepTimerPreferences.vibrate()) {
+                    if (SleepTimerPreferences.vibrate() && !hasVibrated) {
                         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                         if (v != null) {
                             v.vibrate(500);
+                            hasVibrated = true;
                         }
                     }
                     if (shakeListener == null && SleepTimerPreferences.shakeToReset()) {
                         shakeListener = new ShakeListener(context, this);
                     }
-                    postCallback(callback::onSleepTimerAlmostExpired);
-                    notifiedAlmostExpired = true;
+                    postCallback(() -> callback.onSleepTimerAlmostExpired(timeLeft));
                 }
                 if (timeLeft <= 0) {
                     Log.d(TAG, "Sleep timer expired");
@@ -425,6 +421,7 @@ public class PlaybackServiceTaskManager {
                         shakeListener.pause();
                         shakeListener = null;
                     }
+                    hasVibrated = false;
                     if (!Thread.currentThread().isInterrupted()) {
                         postCallback(callback::onSleepTimerExpired);
                     } else {
@@ -461,7 +458,7 @@ public class PlaybackServiceTaskManager {
     public interface PSTMCallback {
         void positionSaverTick();
 
-        void onSleepTimerAlmostExpired();
+        void onSleepTimerAlmostExpired(long timeLeft);
 
         void onSleepTimerExpired();
 

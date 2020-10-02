@@ -45,7 +45,7 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
         final Activity activity = getActivity();
 
         findPreference(PREF_PLAYBACK_SPEED_LAUNCHER).setOnPreferenceClickListener(preference -> {
-            VariableSpeedDialog.showDialog(activity);
+            new VariableSpeedDialog().show(getChildFragmentManager(), null);
             return true;
         });
         findPreference(PREF_PLAYBACK_REWIND_DELTA_LAUNCHER).setOnPreferenceClickListener(preference -> {
@@ -109,14 +109,14 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
     private void buildSmartMarkAsPlayedPreference() {
         final Resources res = getActivity().getResources();
 
-        ListPreference pref = (ListPreference) findPreference(UserPreferences.PREF_SMART_MARK_AS_PLAYED_SECS);
+        ListPreference pref = findPreference(UserPreferences.PREF_SMART_MARK_AS_PLAYED_SECS);
         String[] values = res.getStringArray(R.array.smart_mark_as_played_values);
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {
             if(x == 0) {
                 entries[x] = res.getString(R.string.pref_smart_mark_as_played_disabled);
             } else {
-                Integer v = Integer.parseInt(values[x]);
+                int v = Integer.parseInt(values[x]);
                 if(v < 60) {
                     entries[x] = res.getQuantityString(R.plurals.time_seconds_quantified, v, v);
                 } else {

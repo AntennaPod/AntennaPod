@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.MediumTest;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -29,7 +29,7 @@ public class UITestUtilsTest {
 
     @Before
     public void setUp() throws Exception {
-        uiTestUtils = new UITestUtils(InstrumentationRegistry.getTargetContext());
+        uiTestUtils = new UITestUtils(InstrumentationRegistry.getInstrumentation().getTargetContext());
         uiTestUtils.setup();
     }
 

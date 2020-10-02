@@ -20,7 +20,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -593,6 +593,11 @@ public class PodDBAdapter {
      * @return the id of the entry
      */
     private long setFeedItem(FeedItem item, boolean saveFeed) {
+        if (item.getId() == 0 && item.getPubDate() == null) {
+            Log.e(TAG, "Newly saved item has no pubDate. Using current date as pubDate");
+            item.setPubDate(new Date());
+        }
+
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, item.getTitle());
         values.put(KEY_LINK, item.getLink());
@@ -1201,12 +1206,17 @@ public class PodDBAdapter {
      * Uses DatabaseUtils to escape a search query and removes ' at the
      * beginning and the end of the string returned by the escape method.
      */
-    private String prepareSearchQuery(String query) {
-        StringBuilder builder = new StringBuilder();
-        DatabaseUtils.appendEscapedSQLString(builder, query);
-        builder.deleteCharAt(0);
-        builder.deleteCharAt(builder.length() - 1);
-        return builder.toString();
+    private String[] prepareSearchQuery(String query) {
+        String[] queryWords = query.split("\\s+");
+        for (int i = 0; i < queryWords.length; ++i) {
+            StringBuilder builder = new StringBuilder();
+            DatabaseUtils.appendEscapedSQLString(builder, queryWords[i]);
+            builder.deleteCharAt(0);
+            builder.deleteCharAt(builder.length() - 1);
+            queryWords[i] = builder.toString();
+        }
+
+        return queryWords;
     }
 
     /**
@@ -1216,9 +1226,9 @@ public class PodDBAdapter {
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
     public Cursor searchItems(long feedID, String searchQuery) {
-        String preparedQuery = prepareSearchQuery(searchQuery);
+        String[] queryWords = prepareSearchQuery(searchQuery);
 
-        String queryFeedId = "";
+        String queryFeedId;
         if (feedID != 0) {
             // search items in specific feed
             queryFeedId = KEY_FEED + " = " + feedID;
@@ -1227,14 +1237,28 @@ public class PodDBAdapter {
             queryFeedId = "1 = 1";
         }
 
-        String query = SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION
-                + " WHERE " + queryFeedId + " AND ("
-                + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' OR "
-                + KEY_CONTENT_ENCODED + " LIKE '%" + preparedQuery + "%' OR "
-                + KEY_TITLE + " LIKE '%" + preparedQuery + "%'"
-                + ") ORDER BY " + KEY_PUBDATE + " DESC "
-                + "LIMIT 300";
-        return db.rawQuery(query, null);
+        String queryStart = SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION
+                + " WHERE " + queryFeedId + " AND (";
+        StringBuilder sb = new StringBuilder(queryStart);
+
+        for (int i = 0; i < queryWords.length; i++) {
+            sb
+                    .append("(")
+                    .append(KEY_DESCRIPTION + " LIKE '%").append(queryWords[i])
+                    .append("%' OR ")
+                    .append(KEY_CONTENT_ENCODED).append(" LIKE '%").append(queryWords[i])
+                    .append("%' OR ")
+                    .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
+                    .append("%') ");
+
+            if (i != queryWords.length - 1) {
+                sb.append("AND ");
+            }
+        }
+
+        sb.append(") ORDER BY " + KEY_PUBDATE + " DESC LIMIT 300");
+
+        return db.rawQuery(sb.toString(), null);
     }
 
     /**
@@ -1243,15 +1267,31 @@ public class PodDBAdapter {
      * @return A cursor with all search results in SEL_FI_EXTRA selection.
      */
     public Cursor searchFeeds(String searchQuery) {
-        String preparedQuery = prepareSearchQuery(searchQuery);
-        String query = "SELECT * FROM " + TABLE_NAME_FEEDS + " WHERE "
-                + KEY_TITLE + " LIKE '%" + preparedQuery + "%' OR "
-                + KEY_CUSTOM_TITLE + " LIKE '%" + preparedQuery + "%' OR "
-                + KEY_AUTHOR + " LIKE '%" + preparedQuery + "%' OR "
-                + KEY_DESCRIPTION + " LIKE '%" + preparedQuery + "%' "
-                + "ORDER BY " + KEY_TITLE + " ASC "
-                + "LIMIT 300";
-        return db.rawQuery(query, null);
+        String[] queryWords = prepareSearchQuery(searchQuery);
+
+        String queryStart = "SELECT * FROM " + TABLE_NAME_FEEDS + " WHERE ";
+        StringBuilder sb = new StringBuilder(queryStart);
+
+        for (int i = 0; i < queryWords.length; i++) {
+            sb
+                    .append("(")
+                    .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
+                    .append("%' OR ")
+                    .append(KEY_CUSTOM_TITLE).append(" LIKE '%").append(queryWords[i])
+                    .append("%' OR ")
+                    .append(KEY_AUTHOR).append(" LIKE '%").append(queryWords[i])
+                    .append("%' OR ")
+                    .append(KEY_DESCRIPTION).append(" LIKE '%").append(queryWords[i])
+                    .append("%') ");
+
+            if (i != queryWords.length - 1) {
+                sb.append("AND ");
+            }
+        }
+
+        sb.append("ORDER BY " + KEY_TITLE + " ASC LIMIT 300");
+
+        return db.rawQuery(sb.toString(), null);
     }
 
     /**

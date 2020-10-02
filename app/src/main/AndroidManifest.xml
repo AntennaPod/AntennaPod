@@ -36,7 +36,8 @@
         android:theme="@style/Theme.AntennaPod.Splash"
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
-        android:logo="@mipmap/ic_launcher">
+        android:logo="@mipmap/ic_launcher"
+        android:resizeableActivity="true">
 
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
@@ -49,6 +50,11 @@
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
+
+        <!-- Version < 3.0. DeX Mode and Screen Mirroring support -->
+        <meta-data android:name="com.samsung.android.keepalive.density" android:value="true"/>
+        <!-- Version >= 3.0. DeX Dual Mode support -->
+        <meta-data android:name="com.samsung.android.multidisplay.keep_process_alive" android:value="true"/>
 
         <activity
             android:name=".activity.SplashActivity"
@@ -73,8 +79,8 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout"
-            android:windowSoftInputMode="stateHidden"
+            android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode|keyboard|navigation"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask"
             android:label="@string/app_name">
         </activity>

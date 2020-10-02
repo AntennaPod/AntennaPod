@@ -8,7 +8,7 @@ jobs:
         type: steps
         default: []
     docker:
-      - image: circleci/android:api-28
+      - image: circleci/android:api-30
     working_directory: ~/AntennaPod
     environment:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
@@ -39,6 +39,10 @@ workflows:
             - run:
                 name: Build debug
                 command: ./gradlew assembleDebug -PdisablePreDex
+            - store_artifacts:
+                name: Uploading apk artifact
+                path: app/build/outputs/apk/play/debug/app-play-debug.apk
+                destination: app-play-debug.apk
             - run:
                 name: Execute debug unit tests
                 command: ./gradlew :core:testPlayDebugUnitTest -PdisablePreDex
@@ -80,3 +84,20 @@ workflows:
                   echo "Comparing to $branchBaseCommit"
                   curl -s -L https://github.com/yangziwen/diff-checkstyle/releases/download/0.0.4/diff-checkstyle.jar > diff-checkstyle.jar
                   java -Dconfig_loc=config/checkstyle -jar diff-checkstyle.jar -c config/checkstyle/checkstyle-new-code.xml --git-dir . --base-rev $branchBaseCommit
+      - build:
+          name: Lint app
+          build-steps:
+            - run:
+                name: Lint app
+                command: ./gradlew app:lintPlayRelease
+            - run:
+                name: Lint core
+                command: ./gradlew core:lintPlayRelease
+            - store_artifacts:
+                name: Uploading app lint reports
+                path: app/build/reports/lint-results-playRelease.html
+                destination: lint-results-app.html
+            - store_artifacts:
+                name: Uploading core lint reports
+                path: core/build/reports/lint-results-playRelease.html
+                destination: lint-results-core.html

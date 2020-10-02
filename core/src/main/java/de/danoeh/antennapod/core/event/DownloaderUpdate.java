@@ -46,6 +46,7 @@ public class DownloaderUpdate {
         this.mediaIds = mediaIds1.toArray();
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "DownloaderUpdate{" +

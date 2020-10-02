@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="16dp"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:orientation="vertical"
-    android:importantForAccessibility="no">
+    android:importantForAccessibility="no"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_centerVertical="true"
         android:background="?android:attr/listDivider"
         tools:background="@android:color/holo_red_dark"/>
-</RelativeLayout>
+
+    <TextView
+        android:id="@+id/nav_feeds_filtered_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:paddingStart="@dimen/listitem_icon_leftpadding"
+        android:paddingTop="4dp"
+        android:paddingEnd="@dimen/listitem_icon_leftpadding"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small" />
+</LinearLayout>

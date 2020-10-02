@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.service.playback;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.UiModeManager;
 import android.bluetooth.BluetoothA2dp;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -19,7 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.core.app.NotificationCompat;
@@ -419,7 +421,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 e.printStackTrace();
             }
         } else if (parentId.startsWith("FeedId:")) {
-            Long feedId = Long.parseLong(parentId.split(":")[1]);
+            long feedId = Long.parseLong(parentId.split(":")[1]);
             List<FeedItem> feedItems = DBReader.getFeedItemList(DBReader.getFeed(feedId));
             for (FeedItem feedItem : feedItems) {
                 if (feedItem.getMedia() != null && feedItem.getMedia().getMediaItem() != null) {
@@ -450,6 +452,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         notificationManager.cancel(R.id.notification_streaming_confirmation);
 
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
+        final boolean hardwareButton = intent.getBooleanExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, false);
         final boolean castDisconnect = intent.getBooleanExtra(EXTRA_CAST_DISCONNECT, false);
         Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
         if (keycode == -1 && playable == null && !castDisconnect) {
@@ -463,8 +466,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             stateManager.stopForeground(true);
         } else {
             if (keycode != -1) {
-                Log.d(TAG, "Received media button event");
-                boolean handled = handleKeycode(keycode, true);
+                boolean notificationButton;
+                if (hardwareButton) {
+                    Log.d(TAG, "Received hardware button event");
+                    notificationButton = false;
+                } else {
+                    Log.d(TAG, "Received media button event");
+                    notificationButton = true;
+                }
+                boolean handled = handleKeycode(keycode, notificationButton);
                 if (!handled && !stateManager.hasReceivedValidStartCommand()) {
                     stateManager.stopService();
                     return Service.START_NOT_STICKY;
@@ -711,9 +721,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onSleepTimerAlmostExpired() {
-            float leftVolume = 0.1f * UserPreferences.getLeftVolume();
-            float rightVolume = 0.1f * UserPreferences.getRightVolume();
+        public void onSleepTimerAlmostExpired(long timeLeft) {
+            final float[] multiplicators = {0.1f, 0.2f, 0.3f, 0.3f, 0.3f, 0.4f, 0.4f, 0.4f, 0.6f, 0.8f};
+            float multiplicator = multiplicators[Math.max(0, (int) timeLeft / 1000)];
+            Log.d(TAG, "onSleepTimerAlmostExpired: " + multiplicator);
+            float leftVolume = multiplicator * UserPreferences.getLeftVolume();
+            float rightVolume = multiplicator * UserPreferences.getRightVolume();
             mediaPlayer.setVolume(leftVolume, rightVolume);
         }
 
@@ -1140,13 +1153,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 case INITIALIZING:
                     state = PlaybackStateCompat.STATE_CONNECTING;
                     break;
-                case INITIALIZED:
-                case INDETERMINATE:
-                    state = PlaybackStateCompat.STATE_NONE;
-                    break;
                 case ERROR:
                     state = PlaybackStateCompat.STATE_ERROR;
                     break;
+                case INITIALIZED: // Deliberate fall-through
+                case INDETERMINATE:
                 default:
                     state = PlaybackStateCompat.STATE_NONE;
                     break;
@@ -1158,7 +1169,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         long capabilities = PlaybackStateCompat.ACTION_PLAY_PAUSE
                 | PlaybackStateCompat.ACTION_REWIND
                 | PlaybackStateCompat.ACTION_FAST_FORWARD
-                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
+                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                | PlaybackStateCompat.ACTION_SEEK_TO;
 
         if (useSkipToPreviousForRewindInLockscreen()) {
             // Workaround to fool Android so that Lockscreen will expose a skip-to-previous button,
@@ -1172,6 +1184,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             // @see #setupNotification() for the method to create Androidv5+ lockscreen UI
             //   with notification (compact)
             capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
+        }
+
+        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+        if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
+            sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_REWIND,
+                        getString(R.string.rewind_label), R.drawable.ic_notification_fast_rewind)
+                        .build());
+            sessionState.addCustomAction(
+                new PlaybackStateCompat.CustomAction.Builder(
+                        CUSTOM_ACTION_FAST_FORWARD,
+                        getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
+                        .build());
         }
 
         sessionState.setActions(capabilities);

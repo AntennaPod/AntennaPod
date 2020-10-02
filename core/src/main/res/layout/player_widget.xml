@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/widget_margin" >
@@ -8,8 +9,8 @@
         android:id="@+id/widgetLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#262C31" >
-
+        android:background="#262C31"
+        tools:ignore="UselessParent">
 
         <ImageButton
             android:id="@+id/butPlay"
@@ -41,6 +42,7 @@
                 android:layout_width="@android:dimen/app_icon_size"
                 android:layout_height="match_parent"
                 android:src="@mipmap/ic_launcher_round"
+                android:importantForAccessibility="no"
                 android:layout_margin="12dp" />
 
             <LinearLayout

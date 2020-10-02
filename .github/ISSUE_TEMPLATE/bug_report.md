@@ -1,49 +1,30 @@
 ---
 name: Bug report
 about: Create a report to help us improve existing features
-
+labels: 'possible bug'
 ---
 
-<!--
-DELETE ME
+# Checklist
+<!-- Place an x in the boxes to tick them: [x] -->
 
-Use the search function to see if someone else has already submitted the same bug report.
+- [ ] I have used the search function to see if someone else has already submitted the same bug report.
+- [ ] I will describe the problem with as much detail as possible.
+- [ ] If the bug only to occurs with a certain podcast, I will include the URL of that podcast.
 
-Try to describe the problem with as much detail as possible.
+# System info
+<!-- The following information is very important to fill out because some bugs may only occur on certain devices or versions of Android. -->
 
-Some bugs may only occur on certain devices or versions of Android. Please add information about your device and the version of Android that is running on it (you can look these up under `Settings → About Phone`), as well as which version of AntennaPod you are using.
+**App version**: x.y.z
+<!-- The latest version may be different depending on your device. You can find the version in AntennaPod's settings. -->
 
-If the bug only seems to occur with a certain podcast, please include the URL of that podcast.
-
-If possible, add instructions on how to reproduce the bug.
-
-If possible, add a logfile to your post. This is especially useful if the bug makes the application crash. AntennaPod has an `export logs` feature for this.
-
-Usually, you can take a screenshot of your smartphone by pressing *Power* + *Volume down* for a few seconds.
-
-You don't need to adhere to the template strictly. Feel free to leave out information you feel is not important or does not make sense.
-
-If you are experiencing a crash, including the stacktrace will likely get it fixed sooner.
--->
-
-<!-- READ THIS: The latest version may be different depending on your device. You can find the version in AntennaPod's settings. -->
-**App version**: x.y.z (state whether from Google Play/F-Droid/Custom built APK)
-
+**App source**: Google Play / F-Droid / ...
+<!-- Please delete irrelevant answer or fill in the blank -->
 
 **Android version**: 5.x (Please mention if you are using a custom rom!)
 
-
 **Device model**:
 
-
-**Expected behaviour**:
-
-
-**Current behaviour**:
-
-
-**First occurred**: (e.g. about x days/weeks ago)
-
+# Bug description
 
 **Steps to reproduce**:
 1. This
@@ -51,11 +32,19 @@ If you are experiencing a crash, including the stacktrace will likely get it fix
 3. Then this
 4. Etc.
 
+**Expected behaviour**:
+<!-- After following the steps, what did you think AntennaPod would do? -->
 
-**Environment**: (Settings you have changed (e.g. Auto Download). "Unusual" devices you use (e.g. Bluetooth headphones). Did you select another media player?)
+**Current behaviour**:
+<!-- What did AntennaPod do instead? Screenshots might help. Usually, you can take a screenshot of your smartphone by pressing *Power* + *Volume down* for a few seconds. -->
 
+**First occurred**: (e.g. about x days/weeks ago)
 
-**Stacktrace/Logcat**: 
+**Environment**:
+<!-- Settings you have changed (e.g. Auto Download, changed media player). "Unusual" devices you use (e.g. Bluetooth headphones). -->
+
+**Stacktrace/Logcat**:
+<!-- If you are experiencing a crash, including the stacktrace will likely get it fixed sooner. AntennaPod has an `export logs` feature for this. -->
 ```
 [if available]
 ```
