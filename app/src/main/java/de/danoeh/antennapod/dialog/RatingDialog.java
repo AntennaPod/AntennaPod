@@ -42,7 +42,7 @@ public class RatingDialog {
     }
 
     public static void check() {
-        if(shouldShow()) {
+        if (shouldShow()) {
             try {
                 showInAppReview();
             } catch (Exception e) {
@@ -62,12 +62,12 @@ public class RatingDialog {
         Task<ReviewInfo> request = manager.requestReviewFlow();
 
         request
-                .addOnCompleteListener(task ->  {
-                    if(task.isSuccessful()){
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
                         ReviewInfo reviewInfo = task.getResult();
                         Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
                         flow
-                                .addOnCompleteListener(task1 ->  {
+                                .addOnCompleteListener(task1 -> {
                                     saveRated();
                                     Toast.makeText(context, "Review saved", Toast.LENGTH_SHORT).show();
                                     Log.i("ReviewDialog", "Successfully finished in-app review");
@@ -77,7 +77,7 @@ public class RatingDialog {
                                 });
                     }
                 })
-                .addOnFailureListener(error ->{
+                .addOnFailureListener(error -> {
                     Log.i("ReviewDialog",  "failed to get in-app review request");
                 });
     }
