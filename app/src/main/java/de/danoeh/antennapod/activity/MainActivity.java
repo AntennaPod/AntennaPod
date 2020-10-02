@@ -520,9 +520,6 @@ public class MainActivity extends CastEnabledActivity {
     //Hardware keyboard support
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        Intent serviceIntent = new Intent(this, PlaybackService.class);
-        serviceIntent.putExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, true);
-
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         Integer customKeyCode = null;
 
@@ -555,8 +552,10 @@ public class MainActivity extends CastEnabledActivity {
         }
 
         if (customKeyCode != null) {
-            serviceIntent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
-            ContextCompat.startForegroundService(this, serviceIntent);
+            Intent intent = new Intent(this, PlaybackService.class);
+            intent.putExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, true);
+            intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
+            ContextCompat.startForegroundService(this, intent);
         }
         return true;
     }
