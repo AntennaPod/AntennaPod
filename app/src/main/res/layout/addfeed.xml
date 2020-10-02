@@ -138,7 +138,7 @@
                     app:drawableStartCompat="?attr/av_download"
                     app:drawableLeftCompat="?attr/av_download"
                     style="@style/AddPodcastTextView"
-                    android:text="@string/opml_import_label"/>
+                    android:text="@string/opml_add_podcast_label"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

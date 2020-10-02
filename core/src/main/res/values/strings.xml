@@ -565,6 +565,7 @@
     <string name="database_export_summary">Transfer subscriptions, listened episodes and queue to AntennaPod on another device</string>
     <string name="database_import_summary">Import AntennaPod database from another device</string>
     <string name="opml_import_label">OPML Import</string>
+    <string name="opml_add_podcast_label">Import podcast list (OPML)</string>
     <string name="opml_reader_error">An error has occurred while reading the OPML document:</string>
     <string name="opml_import_error_no_file">No file selected!</string>
     <string name="select_all_label">Select all</string>
@@ -726,7 +727,7 @@
     <string name="search_powered_by">Results by %1$s</string>
 
     <string name="filter">Filter</string>
-    
+
     <!-- Episodes apply actions -->
     <string name="all_label">All</string>
     <string name="selected_all_label">Selected all Episodes</string>
