@@ -1,18 +1,21 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.Dialog;
+import android.app.Activity;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.annotation.Nullable;
+
 import androidx.annotation.VisibleForTesting;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
-import androidx.appcompat.app.AlertDialog;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
+import com.google.android.play.core.tasks.Task;
 
 public class RatingDialog {
 
@@ -23,7 +26,6 @@ public class RatingDialog {
 
     private static WeakReference<Context> mContext;
     private static SharedPreferences mPreferences;
-    private static Dialog mDialog;
 
     private static final String PREFS_NAME = "RatingPrefs";
     private static final String KEY_RATED = "KEY_WAS_RATED";
@@ -40,28 +42,41 @@ public class RatingDialog {
     }
 
     public static void check() {
-        if (mDialog != null && mDialog.isShowing()) {
-            return;
-        }
-        if (shouldShow()) {
+        if(shouldShow()) {
             try {
-                mDialog = createDialog();
-                if (mDialog != null) {
-                    mDialog.show();
-                }
+                showInAppReview();
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
         }
     }
 
-    private static void rateNow() {
+    private static void showInAppReview() {
         Context context = mContext.get();
-        if (context == null) {
-            return;
-        }
-        IntentUtils.openInBrowser(context, "https://play.google.com/store/apps/details?id=de.danoeh.antennapod");
-        saveRated();
+
+        //ReviewManager manager = new FakeReviewManager(context);
+        ReviewManager manager = ReviewManagerFactory.create(context);
+        Task<ReviewInfo> request = manager.requestReviewFlow();
+
+        request
+                .addOnCompleteListener(task ->  {
+                    if(task.isSuccessful()){
+                        ReviewInfo reviewInfo = task.getResult();
+                        Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
+                        flow
+                                .addOnCompleteListener(task1 ->  {
+                                    saveRated();
+                                    Toast.makeText(context, "Review saved", Toast.LENGTH_SHORT).show();
+                                    Log.i("ReviewDialog", "Successfully finished in-app review");
+                                })
+                                .addOnFailureListener(error -> {
+                                    Log.i("ReviewDialog", "failed in reviewing process");
+                                });
+                    }
+                })
+                .addOnFailureListener(error ->{
+                    Log.i("ReviewDialog",  "failed to get in-app review request");
+                });
     }
 
     private static boolean rated() {
@@ -93,21 +108,5 @@ public class RatingDialog {
         long diff = now - firstDate;
         long diffDays = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
         return diffDays >= AFTER_DAYS;
-    }
-
-    @Nullable
-    private static AlertDialog createDialog() {
-        Context context = mContext.get();
-        if (context == null) {
-            return null;
-        }
-        return new AlertDialog.Builder(context)
-                .setTitle(R.string.rating_title)
-                .setMessage(R.string.rating_message)
-                .setPositiveButton(R.string.rating_now_label, (dialog, which) -> rateNow())
-                .setNegativeButton(R.string.rating_never_label, (dialog, which) -> saveRated())
-                .setNeutralButton(R.string.rating_later_label, (dialog, which) -> resetStartDate())
-                .setOnCancelListener(dialog1 -> resetStartDate())
-                .create();
     }
 }
