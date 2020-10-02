@@ -125,7 +125,6 @@ public class ExternalPlayerFragment extends Fragment {
         super.onStart();
         controller = setupPlaybackController();
         controller.init();
-        butPlay.setVisibility(View.VISIBLE);
         loadMediaInfo();
         EventBus.getDefault().register(this);
     }
@@ -201,7 +200,6 @@ public class ExternalPlayerFragment extends Fragment {
                 .into(imgvCover);
 
         if (controller != null && controller.isPlayingVideoLocally()) {
-            butPlay.setVisibility(View.VISIBLE);
             ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
             ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {
