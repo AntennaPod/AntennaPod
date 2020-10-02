@@ -540,21 +540,6 @@ public class MainActivity extends CastEnabledActivity {
                 //Go Forward
                 customKeyCode = KeyEvent.KEYCODE_MEDIA_FAST_FORWARD;
                 break;
-            case KeyEvent.KEYCODE_M:
-                //Mute/Unmute
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, 0);
-                } else {
-                    if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {
-                        //Unmute
-                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                                audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-                    } else {
-                        //Mute
-                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
-                    }
-                }
-                break;
             case KeyEvent.KEYCODE_DPAD_UP:
                 //Raise volume
                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,

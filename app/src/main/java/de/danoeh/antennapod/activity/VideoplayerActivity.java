@@ -513,11 +513,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, 0);
                 } else {
-                    if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) == 0) {
-                        //Unmute
-                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                                audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-                    } else {
+                    if (audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) > 0) {
                         //Mute
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
                     }
@@ -536,7 +532,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             case KeyEvent.KEYCODE_ESCAPE:
             case KeyEvent.KEYCODE_F:
                 //Exit fullscreen mode
-                onOptionsItemSelected(new ActionMenuItem(this, 0, android.R.id.home, 0, 0, ""));
+                onBackPressed();
                 break;
             case KeyEvent.KEYCODE_P:
                 //Toggle picture-in-picture mode
