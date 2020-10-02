@@ -512,6 +512,8 @@ public class VideoplayerActivity extends MediaplayerActivity {
                 //Mute/Unmute
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, 0);
+                } else {
+                    return super.onKeyUp(keyCode, event);
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_UP:
