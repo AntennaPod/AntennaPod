@@ -53,6 +53,9 @@ public class RatingDialog {
 
     private static void showInAppReview() {
         Context context = mContext.get();
+        if (context == null) {
+            return;
+        }
 
         //ReviewManager manager = new FakeReviewManager(context);
         ReviewManager manager = ReviewManagerFactory.create(context);
