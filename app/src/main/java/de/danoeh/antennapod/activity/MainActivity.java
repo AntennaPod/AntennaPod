@@ -553,7 +553,6 @@ public class MainActivity extends CastEnabledActivity {
 
         if (customKeyCode != null) {
             Intent intent = new Intent(this, PlaybackService.class);
-            intent.putExtra(MediaButtonReceiver.EXTRA_HARDWAREBUTTON, true);
             intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
             ContextCompat.startForegroundService(this, intent);
         }
