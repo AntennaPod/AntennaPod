@@ -69,6 +69,8 @@ public class SubscriptionFragment extends Fragment {
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
 
+    public static final int SWIPE_TO_REFRESH_DURATION = 750;
+
     private GridView subscriptionGridLayout;
     private DBReader.NavDrawerData navDrawerData;
     private SubscriptionsAdapter subscriptionAdapter;
@@ -109,7 +111,7 @@ public class SubscriptionFragment extends Fragment {
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
-            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 1000);
+            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), SWIPE_TO_REFRESH_DURATION);
         });
         return root;
     }
