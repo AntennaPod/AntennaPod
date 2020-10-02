@@ -216,9 +216,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             } catch (DownloadRequestException e) {
                 e.printStackTrace();
             }
-            new Handler().postDelayed(() ->
-                            getActivity().runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false))
-                    , 1000);
+            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 1000);
         });
 
         loadItems();
