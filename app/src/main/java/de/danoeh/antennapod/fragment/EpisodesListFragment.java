@@ -220,7 +220,8 @@ public abstract class EpisodesListFragment extends Fragment {
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             AutoUpdateManager.runImmediate(requireContext());
-            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), SubscriptionFragment.SWIPE_TO_REFRESH_DURATION);
+            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
 
         progLoading = root.findViewById(R.id.progLoading);

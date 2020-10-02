@@ -216,7 +216,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             } catch (DownloadRequestException e) {
                 e.printStackTrace();
             }
-            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), SubscriptionFragment.SWIPE_TO_REFRESH_DURATION);
+            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
 
         loadItems();
