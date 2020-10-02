@@ -16,7 +16,7 @@ about: Request a new feature or enhancement
 **App version**: x.y.z
 <!-- The latest version may be different depending on your device. You can find the version in AntennaPod's settings. -->
 
-**Download source**: Google Play / F-Droid / ...
+**App source**: Google Play / F-Droid / ...
 <!-- Please delete irrelevant answer or fill in the blank -->
 
 # Feature description
