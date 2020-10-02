@@ -17,7 +17,7 @@ labels: 'possible bug'
 **App version**: x.y.z
 <!-- The latest version may be different depending on your device. You can find the version in AntennaPod's settings. -->
 
-**Download source**: Google Play / F-Droid / ...
+**App source**: Google Play / F-Droid / ...
 <!-- Please delete irrelevant answer or fill in the blank -->
 
 **Android version**: 5.x (Please mention if you are using a custom rom!)
