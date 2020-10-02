@@ -38,7 +38,7 @@ workflows:
           build-steps:
             - run:
                 name: Build debug
-                command: ./gradlew assemblePlayDebug -PdisablePreDex
+                command: ./gradlew assembleDebug -PdisablePreDex
             - run:
                 name: Execute debug unit tests
                 command: ./gradlew :core:testPlayDebugUnitTest -PdisablePreDex
@@ -47,7 +47,7 @@ workflows:
           build-steps:
             - run:
                 name: Build release
-                command: ./gradlew assemblePlayRelease -PdisablePreDex
+                command: ./gradlew assembleRelease -PdisablePreDex
             - run:
                 name: Execute release unit tests
                 command: ./gradlew :core:testPlayReleaseUnitTest -PdisablePreDex

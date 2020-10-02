@@ -2,14 +2,6 @@ package de.danoeh.antennapod.core;
 
 import android.content.Context;
 import java.security.Security;
-
-/*
- * If you get an error here ("package org.conscrypt does not exist"), you are probably doing a free
- * build and didn't pass "-PfreeBuild" to gradle (e.g. "./gradlew assembleFreeRelease -PfreeBuild").
- *
- * If you are doing a non-free build using "assembleRelease" or "assembleDebug" and get this error,
- * use "assemblePlayRelease" or "assemblePlayDebug" instead (e.g. "./gradlew assemblePlayRelease").
- */
 import org.conscrypt.Conscrypt;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;

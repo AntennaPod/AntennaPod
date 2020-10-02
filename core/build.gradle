@@ -88,9 +88,11 @@ dependencies {
         api "com.google.android.support:wearable:$wearableSupportVersion"
         compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
     } else {
-        System.out.println("core: free build hack, skipping some dependencies and bundling conscrypt ($conscryptVersion)")
-        implementation "org.conscrypt:conscrypt-android:$conscryptVersion"
+        System.out.println("core: free build hack, skipping some dependencies")
     }
+
+    // bundle conscrypt with free builds
+    freeImplementation "org.conscrypt:conscrypt-android:$conscryptVersion"
 
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation 'junit:junit:4.13'
