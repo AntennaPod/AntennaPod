@@ -153,7 +153,11 @@ public class DownloadServiceNotification {
                 iconId = R.drawable.ic_notification_sync_error;
                 intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
                 id = R.id.notification_download_report;
-                content = context.getResources().getQuantityString(R.plurals.download_report_content, successfulDownloads, successfulDownloads, failedDownloads);
+                content = context.getResources()
+                        .getQuantityString(R.plurals.download_report_content,
+                                successfulDownloads,
+                                successfulDownloads,
+                                failedDownloads);
             }
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
