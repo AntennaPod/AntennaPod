@@ -36,13 +36,14 @@ public class FeedPreferences {
     private float feedPlaybackSpeed;
     private int feedSkipIntro;
     private int feedSkipEnding;
+    private boolean showNotification;
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
         this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting,
-                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0);
+                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false);
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding) {
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, boolean showNotification) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -54,6 +55,7 @@ public class FeedPreferences {
         this.feedPlaybackSpeed = feedPlaybackSpeed;
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
+        this.showNotification = showNotification;
     }
 
     public static FeedPreferences fromCursor(Cursor cursor) {
@@ -69,6 +71,7 @@ public class FeedPreferences {
         int indexFeedPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_PLAYBACK_SPEED);
         int indexAutoSkipIntro = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_ENDING);
+        int indexEpisodeNotification = cursor.getColumnIndex(PodDBAdapter.KEY_EPISODE_NOTIFICATION);
 
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
@@ -84,6 +87,7 @@ public class FeedPreferences {
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
+        boolean showNotification = cursor.getInt(indexEpisodeNotification) > 0;
         return new FeedPreferences(feedId,
                 autoDownload,
                 autoRefresh,
@@ -94,7 +98,8 @@ public class FeedPreferences {
                 new FeedFilter(includeFilter, excludeFilter),
                 feedPlaybackSpeed,
                 feedAutoSkipIntro,
-                feedAutoSkipEnding
+                feedAutoSkipEnding,
+                showNotification
                 );
     }
 
@@ -201,7 +206,7 @@ public class FeedPreferences {
         DBWriter.setFeedPreferences(this);
     }
 
-    public String getUsername() {
+     public String getUsername() {
         return username;
     }
 
@@ -239,5 +244,16 @@ public class FeedPreferences {
 
     public int getFeedSkipEnding() {
         return feedSkipEnding;
+    }
+
+    /**
+     * @return true if  an notification should be when the feed gets refreshed and a new episode is found.
+     */
+    public boolean getShowNotification() {
+        return showNotification;
+    }
+
+    public void setShowNotification(boolean showNotification) {
+        this.showNotification = showNotification;
     }
 }

@@ -114,6 +114,7 @@ public class PodDBAdapter {
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
     public static final String KEY_FEED_SKIP_INTRO = "feed_skip_intro";
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
+    public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
 
     // Table names
     static final String TABLE_NAME_FEEDS = "Feeds";
@@ -151,7 +152,8 @@ public class PodDBAdapter {
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
             + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
-            + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0)";
+            + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
+            + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -253,7 +255,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED,
             TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING
+            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING,
+            TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION
     };
 
     /**
@@ -447,6 +450,7 @@ public class PodDBAdapter {
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
+        values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowNotification());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 

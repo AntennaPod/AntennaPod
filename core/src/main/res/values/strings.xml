@@ -719,6 +719,8 @@
     <string name="statistics_episodes_on_device">Episodes on the device:</string>
     <string name="statistics_space_used">Space used:</string>
     <string name="statistics_view_all">View for all podcasts »</string>
+    <string name="episode_notification">Episode Notifications</string>
+    <string name="episode_notification_summary">Shows a notification when a new episode comes out.</string>
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>
@@ -862,6 +864,13 @@
     <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
     <string name="notification_channel_auto_download">Auto Downloads</string>
     <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
+
+    <string name="notification_channel_new_episode">New Episode</string>
+    <string name="notification_channel_new_episode_description">Shown when a new episode of a podcast was found, where notifications are enabled</string>
+    <plurals name="new_episode_message">
+        <item quantity="one">%2$s has a new episode</item>
+        <item quantity="other">%2$s has %1$d new episodes</item>
+    </plurals>
 
     <!-- Widget settings -->
     <string name="widget_settings">Widget settings</string>

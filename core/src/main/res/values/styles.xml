@@ -76,6 +76,7 @@
         <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
         <item name="filter_dialog_button_background">@drawable/filter_dialog_background_light</item>
         <item name="ic_notifications">@drawable/ic_notifications_black</item>
+        <item name="notify_bell">@drawable/ic_notification_bell_black</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -154,6 +155,7 @@
         <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
         <item name="filter_dialog_button_background">@drawable/filter_dialog_background_dark</item>
         <item name="ic_notifications">@drawable/ic_notifications_white</item>
+        <item name="notify_bell">@drawable/ic_notification_bell_white</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
