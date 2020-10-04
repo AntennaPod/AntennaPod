@@ -18,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
@@ -101,6 +102,7 @@ public class OnlineSearchFragment extends Fragment {
             PodcastSearchResult podcast = searchResults.get(position);
             Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
             intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
+            intent.putExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH, true);
             startActivity(intent);
         });
         progressBar = root.findViewById(R.id.progressBar);
