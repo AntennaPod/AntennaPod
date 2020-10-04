@@ -19,7 +19,8 @@ import com.google.android.play.core.tasks.Task;
 
 public class RatingDialog {
 
-    private RatingDialog(){}
+    private RatingDialog(){
+    }
 
     private static final String TAG = RatingDialog.class.getSimpleName();
     private static final int AFTER_DAYS = 7;
