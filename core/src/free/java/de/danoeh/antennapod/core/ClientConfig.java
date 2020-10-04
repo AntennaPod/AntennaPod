@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core;
 
 import android.content.Context;
+import java.security.Security;
+import org.conscrypt.Conscrypt;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -53,6 +55,7 @@ public class ClientConfig {
     }
 
     private static void installSslProvider(Context context) {
-        // ProviderInstaller is a closed-source Google library
+        // Insert bundled conscrypt as highest security provider (overrides OS version).
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
     }
 }
