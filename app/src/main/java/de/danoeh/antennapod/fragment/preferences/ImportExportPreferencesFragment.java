@@ -181,23 +181,24 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void importDatabase() {
-        new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.database_import_label)
-                .setMessage(R.string.database_import_warning)
-                .setNegativeButton(R.string.no, null)
-                .setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setTitle(R.string.database_import_label);
+        alert.setMessage(R.string.database_import_warning);
+        alert.setNegativeButton(R.string.no, null);
+        alert.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                     if (Build.VERSION.SDK_INT >= 19) {
-                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT)
-                                .setType("*/*");
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        intent.setType("*/*");
                         startActivityForResult(intent, REQUEST_CODE_RESTORE_DATABASE);
                     } else {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT)
-                                .setType("*/*");
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("*/*");
                         startActivityForResult(Intent.createChooser(intent,
                                 getString(R.string.import_select_file)), REQUEST_CODE_RESTORE_DATABASE);
                     }
-                })
-                .show();
+                }
+        );
+        alert.show();
     }
 
     private void showDatabaseImportSuccessDialog() {
@@ -209,30 +210,27 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void showExportSuccessDialog(final String path, final Uri streamUri) {
-        new AlertDialog.Builder(getContext())
-                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                .setTitle(R.string.export_success_title)
-                .setMessage(getContext().getString(R.string.export_success_sum, path))
-                .setPositiveButton(R.string.send_label, (dialog, which) -> {
-                    Intent sendIntent = new Intent(Intent.ACTION_SEND)
-                            .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label))
-                            .putExtra(Intent.EXTRA_STREAM, streamUri)
-                            .setType("text/plain")
-                            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                        List<ResolveInfo> resInfoList =
-                                getContext().getPackageManager().queryIntentActivities(
-                                        sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                        for (ResolveInfo resolveInfo : resInfoList) {
-                            String packageName = resolveInfo.activityInfo.packageName;
-                            getContext().grantUriPermission(
-                                    packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        }
-                    }
-                    getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
-                })
-                .create()
-                .show();
+        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+        alert.setTitle(R.string.export_success_title);
+        alert.setMessage(getString(R.string.export_success_sum, path));
+        alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
+            Intent sendIntent = new Intent(Intent.ACTION_SEND)
+                    .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label))
+                    .putExtra(Intent.EXTRA_STREAM, streamUri)
+                    .setType("text/plain")
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                List<ResolveInfo> resInfoList = getContext().getPackageManager()
+                        .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+            }
+            startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
+        });
+        alert.create().show();
     }
 
     private void showExportErrorDialog(final Throwable error) {
