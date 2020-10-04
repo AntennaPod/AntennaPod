@@ -16,19 +16,26 @@
         android:visibility="gone"
         tools:text="(i) Information" />
 
-    <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
-        android:id="@android:id/list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/txtvInformation"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
-        android:paddingTop="@dimen/list_vertical_padding"
-        android:paddingBottom="@dimen/list_vertical_padding"
-        android:paddingHorizontal="@dimen/additional_horizontal_spacing"
-        android:layout_above="@id/loadingMore"
-        tools:itemCount="13"
-        tools:listitem="@layout/feeditemlist_item" />
+        android:layout_above="@id/loadingMore">
+
+            <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:paddingTop="@dimen/list_vertical_padding"
+                android:paddingBottom="@dimen/list_vertical_padding"
+                android:paddingHorizontal="@dimen/additional_horizontal_spacing"
+                tools:itemCount="13"
+                tools:listitem="@layout/feeditemlist_item" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progLoading"

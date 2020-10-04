@@ -5,10 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ProgressBar;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -103,6 +106,13 @@ public class SubscriptionFragment extends Fragment {
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
         feedsFilteredMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
+
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            AutoUpdateManager.runImmediate(requireContext());
+            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
+        });
         return root;
     }
 
