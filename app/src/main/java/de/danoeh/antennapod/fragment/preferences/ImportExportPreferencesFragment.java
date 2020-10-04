@@ -69,7 +69,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         setupStorageScreen();
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage(getContext().getString(R.string.please_wait));
+        progressDialog.setMessage(getString(R.string.please_wait));
     }
 
     @Override
@@ -107,10 +107,10 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_OPML_IMPORT).setOnPreferenceClickListener(
                 preference -> {
                     try {
-                        Intent intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
-                        intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
-                        intentGetContentAction.setType("*/*");
-                        startActivityForResult(intentGetContentAction, REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH);
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT)
+                                .addCategory(Intent.CATEGORY_OPENABLE)
+                                .setType("*/*");
+                        startActivityForResult(intent, REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH);
                     } catch (ActivityNotFoundException e) {
                         Log.e(TAG, "No activity found. Should never happen...");
                     }
@@ -143,7 +143,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output -> {
                         Uri fileUri = FileProvider.getUriForFile(context.getApplicationContext(),
-                                context.getString(R.string.provider_authority), output);
+                                getString(R.string.provider_authority), output);
                         showExportSuccessDialog(output.toString(), fileUri);
                     }, this::showExportErrorDialog, progressDialog::dismiss);
         } else {
@@ -152,7 +152,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(output ->
-                            showExportSuccessDialog(output.getUri().toString(), output.getUri()),
+                                    showExportSuccessDialog(output.getUri().toString(), output.getUri()),
                             this::showExportErrorDialog, progressDialog::dismiss);
         }
     }
@@ -170,7 +170,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
             File backupDB = new File(sd, dateStampFilename(DATABASE_EXPORT_FILENAME));
             progressDialog.show();
             disposable = Completable.fromAction(() ->
-                        DatabaseExporter.exportToStream(new FileOutputStream(backupDB), getContext()))
+                    DatabaseExporter.exportToStream(new FileOutputStream(backupDB), getContext()))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
@@ -181,70 +181,67 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void importDatabase() {
-        // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.database_import_label);
-        builder.setMessage(R.string.database_import_warning);
-
-        // add a button
-        builder.setNegativeButton(R.string.no, null);
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.database_import_label)
+                .setMessage(R.string.database_import_warning)
+                .setNegativeButton(R.string.no, null)
+                .setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                     if (Build.VERSION.SDK_INT >= 19) {
-                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                        intent.setType("*/*");
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT)
+                                .setType("*/*");
                         startActivityForResult(intent, REQUEST_CODE_RESTORE_DATABASE);
                     } else {
-                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                        intent.setType("*/*");
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT)
+                                .setType("*/*");
                         startActivityForResult(Intent.createChooser(intent,
                                 getString(R.string.import_select_file)), REQUEST_CODE_RESTORE_DATABASE);
                     }
-                }
-        );
-
-        // create and show the alert dialog
-        builder.show();
+                })
+                .show();
     }
 
     private void showDatabaseImportSuccessDialog() {
-        AlertDialog.Builder d = new AlertDialog.Builder(getContext());
-        d.setMessage(R.string.import_ok);
-        d.setCancelable(false);
-        d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart());
-        d.show();
+        new AlertDialog.Builder(getContext())
+                .setMessage(R.string.import_ok)
+                .setCancelable(false)
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart())
+                .show();
     }
 
     private void showExportSuccessDialog(final String path, final Uri streamUri) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-        alert.setTitle(R.string.export_success_title);
-        alert.setMessage(getContext().getString(R.string.export_success_sum, path));
-        alert.setPositiveButton(R.string.send_label, (dialog, which) -> {
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label));
-            sendIntent.putExtra(Intent.EXTRA_STREAM, streamUri);
-            sendIntent.setType("text/plain");
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                List<ResolveInfo> resInfoList = getContext().getPackageManager()
-                        .queryIntentActivities(sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    getContext().grantUriPermission(packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-            }
-            getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
-        });
-        alert.create().show();
+        new AlertDialog.Builder(getContext())
+                .setNeutralButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .setTitle(R.string.export_success_title)
+                .setMessage(getContext().getString(R.string.export_success_sum, path))
+                .setPositiveButton(R.string.send_label, (dialog, which) -> {
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND)
+                            .putExtra(Intent.EXTRA_SUBJECT, getString(R.string.opml_export_label))
+                            .putExtra(Intent.EXTRA_STREAM, streamUri)
+                            .setType("text/plain")
+                            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                        List<ResolveInfo> resInfoList =
+                                getContext().getPackageManager().queryIntentActivities(
+                                        sendIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                        for (ResolveInfo resolveInfo : resInfoList) {
+                            String packageName = resolveInfo.activityInfo.packageName;
+                            getContext().grantUriPermission(
+                                    packageName, streamUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        }
+                    }
+                    getContext().startActivity(Intent.createChooser(sendIntent, getString(R.string.send_label)));
+                })
+                .create()
+                .show();
     }
 
     private void showExportErrorDialog(final Throwable error) {
         progressDialog.dismiss();
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
-        alert.setTitle(R.string.export_error_label);
-        alert.setMessage(error.getMessage());
-        alert.show();
+        new AlertDialog.Builder(getContext())
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .setTitle(R.string.export_error_label)
+                .setMessage(error.getMessage())
+                .show();
     }
 
     @Override
@@ -254,34 +251,44 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
         }
         Uri uri = data.getData();
 
-        if (requestCode == REQUEST_CODE_CHOOSE_OPML_EXPORT_PATH) {
-            exportWithWriter(new OpmlWriter(), uri);
-        } else if (requestCode == REQUEST_CODE_CHOOSE_HTML_EXPORT_PATH) {
-            exportWithWriter(new HtmlWriter(), uri);
-        } else if (requestCode == REQUEST_CODE_CHOOSE_FAVORITES_EXPORT_PATH) {
-            exportWithWriter(new FavoritesWriter(), uri);
-        } else if (requestCode == REQUEST_CODE_RESTORE_DATABASE) {
-            progressDialog.show();
-            disposable = Completable.fromAction(() -> DatabaseExporter.importBackup(uri, getContext()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        showDatabaseImportSuccessDialog();
-                        progressDialog.dismiss();
-                    }, this::showExportErrorDialog);
-        } else if (requestCode == REQUEST_CODE_BACKUP_DATABASE) {
-            progressDialog.show();
-            disposable = Completable.fromAction(() -> DatabaseExporter.exportToDocument(uri, getContext()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG).show();
-                        progressDialog.dismiss();
-                    }, this::showExportErrorDialog);
-        } else if (requestCode == REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH) {
-            Intent intent = new Intent(getContext(), OpmlImportActivity.class);
-            intent.setData(uri);
-            startActivity(intent);
+        switch (requestCode) {
+            case REQUEST_CODE_CHOOSE_OPML_EXPORT_PATH:
+                exportWithWriter(new OpmlWriter(), uri);
+                break;
+            case REQUEST_CODE_CHOOSE_HTML_EXPORT_PATH:
+                exportWithWriter(new HtmlWriter(), uri);
+                break;
+            case REQUEST_CODE_CHOOSE_FAVORITES_EXPORT_PATH:
+                exportWithWriter(new FavoritesWriter(), uri);
+                break;
+            case REQUEST_CODE_RESTORE_DATABASE:
+                progressDialog.show();
+                disposable = Completable.fromAction(() -> DatabaseExporter.importBackup(uri, getContext()))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            showDatabaseImportSuccessDialog();
+                            progressDialog.dismiss();
+                        }, this::showExportErrorDialog);
+                break;
+            case REQUEST_CODE_BACKUP_DATABASE:
+                progressDialog.show();
+                disposable = Completable.fromAction(() -> DatabaseExporter.exportToDocument(uri, getContext()))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            Snackbar.make(getView(), R.string.export_success_title, Snackbar.LENGTH_LONG).show();
+                            progressDialog.dismiss();
+                        }, this::showExportErrorDialog);
+                break;
+            case REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH:
+                Intent intent = new Intent(getContext(), OpmlImportActivity.class);
+                intent.setData(uri);
+                startActivity(intent);
+                break;
+            default:
+                // Do nothing
+                break;
         }
     }
 
