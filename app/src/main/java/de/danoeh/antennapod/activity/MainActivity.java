@@ -71,6 +71,7 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
+    public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
 
     private @Nullable DrawerLayout drawerLayout;
     private @Nullable ActionBarDrawerToggle drawerToggle;
@@ -477,7 +478,11 @@ public class MainActivity extends CastEnabledActivity {
             if (tag != null) {
                 loadFragment(tag, args);
             } else if (feedId > 0) {
-                loadFeedFragmentById(feedId, args);
+                if (intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false)) {
+                    loadChildFragment(FeedItemlistFragment.newInstance(feedId));
+                } else {
+                    loadFeedFragmentById(feedId, args);
+                }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
