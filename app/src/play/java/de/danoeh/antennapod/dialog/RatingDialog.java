@@ -19,7 +19,7 @@ import com.google.android.play.core.tasks.Task;
 
 public class RatingDialog {
 
-    private RatingDialog(){
+    private RatingDialog() {
     }
 
     private static final String TAG = RatingDialog.class.getSimpleName();
@@ -58,19 +58,15 @@ public class RatingDialog {
             return;
         }
 
-        //ReviewManager manager = new FakeReviewManager(context);
         ReviewManager manager = ReviewManagerFactory.create(context);
         Task<ReviewInfo> request = manager.requestReviewFlow();
 
-        request
-                .addOnCompleteListener(task -> {
+        request.addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         ReviewInfo reviewInfo = task.getResult();
                         Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
-                        flow
-                                .addOnCompleteListener(task1 -> {
+                        flow.addOnCompleteListener(task1 -> {
                                     saveRated();
-                                    Toast.makeText(context, "Review saved", Toast.LENGTH_SHORT).show();
                                     Log.i("ReviewDialog", "Successfully finished in-app review");
                                 })
                                 .addOnFailureListener(error -> {
