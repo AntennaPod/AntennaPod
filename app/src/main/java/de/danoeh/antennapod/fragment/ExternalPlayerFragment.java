@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
@@ -78,7 +79,12 @@ public class ExternalPlayerFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         butPlay.setOnClickListener(v -> {
-            if (controller != null) {
+            if (controller != null && controller.getMedia().getMediaType() == MediaType.VIDEO) {
+                controller.playPause();
+                if(controller.getStatus() != PlayerStatus.PLAYING) {
+                    getContext().startActivity(PlaybackService.getPlayerActivityIntent(getContext(),controller.getMedia()));
+                }
+            }else if (controller != null) {
                 controller.playPause();
             }
         });
