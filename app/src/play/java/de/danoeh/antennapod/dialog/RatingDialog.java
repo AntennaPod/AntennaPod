@@ -62,18 +62,18 @@ public class RatingDialog {
         Task<ReviewInfo> request = manager.requestReviewFlow();
 
         request.addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        ReviewInfo reviewInfo = task.getResult();
-                        Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
-                        flow.addOnCompleteListener(task1 -> {
-                                    saveRated();
-                                    Log.i("ReviewDialog", "Successfully finished in-app review");
-                                })
-                                .addOnFailureListener(error -> {
-                                    Log.i("ReviewDialog", "failed in reviewing process");
-                                });
-                    }
+            if (task.isSuccessful()) {
+                ReviewInfo reviewInfo = task.getResult();
+                Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
+                flow.addOnCompleteListener(task1 -> {
+                    saveRated();
+                    Log.i("ReviewDialog", "Successfully finished in-app review");
                 })
+                        .addOnFailureListener(error -> {
+                            Log.i("ReviewDialog", "failed in reviewing process");
+                        });
+            }
+        })
                 .addOnFailureListener(error -> {
                     Log.i("ReviewDialog",  "failed to get in-app review request");
                 });
