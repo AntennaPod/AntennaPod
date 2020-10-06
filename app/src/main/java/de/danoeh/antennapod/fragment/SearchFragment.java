@@ -260,7 +260,7 @@ public class SearchFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     this.results = results.first;
                     adapter.updateItems(results.first);
-                    if (getArguments().getLong(ARG_FEED , 0) == 0) {
+                    if (getArguments().getLong(ARG_FEED, 0) == 0) {
                         adapterFeeds.updateData(results.second);
                     } else {
                         adapterFeeds.updateData(Collections.emptyList());
