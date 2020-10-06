@@ -298,7 +298,7 @@ public class NavListAdapter extends BaseAdapter
         convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
         TextView feedsFilteredMsg = convertView.findViewById(R.id.nav_feeds_filtered_message);
 
-        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE && showSubscriptionList) {
+        if (UserPreferences.getSubscriptionsFilter().areSubscriptionsFiltered() && showSubscriptionList) {
             convertView.setEnabled(true);
             feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(feedsFilteredMsg);
