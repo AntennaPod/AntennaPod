@@ -43,6 +43,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -262,11 +263,10 @@ public class SearchFragment extends Fragment {
                     if(getArguments().getLong(ARG_FEED,0)==0)
                     {
                         adapterFeeds.updateData(results.second);
-                    }
-                    else
+                    }else
                     {
 
-                        adapterFeeds.updateData(null);
+                        adapterFeeds.updateData(Collections.emptyList());
                     }
                     String query = getArguments().getString(ARG_QUERY);
                     emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
