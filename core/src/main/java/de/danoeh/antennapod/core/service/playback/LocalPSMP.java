@@ -12,6 +12,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import androidx.media.AudioFocusRequestCompat;
+import androidx.media.AudioManagerCompat;
+
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
@@ -373,13 +376,10 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     private void abandonAudioFocus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                    .setOnAudioFocusChangeListener(audioFocusChangeListener);
-            audioManager.abandonAudioFocusRequest(builder.build());
-        } else {
-            audioManager.abandonAudioFocus(audioFocusChangeListener);
-        }
+        AudioFocusRequestCompat.Builder builder =
+                new AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN)
+                        .setOnAudioFocusChangeListener(audioFocusChangeListener);
+        AudioManagerCompat.abandonAudioFocusRequest(audioManager, builder.build());
     }
 
     /**
