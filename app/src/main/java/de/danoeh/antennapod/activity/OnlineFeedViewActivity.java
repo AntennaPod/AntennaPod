@@ -523,7 +523,28 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 subscribeButton.setEnabled(true);
                 subscribeButton.setText(R.string.open_podcast);
                 if (didPressSubscribe) {
-                    openFeed();
+                    //Show auto download dialog
+                    didPressSubscribe = false;
+                    if (UserPreferences.isEnableAutodownload()) {
+                        long feedId = getFeedId(feed);
+                        final Feed feed1 = DBReader.getFeed(feedId);
+                        final FeedPreferences feedPreferences = feed1.getPreferences();
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                        dialog.setTitle(R.string.auto_download_label);
+                        dialog.setMessage(R.string.auto_download_include_message);
+
+                        dialog.setPositiveButton(R.string.yes, (dialog1, which) -> feedPreferences.setAutoDownload(true));
+                        dialog.setNegativeButton(R.string.no, (dialog1, which) -> feedPreferences.setAutoDownload(false));
+                        dialog.setOnDismissListener((listener) -> {
+                            feed1.savePreferences();
+                            openFeed();
+                        });
+
+                        dialog.show();
+                    } else {
+                        openFeed();
+                    }
                 }
             } else {
                 subscribeButton.setEnabled(true);
