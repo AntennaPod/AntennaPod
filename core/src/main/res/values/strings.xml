@@ -686,7 +686,6 @@
     <string name="decrease_speed">Decrease speed</string>
     <string name="media_type_audio_label">Audio</string>
     <string name="media_type_video_label">Video</string>
-    <string name="navigate_upwards_label">Navigate upwards</string>
     <string name="status_downloading_label">Episode is being downloaded</string>
     <string name="in_queue_label">Episode is in the queue</string>
     <string name="is_favorite_label">Episode is marked as favorite</string>
