@@ -795,7 +795,7 @@ public final class DBReader {
         Log.d(TAG, "getNavDrawerData() called with: " + "");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        SubscriptionsFilter subscriptionsFilter = UserPreferences.getFeedFilter();
+        SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), adapter);
         long[] feedIds = new long[feeds.size()];
         for (int i = 0; i < feeds.size(); i++) {

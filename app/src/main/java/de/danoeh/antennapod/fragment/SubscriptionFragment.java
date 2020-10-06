@@ -214,7 +214,7 @@ public class SubscriptionFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
-        if (UserPreferences.getFeedFilter().areSubscriptionsFiltered()) {
+        if (UserPreferences.getSubscriptionsFilter().areSubscriptionsFiltered()) {
             feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(feedsFilteredMsg);
             feedsFilteredMsg.setVisibility(View.VISIBLE);

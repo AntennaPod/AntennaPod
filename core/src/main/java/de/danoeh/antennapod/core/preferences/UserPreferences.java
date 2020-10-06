@@ -1045,12 +1045,12 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static SubscriptionsFilter getFeedFilter() {
+    public static SubscriptionsFilter getSubscriptionsFilter() {
         String value = prefs.getString(PREF_FILTER_FEED, "");
         return new SubscriptionsFilter(value);
     }
 
-    public static void setFeedFilter(SubscriptionsFilter value) {
+    public static void setSubscriptionsFilter(SubscriptionsFilter value) {
         prefs.edit()
                 .putString(PREF_FILTER_FEED, TextUtils.join(",", value.getValues()))
                 .apply();

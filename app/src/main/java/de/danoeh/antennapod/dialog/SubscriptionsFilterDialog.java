@@ -24,7 +24,7 @@ import de.danoeh.antennapod.view.RecursiveRadioGroup;
 
 public class SubscriptionsFilterDialog {
     public static void showDialog(Context context) {
-        SubscriptionsFilter subscriptionsFilter = UserPreferences.getFeedFilter();
+        SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
         final Set<String> filterValues = new HashSet<>(Arrays.asList(subscriptionsFilter.getValues()));
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(context.getString(R.string.pref_filter_feed_title));
@@ -71,12 +71,12 @@ public class SubscriptionsFilterDialog {
             updateFilter(filterValues);
         });
         builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
+        builder.show();
     }
 
     private static void updateFilter(Set<String> filterValues) {
         SubscriptionsFilter subscriptionsFilter = new SubscriptionsFilter(filterValues.toArray(new String[0]));
-        UserPreferences.setFeedFilter(subscriptionsFilter);
+        UserPreferences.setSubscriptionsFilter(subscriptionsFilter);
         EventBus.getDefault().post(new UnreadItemsUpdateEvent());
     }
 }
