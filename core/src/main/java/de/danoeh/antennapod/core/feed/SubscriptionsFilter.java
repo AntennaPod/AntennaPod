@@ -5,10 +5,11 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.LongIntMap;
 
 public class SubscriptionsFilter {
+    private static final String divider = ",";
+
     private final String[] properties;
 
     private boolean showIfCounterGreaterZero = false;
@@ -20,7 +21,7 @@ public class SubscriptionsFilter {
     private boolean showUpdatedDisabled = false;
 
     public SubscriptionsFilter(String properties) {
-        this(TextUtils.split(properties, ","));
+        this(TextUtils.split(properties, divider));
     }
 
 
@@ -57,19 +58,12 @@ public class SubscriptionsFilter {
     /**
      * Run a list of feed items through the filter.
      */
-    public List<Feed> filter(List<Feed> items, PodDBAdapter adapter) {
+    public List<Feed> filter(List<Feed> items, LongIntMap feedCounters) {
         if (properties.length == 0) {
             return items;
         }
 
         List<Feed> result = new ArrayList<>();
-
-        // Check for filter combinations that will always return an empty list
-        if (showAutoDownloadDisabled && showAutoDownloadEnabled) {
-            return result;
-        } else if (showUpdatedDisabled && showUpdatedEnabled) {
-            return result;
-        }
 
         for (Feed item : items) {
             FeedPreferences itemPreferences = item.getPreferences();
@@ -92,15 +86,8 @@ public class SubscriptionsFilter {
         }
 
         if (showIfCounterGreaterZero) {
-            long[] feedIds = new long[result.size()];
-            for (int i = 0; i < feedIds.length; i++) {
-                feedIds[i] = result.get(i).getId();
-            }
-            final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
-
             for (int i = result.size() - 1; i >= 0; i--) {
                 if (feedCounters.get(result.get(i).getId()) <= 0) {
-                    feedCounters.delete(result.get(i).getId());
                     result.remove(i);
                 }
             }
@@ -113,4 +100,7 @@ public class SubscriptionsFilter {
         return properties.clone();
     }
 
+    public String serialize() {
+        return TextUtils.join(divider, getValues());
+    }
 }

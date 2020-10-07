@@ -796,13 +796,16 @@ public final class DBReader {
         Log.d(TAG, "getNavDrawerData() called with: " + "");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
-        List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), adapter);
+
+        List<Feed> feeds = getFeedList(adapter);
         long[] feedIds = new long[feeds.size()];
         for (int i = 0; i < feeds.size(); i++) {
             feedIds[i] = feeds.get(i).getId();
         }
         final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
+
+        SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
+        feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();

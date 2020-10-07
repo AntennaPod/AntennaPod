@@ -1052,7 +1052,7 @@ public class UserPreferences {
 
     public static void setSubscriptionsFilter(SubscriptionsFilter value) {
         prefs.edit()
-                .putString(PREF_FILTER_FEED, TextUtils.join(",", value.getValues()))
+                .putString(PREF_FILTER_FEED, value.serialize())
                 .apply();
     }
 
