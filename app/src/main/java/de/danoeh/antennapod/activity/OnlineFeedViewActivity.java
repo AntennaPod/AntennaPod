@@ -14,7 +14,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -105,6 +107,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Button subscribeButton;
     private ProgressBar progressBar;
     private Button stopPreviewButton;
+    private CheckBox autoDownloadCheckbox;
 
     private Disposable download;
     private Disposable parser;
@@ -410,6 +413,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         subscribeButton = findViewById(R.id.butSubscribe);
         stopPreviewButton = findViewById(R.id.butStopPreview);
+        autoDownloadCheckbox = findViewById(R.id.checkBoxAutoDownload);
+        autoDownloadCheckbox.setChecked(UserPreferences.isEnableAutodownload());
 
         if (StringUtils.isNotBlank(feed.getImageUrl())) {
             Glide.with(this)
@@ -519,36 +524,35 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (DownloadRequester.getInstance().isDownloadingFile(feed.getDownload_url())) {
                 subscribeButton.setEnabled(false);
                 subscribeButton.setText(R.string.subscribing_label);
+                if (UserPreferences.isEnableAutodownload()) {
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) subscribeButton.getLayoutParams();
+                    layoutParams.setMargins(16, 16, 16, 0);
+                    subscribeButton.setLayoutParams(layoutParams);
+                    autoDownloadCheckbox.setVisibility(View.VISIBLE);
+                }
             } else if (feedInFeedlist(feed)) {
                 subscribeButton.setEnabled(true);
                 subscribeButton.setText(R.string.open_podcast);
                 if (didPressSubscribe) {
                     //Show auto download dialog
                     didPressSubscribe = false;
-                    if (UserPreferences.isEnableAutodownload()) {
-                        long feedId = getFeedId(feed);
-                        final Feed feed1 = DBReader.getFeed(feedId);
-                        final FeedPreferences feedPreferences = feed1.getPreferences();
-
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                        dialog.setTitle(R.string.auto_download_label);
-                        dialog.setMessage(R.string.auto_download_include_message);
-
-                        dialog.setPositiveButton(R.string.yes, (dialog1, which) -> feedPreferences.setAutoDownload(true));
-                        dialog.setNegativeButton(R.string.no, (dialog1, which) -> feedPreferences.setAutoDownload(false));
-                        dialog.setOnDismissListener((listener) -> {
-                            feed1.savePreferences();
-                            openFeed();
-                        });
-
-                        dialog.show();
-                    } else {
-                        openFeed();
+                    if (autoDownloadCheckbox.getVisibility() == View.VISIBLE) {
+                        Feed feed1 = DBReader.getFeed(getFeedId(feed));
+                        FeedPreferences feedPreferences = feed1.getPreferences();
+                        feedPreferences.setAutoDownload(autoDownloadCheckbox.isChecked());
+                        feed1.savePreferences();
                     }
+                    openFeed();
                 }
             } else {
                 subscribeButton.setEnabled(true);
                 subscribeButton.setText(R.string.subscribe_label);
+                if (UserPreferences.isEnableAutodownload()) {
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) subscribeButton.getLayoutParams();
+                    layoutParams.setMargins(16, 16, 16, 0);
+                    subscribeButton.setLayoutParams(layoutParams);
+                    autoDownloadCheckbox.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
