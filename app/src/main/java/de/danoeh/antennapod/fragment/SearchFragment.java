@@ -43,6 +43,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -259,7 +260,11 @@ public class SearchFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     this.results = results.first;
                     adapter.updateItems(results.first);
-                    adapterFeeds.updateData(results.second);
+                    if (getArguments().getLong(ARG_FEED, 0) == 0) {
+                        adapterFeeds.updateData(results.second);
+                    } else {
+                        adapterFeeds.updateData(Collections.emptyList());
+                    }
                     String query = getArguments().getString(ARG_QUERY);
                     emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
