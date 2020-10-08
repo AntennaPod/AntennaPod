@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -216,7 +217,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             } catch (DownloadRequestException e) {
                 e.printStackTrace();
             }
-            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
+            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
 

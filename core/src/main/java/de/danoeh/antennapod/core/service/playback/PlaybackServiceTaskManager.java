@@ -343,7 +343,7 @@ public class PlaybackServiceTaskManager {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             // Called in main thread => ExoPlayer is used
             // Run on ui thread even if called from schedExecutor
-            Handler handler = new Handler();
+            Handler handler = new Handler(Looper.getMainLooper());
             return () -> handler.post(runnable);
         } else {
             return runnable;
@@ -370,7 +370,7 @@ public class PlaybackServiceTaskManager {
 
             if (UserPreferences.useExoplayer() && Looper.myLooper() == Looper.getMainLooper()) {
                 // Run callbacks in main thread so they can call ExoPlayer methods themselves
-                this.handler = new Handler();
+                this.handler = new Handler(Looper.getMainLooper());
             } else {
                 this.handler = null;
             }
