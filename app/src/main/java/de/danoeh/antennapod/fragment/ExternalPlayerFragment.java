@@ -81,10 +81,11 @@ public class ExternalPlayerFragment extends Fragment {
         butPlay.setOnClickListener(v -> {
             if (controller != null && controller.getMedia().getMediaType() == MediaType.VIDEO) {
                 controller.playPause();
-                if(controller.getStatus() != PlayerStatus.PLAYING) {
-                    getContext().startActivity(PlaybackService.getPlayerActivityIntent(getContext(),controller.getMedia()));
+                if (controller.getStatus() != PlayerStatus.PLAYING) {
+                    getContext().startActivity(PlaybackService
+                            .getPlayerActivityIntent(getContext(), controller.getMedia()));
                 }
-            }else if (controller != null) {
+            } else if (controller != null) {
                 controller.playPause();
             }
         });
