@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -182,7 +183,7 @@ public class MainActivity extends CastEnabledActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
             loadFragment(AddFeedFragment.TAG, null);
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (drawerLayout != null) { // Tablet layout does not have a drawer
                     drawerLayout.openDrawer(navDrawer);
                 }

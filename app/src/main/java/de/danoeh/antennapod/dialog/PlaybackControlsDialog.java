@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -159,7 +160,7 @@ public class PlaybackControlsDialog extends DialogFragment {
         butAudioTracks.setText(audioTracks.get(selectedAudioTrack));
         butAudioTracks.setOnClickListener(v -> {
             controller.setAudioTrack((selectedAudioTrack + 1) % audioTracks.size());
-            new Handler().postDelayed(this::setupAudioTracks, 500);
+            new Handler(Looper.getMainLooper()).postDelayed(this::setupAudioTracks, 500);
         });
     }
 }
