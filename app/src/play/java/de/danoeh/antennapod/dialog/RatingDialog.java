@@ -23,7 +23,7 @@ public class RatingDialog {
     }
 
     private static final String TAG = RatingDialog.class.getSimpleName();
-    private static final int AFTER_DAYS = 7;
+    private static final int AFTER_DAYS = 14;
 
     private static WeakReference<Context> mContext;
     private static SharedPreferences mPreferences;
@@ -66,7 +66,15 @@ public class RatingDialog {
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
                 flow.addOnCompleteListener(task1 -> {
-                    saveRated();
+                    int previousAttempts = mPreferences.getInt(NUMBER_OF_REVIEW_ATTEMPTS, 0);
+                    if (previousAttempts >= 3) {
+                        saveRated();
+                    } else {
+                        mPreferences
+                                .edit()
+                                .putInt(NUMBER_OF_REVIEW_ATTEMPTS, previousAttempts+1)
+                                .apply();
+                    }
                     Log.i("ReviewDialog", "Successfully finished in-app review");
                 })
                         .addOnFailureListener(error -> {
