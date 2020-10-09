@@ -109,9 +109,7 @@ public class DiscoveryFragment extends Fragment {
         });
 
 
-        List country_codes = Arrays.asList(getActivity().
-                getResources().
-                getStringArray(R.array.country_code));
+        List country_codes = Arrays.asList(getActivity().getResources().getStringArray(R.array.country_code));
 
         Spinner country_spinner = root.findViewById(R.id.spinner_country);
 
@@ -136,17 +134,12 @@ public class DiscoveryFragment extends Fragment {
 
             }
         });
-        int pos = country_codes.indexOf(country_code);
-        country_spinner.setSelection (pos);
-
-
+        country_spinner.setSelection(country_codes.indexOf(country_code));
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
-
         loadToplist(country_code);
-
         return root;
     }
 
