@@ -14,6 +14,12 @@
             app:title="@string/search_label"
             android:id="@+id/toolbar"/>
 
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </TextView>
+
     <ProgressBar
             android:layout_centerInParent="true"
             android:id="@+id/progressBar"

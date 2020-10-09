@@ -10,11 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
@@ -52,7 +56,9 @@ public class SearchFragment extends Fragment {
     private static final String TAG = "SearchFragment";
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
+//    private static  String PODCAST_NAME = "";
 
+    private TextView textView;
     private EpisodeItemListAdapter adapter;
     private FeedSearchResultAdapter adapterFeeds;
     private Disposable disposable;
@@ -60,6 +66,7 @@ public class SearchFragment extends Fragment {
     private EmptyViewHandler emptyViewHandler;
     private EpisodeItemListRecyclerView recyclerView;
     private List<FeedItem> results;
+    private MutableLiveData<String> podcastName;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -82,6 +89,7 @@ public class SearchFragment extends Fragment {
     public static SearchFragment newInstance(String query, long feed) {
         SearchFragment fragment = newInstance(query);
         fragment.getArguments().putLong(ARG_FEED, feed);
+//        PODCAST_NAME = podcastName;
         return fragment;
     }
 
@@ -120,6 +128,13 @@ public class SearchFragment extends Fragment {
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
 
+        textView = layout.findViewById(R.id.name);
+
+//        long feed = getArguments().getLong(ARG_FEED);
+//        if (feed != 0) {
+//            textView.setText("testingg");
+//        }
+
         RecyclerView recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
         LinearLayoutManager layoutManagerFeeds = new LinearLayoutManager(getActivity());
         layoutManagerFeeds.setOrientation(RecyclerView.HORIZONTAL);
@@ -132,6 +147,16 @@ public class SearchFragment extends Fragment {
         emptyViewHandler.setIcon(R.attr.action_search);
         emptyViewHandler.setTitle(R.string.search_status_no_results);
         EventBus.getDefault().register(this);
+        podcastName = new MutableLiveData<>();
+        final Observer<String> nameObserver = new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable final String newName) {
+                // Update the UI, in this case, a TextView.
+                textView.setText(podcastName.getValue());
+            }
+        };
+
+        podcastName.observe(requireActivity(), nameObserver);
         return layout;
     }
 
@@ -262,6 +287,7 @@ public class SearchFragment extends Fragment {
                     adapterFeeds.updateData(results.second);
                     String query = getArguments().getString(ARG_QUERY);
                     emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
+                    podcastName.setValue(getCurrentFeedName(results.second));
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
@@ -272,5 +298,13 @@ public class SearchFragment extends Fragment {
         List<FeedItem> items = FeedSearcher.searchFeedItems(getContext(), query, feed);
         List<Feed> feeds = FeedSearcher.searchFeeds(getContext(), query);
         return new Pair<>(items, feeds);
+    }
+
+    private String getCurrentFeedName(List<Feed> feedList) {
+        long feedId = getArguments().getLong(ARG_FEED);
+        for (Feed feed: feedList) {
+            if (feedId == feed.getId()) return feed.getTitle();
+        }
+        return "";
     }
 }
