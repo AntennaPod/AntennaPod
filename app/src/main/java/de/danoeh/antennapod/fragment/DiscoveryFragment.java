@@ -1,14 +1,17 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +24,10 @@ import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Searches iTunes store for top podcasts and displays results in a list.
@@ -29,6 +35,7 @@ import java.util.List;
 public class DiscoveryFragment extends Fragment {
 
     private static final String TAG = "ItunesSearchFragment";
+    private SharedPreferences prefs;
 
     /**
      * Adapter responsible with the search results.
@@ -46,6 +53,7 @@ public class DiscoveryFragment extends Fragment {
     private List<PodcastSearchResult> searchResults;
     private List<PodcastSearchResult> topList;
     private Disposable disposable;
+    private String country_code;
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -75,6 +83,8 @@ public class DiscoveryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
+        country_code = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, "us");
     }
 
     @Override
@@ -97,12 +107,45 @@ public class DiscoveryFragment extends Fragment {
             intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
             startActivity(intent);
         });
+
+
+        List country_codes = Arrays.asList(getActivity().
+                getResources().
+                getStringArray(R.array.country_code));
+
+        Spinner country_spinner = root.findViewById(R.id.spinner_country);
+
+        country_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> country_spinner, View view, int position, long id) {
+                String genre = (String) country_spinner.getItemAtPosition(position);
+
+                String[] country_code_array = getResources().getStringArray(R.array.country_code);
+                country_code = (position < country_code_array.length) ? country_code_array[position] : "";
+
+                prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
+                prefs.edit()
+                        .putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, country_code)
+                        .apply();
+
+                loadToplist(country_code);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        int pos = country_codes.indexOf(country_code);
+        country_spinner.setSelection (pos);
+
+
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
 
-        loadToplist();
+        loadToplist(country_code);
 
         return root;
     }
@@ -116,7 +159,7 @@ public class DiscoveryFragment extends Fragment {
         adapter = null;
     }
 
-    private void loadToplist() {
+    private void loadToplist(String country) {
         if (disposable != null) {
             disposable.dispose();
         }
@@ -127,7 +170,7 @@ public class DiscoveryFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.loadToplist(25).subscribe(podcasts -> {
+        disposable = loader.loadToplist(country, 25).subscribe(podcasts -> {
             progressBar.setVisibility(View.GONE);
             topList = podcasts;
             updateData(topList);
@@ -136,7 +179,7 @@ public class DiscoveryFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 txtvError.setText(error.toString());
                 txtvError.setVisibility(View.VISIBLE);
-                butRetry.setOnClickListener(v -> loadToplist());
+                butRetry.setOnClickListener(v -> loadToplist(country));
                 butRetry.setVisibility(View.VISIBLE);
             });
     }

@@ -350,4 +350,16 @@
         <item>EpisodesFragment</item>
         <item>SubscriptionFragment</item>
     </string-array>
+
+    <string-array name="country_name">
+        <item>China</item>
+        <item>Germany</item>
+        <item>United States</item>
+    </string-array>
+
+    <string-array name="country_code">
+        <item>cn</item>
+        <item>de</item>
+        <item>us</item>
+    </string-array>
 </resources>

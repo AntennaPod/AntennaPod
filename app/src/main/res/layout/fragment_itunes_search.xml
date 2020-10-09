@@ -4,8 +4,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/browsing"
+        >
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
@@ -14,8 +20,21 @@
         app:title="@string/discover"
         android:id="@+id/toolbar"/>
 
+        <android.widget.Spinner
+            android:id="@+id/spinner_country"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            android:entries="@array/country_name"
+            android:gravity="right|end"
+            android:isScrollContainer="true"
+            android:minHeight="?attr/actionBarSize"
+            android:spinnerMode="dropdown"
+            android:textAlignment="textEnd" />
+    </LinearLayout>
+
     <GridView
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/browsing"
         android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
