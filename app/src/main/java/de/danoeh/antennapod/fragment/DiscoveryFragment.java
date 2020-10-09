@@ -53,7 +53,7 @@ public class DiscoveryFragment extends Fragment {
     private List<PodcastSearchResult> searchResults;
     private List<PodcastSearchResult> topList;
     private Disposable disposable;
-    private String country_code;
+    private String countryCode;
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -84,7 +84,7 @@ public class DiscoveryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
-        country_code = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, "us");
+        countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, "us");
     }
 
     @Override
@@ -109,24 +109,24 @@ public class DiscoveryFragment extends Fragment {
         });
 
 
-        List country_codes = Arrays.asList(getActivity().getResources().getStringArray(R.array.country_code));
+        List countryCodes = Arrays.asList(getActivity().getResources().getStringArray(R.array.country_code));
 
-        Spinner country_spinner = root.findViewById(R.id.spinner_country);
+        Spinner countrySpinner = root.findViewById(R.id.spinner_country);
 
-        country_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> country_spinner, View view, int position, long id) {
-                String genre = (String) country_spinner.getItemAtPosition(position);
+            public void onItemSelected(AdapterView<?> countrySpinner, View view, int position, long id) {
+                String genre = (String) countrySpinner.getItemAtPosition(position);
 
-                String[] country_code_array = getResources().getStringArray(R.array.country_code);
-                country_code = (position < country_code_array.length) ? country_code_array[position] : "";
+                String[] countryCodeArray = getResources().getStringArray(R.array.country_code);
+                countryCode = (position < countryCodeArray.length) ? countryCodeArray[position] : "";
 
                 prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
                 prefs.edit()
-                        .putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, country_code)
+                        .putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode)
                         .apply();
 
-                loadToplist(country_code);
+                loadToplist(countryCode);
             }
 
             @Override
@@ -134,12 +134,12 @@ public class DiscoveryFragment extends Fragment {
 
             }
         });
-        country_spinner.setSelection(country_codes.indexOf(country_code));
+        countrySpinner.setSelection(countryCodes.indexOf(countryCode));
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
-        loadToplist(country_code);
+        loadToplist(countryCode);
         return root;
     }
 

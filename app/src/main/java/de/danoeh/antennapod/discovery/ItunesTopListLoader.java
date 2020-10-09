@@ -38,11 +38,12 @@ public class ItunesTopListLoader {
     }
 
     public Single<List<PodcastSearchResult>> loadToplist() {
-        String defaultCountry= Locale.getDefault().getCountry();
+        String defaultCountry = Locale.getDefault().getCountry();
         SharedPreferences prefs = context.getSharedPreferences(PREFS, MODE_PRIVATE);
-        String country_code = prefs.getString(PREF_KEY_COUNTRY_CODE, defaultCountry);
-        return this.loadToplist(country_code, 25);
+        String countryCode = prefs.getString(PREF_KEY_COUNTRY_CODE, defaultCountry);
+        return this.loadToplist(countryCode, 25);
     }
+
     public Single<List<PodcastSearchResult>> loadToplist(String country, int limit) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
