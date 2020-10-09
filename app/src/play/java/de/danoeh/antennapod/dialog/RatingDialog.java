@@ -72,7 +72,7 @@ public class RatingDialog {
                     } else {
                         mPreferences
                                 .edit()
-                                .putInt(NUMBER_OF_REVIEW_ATTEMPTS, previousAttempts+1)
+                                .putInt(NUMBER_OF_REVIEW_ATTEMPTS, previousAttempts + 1)
                                 .apply();
                     }
                     Log.i("ReviewDialog", "Successfully finished in-app review");
