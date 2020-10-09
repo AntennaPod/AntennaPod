@@ -9,16 +9,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/browsing"
-        >
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:layout_alignParentTop="true"
-        app:navigationIcon="?homeAsUpIndicator"
-        app:title="@string/discover"
-        android:id="@+id/toolbar"/>
+        android:layout_alignParentTop="true">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:navigationIcon="?homeAsUpIndicator"
+            app:title="@string/discover"
+            android:id="@+id/toolbar"/>
 
         <android.widget.Spinner
             android:id="@+id/spinner_country"
