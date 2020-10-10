@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import androidx.preference.PreferenceManager;
@@ -23,6 +24,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -114,6 +116,7 @@ public class UserPreferences {
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
+    public static final String PREF_USAGE_COUNTING_DATE = "prefUsageCounting";
 
     // Mediaplayer
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
@@ -1055,6 +1058,33 @@ public class UserPreferences {
         prefs.edit()
                 .putString(PREF_FILTER_FEED, value)
                 .apply();
+    }
+
+    public static Calendar getUsageCountingDate() {
+        long installDateMillis = prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
+        if (installDateMillis < 0) {
+            installDateMillis = getInstallationDate();
+            setUsageCountingDate(installDateMillis);
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(installDateMillis);
+        return calendar;
+    }
+
+    public static void resetUsageCountingDate() {
+        setUsageCountingDate(Calendar.getInstance().getTimeInMillis());
+    }
+
+    private static void setUsageCountingDate(long value) {
+        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
+    }
+
+    private static long getInstallationDate() {
+        try {
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).firstInstallTime;
+        } catch (PackageManager.NameNotFoundException e) {
+            return Calendar.getInstance().getTimeInMillis();
+        }
     }
 
 }
