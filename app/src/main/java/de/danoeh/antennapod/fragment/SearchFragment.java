@@ -10,15 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -69,7 +66,6 @@ public class SearchFragment extends Fragment {
     private EmptyViewHandler emptyViewHandler;
     private EpisodeItemListRecyclerView recyclerView;
     private List<FeedItem> results;
-    private MutableLiveData<String> podcastName;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -134,6 +130,8 @@ public class SearchFragment extends Fragment {
         if (getArguments().getLong(ARG_FEED) != 0 && !FEED_TITLE.isEmpty()) {
             chip = layout.findViewById(R.id.feed_title_chip);
             chip.setText(FEED_TITLE);
+        } else {
+            chip.setVisibility(View.GONE);
         }
 
         RecyclerView recyclerViewFeeds = layout.findViewById(R.id.recyclerViewFeeds);
