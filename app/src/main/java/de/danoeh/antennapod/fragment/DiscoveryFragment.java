@@ -115,8 +115,6 @@ public class DiscoveryFragment extends Fragment {
             startActivity(intent);
         });
 
-
-        Spinner countrySpinner = root.findViewById(R.id.spinner_country);
         List<String> countryCodeArray = Arrays.asList(Locale.getISOCountries());
         HashMap<String, String> countryCodeNames = new HashMap<String, String>();
         for (String countryCode : countryCodeArray) {
@@ -130,7 +128,10 @@ public class DiscoveryFragment extends Fragment {
         List<String> countryNamesSort = new ArrayList<String>(countryCodeNames.values());
         Collections.sort(countryNamesSort);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, countryNamesSort);
+        Spinner countrySpinner = root.findViewById(R.id.spinner_country);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getContext(), 
+            android.R.layout.simple_spinner_item, 
+            countryNamesSort);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         countrySpinner.setAdapter(dataAdapter);
 
@@ -141,9 +142,9 @@ public class DiscoveryFragment extends Fragment {
 
                 String countryName = (position < countryNamesSort.size()) ? countryNamesSort.get(position) : "";
                 for (Object o : countryCodeNames.keySet()) {
-                     if (countryCodeNames.get(o).equals(countryName)) {
-                         countryCode = o.toString();
-                     }
+                    if (countryCodeNames.get(o).equals(countryName)) {
+                        countryCode = o.toString();
+                    }
                  }
 
                 prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
