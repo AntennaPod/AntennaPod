@@ -90,8 +90,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         errorView.setVisibility(View.GONE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        // Tony Tam TODO
-        disposable = loader.loadToplist("us", NUM_SUGGESTIONS)
+        disposable = loader.loadToplist("US", NUM_SUGGESTIONS)
                 .subscribe(podcasts -> {
                     errorView.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
