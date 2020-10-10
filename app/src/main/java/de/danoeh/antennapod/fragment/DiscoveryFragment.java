@@ -59,7 +59,7 @@ public class DiscoveryFragment extends Fragment {
     private List<PodcastSearchResult> searchResults;
     private List<PodcastSearchResult> topList;
     private Disposable disposable;
-    private String countryCode;
+    private String countryCode = "US";
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -90,8 +90,7 @@ public class DiscoveryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
-        countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, "us");
-        Log.i(TAG, "got pref " + countryCode);
+        countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, "US");
     }
 
     @Override
@@ -134,16 +133,18 @@ public class DiscoveryFragment extends Fragment {
                 countryNamesSort);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         countrySpinner.setAdapter(dataAdapter);
+        int pos = countryNamesSort.indexOf(countryCodeNames.get(countryCode));
+        countrySpinner.setSelection(pos);
 
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> countrySpinner, View view, int position, long id) {
-                String genre = (String) countrySpinner.getItemAtPosition(position);
+                String countryName = (String) countrySpinner.getItemAtPosition(position);
 
-                String countryName = (position < countryNamesSort.size()) ? countryNamesSort.get(position) : "";
                 for (Object o : countryCodeNames.keySet()) {
                     if (countryCodeNames.get(o).equals(countryName)) {
                         countryCode = o.toString();
+                        break;
                     }
                 }
 
@@ -152,16 +153,12 @@ public class DiscoveryFragment extends Fragment {
                         .putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode)
                         .apply();
 
-                Log.i(TAG, "save country " + countryCode);
                 loadToplist(countryCode);
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
-        countrySpinner.setSelection(countryNamesSort.indexOf(countryCodeNames.get(countryCode)));
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);

@@ -33,7 +33,6 @@ public class ItunesTopListLoader {
     public static final String PREFS = "CountryRegionPrefs";
 
     public ItunesTopListLoader(Context context) {
-
         this.context = context;
     }
 
