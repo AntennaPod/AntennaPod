@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.service;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -94,7 +95,8 @@ public class FeedUpdateWorker extends Worker {
         Resources res = context.getResources();
         String text = res.getQuantityString(R.plurals.new_episode_message, newEpisodes, newEpisodes, feed.getTitle());
 
-        Intent intent = new Intent("de.danoeh.antennapod.activity.MainActivity");
+        Intent intent = new Intent();
+        intent.setComponent(new ComponentName(context, "de.danoeh.antennapod.activity.MainActivity"));
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra("fragment_feed_id", feed.getId());
@@ -111,7 +113,7 @@ public class FeedUpdateWorker extends Worker {
         createNotificationChannel();
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(R.string.notification_channel_new_episode * (int) feed.getId(), builder.build());
+        notificationManager.notify(R.string.notification_channel_new_episode * feed.hashCode(), builder.build());
     }
 
     private void createNotificationChannel() {
