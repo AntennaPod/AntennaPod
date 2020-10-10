@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ProgressBar;
@@ -23,9 +24,14 @@ import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import io.reactivex.disposables.Disposable;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -85,6 +91,7 @@ public class DiscoveryFragment extends Fragment {
         setHasOptionsMenu(true);
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
         countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, "us");
+        Log.i(TAG, "got pref " + countryCode);
     }
 
     @Override
@@ -109,23 +116,42 @@ public class DiscoveryFragment extends Fragment {
         });
 
 
-        List countryCodes = Arrays.asList(getActivity().getResources().getStringArray(R.array.country_code));
-
         Spinner countrySpinner = root.findViewById(R.id.spinner_country);
+        List<String> countryCodeArray = Arrays.asList(Locale.getISOCountries());
+        HashMap<String, String> countryCodeNames = new HashMap<String, String>();
+        for (String countryCode : countryCodeArray) {
+            Locale locale = new Locale("", countryCode);
+            String countryName = locale.getDisplayCountry();
+            if (countryName != null) {
+                countryCodeNames.put(countryCode, countryName);
+            }
+        }
+
+        List<String> countryNamesSort = new ArrayList<String>(countryCodeNames.values());
+        Collections.sort(countryNamesSort);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item, countryNamesSort);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        countrySpinner.setAdapter(dataAdapter);
 
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> countrySpinner, View view, int position, long id) {
                 String genre = (String) countrySpinner.getItemAtPosition(position);
 
-                String[] countryCodeArray = getResources().getStringArray(R.array.country_code);
-                countryCode = (position < countryCodeArray.length) ? countryCodeArray[position] : "";
+                String countryName = (position < countryNamesSort.size()) ? countryNamesSort.get(position) : "";
+                for (Object o : countryCodeNames.keySet()) {
+                     if (countryCodeNames.get(o).equals(countryName)) {
+                         countryCode = o.toString();
+                     }
+                 }
 
                 prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
                 prefs.edit()
                         .putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode)
                         .apply();
 
+                Log.i(TAG, "save country " + countryCode);
                 loadToplist(countryCode);
             }
 
@@ -134,7 +160,7 @@ public class DiscoveryFragment extends Fragment {
 
             }
         });
-        countrySpinner.setSelection(countryCodes.indexOf(countryCode));
+        countrySpinner.setSelection(countryNamesSort.indexOf(countryCodeNames.get(countryCode)));
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
