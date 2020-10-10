@@ -31,6 +31,7 @@ public class RatingDialog {
     private static final String PREFS_NAME = "RatingPrefs";
     private static final String KEY_RATED = "KEY_WAS_RATED";
     private static final String KEY_FIRST_START_DATE = "KEY_FIRST_HIT_DATE";
+    private static final String KEY_NUMBER_OF_REVIEWS = "NUMBER_OF_REVIEW_ATTEMPTS";
 
     public static void init(Context context) {
         mContext = new WeakReference<>(context);
@@ -66,13 +67,14 @@ public class RatingDialog {
                 ReviewInfo reviewInfo = task.getResult();
                 Task<Void> flow = manager.launchReviewFlow((Activity) context, reviewInfo);
                 flow.addOnCompleteListener(task1 -> {
-                    int previousAttempts = mPreferences.getInt(NUMBER_OF_REVIEW_ATTEMPTS, 0);
+                    int previousAttempts = mPreferences.getInt(KEY_NUMBER_OF_REVIEWS, 0);
                     if (previousAttempts >= 3) {
                         saveRated();
                     } else {
+                        resetStartDate();
                         mPreferences
                                 .edit()
-                                .putInt(NUMBER_OF_REVIEW_ATTEMPTS, previousAttempts + 1)
+                                .putInt(KEY_NUMBER_OF_REVIEWS, previousAttempts + 1)
                                 .apply();
                     }
                     Log.i("ReviewDialog", "Successfully finished in-app review");
