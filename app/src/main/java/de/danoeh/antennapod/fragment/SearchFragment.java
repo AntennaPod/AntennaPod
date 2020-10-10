@@ -278,7 +278,6 @@ public class SearchFragment extends Fragment {
                     adapterFeeds.updateData(results.second);
                     String query = getArguments().getString(ARG_QUERY);
                     emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
-//                    podcastName.setValue("");
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
