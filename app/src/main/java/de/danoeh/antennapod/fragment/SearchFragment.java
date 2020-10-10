@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +17,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.chip.Chip;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -57,7 +54,6 @@ public class SearchFragment extends Fragment {
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
     private static  String FEED_TITLE = "";
-
     private Chip chip;
     private EpisodeItemListAdapter adapter;
     private FeedSearchResultAdapter adapterFeeds;
@@ -88,7 +84,7 @@ public class SearchFragment extends Fragment {
     public static SearchFragment newInstance(String query, long feed, String feedTitle) {
         SearchFragment fragment = newInstance(query);
         fragment.getArguments().putLong(ARG_FEED, feed);
-        FEED_TITLE = "";
+        FEED_TITLE = feedTitle;
         return fragment;
     }
 
@@ -126,9 +122,9 @@ public class SearchFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         adapter = new EpisodeItemListAdapter((MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
+        chip = layout.findViewById(R.id.feed_title_chip);
 
         if (getArguments().getLong(ARG_FEED) != 0 && !FEED_TITLE.isEmpty()) {
-            chip = layout.findViewById(R.id.feed_title_chip);
             chip.setText(FEED_TITLE);
         } else {
             chip.setVisibility(View.GONE);
