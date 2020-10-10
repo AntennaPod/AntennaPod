@@ -14,11 +14,19 @@
             app:title="@string/search_label"
             android:id="@+id/toolbar"/>
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </TextView>
+    <com.google.android.material.chip.Chip
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:id="@+id/feed_title_chip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="0dp"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/name"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--    </TextView>-->
 
     <ProgressBar
             android:layout_centerInParent="true"
