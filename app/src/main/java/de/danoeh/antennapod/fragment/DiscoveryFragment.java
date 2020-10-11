@@ -211,18 +211,19 @@ public class DiscoveryFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
         } else {
             ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-            disposable = loader.loadToplist(country, 25).subscribe(podcasts -> {
-                progressBar.setVisibility(View.GONE);
-                topList = podcasts;
-                updateData(topList);
-            }, error -> {
-                Log.e(TAG, Log.getStackTraceString(error));
-                progressBar.setVisibility(View.GONE);
-                txtvError.setText(error.toString());
-                txtvError.setVisibility(View.VISIBLE);
-                butRetry.setOnClickListener(v -> loadToplist(country));
-                butRetry.setVisibility(View.VISIBLE);
-            });
+            disposable = loader.loadToplist(country, 25).subscribe(
+                    podcasts -> {
+                        progressBar.setVisibility(View.GONE);
+                        topList = podcasts;
+                        updateData(topList); },
+                    error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        progressBar.setVisibility(View.GONE);
+                        txtvError.setText(error.toString());
+                        txtvError.setVisibility(View.VISIBLE);
+                        butRetry.setOnClickListener(v -> loadToplist(country));
+                        butRetry.setVisibility(View.VISIBLE);
+                    });
         }
     }
 }
