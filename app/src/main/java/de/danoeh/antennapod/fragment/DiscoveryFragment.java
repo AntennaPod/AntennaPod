@@ -17,9 +17,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.load.engine.Resource;
+
+import org.greenrobot.eventbus.EventBus;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
+import de.danoeh.antennapod.core.event.DiscoveryDefaultUpdateEvent;
 import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import io.reactivex.disposables.Disposable;
@@ -34,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.POWER_SERVICE;
 
 /**
  * Searches iTunes store for top podcasts and displays results in a list.
@@ -90,7 +97,7 @@ public class DiscoveryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
-        countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, "US");
+        countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, Locale.getDefault().getCountry());
     }
 
     @Override
@@ -114,18 +121,22 @@ public class DiscoveryFragment extends Fragment {
             startActivity(intent);
         });
 
-        List<String> countryCodeArray = Arrays.asList(Locale.getISOCountries());
+        List<String> countryCodeArray = new ArrayList<String>(Arrays.asList(Locale.getISOCountries()));
         HashMap<String, String> countryCodeNames = new HashMap<String, String>();
-        for (String countryCode : countryCodeArray) {
-            Locale locale = new Locale("", countryCode);
+        for (String code: countryCodeArray) {
+            Locale locale = new Locale("", code);
             String countryName = locale.getDisplayCountry();
             if (countryName != null) {
-                countryCodeNames.put(countryCode, countryName);
+                countryCodeNames.put(code, countryName);
             }
         }
+        //countryCodeArray.add(0, getResources().getString(R.string.discover_hide_fake_code));
+        // countryCodeNames.put(getResources().getString(R.string.discover_hide_fake_code),
+        //                 getResources().getString(R.string.discover_hide));
 
         List<String> countryNamesSort = new ArrayList<String>(countryCodeNames.values());
         Collections.sort(countryNamesSort);
+        countryNamesSort.add(0, getResources().getString(R.string.discover_hide));
 
         Spinner countrySpinner = root.findViewById(R.id.spinner_country);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this.getContext(), 
@@ -141,10 +152,21 @@ public class DiscoveryFragment extends Fragment {
             public void onItemSelected(AdapterView<?> countrySpinner, View view, int position, long id) {
                 String countryName = (String) countrySpinner.getItemAtPosition(position);
 
-                for (Object o : countryCodeNames.keySet()) {
-                    if (countryCodeNames.get(o).equals(countryName)) {
-                        countryCode = o.toString();
-                        break;
+                if (countryName.equals(getResources().getString(R.string.discover_hide))) {
+                    countryCode = getResources().getString(R.string.discover_hide_fake_code);
+                    gridView.setVisibility(View.GONE);
+                    txtvError.setVisibility(View.VISIBLE);
+                    txtvError.setText(String.format(getResources().getString(R.string.discover_will_be_hidden),
+                            getResources().getString(R.string.discover_hide)));
+                    butRetry.setVisibility(View.GONE);
+                    txtvEmpty.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    for (Object o : countryCodeNames.keySet()) {
+                        if (countryCodeNames.get(o).equals(countryName)) {
+                            countryCode = o.toString();
+                            break;
+                        }
                     }
                 }
 
@@ -153,6 +175,12 @@ public class DiscoveryFragment extends Fragment {
                         .putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode)
                         .apply();
 
+                EventBus.getDefault().post(
+                        new DiscoveryDefaultUpdateEvent()
+                );
+                if (countryCode.equals(getResources().getString(R.string.discover_hide_fake_code))) {
+                     return;
+                }
                 loadToplist(countryCode);
             }
 
@@ -164,7 +192,12 @@ public class DiscoveryFragment extends Fragment {
         txtvError = root.findViewById(R.id.txtvError);
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
-        loadToplist(countryCode);
+
+        String fake_code = getResources().getString(R.string.discover_hide_fake_code);
+        if (! countryCode.equals(fake_code)) {
+            loadToplist(countryCode);
+        }
+
         return root;
     }
 

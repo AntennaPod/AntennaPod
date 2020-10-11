@@ -724,6 +724,9 @@
     <string name="add_podcast_by_url_hint" translatable="false">www.example.com/feed</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
     <string name="discover">Discover</string>
+    <string name="discover_hide">Hide</string>
+    <string name="discover_will_be_hidden">You selected to hide podcasts using [%s].</string>
+    <string name="discover_hide_fake_code">00</string>
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
     <string name="search_powered_by">Results by %1$s</string>

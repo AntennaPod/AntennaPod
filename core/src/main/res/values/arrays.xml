@@ -356,6 +356,6 @@
     </string-array>
 
     <string-array name="country_code">
-        <item>us</item>
+        <item>US</item>
     </string-array>
 </resources>

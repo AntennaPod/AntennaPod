@@ -50,7 +50,7 @@ public class ItunesTopListLoader {
             try {
                 feedString = getTopListFeed(client, country, limit);
             } catch (IOException e) {
-                feedString = getTopListFeed(client, "us", limit);
+                feedString = getTopListFeed(client, "US", limit);
             }
             List<PodcastSearchResult> podcasts = parseFeed(feedString);
             emitter.onSuccess(podcasts);
