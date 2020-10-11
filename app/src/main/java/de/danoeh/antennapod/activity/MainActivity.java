@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -67,6 +68,7 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
+    public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
 
     private DrawerLayout drawerLayout;
     private View navDrawer;
@@ -88,6 +90,9 @@ public class MainActivity extends CastEnabledActivity {
     public void onCreate(Bundle savedInstanceState) {
         lastTheme = UserPreferences.getNoTitleTheme();
         setTheme(lastTheme);
+        if (savedInstanceState != null) {
+            ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
+        }
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
@@ -130,6 +135,25 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior.setPeekHeight((int) getResources().getDimension(R.dimen.external_player_height));
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+    }
+
+    /**
+     * ViewCompat.generateViewId stores the current ID in a static variable.
+     * When the process is killed, the variable gets reset.
+     * This makes sure that we do not get ID collisions
+     * and therefore errors when trying to restore state from another view.
+     */
+    @SuppressWarnings("StatementWithEmptyBody")
+    private void ensureGeneratedViewIdGreaterThan(int minimum) {
+        while (ViewCompat.generateViewId() <= minimum) {
+            // Generate new IDs
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_GENERATED_VIEW_ID, ViewCompat.generateViewId());
     }
 
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
