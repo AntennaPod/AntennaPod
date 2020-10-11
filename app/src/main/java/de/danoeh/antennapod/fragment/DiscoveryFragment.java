@@ -175,9 +175,7 @@ public class DiscoveryFragment extends Fragment {
                         .putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode)
                         .apply();
 
-                EventBus.getDefault().post(
-                        new DiscoveryDefaultUpdateEvent()
-                );
+                EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
                 if (countryCode.equals(getResources().getString(R.string.discover_hide_fake_code))) {
                      return;
                 }
@@ -193,8 +191,8 @@ public class DiscoveryFragment extends Fragment {
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
 
-        String fake_code = getResources().getString(R.string.discover_hide_fake_code);
-        if (! countryCode.equals(fake_code)) {
+        String fakeCode = getResources().getString(R.string.discover_hide_fake_code);
+        if (! countryCode.equals(fakeCode)) {
             loadToplist(countryCode);
         }
 
