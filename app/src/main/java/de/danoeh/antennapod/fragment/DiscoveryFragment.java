@@ -177,7 +177,7 @@ public class DiscoveryFragment extends Fragment {
 
                 EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
                 if (countryCode.equals(getResources().getString(R.string.discover_hide_fake_code))) {
-                     return;
+                    return;
                 }
                 loadToplist(countryCode);
             }
