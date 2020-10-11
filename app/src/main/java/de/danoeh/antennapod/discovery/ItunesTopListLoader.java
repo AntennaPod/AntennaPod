@@ -31,7 +31,7 @@ public class ItunesTopListLoader {
     private final Context context;
     public static final String PREF_KEY_COUNTRY_CODE = "country_code";
     public static final String PREFS = "CountryRegionPrefs";
-
+    public static final String DISCOVER_HIDE_FAKE_COUNTRY_CODE = "00";
     public ItunesTopListLoader(Context context) {
         this.context = context;
     }

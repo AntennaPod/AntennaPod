@@ -51,7 +51,6 @@ import java.util.List;
  */
 public class SearchFragment extends Fragment {
     private static final String TAG = "SearchFragment";
-
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
 

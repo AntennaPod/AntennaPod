@@ -130,9 +130,6 @@ public class DiscoveryFragment extends Fragment {
                 countryCodeNames.put(code, countryName);
             }
         }
-        //countryCodeArray.add(0, getResources().getString(R.string.discover_hide_fake_code));
-        // countryCodeNames.put(getResources().getString(R.string.discover_hide_fake_code),
-        //                 getResources().getString(R.string.discover_hide));
 
         List<String> countryNamesSort = new ArrayList<String>(countryCodeNames.values());
         Collections.sort(countryNamesSort);
@@ -153,14 +150,7 @@ public class DiscoveryFragment extends Fragment {
                 String countryName = (String) countrySpinner.getItemAtPosition(position);
 
                 if (countryName.equals(getResources().getString(R.string.discover_hide))) {
-                    countryCode = getResources().getString(R.string.discover_hide_fake_code);
-                    gridView.setVisibility(View.GONE);
-                    txtvError.setVisibility(View.VISIBLE);
-                    txtvError.setText(String.format(getResources().getString(R.string.discover_will_be_hidden),
-                            getResources().getString(R.string.discover_hide)));
-                    butRetry.setVisibility(View.GONE);
-                    txtvEmpty.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
+                    countryCode = ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE;
                 } else {
                     for (Object o : countryCodeNames.keySet()) {
                         if (countryCodeNames.get(o).equals(countryName)) {
@@ -170,15 +160,11 @@ public class DiscoveryFragment extends Fragment {
                     }
                 }
 
-                prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
                 prefs.edit()
                         .putString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE, countryCode)
                         .apply();
 
                 EventBus.getDefault().post(new DiscoveryDefaultUpdateEvent());
-                if (countryCode.equals(getResources().getString(R.string.discover_hide_fake_code))) {
-                    return;
-                }
                 loadToplist(countryCode);
             }
 
@@ -191,11 +177,7 @@ public class DiscoveryFragment extends Fragment {
         butRetry = root.findViewById(R.id.butRetry);
         txtvEmpty = root.findViewById(android.R.id.empty);
 
-        String fakeCode = getResources().getString(R.string.discover_hide_fake_code);
-        if (! countryCode.equals(fakeCode)) {
-            loadToplist(countryCode);
-        }
-
+        loadToplist(countryCode);
         return root;
     }
 
@@ -212,18 +194,28 @@ public class DiscoveryFragment extends Fragment {
         if (disposable != null) {
             disposable.dispose();
         }
+
         gridView.setVisibility(View.GONE);
         txtvError.setVisibility(View.GONE);
         butRetry.setVisibility(View.GONE);
         txtvEmpty.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
-        ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
-        disposable = loader.loadToplist(country, 25).subscribe(podcasts -> {
+        if (country.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
+            gridView.setVisibility(View.GONE);
+            txtvError.setVisibility(View.VISIBLE);
+            txtvError.setText(String.format(getResources().getString(R.string.discover_will_be_hidden),
+                    getResources().getString(R.string.discover_hide)));
+            butRetry.setVisibility(View.GONE);
+            txtvEmpty.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
-            topList = podcasts;
-            updateData(topList);
-        }, error -> {
+        } else {
+            ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
+            disposable = loader.loadToplist(country, 25).subscribe(podcasts -> {
+                progressBar.setVisibility(View.GONE);
+                topList = podcasts;
+                updateData(topList);
+            }, error -> {
                 Log.e(TAG, Log.getStackTraceString(error));
                 progressBar.setVisibility(View.GONE);
                 txtvError.setText(error.toString());
@@ -231,5 +223,6 @@ public class DiscoveryFragment extends Fragment {
                 butRetry.setOnClickListener(v -> loadToplist(country));
                 butRetry.setVisibility(View.VISIBLE);
             });
+        }
     }
 }
