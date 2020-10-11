@@ -32,6 +32,7 @@ public class ItunesTopListLoader {
     public static final String PREF_KEY_COUNTRY_CODE = "country_code";
     public static final String PREFS = "CountryRegionPrefs";
     public static final String DISCOVER_HIDE_FAKE_COUNTRY_CODE = "00";
+    public static final String COUNTRY_CODE_UNSET = "99";
 
     public ItunesTopListLoader(Context context) {
         this.context = context;
@@ -40,19 +41,28 @@ public class ItunesTopListLoader {
     public Single<List<PodcastSearchResult>> loadToplist() {
         String defaultCountry = Locale.getDefault().getCountry();
         SharedPreferences prefs = context.getSharedPreferences(PREFS, MODE_PRIVATE);
-        String countryCode = prefs.getString(PREF_KEY_COUNTRY_CODE, defaultCountry);
+        String countryCode = prefs.getString(PREF_KEY_COUNTRY_CODE, COUNTRY_CODE_UNSET);
         return this.loadToplist(countryCode, 25);
     }
 
     public Single<List<PodcastSearchResult>> loadToplist(String country, int limit) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
-            String feedString;
-            try {
-                feedString = getTopListFeed(client, country, limit);
-            } catch (IOException e) {
-                feedString = getTopListFeed(client, "US", limit);
+            String feedString = "{}";
+            String loadCountry = country;
+            if (COUNTRY_CODE_UNSET.equals(country)) {
+                loadCountry = Locale.getDefault().getCountry();
             }
+            try {
+                feedString = getTopListFeed(client, loadCountry, limit);
+            } catch (IOException e) {
+                if (COUNTRY_CODE_UNSET.equals(country)) {
+                    feedString = getTopListFeed(client, "US", limit);
+                } else {
+                    emitter.onError(e);
+                }
+            }
+
             List<PodcastSearchResult> podcasts = parseFeed(feedString);
             emitter.onSuccess(podcasts);
         })

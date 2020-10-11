@@ -18,8 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.load.engine.Resource;
-
 import org.greenrobot.eventbus.EventBus;
 
 import de.danoeh.antennapod.R;
@@ -30,17 +28,14 @@ import de.danoeh.antennapod.discovery.ItunesTopListLoader;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
 import io.reactivex.disposables.Disposable;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.content.Context.POWER_SERVICE;
 
 /**
  * Searches iTunes store for top podcasts and displays results in a list.
@@ -204,7 +199,7 @@ public class DiscoveryFragment extends Fragment {
         if (country.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
             gridView.setVisibility(View.GONE);
             txtvError.setVisibility(View.VISIBLE);
-            txtvError.setText(String.format(getResources().getString(R.string.discover_will_be_hidden),
+            txtvError.setText(String.format(getResources().getString(R.string.discover_is_hidden),
                     getResources().getString(R.string.discover_hide)));
             butRetry.setVisibility(View.GONE);
             txtvEmpty.setVisibility(View.GONE);

@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentController;
-import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -117,7 +115,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         String countryCode = prefs.getString(ItunesTopListLoader.PREF_KEY_COUNTRY_CODE,
                 Locale.getDefault().getCountry());
         if (countryCode.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
-            errorTextView.setText(String.format(getResources().getString(R.string.discover_will_be_hidden),
+            errorTextView.setText(String.format(getResources().getString(R.string.discover_is_hidden),
                     getResources().getString(R.string.discover_hide)));
             errorView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
