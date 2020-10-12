@@ -17,6 +17,9 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.chip.Chip;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -53,6 +56,7 @@ public class SearchFragment extends Fragment {
     private static final String TAG = "SearchFragment";
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
+    private static String FEED_TITLE = "";
 
     private EpisodeItemListAdapter adapter;
     private FeedSearchResultAdapter adapterFeeds;
@@ -61,6 +65,7 @@ public class SearchFragment extends Fragment {
     private EmptyViewHandler emptyViewHandler;
     private EpisodeItemListRecyclerView recyclerView;
     private List<FeedItem> results;
+    private Chip chip;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -73,6 +78,7 @@ public class SearchFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(ARG_QUERY, query);
         args.putLong(ARG_FEED, 0);
+        args.putString(FEED_TITLE, "");
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,9 +86,10 @@ public class SearchFragment extends Fragment {
     /**
      * Create a new SearchFragment that searches one specific feed.
      */
-    public static SearchFragment newInstance(String query, long feed) {
+    public static SearchFragment newInstance(String query, long feed, String feedTitle) {
         SearchFragment fragment = newInstance(query);
         fragment.getArguments().putLong(ARG_FEED, feed);
+        FEED_TITLE = feedTitle;
         return fragment;
     }
 
@@ -133,6 +140,13 @@ public class SearchFragment extends Fragment {
         emptyViewHandler.setIcon(R.attr.action_search);
         emptyViewHandler.setTitle(R.string.search_status_no_results);
         EventBus.getDefault().register(this);
+
+        chip = layout.findViewById(R.id.feed_title_chip);
+        if ((getArguments().getLong(ARG_FEED) != 0) && !FEED_TITLE.isEmpty()) {
+            chip.setText(FEED_TITLE);
+        } else {
+            chip.setVisibility(View.GONE);
+        }
         return layout;
     }
 

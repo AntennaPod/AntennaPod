@@ -246,7 +246,7 @@ public class QueueFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         if (queue != null) {
             inflater.inflate(R.menu.queue, menu);
-            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), 0);
+            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), 0, "");
             MenuItemUtils.refreshLockItem(getActivity(), menu);
 
             // Show Lock Item only if queue is sorted manually

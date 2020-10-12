@@ -30,7 +30,7 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
         ta.recycle();
     }
 
-    public static void setupSearchItem(Menu menu, MainActivity activity, long feedId) {
+    public static void setupSearchItem(Menu menu, MainActivity activity, long feedId, String feedTitle) {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) searchItem.getActionView();
         sv.setQueryHint(activity.getString(R.string.search_label));
@@ -38,7 +38,7 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
             @Override
             public boolean onQueryTextSubmit(String s) {
                 sv.clearFocus();
-                activity.loadChildFragment(SearchFragment.newInstance(s, feedId));
+                activity.loadChildFragment(SearchFragment.newInstance(s, feedId, feedTitle));
                 searchItem.collapseActionView();
                 return true;
             }
