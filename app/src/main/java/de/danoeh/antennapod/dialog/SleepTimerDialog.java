@@ -144,6 +144,14 @@ public class SleepTimerDialog extends DialogFragment {
                 Snackbar.make(content, R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
             }
         });
+        Button stopAfterEpisodeButton = content.findViewById(R.id.setStopAfterEpisodeButton);
+        stopAfterEpisodeButton.setOnClickListener(v -> {
+            if (!PlaybackService.isRunning) {
+                Snackbar.make(content, R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+            SleepTimerPreferences.setStopAfterEpisode(controller.getMedia());
+        });
         return builder.create();
     }
 

@@ -927,6 +927,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
+            if (SleepTimerPreferences.stopAfter(PlaybackService.this.getPlayable())) {
+                stopPlaying = true;
+                disableSleepTimer();
+            }
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
     };

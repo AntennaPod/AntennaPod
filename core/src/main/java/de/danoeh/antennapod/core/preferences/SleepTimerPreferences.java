@@ -7,6 +7,8 @@ import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.util.playback.Playable;
+
 public class SleepTimerPreferences {
 
     private static final String TAG = "SleepTimerPreferences";
@@ -17,6 +19,7 @@ public class SleepTimerPreferences {
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
     private static final String PREF_AUTO_ENABLE = "AutoEnable";
+    private static final String PREF_STOP_AFTER_EPISODE = "StopAfterEpisode";
 
     private static final TimeUnit[] UNITS = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
@@ -74,6 +77,26 @@ public class SleepTimerPreferences {
 
     public static boolean autoEnable() {
         return prefs.getBoolean(PREF_AUTO_ENABLE, false);
+    }
+
+    public static void setStopAfterEpisode(Playable playable) {
+        prefs.edit().putString(PREF_STOP_AFTER_EPISODE, playable.getIdentifier().toString()).apply();
+    }
+
+    public static void clearStopAfterEpisode() {
+        prefs.edit().putString(PREF_STOP_AFTER_EPISODE, null).apply();
+    }
+
+    public static boolean stopAfter(Playable playable) {
+        boolean stopAfter = playable.getIdentifier().toString().equals(getStopAfterEpisode());
+        if (stopAfter) {
+            clearStopAfterEpisode();
+        }
+        return stopAfter;
+    }
+
+    private static String getStopAfterEpisode() {
+        return prefs.getString(PREF_STOP_AFTER_EPISODE, null);
     }
 
 }
