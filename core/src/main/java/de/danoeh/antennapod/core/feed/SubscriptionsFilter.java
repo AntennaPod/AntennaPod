@@ -51,7 +51,7 @@ public class SubscriptionsFilter {
         }
     }
 
-    public boolean areSubscriptionsFiltered() {
+    public boolean isEnabled() {
         return properties.length > 0;
     }
 
