@@ -31,7 +31,7 @@
             android:layout_gravity="center"/>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@id/toolbar"
+            android:layout_below="@id/feed_title_chip"
             android:id="@+id/recyclerViewFeeds"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
