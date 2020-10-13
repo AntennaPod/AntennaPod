@@ -259,7 +259,6 @@ public class HttpDownloader extends Downloader {
             onFail(DownloadError.ERROR_CONNECTION_ERROR, request.getSource());
         } finally {
             IOUtils.closeQuietly(out);
-            AntennapodHttpClient.cleanup();
             IOUtils.closeQuietly(responseBody);
         }
     }
