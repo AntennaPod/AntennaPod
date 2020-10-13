@@ -130,7 +130,7 @@ public abstract class EpisodesListFragment extends Fragment {
         }
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.episodes, menu);
-        MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), 0);
+        MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), 0, "");
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 

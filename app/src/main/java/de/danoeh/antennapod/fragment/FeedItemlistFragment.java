@@ -252,7 +252,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         optionsMenu = menu;
         FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
         iconTintManager.updateTint();
-        MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID);
+        if (feed != null) {
+            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID, feed.getTitle());
+        } else {
+            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID, "");
+        }
         if (feed == null || feed.getLink() == null) {
             menu.findItem(R.id.share_link_item).setVisible(false);
             menu.findItem(R.id.visit_website_item).setVisible(false);
