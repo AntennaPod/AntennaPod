@@ -1,0 +1,31 @@
+AntennaPod é um gestor de podcasts que lhe permite aceder a milhões de podcasts, gratuitos ou pagos,  sejam eles publicadores independentes ou grandes cadeias tais como as estações BBC, NPR e CNN. A adição de fontes é muito fácil através do serviço iTunes, ficheiros OPML e fontes RSS. 
+Pode descarregar, emitir ou colocar episódios na fila de reprodução ao seu gosto, pode utilizar velocidades variáveis de reprodução, tem suporte a capítulos e um temporizador. 
+Poupe tempo, economize bateria e dados móveis através dos mecanismos de controlo de descargas de episódios (possibilidade de especificar intervalos ou horas para as descargas e redes Wi-Fi) e de eliminação de episódios (de acordo com as suas preferências).
+
+Criado por entusiastas de podcasts, AntennaPod é livre em todos os sentidos da palavra: open source, gratuito e sem publicidade.
+
+<b>Importação, organização e reprodução</b>
+•  Gestão de podcasts através do widget, barra de notificações e controlos de auriculares ou bluetooth
+•  Adicione e importe fontes existentes nos diretórios iTunes e gPodder.net, ficheiros OPML e ligações ATOM e RSS
+• Velocidade variável de reprodução, suporte a capítulos, memorização da posição de reprodução e um temporizador avançado (agite para repor, baixar e aumentar o volume)
+•  Acesso a fontes e episódios protegidos por palavra-passe
+
+<b>Monitorizar, partilhar e apreciar</b>
+•  Monitorize os seus episódio preferidos marcando-os como favoritos
+• Localize um episódio no histórico de reprodução ou através de uma pesquisa por título ou notas
+• Partilhe episódios e fontes nas redes sociais, por e-mail, no diretório gPodder.net ou através de ficheiros OPML
+
+<b>Controlo de sistema</b>
+• Controle todas as descargas automáticas: escolha as fontes, exclua redes móveis, especifique as redes Wi-Fi, indique se o telefone deve estar a ser carregado e defina as horas ou intervalos das descargas
+• Gestão do armazenamento através da cache de episódios, da eliminação inteligente e selecionando a localização dos dados
+• Adapte-se ao seu ambiente através dos temas claro ou escuro
+•  Guarde as suas subscrições com a integração gPodder.net ou através da exportação OPML
+
+<b>Integrar a comunidade AntennaPod!</b>
+O AntennaPod é desenvolvido por voluntários. Você também pode contribuir na programação ou reportando os erros encontrados!
+
+Os membros do nosso fórum podem ajudar-vos em relação às vossas dúvidas. Sinta-se à vontade para propor funcionalidades ou simplesmente falar connosco.
+https://forum.antennapod.org/
+
+Transifex é o local certo para ajudar a traduzir a aplicação:
+https://www.transifex.com/antennapod/antennapod
