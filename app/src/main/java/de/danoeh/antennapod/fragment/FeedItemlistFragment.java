@@ -247,7 +247,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!super.onOptionsItemSelected(item)) {
+        if (item.getItemId() == R.id.action_search) {
+            item.getActionView().post(() -> iconTintManager.updateTint());
+        }
+        if (super.onOptionsItemSelected(item)) {
+            return true;
+        } else {
             if (feed == null) {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                         R.string.please_wait_for_data, Toast.LENGTH_LONG);
@@ -298,8 +303,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
                 return true;
             }
-        } else {
-            return true;
         }
     }
 
