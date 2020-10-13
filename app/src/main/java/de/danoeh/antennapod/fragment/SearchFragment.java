@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment {
     private static final String TAG = "SearchFragment";
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
-    private static String FEED_TITLE = "";
+    private static final String ARG_FEED_NAME = "feedName";
 
     private EpisodeItemListAdapter adapter;
     private FeedSearchResultAdapter adapterFeeds;
@@ -78,7 +78,6 @@ public class SearchFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString(ARG_QUERY, query);
         args.putLong(ARG_FEED, 0);
-        args.putString(FEED_TITLE, "");
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,7 +88,7 @@ public class SearchFragment extends Fragment {
     public static SearchFragment newInstance(String query, long feed, String feedTitle) {
         SearchFragment fragment = newInstance(query);
         fragment.getArguments().putLong(ARG_FEED, feed);
-        FEED_TITLE = feedTitle;
+        fragment.getArguments().putString(ARG_FEED_NAME, feedTitle);
         return fragment;
     }
 
@@ -142,11 +141,10 @@ public class SearchFragment extends Fragment {
         EventBus.getDefault().register(this);
 
         chip = layout.findViewById(R.id.feed_title_chip);
-        if ((getArguments().getLong(ARG_FEED) != 0) && !FEED_TITLE.isEmpty()) {
-            chip.setText(FEED_TITLE);
-        } else {
-            chip.setVisibility(View.GONE);
-        }
+        chip.setOnCloseIconClickListener(v -> {
+            getArguments().putLong(ARG_FEED, 0);
+            search();
+        });
         return layout;
     }
 
@@ -276,8 +274,10 @@ public class SearchFragment extends Fragment {
                     adapter.updateItems(results.first);
                     if (getArguments().getLong(ARG_FEED, 0) == 0) {
                         adapterFeeds.updateData(results.second);
+                        chip.setVisibility(View.GONE);
                     } else {
                         adapterFeeds.updateData(Collections.emptyList());
+                        chip.setText(getArguments().getString(ARG_FEED_NAME, ""));
                     }
                     String query = getArguments().getString(ARG_QUERY);
                     emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));

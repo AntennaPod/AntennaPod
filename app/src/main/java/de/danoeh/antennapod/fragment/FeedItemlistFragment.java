@@ -254,6 +254,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         iconTintManager.updateTint();
         if (feed != null) {
             MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID, feed.getTitle());
+        } else {
+            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID, "");
         }
         if (feed == null || feed.getLink() == null) {
             menu.findItem(R.id.share_link_item).setVisible(false);
