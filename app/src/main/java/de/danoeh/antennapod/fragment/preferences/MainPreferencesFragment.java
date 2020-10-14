@@ -26,7 +26,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_CATEGORY_PROJECT = "project";
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
-    private static final String PREF_NOTIFICATION = "notification";
+    private static final String PREF_NOTIFICATION = "notifications";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -70,7 +70,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(PREF_NOTIFICATION).setOnPreferenceClickListener(preference -> {
-            ((PreferenceActivity)getActivity()).openScreen(R.xml.preferences_notification);
+            ((PreferenceActivity)getActivity()).openScreen(R.xml.preferences_notifications);
             return true;
         });
 
@@ -126,7 +126,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_autodownload));
         config.index(R.xml.preferences_gpodder)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_gpodder));
-        config.index(R.xml.preferences_notification)
-                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_notification));
+        config.index(R.xml.preferences_notifications)
+                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_notifications));
     }
 }

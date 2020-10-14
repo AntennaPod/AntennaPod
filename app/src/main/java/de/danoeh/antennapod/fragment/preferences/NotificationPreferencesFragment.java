@@ -13,7 +13,7 @@ public class NotificationPreferencesFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.preferences_notification);
+        addPreferencesFromResource(R.xml.preferences_notifications);
         setUpScreen();
     }
 
