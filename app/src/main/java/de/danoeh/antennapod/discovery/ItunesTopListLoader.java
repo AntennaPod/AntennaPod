@@ -48,7 +48,7 @@ public class ItunesTopListLoader {
     public Single<List<PodcastSearchResult>> loadToplist(String country, int limit) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
-            String feedString ;
+            String feedString;
             String loadCountry = country;
             if (COUNTRY_CODE_UNSET.equals(country)) {
                 loadCountry = Locale.getDefault().getCountry();
