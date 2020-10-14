@@ -491,21 +491,46 @@ public class VideoplayerActivity extends MediaplayerActivity {
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         switch (keyCode) {
-            case KeyEvent.KEYCODE_ENTER: //Fallthrough
+            case KeyEvent.KEYCODE_P: //Fallthrough
             case KeyEvent.KEYCODE_SPACE:
                 //Play/Pause
                 onPlayPause();
                 toggleVideoControlsVisibility();
                 return true;
-            case KeyEvent.KEYCODE_DPAD_LEFT:
+            case KeyEvent.KEYCODE_J: //Fallthrough
+            case KeyEvent.KEYCODE_A:
+            case KeyEvent.KEYCODE_COMMA:
                 //Go Back
                 onRewind();
                 showSkipAnimation(false);
                 return true;
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
+            case KeyEvent.KEYCODE_K: //Fallthrough
+            case KeyEvent.KEYCODE_D:
+            case KeyEvent.KEYCODE_PERIOD:
                 //Go Forward
                 onFastForward();
                 showSkipAnimation(true);
+                return true;
+            case KeyEvent.KEYCODE_F:
+            case KeyEvent.KEYCODE_ESCAPE:
+                //Exit fullscreen mode
+                onBackPressed();
+                return true;
+            case KeyEvent.KEYCODE_I:
+                //Toggle picture-in-picture mode
+                compatEnterPictureInPicture();
+                return true;
+            case KeyEvent.KEYCODE_PLUS: //Fallthrough
+            case KeyEvent.KEYCODE_W:
+                //Raise volume
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_MINUS: //Fallthrough
+            case KeyEvent.KEYCODE_S:
+                //Raise volume
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
                 return true;
             case KeyEvent.KEYCODE_M:
                 //Mute/Unmute
@@ -514,25 +539,6 @@ public class VideoplayerActivity extends MediaplayerActivity {
                     return true;
                 }
                 break;
-            case KeyEvent.KEYCODE_DPAD_UP:
-                //Raise volume
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                        AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
-                return true;
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                //Raise volume
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                        AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
-                return true;
-            case KeyEvent.KEYCODE_ESCAPE:
-            case KeyEvent.KEYCODE_F:
-                //Exit fullscreen mode
-                onBackPressed();
-                return true;
-            case KeyEvent.KEYCODE_P:
-                //Toggle picture-in-picture mode
-                compatEnterPictureInPicture();
-                return true;
         }
 
         //Go to x% of video:
