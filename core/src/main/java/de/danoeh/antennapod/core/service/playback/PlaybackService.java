@@ -84,6 +84,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -315,7 +316,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
             }
             emitter.onSuccess(queueItems);
-        }).subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(queueItems -> mediaSession.setQueue(queueItems), Throwable::printStackTrace);
 
         flavorHelper.initializeMediaPlayer(PlaybackService.this);
         mediaSession.setActive(true);
