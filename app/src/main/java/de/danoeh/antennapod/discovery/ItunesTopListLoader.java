@@ -48,7 +48,7 @@ public class ItunesTopListLoader {
     public Single<List<PodcastSearchResult>> loadToplist(String country, int limit) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
-            String feedString = "{}";
+            String feedString ;
             String loadCountry = country;
             if (COUNTRY_CODE_UNSET.equals(country)) {
                 loadCountry = Locale.getDefault().getCountry();
@@ -81,6 +81,9 @@ public class ItunesTopListLoader {
         try (Response response = client.newCall(httpReq.build()).execute()) {
             if (response.isSuccessful()) {
                 return response.body().string();
+            }
+            if (response.code() == 400) {
+                throw new IOException("iTunes does not have data for the selected country.");
             }
             String prefix = context.getString(R.string.error_msg_prefix);
             throw new IOException(prefix + response);
