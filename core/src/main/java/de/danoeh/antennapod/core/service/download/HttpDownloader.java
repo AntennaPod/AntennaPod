@@ -71,6 +71,7 @@ public class HttpDownloader extends Downloader {
                 // set header explicitly so that okhttp doesn't do transparent gzip
                 Log.d(TAG, "addHeader(\"Accept-Encoding\", \"identity\")");
                 httpReq.addHeader("Accept-Encoding", "identity");
+                httpReq.cacheControl(new CacheControl.Builder().noCache().build()); // noStore breaks CDNs
             }
 
             if (!TextUtils.isEmpty(request.getLastModified())) {
