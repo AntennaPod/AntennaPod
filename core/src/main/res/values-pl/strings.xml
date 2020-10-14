@@ -323,7 +323,7 @@
   <!--Empty list labels-->
   <string name="no_items_header_label">Brak odcinków w kolejce</string>
   <string name="no_items_label">Dodaj odcinek, pobierając go, lub przytrzymaj dłużej na odcinku i wybierz \"Dodaj do kolejki\".</string>
-  <string name="no_shownotes_label">Ten epizod nie ma notatek.</string>
+  <string name="no_shownotes_label">Ten odcinek nie ma notatek.</string>
   <string name="no_run_downloads_head_label">Brak aktywnych pobierań</string>
   <string name="no_run_downloads_label">Możesz pobrać odcinki z ekranu informacji o podcaście</string>
   <string name="no_comp_downloads_head_label">Brak pobranych odcinków</string>
@@ -528,8 +528,10 @@
   <!--About screen-->
   <string name="about_pref">O...</string>
   <string name="antennapod_version">Wersja AntennaPod</string>
+  <string name="contributors">Kontrybutorzy</string>
   <string name="developers">Twórcy</string>
   <string name="translators">Tłumacze</string>
+  <string name="special_thanks">Specjalne podziękowania</string>
   <string name="privacy_policy">Polityka prywatności</string>
   <string name="licenses">Licencje</string>
   <string name="licenses_summary">AntennaPod używa różnego świetnego oprogramowania/bibliotek</string>
@@ -573,6 +575,8 @@
   <string name="import_select_file">Wybierz plik do Importowania</string>
   <string name="import_ok">Import zakończony powodzeniem.\n\nNaciśnij OK aby zrestartować AntennaPod</string>
   <string name="import_no_downgrade">Baza danych została eksportowana z nowszej wersji AntennaPod. Twoja wersja nie potrafi obsłużyć tego pliku. </string>
+  <string name="favorites_export_label">Eksport ulubionych</string>
+  <string name="favorites_export_summary">Ulubione wyeksportowano do pliku</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ustaw czas do wyłączenia</string>
   <string name="disable_sleeptimer_label">Wyłącz wyłącznik czasowy</string>
