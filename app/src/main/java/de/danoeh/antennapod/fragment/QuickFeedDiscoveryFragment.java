@@ -109,6 +109,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         progressBar.setVisibility(View.VISIBLE);
         discoverGridLayout.setVisibility(View.INVISIBLE);
         errorView.setVisibility(View.GONE);
+        errorRetry.setVisibility(View.INVISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
@@ -129,13 +130,20 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
                     errorView.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     discoverGridLayout.setVisibility(View.VISIBLE);
-                    adapter.updateData(podcasts);
+                    if (podcasts.size() == 0) {
+                        errorTextView.setText(getResources().getText(R.string.search_status_no_results));
+                        errorView.setVisibility(View.VISIBLE);
+                        discoverGridLayout.setVisibility(View.INVISIBLE);
+                    } else {
+                        adapter.updateData(podcasts);
+                    }
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
                     errorTextView.setText(error.getLocalizedMessage());
                     errorView.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
                     discoverGridLayout.setVisibility(View.INVISIBLE);
+                    errorRetry.setVisibility(View.VISIBLE);
                 });
     }
 

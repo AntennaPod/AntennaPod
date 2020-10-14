@@ -60,6 +60,7 @@ public class ItunesTopListLoader {
                     feedString = getTopListFeed(client, "US", limit);
                 } else {
                     emitter.onError(e);
+                    return;
                 }
             }
 
@@ -88,8 +89,14 @@ public class ItunesTopListLoader {
 
     private List<PodcastSearchResult> parseFeed(String jsonString) throws JSONException {
         JSONObject result = new JSONObject(jsonString);
-        JSONObject feed = result.getJSONObject("feed");
-        JSONArray entries = feed.getJSONArray("entry");
+        JSONObject feed;
+        JSONArray entries;
+        try {
+            feed = result.getJSONObject("feed");
+            entries = feed.getJSONArray("entry");
+        } catch (JSONException e) {
+            return new ArrayList<>();
+        }
 
         List<PodcastSearchResult> results = new ArrayList<>();
         for (int i = 0; i < entries.length(); i++) {
