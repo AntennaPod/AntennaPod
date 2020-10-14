@@ -126,25 +126,26 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         }
 
         disposable = loader.loadToplist(countryCode, NUM_SUGGESTIONS)
-                .subscribe(podcasts -> {
-                    errorView.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
-                    discoverGridLayout.setVisibility(View.VISIBLE);
-                    if (podcasts.size() == 0) {
-                        errorTextView.setText(getResources().getText(R.string.search_status_no_results));
-                        errorView.setVisibility(View.VISIBLE);
-                        discoverGridLayout.setVisibility(View.INVISIBLE);
-                    } else {
-                        adapter.updateData(podcasts);
-                    }
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                    errorTextView.setText(error.getLocalizedMessage());
-                    errorView.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                    discoverGridLayout.setVisibility(View.INVISIBLE);
-                    errorRetry.setVisibility(View.VISIBLE);
-                });
+                .subscribe(
+                        podcasts -> {
+                            errorView.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
+                            discoverGridLayout.setVisibility(View.VISIBLE);
+                            if (podcasts.size() == 0) {
+                                errorTextView.setText(getResources().getText(R.string.search_status_no_results));
+                                errorView.setVisibility(View.VISIBLE);
+                                discoverGridLayout.setVisibility(View.INVISIBLE);
+                            } else {
+                                adapter.updateData(podcasts);
+                            }
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                            errorTextView.setText(error.getLocalizedMessage());
+                            errorView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            discoverGridLayout.setVisibility(View.INVISIBLE);
+                            errorRetry.setVisibility(View.VISIBLE);
+                        });
     }
 
     @Override
