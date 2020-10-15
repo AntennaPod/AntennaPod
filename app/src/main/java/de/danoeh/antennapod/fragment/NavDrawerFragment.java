@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -72,6 +74,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     private int position = -1;
     private NavListAdapter navAdapter;
     private Disposable disposable;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -91,6 +94,9 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 startActivity(new Intent(getActivity(), PreferenceActivity.class)));
         getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .registerOnSharedPreferenceChangeListener(this);
+
+        progressBar = root.findViewById(R.id.progressBar);
+        progressBar.bringToFront();
         return root;
     }
 
@@ -354,6 +360,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     };
 
     private void loadData() {
+        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -361,6 +368,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     navDrawerData = result;
                     updateSelection(); // Selected item might be a feed
                     navAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 

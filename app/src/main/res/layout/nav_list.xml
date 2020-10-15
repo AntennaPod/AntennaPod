@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
 
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerVertical="true" />
+
     <LinearLayout
         android:id="@+id/nav_settings"
         android:layout_width="match_parent"
@@ -62,6 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/divider"
+        android:layout_below="@+id/progressBar"
         android:choiceMode="singleChoice"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
