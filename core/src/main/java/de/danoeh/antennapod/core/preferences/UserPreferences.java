@@ -25,7 +25,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -1060,22 +1059,28 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static Calendar getUsageCountingDate() {
+    public static long getUsageCountingMillis() {
+        return prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
+    }
+
+    public static void checkUsageCounting() {
         long installDateMillis = prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
         if (installDateMillis < 0) {
-            installDateMillis = getInstallationDate();
-            setUsageCountingDate(installDateMillis);
+            //App upgrade or new installation
+            long installDate = TimeUnit.MILLISECONDS.toDays(getInstallationDate());
+            long currentDate = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis());
+            if (installDate == currentDate) {
+                //New installation
+                resetUsageCounting();
+            }
         }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(installDateMillis);
-        return calendar;
     }
 
-    public static void resetUsageCountingDate() {
-        setUsageCountingDate(Calendar.getInstance().getTimeInMillis());
+    public static void resetUsageCounting() {
+        setUsageCountingMillis(Calendar.getInstance().getTimeInMillis());
     }
 
-    private static void setUsageCountingDate(long value) {
+    private static void setUsageCountingMillis(long value) {
         prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
     }
 

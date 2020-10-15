@@ -19,8 +19,8 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    int getHeaderCaptionResourceId() {
-        return R.string.total_size_downloaded_podcasts;
+    String getHeaderCaption() {
+        return context.getString(R.string.total_size_downloaded_podcasts);
     }
 
     @Override

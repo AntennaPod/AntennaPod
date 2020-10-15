@@ -5,16 +5,6 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <TextView
-            android:id="@+id/txtv_counting_since"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="top"
-            android:visibility="gone"
-            android:textAppearance="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-            android:layout_marginTop="8dp"/>
-
     <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

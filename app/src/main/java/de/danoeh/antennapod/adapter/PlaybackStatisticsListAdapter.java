@@ -4,10 +4,13 @@ import android.content.Context;
 import androidx.appcompat.app.AlertDialog;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.view.PieChartView;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,8 +29,15 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    int getHeaderCaptionResourceId() {
-        return R.string.total_time_listened_to_podcasts;
+    String getHeaderCaption() {
+        long usageCounting = UserPreferences.getUsageCountingMillis();
+        if (usageCounting > 0) {
+            DateFormat dateFormat = android.text.format.DateFormat.getLongDateFormat(context);
+            String date = dateFormat.format(new Date(usageCounting));
+            return context.getString(R.string.statistics_counting_since, date);
+        } else {
+            return context.getString(R.string.total_time_listened_to_podcasts);
+        }
     }
 
     @Override

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,11 +36,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Displays the 'playback statistics' screen
@@ -55,7 +51,6 @@ public class PlaybackStatisticsFragment extends Fragment {
     private RecyclerView feedStatisticsList;
     private ProgressBar progressBar;
     private PlaybackStatisticsListAdapter listAdapter;
-    private TextView countingSince;
     private boolean countAll = false;
     private SharedPreferences prefs;
 
@@ -78,11 +73,6 @@ public class PlaybackStatisticsFragment extends Fragment {
         listAdapter.setCountAll(countAll);
         feedStatisticsList.setLayoutManager(new LinearLayoutManager(getContext()));
         feedStatisticsList.setAdapter(listAdapter);
-        countingSince = root.findViewById(R.id.txtv_counting_since);
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        String date = format.format(new Date(UserPreferences.getUsageCountingDate().getTimeInMillis()));
-        countingSince.setText(getString(R.string.statistics_counting_since, date));
-        countingSince.setVisibility(View.VISIBLE);
         return root;
     }
 
@@ -167,10 +157,8 @@ public class PlaybackStatisticsFragment extends Fragment {
             disposable.dispose();
         }
 
-        UserPreferences.resetUsageCountingDate();
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        String date = format.format(new Date(UserPreferences.getUsageCountingDate().getTimeInMillis()));
-        countingSince.setText(getString(R.string.statistics_counting_since, date));
+        UserPreferences.resetUsageCounting();
+
         disposable = Completable.fromFuture(DBWriter.resetStatistics())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
