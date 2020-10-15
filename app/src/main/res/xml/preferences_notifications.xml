@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreferenceCompat
-        android:defaultValue="true"
-        android:enabled="true"
-        android:key="prefShowDownloadReport"
-        android:summary="@string/pref_showDownloadReport_sum"
-        android:title="@string/pref_showDownloadReport_title" />
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefShowDownloadReport"
+            android:summary="@string/pref_showDownloadReport_sum"
+            android:title="@string/pref_showDownloadReport_title" />
     <SwitchPreferenceCompat
-        android:defaultValue="false"
-        android:enabled="true"
-        android:key="prefShowAutoDownloadReport"
-        android:summary="@string/pref_showAutoDownloadReport_sum"
-        android:title="@string/pref_showAutoDownloadReport_title" />
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefShowAutoDownloadReport"
+            android:summary="@string/pref_showAutoDownloadReport_sum"
+            android:title="@string/pref_showAutoDownloadReport_title" />
     <SwitchPreferenceCompat
-        android:defaultValue="true"
-        android:key="pref_gpodnet_notifications"
-        android:summary="@string/pref_gpodnet_notifications_sum"
-        android:title="@string/pref_gpodnet_notifications_title" />
+            android:defaultValue="true"
+            android:key="pref_gpodnet_notifications"
+            android:summary="@string/pref_gpodnet_notifications_sum"
+            android:title="@string/pref_gpodnet_notifications_title" />
 </PreferenceScreen>
