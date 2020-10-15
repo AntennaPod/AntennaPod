@@ -362,15 +362,16 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    navDrawerData = result;
-                    updateSelection(); // Selected item might be a feed
-                    navAdapter.notifyDataSetChanged();
-                    progressBar.setVisibility(View.GONE);
-                }, error -> {
-                    Log.e(TAG, Log.getStackTraceString(error));
-                    progressBar.setVisibility(View.GONE);
-                });
+                .subscribe(
+                        result -> {
+                            navDrawerData = result;
+                            updateSelection(); // Selected item might be a feed
+                            navAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                            progressBar.setVisibility(View.GONE);
+                        });
     }
 
     @Override
