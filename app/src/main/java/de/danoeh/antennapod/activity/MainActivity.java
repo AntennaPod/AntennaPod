@@ -555,7 +555,7 @@ public class MainActivity extends CastEnabledActivity {
             case KeyEvent.KEYCODE_M:
                 //Mute/Unmute
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, 0);
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                     return true;
                 }
                 break;
