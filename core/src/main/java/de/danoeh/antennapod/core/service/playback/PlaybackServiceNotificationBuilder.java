@@ -139,6 +139,7 @@ public class PlaybackServiceNotificationBuilder {
         notification.setSmallIcon(R.drawable.ic_notification);
         notification.setOngoing(false);
         notification.setOnlyAlertOnce(true);
+        notification.setShowWhen(false);
         notification.setPriority(UserPreferences.getNotifyPriority());
         notification.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         notification.setColor(NotificationCompat.COLOR_DEFAULT);
