@@ -151,6 +151,7 @@ public class SleepTimerDialog extends DialogFragment {
                 return;
             }
             SleepTimerPreferences.setStopAfterEpisode(controller.getMedia());
+            dismiss();
         });
         return builder.create();
     }

@@ -40,6 +40,7 @@ public class SleepTimerPreferences {
 
     public static void setLastTimer(String value, int timeUnit) {
         prefs.edit().putString(PREF_VALUE, value).putInt(PREF_TIME_UNIT, timeUnit).apply();
+        clearStopAfterEpisode();
     }
 
     public static String lastTimerValue() {
@@ -83,7 +84,7 @@ public class SleepTimerPreferences {
         prefs.edit().putString(PREF_STOP_AFTER_EPISODE, playable.getIdentifier().toString()).apply();
     }
 
-    public static void clearStopAfterEpisode() {
+    private static void clearStopAfterEpisode() {
         prefs.edit().putString(PREF_STOP_AFTER_EPISODE, null).apply();
     }
 
