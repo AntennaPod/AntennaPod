@@ -39,4 +39,5 @@
     <dimen name="media_router_controller_bottom_margin">8dp</dimen>
 
     <dimen name="nav_drawer_max_screen_size">480dp</dimen>
+
 </resources>
