@@ -493,47 +493,40 @@ public class VideoplayerActivity extends MediaplayerActivity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_P: //Fallthrough
             case KeyEvent.KEYCODE_SPACE:
-                //Play/Pause
                 onPlayPause();
                 toggleVideoControlsVisibility();
                 return true;
             case KeyEvent.KEYCODE_J: //Fallthrough
             case KeyEvent.KEYCODE_A:
             case KeyEvent.KEYCODE_COMMA:
-                //Go Back
                 onRewind();
                 showSkipAnimation(false);
                 return true;
             case KeyEvent.KEYCODE_K: //Fallthrough
             case KeyEvent.KEYCODE_D:
             case KeyEvent.KEYCODE_PERIOD:
-                //Go Forward
                 onFastForward();
                 showSkipAnimation(true);
                 return true;
-            case KeyEvent.KEYCODE_F:
+            case KeyEvent.KEYCODE_F: //Fallthrough
             case KeyEvent.KEYCODE_ESCAPE:
                 //Exit fullscreen mode
                 onBackPressed();
                 return true;
             case KeyEvent.KEYCODE_I:
-                //Toggle picture-in-picture mode
                 compatEnterPictureInPicture();
                 return true;
             case KeyEvent.KEYCODE_PLUS: //Fallthrough
             case KeyEvent.KEYCODE_W:
-                //Raise volume
                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                         AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
                 return true;
             case KeyEvent.KEYCODE_MINUS: //Fallthrough
             case KeyEvent.KEYCODE_S:
-                //Raise volume
                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                         AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
                 return true;
             case KeyEvent.KEYCODE_M:
-                //Mute/Unmute
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                     return true;

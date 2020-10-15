@@ -525,35 +525,29 @@ public class MainActivity extends CastEnabledActivity {
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_P:
-                //Play/Pause
                 customKeyCode = KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE;
                 break;
             case KeyEvent.KEYCODE_J: //Fallthrough
             case KeyEvent.KEYCODE_A:
             case KeyEvent.KEYCODE_COMMA:
-                //Go Back
                 customKeyCode = KeyEvent.KEYCODE_MEDIA_REWIND;
                 break;
             case KeyEvent.KEYCODE_K: //Fallthrough
             case KeyEvent.KEYCODE_D:
             case KeyEvent.KEYCODE_PERIOD:
-                //Go Forward
                 customKeyCode = KeyEvent.KEYCODE_MEDIA_FAST_FORWARD;
                 break;
             case KeyEvent.KEYCODE_PLUS: //Fallthrough
             case KeyEvent.KEYCODE_W:
-                //Raise volume
                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                         AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
                 return true;
             case KeyEvent.KEYCODE_MINUS: //Fallthrough
             case KeyEvent.KEYCODE_S:
-                //Raise volume
                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                         AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
                 return true;
             case KeyEvent.KEYCODE_M:
-                //Mute/Unmute
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                     return true;
