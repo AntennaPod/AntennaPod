@@ -71,7 +71,7 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             prefFragment = new GpodderPreferencesFragment();
         } else if (screen == R.xml.preferences_playback) {
             prefFragment = new PlaybackPreferencesFragment();
-        } else if (screen == R.xml.preferences_notifications ) {
+        } else if (screen == R.xml.preferences_notifications) {
             prefFragment = new NotificationPreferencesFragment();
         }
         return prefFragment;

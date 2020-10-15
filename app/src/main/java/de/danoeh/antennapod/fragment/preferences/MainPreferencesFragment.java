@@ -70,7 +70,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(PREF_NOTIFICATION).setOnPreferenceClickListener(preference -> {
-            ((PreferenceActivity)getActivity()).openScreen(R.xml.preferences_notifications);
+            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
             return true;
         });
 
