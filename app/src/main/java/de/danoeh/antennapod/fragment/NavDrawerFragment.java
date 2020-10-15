@@ -82,6 +82,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.nav_list, container, false);
 
+        progressBar = root.findViewById(R.id.progressBar);
         ListView navList = root.findViewById(R.id.nav_list);
         navAdapter = new NavListAdapter(itemAccess, getActivity());
         navList.setAdapter(navAdapter);
@@ -94,9 +95,6 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 startActivity(new Intent(getActivity(), PreferenceActivity.class)));
         getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .registerOnSharedPreferenceChangeListener(this);
-
-        progressBar = root.findViewById(R.id.progressBar);
-        progressBar.bringToFront();
         return root;
     }
 
@@ -369,7 +367,10 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     updateSelection(); // Selected item might be a feed
                     navAdapter.notifyDataSetChanged();
                     progressBar.setVisibility(View.GONE);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                    progressBar.setVisibility(View.GONE);
+                });
     }
 
     @Override
