@@ -207,11 +207,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void showDatabaseImportSuccessDialog() {
-        AlertDialog.Builder d = new AlertDialog.Builder(getContext());
-        d.setMessage(R.string.import_ok);
-        d.setCancelable(false);
-        d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart());
-        d.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.successful_import_label);
+        builder.setMessage(R.string.import_ok);
+        builder.setCancelable(false);
+        builder.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart());
+        builder.show();
     }
 
     private void showExportSuccessDialog(final String path, final Uri streamUri) {
