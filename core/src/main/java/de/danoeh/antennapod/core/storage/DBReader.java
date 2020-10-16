@@ -19,6 +19,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
@@ -795,6 +796,7 @@ public final class DBReader {
         Log.d(TAG, "getNavDrawerData() called with: " + "");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
+
         List<Feed> feeds = getFeedList(adapter);
         long[] feedIds = new long[feeds.size()];
         for (int i = 0; i < feeds.size(); i++) {
@@ -802,15 +804,8 @@ public final class DBReader {
         }
         final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
 
-        int feedFilter = UserPreferences.getFeedFilter();
-        if (feedFilter == UserPreferences.FEED_FILTER_COUNTER_ZERO) {
-            for (int i = feeds.size() - 1; i >= 0; i--) {
-                if (feedCounters.get(feeds.get(i).getId()) <= 0) {
-                    feedCounters.delete(feeds.get(i).getId());
-                    feeds.remove(i);
-                }
-            }
-        }
+        SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
+        feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();

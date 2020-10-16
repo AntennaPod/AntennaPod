@@ -49,7 +49,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.dialog.FeedFilterDialog;
+import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -106,7 +106,7 @@ public class SubscriptionFragment extends Fragment {
         progressBar = root.findViewById(R.id.progLoading);
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
-        feedsFilteredMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
+        feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
 
         SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(() -> {
@@ -141,7 +141,7 @@ public class SubscriptionFragment extends Fragment {
                 AutoUpdateManager.runImmediate(requireContext());
                 return true;
             case R.id.subscriptions_filter:
-                FeedFilterDialog.showDialog(requireContext());
+                SubscriptionsFilterDialog.showDialog(requireContext());
                 return true;
             case R.id.subscriptions_sort:
                 FeedSortDialog.showDialog(requireContext());
@@ -225,7 +225,7 @@ public class SubscriptionFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
-        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
+        if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
             feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(feedsFilteredMsg);
             feedsFilteredMsg.setVisibility(View.VISIBLE);
