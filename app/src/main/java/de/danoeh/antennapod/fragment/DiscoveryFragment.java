@@ -199,8 +199,7 @@ public class DiscoveryFragment extends Fragment {
         if (country.equals(ItunesTopListLoader.DISCOVER_HIDE_FAKE_COUNTRY_CODE)) {
             gridView.setVisibility(View.GONE);
             txtvError.setVisibility(View.VISIBLE);
-            txtvError.setText(String.format(getResources().getString(R.string.discover_is_hidden),
-                    getResources().getString(R.string.discover_hide)));
+            txtvError.setText(getResources().getString(R.string.discover_is_hidden));
             butRetry.setVisibility(View.GONE);
             txtvEmpty.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
