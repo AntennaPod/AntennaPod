@@ -16,7 +16,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assemblePlayDebugAndroidTest
     - name: Android Emulator test
-      uses: ReactiveCircus/android-emulator-runner@v2.2.0
+      uses: ReactiveCircus/android-emulator-runner@v2
       with:
         api-level: 28
         disable-animations: true
