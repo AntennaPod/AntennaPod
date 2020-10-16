@@ -16,6 +16,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +60,11 @@ public class FeedUpdateWorker extends Worker {
                 FeedPreferences prefs = feed.getPreferences();
                 if (prefs.getKeepUpdated() && prefs.getShowNotification()) {
                     List<FeedItem> outdatedFeedItems = DBReader.getFeedItemList(feed);
-                    lastItemsMap.put(feed.getId(), outdatedFeedItems.get(0));
+                    if (!outdatedFeedItems.isEmpty()) {
+                        FeedItem newestEpisode = outdatedFeedItems.get(0);
+
+                        lastItemsMap.put(feed.getId(), newestEpisode);
+                    }
                     feeds.add(feed);
                 }
             }
@@ -67,10 +73,17 @@ public class FeedUpdateWorker extends Worker {
 
             if (refreshed) {
                 for (Feed feed : feeds) {
-                    FeedItem lastKnownFeedItems = lastItemsMap.get(feed.getId());
                     List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
 
-                    int newEpisodes = feedItems.indexOf(lastKnownFeedItems);
+                    int newEpisodes;
+                    if (lastItemsMap.containsKey(feed.getId())) {
+                        FeedItem lastKnownFeedItems = lastItemsMap.get(feed.getId());
+
+                        newEpisodes = feedItems.indexOf(lastKnownFeedItems);
+                    } else {
+                        newEpisodes = feedItems.size();
+                    }
+
                     if (newEpisodes > 0) {
                         showNotification(newEpisodes, feed);
                     }
