@@ -119,7 +119,6 @@ public class DiscoveryFragment extends Fragment {
         List<String> countryCodeArray = new ArrayList<String>(Arrays.asList(Locale.getISOCountries()));
         HashMap<String, String> countryCodeNames = new HashMap<String, String>();
         for (String code: countryCodeArray) {
-            Log.d("Country=", code);
             Locale locale = new Locale("", code);
             String countryName = locale.getDisplayCountry();
             if (countryName != null) {
@@ -211,8 +210,8 @@ public class DiscoveryFragment extends Fragment {
                     podcasts -> {
                         progressBar.setVisibility(View.GONE);
                         topList = podcasts;
-                        updateData(topList); },
-                    error -> {
+                        updateData(topList);
+                    }, error -> {
                         Log.e(TAG, Log.getStackTraceString(error));
                         progressBar.setVisibility(View.GONE);
                         txtvError.setText(error.getMessage());
