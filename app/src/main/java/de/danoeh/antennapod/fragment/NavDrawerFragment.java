@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -72,6 +74,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     private int position = -1;
     private NavListAdapter navAdapter;
     private Disposable disposable;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -79,6 +82,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.nav_list, container, false);
 
+        progressBar = root.findViewById(R.id.progressBar);
         ListView navList = root.findViewById(R.id.nav_list);
         navAdapter = new NavListAdapter(itemAccess, getActivity());
         navList.setAdapter(navAdapter);
@@ -354,14 +358,20 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     };
 
     private void loadData() {
+        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    navDrawerData = result;
-                    updateSelection(); // Selected item might be a feed
-                    navAdapter.notifyDataSetChanged();
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(
+                        result -> {
+                            navDrawerData = result;
+                            updateSelection(); // Selected item might be a feed
+                            navAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                            progressBar.setVisibility(View.GONE);
+                        });
     }
 
     @Override
