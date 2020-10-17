@@ -38,6 +38,8 @@ import io.reactivex.schedulers.Schedulers;
 public class ItemPagerFragment extends Fragment {
     private static final String ARG_FEEDITEMS = "feeditems";
     private static final String ARG_FEEDITEM_POS = "feeditem_pos";
+    private static final String KEY_PAGER_ID = "pager_id";
+    private ViewPager2 pager;
 
     /**
      * Creates a new instance of an ItemPagerFragment.
@@ -77,12 +79,16 @@ public class ItemPagerFragment extends Fragment {
         feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
         int feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
 
-        ViewPager2 pager = layout.findViewById(R.id.pager);
+        pager = layout.findViewById(R.id.pager);
         // FragmentStatePagerAdapter documentation:
         // > When using FragmentStatePagerAdapter the host ViewPager must have a valid ID set.
         // When opening multiple ItemPagerFragments by clicking "item" -> "visit podcast" -> "item" -> etc,
         // the ID is no longer unique and FragmentStatePagerAdapter does not display any pages.
         int newId = ViewCompat.generateViewId();
+        if (savedInstanceState != null && savedInstanceState.getInt(KEY_PAGER_ID, 0) != 0) {
+            // Restore state by using the same ID as before. ID collisions are prevented in MainActivity.
+            newId = savedInstanceState.getInt(KEY_PAGER_ID, 0);
+        }
         pager.setId(newId);
         pager.setAdapter(new ItemPagerAdapter(this));
         pager.setCurrentItem(feedItemPos, false);
@@ -97,6 +103,12 @@ public class ItemPagerFragment extends Fragment {
 
         EventBus.getDefault().register(this);
         return layout;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_PAGER_ID, pager.getId());
     }
 
     @Override

@@ -509,8 +509,11 @@
   <!--About screen-->
   <string name="about_pref">Honi buruz</string>
   <string name="antennapod_version">AntennaPod bertsioa</string>
+  <string name="contributors">Laguntzaileak</string>
+  <string name="contributors_summary">Denek lagun dezakete gure foroan kodea, itzulpenak edo erabiltzaileei laguntza emanez.</string>
   <string name="developers">Garatzaileak</string>
   <string name="translators">Itzultzaileak</string>
+  <string name="special_thanks">Esker bereziak</string>
   <string name="privacy_policy">Pribatutasun politika</string>
   <string name="licenses">Baimenak</string>
   <string name="licenses_summary">AntennaPod-ek beste software ezin hobeak erabiltzen ditu</string>
@@ -554,6 +557,8 @@
   <string name="import_select_file">Aukeratu inportatzeko fitxategia</string>
   <string name="import_ok">Inportazio arrakastatsua.\n\nSakatu OK, AntennaPod berrabiarazteko</string>
   <string name="import_no_downgrade">Datu-basea AntennaPod-en bertsio berriago batekin esportatu zen. Uneko aplikazioak ez daki nola inportatu.</string>
+  <string name="favorites_export_label">Gogokoak esportatu</string>
+  <string name="favorites_export_summary">Gorde diren gogokoak esportatu artxibatzeko</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Ezarri tenporizadore bat</string>
   <string name="disable_sleeptimer_label">Desgaitu tenporizadorea</string>

@@ -24,8 +24,8 @@ Podcast-rajongók készítésében, az AntennaPod teljesen szabad, nyílt forrá
 <b>Csatlakozzon az AntennaPod közösséghez!</b>
 Az AntennaPodot aktívan fejlesztik az önkéntesek. Ön is közreműködhet: kóddal vagy megjegyzésekkel!
 
-A GitHub a funkciókérések, hibajelentések és a kódbeküldés helye:
-https://www.github.com/AntennaPod/AntennaPod
+A barátságos fórumtagjaink örömmel segítenek minden felmerülő kérdésben. Meghívjuk, hogy beszélgessen a funkciókról, valamint általánosságban a podcastolásról.
+https://forum.antennapod.org/
 
 A Transifexen segíthet a fordításokban:
 https://www.transifex.com/antennapod/antennapod
