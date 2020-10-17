@@ -69,10 +69,10 @@ public class NotificationUtils {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private static NotificationChannel createChannelSyncError(Context c) {
-        NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID_SYNC_ERROR,
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID_SYNC_ERROR,
                 c.getString(R.string.notification_channel_sync_error), NotificationManager.IMPORTANCE_HIGH);
-        mChannel.setDescription(c.getString(R.string.notification_channel_sync_error_description));
-        return mChannel;
+        notificationChannel.setDescription(c.getString(R.string.notification_channel_sync_error_description));
+        return notificationChannel;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
