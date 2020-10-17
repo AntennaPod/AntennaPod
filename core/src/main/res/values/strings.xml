@@ -843,7 +843,9 @@
     <string name="notification_channel_playing">Currently playing</string>
     <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
     <string name="notification_channel_error">Errors</string>
-    <string name="notification_channel_error_description">Shown if something went wrong, for example if download or gpodder sync fails.</string>
+    <string name="notification_channel_error_description">Shown if something went wrong, for example if download or feed update fails.</string>
+    <string name="notification_channel_sync_error">Synchronization Errors</string>
+    <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
     <string name="notification_channel_auto_download">Auto Downloads</string>
     <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
 
