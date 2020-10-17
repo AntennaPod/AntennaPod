@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.discovery;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import de.danoeh.antennapod.R;
@@ -23,24 +24,46 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class ItunesTopListLoader {
     private static final String TAG = "ITunesTopListLoader";
     private final Context context;
+    public static final String PREF_KEY_COUNTRY_CODE = "country_code";
+    public static final String PREFS = "CountryRegionPrefs";
+    public static final String DISCOVER_HIDE_FAKE_COUNTRY_CODE = "00";
+    public static final String COUNTRY_CODE_UNSET = "99";
 
     public ItunesTopListLoader(Context context) {
         this.context = context;
     }
 
-    public Single<List<PodcastSearchResult>> loadToplist(int limit) {
+    public Single<List<PodcastSearchResult>> loadToplist() {
+        String defaultCountry = Locale.getDefault().getCountry();
+        SharedPreferences prefs = context.getSharedPreferences(PREFS, MODE_PRIVATE);
+        String countryCode = prefs.getString(PREF_KEY_COUNTRY_CODE, COUNTRY_CODE_UNSET);
+        return this.loadToplist(countryCode, 25);
+    }
+
+    public Single<List<PodcastSearchResult>> loadToplist(String country, int limit) {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) emitter -> {
-            String country = Locale.getDefault().getCountry();
             OkHttpClient client = AntennapodHttpClient.getHttpClient();
             String feedString;
-            try {
-                feedString = getTopListFeed(client, country, limit);
-            } catch (IOException e) {
-                feedString = getTopListFeed(client, "us", limit);
+            String loadCountry = country;
+            if (COUNTRY_CODE_UNSET.equals(country)) {
+                loadCountry = Locale.getDefault().getCountry();
             }
+            try {
+                feedString = getTopListFeed(client, loadCountry, limit);
+            } catch (IOException e) {
+                if (COUNTRY_CODE_UNSET.equals(country)) {
+                    feedString = getTopListFeed(client, "US", limit);
+                } else {
+                    emitter.onError(e);
+                    return;
+                }
+            }
+
             List<PodcastSearchResult> podcasts = parseFeed(feedString);
             emitter.onSuccess(podcasts);
         })
@@ -59,6 +82,9 @@ public class ItunesTopListLoader {
             if (response.isSuccessful()) {
                 return response.body().string();
             }
+            if (response.code() == 400) {
+                throw new IOException("iTunes does not have data for the selected country.");
+            }
             String prefix = context.getString(R.string.error_msg_prefix);
             throw new IOException(prefix + response);
         }
@@ -66,8 +92,14 @@ public class ItunesTopListLoader {
 
     private List<PodcastSearchResult> parseFeed(String jsonString) throws JSONException {
         JSONObject result = new JSONObject(jsonString);
-        JSONObject feed = result.getJSONObject("feed");
-        JSONArray entries = feed.getJSONArray("entry");
+        JSONObject feed;
+        JSONArray entries;
+        try {
+            feed = result.getJSONObject("feed");
+            entries = feed.getJSONArray("entry");
+        } catch (JSONException e) {
+            return new ArrayList<>();
+        }
 
         List<PodcastSearchResult> results = new ArrayList<>();
         for (int i = 0; i < entries.length(); i++) {
