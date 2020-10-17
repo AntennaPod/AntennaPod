@@ -58,7 +58,7 @@ public class DatabaseExporter {
                 dst.transferFrom(src, 0, srcSize);
 
                 long newDstSize = dst.size();
-                if (newDstSize < srcSize) {
+                if (newDstSize != srcSize) {
                     throw new IOException(String.format(
                             "Unable to write entire database. Expected to write %s, but wrote %s.",
                             Formatter.formatShortFileSize(context, srcSize),
