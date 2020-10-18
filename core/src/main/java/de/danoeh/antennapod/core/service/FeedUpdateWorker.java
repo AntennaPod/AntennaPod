@@ -1,13 +1,10 @@
 package de.danoeh.antennapod.core.service;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -33,13 +30,13 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
+import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class FeedUpdateWorker extends Worker {
 
     private static final String TAG = "FeedUpdateWorker";
 
     public static final String PARAM_RUN_ONCE = "runOnce";
-    public static final String CHANNEL_ID = "new_episode_channel";
 
     public FeedUpdateWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
@@ -115,7 +112,7 @@ public class FeedUpdateWorker extends Worker {
         intent.putExtra("fragment_feed_id", feed.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFY)
                 .setSmallIcon(R.drawable.ic_notification_bell_white)
                 .setContentTitle("New Episode")
                 .setContentText(text)
@@ -123,25 +120,7 @@ public class FeedUpdateWorker extends Worker {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-        createNotificationChannel();
-
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(R.string.notification_channel_new_episode * feed.hashCode(), builder.build());
     }
-
-    private void createNotificationChannel() {
-        Context context = getApplicationContext();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = context.getString(R.string.notification_channel_new_episode);
-            String description = context.getString(R.string.notification_channel_new_episode_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
 }
