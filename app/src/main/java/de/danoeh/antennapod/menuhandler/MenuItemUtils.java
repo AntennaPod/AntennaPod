@@ -35,6 +35,7 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) searchItem.getActionView();
         sv.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, android.R.attr.windowBackground));
+        sv.setAlpha(0.75f);
         sv.setQueryHint(activity.getString(R.string.search_label));
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
