@@ -41,11 +41,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/setSleeptimerButton"/>
 
-        <Button
-            android:text="Stop after current track"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/setStopAfterEpisodeButton"/>
     </LinearLayout>
 
     <LinearLayout

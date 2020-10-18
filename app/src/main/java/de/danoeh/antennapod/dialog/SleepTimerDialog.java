@@ -3,7 +3,6 @@ package de.danoeh.antennapod.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Observable;
@@ -89,16 +89,17 @@ public class SleepTimerDialog extends DialogFragment {
         timeDisplay = content.findViewById(R.id.timeDisplay);
         time = content.findViewById(R.id.time);
 
-        etxtTime.setText(SleepTimerPreferences.lastTimerValue());
+        etxtTime.setText("" + SleepTimerPreferences.lastTimerValue());
         etxtTime.postDelayed(() -> {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(etxtTime, InputMethodManager.SHOW_IMPLICIT);
         }, 100);
 
-        String[] spinnerContent = new String[] {
+        String[] spinnerContent = new String[]{
                 getString(R.string.time_seconds),
                 getString(R.string.time_minutes),
-                getString(R.string.time_hours) };
+                getString(R.string.time_hours),
+                getString(R.string.time_episodes)};
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
                 android.R.layout.simple_spinner_item, spinnerContent);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,26 +133,34 @@ public class SleepTimerDialog extends DialogFragment {
                 Snackbar.make(content, R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
                 return;
             }
+
+            int timeUnit = spTimeUnit.getSelectedItemPosition();
+            int timeValue;
             try {
-                SleepTimerPreferences.setLastTimer(etxtTime.getText().toString(), spTimeUnit.getSelectedItemPosition());
+                timeValue = Integer.parseInt(etxtTime.getText().toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+                Snackbar.make(content, R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+
+            if (timeUnit < 3) {
+                //Seconds, minutes, hours
+                SleepTimerPreferences.setLastTimer(timeValue, timeUnit);
                 long time = SleepTimerPreferences.timerMillis();
                 if (controller != null) {
                     controller.setSleepTimer(time);
                 }
-                closeKeyboard(content);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-                Snackbar.make(content, R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
+            } else {
+                //Episodes
+                if(timeValue >= DBReader.getQueueIDList().size()){
+                    Snackbar.make(content, "Invalid input, there are not so many episodes in the queue", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                SleepTimerPreferences.setStopAfterEpisodes(timeValue);
             }
-        });
-        Button stopAfterEpisodeButton = content.findViewById(R.id.setStopAfterEpisodeButton);
-        stopAfterEpisodeButton.setOnClickListener(v -> {
-            if (!PlaybackService.isRunning) {
-                Snackbar.make(content, R.string.no_media_playing_label, Snackbar.LENGTH_LONG).show();
-                return;
-            }
-            SleepTimerPreferences.setStopAfterEpisode(controller.getMedia());
-            dismiss();
+            closeKeyboard(content);
         });
         return builder.create();
     }

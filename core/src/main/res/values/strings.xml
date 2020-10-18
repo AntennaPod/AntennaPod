@@ -599,6 +599,7 @@
     <string name="time_seconds">seconds</string>
     <string name="time_minutes">minutes</string>
     <string name="time_hours">hours</string>
+    <string name="time_episodes">episodes</string>
     <plurals name="time_seconds_quantified">
         <item quantity="one">1 second</item>
         <item quantity="other">%d seconds</item>

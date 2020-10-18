@@ -7,14 +7,12 @@ import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.util.playback.Playable;
-
 public class SleepTimerPreferences {
 
     private static final String TAG = "SleepTimerPreferences";
 
     private static final String PREF_NAME = "SleepTimerDialog";
-    private static final String PREF_VALUE = "LastValue";
+    private static final String PREF_VALUE = "LastValueInt";
     private static final String PREF_TIME_UNIT = "LastTimeUnit";
     private static final String PREF_VIBRATE = "Vibrate";
     private static final String PREF_SHAKE_TO_RESET = "ShakeToReset";
@@ -23,7 +21,7 @@ public class SleepTimerPreferences {
 
     private static final TimeUnit[] UNITS = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
-    private static final String DEFAULT_VALUE = "15";
+    private static final int DEFAULT_VALUE = 15;
     private static final int DEFAULT_TIME_UNIT = 1;
 
     private static SharedPreferences prefs;
@@ -38,13 +36,13 @@ public class SleepTimerPreferences {
         SleepTimerPreferences.prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
     }
 
-    public static void setLastTimer(String value, int timeUnit) {
-        prefs.edit().putString(PREF_VALUE, value).putInt(PREF_TIME_UNIT, timeUnit).apply();
-        clearStopAfterEpisode();
+    public static void setLastTimer(int value, int timeUnit) {
+        prefs.edit().putInt(PREF_VALUE, value).putInt(PREF_TIME_UNIT, timeUnit).apply();
+        resetStopAfterEpisodes();
     }
 
-    public static String lastTimerValue() {
-        return prefs.getString(PREF_VALUE, DEFAULT_VALUE);
+    public static int lastTimerValue() {
+        return prefs.getInt(PREF_VALUE, DEFAULT_VALUE);
     }
 
     public static int lastTimerTimeUnit() {
@@ -52,8 +50,7 @@ public class SleepTimerPreferences {
     }
 
     public static long timerMillis() {
-        long value = Long.parseLong(lastTimerValue());
-        return UNITS[lastTimerTimeUnit()].toMillis(value);
+        return UNITS[lastTimerTimeUnit()].toMillis(lastTimerValue());
     }
 
     public static void setVibrate(boolean vibrate) {
@@ -80,24 +77,39 @@ public class SleepTimerPreferences {
         return prefs.getBoolean(PREF_AUTO_ENABLE, false);
     }
 
-    public static void setStopAfterEpisode(Playable playable) {
-        prefs.edit().putString(PREF_STOP_AFTER_EPISODE, playable.getIdentifier().toString()).apply();
+    public static void setStopAfterEpisodes(int value) {
+        if (value <= 0) {
+            value = 1;
+        }
+        prefs.edit().putInt(PREF_VALUE, value).putInt(PREF_STOP_AFTER_EPISODE, value).apply();
     }
 
-    private static void clearStopAfterEpisode() {
-        prefs.edit().putString(PREF_STOP_AFTER_EPISODE, null).apply();
+    private static int getStopAfterEpisodes() {
+        return prefs.getInt(PREF_STOP_AFTER_EPISODE, -1);
     }
 
-    public static boolean stopAfter(Playable playable) {
-        boolean stopAfter = playable.getIdentifier().toString().equals(getStopAfterEpisode());
+    private static void resetStopAfterEpisodes() {
+        prefs.edit().putInt(PREF_STOP_AFTER_EPISODE, -1).apply();
+    }
+
+    public static void restartStopAfterEpisode() {
+        if (isStopAfterEpisodeEnabled())
+            setStopAfterEpisodes(lastTimerValue());
+    }
+
+    public static boolean isStopAfterEpisodeEnabled() {
+        return getStopAfterEpisodes() > 0;
+    }
+
+    public static boolean stopAfterEpisode() {
+        int stopAfterEpisodes = getStopAfterEpisodes();
+        boolean stopAfter = (stopAfterEpisodes == 1);
         if (stopAfter) {
-            clearStopAfterEpisode();
+            resetStopAfterEpisodes();
+        } else {
+            setStopAfterEpisodes(stopAfterEpisodes - 1);
         }
         return stopAfter;
-    }
-
-    private static String getStopAfterEpisode() {
-        return prefs.getString(PREF_STOP_AFTER_EPISODE, null);
     }
 
 }
