@@ -55,7 +55,8 @@ public class LocalFeedUpdaterTest {
      * The exact URL doesn't matter here as access to external storage is mocked
      * (seems not to be supported by Robolectric).
      */
-    private static final String FEED_URL = "content://com.android.externalstorage.documents/tree/primary%3ADownload%2Flocal-feed";
+    private static final String FEED_URL =
+            "content://com.android.externalstorage.documents/tree/primary%3ADownload%2Flocal-feed";
 
     private Context context;
     private File localFeedDir1;
@@ -109,9 +110,9 @@ public class LocalFeedUpdaterTest {
                 Field dbHelperField = innerClass.getDeclaredField("dbHelper");
                 dbHelperField.setAccessible(true);
                 SQLiteOpenHelper dbHelper = (SQLiteOpenHelper) dbHelperField.get(null);
-                Field mDatabaseField = SQLiteOpenHelper.class.getDeclaredField("mDatabase");
-                mDatabaseField.setAccessible(true);
-                mDatabaseField.set(dbHelper, null);
+                Field databaseField = SQLiteOpenHelper.class.getDeclaredField("mDatabase");
+                databaseField.setAccessible(true);
+                databaseField.set(dbHelper, null);
             }
         }
     }
