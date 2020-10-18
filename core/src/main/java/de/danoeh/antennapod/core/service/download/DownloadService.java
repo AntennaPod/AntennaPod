@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.DownloadFinishedEvent;
 import de.danoeh.antennapod.core.sync.SyncService;
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -237,6 +238,8 @@ public class DownloadService extends Service {
 
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
+
+        EventBus.getDefault().post(new DownloadFinishedEvent());
     }
 
     private final Thread downloadCompletionThread = new Thread("DownloadCompletionThread") {

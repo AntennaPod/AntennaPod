@@ -14,6 +14,8 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +24,7 @@ import java.util.Map;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.DownloadFinishedEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -37,6 +40,9 @@ public class FeedUpdateWorker extends Worker {
     private static final String TAG = "FeedUpdateWorker";
 
     public static final String PARAM_RUN_ONCE = "runOnce";
+
+    private Map<Long, FeedItem> lastItemsMap;
+    private List<Feed> feeds;
 
     public FeedUpdateWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
@@ -66,26 +72,11 @@ public class FeedUpdateWorker extends Worker {
                 }
             }
 
-            boolean refreshed = DBTasks.refreshAllFeeds(getApplicationContext(), false);
+            this.feeds = feeds;
+            this.lastItemsMap = lastItemsMap;
+            EventBus.getDefault().register(this);
 
-            if (refreshed) {
-                for (Feed feed : feeds) {
-                    List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
-
-                    int newEpisodes;
-                    if (lastItemsMap.containsKey(feed.getId())) {
-                        FeedItem lastKnownFeedItems = lastItemsMap.get(feed.getId());
-
-                        newEpisodes = feedItems.indexOf(lastKnownFeedItems);
-                    } else {
-                        newEpisodes = feedItems.size();
-                    }
-
-                    if (newEpisodes > 0) {
-                        showNotification(newEpisodes, feed);
-                    }
-                }
-            }
+            DBTasks.refreshAllFeeds(getApplicationContext(), false);
         } else {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
         }
@@ -97,6 +88,28 @@ public class FeedUpdateWorker extends Worker {
         }
 
         return Result.success();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void downloadStatusChanged(DownloadFinishedEvent ignored) {
+        for (Feed feed : feeds) {
+            List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
+
+            int newEpisodes;
+            if (lastItemsMap.containsKey(feed.getId())) {
+                FeedItem lastKnownFeedItems = lastItemsMap.get(feed.getId());
+
+                newEpisodes = feedItems.indexOf(lastKnownFeedItems);
+            } else {
+                newEpisodes = feedItems.size();
+            }
+
+            if (newEpisodes > 0) {
+                showNotification(newEpisodes, feed);
+            }
+        }
+
+        EventBus.getDefault().unregister(this);
     }
 
     private void showNotification(int newEpisodes, Feed feed) {
