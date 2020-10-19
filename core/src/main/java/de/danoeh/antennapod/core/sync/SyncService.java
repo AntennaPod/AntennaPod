@@ -467,6 +467,7 @@ public class SyncService extends Worker {
                 if (playItem.getMedia().hasAlmostEnded()) {
                     Log.d(TAG, "Marking as played");
                     playItem.setPlayed(true);
+                    DBWriter.removeQueueItem(getApplicationContext(), false, playItem);
                 }
                 updatedItems.add(playItem);
             }
