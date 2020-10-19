@@ -42,6 +42,12 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         notifyDataSetChanged();
     }
 
+    public void removeItem(FeedItem item) {
+        int pos = episodes.indexOf(item);
+        episodes.remove(pos);
+        notifyItemRemoved(pos);
+    }
+
     @Override
     public final int getItemViewType(int position) {
         return R.id.view_type_episode_item;
