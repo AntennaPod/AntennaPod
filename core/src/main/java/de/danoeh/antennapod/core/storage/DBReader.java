@@ -17,6 +17,7 @@ import java.util.Map;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
@@ -378,6 +379,30 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit)) {
+            List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
+            loadAdditionalFeedItemListData(items);
+            return items;
+        } finally {
+            adapter.close();
+        }
+    }
+
+    /**
+     * Loads a filtered list of FeedItems sorted by pubDate in descending order.
+     *
+     * @param offset The first episode that should be loaded.
+     * @param limit The maximum number of episodes that should be loaded.
+     * @param filter The filter describing which episodes to filter out.
+     */
+    @NonNull
+    public static List<FeedItem> getRecentlyPublishedEpisodesFiltered(int offset, int limit,
+                                                                      FeedItemFilter filter) {
+        Log.d(TAG, "getRecentlyPublishedEpisodesFiltered() called with: "
+                + "offset = [" + offset + "]" + " limit = [" + limit + "]" + " filter = [" + filter.getQuery() + "]");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursorFiltered(offset, limit, filter)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
