@@ -13,7 +13,7 @@
         android:key="episodeNotification"
         android:defaultValue="false"
         android:dependency="keepUpdated"
-        android:icon="?attr/notify_bell"
+        android:icon="?attr/ic_notifications"
         android:title="@string/episode_notification"
         android:summary="@string/episode_notification_summary"/>
 

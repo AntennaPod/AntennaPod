@@ -126,7 +126,7 @@ public class FeedUpdateWorker extends Worker {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFY)
-                .setSmallIcon(R.drawable.ic_notification_bell_white)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("New Episode")
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
