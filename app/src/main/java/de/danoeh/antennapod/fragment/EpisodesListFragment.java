@@ -197,6 +197,7 @@ public abstract class EpisodesListFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
         FeedItem selectedItem = listAdapter.getSelectedItem();
+
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
