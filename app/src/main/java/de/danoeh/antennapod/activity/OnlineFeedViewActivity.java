@@ -13,11 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
@@ -106,7 +101,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private Disposable parser;
     private Disposable updater;
 
-    private OnlinefeedviewActivityBinding binding;
+    private OnlinefeedviewActivityBinding viewBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,11 +109,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
 
-        binding = OnlinefeedviewActivityBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        viewBinding = OnlinefeedviewActivityBinding.inflate(getLayoutInflater());
+        setContentView(viewBinding.getRoot());
 
-        binding.transparentBackground.setOnClickListener(v -> finish());
-        binding.card.setOnClickListener(null);
+        viewBinding.transparentBackground.setOnClickListener(v -> finish());
+        viewBinding.card.setOnClickListener(null);
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -164,8 +159,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      * Displays a progress indicator.
      */
     private void setLoadingLayout() {
-        binding.progressBar.setVisibility(View.VISIBLE);
-        binding.feedDisplay.setVisibility(View.GONE);
+        viewBinding.progressBar.setVisibility(View.VISIBLE);
+        viewBinding.feedDisplay.setVisibility(View.GONE);
     }
 
     @Override
@@ -387,18 +382,18 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      * This method is executed on the GUI thread.
      */
     private void showFeedInformation(final Feed feed, Map<String, String> alternateFeedUrls) {
-        binding.progressBar.setVisibility(View.GONE);
-        binding.feedDisplay.setVisibility(View.VISIBLE);
+        viewBinding.progressBar.setVisibility(View.GONE);
+        viewBinding.feedDisplay.setVisibility(View.VISIBLE);
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
 
-        binding.background.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+        viewBinding.backgroundImage.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
         View header = View.inflate(this, R.layout.onlinefeedview_header, null);
 
-        binding.listView.addHeaderView(header);
-        binding.listView.setSelector(android.R.color.transparent);
-        binding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
+        viewBinding.listView.addHeaderView(header);
+        viewBinding.listView.setSelector(android.R.color.transparent);
+        viewBinding.listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
 
         TextView description = header.findViewById(R.id.txtvDescription);
 
@@ -411,7 +406,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                         .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
                         .dontAnimate())
-                    .into(binding.cover);
+                    .into(viewBinding.coverImage);
             Glide.with(this)
                     .load(feed.getImageUrl())
                     .apply(new RequestOptions()
@@ -420,14 +415,14 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                             .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                             .transform(new FastBlurTransformation())
                             .dontAnimate())
-                    .into(binding.background);
+                    .into(viewBinding.backgroundImage);
         }
 
-        binding.title.setText(feed.getTitle());
-        binding.author.setText(feed.getAuthor());
+        viewBinding.titleLabel.setText(feed.getTitle());
+        viewBinding.authorLabel.setText(feed.getAuthor());
         description.setText(feed.getDescription());
 
-        binding.subscribeButton.setOnClickListener(v -> {
+        viewBinding.subscribeButton.setOnClickListener(v -> {
             if (feedInFeedlist(feed)) {
                 openFeed();
             } else {
@@ -445,7 +440,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
         });
 
-        binding.stopPreviewButton.setOnClickListener(v -> {
+        viewBinding.stopPreviewButton.setOnClickListener(v -> {
             PlaybackPreferences.writeNoMediaPlaying();
             IntentUtils.sendLocalBroadcast(this, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
         });
@@ -462,9 +457,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         });
 
         if (alternateFeedUrls.isEmpty()) {
-            binding.spinnerAlternateUrls.setVisibility(View.GONE);
+            viewBinding.spinnerAlternateUrls.setVisibility(View.GONE);
         } else {
-            binding.spinnerAlternateUrls.setVisibility(View.VISIBLE);
+            viewBinding.spinnerAlternateUrls.setVisibility(View.VISIBLE);
 
             final List<String> alternateUrlsList = new ArrayList<>();
             final List<String> alternateUrlsTitleList = new ArrayList<>();
@@ -479,8 +474,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, alternateUrlsTitleList);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            binding.spinnerAlternateUrls.setAdapter(adapter);
-            binding.spinnerAlternateUrls.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            viewBinding.spinnerAlternateUrls.setAdapter(adapter);
+            viewBinding.spinnerAlternateUrls.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedDownloadUrl = alternateUrlsList.get(position);
@@ -506,17 +501,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     private void handleUpdatedFeedStatus(Feed feed) {
         if (feed != null) {
             if (DownloadRequester.getInstance().isDownloadingFile(feed.getDownload_url())) {
-                binding.subscribeButton.setEnabled(false);
-                binding.subscribeButton.setText(R.string.subscribing_label);
+                viewBinding.subscribeButton.setEnabled(false);
+                viewBinding.subscribeButton.setText(R.string.subscribing_label);
             } else if (feedInFeedlist(feed)) {
-                binding.subscribeButton.setEnabled(true);
-                binding.subscribeButton.setText(R.string.open_podcast);
+                viewBinding.subscribeButton.setEnabled(true);
+                viewBinding.subscribeButton.setText(R.string.open_podcast);
                 if (didPressSubscribe) {
                     openFeed();
                 }
             } else {
-                binding.subscribeButton.setEnabled(true);
-                binding.subscribeButton.setText(R.string.subscribe_label);
+                viewBinding.subscribeButton.setEnabled(true);
+                viewBinding.subscribeButton.setText(R.string.subscribe_label);
             }
         }
     }
@@ -571,7 +566,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     public void playbackStateChanged(PlayerStatusEvent event) {
         boolean isPlayingPreview =
                 PlaybackPreferences.getCurrentlyPlayingMediaType() == RemoteMedia.PLAYABLE_TYPE_REMOTE_MEDIA;
-        binding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
+        viewBinding.stopPreviewButton.setVisibility(isPlayingPreview ? View.VISIBLE : View.GONE);
     }
 
     /**

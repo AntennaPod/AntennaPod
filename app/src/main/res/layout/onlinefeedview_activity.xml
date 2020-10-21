@@ -39,13 +39,13 @@
                         android:background="@color/feed_image_bg">
 
                     <ImageView
-                            android:id="@+id/background"
+                            android:id="@+id/backgroundImage"
                             style="@style/BigBlurryBackground"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/feeditemlist_header_height"/>
 
                     <ImageView
-                            android:id="@+id/cover"
+                            android:id="@+id/coverImage"
                             android:layout_width="@dimen/thumbnail_length_onlinefeedview"
                             android:layout_height="@dimen/thumbnail_length_onlinefeedview"
                             android:layout_alignParentLeft="true"
@@ -60,7 +60,7 @@
                             tools:src="@drawable/ic_antenna"/>
 
                     <TextView
-                            android:id="@+id/title"
+                            android:id="@+id/titleLabel"
                             style="@style/AntennaPod.TextView.Heading"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -73,8 +73,8 @@
                             android:layout_marginEnd="16dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@id/cover"
-                            android:layout_toEndOf="@id/cover"
+                            android:layout_toRightOf="@id/coverImage"
+                            android:layout_toEndOf="@id/coverImage"
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:shadowColor="@color/black"
@@ -83,10 +83,10 @@
                             tools:text="Podcast title"/>
 
                     <TextView
-                            android:id="@+id/author"
+                            android:id="@+id/author_label"
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/title"
+                            android:layout_below="@id/titleLabel"
                             android:layout_marginBottom="16dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginStart="16dp"
@@ -94,8 +94,8 @@
                             android:layout_marginEnd="16dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@id/cover"
-                            android:layout_toEndOf="@id/cover"
+                            android:layout_toRightOf="@id/coverImage"
+                            android:layout_toEndOf="@id/coverImage"
                             android:ellipsize="end"
                             android:lines="1"
                             android:shadowColor="@color/black"
