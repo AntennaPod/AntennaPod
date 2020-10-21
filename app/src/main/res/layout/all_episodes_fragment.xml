@@ -23,6 +23,10 @@
         android:layout_below="@+id/txtvInformation"
         android:layout_above="@id/loadingMore">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <de.danoeh.antennapod.view.EpisodeItemListRecyclerView
                 android:id="@android:id/list"
                 android:layout_width="match_parent"
@@ -34,6 +38,8 @@
                 android:paddingHorizontal="@dimen/additional_horizontal_spacing"
                 tools:itemCount="13"
                 tools:listitem="@layout/feeditemlist_item" />
+
+        </RelativeLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
