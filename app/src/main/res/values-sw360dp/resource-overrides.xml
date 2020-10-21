@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources, MissingDefaultResource">
+    <bool name="config_materialPreferenceIconSpaceReserved" tools:override="true">false</bool>
+</resources>
