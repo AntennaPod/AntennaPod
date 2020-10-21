@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import java.nio.charset.Charset;
  * Displays the 'crash report' screen
  */
 public class BugReportActivity extends AppCompatActivity {
+    private static final String TAG = "BugReportActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +32,20 @@ public class BugReportActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.bug_report);
 
-        String crashDetailsText = CrashReportWriter.getSystemInfo() + "\n\n";
-        TextView crashDetailsTextView = findViewById(R.id.crash_report_logs);
-
+        String stacktrace = "No crash report recorded";
         try {
             File crashFile = CrashReportWriter.getFile();
-            crashDetailsText += IOUtils.toString(new FileInputStream(crashFile), Charset.forName("UTF-8"));
+            if (crashFile.exists()) {
+                stacktrace = IOUtils.toString(new FileInputStream(crashFile), Charset.forName("UTF-8"));
+            } else {
+                Log.d(TAG, stacktrace);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            crashDetailsText += "No crash report recorded";
         }
-        crashDetailsTextView.setText(crashDetailsText);
+
+        TextView crashDetailsTextView = findViewById(R.id.crash_report_logs);
+        crashDetailsTextView.setText(CrashReportWriter.getSystemInfo() + "\n\n" + stacktrace);
 
         findViewById(R.id.btn_open_bug_tracker).setOnClickListener(v -> IntentUtils.openInBrowser(
                 BugReportActivity.this, "https://github.com/AntennaPod/AntennaPod/issues"));
