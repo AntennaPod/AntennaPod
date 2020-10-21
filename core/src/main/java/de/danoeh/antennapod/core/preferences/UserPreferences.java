@@ -1063,33 +1063,11 @@ public class UserPreferences {
         return prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
     }
 
-    public static void checkUsageCounting() {
-        long installDateMillis = prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
-        if (installDateMillis < 0) {
-            //App upgrade or new installation
-            long installDate = TimeUnit.MILLISECONDS.toDays(getInstallationDate());
-            long currentDate = TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis());
-            if (installDate == currentDate) {
-                //New installation
-                resetUsageCounting();
-            }
-        }
+    private static void setUsageCountingMillis(long value) {
+        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
     }
 
     public static void resetUsageCounting() {
         setUsageCountingMillis(Calendar.getInstance().getTimeInMillis());
     }
-
-    private static void setUsageCountingMillis(long value) {
-        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
-    }
-
-    private static long getInstallationDate() {
-        try {
-            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).firstInstallTime;
-        } catch (PackageManager.NameNotFoundException e) {
-            return Calendar.getInstance().getTimeInMillis();
-        }
-    }
-
 }

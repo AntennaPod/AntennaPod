@@ -68,8 +68,6 @@ public class PodcastApp extends Application {
                 .logNoSubscriberMessages(false)
                 .sendNoSubscriberEvent(false)
                 .installDefaultEventBus();
-
-        UserPreferences.checkUsageCounting();
     }
 
     public static void forceRestart() {
