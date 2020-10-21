@@ -197,11 +197,6 @@ public abstract class EpisodesListFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
         FeedItem selectedItem = listAdapter.getSelectedItem();
-
-        if (item.getItemId() == R.id.remove_item) {
-            listAdapter.removeItem(selectedItem);
-        }
-
         return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(), selectedItem);
     }
 
