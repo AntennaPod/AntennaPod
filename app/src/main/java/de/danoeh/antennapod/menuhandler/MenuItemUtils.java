@@ -58,12 +58,14 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
                         menu.getItem(i).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
                     }
                 }
+                activity.disableHardwareShortcuts();
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 activity.invalidateOptionsMenu();
+                activity.enableHardwareShortcuts();
                 return true;
             }
         });

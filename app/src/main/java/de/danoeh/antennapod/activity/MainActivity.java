@@ -88,6 +88,7 @@ public class MainActivity extends CastEnabledActivity {
     private long lastBackButtonPressTime = 0;
     private RecyclerView.RecycledViewPool recycledViewPool = new RecyclerView.RecycledViewPool();
     private int lastTheme = 0;
+    private boolean hardwareShortcutsEnabled = true;
 
     @NonNull
     public static Intent getIntentToOpenFeed(@NonNull Context context, long feedId) {
@@ -548,8 +549,20 @@ public class MainActivity extends CastEnabledActivity {
     }
 
     //Hardware keyboard support
+    public void enableHardwareShortcuts() {
+        hardwareShortcutsEnabled = true;
+    }
+
+    public void disableHardwareShortcuts() {
+        hardwareShortcutsEnabled = false;
+    }
+
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (!hardwareShortcutsEnabled) {
+            return super.onKeyUp(keyCode, event);
+        }
+
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         Integer customKeyCode = null;
 

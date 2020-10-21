@@ -149,12 +149,14 @@ public class OnlineSearchFragment extends Fragment {
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                ((MainActivity) requireActivity()).disableHardwareShortcuts();
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 getActivity().getSupportFragmentManager().popBackStack();
+                ((MainActivity) requireActivity()).enableHardwareShortcuts();
                 return true;
             }
         });

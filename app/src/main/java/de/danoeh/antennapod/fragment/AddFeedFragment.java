@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,9 +63,30 @@ public class AddFeedFragment extends Fragment {
 
         combinedFeedSearchBox = root.findViewById(R.id.combinedFeedSearchBox);
         combinedFeedSearchBox.setOnEditorActionListener((v, actionId, event) -> {
+            ((MainActivity) requireActivity()).enableHardwareShortcuts();
             performSearch();
             return true;
         });
+        combinedFeedSearchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                ((MainActivity) requireActivity()).disableHardwareShortcuts();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+        });
+        combinedFeedSearchBox.setOnFocusChangeListener((view, hasFocus) -> {
+            if (!hasFocus) {
+                ((MainActivity) requireActivity()).enableHardwareShortcuts();
+            }
+        });
+
         root.findViewById(R.id.btn_add_via_url).setOnClickListener(v
                 -> showAddViaUrlDialog());
 

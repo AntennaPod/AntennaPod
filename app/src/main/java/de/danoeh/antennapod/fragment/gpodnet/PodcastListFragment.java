@@ -49,6 +49,7 @@ public abstract class PodcastListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        ((MainActivity) requireActivity()).disableHardwareShortcuts();
     }
 
     @Override
@@ -166,5 +167,11 @@ public abstract class PodcastListFragment extends Fragment {
         };
 
         loaderTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ((MainActivity) requireActivity()).enableHardwareShortcuts();
     }
 }

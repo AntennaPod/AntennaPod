@@ -31,6 +31,7 @@ public class TagListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        ((MainActivity) requireActivity()).disableHardwareShortcuts();
     }
 
     @Override
@@ -75,6 +76,7 @@ public class TagListFragment extends ListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         cancelLoadTask();
+        ((MainActivity) requireActivity()).enableHardwareShortcuts();
     }
 
     private AsyncTask<Void, Void, List<GpodnetTag>> loadTask;
