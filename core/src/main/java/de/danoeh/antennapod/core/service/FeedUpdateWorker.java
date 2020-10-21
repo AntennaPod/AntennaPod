@@ -134,6 +134,6 @@ public class FeedUpdateWorker extends Worker {
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(R.string.notification_channel_new_episode * feed.hashCode(), builder.build());
+        notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFY, feed.hashCode(), builder.build());
     }
 }
