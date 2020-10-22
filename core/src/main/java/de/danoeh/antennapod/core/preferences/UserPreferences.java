@@ -1059,15 +1059,12 @@ public class UserPreferences {
                 .apply();
     }
 
-    public static long getUsageCountingMillis() {
+    public static long getUsageCountingDateMillis() {
         return prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
     }
 
-    private static void setUsageCountingMillis(long value) {
-        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
-    }
-
-    public static void resetUsageCounting() {
-        setUsageCountingMillis(Calendar.getInstance().getTimeInMillis());
+    public static void resetUsageCountingDate() {
+        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE,
+                Calendar.getInstance().getTimeInMillis()).apply();
     }
 }

@@ -157,12 +157,13 @@ public class PlaybackStatisticsFragment extends Fragment {
             disposable.dispose();
         }
 
-        UserPreferences.resetUsageCounting();
-
         disposable = Completable.fromFuture(DBWriter.resetStatistics())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::refreshStatistics, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(() -> {
+                    refreshStatistics();
+                    UserPreferences.resetUsageCountingDate();
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void refreshStatistics() {

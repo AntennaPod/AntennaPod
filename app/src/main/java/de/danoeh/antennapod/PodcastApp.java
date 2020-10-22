@@ -12,7 +12,6 @@ import com.joanzapata.iconify.fonts.MaterialModule;
 import de.danoeh.antennapod.activity.SplashActivity;
 import de.danoeh.antennapod.core.ApCoreEventBusIndex;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.error.RxJavaErrorHandlerSetup;
 import de.danoeh.antennapod.spa.SPAUtil;

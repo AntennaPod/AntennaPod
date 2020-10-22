@@ -30,7 +30,7 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     String getHeaderCaption() {
-        long usageCounting = UserPreferences.getUsageCountingMillis();
+        long usageCounting = UserPreferences.getUsageCountingDateMillis();
         if (usageCounting > 0) {
             DateFormat dateFormat = android.text.format.DateFormat.getLongDateFormat(context);
             String date = dateFormat.format(new Date(usageCounting));
