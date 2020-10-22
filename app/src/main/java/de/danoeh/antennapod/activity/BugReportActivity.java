@@ -4,15 +4,19 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
-import android.view.Gravity;
-import android.view.View;
-import android.widget.FrameLayout;
+
 import android.widget.TextView;
+
+
 import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -23,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * Displays the 'crash report' screen
@@ -64,29 +69,30 @@ public class BugReportActivity extends AppCompatActivity {
                 filename.createNewFile();
                 String cmd = "logcat -d -f " + filename.getAbsolutePath();
                 Runtime.getRuntime().exec(cmd);
-                Snackbar snack = Snackbar.make(findViewById(android.R.id.content),
-                        filename.getAbsolutePath(), Snackbar.LENGTH_SHORT);
-
-                //position snackbar in middle
-                View view = snack.getView();
-                FrameLayout.LayoutParams params =(FrameLayout.LayoutParams)view.getLayoutParams();
-                params.gravity = Gravity.TOP;
-                params.topMargin=472;
-                view.setLayoutParams(params);
-
-                snack.show();
 
                 //share file
                 try {
-                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                    sharingIntent.setType("text/*");
-                    sharingIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + filename.getAbsolutePath()));
-                    startActivity(Intent.createChooser(sharingIntent, "share file with"));
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/*");
+                    Uri fileUri = FileProvider.getUriForFile(this, this.getString(de.danoeh.antennapod.core.R.string.provider_authority),
+                            new File(filename.getAbsolutePath()));
+                    shareIntent.putExtra(Intent.EXTRA_STREAM,  fileUri);
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                        List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                        for (ResolveInfo resolveInfo : resInfoList) {
+                            String packageName = resolveInfo.activityInfo.packageName;
+                            this.grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        }
+                    }
+                    this.startActivity(Intent.createChooser(shareIntent, this.getString(de.danoeh.antennapod.core.R.string.share_file_label)));
+
                 }
                 catch (Exception e){
                     e.printStackTrace();
                     Snackbar.make(findViewById(android.R.id.content),"Failed to share file", Snackbar.LENGTH_LONG).show();
                 }
+
 
             } catch (IOException e) {
                 e.printStackTrace();
