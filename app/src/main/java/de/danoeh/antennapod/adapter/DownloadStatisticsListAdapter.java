@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.format.Formatter;
 
 import java.util.List;
+import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
@@ -41,6 +42,8 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     @Override
     void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item) {
         holder.value.setText(Formatter.formatShortFileSize(context, item.totalDownloadSize));
+        holder.count.setText(String.format(Locale.getDefault(), "%d%s",
+                item.episodesDownloadCount, context.getString(R.string.episodes_suffix)));
     }
 
 }

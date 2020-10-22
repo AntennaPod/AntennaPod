@@ -68,4 +68,30 @@
             android:layout_below="@+id/txtvTitle"
             tools:text="23 hours"/>
 
+    <TextView
+        android:id="@+id/txtvSeperator"
+        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_below="@id/txtvTitle"
+        android:layout_toEndOf="@id/txtvValue"
+        android:layout_toRightOf="@id/txtvValue"
+        android:layout_marginStart="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"
+        android:text="·" />
+
+    <TextView
+        android:id="@+id/txtvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtvTitle"
+        android:layout_toEndOf="@+id/txtvSeperator"
+        android:layout_toRightOf="@+id/txtvSeperator"
+        android:lines="1"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="14sp"
+        tools:text="2 episodes" />
+
 </RelativeLayout>

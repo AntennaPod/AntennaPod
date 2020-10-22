@@ -746,6 +746,7 @@ public final class DBReader {
             long episodesStarted = 0;
             long episodesStartedIncludingMarked = 0;
             long totalDownloadSize = 0;
+            long episodesDownloadCount = 0;
             List<FeedItem> items = getFeed(feed.getId()).getItems();
             for (FeedItem item : items) {
                 FeedMedia media = item.getMedia();
@@ -773,13 +774,14 @@ public final class DBReader {
 
                 if (media.isDownloaded()) {
                     totalDownloadSize = totalDownloadSize + media.getSize();
+                    episodesDownloadCount++;
                 }
 
                 episodes++;
             }
             feedTime.add(new StatisticsItem(
                     feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize));
+                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize, episodesDownloadCount));
         }
 
         adapter.close();
