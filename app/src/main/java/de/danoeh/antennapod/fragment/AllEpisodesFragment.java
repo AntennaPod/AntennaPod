@@ -89,6 +89,18 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         filterDialog.openDialog();
     }
 
+    @Override
+    protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        FeedItemFilter feedItemFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
+
+        if (feedItemFilter.isShowDownloaded() && (!item.hasMedia() || !item.getMedia().isDownloaded())) {
+            return false;
+        }
+
+        return true;
+    }
+
     @NonNull
     @Override
     protected List<FeedItem> loadData() {

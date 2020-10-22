@@ -129,4 +129,8 @@ public class FeedItemFilter {
         return mProperties.clone();
     }
 
+    public boolean isShowDownloaded() {
+        return showDownloaded;
+    }
+
 }
