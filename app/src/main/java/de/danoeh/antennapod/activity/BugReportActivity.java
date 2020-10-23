@@ -73,21 +73,25 @@ public class BugReportActivity extends AppCompatActivity {
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("text/*");
-                    Uri fileUri = FileProvider.getUriForFile(this, this.getString(de.danoeh.antennapod.core.R.string.provider_authority),
-                            new File(filename.getAbsolutePath()));
+                    String authString = getString(de.danoeh.antennapod.core.R.string.provider_authority);
+                    Uri fileUri = FileProvider.getUriForFile(this, authString, filename);
                     shareIntent.putExtra(Intent.EXTRA_STREAM,  fileUri);
                     shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                        List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY);
+                        PackageManager pm = getPackageManager();
+                        List<ResolveInfo> resInfoList = pm.queryIntentActivities(shareIntent, PackageManager.MATCH_DEFAULT_ONLY);
                         for (ResolveInfo resolveInfo : resInfoList) {
                             String packageName = resolveInfo.activityInfo.packageName;
-                            this.grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         }
                     }
-                    this.startActivity(Intent.createChooser(shareIntent, this.getString(de.danoeh.antennapod.core.R.string.share_file_label)));
-                }catch (Exception e){
+                    String chooserTitle =  getString(de.danoeh.antennapod.core.R.string.share_file_label);
+                    startActivity(Intent.createChooser(shareIntent, chooserTitle));
+                } catch (Exception e) {
                     e.printStackTrace();
-                    Snackbar.make(findViewById(android.R.id.content),R.string.log_file_share_exception, Snackbar.LENGTH_LONG).show();
+                    int strResId = R.string.log_file_share_exception;
+                    Snackbar.make(findViewById(android.R.id.content), strResId, Snackbar.LENGTH_LONG)
+                            .show();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
