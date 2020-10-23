@@ -69,7 +69,6 @@ public class BugReportActivity extends AppCompatActivity {
                 filename.createNewFile();
                 String cmd = "logcat -d -f " + filename.getAbsolutePath();
                 Runtime.getRuntime().exec(cmd);
-
                 //share file
                 try {
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -86,14 +85,10 @@ public class BugReportActivity extends AppCompatActivity {
                         }
                     }
                     this.startActivity(Intent.createChooser(shareIntent, this.getString(de.danoeh.antennapod.core.R.string.share_file_label)));
-
-                }
-                catch (Exception e){
+                }catch (Exception e){
                     e.printStackTrace();
-                    Snackbar.make(findViewById(android.R.id.content),"Failed to share file", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(findViewById(android.R.id.content),R.string.log_file_share_exception, Snackbar.LENGTH_LONG).show();
                 }
-
-
             } catch (IOException e) {
                 e.printStackTrace();
                 Snackbar.make(findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
