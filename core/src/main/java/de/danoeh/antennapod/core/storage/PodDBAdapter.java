@@ -126,7 +126,7 @@ public class PodDBAdapter {
     private static final String TABLE_PRIMARY_KEY = KEY_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT ,";
 
-    private static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
+    private static final String CREATE_TABLE_FEEDS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_CUSTOM_TITLE + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
             + KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
@@ -150,7 +150,7 @@ public class PodDBAdapter {
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0)";
 
-    private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
+    private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE
             + " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
@@ -160,7 +160,7 @@ public class PodDBAdapter {
             + KEY_IMAGE_URL + " TEXT,"
             + KEY_AUTO_DOWNLOAD + " INTEGER)";
 
-    private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
+    private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
             + " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
             + " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
@@ -171,24 +171,24 @@ public class PodDBAdapter {
             + KEY_HAS_EMBEDDED_PICTURE + " INTEGER,"
             + KEY_LAST_PLAYED_TIME + " INTEGER" + ")";
 
-    private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
+    private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
             + " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
             + " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
             + " INTEGER," + KEY_REASON_DETAILED + " TEXT,"
             + KEY_DOWNLOADSTATUS_TITLE + " TEXT)";
 
-    private static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
+    private static final String CREATE_TABLE_QUEUE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NAME_QUEUE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
-    private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
+    private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
             + KEY_LINK + " TEXT," + KEY_IMAGE_URL + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
 
     // SQL Statements for creating indexes
-    static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
+    static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_FEED + ")";
 
@@ -200,19 +200,19 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_READ + ")";
 
-    static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
+    static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_QUEUE + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_QUEUE + " ("
             + KEY_FEEDITEM + ")";
 
-    static final String CREATE_INDEX_FEEDMEDIA_FEEDITEM = "CREATE INDEX "
+    static final String CREATE_INDEX_FEEDMEDIA_FEEDITEM = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_FEED_MEDIA + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_FEED_MEDIA + " ("
             + KEY_FEEDITEM + ")";
 
-    static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
+    static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX IF NOT EXISTS "
             + TABLE_NAME_SIMPLECHAPTERS + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_SIMPLECHAPTERS + " ("
             + KEY_FEEDITEM + ")";
 
-    static final String CREATE_TABLE_FAVORITES = "CREATE TABLE "
+    static final String CREATE_TABLE_FAVORITES = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NAME_FAVORITES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
