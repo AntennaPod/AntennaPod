@@ -102,6 +102,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-inline:3.5.13'
     testImplementation 'org.robolectric:robolectric:4.3.1'
+    testImplementation 'javax.inject:javax.inject:1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test:runner:$runnerVersion"
