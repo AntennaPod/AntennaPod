@@ -2,6 +2,7 @@ package androidx.documentfile.provider;
 
 import android.content.res.AssetManager;
 import android.net.Uri;
+import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,13 +63,8 @@ public class AssetsDocumentFile extends DocumentFile {
     @Nullable
     @Override
     public String getType() {
-        if (fileName.endsWith(".mp3")) {
-            return "audio/mp3";
-        } else if (fileName.endsWith(".png")) {
-            return "image/png";
-        } else {
-            return null;
-        }
+        String extension = MimeTypeMap.getFileExtensionFromUrl(fileName);
+        return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
     }
 
     @Override

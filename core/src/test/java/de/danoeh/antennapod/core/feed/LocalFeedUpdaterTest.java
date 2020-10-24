@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaMetadataRetriever;
+import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
 import androidx.documentfile.provider.AssetsDocumentFile;
@@ -37,6 +38,7 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Test local feeds handling in class LocalFeedUpdater.
@@ -79,6 +81,7 @@ public class LocalFeedUpdaterTest {
 
         mapDummyMetadata(LOCAL_FEED_DIR1);
         mapDummyMetadata(LOCAL_FEED_DIR2);
+        shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("mp3", "audio/mp3");
     }
 
     @After
@@ -159,7 +162,6 @@ public class LocalFeedUpdaterTest {
      *
      * @param localFeedDir assets local feed folder with media files
      */
-    @SuppressWarnings("ConstantConditions")
     private void mapDummyMetadata(@NonNull String localFeedDir) throws IOException {
         String[] fileNames = context.getAssets().list(localFeedDir);
         for (String fileName : fileNames) {
