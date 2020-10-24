@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.feed;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.media.MediaMetadataRetriever;
 import android.webkit.MimeTypeMap;
 
@@ -33,9 +32,6 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -64,20 +60,16 @@ public class LocalFeedUpdaterTest {
         context = InstrumentationRegistry.getInstrumentation().getContext();
         UserPreferences.init(context);
 
+        Application app = (Application) context;
+        ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
+        when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
+
         // Initialize database
         PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
-
-        // Emulate turned off gpodder.net support in SyncService
-        SharedPreferences spref = mock(SharedPreferences.class);
-        when(spref.getString(eq("prefGpodnetHostname"), anyString())).thenReturn("gpodder.net");
-        Application app = mock(Application.class);
-        when(app.getSharedPreferences(anyString(), anyInt())).thenReturn(spref);
-        ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
-        when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
 
         mapDummyMetadata(LOCAL_FEED_DIR1);
         mapDummyMetadata(LOCAL_FEED_DIR2);
