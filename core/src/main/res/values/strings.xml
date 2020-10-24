@@ -59,6 +59,9 @@
     <string name="drawer_feed_counter_downloaded">Number of downloaded episodes</string>
     <string name="drawer_feed_counter_none">None</string>
 
+    <!-- Bug report activity -->
+    <string name="log_file_share_exception">No compatible apps found</string>
+
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in Browser</string>
     <string name="copy_url_label">Copy URL</string>
