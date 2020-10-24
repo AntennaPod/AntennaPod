@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.feed;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
@@ -22,7 +21,6 @@ import org.robolectric.shadows.ShadowMediaMetadataRetriever;
 import org.robolectric.shadows.util.DataSource;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -97,24 +95,9 @@ public class LocalFeedUpdaterTest {
         shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("mp3", "audio/mp3");
     }
 
-    @SuppressWarnings("JavaReflectionMemberAccess")
     @After
-    public void tearDown() throws Exception {
-        // Workaround for Robolectric issue in ShadowSQLiteConnection: IllegalStateException: Illegal connection pointer
-        Field field = PodDBAdapter.class.getDeclaredField("db");
-        field.setAccessible(true);
-        field.set(null, null);
-
-        for (Class<?> innerClass : PodDBAdapter.class.getDeclaredClasses()) {
-            if (innerClass.getSimpleName().equals("SingletonHolder")) {
-                Field dbHelperField = innerClass.getDeclaredField("dbHelper");
-                dbHelperField.setAccessible(true);
-                SQLiteOpenHelper dbHelper = (SQLiteOpenHelper) dbHelperField.get(null);
-                Field databaseField = SQLiteOpenHelper.class.getDeclaredField("mDatabase");
-                databaseField.setAccessible(true);
-                databaseField.set(dbHelper, null);
-            }
-        }
+    public void tearDown() {
+        PodDBAdapter.tearDownTests();
     }
 
     /**
