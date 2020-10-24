@@ -7,6 +7,7 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
+import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -105,27 +106,16 @@ public class LocalFeedUpdaterTest {
      */
     @Test
     public void testUpdateFeed_AddNewFeed() {
-        // verify empty database
+        // check for empty database
         List<Feed> feedListBefore = DBReader.getFeedList();
         assertTrue(feedListBefore.isEmpty());
 
-        DocumentFile documentFile = DocumentFile.fromFile(localFeedDir2);
-        try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
-            // mock external storage
-            dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile);
-
-            // call method to test
-            Feed feed = new Feed(FEED_URL, null);
-            LocalFeedUpdater.updateFeed(feed, context);
-        }
+        callUpdateFeed(localFeedDir2);
 
         // verify new feed in database
-        List<Feed> feedListAfter = DBReader.getFeedList();
-        assertEquals(1, feedListAfter.size());
-        Feed feedAfter = feedListAfter.get(0);
+        verifySingleFeedInDatabaseAndItemCount(2);
+        Feed feedAfter = verifySingleFeedInDatabase();
         assertEquals(FEED_URL, feedAfter.getDownload_url());
-        List<FeedItem> feedItems = DBReader.getFeedItemList(feedAfter);
-        assertEquals(2, feedItems.size());
     }
 
     /**
@@ -134,31 +124,12 @@ public class LocalFeedUpdaterTest {
     @Test
     public void testUpdateFeed_AddMoreItems() {
         // add local feed with 1 item (localFeedDir1)
-        DocumentFile documentFile1 = DocumentFile.fromFile(localFeedDir1);
-        try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
-            // mock external storage
-            dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile1);
-            Feed feed = new Feed(FEED_URL, null);
-            LocalFeedUpdater.updateFeed(feed, context);
-        }
+        callUpdateFeed(localFeedDir1);
 
         // now add another item (by changing to local feed folder localFeedDir2)
-        DocumentFile documentFile2 = DocumentFile.fromFile(localFeedDir2);
-        try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
-            // mock external storage
-            dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile2);
+        callUpdateFeed(localFeedDir2);
 
-            // call method to test
-            Feed feed = new Feed(FEED_URL, null);
-            LocalFeedUpdater.updateFeed(feed, context);
-        }
-
-        // verify new feed in database
-        List<Feed> feedListAfter = DBReader.getFeedList();
-        assertEquals(1, feedListAfter.size());
-        Feed feedAfter = feedListAfter.get(0);
-        List<FeedItem> feedItems = DBReader.getFeedItemList(feedAfter);
-        assertEquals(2, feedItems.size());
+        verifySingleFeedInDatabaseAndItemCount(2);
     }
 
     /**
@@ -167,31 +138,12 @@ public class LocalFeedUpdaterTest {
     @Test
     public void testUpdateFeed_RemoveItems() {
         // add local feed with 2 items (localFeedDir1)
-        DocumentFile documentFile1 = DocumentFile.fromFile(localFeedDir2);
-        try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
-            // mock external storage
-            dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile1);
-            Feed feed = new Feed(FEED_URL, null);
-            LocalFeedUpdater.updateFeed(feed, context);
-        }
+        callUpdateFeed(localFeedDir2);
 
         // now remove an item (by changing to local feed folder localFeedDir1)
-        DocumentFile documentFile2 = DocumentFile.fromFile(localFeedDir1);
-        try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
-            // mock external storage
-            dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile2);
+        callUpdateFeed(localFeedDir1);
 
-            // call method to test
-            Feed feed = new Feed(FEED_URL, null);
-            LocalFeedUpdater.updateFeed(feed, context);
-        }
-
-        // verify new feed in database
-        List<Feed> feedListAfter = DBReader.getFeedList();
-        assertEquals(1, feedListAfter.size());
-        Feed feedAfter = feedListAfter.get(0);
-        List<FeedItem> feedItems = DBReader.getFeedItemList(feedAfter);
-        assertEquals(1, feedItems.size());
+        verifySingleFeedInDatabaseAndItemCount(1);
     }
 
     /**
@@ -199,20 +151,9 @@ public class LocalFeedUpdaterTest {
      */
     @Test
     public void testUpdateFeed_FeedIconFromFolder() {
-        DocumentFile documentFile2 = DocumentFile.fromFile(localFeedDir2);
-        try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
-            // mock external storage
-            dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile2);
+        callUpdateFeed(localFeedDir2);
 
-            // call method to test
-            Feed feed = new Feed(FEED_URL, null);
-            LocalFeedUpdater.updateFeed(feed, context);
-        }
-
-        // verify new feed in database
-        List<Feed> feedListAfter = DBReader.getFeedList();
-        assertEquals(1, feedListAfter.size());
-        Feed feedAfter = feedListAfter.get(0);
+        Feed feedAfter = verifySingleFeedInDatabase();
         assertTrue(feedAfter.getImageUrl().contains("local-feed2/folder.png"));
     }
 
@@ -221,21 +162,50 @@ public class LocalFeedUpdaterTest {
      */
     @Test
     public void testUpdateFeed_FeedIconDefault() {
-        DocumentFile documentFile2 = DocumentFile.fromFile(localFeedDir1);
+        callUpdateFeed(localFeedDir1);
+
+        Feed feedAfter = verifySingleFeedInDatabase();
+        String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
+        assertTrue(feedAfter.getImageUrl().contains(resourceEntryName));
+    }
+
+    /**
+     * Calls the method {@link LocalFeedUpdater#updateFeed(Feed, Context)} with
+     * the given local feed folder.
+     *
+     * @param localFeedDir local feed folder with media files
+     */
+    private void callUpdateFeed(@NonNull File localFeedDir) {
+        DocumentFile documentFile = DocumentFile.fromFile(localFeedDir);
         try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
             // mock external storage
-            dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile2);
+            dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile);
 
             // call method to test
             Feed feed = new Feed(FEED_URL, null);
             LocalFeedUpdater.updateFeed(feed, context);
         }
+    }
 
-        // verify new feed in database
+    /**
+     * Verify that the database contains exactly one feed and return that feed.
+     */
+    @NonNull
+    private static Feed verifySingleFeedInDatabase() {
         List<Feed> feedListAfter = DBReader.getFeedList();
         assertEquals(1, feedListAfter.size());
-        Feed feedAfter = feedListAfter.get(0);
-        String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        assertTrue(feedAfter.getImageUrl().contains(resourceEntryName));
+        return feedListAfter.get(0);
+    }
+
+    /**
+     * Verify that the database contains exactly one feed and the number of
+     * items in the feed.
+     *
+     * @param expectedItemCount expected number of items in the feed
+     */
+    private static void verifySingleFeedInDatabaseAndItemCount(int expectedItemCount) {
+        Feed feed = verifySingleFeedInDatabase();
+        List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
+        assertEquals(expectedItemCount, feedItems.size());
     }
 }
