@@ -21,8 +21,10 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -1187,6 +1189,25 @@ public class PodDBAdapter {
     public final LongIntMap getPlayedEpisodesCounters(long... feedIds) {
         String whereRead = KEY_READ + "=" + FeedItem.PLAYED;
         return conditionalFeedCounterRead(whereRead, feedIds);
+    }
+
+    public final Map<Long, Long> getMostRecentItemDates() {
+        final String query = "SELECT " + KEY_FEED + ","
+                + " MAX(" + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + ") AS most_recent_pubdate"
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " GROUP BY " + KEY_FEED;
+
+        Cursor c = db.rawQuery(query, null);
+        Map<Long, Long> result = new HashMap<>();
+        if (c.moveToFirst()) {
+            do {
+                long feedId = c.getLong(0);
+                long date = c.getLong(1);
+                result.put(feedId, date);
+            } while (c.moveToNext());
+        }
+        c.close();
+        return result;
     }
 
     public final int getNumberOfDownloadedEpisodes() {
