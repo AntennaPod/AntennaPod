@@ -651,29 +651,30 @@ public final class DBReader {
      *
      * @param item The FeedItem
      */
-    public static void loadChaptersOfFeedItem(final FeedItem item) {
+    public static List<Chapter> loadChaptersOfFeedItem(final FeedItem item) {
         Log.d(TAG, "loadChaptersOfFeedItem() called with: " + "item = [" + item + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try {
-            loadChaptersOfFeedItem(adapter, item);
+            return loadChaptersOfFeedItem(adapter, item);
         } finally {
             adapter.close();
         }
     }
 
-    private static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
+    private static List<Chapter> loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
         try (Cursor cursor = adapter.getSimpleChaptersOfFeedItemCursor(item)) {
             int chaptersCount = cursor.getCount();
             if (chaptersCount == 0) {
                 item.setChapters(null);
-                return;
+                return null;
             }
-            item.setChapters(new ArrayList<>(chaptersCount));
+            ArrayList<Chapter> chapters = new ArrayList<>();
             while (cursor.moveToNext()) {
-                item.getChapters().add(Chapter.fromCursor(cursor));
+                chapters.add(Chapter.fromCursor(cursor));
             }
+            return chapters;
         }
     }
 

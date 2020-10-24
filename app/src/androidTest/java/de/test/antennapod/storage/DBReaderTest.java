@@ -375,7 +375,7 @@ public class DBReaderTest {
         for (Feed feed : feeds) {
             for (FeedItem item : feed.getItems()) {
                 assertFalse(item.hasChapters());
-                DBReader.loadChaptersOfFeedItem(item);
+                item.setChapters(DBReader.loadChaptersOfFeedItem(item));
                 assertFalse(item.hasChapters());
                 assertNull(item.getChapters());
             }
@@ -390,7 +390,7 @@ public class DBReaderTest {
         for (Feed feed : feeds) {
             for (FeedItem item : feed.getItems()) {
                 assertTrue(item.hasChapters());
-                DBReader.loadChaptersOfFeedItem(item);
+                item.setChapters(DBReader.loadChaptersOfFeedItem(item));
                 assertTrue(item.hasChapters());
                 assertNotNull(item.getChapters());
                 assertEquals(NUM_CHAPTERS, item.getChapters().size());
@@ -404,7 +404,7 @@ public class DBReaderTest {
         List<Feed> feeds = saveFeedlist(1, 1, false, true, NUM_CHAPTERS);
         FeedItem item1 = feeds.get(0).getItems().get(0);
         FeedItem item2 = DBReader.getFeedItem(item1.getId());
-        DBReader.loadChaptersOfFeedItem(item2);
+        item2.setChapters(DBReader.loadChaptersOfFeedItem(item2));
         assertTrue(item2.hasChapters());
         assertEquals(item1.getChapters(), item2.getChapters());
     }
