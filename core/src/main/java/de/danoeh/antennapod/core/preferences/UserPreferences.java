@@ -2,10 +2,8 @@ package de.danoeh.antennapod.core.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
-import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -13,6 +11,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1063,8 +1062,15 @@ public class UserPreferences {
         return prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
     }
 
+    private static void setUsageCountingDateMillis(long value) {
+        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
+    }
+
     public static void resetUsageCountingDate() {
-        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE,
-                Calendar.getInstance().getTimeInMillis()).apply();
+        setUsageCountingDateMillis(Calendar.getInstance().getTimeInMillis());
+    }
+
+    public static void unsetUsageCountingDate() {
+        setUsageCountingDateMillis(-1);
     }
 }
