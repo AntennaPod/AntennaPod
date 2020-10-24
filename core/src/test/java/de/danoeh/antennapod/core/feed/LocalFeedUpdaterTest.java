@@ -4,10 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
-import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
+import androidx.documentfile.provider.AssetsDocumentFile;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -19,11 +18,8 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowMediaMetadataRetriever;
-import org.robolectric.shadows.util.DataSource;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.core.ApplicationCallbacks;
@@ -41,7 +37,6 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Test local feeds handling in class LocalFeedUpdater.
@@ -56,14 +51,13 @@ public class LocalFeedUpdaterTest {
      */
     private static final String FEED_URL =
             "content://com.android.externalstorage.documents/tree/primary%3ADownload%2Flocal-feed";
+    private static final String LOCAL_FEED_DIR1 = "local-feed1";
+    private static final String LOCAL_FEED_DIR2 = "local-feed2";
 
     private Context context;
-    private File localFeedDir1;
-    private File localFeedDir2;
 
     @Before
     public void setUp() {
-
         // Initialize environment
         context = InstrumentationRegistry.getInstrumentation().getContext();
         UserPreferences.init(context);
@@ -83,17 +77,17 @@ public class LocalFeedUpdaterTest {
         ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
         when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
 
-        localFeedDir1 = new File("sampledata/local-feed1");
-        localFeedDir2 = new File("sampledata/local-feed2");
-        List<File> files = new ArrayList<>();
-        Collections.addAll(files, localFeedDir1.listFiles());
-        Collections.addAll(files, localFeedDir2.listFiles());
-        for (File file : files) {
-            DataSource ds = DataSource.toDataSource(context, Uri.fromFile(file));
-            ShadowMediaMetadataRetriever.addMetadata(ds, MediaMetadataRetriever.METADATA_KEY_DURATION, "10");
-            ShadowMediaMetadataRetriever.addMetadata(ds, MediaMetadataRetriever.METADATA_KEY_TITLE, file.getName());
+        // fill ShadowMediaMetadataRetriever with dummy duration and title
+        File localFeedBaseDir = new File("src/test/assets");
+        for (File folder : localFeedBaseDir.listFiles()) {
+            for (File file : folder.listFiles()) {
+                String path = folder.getName() + '/' + file.getName();
+                ShadowMediaMetadataRetriever.addMetadata(path,
+                        MediaMetadataRetriever.METADATA_KEY_DURATION, "10");
+                ShadowMediaMetadataRetriever.addMetadata(path,
+                        MediaMetadataRetriever.METADATA_KEY_TITLE, file.getName());
+            }
         }
-        shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("mp3", "audio/mp3");
     }
 
     @After
@@ -110,7 +104,7 @@ public class LocalFeedUpdaterTest {
         List<Feed> feedListBefore = DBReader.getFeedList();
         assertTrue(feedListBefore.isEmpty());
 
-        callUpdateFeed(localFeedDir2);
+        callUpdateFeed(LOCAL_FEED_DIR2);
 
         // verify new feed in database
         verifySingleFeedInDatabaseAndItemCount(2);
@@ -124,10 +118,10 @@ public class LocalFeedUpdaterTest {
     @Test
     public void testUpdateFeed_AddMoreItems() {
         // add local feed with 1 item (localFeedDir1)
-        callUpdateFeed(localFeedDir1);
+        callUpdateFeed(LOCAL_FEED_DIR1);
 
         // now add another item (by changing to local feed folder localFeedDir2)
-        callUpdateFeed(localFeedDir2);
+        callUpdateFeed(LOCAL_FEED_DIR2);
 
         verifySingleFeedInDatabaseAndItemCount(2);
     }
@@ -138,10 +132,10 @@ public class LocalFeedUpdaterTest {
     @Test
     public void testUpdateFeed_RemoveItems() {
         // add local feed with 2 items (localFeedDir1)
-        callUpdateFeed(localFeedDir2);
+        callUpdateFeed(LOCAL_FEED_DIR2);
 
         // now remove an item (by changing to local feed folder localFeedDir1)
-        callUpdateFeed(localFeedDir1);
+        callUpdateFeed(LOCAL_FEED_DIR1);
 
         verifySingleFeedInDatabaseAndItemCount(1);
     }
@@ -151,7 +145,7 @@ public class LocalFeedUpdaterTest {
      */
     @Test
     public void testUpdateFeed_FeedIconFromFolder() {
-        callUpdateFeed(localFeedDir2);
+        callUpdateFeed(LOCAL_FEED_DIR2);
 
         Feed feedAfter = verifySingleFeedInDatabase();
         assertTrue(feedAfter.getImageUrl().contains("local-feed2/folder.png"));
@@ -162,7 +156,7 @@ public class LocalFeedUpdaterTest {
      */
     @Test
     public void testUpdateFeed_FeedIconDefault() {
-        callUpdateFeed(localFeedDir1);
+        callUpdateFeed(LOCAL_FEED_DIR1);
 
         Feed feedAfter = verifySingleFeedInDatabase();
         String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
@@ -175,8 +169,8 @@ public class LocalFeedUpdaterTest {
      *
      * @param localFeedDir local feed folder with media files
      */
-    private void callUpdateFeed(@NonNull File localFeedDir) {
-        DocumentFile documentFile = DocumentFile.fromFile(localFeedDir);
+    private void callUpdateFeed(@NonNull String localFeedDir) {
+        DocumentFile documentFile = new AssetsDocumentFile(localFeedDir, context.getAssets());
         try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
             // mock external storage
             dfMock.when(() -> DocumentFile.fromTreeUri(any(), any())).thenReturn(documentFile);
