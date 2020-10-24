@@ -20,7 +20,7 @@ public class StreamingConfirmationDialog {
         new AlertDialog.Builder(context)
                 .setTitle(R.string.stream_label)
                 .setMessage(R.string.confirm_mobile_streaming_notification_message)
-                .setPositiveButton(R.string.stream_label, (dialog, which) -> stream())
+                .setPositiveButton(R.string.confirm_mobile_streaming_button_once, (dialog, which) -> stream())
                 .setNegativeButton(R.string.confirm_mobile_streaming_button_always, (dialog, which) -> {
                     UserPreferences.setAllowMobileStreaming(true);
                     stream();
