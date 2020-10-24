@@ -19,7 +19,7 @@ import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowMediaMetadataRetriever;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import de.danoeh.antennapod.core.ApplicationCallbacks;
@@ -57,7 +57,7 @@ public class LocalFeedUpdaterTest {
     private Context context;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         // Initialize environment
         context = InstrumentationRegistry.getInstrumentation().getContext();
         UserPreferences.init(context);
@@ -77,17 +77,8 @@ public class LocalFeedUpdaterTest {
         ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
         when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
 
-        // fill ShadowMediaMetadataRetriever with dummy duration and title
-        File localFeedBaseDir = new File("src/test/assets");
-        for (File folder : localFeedBaseDir.listFiles()) {
-            for (File file : folder.listFiles()) {
-                String path = folder.getName() + '/' + file.getName();
-                ShadowMediaMetadataRetriever.addMetadata(path,
-                        MediaMetadataRetriever.METADATA_KEY_DURATION, "10");
-                ShadowMediaMetadataRetriever.addMetadata(path,
-                        MediaMetadataRetriever.METADATA_KEY_TITLE, file.getName());
-            }
-        }
+        mapDummyMetadata(LOCAL_FEED_DIR1);
+        mapDummyMetadata(LOCAL_FEED_DIR2);
     }
 
     @After
@@ -164,10 +155,28 @@ public class LocalFeedUpdaterTest {
     }
 
     /**
+     * Fill ShadowMediaMetadataRetriever with dummy duration and title.
+     *
+     * @param localFeedDir assets local feed folder with media files
+     */
+    @SuppressWarnings("ConstantConditions")
+    private void mapDummyMetadata(@NonNull String localFeedDir) throws IOException {
+        String[] fileNames = context.getAssets().list(localFeedDir);
+        for (String fileName : fileNames) {
+            String path = localFeedDir + '/' + fileName;
+            ShadowMediaMetadataRetriever.addMetadata(path,
+                    MediaMetadataRetriever.METADATA_KEY_DURATION, "10");
+            ShadowMediaMetadataRetriever.addMetadata(path,
+                    MediaMetadataRetriever.METADATA_KEY_TITLE, fileName);
+        }
+
+    }
+
+    /**
      * Calls the method {@link LocalFeedUpdater#updateFeed(Feed, Context)} with
      * the given local feed folder.
      *
-     * @param localFeedDir local feed folder with media files
+     * @param localFeedDir assets local feed folder with media files
      */
     private void callUpdateFeed(@NonNull String localFeedDir) {
         DocumentFile documentFile = new AssetsDocumentFile(localFeedDir, context.getAssets());
