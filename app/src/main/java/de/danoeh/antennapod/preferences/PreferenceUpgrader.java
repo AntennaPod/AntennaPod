@@ -35,7 +35,7 @@ public class PreferenceUpgrader {
     private static void upgrade(int oldVersion) {
         if (oldVersion == -1) {
             //New installation
-            if(UserPreferences.getUsageCountingDateMillis() < 0){
+            if (UserPreferences.getUsageCountingDateMillis() < 0) {
                 UserPreferences.resetUsageCountingDate();
             }
             return;
