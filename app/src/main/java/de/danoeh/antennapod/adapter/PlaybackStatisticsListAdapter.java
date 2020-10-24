@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.view.View;
-
 import androidx.appcompat.app.AlertDialog;
 
 import de.danoeh.antennapod.R;
@@ -51,8 +49,6 @@ public class PlaybackStatisticsListAdapter extends StatisticsListAdapter {
     void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem statsItem) {
         long time = countAll ? statsItem.timePlayedCountAll : statsItem.timePlayed;
         holder.value.setText(Converter.shortLocalizedDuration(context, time));
-        holder.separator.setVisibility(View.GONE);
-        holder.count.setVisibility(View.GONE);
 
         holder.itemView.setOnClickListener(v -> {
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);

@@ -103,8 +103,6 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
         TextView title;
         TextView value;
         TextView chip;
-        TextView count;
-        TextView separator;
 
         StatisticsHolder(View itemView) {
             super(itemView);
@@ -112,8 +110,6 @@ public abstract class StatisticsListAdapter extends RecyclerView.Adapter<Recycle
             title = itemView.findViewById(R.id.txtvTitle);
             value = itemView.findViewById(R.id.txtvValue);
             chip = itemView.findViewById(R.id.chip);
-            count = itemView.findViewById(R.id.txtvCount);
-            separator = itemView.findViewById(R.id.txtvSeperator);
         }
     }
 

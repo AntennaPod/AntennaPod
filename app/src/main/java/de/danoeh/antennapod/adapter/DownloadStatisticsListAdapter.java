@@ -41,8 +41,9 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item) {
-        holder.value.setText(Formatter.formatShortFileSize(context, item.totalDownloadSize));
-        holder.count.setText(String.format(Locale.getDefault(), "%d%s",
+        holder.value.setText(Formatter.formatShortFileSize(context, item.totalDownloadSize)
+                + " • "
+                + String.format(Locale.getDefault(), "%d%s",
                 item.episodesDownloadCount, context.getString(R.string.episodes_suffix)));
     }
 
