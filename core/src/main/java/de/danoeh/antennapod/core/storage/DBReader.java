@@ -852,24 +852,11 @@ public final class DBReader {
                 }
             };
         } else {
+            final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
             comparator = (lhs, rhs) -> {
-                if (lhs.getItems() == null || lhs.getItems().size() == 0) {
-                    List<FeedItem> items = DBReader.getFeedItemList(lhs);
-                    lhs.setItems(items);
-                }
-                if (rhs.getItems() == null || rhs.getItems().size() == 0) {
-                    List<FeedItem> items = DBReader.getFeedItemList(rhs);
-                    rhs.setItems(items);
-                }
-                if (lhs.getMostRecentItem() == null) {
-                    return 1;
-                } else if (rhs.getMostRecentItem() == null) {
-                    return -1;
-                } else {
-                    Date d1 = lhs.getMostRecentItem().getPubDate();
-                    Date d2 = rhs.getMostRecentItem().getPubDate();
-                    return d2.compareTo(d1);
-                }
+                long dateLhs = recentPubDates.containsKey(lhs.getId()) ? recentPubDates.get(lhs.getId()) : 0;
+                long dateRhs = recentPubDates.containsKey(rhs.getId()) ? recentPubDates.get(rhs.getId()) : 0;
+                return Long.compare(dateRhs, dateLhs);
             };
         }
 
