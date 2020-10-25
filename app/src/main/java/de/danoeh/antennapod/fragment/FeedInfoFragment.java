@@ -270,7 +270,7 @@ public class FeedInfoFragment extends Fragment {
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getContext(), e.getMessage());
         }
 
-        if (item.getItemId() == R.id.reconnect_local_folder) {
+        if (item.getItemId() == R.id.reconnect_local_folder && Build.VERSION.SDK_INT >= 21) {
             AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
             alert.setMessage(R.string.reconnect_local_folder_warning);
             alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
