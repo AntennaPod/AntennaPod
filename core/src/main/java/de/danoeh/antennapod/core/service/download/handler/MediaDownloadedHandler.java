@@ -56,7 +56,7 @@ public class MediaDownloadedHandler implements Runnable {
 
         // check if file has chapters
         if (media.getItem() != null && !media.getItem().hasChapters()) {
-            ChapterUtils.loadChaptersFromFileUrl(media);
+            media.setChapters(ChapterUtils.loadChaptersFromFileUrl(media));
         }
 
         // Get duration

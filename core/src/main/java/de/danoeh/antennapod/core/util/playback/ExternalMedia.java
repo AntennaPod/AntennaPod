@@ -99,7 +99,7 @@ public class ExternalMedia implements Playable {
             e.printStackTrace();
             throw new PlayableException("NumberFormatException when reading duration of media file");
         }
-        ChapterUtils.loadChaptersFromFileUrl(this);
+        setChapters(ChapterUtils.loadChaptersFromFileUrl(this));
     }
 
     @Override
