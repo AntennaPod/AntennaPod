@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
-import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -12,6 +11,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +23,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -49,7 +48,8 @@ import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
  * when called.
  */
 public class UserPreferences {
-    private UserPreferences(){}
+    private UserPreferences() {
+    }
 
     private static final String TAG = "UserPreferences";
 
@@ -373,7 +373,9 @@ public class UserPreferences {
         prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).apply();
     }
 
-    public static boolean shouldSkipKeepEpisode() { return prefs.getBoolean(PREF_SKIP_KEEPS_EPISODE, true); }
+    public static boolean shouldSkipKeepEpisode() {
+        return prefs.getBoolean(PREF_SKIP_KEEPS_EPISODE, true);
+    }
 
     public static boolean shouldFavoriteKeepEpisode() {
         return prefs.getBoolean(PREF_FAVORITE_KEEPS_EPISODE, true);
@@ -456,20 +458,23 @@ public class UserPreferences {
      */
     public static long getUpdateInterval() {
         String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
-        if(!updateInterval.contains(":")) {
+        if (!updateInterval.contains(":")) {
             return readUpdateInterval(updateInterval);
         } else {
             return 0;
         }
     }
 
+    /**
+     * @return empty array if disabled, else {hourOfDay, minute} int array
+     */
     public static int[] getUpdateTimeOfDay() {
         String datetime = prefs.getString(PREF_UPDATE_INTERVAL, "");
-        if(datetime.length() >= 3 && datetime.contains(":")) {
+        if (datetime.length() >= 3 && datetime.contains(":")) {
             String[] parts = datetime.split(":");
             int hourOfDay = Integer.parseInt(parts[0]);
             int minute = Integer.parseInt(parts[1]);
-            return new int[] { hourOfDay, minute };
+            return new int[]{hourOfDay, minute};
         } else {
             return new int[0];
         }
@@ -600,22 +605,22 @@ public class UserPreferences {
     public static void setProxyConfig(ProxyConfig config) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(PREF_PROXY_TYPE, config.type.name());
-        if(TextUtils.isEmpty(config.host)) {
+        if (TextUtils.isEmpty(config.host)) {
             editor.remove(PREF_PROXY_HOST);
         } else {
             editor.putString(PREF_PROXY_HOST, config.host);
         }
-        if(config.port <= 0 || config.port > 65535) {
+        if (config.port <= 0 || config.port > 65535) {
             editor.remove(PREF_PROXY_PORT);
         } else {
             editor.putInt(PREF_PROXY_PORT, config.port);
         }
-        if(TextUtils.isEmpty(config.username)) {
+        if (TextUtils.isEmpty(config.username)) {
             editor.remove(PREF_PROXY_USER);
         } else {
             editor.putString(PREF_PROXY_USER, config.username);
         }
-        if(TextUtils.isEmpty(config.password)) {
+        if (TextUtils.isEmpty(config.password)) {
             editor.remove(PREF_PROXY_PASSWORD);
         } else {
             editor.putString(PREF_PROXY_PASSWORD, config.password);
@@ -642,20 +647,20 @@ public class UserPreferences {
 
     public static void setFastForwardSecs(int secs) {
         prefs.edit()
-             .putInt(PREF_FAST_FORWARD_SECS, secs)
-             .apply();
+                .putInt(PREF_FAST_FORWARD_SECS, secs)
+                .apply();
     }
 
     public static void setRewindSecs(int secs) {
         prefs.edit()
-             .putInt(PREF_REWIND_SECS, secs)
-             .apply();
+                .putInt(PREF_REWIND_SECS, secs)
+                .apply();
     }
 
     public static void setPlaybackSpeed(float speed) {
         prefs.edit()
-             .putString(PREF_PLAYBACK_SPEED, String.valueOf(speed))
-             .apply();
+                .putString(PREF_PLAYBACK_SPEED, String.valueOf(speed))
+                .apply();
     }
 
     public static void setVideoPlaybackSpeed(float speed) {
@@ -679,22 +684,22 @@ public class UserPreferences {
             jsonArray.put(speedFormat.format(speed));
         }
         prefs.edit()
-             .putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
-             .apply();
+                .putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
+                .apply();
     }
 
     public static void setVolume(@IntRange(from = 0, to = 100) int leftVolume,
                                  @IntRange(from = 0, to = 100) int rightVolume) {
         prefs.edit()
-             .putInt(PREF_LEFT_VOLUME, leftVolume)
-             .putInt(PREF_RIGHT_VOLUME, rightVolume)
-             .apply();
+                .putInt(PREF_LEFT_VOLUME, leftVolume)
+                .putInt(PREF_RIGHT_VOLUME, rightVolume)
+                .apply();
     }
 
     public static void setAutodownloadSelectedNetworks(String[] value) {
         prefs.edit()
-             .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
-             .apply();
+                .putString(PREF_AUTODL_SELECTED_NETWORKS, TextUtils.join(",", value))
+                .apply();
     }
 
     /**
@@ -702,8 +707,8 @@ public class UserPreferences {
      */
     public static void setUpdateInterval(long hours) {
         prefs.edit()
-             .putString(PREF_UPDATE_INTERVAL, String.valueOf(hours))
-             .apply();
+                .putString(PREF_UPDATE_INTERVAL, String.valueOf(hours))
+                .apply();
         // when updating with an interval, we assume the user wants
         // to update *now* and then every 'hours' interval thereafter.
         AutoUpdateManager.restartUpdateAlarm(context);
@@ -714,8 +719,8 @@ public class UserPreferences {
      */
     public static void setUpdateTimeOfDay(int hourOfDay, int minute) {
         prefs.edit()
-             .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
-             .apply();
+                .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
+                .apply();
         AutoUpdateManager.restartUpdateAlarm(context);
     }
 
@@ -739,21 +744,21 @@ public class UserPreferences {
     public static void setHiddenDrawerItems(List<String> items) {
         String str = TextUtils.join(",", items);
         prefs.edit()
-             .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
-             .apply();
+                .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
+                .apply();
     }
 
     public static void setCompactNotificationButtons(List<Integer> items) {
         String str = TextUtils.join(",", items);
         prefs.edit()
-             .putString(PREF_COMPACT_NOTIFICATION_BUTTONS, str)
-             .apply();
+                .putString(PREF_COMPACT_NOTIFICATION_BUTTONS, str)
+                .apply();
     }
 
     public static void setQueueLocked(boolean locked) {
         prefs.edit()
-             .putBoolean(PREF_QUEUE_LOCKED, locked)
-             .apply();
+                .putBoolean(PREF_QUEUE_LOCKED, locked)
+                .apply();
     }
 
     private static int readThemeValue(String valueFromPrefs) {
@@ -836,10 +841,13 @@ public class UserPreferences {
 
     public static VideoBackgroundBehavior getVideoBackgroundBehavior() {
         switch (prefs.getString(PREF_VIDEO_BEHAVIOR, "pip")) {
-            case "stop": return VideoBackgroundBehavior.STOP;
-            case "continue": return VideoBackgroundBehavior.CONTINUE_PLAYING;
+            case "stop":
+                return VideoBackgroundBehavior.STOP;
+            case "continue":
+                return VideoBackgroundBehavior.CONTINUE_PLAYING;
             case "pip": //Deliberate fall-through
-            default: return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
+            default:
+                return VideoBackgroundBehavior.PICTURE_IN_PICTURE;
         }
     }
 
@@ -923,8 +931,8 @@ public class UserPreferences {
     public static void setDataFolder(String dir) {
         Log.d(TAG, "setDataFolder(dir: " + dir + ")");
         prefs.edit()
-             .putString(PREF_DATA_FOLDER, dir)
-             .apply();
+                .putString(PREF_DATA_FOLDER, dir)
+                .apply();
     }
 
     /**
@@ -944,9 +952,8 @@ public class UserPreferences {
     }
 
     /**
-     *
      * @return true if auto update is set to a specific time
-     *         false if auto update is set to interval
+     * false if auto update is set to interval
      */
     public static boolean isAutoUpdateTimeOfDay() {
         return getUpdateTimeOfDay().length == 2;
@@ -969,12 +976,17 @@ public class UserPreferences {
 
     public static BackButtonBehavior getBackButtonBehavior() {
         switch (prefs.getString(PREF_BACK_BUTTON_BEHAVIOR, "default")) {
-            case "drawer": return BackButtonBehavior.OPEN_DRAWER;
-            case "doubletap": return BackButtonBehavior.DOUBLE_TAP;
-            case "prompt": return BackButtonBehavior.SHOW_PROMPT;
-            case "page": return BackButtonBehavior.GO_TO_PAGE;
+            case "drawer":
+                return BackButtonBehavior.OPEN_DRAWER;
+            case "doubletap":
+                return BackButtonBehavior.DOUBLE_TAP;
+            case "prompt":
+                return BackButtonBehavior.SHOW_PROMPT;
+            case "page":
+                return BackButtonBehavior.GO_TO_PAGE;
             case "default": // Deliberate fall-through
-            default: return BackButtonBehavior.DEFAULT;
+            default:
+                return BackButtonBehavior.DEFAULT;
         }
     }
 

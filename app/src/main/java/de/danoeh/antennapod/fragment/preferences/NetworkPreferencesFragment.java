@@ -2,19 +2,39 @@ package de.danoeh.antennapod.fragment.preferences;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceFragmentCompat;
+
 import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.dialog.ProxyDialog;
-import org.apache.commons.lang3.ArrayUtils;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
+import java.net.UnknownServiceException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -72,13 +92,13 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
         Context context = getActivity().getApplicationContext();
         String val;
         long interval = UserPreferences.getUpdateInterval();
-        if(interval > 0) {
+        if (interval > 0) {
             int hours = (int) TimeUnit.MILLISECONDS.toHours(interval);
             String hoursStr = context.getResources().getQuantityString(R.plurals.time_hours_quantified, hours, hours);
             val = String.format(context.getString(R.string.pref_autoUpdateIntervallOrTime_every), hoursStr);
         } else {
             int[] timeOfDay = UserPreferences.getUpdateTimeOfDay();
-            if(timeOfDay.length == 2) {
+            if (timeOfDay.length == 2) {
                 Calendar cal = new GregorianCalendar();
                 cal.set(Calendar.HOUR_OF_DAY, timeOfDay[0]);
                 cal.set(Calendar.MINUTE, timeOfDay[1]);
@@ -106,72 +126,93 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
         final Context context = getActivity();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LinearLayout content = new LinearLayout(context);
+        content.setOrientation(LinearLayout.VERTICAL);
         builder.setTitle(R.string.pref_autoUpdateIntervallOrTime_title);
-        builder.setMessage(R.string.pref_autoUpdateIntervallOrTime_message);
-        builder.setPositiveButton(R.string.pref_autoUpdateIntervallOrTime_Interval, (dialog, which) -> {
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-            builder1.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
-            final String[] values = context.getResources().getStringArray(R.array.update_intervall_values);
-            final String[] entries = getUpdateIntervalEntries(values);
-            long currInterval = UserPreferences.getUpdateInterval();
-            int checkedItem = -1;
-            if(currInterval > 0) {
-                String currIntervalStr = String.valueOf(TimeUnit.MILLISECONDS.toHours(currInterval));
-                checkedItem = ArrayUtils.indexOf(values, currIntervalStr);
-            }
-            builder1.setSingleChoiceItems(entries, checkedItem, (dialog1, which1) -> {
-                int hours = Integer.parseInt(values[which1]);
-                UserPreferences.setUpdateInterval(hours);
-                dialog1.dismiss();
-                setUpdateIntervalText();
+
+        CharSequence[] options = new CharSequence[]{
+                context.getText(R.string.pref_autoUpdateIntervallOrTime_Interval),
+                context.getText(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay),
+                context.getText(R.string.pref_autoUpdateIntervallOrTime_Disable)
+        };
+
+        int selected;
+        if (UserPreferences.getUpdateInterval() != 0)
+            selected = 0;
+        else if (UserPreferences.getUpdateTimeOfDay().length != 0)
+            selected = 1;
+        else
+            selected = 2;
+
+        View picker = getPicker(selected, context);
+
+        RadioGroup radioButtons = new RadioGroup(context);
+        for (CharSequence option : options) {
+            RadioButton b = new RadioButton(context);
+            b.setText(option);
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int selected = radioButtons.indexOfChild(view);
+                    View newPicker = getPicker(selected, context);
+                    content.removeViewAt(1);
+                    content.addView(newPicker);
+                }
             });
-            builder1.setNegativeButton(context.getString(R.string.cancel_label), null);
-            builder1.show();
-        });
-        builder.setNegativeButton(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay, (dialog, which) -> {
-            int hourOfDay = 7;
-            int minute = 0;
-            int[] updateTime = UserPreferences.getUpdateTimeOfDay();
-            if (updateTime.length == 2) {
-                hourOfDay = updateTime[0];
-                minute = updateTime[1];
+            radioButtons.addView(b);
+        }
+        content.addView(radioButtons);
+        ((RadioButton) radioButtons.getChildAt(selected)).setChecked(true);
+
+        content.addView(picker);
+        builder.setView(content);
+        builder.setNegativeButton("Cancel", (dialogInterface, i) -> builder.create().cancel());
+        builder.setPositiveButton("Save", (dialogInterface, i) -> {
+            int id = radioButtons.getCheckedRadioButtonId();
+            int selected1 = radioButtons.indexOfChild(radioButtons.findViewById(id));
+            if (selected1 == 0) {
+                int interval = Integer.parseInt(((Spinner) content.getChildAt(1)).getSelectedItem().toString());
+                UserPreferences.setUpdateInterval(interval);
+                setUpdateIntervalText();
+            } else if (selected1 == 1) {
+                int hour = ((TimePicker) content.getChildAt(1)).getCurrentHour();
+                int minute = ((TimePicker) content.getChildAt(1)).getCurrentMinute();
+                UserPreferences.setUpdateTimeOfDay(hour, minute);
+            } else {
+                UserPreferences.disableAutoUpdate(context);
             }
-            TimePickerDialog timePickerDialog = new TimePickerDialog(context,
-                    (view, selectedHourOfDay, selectedMinute) -> {
-                        if (view.getTag() == null) { // onTimeSet() may get called twice!
-                            view.setTag("TAGGED");
-                            UserPreferences.setUpdateTimeOfDay(selectedHourOfDay, selectedMinute);
-                            setUpdateIntervalText();
-                        }
-                    }, hourOfDay, minute, DateFormat.is24HourFormat(context));
-            timePickerDialog.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay));
-            timePickerDialog.show();
-        });
-        builder.setNeutralButton(R.string.pref_autoUpdateIntervallOrTime_Disable, (dialog, which) -> {
-            UserPreferences.disableAutoUpdate(context);
             setUpdateIntervalText();
         });
         builder.show();
     }
 
-    private String[] getUpdateIntervalEntries(final String[] values) {
-        final Resources res = getActivity().getResources();
-        String[] entries = new String[values.length];
-        for (int x = 0; x < values.length; x++) {
-            Integer v = Integer.parseInt(values[x]);
-            switch (v) {
-                case 0:
-                    entries[x] = res.getString(R.string.pref_update_interval_hours_manual);
-                    break;
-                case 1:
-                    entries[x] = v + " " + res.getString(R.string.pref_update_interval_hours_singular);
-                    break;
-                default:
-                    entries[x] = v + " " + res.getString(R.string.pref_update_interval_hours_plural);
-                    break;
-
-            }
+    private View getPicker(int selected, Context context) {
+        switch (selected) {
+            case 0:
+                Spinner intervalPicker = new Spinner(context);
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.update_intervall_values, android.R.layout.simple_spinner_item);
+                intervalPicker.setAdapter(adapter);
+                int current = (int) TimeUnit.MILLISECONDS.toHours(UserPreferences.getUpdateInterval());
+                if (current == 0) current = 4; // default value
+                Log.println(Log.INFO, "Current Intervall", Integer.toString(current));
+                int position = adapter.getPosition(Long.toString(current));
+                intervalPicker.setSelection(position);
+                return intervalPicker;
+            case 1:
+                TimePicker timePicker = new TimePicker(context);
+                int[] time = UserPreferences.getUpdateTimeOfDay();
+                if (time.length == 2) {
+                    timePicker.setCurrentHour(time[0]);
+                    timePicker.setCurrentMinute(time[1]);
+                } else {
+                    timePicker.setCurrentHour(7);
+                    timePicker.setCurrentMinute(0);
+                }
+                return timePicker;
+            default:
+                TextView disabledText = new TextView(context);
+                disabledText.setText("Automatic updates disabled. ");
+                return disabledText;
         }
-        return entries;
     }
 }
