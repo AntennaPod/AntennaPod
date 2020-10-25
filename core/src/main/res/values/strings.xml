@@ -268,7 +268,8 @@
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
     <string name="confirm_mobile_streaming_notification_title">Confirm Mobile streaming</string>
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
-    <string name="confirm_mobile_streaming_button_always">Always allow</string>
+    <string name="confirm_mobile_streaming_button_always">Always</string>
+    <string name="confirm_mobile_streaming_button_once">Once</string>
     <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 

@@ -580,7 +580,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntentAllowThisTime)
                 .addAction(R.drawable.ic_stream_white,
-                        getString(R.string.stream_label),
+                        getString(R.string.confirm_mobile_streaming_button_once),
                         pendingIntentAllowThisTime)
                 .addAction(R.drawable.ic_stream_white,
                         getString(R.string.confirm_mobile_streaming_button_always),
