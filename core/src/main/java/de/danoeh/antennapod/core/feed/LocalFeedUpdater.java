@@ -32,11 +32,12 @@ public class LocalFeedUpdater {
         String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
         DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
         if (documentFolder == null) {
-            reportError(feed, "Unable to retrieve document tree");
+            reportError(feed, "Unable to retrieve document tree."
+                    + "Try re-connecting the folder on the podcast info page.");
             return;
         }
         if (!documentFolder.exists() || !documentFolder.canRead()) {
-            reportError(feed, "Cannot read local directory");
+            reportError(feed, "Cannot read local directory. Try re-connecting the folder on the podcast info page.");
             return;
         }
 
