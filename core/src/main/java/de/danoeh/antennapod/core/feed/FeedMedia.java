@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -383,19 +384,30 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item == null || item.getChapters() != null) {
             return;
         }
-        // check if chapters are stored in db and not loaded yet.
-        if (item.hasChapters()) {
-            DBReader.loadChaptersOfFeedItem(item);
+
+        List<Chapter> chapters = loadChapters(context);
+        if (chapters == null) {
+            // Do not try loading again. There are no chapters.
+            item.setChapters(Collections.emptyList());
         } else {
-            if (localFileAvailable()) {
-                ChapterUtils.loadChaptersFromFileUrl(this);
-            } else {
-                ChapterUtils.loadChaptersFromStreamUrl(this, context);
-            }
-            if (item.getChapters() != null) {
-                DBWriter.setFeedItem(item);
-            }
+            item.setChapters(chapters);
         }
+    }
+
+    private List<Chapter> loadChapters(Context context) {
+        List<Chapter> chaptersFromDatabase = null;
+        if (item.hasChapters()) {
+            chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(item);
+        }
+
+        List<Chapter> chaptersFromMediaFile;
+        if (localFileAvailable()) {
+            chaptersFromMediaFile = ChapterUtils.loadChaptersFromFileUrl(this);
+        } else {
+            chaptersFromMediaFile = ChapterUtils.loadChaptersFromStreamUrl(this, context);
+        }
+
+        return ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
     }
 
     @Override

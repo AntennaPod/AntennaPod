@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
-import androidx.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -12,6 +11,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +23,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -115,6 +115,7 @@ public class UserPreferences {
     private static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
     public static final String PREF_DELETE_REMOVES_FROM_QUEUE = "prefDeleteRemovesFromQueue";
+    public static final String PREF_USAGE_COUNTING_DATE = "prefUsageCounting";
 
     // Mediaplayer
     public static final String PREF_MEDIA_PLAYER = "prefMediaPlayer";
@@ -1056,4 +1057,19 @@ public class UserPreferences {
                 .apply();
     }
 
+    public static long getUsageCountingDateMillis() {
+        return prefs.getLong(PREF_USAGE_COUNTING_DATE, -1);
+    }
+
+    private static void setUsageCountingDateMillis(long value) {
+        prefs.edit().putLong(PREF_USAGE_COUNTING_DATE, value).apply();
+    }
+
+    public static void resetUsageCountingDate() {
+        setUsageCountingDateMillis(Calendar.getInstance().getTimeInMillis());
+    }
+
+    public static void unsetUsageCountingDate() {
+        setUsageCountingDateMillis(-1);
+    }
 }

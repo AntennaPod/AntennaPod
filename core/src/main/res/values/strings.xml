@@ -41,6 +41,7 @@
     <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
     <string name="statistics_reset_data">Reset statistics data</string>
     <string name="statistics_reset_data_msg">This will erase the history of duration played for all episodes. Are you sure you want to proceed?</string>
+    <string name="statistics_counting_since">Since %s,\nyou played</string>
 
     <!-- Download Statistics fragment -->
     <string name="total_size_downloaded_podcasts">Total size of episodes on the device:</string>
@@ -269,7 +270,8 @@
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
     <string name="confirm_mobile_streaming_notification_title">Confirm Mobile streaming</string>
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
-    <string name="confirm_mobile_streaming_button_always">Always allow</string>
+    <string name="confirm_mobile_streaming_button_always">Always</string>
+    <string name="confirm_mobile_streaming_button_once">Once</string>
     <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
