@@ -1109,7 +1109,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
         int skipEnd = preferences.getFeedSkipEnding();
         if (skipEnd > 0
-                && skipEnd < getDuration()
+                && skipEnd * 1000 < getDuration()
                 && (remainingTime - (skipEnd * 1000) > 0)
                 && ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
             Log.d(TAG, "skipEndingIfNecessary: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());
@@ -1119,7 +1119,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             toast.show();
 
             this.autoSkippedFeedMediaId = feedMedia.getItem().getId();
-            mediaPlayer.skip();
+            mediaPlayer.seekTo(duration);
         }
    }
 
