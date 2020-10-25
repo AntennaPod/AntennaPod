@@ -30,7 +30,6 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_GPODNET_FORCE_FULL_SYNC = "pref_gpodnet_force_full_sync";
     private static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
     private static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
-    private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -112,7 +111,6 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_GPODNET_SYNC).setEnabled(loggedIn);
         findPreference(PREF_GPODNET_FORCE_FULL_SYNC).setEnabled(loggedIn);
         findPreference(PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
-        findPreference(PREF_GPODNET_NOTIFICATIONS).setEnabled(loggedIn);
         if (loggedIn) {
             String format = getActivity().getString(R.string.pref_gpodnet_login_status);
             String summary = String.format(format, GpodnetPreferences.getUsername(),

@@ -71,4 +71,11 @@
         android:paddingTop="8dp"
         android:scrollbarStyle="outsideOverlay"
         tools:listitem="@layout/nav_listitem" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

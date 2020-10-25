@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.content.Intent;
 import android.graphics.LightingColorFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +28,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
@@ -205,6 +209,18 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         });
 
         EventBus.getDefault().register(this);
+
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            try {
+                DBTasks.forceRefreshFeed(requireContext(), feed, true);
+            } catch (DownloadRequestException e) {
+                e.printStackTrace();
+            }
+            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
+        });
+
         loadItems();
         return root;
     }
@@ -236,7 +252,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         optionsMenu = menu;
         FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
         iconTintManager.updateTint();
-        MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID);
+        if (feed != null) {
+            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID, feed.getTitle());
+        } else {
+            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), feedID, "");
+        }
         if (feed == null || feed.getLink() == null) {
             menu.findItem(R.id.share_link_item).setVisible(false);
             menu.findItem(R.id.visit_website_item).setVisible(false);
@@ -261,7 +281,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (!super.onOptionsItemSelected(item)) {
+        if (item.getItemId() == R.id.action_search) {
+            item.getActionView().post(() -> iconTintManager.updateTint());
+        }
+        if (super.onOptionsItemSelected(item)) {
+            return true;
+        } else {
             if (feed == null) {
                 ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                         R.string.please_wait_for_data, Toast.LENGTH_LONG);
@@ -320,8 +345,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
                 return true;
             }
-        } else {
-            return true;
         }
     }
 

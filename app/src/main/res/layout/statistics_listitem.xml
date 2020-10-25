@@ -21,7 +21,7 @@
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:scaleType="fitCenter"
-            tools:src="@drawable/ic_antenna"
+            tools:src="@tools:sample/avatars"
             tools:background="@android:color/holo_green_dark"/>
 
     <TextView

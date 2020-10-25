@@ -246,7 +246,7 @@ public class QueueFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         if (queue != null) {
             inflater.inflate(R.menu.queue, menu);
-            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), 0);
+            MenuItemUtils.setupSearchItem(menu, (MainActivity) getActivity(), 0, "");
             MenuItemUtils.refreshLockItem(getActivity(), menu);
 
             // Show Lock Item only if queue is sorted manually
@@ -335,10 +335,8 @@ public class QueueFragment extends Fragment {
                     if (keepSortedNew) {
                         SortOrder sortOrder = UserPreferences.getQueueKeepSortedOrder();
                         DBWriter.reorderQueue(sortOrder, true);
-                        if (recyclerAdapter != null) {
-                            recyclerAdapter.updateDragDropEnabled();
-                        }
-                    } else if (recyclerAdapter != null) {
+                    }
+                    if (recyclerAdapter != null) {
                         recyclerAdapter.updateDragDropEnabled();
                     }
                     getActivity().invalidateOptionsMenu();

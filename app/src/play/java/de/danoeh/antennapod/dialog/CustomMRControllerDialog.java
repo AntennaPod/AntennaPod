@@ -290,10 +290,10 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
 
         View playbackControlLayout = View.inflate(getContext(), R.layout.media_router_controller, wrapper);
 
-        titleView = (TextView) playbackControlLayout.findViewById(R.id.mrc_control_title);
-        subtitleView = (TextView) playbackControlLayout.findViewById(R.id.mrc_control_subtitle);
+        titleView = playbackControlLayout.findViewById(R.id.mrc_control_title);
+        subtitleView = playbackControlLayout.findViewById(R.id.mrc_control_subtitle);
         playbackControlLayout.findViewById(R.id.mrc_control_title_container).setOnClickListener(onClickListener);
-        playPauseButton = (ImageButton) playbackControlLayout.findViewById(R.id.mrc_control_play_pause);
+        playPauseButton = playbackControlLayout.findViewById(R.id.mrc_control_play_pause);
         playPauseButton.setOnClickListener(v -> {
             PlaybackStateCompat state;
             if (mediaController != null && (state = mediaController.getPlaybackState()) != null) {

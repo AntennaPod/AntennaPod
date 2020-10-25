@@ -58,6 +58,16 @@ android {
             includeAndroidResources = true
         }
     }
+
+    lintOptions {
+        disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
+                "GradleDependency", "ParcelClassLoader", "Typos", "ExtraTranslation", "ImpliedQuantity",
+                "PluralsCandidate", "UnusedQuantity", "StringFormatCount", "TrustAllX509TrustManager",
+                "StaticFieldLeak", "TypographyEllipsis", "IconDensities", "IconDuplicates", "CheckResult"
+
+        warningsAsErrors true
+        abortOnError true
+    }
 }
 
 dependencies {
@@ -97,6 +107,9 @@ dependencies {
     } else {
         System.out.println("core: free build hack, skipping some dependencies")
     }
+
+    // bundle conscrypt with free builds
+    freeImplementation "org.conscrypt:conscrypt-android:$conscryptVersion"
 
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation 'junit:junit:4.13'

@@ -45,6 +45,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class CoverFragment extends Fragment {
 
     private static final String TAG = "CoverFragment";
+    static final double SIXTEEN_BY_NINE = 1.7;
 
     private View root;
     private TextView txtvPodcastTitle;
@@ -188,20 +189,31 @@ public class CoverFragment extends Fragment {
 
     private void configureForOrientation(Configuration newConfig) {
         LinearLayout mainContainer = getView().findViewById(R.id.cover_fragment);
-        ViewGroup.LayoutParams params = imgvCover.getLayoutParams();
+        LinearLayout textContainer = getView().findViewById(R.id.cover_fragment_text_container);
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imgvCover.getLayoutParams();
+        LinearLayout.LayoutParams textParams = (LinearLayout.LayoutParams) textContainer.getLayoutParams();
+        double ratio = (float) newConfig.screenHeightDp / (float) newConfig.screenWidthDp;
 
         if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            double percentageWidth = 0.8;
+            if (ratio <= SIXTEEN_BY_NINE) {
+                percentageWidth = (ratio / SIXTEEN_BY_NINE) * percentageWidth * 0.8;
+            }
             mainContainer.setOrientation(LinearLayout.VERTICAL);
             if (newConfig.screenWidthDp > 0) {
-                params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * .80);
+                params.width = (int) (convertDpToPixel(newConfig.screenWidthDp) * percentageWidth);
                 params.height = params.width;
+                textParams.weight = 0;
                 imgvCover.setLayoutParams(params);
             }
         } else {
+            double percentageHeight = ratio * 0.8;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
-                params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * .40);
+                params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);
                 params.width = params.height;
+                textParams.weight = 1;
                 imgvCover.setLayoutParams(params);
             }
         }

@@ -5,12 +5,11 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.CrashReportWriter;
+import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class PreferenceUpgrader {
     private static final String PREF_CONFIGURED_VERSION = "version_code";

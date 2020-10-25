@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -33,6 +38,8 @@ import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
@@ -71,6 +78,8 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
     public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
+    public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
+    public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
 
     private @Nullable DrawerLayout drawerLayout;
     private @Nullable ActionBarDrawerToggle drawerToggle;
@@ -92,6 +101,9 @@ public class MainActivity extends CastEnabledActivity {
     public void onCreate(Bundle savedInstanceState) {
         lastTheme = UserPreferences.getNoTitleTheme();
         setTheme(lastTheme);
+        if (savedInstanceState != null) {
+            ensureGeneratedViewIdGreaterThan(savedInstanceState.getInt(KEY_GENERATED_VIEW_ID, 0));
+        }
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
@@ -143,6 +155,25 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
 
+    /**
+     * ViewCompat.generateViewId stores the current ID in a static variable.
+     * When the process is killed, the variable gets reset.
+     * This makes sure that we do not get ID collisions
+     * and therefore errors when trying to restore state from another view.
+     */
+    @SuppressWarnings("StatementWithEmptyBody")
+    private void ensureGeneratedViewIdGreaterThan(int minimum) {
+        while (ViewCompat.generateViewId() <= minimum) {
+            // Generate new IDs
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_GENERATED_VIEW_ID, ViewCompat.generateViewId());
+    }
+
     private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
             new BottomSheetBehavior.BottomSheetCallback() {
         @Override
@@ -181,7 +212,7 @@ public class MainActivity extends CastEnabledActivity {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
             loadFragment(AddFeedFragment.TAG, null);
-            new Handler().postDelayed(() -> {
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (drawerLayout != null) { // Tablet layout does not have a drawer
                     drawerLayout.openDrawer(navDrawer);
                 }
@@ -477,7 +508,11 @@ public class MainActivity extends CastEnabledActivity {
             if (tag != null) {
                 loadFragment(tag, args);
             } else if (feedId > 0) {
-                loadFeedFragmentById(feedId, args);
+                if (intent.getBooleanExtra(EXTRA_STARTED_FROM_SEARCH, false)) {
+                    loadChildFragment(FeedItemlistFragment.newInstance(feedId));
+                } else {
+                    loadFeedFragmentById(feedId, args);
+                }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
@@ -511,4 +546,53 @@ public class MainActivity extends CastEnabledActivity {
     public Snackbar showSnackbarAbovePlayer(int text, int duration) {
         return showSnackbarAbovePlayer(getResources().getText(text), duration);
     }
+
+    //Hardware keyboard support
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        Integer customKeyCode = null;
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_P:
+                customKeyCode = KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE;
+                break;
+            case KeyEvent.KEYCODE_J: //Fallthrough
+            case KeyEvent.KEYCODE_A:
+            case KeyEvent.KEYCODE_COMMA:
+                customKeyCode = KeyEvent.KEYCODE_MEDIA_REWIND;
+                break;
+            case KeyEvent.KEYCODE_K: //Fallthrough
+            case KeyEvent.KEYCODE_D:
+            case KeyEvent.KEYCODE_PERIOD:
+                customKeyCode = KeyEvent.KEYCODE_MEDIA_FAST_FORWARD;
+                break;
+            case KeyEvent.KEYCODE_PLUS: //Fallthrough
+            case KeyEvent.KEYCODE_W:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_MINUS: //Fallthrough
+            case KeyEvent.KEYCODE_S:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_M:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                            AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
+                    return true;
+                }
+                break;
+        }
+
+        if (customKeyCode != null) {
+            Intent intent = new Intent(this, PlaybackService.class);
+            intent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE, customKeyCode);
+            ContextCompat.startForegroundService(this, intent);
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+
 }

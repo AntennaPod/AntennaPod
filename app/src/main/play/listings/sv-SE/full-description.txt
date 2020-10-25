@@ -24,8 +24,8 @@ Gjord av podcastenthusiaster, AntennaPod är fri i alla ordets bemärkelser: öp
 <b>Gå med i AntennaPods gemenskap!</b>
 AntennaPod är under aktiv utveckling av volontärer. Du kan också bidra, med kod eller kommentarer!
 
-GitHub är platsen att gå till för att be om funktioner, skapa buggrapporter eller bidra med kod:
-https://www.github.com/AntennaPod/AntennaPod
+Våra vänliga forummedlemmar hjälper glatt till med alla frågor du har. Du inbjuds också att diskutera funktioner och podcasting generellt.
+https://forum.antennapod.org/
 
 Transifex är platsen att gå till för att hjälpa till med översättningen:
 https://www.transifex.com/antennapod/antennapod

@@ -74,7 +74,8 @@
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_black</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
         <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
-        <item name="filter_dialog_button_background">@color/filter_dialog_background_light</item>
+        <item name="filter_dialog_button_background">@drawable/filter_dialog_background_light</item>
+        <item name="ic_notifications">@drawable/ic_notifications_black</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -151,7 +152,8 @@
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_white</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
         <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
-        <item name="filter_dialog_button_background">@color/filter_dialog_background_dark</item>
+        <item name="filter_dialog_button_background">@drawable/filter_dialog_background_dark</item>
+        <item name="ic_notifications">@drawable/ic_notifications_white</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
@@ -228,8 +230,8 @@
 
     <style name="Theme.AntennaPod.Splash" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
-        <item name="colorPrimary">@color/ic_launcher_background</item>
-        <item name="colorPrimaryDark">@color/ic_launcher_background</item>
+        <item name="colorPrimary">@color/icon_background_gradient_start</item>
+        <item name="colorPrimaryDark">@color/icon_background_gradient_start</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
@@ -306,4 +308,14 @@
     <style name="Widget.AntennaPod.ActionBar.Black" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
         <item name="background">@color/black</item>
     </style>
+
+    <style name="AddPodcastTextView">
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:clickable">true</item>
+    </style>
+
 </resources>

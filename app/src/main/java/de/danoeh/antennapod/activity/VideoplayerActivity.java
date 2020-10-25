@@ -3,14 +3,18 @@ package de.danoeh.antennapod.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+
+import androidx.appcompat.view.menu.ActionMenuItem;
 import androidx.core.view.WindowCompat;
 import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
@@ -102,6 +106,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (!PictureInPictureUtil.isInPictureInPictureMode(this)) {
             videoControlsHider.stop();
         }
+        progressIndicator.setVisibility(View.GONE); // Controller released; we will not receive buffering updates
     }
 
     @Override
@@ -187,7 +192,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             videoControlsHider.stop();
 
             if (System.currentTimeMillis() - lastScreenTap < 300) {
-                if (event.getX() > v.getMeasuredWidth() / 2) {
+                if (event.getX() > v.getMeasuredWidth() / 2.0f) {
                     onFastForward();
                     showSkipAnimation(true);
                 } else {
@@ -480,4 +485,62 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     }
 
+
+    //Hardware keyboard support
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_P: //Fallthrough
+            case KeyEvent.KEYCODE_SPACE:
+                onPlayPause();
+                toggleVideoControlsVisibility();
+                return true;
+            case KeyEvent.KEYCODE_J: //Fallthrough
+            case KeyEvent.KEYCODE_A:
+            case KeyEvent.KEYCODE_COMMA:
+                onRewind();
+                showSkipAnimation(false);
+                return true;
+            case KeyEvent.KEYCODE_K: //Fallthrough
+            case KeyEvent.KEYCODE_D:
+            case KeyEvent.KEYCODE_PERIOD:
+                onFastForward();
+                showSkipAnimation(true);
+                return true;
+            case KeyEvent.KEYCODE_F: //Fallthrough
+            case KeyEvent.KEYCODE_ESCAPE:
+                //Exit fullscreen mode
+                onBackPressed();
+                return true;
+            case KeyEvent.KEYCODE_I:
+                compatEnterPictureInPicture();
+                return true;
+            case KeyEvent.KEYCODE_PLUS: //Fallthrough
+            case KeyEvent.KEYCODE_W:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_MINUS: //Fallthrough
+            case KeyEvent.KEYCODE_S:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                        AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                return true;
+            case KeyEvent.KEYCODE_M:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                            AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
+                    return true;
+                }
+                break;
+        }
+
+        //Go to x% of video:
+        if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
+            controller.seekTo((int) (0.1f * (keyCode - KeyEvent.KEYCODE_0) * controller.getDuration()));
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
 }

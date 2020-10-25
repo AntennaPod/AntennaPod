@@ -527,10 +527,11 @@
   <!--About screen-->
   <string name="about_pref">על אודות</string>
   <string name="antennapod_version">גרסת אנטנה־פּוֹד</string>
+  <string name="contributors">מתנדבים</string>
+  <string name="contributors_summary">כל אחד ואחת יכולים לסייע בשיפור AntennaPod באמצעות תרומת קוד, תרגום או באמצעות סיוע למשתמשים שלנו בפורום</string>
   <string name="developers">מפתחים</string>
-  <string name="developers_summary">כולם יכולים לסייע בשיפור אנטנה־פּוֹד</string>
   <string name="translators">מתרגמים</string>
-  <string name="translators_summary">תרגומים נוצרים על ידי משתמשים של אנטנה־פּוֹד בעזרת Transifex</string>
+  <string name="special_thanks">תודות מיוחדות</string>
   <string name="privacy_policy">מדיניות פרטיות</string>
   <string name="licenses">רישיונות</string>
   <string name="licenses_summary">היישומון אנטנה־פּוֹד משתמש בתכניות נהדרות נוספות</string>
@@ -574,6 +575,8 @@
   <string name="import_select_file">בחירת קובץ לייבוא</string>
   <string name="import_ok">הייבוא הצליח.\n\nנא ללחוץ על אישור כדי להפעיל את אנטנה־פּוֹד מחדש</string>
   <string name="import_no_downgrade">מסד נתונים זה ייוצא עם גרסה עדכנית יותר של אנטנה־פ‎וֹד</string>
+  <string name="favorites_export_label">ייצוא מועדפים</string>
+  <string name="favorites_export_summary">ייצור המועדפים השמורים לקובץ</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">הגדרת מתזמן שינה</string>
   <string name="disable_sleeptimer_label">השבתת מתזמן שינה</string>

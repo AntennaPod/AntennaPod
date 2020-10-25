@@ -35,7 +35,7 @@
             android:defaultValue="1"/>
         <Preference
             android:title="@string/pref_filter_feed_title"
-            android:key="prefFeedFilter"
+            android:key="prefSubscriptionsFilter"
             android:summary="@string/pref_filter_feed_sum" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">

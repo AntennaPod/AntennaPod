@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.cast;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import androidx.core.view.MenuItemCompat;
+
 import de.danoeh.antennapod.core.R;
 
 public class CastButtonVisibilityManager {
@@ -115,6 +115,6 @@ public class CastButtonVisibilityManager {
             Log.e(TAG, "setShowAsAction(), but cast button not inflated");
             return;
         }
-        MenuItemCompat.setShowAsAction(item, connected ? MenuItem.SHOW_AS_ACTION_ALWAYS : showAsAction);
+        item.setShowAsAction(connected ? MenuItem.SHOW_AS_ACTION_ALWAYS : showAsAction);
     }
 }

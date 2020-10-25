@@ -33,6 +33,7 @@ import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.discovery.CombinedSearcher;
 import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
 import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
+import de.danoeh.antennapod.discovery.PodcastIndexPodcastSearcher;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
 
 import java.util.Collections;
@@ -65,6 +66,8 @@ public class AddFeedFragment extends Fragment {
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(FyydPodcastSearcher.class)));
         root.findViewById(R.id.btn_search_gpodder).setOnClickListener(v
                 -> activity.loadChildFragment(new GpodnetMainFragment()));
+        root.findViewById(R.id.btn_search_podcastindex).setOnClickListener(v
+                -> activity.loadChildFragment(OnlineSearchFragment.newInstance(PodcastIndexPodcastSearcher.class)));
 
         combinedFeedSearchBox = root.findViewById(R.id.combinedFeedSearchBox);
         combinedFeedSearchBox.setOnEditorActionListener((v, actionId, event) -> {

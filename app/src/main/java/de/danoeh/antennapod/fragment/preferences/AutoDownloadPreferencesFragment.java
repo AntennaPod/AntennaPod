@@ -168,7 +168,7 @@ public class AutoDownloadPreferencesFragment extends PreferenceFragmentCompat {
     private void buildEpisodeCleanupPreference() {
         final Resources res = getActivity().getResources();
 
-        ListPreference pref = (ListPreference) findPreference(UserPreferences.PREF_EPISODE_CLEANUP);
+        ListPreference pref = findPreference(UserPreferences.PREF_EPISODE_CLEANUP);
         String[] values = res.getStringArray(
                 R.array.episode_cleanup_values);
         String[] entries = new String[values.length];

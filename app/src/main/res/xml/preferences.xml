@@ -40,6 +40,11 @@
             android:icon="?attr/storage" />
 
     <Preference
+            android:key="notifications"
+            android:title="@string/notification_pref_fragment"
+            android:icon="?attr/ic_notifications"/>
+
+    <Preference
             android:key="statistics"
             android:title="@string/statistics_label"
             android:icon="?attr/statistics" />

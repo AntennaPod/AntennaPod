@@ -10,6 +10,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.BugReportActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.fragment.preferences.about.AboutFragment;
 
 public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String TAG = "MainPreferencesFragment";
@@ -25,6 +26,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_CATEGORY_PROJECT = "project";
     private static final String STATISTICS = "statistics";
     private static final String PREF_ABOUT = "prefAbout";
+    private static final String PREF_NOTIFICATION = "notifications";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -65,6 +67,10 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         });
         findPreference(PREF_SCREEN_STORAGE).setOnPreferenceClickListener(preference -> {
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_storage);
+            return true;
+        });
+        findPreference(PREF_NOTIFICATION).setOnPreferenceClickListener(preference -> {
+            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
             return true;
         });
 
@@ -120,5 +126,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_autodownload));
         config.index(R.xml.preferences_gpodder)
                 .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_gpodder));
+        config.index(R.xml.preferences_notifications)
+                .addBreadcrumb(PreferenceActivity.getTitleOfPage(R.xml.preferences_notifications));
     }
 }

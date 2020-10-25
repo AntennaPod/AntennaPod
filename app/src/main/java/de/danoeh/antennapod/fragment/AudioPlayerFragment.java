@@ -124,8 +124,6 @@ public class AudioPlayerFragment extends Fragment implements
         setupLengthTextView();
         setupControlButtons();
         setupPlaybackSpeedButton();
-        txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
-        txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
         sbPosition.setOnSeekBarChangeListener(this);
 
         pager = root.findViewById(R.id.pager);
@@ -376,6 +374,8 @@ public class AudioPlayerFragment extends Fragment implements
         controller.init();
         loadMediaInfo();
         EventBus.getDefault().register(this);
+        txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
+        txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
     }
 
     @Override
@@ -383,6 +383,7 @@ public class AudioPlayerFragment extends Fragment implements
         super.onStop();
         controller.release();
         controller = null;
+        progressIndicator.setVisibility(View.GONE); // Controller released; we will not receive buffering updates
         EventBus.getDefault().unregister(this);
         if (disposable != null) {
             disposable.dispose();

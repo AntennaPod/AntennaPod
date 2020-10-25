@@ -353,7 +353,7 @@ public class Feed extends FeedFile implements ImageResource {
         Date mostRecentDate = new Date(0);
         FeedItem mostRecentItem = null;
         for (FeedItem item : items) {
-            if (item.getPubDate().after(mostRecentDate)) {
+            if (item.getPubDate() != null && item.getPubDate().after(mostRecentDate)) {
                 mostRecentDate = item.getPubDate();
                 mostRecentItem = item;
             }

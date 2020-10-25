@@ -85,6 +85,7 @@
   <string name="auto_download_apply_to_items_message">تنظیمات جدید <i>بارگیری خودکار</i> به طور خودکار بر قسمت‌های جدید اعمال خواهد شد.\nآیا می‌خواهید بر قسمت‌هایی قبلاً منتشر شده هم اعمال شود؟</string>
   <string name="auto_delete_label">حذف خودکار قسمت</string>
   <string name="feed_volume_reduction">کم کردن صدا</string>
+  <string name="feed_volume_reduction_summary">برای قسمت‌های این خوراک، صدا کم شود: %1$s</string>
   <string name="feed_volume_reduction_off">خاموش</string>
   <string name="feed_volume_reduction_light">سبک</string>
   <string name="feed_volume_reduction_heavy">سنگین</string>
@@ -103,6 +104,10 @@
   <plurals name="episode_cleanup_days_after_listening">
     <item quantity="one">%dروز بعد از اتمام</item>
     <item quantity="other">%dروز بعد از اتمام</item>
+  </plurals>
+  <plurals name="num_selected_label">
+    <item quantity="one">%d گزیده</item>
+    <item quantity="other">%dگزیده</item>
   </plurals>
   <string name="loading_more">بارگیری بیشتر…</string>
   <!--Actions on feeds-->
@@ -200,6 +205,7 @@
   <string name="deactivate_auto_download">غیر فعال کردن بارگیری خودکار</string>
   <string name="reset_position">تنظیم مجدد موقعیت پخش</string>
   <string name="removed_item">مورد حذف شده است</string>
+  <string name="no_items_selected">چیزی انتخاب نشده است</string>
   <!--Download messages and labels-->
   <string name="download_successful">موفقیت‌آمیز</string>
   <string name="download_pending">بارگیری معوق</string>
@@ -320,6 +326,8 @@
   <string name="storage_sum">حذف خودکار قسمت، درون‌ریزی، برون‌ریزی</string>
   <string name="project_pref">پروژه</string>
   <string name="queue_label">صف</string>
+  <string name="synchronization_pref">هم‌گام‌سازی</string>
+  <string name="synchronization_sum">با کمک gpodder.net با دستگاه‌های دیگر هم‌گام کنید</string>
   <string name="automation">اتوماسیون</string>
   <string name="download_pref_details">جزئیات</string>
   <string name="import_export_pref">وارد/صادر کرد</string>
@@ -346,6 +354,7 @@
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">تنظیم زمان روز</string>
   <string name="user_interface_label">رابط کاربری</string>
   <string name="pref_set_theme_title">انتخاب پوسته</string>
+  <string name="pref_episode_cover_title">استفاده از عکس قسمت</string>
   <string name="pref_theme_title_light">روشن</string>
   <string name="pref_theme_title_dark">تاریک</string>
   <string name="pref_theme_title_trueblack">سیاه (مناسب AMOLED)</string>
@@ -380,7 +389,6 @@
   <string name="antennapod_version">نسخه AntennaPod</string>
   <string name="developers">توسعه‌دهندگان</string>
   <string name="translators">مترجمان</string>
-  <string name="translators_summary">ترجمه‌ها به کمک کاربران AntennaPod و با استفاده از Transifex انجام شده‌اند</string>
   <string name="privacy_policy">سیاست حریم شخصی</string>
   <string name="licenses">پروانه‌ها</string>
   <!--Search-->

@@ -60,6 +60,7 @@
     <attr name="background_elevated" format="color"/>
     <attr name="filter_dialog_clear" format="reference"/>
     <attr name="filter_dialog_button_background" format="reference"/>
+    <attr name="ic_notifications" format="reference"/>
 
     <declare-styleable name="SquareImageView">
         <attr name="direction" format="enum">

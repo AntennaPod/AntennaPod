@@ -18,7 +18,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.concurrent.Callable;
 
 public class FeedParserTask implements Callable<FeedHandlerResult> {
@@ -103,13 +102,6 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
         for (FeedItem item : feed.getItems()) {
             if (item.getTitle() == null) {
                 throw new InvalidFeedException("Item has no title: " + item);
-            }
-            if (item.getPubDate() == null) {
-                Log.e(TAG, "Item has no pubDate. Using current time as pubDate");
-                if (item.getTitle() != null) {
-                    Log.e(TAG, "Title of invalid item: " + item.getTitle());
-                }
-                item.setPubDate(new Date());
             }
         }
     }

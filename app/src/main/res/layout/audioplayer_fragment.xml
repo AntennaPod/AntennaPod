@@ -67,7 +67,8 @@
                 android:max="500"
                 tools:progress="100"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="8dp"
+                android:clickable="true"/>
 
         <RelativeLayout
                 android:layout_width="match_parent"
