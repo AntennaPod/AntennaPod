@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.apache.commons.io.FileUtils;
@@ -357,6 +358,21 @@ public class PodDBAdapter {
 
     public synchronized void close() {
         // do nothing
+    }
+
+    /**
+     * <p>Resets all database connections to ensure new database connections for
+     * the next test case. Call method only for unit tests.</p>
+     *
+     * <p>That's a workaround for a Robolectric issue in ShadowSQLiteConnection
+     * that leads to an error <tt>IllegalStateException: Illegal connection
+     * pointer</tt> if several threads try to use the same database connection.
+     * For more information see
+     * <a href="https://github.com/robolectric/robolectric/issues/1890">robolectric/robolectric#1890</a>.</p>
+     */
+    public static void tearDownTests() {
+        db = null;
+        SingletonHolder.dbHelper.close();
     }
 
     public static boolean deleteDatabase() {
@@ -856,6 +872,23 @@ public class PodDBAdapter {
         }
         db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
                 new String[]{String.valueOf(item.getId())});
+    }
+
+    /**
+     * Remove the listed items and their FeedMedia entries.
+     */
+    public void removeFeedItems(@NonNull List<FeedItem> items) {
+        try {
+            db.beginTransactionNonExclusive();
+            for (FeedItem item : items) {
+                removeFeedItem(item);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
     }
 
     /**

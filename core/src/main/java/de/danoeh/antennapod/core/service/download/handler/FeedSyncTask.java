@@ -30,8 +30,7 @@ public class FeedSyncTask {
             return false;
         }
 
-        Feed[] savedFeeds = DBTasks.updateFeed(context, result.feed);
-        Feed savedFeed = savedFeeds[0];
+        Feed savedFeed = DBTasks.updateFeed(context, result.feed, false);
         // If loadAllPages=true, check if another page is available and queue it for download
         final boolean loadAllPages = request.getArguments().getBoolean(DownloadRequester.REQUEST_ARG_LOAD_ALL_PAGES);
         final Feed feed = result.feed;

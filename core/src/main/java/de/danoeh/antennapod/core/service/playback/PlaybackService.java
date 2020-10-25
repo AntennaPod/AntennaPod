@@ -37,6 +37,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+import android.webkit.URLUtil;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -496,7 +497,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (allowStreamAlways) {
                     UserPreferences.setAllowMobileStreaming(true);
                 }
-                if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime) {
+                boolean localFeed = URLUtil.isContentUrl(playable.getStreamUrl());
+                if (stream && !NetworkUtils.isStreamingAllowed() && !allowStreamThisTime && !localFeed) {
                     displayStreamingNotAllowedNotification(intent);
                     PlaybackPreferences.writeNoMediaPlaying();
                     stateManager.stopService();
@@ -696,7 +698,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         playable -> {
-                            if (PlaybackPreferences.getCurrentEpisodeIsStream() && !NetworkUtils.isStreamingAllowed()) {
+                            boolean localFeed = URLUtil.isContentUrl(playable.getStreamUrl());
+                            if (PlaybackPreferences.getCurrentEpisodeIsStream()
+                                    && !NetworkUtils.isStreamingAllowed() && !localFeed) {
                                 displayStreamingNotAllowedNotification(
                                         new PlaybackServiceStarter(this, playable)
                                                 .prepareImmediately(true)
@@ -987,7 +991,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         if (!nextItem.getMedia().localFileAvailable() && !NetworkUtils.isStreamingAllowed()
-                && UserPreferences.isFollowQueue()) {
+                && UserPreferences.isFollowQueue() && !nextItem.getFeed().isLocalFeed()) {
             displayStreamingNotAllowedNotification(
                     new PlaybackServiceStarter(this, nextItem.getMedia())
                     .prepareImmediately(true)

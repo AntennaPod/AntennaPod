@@ -1,12 +1,12 @@
 package de.danoeh.antennapod.core.util;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.Uri;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import java.net.URLConnection;
-import java.util.zip.CheckedOutputStream;
-
 import de.danoeh.antennapod.core.ClientConfig;
 import org.apache.commons.io.IOUtils;
 
@@ -52,10 +52,10 @@ public class ChapterUtils {
         return chapters.size() - 1;
     }
 
-    public static List<Chapter> loadChaptersFromStreamUrl(Playable media) {
-        List<Chapter> chapters = ChapterUtils.readID3ChaptersFromPlayableStreamUrl(media);
+    public static List<Chapter> loadChaptersFromStreamUrl(Playable media, Context context) {
+        List<Chapter> chapters = ChapterUtils.readID3ChaptersFromPlayableStreamUrl(media, context);
         if (chapters == null) {
-            chapters = ChapterUtils.readOggChaptersFromPlayableStreamUrl(media);
+            chapters = ChapterUtils.readOggChaptersFromPlayableStreamUrl(media, context);
         }
         return chapters;
     }
@@ -76,7 +76,7 @@ public class ChapterUtils {
      * Uses the download URL of a media object of a feeditem to read its ID3
      * chapters.
      */
-    private static List<Chapter> readID3ChaptersFromPlayableStreamUrl(Playable p) {
+    private static List<Chapter> readID3ChaptersFromPlayableStreamUrl(Playable p, Context context) {
         if (p == null || p.getStreamUrl() == null) {
             Log.e(TAG, "Unable to read ID3 chapters: media or download URL was null");
             return null;
@@ -84,16 +84,21 @@ public class ChapterUtils {
         Log.d(TAG, "Reading id3 chapters from item " + p.getEpisodeTitle());
         CountingInputStream in = null;
         try {
-            URL url = new URL(p.getStreamUrl());
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.setRequestProperty("User-Agent", ClientConfig.USER_AGENT);
-            in = new CountingInputStream(urlConnection.getInputStream());
+            if (p.getStreamUrl().startsWith(ContentResolver.SCHEME_CONTENT)) {
+                Uri uri = Uri.parse(p.getStreamUrl());
+                in = new CountingInputStream(context.getContentResolver().openInputStream(uri));
+            } else {
+                URL url = new URL(p.getStreamUrl());
+                URLConnection urlConnection = url.openConnection();
+                urlConnection.setRequestProperty("User-Agent", ClientConfig.USER_AGENT);
+                in = new CountingInputStream(urlConnection.getInputStream());
+            }
             List<Chapter> chapters = readChaptersFrom(in);
             if (!chapters.isEmpty()) {
                 return chapters;
             }
             Log.i(TAG, "Chapters loaded");
-        } catch (IOException | ID3ReaderException e) {
+        } catch (IOException | ID3ReaderException | IllegalArgumentException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             IOUtils.closeQuietly(in);
@@ -151,20 +156,25 @@ public class ChapterUtils {
         return chapters;
     }
 
-    private static List<Chapter> readOggChaptersFromPlayableStreamUrl(Playable media) {
+    private static List<Chapter> readOggChaptersFromPlayableStreamUrl(Playable media, Context context) {
         if (media == null || !media.streamAvailable()) {
             return null;
         }
         InputStream input = null;
         try {
-            URL url = new URL(media.getStreamUrl());
-            URLConnection urlConnection = url.openConnection();
-            urlConnection.setRequestProperty("User-Agent", ClientConfig.USER_AGENT);
-            input = urlConnection.getInputStream();
+            if (media.getStreamUrl().startsWith(ContentResolver.SCHEME_CONTENT)) {
+                Uri uri = Uri.parse(media.getStreamUrl());
+                input = context.getContentResolver().openInputStream(uri);
+            } else {
+                URL url = new URL(media.getStreamUrl());
+                URLConnection urlConnection = url.openConnection();
+                urlConnection.setRequestProperty("User-Agent", ClientConfig.USER_AGENT);
+                input = urlConnection.getInputStream();
+            }
             if (input != null) {
                 return readOggChaptersFromInputStream(media, input);
             }
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             IOUtils.closeQuietly(input);

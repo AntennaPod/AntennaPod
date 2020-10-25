@@ -151,6 +151,7 @@
     <string name="share_item_url_label">Share Media File URL</string>
     <string name="share_item_url_with_position_label">Share Media File URL with Position</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
+    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\". The files in the local source folder will not be deleted.</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
@@ -740,6 +741,11 @@
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
     <string name="search_powered_by">Results by %1$s</string>
+    <string name="add_local_folder">Add local folder</string>
+    <string name="add_local_folder_success">Adding local folder succeeded</string>
+    <string name="reconnect_local_folder">Re-connect local folder</string>
+    <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
+    <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
 
     <string name="filter">Filter</string>
 
