@@ -358,6 +358,21 @@ public class PodDBAdapter {
         // do nothing
     }
 
+    /**
+     * <p>Resets all database connections to ensure new database connections for
+     * the next test case. Call method only for unit tests.</p>
+     *
+     * <p>That's a workaround for a Robolectric issue in ShadowSQLiteConnection
+     * that leads to an error <tt>IllegalStateException: Illegal connection
+     * pointer</tt> if several threads try to use the same database connection.
+     * For more information see
+     * <a href="https://github.com/robolectric/robolectric/issues/1890">robolectric/robolectric#1890</a>.</p>
+     */
+    public static void tearDownTests() {
+        db = null;
+        SingletonHolder.dbHelper.close();
+    }
+
     public static boolean deleteDatabase() {
         PodDBAdapter adapter = getInstance();
         adapter.open();
