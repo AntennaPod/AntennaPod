@@ -99,14 +99,9 @@
                     android:id="@+id/btn_add_local_folder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
                     app:drawableStartCompat="?attr/ic_folder"
                     app:drawableLeftCompat="?attr/ic_folder"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:clickable="true"
+                    style="@style/AddPodcastTextView"
                     android:text="@string/add_local_folder"/>
 
             <TextView
