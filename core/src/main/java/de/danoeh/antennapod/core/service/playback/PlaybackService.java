@@ -623,7 +623,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (notificationButton || UserPreferences.shouldHardwareButtonSkip()) {
+                if (getStatus() != PlayerStatus.PLAYING && getStatus() != PlayerStatus.PAUSED) {
+                    return false;
+                } else if (notificationButton || UserPreferences.shouldHardwareButtonSkip()) {
                     // assume the skip command comes from a notification or the lockscreen
                     // a >| skip button should actually skip
                     mediaPlayer.skip();
@@ -634,10 +636,15 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return true;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-                mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
-                return true;
+                if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
+                    mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
+                    return true;
+                }
+                return false;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                if (UserPreferences.shouldHardwarePreviousButtonRestart()) {
+                if (getStatus() != PlayerStatus.PLAYING && getStatus() != PlayerStatus.PAUSED) {
+                    return false;
+                } else if (UserPreferences.shouldHardwarePreviousButtonRestart()) {
                     // user wants to restart current episode
                     mediaPlayer.seekTo(0);
                 } else {
@@ -646,7 +653,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return true;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
-                mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
+                    mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                } else {
+                    return false;
+                }
                 return true;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
