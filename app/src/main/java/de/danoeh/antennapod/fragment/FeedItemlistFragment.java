@@ -296,8 +296,14 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 if (!FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed)) {
                     switch (item.getItemId()) {
                         case R.id.episode_actions:
+                            int actions = EpisodesApplyActionFragment.ACTION_ALL;
+                            if (feed.isLocalFeed()) {
+                                // turn off download and delete actions for local feed
+                                actions ^= EpisodesApplyActionFragment.ACTION_DOWNLOAD;
+                                actions ^= EpisodesApplyActionFragment.ACTION_DELETE;
+                            }
                             EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
-                                    .newInstance(feed.getItems());
+                                    .newInstance(feed.getItems(), actions);
                             ((MainActivity)getActivity()).loadChildFragment(fragment);
                             return true;
                         case R.id.rename_item:
@@ -312,9 +318,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                                     ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
                                 }
                             };
+                            int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg
+                                    : R.string.feed_delete_confirmation_msg;
                             ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
                                     R.string.remove_feed_label,
-                                    getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
+                                    getString(messageId, feed.getTitle())) {
 
                                 @Override
                                 public void onConfirmButtonPressed(

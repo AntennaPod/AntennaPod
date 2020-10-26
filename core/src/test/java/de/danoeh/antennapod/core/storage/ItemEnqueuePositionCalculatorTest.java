@@ -32,7 +32,7 @@ import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.stub;
+import static org.mockito.Mockito.when;
 
 public class ItemEnqueuePositionCalculatorTest {
 
@@ -189,7 +189,7 @@ public class ItemEnqueuePositionCalculatorTest {
             //
             ItemEnqueuePositionCalculator calculator = new ItemEnqueuePositionCalculator(options);
             DownloadStateProvider stubDownloadStateProvider = mock(DownloadStateProvider.class);
-            stub(stubDownloadStateProvider.isDownloadingFile(any(FeedMedia.class))).toReturn(false);
+            when(stubDownloadStateProvider.isDownloadingFile(any(FeedMedia.class))).thenReturn(false);
             calculator.downloadStateProvider = stubDownloadStateProvider;
 
             // Setup initial data
@@ -232,7 +232,7 @@ public class ItemEnqueuePositionCalculatorTest {
 
         private static FeedItem setAsDownloading(FeedItem item, DownloadStateProvider stubDownloadStateProvider,
                                                  boolean isDownloading) {
-            stub(stubDownloadStateProvider.isDownloadingFile(item.getMedia())).toReturn(isDownloading);
+            when(stubDownloadStateProvider.isDownloadingFile(item.getMedia())).thenReturn(isDownloading);
             return item;
         }
 

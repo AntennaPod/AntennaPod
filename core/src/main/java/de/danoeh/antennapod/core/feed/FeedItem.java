@@ -381,7 +381,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         if (imageUrl != null) {
             return imageUrl;
         } else if (media != null && media.hasEmbeddedPicture()) {
-            return media.getLocalMediaUrl();
+            return FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER + media.getLocalMediaUrl();
         } else if (feed != null) {
             return feed.getImageLocation();
         } else {

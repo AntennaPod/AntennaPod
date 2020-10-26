@@ -41,6 +41,7 @@
     <string name="statistics_speed_not_counted">Notice: Playback speed is never taken into account.</string>
     <string name="statistics_reset_data">Reset statistics data</string>
     <string name="statistics_reset_data_msg">This will erase the history of duration played for all episodes. Are you sure you want to proceed?</string>
+    <string name="statistics_counting_since">Since %s,\nyou played</string>
 
     <!-- Download Statistics fragment -->
     <string name="total_size_downloaded_podcasts">Total size of episodes on the device:</string>
@@ -58,6 +59,9 @@
     <string name="drawer_feed_counter_unplayed">Number of unplayed episodes</string>
     <string name="drawer_feed_counter_downloaded">Number of downloaded episodes</string>
     <string name="drawer_feed_counter_none">None</string>
+
+    <!-- Bug report activity -->
+    <string name="log_file_share_exception">No compatible apps found</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in Browser</string>
@@ -147,6 +151,7 @@
     <string name="share_item_url_label">Share Media File URL</string>
     <string name="share_item_url_with_position_label">Share Media File URL with Position</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete the podcast \"%1$s\" and ALL its episodes (including downloaded episodes).</string>
+    <string name="feed_delete_confirmation_local_msg">Please confirm that you want to remove the podcast \"%1$s\". The files in the local source folder will not be deleted.</string>
     <string name="feed_remover_msg">Removing podcast</string>
     <string name="load_complete_feed">Refresh complete podcast</string>
     <string name="multi_select">Multi select</string>
@@ -265,7 +270,8 @@
     <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
     <string name="confirm_mobile_streaming_notification_title">Confirm Mobile streaming</string>
     <string name="confirm_mobile_streaming_notification_message">Streaming over mobile data connection is disabled in the settings. Tap to stream anyway.</string>
-    <string name="confirm_mobile_streaming_button_always">Always allow</string>
+    <string name="confirm_mobile_streaming_button_always">Always</string>
+    <string name="confirm_mobile_streaming_button_once">Once</string>
     <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
     <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
@@ -735,6 +741,11 @@
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
     <string name="search_powered_by">Results by %1$s</string>
+    <string name="add_local_folder">Add local folder</string>
+    <string name="add_local_folder_success">Adding local folder succeeded</string>
+    <string name="reconnect_local_folder">Re-connect local folder</string>
+    <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
+    <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
 
     <string name="filter">Filter</string>
 

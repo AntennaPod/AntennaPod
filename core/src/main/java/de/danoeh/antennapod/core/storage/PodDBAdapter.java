@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.apache.commons.io.FileUtils;
@@ -21,8 +22,10 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -355,6 +358,21 @@ public class PodDBAdapter {
 
     public synchronized void close() {
         // do nothing
+    }
+
+    /**
+     * <p>Resets all database connections to ensure new database connections for
+     * the next test case. Call method only for unit tests.</p>
+     *
+     * <p>That's a workaround for a Robolectric issue in ShadowSQLiteConnection
+     * that leads to an error <tt>IllegalStateException: Illegal connection
+     * pointer</tt> if several threads try to use the same database connection.
+     * For more information see
+     * <a href="https://github.com/robolectric/robolectric/issues/1890">robolectric/robolectric#1890</a>.</p>
+     */
+    public static void tearDownTests() {
+        db = null;
+        SingletonHolder.dbHelper.close();
     }
 
     public static boolean deleteDatabase() {
@@ -857,6 +875,23 @@ public class PodDBAdapter {
     }
 
     /**
+     * Remove the listed items and their FeedMedia entries.
+     */
+    public void removeFeedItems(@NonNull List<FeedItem> items) {
+        try {
+            db.beginTransactionNonExclusive();
+            for (FeedItem item : items) {
+                removeFeedItem(item);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    /**
      * Remove a feed with all its FeedItems and Media entries.
      */
     public void removeFeed(Feed feed) {
@@ -1187,6 +1222,25 @@ public class PodDBAdapter {
     public final LongIntMap getPlayedEpisodesCounters(long... feedIds) {
         String whereRead = KEY_READ + "=" + FeedItem.PLAYED;
         return conditionalFeedCounterRead(whereRead, feedIds);
+    }
+
+    public final Map<Long, Long> getMostRecentItemDates() {
+        final String query = "SELECT " + KEY_FEED + ","
+                + " MAX(" + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + ") AS most_recent_pubdate"
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " GROUP BY " + KEY_FEED;
+
+        Cursor c = db.rawQuery(query, null);
+        Map<Long, Long> result = new HashMap<>();
+        if (c.moveToFirst()) {
+            do {
+                long feedId = c.getLong(0);
+                long date = c.getLong(1);
+                result.put(feedId, date);
+            } while (c.moveToNext());
+        }
+        c.close();
+        return result;
     }
 
     public final int getNumberOfDownloadedEpisodes() {

@@ -24,6 +24,7 @@ public class Feed extends FeedFile implements ImageResource {
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_ATOM1 = "atom";
+    public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
 
     /* title as defined by the feed */
     private String feedTitle;
@@ -551,4 +552,7 @@ public class Feed extends FeedFile implements ImageResource {
         this.lastUpdateFailed = lastUpdateFailed;
     }
 
+    public boolean isLocalFeed() {
+        return download_url.startsWith(PREFIX_LOCAL_FOLDER);
+    }
 }
