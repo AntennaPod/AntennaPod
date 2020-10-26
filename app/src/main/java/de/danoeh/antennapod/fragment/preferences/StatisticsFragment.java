@@ -67,7 +67,9 @@ public class StatisticsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
+        if(getActivity().getClass() == PreferenceActivity.class) {
+            ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
+        }
     }
 
     public static class StatisticsPagerAdapter extends FragmentStateAdapter {

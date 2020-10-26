@@ -79,7 +79,9 @@ public class PlaybackStatisticsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
+        if(getActivity().getClass() == PreferenceActivity.class) {
+            ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
+        }
         refreshStatistics();
     }
 

@@ -10,6 +10,7 @@ import android.graphics.LightingColorFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -17,7 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
+
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,12 +31,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -43,22 +48,26 @@ import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.storage.StatisticsItem;
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.LangUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.core.util.comparator.CompareCompat;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
+import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Displays information about a feed.
@@ -74,8 +83,9 @@ public class FeedInfoFragment extends Fragment {
     private ImageView imgvCover;
     private TextView txtvTitle;
     private TextView txtvDescription;
-    private TextView lblLanguage;
-    private TextView txtvLanguage;
+    private TextView lblStatistics;
+    private TextView txtvStatistics;
+    private TextView txtvOpenStatistics;
     private TextView lblAuthor;
     private TextView txtvAuthor;
     private TextView txtvUrl;
@@ -85,6 +95,7 @@ public class FeedInfoFragment extends Fragment {
     private View header;
     private Menu optionsMenu;
     private ToolbarIconTintManager iconTintManager;
+    private StatisticsItem podcastStatistics;
 
     public static FeedInfoFragment newInstance(Feed feed) {
         FeedInfoFragment fragment = new FeedInfoFragment();
@@ -144,13 +155,23 @@ public class FeedInfoFragment extends Fragment {
         imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
 
         txtvDescription = root.findViewById(R.id.txtvDescription);
-        lblLanguage = root.findViewById(R.id.lblLanguage);
-        txtvLanguage = root.findViewById(R.id.txtvLanguage);
+        lblStatistics = root.findViewById(R.id.lblStatistics);
+        txtvStatistics = root.findViewById(R.id.txtvStatistics);
+        txtvOpenStatistics = root.findViewById(R.id.txtvOpenStatistics);
         lblAuthor = root.findViewById(R.id.lblAuthor);
         txtvAuthor = root.findViewById(R.id.txtvDetailsAuthor);
         txtvUrl = root.findViewById(R.id.txtvUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
+
+        txtvOpenStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StatisticsFragment fragment = new StatisticsFragment();
+                ((MainActivity) getActivity()).loadChildFragment(fragment, TransitionEffect.SLIDE);
+            }
+        });
+
         return root;
     }
 
@@ -169,8 +190,9 @@ public class FeedInfoFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     feed = result;
-                    showFeed();
-                }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
+                    loadStatistics();
+                }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> {
+                });
     }
 
     @Override
@@ -218,16 +240,50 @@ public class FeedInfoFragment extends Fragment {
             lblAuthor.setVisibility(View.GONE);
             txtvAuthor.setVisibility(View.GONE);
         }
-        if (!TextUtils.isEmpty(feed.getLanguage())) {
-            txtvLanguage.setText(LangUtils.getLanguageString(feed.getLanguage()));
+        if (podcastStatistics != null) {
+            txtvStatistics.setText(getString(R.string.podcast_listendes_for)
+                    + " "
+                    + Converter.shortLocalizedDuration(getContext(), podcastStatistics.timePlayed)
+                    + "\n"
+                    + getString(R.string.podcast_on_device)
+                    + " "
+                    + Formatter.formatShortFileSize(getContext(), podcastStatistics.totalDownloadSize)
+                    + " • "
+                    + String.format(Locale.getDefault(), "%d%s",
+                    podcastStatistics.episodesDownloadCount, getString(R.string.episodes_suffix)));
         } else {
-            lblLanguage.setVisibility(View.GONE);
-            txtvLanguage.setVisibility(View.GONE);
+            lblStatistics.setVisibility(View.GONE);
+            txtvStatistics.setVisibility(View.GONE);
         }
+
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
         Iconify.addIcons(txtvUrl);
-
         getActivity().invalidateOptionsMenu();
+    }
+
+    private void loadStatistics() {
+        if (disposable != null) {
+            disposable.dispose();
+        }
+
+        disposable =
+                Observable.fromCallable(() -> {
+                    List<StatisticsItem> statisticsData = DBReader.getStatistics();
+                    Collections.sort(statisticsData, (item1, item2) ->
+                            CompareCompat.compareLong(item1.totalDownloadSize, item2.totalDownloadSize));
+                    return statisticsData;
+                })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(result -> {
+                            for (StatisticsItem item : result) {
+                                if (item.feed.getId() == feed.getId()) {
+                                    podcastStatistics = item;
+                                    break;
+                                }
+                            }
+                            showFeed();
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Override

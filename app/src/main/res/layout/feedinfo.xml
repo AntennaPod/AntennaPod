@@ -86,18 +86,40 @@
                     tools:background="@android:color/holo_green_dark"/>
 
             <TextView
-                    style="@style/AntennaPod.TextView.Heading"
-                    android:id="@+id/lblLanguage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/language_label"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:background="@android:color/holo_red_light"/>
+                android:id="@+id/lblUrl"
+                style="@style/AntennaPod.TextView.Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="@string/url_label"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:background="@android:color/holo_red_light" />
 
             <TextView
-                    android:id="@+id/txtvLanguage"
+                android:id="@+id/txtvUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:maxLines="4"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                tools:background="@android:color/holo_green_dark"
+                tools:text="http://www.example.com/feed" />
+
+            <TextView
+                android:id="@+id/lblStatistics"
+                style="@style/AntennaPod.TextView.Heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/statistics_label"
+                android:textColor="?android:attr/textColorPrimary"
+                tools:background="@android:color/holo_red_light" />
+
+            <TextView
+                    android:id="@+id/txtvStatistics"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textIsSelectable="true"
@@ -105,26 +127,16 @@
                     tools:background="@android:color/holo_green_dark"/>
 
             <TextView
-                    style="@style/AntennaPod.TextView.Heading"
-                    android:id="@+id/lblUrl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:text="@string/url_label"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:background="@android:color/holo_red_light"/>
-
-            <TextView
-                    android:id="@+id/txtvUrl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:maxLines="4"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    tools:text="http://www.example.com/feed"
-                    tools:background="@android:color/holo_green_dark"/>
+                android:id="@+id/txtvOpenStatistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:drawablePadding="2dp"
+                android:gravity="center"
+                android:text="@string/view_all_statistics"
+                tools:background="@android:color/holo_green_dark"
+                app:drawableTint="@android:color/secondary_text_dark_nodisable"
+                app:drawableLeftCompat="@drawable/ic_open_in_new" />
 
             <TextView
                     style="@style/AntennaPod.TextView.Heading"
