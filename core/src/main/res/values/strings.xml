@@ -719,9 +719,10 @@
     <string name="keep_updated">Keep Updated</string>
     <string name="keep_updated_summary">Include this podcast when (auto-)refreshing all podcasts</string>
     <string name="auto_download_disabled_globally">Auto download is disabled in the main AntennaPod settings</string>
-    <string name="podcast_listendes_for">Listened for :</string>
-    <string name="podcast_on_device">Episodes on the device :</string>
-    <string name="view_all_statistics">View all statistics</string>
+    <string name="statistics_listened_for">Listened for:</string>
+    <string name="statistics_episodes_on_device">Episodes on the device:</string>
+    <string name="statistics_space_used">Space used:</string>
+    <string name="statistics_view_all">View for all podcasts »</string>
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>

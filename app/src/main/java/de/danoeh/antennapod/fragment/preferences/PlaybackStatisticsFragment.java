@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.PlaybackStatisticsListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -79,9 +78,6 @@ public class PlaybackStatisticsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(getActivity().getClass() == PreferenceActivity.class) {
-            ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
-        }
         refreshStatistics();
     }
 
