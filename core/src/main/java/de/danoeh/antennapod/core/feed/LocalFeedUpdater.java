@@ -10,13 +10,17 @@ import androidx.documentfile.provider.DocumentFile;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -130,12 +134,29 @@ public class LocalFeedUpdater {
 
     private static FeedItem createFeedItem(Feed feed, DocumentFile file, Context context) {
         String uuid = UUID.randomUUID().toString();
-        FeedItem item = new FeedItem(0, file.getName(), uuid, file.getName(), new Date(),
-                FeedItem.UNPLAYED, feed);
-        item.setAutoDownload(false);
 
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(context, file.getUri());
+        String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
+
+        Date date = null;
+        if (!TextUtils.isEmpty(dateStr)) {
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
+                date = simpleDateFormat.parse(dateStr);
+            }
+            catch (ParseException parseException) {
+            }
+        }
+
+        if (date == null) {
+            date = new Date(file.lastModified());
+        }
+
+        FeedItem item = new FeedItem(0, file.getName(), uuid, file.getName(), date,
+                FeedItem.UNPLAYED, feed);
+        item.setAutoDownload(false);
+
         String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         if (!TextUtils.isEmpty(title)) {
