@@ -144,8 +144,7 @@ public class LocalFeedUpdater {
             try {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
                 date = simpleDateFormat.parse(dateStr);
-            }
-            catch (ParseException parseException) {
+            } catch (ParseException parseException) {
             }
         }
 
