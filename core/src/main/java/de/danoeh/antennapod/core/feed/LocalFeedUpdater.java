@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 
 public class LocalFeedUpdater {
@@ -145,10 +146,12 @@ public class LocalFeedUpdater {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
                 date = simpleDateFormat.parse(dateStr);
             } catch (ParseException parseException) {
+                date = DateUtils.parse(dateStr);
+                if (date == null) {
+                    date = new Date(file.lastModified());
+                }
             }
-        }
-
-        if (date == null) {
+        } else {
             date = new Date(file.lastModified());
         }
 

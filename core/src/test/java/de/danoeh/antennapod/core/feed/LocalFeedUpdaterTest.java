@@ -154,7 +154,9 @@ public class LocalFeedUpdaterTest {
     }
 
     /**
-     * Test default feed icon if there is no matching file in the local feed media folder.
+     * Test default feed metadata.
+     *
+     * @see #mapDummyMetadata Title and PubDate are dummy values.
      */
     @Test
     public void testUpdateFeed_FeedMetadata() {
@@ -163,7 +165,9 @@ public class LocalFeedUpdaterTest {
         Feed feed = verifySingleFeedInDatabase();
         List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
         FeedItem feedItem = feedItems.get(0);
-        assertFalse(feedItem.getTitle().isEmpty());
+
+        assertEquals("track1.mp3", feedItem.getTitle());
+
         Date pubDate = feedItem.getPubDate();
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(pubDate);
