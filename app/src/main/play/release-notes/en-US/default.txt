@@ -1,4 +1,4 @@
-We are proud to release version 2.0.0 with a new logo and refreshed user interface.
+We are proud to release version 2.0 with a new logo and refreshed user interface.
 Thank you to 6420 users who participated in the vote for the new logo!
 
 - Support for chapter images (only new episodes, by @ByteHamster)
