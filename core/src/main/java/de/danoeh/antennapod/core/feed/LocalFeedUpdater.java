@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.DateUtils;
@@ -110,6 +112,10 @@ public class LocalFeedUpdater {
         // deleting played state or position in case the folder is temporarily unavailable.
         boolean removeUnlistedItems = (newItems.size() >= 1);
         DBTasks.updateFeed(context, feed, removeUnlistedItems);
+
+        if (mustReportDownloadSuccessful(feed)) {
+            reportSuccess(feed);
+        }
     }
 
     /**
@@ -180,5 +186,36 @@ public class LocalFeedUpdater {
                 DownloadError.ERROR_IO_ERROR, false, reasonDetailed, true);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
+    }
+
+    /**
+     * Reports a successful download status.
+     */
+    private static void reportSuccess(Feed feed) {
+        DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
+                DownloadError.SUCCESS, true, null, true);
+        DBWriter.addDownloadStatus(status);
+        DBWriter.setFeedLastUpdateFailed(feed.getId(), false);
+    }
+
+    /**
+     * Answers if reporting success is needed for the given feed.
+     */
+    private static boolean mustReportDownloadSuccessful(Feed feed) {
+        List<DownloadStatus> downloadStatuses = DBReader.getFeedDownloadLog(feed.getId());
+
+        if (downloadStatuses.isEmpty()) {
+            // report success if never reported before
+            return true;
+        }
+
+        Collections.sort(downloadStatuses, (downloadStatus1, downloadStatus2) ->
+                downloadStatus1.getCompletionDate().compareTo(downloadStatus2.getCompletionDate()));
+
+        DownloadStatus lastDownloadStatus = downloadStatuses.get(downloadStatuses.size() - 1);
+
+        // report success if the last update was not successful
+        // (avoid logging success again if the last update was ok)
+        return !lastDownloadStatus.isSuccessful();
     }
 }
