@@ -160,7 +160,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      */
     private void setLoadingLayout() {
         viewBinding.progressBar.setVisibility(View.VISIBLE);
-        viewBinding.feedDisplay.setVisibility(View.GONE);
+        viewBinding.feedDisplayContainer.setVisibility(View.GONE);
     }
 
     @Override
@@ -383,7 +383,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      */
     private void showFeedInformation(final Feed feed, Map<String, String> alternateFeedUrls) {
         viewBinding.progressBar.setVisibility(View.GONE);
-        viewBinding.feedDisplay.setVisibility(View.VISIBLE);
+        viewBinding.feedDisplayContainer.setVisibility(View.VISIBLE);
         this.feed = feed;
         this.selectedDownloadUrl = feed.getDownload_url();
 
@@ -457,9 +457,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         });
 
         if (alternateFeedUrls.isEmpty()) {
-            viewBinding.spinnerAlternateUrls.setVisibility(View.GONE);
+            viewBinding.alternateUrlsSpinner.setVisibility(View.GONE);
         } else {
-            viewBinding.spinnerAlternateUrls.setVisibility(View.VISIBLE);
+            viewBinding.alternateUrlsSpinner.setVisibility(View.VISIBLE);
 
             final List<String> alternateUrlsList = new ArrayList<>();
             final List<String> alternateUrlsTitleList = new ArrayList<>();
@@ -474,8 +474,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, alternateUrlsTitleList);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            viewBinding.spinnerAlternateUrls.setAdapter(adapter);
-            viewBinding.spinnerAlternateUrls.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            viewBinding.alternateUrlsSpinner.setAdapter(adapter);
+            viewBinding.alternateUrlsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     selectedDownloadUrl = alternateUrlsList.get(position);

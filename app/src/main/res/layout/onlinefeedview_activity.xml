@@ -28,7 +28,7 @@
                     android:layout_gravity="center"/>
 
             <LinearLayout
-                    android:id="@+id/feedDisplay"
+                    android:id="@+id/feed_display_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -106,7 +106,7 @@
                 </RelativeLayout>
 
                 <Spinner
-                        android:id="@+id/spinnerAlternateUrls"
+                        android:id="@+id/alternate_urls_spinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
