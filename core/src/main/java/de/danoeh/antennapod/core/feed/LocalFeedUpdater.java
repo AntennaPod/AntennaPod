@@ -31,8 +31,6 @@ import de.danoeh.antennapod.core.util.DownloadError;
 public class LocalFeedUpdater {
 
     public static void updateFeed(Feed feed, Context context) {
-        boolean mustReportDownloadSuccessful = mustReportDownloadSuccessful(feed);
-
         String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
         DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
         if (documentFolder == null) {
@@ -111,7 +109,7 @@ public class LocalFeedUpdater {
         boolean removeUnlistedItems = (newItems.size() >= 1);
         DBTasks.updateFeed(context, feed, removeUnlistedItems);
 
-        if (mustReportDownloadSuccessful) {
+        if (mustReportDownloadSuccessful(feed)) {
             reportSuccess(feed);
         }
     }
@@ -169,7 +167,7 @@ public class LocalFeedUpdater {
     }
 
     /**
-     * Reports a successful download status
+     * Reports a successful download status.
      */
     private static void reportSuccess(Feed feed) {
         DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
@@ -179,7 +177,7 @@ public class LocalFeedUpdater {
     }
 
     /**
-     * Answers if reporting success is needed for the given feed
+     * Answers if reporting success is needed for the given feed.
      */
     private static boolean mustReportDownloadSuccessful(Feed feed) {
         List<DownloadStatus> downloadStatuses = DBReader.getFeedDownloadLog(feed.getId());
