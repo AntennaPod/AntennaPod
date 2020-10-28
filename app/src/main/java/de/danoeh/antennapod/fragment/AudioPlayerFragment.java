@@ -133,7 +133,12 @@ public class AudioPlayerFragment extends Fragment implements
         pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-                pager.post(() -> ((MainActivity) getActivity()).getBottomSheet().updateScrollingChild());
+                pager.post(() -> {
+                    if (getActivity() != null) {
+                        // By the time this is posted, the activity might be closed again.
+                        ((MainActivity) getActivity()).getBottomSheet().updateScrollingChild();
+                    }
+                });
             }
         });
         pageIndicator = root.findViewById(R.id.page_indicator);

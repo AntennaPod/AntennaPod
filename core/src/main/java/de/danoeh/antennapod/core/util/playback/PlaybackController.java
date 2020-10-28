@@ -512,6 +512,7 @@ public class PlaybackController {
                 new PlaybackServiceStarter(activity, media)
                         .startWhenPrepared(true)
                         .streamIfLastWasStream()
+                        .callEvenIfRunning(true)
                         .start();
                 Log.w(TAG, "Play/Pause button was pressed and PlaybackService state was unknown");
                 break;

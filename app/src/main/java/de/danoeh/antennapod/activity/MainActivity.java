@@ -184,6 +184,9 @@ public class MainActivity extends CastEnabledActivity {
         public void onSlide(@NonNull View view, float slideOffset) {
             AudioPlayerFragment audioPlayer = (AudioPlayerFragment) getSupportFragmentManager()
                     .findFragmentByTag(AudioPlayerFragment.TAG);
+            if (audioPlayer == null) {
+                return;
+            }
             float condensedSlideOffset = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
             audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
             audioPlayer.getExternalPlayerHolder().setVisibility(

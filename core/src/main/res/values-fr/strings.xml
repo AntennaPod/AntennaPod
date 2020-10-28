@@ -17,7 +17,7 @@
   <string name="downloads_log_label">Journal</string>
   <string name="subscriptions_label">Abonnements</string>
   <string name="subscriptions_list_label">Liste des abonnements</string>
-  <string name="cancel_download_label">Annuler les téléchargements</string>
+  <string name="cancel_download_label">Annuler le téléchargement</string>
   <string name="playback_history_label">Journal de lecture</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Identifiants gpodder.net</string>

@@ -29,7 +29,7 @@
   <string name="total_time_listened_to_podcasts">Podcast 總播放時長：</string>
   <string name="statistics_details_dialog">聽過 %1$d/%2$d集。\n\n播過%3$s/%4$s集。</string>
   <string name="statistics_mode">統計模式</string>
-  <string name="statistics_mode_normal">計算真實的播放時長。如果播放同一劇集兩遍，則會記錄兩遍的市場。如果只是標記為已播放，則不會被計入播放時長。</string>
+  <string name="statistics_mode_normal">計算真實的播放時長。如果播放同一劇集兩遍，則會記錄兩遍的時間；如果只是標記為已播放，則不會被計入播放時長</string>
   <string name="statistics_mode_count_all">累加所有標記為已播放的 Podcast</string>
   <string name="statistics_speed_not_counted">注意：播放速度不被計入。</string>
   <string name="statistics_reset_data">重設統計數據</string>
@@ -89,7 +89,7 @@
   <string name="feed_volume_reduction_off">關閉</string>
   <string name="feed_volume_reduction_light">輕</string>
   <string name="feed_volume_reduction_heavy">重</string>
-  <string name="parallel_downloads_suffix">\u0020同時下載</string>
+  <string name="parallel_downloads_suffix">目前設定可同步下載 \u0020 集</string>
   <string name="feed_auto_download_global">預設值</string>
   <string name="feed_auto_download_always">總是</string>
   <string name="feed_auto_download_never">不予下載</string>
@@ -155,7 +155,7 @@
   </plurals>
   <string name="play_label">播放</string>
   <string name="pause_label">暫停</string>
-  <string name="stream_label">流</string>
+  <string name="stream_label">串流播放</string>
   <string name="delete_label">刪除</string>
   <string name="delete_failed">刪除文件失敗。重啟設備試試看。</string>
   <string name="delete_episode_label">刪除這一集</string>
@@ -314,7 +314,7 @@
   <!--Preferences-->
   <string name="storage_pref">儲存空間</string>
   <string name="storage_sum">自動刪除、匯入、匯出</string>
-  <string name="project_pref">項目</string>
+  <string name="project_pref">專案</string>
   <string name="queue_label">待播清單</string>
   <string name="synchronization_pref">同步</string>
   <string name="synchronization_sum">利用 gpodder.net 與其他裝置同步</string>
@@ -335,17 +335,17 @@
   <string name="pref_pauseOnDisconnect_sum">耳機或藍牙斷開連接時暫停播放</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">當耳機再次連接時繼續播放</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">當藍牙再次連接時繼續播放</string>
-  <string name="pref_hardwareForwardButtonSkips_title">快進按鈕跳過</string>
+  <string name="pref_hardwareForwardButtonSkips_title">快轉鈕視為跳過單集</string>
   <string name="pref_hardwareForwardButtonSkips_sum">當按下藍牙連接裝置上的快轉鈕時，不要快轉，而是播放下一集</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">後退鍵重新播放</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">當按下實體的倒轉鈕時，不要倒轉，而是重新播放本集。</string>
+  <string name="pref_hardwarePreviousButtonRestarts_title">倒轉鈕視為重新播放</string>
+  <string name="pref_hardwarePreviousButtonRestarts_sum">當按下實體的倒轉鈕時，不要倒轉，而是重新播放本集</string>
   <string name="pref_followQueue_sum">當播放完畢時自動跳至待播清單中的下一集</string>
   <string name="pref_auto_delete_sum">播放完畢後刪除該集</string>
   <string name="pref_auto_delete_title">自動刪除</string>
-  <string name="pref_smart_mark_as_played_sum">若離開時還剩下特定秒數以內，也將該集標記為已播放。</string>
-  <string name="pref_smart_mark_as_played_title">智慧標記為已播放過</string>
-  <string name="pref_skip_keeps_episodes_sum">當跳過時，保留該集</string>
-  <string name="pref_skip_keeps_episodes_title">保留跳過</string>
+  <string name="pref_smart_mark_as_played_sum">若離開時還剩下特定秒數以內，也將該集標記為已播放</string>
+  <string name="pref_smart_mark_as_played_title">提前視為已播放</string>
+  <string name="pref_skip_keeps_episodes_sum">當跳過某集不播放時，仍於清單中保留該集</string>
+  <string name="pref_skip_keeps_episodes_title">保留跳過的單集</string>
   <string name="pref_favorite_keeps_episodes_sum">保留標記為最愛的各單集</string>
   <string name="pref_favorite_keeps_episodes_title">保留最愛單集</string>
   <string name="playback_pref">播放</string>
@@ -381,7 +381,7 @@
   <string name="pref_nav_drawer_feed_order_title">設定訂閱排序方式</string>
   <string name="pref_nav_drawer_feed_order_sum">更改您訂閱頻道的排序方式</string>
   <string name="pref_nav_drawer_feed_counter_title">設定訂閱計數器</string>
-  <string name="pref_nav_drawer_feed_counter_sum">調整訂閱計數器中要顯示的東西，同時也會在排序方式設定為「計數」時影響排序。</string>
+  <string name="pref_nav_drawer_feed_counter_sum">調整訂閱計數器中要顯示的東西，同時也會在排序方式設定為「計數」時影響排序</string>
   <string name="pref_set_theme_sum">更改 AntennaPod 的外觀</string>
   <string name="pref_automatic_download_title">自動下載</string>
   <string name="pref_automatic_download_sum">設定單集自動下載機制</string>
@@ -389,11 +389,11 @@
   <string name="pref_autodl_wifi_filter_sum">限定於特定 Wi-Fi 連線時自動下載</string>
   <string name="pref_automatic_download_on_battery_title">未充電時下載</string>
   <string name="pref_automatic_download_on_battery_sum">允許未充電時也自動下載</string>
-  <string name="pref_parallel_downloads_title">平行下載</string>
+  <string name="pref_parallel_downloads_title">同步下載</string>
   <string name="pref_episode_cache_title">暫存集數</string>
   <string name="pref_episode_cache_summary">在本機中可以暫存的集數，若達上限則將停止自動下載。</string>
   <string name="pref_episode_cover_title">使用單集的封面圖</string>
-  <string name="pref_episode_cover_summary">在單集有專屬封面的情況下使用該封面圖。如果取消，則一律使用 Podcast 的封面圖。</string>
+  <string name="pref_episode_cover_summary">在單集有專屬封面的情況下使用該封面圖。如果取消，則一律使用 Podcast 的封面圖</string>
   <string name="pref_theme_title_use_system">依據系統設定</string>
   <string name="pref_theme_title_light">淡色</string>
   <string name="pref_theme_title_dark">深色</string>
@@ -435,17 +435,17 @@
   <string name="pref_expandNotify_title">優先通知</string>
   <string name="pref_expandNotify_sum">此功能通常會加大通知訊息以便顯示控制鈕</string>
   <string name="pref_persistNotify_title">保留播放控制鈕</string>
-  <string name="pref_persistNotify_sum">暫停播放時，在通知列及鎖定畫面上保留播放控制鈕。</string>
+  <string name="pref_persistNotify_sum">暫停播放時，在通知列及鎖定畫面上保留播放控制鈕</string>
   <string name="pref_compact_notification_buttons_title">設定鎖定畫面按鈕</string>
-  <string name="pref_compact_notification_buttons_sum">設定鎖定畫面上的播放控制鈕。「暫停/播放」鈕一定會出現。</string>
+  <string name="pref_compact_notification_buttons_sum">設定鎖定畫面上的播放控制鈕。「暫停/播放」鈕一定會出現</string>
   <string name="pref_compact_notification_buttons_dialog_title">最多可選擇 %1$d 項</string>
   <string name="pref_compact_notification_buttons_dialog_error">您最多只能選擇 %1$d 項。</string>
   <string name="pref_lockscreen_background_title">設定鎖定畫面背景</string>
-  <string name="pref_lockscreen_background_sum">在鎖定畫面背景採用本單集的圖片，同時也會在第三方 App 裡顯示圖片。</string>
+  <string name="pref_lockscreen_background_sum">在鎖定畫面背景採用本單集的圖片，同時也會在第三方 App 裡顯示圖片</string>
   <string name="pref_showDownloadReport_title">顯示下載報告</string>
-  <string name="pref_showDownloadReport_sum">如果下載失敗，產生錯誤相關細節的報告。</string>
+  <string name="pref_showDownloadReport_sum">如果下載失敗，產生錯誤相關細節的報告</string>
   <string name="pref_showAutoDownloadReport_title">顯示自動下載報告</string>
-  <string name="pref_showAutoDownloadReport_sum">顯示自動下載通知。</string>
+  <string name="pref_showAutoDownloadReport_sum">顯示自動下載通知</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 以前尚未支援延伸通知工具。</string>
   <string name="pref_enqueue_location_title">待播清單新增位置</string>
   <string name="pref_enqueue_location_sum">將這幾集加到：%1$s</string>
@@ -574,7 +574,7 @@
   <string name="gpodnet_suggestions_header">建議</string>
   <string name="gpodnet_search_hint">搜尋 gpodder.net</string>
   <string name="gpodnetauth_login_title">登入</string>
-  <string name="gpodnetauth_login_descr">歡迎登入 gpodder.net，請先輸入您的登入資訊：</string>
+  <string name="gpodnetauth_login_descr">歡迎登入 gpodder.net，請輸入登入資訊：</string>
   <string name="gpodnetauth_login_butLabel">登入</string>
   <string name="gpodnetauth_login_register">如果您還沒有帳號，可以先註冊一個：\nhttps://gpodder.net/register/</string>
   <string name="username_label">帳號</string>
@@ -635,6 +635,7 @@
   <string name="decrease_speed">放慢</string>
   <string name="media_type_audio_label">聲音</string>
   <string name="media_type_video_label">影片</string>
+  <string name="navigate_upwards_label">Navigate upwards</string>
   <string name="status_downloading_label">正在下載這集</string>
   <string name="in_queue_label">單集已在待播清單中</string>
   <string name="is_favorite_label">已將此單集標為最愛</string>

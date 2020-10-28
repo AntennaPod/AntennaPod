@@ -509,6 +509,7 @@
   <string name="antennapod_version">Versión de AntennaPod</string>
   <string name="developers">Desarrolladores</string>
   <string name="translators">Traductores</string>
+  <string name="special_thanks">Gracias especiales</string>
   <string name="privacy_policy">Política de privacidad</string>
   <string name="licenses">Licencias</string>
   <string name="licenses_summary">AntennaPod usa otros software estupendos</string>
@@ -552,6 +553,7 @@
   <string name="import_select_file">Seleccionar archivo a importar</string>
   <string name="import_ok">Importación exitosa.\n\nPulse OK para reiniciar AntennaPod</string>
   <string name="import_no_downgrade">Esta base de datos fue exportada con una versión más moderna de AntennaPod. La versión instalada no puede manejarla.</string>
+  <string name="favorites_export_label">Exportar favoritos</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Establecer un temporizador</string>
   <string name="disable_sleeptimer_label">Desactivar el temporizador</string>
