@@ -2,4 +2,5 @@
 <resources>
     <integer name="subscriptions_default_num_of_columns">3</integer>
     <integer name="nav_drawer_screen_size_percent">80</integer>
+    <integer name="swipe_to_refresh_duration_in_ms">750</integer>
 </resources>

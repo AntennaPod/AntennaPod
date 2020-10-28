@@ -102,6 +102,11 @@ public class FeedItemMenuHandler {
 
         setItemVisibility(menu, R.id.remove_item, fileDownloaded);
 
+        if (selectedItem.getFeed().isLocalFeed()) {
+            setItemVisibility(menu, R.id.visit_website_item, false);
+            setItemVisibility(menu, R.id.share_item, false);
+        }
+
         return true;
     }
 

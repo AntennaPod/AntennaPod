@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.sync.model.ISyncService;
 import de.danoeh.antennapod.core.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.core.sync.model.SyncServiceException;
 import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import io.reactivex.Completable;
@@ -456,7 +457,7 @@ public class SyncService extends Worker {
                     break;
             }
         }
-
+        LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : mostRecentPlayAction.values()) {
             FeedItem playItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
@@ -467,10 +468,12 @@ public class SyncService extends Worker {
                 if (playItem.getMedia().hasAlmostEnded()) {
                     Log.d(TAG, "Marking as played");
                     playItem.setPlayed(true);
+                    queueToBeRemoved.add(playItem.getId());
                 }
                 updatedItems.add(playItem);
             }
         }
+        DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
         DBWriter.setItemList(updatedItems);
     }
 
@@ -491,7 +494,7 @@ public class SyncService extends Worker {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
                 R.id.pending_intent_sync_error, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(getApplicationContext(),
-                NotificationUtils.CHANNEL_ID_ERROR)
+                NotificationUtils.CHANNEL_ID_SYNC_ERROR)
                 .setContentTitle(getApplicationContext().getString(R.string.gpodnetsync_error_title))
                 .setContentText(description)
                 .setContentIntent(pendingIntent)

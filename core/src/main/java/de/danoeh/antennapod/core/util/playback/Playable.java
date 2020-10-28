@@ -3,12 +3,9 @@ package de.danoeh.antennapod.core.util.playback;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
-import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 import android.util.Log;
-
-import java.util.List;
-
+import androidx.annotation.Nullable;
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -16,6 +13,8 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
+
+import java.util.List;
 
 /**
  * Interface for objects that can be played by the PlaybackService.
@@ -44,7 +43,7 @@ public interface Playable extends Parcelable,
      * Playable objects should load their chapter marks in this method if no
      * local file was available when loadMetadata() was called.
      */
-    void loadChapterMarks();
+    void loadChapterMarks(Context context);
 
     /**
      * Returns the title of the episode that this playable represents

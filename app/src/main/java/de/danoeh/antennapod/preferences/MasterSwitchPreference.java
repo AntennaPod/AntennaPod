@@ -4,7 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
 import androidx.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
 
-public class MasterSwitchPreference extends SwitchPreference {
+public class MasterSwitchPreference extends SwitchPreferenceCompat {
 
     public MasterSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);

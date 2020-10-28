@@ -10,6 +10,7 @@
     <color name="download_failed_red">#B00020</color>
     <color name="image_readability_tint">#80000000</color>
     <color name="feed_image_bg">#50000000</color>
+    <color name="feed_text_bg">#ccbfbfbf</color>
 
     <!-- Theme colors -->
     <color name="background_light">#FFFFFF</color>
@@ -23,7 +24,8 @@
 
     <color name="accent_light">#0078C2</color>
     <color name="accent_dark">#3D8BFF</color>
-    <color name="ic_launcher_background">#008AB8</color>
+    <color name="icon_background_gradient_start">#0ba2ff</color>
+    <color name="icon_background_gradient_end">#0878ff</color>
 
     <color name="master_switch_background_light">#DDDDDD</color>
     <color name="master_switch_background_dark">#191919</color>

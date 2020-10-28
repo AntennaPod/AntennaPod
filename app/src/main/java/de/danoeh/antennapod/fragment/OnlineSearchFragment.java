@@ -18,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.discovery.PodcastSearchResult;
@@ -27,6 +28,8 @@ import io.reactivex.disposables.Disposable;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.View.INVISIBLE;
 
 public class OnlineSearchFragment extends Fragment {
 
@@ -92,6 +95,7 @@ public class OnlineSearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
         ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        root.findViewById(R.id.spinner_country).setVisibility(INVISIBLE);
         gridView = root.findViewById(R.id.gridView);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
         gridView.setAdapter(adapter);
@@ -101,6 +105,7 @@ public class OnlineSearchFragment extends Fragment {
             PodcastSearchResult podcast = searchResults.get(position);
             Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
             intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, podcast.feedUrl);
+            intent.putExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH, true);
             startActivity(intent);
         });
         progressBar = root.findViewById(R.id.progressBar);

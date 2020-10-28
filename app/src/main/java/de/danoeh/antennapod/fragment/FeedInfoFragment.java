@@ -1,16 +1,21 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.LightingColorFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,6 +41,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LangUtils;
@@ -43,11 +49,16 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.view.ToolbarIconTintManager;
+import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import java.util.Collections;
 
 /**
  * Displays information about a feed.
@@ -56,6 +67,7 @@ public class FeedInfoFragment extends Fragment {
 
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedInfoActivity";
+    private static final int REQUEST_CODE_ADD_LOCAL_FOLDER = 2;
 
     private Feed feed;
     private Disposable disposable;
@@ -237,6 +249,7 @@ public class FeedInfoFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.reconnect_local_folder).setVisible(feed != null && feed.isLocalFeed());
         menu.findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
         menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
@@ -256,6 +269,60 @@ public class FeedInfoFragment extends Fragment {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getContext(), e.getMessage());
         }
+
+        if (item.getItemId() == R.id.reconnect_local_folder && Build.VERSION.SDK_INT >= 21) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+            alert.setMessage(R.string.reconnect_local_folder_warning);
+            alert.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(intent, REQUEST_CODE_ADD_LOCAL_FOLDER);
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "No activity found. Should never happen...");
+                }
+            });
+            alert.setNegativeButton(android.R.string.cancel, null);
+            alert.show();
+            return true;
+        }
+
         return handled || super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            return;
+        }
+        Uri uri = data.getData();
+
+        if (requestCode == REQUEST_CODE_ADD_LOCAL_FOLDER) {
+            reconnectLocalFolder(uri);
+        }
+    }
+
+    private void reconnectLocalFolder(Uri uri) {
+        if (Build.VERSION.SDK_INT < 21 || feed == null) {
+            return;
+        }
+
+        Completable.fromAction(() -> {
+            getActivity().getContentResolver()
+                    .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
+            if (documentFile == null) {
+                throw new IllegalArgumentException("Unable to retrieve document tree");
+            }
+            feed.setDownload_url(Feed.PREFIX_LOCAL_FOLDER + uri.toString());
+            DBTasks.updateFeed(getContext(), feed, true);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> ((MainActivity) getActivity())
+                                .showSnackbarAbovePlayer(R.string.add_local_folder_success, Snackbar.LENGTH_SHORT),
+                        error -> ((MainActivity) getActivity())
+                                .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG));
     }
 }

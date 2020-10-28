@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+import android.text.format.Formatter;
 import android.util.Log;
 import de.danoeh.antennapod.core.R;
 import org.apache.commons.io.FileUtils;
@@ -53,7 +54,16 @@ public class DatabaseExporter {
             if (currentDB.exists()) {
                 src = new FileInputStream(currentDB).getChannel();
                 dst = outFileStream.getChannel();
-                dst.transferFrom(src, 0, src.size());
+                long srcSize = src.size();
+                dst.transferFrom(src, 0, srcSize);
+
+                long newDstSize = dst.size();
+                if (newDstSize != srcSize) {
+                    throw new IOException(String.format(
+                            "Unable to write entire database. Expected to write %s, but wrote %s.",
+                            Formatter.formatShortFileSize(context, srcSize),
+                            Formatter.formatShortFileSize(context, newDstSize)));
+                }
             } else {
                 throw new IOException("Can not access current database");
             }

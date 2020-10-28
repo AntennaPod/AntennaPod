@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.view;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
@@ -33,16 +35,20 @@ public abstract class ToolbarIconTintManager implements AppBarLayout.OnOffsetCha
     public void updateTint() {
         if (isTinted) {
             doTint(new ContextThemeWrapper(context, R.style.Theme_AntennaPod_Dark));
-            if (toolbar.getNavigationIcon() != null) { // Tablets do not show a navigation icon
-                toolbar.getNavigationIcon().setColorFilter(0xffffffff, PorterDuff.Mode.SRC_ATOP);
-            }
-            toolbar.getOverflowIcon().setColorFilter(0xffffffff, PorterDuff.Mode.SRC_ATOP);
+            safeSetColorFilter(toolbar.getNavigationIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
+            safeSetColorFilter(toolbar.getOverflowIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
+            safeSetColorFilter(toolbar.getCollapseIcon(), new PorterDuffColorFilter(0xffffffff, Mode.SRC_ATOP));
         } else {
             doTint(context);
-            if (toolbar.getNavigationIcon() != null) { // Tablets do not show a navigation icon
-                toolbar.getNavigationIcon().clearColorFilter();
-            }
-            toolbar.getOverflowIcon().clearColorFilter();
+            safeSetColorFilter(toolbar.getNavigationIcon(), null);
+            safeSetColorFilter(toolbar.getOverflowIcon(), null);
+            safeSetColorFilter(toolbar.getCollapseIcon(), null);
+        }
+    }
+
+    private void safeSetColorFilter(Drawable icon, PorterDuffColorFilter filter) {
+        if (icon != null) {
+            icon.setColorFilter(filter);
         }
     }
 

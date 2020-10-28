@@ -24,8 +24,8 @@ AntennaPod ist von Podcast-Enthusiasten gemacht und frei im wahrsten Sinne des W
 <b>Tritt der AntennaPod-Community bei!</b>
 AntennaPod wird aktiv von Freiwilligen weiterentwickelt. Auch du kannst bei der Entwicklung mit Quellcode oder Kommentaren mitwirken!
 
-Wir verwenden GitHub für Funktionswünsche, Fehlerberichte und zur Beteiligung an der Entwicklung:
-https://www.github.com/AntennaPod/AntennaPod
+Unsere freundlichen Freiwilligen im Forum stehen dir bei allen Fragen zur Seite. Gerne kannst du dich dort auch über neue Funktionen und über Podcasting generell austauschen.
+https://forum.antennapod.org/
 
 Mit Transifex kannst du uns beim Übersetzen helfen:
 https://www.transifex.com/antennapod/antennapod

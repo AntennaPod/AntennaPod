@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.danoeh.antennapod.core">
+          xmlns:tools="http://schemas.android.com/tools" package="de.danoeh.antennapod.core">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,15 +12,19 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:supportsRtl="true">
 
         <service
             android:name=".service.download.DownloadService"
             android:enabled="true" />
+
         <service android:name=".service.playback.PlaybackService"
             android:label="@string/app_name"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="ExportedService">
+
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService"/>
             </intent-filter>
@@ -39,8 +43,8 @@
 
         <receiver android:name=".receiver.FeedUpdateReceiver"
             android:label="@string/feed_update_receiver_name"
-            android:exported="true"> <!-- allow feeds update to be triggered by external apps -->
-        </receiver>
+            android:exported="true"
+            tools:ignore="ExportedReceiver" /> <!-- allow feeds update to be triggered by external apps -->
     </application>
 
 </manifest>

@@ -42,13 +42,13 @@ subprojects {
 }
 
 project.ext {
-    compileSdkVersion = 28
+    compileSdkVersion = 30
     minSdkVersion = 16
-    targetSdkVersion = 28
+    targetSdkVersion = 30
 
     // AndroidX
     annotationVersion = "1.1.0"
-    appcompatVersion = "1.1.0"
+    appcompatVersion = "1.2.0"
     mediaVersion = "1.1.0"
     preferenceVersion = "1.1.1"
     workManagerVersion = "2.3.4"
@@ -66,6 +66,9 @@ project.ext {
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
     audioPlayerVersion = "v2.0.0"
+
+    // Only used for free builds. This version should be updated regularly.
+    conscryptVersion = "2.4.0"
 
     // Google Play build
     wearableSupportVersion = "2.6.0"

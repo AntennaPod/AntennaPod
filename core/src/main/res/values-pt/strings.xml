@@ -33,7 +33,7 @@
   <string name="statistics_mode_count_all">Somar todos os podcasts marcados como reproduzidos</string>
   <string name="statistics_speed_not_counted">Aviso: a velocidade de reprodução nunca será considerada.</string>
   <string name="statistics_reset_data">Reiniciar estatísticas dos dados</string>
-  <string name="statistics_reset_data_msg">Isto irá apagar o histórico do tempo de reprodução pata todos os episódios. Tem a certeza de que deseja continuar?</string>
+  <string name="statistics_reset_data_msg">Isto irá apagar o histórico do tempo de reprodução para todos os episódios. Tem a certeza de que deseja continuar?</string>
   <!--Download Statistics fragment-->
   <string name="total_size_downloaded_podcasts">Tamanho total dos podcasts descarregados:</string>
   <!--Main activity-->
@@ -176,7 +176,7 @@
   <string name="play_this_to_seek_position">Se quiser ir para uma posição, tem que reproduzir o episódio</string>
   <plurals name="marked_read_batch_label">
     <item quantity="one">%d episódio marcado como reproduzido.</item>
-    <item quantity="other">%depisódios marcados como reproduzido. </item>
+    <item quantity="other">%depisódios marcados como reproduzidos. </item>
   </plurals>
   <string name="mark_unread_label">Marcar como não reproduzido</string>
   <string name="mark_unread_label_no_media">Marcar como não lida</string>
@@ -507,10 +507,11 @@
   <!--About screen-->
   <string name="about_pref">Acerca</string>
   <string name="antennapod_version">Versão do AntennaPod</string>
+  <string name="contributors">Contributos</string>
+  <string name="contributors_summary">Todos podem ajudar a melhorar o AntennaPod - com código, com traduções ou até mesmo auxiliando os utilizadores do nosso fórum</string>
   <string name="developers">Programadores</string>
-  <string name="developers_summary">Todos podem ajudar a tornar o AntennaPod melhor</string>
   <string name="translators">Tradutores</string>
-  <string name="translators_summary">As traduções são criadas pelos utilizadores do AntennaPod, através da plataforma Transifex</string>
+  <string name="special_thanks">Especial agradecimento</string>
   <string name="privacy_policy">Política de privacidade</string>
   <string name="licenses">Licenças</string>
   <string name="licenses_summary">AntennaPod utiliza outro software grandioso</string>
@@ -554,6 +555,8 @@
   <string name="import_select_file">Selecione o ficheiro a importar</string>
   <string name="import_ok">Importação bem sucedida.\n\nPor favor prima OK para reiniciar o AntennaPod</string>
   <string name="import_no_downgrade">A base de dados foi exportada de uma versão mais recente do AntennaPod. A sua versão da aplicação não sabe como manipular este ficheiro.</string>
+  <string name="favorites_export_label">Exportação de favoritos</string>
+  <string name="favorites_export_summary">Exportar favoritos para um ficheiro</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Definir temporizador</string>
   <string name="disable_sleeptimer_label">Desativar temporizador</string>

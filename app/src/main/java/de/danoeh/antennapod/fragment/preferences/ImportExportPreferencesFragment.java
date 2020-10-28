@@ -26,6 +26,7 @@ import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.export.favorites.FavoritesWriter;
 import de.danoeh.antennapod.core.export.html.HtmlWriter;
 import de.danoeh.antennapod.core.export.opml.OpmlWriter;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DatabaseExporter;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -207,11 +208,12 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
     }
 
     private void showDatabaseImportSuccessDialog() {
-        AlertDialog.Builder d = new AlertDialog.Builder(getContext());
-        d.setMessage(R.string.import_ok);
-        d.setCancelable(false);
-        d.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart());
-        d.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.successful_import_label);
+        builder.setMessage(R.string.import_ok);
+        builder.setCancelable(false);
+        builder.setPositiveButton(android.R.string.ok, (dialogInterface, i) -> PodcastApp.forceRestart());
+        builder.show();
     }
 
     private void showExportSuccessDialog(final String path, final Uri streamUri) {
@@ -267,6 +269,7 @@ public class ImportExportPreferencesFragment extends PreferenceFragmentCompat {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
                         showDatabaseImportSuccessDialog();
+                        UserPreferences.unsetUsageCountingDate();
                         progressDialog.dismiss();
                     }, this::showExportErrorDialog);
         } else if (requestCode == REQUEST_CODE_BACKUP_DATABASE) {

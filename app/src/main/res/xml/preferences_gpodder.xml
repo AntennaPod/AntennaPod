@@ -26,10 +26,5 @@
     <Preference
             android:key="pref_gpodnet_hostname"
             android:title="@string/pref_gpodnet_sethostname_title"/>
-    <SwitchPreference
-            android:key="pref_gpodnet_notifications"
-            android:title="@string/pref_gpodnet_notifications_title"
-            android:summary="@string/pref_gpodnet_notifications_sum"
-            android:defaultValue="true"/>
 
 </PreferenceScreen>

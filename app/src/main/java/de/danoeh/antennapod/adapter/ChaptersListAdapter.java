@@ -63,7 +63,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
             duration = media.getDuration() - sc.getStart();
         }
         holder.duration.setText(context.getString(R.string.chapter_duration,
-                Converter.getDurationStringLong((int) duration)));
+                Converter.getDurationStringLocalized(context, (int) duration)));
 
         if (sc.getLink() == null) {
             holder.link.setVisibility(View.GONE);

@@ -8,6 +8,7 @@ import androidx.appcompat.widget.SearchView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.SearchFragment;
 
 /**
@@ -30,15 +31,16 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
         ta.recycle();
     }
 
-    public static void setupSearchItem(Menu menu, MainActivity activity, long feedId) {
+    public static void setupSearchItem(Menu menu, MainActivity activity, long feedId, String feedTitle) {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView sv = (SearchView) searchItem.getActionView();
+        sv.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, android.R.attr.windowBackground));
         sv.setQueryHint(activity.getString(R.string.search_label));
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 sv.clearFocus();
-                activity.loadChildFragment(SearchFragment.newInstance(s, feedId));
+                activity.loadChildFragment(SearchFragment.newInstance(s, feedId, feedTitle));
                 searchItem.collapseActionView();
                 return true;
             }

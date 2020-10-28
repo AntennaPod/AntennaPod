@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
   <string name="feed_update_receiver_name">Actualizar suscripciones</string>
-  <string name="feeds_label">Podcasts</string>
+  <string name="feeds_label">Pódcast</string>
   <string name="statistics_label">Estadísticas</string>
   <string name="add_feed_label">Añadir pódcast</string>
   <string name="episodes_label">Episodios</string>
@@ -33,9 +33,9 @@
   <string name="statistics_mode_count_all">Suma de todos los pódcast marcados como reproducidos</string>
   <string name="statistics_speed_not_counted">Aviso: La velocidad de reproducción nunca se tiene en cuenta.</string>
   <string name="statistics_reset_data">Borrar estadísticas</string>
-  <string name="statistics_reset_data_msg">Esto borrará el historial de duración de todos los episodios. ¿Estás seguro de que quieres hacerlo?</string>
+  <string name="statistics_reset_data_msg">Esto borrará el historial de duración reproducida de todos los episodios. ¿Confirma que quiere hacerlo?</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Tamaño total de podcast descargados:</string>
+  <string name="total_size_downloaded_podcasts">Tamaño total de pódcast descargados:</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Cerrar menú</string>
@@ -53,7 +53,7 @@
   <string name="open_in_browser_label">Abrir en el navegador</string>
   <string name="copy_url_label">Copiar URL</string>
   <string name="share_url_label">Compartir URL</string>
-  <string name="copied_url_msg">URL copiada al portapapeles</string>
+  <string name="copied_url_msg">URL copiado en el portapapeles</string>
   <string name="go_to_position_label">Ir a esa posición</string>
   <!--Playback history-->
   <string name="clear_history_label">Vaciar el historial</string>
@@ -508,9 +508,7 @@
   <string name="about_pref">Acerca de</string>
   <string name="antennapod_version">Versión de AntennaPod</string>
   <string name="developers">Desarrolladores</string>
-  <string name="developers_summary">Todos pueden ayudar a mejorar AntennaPod</string>
   <string name="translators">Traductores</string>
-  <string name="translators_summary">Las traducciones las crean los usuarios de AntennaPod usando Transifex</string>
   <string name="privacy_policy">Política de privacidad</string>
   <string name="licenses">Licencias</string>
   <string name="licenses_summary">AntennaPod usa otros software estupendos</string>

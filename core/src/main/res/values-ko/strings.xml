@@ -497,10 +497,11 @@
   <!--About screen-->
   <string name="about_pref">정보</string>
   <string name="antennapod_version">안테나팟 버전</string>
+  <string name="contributors">기여한 분들</string>
+  <string name="contributors_summary">코드, 번역, 포럼에서 사용자를 돕는 일 등, 안테나팟을 더 좋게 만드는데 누구나 도움을 주실 수 있습니다. </string>
   <string name="developers">개발자</string>
-  <string name="developers_summary">안테나팟을 더 낫게 만드는데 도움을 준 모든 분</string>
   <string name="translators">번역자</string>
-  <string name="translators_summary">번역은 안테나팟 사용자들이 Transifex를 사용해 만듭니다.</string>
+  <string name="special_thanks">특별히 감사</string>
   <string name="privacy_policy">개인 정보 정책</string>
   <string name="licenses">라이선스</string>
   <string name="licenses_summary">안테나팟은 여러가지 위대한 소프트웨어를 사용하고 있습니다</string>
@@ -544,6 +545,8 @@
   <string name="import_select_file">가져올 파일을 선택하십시오</string>
   <string name="import_ok">내보내기 성공.\n\n안테나팟을 다시 시작하려면 확인을 누르십시오</string>
   <string name="import_no_downgrade">이 데이터베이스는 더 새로운 버전의 안테나팟에서 내보낸 데이터베이스입니다. 현재 설치된 버전의 안테나팟에서는 이 파일을 제대로 처리하지 못할 수도 있습니다.</string>
+  <string name="favorites_export_label">즐겨찾기 내보내기</string>
+  <string name="favorites_export_summary">저장한 즐겨찾기를 파일로 내보내기</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">취침 타이머 설정</string>
   <string name="disable_sleeptimer_label">취침 타이머 사용 않음</string>

@@ -104,6 +104,7 @@ public abstract class PodcastListFragment extends Fragment {
         Log.d(TAG, "Selected podcast: " + selection.toString());
         Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, selection.getUrl());
+        intent.putExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH, true);
         startActivity(intent);
     }
 

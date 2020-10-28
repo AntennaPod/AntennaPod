@@ -3,7 +3,7 @@ package de.test.antennapod.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import androidx.annotation.StringRes;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;

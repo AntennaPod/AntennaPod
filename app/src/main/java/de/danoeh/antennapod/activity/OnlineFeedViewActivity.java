@@ -494,6 +494,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         // feed.getId() is always 0, we have to retrieve the id from the feed list from
         // the database
         Intent intent = MainActivity.getIntentToOpenFeed(this, getFeedId(feed));
+        intent.putExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH,
+                getIntent().getBooleanExtra(MainActivity.EXTRA_STARTED_FROM_SEARCH, false));
         finish();
         startActivity(intent);
     }

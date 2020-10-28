@@ -5,10 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.ProgressBar;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -45,7 +49,8 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
-import de.danoeh.antennapod.dialog.FeedFilterDialog;
+import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
+import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.view.EmptyViewHandler;
@@ -101,7 +106,14 @@ public class SubscriptionFragment extends Fragment {
         progressBar = root.findViewById(R.id.progLoading);
 
         feedsFilteredMsg = root.findViewById(R.id.feeds_filtered_message);
-        feedsFilteredMsg.setOnClickListener((l) -> FeedFilterDialog.showDialog(requireContext()));
+        feedsFilteredMsg.setOnClickListener((l) -> SubscriptionsFilterDialog.showDialog(requireContext()));
+
+        SwipeRefreshLayout swipeRefreshLayout = root.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            AutoUpdateManager.runImmediate(requireContext());
+            new Handler(Looper.getMainLooper()).postDelayed(() -> swipeRefreshLayout.setRefreshing(false),
+                    getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
+        });
         return root;
     }
 
@@ -129,7 +141,10 @@ public class SubscriptionFragment extends Fragment {
                 AutoUpdateManager.runImmediate(requireContext());
                 return true;
             case R.id.subscriptions_filter:
-                FeedFilterDialog.showDialog(requireContext());
+                SubscriptionsFilterDialog.showDialog(requireContext());
+                return true;
+            case R.id.subscriptions_sort:
+                FeedSortDialog.showDialog(requireContext());
                 return true;
             case R.id.subscription_num_columns_2:
                 setColumnNumber(2);
@@ -210,7 +225,7 @@ public class SubscriptionFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
 
-        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE) {
+        if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
             feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(feedsFilteredMsg);
             feedsFilteredMsg.setVisibility(View.VISIBLE);
@@ -293,7 +308,9 @@ public class SubscriptionFragment extends Fragment {
             }
         };
 
-        String message = getString(R.string.feed_delete_confirmation_msg, feed.getTitle());
+        int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg
+                : R.string.feed_delete_confirmation_msg;
+        String message = getString(messageId, feed.getTitle());
         ConfirmationDialog dialog = new ConfirmationDialog(getContext(), R.string.remove_feed_label, message) {
             @Override
             public void onConfirmButtonPressed(DialogInterface clickedDialog) {

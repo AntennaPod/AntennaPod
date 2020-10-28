@@ -1,40 +1,16 @@
 package de.danoeh.antennapod.core.service.download;
 
 import android.os.Build;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-
-import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.Socket;
-import java.net.SocketAddress;
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-
+import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.ProviderInstallerInterceptor;
+import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import de.danoeh.antennapod.core.service.UserAgentInterceptor;
+import de.danoeh.antennapod.core.ssl.BackportTrustManager;
+import de.danoeh.antennapod.core.ssl.NoV1SslSocketFactory;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.Flavors;
 import okhttp3.Cache;
 import okhttp3.CipherSuite;
 import okhttp3.ConnectionSpec;
@@ -45,6 +21,19 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.internal.http.StatusLine;
+
+import javax.net.ssl.X509TrustManager;
+import java.io.File;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides access to a HttpClient singleton.
@@ -117,7 +106,6 @@ public class AntennapodHttpClient {
             }
             return response;
         });
-        builder.interceptors().add(new ProviderInstallerInterceptor());
         builder.interceptors().add(new BasicAuthorizationInterceptor());
         builder.networkInterceptors().add(new UserAgentInterceptor());
 
@@ -151,13 +139,20 @@ public class AntennapodHttpClient {
                 });
             }
         }
-        if (Build.VERSION.SDK_INT < 21) {
-            builder.sslSocketFactory(new CustomSslSocketFactory(), trustManager());
+
+        if (Flavors.FLAVOR == Flavors.FREE) {
+            // The Free flavor bundles a modern conscrypt (security provider), so CustomSslSocketFactory
+            // is only used to make sure that modern protocols (TLSv1.3 and TLSv1.2) are enabled and
+            // that old, deprecated, protocols (like SSLv3, TLSv1.0 and TLSv1.1) are disabled.
+            X509TrustManager trustManager = BackportTrustManager.create();
+            builder.sslSocketFactory(new NoV1SslSocketFactory(trustManager), trustManager);
+        } else if (Build.VERSION.SDK_INT < 21) {
+            X509TrustManager trustManager = BackportTrustManager.create();
+            builder.sslSocketFactory(new NoV1SslSocketFactory(trustManager), trustManager);
 
             // workaround for Android 4.x for certain web sites.
             // see: https://github.com/square/okhttp/issues/4053#issuecomment-402579554
-            List<CipherSuite> cipherSuites = new ArrayList<>(
-                    ConnectionSpec.MODERN_TLS.cipherSuites());
+            List<CipherSuite> cipherSuites = new ArrayList<>(ConnectionSpec.MODERN_TLS.cipherSuites());
             cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA);
             cipherSuites.add(CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA);
 
@@ -170,101 +165,7 @@ public class AntennapodHttpClient {
         return builder;
     }
 
-    /**
-     * Closes expired connections. This method should be called by the using class once has finished its work with
-     * the HTTP client.
-     */
-    public static synchronized void cleanup() {
-        if (httpClient != null) {
-            // does nothing at the moment
-        }
-    }
-
-    private static X509TrustManager trustManager() {
-        try {
-            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
-                    TrustManagerFactory.getDefaultAlgorithm());
-            trustManagerFactory.init((KeyStore) null);
-            TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
-            if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
-                throw new IllegalStateException("Unexpected default trust managers:"
-                        + Arrays.toString(trustManagers));
-            }
-            return (X509TrustManager) trustManagers[0];
-        } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-            return null;
-        }
-    }
-
     public static void setCacheDirectory(File cacheDirectory) {
         AntennapodHttpClient.cacheDirectory = cacheDirectory;
     }
-
-    private static class CustomSslSocketFactory extends SSLSocketFactory {
-
-        private SSLSocketFactory factory;
-
-        public CustomSslSocketFactory() {
-            try {
-                SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
-                sslContext.init(null, null, null);
-                factory= sslContext.getSocketFactory();
-            } catch(GeneralSecurityException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public String[] getDefaultCipherSuites() {
-            return factory.getDefaultCipherSuites();
-        }
-
-        @Override
-        public String[] getSupportedCipherSuites() {
-            return factory.getSupportedCipherSuites();
-        }
-
-        public Socket createSocket() throws IOException {
-            SSLSocket result = (SSLSocket) factory.createSocket();
-            configureSocket(result);
-            return result;
-        }
-
-        public Socket createSocket(String var1, int var2) throws IOException {
-            SSLSocket result = (SSLSocket) factory.createSocket(var1, var2);
-            configureSocket(result);
-            return result;
-        }
-
-        public Socket createSocket(Socket var1, String var2, int var3, boolean var4) throws IOException {
-            SSLSocket result = (SSLSocket) factory.createSocket(var1, var2, var3, var4);
-            configureSocket(result);
-            return result;
-        }
-
-        public Socket createSocket(InetAddress var1, int var2) throws IOException {
-            SSLSocket result = (SSLSocket) factory.createSocket(var1, var2);
-            configureSocket(result);
-            return result;
-        }
-
-        public Socket createSocket(String var1, int var2, InetAddress var3, int var4) throws IOException {
-            SSLSocket result = (SSLSocket) factory.createSocket(var1, var2, var3, var4);
-            configureSocket(result);
-            return result;
-        }
-
-        public Socket createSocket(InetAddress var1, int var2, InetAddress var3, int var4) throws IOException {
-            SSLSocket result = (SSLSocket) factory.createSocket(var1, var2, var3, var4);
-            configureSocket(result);
-            return result;
-        }
-
-        private void configureSocket(SSLSocket s) {
-            s.setEnabledProtocols(new String[] { "TLSv1.2", "TLSv1.1", "TLSv1" } );
-        }
-
-    }
-
 }

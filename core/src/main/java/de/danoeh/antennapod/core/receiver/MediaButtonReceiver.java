@@ -15,6 +15,7 @@ public class MediaButtonReceiver extends BroadcastReceiver {
 	private static final String TAG = "MediaButtonReceiver";
 	public static final String EXTRA_KEYCODE = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.KEYCODE";
 	public static final String EXTRA_SOURCE = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.SOURCE";
+	public static final String EXTRA_HARDWAREBUTTON = "de.danoeh.antennapod.core.service.extra.MediaButtonReceiver.HARDWAREBUTTON";
 
 	public static final String NOTIFY_BUTTON_RECEIVER = "de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER";
 
@@ -30,6 +31,12 @@ public class MediaButtonReceiver extends BroadcastReceiver {
 			Intent serviceIntent = new Intent(context, PlaybackService.class);
 			serviceIntent.putExtra(EXTRA_KEYCODE, event.getKeyCode());
 			serviceIntent.putExtra(EXTRA_SOURCE, event.getSource());
+			//detect if this is a hardware button press
+			if (event.getEventTime() > 0 || event.getDownTime() > 0) {
+				serviceIntent.putExtra(EXTRA_HARDWAREBUTTON, true);
+			} else {
+				serviceIntent.putExtra(EXTRA_HARDWAREBUTTON, false);
+			}
 			ContextCompat.startForegroundService(context, serviceIntent);
 		}
 

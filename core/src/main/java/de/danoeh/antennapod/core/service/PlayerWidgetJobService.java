@@ -132,7 +132,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 views.setImageViewBitmap(R.id.imgvCover, icon);
             } catch (Throwable tr) {
                 Log.e(TAG, "Error loading the media icon for the widget", tr);
-                views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_foreground);
+                views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
             }
 
             views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
@@ -171,7 +171,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
-            views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_foreground);
+            views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
         }
 

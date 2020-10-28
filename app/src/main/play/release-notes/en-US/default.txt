@@ -1,6 +1,6 @@
-This is a beta release for version 2.0.0. We would love to read your thoughts in our forum (link on the settings screen).
+We are proud to release version 2.0.0 with a new logo and refreshed user interface.
+Thank you to 6420 users who participated in the vote for the new logo!
 
-- Brand new user interface (by @ByteHamster)
 - Support for chapter images (only new episodes, by @ByteHamster)
 - Skip intro and ending per feed (by @tonytamsf)
 - Option to show notifications after episodes have been auto-downloaded (by @shortspider)

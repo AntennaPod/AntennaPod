@@ -37,13 +37,14 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:logo="@mipmap/ic_launcher"
-        android:resizeableActivity="true">
+        android:resizeableActivity="true"
+        android:allowAudioPlaybackCapture="true">
 
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
             android:value="true"/>
         <meta-data android:name="com.google.android.gms.car.notification.SmallIcon"
-            android:resource="@drawable/ic_antenna"/>
+            android:resource="@drawable/ic_notification"/>
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc"/>
@@ -80,7 +81,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode|keyboard|navigation"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask"
             android:label="@string/app_name">
         </activity>

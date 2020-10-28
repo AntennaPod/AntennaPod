@@ -57,7 +57,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:importantForAccessibility="no"
-                            tools:src="@drawable/ic_antenna"/>
+                            tools:src="@tools:sample/avatars"/>
 
                     <TextView
                             android:id="@+id/titleLabel"

@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help us improve existing features
-
+labels: 'possible bug'
 ---
 
 # Checklist
@@ -14,8 +14,11 @@ about: Create a report to help us improve existing features
 # System info
 <!-- The following information is very important to fill out because some bugs may only occur on certain devices or versions of Android. -->
 
-**App version**: x.y.z (Where did you download the app?)
+**App version**: x.y.z
 <!-- The latest version may be different depending on your device. You can find the version in AntennaPod's settings. -->
+
+**App source**: Google Play / F-Droid / ...
+<!-- Please delete irrelevant answer or fill in the blank -->
 
 **Android version**: 5.x (Please mention if you are using a custom rom!)
 
@@ -37,7 +40,8 @@ about: Create a report to help us improve existing features
 
 **First occurred**: (e.g. about x days/weeks ago)
 
-**Environment**: (Settings you have changed (e.g. Auto Download). "Unusual" devices you use (e.g. Bluetooth headphones). Did you select another media player?)
+**Environment**:
+<!-- Settings you have changed (e.g. Auto Download, changed media player). "Unusual" devices you use (e.g. Bluetooth headphones). -->
 
 **Stacktrace/Logcat**:
 <!-- If you are experiencing a crash, including the stacktrace will likely get it fixed sooner. AntennaPod has an `export logs` feature for this. -->

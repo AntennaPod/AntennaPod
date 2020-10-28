@@ -8,7 +8,7 @@ jobs:
         type: steps
         default: []
     docker:
-      - image: circleci/android:api-28
+      - image: circleci/android:api-30
     working_directory: ~/AntennaPod
     environment:
       GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx1536m -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError"'
@@ -90,7 +90,14 @@ workflows:
             - run:
                 name: Lint app
                 command: ./gradlew app:lintPlayRelease
+            - run:
+                name: Lint core
+                command: ./gradlew core:lintPlayRelease
             - store_artifacts:
-                name: Uploading lint reports
+                name: Uploading app lint reports
                 path: app/build/reports/lint-results-playRelease.html
-                destination: lint-results.html
+                destination: lint-results-app.html
+            - store_artifacts:
+                name: Uploading core lint reports
+                path: core/build/reports/lint-results-playRelease.html
+                destination: lint-results-core.html
