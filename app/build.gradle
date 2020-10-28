@@ -7,6 +7,14 @@ plugins {
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    viewBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        checkGeneratedSources = true
+    }
+
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
