@@ -420,18 +420,30 @@
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
   <string name="pref_gpodnet_sync_changes_title">Sincronitza ara</string>
   <string name="pref_gpodnet_sync_changes_sum">Sincronitza amb gpodder.net les subscripcions i els estats dels episodis.</string>
+  <string name="pref_gpodnet_full_sync_title">Força sincronització completa</string>
   <string name="pref_gpodnet_full_sync_sum">Sincronitza amb gpodder.net totes les subscripcions i els estats dels episodis.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Connectat com a <i>%1$s</i> amb el dispositiu <i>%2$s</i>]]></string>
   <string name="pref_gpodnet_notifications_title">Notifica els errors de sincronització</string>
   <string name="pref_gpodnet_notifications_sum">Aquest paràmetre no s\'aplica als errors d\'autenticació. </string>
   <string name="pref_playback_speed_title">Velocitats de reproducció</string>
   <string name="pref_playback_speed_sum">Personalitzeu les velocitats disponibles per a una velocitat de reproducció d\'àudio variable</string>
+  <string name="pref_feed_playback_speed_sum">La velocitat a usar quan comence la reproducció per a episodis en aquest podcast</string>
+  <string name="pref_feed_skip">Auto Ometre</string>
+  <string name="pref_feed_skip_sum">Omet introduccions i crèdits finals</string>
+  <string name="pref_feed_skip_ending">Omet final (en segons):</string>
+  <string name="pref_feed_skip_intro">Omet introducció (en segons):</string>
+  <string name="pref_feed_skip_ending_toast">Omesos els últims %dsegons</string>
+  <string name="pref_feed_skip_intro_toast">Omesos els primers %d segons</string>
+  <string name="pref_playback_time_respects_speed_title">Ajusta la informació dels medis a la velocitat de reproducció</string>
+  <string name="pref_playback_time_respects_speed_sum">La posició i la duració son adaptades a la velocitat de reproducció</string>
   <string name="pref_fast_forward">Temps de salt de l\'Avanç ràpid</string>
   <string name="pref_fast_forward_sum">Personalitzar el nombre de segons del salt endavant quan es prem el botó d\'Avanç ràpid.</string>
   <string name="pref_rewind">Temps de salt del Rebobinat</string>
   <string name="pref_rewind_sum">Personalitza el nombre de segons del salt endarrere quan es prem el botó de Rebobinat</string>
   <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
+  <string name="pref_expandNotify_title">Alta prioritat de notificacions</string>
+  <string name="pref_expandNotify_sum">Açò normalment expandeix la notificació per a mostrar botons de reproducció</string>
   <string name="pref_persistNotify_title">Botons de reproducció persistents</string>
   <string name="pref_persistNotify_sum">Manté els controls a l\'àrea de notificacions i pantalla de bloqueig quan la reproducció estigui aturada</string>
   <string name="pref_compact_notification_buttons_title">Estableix els botons del bloqueig de pantalla</string>
@@ -442,15 +454,29 @@
   <string name="pref_lockscreen_background_sum">Estableix el fons del bloqueig de pantalla a la imatge de l\'episodi actual. Com a efecte secundari, això també mostrarà la imatge en aplicacions de tercers.</string>
   <string name="pref_showDownloadReport_title">Mostra informació de baixades</string>
   <string name="pref_showDownloadReport_sum">Si les descàrregues fallen, genera un informe que mostra els detalls de la fallada.</string>
+  <string name="pref_showAutoDownloadReport_title">Mostra Informe de baixades automàtiques</string>
+  <string name="pref_showAutoDownloadReport_sum">Mostra una notificació per a episodis descarregats automàticament</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android anteriors a la 4.1 no suporten les notificacions ampliades.</string>
+  <string name="pref_enqueue_location_title">Posició d\'entrada en cola</string>
+  <string name="pref_enqueue_location_sum">Afegit episodis a: %1$s</string>
+  <string name="enqueue_location_back">Final</string>
+  <string name="enqueue_location_front">Principi</string>
+  <string name="enqueue_location_after_current">Després de l\'episodi actual</string>
   <string name="pref_smart_mark_as_played_disabled">Desactivat</string>
   <string name="pref_image_cache_size_title">Mida de la memòria cau de les imatges</string>
   <string name="pref_image_cache_size_sum">Mida de la memòria cau en el disc de les imatges.</string>
+  <string name="visit_user_forum">Fòrum d\'usuaris</string>
+  <string name="bug_report_title">Informa d\'un bug</string>
+  <string name="open_bug_tracker">Obri rastrejador de bugs</string>
+  <string name="export_logs">Exporta els logs</string>
+  <string name="copy_to_clipboard">Còpia al porta-retalls </string>
+  <string name="copied_to_clipboard">Copiat al porta-retalls</string>
   <string name="experimental_pref">Experimental</string>
   <string name="pref_media_player_message">Seleccioneu el reproductor multimèdia per a reproduir fitxers</string>
   <string name="pref_current_value">Valor actual: %1$s</string>
   <string name="pref_proxy_title">Servidor intermediari</string>
   <string name="pref_proxy_sum">Estableix un servidor intermediari</string>
+  <string name="pref_faq">Preguntes Freqüents</string>
   <string name="pref_no_browser_found">No s\'ha trobat cap navegador web.</string>
   <string name="pref_cast_title">Suport per a Chromecast</string>
   <string name="pref_cast_message_play_flavor">Habilita el suport per la reproducció remota en dispositius de difusió (com ara Chromecast, Audio Speakers o Android TV). </string>
@@ -458,18 +484,59 @@
   <string name="pref_enqueue_downloaded_title">Afegeix les baixades a la cua</string>
   <string name="pref_enqueue_downloaded_summary">Afegeix els episodis descarregats a la cua</string>
   <string name="media_player_builtin">Reproductor Android estàndard</string>
+  <string name="media_player_switch_to_exoplayer">Canvia a ExoPlayer</string>
+  <string name="media_player_switched_to_exoplayer">Canviat a ExoPlayer</string>
+  <string name="pref_skip_silence_title">Omet Silenci en Audio</string>
   <string name="pref_videoBehavior_title">En sortir d\'un vídeo</string>
   <string name="pref_videoBehavior_sum">Comportament a l\'abandonar la reproducció d\'un vídeo</string>
   <string name="stop_playback">Atura reproducció</string>
   <string name="continue_playback">Continuar reproducció d\'audio</string>
+  <string name="behavior">Comportament</string>
+  <string name="pref_back_button_behavior_title">Comportament del botó \"endarrere\"</string>
+  <string name="pref_back_button_behavior_sum">Canvia el comportament del botó \"endarrere\"</string>
+  <string name="back_button_default">Per defecte</string>
+  <string name="back_button_open_drawer">Obri el calaix de navegació</string>
+  <string name="back_button_double_tap">Doble toc per a eixir</string>
+  <string name="back_button_show_prompt">Confema per a eixir</string>
+  <string name="close_prompt">Estàs segur que vols tancar AntennaPod?</string>
+  <string name="double_tap_toast">Toca el botó \"endarrere\" un altra vegada per a eixir</string>
+  <string name="back_button_go_to_page">Ves a la pàgina...</string>
+  <string name="back_button_go_to_page_title">Selecciona pàgina</string>
+  <string name="pref_delete_removes_from_queue_title">\"Esborrar\" remou de la cua</string>
+  <string name="pref_delete_removes_from_queue_sum">Remou automàticament un episodi de la cua quan siga esborrat</string>
   <!--About screen-->
   <string name="about_pref">Quant a</string>
+  <string name="antennapod_version">Versió d\'AntennaPod</string>
+  <string name="contributors">Contributors</string>
+  <string name="contributors_summary">Tothom pot ajudar a fer AntennaPod millor - amb codi, traduccions o ajudant als usuaris al nostre fòrum</string>
+  <string name="developers">Desenvolupadors</string>
+  <string name="translators">Traductors</string>
+  <string name="special_thanks">Agraïments especials</string>
+  <string name="privacy_policy">Política de privacitat</string>
+  <string name="licenses">Llicències</string>
+  <string name="licenses_summary">AntennaPod usa altre programati genial</string>
   <!--Search-->
   <string name="search_status_no_results">No s\'ha trobat cap resultat</string>
   <string name="search_label">Cerca</string>
   <string name="no_results_for_query">No s\'han trobat resultats per \"%1$s\"</string>
   <!--Synchronization-->
+  <string name="sync_status_started">Sincronització començada</string>
+  <string name="sync_status_episodes_upload">Pujant canvis d\'episodi</string>
+  <string name="sync_status_episodes_download">Descarregant canvis d\'episodi...</string>
+  <string name="sync_status_upload_played">Pujant estat de reproducció...</string>
+  <string name="sync_status_subscriptions">Sincronitzant subscripcions...</string>
+  <string name="sync_status_success">Sincronització exitosa</string>
+  <string name="sync_status_error">Sincronització fallida</string>
   <!--import and export-->
+  <string name="import_export_summary">Mou subscripcions i cola a un altre dispositiu</string>
+  <string name="database">Base de dades</string>
+  <string name="opml">OPML</string>
+  <string name="html">HTML</string>
+  <string name="html_export_summary">Mostra les teues subscripcions a un amic</string>
+  <string name="opml_export_summary">Transfereix les teues subscripcions a un altra aplicació de podcast</string>
+  <string name="opml_import_summary">Importa les teues subscripcions des d\'un altra aplicació de podcast</string>
+  <string name="database_export_summary">Transfereix subscripcions i cola a AntennaPod en un altre dispositiu</string>
+  <string name="database_import_summary">Importa base de dades d\'AntennaPod des d\'un altre dispositiu</string>
   <string name="opml_import_label">Importació d\'OPML</string>
   <string name="opml_reader_error">S\'ha produït un error en llegir el document OPML: </string>
   <string name="opml_import_error_no_file">Cap fitxer seleccionat!</string>
@@ -477,17 +544,26 @@
   <string name="deselect_all_label">Deselecciona-ho tot</string>
   <string name="opml_export_label">Exportació OPML</string>
   <string name="html_export_label">Exporta HTML</string>
+  <string name="database_export_label">Exporta base de dades</string>
+  <string name="database_import_label">Importa base de dades</string>
+  <string name="database_import_warning">Importar una base de dades reemplaçarà totes les teues subscripcions i històric de reproducció. Deuries exportar la teua base de dades com a còpia de seguretat. Vols reemplaçar?</string>
+  <string name="please_wait">Per favor, espera...</string>
   <string name="export_error_label">Error d\'exportació</string>
   <string name="export_success_title">Exportació correcta</string>
   <string name="export_success_sum">S\'ha exportat el fitxer a:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Per llegir arxius OPML és necessari accés a la memòria externa</string>
   <string name="import_select_file">Tria un fitxer per a importar</string>
   <string name="import_ok">S\'ha importat amb èxit.\n\nPremeu D\'acord per a reiniciar l\'AntennaPod.</string>
+  <string name="import_no_downgrade">Aquesta base de dades va ser exportada amb una versió més nova d\'AntennaPod. La versió que tens ara mateixa no sap com processar-la.</string>
+  <string name="favorites_export_label">Exportar preferits</string>
+  <string name="favorites_export_summary">Exportar episodis favorits a un arxiu</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Defineix un temporitzador</string>
   <string name="disable_sleeptimer_label">Desactiva el temporitzador</string>
   <string name="sleep_timer_label">Temporitzador</string>
   <string name="time_dialog_invalid_input">L\'entrada no és vàlida, ja que el temps ha de ser un nombre i no ho és</string>
+  <string name="shake_to_reset_label">Agita per a resetejar</string>
+  <string name="timer_vibration_label">Vibra un poc abans del final</string>
   <string name="time_seconds">segons</string>
   <string name="time_minutes">minuts</string>
   <string name="time_hours">hores</string>
@@ -536,12 +612,14 @@
   <string name="gpodnetsync_error_descr">S\'ha produït un error durant la sincronització:\u0020</string>
   <string name="gpodnetsync_pref_report_successful">Correcte</string>
   <string name="gpodnetsync_pref_report_failed">Ha fallat</string>
+  <string name="gpodnetsync_username_characters_error">Noms d\'usuari sols poden contindre lletres, dígits, guions i guions baixos. </string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Carpeta seleccionada:</string>
   <string name="create_folder_label">Crea una carpeta</string>
   <string name="choose_data_directory">Selecció de la carpeta de dades</string>
   <string name="choose_data_directory_message">Selecciona l\'arrel del teu directori d\'informació. AntennaPod crearà els subdirectoris pertinents</string>
   <string name="choose_data_directory_permission_rationale">Es requereix accés a l\'emmagatzematge extern per canviar el directori d\'informació</string>
+  <string name="choose_data_directory_available_space">%1$s de %2$s lliures</string>
   <string name="create_folder_msg">Voleu crear una nova carpeta amb el nom \"%1$s\"?</string>
   <string name="create_folder_success">S\'ha creat la nova carpeta</string>
   <string name="create_folder_error_no_write_access">No es pot escriure dins d\'aquesta carpeta</string>
@@ -560,16 +638,25 @@
   <string name="pref_restart_required">AntennaPod s\'ha de reiniciar perquè aquest canvi tingui efecte.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscriu</string>
+  <string name="subscribing_label">Subscrivint...</string>
+  <string name="preview_episode">Vista prelimiar</string>
+  <string name="stop_preview">Atura vista preliminar</string>
   <!--Content descriptions for image buttons-->
   <string name="rewind_label">Rebobina</string>
   <string name="fast_forward_label">Avança ràpidament</string>
+  <string name="increase_speed">Augmenta la velocitat</string>
+  <string name="decrease_speed">Disminueix la velocitat</string>
   <string name="media_type_audio_label">Àudio</string>
   <string name="media_type_video_label">Vídeo</string>
   <string name="navigate_upwards_label">Navega cap amunt</string>
   <string name="status_downloading_label">S\'està baixant l\'episodi</string>
   <string name="in_queue_label">S\'ha afegit l\'episodi a la cua</string>
+  <string name="is_favorite_label">L\'episodi està marcat com a favorit</string>
   <string name="drag_handle_content_description">Arrossegueu l\'element per canviar-ne la posició</string>
   <string name="load_next_page_label">Carrega la següent pàgina</string>
+  <string name="switch_pages">Canvia pàgines</string>
+  <string name="position">Posició: %1$s</string>
+  <string name="apply_action">Aplica acció</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticació</string>
   <string name="authentication_descr">Canvieu el nom d\'usuari i contrasenya per a aquest podcast i els seus episodis.</string>
@@ -580,6 +667,8 @@
   <string name="episode_filters_exclude">Exclou</string>
   <string name="episode_filters_hint">Una paraula \n\"Diverses paraules\"</string>
   <string name="keep_updated">Manté actualitzat</string>
+  <string name="keep_updated_summary">Incloure aquest podcast quan (auto-)actualitzen tots els podcasts</string>
+  <string name="auto_download_disabled_globally">La baixada automàtica està deshabilitada als ajustos generals d\'AntennaPod</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Actualitzant la base de dades</string>
   <!--AntennaPodSP-->
@@ -588,9 +677,12 @@
   <string name="search_podcast_hint">Cerca podcast…</string>
   <string name="search_itunes_label">Cerca a iTunes</string>
   <string name="search_fyyd_label">Cerca a fyyd</string>
+  <string name="advanced">Avançat</string>
+  <string name="add_podcast_by_url">Afegir podcast per URL</string>
   <string name="browse_gpoddernet_label">Navega gpodder.net</string>
   <string name="discover">Descobreix</string>
   <string name="discover_more">més »</string>
+  <string name="search_powered_by">Cerca feta per %1$s</string>
   <string name="filter">Filtra</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tot</string>
@@ -618,6 +710,12 @@
   <string name="sort_date_old_new">Data (Antic \u2192 Nou)</string>
   <string name="sort_duration_short_long">Duració (Curt \u2192 Llarg)</string>
   <string name="sort_duration_long_short">Duration (Llarg \u2192 Curt)</string>
+  <string name="sort_a_z">A \u2192 Z</string>
+  <string name="sort_z_a">Z \u2192 A</string>
+  <string name="sort_new_old">Nou \u2192 Antic</string>
+  <string name="sort_old_new">Antic \u2192 Nou</string>
+  <string name="sort_short_long">Curt \u2192 Llarg</string>
+  <string name="sort_long_short">Llarg \u2192 Curt</string>
   <!--Rating dialog-->
   <string name="rating_title">T\'agrada AntennaPod?</string>
   <string name="rating_message">Apreciaríem que et prenguessis un temps per valorar AntennaPod</string>
@@ -633,6 +731,7 @@
   <string name="audio_effects">Efectes de so</string>
   <string name="stereo_to_mono">Downmix: D\'estereo a mono</string>
   <string name="sonic_only">Només Sonic</string>
+  <string name="exoplayer_only">ExoPlayer solament</string>
   <!--proxy settings-->
   <string name="proxy_type_label">Tipus</string>
   <string name="host_label">Host</string>
@@ -646,6 +745,7 @@
   <string name="proxy_host_invalid_error">El host no és una adreça IP o domini vàlid</string>
   <string name="proxy_port_invalid_error">El port no és vàlid</string>
   <!--Subscriptions fragment-->
+  <string name="subscription_num_columns">Número de columnes</string>
   <!--Casting-->
   <string name="cast_media_route_menu_title">Reproduir a...</string>
   <string name="cast_disconnect_label">Desconnectar la sessió de difusió </string>
@@ -669,6 +769,14 @@
   <string name="notification_channel_playing_description">Permet controlar la reproducció. Aquesta és la notificació principal que veureu durant la reproducció d\'un podcast.</string>
   <string name="notification_channel_error">Errors</string>
   <string name="notification_channel_error_description">Mostrar si quelcom va malament, per exemple si una baixada o sincronització fallen.</string>
+  <string name="notification_channel_auto_download">Baixades automàtiques</string>
+  <string name="notification_channel_episode_auto_download">Mostrat quan els episodis han sigut descarregats automàticament</string>
   <!--Widget settings-->
+  <string name="widget_settings">Settings del widget</string>
+  <string name="widget_create_button">Crear widget</string>
+  <string name="widget_opacity">Opacitat</string>
   <!--On-Demand configuration-->
+  <string name="on_demand_config_setting_changed">Ajust actualitzar exitosament</string>
+  <string name="on_demand_config_stream_text">Pareix que escoltes en línia molt a sovint. Vols que les llistes d\'episodis mostren botons per a escoltar en línia?</string>
+  <string name="on_demand_config_download_text">Pareix que baixes molt a sovint. Vols que les llistes d\'episodis mostren botons per a baixar episodis?</string>
 </resources>
