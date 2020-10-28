@@ -253,6 +253,8 @@
         <item>@string/sort_title_z_a</item>
         <item>@string/sort_duration_short_long</item>
         <item>@string/sort_duration_long_short</item>
+        <item>@string/sort_filename_a_z</item>
+        <item>@string/sort_filename_z_a</item>
     </string-array>
 
     <string-array name="feed_episodes_sort_values">
