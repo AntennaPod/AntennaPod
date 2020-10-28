@@ -189,11 +189,13 @@ public class LocalFeedUpdater {
             return true;
         }
 
-        Collections.sort(downloadStatuses, (downloadStatus1, downloadStatus2) -> downloadStatus1.getCompletionDate().compareTo(downloadStatus2.getCompletionDate()));
+        Collections.sort(downloadStatuses, (downloadStatus1, downloadStatus2) ->
+                downloadStatus1.getCompletionDate().compareTo(downloadStatus2.getCompletionDate()));
 
         DownloadStatus lastDownloadStatus = downloadStatuses.get(downloadStatuses.size() - 1);
 
-        // report success if the last update was not successful (avoid logging success again if the last update was ok)
+        // report success if the last update was not successful
+        // (avoid logging success again if the last update was ok)
         return !lastDownloadStatus.isSuccessful();
     }
 }
