@@ -212,7 +212,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private Disposable positionEventTimer;
     private PlaybackServiceNotificationBuilder notificationBuilder;
 
-    private long autoSkippedFeedMediaId = -1;
+    private String autoSkippedFeedMediaId = null;
 
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
@@ -1046,18 +1046,21 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "smart mark as played");
         }
 
+        boolean autoSkipped = false;
+        if (autoSkippedFeedMediaId != null && autoSkippedFeedMediaId.equals(item.getIdentifyingValue())) {
+            autoSkippedFeedMediaId = null;
+            autoSkipped = true;
+        }
+
         if (ended || smartMarkAsPlayed) {
             media.onPlaybackCompleted(getApplicationContext());
         } else {
             media.onPlaybackPause(getApplicationContext());
         }
 
-        if (autoSkippedFeedMediaId >= 0 && autoSkippedFeedMediaId == media.getId()) {
-            ended = true;
-        }
-
         if (item != null) {
             if (ended || smartMarkAsPlayed
+                    || autoSkipped
                     || (skipped && !UserPreferences.shouldSkipKeepEpisode())) {
                 // only mark the item as played if we're not keeping it anyways
                 DBWriter.markItemPlayed(item, FeedItem.PLAYED, ended);
@@ -1109,7 +1112,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
         int skipEnd = preferences.getFeedSkipEnding();
         if (skipEnd > 0
-                && skipEnd < getDuration()
+                && skipEnd * 1000 < getDuration()
                 && (remainingTime - (skipEnd * 1000) > 0)
                 && ((remainingTime - skipEnd * 1000) < (getCurrentPlaybackSpeed() * 1000))) {
             Log.d(TAG, "skipEndingIfNecessary: Skipping the remaining " + remainingTime + " " + skipEnd * 1000 + " speed " + getCurrentPlaybackSpeed());
@@ -1118,7 +1121,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Toast toast = Toast.makeText(context, skipMesg, Toast.LENGTH_LONG);
             toast.show();
 
-            this.autoSkippedFeedMediaId = feedMedia.getItem().getId();
+            this.autoSkippedFeedMediaId = feedMedia.getItem().getIdentifyingValue();
             mediaPlayer.skip();
         }
    }
