@@ -3,7 +3,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent" android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -16,34 +17,35 @@
                 android:layout_height="match_parent"
                 android:background="?android:attr/windowBackground"
                 app:contentScrim="?android:attr/windowBackground"
-                app:scrimAnimationDuration="200"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:scrimAnimationDuration="200">
 
             <ImageView
                     android:id="@+id/imgvBackground"
                     style="@style/BigBlurryBackground"
-                    android:background="@color/image_readability_tint"
                     android:layout_width="match_parent"
                     android:layout_height="232dp"
+                    android:background="@color/image_readability_tint"
                     app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.6"/>
+                    app:layout_collapseParallaxMultiplier="0.6" />
 
-            <include layout="@layout/feeditemlist_header"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_gravity="bottom"
-                     app:layout_collapseMode="parallax"
-                     app:layout_collapseParallaxMultiplier="0.6"/>
-
-            <androidx.appcompat.widget.Toolbar
+            <include
+                    layout="@layout/feeditemlist_header"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.6" />
+
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
                     android:minHeight="?attr/actionBarSize"
                     android:theme="?attr/actionBarTheme"
-                    app:navigationIcon="?homeAsUpIndicator"
-                    android:layout_alignParentTop="true"
-                    android:id="@+id/toolbar"
-                    app:layout_collapseMode="pin"/>
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="?homeAsUpIndicator" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -52,68 +54,30 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbarStyle="outsideOverlay"
+            android:clipToPadding="false"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
-            android:clipToPadding="false"
+            android:scrollbarStyle="outsideOverlay"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+                android:id="@+id/infoContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/infoContainer"
-                android:paddingHorizontal="@dimen/additional_horizontal_spacing"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/additional_horizontal_spacing">
 
             <TextView
-                    style="@style/AntennaPod.TextView.Heading"
-                    android:id="@+id/lblAuthor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/author_label"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:background="@android:color/holo_red_light"/>
-
-            <TextView
-                    android:id="@+id/txtvDetailsAuthor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textIsSelectable="true"
-                    tools:text="Daniel Oeh"
-                    tools:background="@android:color/holo_green_dark"/>
-
-            <TextView
-                    style="@style/AntennaPod.TextView.Heading"
-                    android:id="@+id/lblLanguage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/language_label"
-                    android:textColor="?android:attr/textColorPrimary"
-                    tools:background="@android:color/holo_red_light"/>
-
-            <TextView
-                    android:id="@+id/txtvLanguage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textIsSelectable="true"
-                    tools:text="English"
-                    tools:background="@android:color/holo_green_dark"/>
-
-            <TextView
-                    style="@style/AntennaPod.TextView.Heading"
                     android:id="@+id/lblUrl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="4dp"
                     android:text="@string/url_label"
                     android:textColor="?android:attr/textColorPrimary"
-                    tools:background="@android:color/holo_red_light"/>
+                    tools:background="@android:color/holo_red_light" />
 
             <TextView
                     android:id="@+id/txtvUrl"
@@ -123,24 +87,100 @@
                     android:maxLines="4"
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
-                    tools:text="http://www.example.com/feed"
-                    tools:background="@android:color/holo_green_dark"/>
+                    tools:background="@android:color/holo_green_dark"
+                    tools:text="http://www.example.com/feed" />
 
             <TextView
-                    style="@style/AntennaPod.TextView.Heading"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/description_label"/>
+                    android:textSize="18sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/description_label"
+                    android:textColor="?android:attr/textColorPrimary"
+                    tools:background="@android:color/holo_red_light" />
 
             <TextView
                     android:id="@+id/txtvDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textIsSelectable="true"
                     android:text="@string/design_time_lorem_ipsum"
-                    tools:background="@android:color/holo_green_dark"/>
+                    android:textIsSelectable="true"
+                    tools:background="@android:color/holo_green_dark" />
+
+            <TextView
+                    android:id="@+id/lblStatistics"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textSize="18sp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/statistics_label"
+                    android:textColor="?android:attr/textColorPrimary"
+                    tools:background="@android:color/holo_red_light" />
+
+            <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/statistics_listened_for" />
+
+                    <TextView
+                            android:id="@+id/txtvPodcastTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp" />
+                </TableRow>
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/statistics_episodes_on_device" />
+
+                    <TextView
+                            android:id="@+id/txtvPodcastEpisodeCount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp" />
+                </TableRow>
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/statistics_space_used" />
+
+                    <TextView
+                            android:id="@+id/txtvPodcastSpaceUsed"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp" />
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                    android:id="@+id/btnvOpenStatistics"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:text="@string/statistics_view_all" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
