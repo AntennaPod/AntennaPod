@@ -13,17 +13,22 @@
         android:layout_marginBottom="16dp"
         android:orientation="vertical">
 
-        <RadioButton android:id="@+id/share_episode_website_radio"
+        <RadioButton
+            android:id="@+id/share_episode_website_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/share_dialog_episode_website_label"
-            android:checked="true"
-            />
-        <RadioButton android:id="@+id/share_media_file_radio"
+            android:checked="true" />
+        <RadioButton
+            android:id="@+id/share_media_file_url_radio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/share_dialog_media_file_label"
-            />
+            android:text="@string/share_dialog_media_file_url_label" />
+        <RadioButton
+            android:id="@+id/share_media_file_radio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/share_dialog_media_file_label" />
     </RadioGroup>
 
     <TextView
