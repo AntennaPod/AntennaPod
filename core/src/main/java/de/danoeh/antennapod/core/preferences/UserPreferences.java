@@ -301,10 +301,16 @@ public class UserPreferences {
      * @return {@code true} if download reports are shown, {@code false}  otherwise
      */
     public static boolean showDownloadReport() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return true; // System handles notification preferences
+        }
         return prefs.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
     }
 
     public static boolean showAutoDownloadReport() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return true; // System handles notification preferences
+        }
         return prefs.getBoolean(PREF_SHOW_AUTO_DOWNLOAD_REPORT, false);
     }
 
@@ -728,6 +734,9 @@ public class UserPreferences {
     }
 
     public static boolean gpodnetNotificationsEnabled() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return true; // System handles notification preferences
+        }
         return prefs.getBoolean(PREF_GPODNET_NOTIFICATIONS, true);
     }
 

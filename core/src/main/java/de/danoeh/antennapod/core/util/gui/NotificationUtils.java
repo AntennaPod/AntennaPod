@@ -22,7 +22,7 @@ public class NotificationUtils {
     public static final String GROUP_ID_NEWS = "group_news";
 
     public static void createChannels(Context context) {
-        if (android.os.Build.VERSION.SDK_INT < 26) {
+        if (Build.VERSION.SDK_INT < 26) {
             return;
         }
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
