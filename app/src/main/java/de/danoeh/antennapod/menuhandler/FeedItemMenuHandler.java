@@ -78,17 +78,12 @@ public class FeedItemMenuHandler {
             setItemVisibility(menu, R.id.reset_position, false);
         }
 
-        if (!selectedItem.getFeed().isLocalFeed()) {
-            if (!UserPreferences.isEnableAutodownload() || fileDownloaded) {
-                setItemVisibility(menu, R.id.activate_auto_download, false);
-                setItemVisibility(menu, R.id.deactivate_auto_download, false);
-            } else if (selectedItem.getAutoDownload()) {
-                setItemVisibility(menu, R.id.activate_auto_download, false);
-            } else {
-                setItemVisibility(menu, R.id.deactivate_auto_download, false);
-            }
-        } else {
+        if (!UserPreferences.isEnableAutodownload() || fileDownloaded || selectedItem.getFeed().isLocalFeed()) {
             setItemVisibility(menu, R.id.activate_auto_download, false);
+            setItemVisibility(menu, R.id.deactivate_auto_download, false);
+        } else if (selectedItem.getAutoDownload()) {
+            setItemVisibility(menu, R.id.activate_auto_download, false);
+        } else {
             setItemVisibility(menu, R.id.deactivate_auto_download, false);
         }
 
