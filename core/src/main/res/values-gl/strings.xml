@@ -465,7 +465,7 @@
   <string name="pref_smart_mark_as_played_disabled">Desactivado</string>
   <string name="pref_image_cache_size_title">Tamaño da caché de imaxes</string>
   <string name="pref_image_cache_size_sum">Tamaño da caché en disco para as imaxes.</string>
-  <string name="visit_user_forum">Foro de usuarios</string>
+  <string name="visit_user_forum">Foro de usuarias</string>
   <string name="bug_report_title">Informar de fallo</string>
   <string name="open_bug_tracker">Abrir seguimento de fallos</string>
   <string name="export_logs">Exportar rexistro</string>

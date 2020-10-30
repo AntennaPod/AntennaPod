@@ -20,6 +20,9 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowMediaMetadataRetriever;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import de.danoeh.antennapod.core.ApplicationCallbacks;
@@ -30,6 +33,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -150,6 +154,32 @@ public class LocalFeedUpdaterTest {
     }
 
     /**
+     * Test default feed metadata.
+     *
+     * @see #mapDummyMetadata Title and PubDate are dummy values.
+     */
+    @Test
+    public void testUpdateFeed_FeedMetadata() {
+        callUpdateFeed(LOCAL_FEED_DIR1);
+
+        Feed feed = verifySingleFeedInDatabase();
+        List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
+        FeedItem feedItem = feedItems.get(0);
+
+        assertEquals("track1.mp3", feedItem.getTitle());
+
+        Date pubDate = feedItem.getPubDate();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(pubDate);
+        assertEquals(2020, calendar.get(Calendar.YEAR));
+        assertEquals(6 - 1, calendar.get(Calendar.MONTH));
+        assertEquals(1, calendar.get(Calendar.DAY_OF_MONTH));
+        assertEquals(22, calendar.get(Calendar.HOUR_OF_DAY));
+        assertEquals(23, calendar.get(Calendar.MINUTE));
+        assertEquals(24, calendar.get(Calendar.SECOND));
+    }
+
+    /**
      * Fill ShadowMediaMetadataRetriever with dummy duration and title.
      *
      * @param localFeedDir assets local feed folder with media files
@@ -162,6 +192,8 @@ public class LocalFeedUpdaterTest {
                     MediaMetadataRetriever.METADATA_KEY_DURATION, "10");
             ShadowMediaMetadataRetriever.addMetadata(path,
                     MediaMetadataRetriever.METADATA_KEY_TITLE, fileName);
+            ShadowMediaMetadataRetriever.addMetadata(path,
+                    MediaMetadataRetriever.METADATA_KEY_DATE, "20200601T222324");
         }
 
     }

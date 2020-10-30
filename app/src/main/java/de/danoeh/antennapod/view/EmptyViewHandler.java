@@ -84,12 +84,16 @@ public class EmptyViewHandler {
 
     private void addToParentView(View view) {
         ViewGroup parent = ((ViewGroup) view.getParent());
-        parent.addView(emptyView);
-        if (parent instanceof RelativeLayout) {
-            RelativeLayout.LayoutParams layoutParams =
-                    (RelativeLayout.LayoutParams) emptyView.getLayoutParams();
-            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-            emptyView.setLayoutParams(layoutParams);
+        while (parent != null) {
+            if (parent instanceof RelativeLayout) {
+                parent.addView(emptyView);
+                RelativeLayout.LayoutParams layoutParams =
+                        (RelativeLayout.LayoutParams) emptyView.getLayoutParams();
+                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                emptyView.setLayoutParams(layoutParams);
+                break;
+            }
+            parent = (ViewGroup) parent.getParent();
         }
     }
 

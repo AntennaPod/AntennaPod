@@ -10,20 +10,26 @@ import androidx.documentfile.provider.DocumentFile;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 
 public class LocalFeedUpdater {
@@ -106,6 +112,10 @@ public class LocalFeedUpdater {
         // deleting played state or position in case the folder is temporarily unavailable.
         boolean removeUnlistedItems = (newItems.size() >= 1);
         DBTasks.updateFeed(context, feed, removeUnlistedItems);
+
+        if (mustReportDownloadSuccessful(feed)) {
+            reportSuccess(feed);
+        }
     }
 
     /**
@@ -130,12 +140,30 @@ public class LocalFeedUpdater {
 
     private static FeedItem createFeedItem(Feed feed, DocumentFile file, Context context) {
         String uuid = UUID.randomUUID().toString();
-        FeedItem item = new FeedItem(0, file.getName(), uuid, file.getName(), new Date(),
-                FeedItem.UNPLAYED, feed);
-        item.setAutoDownload(false);
 
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(context, file.getUri());
+        String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
+
+        Date date = null;
+        if (!TextUtils.isEmpty(dateStr)) {
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
+                date = simpleDateFormat.parse(dateStr);
+            } catch (ParseException parseException) {
+                date = DateUtils.parse(dateStr);
+                if (date == null) {
+                    date = new Date(file.lastModified());
+                }
+            }
+        } else {
+            date = new Date(file.lastModified());
+        }
+
+        FeedItem item = new FeedItem(0, file.getName(), uuid, file.getName(), date,
+                FeedItem.UNPLAYED, feed);
+        item.setAutoDownload(false);
+
         String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         if (!TextUtils.isEmpty(title)) {
@@ -158,5 +186,36 @@ public class LocalFeedUpdater {
                 DownloadError.ERROR_IO_ERROR, false, reasonDetailed, true);
         DBWriter.addDownloadStatus(status);
         DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
+    }
+
+    /**
+     * Reports a successful download status.
+     */
+    private static void reportSuccess(Feed feed) {
+        DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
+                DownloadError.SUCCESS, true, null, true);
+        DBWriter.addDownloadStatus(status);
+        DBWriter.setFeedLastUpdateFailed(feed.getId(), false);
+    }
+
+    /**
+     * Answers if reporting success is needed for the given feed.
+     */
+    private static boolean mustReportDownloadSuccessful(Feed feed) {
+        List<DownloadStatus> downloadStatuses = DBReader.getFeedDownloadLog(feed.getId());
+
+        if (downloadStatuses.isEmpty()) {
+            // report success if never reported before
+            return true;
+        }
+
+        Collections.sort(downloadStatuses, (downloadStatus1, downloadStatus2) ->
+                downloadStatus1.getCompletionDate().compareTo(downloadStatus2.getCompletionDate()));
+
+        DownloadStatus lastDownloadStatus = downloadStatuses.get(downloadStatuses.size() - 1);
+
+        // report success if the last update was not successful
+        // (avoid logging success again if the last update was ok)
+        return !lastDownloadStatus.isSuccessful();
     }
 }

@@ -7,6 +7,14 @@ plugins {
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    viewBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        checkGeneratedSources = true
+    }
+
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -14,8 +22,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2000295
-        versionName "2.0.2"
+        versionCode 2000395
+        versionName "2.0.3"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true

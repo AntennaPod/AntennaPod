@@ -89,8 +89,6 @@ public class AddFeedFragment extends Fragment {
         });
         root.findViewById(R.id.btn_add_local_folder).setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT < 21) {
-                ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                        "Local folders are only supported on Android 5.0 and later", Snackbar.LENGTH_LONG);
                 return;
             }
             try {
