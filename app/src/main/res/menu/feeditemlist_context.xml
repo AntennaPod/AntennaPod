@@ -49,15 +49,6 @@
         android:title="@string/reset_position" />
 
     <item
-        android:id="@+id/activate_auto_download"
-        android:menuCategory="container"
-        android:title="@string/activate_auto_download" />
-    <item
-        android:id="@+id/deactivate_auto_download"
-        android:menuCategory="container"
-        android:title="@string/deactivate_auto_download" />
-
-    <item
         android:id="@+id/visit_website_item"
         android:menuCategory="container"
         android:title="@string/visit_website_label" />

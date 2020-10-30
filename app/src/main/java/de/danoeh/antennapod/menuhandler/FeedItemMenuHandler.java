@@ -78,15 +78,6 @@ public class FeedItemMenuHandler {
             setItemVisibility(menu, R.id.reset_position, false);
         }
 
-        if(!UserPreferences.isEnableAutodownload() || fileDownloaded) {
-            setItemVisibility(menu, R.id.activate_auto_download, false);
-            setItemVisibility(menu, R.id.deactivate_auto_download, false);
-        } else if (selectedItem.getAutoDownload()) {
-            setItemVisibility(menu, R.id.activate_auto_download, false);
-        } else {
-            setItemVisibility(menu, R.id.deactivate_auto_download, false);
-        }
-
         // Display proper strings when item has no media
         if (!hasMedia && !selectedItem.isPlayed()) {
             setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_no_media_label);
@@ -227,14 +218,6 @@ public class FeedItemMenuHandler {
                     IntentUtils.sendLocalBroadcast(context, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
                 }
                 DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
-                break;
-            case R.id.activate_auto_download:
-                selectedItem.setAutoDownload(true);
-                DBWriter.setFeedItemAutoDownload(selectedItem, true);
-                break;
-            case R.id.deactivate_auto_download:
-                selectedItem.setAutoDownload(false);
-                DBWriter.setFeedItemAutoDownload(selectedItem, false);
                 break;
             case R.id.visit_website_item:
                 IntentUtils.openInBrowser(context, FeedItemUtil.getLinkWithFallback(selectedItem));
