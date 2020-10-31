@@ -173,6 +173,7 @@ public class DownloadServiceNotification {
             }
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(id, builder.build());
+            Log.d(TAG, "Download report notification was posted");
         } else {
             Log.d(TAG, "No report is created");
         }
