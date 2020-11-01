@@ -35,6 +35,9 @@ import de.danoeh.antennapod.discovery.FyydPodcastSearcher;
 import de.danoeh.antennapod.discovery.ItunesPodcastSearcher;
 import de.danoeh.antennapod.discovery.PodcastIndexPodcastSearcher;
 import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import java.util.Collections;
 
@@ -162,31 +165,37 @@ public class AddFeedFragment extends Fragment {
             intent.setData(uri);
             startActivity(intent);
         } else if (requestCode == REQUEST_CODE_ADD_LOCAL_FOLDER) {
-            addLocalFolder(uri);
+            Observable.fromCallable(() -> addLocalFolder(uri))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        feed -> {
+                            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
+                            ((MainActivity) getActivity()).loadChildFragment(fragment);
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                            ((MainActivity) getActivity())
+                                    .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG);
+                        });
         }
     }
 
-    private void addLocalFolder(Uri uri) {
+    private Feed addLocalFolder(Uri uri) throws DownloadRequestException {
         if (Build.VERSION.SDK_INT < 21) {
-            return;
+            return null;
         }
-        try {
-            getActivity().getContentResolver()
-                    .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
-            if (documentFile == null) {
-                throw new IllegalArgumentException("Unable to retrieve document tree");
-            }
-            Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, documentFile.getName());
-            dirFeed.setDescription(getString(R.string.local_feed_description));
-            dirFeed.setItems(Collections.emptyList());
-            dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
-            DBTasks.forceRefreshFeed(getContext(), dirFeed, true);
-            ((MainActivity) getActivity())
-                    .showSnackbarAbovePlayer(R.string.add_local_folder_success, Snackbar.LENGTH_SHORT);
-        } catch (DownloadRequestException | IllegalArgumentException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(e.getLocalizedMessage(), Snackbar.LENGTH_LONG);
+        getActivity().getContentResolver()
+                .takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        DocumentFile documentFile = DocumentFile.fromTreeUri(getContext(), uri);
+        if (documentFile == null) {
+            throw new IllegalArgumentException("Unable to retrieve document tree");
         }
+        Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, documentFile.getName());
+        dirFeed.setDescription(getString(R.string.local_feed_description));
+        dirFeed.setItems(Collections.emptyList());
+        dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
+        Feed fromDatabase = DBTasks.updateFeed(getContext(), dirFeed, false);
+        DBTasks.forceRefreshFeed(getContext(), fromDatabase, true);
+        return fromDatabase;
     }
 }
