@@ -98,7 +98,6 @@
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
     <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
-    <string name="auto_download_include_message">Should all new (future) episodes of this podcast be automatically downloaded?</string>
     <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
     <string name="auto_delete_label">Auto Delete Episode</string>
     <string name="feed_volume_reduction">Volume Reduction</string>

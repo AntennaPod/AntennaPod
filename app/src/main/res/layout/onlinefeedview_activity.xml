@@ -126,13 +126,14 @@
 
                 <CheckBox
                         android:id="@+id/autoDownloadCheckBox"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="4dp"
+                        android:layout_gravity="left"
                         android:focusable="false"
                         android:text="@string/auto_download_label"
                         android:visibility="gone"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         tools:visibility="visible"/>
 
                 <Button
