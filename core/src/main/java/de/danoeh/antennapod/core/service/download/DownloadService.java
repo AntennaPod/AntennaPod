@@ -219,9 +219,9 @@ public class DownloadService extends Service {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        cancelNotificationUpdater();
         syncExecutor.shutdown();
         schedExecutor.shutdown();
-        cancelNotificationUpdater();
         if (downloadPostFuture != null) {
             downloadPostFuture.cancel(true);
         }
@@ -640,6 +640,7 @@ public class DownloadService extends Service {
             if (n != null) {
                 NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 nm.notify(R.id.notification_downloading, n);
+                Log.d(TAG, "Download progress notification was posted");
             }
         }
     }
