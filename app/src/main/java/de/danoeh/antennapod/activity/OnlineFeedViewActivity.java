@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
@@ -114,6 +115,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.transparentBackground.setOnClickListener(v -> finish());
         viewBinding.card.setOnClickListener(null);
+        viewBinding.autoDownloadCheckBox.setChecked(UserPreferences.isEnableAutodownload());
 
         String feedUrl = null;
         if (getIntent().hasExtra(ARG_FEEDURL)) {
@@ -505,13 +507,34 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             if (DownloadRequester.getInstance().isDownloadingFile(feed.getDownload_url())) {
                 viewBinding.subscribeButton.setEnabled(false);
                 viewBinding.subscribeButton.setText(R.string.subscribing_label);
+                if (UserPreferences.isEnableAutodownload()) {
+                    LinearLayout.LayoutParams layoutParams
+                            = (LinearLayout.LayoutParams) viewBinding.subscribeButton.getLayoutParams();
+                    layoutParams.setMargins(16, 16, 16, 0);
+                    viewBinding.subscribeButton.setLayoutParams(layoutParams);
+                    viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+                }
             } else if (feedInFeedlist(feed)) {
                 viewBinding.subscribeButton.setEnabled(true);
                 viewBinding.subscribeButton.setText(R.string.open_podcast);
                 if (didPressSubscribe) {
+                    didPressSubscribe = false;
+                    if (viewBinding.autoDownloadCheckBox.getVisibility() == View.VISIBLE) {
+                        Feed feed1 = DBReader.getFeed(getFeedId(feed));
+                        FeedPreferences feedPreferences = feed1.getPreferences();
+                        feedPreferences.setAutoDownload(viewBinding.autoDownloadCheckBox.isChecked());
+                        feed1.savePreferences();
+                    }
                     openFeed();
                 }
             } else {
+                if (UserPreferences.isEnableAutodownload()) {
+                    LinearLayout.LayoutParams layoutParams
+                            = (LinearLayout.LayoutParams) viewBinding.subscribeButton.getLayoutParams();
+                    layoutParams.setMargins(16, 16, 16, 0);
+                    viewBinding.subscribeButton.setLayoutParams(layoutParams);
+                    viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+                }
                 viewBinding.subscribeButton.setEnabled(true);
                 viewBinding.subscribeButton.setText(R.string.subscribe_label);
             }

@@ -124,6 +124,17 @@
                         android:focusable="false"
                         android:text="@string/subscribe_label"/>
 
+                <CheckBox
+                        android:id="@+id/autoDownloadCheckBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="4dp"
+                        android:focusable="false"
+                        android:text="@string/auto_download_label"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
                 <Button
                         android:id="@+id/stopPreviewButton"
                         android:layout_width="match_parent"
@@ -133,7 +144,8 @@
                         android:layout_marginBottom="16dp"
                         android:focusable="false"
                         android:text="@string/stop_preview"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
 
                 <ListView
                         android:id="@+id/listView"
