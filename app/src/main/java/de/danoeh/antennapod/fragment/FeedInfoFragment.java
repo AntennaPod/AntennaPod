@@ -369,7 +369,7 @@ public class FeedInfoFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> ((MainActivity) getActivity())
-                                .showSnackbarAbovePlayer(R.string.add_local_folder_success, Snackbar.LENGTH_SHORT),
+                                .showSnackbarAbovePlayer(android.R.string.ok, Snackbar.LENGTH_SHORT),
                         error -> ((MainActivity) getActivity())
                                 .showSnackbarAbovePlayer(error.getLocalizedMessage(), Snackbar.LENGTH_LONG));
     }
