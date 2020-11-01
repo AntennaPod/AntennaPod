@@ -17,7 +17,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -61,7 +61,8 @@ public class AddFeedFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.addfeed, container, false);
         activity = (MainActivity) getActivity();
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
+        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
 
         root.findViewById(R.id.btn_search_itunes).setOnClickListener(v
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(ItunesPodcastSearcher.class)));
@@ -146,11 +147,6 @@ public class AddFeedFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
-        // So, we certainly *don't* have an options menu,
-        // but unless we say we do, old options menus sometimes
-        // persist.  mfietz thinks this causes the ActionBar to be invalidated
-        setHasOptionsMenu(true);
     }
 
     @Override

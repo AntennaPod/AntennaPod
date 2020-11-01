@@ -13,7 +13,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -21,8 +20,6 @@ import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +64,7 @@ import java.util.Locale;
 /**
  * Displays information about a feed.
  */
-public class FeedInfoFragment extends Fragment {
+public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     private static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
     private static final String TAG = "FeedInfoActivity";
@@ -89,7 +86,7 @@ public class FeedInfoFragment extends Fragment {
     private ImageView imgvBackground;
     private View infoContainer;
     private View header;
-    private Menu optionsMenu;
+    private Toolbar toolbar;
     private ToolbarIconTintManager iconTintManager;
 
     public static FeedInfoFragment newInstance(Feed feed) {
@@ -119,24 +116,24 @@ public class FeedInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.feedinfo, null);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle("");
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.feedinfo);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        toolbar.setOnMenuItemClickListener(this);
+        refreshToolbarState();
+
         AppBarLayout appBar = root.findViewById(R.id.appBar);
         CollapsingToolbarLayout collapsingToolbar = root.findViewById(R.id.collapsing_toolbar);
         iconTintManager = new ToolbarIconTintManager(getContext(), toolbar, collapsingToolbar) {
             @Override
             protected void doTint(Context themedContext) {
-                if (optionsMenu == null) {
-                    return;
-                }
-                optionsMenu.findItem(R.id.visit_website_item)
+                toolbar.getMenu().findItem(R.id.visit_website_item)
                         .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.location_web_site));
             }
         };
+        iconTintManager.updateTint();
         appBar.addOnOffsetChangedListener(iconTintManager);
-
-        setHasOptionsMenu(true);
 
         imgvCover = root.findViewById(R.id.imgvCover);
         txtvTitle = root.findViewById(R.id.txtvTitle);
@@ -234,7 +231,7 @@ public class FeedInfoFragment extends Fragment {
 
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
         Iconify.addIcons(txtvUrl);
-        getActivity().invalidateOptionsMenu();
+        refreshToolbarState();
     }
 
     private void loadStatistics() {
@@ -286,29 +283,19 @@ public class FeedInfoFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.feedinfo, menu);
-        optionsMenu = menu;
-        iconTintManager.updateTint();
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.reconnect_local_folder).setVisible(feed != null && feed.isLocalFeed());
-        menu.findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
-        menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
+    private void refreshToolbarState() {
+        toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(feed != null && feed.isLocalFeed());
+        toolbar.getMenu().findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
+        toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) {
         if (feed == null) {
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                     R.string.please_wait_for_data, Toast.LENGTH_LONG);
-            return super.onOptionsItemSelected(item);
+            return false;
         }
         boolean handled = false;
         try {
@@ -335,7 +322,7 @@ public class FeedInfoFragment extends Fragment {
             return true;
         }
 
-        return handled || super.onOptionsItemSelected(item);
+        return handled;
     }
 
     @Override
