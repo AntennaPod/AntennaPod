@@ -34,11 +34,6 @@ public class FeedMenuHandler {
 
     private static final String TAG = "FeedMenuHandler";
 
-    public static boolean onCreateOptionsMenu(MenuInflater inflater, Menu menu) {
-        inflater.inflate(R.menu.feedlist, menu);
-        return true;
-    }
-
     public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
         if (selectedFeed == null) {
             return true;
