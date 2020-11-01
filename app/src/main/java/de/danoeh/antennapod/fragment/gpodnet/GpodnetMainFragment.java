@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -33,7 +32,7 @@ public class GpodnetMainFragment extends Fragment {
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.gpodnet_main_label);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         ViewPager2 viewPager = root.findViewById(R.id.viewpager);
         GpodnetPagerAdapter pagerAdapter = new GpodnetPagerAdapter(this);

@@ -4,16 +4,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,7 +94,6 @@ public class SearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -118,7 +115,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(layout.findViewById(R.id.toolbar));
+        setupToolbar(layout.findViewById(R.id.toolbar));
         progressBar = layout.findViewById(R.id.progressBar);
 
         recyclerView = layout.findViewById(R.id.recyclerView);
@@ -154,11 +151,12 @@ public class SearchFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
+    private void setupToolbar(Toolbar toolbar) {
+        toolbar.setTitle(R.string.search_label);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        toolbar.inflateMenu(R.menu.gpodder_podcasts);
+
+        MenuItem item = toolbar.getMenu().findItem(R.id.action_search);
         item.expandActionView();
         final SearchView sv = (SearchView) item.getActionView();
         sv.setQueryHint(getString(R.string.search_label));

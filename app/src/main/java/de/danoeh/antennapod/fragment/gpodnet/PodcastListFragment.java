@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,16 +42,34 @@ public abstract class PodcastListFragment extends Fragment {
     private Button butRetry;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.gpodnet_podcast_list, container, false);
+        setupToolbar(root.findViewById(R.id.toolbar));
+
+        gridView = root.findViewById(R.id.gridView);
+        progressBar = root.findViewById(R.id.progressBar);
+        txtvError = root.findViewById(R.id.txtvError);
+        butRetry = root.findViewById(R.id.butRetry);
+
+        gridView.setOnItemClickListener((parent, view, position, id) ->
+                onPodcastSelected((GpodnetPodcast) gridView.getAdapter().getItem(position)));
+        butRetry.setOnClickListener(v -> loadData());
+
+        loadData();
+        return root;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.gpodder_podcasts, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+    private void setupToolbar(Toolbar toolbar) {
+        if (getArguments() != null && getArguments().getBoolean(ARGUMENT_HIDE_TOOLBAR, false)) {
+            toolbar.setVisibility(View.GONE);
+            return;
+        }
+
+        toolbar.setTitle(R.string.gpodnet_main_label);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        toolbar.inflateMenu(R.menu.gpodder_podcasts);
+
+        MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
         final SearchView sv = (SearchView) searchItem.getActionView();
         sv.setQueryHint(getString(R.string.gpodnet_search_hint));
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -74,30 +88,6 @@ public abstract class PodcastListFragment extends Fragment {
                 return false;
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.gpodnet_podcast_list, container, false);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
-        if (getArguments() == null || !getArguments().getBoolean(ARGUMENT_HIDE_TOOLBAR, false)) {
-            toolbar.setTitle(R.string.gpodnet_main_label);
-            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        } else {
-            toolbar.setVisibility(View.GONE);
-        }
-
-        gridView = root.findViewById(R.id.gridView);
-        progressBar = root.findViewById(R.id.progressBar);
-        txtvError = root.findViewById(R.id.txtvError);
-        butRetry = root.findViewById(R.id.butRetry);
-
-        gridView.setOnItemClickListener((parent, view, position, id) ->
-                onPodcastSelected((GpodnetPodcast) gridView.getAdapter().getItem(position)));
-        butRetry.setOnClickListener(v -> loadData());
-
-        loadData();
-        return root;
     }
 
     private void onPodcastSelected(GpodnetPodcast selection) {
