@@ -6,20 +6,19 @@ import androidx.viewpager2.widget.ViewPager2;
 
 /**
  * Fragment with a ViewPager where the displayed items influence the top toolbar's menu.
+ * All items share the same general menu items and are just allowed to show/hide them.
  */
 public abstract class PagedToolbarFragment extends Fragment {
     private Toolbar toolbar;
     private ViewPager2 viewPager;
-    private int currentInflatedMenu = -1;
 
+    /**
+     * Invalidate the toolbar menu if the current child fragment is visible.
+     * @param child The fragment, or null to force-refresh whatever the active fragment is.
+     */
     void invalidateOptionsMenuIfActive(Fragment child) {
         Fragment visibleChild = getChildFragmentManager().findFragmentByTag("f" + viewPager.getCurrentItem());
-        if (visibleChild == child) {
-            if (currentInflatedMenu != viewPager.getCurrentItem()) {
-                currentInflatedMenu = viewPager.getCurrentItem();
-                toolbar.getMenu().clear();
-                child.onCreateOptionsMenu(toolbar.getMenu(), getActivity().getMenuInflater());
-            }
+        if (visibleChild == child || child == null) {
             child.onPrepareOptionsMenu(toolbar.getMenu());
         }
     }
@@ -39,11 +38,7 @@ public abstract class PagedToolbarFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 Fragment child = getChildFragmentManager().findFragmentByTag("f" + position);
-                if (child != null && getActivity() != null) {
-                    toolbar.getMenu().clear();
-                    child.onCreateOptionsMenu(toolbar.getMenu(), getActivity().getMenuInflater());
-                    currentInflatedMenu = position;
-
+                if (child != null) {
                     child.onPrepareOptionsMenu(toolbar.getMenu());
                 }
             }

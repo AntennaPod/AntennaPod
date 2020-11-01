@@ -18,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 
 public class EpisodesFragment extends PagedToolbarFragment {
 
@@ -41,6 +42,8 @@ public class EpisodesFragment extends PagedToolbarFragment {
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
         Toolbar toolbar = rootView.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.episodes_label);
+        toolbar.inflateMenu(R.menu.episodes);
+        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
 
         ViewPager2 viewPager = rootView.findViewById(R.id.viewpager);

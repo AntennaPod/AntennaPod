@@ -47,6 +47,7 @@ public class DownloadsFragment extends PagedToolbarFragment {
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
+        toolbar.inflateMenu(R.menu.downloads);
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
 
         viewPager = root.findViewById(R.id.viewpager);

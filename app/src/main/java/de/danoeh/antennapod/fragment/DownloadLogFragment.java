@@ -166,13 +166,9 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.downloads_log, menu);
-    }
-
-    @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        menu.findItem(R.id.clear_history_item).setVisible(!downloadLog.isEmpty());
+        menu.findItem(R.id.episode_actions).setVisible(false);
+        menu.findItem(R.id.clear_logs_item).setVisible(!downloadLog.isEmpty());
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 

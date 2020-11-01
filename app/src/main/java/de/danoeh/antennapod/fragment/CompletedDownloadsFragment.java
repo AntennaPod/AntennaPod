@@ -105,12 +105,8 @@ public class CompletedDownloadsFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.downloads_completed, menu);
-    }
-
-    @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        menu.findItem(R.id.clear_logs_item).setVisible(false);
         menu.findItem(R.id.episode_actions).setVisible(items.size() > 0);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }

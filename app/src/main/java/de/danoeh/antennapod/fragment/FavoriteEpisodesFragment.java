@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.view.Menu;
 import androidx.annotation.NonNull;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,14 @@ public class FavoriteEpisodesFragment extends EpisodesListFragment {
     public void onEvent(FavoritesEvent event) {
         Log.d(TAG, String.format("onEvent() called with: event = [%s]", event));
         loadItems();
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.filter_items).setVisible(false);
+        menu.findItem(R.id.mark_all_read_item).setVisible(false);
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
     }
 
     @NonNull
