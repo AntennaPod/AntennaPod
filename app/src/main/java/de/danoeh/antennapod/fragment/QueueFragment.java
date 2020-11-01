@@ -273,7 +273,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                 return true;
             case R.id.episode_actions:
                 ((MainActivity) requireActivity()).loadChildFragment(
-                        EpisodesApplyActionFragment.newInstance(queue, ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE  | ACTION_DOWNLOAD));
+                        EpisodesApplyActionFragment.newInstance(queue,
+                                ACTION_DELETE | ACTION_REMOVE_FROM_QUEUE  | ACTION_DOWNLOAD));
                 return true;
             case R.id.queue_sort_episode_title_asc:
                 setSortOrder(SortOrder.EPISODE_TITLE_A_Z);

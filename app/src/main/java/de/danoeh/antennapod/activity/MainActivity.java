@@ -112,15 +112,6 @@ public class MainActivity extends CastEnabledActivity {
         setNavDrawerSize();
 
         final FragmentManager fm = getSupportFragmentManager();
-        fm.addOnBackStackChangedListener(() -> {
-            boolean showArrow = fm.getBackStackEntryCount() != 0;
-            if (drawerToggle != null) { // Tablet layout does not have a drawer
-                drawerToggle.setDrawerIndicatorEnabled(!showArrow);
-            } else if (getActionBar() != null) {
-                getActionBar().setDisplayHomeAsUpEnabled(showArrow);
-            }
-        });
-
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
             String lastFragment = NavDrawerFragment.getLastNavFragment(this);
             if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {

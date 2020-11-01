@@ -154,7 +154,7 @@ public class SearchFragment extends Fragment {
     private void setupToolbar(Toolbar toolbar) {
         toolbar.setTitle(R.string.search_label);
         toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
-        toolbar.inflateMenu(R.menu.gpodder_podcasts);
+        toolbar.inflateMenu(R.menu.search);
 
         MenuItem item = toolbar.getMenu().findItem(R.id.action_search);
         item.expandActionView();

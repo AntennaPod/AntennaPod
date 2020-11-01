@@ -292,7 +292,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 }
                 EpisodesApplyActionFragment fragment = EpisodesApplyActionFragment
                         .newInstance(feed.getItems(), actions);
-                ((MainActivity)getActivity()).loadChildFragment(fragment);
+                ((MainActivity) getActivity()).loadChildFragment(fragment);
                 return true;
             case R.id.rename_item:
                 new RenameFeedDialog(getActivity(), feed).show();
