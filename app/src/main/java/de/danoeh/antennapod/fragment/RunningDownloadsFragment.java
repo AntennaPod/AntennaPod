@@ -76,12 +76,6 @@ public class RunningDownloadsFragment extends ListFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
@@ -95,8 +89,11 @@ public class RunningDownloadsFragment extends ListFragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.downloads_running, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
@@ -113,7 +110,7 @@ public class RunningDownloadsFragment extends ListFragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            getActivity().invalidateOptionsMenu();
+            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
     }
 
