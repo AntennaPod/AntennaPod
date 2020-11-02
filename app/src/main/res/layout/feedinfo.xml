@@ -21,13 +21,13 @@
                 app:scrimAnimationDuration="200">
 
             <ImageView
-                android:id="@+id/imgvBackground"
-                style="@style/BigBlurryBackground"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/feed_info_background_image_height"
-                android:background="@color/image_readability_tint"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.6" />
+                    android:id="@+id/imgvBackground"
+                    style="@style/BigBlurryBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/feed_info_background_image_height"
+                    android:background="@color/image_readability_tint"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.6" />
 
             <include
                     layout="@layout/feeditemlist_header"
