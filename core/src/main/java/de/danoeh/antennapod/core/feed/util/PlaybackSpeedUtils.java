@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.feed.util;
 
+import android.util.Log;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -14,6 +15,7 @@ import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
  * Utility class to use the appropriate playback speed based on {@link PlaybackPreferences}
  */
 public final class PlaybackSpeedUtils {
+    private static final String TAG = "PlaybackSpeedUtils";
 
     private PlaybackSpeedUtils() {
     }
@@ -33,8 +35,10 @@ public final class PlaybackSpeedUtils {
                 FeedItem item = ((FeedMedia) media).getItem();
                 if (item != null) {
                     Feed feed = item.getFeed();
-                    if (feed != null) {
+                    if (feed != null && feed.getPreferences() != null) {
                         playbackSpeed = feed.getPreferences().getFeedPlaybackSpeed();
+                    } else {
+                        Log.d(TAG, "Can not get feed specific playback speed: " + feed);
                     }
                 }
             }
