@@ -1,20 +1,19 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.joanzapata.iconify.Iconify;
@@ -44,10 +43,9 @@ import java.util.List;
 /**
  * BaseAdapter for the navigation drawer
  */
-public class NavListAdapter extends BaseAdapter
+public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private static final int VIEW_TYPE_COUNT = 3;
     public static final int VIEW_TYPE_NAV = 0;
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
     private static final int VIEW_TYPE_SUBSCRIPTION = 2;
@@ -145,26 +143,13 @@ public class NavListAdapter extends BaseAdapter
         return Collections.unmodifiableList(fragmentTags);
     }
 
-
     @Override
-    public int getCount() {
+    public int getItemCount() {
         int baseCount = getSubscriptionOffset();
         if (showSubscriptionList) {
             baseCount += itemAccess.getCount();
         }
         return baseCount;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        int viewType = getItemViewType(position);
-        if (viewType == VIEW_TYPE_NAV) {
-            return getLabel(fragmentTags.get(position));
-        } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-            return "";
-        } else {
-            return itemAccess.getItem(position);
-        }
     }
 
     @Override
@@ -178,11 +163,6 @@ public class NavListAdapter extends BaseAdapter
     }
 
     @Override
-    public boolean hasStableIds() {
-        return true;
-    }
-
-    @Override
     public int getItemViewType(int position) {
         if (0 <= position && position < fragmentTags.size()) {
             return VIEW_TYPE_NAV;
@@ -193,68 +173,59 @@ public class NavListAdapter extends BaseAdapter
         }
     }
 
-    @Override
-    public int getViewTypeCount() {
-        return VIEW_TYPE_COUNT;
-    }
-
     public int getSubscriptionOffset() {
         return fragmentTags.size() > 0 ? fragmentTags.size() + 1 : 0;
     }
 
+    @NonNull
+    @Override
+    public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == VIEW_TYPE_NAV) {
+            return new NavHolder(View.inflate(activity.get(), R.layout.nav_listitem, null));
+        } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
+            return new DividerHolder(View.inflate(activity.get(), R.layout.nav_section_item, null));
+        } else {
+            return new FeedHolder(View.inflate(activity.get(), R.layout.nav_listitem, null));
+        }
+    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
         int viewType = getItemViewType(position);
-        View v;
         if (viewType == VIEW_TYPE_NAV) {
-            v = getNavView((String) getItem(position), position, convertView, parent);
+            bindNavView(getLabel(fragmentTags.get(position)), position, (NavHolder) holder);
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-            v = getSectionDividerView(convertView, parent);
+            bindSectionDivider((DividerHolder) holder);
         } else {
             int itemPos = position - getSubscriptionOffset();
             NavDrawerData.DrawerItem item = itemAccess.getItem(itemPos);
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
-                v = getFeedView((NavDrawerData.FeedDrawerItem) item, convertView, parent);
+                bindFeedView((NavDrawerData.FeedDrawerItem) item, (FeedHolder) holder);
             } else {
-                v = getFolderView((NavDrawerData.FolderDrawerItem) item, convertView, parent);
+                bindFolderView((NavDrawerData.FolderDrawerItem) item, (FeedHolder) holder);
             }
         }
-        if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
+        if (viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TypedValue typedValue = new TypedValue();
 
             if (position == itemAccess.getSelectedItemIndex()) {
-                v.getContext().getTheme().resolveAttribute(R.attr.drawer_activated_color, typedValue, true);
-                v.setBackgroundResource(typedValue.resourceId);
+                activity.get().getTheme().resolveAttribute(R.attr.drawer_activated_color, typedValue, true);
+                holder.itemView.setBackgroundResource(typedValue.resourceId);
             } else {
-                v.getContext().getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true);
-                v.setBackgroundResource(typedValue.resourceId);
+                activity.get().getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true);
+                holder.itemView.setBackgroundResource(typedValue.resourceId);
             }
+
+            holder.itemView.setOnClickListener(v -> itemAccess.onItemClick(position));
+            holder.itemView.setOnLongClickListener(v -> itemAccess.onItemLongClick(position));
         }
-        return v;
     }
 
-    private View getNavView(String title, int position, View convertView, ViewGroup parent) {
+    private void bindNavView(String title, int position, NavHolder holder) {
         Activity context = activity.get();
         if(context == null) {
-            return null;
+            return;
         }
-        NavHolder holder;
-        if (convertView == null) {
-            holder = new NavHolder();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
-
-            holder.image = convertView.findViewById(R.id.imgvCover);
-            holder.title = convertView.findViewById(R.id.txtvTitle);
-            holder.count = convertView.findViewById(R.id.txtvCount);
-            convertView.setTag(holder);
-        } else {
-            holder = (NavHolder) convertView.getTag();
-        }
-
         holder.title.setText(title);
 
         // reset for re-use
@@ -301,56 +272,30 @@ public class NavListAdapter extends BaseAdapter
         }
 
         holder.image.setImageDrawable(getDrawable(fragmentTags.get(position)));
-
-        return convertView;
     }
 
-    private View getSectionDividerView(View convertView, ViewGroup parent) {
+    private void bindSectionDivider(DividerHolder holder) {
         Activity context = activity.get();
         if(context == null) {
-            return null;
+            return;
         }
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
-        TextView feedsFilteredMsg = convertView.findViewById(R.id.nav_feeds_filtered_message);
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled() && showSubscriptionList) {
-            convertView.setEnabled(true);
-            feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.subscriptions_are_filtered));
-            Iconify.addIcons(feedsFilteredMsg);
-            feedsFilteredMsg.setVisibility(View.VISIBLE);
+            holder.itemView.setEnabled(true);
+            holder.feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.subscriptions_are_filtered));
+            Iconify.addIcons(holder.feedsFilteredMsg);
+            holder.feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
-            convertView.setEnabled(false);
-            feedsFilteredMsg.setVisibility(View.GONE);
+            holder.itemView.setEnabled(false);
+            holder.feedsFilteredMsg.setVisibility(View.GONE);
         }
-
-        return convertView;
     }
 
-    private View getFeedView(NavDrawerData.FeedDrawerItem drawerItem, View convertView, ViewGroup parent) {
+    private void bindFeedView(NavDrawerData.FeedDrawerItem drawerItem, FeedHolder holder) {
         Feed feed = drawerItem.feed;
         Activity context = activity.get();
         if (context == null) {
-            return null;
-        }
-
-        FeedHolder holder;
-        if (convertView == null) {
-            holder = new FeedHolder();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
-
-            holder.image = convertView.findViewById(R.id.imgvCover);
-            holder.title = convertView.findViewById(R.id.txtvTitle);
-            holder.failure = convertView.findViewById(R.id.itxtvFailure);
-            holder.count = convertView.findViewById(R.id.txtvCount);
-            convertView.setTag(holder);
-        } else {
-            holder = (FeedHolder) convertView.getTag();
+            return;
         }
 
         Glide.with(context)
@@ -381,31 +326,13 @@ public class NavListAdapter extends BaseAdapter
         } else {
             holder.count.setVisibility(View.GONE);
         }
-        convertView.setPadding(drawerItem.layer * 50, 0, 0, 0); // TODO
-        return convertView;
+        holder.itemView.setPadding(drawerItem.layer * 50, 0, 0, 0); // TODO
     }
 
-    private View getFolderView(NavDrawerData.FolderDrawerItem drawerItem, View convertView, ViewGroup parent) {
+    private void bindFolderView(NavDrawerData.FolderDrawerItem drawerItem, FeedHolder holder) {
         Activity context = activity.get();
         if (context == null) {
-            return null;
-        }
-
-        FeedHolder holder;
-        if (convertView == null) {
-            holder = new FeedHolder();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-            convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
-
-            holder.image = convertView.findViewById(R.id.imgvCover);
-            holder.title = convertView.findViewById(R.id.txtvTitle);
-            holder.failure = convertView.findViewById(R.id.itxtvFailure);
-            holder.count = convertView.findViewById(R.id.txtvCount);
-            convertView.setTag(holder);
-        } else {
-            holder = (FeedHolder) convertView.getTag();
+            return;
         }
 
         holder.image.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.ic_folder));
@@ -413,21 +340,50 @@ public class NavListAdapter extends BaseAdapter
         holder.failure.setVisibility(View.GONE);
         holder.count.setText("?");
 
-        convertView.setPadding(drawerItem.layer * 50, 0, 0, 0); // TODO
-        return convertView;
+        holder.itemView.setPadding(drawerItem.layer * 50, 0, 0, 0); // TODO
     }
 
-    static class NavHolder {
-        ImageView image;
-        TextView title;
-        TextView count;
+    static class Holder extends RecyclerView.ViewHolder {
+        public Holder(@NonNull View itemView) {
+            super(itemView);
+        }
     }
 
-    static class FeedHolder {
-        ImageView image;
-        TextView title;
-        IconTextView failure;
-        TextView count;
+    static class DividerHolder extends Holder {
+        final TextView feedsFilteredMsg;
+
+        public DividerHolder(@NonNull View itemView) {
+            super(itemView);
+            feedsFilteredMsg = itemView.findViewById(R.id.nav_feeds_filtered_message);
+        }
+    }
+
+    static class NavHolder extends Holder {
+        final ImageView image;
+        final TextView title;
+        final TextView count;
+
+        public NavHolder(@NonNull View itemView) {
+            super(itemView);
+            image = itemView.findViewById(R.id.imgvCover);
+            title = itemView.findViewById(R.id.txtvTitle);
+            count = itemView.findViewById(R.id.txtvCount);
+        }
+    }
+
+    static class FeedHolder extends Holder {
+        final ImageView image;
+        final TextView title;
+        final IconTextView failure;
+        final TextView count;
+
+        public FeedHolder(@NonNull View itemView) {
+            super(itemView);
+            image = itemView.findViewById(R.id.imgvCover);
+            title = itemView.findViewById(R.id.txtvTitle);
+            failure = itemView.findViewById(R.id.itxtvFailure);
+            count = itemView.findViewById(R.id.txtvCount);
+        }
     }
 
     public interface ItemAccess {
@@ -440,6 +396,8 @@ public class NavListAdapter extends BaseAdapter
         int getReclaimableItems();
         int getFeedCounter(long feedId);
         int getFeedCounterSum();
+        void onItemClick(int position);
+        boolean onItemLongClick(int position);
     }
 
 }

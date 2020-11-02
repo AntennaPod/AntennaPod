@@ -21,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -57,8 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class NavDrawerFragment extends Fragment implements AdapterView.OnItemClickListener,
-        AdapterView.OnItemLongClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class NavDrawerFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     @VisibleForTesting
     public static final String PREF_LAST_FRAGMENT_TAG = "prefLastFragmentTag";
     @VisibleForTesting
@@ -91,11 +92,11 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         View root = inflater.inflate(R.layout.nav_list, container, false);
 
         progressBar = root.findViewById(R.id.progressBar);
-        ListView navList = root.findViewById(R.id.nav_list);
+        RecyclerView navList = root.findViewById(R.id.nav_list);
         navAdapter = new NavListAdapter(itemAccess, getActivity());
+        navAdapter.setHasStableIds(true);
         navList.setAdapter(navAdapter);
-        navList.setOnItemClickListener(this);
-        navList.setOnItemLongClickListener(this);
+        navList.setLayoutManager(new LinearLayoutManager(getContext()));
         registerForContextMenu(navList);
         updateSelection();
 
@@ -376,6 +377,59 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
             return sum;
         }
 
+        @Override
+        public void onItemClick(int position) {
+            int viewType = navAdapter.getItemViewType(position);
+            if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
+                if (position < navAdapter.getSubscriptionOffset()) {
+                    String tag = navAdapter.getTags().get(position);
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).loadFragment(tag, null);
+                        ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    } else {
+                        showMainActivity(tag);
+                    }
+                } else {
+                    int pos = position - navAdapter.getSubscriptionOffset();
+                    NavDrawerData.DrawerItem clickedItem = flatItemList.get(pos);
+
+                    if (clickedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+                        long feedId = ((NavDrawerData.FeedDrawerItem) clickedItem).feed.getId();
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
+                            ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        } else {
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                            intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
+                            startActivity(intent);
+                        }
+                    } else {
+                        NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) clickedItem);
+                        if (openFolders.contains(folder.name)) {
+                            openFolders.remove(folder.name);
+                        } else {
+                            openFolders.add(folder.name);
+                        }
+                        flatItemList = makeFlatDrawerData(navDrawerData.items);
+                        navAdapter.notifyDataSetChanged();
+                    }
+                }
+            } else if (UserPreferences.getSubscriptionsFilter().isEnabled()
+                    && navAdapter.showSubscriptionList) {
+                SubscriptionsFilterDialog.showDialog(requireContext());
+            }
+        }
+
+        @Override
+        public boolean onItemLongClick(int position) {
+            if (position < navAdapter.getTags().size()) {
+                showDrawerPreferencesDialog();
+                return true;
+            } else {
+                NavDrawerFragment.this.position = position;
+                return false;
+            }
+        }
     };
 
     private void loadData() {
@@ -408,60 +462,6 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
             }
         }
         return flatItems;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int viewType = parent.getAdapter().getItemViewType(position);
-        if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
-            if (position < navAdapter.getSubscriptionOffset()) {
-                String tag = navAdapter.getTags().get(position);
-                if (getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).loadFragment(tag, null);
-                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
-                } else {
-                    showMainActivity(tag);
-                }
-            } else {
-                int pos = position - navAdapter.getSubscriptionOffset();
-                NavDrawerData.DrawerItem clickedItem = flatItemList.get(pos);
-
-                if (clickedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-                    long feedId = ((NavDrawerData.FeedDrawerItem) clickedItem).feed.getId();
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
-                        ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    } else {
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
-                        startActivity(intent);
-                    }
-                } else {
-                    NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) clickedItem);
-                    if (openFolders.contains(folder.name)) {
-                        openFolders.remove(folder.name);
-                    } else {
-                        openFolders.add(folder.name);
-                    }
-                    flatItemList = makeFlatDrawerData(navDrawerData.items);
-                    navAdapter.notifyDataSetChanged();
-                }
-            }
-        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()
-                && navAdapter.showSubscriptionList) {
-            SubscriptionsFilterDialog.showDialog(requireContext());
-        }
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position < navAdapter.getTags().size()) {
-            showDrawerPreferencesDialog();
-            return true;
-        } else {
-            this.position = position;
-            return false;
-        }
     }
 
     public static void saveLastNavFragment(Context context, String tag) {
