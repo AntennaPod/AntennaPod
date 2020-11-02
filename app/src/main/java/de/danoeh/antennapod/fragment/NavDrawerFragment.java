@@ -37,6 +37,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
@@ -50,7 +51,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class NavDrawerFragment extends Fragment implements AdapterView.OnItemClickListener,
         AdapterView.OnItemLongClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -70,12 +75,14 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
             NavListAdapter.SUBSCRIPTION_LIST_TAG
     };
 
-    private DBReader.NavDrawerData navDrawerData;
+    private NavDrawerData navDrawerData;
+    private List<NavDrawerData.DrawerItem> flatItemList;
     private int selectedNavListIndex = -1;
     private int position = -1;
     private NavListAdapter navAdapter;
     private Disposable disposable;
     private ProgressBar progressBar;
+    private Set<String> openFolders = new HashSet<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -107,9 +114,10 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         } else if (StringUtils.isNumeric(lastNavFragment)) { // last fragment was not a list, but a feed
             long feedId = Long.parseLong(lastNavFragment);
             if (navDrawerData != null) {
-                List<Feed> feeds = navDrawerData.feeds;
-                for (int i = 0; i < feeds.size(); i++) {
-                    if (feeds.get(i).getId() == feedId) {
+                List<NavDrawerData.DrawerItem> items = flatItemList;
+                for (int i = 0; i < items.size(); i++) {
+                    if (items.get(i).type == NavDrawerData.DrawerItem.Type.FEED
+                            && ((NavDrawerData.FeedDrawerItem) items.get(i)).feed.getId() == feedId) {
                         selectedNavListIndex = navAdapter.getSubscriptionOffset() + i;
                         break;
                     }
@@ -149,8 +157,11 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         }
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.nav_feed_context, menu);
-        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
-        menu.setHeaderTitle(feed.getTitle());
+
+        NavDrawerData.DrawerItem drawerItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            menu.setHeaderTitle(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getTitle());
+        }
         // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
     }
 
@@ -161,7 +172,14 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         if (position < 0) {
             return false;
         }
-        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        NavDrawerData.DrawerItem drawerItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            return onFeedContextMenuClicked(((NavDrawerData.FeedDrawerItem) drawerItem).feed, item);
+        }
+        return false;
+    }
+
+    private boolean onFeedContextMenuClicked(Feed feed, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.remove_all_new_flags_item:
                 ConfirmationDialog removeAllNewFlagsConfirmationDialog = new ConfirmationDialog(getContext(),
@@ -300,17 +318,17 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
-            if (navDrawerData != null) {
-                return navDrawerData.feeds.size();
+            if (flatItemList != null) {
+                return flatItemList.size();
             } else {
                 return 0;
             }
         }
 
         @Override
-        public Feed getItem(int position) {
-            if (navDrawerData != null && 0 <= position && position < navDrawerData.feeds.size()) {
-                return navDrawerData.feeds.get(position);
+        public NavDrawerData.DrawerItem getItem(int position) {
+            if (flatItemList != null && 0 <= position && position < flatItemList.size()) {
+                return flatItemList.get(position);
             } else {
                 return null;
             }
@@ -368,6 +386,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 .subscribe(
                         result -> {
                             navDrawerData = result;
+                            flatItemList = makeFlatDrawerData(navDrawerData.items); // TODO: This is the main thread!
                             updateSelection(); // Selected item might be a feed
                             navAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
@@ -375,6 +394,20 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                             Log.e(TAG, Log.getStackTraceString(error));
                             progressBar.setVisibility(View.GONE);
                         });
+    }
+
+    private List<NavDrawerData.DrawerItem> makeFlatDrawerData(List<NavDrawerData.DrawerItem> items) {
+        List<NavDrawerData.DrawerItem> flatItems = new ArrayList<>();
+        for (NavDrawerData.DrawerItem item : items) {
+            flatItems.add(item);
+            if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
+                NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) item);
+                if (openFolders.contains(folder.name)) {
+                    flatItems.addAll(makeFlatDrawerData(((NavDrawerData.FolderDrawerItem) item).children));
+                }
+            }
+        }
+        return flatItems;
     }
 
     @Override
@@ -391,14 +424,27 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 }
             } else {
                 int pos = position - navAdapter.getSubscriptionOffset();
-                long feedId = navDrawerData.feeds.get(pos).getId();
-                if (getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
-                    ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+                NavDrawerData.DrawerItem clickedItem = flatItemList.get(pos);
+
+                if (clickedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+                    long feedId = ((NavDrawerData.FeedDrawerItem) clickedItem).feed.getId();
+                    if (getActivity() instanceof MainActivity) {
+                        ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
+                        ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    } else {
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
+                        startActivity(intent);
+                    }
                 } else {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
-                    startActivity(intent);
+                    NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) clickedItem);
+                    if (openFolders.contains(folder.name)) {
+                        openFolders.remove(folder.name);
+                    } else {
+                        openFolders.add(folder.name);
+                    }
+                    flatItemList = makeFlatDrawerData(navDrawerData.items);
+                    navAdapter.notifyDataSetChanged();
                 }
             }
         } else if (UserPreferences.getSubscriptionsFilter().isEnabled()

@@ -11,6 +11,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.LongList;
 import org.junit.After;
@@ -313,8 +314,8 @@ public class DBReaderTest {
         final int NUM_FEEDS = 10;
         final int NUM_ITEMS = 10;
         DBTestUtils.saveFeedlist(NUM_FEEDS, NUM_ITEMS, true);
-        DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData();
-        assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
+        NavDrawerData navDrawerData = DBReader.getNavDrawerData();
+        assertEquals(NUM_FEEDS, navDrawerData.items.size());
         assertEquals(0, navDrawerData.numNewItems);
         assertEquals(0, navDrawerData.queueSize);
     }
@@ -342,8 +343,8 @@ public class DBReaderTest {
 
         adapter.close();
 
-        DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData();
-        assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
+        NavDrawerData navDrawerData = DBReader.getNavDrawerData();
+        assertEquals(NUM_FEEDS, navDrawerData.items.size());
         assertEquals(NUM_NEW, navDrawerData.numNewItems);
         assertEquals(NUM_QUEUE, navDrawerData.queueSize);
     }

@@ -45,6 +45,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
@@ -71,7 +72,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     private static final String PREF_NUM_COLUMNS = "columns";
 
     private GridView subscriptionGridLayout;
-    private DBReader.NavDrawerData navDrawerData;
+    private NavDrawerData navDrawerData;
     private SubscriptionsAdapter subscriptionAdapter;
     private FloatingActionButton subscriptionAddButton;
     private ProgressBar progressBar;
@@ -370,16 +371,16 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
         @Override
         public int getCount() {
             if (navDrawerData != null) {
-                return navDrawerData.feeds.size();
+                return navDrawerData.items.size();
             } else {
                 return 0;
             }
         }
 
         @Override
-        public Feed getItem(int position) {
-            if (navDrawerData != null && 0 <= position && position < navDrawerData.feeds.size()) {
-                return navDrawerData.feeds.get(position);
+        public NavDrawerData.DrawerItem getItem(int position) {
+            if (navDrawerData != null && 0 <= position && position < navDrawerData.items.size()) {
+                return navDrawerData.items.get(position);
             } else {
                 return null;
             }

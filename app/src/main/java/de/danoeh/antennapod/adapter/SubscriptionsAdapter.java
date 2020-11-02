@@ -23,6 +23,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import jp.shts.android.library.TriangleLabelView;
@@ -63,7 +64,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public long getItemId(int position) {
-        return itemAccess.getItem(position).getId();
+        return position; // TODO
     }
 
     @Override
@@ -133,7 +134,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     public interface ItemAccess {
         int getCount();
-        Feed getItem(int position);
+        NavDrawerData.DrawerItem getItem(int position);
         int getFeedCounter(long feedId);
     }
 }

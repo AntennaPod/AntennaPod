@@ -23,6 +23,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
@@ -56,7 +58,7 @@ public class NavListAdapter extends BaseAdapter
      */
     public static final String SUBSCRIPTION_LIST_TAG = "SubscriptionList";
 
-    private static List<String> tags;
+    private static List<String> fragmentTags;
     private static String[] titles;
 
     private final ItemAccess itemAccess;
@@ -96,7 +98,7 @@ public class NavListAdapter extends BaseAdapter
             showSubscriptionList = false;
         }
 
-        tags = newTags;
+        fragmentTags = newTags;
         notifyDataSetChanged();
     }
 
@@ -140,7 +142,7 @@ public class NavListAdapter extends BaseAdapter
     }
 
     public List<String> getTags() {
-        return Collections.unmodifiableList(tags);
+        return Collections.unmodifiableList(fragmentTags);
     }
 
 
@@ -157,7 +159,7 @@ public class NavListAdapter extends BaseAdapter
     public Object getItem(int position) {
         int viewType = getItemViewType(position);
         if (viewType == VIEW_TYPE_NAV) {
-            return getLabel(tags.get(position));
+            return getLabel(fragmentTags.get(position));
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
             return "";
         } else {
@@ -167,12 +169,22 @@ public class NavListAdapter extends BaseAdapter
 
     @Override
     public long getItemId(int position) {
-        return position;
+        int viewType = getItemViewType(position);
+        if (viewType == VIEW_TYPE_SUBSCRIPTION) {
+            return itemAccess.getItem(position - getSubscriptionOffset()).id;
+        } else {
+            return -position - 1; //TODO
+        }
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (0 <= position && position < tags.size()) {
+        if (0 <= position && position < fragmentTags.size()) {
             return VIEW_TYPE_NAV;
         } else if (position < getSubscriptionOffset()) {
             return VIEW_TYPE_SECTION_DIVIDER;
@@ -187,7 +199,7 @@ public class NavListAdapter extends BaseAdapter
     }
 
     public int getSubscriptionOffset() {
-        return tags.size() > 0 ? tags.size() + 1 : 0;
+        return fragmentTags.size() > 0 ? fragmentTags.size() + 1 : 0;
     }
 
 
@@ -200,7 +212,13 @@ public class NavListAdapter extends BaseAdapter
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
             v = getSectionDividerView(convertView, parent);
         } else {
-            v = getFeedView(position, convertView, parent);
+            int itemPos = position - getSubscriptionOffset();
+            NavDrawerData.DrawerItem item = itemAccess.getItem(itemPos);
+            if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
+                v = getFeedView((NavDrawerData.FeedDrawerItem) item, convertView, parent);
+            } else {
+                v = getFolderView((NavDrawerData.FolderDrawerItem) item, convertView, parent);
+            }
         }
         if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TypedValue typedValue = new TypedValue();
@@ -243,7 +261,7 @@ public class NavListAdapter extends BaseAdapter
         holder.count.setVisibility(View.GONE);
         holder.count.setOnClickListener(null);
 
-        String tag = tags.get(position);
+        String tag = fragmentTags.get(position);
         if (tag.equals(QueueFragment.TAG)) {
             int queueSize = itemAccess.getQueueSize();
             if (queueSize > 0) {
@@ -282,7 +300,7 @@ public class NavListAdapter extends BaseAdapter
             }
         }
 
-        holder.image.setImageDrawable(getDrawable(tags.get(position)));
+        holder.image.setImageDrawable(getDrawable(fragmentTags.get(position)));
 
         return convertView;
     }
@@ -311,13 +329,12 @@ public class NavListAdapter extends BaseAdapter
         return convertView;
     }
 
-    private View getFeedView(int position, View convertView, ViewGroup parent) {
+    private View getFeedView(NavDrawerData.FeedDrawerItem drawerItem, View convertView, ViewGroup parent) {
+        Feed feed = drawerItem.feed;
         Activity context = activity.get();
-        if(context == null) {
+        if (context == null) {
             return null;
         }
-        int feedPos = position - getSubscriptionOffset();
-        Feed feed = itemAccess.getItem(feedPos);
 
         FeedHolder holder;
         if (convertView == null) {
@@ -364,6 +381,39 @@ public class NavListAdapter extends BaseAdapter
         } else {
             holder.count.setVisibility(View.GONE);
         }
+        convertView.setPadding(drawerItem.layer * 50, 0, 0, 0); // TODO
+        return convertView;
+    }
+
+    private View getFolderView(NavDrawerData.FolderDrawerItem drawerItem, View convertView, ViewGroup parent) {
+        Activity context = activity.get();
+        if (context == null) {
+            return null;
+        }
+
+        FeedHolder holder;
+        if (convertView == null) {
+            holder = new FeedHolder();
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
+
+            holder.image = convertView.findViewById(R.id.imgvCover);
+            holder.title = convertView.findViewById(R.id.txtvTitle);
+            holder.failure = convertView.findViewById(R.id.itxtvFailure);
+            holder.count = convertView.findViewById(R.id.txtvCount);
+            convertView.setTag(holder);
+        } else {
+            holder = (FeedHolder) convertView.getTag();
+        }
+
+        holder.image.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.ic_folder));
+        holder.title.setText(drawerItem.name);
+        holder.failure.setVisibility(View.GONE);
+        holder.count.setText("?");
+
+        convertView.setPadding(drawerItem.layer * 50, 0, 0, 0); // TODO
         return convertView;
     }
 
@@ -382,7 +432,7 @@ public class NavListAdapter extends BaseAdapter
 
     public interface ItemAccess {
         int getCount();
-        Feed getItem(int position);
+        NavDrawerData.DrawerItem getItem(int position);
         int getSelectedItemIndex();
         int getQueueSize();
         int getNumberOfNewItems();

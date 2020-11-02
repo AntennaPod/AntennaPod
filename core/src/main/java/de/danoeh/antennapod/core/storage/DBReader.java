@@ -10,7 +10,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -866,32 +865,26 @@ public final class DBReader {
         int numNewItems = adapter.getNumberOfNewItems();
         int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
 
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numDownloadedItems,
+        List<NavDrawerData.DrawerItem> items = new ArrayList<>();
+        for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
+            items.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 0, i));
+        }
+
+        List<NavDrawerData.DrawerItem> folderItems = new ArrayList<>();
+        for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
+            folderItems.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 1, 10001 + i));
+        }
+        items.add(new NavDrawerData.FolderDrawerItem("Folder 1", folderItems, 0, 10000));
+
+        List<NavDrawerData.DrawerItem> folderItems2 = new ArrayList<>();
+        for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
+            folderItems2.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 1, 20001 + i));
+        }
+        items.add(new NavDrawerData.FolderDrawerItem("Folder 2", folderItems2, 0, 20000));
+
+        NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems,
                 feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();
         return result;
-    }
-
-    public static class NavDrawerData {
-        public final List<Feed> feeds;
-        public final int queueSize;
-        public final int numNewItems;
-        public final int numDownloadedItems;
-        public final LongIntMap feedCounters;
-        public final int reclaimableSpace;
-
-        public NavDrawerData(List<Feed> feeds,
-                             int queueSize,
-                             int numNewItems,
-                             int numDownloadedItems,
-                             LongIntMap feedIndicatorValues,
-                             int reclaimableSpace) {
-            this.feeds = feeds;
-            this.queueSize = queueSize;
-            this.numNewItems = numNewItems;
-            this.numDownloadedItems = numDownloadedItems;
-            this.feedCounters = feedIndicatorValues;
-            this.reclaimableSpace = reclaimableSpace;
-        }
     }
 }
