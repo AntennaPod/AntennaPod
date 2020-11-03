@@ -134,7 +134,9 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     public interface ItemAccess {
         int getCount();
+
         NavDrawerData.DrawerItem getItem(int position);
+
         int getFeedCounter(long feedId);
     }
 }

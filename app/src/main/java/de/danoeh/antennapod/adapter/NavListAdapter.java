@@ -282,7 +282,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled() && showSubscriptionList) {
             holder.itemView.setEnabled(true);
-            holder.feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.subscriptions_are_filtered));
+            holder.feedsFilteredMsg.setText("{md-info-outline} "
+                    + context.getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(holder.feedsFilteredMsg);
             holder.feedsFilteredMsg.setVisibility(View.VISIBLE);
         } else {
@@ -388,15 +389,25 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
     public interface ItemAccess {
         int getCount();
+
         NavDrawerData.DrawerItem getItem(int position);
+
         int getSelectedItemIndex();
+
         int getQueueSize();
+
         int getNumberOfNewItems();
+
         int getNumberOfDownloadedItems();
+
         int getReclaimableItems();
+
         int getFeedCounter(long feedId);
+
         int getFeedCounterSum();
+
         void onItemClick(int position);
+
         boolean onItemLongClick(int position);
     }
 

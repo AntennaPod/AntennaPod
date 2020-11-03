@@ -397,7 +397,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                         long feedId = ((NavDrawerData.FeedDrawerItem) clickedItem).feed.getId();
                         if (getActivity() instanceof MainActivity) {
                             ((MainActivity) getActivity()).loadFeedFragmentById(feedId, null);
-                            ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            ((MainActivity) getActivity()).getBottomSheet()
+                                    .setState(BottomSheetBehavior.STATE_COLLAPSED);
                         } else {
                             Intent intent = new Intent(getActivity(), MainActivity.class);
                             intent.putExtra(MainActivity.EXTRA_FEED_ID, feedId);
