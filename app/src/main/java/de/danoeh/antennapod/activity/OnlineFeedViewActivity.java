@@ -523,10 +523,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 viewBinding.subscribeButton.setEnabled(true);
                 viewBinding.subscribeButton.setText(R.string.subscribe_label);
                 if (UserPreferences.isEnableAutodownload()) {
-                    LinearLayout.LayoutParams layoutParams
-                            = (LinearLayout.LayoutParams) viewBinding.subscribeButton.getLayoutParams();
-                    layoutParams.setMargins(16, 16, 16, 0);
-                    viewBinding.subscribeButton.setLayoutParams(layoutParams);
                     viewBinding.autoDownloadCheckBox.setChecked(true);
                     viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
                 }

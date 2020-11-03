@@ -105,48 +105,54 @@
                             tools:text="Podcast author"/>
                 </RelativeLayout>
 
-                <Spinner
-                        android:id="@+id/alternate_urls_spinner"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="8dp"
-                        android:padding="8dp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="@dimen/text_size_micro"/>
-
-                <Button
-                        android:id="@+id/subscribeButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:focusable="false"
-                        android:text="@string/subscribe_label"/>
-
-                <CheckBox
-                        android:id="@+id/autoDownloadCheckBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:focusable="false"
-                        android:text="@string/auto_download_label"
-                        android:visibility="gone"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
-                        tools:visibility="visible"/>
-
-                <Button
-                        android:id="@+id/stopPreviewButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
                         android:layout_marginBottom="16dp"
-                        android:focusable="false"
-                        android:text="@string/stop_preview"
-                        android:visibility="gone"
-                        tools:visibility="visible"/>
+                        android:orientation="vertical">
+
+                    <Spinner
+                            android:id="@+id/alternate_urls_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:padding="8dp"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textSize="@dimen/text_size_micro" />
+
+                    <Button
+                            android:id="@+id/subscribeButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:focusable="false"
+                            android:text="@string/subscribe_label" />
+
+                    <CheckBox
+                            android:id="@+id/autoDownloadCheckBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:focusable="false"
+                            android:text="@string/auto_download_label"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                    <Button
+                            android:id="@+id/stopPreviewButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:focusable="false"
+                            android:text="@string/stop_preview"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                </LinearLayout>
 
                 <ListView
                         android:id="@+id/listView"
