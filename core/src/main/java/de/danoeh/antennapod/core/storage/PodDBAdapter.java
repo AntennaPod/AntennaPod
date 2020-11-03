@@ -195,11 +195,11 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_FEED + ")";
 
-    static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX IF NOT EXISTS "
+    static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_PUBDATE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_PUBDATE + ")";
 
-    static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX IF NOT EXISTS "
+    static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_READ + ")";
 
