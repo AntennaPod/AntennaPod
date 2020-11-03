@@ -523,7 +523,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 viewBinding.subscribeButton.setEnabled(true);
                 viewBinding.subscribeButton.setText(R.string.subscribe_label);
                 if (UserPreferences.isEnableAutodownload()) {
-                    viewBinding.autoDownloadCheckBox.setChecked(true);
                     viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
                 }
             }

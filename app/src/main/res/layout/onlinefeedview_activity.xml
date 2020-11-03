@@ -138,6 +138,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
                             android:focusable="false"
+                            android:checked="true"
                             android:text="@string/auto_download_label"
                             android:visibility="gone"
                             tools:visibility="visible" />
