@@ -107,19 +107,18 @@ public final class DBTasks {
      *
      * @param context  Might be used for accessing the database
      * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
-     * @return if refreshing was successful
      */
-    public static boolean refreshAllFeeds(final Context context, boolean initiatedByUser) {
+    public static void refreshAllFeeds(final Context context, boolean initiatedByUser) {
         if (!isRefreshing.compareAndSet(false, true)) {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
-            return false;
+            return;
         }
 
         if (Looper.myLooper() == Looper.getMainLooper()) {
             throw new IllegalStateException("DBTasks.refreshAllFeeds() must not be called from the main thread.");
         }
 
-        boolean refresh_succeeded = refreshFeeds(context, DBReader.getFeedList(), initiatedByUser);
+        refreshFeeds(context, DBReader.getFeedList(), initiatedByUser);
         isRefreshing.set(false);
 
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
@@ -130,21 +129,16 @@ public final class DBTasks {
         // Instead it is done after all feeds have been refreshed (asynchronously),
         // in DownloadService.onDestroy()
         // See Issue #2577 for the details of the rationale
-
-        return refresh_succeeded;
     }
 
     /**
      * @param context
      * @param feedList the list of feeds to refresh
      * @param initiatedByUser a boolean indicating if the refresh was triggered by user action.
-     * @return true if at least one feed successfully refreshed
      */
-    private static boolean refreshFeeds(final Context context,
+    private static void refreshFeeds(final Context context,
                                      final List<Feed> feedList,
                                      boolean initiatedByUser) {
-
-        boolean feed_refreshed = false;
 
         for (Feed feed : feedList) {
             FeedPreferences prefs = feed.getPreferences();
@@ -153,7 +147,6 @@ public final class DBTasks {
             if (prefs.getKeepUpdated()) {
                 try {
                     refreshFeed(context, feed);
-                    feed_refreshed = true;
                 } catch (DownloadRequestException e) {
                     e.printStackTrace();
                     DBWriter.addDownloadStatus(
@@ -168,7 +161,6 @@ public final class DBTasks {
             }
         }
 
-        return feed_refreshed;
     }
 
     /**

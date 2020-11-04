@@ -206,7 +206,7 @@ public class FeedPreferences {
         DBWriter.setFeedPreferences(this);
     }
 
-     public String getUsername() {
+    public String getUsername() {
         return username;
     }
 
