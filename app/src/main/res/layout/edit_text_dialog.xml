@@ -10,6 +10,6 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:ems="10"
-            android:id="@+id/text" />
+            android:id="@+id/urlEditText" />
 
 </LinearLayout>
