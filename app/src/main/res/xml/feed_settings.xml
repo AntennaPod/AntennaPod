@@ -10,12 +10,12 @@
             android:summary="@string/keep_updated_summary"/>
 
     <SwitchPreferenceCompat
-        android:key="episodeNotification"
-        android:defaultValue="false"
-        android:dependency="keepUpdated"
-        android:icon="?attr/ic_notifications"
-        android:title="@string/episode_notification"
-        android:summary="@string/episode_notification_summary"/>
+            android:key="episodeNotification"
+            android:defaultValue="false"
+            android:dependency="keepUpdated"
+            android:icon="?attr/ic_notifications"
+            android:title="@string/episode_notification"
+            android:summary="@string/episode_notification_summary"/>
 
     <Preference
             android:key="authentication"
