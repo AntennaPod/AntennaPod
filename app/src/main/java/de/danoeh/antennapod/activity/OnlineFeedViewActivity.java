@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
@@ -509,11 +510,21 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 viewBinding.subscribeButton.setEnabled(true);
                 viewBinding.subscribeButton.setText(R.string.open_podcast);
                 if (didPressSubscribe) {
+                    didPressSubscribe = false;
+                    if (UserPreferences.isEnableAutodownload()) {
+                        Feed feed1 = DBReader.getFeed(getFeedId(feed));
+                        FeedPreferences feedPreferences = feed1.getPreferences();
+                        feedPreferences.setAutoDownload(viewBinding.autoDownloadCheckBox.isChecked());
+                        feed1.savePreferences();
+                    }
                     openFeed();
                 }
             } else {
                 viewBinding.subscribeButton.setEnabled(true);
                 viewBinding.subscribeButton.setText(R.string.subscribe_label);
+                if (UserPreferences.isEnableAutodownload()) {
+                    viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
