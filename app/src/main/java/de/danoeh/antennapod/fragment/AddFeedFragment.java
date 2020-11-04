@@ -129,7 +129,8 @@ public class AddFeedFragment extends Fragment {
             alertViewBinding.urlEditText.setText(clipboardContent.trim());
         }
         builder.setView(content);
-        builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> addUrl(alertViewBinding.urlEditText.getText().toString()));
+        builder.setPositiveButton(R.string.confirm_label
+                , (dialog, which) -> addUrl(alertViewBinding.urlEditText.getText().toString()));
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.show();
     }
