@@ -1,7 +1,9 @@
-We are proud to release version 2.0 with a new logo and refreshed user interface.
-Thank you to 6420 users who participated in the vote for the new logo!
+This is a beta release for AntennaPod 2.1.0
 
-- Support for chapter images (only new episodes, by @ByteHamster)
-- Skip intro and ending per feed (by @tonytamsf)
-- Option to show notifications after episodes have been auto-downloaded (by @shortspider)
-- Bug fixes and improvements (by @ebraminio, @tonytamsf, @JessieVela, @ByteHamster and more)
+- A long-standing wish of many: playing local files! In the 'Add podcast' screen simply tap 'Add local folder' and select a location on your phone! (@ByteHamster, @igoralmeida & @damoasda)
+- Pick a country for the 'Discover' screen (@tonytamsf)
+- Keyboard shortcuts (@asdoi)
+- Search the PodcastIndex.org database (@edwinhere)
+- Pull to refresh (@asdoi)
+- Playback speed & filter dialogs (@ByteHamster & @bws9000)
+- Smooth sleep timer volume (@olivoto)
