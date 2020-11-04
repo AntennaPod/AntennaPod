@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.joanzapata.iconify.Iconify;
 
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.R;
@@ -69,6 +70,12 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
+    private static final int MIN_NUM_COLUMNS = 2;
+    private static final int[] COLUMN_CHECKBOX_IDS = {
+            R.id.subscription_num_columns_2,
+            R.id.subscription_num_columns_3,
+            R.id.subscription_num_columns_4,
+            R.id.subscription_num_columns_5};
 
     private GridView subscriptionGridLayout;
     private DBReader.NavDrawerData navDrawerData;
@@ -101,6 +108,11 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
         toolbar.setOnMenuItemClickListener(this);
         ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
         toolbar.inflateMenu(R.menu.subscriptions);
+        for (int i = 0; i < COLUMN_CHECKBOX_IDS.length; i++) {
+            // Do this in Java to localize numbers
+            toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[i])
+                    .setTitle(String.format(Locale.getDefault(), "%d", i + MIN_NUM_COLUMNS));
+        }
         refreshToolbarState();
 
         subscriptionGridLayout = root.findViewById(R.id.subscriptions_grid);
@@ -123,10 +135,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
 
     private void refreshToolbarState() {
         int columns = prefs.getInt(PREF_NUM_COLUMNS, getDefaultNumOfColumns());
-        toolbar.getMenu().findItem(R.id.subscription_num_columns_2).setChecked(columns == 2);
-        toolbar.getMenu().findItem(R.id.subscription_num_columns_3).setChecked(columns == 3);
-        toolbar.getMenu().findItem(R.id.subscription_num_columns_4).setChecked(columns == 4);
-        toolbar.getMenu().findItem(R.id.subscription_num_columns_5).setChecked(columns == 5);
+        toolbar.getMenu().findItem(COLUMN_CHECKBOX_IDS[columns - MIN_NUM_COLUMNS]).setChecked(true);
 
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(toolbar.getMenu(),
                 R.id.refresh_item, updateRefreshMenuItemChecker);
