@@ -75,7 +75,7 @@ public class MainActivityTest {
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
         openNavDrawer();
         onView(withText(R.string.add_feed_label)).perform(click());
-        onView(withId(R.id.btn_add_via_url)).perform(scrollTo(), click());
+        onView(withId(R.id.addViaUrlButton)).perform(scrollTo(), click());
         onView(withId(R.id.text)).perform(replaceText(feed.getDownload_url()));
         onView(withText(R.string.confirm_label)).perform(scrollTo(), click());
         Espresso.closeSoftKeyboard();
