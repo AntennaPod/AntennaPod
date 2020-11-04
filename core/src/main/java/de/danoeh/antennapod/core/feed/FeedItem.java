@@ -492,9 +492,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
 
     @Override
     public int hashCode() {
-        int result = 17;
-
-        result = 31 * result + itemIdentifier.hashCode();
+        int result = itemIdentifier != null ? itemIdentifier.hashCode() : 0;
         result = 31 * result + (int) (feedId ^ (feedId >>> 32));
         return result;
     }
