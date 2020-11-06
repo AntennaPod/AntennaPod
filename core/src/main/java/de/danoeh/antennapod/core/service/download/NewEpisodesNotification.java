@@ -21,7 +21,7 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
-public class EpisodesNotification {
+public class NewEpisodesNotification {
     private static final List<Feed> feeds = new ArrayList<>();
     private static final Map<Long, FeedItem> lastItemsMap = new HashMap<>();
 

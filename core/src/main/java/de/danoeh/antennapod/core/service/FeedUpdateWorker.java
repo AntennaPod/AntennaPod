@@ -9,7 +9,7 @@ import androidx.work.WorkerParameters;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.EpisodesNotification;
+import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
@@ -32,7 +32,7 @@ public class FeedUpdateWorker extends Worker {
         ClientConfig.initialize(getApplicationContext());
 
         if (NetworkUtils.networkAvailable() && NetworkUtils.isFeedRefreshAllowed()) {
-            EpisodesNotification.setOldEpisodes();
+            NewEpisodesNotification.setOldEpisodes();
 
             DBTasks.refreshAllFeeds(getApplicationContext(), false);
         } else {

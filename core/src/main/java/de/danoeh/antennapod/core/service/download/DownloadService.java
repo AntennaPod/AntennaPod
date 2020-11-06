@@ -238,7 +238,7 @@ public class DownloadService extends Service {
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
 
-        EpisodesNotification.showNotifications(getApplicationContext());
+        NewEpisodesNotification.showNotifications(getApplicationContext());
     }
 
     private final Thread downloadCompletionThread = new Thread("DownloadCompletionThread") {
