@@ -507,7 +507,7 @@
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
     <string name="media_player_builtin">Built-in Android player</string>
     <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
-    <string name="media_player_exoplayer" translatable="false">ExoPlayer</string>
+    <string name="media_player_exoplayer_recommended">ExoPlayer (recommended)</string>
     <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
     <string name="pref_skip_silence_title">Skip Silence in Audio</string>
