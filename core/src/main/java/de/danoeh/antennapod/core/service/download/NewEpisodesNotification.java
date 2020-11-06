@@ -32,7 +32,7 @@ public class NewEpisodesNotification {
 
         for (Feed feed : DBReader.getFeedList()) {
             FeedPreferences prefs = feed.getPreferences();
-            if (prefs.getKeepUpdated() && prefs.getShowNotification()) {
+            if (prefs.getKeepUpdated() && prefs.getShowEpisodeNotification()) {
                 List<FeedItem> outdatedFeedItems = DBReader.getFeedItemList(feed);
                 if (!outdatedFeedItems.isEmpty()) {
                     FeedItem newestEpisode = outdatedFeedItems.get(0);
@@ -74,7 +74,7 @@ public class NewEpisodesNotification {
         intent.putExtra("fragment_feed_id", feed.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFY)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle("New Episode")
                 .setContentText(text)
@@ -83,6 +83,6 @@ public class NewEpisodesNotification {
                 .setAutoCancel(true);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFY, feed.hashCode(), builder.build());
+        notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, feed.hashCode(), builder.build());
     }
 }

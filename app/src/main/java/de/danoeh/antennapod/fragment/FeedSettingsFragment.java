@@ -398,10 +398,10 @@ public class FeedSettingsFragment extends Fragment {
         private void setupEpisodeNotificationPreference() {
             SwitchPreferenceCompat pref = findPreference("episodeNotification");
 
-            pref.setChecked(feedPreferences.getShowNotification());
+            pref.setChecked(feedPreferences.getShowEpisodeNotification());
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean checked = newValue == Boolean.TRUE;
-                feedPreferences.setShowNotification(checked);
+                feedPreferences.setShowEpisodeNotification(checked);
                 feed.savePreferences();
                 pref.setChecked(checked);
                 return false;

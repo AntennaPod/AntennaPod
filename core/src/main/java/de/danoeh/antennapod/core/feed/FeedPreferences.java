@@ -36,14 +36,14 @@ public class FeedPreferences {
     private float feedPlaybackSpeed;
     private int feedSkipIntro;
     private int feedSkipEnding;
-    private boolean showNotification;
+    private boolean showEpisodeNotification;
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
         this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting,
                 username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false);
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, boolean showNotification) {
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -55,7 +55,7 @@ public class FeedPreferences {
         this.feedPlaybackSpeed = feedPlaybackSpeed;
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
-        this.showNotification = showNotification;
+        this.showEpisodeNotification = showEpisodeNotification;
     }
 
     public static FeedPreferences fromCursor(Cursor cursor) {
@@ -249,11 +249,11 @@ public class FeedPreferences {
     /**
      * @return true if  an notification should be when the feed gets refreshed and a new episode is found.
      */
-    public boolean getShowNotification() {
-        return showNotification;
+    public boolean getShowEpisodeNotification() {
+        return showEpisodeNotification;
     }
 
-    public void setShowNotification(boolean showNotification) {
-        this.showNotification = showNotification;
+    public void setShowEpisodeNotification(boolean showEpisodeNotification) {
+        this.showEpisodeNotification = showEpisodeNotification;
     }
 }

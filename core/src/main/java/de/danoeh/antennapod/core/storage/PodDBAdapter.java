@@ -450,7 +450,7 @@ public class PodDBAdapter {
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
-        values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowNotification());
+        values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowEpisodeNotification());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
