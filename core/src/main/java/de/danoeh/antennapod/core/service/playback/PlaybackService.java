@@ -517,11 +517,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 playableLoaded -> {
-                                    mediaPlayer.playMediaObject(playable, stream, startWhenPrepared,
+                                    mediaPlayer.playMediaObject(playableLoaded, stream, startWhenPrepared,
                                             prepareImmediately);
-                                    addPlayableToQueue(playable);
+                                    addPlayableToQueue(playableLoaded);
                                 }, error -> {
                                     Log.d(TAG, "Playable was not found. Stopping service.");
+                                    error.printStackTrace();
                                     stateManager.stopService();
                                 });
                 return Service.START_NOT_STICKY;
@@ -729,6 +730,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             addPlayableToQueue(playable);
                         }, error -> {
                             Log.d(TAG, "Playable was not loaded from preferences. Stopping service.");
+                            error.printStackTrace();
                             stateManager.stopService();
                         });
     }

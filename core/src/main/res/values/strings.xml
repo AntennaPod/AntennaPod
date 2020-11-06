@@ -501,7 +501,7 @@
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
     <string name="media_player_builtin">Built-in Android player</string>
     <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
-    <string name="media_player_exoplayer" translatable="false">ExoPlayer</string>
+    <string name="media_player_exoplayer_recommended">ExoPlayer (recommended)</string>
     <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
     <string name="pref_skip_silence_title">Skip Silence in Audio</string>
@@ -739,6 +739,7 @@
     <string name="reconnect_local_folder">Re-connect local folder</string>
     <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
     <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
+    <string name="unable_to_start_system_file_manager">Unable to start system file manager</string>
 
     <string name="filter">Filter</string>
 

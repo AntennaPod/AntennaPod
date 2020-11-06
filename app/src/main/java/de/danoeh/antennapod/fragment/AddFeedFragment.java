@@ -88,7 +88,9 @@ public class AddFeedFragment extends Fragment {
                 intentGetContentAction.setType("*/*");
                 startActivityForResult(intentGetContentAction, REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH);
             } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "No activity found. Should never happen...");
+                e.printStackTrace();
+                ((MainActivity) getActivity())
+                        .showSnackbarAbovePlayer(R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG);
             }
         });
         root.findViewById(R.id.btn_add_local_folder).setOnClickListener(v -> {
@@ -100,7 +102,9 @@ public class AddFeedFragment extends Fragment {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivityForResult(intent, REQUEST_CODE_ADD_LOCAL_FOLDER);
             } catch (ActivityNotFoundException e) {
-                Log.e(TAG, "No activity found. Should never happen...");
+                e.printStackTrace();
+                ((MainActivity) getActivity())
+                        .showSnackbarAbovePlayer(R.string.unable_to_start_system_file_manager, Snackbar.LENGTH_LONG);
             }
         });
         if (Build.VERSION.SDK_INT < 21) {

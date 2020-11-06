@@ -176,7 +176,7 @@ public class DownloadLogFragment extends ListFragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
-                case R.id.clear_history_item:
+                case R.id.clear_logs_item:
                     DBWriter.clearDownloadLog();
                     return true;
                 case R.id.refresh_item:
