@@ -446,8 +446,6 @@
     <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
     <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
     <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
-    <string name="pref_gpodnet_notifications_title">Synchronization failed</string>
-    <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
     <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
     <string name="pref_feed_skip">Auto Skip</string>
@@ -474,10 +472,6 @@
     <string name="pref_compact_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
     <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
     <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
-    <string name="pref_showDownloadReport_title">Download failed</string>
-    <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
-    <string name="pref_showAutoDownloadReport_title">Automatic download completed</string>
-    <string name="pref_showAutoDownloadReport_sum">Show a notification for automatically downloaded episodes.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_enqueue_location_title">Enqueue Location</string>
     <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
@@ -850,17 +844,19 @@
     <string name="cast_failed_media_error_skipping">Error playing media. Skipping&#8230;</string>
 
     <!-- Notification channels -->
+    <string name="notification_group_errors">Errors</string>
+    <string name="notification_group_news">News</string>
     <string name="notification_channel_user_action">Action required</string>
     <string name="notification_channel_user_action_description">Shown if your action is required, for example if you need to enter a password.</string>
     <string name="notification_channel_downloading">Downloading</string>
     <string name="notification_channel_downloading_description">Shown while currently downloading.</string>
     <string name="notification_channel_playing">Currently playing</string>
     <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
-    <string name="notification_channel_error">Errors</string>
-    <string name="notification_channel_error_description">Shown if something went wrong, for example if download or feed update fails.</string>
-    <string name="notification_channel_sync_error">Synchronization Errors</string>
+    <string name="notification_channel_download_error">Download failed</string>
+    <string name="notification_channel_download_error_description">Shown when download or feed update fails.</string>
+    <string name="notification_channel_sync_error">Synchronization failed</string>
     <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
-    <string name="notification_channel_auto_download">Auto Downloads</string>
+    <string name="notification_channel_auto_download">Automatic download completed</string>
     <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
 
     <!-- Widget settings -->
