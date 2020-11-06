@@ -124,6 +124,8 @@ public class DownloadService extends Service {
 
     private final IBinder mBinder = new LocalBinder();
 
+    private NewEpisodesNotification newEpisodesNotification;
+
     private class LocalBinder extends Binder {
         public DownloadService getService() {
             return DownloadService.this;
@@ -178,6 +180,8 @@ public class DownloadService extends Service {
     @Override
     public void onCreate() {
         Log.d(TAG, "Service started");
+        newEpisodesNotification = new NewEpisodesNotification(getApplicationContext());
+
         isRunning = true;
         handler = new Handler(Looper.getMainLooper());
         notificationManager = new DownloadServiceNotification(this);
@@ -238,7 +242,7 @@ public class DownloadService extends Service {
         // start auto download in case anything new has shown up
         DBTasks.autodownloadUndownloadedItems(getApplicationContext());
 
-        NewEpisodesNotification.showNotifications(getApplicationContext());
+        newEpisodesNotification.showNotifications();
     }
 
     private final Thread downloadCompletionThread = new Thread("DownloadCompletionThread") {

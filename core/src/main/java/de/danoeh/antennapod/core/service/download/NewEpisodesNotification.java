@@ -22,10 +22,14 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class NewEpisodesNotification {
-    private static final List<Feed> feeds = new ArrayList<>();
-    private static final Map<Long, FeedItem> lastItemsMap = new HashMap<>();
+    private final List<Feed> feeds = new ArrayList<>();
+    private final Map<Long, FeedItem> lastItemsMap = new HashMap<>();
 
-    public static void setOldEpisodes() {
+    private final Context context;
+
+    public NewEpisodesNotification(Context context) {
+        this.context = context;
+
         for (Feed feed : DBReader.getFeedList()) {
             FeedPreferences prefs = feed.getPreferences();
             if (prefs.getKeepUpdated() && prefs.getShowNotification()) {
@@ -40,7 +44,7 @@ public class NewEpisodesNotification {
         }
     }
 
-    static public void showNotifications(Context context) {
+    public void showNotifications() {
         for (Feed feed : feeds) {
             List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
 
