@@ -745,6 +745,7 @@
     <string name="reconnect_local_folder">Re-connect local folder</string>
     <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
     <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
+    <string name="unable_to_start_system_file_manager">Unable to start system file manager</string>
 
     <string name="filter">Filter</string>
 
