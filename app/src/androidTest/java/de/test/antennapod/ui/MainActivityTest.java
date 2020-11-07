@@ -76,7 +76,7 @@ public class MainActivityTest {
         openNavDrawer();
         onView(withText(R.string.add_feed_label)).perform(click());
         onView(withId(R.id.addViaUrlButton)).perform(scrollTo(), click());
-        onView(withId(R.id.text)).perform(replaceText(feed.getDownload_url()));
+        onView(withId(R.id.urlEditText)).perform(replaceText(feed.getDownload_url()));
         onView(withText(R.string.confirm_label)).perform(scrollTo(), click());
         Espresso.closeSoftKeyboard();
         onView(withText(R.string.subscribe_label)).perform(click());

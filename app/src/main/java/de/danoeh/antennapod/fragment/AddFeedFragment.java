@@ -54,15 +54,14 @@ public class AddFeedFragment extends Fragment {
 
     private MainActivity activity;
 
-    private AddfeedBinding viewBinding;
-    private EditTextDialogBinding alertViewBinding;
-
     @Override
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        AddfeedBinding viewBinding;
+
         viewBinding = AddfeedBinding.inflate(getLayoutInflater());
         activity = (MainActivity) getActivity();
 
@@ -79,7 +78,8 @@ public class AddFeedFragment extends Fragment {
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(PodcastIndexPodcastSearcher.class)));
 
         viewBinding.combinedFeedSearchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            performSearch();
+            String query = viewBinding.combinedFeedSearchEditText.getText().toString();
+            performSearch(query);
             return true;
         });
 
@@ -112,11 +112,16 @@ public class AddFeedFragment extends Fragment {
         if (Build.VERSION.SDK_INT < 21) {
             viewBinding.addLocalFolderButton.setVisibility(View.GONE);
         }
-        viewBinding.searchButton.setOnClickListener(view -> performSearch());
+
+        String query = viewBinding.combinedFeedSearchEditText.getText().toString();
+        viewBinding.searchButton.setOnClickListener(view -> performSearch(query));
+
         return viewBinding.getRoot();
     }
 
     private void showAddViaUrlDialog() {
+        EditTextDialogBinding alertViewBinding;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.add_podcast_by_url);
         View content = View.inflate(getContext(), R.layout.edit_text_dialog, null);
@@ -128,7 +133,7 @@ public class AddFeedFragment extends Fragment {
         if (clipboardContent.trim().startsWith("http")) {
             alertViewBinding.urlEditText.setText(clipboardContent.trim());
         }
-        builder.setView(content);
+        builder.setView(alertViewBinding.getRoot());
         builder.setPositiveButton(R.string.confirm_label,
                 (dialog, which) -> addUrl(alertViewBinding.urlEditText.getText().toString()));
         builder.setNegativeButton(R.string.cancel_label, null);
@@ -141,8 +146,7 @@ public class AddFeedFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void performSearch() {
-        String query = viewBinding.combinedFeedSearchEditText.getText().toString();
+    private void performSearch(String query) {
 
         if (query.matches("http[s]?://.*")) {
             addUrl(query);
