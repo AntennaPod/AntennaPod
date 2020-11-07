@@ -22,8 +22,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class NewEpisodesNotification {
-    private final List<Feed> feeds = new ArrayList<>();
-    private final Map<Long, FeedItem> lastItemsMap = new HashMap<>();
+    private final List<Long> feedIDs = new ArrayList<>();
+    private final Map<Long, Long> lastItemsMap = new HashMap<>();
 
     private final Context context;
 
@@ -37,20 +37,22 @@ public class NewEpisodesNotification {
                 if (!outdatedFeedItems.isEmpty()) {
                     FeedItem newestEpisode = outdatedFeedItems.get(0);
 
-                    lastItemsMap.put(feed.getId(), newestEpisode);
+                    lastItemsMap.put(feed.getId(), newestEpisode.getId());
                 }
-                feeds.add(feed);
+                feedIDs.add(feed.getId());
             }
         }
     }
 
     public void showNotifications() {
-        for (Feed feed : feeds) {
+        for (long feedId : feedIDs) {
+            Feed feed = DBReader.getFeed(feedId);
             List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
 
             int newEpisodes;
-            if (lastItemsMap.containsKey(feed.getId())) {
-                FeedItem lastKnownFeedItems = lastItemsMap.get(feed.getId());
+            if (lastItemsMap.containsKey(feedId)) {
+                long lastKnownFeedItemIds = lastItemsMap.get(feedId);
+                FeedItem lastKnownFeedItems = DBReader.getFeedItem(lastKnownFeedItemIds);
 
                 newEpisodes = feedItems.indexOf(lastKnownFeedItems);
             } else {
