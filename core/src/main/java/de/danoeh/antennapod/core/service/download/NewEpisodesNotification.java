@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -22,6 +23,9 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class NewEpisodesNotification {
+    final static int SUMMARY_ID = 0;
+    final static String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
+
     private final List<Long> feedIDs = new ArrayList<>();
     private final Map<Long, Long> lastItemsMap = new HashMap<>();
 
@@ -45,6 +49,13 @@ public class NewEpisodesNotification {
     }
 
     public void showNotifications() {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
+        String text = "";
+        int episodeSum = 0;
+        int podcastsWithEpisodes = 0;
+
         for (long feedId : feedIDs) {
             Feed feed = DBReader.getFeed(feedId);
             List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
@@ -60,14 +71,41 @@ public class NewEpisodesNotification {
             }
 
             if (newEpisodes > 0) {
-                showNotification(newEpisodes, feed, context);
+                text = showNotification(newEpisodes, feed, context, notificationManager);
+                style.addLine(text);
+                episodeSum += newEpisodes;
+                podcastsWithEpisodes++;
             }
+        }
+
+        if (episodeSum > 0) {
+            Resources res = context.getResources();
+            String title = res.getQuantityString(R.plurals.new_episode_notification_title, episodeSum);
+
+            if (podcastsWithEpisodes > 1) {
+                text = res.getString(R.string.new_episode_notification_group_text, podcastsWithEpisodes, episodeSum);
+            }
+
+            style.setBigContentTitle(title).setSummaryText(title);
+
+            Notification summaryNotification =
+                    new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
+                            .setContentTitle(title)
+                            .setContentText(text)
+                            .setSmallIcon(R.drawable.ic_notification)
+                            .setStyle(style)
+                            .setGroup(GROUP_KEY)
+                            .setGroupSummary(true)
+                            .build();
+
+            notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, SUMMARY_ID, summaryNotification);
         }
     }
 
-    static private void showNotification(int newEpisodes, Feed feed, Context context) {
+    static private String showNotification(int newEpisodes, Feed feed, Context context, NotificationManagerCompat notificationManager) {
         Resources res = context.getResources();
-        String text = res.getQuantityString(R.plurals.new_episode_message, newEpisodes, newEpisodes, feed.getTitle());
+        String text = res.getQuantityString(R.plurals.new_episode_notification_message, newEpisodes, newEpisodes, feed.getTitle());
+        String title = res.getQuantityString(R.plurals.new_episode_notification_title, newEpisodes);
 
         Intent intent = new Intent();
         intent.setComponent(new ComponentName(context, "de.danoeh.antennapod.activity.MainActivity"));
@@ -76,15 +114,17 @@ public class NewEpisodesNotification {
         intent.putExtra("fragment_feed_id", feed.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
+        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
                 .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle("New Episode")
+                .setContentTitle(title)
                 .setContentText(text)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
+                .setGroup(GROUP_KEY)
+                .setAutoCancel(true)
+                .build();
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, feed.hashCode(), builder.build());
+        notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, feed.hashCode(), notification);
+
+        return text;
     }
 }
