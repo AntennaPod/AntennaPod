@@ -57,6 +57,7 @@ public class LocalFeedUpdaterTest {
     private static final String LOCAL_FEED_DIR2 = "local-feed2";
 
     private Context context;
+    private MockedStatic<PodDBAdapter> podDbAdapterMockedStatic;
 
     @Before
     public void setUp() throws Exception {
@@ -78,11 +79,16 @@ public class LocalFeedUpdaterTest {
         mapDummyMetadata(LOCAL_FEED_DIR1);
         mapDummyMetadata(LOCAL_FEED_DIR2);
         shadowOf(MimeTypeMap.getSingleton()).addExtensionMimeTypMapping("mp3", "audio/mp3");
+
+        // Actual method is called in background thread but here we test on the main thread
+        podDbAdapterMockedStatic = Mockito.mockStatic(PodDBAdapter.class);
+        podDbAdapterMockedStatic.when(PodDBAdapter::assertNotMainThread).thenReturn(null);
     }
 
     @After
     public void tearDown() {
         PodDBAdapter.tearDownTests();
+        podDbAdapterMockedStatic.close();
     }
 
     /**

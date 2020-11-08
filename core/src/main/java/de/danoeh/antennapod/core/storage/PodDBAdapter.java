@@ -11,12 +11,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import de.danoeh.antennapod.core.BuildConfig;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -340,7 +342,14 @@ public class PodDBAdapter {
         if (db == null || !db.isOpen() || db.isReadOnly()) {
             db = openDb();
         }
+        assertNotMainThread();
         return this;
+    }
+
+    public static void assertNotMainThread() {
+        if (Looper.myLooper() == Looper.getMainLooper() && BuildConfig.DEBUG) {
+            throw new IllegalStateException("Database operations on main thread");
+        }
     }
 
     @SuppressLint("NewApi")
