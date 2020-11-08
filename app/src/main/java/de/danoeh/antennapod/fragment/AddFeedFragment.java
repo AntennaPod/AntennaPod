@@ -60,9 +60,7 @@ public class AddFeedFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        AddfeedBinding viewBinding;
-
-        viewBinding = AddfeedBinding.inflate(getLayoutInflater());
+        AddfeedBinding viewBinding = AddfeedBinding.inflate(getLayoutInflater());
         activity = (MainActivity) getActivity();
 
         Toolbar toolbar = viewBinding.toolbar;
@@ -120,12 +118,10 @@ public class AddFeedFragment extends Fragment {
     }
 
     private void showAddViaUrlDialog() {
-        EditTextDialogBinding alertViewBinding;
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.add_podcast_by_url);
         View content = View.inflate(getContext(), R.layout.edit_text_dialog, null);
-        alertViewBinding = EditTextDialogBinding.bind(content);
+        EditTextDialogBinding alertViewBinding = EditTextDialogBinding.bind(content);
         alertViewBinding.urlEditText.setHint(R.string.add_podcast_by_url_hint);
 
         ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
