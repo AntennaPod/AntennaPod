@@ -10,7 +10,6 @@ import android.content.res.Resources;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +22,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class NewEpisodesNotification {
-    final static int SUMMARY_ID = 0;
-    final static String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
+    static final int SUMMARY_ID = 0;
+    static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
     private final Map<Long, Long> lastItemsMap = new HashMap<>();
 
@@ -87,23 +86,23 @@ public class NewEpisodesNotification {
 
             style.setBigContentTitle(title).setSummaryText(title);
 
-            Notification summaryNotification =
-                    new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
-                            .setContentTitle(title)
-                            .setContentText(text)
-                            .setSmallIcon(R.drawable.ic_notification)
-                            .setStyle(style)
-                            .setGroup(GROUP_KEY)
-                            .setGroupSummary(true)
-                            .build();
+            Notification summaryNotification = new NotificationCompat.Builder(
+                    context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS
+            )
+                    .setSmallIcon(R.drawable.ic_notification).setStyle(style).setGroup(GROUP_KEY)
+                    .setContentTitle(title).setContentText(text).setGroupSummary(true).build();
 
-            notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, SUMMARY_ID, summaryNotification);
+            notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS,
+                    SUMMARY_ID, summaryNotification);
         }
     }
 
-    static private String showNotification(int newEpisodes, Feed feed, Context context, NotificationManagerCompat notificationManager) {
+    private static String showNotification(int newEpisodes, Feed feed, Context context,
+                                           NotificationManagerCompat notificationManager) {
         Resources res = context.getResources();
-        String text = res.getQuantityString(R.plurals.new_episode_notification_message, newEpisodes, newEpisodes, feed.getTitle());
+        String text = res.getQuantityString(
+                R.plurals.new_episode_notification_message, newEpisodes, newEpisodes, feed.getTitle()
+        );
         String title = res.getQuantityString(R.plurals.new_episode_notification_title, newEpisodes);
 
         Intent intent = new Intent();
@@ -113,7 +112,9 @@ public class NewEpisodesNotification {
         intent.putExtra("fragment_feed_id", feed.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-        Notification notification = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
+        Notification notification = new NotificationCompat.Builder(
+                context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS
+        )
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(text)

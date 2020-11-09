@@ -311,8 +311,8 @@ class DBUpgrader {
                     " ADD COLUMN " + PodDBAdapter.KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0;");
         }
         if (oldVersion < 2020000) {
-            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS +
-                    " ADD COLUMN " + PodDBAdapter.KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0;");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0;");
         }
     }
 

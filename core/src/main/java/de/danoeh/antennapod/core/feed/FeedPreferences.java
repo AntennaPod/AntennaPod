@@ -43,7 +43,10 @@ public class FeedPreferences {
                 username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false);
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification) {
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
+                            AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting,
+                            String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed,
+                            int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -247,7 +250,8 @@ public class FeedPreferences {
     }
 
     /**
-     * @return true if  an notification should be when the feed gets refreshed and a new episode is found.
+     * getter for preference if notifications should be display for new episodes.
+     * @return true for displaying notifications
      */
     public boolean getShowEpisodeNotification() {
         return showEpisodeNotification;
