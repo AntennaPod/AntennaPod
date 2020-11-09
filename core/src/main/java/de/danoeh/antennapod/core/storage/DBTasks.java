@@ -445,7 +445,8 @@ public final class DBTasks {
                     // as the most recent item
                     // (if the most recent date is null then we can assume there are no items
                     // and this is the first, hence 'new')
-                    if (priorMostRecentDate == null
+                    // New items that do not have a pubDate set are always marked as new
+                    if (item.getPubDate() == null || priorMostRecentDate == null
                             || priorMostRecentDate.before(item.getPubDate())
                             || priorMostRecentDate.equals(item.getPubDate())) {
                         Log.d(TAG, "Marking item published on " + item.getPubDate()
