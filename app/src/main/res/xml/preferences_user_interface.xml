@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <PreferenceCategory android:title="@string/appearance">
         <ListPreference
@@ -44,7 +45,8 @@
                 android:enabled="true"
                 android:key="prefExpandNotify"
                 android:summary="@string/pref_expandNotify_sum"
-                android:title="@string/pref_expandNotify_title"/>
+                android:title="@string/pref_expandNotify_title"
+				search:ignore="true"/>
         <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
