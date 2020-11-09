@@ -735,7 +735,10 @@
     <string name="discover_more">more »</string>
     <string name="discover_powered_by_itunes">Suggestions by iTunes</string>
     <string name="search_powered_by">Results by %1$s</string>
+
+    <!-- Local feeds -->
     <string name="add_local_folder">Add local folder</string>
+    <string name="local_folder">Local folder</string>
     <string name="reconnect_local_folder">Re-connect local folder</string>
     <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
     <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
