@@ -26,7 +26,6 @@ public class NewEpisodesNotification {
     final static int SUMMARY_ID = 0;
     final static String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
-    private final List<Long> feedIDs = new ArrayList<>();
     private final Map<Long, Long> lastItemsMap = new HashMap<>();
 
     private final Context context;
@@ -38,12 +37,12 @@ public class NewEpisodesNotification {
             FeedPreferences prefs = feed.getPreferences();
             if (prefs.getKeepUpdated() && prefs.getShowEpisodeNotification()) {
                 List<FeedItem> outdatedFeedItems = DBReader.getFeedItemList(feed);
-                if (!outdatedFeedItems.isEmpty()) {
-                    FeedItem newestEpisode = outdatedFeedItems.get(0);
 
-                    lastItemsMap.put(feed.getId(), newestEpisode.getId());
+                Long newestEpisodeId = null;
+                if (!outdatedFeedItems.isEmpty()) {
+                    newestEpisodeId = outdatedFeedItems.get(0).getId();
                 }
-                feedIDs.add(feed.getId());
+                lastItemsMap.put(feed.getId(), newestEpisodeId);
             }
         }
     }
@@ -56,12 +55,12 @@ public class NewEpisodesNotification {
         int episodeSum = 0;
         int podcastsWithEpisodes = 0;
 
-        for (long feedId : feedIDs) {
+        for (Long feedId : lastItemsMap.keySet()) {
             Feed feed = DBReader.getFeed(feedId);
             List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
 
             int newEpisodes;
-            if (lastItemsMap.containsKey(feedId)) {
+            if (feedId != null) {
                 long lastKnownFeedItemIds = lastItemsMap.get(feedId);
                 FeedItem lastKnownFeedItems = DBReader.getFeedItem(lastKnownFeedItemIds);
 
