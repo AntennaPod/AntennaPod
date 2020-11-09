@@ -97,15 +97,11 @@ public class LocalFeedUpdater {
             // set default feed image
             feed.setImageUrl(getDefaultIconUrl(context));
         }
-        if (feed.getPreferences().getAutoDownload()) {
-            feed.getPreferences().setAutoDownload(false);
-            feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
-            try {
-                DBWriter.setFeedPreferences(feed.getPreferences()).get();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
+        feed.getPreferences().setAutoDownload(false);
+        feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
+        feed.setDescription(context.getString(R.string.local_feed_description));
+        feed.setAuthor(context.getString(R.string.local_folder));
 
         // update items, delete items without existing file;
         // only delete items if the folder contains at least one element to avoid accidentally
