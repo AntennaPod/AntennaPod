@@ -42,9 +42,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.onDrawerItem;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static de.test.antennapod.NthMatcher.first;
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * User interface tests for MainActivity drawer.
