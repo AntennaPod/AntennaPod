@@ -34,9 +34,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * User interface tests for MainActivity
