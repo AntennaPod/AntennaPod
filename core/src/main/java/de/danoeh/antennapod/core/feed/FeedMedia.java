@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
@@ -165,13 +166,20 @@ public class FeedMedia extends FeedFile implements Playable {
      */
     public MediaBrowserCompat.MediaItem getMediaItem() {
         Playable p = this;
-        MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
+        MediaDescriptionCompat.Builder builder = new MediaDescriptionCompat.Builder()
                 .setMediaId(String.valueOf(id))
                 .setTitle(p.getEpisodeTitle())
                 .setDescription(p.getFeedTitle())
-                .setSubtitle(p.getFeedTitle())
-                .build();
-        return new MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
+                .setSubtitle(p.getFeedTitle());
+        if (item != null) {
+            // getImageLocation() also loads embedded images, which we can not send to external devices
+            if (item.getImageUrl() != null) {
+                builder.setIconUri(Uri.parse(item.getImageUrl()));
+            } else if (item.getFeed() != null && item.getFeed().getImageLocation() != null) {
+                builder.setIconUri(Uri.parse(item.getFeed().getImageLocation()));
+            }
+        }
+        return new MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
     }
 
     /**
