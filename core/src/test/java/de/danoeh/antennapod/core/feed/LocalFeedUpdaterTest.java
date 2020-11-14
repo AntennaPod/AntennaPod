@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowMediaMetadataRetriever;
 
 import java.io.IOException;
@@ -33,7 +34,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
@@ -44,6 +44,7 @@ import static org.robolectric.Shadows.shadowOf;
  * Test local feeds handling in class LocalFeedUpdater.
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(sdk = 28)
 public class LocalFeedUpdaterTest {
 
     /**
