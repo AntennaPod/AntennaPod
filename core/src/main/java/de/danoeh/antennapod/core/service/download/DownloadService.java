@@ -168,6 +168,7 @@ public class DownloadService extends Service {
             startForeground(R.id.notification_downloading, notification);
             syncExecutor.execute(() -> onDownloadQueued(intent));
         } else if (numberOfDownloads.get() == 0) {
+            stopForeground(true);
             stopSelf();
         } else {
             Log.d(TAG, "onStartCommand: Unknown intent");
@@ -553,6 +554,7 @@ public class DownloadService extends Service {
 
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
+            stopForeground(true);
             stopSelf();
             if (notificationUpdater != null) {
                 notificationUpdater.run();
