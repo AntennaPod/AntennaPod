@@ -290,7 +290,7 @@ public final class DBTasks {
      */
     public static Future<?> autodownloadUndownloadedItems(final Context context) {
         Log.d(TAG, "autodownloadUndownloadedItems");
-        return autodownloadExec.submit(ClientConfig.dbTasksCallbacks.getAutomaticDownloadAlgorithm()
+        return autodownloadExec.submit(ClientConfig.automaticDownloadAlgorithm
                 .autoDownloadUndownloadedItems(context));
 
     }
@@ -304,7 +304,7 @@ public final class DBTasks {
      * @param context Used for accessing the DB.
      */
     public static void performAutoCleanup(final Context context) {
-        ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().performCleanup(context);
+        UserPreferences.getEpisodeCleanupAlgorithm().performCleanup(context);
     }
 
     /**
