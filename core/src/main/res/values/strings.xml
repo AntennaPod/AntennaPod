@@ -526,7 +526,7 @@
     <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
     <string name="no_filter_label">None</string>
     <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>
-    <string name="subscriptions_counter_greater_zero">Counter greater zero</string>
+    <string name="subscriptions_counter_greater_zero">Counter greater than zero</string>
     <string name="auto_downloaded">Auto downloaded</string>
     <string name="not_auto_downloaded">Not auto downloaded</string>
     <string name="kept_updated">Kept updated</string>
