@@ -429,7 +429,7 @@ public class DownloadService extends Service {
                 + ", cleanupMedia=" + cleanupMedia);
 
         if (cleanupMedia) {
-            ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
+            UserPreferences.getEpisodeCleanupAlgorithm()
                     .makeRoomForEpisodes(getApplicationContext(), requests.size());
         }
 
