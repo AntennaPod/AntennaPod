@@ -973,10 +973,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "getNextInQueue(), but playable not an instance of FeedMedia, so not proceeding");
             return null;
         }
-        if (!ClientConfig.playbackServiceCallbacks.useQueue()) {
-            Log.d(TAG, "getNextInQueue(), but queue not in use by this app");
-            return null;
-        }
         Log.d(TAG, "getNextInQueue()");
         FeedMedia media = (FeedMedia) currentMedia;
         try {
