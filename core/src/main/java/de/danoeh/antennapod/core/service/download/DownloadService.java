@@ -205,8 +205,7 @@ public class DownloadService extends Service {
         isRunning = false;
 
         boolean showAutoDownloadReport = UserPreferences.showAutoDownloadReport();
-        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()
-                && (UserPreferences.showDownloadReport() || showAutoDownloadReport)) {
+        if (UserPreferences.showDownloadReport() || showAutoDownloadReport) {
             notificationManager.updateReport(reportQueue, showAutoDownloadReport);
             reportQueue.clear();
         }

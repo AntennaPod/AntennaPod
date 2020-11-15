@@ -37,7 +37,7 @@ public interface DownloadServiceCallbacks {
      * <p/>
      * The PendingIntent takes users to an activity where they can look at all successful and failed downloads.
      *
-     * @return A non-null PendingIntent for the notification or null if shouldCreateReport()==false
+     * @return A non-null PendingIntent for the notification
      */
     PendingIntent getReportNotificationContentIntent(Context context);
 
@@ -47,14 +47,8 @@ public interface DownloadServiceCallbacks {
      * <p/>
      * The PendingIntent takes users to an activity where they can look at their episode queue.
      *
-     * @return A non-null PendingIntent for the notification or null if shouldCreateReport()==false
+     * @return A non-null PendingIntent for the notification
      */
     PendingIntent getAutoDownloadReportNotificationContentIntent(Context context);
-
-    /**
-     * Returns true if the DownloadService should create a report that shows the number of failed
-     * downloads when the service shuts down.
-     */
-    boolean shouldCreateReport();
 }
 

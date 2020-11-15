@@ -22,10 +22,4 @@ public class PlaybackServiceCallbacksImpl implements PlaybackServiceCallbacks {
             return i;
         }
     }
-
-    @Override
-    public boolean useQueue() {
-        return true;
-    }
-
 }
