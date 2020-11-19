@@ -7,6 +7,7 @@ import androidx.collection.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -774,7 +775,7 @@ public final class DBReader {
                 feedTotalTime += media.getDuration() / 1000;
 
                 if (media.isDownloaded()) {
-                    totalDownloadSize = totalDownloadSize + media.getSize();
+                    totalDownloadSize += new File(media.getFile_url()).length();
                     episodesDownloadCount++;
                 }
 

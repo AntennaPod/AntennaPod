@@ -285,6 +285,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
 
     private void refreshToolbarState() {
         toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(feed != null && feed.isLocalFeed());
+        toolbar.getMenu().findItem(R.id.share_download_url_item).setVisible(feed != null && !feed.isLocalFeed());
         toolbar.getMenu().findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));

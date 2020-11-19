@@ -33,7 +33,6 @@ import de.danoeh.antennapod.core.sync.gpoddernet.model.GpodnetPodcast;
  * Displays a list of GPodnetPodcast-Objects in a GridView
  */
 public abstract class PodcastListFragment extends Fragment {
-    public static final String ARGUMENT_HIDE_TOOLBAR = "hideToolbar";
     private static final String TAG = "PodcastListFragment";
 
     private GridView gridView;
@@ -44,8 +43,6 @@ public abstract class PodcastListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.gpodnet_podcast_list, container, false);
-        setupToolbar(root.findViewById(R.id.toolbar));
-
         gridView = root.findViewById(R.id.gridView);
         progressBar = root.findViewById(R.id.progressBar);
         txtvError = root.findViewById(R.id.txtvError);
@@ -57,37 +54,6 @@ public abstract class PodcastListFragment extends Fragment {
 
         loadData();
         return root;
-    }
-
-    private void setupToolbar(Toolbar toolbar) {
-        if (getArguments() != null && getArguments().getBoolean(ARGUMENT_HIDE_TOOLBAR, false)) {
-            toolbar.setVisibility(View.GONE);
-            return;
-        }
-
-        toolbar.setTitle(R.string.gpodnet_main_label);
-        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
-        toolbar.inflateMenu(R.menu.gpodder_podcasts);
-
-        MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
-        final SearchView sv = (SearchView) searchItem.getActionView();
-        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                MainActivity activity = (MainActivity)getActivity();
-                if (activity != null) {
-                    activity.loadChildFragment(SearchListFragment.newInstance(s));
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
     }
 
     private void onPodcastSelected(GpodnetPodcast selection) {
