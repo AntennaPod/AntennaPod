@@ -41,6 +41,7 @@ public class NewEpisodesNotification {
                 if (!outdatedFeedItems.isEmpty()) {
                     newestEpisodeId = outdatedFeedItems.get(0).getId();
                 }
+                // newestEpisodeId is null if the feed does not have an an episode yet
                 lastItemsMap.put(feed.getId(), newestEpisodeId);
             }
         }
@@ -58,10 +59,11 @@ public class NewEpisodesNotification {
             Feed feed = DBReader.getFeed(feedId);
             List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
 
+            Long lastKnownEpisodeId = lastItemsMap.get(feedId);
+
             int newEpisodes;
-            if (feedId != null) {
-                long lastKnownFeedItemIds = lastItemsMap.get(feedId);
-                FeedItem lastKnownFeedItems = DBReader.getFeedItem(lastKnownFeedItemIds);
+            if (lastKnownEpisodeId != null) { // the feed does not have an an episode yet
+                FeedItem lastKnownFeedItems = DBReader.getFeedItem(lastKnownEpisodeId);
 
                 newEpisodes = feedItems.indexOf(lastKnownFeedItems);
             } else {
