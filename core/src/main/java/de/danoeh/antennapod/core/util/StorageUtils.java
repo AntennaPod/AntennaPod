@@ -30,7 +30,7 @@ public class StorageUtils {
 
     /**
      * Checks if external storage is available. If external storage isn't
-     * available, the current activity is finsished an an error activity is
+     * available, the current activity is finished and an error activity is
      * launched.
      *
      * @param activity the activity which would be finished if no storage is
