@@ -13,9 +13,9 @@ import android.widget.ProgressBar;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.error.CrashReportWriter;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -44,13 +44,15 @@ public class SplashActivity extends AppCompatActivity {
         })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                    finish();
-                }, error -> {
+                .subscribe(
+                    () -> {
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                        finish();
+                    }, error -> {
                         error.printStackTrace();
+                        CrashReportWriter.write(error);
                         Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         finish();
                     });
