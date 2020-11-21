@@ -210,8 +210,6 @@ public class MainActivity extends CastEnabledActivity {
                 }
             }, 1500);
 
-//            ABC
-
             // for backward compatibility, we only change defaults for fresh installs
             UserPreferences.setUpdateInterval(12);
 

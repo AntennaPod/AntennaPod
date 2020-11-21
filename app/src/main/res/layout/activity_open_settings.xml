@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    tools:context=".activity.OpenSettingsActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allow AntennaPod to stay connected for \n Hassle-free experience."
+        android:layout_marginStart="20dp"
+        android:textSize="20sp"
+        android:layout_marginBottom="15dp"
+        android:textColor="?android:attr/textColorPrimary" />
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Open Settings"
+        android:layout_marginHorizontal="50dp"
+        android:textSize="18sp"
+        android:textAllCaps="false"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="100dp"
+        android:textColor="?android:attr/textColorPrimary" />
+
+</LinearLayout>

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -22,6 +23,10 @@ import io.reactivex.schedulers.Schedulers;
  * Shows the AntennaPod logo while waiting for the main activity to start.
  */
 public class SplashActivity extends AppCompatActivity {
+
+    public static final String PREF_NAME = "SplashActivityPrefs";
+    public static final String PREF_IS_FIRST_LAUNCH = "prefSplashActivityIsFirstLaunch";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +50,20 @@ public class SplashActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent intent;
+                    SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                            if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
+                                intent = new Intent(SplashActivity.this, OpenSettingsActivity.class);
+                            }else{
+                                intent = new Intent(SplashActivity.this, MainActivity.class);
+                            }
+                            SharedPreferences.Editor edit = prefs.edit();
+                            edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
+                            edit.apply();
+                        }else {
+                        intent = new Intent(SplashActivity.this, MainActivity.class);
+                    }
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                     finish();

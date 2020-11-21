@@ -156,6 +156,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     freeImplementation project(":core")
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
