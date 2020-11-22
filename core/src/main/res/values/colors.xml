@@ -5,6 +5,7 @@
     <color name="grey100">#f5f5f5</color>
     <color name="grey600">#757575</color>
     <color name="light_gray">#bfbfbf</color>
+    <color name="medium_gray">#afafaf</color>
     <color name="black">#000000</color>
     <color name="download_success_green">#248800</color>
     <color name="download_failed_red">#B00020</color>
