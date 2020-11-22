@@ -26,6 +26,7 @@
                 android:minHeight="0dp"
                 android:minWidth="0dp"
                 android:text="@string/discover_more"
+                android:textSize="21sp"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:id="@+id/discover_more"/>
     </LinearLayout>
