@@ -1224,6 +1224,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+        //
         if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
             sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
@@ -1235,16 +1236,19 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         CUSTOM_ACTION_FAST_FORWARD,
                         getString(R.string.fast_forward_label), R.drawable.ic_notification_fast_forward)
                         .build());
+        } else {
+            // This would give the PIP of videos a play button
+            capabilities = capabilities | PlaybackStateCompat.ACTION_PLAY;
+            if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_WATCH) {
+                flavorHelper.sessionStateAddActionForWear(sessionState,
+                        CUSTOM_ACTION_REWIND, getString(R.string.rewind_label), android.R.drawable.ic_media_rew);
+                flavorHelper.sessionStateAddActionForWear(sessionState,
+                        CUSTOM_ACTION_FAST_FORWARD, getString(R.string.fast_forward_label), android.R.drawable.ic_media_ff);
+                flavorHelper.mediaSessionSetExtraForWear(mediaSession);
+            }
         }
 
         sessionState.setActions(capabilities);
-
-        flavorHelper.sessionStateAddActionForWear(sessionState,
-                CUSTOM_ACTION_REWIND, getString(R.string.rewind_label), android.R.drawable.ic_media_rew);
-        flavorHelper.sessionStateAddActionForWear(sessionState,
-                CUSTOM_ACTION_FAST_FORWARD, getString(R.string.fast_forward_label), android.R.drawable.ic_media_ff);
-
-        flavorHelper.mediaSessionSetExtraForWear(mediaSession);
 
         mediaSession.setPlaybackState(sessionState.build());
     }
