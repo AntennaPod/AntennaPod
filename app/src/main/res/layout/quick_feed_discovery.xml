@@ -23,10 +23,10 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="0dp"
+                android:minHeight="48dp"
                 android:minWidth="0dp"
                 android:text="@string/discover_more"
-                android:textSize="21sp"
+                android:textSize="18sp"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:id="@+id/discover_more"/>
     </LinearLayout>
