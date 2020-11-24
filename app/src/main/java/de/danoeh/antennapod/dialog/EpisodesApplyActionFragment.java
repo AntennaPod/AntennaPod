@@ -458,15 +458,11 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
     }
 
     private void closeMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
-        try {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                    getResources().getQuantityString(msgId,
-                            countHasMedia,
-                            (countHasMedia + countNoMedia), countHasMedia),
-                    Snackbar.LENGTH_LONG);
-        } catch (Exception e) {
-            Log.d(TAG, e.toString());
-        }
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                getResources().getQuantityString(msgId,
+                        (countHasMedia + countNoMedia),
+                        (countHasMedia + countNoMedia), countHasMedia),
+                Snackbar.LENGTH_LONG);
         getActivity().getSupportFragmentManager().popBackStack();
     }
 }
