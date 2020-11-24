@@ -462,7 +462,7 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
             ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                     getResources().getQuantityString(msgId,
                             countHasMedia,
-                            (countHasMedia+countNoMedia), countHasMedia, 232),
+                            (countHasMedia + countNoMedia), countHasMedia),
                     Snackbar.LENGTH_LONG);
         } catch (Exception e) {
             Log.d(TAG, e.toString());
