@@ -964,7 +964,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
-            PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
     };
@@ -1021,6 +1020,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
         Log.d(TAG, "Playback ended");
+        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
