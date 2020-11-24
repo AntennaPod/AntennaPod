@@ -30,6 +30,7 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -436,13 +437,18 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
     }
 
     private void deleteChecked() {
+        int countHasMedia = 0;
+        int countNoMedia = 0;
         for (long id : checkedIds.toArray()) {
             FeedItem episode = idMap.get(id);
-            if (episode.hasMedia()) {
+            if (episode.hasMedia() && episode.getMedia().isDownloaded()) {
+                countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());
+            } else {
+                countNoMedia++;
             }
         }
-        close(R.plurals.deleted_episode_batch_label, checkedIds.size());
+        closeMore(R.plurals.deleted_multi_episode_batch_label, countNoMedia, countHasMedia);
     }
 
     private void close(@PluralsRes int msgId, int numItems) {
@@ -451,4 +457,16 @@ public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnM
         getActivity().getSupportFragmentManager().popBackStack();
     }
 
+    private void closeMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
+        try {
+            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                    getResources().getQuantityString(msgId,
+                            countHasMedia,
+                            (countHasMedia+countNoMedia), countHasMedia, 232),
+                    Snackbar.LENGTH_LONG);
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
+        }
+        getActivity().getSupportFragmentManager().popBackStack();
+    }
 }

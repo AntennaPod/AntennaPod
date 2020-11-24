@@ -178,6 +178,11 @@
         <item quantity="one">%d episode deleted.</item>
         <item quantity="other">%d episodes deleted.</item>
     </plurals>
+    <plurals name="deleted_multi_episode_batch_label">
+        <item quantity="zero">%d episodes selected, %d deleted. Only downloaded files removed.</item>
+        <item quantity="one">%d episodes selected, %d deleted. Only downloaded files removed.</item>
+        <item quantity="other">%d episodes selected, %d deleted. Only downloaded files removed.</item>
+    </plurals>
     <string name="remove_new_flag_label">Remove \"new\" flag</string>
     <string name="removed_new_flag_label">Removed \"new\" flag</string>
     <string name="mark_read_label">Mark as played</string>
