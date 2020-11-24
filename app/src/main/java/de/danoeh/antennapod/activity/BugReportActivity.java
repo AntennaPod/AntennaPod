@@ -11,10 +11,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 
@@ -67,42 +72,60 @@ public class BugReportActivity extends AppCompatActivity {
             clipboard.setPrimaryClip(clip);
             Snackbar.make(findViewById(android.R.id.content), R.string.copied_to_clipboard, Snackbar.LENGTH_SHORT).show();
         });
-
-        findViewById(R.id.btn_export_logcat).setOnClickListener(v -> {
-            try {
-                File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
-                filename.createNewFile();
-                String cmd = "logcat -d -f " + filename.getAbsolutePath();
-                Runtime.getRuntime().exec(cmd);
-                //share file
-                try {
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("text/*");
-                    String authString = getString(de.danoeh.antennapod.core.R.string.provider_authority);
-                    Uri fileUri = FileProvider.getUriForFile(this, authString, filename);
-                    i.putExtra(Intent.EXTRA_STREAM,  fileUri);
-                    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                        PackageManager pm = getPackageManager();
-                        List<ResolveInfo> resInfos = pm.queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY);
-                        for (ResolveInfo resolveInfo : resInfos) {
-                            String packageName = resolveInfo.activityInfo.packageName;
-                            grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        }
-                    }
-                    String chooserTitle =  getString(de.danoeh.antennapod.core.R.string.share_file_label);
-                    startActivity(Intent.createChooser(i, chooserTitle));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    int strResId = R.string.log_file_share_exception;
-                    Snackbar.make(findViewById(android.R.id.content), strResId, Snackbar.LENGTH_LONG)
-                            .show();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Snackbar.make(findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
-            }
-        });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.bug_report_options, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.export_logcat) {
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+            alertBuilder.setTitle("Warning!").setMessage("Logs may contain sensitive information");
+            alertBuilder.setPositiveButton("Continue", (dialog, which) -> {
+                try {
+                    File filename = new File(UserPreferences.getDataFolder(null), "full-logs.txt");
+                    filename.createNewFile();
+                    String cmd = "logcat -d -f " + filename.getAbsolutePath();
+                    Runtime.getRuntime().exec(cmd);
+                    //share file
+                    try {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("text/*");
+                        String authString = getString(de.danoeh.antennapod.core.R.string.provider_authority);
+                        Uri fileUri = FileProvider.getUriForFile(this, authString, filename);
+                        i.putExtra(Intent.EXTRA_STREAM, fileUri);
+                        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                            PackageManager pm = getPackageManager();
+                            List<ResolveInfo> resInfos = pm.queryIntentActivities(i, PackageManager.MATCH_DEFAULT_ONLY);
+                            for (ResolveInfo resolveInfo : resInfos) {
+                                String packageName = resolveInfo.activityInfo.packageName;
+                                grantUriPermission(packageName, fileUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            }
+                        }
+                        String chooserTitle = getString(de.danoeh.antennapod.core.R.string.share_file_label);
+                        startActivity(Intent.createChooser(i, chooserTitle));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        int strResId = R.string.log_file_share_exception;
+                        Snackbar.make(findViewById(android.R.id.content), strResId, Snackbar.LENGTH_LONG)
+                                .show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Snackbar.make(findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
+                dialog.dismiss();
+            });
+            alertBuilder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+            alertBuilder.create();
+            alertBuilder.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
