@@ -965,7 +965,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
             PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
-
             PlaybackService.this.onPlaybackEnded(mediaType, stopPlaying);
         }
     };
