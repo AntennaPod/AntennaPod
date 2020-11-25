@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
+    <string name="no_media_label">Item does not contain a media file</string>
+
+
     <!-- Activity and fragment titles -->
     <string name="app_name" translate="false">AntennaPod</string>
     <string name="provider_authority" translate="false">de.danoeh.antennapod.provider</string>
