@@ -82,6 +82,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         if (position == currentChapterIndex) {
             int playingBackGroundColor = ThemeUtils.getColorFromAttr(context, R.attr.currently_playing_background);
             holder.itemView.setBackgroundColor(playingBackGroundColor);
+            holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.av_replay));
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
         }
