@@ -156,9 +156,6 @@
   <string name="delete_label">删除</string>
   <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
   <string name="delete_episode_label">删除节目</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="other">已删除%d个节目</item>
-  </plurals>
   <string name="remove_new_flag_label">移除“新的”标签</string>
   <string name="removed_new_flag_label">已移除“新的”标签</string>
   <string name="mark_read_label">标记已播放</string>

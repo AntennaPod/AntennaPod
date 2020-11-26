@@ -157,12 +157,6 @@
   <string name="delete_label">Usuń</string>
   <string name="delete_failed">Nie można usunąć pliku. Restart urządzenia może w tym pomóc.</string>
   <string name="delete_episode_label">Usuń odcinek</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">Usunięto %d odcinek. </item>
-    <item quantity="few">Usunięto %d odcinki(ów). </item>
-    <item quantity="many">Usunięto %d odcinki(ów). </item>
-    <item quantity="other">Usunięto %d odcinki(ów). </item>
-  </plurals>
   <string name="remove_new_flag_label">Usuń flagę \"nowy\"</string>
   <string name="removed_new_flag_label">Usunięto flagę \"nowy\"</string>
   <string name="mark_read_label">Oznacz jako odtworzone</string>

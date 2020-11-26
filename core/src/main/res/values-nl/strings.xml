@@ -160,10 +160,6 @@
   <string name="delete_label">Verwijderen</string>
   <string name="delete_failed">Kan bestand niet verwijderen; start je apparaat opnieuw op.</string>
   <string name="delete_episode_label">Aflevering verwijderen</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d aflevering verwijderd.</item>
-    <item quantity="other">%d afleveringen verwijderd.</item>
-  </plurals>
   <string name="remove_new_flag_label">\'Nieuw\'-label verwijderen</string>
   <string name="removed_new_flag_label">\'Nieuw\'-label is verwijderd</string>
   <string name="mark_read_label">Als afgespeeld markeren</string>

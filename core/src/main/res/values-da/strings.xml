@@ -160,10 +160,6 @@
   <string name="delete_label">Slet</string>
   <string name="delete_failed">Kan ikke slette fil. En genstart af enheden vil sandsynligvis hjælpe.</string>
   <string name="delete_episode_label">Slet udsendelse</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d udsendelse slettet.</item>
-    <item quantity="other">%d udsendelser slettet.</item>
-  </plurals>
   <string name="remove_new_flag_label">Fjern \"ny\"-markering</string>
   <string name="removed_new_flag_label">Fjernet \"ny\"-markering</string>
   <string name="mark_read_label">Marker som afspillet</string>

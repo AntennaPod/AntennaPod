@@ -160,10 +160,6 @@
   <string name="delete_label">Ta bort</string>
   <string name="delete_failed">Kunde inte ta bort filen. Testa att starta om enheten.</string>
   <string name="delete_episode_label">Radera episod</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">1%d episod raderad.</item>
-    <item quantity="other">1%d episder raderade.</item>
-  </plurals>
   <string name="remove_new_flag_label">Ta bort \"ny\"-flagga</string>
   <string name="removed_new_flag_label">Tog bort \"ny\"-flagga</string>
   <string name="mark_read_label">Markera som spelad</string>

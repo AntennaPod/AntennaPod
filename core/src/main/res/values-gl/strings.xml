@@ -160,10 +160,6 @@
   <string name="delete_label">Borrar</string>
   <string name="delete_failed">Non se puido eliminar o ficheiro. Reiniciar o dispositivo podería axudar.</string>
   <string name="delete_episode_label">Eliminar episodio</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d episodio eliminado.</item>
-    <item quantity="other">%d episodios eliminados.</item>
-  </plurals>
   <string name="remove_new_flag_label">Quitar marca \"novo\"</string>
   <string name="removed_new_flag_label">Eliminouse marca \"novo\"</string>
   <string name="mark_read_label">Marcar como reproducido</string>

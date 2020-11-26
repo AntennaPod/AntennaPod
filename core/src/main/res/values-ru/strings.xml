@@ -157,12 +157,6 @@
   <string name="delete_label">Удалить</string>
   <string name="delete_failed">Невозможно удалить файл. Попробуйте перезагрузить устройство.</string>
   <string name="delete_episode_label">Удалить выпуск</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d выпуск удален.</item>
-    <item quantity="few">%d выпуска удалены.</item>
-    <item quantity="many">%d выпусков удалены.</item>
-    <item quantity="other">%d выпусков удалено.</item>
-  </plurals>
   <string name="remove_new_flag_label">Убрать пометку «Новый»</string>
   <string name="removed_new_flag_label">Пометка «Новый» убрана</string>
   <string name="mark_read_label">Отметить как прослушанное</string>

@@ -149,10 +149,6 @@
   <string name="delete_label">Kustuta</string>
   <string name="delete_failed">Faili ei saa kustutada. Aidata võib seadme taaskäivitamine.</string>
   <string name="delete_episode_label">Kustuta saade</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">Kustutati %d saade.</item>
-    <item quantity="other">Kustutati %d saadet.</item>
-  </plurals>
   <string name="remove_new_flag_label">Eemalda silt \"uus\"</string>
   <string name="removed_new_flag_label">Eemaldati silt \"uus\"</string>
   <string name="mark_read_label">Märgi kuulatuks</string>

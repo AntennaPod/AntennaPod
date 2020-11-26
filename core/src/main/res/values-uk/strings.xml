@@ -137,12 +137,6 @@
   <string name="delete_label">Видалити</string>
   <string name="delete_failed">Файл не видалено. Можливо, перезавантаження пристрою допоможе.</string>
   <string name="delete_episode_label">Видалити епізод</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d епізод видалено.</item>
-    <item quantity="few">%dепізода видалено. </item>
-    <item quantity="many">%dепізодів видалено. </item>
-    <item quantity="other">%d епізодів видалено.</item>
-  </plurals>
   <string name="mark_read_label">Позначити як відтворений</string>
   <string name="marked_as_read_label">Позначено як відтворений</string>
   <plurals name="marked_read_batch_label">

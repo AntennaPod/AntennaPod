@@ -149,10 +149,6 @@
   <string name="delete_label">Törlés</string>
   <string name="delete_failed">A fájl nem törölhető. Az eszköz újraindítása segíthet a probléma megoldásában.</string>
   <string name="delete_episode_label">Epizód törlése</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d epizód törölve. </item>
-    <item quantity="other">%d epizód törölve.</item>
-  </plurals>
   <string name="remove_new_flag_label">Az „új” jelző eltávolítása</string>
   <string name="removed_new_flag_label">Az „új” jelző eltávolítva</string>
   <string name="mark_read_label">Megjelölés lejátszottként</string>

@@ -151,10 +151,6 @@
   <string name="delete_label">Slett</string>
   <string name="delete_failed">Kan ikke slette filen. Omstart av enheten kan hjelpe.</string>
   <string name="delete_episode_label">Slett episode</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d episode slettet.</item>
-    <item quantity="other">%d episode slettet.</item>
-  </plurals>
   <string name="remove_new_flag_label">Fjern \"Ny\"-markering</string>
   <string name="removed_new_flag_label">Fjernet \"Ny\"-markering</string>
   <string name="mark_read_label">Marker som avspilt</string>

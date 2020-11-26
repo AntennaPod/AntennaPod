@@ -141,9 +141,6 @@
   <string name="delete_label">削除</string>
   <string name="delete_failed">ファイルを削除できません。デバイスを再起動してみてください。</string>
   <string name="delete_episode_label">エピソードを削除</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="other">%d エピソードを削除しました。</item>
-  </plurals>
   <string name="remove_new_flag_label">\"新規\" フラグを削除</string>
   <string name="removed_new_flag_label">\"新規\" フラグを削除しました</string>
   <string name="mark_read_label">再生済としてマーク</string>

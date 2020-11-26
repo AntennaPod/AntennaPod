@@ -160,10 +160,6 @@
   <string name="delete_label">Supprimer</string>
   <string name="delete_failed">Suppression du fichier impossible. Redémarrer pourrait aider.</string>
   <string name="delete_episode_label">Suppression de l\'épisode</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d épisode supprimé.</item>
-    <item quantity="other">%d épisodes supprimés.</item>
-  </plurals>
   <string name="remove_new_flag_label">Ne plus considérer nouveau</string>
   <string name="removed_new_flag_label">Le statut \"nouveau\" a été supprimé</string>
   <string name="mark_read_label">Marquer comme lu</string>

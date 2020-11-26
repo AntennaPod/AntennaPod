@@ -149,10 +149,6 @@
   <string name="delete_label">Poista</string>
   <string name="delete_failed">Ei voida poistaa tiedostoa. Laitteen uudelleenkäynnistys saattaa auttaa.</string>
   <string name="delete_episode_label">Poista jakso</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d jakso poistettu.</item>
-    <item quantity="other">%d jaksoa poistettu.</item>
-  </plurals>
   <string name="remove_new_flag_label">Poista \"uusi\"-lippu</string>
   <string name="removed_new_flag_label">Poistettiin \"uusi\"-lippu</string>
   <string name="mark_read_label">Merkitse soitetuksi</string>

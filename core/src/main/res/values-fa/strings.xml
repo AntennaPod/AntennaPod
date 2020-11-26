@@ -149,10 +149,6 @@
   <string name="delete_label">حذف</string>
   <string name="delete_failed">پرونده حذف نشد. راه‌اندازی مجدد دستگاه می‌تواند کمک کند.</string>
   <string name="delete_episode_label">حذف قسمت</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d قسمت حذف شد.</item>
-    <item quantity="other">%d قسمت حذف شد.</item>
-  </plurals>
   <string name="remove_new_flag_label">حذف نشان «جدید»</string>
   <string name="removed_new_flag_label">نشان «جدید» حذف شد</string>
   <string name="mark_read_label">علامت‌گذاری به‌عنوان پخش‌شده</string>

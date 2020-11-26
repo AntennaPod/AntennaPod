@@ -145,9 +145,6 @@
   <string name="delete_label">刪除</string>
   <string name="delete_failed">刪除文件失敗。重啟設備試試看。</string>
   <string name="delete_episode_label">刪除這一集</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="other">已刪除 %d 集。</item>
-  </plurals>
   <string name="remove_new_flag_label">移除「新」的標記</string>
   <string name="removed_new_flag_label">已移除「新」的標記</string>
   <string name="mark_read_label">標記為已播放</string>

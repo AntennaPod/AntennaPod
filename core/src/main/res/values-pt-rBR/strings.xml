@@ -149,10 +149,6 @@
   <string name="delete_label">Deletar</string>
   <string name="delete_failed">Não foi possível deletar o arquivo. Experimente reiniciar o dispositivo.</string>
   <string name="delete_episode_label">Apagar Episódio</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d episódio apagado.</item>
-    <item quantity="other">%d episódios apagados.</item>
-  </plurals>
   <string name="remove_new_flag_label">Remover etiqueta de \"novo\"</string>
   <string name="removed_new_flag_label">Etiqueta de \"novo\" removida</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
