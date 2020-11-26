@@ -377,10 +377,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .appendPath(getResources().getResourceTypeName(R.drawable.ic_playlist_black))
                 .appendPath(getResources().getResourceEntryName(R.drawable.ic_playlist_black))
                 .build();
+
+        String subtitle = "";
+        try {
+            int count = taskManager.getQueue().size();
+            subtitle = getResources().getQuantityString(R.plurals.num_episodes, count, count);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
-                .setMediaUri(uri)
+                .setIconUri(uri)
                 .setMediaId(getResources().getString(R.string.queue_label))
                 .setTitle(getResources().getString(R.string.queue_label))
+                .setSubtitle(subtitle)
                 .build();
         return new MediaBrowserCompat.MediaItem(description,
                 MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
