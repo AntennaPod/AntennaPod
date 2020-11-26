@@ -264,6 +264,8 @@
         <item>EPISODE_TITLE_Z_A</item>
         <item>DURATION_SHORT_LONG</item>
         <item>DURATION_LONG_SHORT</item>
+        <item>EPISODE_FILENAME_A_Z</item>
+        <item>EPISODE_FILENAME_Z_A</item>
     </string-array>
 
     <string-array name="image_cache_size_options">
