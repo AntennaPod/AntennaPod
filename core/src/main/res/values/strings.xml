@@ -125,6 +125,11 @@
         <item quantity="one">%d selected</item>
         <item quantity="other">%d selected</item>
     </plurals>
+    <plurals name="num_episodes">
+        <item quantity="zero">no episodes</item>
+        <item quantity="one">%d episode</item>
+        <item quantity="other">%d episodes</item>
+    </plurals>
     <string name="loading_more">Loading more…</string>
 
     <!-- Actions on feeds -->
