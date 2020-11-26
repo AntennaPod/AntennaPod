@@ -1020,6 +1020,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
         Log.d(TAG, "Playback ended");
+        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
@@ -1058,7 +1059,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void onPostPlayback(final Playable playable, boolean ended, boolean skipped,
                                 boolean playingNext) {
-        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
         if (playable == null) {
             Log.e(TAG, "Cannot do post-playback processing: media was null");
             return;
