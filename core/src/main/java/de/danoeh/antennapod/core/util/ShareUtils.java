@@ -67,6 +67,7 @@ public class ShareUtils {
 		String text = getItemShareText(item) + " " + item.getMedia().getDownload_url();
 		if(withPosition) {
 			int pos = item.getMedia().getPosition();
+			text += "#t=" + pos / 1000;
 			text += " [" + Converter.getDurationStringLong(pos) + "]";
 		}
 		shareLink(context, text);
