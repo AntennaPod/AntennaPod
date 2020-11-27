@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
@@ -49,7 +47,7 @@ public class FeedSyncTask {
             }
         }
 
-        newEpisodesNotification.showNotification(this.context);
+        newEpisodesNotification.showNotification(context);
 
         return true;
     }
