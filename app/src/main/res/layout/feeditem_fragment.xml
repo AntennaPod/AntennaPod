@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:textAlignment="center"
-            android:background="@color/light_gray"
+            android:background="?android:attr/dividerVertical"
             android:text="@string/no_media_label"/>
 
         <View
