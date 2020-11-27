@@ -84,7 +84,6 @@ public class BugReportActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.export_logcat) {
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-            alertBuilder.setTitle(R.string.confirm_export_log_dialog_title);
             alertBuilder.setMessage(R.string.confirm_export_log_dialog_message);
             alertBuilder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
                 exportLog();

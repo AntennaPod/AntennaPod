@@ -63,8 +63,7 @@
     <!-- Bug report activity -->
     <string name="log_file_share_exception">No compatible apps found</string>
     <string name="export_logs_menu_title">Export detailed logs</string>
-    <string name="confirm_export_log_dialog_title">Warning!</string>
-    <string name="confirm_export_log_dialog_message">Logs may contain sensitive information</string>
+    <string name="confirm_export_log_dialog_message">Detailed logs may contain sensitive information, such as your subscriptions list</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in Browser</string>
