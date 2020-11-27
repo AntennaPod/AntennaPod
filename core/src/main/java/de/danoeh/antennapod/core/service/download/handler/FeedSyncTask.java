@@ -2,9 +2,13 @@ package de.danoeh.antennapod.core.service.download.handler;
 
 import android.content.Context;
 import android.util.Log;
+
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -22,6 +26,8 @@ public class FeedSyncTask {
     }
 
     public boolean run() {
+        NewEpisodesNotification newEpisodesNotification = new NewEpisodesNotification(request.getFeedfileId());
+
         FeedParserTask task = new FeedParserTask(request);
         FeedHandlerResult result = task.call();
         downloadStatus = task.getDownloadStatus();
@@ -42,6 +48,9 @@ public class FeedSyncTask {
                 Log.e(TAG, "Error trying to load next page", e);
             }
         }
+
+        newEpisodesNotification.showNotification(this.context);
+
         return true;
     }
 

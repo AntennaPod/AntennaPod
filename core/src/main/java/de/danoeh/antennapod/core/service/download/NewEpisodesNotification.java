@@ -10,9 +10,7 @@ import android.content.res.Resources;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -22,85 +20,65 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class NewEpisodesNotification {
-    static final int SUMMARY_ID = 0;
     static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
-    private final Map<Long, Long> lastItemsMap = new HashMap<>();
+    private final Long feedId;
+    private final Long lastEpisodeID;
+    private final boolean dontShowNotification;
 
-    private final Context context;
+    public NewEpisodesNotification(Long feedId) {
+        Feed feed = DBReader.getFeed(feedId);
 
-    public NewEpisodesNotification(Context context) {
-        this.context = context;
+        FeedPreferences prefs = feed.getPreferences();
+        if (!prefs.getKeepUpdated() || !prefs.getShowEpisodeNotification()) {
+            dontShowNotification = true;
 
-        for (Feed feed : DBReader.getFeedList()) {
-            FeedPreferences prefs = feed.getPreferences();
-            if (prefs.getKeepUpdated() && prefs.getShowEpisodeNotification()) {
-                List<FeedItem> outdatedFeedItems = DBReader.getFeedItemList(feed);
+            this.feedId = 0L;
+            lastEpisodeID = null;
 
-                Long newestEpisodeId = null;
-                if (!outdatedFeedItems.isEmpty()) {
-                    newestEpisodeId = outdatedFeedItems.get(0).getId();
-                }
-                // newestEpisodeId is null if the feed does not have an an episode yet
-                lastItemsMap.put(feed.getId(), newestEpisodeId);
-            }
+            return;
         }
+
+        List<FeedItem> outdatedFeedItems = DBReader.getFeedItemList(feed);
+
+        Long newestEpisodeId = null;
+        if (!outdatedFeedItems.isEmpty()) {
+            newestEpisodeId = outdatedFeedItems.get(0).getId();
+        }
+
+        dontShowNotification = false;
+        this.feedId = feedId;
+
+        // newestEpisodeId is null if the feed does not have an an episode yet
+        lastEpisodeID = newestEpisodeId;
     }
 
-    public void showNotifications() {
+    public void showNotification(Context context) {
+        if (dontShowNotification) {
+            return;
+        }
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-        NotificationCompat.InboxStyle style = new NotificationCompat.InboxStyle();
-        String text = "";
-        int episodeSum = 0;
-        int podcastsWithEpisodes = 0;
+        Feed feed = DBReader.getFeed(feedId);
+        List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
 
-        for (Long feedId : lastItemsMap.keySet()) {
-            Feed feed = DBReader.getFeed(feedId);
-            List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
+        int newEpisodes;
+        if (lastEpisodeID != null) { // the feed does not have an an episode yet
+            FeedItem lastKnownFeedItems = DBReader.getFeedItem(lastEpisodeID);
 
-            Long lastKnownEpisodeId = lastItemsMap.get(feedId);
-
-            int newEpisodes;
-            if (lastKnownEpisodeId != null) { // the feed does not have an an episode yet
-                FeedItem lastKnownFeedItems = DBReader.getFeedItem(lastKnownEpisodeId);
-
-                newEpisodes = feedItems.indexOf(lastKnownFeedItems);
-            } else {
-                newEpisodes = feedItems.size();
-            }
-
-            if (newEpisodes > 0) {
-                text = showNotification(newEpisodes, feed, context, notificationManager);
-                style.addLine(text);
-                episodeSum += newEpisodes;
-                podcastsWithEpisodes++;
-            }
+            newEpisodes = feedItems.indexOf(lastKnownFeedItems);
+        } else {
+            newEpisodes = feedItems.size();
         }
 
-        if (episodeSum > 0) {
-            Resources res = context.getResources();
-            String title = res.getQuantityString(R.plurals.new_episode_notification_title, episodeSum);
-
-            if (podcastsWithEpisodes > 1) {
-                text = res.getString(R.string.new_episode_notification_group_text, podcastsWithEpisodes, episodeSum);
-            }
-
-            style.setBigContentTitle(title).setSummaryText(title);
-
-            Notification summaryNotification = new NotificationCompat.Builder(
-                    context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS
-            )
-                    .setSmallIcon(R.drawable.ic_notification).setStyle(style).setGroup(GROUP_KEY)
-                    .setContentTitle(title).setContentText(text).setGroupSummary(true).build();
-
-            notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS,
-                    SUMMARY_ID, summaryNotification);
+        if (newEpisodes > 0) {
+            showNotification(newEpisodes, feed, context, notificationManager);
         }
     }
 
-    private static String showNotification(int newEpisodes, Feed feed, Context context,
-                                           NotificationManagerCompat notificationManager) {
+    private static void showNotification(int newEpisodes, Feed feed, Context context,
+                                         NotificationManagerCompat notificationManager) {
         Resources res = context.getResources();
         String text = res.getQuantityString(
                 R.plurals.new_episode_notification_message, newEpisodes, newEpisodes, feed.getTitle()
@@ -126,7 +104,5 @@ public class NewEpisodesNotification {
                 .build();
 
         notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, feed.hashCode(), notification);
-
-        return text;
     }
 }
