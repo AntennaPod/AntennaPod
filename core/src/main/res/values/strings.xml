@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
-    <string name="no_media_label">Item does not contain a media file</string>
 
 
     <!-- Activity and fragment titles -->
@@ -291,6 +290,7 @@
     <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
     <string name="error_file_not_found">File not found</string>
+    <string name="no_media_label">Item does not contain a media file</string>
 
     <!-- Queue operations -->
     <string name="lock_queue">Lock Queue</string>
