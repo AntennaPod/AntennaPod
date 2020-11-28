@@ -22,7 +22,6 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 public class NewEpisodesNotification {
     static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
-    private final Long feedId;
     private final Long lastEpisodeID;
     private final boolean dontShowNotification;
 
@@ -32,35 +31,30 @@ public class NewEpisodesNotification {
         FeedPreferences prefs = feed.getPreferences();
         if (!prefs.getKeepUpdated() || !prefs.getShowEpisodeNotification()) {
             dontShowNotification = true;
-
-            this.feedId = 0L;
             lastEpisodeID = null;
-
             return;
         }
 
-        List<FeedItem> outdatedFeedItems = DBReader.getFeedItemList(feed);
+        List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
 
         Long newestEpisodeId = null;
-        if (!outdatedFeedItems.isEmpty()) {
-            newestEpisodeId = outdatedFeedItems.get(0).getId();
+        if (!feedItems.isEmpty()) {
+            newestEpisodeId = feedItems.get(0).getId();
         }
 
         dontShowNotification = false;
-        this.feedId = feedId;
 
         // newestEpisodeId is null if the feed does not have an an episode yet
         lastEpisodeID = newestEpisodeId;
     }
 
-    public void showNotification(Context context) {
+    public void showNotification(Context context, Feed feed) {
         if (dontShowNotification) {
             return;
         }
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-        Feed feed = DBReader.getFeed(feedId);
         List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
 
         int newEpisodes;

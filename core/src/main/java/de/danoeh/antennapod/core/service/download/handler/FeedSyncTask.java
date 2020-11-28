@@ -47,7 +47,7 @@ public class FeedSyncTask {
             }
         }
 
-        newEpisodesNotification.showNotification(context);
+        newEpisodesNotification.showNotification(context, result.feed);
 
         return true;
     }
