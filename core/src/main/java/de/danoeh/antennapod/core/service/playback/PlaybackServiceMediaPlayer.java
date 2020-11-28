@@ -335,6 +335,10 @@ public abstract class PlaybackServiceMediaPlayer {
         callback.statusChanged(new PSMPInfo(oldPlayerStatus, playerStatus, getPlayable()));
     }
 
+    public boolean isAudioChannelInUse() {
+        return false;
+    }
+
     /**
      * @see #setPlayerStatus(PlayerStatus, Playable, int)
      */

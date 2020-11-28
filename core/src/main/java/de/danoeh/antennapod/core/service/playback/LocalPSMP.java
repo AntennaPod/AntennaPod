@@ -296,10 +296,17 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         });
     }
 
+    @Override
+    public boolean isAudioChannelInUse() {
+        int mode = audioManager.getMode();
+        Log.d(TAG, "Audio mode = " + audioManager.getMode());
+
+        return (mode != AudioManager.MODE_NORMAL);
+    }
+
     private void resumeSync() {
         if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
             int focusGained = AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest);
-
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 Log.d(TAG, "Audiofocus successfully requested");
                 Log.d(TAG, "Resuming/Starting playback");

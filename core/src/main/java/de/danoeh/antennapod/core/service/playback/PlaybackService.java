@@ -1560,6 +1560,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * @param bluetooth true if the event for unpausing came from bluetooth
      */
     private void unpauseIfPauseOnDisconnect(boolean bluetooth) {
+        if (mediaPlayer.isAudioChannelInUse()) {
+            Log.d(TAG, "unpauseIfPauseOnDisconnect() audio is in use");
+           return;
+        }
         if (transientPause) {
             transientPause = false;
             if (!bluetooth && UserPreferences.isUnpauseOnHeadsetReconnect()) {
