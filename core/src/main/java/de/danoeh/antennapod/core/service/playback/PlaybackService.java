@@ -1562,7 +1562,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     private void unpauseIfPauseOnDisconnect(boolean bluetooth) {
         if (mediaPlayer.isAudioChannelInUse()) {
             Log.d(TAG, "unpauseIfPauseOnDisconnect() audio is in use");
-           return;
+            return;
         }
         if (transientPause) {
             transientPause = false;
