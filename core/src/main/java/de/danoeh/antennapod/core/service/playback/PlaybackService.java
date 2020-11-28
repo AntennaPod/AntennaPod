@@ -52,7 +52,6 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
@@ -1465,7 +1464,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Received Auto Connection update: " + status);
             if (!isConnectedToCar) {
                 Log.d(TAG, "Car was unplugged during playback.");
-                pauseIfPauseOnDisconnect();
+                pauseIfPauseOnDisconnect("bluetooth");
             } else {
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
@@ -1499,11 +1498,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             if (TextUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
+                Log.d(TAG, "Headset plug event. State is " + state);
                 if (state != -1) {
-                    Log.d(TAG, "Headset plug event. State is " + state);
                     if (state == UNPLUGGED) {
                         Log.d(TAG, "Headset was unplugged during playback.");
-                        pauseIfPauseOnDisconnect();
+                        pauseIfPauseOnDisconnect("Headphones");
                     } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
                         unpauseIfPauseOnDisconnect(false);
@@ -1534,7 +1533,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onReceive(Context context, Intent intent) {
             // sound is about to change, eg. bluetooth -> speaker
             Log.d(TAG, "Pausing playback because audio is becoming noisy");
-            pauseIfPauseOnDisconnect();
+            pauseIfPauseOnDisconnect("speaker");
         }
         // android.media.AUDIO_BECOMING_NOISY
     };
@@ -1542,11 +1541,17 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true.
      */
-    private void pauseIfPauseOnDisconnect() {
-        if (UserPreferences.isPauseOnHeadsetDisconnect() && !isCasting()) {
-            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
-                transientPause = true;
-            }
+    private void pauseIfPauseOnDisconnect(String soundOutput) {
+        Log.d(TAG, "pauseIfPauseOnDisconnect() " + soundOutput);
+        // If bluetooth is playing, headset is plugged in, headset unplugged, bluetooth should continue
+        // If headset is playing, bluetooth is connected, bluetooth is unplugged, headset should continue
+        // If headset or bluetooth is unplugged (the speaker should not be playing)
+        if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
+            transientPause = true;
+        }
+        if (UserPreferences.isPauseOnHeadsetDisconnect()
+                && soundOutput == "speaker"
+                && !isCasting()) {
             mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
         }
     }
