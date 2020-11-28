@@ -485,7 +485,11 @@ public class SyncService extends Worker {
     }
 
     private void updateErrorNotification(SyncServiceException exception) {
-        Log.d(TAG, "Posting error notification");
+        if (!UserPreferences.gpodnetNotificationsEnabled()) {
+            Log.d(TAG, "Skipping sync error notification because of user setting");
+            return;
+        }
+        Log.d(TAG, "Posting sync error notification");
         final String description = getApplicationContext().getString(R.string.gpodnetsync_error_descr)
                 + exception.getMessage();
 

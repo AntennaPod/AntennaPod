@@ -20,6 +20,7 @@
         <item name="action_icon_color">@color/black</item>
         <item name="drawer_activated_color">@color/highlight_light</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textColorHint">@color/grey600</item>
 
         <item name="storage">@drawable/ic_storage_black</item>
         <item name="ic_network">@drawable/ic_network_black</item>
@@ -98,6 +99,7 @@
         <item name="currently_playing_background">@color/highlight_dark</item>
         <item name="action_icon_color">@color/white</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textColorHint">@color/medium_gray</item>
 
         <item name="storage">@drawable/ic_storage_white</item>
         <item name="ic_network">@drawable/ic_network_white</item>
@@ -170,6 +172,7 @@
         <item name="android:windowBackground">@color/black</item>
         <item name="android:actionBarStyle">@color/black</item>
         <item name="background_elevated">@color/black</item>
+        <item name="android:textColorHint">@color/medium_gray</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AntennaPod.Light">

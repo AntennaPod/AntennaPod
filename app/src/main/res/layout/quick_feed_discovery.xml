@@ -23,7 +23,7 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="0dp"
+                android:minHeight="48dp"
                 android:minWidth="0dp"
                 android:text="@string/discover_more"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -85,6 +85,7 @@
     </RelativeLayout>
 
     <TextView
+            android:id="@+id/discover_powered_by_itunes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="?android:attr/textColorTertiary"

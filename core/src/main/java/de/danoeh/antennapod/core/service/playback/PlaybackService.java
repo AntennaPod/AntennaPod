@@ -7,6 +7,7 @@ import android.app.UiModeManager;
 import android.bluetooth.BluetoothA2dp;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -370,9 +371,26 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private MediaBrowserCompat.MediaItem createBrowsableMediaItemForRoot() {
+        Uri uri = new Uri.Builder()
+                .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
+                .authority(getResources().getResourcePackageName(R.drawable.ic_playlist_black))
+                .appendPath(getResources().getResourceTypeName(R.drawable.ic_playlist_black))
+                .appendPath(getResources().getResourceEntryName(R.drawable.ic_playlist_black))
+                .build();
+
+        String subtitle = "";
+        try {
+            int count = taskManager.getQueue().size();
+            subtitle = getResources().getQuantityString(R.plurals.num_episodes, count, count);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
+                .setIconUri(uri)
                 .setMediaId(getResources().getString(R.string.queue_label))
                 .setTitle(getResources().getString(R.string.queue_label))
+                .setSubtitle(subtitle)
                 .build();
         return new MediaBrowserCompat.MediaItem(description,
                 MediaBrowserCompat.MediaItem.FLAG_BROWSABLE);
@@ -517,11 +535,12 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 playableLoaded -> {
-                                    mediaPlayer.playMediaObject(playable, stream, startWhenPrepared,
+                                    mediaPlayer.playMediaObject(playableLoaded, stream, startWhenPrepared,
                                             prepareImmediately);
-                                    addPlayableToQueue(playable);
+                                    addPlayableToQueue(playableLoaded);
                                 }, error -> {
                                     Log.d(TAG, "Playable was not found. Stopping service.");
+                                    error.printStackTrace();
                                     stateManager.stopService();
                                 });
                 return Service.START_NOT_STICKY;
@@ -729,6 +748,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                             addPlayableToQueue(playable);
                         }, error -> {
                             Log.d(TAG, "Playable was not loaded from preferences. Stopping service.");
+                            error.printStackTrace();
                             stateManager.stopService();
                         });
     }
@@ -971,10 +991,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "getNextInQueue(), but playable not an instance of FeedMedia, so not proceeding");
             return null;
         }
-        if (!ClientConfig.playbackServiceCallbacks.useQueue()) {
-            Log.d(TAG, "getNextInQueue(), but queue not in use by this app");
-            return null;
-        }
         Log.d(TAG, "getNextInQueue()");
         FeedMedia media = (FeedMedia) currentMedia;
         try {
@@ -1022,6 +1038,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void onPlaybackEnded(MediaType mediaType, boolean stopPlaying) {
         Log.d(TAG, "Playback ended");
+        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
         if (stopPlaying) {
             taskManager.cancelPositionSaver();
             cancelPositionObserver();
@@ -1060,7 +1077,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void onPostPlayback(final Playable playable, boolean ended, boolean skipped,
                                 boolean playingNext) {
-        PlaybackPreferences.clearCurrentlyPlayingTemporaryPlaybackSpeed();
         if (playable == null) {
             Log.e(TAG, "Cannot do post-playback processing: media was null");
             return;

@@ -290,7 +290,7 @@ public final class DBTasks {
      */
     public static Future<?> autodownloadUndownloadedItems(final Context context) {
         Log.d(TAG, "autodownloadUndownloadedItems");
-        return autodownloadExec.submit(ClientConfig.dbTasksCallbacks.getAutomaticDownloadAlgorithm()
+        return autodownloadExec.submit(ClientConfig.automaticDownloadAlgorithm
                 .autoDownloadUndownloadedItems(context));
 
     }
@@ -304,7 +304,7 @@ public final class DBTasks {
      * @param context Used for accessing the DB.
      */
     public static void performAutoCleanup(final Context context) {
-        ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().performCleanup(context);
+        UserPreferences.getEpisodeCleanupAlgorithm().performCleanup(context);
     }
 
     /**
@@ -445,7 +445,8 @@ public final class DBTasks {
                     // as the most recent item
                     // (if the most recent date is null then we can assume there are no items
                     // and this is the first, hence 'new')
-                    if (priorMostRecentDate == null
+                    // New items that do not have a pubDate set are always marked as new
+                    if (item.getPubDate() == null || priorMostRecentDate == null
                             || priorMostRecentDate.before(item.getPubDate())
                             || priorMostRecentDate.equals(item.getPubDate())) {
                         Log.d(TAG, "Marking item published on " + item.getPubDate()

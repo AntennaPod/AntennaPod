@@ -14,8 +14,12 @@ public class FeedItemPubdateComparator implements Comparator<FeedItem> {
      */
     @Override
     public int compare(FeedItem lhs, FeedItem rhs) {
-        if (rhs.getPubDate() == null || lhs.getPubDate() == null) {
+        if (rhs.getPubDate() == null && lhs.getPubDate() == null) {
             return 0;
+        } else if (rhs.getPubDate() == null) {
+            return 1;
+        } else if (lhs.getPubDate() == null) {
+            return -1;
         }
         return rhs.getPubDate().compareTo(lhs.getPubDate());
     }
