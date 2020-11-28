@@ -7,9 +7,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.widget.ProgressBar;
 
 import de.danoeh.antennapod.R;
@@ -52,25 +54,30 @@ public class SplashActivity extends AppCompatActivity {
                 .subscribe(() -> {
                     Intent intent;
                     SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                            if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
-                                intent = new Intent(SplashActivity.this, OpenSettingsActivity.class);
-                            }else{
-                                intent = new Intent(SplashActivity.this, MainActivity.class);
-                            }
-                            SharedPreferences.Editor edit = prefs.edit();
-                            edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
-                            edit.apply();
-                        }else {
-                        intent = new Intent(SplashActivity.this, MainActivity.class);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                            When user open the app for the 1st time, re-direct them to the
+//                            OpenSettingsActivity.class, otherwise trigger MainActivity.class
+                        if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
+                            intent = new Intent(SplashActivity.this,
+                                    OpenSettingsActivity.class);
+                        } else {
+                            intent = new Intent(SplashActivity.this,
+                                    MainActivity.class);
+                        }
+                        SharedPreferences.Editor edit = prefs.edit();
+                        edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
+                        edit.apply();
+                    } else {
+                        intent = new Intent(SplashActivity.this,
+                                MainActivity.class);
                     }
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                     finish();
                 }, error -> {
-                        error.printStackTrace();
-                        Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                        finish();
-                    });
+                    error.printStackTrace();
+                    Toast.makeText(this, error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    finish();
+                });
     }
 }

@@ -73,6 +73,11 @@
     <!-- Playback history -->
     <string name="clear_history_label">Clear History</string>
 
+    <!-- Opening Settings -->
+    <string name="grant_access">Grant Access</string>
+    <string name="allow_battery_optimization_label">Allow AntennaPod to stay connected for Hassle-free experience.</string>
+    <string name="open_settings">Open Settings</string>
+
     <!-- Other -->
     <string name="confirm_label">Confirm</string>
     <string name="cancel_label">Cancel</string>

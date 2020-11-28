@@ -21,20 +21,23 @@ public class OpenSettingsActivity extends AppCompatActivity {
         ActivityOpenSettingsBinding viewBinding = ActivityOpenSettingsBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
 
+//        To trigger settings for the app when clicked on the settings button.
         viewBinding.settingsButton.setOnClickListener(v -> {
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                intent.setData(uri);
-                startActivity(intent);
-                taskStarted = true;
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Uri uri = Uri.fromParts("package", getPackageName(), null);
+            intent.setData(uri);
+            startActivity(intent);
+            taskStarted = true;
         });
     }
 
+    //    when this activity is resumed again after returning back from the settings page,
+    //    send users to main activity.
     @Override
     protected void onResume() {
         super.onResume();
-        if(taskStarted) {
+        if (taskStarted) {
             Intent intent = new Intent(OpenSettingsActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
