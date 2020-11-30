@@ -16,12 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <Button
-            android:id="@+id/btn_export_logcat"
-            android:text="@string/export_logs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
     <TextView
             android:layout_marginTop="8dp"
             android:id="@+id/crash_report_logs"
