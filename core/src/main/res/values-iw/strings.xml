@@ -168,12 +168,6 @@
   <string name="delete_label">מחיקה</string>
   <string name="delete_failed">לא ניתן למחוק קובץ. הפעלת המכשיר מחדש עשויה לסייע.</string>
   <string name="delete_episode_label">מחיקת פרק</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">פרק אחד נמחק.</item>
-    <item quantity="two">%d פרקים נמחקו.</item>
-    <item quantity="many">%d פרקים נמחקו.</item>
-    <item quantity="other">%d פרקים נמחקו.</item>
-  </plurals>
   <string name="remove_new_flag_label">הסרת הסימון „חדש”</string>
   <string name="removed_new_flag_label">הוסר הסימון „חדש”</string>
   <string name="mark_read_label">סימון כנצפה</string>

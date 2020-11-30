@@ -153,10 +153,6 @@
   <string name="delete_label">Elimina</string>
   <string name="delete_failed">Impossibile eliminare il file. Prova a riavviare il dispositivo.</string>
   <string name="delete_episode_label">Elimina episodio</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d episodio eliminato.</item>
-    <item quantity="other">%d episodi eliminati.</item>
-  </plurals>
   <string name="remove_new_flag_label">Rimuovi flag \"nuovo\"</string>
   <string name="removed_new_flag_label">Flag \"nuovo\" rimosso</string>
   <string name="mark_read_label">Segna come riprodotto</string>

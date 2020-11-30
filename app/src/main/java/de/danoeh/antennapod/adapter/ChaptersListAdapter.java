@@ -87,6 +87,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
             progress = Math.max(progress, CircularProgressBar.MINIMUM_PERCENTAGE);
             progress = Math.min(progress, CircularProgressBar.MAXIMUM_PERCENTAGE);
             holder.progressBar.setPercentage(progress, position);
+            holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.av_replay));
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
             holder.progressBar.setPercentage(0, null);

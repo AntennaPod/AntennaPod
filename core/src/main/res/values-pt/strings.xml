@@ -160,10 +160,6 @@
   <string name="delete_label">Eliminar</string>
   <string name="delete_failed">Episódio não eliminado. Tente reiniciar o dispositivo.</string>
   <string name="delete_episode_label">Eliminar episódio</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d episódio eliminado.</item>
-    <item quantity="other">%d episódios eliminados.</item>
-  </plurals>
   <string name="remove_new_flag_label">Remover a marca \"novo\"</string>
   <string name="removed_new_flag_label">A marca \"novo\" foi removida</string>
   <string name="mark_read_label">Marcar como reproduzido</string>
