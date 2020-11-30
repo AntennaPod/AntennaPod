@@ -10,19 +10,17 @@ import android.content.res.Resources;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import java.util.List;
-
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class NewEpisodesNotification {
     static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
-    private final Long lastEpisodeID;
+    private final int lastEpisodeCount;
     private final boolean dontShowNotification;
 
     public NewEpisodesNotification(Long feedId) {
@@ -31,21 +29,13 @@ public class NewEpisodesNotification {
         FeedPreferences prefs = feed.getPreferences();
         if (!prefs.getKeepUpdated() || !prefs.getShowEpisodeNotification()) {
             dontShowNotification = true;
-            lastEpisodeID = null;
+            lastEpisodeCount = -1;
             return;
         }
 
-        List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
-
-        Long newestEpisodeId = null;
-        if (!feedItems.isEmpty()) {
-            newestEpisodeId = feedItems.get(0).getId();
-        }
+        lastEpisodeCount = PodDBAdapter.getInstance().getFeedCounters(feedId).get(feedId);
 
         dontShowNotification = false;
-
-        // newestEpisodeId is null if the feed does not have an an episode yet
-        lastEpisodeID = newestEpisodeId;
     }
 
     public void showNotification(Context context, Feed feed) {
@@ -53,20 +43,12 @@ public class NewEpisodesNotification {
             return;
         }
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
-        List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
-
-        int newEpisodes;
-        if (lastEpisodeID != null) { // the feed does not have an an episode yet
-            FeedItem lastKnownFeedItems = DBReader.getFeedItem(lastEpisodeID);
-
-            newEpisodes = feedItems.indexOf(lastKnownFeedItems);
-        } else {
-            newEpisodes = feedItems.size();
-        }
+        long feedId = feed.getId();
+        int episodeCount = PodDBAdapter.getInstance().getFeedCounters(feedId).get(feedId);
+        int newEpisodes = episodeCount - lastEpisodeCount;
 
         if (newEpisodes > 0) {
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             showNotification(newEpisodes, feed, context, notificationManager);
         }
     }

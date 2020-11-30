@@ -489,29 +489,4 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
-
-    @Override
-    public int hashCode() {
-        int result = itemIdentifier != null ? itemIdentifier.hashCode() : 0;
-        result = 31 * result + (int) (feedId ^ (feedId >>> 32));
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        FeedItem other = (FeedItem) obj;
-        if (feedId != other.feedId) {
-            return false;
-        }
-        return getIdentifyingValue().equals(other.getIdentifyingValue());
-    }
 }
