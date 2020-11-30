@@ -154,10 +154,6 @@
   <string name="delete_label">Löschen</string>
   <string name="delete_failed">Die Datei kann nicht gelöscht werden. Eventuell hilft es, das Gerät neu zu starten.</string>
   <string name="delete_episode_label">Episode löschen</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d Episode gelöscht.</item>
-    <item quantity="other">%d Episoden gelöscht.</item>
-  </plurals>
   <string name="remove_new_flag_label">\"Neu\"-Markierung entfernen</string>
   <string name="removed_new_flag_label">\"Neu\"-Markierung entfernt</string>
   <string name="mark_read_label">Als gespielt markieren</string>

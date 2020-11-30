@@ -157,12 +157,6 @@
   <string name="delete_label">Ištrinti</string>
   <string name="delete_failed">Nepavyksta ištrinti failo. Įrenginio paleidimas iš naujo gali padėti.</string>
   <string name="delete_episode_label">Ištrinti epizodą</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d epizodas ištrintas.</item>
-    <item quantity="few">%d epizodai ištrinti.</item>
-    <item quantity="many">%d epizodai ištrinti.</item>
-    <item quantity="other">%d epizodai ištrinti.</item>
-  </plurals>
   <string name="remove_new_flag_label">Pašalinti „naujas“ gairelę</string>
   <string name="removed_new_flag_label">„naujas“ gairelė pašalinta</string>
   <string name="mark_read_label">Pažymėti kaip perklausytą</string>

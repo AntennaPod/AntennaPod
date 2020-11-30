@@ -181,9 +181,9 @@
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
     <string name="delete_episode_label">Delete Episode</string>
-    <plurals name="deleted_episode_batch_label">
-        <item quantity="one">%d episode deleted.</item>
-        <item quantity="other">%d episodes deleted.</item>
+    <plurals name="deleted_multi_episode_batch_label">
+        <item quantity="one">%d episode selected, %d download deleted.</item>
+        <item quantity="other">%d episodes selected, %d download(s) deleted.</item>
     </plurals>
     <string name="remove_new_flag_label">Remove \"new\" flag</string>
     <string name="removed_new_flag_label">Removed \"new\" flag</string>

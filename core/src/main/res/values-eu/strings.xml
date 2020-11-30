@@ -160,10 +160,6 @@
   <string name="delete_label">Ezabatu</string>
   <string name="delete_failed">Ezin da fitxategia ezabatu. Gailua berrabiarazteak lagun dezake.</string>
   <string name="delete_episode_label">Saioa ezabatu</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%dsaio ezabatua.</item>
-    <item quantity="other">%d saio ezabatuak.</item>
-  </plurals>
   <string name="remove_new_flag_label">Kendu \"berria\" ikurra</string>
   <string name="removed_new_flag_label">\"Berria\" ikurra kendu da</string>
   <string name="mark_read_label">Markatu ikusita bezala</string>

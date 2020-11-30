@@ -145,9 +145,6 @@
   <string name="delete_label">삭제</string>
   <string name="delete_failed">파일을 삭제할 수 없습니다. 장치를 재부팅하면 동작할 수도 있습니다.</string>
   <string name="delete_episode_label">에피소드 삭제</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="other">%d개 에피소드 삭제함.</item>
-  </plurals>
   <string name="remove_new_flag_label">\"신규\" 플래그 제거</string>
   <string name="removed_new_flag_label">\"신규\" 플래그 제거함</string>
   <string name="mark_read_label">재생했다고 표시</string>

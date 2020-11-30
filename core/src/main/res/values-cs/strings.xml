@@ -158,12 +158,6 @@
   <string name="delete_label">Smazat</string>
   <string name="delete_failed">Nelze smazat soubor. Restart přístroje může pomoci.</string>
   <string name="delete_episode_label">Smazat epizodu</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d epizoda stažena.</item>
-    <item quantity="few">%d epizody staženy.</item>
-    <item quantity="many">%d epizod staženo.</item>
-    <item quantity="other">%d epizod staženo.</item>
-  </plurals>
   <string name="remove_new_flag_label">Odstranit příznak „nová“</string>
   <string name="removed_new_flag_label">Příznak „nová“ odstraněn</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>

@@ -160,10 +160,6 @@
   <string name="delete_label">Sil</string>
   <string name="delete_failed">Dosya silinemiyor. Cihazı yeniden başlatmak yardımcı olabilir.</string>
   <string name="delete_episode_label">Delete Episode</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d episode deleted.</item>
-    <item quantity="other">%d episodes deleted.</item>
-  </plurals>
   <string name="remove_new_flag_label">Remove \"new\" flag</string>
   <string name="removed_new_flag_label">Removed \"new\" flag</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>

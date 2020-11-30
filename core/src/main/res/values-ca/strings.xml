@@ -149,10 +149,6 @@
   <string name="delete_label">Esborrar</string>
   <string name="delete_failed">No s\'ha pogut esborrar el fitxer. Reiniciar el dispositiu pot ajudar.</string>
   <string name="delete_episode_label">Esborrar episodi.</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d episodi esborrat.</item>
-    <item quantity="other">%d episodis esborrats.</item>
-  </plurals>
   <string name="remove_new_flag_label">Retirar bandera de \"nou\"</string>
   <string name="removed_new_flag_label">Retirada bandera de \"nou\"</string>
   <string name="mark_read_label">Marca com a llegit</string>
