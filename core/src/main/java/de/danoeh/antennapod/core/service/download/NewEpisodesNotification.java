@@ -38,7 +38,7 @@ public class NewEpisodesNotification {
         dontShowNotification = false;
     }
 
-    public void showNotification(Context context, Feed feed) {
+    public void showIfNeeded(Context context, Feed feed) {
         if (dontShowNotification) {
             return;
         }
