@@ -22,12 +22,14 @@ import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.view.CircularProgressBar;
 
 public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapter.ChapterHolder> {
     private Playable media;
     private final Callback callback;
     private final Context context;
     private int currentChapterIndex = -1;
+    private long currentChapterPosition = -1;
     private boolean hasImages = false;
 
     public ChaptersListAdapter(Context context, Callback callback) {
@@ -47,7 +49,6 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         }
         notifyDataSetChanged();
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull ChapterHolder holder, int position) {
@@ -82,8 +83,13 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         if (position == currentChapterIndex) {
             int playingBackGroundColor = ThemeUtils.getColorFromAttr(context, R.attr.currently_playing_background);
             holder.itemView.setBackgroundColor(playingBackGroundColor);
+            float progress = ((float) (currentChapterPosition - sc.getStart())) / duration;
+            progress = Math.max(progress, CircularProgressBar.MINIMUM_PERCENTAGE);
+            progress = Math.min(progress, CircularProgressBar.MAXIMUM_PERCENTAGE);
+            holder.progressBar.setPercentage(progress, position);
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent));
+            holder.progressBar.setPercentage(0, null);
         }
 
         if (hasImages) {
@@ -135,6 +141,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         final ImageView image;
         final View secondaryActionButton;
         final ImageView secondaryActionIcon;
+        final CircularProgressBar progressBar;
 
         public ChapterHolder(@NonNull View itemView) {
             super(itemView);
@@ -145,12 +152,21 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
             duration = itemView.findViewById(R.id.txtvDuration);
             secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
             secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
+            progressBar = itemView.findViewById(R.id.secondaryActionProgress);
         }
     }
 
     public void notifyChapterChanged(int newChapterIndex) {
         currentChapterIndex = newChapterIndex;
+        currentChapterPosition = getItem(newChapterIndex).getStart();
         notifyDataSetChanged();
+    }
+
+    public void notifyTimeChanged(long timeMs) {
+        currentChapterPosition = timeMs;
+        // Passing an argument prevents flickering.
+        // See EpisodeItemListAdapter.notifyItemChangedCompat.
+        notifyItemChanged(currentChapterIndex, "foo");
     }
 
     private boolean ignoreChapter(Chapter c) {

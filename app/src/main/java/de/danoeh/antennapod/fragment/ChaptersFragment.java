@@ -106,6 +106,7 @@ public class ChaptersFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         updateChapterSelection(getCurrentChapter(media));
+        adapter.notifyTimeChanged(event.getPosition());
     }
 
     private int getCurrentChapter(Playable media) {
