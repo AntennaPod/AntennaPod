@@ -218,6 +218,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
     private String autoSkippedFeedMediaId = null;
 
+    private enum AudioOutputMode {
+        BLUETOOTH,
+        HEADPHONE,
+        PHONE_SPEAKER
+    }
     /**
      * Used for Lollipop notifications, Android Wear, and Android Auto.
      */
@@ -1464,7 +1469,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Received Auto Connection update: " + status);
             if (!isConnectedToCar) {
                 Log.d(TAG, "Car was unplugged during playback.");
-                pauseIfPauseOnDisconnect("bluetooth");
+                pauseIfPauseOnDisconnect(AudioOutputMode.BLUETOOTH);
             } else {
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
@@ -1502,7 +1507,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 if (state != -1) {
                     if (state == UNPLUGGED) {
                         Log.d(TAG, "Headset was unplugged during playback.");
-                        pauseIfPauseOnDisconnect("Headphones");
+                        pauseIfPauseOnDisconnect(AudioOutputMode.HEADPHONE);
                     } else if (state == PLUGGED) {
                         Log.d(TAG, "Headset was plugged in during playback.");
                         unpauseIfPauseOnDisconnect(false);
@@ -1533,7 +1538,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         public void onReceive(Context context, Intent intent) {
             // sound is about to change, eg. bluetooth -> speaker
             Log.d(TAG, "Pausing playback because audio is becoming noisy");
-            pauseIfPauseOnDisconnect("speaker");
+            pauseIfPauseOnDisconnect(AudioOutputMode.PHONE_SPEAKER);
         }
         // android.media.AUDIO_BECOMING_NOISY
     };
@@ -1541,8 +1546,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     /**
      * Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true.
      */
-    private void pauseIfPauseOnDisconnect(String soundOutput) {
-        Log.d(TAG, "pauseIfPauseOnDisconnect() " + soundOutput);
+    private void pauseIfPauseOnDisconnect(AudioOutputMode outputMode) {
+        Log.d(TAG, "pauseIfPauseOnDisconnect() " + outputMode);
         // If bluetooth is playing, headset is plugged in, headset unplugged, bluetooth should continue
         // If headset is playing, bluetooth is connected, bluetooth is unplugged, headset should continue
         // If headset or bluetooth is unplugged (the speaker should not be playing)
@@ -1550,7 +1555,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             transientPause = true;
         }
         if (UserPreferences.isPauseOnHeadsetDisconnect()
-                && soundOutput == "speaker"
+                && outputMode == AudioOutputMode.PHONE_SPEAKER
                 && !isCasting()) {
             mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
         }
