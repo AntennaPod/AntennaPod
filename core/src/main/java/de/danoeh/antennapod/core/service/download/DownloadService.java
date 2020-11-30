@@ -179,7 +179,6 @@ public class DownloadService extends Service {
     @Override
     public void onCreate() {
         Log.d(TAG, "Service started");
-
         isRunning = true;
         handler = new Handler(Looper.getMainLooper());
         notificationManager = new DownloadServiceNotification(this);
