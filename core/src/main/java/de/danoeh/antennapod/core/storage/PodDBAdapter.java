@@ -1165,6 +1165,11 @@ public class PodDBAdapter {
 
     public final LongIntMap getFeedCounters(long... feedIds) {
         int setting = UserPreferences.getFeedCounterSetting();
+
+        return getFeedCounters(setting, feedIds);
+    }
+
+    public final LongIntMap getFeedCounters(int setting, long... feedIds) {
         String whereRead;
         switch (setting) {
             case UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM:
