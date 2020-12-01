@@ -24,7 +24,7 @@ public class FeedSyncTask {
     }
 
     public boolean run() {
-        NewEpisodesNotification newEpisodesNotification = new NewEpisodesNotification(request.getFeedfileId());
+        final NewEpisodesNotification newEpisodesNotification = new NewEpisodesNotification(request.getFeedfileId());
 
         FeedParserTask task = new FeedParserTask(request);
         FeedHandlerResult result = task.call();
