@@ -44,9 +44,9 @@ public class NewEpisodesNotification {
         }
 
         long feedId = feed.getId();
-        int newEpisodes = getNewEpisodeCount(feedId) - lastEpisodeCount;
+        int newEpisodes = getNewEpisodeCount(feedId);
 
-        if (newEpisodes > 0) {
+        if (newEpisodes > lastEpisodeCount) {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             showNotification(newEpisodes, feed, context, notificationManager);
         }

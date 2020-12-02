@@ -135,13 +135,13 @@
     <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s has a new episode</item>
-        <item quantity="other">%2$s has %1$d new episodes</item>
+        <item quantity="other">%2$s has %1$d episodes flagged as new.</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">New Episode</item>
         <item quantity="other">New Episodes</item>
     </plurals>
-    <string name="new_episode_notification_group_text">%1$d podcasts combined have %2$d new episodes.</string>
+    <string name="new_episode_notification_group_text">%1$d podcasts combined have %2$d episodes flagged as new.</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
