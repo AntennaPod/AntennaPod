@@ -75,6 +75,7 @@ public class NewEpisodesNotification {
                 .setContentIntent(pendingIntent)
                 .setGroup(GROUP_KEY)
                 .setAutoCancel(true)
+                .setCategory(res.getString(R.string.notification_group_news))
                 .build();
 
         notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, feed.hashCode(), notification);
