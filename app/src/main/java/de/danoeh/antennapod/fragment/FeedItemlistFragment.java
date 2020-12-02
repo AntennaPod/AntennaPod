@@ -36,8 +36,6 @@ import com.joanzapata.iconify.widget.IconTextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
-import de.danoeh.antennapod.core.asynctask.FeedRemover;
-import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.DownloaderUpdate;
@@ -65,6 +63,7 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
+import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
@@ -298,28 +297,8 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 new RenameFeedDialog(getActivity(), feed).show();
                 return true;
             case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(
-                        getActivity(), feed) {
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        super.onPostExecute(result);
-                        ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
-                    }
-                };
-                int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg
-                        : R.string.feed_delete_confirmation_msg;
-                ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
-                        R.string.remove_feed_label,
-                        getString(messageId, feed.getTitle())) {
-
-                    @Override
-                    public void onConfirmButtonPressed(
-                            DialogInterface dialog) {
-                        dialog.dismiss();
-                        remover.executeAsync();
-                    }
-                };
-                conDialog.createNewDialog().show();
+                RemoveFeedDialog.show(getContext(), feed, () ->
+                        ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null));
                 return true;
             default:
                 return false;
