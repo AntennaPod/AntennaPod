@@ -24,7 +24,8 @@ public class FeedSyncTask {
     }
 
     public boolean run() {
-        final NewEpisodesNotification newEpisodesNotification = new NewEpisodesNotification(request.getFeedfileId());
+        final NewEpisodesNotification newEpisodesNotification =
+                request.getFeedfileId() == 0 ? null : new NewEpisodesNotification(request.getFeedfileId());
 
         FeedParserTask task = new FeedParserTask(request);
         FeedHandlerResult result = task.call();
@@ -47,8 +48,9 @@ public class FeedSyncTask {
             }
         }
 
-        newEpisodesNotification.showIfNeeded(context, result.feed);
-
+        if (request.getFeedfileId() != 0) {
+            newEpisodesNotification.showIfNeeded(context, result.feed);
+        }
         return true;
     }
 
