@@ -475,6 +475,7 @@
   <string name="pref_enqueue_downloaded_title">已下载队列</string>
   <string name="pref_enqueue_downloaded_summary">向队列添加已下载的节目</string>
   <string name="media_player_builtin">内置安卓播放器</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (推荐)</string>
   <string name="media_player_switch_to_exoplayer">转到ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">已转至ExoPlayer</string>
   <string name="pref_skip_silence_title">跳过没有声音的音频</string>
@@ -499,6 +500,7 @@
   <string name="pref_filter_feed_sum">在导航抽屉和订阅屏幕中筛选订阅。</string>
   <string name="no_filter_label">没有</string>
   <string name="subscriptions_are_filtered">订阅已过滤</string>
+  <string name="subscriptions_counter_greater_zero">仅显示有计数的订阅</string>
   <string name="auto_downloaded">自动下载的</string>
   <string name="not_auto_downloaded">非自动下载的</string>
   <string name="kept_updated">保持更新的</string>
@@ -690,9 +692,11 @@
   <string name="search_powered_by">按 %1$s 显示结果</string>
   <!--Local feeds-->
   <string name="add_local_folder">添加本地文件夹</string>
+  <string name="local_folder">本地文件夹</string>
   <string name="reconnect_local_folder">重新连接本地文件夹</string>
   <string name="reconnect_local_folder_warning">在权限遭拒的情况下，您可以使用它重新连接到完全相同的文件夹。不要选择其他文件夹。</string>
   <string name="local_feed_description">这个虚拟播客是通过向AntennaPod添加一个文件夹创建的</string>
+  <string name="unable_to_start_system_file_manager">无法启动系统文件管理器</string>
   <string name="filter">过滤器</string>
   <!--Episodes apply actions-->
   <string name="all_label">全部</string>

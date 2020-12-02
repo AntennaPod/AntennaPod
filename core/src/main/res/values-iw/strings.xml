@@ -507,6 +507,7 @@
   <string name="pref_enqueue_downloaded_title">הוספת הורדות לתור</string>
   <string name="pref_enqueue_downloaded_summary">הוספת פרקים שהתקבלו לתור</string>
   <string name="media_player_builtin">הנגן המובנה ב־Android</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (מומלץ)</string>
   <string name="media_player_switch_to_exoplayer">מעבר ל־ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">הועבר ל־ExoPlayer.</string>
   <string name="pref_skip_silence_title">דילוג על שקט בקטעי ההאזנה</string>
@@ -531,6 +532,7 @@
   <string name="pref_filter_feed_sum">סינון המינויים שלך במגירת הניווט ובמסך המינויים.</string>
   <string name="no_filter_label">ללא</string>
   <string name="subscriptions_are_filtered">המינויים מסוננים.</string>
+  <string name="subscriptions_counter_greater_zero">המונה גדול מאפס</string>
   <string name="auto_downloaded">התקבלו אוטומטית</string>
   <string name="not_auto_downloaded">לא התקבלו אוטומטית</string>
   <string name="kept_updated">נשאר עדכני</string>
@@ -731,9 +733,11 @@
   <string name="search_powered_by">תוצאות מאת %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">הוספת תיקייה מקומית</string>
+  <string name="local_folder">תיקייה מקומית</string>
   <string name="reconnect_local_folder">חיבור מחדש לתיקייה מקומית</string>
   <string name="reconnect_local_folder_warning">במקרה של דחיית הרשה, ניתן להשתמש בזה כדי לחבר את אותה התיקייה בדיוק מחדש. אין לבחור בתיקייה אחרת.</string>
   <string name="local_feed_description">הפודקאסט הווירטואלי הזה נוצר על ידי הוספת תיקייה לאנטנה־פּוֹד.</string>
+  <string name="unable_to_start_system_file_manager">לא ניתן להפעיל את מנהל הקבצים של המערכת</string>
   <string name="filter">מסנן</string>
   <!--Episodes apply actions-->
   <string name="all_label">הכול</string>

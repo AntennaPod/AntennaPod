@@ -485,6 +485,7 @@
   <string name="pref_enqueue_downloaded_title">Sæt overførte udsendelser i kø</string>
   <string name="pref_enqueue_downloaded_summary">Føj downloadede udsendelser til køen</string>
   <string name="media_player_builtin">Indbygget Android-afspiller</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (anbefalet)</string>
   <string name="media_player_switch_to_exoplayer">Skift til ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Skiftet til ExoPlayer.</string>
   <string name="pref_skip_silence_title">Overspring stilhed i lyd</string>
@@ -509,6 +510,7 @@
   <string name="pref_filter_feed_sum">Filtrer dine abonnementer i navigationspanelet og på abonnementsoversigten.</string>
   <string name="no_filter_label">Ingen</string>
   <string name="subscriptions_are_filtered">Abonnementer er filtreret.</string>
+  <string name="subscriptions_counter_greater_zero">Tæller større end 0</string>
   <string name="auto_downloaded">Automatisk hentet</string>
   <string name="not_auto_downloaded">Ikke automatisk hentet</string>
   <string name="kept_updated">Holdt opdateret</string>
@@ -703,9 +705,11 @@
   <string name="search_powered_by">Resultater fra %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Tilføj lokal mappe</string>
+  <string name="local_folder">Lokal mappe</string>
   <string name="reconnect_local_folder">Genforbind lokal mappe</string>
   <string name="reconnect_local_folder_warning">I tilfælde af nægtelse af tilladelse kan du bruge denne til at forbinde til præcis den samme mappe. Vælg ikke en anden mappe.</string>
   <string name="local_feed_description">Denne virtuelle podcast blev oprettet ved at en mappe blev føjet til AntennaPod.</string>
+  <string name="unable_to_start_system_file_manager">Kunne ikke starte system filhåndtering</string>
   <string name="filter">Filtrér</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>

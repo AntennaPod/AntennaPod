@@ -485,6 +485,7 @@
   <string name="pref_enqueue_downloaded_title">Colocar descargas na fila</string>
   <string name="pref_enqueue_downloaded_summary">Adicionar à fila os episódios descarregados.</string>
   <string name="media_player_builtin">Reprodutor nativo Android</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (recomendado)</string>
   <string name="media_player_switch_to_exoplayer">Trocar para ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Trocou para ExoPlayer.</string>
   <string name="pref_skip_silence_title">Ignorar silêncio no áudio</string>
@@ -509,6 +510,7 @@
   <string name="pref_filter_feed_sum">Filtrar subscrições no menu de navegação e no ecrã de subscrições.</string>
   <string name="no_filter_label">Nenhum</string>
   <string name="subscriptions_are_filtered">Subscrições filtradas</string>
+  <string name="subscriptions_counter_greater_zero">Contagem maior do que zero</string>
   <string name="auto_downloaded">Descarregado automaticamente</string>
   <string name="not_auto_downloaded">Não descarregado automaticamente</string>
   <string name="kept_updated">Manter atualizada</string>
@@ -703,8 +705,11 @@
   <string name="search_powered_by">Resultados de %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Adicionar pasta local</string>
+  <string name="local_folder">Pasta local</string>
   <string name="reconnect_local_folder">Restabelecer ligação a pasta local</string>
+  <string name="reconnect_local_folder_warning">Em casos de recusa de permissões, pode utilizar isto para estabelecer uma nova ligação à mesma pasta. Não deve escolher outra pasta.</string>
   <string name="local_feed_description">Este podcast virtual foi criado através da adição de uma pasta ao AntennaPod.</string>
+  <string name="unable_to_start_system_file_manager">Não foi possível iniciar o gestor de ficheiros</string>
   <string name="filter">Filtro</string>
   <!--Episodes apply actions-->
   <string name="all_label">Todos</string>
