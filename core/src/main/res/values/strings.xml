@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingTranslation">
 
-
-
     <!-- Activity and fragment titles -->
     <string name="app_name" translate="false">AntennaPod</string>
     <string name="provider_authority" translate="false">de.danoeh.antennapod.provider</string>
