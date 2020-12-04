@@ -73,6 +73,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
             holder.link.setOnClickListener(v -> IntentUtils.openInBrowser(context, sc.getLink()));
         }
         holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.av_play));
+        holder.secondaryActionButton.setContentDescription(context.getString(R.string.play_chapter));
         holder.secondaryActionButton.setOnClickListener(v -> {
             if (callback != null) {
                 callback.onPlayChapterButtonClicked(position);
