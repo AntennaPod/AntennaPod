@@ -107,7 +107,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                 }
         );
         findPreference(PREF_FAQ).setOnPreferenceClickListener(preference -> {
-            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/faq.html");
+            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/documentation/");
             return true;
         });
         findPreference(PREF_VIEW_FORUM).setOnPreferenceClickListener(preference -> {
