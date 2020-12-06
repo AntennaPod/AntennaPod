@@ -24,7 +24,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SCREEN_NETWORK = "prefScreenNetwork";
     private static final String PREF_SCREEN_GPODDER = "prefScreenGpodder";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
-    private static final String PREF_FAQ = "prefFaq";
+    private static final String PREF_DOCUMENTATION = "prefDocumentation";
     private static final String PREF_VIEW_FORUM = "prefViewForum";
     private static final String PREF_SEND_BUG_REPORT = "prefSendBugReport";
     private static final String PREF_CATEGORY_PROJECT = "project";
@@ -106,7 +106,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 }
         );
-        findPreference(PREF_FAQ).setOnPreferenceClickListener(preference -> {
+        findPreference(PREF_DOCUMENTATION).setOnPreferenceClickListener(preference -> {
             IntentUtils.openInBrowser(getContext(), "https://antennapod.org/documentation/");
             return true;
         });
