@@ -54,7 +54,7 @@
             android:title="@string/project_pref">
         <Preference
             android:key="prefDocumentation"
-            android:title="@string/documentation"
+            android:title="@string/documentation_support"
             android:icon="?attr/ic_questionmark" />
         <Preference
             android:key="prefViewForum"
