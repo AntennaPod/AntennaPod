@@ -295,7 +295,6 @@
     <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
     <string name="error_file_not_found">File not found</string>
-    <string name="no_media_label">Item does not contain a media file</string>
 
     <!-- Queue operations -->
     <string name="lock_queue">Lock Queue</string>
@@ -393,9 +392,20 @@
     <string name="playback_pref_sum">Headphone controls, Skip intervals, Queue</string>
     <string name="network_pref">Network</string>
     <string name="network_pref_sum">Update interval, Download controls, Mobile data</string>
+
     <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>
     <string name="pref_autoUpdateIntervallOrTime_sum">Specify an interval or a specific time of day to refresh the podcasts automatically</string>
     <string name="pref_autoUpdateIntervallOrTime_message">You can set an <i>interval</i> like \"every 2 hours\", set a specific <i>time of day</i> like \"7:00 AM\" or <i>disable</i> automatic updates altogether.\n\n<small>Please note: Update times are inexact. You may encounter a short delay.</small></string>
+
+    <string name="pref_autoUpdateIntervallOrTime_titleAct">Update podcast</string>
+    <string name="pref_autoUpdateIntervallOrTime_sumAct">AntennaPod automatically looks for new episodes</string>
+    <string name="pref_autoUpdateIntervallOrTime_titleAccept">Accept</string>
+    <string name="pref_autoUpdateIntervallOrTime_sumCancel">Cancel</string>
+
+    <string name="pref_autoUpdateIntervallOrTime_CheckStatusInterval">Interval</string>
+    <string name="pref_autoUpdateIntervallOrTime_CheckStatusTime">Time</string>
+    <string name="pref_autoUpdateIntervallOrTime_CheckStatusNever">Never</string>
+
     <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
     <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
     <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>

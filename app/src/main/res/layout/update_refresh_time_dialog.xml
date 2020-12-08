@@ -1,0 +1,148 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="#ffffffff">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/title"
+        android:textSize="20sp"
+        android:paddingStart="10dp"
+        android:text="@string/pref_autoUpdateIntervallOrTime_titleAct"
+
+        />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:id="@+id/text"
+            android:textSize="20sp"
+            android:paddingStart="10dp"
+            android:text="@string/pref_autoUpdateIntervallOrTime_sumAct"
+
+            />
+
+
+
+
+    <RadioGroup
+        android:id="@+id/genderRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+
+        >
+
+
+        <RadioButton
+            android:id="@+id/intervalRadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Interval"
+            android:layout_weight="1"
+            android:textSize="20sp"
+
+            />
+
+        <Spinner
+            android:id="@+id/spinner"
+                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            android:textSize="20sp" />
+
+
+
+
+
+        <RadioButton
+            android:id="@+id/timeRadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/maleRadioButton"
+            android:text="SpecificTime"
+            android:layout_weight="1"
+            android:textSize="20sp"
+
+            />
+
+        <TimePicker
+            android:id="@+id/timePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:timePickerMode="spinner"
+            android:textSize="20sp"
+
+
+            />
+
+        <RadioButton
+            android:id="@+id/disableButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/maleRadioButton"
+            android:layout_weight="1"
+            android:textSize="20sp"
+
+            android:text="Never" />
+
+    </RadioGroup>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/genderRadioGroup"
+            android:orientation="horizontal"
+            >
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pref_autoUpdateIntervallOrTime_titleAccept"
+                android:textColor="@color/accent_dark"
+                android:gravity="center"
+                android:layout_weight="2"
+                android:backgroundTint="@color/ambient_mode_text"
+                android:shadowColor="@color/ambient_mode_text"
+                android:padding="10sp"
+                android:id="@+id/button_accept"
+
+                />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pref_autoUpdateIntervallOrTime_sumCancel"
+                android:textColor="@color/accent_dark"
+                android:layout_weight="2"
+                android:backgroundTint="@color/ambient_mode_text"
+                android:padding="10sp"
+                android:id="@+id/button_cancel"
+
+                />
+
+
+
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,12 +1,27 @@
 package de.danoeh.antennapod.fragment.preferences;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceFragmentCompat;
 import android.text.format.DateFormat;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -32,6 +47,8 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
     public void onStart() {
         super.onStart();
         ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.network_pref);
+
+        Activity activity= ((PreferenceActivity) getActivity());
     }
 
     @Override
@@ -41,16 +58,19 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
         setParallelDownloadsText(UserPreferences.getParallelDownloads());
     }
 
-    private void setupNetworkScreen() {
+    private void setupNetworkScreen()
+    {
         findPreference(PREF_SCREEN_AUTODL).setOnPreferenceClickListener(preference -> {
             ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_autodownload);
             return true;
         });
         findPreference(UserPreferences.PREF_UPDATE_INTERVAL)
                 .setOnPreferenceClickListener(preference -> {
-                    showUpdateIntervalTimePreferencesDialog();
+                    ViewDialog alert = new ViewDialog();
+                      alert.showDialog(getActivity(), "Error de conexión al servidor");
                     return true;
                 });
+
         findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)
                 .setOnPreferenceChangeListener(
                         (preference, o) -> {
@@ -68,7 +88,8 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
         });
     }
 
-    private void setUpdateIntervalText() {
+    private void setUpdateIntervalText()
+    {
         Context context = getActivity().getApplicationContext();
         String val;
         long interval = UserPreferences.getUpdateInterval();
@@ -102,24 +123,32 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS).setSummary(s);
     }
 
-    private void showUpdateIntervalTimePreferencesDialog() {
+    private void showUpdateIntervalTimePreferencesDialog()
+    {
         final Context context = getActivity();
-
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.pref_autoUpdateIntervallOrTime_title);
         builder.setMessage(R.string.pref_autoUpdateIntervallOrTime_message);
-        builder.setPositiveButton(R.string.pref_autoUpdateIntervallOrTime_Interval, (dialog, which) -> {
+        builder.setPositiveButton(R.string.pref_autoUpdateIntervallOrTime_Interval, (dialog, which) ->
+        {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
             builder1.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
+
+            //Get default Interval Values from Array
             final String[] values = context.getResources().getStringArray(R.array.update_intervall_values);
+
+            //Get from Preferences Array in String
             final String[] entries = getUpdateIntervalEntries(values);
+            //Get Interval Value from User Preferences
             long currInterval = UserPreferences.getUpdateInterval();
             int checkedItem = -1;
-            if(currInterval > 0) {
+            if(currInterval > 0)
+            {
                 String currIntervalStr = String.valueOf(TimeUnit.MILLISECONDS.toHours(currInterval));
                 checkedItem = ArrayUtils.indexOf(values, currIntervalStr);
             }
-            builder1.setSingleChoiceItems(entries, checkedItem, (dialog1, which1) -> {
+            builder1.setSingleChoiceItems(entries, checkedItem, (dialog1, which1) ->
+            {
                 int hours = Integer.parseInt(values[which1]);
                 UserPreferences.setUpdateInterval(hours);
                 dialog1.dismiss();
@@ -128,7 +157,9 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
             builder1.setNegativeButton(context.getString(R.string.cancel_label), null);
             builder1.show();
         });
-        builder.setNegativeButton(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay, (dialog, which) -> {
+
+        builder.setNegativeButton(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay, (dialog, which) ->
+        {
             int hourOfDay = 7;
             int minute = 0;
             int[] updateTime = UserPreferences.getUpdateTimeOfDay();
@@ -139,22 +170,40 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
             TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                     (view, selectedHourOfDay, selectedMinute) -> {
                         if (view.getTag() == null) { // onTimeSet() may get called twice!
-                            view.setTag("TAGGED");
                             UserPreferences.setUpdateTimeOfDay(selectedHourOfDay, selectedMinute);
                             setUpdateIntervalText();
+
                         }
                     }, hourOfDay, minute, DateFormat.is24HourFormat(context));
+
             timePickerDialog.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay));
             timePickerDialog.show();
         });
+
+
         builder.setNeutralButton(R.string.pref_autoUpdateIntervallOrTime_Disable, (dialog, which) -> {
             UserPreferences.disableAutoUpdate(context);
             setUpdateIntervalText();
         });
+
+        AlertDialog.Builder builderAct = new AlertDialog.Builder(context);
+        builderAct.setTitle(R.string.pref_autoUpdateIntervallOrTime_titleAct);
+        builderAct.setMessage(R.string.pref_autoUpdateIntervallOrTime_sumAct);
+
+
+
+
+
         builder.show();
     }
 
-    private String[] getUpdateIntervalEntries(final String[] values) {
+
+
+
+
+
+    private String[] getUpdateIntervalEntries(final String[] values)
+    {
         final Resources res = getActivity().getResources();
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {
@@ -173,5 +222,163 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
             }
         }
         return entries;
+    }
+
+
+    public class ViewDialog {
+
+
+        final Context context = getActivity();
+        int string_spinnercase;
+
+        public void showDialog(Activity activity, String msg){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.update_refresh_time_dialog);
+            Spinner spinner = (Spinner) dialog.findViewById(R.id.spinner);
+
+            RadioButton radioButton_interval = (RadioButton) dialog.findViewById(R.id.intervalRadioButton);
+            RadioButton radioButtonTime = (RadioButton) dialog.findViewById(R.id.timeRadioButton);
+            RadioButton radioButton_disable = (RadioButton) dialog.findViewById(R.id.disableButton);
+            RadioGroup radioGroupOne = (RadioGroup) dialog.findViewById(R.id.genderRadioGroup);
+            TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.timePicker);
+            Button button_accept = (Button) dialog.findViewById(R.id.button_accept);
+            Button button_cancel = (Button) dialog.findViewById(R.id.button_cancel);
+
+
+
+            radioGroupOne.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i)
+                {
+                    switch (i)
+
+                    {
+                        case R.id.intervalRadioButton:
+                            // ->Spinner
+                            //Get default Interval Values from Array
+                            final String[] values = context.getResources().getStringArray(R.array.update_intervall_values);
+
+                            //Get from Preferences Array in String
+                            final String[] entries = getUpdateIntervalEntries(values);
+                            //Get Interval Value from User Preferences
+                            long currInterval = UserPreferences.getUpdateInterval();
+                            int checkedItem = -1;
+                            if(currInterval > 0)
+                            {
+                                String currIntervalStr = String.valueOf(TimeUnit.MILLISECONDS.toHours(currInterval));
+                                checkedItem = ArrayUtils.indexOf(values, currIntervalStr);
+                            }
+                            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, entries); //selected item will look like a spinner set from XML
+                            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinner.setAdapter(spinnerArrayAdapter);
+                            spinner.setSelection(checkedItem);
+                            spinner.setVisibility(View.VISIBLE);
+                            timePicker.setVisibility(View.GONE);
+                             string_spinnercase= R.string.pref_autoUpdateIntervallOrTime_CheckStatusInterval;
+
+                            break;
+                        case R.id.timeRadioButton:
+                            spinner.setVisibility(View.GONE);
+                            timePicker.setVisibility(View.VISIBLE);
+                            string_spinnercase= R.string.pref_autoUpdateIntervallOrTime_CheckStatusTime;
+                            int hourOfDay = 7;
+                            int minute = 0;
+                            int[] updateTime = UserPreferences.getUpdateTimeOfDay();
+                            if (updateTime.length == 2) {
+                                hourOfDay = updateTime[0];
+                                minute = updateTime[1];
+                            }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            {
+                                timePicker.setHour(hourOfDay);
+                            }
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                            {
+                                timePicker.setMinute(minute);
+                            }
+                            break;
+                        case R.id.disableButton:
+                            spinner.setVisibility(View.GONE);
+                            timePicker.setVisibility(View.GONE);
+                            string_spinnercase= R.string.pref_autoUpdateIntervallOrTime_CheckStatusNever;
+
+                            break;
+                        default:
+
+                    }
+                }
+            });
+            radioButton_interval.setChecked(true);
+
+
+            button_accept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (string_spinnercase)
+                    {
+                        case R.string.pref_autoUpdateIntervallOrTime_CheckStatusInterval:
+                            String text = spinner.getSelectedItem().toString();
+                            String[] parts = text.split(" ");
+                            int hours = Integer.parseInt(parts[0]);
+                            UserPreferences.setUpdateInterval(hours);
+                            setUpdateIntervalText();
+                            dialog.cancel();
+                            break;
+                        case R.string.pref_autoUpdateIntervallOrTime_CheckStatusTime:
+
+
+
+
+                            int hour = 0;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                hour = timePicker.getHour();
+                            }
+                            int minutx = 0;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                minutx = timePicker.getMinute();
+                            }
+
+                            UserPreferences.setUpdateTimeOfDay(hour, minutx);
+                            setUpdateIntervalText();
+
+                            Log.e("Accept Time "," hour: " + hour + " minute: " + minutx);
+
+
+
+                            Log.e("Switch Status", " " + R.string.pref_autoUpdateIntervallOrTime_CheckStatusTime);
+
+                            dialog.cancel();
+
+                            break;
+                        case R.string.pref_autoUpdateIntervallOrTime_CheckStatusNever:
+                            Log.e("Switch Status", " " + R.string.pref_autoUpdateIntervallOrTime_CheckStatusNever);
+
+                            UserPreferences.disableAutoUpdate(context);
+                            setUpdateIntervalText();
+                            dialog.cancel();
+                            break;
+
+
+
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + string_spinnercase);
+                    }
+                    dialog.cancel();
+                }
+            });
+
+
+            button_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+
+            dialog.show();
+
+        }
     }
 }

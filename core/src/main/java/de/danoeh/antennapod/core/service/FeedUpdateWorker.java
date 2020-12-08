@@ -1,5 +1,4 @@
 package de.danoeh.antennapod.core.service;
-
 import android.content.Context;
 import androidx.annotation.NonNull;
 import android.util.Log;
@@ -41,7 +40,6 @@ public class FeedUpdateWorker extends Worker {
             // We repeatedly schedule a OneTimeWorkRequest instead.
             AutoUpdateManager.restartUpdateAlarm(getApplicationContext());
         }
-
         return Result.success();
     }
 }

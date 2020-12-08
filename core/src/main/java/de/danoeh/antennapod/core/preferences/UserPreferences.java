@@ -477,6 +477,7 @@ public class UserPreferences {
      */
     public static long getUpdateInterval() {
         String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
+        Log.e("UPREF/UpdateInterval" , " /Shared Preferences: " + updateInterval);
         if(!updateInterval.contains(":")) {
             return readUpdateInterval(updateInterval);
         } else {
@@ -486,6 +487,8 @@ public class UserPreferences {
 
     public static int[] getUpdateTimeOfDay() {
         String datetime = prefs.getString(PREF_UPDATE_INTERVAL, "");
+        Log.e("DateTime" , " /Shared Preferences: " + datetime);
+
         if(datetime.length() >= 3 && datetime.contains(":")) {
             String[] parts = datetime.split(":");
             int hourOfDay = Integer.parseInt(parts[0]);
