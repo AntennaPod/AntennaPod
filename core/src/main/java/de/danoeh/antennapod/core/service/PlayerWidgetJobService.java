@@ -212,7 +212,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         Intent startingIntent = new Intent(getBaseContext(), MediaButtonReceiver.class);
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
-        return PendingIntent.getBroadcast(this, eventCode, startingIntent,0);
+        return PendingIntent.getBroadcast(this, eventCode, startingIntent, 0);
     }
 
     private String getProgressString(int position, int duration, float speed) {
