@@ -120,6 +120,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
         if (media != null) {
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
+            views.setOnClickPendingIntent(R.id.layout_center, startMediaPlayer);
 
             try {
                 Bitmap icon;
