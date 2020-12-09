@@ -45,6 +45,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     private final Object waitForService = new Object();
     private final Object waitUsingService = new Object();
 
+    private Boolean intented = false;
     private static final int JOB_ID = -17001;
 
     public static void updateWidget(Context context) {
@@ -159,15 +160,21 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
                 views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
             }
-            views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent());
+            if ( !intented ) {
+                views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                views.setOnClickPendingIntent(R.id.butRew, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
+                views.setOnClickPendingIntent(R.id.butFastForward, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+                views.setOnClickPendingIntent(R.id.butSkip, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT));
+                intented = true;
+            }
+
         } else {
             nothingPlaying = true;
         }
 
         if (nothingPlaying) {
-            // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
-            views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
+            views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
@@ -200,13 +207,13 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     /**
      * Creates an intent which fakes a mediabutton press
      */
-    private PendingIntent createMediaButtonIntent() {
-        KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
+    private PendingIntent createMediaButtonIntent(int eventCode) {
+        KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
         Intent startingIntent = new Intent(getBaseContext(), MediaButtonReceiver.class);
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
-
-        return PendingIntent.getBroadcast(this, 0, startingIntent, 0);
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, eventCode, startingIntent,0);
+        return pIntent;
     }
 
     private String getProgressString(int position, int duration, float speed) {

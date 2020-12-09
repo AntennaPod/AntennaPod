@@ -11,28 +11,107 @@
         android:layout_height="match_parent"
         android:background="#262C31"
         tools:ignore="UselessParent">
-
-        <ImageButton
-            android:id="@+id/butPlay"
-            android:contentDescription="@string/play_label"
-            android:layout_width="@android:dimen/app_icon_size"
+        <LinearLayout
+            android:id="@+id/layout_center"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="12dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:scaleType="fitCenter"
-            android:padding="8dp"
-            android:src="@drawable/ic_av_play_white_24dp" />
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/layout_left"
+            android:gravity="top"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/layout_left">
+
+            <TextView
+                android:id="@+id/txtNoPlaying"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="3"
+                android:text="@string/no_media_playing_label"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txtvProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_micro"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/layout_left"
+            android:layout_toRightOf="@id/layout_left"
+            android:gravity="bottom"
+            android:minHeight="36dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/butRew"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_margin="2dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/rewind_label"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_av_fast_rewind_white_48dp" />
+
+            <ImageButton
+                android:id="@+id/butPlay"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_margin="2dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/play_label"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_av_play_white_48dp" />
+
+            <ImageButton
+                android:id="@+id/butFastForward"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_margin="2dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/fast_forward_label"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_av_fast_forward_white_48dp" />
+
+            <ImageButton
+                android:id="@+id/butSkip"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_margin="2dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/skip_episode_label"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_av_skip_white_24dp" />
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/layout_left"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@id/butPlay"
-            android:layout_toStartOf="@id/butPlay"
             android:background="@android:color/transparent"
             android:gravity="fill_horizontal"
             android:orientation="horizontal" >
@@ -43,43 +122,8 @@
                 android:layout_height="match_parent"
                 android:src="@mipmap/ic_launcher_round"
                 android:importantForAccessibility="no"
-                android:layout_margin="12dp" />
+                android:layout_margin="4dp" />
 
-            <LinearLayout
-                android:id="@+id/layout_center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/txtNoPlaying"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="3"
-                    android:text="@string/no_media_playing_label"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtvTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/txtvProgress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="@color/white"
-                    android:visibility="gone" />
-            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
