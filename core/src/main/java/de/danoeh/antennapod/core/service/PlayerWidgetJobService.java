@@ -45,7 +45,6 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     private final Object waitForService = new Object();
     private final Object waitUsingService = new Object();
 
-    private Boolean intented = false;
     private static final int JOB_ID = -17001;
 
     public static void updateWidget(Context context) {
@@ -161,14 +160,14 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
                 views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
             }
-            if ( !intented ) {
-                views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
-                views.setOnClickPendingIntent(R.id.butRew, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
-                views.setOnClickPendingIntent(R.id.butFastForward, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
-                views.setOnClickPendingIntent(R.id.butSkip, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT));
-                intented = true;
-            }
-
+            views.setOnClickPendingIntent(R.id.butPlay,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+            views.setOnClickPendingIntent(R.id.butRew,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
+            views.setOnClickPendingIntent(R.id.butFastForward,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+            views.setOnClickPendingIntent(R.id.butSkip,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT));
         } else {
             nothingPlaying = true;
         }
@@ -213,8 +212,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         Intent startingIntent = new Intent(getBaseContext(), MediaButtonReceiver.class);
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
-        final PendingIntent pIntent = PendingIntent.getBroadcast(this, eventCode, startingIntent,0);
-        return pIntent;
+        return PendingIntent.getBroadcast(this, eventCode, startingIntent,0);
     }
 
     private String getProgressString(int position, int duration, float speed) {
