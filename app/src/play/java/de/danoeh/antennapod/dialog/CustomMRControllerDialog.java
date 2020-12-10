@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.RemoteException;
 import androidx.annotation.NonNull;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -74,12 +73,8 @@ public class CustomMRControllerDialog extends MediaRouteControllerDialog {
         super(context, theme);
         mediaRouter = MediaRouter.getInstance(getContext());
         token = mediaRouter.getMediaSessionToken();
-        try {
-            if (token != null) {
-                mediaController = new MediaControllerCompat(getContext(), token);
-            }
-        } catch (RemoteException e) {
-            Log.e(TAG, "Error creating media controller", e);
+        if (token != null) {
+            mediaController = new MediaControllerCompat(getContext(), token);
         }
 
         if (mediaController != null) {

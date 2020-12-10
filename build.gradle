@@ -49,7 +49,7 @@ project.ext {
     // AndroidX
     annotationVersion = "1.1.0"
     appcompatVersion = "1.2.0"
-    mediaVersion = "1.1.0"
+    mediaVersion = "1.2.1"
     preferenceVersion = "1.1.1"
     workManagerVersion = "2.3.4"
     googleMaterialVersion = "1.1.0"
