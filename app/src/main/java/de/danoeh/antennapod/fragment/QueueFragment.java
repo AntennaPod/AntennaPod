@@ -485,7 +485,8 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
                     ScheduledFuture<?> countdown = scheduler.schedule(() -> {
                         if (item.getFeed().getPreferences().getCurrentAutoDelete()
-                                && (!item.isTagged(FeedItem.TAG_FAVORITE) || !UserPreferences.shouldFavoriteKeepEpisode())) {
+                                && (!item.isTagged(FeedItem.TAG_FAVORITE)
+                                || !UserPreferences.shouldFavoriteKeepEpisode())) {
                             Log.d(TAG, "Episode Media Deleted " + item.getMedia().getEpisodeTitle());
                             DBWriter.deleteFeedMediaOfItem(getContext(), item.getMedia().getId());
                         }
@@ -496,7 +497,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                             item.hasMedia() ? R.string.marked_as_read_label : R.string.marked_as_read_no_media_label,
                             Snackbar.LENGTH_LONG)
                             .setAction(getString(R.string.undo), v -> {
-                                if(countdown!= null){
+                                if (countdown != null) {
                                     countdown.cancel(true);
                                     scheduler.shutdown();
                                 }
