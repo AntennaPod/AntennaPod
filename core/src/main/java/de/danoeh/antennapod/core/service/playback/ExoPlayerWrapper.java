@@ -138,7 +138,7 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void pause() {
-        exoPlayer.setPlayWhenReady(false);
+        exoPlayer.pause();
     }
 
     @Override
@@ -225,7 +225,7 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void start() {
-        exoPlayer.setPlayWhenReady(true);
+        exoPlayer.play();
         // Can't set params when paused - so always set it on start in case they changed
         exoPlayer.setPlaybackParameters(playbackParameters);
     }
