@@ -57,6 +57,10 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DELETE;
 import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_DOWNLOAD;
@@ -67,6 +71,7 @@ import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REM
  */
 public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "QueueFragment";
+    private static int DOUBLE_SNACKBAR_MANAGER_LONG_DURATION_MS = 5500;
 
     private TextView infoBar;
     private EpisodeItemListRecyclerView recyclerView;
@@ -477,10 +482,24 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
                     DBWriter.markItemPlayed(FeedItem.PLAYED, false, item.getId());
                     DBWriter.removeQueueItem(getActivity(), true, item);
 
+                    final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+                    ScheduledFuture<?> countdown = scheduler.schedule(() -> {
+                        if (item.getFeed().getPreferences().getCurrentAutoDelete()
+                                && (!item.isTagged(FeedItem.TAG_FAVORITE) || !UserPreferences.shouldFavoriteKeepEpisode())) {
+                            Log.d(TAG, "Episode Media Deleted " + item.getMedia().getEpisodeTitle());
+                            DBWriter.deleteFeedMediaOfItem(getContext(), item.getMedia().getId());
+                        }
+                        // We are using 5 seconds, SnackManager.
+                    }, DOUBLE_SNACKBAR_MANAGER_LONG_DURATION_MS, TimeUnit.MILLISECONDS);
+
                     ((MainActivity) getActivity()).showSnackbarAbovePlayer(
                             item.hasMedia() ? R.string.marked_as_read_label : R.string.marked_as_read_no_media_label,
                             Snackbar.LENGTH_LONG)
                             .setAction(getString(R.string.undo), v -> {
+                                if(countdown!= null){
+                                    countdown.cancel(true);
+                                    scheduler.shutdown();
+                                }
                                 DBWriter.addQueueItemAt(getActivity(), item.getId(), position, false);
                                 if (!isRead) {
                                     DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
