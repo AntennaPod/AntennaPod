@@ -9,6 +9,7 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SeekParameters;
@@ -78,12 +79,12 @@ public class ExoPlayerWrapper implements IPlayer {
         trackSelector = new DefaultTrackSelector(context);
         exoPlayer = new SimpleExoPlayer.Builder(context, new DefaultRenderersFactory(context))
                 .setTrackSelector(trackSelector)
-                .setLoadControl(loadControl.createDefaultLoadControl())
+                .setLoadControl(loadControl.build())
                 .build();
         exoPlayer.setSeekParameters(SeekParameters.EXACT);
         exoPlayer.addListener(new Player.EventListener() {
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            public void onPlaybackStateChanged(int playbackState) {
                 if (audioCompletionListener != null && playbackState == Player.STATE_ENDED) {
                     audioCompletionListener.onCompletion(null);
                 } else if (infoListener != null && playbackState == Player.STATE_BUFFERING) {
@@ -98,11 +99,6 @@ public class ExoPlayerWrapper implements IPlayer {
                 if (audioErrorListener != null) {
                     audioErrorListener.onError(null, error.type + ERROR_CODE_OFFSET, 0);
                 }
-            }
-
-            @Override
-            public void onSeekProcessed() {
-                audioSeekCompleteListener.onSeekComplete(null);
             }
         });
     }
@@ -147,7 +143,8 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void prepare() throws IllegalStateException {
-        exoPlayer.prepare(mediaSource, false, true);
+        exoPlayer.setMediaSource(mediaSource, false);
+        exoPlayer.prepare();
     }
 
     @Override
@@ -196,7 +193,7 @@ public class ExoPlayerWrapper implements IPlayer {
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
         ProgressiveMediaSource.Factory f = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory);
-        mediaSource = f.createMediaSource(Uri.parse(s));
+        mediaSource = f.createMediaSource(MediaItem.fromUri(Uri.parse(s)));
     }
 
     @Override
@@ -206,7 +203,8 @@ public class ExoPlayerWrapper implements IPlayer {
 
     @Override
     public void setPlaybackParams(float speed, boolean skipSilence) {
-        playbackParameters = new PlaybackParameters(speed, playbackParameters.pitch, skipSilence);
+        playbackParameters = new PlaybackParameters(speed, playbackParameters.pitch);
+        exoPlayer.setSkipSilenceEnabled(skipSilence);
         exoPlayer.setPlaybackParameters(playbackParameters);
     }
 

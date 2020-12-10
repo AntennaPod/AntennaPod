@@ -65,6 +65,7 @@ project.ext {
     rxAndroidVersion = "2.1.1"
     rxJavaVersion = "2.2.2"
     iconifyVersion = "2.2.2"
+    exoplayerVersion = "2.12.2"
     audioPlayerVersion = "v2.0.0"
 
     // Only used for free builds. This version should be updated regularly.
