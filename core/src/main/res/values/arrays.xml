@@ -253,11 +253,30 @@
         <item>@string/sort_title_z_a</item>
         <item>@string/sort_duration_short_long</item>
         <item>@string/sort_duration_long_short</item>
+    </string-array>
+
+    <!-- sort for local feed screen -->
+    <string-array name="local_feed_episodes_sort_options">
+        <item>@string/sort_date_new_old</item>
+        <item>@string/sort_date_old_new</item>
+        <item>@string/sort_title_a_z</item>
+        <item>@string/sort_title_z_a</item>
+        <item>@string/sort_duration_short_long</item>
+        <item>@string/sort_duration_long_short</item>
         <item>@string/sort_filename_a_z</item>
         <item>@string/sort_filename_z_a</item>
     </string-array>
 
     <string-array name="feed_episodes_sort_values">
+        <item>DATE_NEW_OLD</item>
+        <item>DATE_OLD_NEW</item>
+        <item>EPISODE_TITLE_A_Z</item>
+        <item>EPISODE_TITLE_Z_A</item>
+        <item>DURATION_SHORT_LONG</item>
+        <item>DURATION_LONG_SHORT</item>
+    </string-array>
+
+    <string-array name="local_feed_episodes_sort_values">
         <item>DATE_NEW_OLD</item>
         <item>DATE_OLD_NEW</item>
         <item>EPISODE_TITLE_A_Z</item>

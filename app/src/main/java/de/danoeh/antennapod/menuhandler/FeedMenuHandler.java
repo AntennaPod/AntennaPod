@@ -124,7 +124,7 @@ public class FeedMenuHandler {
                 DBWriter.setFeedItemSortOrder(selectedFeed.getId(), sortOrder);
             }
         };
-        sortDialog.openDialog();
+        sortDialog.openDialog(selectedFeed.isLocalFeed());
     }
 
 }

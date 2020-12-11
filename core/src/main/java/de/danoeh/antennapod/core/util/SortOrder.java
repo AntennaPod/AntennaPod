@@ -70,4 +70,12 @@ public enum SortOrder {
     public static String toCodeString(@Nullable SortOrder sortOrder) {
         return sortOrder != null ? Integer.toString(sortOrder.code) : null;
     }
+
+    public static SortOrder[] getSortOrderValuesFromStringValues(String[] stringValues) {
+        SortOrder[] values = new SortOrder[stringValues.length];
+        for (int i = 0; i < stringValues.length; i++) {
+            values[i] = SortOrder.valueOf(stringValues[i]);
+        }
+        return values;
+    }
 }

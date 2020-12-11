@@ -102,7 +102,7 @@ public class FeedItemPermutors {
     @NonNull
     private static String itemLink(@Nullable FeedItem item) {
         return (item != null && item.getLink() != null) ?
-                item.getTitle() :
+                item.getLink() :
                 "";
     }
 
