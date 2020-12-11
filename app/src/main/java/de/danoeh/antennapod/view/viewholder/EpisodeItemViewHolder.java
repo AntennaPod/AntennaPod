@@ -39,7 +39,7 @@ import de.danoeh.antennapod.view.CircularProgressBar;
 public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private static final String TAG = "EpisodeItemViewHolder";
 
-    public final View container;
+    private final View container;
     public final ImageView dragHandle;
     private final TextView placeholder;
     private final ImageView cover;
@@ -102,7 +102,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         isNew.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         isFavorite.setVisibility(item.isTagged(FeedItem.TAG_FAVORITE) ? View.VISIBLE : View.GONE);
         isInQueue.setVisibility(item.isTagged(FeedItem.TAG_QUEUE) ? View.VISIBLE : View.GONE);
-        itemView.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
+        container.setAlpha(item.isPlayed() ? 0.5f : 1.0f);
 
         ItemActionButton actionButton = ItemActionButton.forItem(item, true, true);
         actionButton.configure(secondaryActionButton, secondaryActionIcon, activity);
@@ -116,6 +116,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             progressBar.setVisibility(View.GONE);
             duration.setVisibility(View.GONE);
             position.setVisibility(View.GONE);
+            itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         }
 
         if (coverHolder.getVisibility() == View.VISIBLE) {
@@ -136,9 +137,9 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
                 Converter.getDurationStringLocalized(activity, media.getDuration())));
 
         if (media.isCurrentlyPlaying()) {
-            container.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
+            itemView.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
         } else {
-            container.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
+            itemView.setBackgroundResource(ThemeUtils.getDrawableFromAttr(activity, R.attr.selectableItemBackground));
         }
 
         if (DownloadRequester.getInstance().isDownloadingFile(media)) {

@@ -3,7 +3,9 @@ package de.danoeh.antennapod.view;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import android.widget.ListAdapter;
 import androidx.annotation.AttrRes;
 import androidx.core.content.ContextCompat;
@@ -21,7 +23,7 @@ public class EmptyViewHandler {
     private boolean layoutAdded = false;
     private View list;
     private ListAdapter listAdapter;
-    private RecyclerView.Adapter recyclerAdapter;
+    private RecyclerView.Adapter<?> recyclerAdapter;
 
     private final Context context;
     private final View emptyView;
@@ -84,16 +86,27 @@ public class EmptyViewHandler {
 
     private void addToParentView(View view) {
         ViewGroup parent = ((ViewGroup) view.getParent());
-        parent.addView(emptyView);
-        if (parent instanceof RelativeLayout) {
-            RelativeLayout.LayoutParams layoutParams =
-                    (RelativeLayout.LayoutParams) emptyView.getLayoutParams();
-            layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-            emptyView.setLayoutParams(layoutParams);
+        while (parent != null) {
+            if (parent instanceof RelativeLayout) {
+                parent.addView(emptyView);
+                RelativeLayout.LayoutParams layoutParams =
+                        (RelativeLayout.LayoutParams) emptyView.getLayoutParams();
+                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+                emptyView.setLayoutParams(layoutParams);
+                break;
+            } else if (parent instanceof FrameLayout) {
+                parent.addView(emptyView);
+                FrameLayout.LayoutParams layoutParams =
+                        (FrameLayout.LayoutParams) emptyView.getLayoutParams();
+                layoutParams.gravity = Gravity.CENTER;
+                emptyView.setLayoutParams(layoutParams);
+                break;
+            }
+            parent = (ViewGroup) parent.getParent();
         }
     }
 
-    public void updateAdapter(RecyclerView.Adapter adapter) {
+    public void updateAdapter(RecyclerView.Adapter<?> adapter) {
         if (this.recyclerAdapter != null) {
             this.recyclerAdapter.unregisterAdapterDataObserver(adapterObserver);
         }

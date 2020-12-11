@@ -22,7 +22,7 @@ AntennaPod has many users and we don't want them to run into trouble when we add
 
 ## License
 
-AntennaPod is licensed under the MIT License. You can find the license text in the LICENSE file.
+AntennaPod is licensed under the GNU General Public License (GPL-3.0). You can find the license text in the LICENSE file.
 
 ## Translating AntennaPod
 If you want to translate AntennaPod into another language, you can visit the [Transifex project page](https://www.transifex.com/antennapod/antennapod/).

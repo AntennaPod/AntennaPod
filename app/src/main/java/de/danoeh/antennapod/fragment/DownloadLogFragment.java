@@ -66,12 +66,6 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         if (disposable != null) {
@@ -108,7 +102,7 @@ public class DownloadLogFragment extends ListFragment {
     private void onFragmentLoaded() {
         setListShown(true);
         adapter.notifyDataSetChanged();
-        getActivity().invalidateOptionsMenu();
+        ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
     }
 
     @Override
@@ -172,26 +166,17 @@ public class DownloadLogFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.downloads_log, menu);
-        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
-    }
-
-    @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.clear_history_item);
-        if (menuItem != null) {
-            menuItem.setVisible(!downloadLog.isEmpty());
-        }
+        menu.findItem(R.id.episode_actions).setVisible(false);
+        menu.findItem(R.id.clear_logs_item).setVisible(!downloadLog.isEmpty());
+        isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
-                case R.id.clear_history_item:
+                case R.id.clear_logs_item:
                     DBWriter.clearDownloadLog();
                     return true;
                 case R.id.refresh_item:
@@ -209,7 +194,7 @@ public class DownloadLogFragment extends ListFragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            getActivity().invalidateOptionsMenu();
+            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
     }
 

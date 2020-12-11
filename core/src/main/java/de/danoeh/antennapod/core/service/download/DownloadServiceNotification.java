@@ -148,7 +148,7 @@ public class DownloadServiceNotification {
                 id = R.id.notification_auto_download_report;
                 content = createAutoDownloadNotificationContent(reportQueue);
             } else {
-                channelId = NotificationUtils.CHANNEL_ID_ERROR;
+                channelId = NotificationUtils.CHANNEL_ID_DOWNLOAD_ERROR;
                 titleId = R.string.download_report_title;
                 iconId = R.drawable.ic_notification_sync_error;
                 intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
@@ -173,6 +173,7 @@ public class DownloadServiceNotification {
             }
             NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(id, builder.build());
+            Log.d(TAG, "Download report notification was posted");
         } else {
             Log.d(TAG, "No report is created");
         }

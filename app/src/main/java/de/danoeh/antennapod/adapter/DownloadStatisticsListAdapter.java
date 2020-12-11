@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.format.Formatter;
 
 import java.util.List;
+import java.util.Locale;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
@@ -19,8 +20,8 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
     }
 
     @Override
-    int getHeaderCaptionResourceId() {
-        return R.string.total_size_downloaded_podcasts;
+    String getHeaderCaption() {
+        return context.getString(R.string.total_size_downloaded_podcasts);
     }
 
     @Override
@@ -40,7 +41,10 @@ public class DownloadStatisticsListAdapter extends StatisticsListAdapter {
 
     @Override
     void onBindFeedViewHolder(StatisticsHolder holder, StatisticsItem item) {
-        holder.value.setText(Formatter.formatShortFileSize(context, item.totalDownloadSize));
+        holder.value.setText(Formatter.formatShortFileSize(context, item.totalDownloadSize)
+                + " • "
+                + String.format(Locale.getDefault(), "%d%s",
+                item.episodesDownloadCount, context.getString(R.string.episodes_suffix)));
     }
 
 }

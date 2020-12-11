@@ -53,8 +53,8 @@
             android:key="project"
             android:title="@string/project_pref">
         <Preference
-            android:key="prefFaq"
-            android:title="@string/pref_faq"
+            android:key="prefDocumentation"
+            android:title="@string/documentation_support"
             android:icon="?attr/ic_questionmark" />
         <Preference
             android:key="prefViewForum"

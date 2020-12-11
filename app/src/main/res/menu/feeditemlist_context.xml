@@ -64,28 +64,5 @@
     <item
         android:id="@+id/share_item"
         android:menuCategory="container"
-        android:title="@string/share_label">
-        <menu>
-            <item
-                android:id="@+id/share_link_item"
-                android:menuCategory="container"
-                android:title="@string/share_link_label" />
-            <item
-                android:id="@+id/share_link_with_position_item"
-                android:menuCategory="container"
-                android:title="@string/share_link_with_position_label" />
-            <item
-                android:id="@+id/share_download_url_item"
-                android:menuCategory="container"
-                android:title="@string/share_item_url_label" />
-            <item
-                android:id="@+id/share_download_url_with_position_item"
-                android:menuCategory="container"
-                android:title="@string/share_item_url_with_position_label" />
-            <item
-                android:id="@+id/share_file"
-                android:menuCategory="container"
-                android:title="@string/share_file_label" />
-        </menu>
-    </item>
+        android:title="@string/share_label" />
 </menu>

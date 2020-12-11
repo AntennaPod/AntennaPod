@@ -26,16 +26,13 @@
   <string name="playback_statistics_label">پخش</string>
   <string name="download_statistics_label">بارگیری‌ها</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">مجموع زمان پادکست‌های پخش‌شده:</string>
   <string name="statistics_details_dialog">%1$d از %2$d قسمت‌ها شروع شده است.\n\n%3$s از %4$s پخش.</string>
   <string name="statistics_mode">حالت آمار</string>
   <string name="statistics_mode_normal">مدت زمان واقعی پخش را محاسبه کنید. دو بار پخش کردن دو بار شمارش می‌شود، در حالیکه علامت‌گذاری‌شده به‌عنوان پخش‌شده محاسبه نمی‌شود.</string>
-  <string name="statistics_mode_count_all">جمع مجموع پادکست‌هایی که تعیین‌شده به‌عنوان پخش‌شده</string>
   <string name="statistics_speed_not_counted">توجه: سرعت پخش هرگز به حساب نمی‌آید.</string>
   <string name="statistics_reset_data">بازنشانی داده‌های آماری</string>
   <string name="statistics_reset_data_msg">این همهٔ تاریخچهٔ طول پخش همهٔ قسمت‌های را پاک می‌کند. مطمئنید که می‌خواید ادامه دهید؟</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">جمع کل پادکست‌های بارگیری شده:</string>
   <!--Main activity-->
   <string name="drawer_open">باز کردن منو</string>
   <string name="drawer_close">بستن منو</string>
@@ -49,6 +46,7 @@
   <string name="drawer_feed_counter_unplayed">تعداد قسمت‌های پخش‌نشده</string>
   <string name="drawer_feed_counter_downloaded">تعداد قسمت‌های بارگیری‌شده</string>
   <string name="drawer_feed_counter_none">هیچ‌یک</string>
+  <!--Bug report activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">باز کردن در مرورگر</string>
   <string name="copy_url_label">کپی کردن URL</string>
@@ -124,14 +122,7 @@
   <string name="feed_settings_label">تنظیمات پادکست</string>
   <string name="rename_feed_label">تغییر نام پادکست</string>
   <string name="remove_feed_label">پاک کردن پادکست</string>
-  <string name="share_label">هم‌رسانی…</string>
-  <string name="share_link_label">هم‌رسانی نشانی پادکست</string>
-  <string name="share_link_with_position_label">هم‌رسانی URL قسمت با موقعیت پخش</string>
   <string name="share_file_label">هم‌رسانی پرونده</string>
-  <string name="share_website_url_label">هم‌رسانی نشانی تارنما</string>
-  <string name="share_feed_url_label">هم‌رسانی نشانی پادکست</string>
-  <string name="share_item_url_label">هم‌رسانی نشانی پروندهٔ رسانه‌ای</string>
-  <string name="share_item_url_with_position_label">هم‌رسانی URL فایل قسمت با موقعیت پخش</string>
   <string name="feed_delete_confirmation_msg">لطفا تأیید کنید که می‌خواهید پادکست «%1$s» و تمام قسمت‌های آن که بارگیری کرده‌اید را حذف کنید.</string>
   <string name="feed_remover_msg">در حال پاک کردن پادکست</string>
   <string name="load_complete_feed">تازه‌سازی تمام پادکست</string>
@@ -139,14 +130,9 @@
   <string name="select_all_above">انتخاب همهٔ بالایی‌ها</string>
   <string name="select_all_below">انتخاب همهٔ پایینی‌ها</string>
   <string name="hide_unplayed_episodes_label">پخش‌نشده</string>
-  <string name="hide_paused_episodes_label">متوقف شد</string>
-  <string name="hide_played_episodes_label">پخش شد</string>
   <string name="hide_queued_episodes_label">در صف</string>
   <string name="hide_not_queued_episodes_label">خارج از صف</string>
-  <string name="hide_downloaded_episodes_label">بارگیری‌شده</string>
-  <string name="hide_not_downloaded_episodes_label">بارگیری‌نشده</string>
   <string name="hide_has_media_label">دارای رسانه</string>
-  <string name="hide_is_favorite_label">مورد علاقه</string>
   <string name="filtered_label">فیلتر شده</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} آخرین تازه‌سازی ناموفق بود</string>
   <string name="open_podcast">باز کردن پادکست</string>
@@ -163,10 +149,6 @@
   <string name="delete_label">حذف</string>
   <string name="delete_failed">پرونده حذف نشد. راه‌اندازی مجدد دستگاه می‌تواند کمک کند.</string>
   <string name="delete_episode_label">حذف قسمت</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d قسمت حذف شد.</item>
-    <item quantity="other">%d قسمت حذف شد.</item>
-  </plurals>
   <string name="remove_new_flag_label">حذف نشان «جدید»</string>
   <string name="removed_new_flag_label">نشان «جدید» حذف شد</string>
   <string name="mark_read_label">علامت‌گذاری به‌عنوان پخش‌شده</string>
@@ -238,7 +220,6 @@
   </plurals>
   <string name="downloads_processing">پردازش بارگیری‌ها</string>
   <string name="download_notification_title">بارگیری داده پادکست</string>
-  <string name="download_report_content">%1$d بارگیری موفق شد، %2$d شکست خورد</string>
   <string name="download_log_title_unknown">عنوان ناشناخته</string>
   <string name="download_type_feed">خوراک</string>
   <string name="download_type_media">پرونده رسانه</string>
@@ -251,7 +232,6 @@
   <string name="confirm_mobile_download_dialog_message">بارگیری بر روی اتصال داده‌ای همراه در تنظیمات غیر فعال شده است.\n\nمایلید به صورت موقت بارگیری صورت گیرد؟\n\n<small>انتخاب شما برای ۱۰ دقیقهٔ آینده به خاطر سپرده می‌شود.</small></string>
   <string name="confirm_mobile_streaming_notification_title">پخش جریانی همراه</string>
   <string name="confirm_mobile_streaming_notification_message">پخش جریانی بر روی اتصال داده‌ای همراه در تنظیمات غیر فعال شده است. برای پخش جریانی به هر روی کلیک کنید.</string>
-  <string name="confirm_mobile_streaming_button_always">همیشه مجاز کن</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">در صف قرار دادن</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">اجازهٔ موقت</string>
   <!--Mediaplayer messages-->
@@ -297,7 +277,6 @@
   <string name="download_plugin_label">بارگیری افزایه</string>
   <string name="no_playback_plugin_title">افزایه نصب‌نشده</string>
   <string name="no_playback_plugin_or_sonic_msg">برای اینکه سرعت بازپخش متغیر کار کند، پیشنهاد می‌دهید که پخش‌کنندهٔ داخلی Sonic را استفاده کنید.</string>
-  <string name="set_playback_speed_label">سرعت‌های پخش</string>
   <string name="enable_sonic">فعال‌سازی Sonic</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">بدون قسمت صف‌شده</string>
@@ -366,11 +345,8 @@
   <string name="pref_gpodnet_logout_title">خروج</string>
   <string name="pref_gpodnet_logout_toast">خروج موفقیت‌آمیز بود</string>
   <string name="pref_gpodnet_setlogin_information_title">تغییر اطلاعات ورود</string>
-  <string name="pref_playback_speed_title">سرعت‌های پخش</string>
   <string name="pref_lockscreen_background_title">تنظیم پس‌زمینه صفحهٔ قفل</string>
-  <string name="pref_showDownloadReport_title">نمایش گزارش بارگیری</string>
   <string name="pref_showDownloadReport_sum">در صورت شکست در بارگیری، گزارشی تولید شود که جزئیات شکست را نشان دهد.</string>
-  <string name="pref_showAutoDownloadReport_title">نمایش گزارش بارگیری خودکار</string>
   <string name="pref_expand_notify_unsupport_toast">اندرویدهای قدیمی‌تر از نسخه ۴٫۱ از اعلان‌های بسط‌یافته پشتیبانی نمی‌کنند.</string>
   <string name="pref_smart_mark_as_played_disabled">غیرفعال</string>
   <string name="bug_report_title">گزارش مشکل</string>
@@ -476,9 +452,16 @@
   <!--AntennaPodSP-->
   <!--Add podcast fragment-->
   <string name="browse_gpoddernet_label">مرور gpodder.net</string>
+  <!--Local feeds-->
   <!--Episodes apply actions-->
+  <string name="hide_is_favorite_label">مورد علاقه</string>
+  <string name="hide_downloaded_episodes_label">بارگیری‌شده</string>
+  <string name="hide_not_downloaded_episodes_label">بارگیری‌نشده</string>
+  <string name="hide_paused_episodes_label">متوقف شد</string>
+  <string name="hide_played_episodes_label">پخش شد</string>
   <!--Sort-->
   <!--Rating dialog-->
+  <!--Share episode dialog-->
   <!--Audio controls-->
   <!--proxy settings-->
   <!--Subscriptions fragment-->

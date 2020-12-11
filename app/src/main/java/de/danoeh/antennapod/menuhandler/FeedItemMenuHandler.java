@@ -48,60 +48,43 @@ public class FeedItemMenuHandler {
         if (menu == null || selectedItem == null) {
             return false;
         }
-        boolean hasMedia = selectedItem.getMedia() != null;
-        boolean isPlaying = hasMedia && selectedItem.getState() == FeedItem.State.PLAYING;
+        final boolean hasMedia = selectedItem.getMedia() != null;
+        final boolean isPlaying = hasMedia && selectedItem.getState() == FeedItem.State.PLAYING;
+        final boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
+        final boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
+        final boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
 
-        if (!isPlaying) {
-            setItemVisibility(menu, R.id.skip_episode_item, false);
-        }
-        boolean isInQueue = selectedItem.isTagged(FeedItem.TAG_QUEUE);
-        if (!isInQueue) {
-            setItemVisibility(menu, R.id.remove_from_queue_item, false);
-        }
-        if (!(!isInQueue && selectedItem.getMedia() != null)) {
-            setItemVisibility(menu, R.id.add_to_queue_item, false);
-        }
-        if (!ShareUtils.hasLinkToShare(selectedItem)) {
-            setItemVisibility(menu, R.id.visit_website_item, false);
-        }
-
-        boolean fileDownloaded = hasMedia && selectedItem.getMedia().fileExists();
-
+        setItemVisibility(menu, R.id.skip_episode_item, isPlaying);
+        setItemVisibility(menu, R.id.remove_from_queue_item, isInQueue);
+        setItemVisibility(menu, R.id.add_to_queue_item, !isInQueue && selectedItem.getMedia() != null);
+        setItemVisibility(menu, R.id.visit_website_item, !selectedItem.getFeed().isLocalFeed()
+                && ShareUtils.hasLinkToShare(selectedItem));
+        setItemVisibility(menu, R.id.share_item, !selectedItem.getFeed().isLocalFeed());
         setItemVisibility(menu, R.id.remove_new_flag_item, selectedItem.isNew());
-        if (selectedItem.isPlayed()) {
-            setItemVisibility(menu, R.id.mark_read_item, false);
-        } else {
-            setItemVisibility(menu, R.id.mark_unread_item, false);
-        }
+        setItemVisibility(menu, R.id.mark_read_item, !selectedItem.isPlayed());
+        setItemVisibility(menu, R.id.mark_unread_item, selectedItem.isPlayed());
+        setItemVisibility(menu, R.id.reset_position, hasMedia && selectedItem.getMedia().getPosition() != 0);
 
-        if (selectedItem.getMedia() == null || selectedItem.getMedia().getPosition() == 0) {
-            setItemVisibility(menu, R.id.reset_position, false);
-        }
-
-        if(!UserPreferences.isEnableAutodownload() || fileDownloaded) {
+        if (!UserPreferences.isEnableAutodownload() || fileDownloaded || selectedItem.getFeed().isLocalFeed()) {
             setItemVisibility(menu, R.id.activate_auto_download, false);
             setItemVisibility(menu, R.id.deactivate_auto_download, false);
-        } else if (selectedItem.getAutoDownload()) {
-            setItemVisibility(menu, R.id.activate_auto_download, false);
         } else {
-            setItemVisibility(menu, R.id.deactivate_auto_download, false);
+            setItemVisibility(menu, R.id.activate_auto_download, !selectedItem.getAutoDownload());
+            setItemVisibility(menu, R.id.deactivate_auto_download, selectedItem.getAutoDownload());
         }
 
         // Display proper strings when item has no media
-        if (!hasMedia && !selectedItem.isPlayed()) {
+        if (hasMedia) {
+            setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_label);
+            setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label);
+        } else {
             setItemTitle(menu, R.id.mark_read_item, R.string.mark_read_no_media_label);
-        }
-
-        if (!hasMedia && selectedItem.isPlayed()) {
             setItemTitle(menu, R.id.mark_unread_item, R.string.mark_unread_label_no_media);
         }
 
-        boolean isFavorite = selectedItem.isTagged(FeedItem.TAG_FAVORITE);
         setItemVisibility(menu, R.id.add_to_favorites_item, !isFavorite);
         setItemVisibility(menu, R.id.remove_from_favorites_item, isFavorite);
-
         setItemVisibility(menu, R.id.remove_item, fileDownloaded);
-
         return true;
     }
 
@@ -129,7 +112,7 @@ public class FeedItemMenuHandler {
      * @param id The id of the string that is going to be replaced.
      * @param noMedia The id of the new String that is going to be used.
      * */
-    public static void setItemTitle(Menu menu, int id, int noMedia){
+    public static void setItemTitle(Menu menu, int id, int noMedia) {
         MenuItem item = menu.findItem(id);
         if (item != null) {
             item.setTitle(noMedia);

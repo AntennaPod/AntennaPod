@@ -54,9 +54,4 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
         return PendingIntent.getActivity(context, R.id.pending_intent_download_service_autodownload_report,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
-    @Override
-    public boolean shouldCreateReport() {
-        return true;
-    }
 }

@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.apache.commons.io.FileUtils;
@@ -21,8 +22,10 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -192,11 +195,11 @@ public class PodDBAdapter {
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_FEED + ")";
 
-    static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX IF NOT EXISTS "
+    static final String CREATE_INDEX_FEEDITEMS_PUBDATE = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_PUBDATE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_PUBDATE + ")";
 
-    static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX IF NOT EXISTS "
+    static final String CREATE_INDEX_FEEDITEMS_READ = "CREATE INDEX "
             + TABLE_NAME_FEED_ITEMS + "_" + KEY_READ + " ON " + TABLE_NAME_FEED_ITEMS + " ("
             + KEY_READ + ")";
 
@@ -313,48 +316,61 @@ public class PodDBAdapter {
             + JOIN_FEED_ITEM_AND_MEDIA;
 
     private static Context context;
+    private static PodDBAdapter instance;
 
-    private static volatile SQLiteDatabase db;
+    private final SQLiteDatabase db;
+    private final PodDBHelper dbHelper;
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
     }
 
-    // Bill Pugh Singleton Implementation
-    private static class SingletonHolder {
-        private static final PodDBHelper dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
-        private static final PodDBAdapter dbAdapter = new PodDBAdapter();
-    }
-
     public static PodDBAdapter getInstance() {
-        return SingletonHolder.dbAdapter;
+        if (instance == null) {
+            instance = new PodDBAdapter();
+        }
+        return instance;
     }
 
     private PodDBAdapter() {
+        dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
+        db = openDb();
     }
 
-    public synchronized PodDBAdapter open() {
-        if (db == null || !db.isOpen() || db.isReadOnly()) {
-            db = openDb();
-        }
-        return this;
-    }
-
-    @SuppressLint("NewApi")
     private SQLiteDatabase openDb() {
         SQLiteDatabase newDb;
         try {
-            newDb = SingletonHolder.dbHelper.getWritableDatabase();
+            newDb = dbHelper.getWritableDatabase();
             newDb.disableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
-            newDb = SingletonHolder.dbHelper.getReadableDatabase();
+            newDb = dbHelper.getReadableDatabase();
         }
         return newDb;
     }
 
+    public synchronized PodDBAdapter open() {
+        // do nothing
+        return this;
+    }
+
     public synchronized void close() {
         // do nothing
+    }
+
+    /**
+     * <p>Resets all database connections to ensure new database connections for
+     * the next test case. Call method only for unit tests.</p>
+     *
+     * <p>That's a workaround for a Robolectric issue in ShadowSQLiteConnection
+     * that leads to an error <tt>IllegalStateException: Illegal connection
+     * pointer</tt> if several threads try to use the same database connection.
+     * For more information see
+     * <a href="https://github.com/robolectric/robolectric/issues/1890">robolectric/robolectric#1890</a>.</p>
+     */
+    public static void tearDownTests() {
+        getInstance().dbHelper.close();
+        instance = null;
     }
 
     public static boolean deleteDatabase() {
@@ -362,7 +378,7 @@ public class PodDBAdapter {
         adapter.open();
         try {
             for (String tableName : ALL_TABLES) {
-                db.delete(tableName, "1", null);
+                adapter.db.delete(tableName, "1", null);
             }
             return true;
         } finally {
@@ -857,6 +873,23 @@ public class PodDBAdapter {
     }
 
     /**
+     * Remove the listed items and their FeedMedia entries.
+     */
+    public void removeFeedItems(@NonNull List<FeedItem> items) {
+        try {
+            db.beginTransactionNonExclusive();
+            for (FeedItem item : items) {
+                removeFeedItem(item);
+            }
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    /**
      * Remove a feed with all its FeedItems and Media entries.
      */
     public void removeFeed(Feed feed) {
@@ -1187,6 +1220,25 @@ public class PodDBAdapter {
     public final LongIntMap getPlayedEpisodesCounters(long... feedIds) {
         String whereRead = KEY_READ + "=" + FeedItem.PLAYED;
         return conditionalFeedCounterRead(whereRead, feedIds);
+    }
+
+    public final Map<Long, Long> getMostRecentItemDates() {
+        final String query = "SELECT " + KEY_FEED + ","
+                + " MAX(" + TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE + ") AS most_recent_pubdate"
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " GROUP BY " + KEY_FEED;
+
+        Cursor c = db.rawQuery(query, null);
+        Map<Long, Long> result = new HashMap<>();
+        if (c.moveToFirst()) {
+            do {
+                long feedId = c.getLong(0);
+                long date = c.getLong(1);
+                result.put(feedId, date);
+            } while (c.moveToNext());
+        }
+        c.close();
+        return result;
     }
 
     public final int getNumberOfDownloadedEpisodes() {

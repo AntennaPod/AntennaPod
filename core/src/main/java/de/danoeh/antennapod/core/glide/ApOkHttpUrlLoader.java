@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.glide;
 
+import android.content.ContentResolver;
 import android.text.TextUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader
+ * {@see com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader}.
  */
 class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
 
@@ -52,14 +53,7 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
          * Constructor for a new Factory that runs requests using a static singleton client.
          */
         Factory() {
-            this(getInternalClient());
-        }
-
-        /**
-         * Constructor for a new Factory that runs requests using given client.
-         */
-        Factory(OkHttpClient client) {
-            this.client = client;
+            this.client = getInternalClient();
         }
 
         @NonNull
@@ -83,19 +77,15 @@ class ApOkHttpUrlLoader implements ModelLoader<String, InputStream> {
     @Nullable
     @Override
     public LoadData<InputStream> buildLoadData(@NonNull String model, int width, int height, @NonNull Options options) {
-        if (TextUtils.isEmpty(model)) {
-            return null;
-        } else if (model.startsWith("/")) {
-            return new LoadData<>(new ObjectKey(model), new AudioCoverFetcher(model));
-        } else {
-            GlideUrl url = new GlideUrl(model);
-            return new LoadData<>(new ObjectKey(model), new OkHttpStreamFetcher(client, url));
-        }
+        return new LoadData<>(new ObjectKey(model), new OkHttpStreamFetcher(client, new GlideUrl(model)));
     }
 
     @Override
-    public boolean handles(@NonNull String s) {
-        return true;
+    public boolean handles(@NonNull String model) {
+        // Leave content URIs to Glide's default loaders
+        return !TextUtils.isEmpty(model)
+                && !model.startsWith(ContentResolver.SCHEME_CONTENT)
+                && !model.startsWith(ContentResolver.SCHEME_ANDROID_RESOURCE);
     }
 
     private static class NetworkAllowanceInterceptor implements Interceptor {

@@ -2,14 +2,11 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +74,6 @@ public class OnlineSearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
 
         for (PodcastSearcherRegistry.SearcherInfo info : PodcastSearcherRegistry.getSearchProviders()) {
             if (info.searcher.getClass().getName().equals(getArguments().getString(ARG_SEARCHER))) {
@@ -94,7 +90,6 @@ public class OnlineSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(root.findViewById(R.id.toolbar));
         root.findViewById(R.id.spinner_country).setVisibility(INVISIBLE);
         gridView = root.findViewById(R.id.gridView);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
@@ -114,6 +109,7 @@ public class OnlineSearchFragment extends Fragment {
         txtvEmpty = root.findViewById(android.R.id.empty);
         TextView txtvPoweredBy = root.findViewById(R.id.search_powered_by);
         txtvPoweredBy.setText(getString(R.string.search_powered_by, searchProvider.getName()));
+        setupToolbar(root.findViewById(R.id.toolbar));
         return root;
     }
 
@@ -126,11 +122,11 @@ public class OnlineSearchFragment extends Fragment {
         adapter = null;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.online_search, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+    private void setupToolbar(Toolbar toolbar) {
+        toolbar.inflateMenu(R.menu.online_search);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+
+        MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
         final SearchView sv = (SearchView) searchItem.getActionView();
         sv.setQueryHint(getString(R.string.search_podcast_hint));
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -163,7 +159,6 @@ public class OnlineSearchFragment extends Fragment {
         if (getArguments().getString(ARG_QUERY, null) != null) {
             sv.setQuery(getArguments().getString(ARG_QUERY, null), true);
         }
-
     }
 
     private void search(String query) {

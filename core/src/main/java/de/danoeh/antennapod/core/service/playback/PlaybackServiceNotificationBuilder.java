@@ -69,7 +69,7 @@ public class PlaybackServiceNotificationBuilder {
     }
 
     public void loadIcon() {
-        int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
+        int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
         try {
             icon = Glide.with(context)
                     .asBitmap()

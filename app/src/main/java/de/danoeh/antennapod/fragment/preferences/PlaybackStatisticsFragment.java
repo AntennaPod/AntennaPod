@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.PlaybackStatisticsListAdapter;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
@@ -78,7 +78,6 @@ public class PlaybackStatisticsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ((PreferenceActivity) getActivity()).getSupportActionBar().setTitle(R.string.statistics_label);
         refreshStatistics();
     }
 
@@ -159,7 +158,10 @@ public class PlaybackStatisticsFragment extends Fragment {
         disposable = Completable.fromFuture(DBWriter.resetStatistics())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::refreshStatistics, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(() -> {
+                    refreshStatistics();
+                    UserPreferences.resetUsageCountingDate();
+                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     private void refreshStatistics() {

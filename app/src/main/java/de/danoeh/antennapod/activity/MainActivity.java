@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,11 +12,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -114,15 +113,6 @@ public class MainActivity extends CastEnabledActivity {
         setNavDrawerSize();
 
         final FragmentManager fm = getSupportFragmentManager();
-        fm.addOnBackStackChangedListener(() -> {
-            boolean showArrow = fm.getBackStackEntryCount() != 0;
-            if (drawerToggle != null) { // Tablet layout does not have a drawer
-                drawerToggle.setDrawerIndicatorEnabled(!showArrow);
-            } else if (getActionBar() != null) {
-                getActionBar().setDisplayHomeAsUpEnabled(showArrow);
-            }
-        });
-
         if (fm.findFragmentByTag(MAIN_FRAGMENT_TAG) == null) {
             String lastFragment = NavDrawerFragment.getLastNavFragment(this);
             if (ArrayUtils.contains(NavDrawerFragment.NAV_DRAWER_TAGS, lastFragment)) {
@@ -184,6 +174,9 @@ public class MainActivity extends CastEnabledActivity {
         public void onSlide(@NonNull View view, float slideOffset) {
             AudioPlayerFragment audioPlayer = (AudioPlayerFragment) getSupportFragmentManager()
                     .findFragmentByTag(AudioPlayerFragment.TAG);
+            if (audioPlayer == null) {
+                return;
+            }
             float condensedSlideOffset = Math.max(0.0f, Math.min(0.2f, slideOffset - 0.2f)) / 0.2f;
             audioPlayer.getExternalPlayerHolder().setAlpha(1 - condensedSlideOffset);
             audioPlayer.getExternalPlayerHolder().setVisibility(
@@ -191,8 +184,7 @@ public class MainActivity extends CastEnabledActivity {
         }
     };
 
-    @Override
-    public void setSupportActionBar(@Nullable Toolbar toolbar) {
+    public void setupToolbarToggle(@Nullable Toolbar toolbar) {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             drawerLayout.removeDrawerListener(drawerToggle);
             drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -200,12 +192,13 @@ public class MainActivity extends CastEnabledActivity {
             drawerLayout.addDrawerListener(drawerToggle);
             drawerToggle.syncState();
             drawerToggle.setDrawerIndicatorEnabled(getSupportFragmentManager().getBackStackEntryCount() == 0);
+            drawerToggle.setToolbarNavigationClickListener(v -> getSupportFragmentManager().popBackStack());
         } else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             toolbar.setNavigationIcon(null);
         } else {
             toolbar.setNavigationIcon(ThemeUtils.getDrawableFromAttr(this, R.attr.homeAsUpIndicator));
+            toolbar.setNavigationOnClickListener(v -> getSupportFragmentManager().popBackStack());
         }
-        super.setSupportActionBar(toolbar);
     }
 
     private void checkFirstLaunch() {
@@ -550,6 +543,11 @@ public class MainActivity extends CastEnabledActivity {
     //Hardware keyboard support
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        View currentFocus = getCurrentFocus();
+        if (currentFocus instanceof EditText) {
+            return super.onKeyUp(keyCode, event);
+        }
+
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         Integer customKeyCode = null;
 

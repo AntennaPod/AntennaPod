@@ -24,16 +24,19 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.ActivityResultMatchers.hasResultCode;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.openNavDrawer;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * User interface tests for MainActivity
@@ -72,16 +75,12 @@ public class MainActivityTest {
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
         openNavDrawer();
         onView(withText(R.string.add_feed_label)).perform(click());
-        onView(withId(R.id.btn_add_via_url)).perform(scrollTo(), click());
-        onView(withId(R.id.text)).perform(replaceText(feed.getDownload_url()));
+        onView(withId(R.id.addViaUrlButton)).perform(scrollTo(), click());
+        onView(withId(R.id.urlEditText)).perform(replaceText(feed.getDownload_url()));
         onView(withText(R.string.confirm_label)).perform(scrollTo(), click());
         Espresso.closeSoftKeyboard();
         onView(withText(R.string.subscribe_label)).perform(click());
         onView(isRoot()).perform(waitForView(withId(R.id.butShowSettings), 5000));
-    }
-
-    private String getActionbarTitle() {
-        return ((MainActivity) solo.getCurrentActivity()).getSupportActionBar().getTitle().toString();
     }
 
     @Test
@@ -98,7 +97,8 @@ public class MainActivityTest {
         solo.goBackToActivity(MainActivity.class.getSimpleName());
         solo.goBack();
         solo.goBack();
-        assertEquals(solo.getString(R.string.subscriptions_label), getActionbarTitle());
+        onView(allOf(withId(R.id.toolbar), isDisplayed())).check(
+                matches(hasDescendant(withText(R.string.subscriptions_label))));
         solo.goBack();
         assertThat(mActivityRule.getActivityResult(), hasResultCode(Activity.RESULT_CANCELED));
     }

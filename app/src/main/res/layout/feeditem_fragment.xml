@@ -166,6 +166,15 @@
             </LinearLayout>
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/noMediaLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:background="?android:attr/dividerVertical"
+            android:text="@string/no_media_label"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

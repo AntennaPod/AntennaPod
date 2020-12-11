@@ -34,11 +34,6 @@ public class FeedMenuHandler {
 
     private static final String TAG = "FeedMenuHandler";
 
-    public static boolean onCreateOptionsMenu(MenuInflater inflater, Menu menu) {
-        inflater.inflate(R.menu.feedlist, menu);
-        return true;
-    }
-
     public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
         if (selectedFeed == null) {
             return true;
@@ -50,6 +45,10 @@ public class FeedMenuHandler {
         if (StringUtils.isBlank(selectedFeed.getLink())) {
             menu.findItem(R.id.visit_website_item).setVisible(false);
             menu.findItem(R.id.share_link_item).setVisible(false);
+        }
+        if (selectedFeed.isLocalFeed()) {
+            // hide complete submenu "Share..." as both sub menu items are not visible
+            menu.findItem(R.id.share_item).setVisible(false);
         }
 
         return true;

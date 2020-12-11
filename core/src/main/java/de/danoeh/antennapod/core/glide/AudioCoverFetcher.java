@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.core.glide;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.media.MediaMetadataRetriever;
 
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.DataSource;
@@ -17,16 +20,22 @@ class AudioCoverFetcher implements DataFetcher<InputStream> {
     private static final String TAG = "AudioCoverFetcher";
 
     private final String path;
+    private final Context context;
 
-    public AudioCoverFetcher(String path) {
+    public AudioCoverFetcher(String path, Context context) {
         this.path = path;
+        this.context = context;
     }
 
     @Override
     public void loadData(@NonNull Priority priority, @NonNull DataCallback<? super InputStream> callback) {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try {
-            retriever.setDataSource(path);
+            if (path.startsWith(ContentResolver.SCHEME_CONTENT)) {
+                retriever.setDataSource(context, Uri.parse(path));
+            } else {
+                retriever.setDataSource(path);
+            }
             byte[] picture = retriever.getEmbeddedPicture();
             if (picture != null) {
                 callback.onDataReady(new ByteArrayInputStream(picture));
@@ -41,6 +50,7 @@ class AudioCoverFetcher implements DataFetcher<InputStream> {
     @Override public void cleanup() {
         // nothing to clean up
     }
+
     @Override public void cancel() {
         // cannot cancel
     }

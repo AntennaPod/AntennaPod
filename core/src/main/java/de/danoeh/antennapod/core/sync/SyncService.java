@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.sync.model.ISyncService;
 import de.danoeh.antennapod.core.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.core.sync.model.SyncServiceException;
 import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import io.reactivex.Completable;
@@ -456,7 +457,7 @@ public class SyncService extends Worker {
                     break;
             }
         }
-
+        LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : mostRecentPlayAction.values()) {
             FeedItem playItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
@@ -467,10 +468,12 @@ public class SyncService extends Worker {
                 if (playItem.getMedia().hasAlmostEnded()) {
                     Log.d(TAG, "Marking as played");
                     playItem.setPlayed(true);
+                    queueToBeRemoved.add(playItem.getId());
                 }
                 updatedItems.add(playItem);
             }
         }
+        DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
         DBWriter.setItemList(updatedItems);
     }
 
@@ -482,7 +485,11 @@ public class SyncService extends Worker {
     }
 
     private void updateErrorNotification(SyncServiceException exception) {
-        Log.d(TAG, "Posting error notification");
+        if (!UserPreferences.gpodnetNotificationsEnabled()) {
+            Log.d(TAG, "Skipping sync error notification because of user setting");
+            return;
+        }
+        Log.d(TAG, "Posting sync error notification");
         final String description = getApplicationContext().getString(R.string.gpodnetsync_error_descr)
                 + exception.getMessage();
 

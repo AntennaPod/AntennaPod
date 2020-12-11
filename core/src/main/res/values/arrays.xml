@@ -236,7 +236,7 @@
     <string-array name="media_player_options">
         <item>@string/media_player_builtin</item>
         <item>@string/media_player_sonic</item>
-        <item>@string/media_player_exoplayer</item>
+        <item>@string/media_player_exoplayer_recommended</item>
     </string-array>
 
     <string-array name="media_player_values">

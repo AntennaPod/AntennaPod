@@ -7,6 +7,7 @@ import androidx.collection.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -651,29 +652,30 @@ public final class DBReader {
      *
      * @param item The FeedItem
      */
-    public static void loadChaptersOfFeedItem(final FeedItem item) {
+    public static List<Chapter> loadChaptersOfFeedItem(final FeedItem item) {
         Log.d(TAG, "loadChaptersOfFeedItem() called with: " + "item = [" + item + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try {
-            loadChaptersOfFeedItem(adapter, item);
+            return loadChaptersOfFeedItem(adapter, item);
         } finally {
             adapter.close();
         }
     }
 
-    private static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
+    private static List<Chapter> loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
         try (Cursor cursor = adapter.getSimpleChaptersOfFeedItemCursor(item)) {
             int chaptersCount = cursor.getCount();
             if (chaptersCount == 0) {
                 item.setChapters(null);
-                return;
+                return null;
             }
-            item.setChapters(new ArrayList<>(chaptersCount));
+            ArrayList<Chapter> chapters = new ArrayList<>();
             while (cursor.moveToNext()) {
-                item.getChapters().add(Chapter.fromCursor(cursor));
+                chapters.add(Chapter.fromCursor(cursor));
             }
+            return chapters;
         }
     }
 
@@ -746,6 +748,7 @@ public final class DBReader {
             long episodesStarted = 0;
             long episodesStartedIncludingMarked = 0;
             long totalDownloadSize = 0;
+            long episodesDownloadCount = 0;
             List<FeedItem> items = getFeed(feed.getId()).getItems();
             for (FeedItem item : items) {
                 FeedMedia media = item.getMedia();
@@ -772,14 +775,15 @@ public final class DBReader {
                 feedTotalTime += media.getDuration() / 1000;
 
                 if (media.isDownloaded()) {
-                    totalDownloadSize = totalDownloadSize + media.getSize();
+                    totalDownloadSize += new File(media.getFile_url()).length();
+                    episodesDownloadCount++;
                 }
 
                 episodes++;
             }
             feedTime.add(new StatisticsItem(
                     feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize));
+                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize, episodesDownloadCount));
         }
 
         adapter.close();
@@ -850,24 +854,11 @@ public final class DBReader {
                 }
             };
         } else {
+            final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
             comparator = (lhs, rhs) -> {
-                if (lhs.getItems() == null || lhs.getItems().size() == 0) {
-                    List<FeedItem> items = DBReader.getFeedItemList(lhs);
-                    lhs.setItems(items);
-                }
-                if (rhs.getItems() == null || rhs.getItems().size() == 0) {
-                    List<FeedItem> items = DBReader.getFeedItemList(rhs);
-                    rhs.setItems(items);
-                }
-                if (lhs.getMostRecentItem() == null) {
-                    return 1;
-                } else if (rhs.getMostRecentItem() == null) {
-                    return -1;
-                } else {
-                    Date d1 = lhs.getMostRecentItem().getPubDate();
-                    Date d2 = rhs.getMostRecentItem().getPubDate();
-                    return d2.compareTo(d1);
-                }
+                long dateLhs = recentPubDates.containsKey(lhs.getId()) ? recentPubDates.get(lhs.getId()) : 0;
+                long dateRhs = recentPubDates.containsKey(rhs.getId()) ? recentPubDates.get(rhs.getId()) : 0;
+                return Long.compare(dateRhs, dateLhs);
             };
         }
 

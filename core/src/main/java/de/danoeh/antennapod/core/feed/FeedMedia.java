@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -32,6 +34,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
+    public static final String FILENAME_PREFIX_EMBEDDED_COVER = "metadata-retriever:";
 
     public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
     private static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
@@ -163,13 +166,20 @@ public class FeedMedia extends FeedFile implements Playable {
      */
     public MediaBrowserCompat.MediaItem getMediaItem() {
         Playable p = this;
-        MediaDescriptionCompat description = new MediaDescriptionCompat.Builder()
+        MediaDescriptionCompat.Builder builder = new MediaDescriptionCompat.Builder()
                 .setMediaId(String.valueOf(id))
                 .setTitle(p.getEpisodeTitle())
                 .setDescription(p.getFeedTitle())
-                .setSubtitle(p.getFeedTitle())
-                .build();
-        return new MediaBrowserCompat.MediaItem(description, MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
+                .setSubtitle(p.getFeedTitle());
+        if (item != null) {
+            // getImageLocation() also loads embedded images, which we can not send to external devices
+            if (item.getImageUrl() != null) {
+                builder.setIconUri(Uri.parse(item.getImageUrl()));
+            } else if (item.getFeed() != null && item.getFeed().getImageLocation() != null) {
+                builder.setIconUri(Uri.parse(item.getFeed().getImageLocation()));
+            }
+        }
+        return new MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
     }
 
     /**
@@ -375,26 +385,37 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void loadChapterMarks() {
+    public void loadChapterMarks(Context context) {
         if (item == null && itemID != 0) {
             item = DBReader.getFeedItem(itemID);
         }
         if (item == null || item.getChapters() != null) {
             return;
         }
-        // check if chapters are stored in db and not loaded yet.
-        if (item.hasChapters()) {
-            DBReader.loadChaptersOfFeedItem(item);
+
+        List<Chapter> chapters = loadChapters(context);
+        if (chapters == null) {
+            // Do not try loading again. There are no chapters.
+            item.setChapters(Collections.emptyList());
         } else {
-            if(localFileAvailable()) {
-                ChapterUtils.loadChaptersFromFileUrl(this);
-            } else {
-                ChapterUtils.loadChaptersFromStreamUrl(this);
-            }
-            if (item.getChapters() != null) {
-                DBWriter.setFeedItem(item);
-            }
+            item.setChapters(chapters);
         }
+    }
+
+    private List<Chapter> loadChapters(Context context) {
+        List<Chapter> chaptersFromDatabase = null;
+        if (item.hasChapters()) {
+            chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(item);
+        }
+
+        List<Chapter> chaptersFromMediaFile;
+        if (localFileAvailable()) {
+            chaptersFromMediaFile = ChapterUtils.loadChaptersFromFileUrl(this);
+        } else {
+            chaptersFromMediaFile = ChapterUtils.loadChaptersFromStreamUrl(this, context);
+        }
+
+        return ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
     }
 
     @Override
@@ -557,7 +578,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item != null) {
             return item.getImageLocation();
         } else if (hasEmbeddedPicture()) {
-            return getLocalMediaUrl();
+            return FILENAME_PREFIX_EMBEDDED_COVER + getLocalMediaUrl();
         } else {
             return null;
         }

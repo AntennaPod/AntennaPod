@@ -43,9 +43,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static de.test.antennapod.EspressoTestUtils.clickPreference;
 import static de.test.antennapod.EspressoTestUtils.waitForView;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertTrue;
 
 @LargeTest
 public class PreferencesTest {
