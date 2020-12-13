@@ -1,16 +1,13 @@
 package de.test.antennapod.util;
 
-import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.filters.SmallTest;
-import android.text.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
 
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.After;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -67,7 +64,7 @@ public class FilenameGeneratorTest {
     @Test
     public void testInvalidInput() {
         String result = FileNameGenerator.generateFileName("???");
-        assertFalse(TextUtils.isEmpty(result));
+        assertFalse(result.isEmpty());
     }
 
     @Test

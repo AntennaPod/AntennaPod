@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.util;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ public class FileNameGenerator {
      * This method will return a new string that doesn't contain any illegal
      * characters of the given string.
      */
+    @NonNull
     public static String generateFileName(String string) {
         string = StringUtils.stripAccents(string);
         StringBuilder buf = new StringBuilder();
