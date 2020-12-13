@@ -39,14 +39,6 @@ public class ShareUtils {
         shareLink(context, feed.getTitle() + ": " + feed.getDownload_url());
     }
 
-    public static void shareFeedItemLink(Context context, FeedItem item) {
-        shareFeedItemLink(context, item, false);
-    }
-
-    public static void shareFeedItemDownloadLink(Context context, FeedItem item) {
-        shareFeedItemDownloadLink(context, item, false);
-    }
-
     private static String getItemShareText(FeedItem item) {
         return item.getFeed().getTitle() + ": " + item.getTitle();
     }
