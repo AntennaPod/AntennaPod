@@ -93,7 +93,7 @@
   <string name="feed_volume_reduction_off">關閉</string>
   <string name="feed_volume_reduction_light">輕</string>
   <string name="feed_volume_reduction_heavy">重</string>
-  <string name="parallel_downloads_suffix">目前設定可同步下載 \u0020 集</string>
+  <string name="parallel_downloads_suffix">\u0020項同步下載</string>
   <string name="feed_auto_download_global">預設值</string>
   <string name="feed_auto_download_always">總是</string>
   <string name="feed_auto_download_never">不予下載</string>
