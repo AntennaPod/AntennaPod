@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;

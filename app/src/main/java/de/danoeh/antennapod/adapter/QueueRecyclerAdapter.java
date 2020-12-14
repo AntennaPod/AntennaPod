@@ -6,7 +6,6 @@ import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;

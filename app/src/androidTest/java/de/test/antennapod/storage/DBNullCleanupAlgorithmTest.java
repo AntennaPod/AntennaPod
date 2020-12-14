@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
