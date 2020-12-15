@@ -15,7 +15,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
