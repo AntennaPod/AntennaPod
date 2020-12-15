@@ -30,7 +30,6 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.SortOrder;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

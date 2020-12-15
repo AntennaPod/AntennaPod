@@ -15,7 +15,6 @@ import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.appcompat.view.menu.ActionMenuItem;
 import androidx.core.view.WindowCompat;
 import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;

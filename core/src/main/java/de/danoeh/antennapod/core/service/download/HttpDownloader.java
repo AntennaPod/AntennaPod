@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import okhttp3.CacheControl;
 import org.apache.commons.io.IOUtils;
 
@@ -21,14 +20,12 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Date;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URIUtil;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;

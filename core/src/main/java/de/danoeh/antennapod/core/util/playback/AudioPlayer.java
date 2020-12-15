@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.SurfaceHolder;

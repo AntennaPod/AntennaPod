@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.widget.ImageView;
-import android.widget.RemoteViews;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.appwidget.AppWidgetManager;

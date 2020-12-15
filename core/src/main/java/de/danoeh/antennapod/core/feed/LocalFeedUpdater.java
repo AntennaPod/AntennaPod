@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;

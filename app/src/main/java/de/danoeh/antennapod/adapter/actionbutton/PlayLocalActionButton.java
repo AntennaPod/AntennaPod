@@ -7,11 +7,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
-import de.danoeh.antennapod.dialog.StreamingConfirmationDialog;
 
 public class PlayLocalActionButton extends ItemActionButton {
 

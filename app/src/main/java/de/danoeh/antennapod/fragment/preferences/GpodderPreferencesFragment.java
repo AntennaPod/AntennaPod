@@ -1,15 +1,12 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.core.text.HtmlCompat;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import android.text.Spanned;
 import android.text.format.DateUtils;
-import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
