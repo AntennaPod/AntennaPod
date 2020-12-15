@@ -105,7 +105,7 @@
     <string name="feed_volume_reduction_off">Off</string>
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
-    <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
+    <string name="parallel_downloads">%1$d parallel downloads</string>
     <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
