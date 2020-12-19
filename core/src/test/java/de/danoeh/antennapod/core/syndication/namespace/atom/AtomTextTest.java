@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(RobolectricTestRunner.class)
 public class AtomTextTest {
 
-    private static final String[][] testData = {
+    private static final String[][] TEST_DATA = {
             {"&gt;", ">"},
             {">", ">"},
             {"&lt;Fran&ccedil;ais&gt;", "<Français>"},
@@ -26,7 +26,7 @@ public class AtomTextTest {
 
     @Test
     public void testProcessingHtml() {
-        for (String[] pair : testData) {
+        for (String[] pair : TEST_DATA) {
             final AtomText atomText = new AtomText("", new NSAtom(), AtomText.TYPE_HTML);
             atomText.setContent(pair[0]);
             assertEquals(pair[1], atomText.getProcessedContent());
