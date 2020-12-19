@@ -122,7 +122,7 @@ public class FeedPreferences {
     }
 
     /**
-     * Compare another FeedPreferences with this one. The feedID, autoDownload and AutoDeleteAction attribute are excluded from the
+     * Compare another FeedPreferences with this one. The feedID and AutoDeleteAction attribute are excluded from the
      * comparison.
      *
      * @return True if the two objects are different.
@@ -137,11 +137,14 @@ public class FeedPreferences {
         if (!TextUtils.equals(password, other.password)) {
             return true;
         }
+        if (autoDownload != other.autoDownload) {
+            return true;
+        }
         return false;
     }
 
     /**
-     * Update this FeedPreferences object from another one. The feedID, autoDownload and AutoDeleteAction attributes are excluded
+     * Update this FeedPreferences object from another one. The feedID and AutoDeleteAction attributes are excluded
      * from the update.
      */
     public void updateFromOther(FeedPreferences other) {
@@ -149,6 +152,7 @@ public class FeedPreferences {
             return;
         this.username = other.username;
         this.password = other.password;
+        this.autoDownload = other.autoDownload;
     }
 
     public long getFeedID() {
