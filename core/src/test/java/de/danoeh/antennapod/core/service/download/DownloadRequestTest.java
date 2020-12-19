@@ -3,9 +3,9 @@ package de.danoeh.antennapod.core.service.download;
 import android.os.Bundle;
 import android.os.Parcel;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import de.danoeh.antennapod.core.feed.FeedFile;
 
 import static org.junit.Assert.assertEquals;
 
-@SmallTest
+@RunWith(RobolectricTestRunner.class)
 public class DownloadRequestTest {
 
     @Test
