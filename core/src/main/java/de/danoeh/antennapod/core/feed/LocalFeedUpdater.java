@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -179,8 +180,16 @@ public class LocalFeedUpdater {
     private static void reportError(Feed feed, String reasonDetailed) {
         DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
                 DownloadError.ERROR_IO_ERROR, false, reasonDetailed, true);
-        DBWriter.addDownloadStatus(status);
-        DBWriter.setFeedLastUpdateFailed(feed.getId(), true);
+        try {
+            DBWriter.addDownloadStatus(status).get();
+        } catch (ExecutionException | InterruptedException e) {
+            // ignore error
+        }
+        try {
+            DBWriter.setFeedLastUpdateFailed(feed.getId(), true).get();
+        } catch (ExecutionException | InterruptedException e) {
+            // ignore error
+        }
     }
 
     /**
@@ -189,8 +198,16 @@ public class LocalFeedUpdater {
     private static void reportSuccess(Feed feed) {
         DownloadStatus status = new DownloadStatus(feed, feed.getTitle(),
                 DownloadError.SUCCESS, true, null, true);
-        DBWriter.addDownloadStatus(status);
-        DBWriter.setFeedLastUpdateFailed(feed.getId(), false);
+        try {
+            DBWriter.addDownloadStatus(status).get();
+        } catch (ExecutionException | InterruptedException e) {
+            // ignore error
+        }
+        try {
+            DBWriter.setFeedLastUpdateFailed(feed.getId(), false).get();
+        } catch (ExecutionException | InterruptedException e) {
+            // ignore error
+        }
     }
 
     /**
