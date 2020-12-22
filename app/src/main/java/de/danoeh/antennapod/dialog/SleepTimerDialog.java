@@ -138,7 +138,8 @@ public class SleepTimerDialog extends DialogFragment {
                 if (spTimeUnit.getSelectedItemPosition() >= 3) {
                     int timeValue = Integer.parseInt(etxtTime.getText().toString());
                     if (timeValue > DBReader.getQueueIDList().size()) {
-                        Snackbar.make(content, R.string.time_dialog_invalid_episodes_input, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(content,
+                                R.string.time_dialog_invalid_episodes_input, Snackbar.LENGTH_LONG).show();
                         return;
                     }
                 }
