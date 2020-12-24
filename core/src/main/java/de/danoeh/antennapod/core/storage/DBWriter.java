@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
@@ -70,6 +71,14 @@ public class DBWriter {
     }
 
     private DBWriter() {
+    }
+
+    public static void tearDownTests() {
+        try {
+            dbExec.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            // ignore error
+        }
     }
 
     /**
