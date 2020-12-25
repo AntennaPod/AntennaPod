@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,8 +76,7 @@ public class AddFeedFragment extends Fragment {
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(PodcastIndexPodcastSearcher.class)));
 
         viewBinding.combinedFeedSearchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            String query = viewBinding.combinedFeedSearchEditText.getText().toString();
-            performSearch(query);
+            performSearch(viewBinding.combinedFeedSearchEditText);
             return true;
         });
 
@@ -114,8 +114,7 @@ public class AddFeedFragment extends Fragment {
             viewBinding.addLocalFolderButton.setVisibility(View.GONE);
         }
 
-        String query = viewBinding.combinedFeedSearchEditText.getText().toString();
-        viewBinding.searchButton.setOnClickListener(view -> performSearch(query));
+        viewBinding.searchButton.setOnClickListener(view -> performSearch(viewBinding.combinedFeedSearchEditText));
 
         return viewBinding.getRoot();
     }
@@ -145,8 +144,8 @@ public class AddFeedFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void performSearch(String query) {
-
+    private void performSearch(EditText searchEditText) {
+        String query = searchEditText.getText().toString();
         if (query.matches("http[s]?://.*")) {
             addUrl(query);
             return;
