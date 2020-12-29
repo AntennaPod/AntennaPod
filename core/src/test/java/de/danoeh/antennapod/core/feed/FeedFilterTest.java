@@ -1,19 +1,15 @@
-package de.test.antennapod.feed;
+package de.danoeh.antennapod.core.feed;
 
-import androidx.test.filters.SmallTest;
-import de.danoeh.antennapod.core.feed.FeedFilter;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-@SmallTest
 public class FeedFilterTest {
 
     @Test
-    public void testNullFilter() throws Exception {
+    public void testNullFilter() {
         FeedFilter filter = new FeedFilter();
         FeedItem item = new FeedItem();
         item.setTitle("Hello world");
@@ -26,7 +22,7 @@ public class FeedFilterTest {
     }
 
     @Test
-    public void testBasicIncludeFilter() throws Exception {
+    public void testBasicIncludeFilter() {
         String includeFilter = "Hello";
         FeedFilter filter = new FeedFilter(includeFilter, "");
         FeedItem item = new FeedItem();
@@ -44,7 +40,7 @@ public class FeedFilterTest {
     }
 
     @Test
-    public void testBasicExcludeFilter() throws Exception {
+    public void testBasicExcludeFilter() {
         String excludeFilter = "Hello";
         FeedFilter filter = new FeedFilter("", excludeFilter);
         FeedItem item = new FeedItem();
@@ -62,7 +58,7 @@ public class FeedFilterTest {
     }
 
     @Test
-    public void testComplexIncludeFilter() throws Exception {
+    public void testComplexIncludeFilter() {
         String includeFilter = "Hello \n\"Two words\"";
         FeedFilter filter = new FeedFilter(includeFilter, "");
         FeedItem item = new FeedItem();
@@ -84,7 +80,7 @@ public class FeedFilterTest {
     }
 
     @Test
-    public void testComplexExcludeFilter() throws Exception {
+    public void testComplexExcludeFilter() {
         String excludeFilter = "Hello \"Two words\"";
         FeedFilter filter = new FeedFilter("", excludeFilter);
         FeedItem item = new FeedItem();
@@ -106,7 +102,7 @@ public class FeedFilterTest {
     }
 
     @Test
-    public void testComboFilter() throws Exception {
+    public void testComboFilter() {
         String includeFilter = "Hello world";
         String excludeFilter = "dislike";
         FeedFilter filter = new FeedFilter(includeFilter, excludeFilter);
