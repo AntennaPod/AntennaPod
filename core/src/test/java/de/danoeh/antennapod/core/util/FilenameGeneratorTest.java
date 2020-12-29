@@ -87,16 +87,13 @@ public class FilenameGeneratorTest {
 
     /**
      * Tests if files can be created.
-     *
-     * @throws IOException
      */
     private void createFiles(String name) throws IOException {
         File cache = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalCacheDir();
         File testFile = new File(cache, name);
-        testFile.mkdir();
+        assertTrue(testFile.mkdir());
         assertTrue(testFile.exists());
-        testFile.delete();
+        assertTrue(testFile.delete());
         assertTrue(testFile.createNewFile());
     }
-
 }
