@@ -1,22 +1,22 @@
-package de.test.antennapod.util;
+package de.danoeh.antennapod.core.util;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.SmallTest;
 import android.text.TextUtils;
 
 import java.io.File;
 import java.io.IOException;
 
-import de.danoeh.antennapod.core.util.FileNameGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-@SmallTest
+@RunWith(RobolectricTestRunner.class)
 public class FilenameGeneratorTest {
 
     public FilenameGeneratorTest() {
