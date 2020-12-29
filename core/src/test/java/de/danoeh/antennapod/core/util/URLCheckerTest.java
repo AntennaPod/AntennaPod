@@ -1,17 +1,17 @@
-package de.test.antennapod.util;
+package de.danoeh.antennapod.core.util;
 
-import androidx.test.filters.SmallTest;
-import de.danoeh.antennapod.core.util.URLChecker;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for URLChecker
+ * Test class for {@link URLChecker}
  */
-@SmallTest
+@RunWith(RobolectricTestRunner.class)
 public class URLCheckerTest {
 
     @Test
@@ -78,7 +78,7 @@ public class URLCheckerTest {
     }
 
     @Test
-    public void testAntennaPodSubscribeProtocolNoScheme() throws Exception {
+    public void testAntennaPodSubscribeProtocolNoScheme() {
         final String in = "antennapod-subscribe://example.com";
         final String out = URLChecker.prepareURL(in);
         assertEquals("http://example.com", out);
@@ -92,14 +92,14 @@ public class URLCheckerTest {
     }
 
     @Test
-    public void testAntennaPodSubscribeProtocolWithScheme() throws Exception {
+    public void testAntennaPodSubscribeProtocolWithScheme() {
         final String in = "antennapod-subscribe://https://example.com";
         final String out = URLChecker.prepareURL(in);
         assertEquals("https://example.com", out);
     }
 
     @Test
-    public void testProtocolRelativeUrlIsAbsolute() throws Exception {
+    public void testProtocolRelativeUrlIsAbsolute() {
         final String in = "https://example.com";
         final String inBase = "http://examplebase.com";
         final String out = URLChecker.prepareURL(in, inBase);
@@ -107,7 +107,7 @@ public class URLCheckerTest {
     }
 
     @Test
-    public void testProtocolRelativeUrlIsRelativeHttps() throws Exception {
+    public void testProtocolRelativeUrlIsRelativeHttps() {
         final String in = "//example.com";
         final String inBase = "https://examplebase.com";
         final String out = URLChecker.prepareURL(in, inBase);
@@ -115,7 +115,7 @@ public class URLCheckerTest {
     }
 
     @Test
-    public void testProtocolRelativeUrlIsHttpsWithAPSubscribeProtocol() throws Exception {
+    public void testProtocolRelativeUrlIsHttpsWithAPSubscribeProtocol() {
         final String in = "//example.com";
         final String inBase = "antennapod-subscribe://https://examplebase.com";
         final String out = URLChecker.prepareURL(in, inBase);
@@ -123,7 +123,7 @@ public class URLCheckerTest {
     }
 
     @Test
-    public void testProtocolRelativeUrlBaseUrlNull() throws Exception {
+    public void testProtocolRelativeUrlBaseUrlNull() {
         final String in = "example.com";
         final String out = URLChecker.prepareURL(in, null);
         assertEquals("http://example.com", out);
