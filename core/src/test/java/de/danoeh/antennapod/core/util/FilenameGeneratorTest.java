@@ -3,7 +3,9 @@ package de.danoeh.antennapod.core.util;
 import androidx.test.platform.app.InstrumentationRegistry;
 import android.text.TextUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -18,8 +20,22 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricTestRunner.class)
 public class FilenameGeneratorTest {
 
-    public FilenameGeneratorTest() {
-        super();
+    @Test
+    public void testSystemEnvironment() throws Exception {
+        executeCommand("getconf PATH_MAX /");
+        executeCommand("getconf NAME_MAX /");
+    }
+
+    private void executeCommand(String command) throws Exception {
+        System.out.println("Command: " + command);
+        Process p = Runtime.getRuntime().exec(command);
+        p.waitFor();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
     }
 
     @Test
