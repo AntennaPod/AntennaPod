@@ -1,26 +1,28 @@
-package de.test.antennapod.util.syndication;
+package de.danoeh.antennapod.core.util.syndication;
 
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.charset.Charset;
-import java.util.Map;
-
-import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for FeedDiscoverer
+ * Test class for {@link FeedDiscoverer}
  */
+@RunWith(RobolectricTestRunner.class)
 public class FeedDiscovererTest {
 
     private FeedDiscoverer fd;
@@ -28,10 +30,11 @@ public class FeedDiscovererTest {
     private File testDir;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         fd = new FeedDiscoverer();
         testDir = new File(InstrumentationRegistry
                 .getInstrumentation().getTargetContext().getFilesDir(), "FeedDiscovererTest");
+        //noinspection ResultOfMethodCallIgnored
         testDir.mkdir();
         assertTrue(testDir.exists());
     }
@@ -41,6 +44,7 @@ public class FeedDiscovererTest {
         FileUtils.deleteDirectory(testDir);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private String createTestHtmlString(String rel, String type, String href, String title) {
         return String.format("<html><head><title>Test</title><link rel=\"%s\" type=\"%s\" href=\"%s\" title=\"%s\"></head><body></body></html>",
                 rel, type, href, title);
@@ -69,7 +73,7 @@ public class FeedDiscovererTest {
         } else {
             File testFile = new File(testDir, "feed");
             FileOutputStream out = new FileOutputStream(testFile);
-            IOUtils.write(html, out, Charset.forName("UTF-8"));
+            IOUtils.write(html, out, StandardCharsets.UTF_8);
             out.close();
             res = fd.findLinks(testFile, base);
         }

@@ -1,9 +1,8 @@
-package de.test.antennapod.util.playback;
+package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.SmallTest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,10 +14,14 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.Timeline;
+import de.danoeh.antennapod.core.storage.DBReader;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,18 +29,25 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for timeline.
+ * Test class for {@link Timeline}.
  */
-@SmallTest
+@RunWith(RobolectricTestRunner.class)
 public class TimelineTest {
 
     private Context context;
+
+    @BeforeClass
+    public static void beforeClass() {
+        //noinspection ResultOfMethodCallIgnored
+        Mockito.mockStatic(DBReader.class);
+    }
 
     @Before
     public void setUp() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    @SuppressWarnings("SameParameterValue")
     private Playable newTestPlayable(List<Chapter> chapters, String shownotes, int duration) {
         FeedItem item = new FeedItem(0, "Item", "item-id", "http://example.com/item", new Date(), FeedItem.PLAYED, null);
         item.setChapters(chapters);
