@@ -1,15 +1,15 @@
 package de.danoeh.antennapod.core.util;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import android.text.TextUtils;
 
-import java.io.File;
-import java.io.IOException;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,26 +19,22 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricTestRunner.class)
 public class FilenameGeneratorTest {
 
-    public FilenameGeneratorTest() {
-        super();
-    }
-
     @Test
-    public void testGenerateFileName() throws IOException {
+    public void testGenerateFileName() throws Exception {
         String result = FileNameGenerator.generateFileName("abc abc");
         assertEquals(result, "abc abc");
         createFiles(result);
     }
 
     @Test
-    public void testGenerateFileName1() throws IOException {
+    public void testGenerateFileName1() throws Exception {
         String result = FileNameGenerator.generateFileName("ab/c: <abc");
         assertEquals(result, "abc abc");
         createFiles(result);
     }
 
     @Test
-    public void testGenerateFileName2() throws IOException {
+    public void testGenerateFileName2() throws Exception {
         String result = FileNameGenerator.generateFileName("abc abc ");
         assertEquals(result, "abc abc");
         createFiles(result);
@@ -69,7 +65,7 @@ public class FilenameGeneratorTest {
     }
 
     @Test
-    public void testLongFilename() throws IOException {
+    public void testLongFilename() throws Exception {
         String longName = StringUtils.repeat("x", 20 + FileNameGenerator.MAX_FILENAME_LENGTH);
         String result = FileNameGenerator.generateFileName(longName);
         assertTrue(result.length() <= FileNameGenerator.MAX_FILENAME_LENGTH);
@@ -87,16 +83,13 @@ public class FilenameGeneratorTest {
 
     /**
      * Tests if files can be created.
-     *
-     * @throws IOException
      */
-    private void createFiles(String name) throws IOException {
+    private void createFiles(String name) throws Exception {
         File cache = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalCacheDir();
         File testFile = new File(cache, name);
-        testFile.mkdir();
+        assertTrue(testFile.mkdirs());
         assertTrue(testFile.exists());
-        testFile.delete();
+        assertTrue(testFile.delete());
         assertTrue(testFile.createNewFile());
     }
-
 }
