@@ -90,8 +90,7 @@ public class FilenameGeneratorTest {
     private void createFiles(String name) throws Exception {
         File cache = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalCacheDir();
         File testFile = new File(cache, name);
-        System.out.println("testFile: " + testFile.getCanonicalPath());
-        assertTrue(testFile.mkdir());
+        assertTrue(testFile.mkdirs());
         assertTrue(testFile.exists());
         assertTrue(testFile.delete());
         assertTrue(testFile.createNewFile());
