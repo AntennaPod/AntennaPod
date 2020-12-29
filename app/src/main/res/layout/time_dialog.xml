@@ -50,19 +50,46 @@
             android:visibility="gone">
 
         <TextView
-                android:text="00:00:00"
-                android:layout_gravity="center"
-                android:textSize="32sp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/time"/>
+            android:text="00:00:00"
+            android:layout_gravity="center"
+            android:textSize="32sp" 
+            android:textColor="?android:attr/textColorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/time"/>
 
         <Button
-                android:text="@string/disable_sleeptimer_label"
-                android:layout_width="match_parent"
+            android:text="@string/disable_sleeptimer_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/disableSleeptimerButton"/>
+            
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/extend_sleep_five_minutes_button"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/disableSleeptimerButton"/>
+                android:layout_marginEnd="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_weight="0.5"
+                android:padding="5dp"
+                android:text="+5 min" />
+
+            <Button
+                android:id="@+id/extend_sleep_ten_minutes_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_weight="0.5"
+                android:text="+10 min" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

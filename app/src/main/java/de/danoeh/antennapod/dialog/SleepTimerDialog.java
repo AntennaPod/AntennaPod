@@ -37,6 +37,8 @@ public class SleepTimerDialog extends DialogFragment {
     private LinearLayout timeSetup;
     private LinearLayout timeDisplay;
     private TextView time;
+    private Button extend_sleep_five_minutes_button;
+    private Button extend_sleep_ten_minutes_button;
 
     public SleepTimerDialog() {
 
@@ -87,6 +89,18 @@ public class SleepTimerDialog extends DialogFragment {
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
         time = content.findViewById(R.id.time);
+        extend_sleep_five_minutes_button = content.findViewById(R.id.extend_sleep_five_minutes_button);
+        extend_sleep_five_minutes_button.setOnClickListener(v -> {
+            if (controller != null) {
+                controller.extendSleepTimer(5 * 1000 * 60);
+            }
+        });
+        extend_sleep_ten_minutes_button = content.findViewById(R.id.extend_sleep_ten_minutes_button);
+        extend_sleep_ten_minutes_button.setOnClickListener(v -> {
+            if (controller != null) {
+                controller.extendSleepTimer(10 * 1000 * 60);
+            }
+        });
 
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.postDelayed(() -> {
