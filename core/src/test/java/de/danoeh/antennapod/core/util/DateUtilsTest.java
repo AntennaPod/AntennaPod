@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
-import androidx.test.filters.SmallTest;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -12,16 +12,17 @@ import static org.junit.Assert.assertEquals;
 
 /**
  * Unit test for {@link DateUtils}.
- *
- * Note: It NEEDS to be run in android devices, i.e., it cannot be run in standard JDK, because
- * the test invokes some android platform-specific behavior in the underlying
- * {@link java.text.SimpleDateFormat} used by {@link DateUtils}.
- *
  */
-@SmallTest
+@SuppressWarnings("ConstantConditions")
 public class DateUtilsTest {
+
+    @Before
+    public void setUp() {
+        DateUtils.dateFormatParser.setTimeZone(DateUtils.defaultTimezone);
+    }
+
     @Test
-    public void testParseDateWithMicroseconds() throws Exception {
+    public void testParseDateWithMicroseconds() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 13, 31, 4);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 963);
@@ -30,7 +31,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseDateWithCentiseconds() throws Exception {
+    public void testParseDateWithCentiseconds() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 13, 31, 4);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 960);
@@ -39,7 +40,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseDateWithDeciseconds() throws Exception {
+    public void testParseDateWithDeciseconds() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 13, 31, 4);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 900);
@@ -49,7 +50,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseDateWithMicrosecondsAndTimezone() throws Exception {
+    public void testParseDateWithMicrosecondsAndTimezone() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 6, 31, 4);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 963);
@@ -58,7 +59,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseDateWithCentisecondsAndTimezone() throws Exception {
+    public void testParseDateWithCentisecondsAndTimezone() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 6, 31, 4);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 960);
@@ -67,7 +68,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseDateWithDecisecondsAndTimezone() throws Exception {
+    public void testParseDateWithDecisecondsAndTimezone() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 6, 31, 4);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 900);
@@ -77,7 +78,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseDateWithTimezoneName() throws Exception {
+    public void testParseDateWithTimezoneName() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 6, 31, 4);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis());
@@ -86,7 +87,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseDateWithTimezoneName2() throws Exception {
+    public void testParseDateWithTimezoneName2() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 6, 31, 0);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis());
@@ -95,7 +96,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testParseDateWithTimeZoneOffset() throws Exception {
+    public void testParseDateWithTimeZoneOffset() {
         GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 12, 16, 12);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis());
@@ -104,7 +105,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testAsctime() throws Exception {
+    public void testAsctime() {
         GregorianCalendar exp = new GregorianCalendar(2011, 4, 25, 12, 33, 0);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis());
@@ -113,7 +114,7 @@ public class DateUtilsTest {
     }
 
     @Test
-    public void testMultipleConsecutiveSpaces() throws Exception {
+    public void testMultipleConsecutiveSpaces() {
         GregorianCalendar exp = new GregorianCalendar(2010, 2, 23, 6, 6, 26);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis());
@@ -128,7 +129,7 @@ public class DateUtilsTest {
      * <code>-0800</code> (RFC 822 format)
      */
     @Test
-    public void testParseDateWithNoTimezonePadding() throws Exception {
+    public void testParseDateWithNoTimezonePadding() {
         GregorianCalendar exp = new GregorianCalendar(2017, 1, 22, 22, 28, 0);
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 2);
@@ -143,7 +144,7 @@ public class DateUtilsTest {
      * @see #testParseDateWithNoTimezonePadding()
      */
     @Test
-    public void testParseDateWithForCest() throws Exception {
+    public void testParseDateWithForCest() {
         GregorianCalendar exp1 = new GregorianCalendar(2017, 0, 28, 22, 0, 0);
         exp1.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected1 = new Date(exp1.getTimeInMillis());
