@@ -115,7 +115,7 @@ public class URLCheckerTest {
     }
 
     @Test
-    public void testProtocolRelativeUrlIsHttpsWithAPSubscribeProtocol() {
+    public void testProtocolRelativeUrlIsHttpsWithApSubscribeProtocol() {
         final String in = "//example.com";
         final String inBase = "antennapod-subscribe://https://examplebase.com";
         final String out = URLChecker.prepareURL(in, inBase);
