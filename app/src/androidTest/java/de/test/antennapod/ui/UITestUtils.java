@@ -9,7 +9,6 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.test.antennapod.util.service.download.HTTPBin;
-import de.test.antennapod.util.syndication.feedgenerator.Rss2Generator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -75,12 +74,8 @@ public class UITestUtils {
         }
     }
 
-    private String hostFeed(Feed feed) throws IOException {
+    private String hostFeed(Feed feed) {
         File feedFile = new File(hostedFeedDir, feed.getTitle());
-        FileOutputStream out = new FileOutputStream(feedFile);
-        Rss2Generator generator = new Rss2Generator();
-        generator.writeFeed(feed, out, "UTF-8", 0);
-        out.close();
         int id = server.serveFile(feedFile);
         Assert.assertTrue(id != -1);
         return String.format(Locale.US, "%s/files/%d", server.getBaseUrl(), id);
