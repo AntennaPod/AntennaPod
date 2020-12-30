@@ -102,109 +102,117 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
         int[] widgetIds = manager.getAppWidgetIds(playerWidget);
-        RemoteViews views = new RemoteViews(getPackageName(), R.layout.player_widget);
-        final PendingIntent startMediaPlayer = PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
-                PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);
 
-        boolean nothingPlaying = false;
-        Playable media;
-        PlayerStatus status;
-        if (playbackService != null) {
-            media = playbackService.getPlayable();
-            status = playbackService.getStatus();
-        } else {
-            media = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
-            status = PlayerStatus.STOPPED;
-        }
-
-        if (media != null) {
-            views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
-            views.setOnClickPendingIntent(R.id.layout_center, startMediaPlayer);
-
-            try {
-                Bitmap icon;
-                int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
-                icon = Glide.with(PlayerWidgetJobService.this)
-                        .asBitmap()
-                        .load(ImageResourceUtils.getImageLocation(media))
-                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
-                        .submit(iconSize, iconSize)
-                        .get(500, TimeUnit.MILLISECONDS);
-                views.setImageViewBitmap(R.id.imgvCover, icon);
-            } catch (Throwable tr) {
-                Log.e(TAG, "Error loading the media icon for the widget", tr);
-                views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
+        for (int id : widgetIds) {
+            RemoteViews views;
+            SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
+            boolean bRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
+            boolean bFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
+            boolean bSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
+            if (!bRewind && !bFastForward && !bSkip) {
+                views = new RemoteViews(getPackageName(), R.layout.player_widget);
+            } else {
+                views = new RemoteViews(getPackageName(), R.layout.player_widget_more);
             }
+            final PendingIntent startMediaPlayer = PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
+                    PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);
 
-            views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
-            views.setViewVisibility(R.id.txtvTitle, View.VISIBLE);
-            views.setViewVisibility(R.id.txtNoPlaying, View.GONE);
-
-            String progressString;
+            boolean nothingPlaying = false;
+            Playable media;
+            PlayerStatus status;
             if (playbackService != null) {
-                progressString = getProgressString(playbackService.getCurrentPosition(),
-                        playbackService.getDuration(), playbackService.getCurrentPlaybackSpeed());
+                media = playbackService.getPlayable();
+                status = playbackService.getStatus();
             } else {
-                progressString = getProgressString(media.getPosition(), media.getDuration(), PlaybackSpeedUtils.getCurrentPlaybackSpeed(media));
+                media = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
+                status = PlayerStatus.STOPPED;
             }
 
-            if (progressString != null) {
-                views.setViewVisibility(R.id.txtvProgress, View.VISIBLE);
-                views.setTextViewText(R.id.txtvProgress, progressString);
-            }
+            if (media != null) {
+                views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
+                views.setOnClickPendingIntent(R.id.layout_center, startMediaPlayer);
 
-            if (status == PlayerStatus.PLAYING) {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_pause_white_48dp);
-                views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
-            } else {
-                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
-                views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
-            }
-            views.setOnClickPendingIntent(R.id.butPlay,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
-            views.setOnClickPendingIntent(R.id.butRew,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
-            views.setOnClickPendingIntent(R.id.butFastForward,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
-            views.setOnClickPendingIntent(R.id.butSkip,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT));
-        } else {
-            nothingPlaying = true;
-        }
-
-        if (nothingPlaying) {
-            views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
-            views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
-            views.setViewVisibility(R.id.txtvProgress, View.GONE);
-            views.setViewVisibility(R.id.txtvTitle, View.GONE);
-            views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
-            views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
-            views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
-        }
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            for (int id : widgetIds) {
-                Bundle options = manager.getAppWidgetOptions(id);
-                int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                int columns = getCellsForSize(minWidth);
-                if (columns < 3) {
-                    views.setViewVisibility(R.id.layout_center, View.INVISIBLE);
-                } else {
-                    views.setViewVisibility(R.id.layout_center, View.VISIBLE);
+                try {
+                    Bitmap icon;
+                    int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+                    icon = Glide.with(PlayerWidgetJobService.this)
+                            .asBitmap()
+                            .load(ImageResourceUtils.getImageLocation(media))
+                            .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                            .submit(iconSize, iconSize)
+                            .get(500, TimeUnit.MILLISECONDS);
+                    views.setImageViewBitmap(R.id.imgvCover, icon);
+                } catch (Throwable tr) {
+                    Log.e(TAG, "Error loading the media icon for the widget", tr);
+                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
                 }
 
-                SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
-                int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
-                views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
-                boolean bRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND, false);
-                views.setInt(R.id.butRew, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id , false)? View.VISIBLE : View.GONE);
-                views.setInt(R.id.butFastForward, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false) ? View.VISIBLE : View.GONE);
-                views.setInt(R.id.butSkip, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id , false) ? View.VISIBLE : View.GONE);
+                views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
+                views.setViewVisibility(R.id.txtvTitle, View.VISIBLE);
+                views.setViewVisibility(R.id.txtNoPlaying, View.GONE);
 
-                manager.updateAppWidget(id, views);
+                String progressString;
+                if (playbackService != null) {
+                    progressString = getProgressString(playbackService.getCurrentPosition(),
+                            playbackService.getDuration(), playbackService.getCurrentPlaybackSpeed());
+                } else {
+                    progressString = getProgressString(media.getPosition(), media.getDuration(), PlaybackSpeedUtils.getCurrentPlaybackSpeed(media));
+                }
+
+                if (progressString != null) {
+                    views.setViewVisibility(R.id.txtvProgress, View.VISIBLE);
+                    views.setTextViewText(R.id.txtvProgress, progressString);
+                }
+
+                if (status == PlayerStatus.PLAYING) {
+                    views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_pause_white_48dp);
+                    views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
+                } else {
+                    views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
+                    views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
+                }
+                views.setOnClickPendingIntent(R.id.butPlay,
+                        createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                views.setOnClickPendingIntent(R.id.butRew,
+                        createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
+                views.setOnClickPendingIntent(R.id.butFastForward,
+                        createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+                views.setOnClickPendingIntent(R.id.butSkip,
+                        createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT));
+            } else {
+                nothingPlaying = true;
             }
-        } else {
-            manager.updateAppWidget(playerWidget, views);
+
+            if (nothingPlaying) {
+                views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
+                views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                views.setViewVisibility(R.id.txtvProgress, View.GONE);
+                views.setViewVisibility(R.id.txtvTitle, View.GONE);
+                views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
+                views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
+                views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
+            }
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                    Bundle options = manager.getAppWidgetOptions(id);
+                    int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                    int columns = getCellsForSize(minWidth);
+                    if (columns < 3) {
+                        views.setViewVisibility(R.id.layout_center, View.INVISIBLE);
+                    } else {
+                        views.setViewVisibility(R.id.layout_center, View.VISIBLE);
+                    }
+
+                    int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
+                    views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
+                    views.setInt(R.id.butRew, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false) ? View.VISIBLE : View.GONE);
+                    views.setInt(R.id.butFastForward, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false) ? View.VISIBLE : View.GONE);
+                    views.setInt(R.id.butSkip, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false) ? View.VISIBLE : View.GONE);
+
+                    manager.updateAppWidget(id, views);
+            } else {
+                manager.updateAppWidget(playerWidget, views);
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:resizeMode="horizontal|vertical"
+                    android:resizeMode="horizontal"
                     android:initialLayout="@layout/player_widget"
                     android:updatePeriodMillis="86400000"
                     android:previewImage="@drawable/ic_widget_preview"
@@ -8,4 +8,5 @@
                     android:minWidth="250dp"
                     android:minResizeWidth="40dp"
                     android:configure="de.danoeh.antennapod.activity.WidgetConfigActivity">
+
 </appwidget-provider>
