@@ -30,6 +30,7 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import static org.junit.Assert.assertEquals;
@@ -81,6 +82,7 @@ public class LocalFeedUpdaterTest {
 
     @After
     public void tearDown() {
+        DBWriter.tearDownTests();
         PodDBAdapter.tearDownTests();
     }
 
