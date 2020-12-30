@@ -1,6 +1,8 @@
-package de.test.antennapod.util.syndication.feedgenerator;
+package de.danoeh.antennapod.core.syndication.handler;
 
 import android.util.Xml;
+
+import androidx.annotation.NonNull;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -22,11 +24,7 @@ public class AtomGenerator implements FeedGenerator {
     private static final long FEATURE_USE_RFC3339LOCAL = 1;
 
     @Override
-    public void writeFeed(Feed feed, OutputStream outputStream, String encoding, long flags) throws IOException {
-        if (feed == null) throw new IllegalArgumentException("feed = null");
-        if (outputStream == null) throw new IllegalArgumentException("outputStream = null");
-        if (encoding == null) throw new IllegalArgumentException("encoding = null");
-
+    public void writeFeed(@NonNull Feed feed, @NonNull OutputStream outputStream, @NonNull String encoding, long flags) throws IOException {
         XmlSerializer xml = Xml.newSerializer();
         xml.setOutput(outputStream, encoding);
         xml.startDocument(encoding, null);

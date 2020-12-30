@@ -1,9 +1,9 @@
-package de.test.antennapod.handler;
+package de.danoeh.antennapod.core.syndication.handler;
 
-import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.test.antennapod.util.syndication.feedgenerator.AtomGenerator;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
@@ -13,12 +13,12 @@ import static org.junit.Assert.assertEquals;
 /**
  * Tests for Atom feeds in FeedHandler.
  */
-@SmallTest
+@RunWith(RobolectricTestRunner.class)
 public class AtomParserTest extends FeedParserTestBase {
     @Test
     public void testAtomBasic() throws Exception {
         Feed f1 = createTestFeed(10, true);
-        Feed f2 = runFeedTest(f1, new AtomGenerator(), "UTF-8", 0);
+        Feed f2 = runFeedTest(f1, new AtomGenerator(), 0);
         feedValid(f1, f2, Feed.TYPE_ATOM1);
     }
 
@@ -34,7 +34,7 @@ public class AtomParserTest extends FeedParserTestBase {
                 xml.text(" " + logo + "\n");
                 xml.endTag(null, "logo");
             }
-        }, "UTF-8", 0);
+        }, 0);
         assertEquals(logo, f2.getImageUrl());
     }
 }

@@ -1,4 +1,6 @@
-package de.test.antennapod.util.syndication.feedgenerator;
+package de.danoeh.antennapod.core.syndication.handler;
+
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -24,5 +26,5 @@ public interface FeedGenerator {
      * @param encoding     The encoding to use. Must not be null.
      * @param flags        Optional argument for enabling implementation-dependent features.
      */
-    void writeFeed(Feed feed, OutputStream outputStream, String encoding, long flags) throws IOException;
+    void writeFeed(@NonNull Feed feed, @NonNull OutputStream outputStream, @NonNull String encoding, long flags) throws IOException;
 }

@@ -1,4 +1,4 @@
-package de.test.antennapod.util.syndication.feedgenerator;
+package de.danoeh.antennapod.core.syndication.handler;
 
 import org.xmlpull.v1.XmlSerializer;
 

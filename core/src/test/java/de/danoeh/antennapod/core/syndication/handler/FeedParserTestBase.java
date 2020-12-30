@@ -1,4 +1,4 @@
-package de.test.antennapod.handler;
+package de.danoeh.antennapod.core.syndication.handler;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -6,9 +6,6 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
-import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
-import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
 import org.junit.After;
 import org.junit.Before;
 import org.xml.sax.SAXException;
@@ -30,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests for FeedHandler.
  */
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public abstract class FeedParserTestBase {
     private static final String FEEDS_DIR = "testfeeds";
 
@@ -61,9 +59,9 @@ public abstract class FeedParserTestBase {
         outputStream = null;
     }
 
-    protected Feed runFeedTest(Feed feed, FeedGenerator g, String encoding, long flags)
+    protected Feed runFeedTest(Feed feed, FeedGenerator g, long flags)
             throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
-        g.writeFeed(feed, outputStream, encoding, flags);
+        g.writeFeed(feed, outputStream, "UTF-8", flags);
         FeedHandler handler = new FeedHandler();
         Feed parsedFeed = new Feed(feed.getDownload_url(), feed.getLastUpdate());
         parsedFeed.setFile_url(file.getAbsolutePath());
@@ -108,6 +106,7 @@ public abstract class FeedParserTestBase {
                     FeedMedia media = item.getMedia();
                     FeedMedia parsedMedia = parsedItem.getMedia();
 
+                    //noinspection ConstantConditions
                     assertEquals(media.getDownload_url(), parsedMedia.getDownload_url());
                     assertEquals(media.getSize(), parsedMedia.getSize());
                     assertEquals(media.getMime_type(), parsedMedia.getMime_type());
