@@ -5,6 +5,7 @@ import android.app.WallpaperManager;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,9 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private SeekBar opacitySeekBar;
     private TextView opacityTextView;
     private RelativeLayout widgetPreview;
+    private CheckBox ckRewind;
+    private CheckBox ckFastFoward;
+    private CheckBox ckSkip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,10 @@ public class WidgetConfigActivity extends AppCompatActivity {
             }
 
         });
+
+        ckRewind = findViewById(R.id.ckRewind);
+        ckFastFoward = findViewById(R.id.ckFastFoward);
+        ckSkip = findViewById(R.id.ckSkip);
     }
 
     private void displayDeviceBackground() {
@@ -92,6 +100,9 @@ public class WidgetConfigActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(PlayerWidget.KEY_WIDGET_COLOR + appWidgetId, backgroundColor);
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_SKIP + appWidgetId, ckSkip.isChecked());
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_REWIND + appWidgetId, ckRewind.isChecked());
+        editor.putBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + appWidgetId, ckFastFoward.isChecked());
         editor.apply();
 
         Intent resultValue = new Intent();

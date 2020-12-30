@@ -196,6 +196,10 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
                 int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
                 views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
+                boolean bRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND, false);
+                views.setInt(R.id.butRew, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id , false)? View.VISIBLE : View.GONE);
+                views.setInt(R.id.butFastForward, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false) ? View.VISIBLE : View.GONE);
+                views.setInt(R.id.butSkip, "setVisibility", prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id , false) ? View.VISIBLE : View.GONE);
 
                 manager.updateAppWidget(id, views);
             }
