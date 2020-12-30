@@ -72,7 +72,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/extend_sleep_five_minutes_button"
+                android:id="@+id/extendSleepFiveMinutesButton"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                 android:text="+5 min" />
 
             <Button
-                android:id="@+id/extend_sleep_ten_minutes_button"
+                android:id="@+id/extendSleepTenMinutesButton"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                 android:text="+10 min" />
 
             <Button
-                android:id="@+id/extend_sleep_twenty_minutes_button"
+                android:id="@+id/extendSleepTwentyMinutesButton"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
