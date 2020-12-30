@@ -106,7 +106,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         for (int id : widgetIds) {
             RemoteViews views;
             SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
-            boolean showRewind= prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
+            boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
             if (!showRewind && !showFastForward && !showSkip) {
