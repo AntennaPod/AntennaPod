@@ -77,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:layout_marginRight="4dp"
-                android:layout_weight="0.333"
+                android:layout_weight="1"
                 android:padding="5dp"
                 android:text="+5 min" />
 
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:layout_weight="0.333"
+                android:layout_weight="1"
                 android:text="+10 min" />
 
             <Button
@@ -99,7 +99,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_weight="0.333"
+                android:layout_weight="1"
                 android:text="+20 min" />
 
         </LinearLayout>
