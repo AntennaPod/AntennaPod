@@ -82,48 +82,4 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:minHeight="36dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <ImageButton
-            android:id="@+id/butRew"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="2dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/rewind_label"
-            android:padding="2dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_av_fast_rewind_white_48dp" />
-
-        <ImageButton
-            android:id="@+id/butFastForward"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="2dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/fast_forward_label"
-            android:padding="2dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_av_fast_forward_white_48dp" />
-
-        <ImageButton
-            android:id="@+id/butSkip"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="2dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="@string/skip_episode_label"
-            android:padding="2dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_av_skip_white_24dp" />
-    </LinearLayout>
-
 </FrameLayout>
