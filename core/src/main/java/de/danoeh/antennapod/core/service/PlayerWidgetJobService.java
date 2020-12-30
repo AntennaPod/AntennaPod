@@ -106,10 +106,10 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         for (int id : widgetIds) {
             RemoteViews views;
             SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
-            boolean bRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
-            boolean bFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
-            boolean bSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
-            if (!bRewind && !bFastForward && !bSkip) {
+            boolean showRewind= prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
+            boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
+            boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
+            if (!showRewind && !showFastForward && !showSkip) {
                 views = new RemoteViews(getPackageName(), R.layout.player_widget);
             } else {
                 views = new RemoteViews(getPackageName(), R.layout.player_widget_more);
@@ -156,7 +156,9 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                     progressString = getProgressString(playbackService.getCurrentPosition(),
                             playbackService.getDuration(), playbackService.getCurrentPlaybackSpeed());
                 } else {
-                    progressString = getProgressString(media.getPosition(), media.getDuration(), PlaybackSpeedUtils.getCurrentPlaybackSpeed(media));
+                    progressString = getProgressString(media.getPosition(),
+                            media.getDuration(),
+                            PlaybackSpeedUtils.getCurrentPlaybackSpeed(media));
                 }
 
                 if (progressString != null) {
@@ -194,24 +196,24 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             }
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    Bundle options = manager.getAppWidgetOptions(id);
-                    int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-                    int columns = getCellsForSize(minWidth);
-                    if (columns < 3) {
-                        views.setViewVisibility(R.id.layout_center, View.INVISIBLE);
-                    } else {
-                        views.setViewVisibility(R.id.layout_center, View.VISIBLE);
-                    }
+                Bundle options = manager.getAppWidgetOptions(id);
+                int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+                int columns = getCellsForSize(minWidth);
+                if (columns < 3) {
+                    views.setViewVisibility(R.id.layout_center, View.INVISIBLE);
+                } else {
+                    views.setViewVisibility(R.id.layout_center, View.VISIBLE);
+                }
 
-                    int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
-                    views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
-                    if (bFastForward || bRewind || bSkip) {
-                        views.setInt(R.id.butRew, "setVisibility", bRewind ? View.VISIBLE : View.GONE);
-                        views.setInt(R.id.butFastForward, "setVisibility", bFastForward ? View.VISIBLE : View.GONE);
-                        views.setInt(R.id.butSkip, "setVisibility", bSkip ? View.VISIBLE : View.GONE);
-                    }
+                int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
+                views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
+                if (showRewind || showSkip || showFastForward) {
+                    views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
+                    views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
+                    views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
+                }
 
-                    manager.updateAppWidget(id, views);
+                manager.updateAppWidget(id, views);
             } else {
                 manager.updateAppWidget(playerWidget, views);
             }
