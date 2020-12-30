@@ -21,7 +21,8 @@ public class Rss2Generator implements FeedGenerator {
     public static final long FEATURE_WRITE_GUID = 1;
 
     @Override
-    public void writeFeed(@NonNull Feed feed, @NonNull OutputStream outputStream, @NonNull String encoding, long flags) throws IOException {
+    public void writeFeed(@NonNull Feed feed, @NonNull OutputStream outputStream, @NonNull String encoding, long flags)
+            throws IOException {
         XmlSerializer xml = Xml.newSerializer();
         xml.setOutput(outputStream, encoding);
         xml.startDocument(encoding, null);

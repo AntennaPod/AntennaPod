@@ -24,7 +24,8 @@ public class AtomGenerator implements FeedGenerator {
     private static final long FEATURE_USE_RFC3339LOCAL = 1;
 
     @Override
-    public void writeFeed(@NonNull Feed feed, @NonNull OutputStream outputStream, @NonNull String encoding, long flags) throws IOException {
+    public void writeFeed(@NonNull Feed feed, @NonNull OutputStream outputStream, @NonNull String encoding, long flags)
+            throws IOException {
         XmlSerializer xml = Xml.newSerializer();
         xml.setOutput(outputStream, encoding);
         xml.startDocument(encoding, null);

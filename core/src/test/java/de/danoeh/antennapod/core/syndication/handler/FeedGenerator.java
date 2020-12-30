@@ -26,5 +26,6 @@ public interface FeedGenerator {
      * @param encoding     The encoding to use. Must not be null.
      * @param flags        Optional argument for enabling implementation-dependent features.
      */
-    void writeFeed(@NonNull Feed feed, @NonNull OutputStream outputStream, @NonNull String encoding, long flags) throws IOException;
+    void writeFeed(@NonNull Feed feed, @NonNull OutputStream outputStream, @NonNull String encoding, long flags)
+            throws IOException;
 }
