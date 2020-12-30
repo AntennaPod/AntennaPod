@@ -87,23 +87,23 @@ public class SleepTimerDialog extends DialogFragment {
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
         time = content.findViewById(R.id.time);
-        Button extend_sleep_five_minutes_button = content.findViewById(R.id.extend_sleep_five_minutes_button);
-        extend_sleep_five_minutes_button.setText(getString(R.string.extend_sleep_timer_label, 5));
-        Button extend_sleep_ten_minutes_button = content.findViewById(R.id.extend_sleep_ten_minutes_button);
-        extend_sleep_ten_minutes_button.setText(getString(R.string.extend_sleep_timer_label, 10));
-        Button extend_sleep_twenty_minutes_button = content.findViewById(R.id.extend_sleep_twenty_minutes_button);
-        extend_sleep_twenty_minutes_button.setText(getString(R.string.extend_sleep_timer_label, 20));
-        extend_sleep_five_minutes_button.setOnClickListener(v -> {
+        Button extendSleepFiveMinutesButton = content.findViewById(R.id.extend_sleep_five_minutes_button);
+        extendSleepFiveMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 5));
+        Button extendSleepTenMinutesButton = content.findViewById(R.id.extend_sleep_ten_minutes_button);
+        extendSleepTenMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 10));
+        Button extendSleepTwentyMinutesButton = content.findViewById(R.id.extend_sleep_twenty_minutes_button);
+        extendSleepTwentyMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 20));
+        extendSleepFiveMinutesButton.setOnClickListener(v -> {
             if (controller != null) {
                 controller.extendSleepTimer(5 * 1000 * 60);
             }
         });
-        extend_sleep_ten_minutes_button.setOnClickListener(v -> {
+        extendSleepTenMinutesButton.setOnClickListener(v -> {
             if (controller != null) {
                 controller.extendSleepTimer(10 * 1000 * 60);
             }
         });
-        extend_sleep_twenty_minutes_button.setOnClickListener(v -> {
+        extendSleepTwentyMinutesButton.setOnClickListener(v -> {
             if (controller != null) {
                 controller.extendSleepTimer(20 * 1000 * 60);
             }
