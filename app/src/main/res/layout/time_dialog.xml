@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/timeDisplay"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:text="00:00:00"
@@ -76,8 +76,8 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="2dp"
-                android:layout_marginRight="2dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_weight="0.333"
                 android:padding="5dp"
                 android:text="+5 min" />
@@ -87,10 +87,9 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:layout_marginEnd="3dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"
                 android:layout_weight="0.333"
-                android:padding="5dp"
                 android:text="+10 min" />
 
             <Button
@@ -98,11 +97,10 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="0.333"
-                android:padding="5dp"
                 android:text="+20 min" />
 
         </LinearLayout>
