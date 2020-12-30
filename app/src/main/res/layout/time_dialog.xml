@@ -43,33 +43,33 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/timeDisplay"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <TextView
-            android:text="00:00:00"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="32sp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/time"/>
-
-        <Button
-            android:text="@string/disable_sleeptimer_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/disableSleeptimerButton"/>
+            android:id="@+id/timeDisplay"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+        <TextView
+                android:text="00:00:00"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="32sp"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/time"/>
+
+        <Button
+                android:text="@string/disable_sleeptimer_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/disableSleeptimerButton"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
             <Button
                 android:id="@+id/extendSleepFiveMinutesButton"
