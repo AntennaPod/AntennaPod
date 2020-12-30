@@ -4,8 +4,8 @@
     tools:ignore="MissingTranslation">
 
     <!-- Activity and fragment titles -->
-    <string name="app_name" translate="false">AntennaPod</string>
-    <string name="provider_authority" translate="false">de.danoeh.antennapod.provider</string>
+    <string name="app_name" translatable="false">AntennaPod</string>
+    <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update Subscriptions</string>
     <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistics</string>
@@ -290,7 +290,7 @@
     <string name="playback_error_source">Unable to access media file</string>
     <string name="playback_error_unknown">Unknown Error</string>
     <string name="no_media_playing_label">No media playing</string>
-    <string name="position_default_label" translate="false">00:00:00</string>
+    <string name="position_default_label" translatable="false">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
     <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
