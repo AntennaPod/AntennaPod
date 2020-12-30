@@ -1,16 +1,15 @@
 package de.danoeh.antennapod.core.util;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import android.text.TextUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+
+import java.io.File;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,24 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class FilenameGeneratorTest {
-
-    @Test
-    public void testSystemEnvironment() throws Exception {
-        executeCommand("getconf PATH_MAX /");
-        executeCommand("getconf NAME_MAX /");
-    }
-
-    private void executeCommand(String command) throws Exception {
-        System.out.println("Command: " + command);
-        Process p = Runtime.getRuntime().exec(command);
-        p.waitFor();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        }
-    }
 
     @Test
     public void testGenerateFileName() throws Exception {
@@ -106,9 +87,9 @@ public class FilenameGeneratorTest {
     private void createFiles(String name) throws Exception {
         File cache = InstrumentationRegistry.getInstrumentation().getTargetContext().getExternalCacheDir();
         File testFile = new File(cache, name);
-        // assertTrue(testFile.mkdirs());
-        // assertTrue(testFile.exists());
-        // assertTrue(testFile.delete());
+        assertTrue(testFile.mkdirs());
+        assertTrue(testFile.exists());
+        assertTrue(testFile.delete());
         assertTrue(testFile.createNewFile());
     }
 }
