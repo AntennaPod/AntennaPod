@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,6 +51,7 @@ public class AddFeedFragment extends Fragment {
     private static final int REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH = 1;
     private static final int REQUEST_CODE_ADD_LOCAL_FOLDER = 2;
 
+    private AddfeedBinding viewBinding;
     private MainActivity activity;
 
     @Override
@@ -60,7 +60,7 @@ public class AddFeedFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        AddfeedBinding viewBinding = AddfeedBinding.inflate(getLayoutInflater());
+        viewBinding = AddfeedBinding.inflate(getLayoutInflater());
         activity = (MainActivity) getActivity();
 
         Toolbar toolbar = viewBinding.toolbar;
@@ -76,7 +76,7 @@ public class AddFeedFragment extends Fragment {
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(PodcastIndexPodcastSearcher.class)));
 
         viewBinding.combinedFeedSearchEditText.setOnEditorActionListener((v, actionId, event) -> {
-            performSearch(viewBinding.combinedFeedSearchEditText);
+            performSearch();
             return true;
         });
 
@@ -114,7 +114,7 @@ public class AddFeedFragment extends Fragment {
             viewBinding.addLocalFolderButton.setVisibility(View.GONE);
         }
 
-        viewBinding.searchButton.setOnClickListener(view -> performSearch(viewBinding.combinedFeedSearchEditText));
+        viewBinding.searchButton.setOnClickListener(view -> performSearch());
 
         return viewBinding.getRoot();
     }
@@ -144,8 +144,8 @@ public class AddFeedFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void performSearch(EditText searchEditText) {
-        String query = searchEditText.getText().toString();
+    private void performSearch() {
+        String query = viewBinding.combinedFeedSearchEditText.getText().toString();
         if (query.matches("http[s]?://.*")) {
             addUrl(query);
             return;
