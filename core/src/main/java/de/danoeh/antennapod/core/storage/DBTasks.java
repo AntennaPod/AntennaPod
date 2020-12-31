@@ -386,7 +386,7 @@ public final class DBTasks {
 
         // Look up feed in the feedslist
         final Feed savedFeed = searchFeedByIdentifyingValueOrID(adapter, newFeed);
-        System.out.println("DBTasks.updateFeed()1: savedFeed=" + savedFeed + ", id=" + newFeed.getId());
+        System.out.println("DBTasks.updateFeed()1: savedFeed=" + savedFeed + ",  id=" + newFeed.getId());
         if (savedFeed == null) {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
