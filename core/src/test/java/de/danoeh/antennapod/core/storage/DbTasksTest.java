@@ -1,13 +1,15 @@
-package de.test.antennapod.storage;
+package de.danoeh.antennapod.core.storage;
 
+import android.app.Application;
 import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.SmallTest;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,14 +17,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import de.danoeh.antennapod.core.ApplicationCallbacks;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import static de.danoeh.antennapod.core.util.FeedItemUtil.getIdList;
 import static java.util.Collections.singletonList;
@@ -32,22 +33,25 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
- * Test class for DBTasks
+ * Test class for {@link DBTasks}.
  */
-@SmallTest
-public class DBTasksTest {
+@RunWith(RobolectricTestRunner.class)
+public class DbTasksTest {
     private Context context;
 
-    @After
-    public void tearDown() throws Exception {
-        assertTrue(PodDBAdapter.deleteDatabase());
-    }
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        UserPreferences.init(context);
+        PlaybackPreferences.init(context);
+
+        Application app = (Application) context;
+        ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
+        when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
 
         // create new database
         PodDBAdapter.init(context);
@@ -55,18 +59,23 @@ public class DBTasksTest {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
+    }
 
-        UserPreferences.init(context);
+    @After
+    public void tearDown() {
+        DBWriter.tearDownTests();
+        PodDBAdapter.tearDownTests();
     }
 
     @Test
     public void testUpdateFeedNewFeed() {
-        final int NUM_ITEMS = 10;
+        final int numItems = 10;
 
         Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
-        for (int i = 0; i < NUM_ITEMS; i++) {
-            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed));
+        for (int i = 0; i < numItems; i++) {
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i,
+                    new Date(), FeedItem.UNPLAYED, feed));
         }
         Feed newFeed = DBTasks.updateFeed(context, feed, false);
 
@@ -96,13 +105,14 @@ public class DBTasksTest {
 
     @Test
     public void testUpdateFeedUpdatedFeed() {
-        final int NUM_ITEMS_OLD = 10;
-        final int NUM_ITEMS_NEW = 10;
+        final int numItemsOld = 10;
+        final int numItemsNew = 10;
 
         final Feed feed = new Feed("url", null, "title");
         feed.setItems(new ArrayList<>());
-        for (int i = 0; i < NUM_ITEMS_OLD; i++) {
-            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
+        for (int i = 0; i < numItemsOld; i++) {
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i,
+                    new Date(i), FeedItem.PLAYED, feed));
         }
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -120,19 +130,20 @@ public class DBTasksTest {
             item.setId(0);
         }
 
-        for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
-            feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.UNPLAYED, feed));
+        for (int i = numItemsOld; i < numItemsNew + numItemsOld; i++) {
+            feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i,
+                    new Date(i), FeedItem.UNPLAYED, feed));
         }
 
         final Feed newFeed = DBTasks.updateFeed(context, feed, false);
         assertNotSame(newFeed, feed);
 
-        updatedFeedTest(newFeed, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
+        updatedFeedTest(newFeed, feedID, itemIDs, numItemsOld, numItemsNew);
 
         final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         assertNotNull(feedFromDB);
         assertEquals(newFeed.getId(), feedFromDB.getId());
-        updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
+        updatedFeedTest(feedFromDB, feedID, itemIDs, numItemsOld, numItemsNew);
     }
 
     @Test
@@ -186,12 +197,14 @@ public class DBTasksTest {
         assertEquals(8, feedFromDB.getItems().size()); // 10 - 2 = 8 items
     }
 
-    private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
+    @SuppressWarnings("SameParameterValue")
+    private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs,
+                                 int numItemsOld, int numItemsNew) {
         assertEquals(feedID, newFeed.getId());
-        assertEquals(NUM_ITEMS_NEW + NUM_ITEMS_OLD, newFeed.getItems().size());
+        assertEquals(numItemsNew + numItemsOld, newFeed.getItems().size());
         Collections.reverse(newFeed.getItems());
         Date lastDate = new Date(0);
-        for (int i = 0; i < NUM_ITEMS_OLD; i++) {
+        for (int i = 0; i < numItemsOld; i++) {
             FeedItem item = newFeed.getItems().get(i);
             assertSame(newFeed, item.getFeed());
             assertEquals((long) itemIDs.get(i), item.getId());
@@ -199,7 +212,7 @@ public class DBTasksTest {
             assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
             lastDate = item.getPubDate();
         }
-        for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
+        for (int i = numItemsOld; i < numItemsNew + numItemsOld; i++) {
             FeedItem item = newFeed.getItems().get(i);
             assertSame(newFeed, item.getFeed());
             assertTrue(item.getId() != 0);
