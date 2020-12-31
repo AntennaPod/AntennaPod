@@ -386,6 +386,7 @@ public final class DBTasks {
 
         // Look up feed in the feedslist
         final Feed savedFeed = searchFeedByIdentifyingValueOrID(adapter, newFeed);
+        System.out.println("DBTasks.updateFeed()1: savedFeed=" + savedFeed);
         if (savedFeed == null) {
             Log.d(TAG, "Found no existing Feed with title "
                             + newFeed.getTitle() + ". Adding as new one.");
@@ -398,6 +399,7 @@ public final class DBTasks {
             }
 
             resultFeed = newFeed;
+            System.out.println("DBTasks.updateFeed()2: resultFeed=" + resultFeed);
         } else {
             Log.d(TAG, "Feed with title " + newFeed.getTitle()
                         + " already exists. Syncing new with existing one.");
@@ -475,6 +477,7 @@ public final class DBTasks {
             savedFeed.setLastUpdateFailed(false);
 
             resultFeed = savedFeed;
+            System.out.println("DBTasks.updateFeed()3: resultFeed=" + resultFeed);
         }
 
         try {
@@ -482,6 +485,7 @@ public final class DBTasks {
                 DBWriter.addNewFeed(context, newFeed).get();
                 // Update with default values that are set in database
                 resultFeed = searchFeedByIdentifyingValueOrID(adapter, newFeed);
+                System.out.println("DBTasks.updateFeed()4: resultFeed=" + resultFeed);
             } else {
                 DBWriter.setCompleteFeed(savedFeed).get();
             }
@@ -500,6 +504,7 @@ public final class DBTasks {
             EventBus.getDefault().post(new FeedListUpdateEvent(Collections.emptyList()));
         }
 
+        System.out.println("DBTasks.updateFeed()5: resultFeed=" + resultFeed);
         return resultFeed;
     }
 

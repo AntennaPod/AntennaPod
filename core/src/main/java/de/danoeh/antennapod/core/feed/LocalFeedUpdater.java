@@ -34,6 +34,7 @@ import de.danoeh.antennapod.core.util.DownloadError;
 public class LocalFeedUpdater {
 
     public static void updateFeed(Feed feed, Context context) {
+        System.out.println("LocalFeedUpdater.updateFeed()1: feed=" + feed);
         String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
         DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
         if (documentFolder == null) {
@@ -51,6 +52,7 @@ public class LocalFeedUpdater {
         }
         //make sure it is the latest 'version' of this feed from the db (all items etc)
         feed = DBTasks.updateFeed(context, feed, false);
+        System.out.println("LocalFeedUpdater.updateFeed()2: feed=" + feed);
 
         // list files in feed folder
         List<DocumentFile> mediaFiles = new ArrayList<>();

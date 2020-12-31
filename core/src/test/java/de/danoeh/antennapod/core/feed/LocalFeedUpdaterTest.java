@@ -206,6 +206,7 @@ public class LocalFeedUpdaterTest {
      * @param localFeedDir assets local feed folder with media files
      */
     private void callUpdateFeed(@NonNull String localFeedDir) {
+        System.out.println("callUpdateFeed()");
         DocumentFile documentFile = new AssetsDocumentFile(localFeedDir, context.getAssets());
         try (MockedStatic<DocumentFile> dfMock = Mockito.mockStatic(DocumentFile.class)) {
             // mock external storage
