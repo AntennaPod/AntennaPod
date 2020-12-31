@@ -80,7 +80,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:text="+5 min" />
+                    tools:text="+5 min" />
 
             <Button
                     android:id="@+id/extendSleepTenMinutesButton"
@@ -90,7 +90,7 @@
                     android:layout_marginStart="4dp"
                     android:layout_marginEnd="4dp"
                     android:layout_weight="1"
-                    android:text="+10 min" />
+                    tools:text="+10 min" />
 
             <Button
                     android:id="@+id/extendSleepTwentyMinutesButton"
@@ -101,7 +101,7 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginLeft="4dp"
                     android:layout_weight="1"
-                    android:text="+20 min" />
+                    tools:text="+20 min" />
 
         </LinearLayout>
 
