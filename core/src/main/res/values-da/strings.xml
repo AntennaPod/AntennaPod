@@ -310,7 +310,7 @@
   <string name="no_comp_downloads_head_label">Ingen overførte udsendelser</string>
   <string name="no_comp_downloads_label">Du kan downloade episoden på podcastens detaljerede skærm. </string>
   <string name="no_log_downloads_head_label">Ingen overførselslog</string>
-  <string name="no_log_downloads_label">Download raport vil blive vist her når muligt</string>
+  <string name="no_log_downloads_label">Overførselslog vil blive vist her når tilgængelig.</string>
   <string name="no_history_head_label">Ingen historik</string>
   <string name="no_history_label">Når du har hørt en episode, vil den blive vist her.</string>
   <string name="no_all_episodes_head_label">Ingen udsendelser</string>
@@ -328,7 +328,7 @@
   <string name="storage_sum">Automatisk sletning, Importer, Exporter af episoder</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Kø</string>
-  <string name="synchronization_pref">synkronisering</string>
+  <string name="synchronization_pref">Synkronisering</string>
   <string name="synchronization_sum">Synkroniser med andre enheder ved hjælp af gpodder.net</string>
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>

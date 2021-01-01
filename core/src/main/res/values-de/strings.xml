@@ -448,6 +448,7 @@
   <string name="pref_persistNotify_title">Persistente Wiedergabesteuerung</string>
   <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
   <string name="pref_compact_notification_buttons_title">Kompakte Benachrichtigungsbuttons</string>
+  <string name="pref_compact_notification_buttons_sum">Verändere die Wiedergabetasten, wenn eine Benachrichtigung ausgeklappt ist. Die Wiedergabe/Pause-Taste wird immer angezeigt.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Wähle bis zu %1$d Elemente aus</string>
   <string name="pref_compact_notification_buttons_dialog_error">Du kannst maximal %1$d Elemente auswählen.</string>
   <string name="pref_lockscreen_background_title">Lockscreen-Hintergrund einstellen</string>
@@ -506,7 +507,9 @@
   <string name="pref_delete_removes_from_queue_title">Löschen entfernt aus Warteschlange</string>
   <string name="pref_delete_removes_from_queue_sum">Entferne Episoden automatisch aus der Warteschlange, wenn sie gelöscht werden.</string>
   <string name="pref_filter_feed_title">Abonnement-Filter</string>
+  <string name="pref_filter_feed_sum">Filtere deine Abonnements in der Navigation und auf der Abonnement-Übersicht. </string>
   <string name="no_filter_label">Keine</string>
+  <string name="subscriptions_are_filtered">Abonnements sind gefiltert</string>
   <string name="subscriptions_counter_greater_zero">Anzahl größer als Null</string>
   <string name="auto_downloaded">Automatisch heruntergeladen </string>
   <string name="not_auto_downloaded">Nicht automatisch heruntergeladen</string>
@@ -807,7 +810,9 @@
   <string name="notification_channel_playing">Jetzt spielt</string>
   <string name="notification_channel_playing_description">Erlaubt es, die Wiedergabe zu steuern. Dies ist die Hauptbenachrichtigung, die du siehst, während ein Podcast abgespielt wird.</string>
   <string name="notification_channel_error">Fehler</string>
+  <string name="notification_channel_error_description">Wird bei einem Problem angezeigt, wenn zum Beispiel ein Download oder die Aktualisierung eines Feed fehlschlägt.</string>
   <string name="notification_channel_sync_error">Fehler bei der Synchronisation</string>
+  <string name="notification_channel_sync_error_description">Wird angezeigt, wenn die gpodder-Synchronisierung fehlschlägt.</string>
   <string name="notification_channel_auto_download">Automatische Downloads</string>
   <string name="notification_channel_episode_auto_download">Wird angezeigt, wenn Episoden automatisch heruntergeladen worden sind.</string>
   <!--Widget settings-->

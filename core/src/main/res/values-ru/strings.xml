@@ -119,7 +119,7 @@
     <item quantity="many">Выбрано: %d</item>
     <item quantity="other">Выбрано: %d</item>
   </plurals>
-  <string name="loading_more">Загружается...</string>
+  <string name="loading_more">Загружается…</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Отметить как прослушанное</string>
   <string name="mark_all_read_msg">Отметить все выпуски как прослушанные</string>
@@ -557,7 +557,7 @@
   <string name="sync_status_episodes_upload">Отправка изменений выпуска…</string>
   <string name="sync_status_episodes_download">Загрузка изменений выпуска…</string>
   <string name="sync_status_upload_played">Отправка состояния прослушивания…</string>
-  <string name="sync_status_subscriptions">Синхронизация подписок ...</string>
+  <string name="sync_status_subscriptions">Синхронизация подписок…</string>
   <string name="sync_status_success">Синхронизация выполнена</string>
   <string name="sync_status_error">Сбой синхронизации</string>
   <!--import and export-->
@@ -718,7 +718,7 @@
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из моноприложений…</string>
   <!--Add podcast fragment-->
-  <string name="search_podcast_hint">Найти подкаст...</string>
+  <string name="search_podcast_hint">Найти подкаст…</string>
   <string name="search_itunes_label">Поиск в iTunes</string>
   <string name="search_podcastindex_label">Поиск на Podcastindex.org</string>
   <string name="search_fyyd_label">Поиск в fyyd</string>
