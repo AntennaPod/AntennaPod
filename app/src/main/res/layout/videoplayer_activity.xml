@@ -84,6 +84,7 @@
             android:layout_marginBottom="12dp"
             android:layout_gravity="center"
             app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?attr/seek_background"
             tools:alpha="1">
 
             <TextView
@@ -99,6 +100,7 @@
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 tools:text="1:06:29" />
+
         </androidx.cardview.widget.CardView>
 
         <RelativeLayout

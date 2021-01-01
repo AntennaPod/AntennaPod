@@ -52,29 +52,31 @@
             android:importantForAccessibility="no"/>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewSeek"
-        android:alpha="0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/pager"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="12dp"
-        app:cardCornerRadius="8dp"
-        tools:alpha="1">
-
-        <TextView
-            android:id="@+id/txtvSeek"
-            android:gravity="center"
+            android:id="@+id/cardViewSeek"
+            android:alpha="0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/seek_background"
-            android:paddingLeft="24dp"
-            android:paddingTop="4dp"
-            android:paddingRight="24dp"
-            android:paddingBottom="4dp"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            tools:text="1:06:29" />
+            android:layout_alignBottom="@+id/pager"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?attr/seek_background"
+            tools:alpha="1">
+
+        <TextView
+                android:id="@+id/txtvSeek"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/seek_background"
+                android:paddingLeft="24dp"
+                android:paddingTop="4dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                tools:text="1:06:29" />
+
     </androidx.cardview.widget.CardView>
 
     <LinearLayout
