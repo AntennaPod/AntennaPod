@@ -335,8 +335,10 @@ public class DownloadService extends Service {
                             && String.valueOf(HttpURLConnection.HTTP_GONE).equals(status.getReasonDetailed());
                     boolean httpBadReq = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
                             && String.valueOf(HttpURLConnection.HTTP_BAD_REQUEST).equals(status.getReasonDetailed());
+                    boolean ioError = status.getReason() == DownloadError.ERROR_IO_ERROR;
+                    boolean connectError = status.getReason() == DownloadError.ERROR_CONNECTION_ERROR;
 
-                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType || httpGone || httpBadReq ) {
+                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType || httpGone || httpBadReq || ioError || connectError) {
                         try {
                             DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                         } catch (ExecutionException | InterruptedException e) {
