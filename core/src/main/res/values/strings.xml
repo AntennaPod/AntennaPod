@@ -602,6 +602,7 @@
     <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
+    <string name="extend_sleep_timer_label">+%d min</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
     <string name="shake_to_reset_label">Shake to reset</string>
