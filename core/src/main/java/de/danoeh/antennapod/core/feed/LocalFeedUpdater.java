@@ -10,6 +10,7 @@ import androidx.documentfile.provider.DocumentFile;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,16 +35,28 @@ import de.danoeh.antennapod.core.util.DownloadError;
 public class LocalFeedUpdater {
 
     public static void updateFeed(Feed feed, Context context) {
+        try {
+            tryUpdateFeed(feed, context);
+
+            if (mustReportDownloadSuccessful(feed)) {
+                reportSuccess(feed);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            reportError(feed, e.getMessage());
+        }
+    }
+
+    private static void tryUpdateFeed(Feed feed, Context context) throws IOException {
         String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
         DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
         if (documentFolder == null) {
-            reportError(feed, "Unable to retrieve document tree."
+            throw new IOException("Unable to retrieve document tree. "
                     + "Try re-connecting the folder on the podcast info page.");
-            return;
         }
         if (!documentFolder.exists() || !documentFolder.canRead()) {
-            reportError(feed, "Cannot read local directory. Try re-connecting the folder on the podcast info page.");
-            return;
+            throw new IOException("Cannot read local directory. "
+                    + "Try re-connecting the folder on the podcast info page.");
         }
 
         if (feed.getItems() == null) {
@@ -107,10 +120,6 @@ public class LocalFeedUpdater {
         // deleting played state or position in case the folder is temporarily unavailable.
         boolean removeUnlistedItems = (newItems.size() >= 1);
         DBTasks.updateFeed(context, feed, removeUnlistedItems);
-
-        if (mustReportDownloadSuccessful(feed)) {
-            reportSuccess(feed);
-        }
     }
 
     /**
@@ -134,46 +143,50 @@ public class LocalFeedUpdater {
     }
 
     private static FeedItem createFeedItem(Feed feed, DocumentFile file, Context context) {
-        String uuid = UUID.randomUUID().toString();
+        FeedItem item = new FeedItem(0, file.getName(), UUID.randomUUID().toString(),
+                file.getName(), new Date(file.lastModified()), FeedItem.UNPLAYED, feed);
+        item.setAutoDownload(false);
 
+        long size = file.length();
+        FeedMedia media = new FeedMedia(0, item, 0, 0, size, file.getType(),
+                file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
+        item.setMedia(media);
+
+        try {
+            loadMetadata(item, file, context);
+        } catch (Exception e) {
+            item.setDescription(e.getMessage());
+        }
+
+        return item;
+    }
+
+    private static void loadMetadata(FeedItem item, DocumentFile file, Context context) throws Exception {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(context, file.getUri());
-        String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
 
-        Date date = null;
+        String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
         if (!TextUtils.isEmpty(dateStr)) {
             try {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
-                date = simpleDateFormat.parse(dateStr);
+                item.setPubDate(simpleDateFormat.parse(dateStr));
             } catch (ParseException parseException) {
-                date = DateUtils.parse(dateStr);
-                if (date == null) {
-                    date = new Date(file.lastModified());
+                Date date = DateUtils.parse(dateStr);
+                if (date != null) {
+                    item.setPubDate(date);
                 }
             }
-        } else {
-            date = new Date(file.lastModified());
         }
 
-        FeedItem item = new FeedItem(0, file.getName(), uuid, file.getName(), date,
-                FeedItem.UNPLAYED, feed);
-        item.setAutoDownload(false);
-
-        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         if (!TextUtils.isEmpty(title)) {
             item.setTitle(title);
         }
 
-        //add the media to the item
-        long duration = Long.parseLong(durationStr);
-        long size = file.length();
-        FeedMedia media = new FeedMedia(0, item, (int) duration, 0, size, file.getType(),
-                file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
-        media.setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
-        item.setMedia(media);
+        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        item.getMedia().setDuration((int) Long.parseLong(durationStr));
 
-        return item;
+        item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
     }
 
     private static void reportError(Feed feed, String reasonDetailed) {

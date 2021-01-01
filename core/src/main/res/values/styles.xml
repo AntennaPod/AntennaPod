@@ -324,4 +324,9 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="NoButtonRadio" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="buttonCompat">@null</item> <!-- For Android 4.4 -->
+        <item name="android:button">@null</item>
+    </style>
+
 </resources>

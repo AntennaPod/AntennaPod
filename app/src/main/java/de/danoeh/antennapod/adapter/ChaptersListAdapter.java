@@ -66,7 +66,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         holder.duration.setText(context.getString(R.string.chapter_duration,
                 Converter.getDurationStringLocalized(context, (int) duration)));
 
-        if (sc.getLink() == null) {
+        if (TextUtils.isEmpty(sc.getLink())) {
             holder.link.setVisibility(View.GONE);
         } else {
             holder.link.setVisibility(View.VISIBLE);
@@ -74,6 +74,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
             holder.link.setOnClickListener(v -> IntentUtils.openInBrowser(context, sc.getLink()));
         }
         holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.av_play));
+        holder.secondaryActionButton.setContentDescription(context.getString(R.string.play_chapter));
         holder.secondaryActionButton.setOnClickListener(v -> {
             if (callback != null) {
                 callback.onPlayChapterButtonClicked(position);

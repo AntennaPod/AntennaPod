@@ -483,6 +483,7 @@
   <string name="pref_enqueue_downloaded_title">Gehitu deskargatutakoak ilarara</string>
   <string name="pref_enqueue_downloaded_summary">Gehitu deskargatutako saioak ilarara</string>
   <string name="media_player_builtin">Integratutako Android erreproduzitzailea</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (gomendatua)</string>
   <string name="media_player_switch_to_exoplayer">Aldatu ExoPlayer-era</string>
   <string name="media_player_switched_to_exoplayer">ExoPlayer-era aldatu da.</string>
   <string name="pref_skip_silence_title">Jauzi egin ixilunea audioan</string>
@@ -507,6 +508,7 @@
   <string name="pref_filter_feed_sum">Iragazi harpidetzak nabigazio-kutxan eta harpidetza-pantailetan.</string>
   <string name="no_filter_label">Batere ez</string>
   <string name="subscriptions_are_filtered">Harpidetzak iragazita daude.</string>
+  <string name="subscriptions_counter_greater_zero">Kontagailua zero baino handiagoa</string>
   <string name="auto_downloaded">Automatikoki deskargatuta</string>
   <string name="not_auto_downloaded">Automatikoki deskargatu gabe</string>
   <string name="kept_updated">Eguneratuta dago</string>
@@ -701,9 +703,11 @@
   <string name="search_powered_by">%1$s -ren emaitzak</string>
   <!--Local feeds-->
   <string name="add_local_folder">Gehitu tokiko karpeta</string>
+  <string name="local_folder">Tokiko karpeta</string>
   <string name="reconnect_local_folder">Birkonektatu tokiko karpeta</string>
   <string name="reconnect_local_folder_warning">Baimenik izan ezean, hau erabil dezakezu karpeta berdina birkonektatzeko. Ez aukeratu beste karpetarik.</string>
   <string name="local_feed_description">Podcast birtual hau AntennaPod-i karpeta bat gehituta sortu da</string>
+  <string name="unable_to_start_system_file_manager">Ezin da sistemaren fitxategi kudeatzailea abiarazi</string>
   <string name="filter">Iragazia</string>
   <!--Episodes apply actions-->
   <string name="all_label">Denak</string>

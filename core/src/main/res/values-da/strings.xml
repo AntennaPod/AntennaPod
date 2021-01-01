@@ -306,7 +306,7 @@
   <string name="no_comp_downloads_head_label">Ingen overførte udsendelser</string>
   <string name="no_comp_downloads_label">Du kan downloade episoden på podcastens detaljerede skærm. </string>
   <string name="no_log_downloads_head_label">Ingen overførselslog</string>
-  <string name="no_log_downloads_label">Download raport vil blive vist her når muligt</string>
+  <string name="no_log_downloads_label">Overførselslog vil blive vist her når tilgængelig.</string>
   <string name="no_history_head_label">Ingen historik</string>
   <string name="no_history_label">Når du har hørt en episode, vil den blive vist her.</string>
   <string name="no_all_episodes_head_label">Ingen udsendelser</string>
@@ -324,7 +324,7 @@
   <string name="storage_sum">Automatisk sletning, Importer, Exporter af episoder</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Kø</string>
-  <string name="synchronization_pref">synkronisering</string>
+  <string name="synchronization_pref">Synkronisering</string>
   <string name="synchronization_sum">Synkroniser med andre enheder ved hjælp af gpodder.net</string>
   <string name="automation">Automatisering</string>
   <string name="download_pref_details">Detaljer</string>
@@ -481,6 +481,7 @@
   <string name="pref_enqueue_downloaded_title">Sæt overførte udsendelser i kø</string>
   <string name="pref_enqueue_downloaded_summary">Føj downloadede udsendelser til køen</string>
   <string name="media_player_builtin">Indbygget Android-afspiller</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (anbefalet)</string>
   <string name="media_player_switch_to_exoplayer">Skift til ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Skiftet til ExoPlayer.</string>
   <string name="pref_skip_silence_title">Overspring stilhed i lyd</string>
@@ -505,6 +506,7 @@
   <string name="pref_filter_feed_sum">Filtrer dine abonnementer i navigationspanelet og på abonnementsoversigten.</string>
   <string name="no_filter_label">Ingen</string>
   <string name="subscriptions_are_filtered">Abonnementer er filtreret.</string>
+  <string name="subscriptions_counter_greater_zero">Tæller større end 0</string>
   <string name="auto_downloaded">Automatisk hentet</string>
   <string name="not_auto_downloaded">Ikke automatisk hentet</string>
   <string name="kept_updated">Holdt opdateret</string>
@@ -699,9 +701,11 @@
   <string name="search_powered_by">Resultater fra %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Tilføj lokal mappe</string>
+  <string name="local_folder">Lokal mappe</string>
   <string name="reconnect_local_folder">Genforbind lokal mappe</string>
   <string name="reconnect_local_folder_warning">I tilfælde af nægtelse af tilladelse kan du bruge denne til at forbinde til præcis den samme mappe. Vælg ikke en anden mappe.</string>
   <string name="local_feed_description">Denne virtuelle podcast blev oprettet ved at en mappe blev føjet til AntennaPod.</string>
+  <string name="unable_to_start_system_file_manager">Kunne ikke starte system filhåndtering</string>
   <string name="filter">Filtrér</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>

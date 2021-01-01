@@ -705,6 +705,7 @@
     <string name="switch_pages">Switch pages</string>
     <string name="position">Position: %1$s</string>
     <string name="apply_action">Apply action</string>
+    <string name="play_chapter">Play chapter</string>
 
     <!-- Feed information screen -->
     <string name="authentication_label">Authentication</string>

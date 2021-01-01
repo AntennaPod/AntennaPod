@@ -43,13 +43,13 @@
   <string name="drawer_close">Fermer le menu</string>
   <string name="drawer_preferences">Préférences du volet</string>
   <string name="drawer_feed_order_unplayed_episodes">Trier par compteur</string>
-  <string name="drawer_feed_order_alphabetical">Trier alphabétiquement</string>
+  <string name="drawer_feed_order_alphabetical">Trier par ordre alphabétique</string>
   <string name="drawer_feed_order_last_update">Trier par date de publication</string>
   <string name="drawer_feed_order_most_played">Trier par nombre lus</string>
-  <string name="drawer_feed_counter_new_unplayed">Nombre de nouveaux épisodes non-lus</string>
-  <string name="drawer_feed_counter_new">Nombre de nouveaux épisodes</string>
-  <string name="drawer_feed_counter_unplayed">Nombre d\'épisodes non-lus</string>
-  <string name="drawer_feed_counter_downloaded">Nombre d\'épisodes téléchargés</string>
+  <string name="drawer_feed_counter_new_unplayed">Nouveaux épisodes et non lus</string>
+  <string name="drawer_feed_counter_new">Nouveaux épisodes</string>
+  <string name="drawer_feed_counter_unplayed">Episodes non-lus</string>
+  <string name="drawer_feed_counter_downloaded">Episodes téléchargés</string>
   <string name="drawer_feed_counter_none">Aucun</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">Aucune application compatible trouvée</string>
@@ -132,9 +132,9 @@
   <string name="share_label_with_ellipses">Partager...</string>
   <string name="share_file_label">Partager le fichier</string>
   <string name="share_website_url_label">Lien du site web</string>
-  <string name="share_feed_url_label">Lien du podcast</string>
+  <string name="share_feed_url_label">Lien du flux</string>
   <string name="feed_delete_confirmation_msg">Confirmer que vous voulez supprimer le podcast \"%1$s\" et TOUS ses épisodes téléchargés.</string>
-  <string name="feed_delete_confirmation_local_msg">Merci de confirmer que vous voulez supprimer le podcast \"%1$s\". Les fichiers du dossier source ne seront pas effacés.</string>
+  <string name="feed_delete_confirmation_local_msg">Merci de confirmer que vous voulez supprimer le podcast \"%1$s\". Les fichiers du dossier local  / source ne seront pas effacés.</string>
   <string name="feed_remover_msg">Podcast en cours de suppression</string>
   <string name="load_complete_feed">Mettre à jour tout le podcast</string>
   <string name="multi_select">Sélection multiple</string>
@@ -146,7 +146,7 @@
   <string name="hide_has_media_label">Avec média</string>
   <string name="filtered_label">Filtré</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} La dernière mise à jour a échoué</string>
-  <string name="open_podcast">Ouvrir Podcast</string>
+  <string name="open_podcast">Ouvrir le podcast</string>
   <string name="please_wait_for_data">Merci d\'attendre la fin du téléchargement des données</string>
   <!--actions on feeditems-->
   <string name="download_label">Télécharger</string>
@@ -481,6 +481,7 @@
   <string name="pref_enqueue_downloaded_title">Ajouter à la liste après téléchargement</string>
   <string name="pref_enqueue_downloaded_summary">Mettre les épisodes dans la la liste de lecture après téléchargement</string>
   <string name="media_player_builtin">Lecteur natif d\'Android</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (recommendé)</string>
   <string name="media_player_switch_to_exoplayer">Utiliser ExoPlayer pour la lecture</string>
   <string name="media_player_switched_to_exoplayer">Lecteur changé pour ExoPlayer</string>
   <string name="pref_skip_silence_title">Supprimer les silences audios</string>
@@ -505,10 +506,11 @@
   <string name="pref_filter_feed_sum">Filtrer les abonnements dans le volet de navigation et dans l\'écran des abonnements.</string>
   <string name="no_filter_label">Aucun</string>
   <string name="subscriptions_are_filtered">Les abonnements sont filtrés.</string>
-  <string name="auto_downloaded">Avec téléchargement auto</string>
-  <string name="not_auto_downloaded">Sans téléchargement auto</string>
-  <string name="kept_updated">Avec mise à jour auto</string>
-  <string name="not_kept_updated">Sans mise à jour auto</string>
+  <string name="subscriptions_counter_greater_zero">Compteur supérieur à zéro</string>
+  <string name="auto_downloaded">Avec téléchargement automatique</string>
+  <string name="not_auto_downloaded">Sans téléchargement automatique</string>
+  <string name="kept_updated">Maintenu à jour</string>
+  <string name="not_kept_updated">Non maintenu à jour</string>
   <!--About screen-->
   <string name="about_pref">À propos</string>
   <string name="antennapod_version">Version d\'AntennaPod</string>
@@ -543,7 +545,7 @@
   <string name="database_export_summary">Transférer les abonnements, les épisodes écoutés et la liste de lecture sur un autre appareil</string>
   <string name="database_import_summary">Importer une base de données AntennaPod d\'un autre appareil</string>
   <string name="opml_import_label">Importer un fichier OPML</string>
-  <string name="opml_add_podcast_label">Importer une liste de podcasts (OPML)</string>
+  <string name="opml_add_podcast_label">Importer une liste de podcasts (fichier OPML)</string>
   <string name="opml_reader_error">Une erreur s\'est produite pendant la lecture du fichier OPML :</string>
   <string name="opml_import_error_no_file">Aucun fichier sélectionné !</string>
   <string name="select_all_label">Tout choisir</string>
@@ -689,7 +691,7 @@
   <string name="search_podcastindex_label">Chercher sur Podcastindex.org</string>
   <string name="search_fyyd_label">Chercher sur fyyd</string>
   <string name="advanced">Avancé</string>
-  <string name="add_podcast_by_url">Ajouter à partir d\'un lien RSS</string>
+  <string name="add_podcast_by_url">Ajouter un lien RSS</string>
   <string name="browse_gpoddernet_label">Chercher sur gpodder.net</string>
   <string name="discover">Découvrir</string>
   <string name="discover_hide">Ne pas montrer</string>
@@ -699,9 +701,11 @@
   <string name="search_powered_by">Résultats de %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Ajouter un dossier</string>
+  <string name="local_folder">Dossier local</string>
   <string name="reconnect_local_folder">Se reconnecter au dossier</string>
   <string name="reconnect_local_folder_warning">En cas de refus de permission vous pouvez utiliser cette option pour vous reconnecter au même dossier. Ne sélectionnez pas un autre dossier.</string>
   <string name="local_feed_description">Ce podcast a été crée à partir d\'un dossier ajouté à AntennaPod.</string>
+  <string name="unable_to_start_system_file_manager">Impossible d\'ouvrir le gestionnaire de fichier</string>
   <string name="filter">Filtrer</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tous</string>
