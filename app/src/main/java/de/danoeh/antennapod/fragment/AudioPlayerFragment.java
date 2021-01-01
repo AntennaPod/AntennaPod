@@ -149,7 +149,7 @@ public class AudioPlayerFragment extends Fragment implements
             tab.view.setAlpha(1.0f);
             switch (position) {
                 case POS_COVER:
-                    tab.setText(R.string.player_label);
+                    tab.setText(R.string.cover_label);
                     break;
                 case POS_DESCR:
                     tab.setText(R.string.description_label);

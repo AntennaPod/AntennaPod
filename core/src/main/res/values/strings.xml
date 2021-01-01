@@ -31,7 +31,6 @@
     <string name="playback_statistics_label">Playback</string>
     <string name="download_statistics_label">Downloads</string>
     <string name="notification_pref_fragment">Notifications</string>
-    <string name="player_label">Player</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
