@@ -34,7 +34,7 @@ import de.danoeh.antennapod.core.util.DownloadError;
 public class LocalFeedUpdater {
 
     public static void updateFeed(Feed feed, Context context) {
-        System.out.println("LocalFeedUpdater.updateFeed()1: feed=" + feed);
+        System.out.println("LocalFeedUpdater.updateFeed()1:  feed=" + feed);
         String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
         DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
         if (documentFolder == null) {
