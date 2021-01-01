@@ -100,7 +100,7 @@ public class PlaybackPreferences implements SharedPreferences.OnSharedPreference
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(PREF_CURRENT_PLAYER_STATUS)) {
+        if (PREF_CURRENT_PLAYER_STATUS.equals(key)) {
             EventBus.getDefault().post(new PlayerStatusEvent());
         }
     }

@@ -20,7 +20,7 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
         super(context, true, ClientConfig.USER_AGENT);
         PreferenceManager.getDefaultSharedPreferences(context)
                 .registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
-                    if (key.equals(UserPreferences.PREF_MEDIA_PLAYER)) {
+                    if (UserPreferences.PREF_MEDIA_PLAYER.equals(key)) {
                         checkMpi();
                     }
                 });
