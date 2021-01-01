@@ -338,7 +338,8 @@ public class DownloadService extends Service {
                     boolean ioError = status.getReason() == DownloadError.ERROR_IO_ERROR;
                     boolean connectError = status.getReason() == DownloadError.ERROR_CONNECTION_ERROR;
 
-                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType || httpGone || httpBadReq || ioError || connectError) {
+                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType
+                            || httpGone || httpBadReq || ioError || connectError) {
                         try {
                             DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                         } catch (ExecutionException | InterruptedException e) {
