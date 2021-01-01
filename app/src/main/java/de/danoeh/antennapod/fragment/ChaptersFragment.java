@@ -141,6 +141,7 @@ public class ChaptersFragment extends Fragment {
             return;
         }
         adapter.setMedia(media);
+        ((AudioPlayerFragment) getParentFragment()).setHasChapters(adapter.getItemCount() > 0);
         int positionOfCurrentChapter = getCurrentChapter(media);
         updateChapterSelection(positionOfCurrentChapter);
     }

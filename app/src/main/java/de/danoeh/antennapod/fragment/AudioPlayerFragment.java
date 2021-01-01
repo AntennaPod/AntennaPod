@@ -90,6 +90,8 @@ public class AudioPlayerFragment extends Fragment implements
     private PlaybackController controller;
     private Disposable disposable;
     private boolean showTimeLeft;
+    private boolean hasChapters = false;
+    private TabLayoutMediator tabLayoutMediator;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -143,7 +145,8 @@ public class AudioPlayerFragment extends Fragment implements
         });
 
         TabLayout tabLayout = root.findViewById(R.id.sliding_tabs);
-        new TabLayoutMediator(tabLayout, pager, (tab, position) -> {
+        tabLayoutMediator = new TabLayoutMediator(tabLayout, pager, (tab, position) -> {
+            tab.view.setAlpha(1.0f);
             switch (position) {
                 case POS_COVER:
                     tab.setText(R.string.player_label);
@@ -153,12 +156,22 @@ public class AudioPlayerFragment extends Fragment implements
                     break;
                 case POS_CHAPTERS:
                     tab.setText(R.string.chapters_label);
+                    if (!hasChapters) {
+                        tab.view.setAlpha(0.5f);
+                    }
                     break;
                 default:
                     break;
             }
-        }).attach();
+        });
+        tabLayoutMediator.attach();
         return root;
+    }
+
+    public void setHasChapters(boolean hasChapters) {
+        this.hasChapters = hasChapters;
+        tabLayoutMediator.detach();
+        tabLayoutMediator.attach();
     }
 
     public View getExternalPlayerHolder() {
