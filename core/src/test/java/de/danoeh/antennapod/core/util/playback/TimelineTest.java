@@ -16,6 +16,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,10 +36,19 @@ import static org.junit.Assert.assertTrue;
 public class TimelineTest {
 
     private Context context;
+    MockedStatic<DBReader> dbReaderMock;
 
     @Before
     public void setUp() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        // mock DBReader, because Timeline.processShownotes() calls FeedItem.loadShownotes()
+        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
+        dbReaderMock = Mockito.mockStatic(DBReader.class);
+    }
+
+    @After
+    public void tearDown() {
+        dbReaderMock.close();
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -60,12 +70,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
                 + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -76,12 +82,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
                 + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -92,12 +94,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
                 + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -108,12 +106,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
                 + timeStr + " here.</p>", 11 * 60 * 1000);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -123,12 +117,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
                 + timeStr + " here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -139,12 +129,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
                 + timeStr + " here.</p>", 2 * 60 * 1000);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -154,13 +140,9 @@ public class TimelineTest {
         String originalText = "<p> Some test text with a timecode " + timeStr + " here.</p>";
         Playable p = newTestPlayable(null, originalText, time);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            Document d = Jsoup.parse(res);
-            assertEquals("Should not parse time codes that equal duration", 0, d.body().getElementsByTag("a").size());
-        }
+        String res = t.processShownotes();
+        Document d = Jsoup.parse(res);
+        assertEquals("Should not parse time codes that equal duration", 0, d.body().getElementsByTag("a").size());
     }
 
     @Test
@@ -170,13 +152,9 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
                 + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 2 * 60 * 60 * 1000);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{10 * 60 * 1000 + 12 * 1000,
-                    60 * 60 * 1000 + 10 * 60 * 1000 + 12 * 1000}, timeStrings);
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{10 * 60 * 1000 + 12 * 1000,
+                60 * 60 * 1000 + 10 * 60 * 1000 + 12 * 1000}, timeStrings);
     }
 
     @Test
@@ -188,12 +166,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
                 + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 3 * 60 * 60 * 1000);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{10 * 60 * 1000 + 12 * 1000, 2 * 60 * 1000 + 12 * 1000}, timeStrings);
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{10 * 60 * 1000 + 12 * 1000, 2 * 60 * 1000 + 12 * 1000}, timeStrings);
     }
 
     @Test
@@ -204,12 +178,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode ("
                 + timeStr + ") here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -220,12 +190,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode ["
                 + timeStr + "] here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -236,12 +202,8 @@ public class TimelineTest {
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode <"
                 + timeStr + "> here.</p>", Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
     @Test
@@ -256,12 +218,8 @@ public class TimelineTest {
 
         Playable p = newTestPlayable(null, shownotes.toString(), Integer.MAX_VALUE);
         Timeline t = new Timeline(context, p);
-        // mock DBReader, because processShownotes() calls FeedItem.loadShownotes()
-        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
-        try (MockedStatic<DBReader> ignored = Mockito.mockStatic(DBReader.class)) {
-            String res = t.processShownotes();
-            checkLinkCorrect(res, new long[0], new String[0]);
-        }
+        String res = t.processShownotes();
+        checkLinkCorrect(res, new long[0], new String[0]);
     }
 
     private void checkLinkCorrect(String res, long[] timecodes, String[] timecodeStr) {
