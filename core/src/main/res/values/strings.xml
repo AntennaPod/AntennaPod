@@ -141,7 +141,7 @@
         <item quantity="one">New Episode</item>
         <item quantity="other">New Episodes</item>
     </plurals>
-    <string name="new_episode_notification_group_text">%1$d podcasts combined have %2$d episodes flagged as new.</string>
+    <string name="new_episode_notification_group_text">Your subscriptions have new epsiodes.</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
