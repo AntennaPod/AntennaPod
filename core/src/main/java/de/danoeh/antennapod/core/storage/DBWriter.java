@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
@@ -71,6 +71,18 @@ public class DBWriter {
     }
 
     private DBWriter() {
+    }
+
+    /**
+     * Wait until all threads are finished to avoid the "Illegal connection pointer" error of
+     * Robolectric. Call this method only for unit tests.
+     */
+    public static void tearDownTests() {
+        try {
+            dbExec.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            // ignore error
+        }
     }
 
     /**

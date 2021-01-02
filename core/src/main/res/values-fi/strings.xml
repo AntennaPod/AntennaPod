@@ -26,16 +26,13 @@
   <string name="playback_statistics_label">Toisto</string>
   <string name="download_statistics_label">Lataukset</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Podcasteja soitettu yhteensä:</string>
   <string name="statistics_details_dialog">%1$d jakso %2$d:sta aloitettu.\n\nSoitettu %3$s jaksoa %4$s:sta.</string>
   <string name="statistics_mode">Tilastointitila</string>
   <string name="statistics_mode_normal">Laske oikeasti soitettu aikamäärä. Uudelleensoitto lasketaan kahdesti, mutta soitetuksi merkattua ei lasketa.</string>
-  <string name="statistics_mode_count_all">Laske yhteen kaikki soitetuksi merketatut podcastit</string>
   <string name="statistics_speed_not_counted">Huomio: Soittonopeutta ei lasketa mukaan.</string>
   <string name="statistics_reset_data">Nollaa tilastotiedot</string>
   <string name="statistics_reset_data_msg">Tämä poistaa kaikkien jaksojen soiton keston historian. Haluatko varmasti jatkaa?</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Ladattujen podcastien yhteiskoko</string>
   <!--Main activity-->
   <string name="drawer_open">Avaa menu</string>
   <string name="drawer_close">Sulje menu</string>
@@ -49,6 +46,7 @@
   <string name="drawer_feed_counter_unplayed">Soittamattomia jaksoja</string>
   <string name="drawer_feed_counter_downloaded">Ladattuja jaksoja</string>
   <string name="drawer_feed_counter_none">Ei yhtään</string>
+  <!--Bug report activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Avaa selaimessa</string>
   <string name="copy_url_label">Kopioi URL</string>
@@ -124,14 +122,7 @@
   <string name="feed_settings_label">Podcastin asetukset</string>
   <string name="rename_feed_label">Uudelleennimeä podcast </string>
   <string name="remove_feed_label">Poista podcast</string>
-  <string name="share_label">Jaa...</string>
-  <string name="share_link_label">Jaa jakson URL</string>
-  <string name="share_link_with_position_label">Jaa jakson URL soittoajan kanssa</string>
   <string name="share_file_label">Jaa tietodosto</string>
-  <string name="share_website_url_label">Jaa verkkosivuston URL</string>
-  <string name="share_feed_url_label">Jaa podcastin URL</string>
-  <string name="share_item_url_label">Jaa mediatiedoston URL</string>
-  <string name="share_item_url_with_position_label">Jaa mediatiedoston URL toistosijainnin kanssa</string>
   <string name="feed_delete_confirmation_msg">Vahvista, että haluat poistaa podcastin \"%1$s\" ja KAIKKI sen jaksot (mukaan lukien ladatut jaksot).</string>
   <string name="feed_remover_msg">Poistetaan podcast</string>
   <string name="load_complete_feed">Päivitä podcast</string>
@@ -139,14 +130,9 @@
   <string name="select_all_above">Valitse kaikki yllä</string>
   <string name="select_all_below">Valitse kaikki alla</string>
   <string name="hide_unplayed_episodes_label">Soittamaton</string>
-  <string name="hide_paused_episodes_label">Pause</string>
-  <string name="hide_played_episodes_label">Soitettu</string>
   <string name="hide_queued_episodes_label">Jonossa</string>
   <string name="hide_not_queued_episodes_label">Ei jonossa</string>
-  <string name="hide_downloaded_episodes_label">Ladattu</string>
-  <string name="hide_not_downloaded_episodes_label">Ei ladattu</string>
   <string name="hide_has_media_label">Sisältää mediaa</string>
-  <string name="hide_is_favorite_label">On suosikki</string>
   <string name="filtered_label">Suodatettu</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Viimeisin päivitys epäonnistui</string>
   <string name="open_podcast">Avaa podcast</string>
@@ -163,10 +149,6 @@
   <string name="delete_label">Poista</string>
   <string name="delete_failed">Ei voida poistaa tiedostoa. Laitteen uudelleenkäynnistys saattaa auttaa.</string>
   <string name="delete_episode_label">Poista jakso</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d jakso poistettu.</item>
-    <item quantity="other">%d jaksoa poistettu.</item>
-  </plurals>
   <string name="remove_new_flag_label">Poista \"uusi\"-lippu</string>
   <string name="removed_new_flag_label">Poistettiin \"uusi\"-lippu</string>
   <string name="mark_read_label">Merkitse soitetuksi</string>
@@ -238,7 +220,6 @@
   </plurals>
   <string name="downloads_processing">Käsitellään latauksia</string>
   <string name="download_notification_title">Ladataan podcastin tietoja</string>
-  <string name="download_report_content">%1$d latausta onnistui, %2$d epäonnistui</string>
   <string name="download_log_title_unknown">Tuntematon otsikko</string>
   <string name="download_type_feed">Syöte</string>
   <string name="download_type_media">Mediatiedosto</string>
@@ -251,7 +232,6 @@
   <string name="confirm_mobile_download_dialog_message">Lataaminen mobiilidatayhteydellä on estetty asetuksissa.\n\nHaluatko sallia lataamisen väliaikaisesti?\n\n<small>Valinta muistetaan 10 minuutin ajan.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Vahvista suoratoisto mobiilidatayhteydellä</string>
   <string name="confirm_mobile_streaming_notification_message">Suoratoisto mobiilidatayhteydellä on estetty asetuksissa. Napsauta suoratoistaaksesi silti.</string>
-  <string name="confirm_mobile_streaming_button_always">Salli aina</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Lisää jonoon</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Salli väliaikaisesti</string>
   <!--Mediaplayer messages-->
@@ -297,7 +277,6 @@
   <string name="download_plugin_label">Lataa laajennus</string>
   <string name="no_playback_plugin_title">Laajennus ei asennettu</string>
   <string name="no_playback_plugin_or_sonic_msg">Vaihtelevan nopeuden toiston toimimiseksi suosittelemme ottamaan käyttöön sisäänrakennetun Sonic-mediasoittimen.</string>
-  <string name="set_playback_speed_label">Soittonopeudet</string>
   <string name="enable_sonic">Ota Sonic käyttöön</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Ei jaksoja jonossa</string>
@@ -371,7 +350,6 @@
   <string name="pref_autoUpdateIntervallOrTime_every">joka %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">aika %1$s</string>
   <string name="pref_followQueue_title">Jatkuva toisto</string>
-  <string name="pref_pauseOnHeadsetDisconnect_title">Kuulokkeiden irrotus</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kuulokkeiden uudelleenyhdistyminen</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth uudelleenyhdistyminen</string>
   <string name="pref_stream_over_download_title">Suosi suoratoistoa</string>
@@ -384,7 +362,6 @@
   <string name="pref_mobileUpdate_episode_download">Jaksojen lataus</string>
   <string name="pref_mobileUpdate_streaming">Suoratoisto</string>
   <string name="user_interface_label">Käyttöliittymä</string>
-  <string name="user_interface_sum">Ulkonäkö, tilausten järjestys, lukitusnäyttö</string>
   <string name="pref_set_theme_title">Valitse teema</string>
   <string name="pref_nav_drawer_items_title">Aseta navigointihyllyn asiat</string>
   <string name="pref_nav_drawer_items_sum">Vaihda navigointihyllyssä esiintyviä asioita.</string>
@@ -420,10 +397,7 @@
   <string name="pref_gpodnet_sync_changes_sum">Synkronoi tilaukset ja jaksojen tilojen muutokset gpodder.net.</string>
   <string name="pref_gpodnet_full_sync_sum">Synkronoi kaikki tilaukset ja jaksojen tilastot gpodder.net</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Kirjauduttu <i>%1$s</i> laitteella <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_title">Näytä synkronointivirheet ilmoituksissa</string>
   <string name="pref_gpodnet_notifications_sum">Tämä asetus ei vaikuta autentikointivirheisiin.</string>
-  <string name="pref_playback_speed_title">Soittonopeudet</string>
-  <string name="pref_playback_speed_sum">Kustomoi muuttuvia soittonopeuksia</string>
   <string name="pref_playback_time_respects_speed_title">Mukauta mediatietoja soiton nopeuteen</string>
   <string name="pref_playback_time_respects_speed_sum">Näytetty aika ja kesto mukautuvat soiton nopeuteen</string>
   <string name="pref_fast_forward">Seuraava skippaa aikaa</string>
@@ -436,13 +410,10 @@
   <string name="pref_expandNotify_sum">Tämä laajentaa ilmoituksen näyttämään soittonapit</string>
   <string name="pref_persistNotify_title">Pysyvät soittokontrollit</string>
   <string name="pref_persistNotify_sum">Säilytä ilmoitus ja lukituskuvan kontrollit kun soitto on pysäytetty.</string>
-  <string name="pref_compact_notification_buttons_title">Aseta lukituskuvan napit</string>
-  <string name="pref_compact_notification_buttons_sum">Vaihda lukituskuvan soittonapit. Soitto/Pause napit on aina mukana.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Valitse maksimi %1$d asioita</string>
   <string name="pref_compact_notification_buttons_dialog_error">Voit valita vain maksimissaan %1$d asioita.</string>
   <string name="pref_lockscreen_background_title">Aseta lukitusruudun taustakuva</string>
   <string name="pref_lockscreen_background_sum">Aseta lukitusruudun taustakuva nykyisen jakson kuvaan. Tämä kuva näkyy kolmannen osapuolen sovelluksissa.</string>
-  <string name="pref_showDownloadReport_title">Näytä latausraportti</string>
   <string name="pref_showDownloadReport_sum">Jos lataus epäonnistuu, generoi raportti joka näyttää virheen tiedot.</string>
   <string name="pref_expand_notify_unsupport_toast">Android versiot ennen 4.1 eivät tue laajenettuja ilmoituksia.</string>
   <string name="pref_smart_mark_as_played_disabled">Poissa käytöstä</string>
@@ -498,7 +469,6 @@
   <string name="export_success_sum">Viety tiedosto on kirjoitettu:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Pääsy ulkoiseen solvellukseen tarvitaan OPML tiedoston lukemiseen</string>
   <string name="import_select_file">Valitse tiedosto tuontiin</string>
-  <string name="import_ok">Tuonti onnistui.\n\nPaina OK uudelleenkäynnistääksesi AntennaPod</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Aseta uniajastin</string>
   <string name="disable_sleeptimer_label">Lopeta uniajastin</string>
@@ -583,7 +553,6 @@
   <string name="fast_forward_label">Hyppää eteen</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
-  <string name="navigate_upwards_label">Navigoi eteenpäoin</string>
   <string name="status_downloading_label">Jaksoa ladataan</string>
   <string name="in_queue_label">Jakso on jonossa</string>
   <string name="drag_handle_content_description">Raahaa muuttaen tilaa</string>
@@ -610,11 +579,11 @@
   <string name="browse_gpoddernet_label">Selaa gpodder.net</string>
   <string name="discover">Löydä</string>
   <string name="discover_more">lisää »</string>
+  <!--Local feeds-->
   <string name="filter">Filteri</string>
   <!--Episodes apply actions-->
   <string name="all_label">Kaikki</string>
   <string name="selected_all_label">Valitse kaikki jaksot</string>
-  <string name="none_label">Ei mitään</string>
   <string name="deselected_all_label">Poista valinta kaikista</string>
   <string name="played_label">Soitettu</string>
   <string name="selected_played_label">Valitut soitetut jaksot</string>
@@ -624,12 +593,17 @@
   <string name="selected_downloaded_label">Valittut ladatut jaksot</string>
   <string name="not_downloaded_label">Ei ladattu</string>
   <string name="selected_not_downloaded_label">Valitut ei ladatut jaksot</string>
-  <string name="queued_label">Jonossa</string>
   <string name="selected_queued_label">Valitut jaksot jonossa</string>
-  <string name="not_queued_label">Ei jonossa</string>
   <string name="selected_not_queued_label">Valitut jaksot ei jonossa</string>
-  <string name="has_media">On media</string>
   <string name="selected_has_media_label">Valitut jaksot joissa media</string>
+  <string name="hide_is_favorite_label">On suosikki</string>
+  <string name="hide_downloaded_episodes_label">Ladattu</string>
+  <string name="hide_not_downloaded_episodes_label">Ei ladattu</string>
+  <string name="queued_label">Jonossa</string>
+  <string name="not_queued_label">Ei jonossa</string>
+  <string name="has_media">On media</string>
+  <string name="hide_paused_episodes_label">Pause</string>
+  <string name="hide_played_episodes_label">Soitettu</string>
   <!--Sort-->
   <string name="sort_title_a_z">Otsikko (A \u2192 Z)</string>
   <string name="sort_title_z_a">Otsikko (Z \u2192 A)</string>
@@ -643,6 +617,7 @@
   <string name="rating_never_label">Jätä minut rauhaan</string>
   <string name="rating_later_label">Muistuta minua myöhemmin</string>
   <string name="rating_now_label">Miksei, tehdään tämä!</string>
+  <!--Share episode dialog-->
   <!--Audio controls-->
   <string name="audio_controls">Audiokontrollit</string>
   <string name="playback_speed">Soittonopeus</string>
@@ -689,7 +664,6 @@
   <string name="notification_channel_playing">Soittaa nyt</string>
   <string name="notification_channel_playing_description">Sallii soiton kontrollit. Tämä on pääilmoitus, jonka näet kun podcast soitetaan.</string>
   <string name="notification_channel_error">Virheet</string>
-  <string name="notification_channel_error_description">Näytetään kun jotain meni vikaan, esimerkiksi jos lataus tai gpodder synkronointi epäonnistui.</string>
   <!--Widget settings-->
   <!--On-Demand configuration-->
 </resources>

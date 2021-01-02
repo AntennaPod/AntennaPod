@@ -80,7 +80,7 @@ public class SyncService extends Worker {
         if (!GpodnetPreferences.loggedIn()) {
             return Result.success();
         }
-        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetService.DEFAULT_BASE_HOST);
+        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetPreferences.getHostname());
         SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .edit();
         prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
@@ -485,7 +485,11 @@ public class SyncService extends Worker {
     }
 
     private void updateErrorNotification(SyncServiceException exception) {
-        Log.d(TAG, "Posting error notification");
+        if (!UserPreferences.gpodnetNotificationsEnabled()) {
+            Log.d(TAG, "Skipping sync error notification because of user setting");
+            return;
+        }
+        Log.d(TAG, "Posting sync error notification");
         final String description = getApplicationContext().getString(R.string.gpodnetsync_error_descr)
                 + exception.getMessage();
 

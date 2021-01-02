@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.adapter.actionbutton;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import androidx.annotation.AttrRes;
 import androidx.annotation.StringRes;

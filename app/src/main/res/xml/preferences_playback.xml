@@ -114,7 +114,7 @@
                 android:title="@string/pref_skip_keeps_episodes_title"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/media_player">
+    <PreferenceCategory android:title="@string/experimental_pref">
         <ListPreference
                 android:defaultValue="exoplayer"
                 android:entries="@array/media_player_options"
@@ -122,9 +122,6 @@
                 android:title="@string/media_player"
                 android:summary="@string/pref_media_player_message"
                 android:entryValues="@array/media_player_values"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/experimental_pref">
         <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"

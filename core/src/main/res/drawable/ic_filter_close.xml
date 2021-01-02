@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!-- Fall-back for old Android devices that do not support attrs as colors -->
     <item
         android:bottom="5dp"
         android:left="5dp"
@@ -10,7 +10,7 @@
         <shape android:shape="oval">
             <stroke
                 android:width="4dp"
-                android:color="?attr/filter_dialog_clear" />
+                android:color="#555" />
         </shape>
     </item>
 
@@ -28,7 +28,7 @@
             <shape android:shape="line">
                 <stroke
                     android:width="4dp"
-                    android:color="?attr/filter_dialog_clear" />
+                    android:color="#555" />
             </shape>
         </rotate>
     </item>
@@ -46,7 +46,7 @@
             <shape android:shape="line">
                 <stroke
                     android:width="4dp"
-                    android:color="?attr/filter_dialog_clear" />
+                    android:color="#555" />
             </shape>
 
         </rotate>

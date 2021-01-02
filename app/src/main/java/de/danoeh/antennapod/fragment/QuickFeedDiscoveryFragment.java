@@ -46,6 +46,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
     private FeedDiscoverAdapter adapter;
     private GridView discoverGridLayout;
     private TextView errorTextView;
+    private TextView poweredByTextView;
     private LinearLayout errorView;
     private Button errorRetry;
 
@@ -63,6 +64,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         errorTextView = root.findViewById(R.id.discover_error_txtV);
         errorRetry = root.findViewById(R.id.discover_error_retry_btn);
         errorRetry.setOnClickListener((listener) -> loadToplist());
+        poweredByTextView = root.findViewById(R.id.discover_powered_by_itunes);
 
         adapter = new FeedDiscoverAdapter((MainActivity) getActivity());
         discoverGridLayout.setAdapter(adapter);
@@ -110,6 +112,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
         discoverGridLayout.setVisibility(View.INVISIBLE);
         errorView.setVisibility(View.GONE);
         errorRetry.setVisibility(View.INVISIBLE);
+        poweredByTextView.setVisibility(View.VISIBLE);
 
         ItunesTopListLoader loader = new ItunesTopListLoader(getContext());
         SharedPreferences prefs = getActivity().getSharedPreferences(ItunesTopListLoader.PREFS, MODE_PRIVATE);
@@ -122,6 +125,7 @@ public class QuickFeedDiscoveryFragment extends Fragment implements AdapterView.
             progressBar.setVisibility(View.GONE);
             discoverGridLayout.setVisibility(View.INVISIBLE);
             errorRetry.setVisibility(View.INVISIBLE);
+            poweredByTextView.setVisibility(View.INVISIBLE);
             return;
         }
 

@@ -564,6 +564,13 @@ public class PlaybackController {
         }
     }
 
+    public void extendSleepTimer(long extendTime) {
+        long timeLeft = getSleepTimerTimeLeft();
+        if (playbackService != null && timeLeft != INVALID_TIME) {
+            setSleepTimer(timeLeft + extendTime);
+        }
+    }
+
     public void setSleepTimer(long time) {
         if (playbackService != null) {
             playbackService.setSleepTimer(time);

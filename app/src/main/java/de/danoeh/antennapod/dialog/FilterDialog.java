@@ -3,6 +3,7 @@ package de.danoeh.antennapod.dialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
@@ -34,18 +35,19 @@ public abstract class FilterDialog {
         builder.setTitle(R.string.filter);
 
         LayoutInflater inflater = LayoutInflater.from(this.context);
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.filter_dialog, null, false);
+        View layout = inflater.inflate(R.layout.filter_dialog, null, false);
+        LinearLayout rows = layout.findViewById(R.id.filter_rows);
         builder.setView(layout);
 
         for (FeedItemFilterGroup item : FeedItemFilterGroup.values()) {
-            RecursiveRadioGroup row = (RecursiveRadioGroup) inflater.inflate(R.layout.filter_dialog_row, null);
+            RecursiveRadioGroup row = (RecursiveRadioGroup) inflater.inflate(R.layout.filter_dialog_row, null, false);
             RadioButton filter1 = row.findViewById(R.id.filter_dialog_radioButton1);
             RadioButton filter2 = row.findViewById(R.id.filter_dialog_radioButton2);
             filter1.setText(item.values[0].displayName);
             filter1.setTag(item.values[0].filterId);
             filter2.setText(item.values[1].displayName);
             filter2.setTag(item.values[1].filterId);
-            layout.addView(row);
+            rows.addView(row);
         }
 
         for (String filterId : filterValues) {
@@ -56,11 +58,11 @@ public abstract class FilterDialog {
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             filterValues.clear();
-            for (int i = 0; i < layout.getChildCount(); i++) {
-                if (!(layout.getChildAt(i) instanceof RecursiveRadioGroup)) {
+            for (int i = 0; i < rows.getChildCount(); i++) {
+                if (!(rows.getChildAt(i) instanceof RecursiveRadioGroup)) {
                     continue;
                 }
-                RecursiveRadioGroup group = (RecursiveRadioGroup) layout.getChildAt(i);
+                RecursiveRadioGroup group = (RecursiveRadioGroup) rows.getChildAt(i);
                 if (group.getCheckedButton() != null) {
                     String tag = (String) group.getCheckedButton().getTag();
                     if (tag != null) { // Clear buttons use no tag

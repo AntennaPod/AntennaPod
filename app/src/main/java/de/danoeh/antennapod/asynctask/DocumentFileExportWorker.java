@@ -9,10 +9,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 
 import de.danoeh.antennapod.core.export.ExportWriter;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.LangUtils;
 import io.reactivex.Observable;
 
 /**
@@ -44,7 +44,7 @@ public class DocumentFileExportWorker {
                 if (outputStream == null) {
                     throw new IOException();
                 }
-                writer = new OutputStreamWriter(outputStream, LangUtils.UTF_8);
+                writer = new OutputStreamWriter(outputStream, Charset.forName("UTF-8"));
                 exportWriter.writeDocument(DBReader.getFeedList(), writer, context);
                 subscriber.onNext(output);
             } catch (IOException e) {

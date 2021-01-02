@@ -39,7 +39,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -168,6 +167,7 @@ public class DownloadService extends Service {
             startForeground(R.id.notification_downloading, notification);
             syncExecutor.execute(() -> onDownloadQueued(intent));
         } else if (numberOfDownloads.get() == 0) {
+            stopForeground(true);
             stopSelf();
         } else {
             Log.d(TAG, "onStartCommand: Unknown intent");
@@ -205,8 +205,7 @@ public class DownloadService extends Service {
         isRunning = false;
 
         boolean showAutoDownloadReport = UserPreferences.showAutoDownloadReport();
-        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()
-                && (UserPreferences.showDownloadReport() || showAutoDownloadReport)) {
+        if (UserPreferences.showDownloadReport() || showAutoDownloadReport) {
             notificationManager.updateReport(reportQueue, showAutoDownloadReport);
             reportQueue.clear();
         }
@@ -429,7 +428,7 @@ public class DownloadService extends Service {
                 + ", cleanupMedia=" + cleanupMedia);
 
         if (cleanupMedia) {
-            ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
+            UserPreferences.getEpisodeCleanupAlgorithm()
                     .makeRoomForEpisodes(getApplicationContext(), requests.size());
         }
 
@@ -553,6 +552,7 @@ public class DownloadService extends Service {
 
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
+            stopForeground(true);
             stopSelf();
             if (notificationUpdater != null) {
                 notificationUpdater.run();

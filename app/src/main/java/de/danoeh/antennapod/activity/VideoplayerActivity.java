@@ -12,9 +12,9 @@ import android.view.KeyEvent;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
+import android.widget.EditText;
 import android.widget.ImageView;
 
-import androidx.appcompat.view.menu.ActionMenuItem;
 import androidx.core.view.WindowCompat;
 import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
@@ -489,6 +489,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
     //Hardware keyboard support
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        View currentFocus = getCurrentFocus();
+        if (currentFocus instanceof EditText) {
+            return super.onKeyUp(keyCode, event);
+        }
+
         AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         switch (keyCode) {

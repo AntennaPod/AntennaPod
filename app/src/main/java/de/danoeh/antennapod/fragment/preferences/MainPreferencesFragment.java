@@ -1,8 +1,11 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import com.bytehamster.lib.preferencesearch.SearchConfiguration;
 import com.bytehamster.lib.preferencesearch.SearchPreference;
@@ -20,7 +23,7 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_SCREEN_NETWORK = "prefScreenNetwork";
     private static final String PREF_SCREEN_GPODDER = "prefScreenGpodder";
     private static final String PREF_SCREEN_STORAGE = "prefScreenStorage";
-    private static final String PREF_FAQ = "prefFaq";
+    private static final String PREF_DOCUMENTATION = "prefDocumentation";
     private static final String PREF_VIEW_FORUM = "prefViewForum";
     private static final String PREF_SEND_BUG_REPORT = "prefSendBugReport";
     private static final String PREF_CATEGORY_PROJECT = "project";
@@ -35,10 +38,18 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
         setupSearch();
 
         // If you are writing a spin-off, please update the details on screens like "About" and "Report bug"
-        // and afterwards remove the following lines.
+        // and afterwards remove the following lines. Please keep in mind that AntennaPod is licensed under the GPL.
+        // This means that your application needs to be open-source under the GPL, too.
+        // It must also include a prominent copyright notice.
         String packageName = getContext().getPackageName();
         if (!"de.danoeh.antennapod".equals(packageName) && !"de.danoeh.antennapod.debug".equals(packageName)) {
             findPreference(PREF_CATEGORY_PROJECT).setVisible(false);
+            Preference copyrightNotice = new Preference(getContext());
+            copyrightNotice.setSummary("This application is based on AntennaPod."
+                    + " The AntennaPod team does NOT provide support for this unofficial version."
+                    + " If you can read this message, the developers of this modification"
+                    + " violate the GNU General Public License (GPL).");
+            findPreference(PREF_CATEGORY_PROJECT).getParent().addPreference(copyrightNotice);
         }
     }
 
@@ -70,10 +81,16 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference(PREF_NOTIFICATION).setOnPreferenceClickListener(preference -> {
-            ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
+            if (Build.VERSION.SDK_INT >= 26) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getActivity().getPackageName());
+                startActivity(intent);
+            } else {
+                ((PreferenceActivity) getActivity()).openScreen(R.xml.preferences_notifications);
+            }
             return true;
         });
-
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(
                 preference -> {
                     getParentFragmentManager().beginTransaction().replace(R.id.content, new AboutFragment())
@@ -88,8 +105,8 @@ public class MainPreferencesFragment extends PreferenceFragmentCompat {
                     return true;
                 }
         );
-        findPreference(PREF_FAQ).setOnPreferenceClickListener(preference -> {
-            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/faq.html");
+        findPreference(PREF_DOCUMENTATION).setOnPreferenceClickListener(preference -> {
+            IntentUtils.openInBrowser(getContext(), "https://antennapod.org/documentation/");
             return true;
         });
         findPreference(PREF_VIEW_FORUM).setOnPreferenceClickListener(preference -> {

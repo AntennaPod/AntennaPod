@@ -19,11 +19,4 @@ public interface PlaybackServiceCallbacks {
      * @return A non-null activity intent.
      */
     Intent getPlayerActivityIntent(Context context, MediaType mediaType, boolean remotePlayback);
-
-    /**
-     * Returns true if the PlaybackService should load new episodes from the queue when playback ends
-     * and false if the PlaybackService should ignore the queue and load no more episodes when playback
-     * finishes.
-     */
-    boolean useQueue();
 }

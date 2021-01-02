@@ -509,11 +509,21 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 viewBinding.subscribeButton.setEnabled(true);
                 viewBinding.subscribeButton.setText(R.string.open_podcast);
                 if (didPressSubscribe) {
+                    didPressSubscribe = false;
+                    if (UserPreferences.isEnableAutodownload()) {
+                        Feed feed1 = DBReader.getFeed(getFeedId(feed));
+                        FeedPreferences feedPreferences = feed1.getPreferences();
+                        feedPreferences.setAutoDownload(viewBinding.autoDownloadCheckBox.isChecked());
+                        feed1.savePreferences();
+                    }
                     openFeed();
                 }
             } else {
                 viewBinding.subscribeButton.setEnabled(true);
                 viewBinding.subscribeButton.setText(R.string.subscribe_label);
+                if (UserPreferences.isEnableAutodownload()) {
+                    viewBinding.autoDownloadCheckBox.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

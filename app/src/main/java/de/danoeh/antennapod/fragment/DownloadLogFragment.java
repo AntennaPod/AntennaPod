@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +12,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.ListFragment;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -176,7 +174,7 @@ public class DownloadLogFragment extends ListFragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
-                case R.id.clear_history_item:
+                case R.id.clear_logs_item:
                     DBWriter.clearDownloadLog();
                     return true;
                 case R.id.refresh_item:
