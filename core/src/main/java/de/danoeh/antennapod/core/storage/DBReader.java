@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -867,24 +868,27 @@ public final class DBReader {
         int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
 
         List<NavDrawerData.DrawerItem> items = new ArrayList<>();
-        for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
-            items.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), i, feedCounters.get(feeds.get(i).getId())));
+        Map<String, NavDrawerData.FolderDrawerItem> folders = new HashMap<>();
+        for (Feed feed : feeds) {
+            for (String tag : feed.getPreferences().getTags()) {
+                NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(),
+                        feedCounters.get(feed.getId()));
+                if (FeedPreferences.TAG_ROOT.equals(tag)) {
+                    items.add(drawerItem);
+                    continue;
+                }
+                NavDrawerData.FolderDrawerItem folder;
+                if (folders.containsKey(tag)) {
+                    folder = folders.get(tag);
+                } else {
+                    folder = new NavDrawerData.FolderDrawerItem(tag);
+                    folders.put(tag, folder);
+                    items.add(folder);
+                }
+                drawerItem.id |= folder.id;
+                folder.children.add(drawerItem);
+            }
         }
-
-        List<NavDrawerData.DrawerItem> folderItems = new ArrayList<>();
-        for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
-            folderItems.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 10001 + i,
-                    feedCounters.get(feeds.get(i).getId())));
-        }
-        items.add(new NavDrawerData.FolderDrawerItem("Folder 1", folderItems, 10000));
-
-        List<NavDrawerData.DrawerItem> folderItems2 = new ArrayList<>();
-        for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
-            folderItems2.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 20001 + i,
-                    feedCounters.get(feeds.get(i).getId())));
-        }
-        items.add(new NavDrawerData.FolderDrawerItem("Folder 2", folderItems2, 20000));
-
         NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems,
                 feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();

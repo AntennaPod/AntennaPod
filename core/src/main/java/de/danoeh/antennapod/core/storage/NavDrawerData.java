@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.storage;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.util.LongIntMap;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NavDrawerData {
@@ -34,7 +35,7 @@ public class NavDrawerData {
 
         public final Type type;
         private int layer;
-        public final long id;
+        public long id;
 
         public DrawerItem(Type type, long id) {
             this.type = type;
@@ -55,13 +56,12 @@ public class NavDrawerData {
     }
 
     public static class FolderDrawerItem extends DrawerItem {
-        public final List<DrawerItem> children;
+        public final List<DrawerItem> children = new ArrayList<>();
         public final String name;
         public boolean isOpen;
 
-        public FolderDrawerItem(String name, List<DrawerItem> children, long id) {
-            super(DrawerItem.Type.FOLDER, id);
-            this.children = children;
+        public FolderDrawerItem(String name) {
+            super(DrawerItem.Type.FOLDER, name.hashCode() & ~0xFFF); // Drop lower 12 bits for item ids
             this.name = name;
         }
 

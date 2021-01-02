@@ -15,6 +15,7 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 public class FeedPreferences {
 
     public static final float SPEED_USE_GLOBAL = -1;
+    public static final String TAG_ROOT = "#root";
 
     @NonNull
     private FeedFilter filter;
@@ -36,6 +37,7 @@ public class FeedPreferences {
     private float feedPlaybackSpeed;
     private int feedSkipIntro;
     private int feedSkipEnding;
+    private String[] tags = {TAG_ROOT, "Test 1", "Test 2"};
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
         this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting,
@@ -239,5 +241,13 @@ public class FeedPreferences {
 
     public int getFeedSkipEnding() {
         return feedSkipEnding;
+    }
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
     }
 }
