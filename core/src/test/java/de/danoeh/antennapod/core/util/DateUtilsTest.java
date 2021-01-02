@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.util;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -13,13 +12,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Unit test for {@link DateUtils}.
  */
-@SuppressWarnings("ConstantConditions")
 public class DateUtilsTest {
-
-    @Before
-    public void setUp() {
-        DateUtils.dateFormatParser.setTimeZone(DateUtils.defaultTimezone);
-    }
 
     @Test
     public void testParseDateWithMicroseconds() {
@@ -45,8 +38,8 @@ public class DateUtilsTest {
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 900);
         Date actual = DateUtils.parse("2015-03-28T13:31:04.9");
-        assertEquals(expected.getTime()/1000, actual.getTime()/1000);
-        assertEquals(900, actual.getTime()%1000);
+        assertEquals(expected.getTime() / 1000, actual.getTime() / 1000);
+        assertEquals(900, actual.getTime() % 1000);
     }
 
     @Test
@@ -73,8 +66,8 @@ public class DateUtilsTest {
         exp.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date expected = new Date(exp.getTimeInMillis() + 900);
         Date actual = DateUtils.parse("2015-03-28T13:31:04.9 +0700");
-        assertEquals(expected.getTime()/1000, actual.getTime()/1000);
-        assertEquals(900, actual.getTime()%1000);
+        assertEquals(expected.getTime() / 1000, actual.getTime() / 1000);
+        assertEquals(900, actual.getTime() % 1000);
     }
 
     @Test
@@ -122,12 +115,6 @@ public class DateUtilsTest {
         assertEquals(expected, actual);
     }
 
-    /**
-     * Requires Android platform.
-     *
-     * Reason: Standard JDK cannot parse timezone <code>-08:00</code> (ISO 8601 format). It only accepts
-     * <code>-0800</code> (RFC 822 format)
-     */
     @Test
     public void testParseDateWithNoTimezonePadding() {
         GregorianCalendar exp = new GregorianCalendar(2017, 1, 22, 22, 28, 0);
