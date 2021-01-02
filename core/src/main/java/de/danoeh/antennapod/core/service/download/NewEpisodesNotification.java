@@ -69,7 +69,7 @@ public class NewEpisodesNotification {
 
         Notification notification = new NotificationCompat.Builder(
                 context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(R.drawable.ic_notification_new)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setContentIntent(pendingIntent)
