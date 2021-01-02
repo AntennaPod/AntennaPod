@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.content.ContentResolver;
 import android.content.Context;
 
 import androidx.core.text.TextUtilsCompat;
@@ -22,6 +23,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import jp.shts.android.library.TriangleLabelView;
 
@@ -61,7 +63,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
 
     @Override
     public long getItemId(int position) {
-        return position; // TODO
+        return ((NavDrawerData.DrawerItem) getItem(position)).id;
     }
 
     @Override
@@ -84,11 +86,13 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             holder = (Holder) convertView.getTag();
         }
 
-        final Feed feed = (Feed) getItem(position);
-        if (feed == null) return null;
+        final NavDrawerData.DrawerItem drawerItem = (NavDrawerData.DrawerItem) getItem(position);
+        if (drawerItem == null) {
+            return null;
+        }
 
-        holder.feedTitle.setText(feed.getTitle());
-        holder.imageView.setContentDescription(feed.getTitle());
+        holder.feedTitle.setText(drawerItem.getTitle());
+        holder.imageView.setContentDescription(drawerItem.getTitle());
         holder.feedTitle.setVisibility(View.VISIBLE);
 
         // Fix TriangleLabelView corner for RTL
@@ -97,30 +101,49 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             holder.count.setCorner(TriangleLabelView.Corner.TOP_LEFT);
         }
 
-        int count = itemAccess.getFeedCounter(feed.getId());
-        if(count > 0) {
-            holder.count.setPrimaryText(
-                    NumberFormat.getInstance().format(itemAccess.getFeedCounter(feed.getId())));
+        if (drawerItem.getCounter() > 0) {
+            holder.count.setPrimaryText(NumberFormat.getInstance().format(drawerItem.getCounter()));
             holder.count.setVisibility(View.VISIBLE);
         } else {
             holder.count.setVisibility(View.GONE);
         }
 
-        boolean textAndImageCombined = feed.isLocalFeed()
-                && LocalFeedUpdater.getDefaultIconUrl(convertView.getContext()).equals(feed.getImageUrl());
-        new CoverLoader(mainActivityRef.get())
-                .withUri(feed.getImageLocation())
-                .withPlaceholderView(holder.feedTitle, textAndImageCombined)
-                .withCoverView(holder.imageView)
-                .load();
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
+            boolean textAndImageCombined = feed.isLocalFeed()
+                    && LocalFeedUpdater.getDefaultIconUrl(convertView.getContext()).equals(feed.getImageUrl());
+            new CoverLoader(mainActivityRef.get())
+                    .withUri(feed.getImageLocation())
+                    .withPlaceholderView(holder.feedTitle, textAndImageCombined)
+                    .withCoverView(holder.imageView)
+                    .load();
+        } else {
+            String resourceEntryName = mainActivityRef.get().getResources()
+                    .getResourceEntryName(ThemeUtils.getDrawableFromAttr(mainActivityRef.get(), R.attr.ic_folder));
+            String iconUri = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                    + mainActivityRef.get().getPackageName() + "/raw/"
+                    + resourceEntryName;
+            new CoverLoader(mainActivityRef.get())
+                    .withUri(iconUri)
+                    .withPlaceholderView(holder.feedTitle, true)
+                    .withCoverView(holder.imageView)
+                    .load();
+        }
 
         return convertView;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Fragment fragment = FeedItemlistFragment.newInstance(getItemId(position));
-        mainActivityRef.get().loadChildFragment(fragment);
+        final NavDrawerData.DrawerItem drawerItem = (NavDrawerData.DrawerItem) getItem(position);
+        if (drawerItem == null) {
+            return;
+        }
+        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            Feed feed = ((NavDrawerData.FeedDrawerItem) drawerItem).feed;
+            Fragment fragment = FeedItemlistFragment.newInstance(feed.getId());
+            mainActivityRef.get().loadChildFragment(fragment);
+        }
     }
 
     static class Holder {

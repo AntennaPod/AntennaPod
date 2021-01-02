@@ -868,18 +868,20 @@ public final class DBReader {
 
         List<NavDrawerData.DrawerItem> items = new ArrayList<>();
         for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
-            items.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 0, i));
+            items.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 0, i, feedCounters.get(feeds.get(i).getId())));
         }
 
         List<NavDrawerData.DrawerItem> folderItems = new ArrayList<>();
         for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
-            folderItems.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 1, 10001 + i));
+            folderItems.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 1, 10001 + i,
+                    feedCounters.get(feeds.get(i).getId())));
         }
         items.add(new NavDrawerData.FolderDrawerItem("Folder 1", folderItems, 0, 10000));
 
         List<NavDrawerData.DrawerItem> folderItems2 = new ArrayList<>();
         for (int i = 0, feedsSize = feeds.size(); i < feedsSize; i++) {
-            folderItems2.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 1, 20001 + i));
+            folderItems2.add(new NavDrawerData.FeedDrawerItem(feeds.get(i), 1, 20001 + i,
+                    feedCounters.get(feeds.get(i).getId())));
         }
         items.add(new NavDrawerData.FolderDrawerItem("Folder 2", folderItems2, 0, 20000));
 

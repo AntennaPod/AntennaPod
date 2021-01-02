@@ -27,7 +27,7 @@ public class NavDrawerData {
         this.reclaimableSpace = reclaimableSpace;
     }
 
-    public static class DrawerItem {
+    public abstract static class DrawerItem {
         public enum Type {
             FOLDER, FEED
         }
@@ -41,6 +41,10 @@ public class NavDrawerData {
             this.layer = layer;
             this.id = id;
         }
+
+        public abstract String getTitle();
+
+        public abstract int getCounter();
     }
 
     public static class FolderDrawerItem extends DrawerItem {
@@ -52,14 +56,32 @@ public class NavDrawerData {
             this.children = children;
             this.name = name;
         }
+
+        public String getTitle() {
+            return name;
+        }
+
+        public int getCounter() {
+            return -1;
+        }
     }
 
     public static class FeedDrawerItem extends DrawerItem {
         public final Feed feed;
+        public final int counter;
 
-        public FeedDrawerItem(Feed feed, int layer, long id) {
+        public FeedDrawerItem(Feed feed, int layer, long id, int counter) {
             super(DrawerItem.Type.FEED, layer, id);
             this.feed = feed;
+            this.counter = counter;
+        }
+
+        public String getTitle() {
+            return feed.getTitle();
+        }
+
+        public int getCounter() {
+            return counter;
         }
     }
 }
