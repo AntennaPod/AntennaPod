@@ -9,6 +9,10 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Contains preferences for a single feed.
  */
@@ -16,6 +20,7 @@ public class FeedPreferences {
 
     public static final float SPEED_USE_GLOBAL = -1;
     public static final String TAG_ROOT = "#root";
+    public static final String TAG_SEPARATOR = ",";
 
     @NonNull
     private FeedFilter filter;
@@ -37,14 +42,17 @@ public class FeedPreferences {
     private float feedPlaybackSpeed;
     private int feedSkipIntro;
     private int feedSkipEnding;
-    private String[] tags = {TAG_ROOT, "Test 1", "Test 2"};
+    private final Set<String> tags = new HashSet<>();
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
         this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting,
-                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0);
+                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, new HashSet<>());
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding) {
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action,
+                            VolumeAdaptionSetting volumeAdaptionSetting, String username, String password,
+                            @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding,
+                            Set<String> tags) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -56,6 +64,7 @@ public class FeedPreferences {
         this.feedPlaybackSpeed = feedPlaybackSpeed;
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
+        this.tags.addAll(tags);
     }
 
     public static FeedPreferences fromCursor(Cursor cursor) {
@@ -71,6 +80,7 @@ public class FeedPreferences {
         int indexFeedPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_PLAYBACK_SPEED);
         int indexAutoSkipIntro = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_ENDING);
+        int indexTags = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_TAGS);
 
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
@@ -86,6 +96,11 @@ public class FeedPreferences {
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
+        String tagsString = cursor.getString(indexTags);
+        if (TextUtils.isEmpty(tagsString)) {
+            tagsString = TAG_ROOT;
+        }
+
         return new FeedPreferences(feedId,
                 autoDownload,
                 autoRefresh,
@@ -96,8 +111,8 @@ public class FeedPreferences {
                 new FeedFilter(includeFilter, excludeFilter),
                 feedPlaybackSpeed,
                 feedAutoSkipIntro,
-                feedAutoSkipEnding
-                );
+                feedAutoSkipEnding,
+                new HashSet<>(Arrays.asList(tagsString.split(TAG_SEPARATOR))));
     }
 
     /**
@@ -243,11 +258,7 @@ public class FeedPreferences {
         return feedSkipEnding;
     }
 
-    public String[] getTags() {
+    public Set<String> getTags() {
         return tags;
-    }
-
-    public void setTags(String[] tags) {
-        this.tags = tags;
     }
 }
