@@ -88,9 +88,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (TextUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
-            playExternalMedia(getIntent(), MediaType.VIDEO);
-        } else if (PlaybackService.isCasting()) {
+        if (PlaybackService.isCasting()) {
             Intent intent = PlaybackService.getPlayerActivityIntent(this);
             if (!intent.getComponent().getClassName().equals(VideoplayerActivity.class.getName())) {
                 destroyingDueToReload = true;

@@ -663,50 +663,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
-    void playExternalMedia(Intent intent, MediaType type) {
-        if (intent == null || intent.getData() == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= 23
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
-            }
-
-            int code = REQUEST_CODE_STORAGE_PLAY_AUDIO;
-            if (type == MediaType.VIDEO) {
-                code = REQUEST_CODE_STORAGE_PLAY_VIDEO;
-            }
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, code);
-            return;
-        }
-
-        Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
-        ExternalMedia media = new ExternalMedia(intent.getData().getPath(), type);
-
-        new PlaybackServiceStarter(this, media)
-                .callEvenIfRunning(true)
-                .startWhenPrepared(true)
-                .shouldStream(false)
-                .prepareImmediately(true)
-                .start();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (requestCode == REQUEST_CODE_STORAGE_PLAY_AUDIO) {
-                playExternalMedia(getIntent(), MediaType.AUDIO);
-            } else if (requestCode == REQUEST_CODE_STORAGE_PLAY_VIDEO) {
-                playExternalMedia(getIntent(), MediaType.VIDEO);
-            }
-        } else {
-            Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
-        }
-    }
-
     @Nullable
     private static FeedItem getFeedItem(@Nullable Playable playable) {
         if (playable instanceof FeedMedia) {
