@@ -34,7 +34,6 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -61,7 +60,6 @@ public class GpodderAuthenticationFragment extends DialogFragment {
     private volatile String password;
     private volatile GpodnetDevice selectedDevice;
     private List<GpodnetDevice> devices;
-    private List<List<String>> synchronizedDevices;
 
     @NonNull
     @Override
@@ -137,7 +135,6 @@ public class GpodderAuthenticationFragment extends DialogFragment {
             Completable.fromAction(() -> {
                 service.authenticate(usernameStr, passwordStr);
                 devices = service.getDevices();
-                synchronizedDevices = service.getSynchronizedDevices();
                 GpodderAuthenticationFragment.this.username = usernameStr;
                 GpodderAuthenticationFragment.this.password = passwordStr;
             })
@@ -159,55 +156,40 @@ public class GpodderAuthenticationFragment extends DialogFragment {
 
     private void setupDeviceView(View view) {
         final EditText deviceName = view.findViewById(R.id.deviceName);
-        final LinearLayout deviceGroups = view.findViewById(R.id.deviceGroups);
+        final LinearLayout devicesContainer = view.findViewById(R.id.devicesContainer);
         deviceName.setText(generateDeviceName());
 
-        MaterialButton newGroupButton = view.findViewById(R.id.startNewGroupButton);
-        newGroupButton.setOnClickListener(v -> createDevice(view, null));
+        MaterialButton createDeviceButton = view.findViewById(R.id.createDeviceButton);
+        createDeviceButton.setOnClickListener(v -> createDevice(view));
 
-        for (List<String> syncGroup : synchronizedDevices) {
-            StringBuilder devicesString = new StringBuilder();
-            for (int i = 0; i < syncGroup.size(); i++) {
-                String deviceId = syncGroup.get(i);
-                devicesString.append(findDevice(deviceId).getCaption());
-                if (i != syncGroup.size() - 1) {
-                    devicesString.append("\n");
-                }
-            }
-
-            View groupView = View.inflate(getContext(), R.layout.gpodnetauth_device_group, null);
-            ((TextView) groupView.findViewById(R.id.groupContents)).setText(devicesString.toString());
-            groupView.findViewById(R.id.selectGroupButton).setOnClickListener(v -> createDevice(view, syncGroup));
-            deviceGroups.addView(groupView);
+        for (GpodnetDevice device : devices) {
+            View row = View.inflate(getContext(), R.layout.gpodnetauth_device_row, null);
+            Button selectDeviceButton = row.findViewById(R.id.selectDeviceButton);
+            selectDeviceButton.setOnClickListener(v -> {
+                selectedDevice = device;
+                advance();
+            });
+            selectDeviceButton.setText(device.getCaption());
+            devicesContainer.addView(row);
         }
     }
 
-    private void createDevice(View view, List<String> group) {
+    private void createDevice(View view) {
         final EditText deviceName = view.findViewById(R.id.deviceName);
         final TextView txtvError = view.findViewById(R.id.deviceSelectError);
         final ProgressBar progBarCreateDevice = view.findViewById(R.id.progbarCreateDevice);
-        final LinearLayout deviceGroups = view.findViewById(R.id.deviceGroups);
-        final MaterialButton newGroupButton = view.findViewById(R.id.startNewGroupButton);
 
         String deviceNameStr = deviceName.getText().toString();
         if (isDeviceInList(deviceNameStr)) {
             return;
         }
-        deviceGroups.setVisibility(View.GONE);
         progBarCreateDevice.setVisibility(View.VISIBLE);
         txtvError.setVisibility(View.GONE);
-        newGroupButton.setVisibility(View.GONE);
         deviceName.setEnabled(false);
 
         Observable.fromCallable(() -> {
             String deviceId = generateDeviceId(deviceNameStr);
             service.configureDevice(deviceId, deviceNameStr, GpodnetDevice.DeviceType.MOBILE);
-
-            if (group != null) {
-                List<String> newGroup = new ArrayList<>(group);
-                newGroup.add(deviceId);
-                service.linkDevices(newGroup);
-            }
             return new GpodnetDevice(deviceId, deviceNameStr, GpodnetDevice.DeviceType.MOBILE.toString(), 0);
         })
                 .subscribeOn(Schedulers.io())
@@ -218,8 +200,6 @@ public class GpodderAuthenticationFragment extends DialogFragment {
                     advance();
                 }, error -> {
                         deviceName.setEnabled(true);
-                        newGroupButton.setVisibility(View.VISIBLE);
-                        deviceGroups.setVisibility(View.VISIBLE);
                         progBarCreateDevice.setVisibility(View.GONE);
                         txtvError.setText(error.getMessage());
                         txtvError.setVisibility(View.VISIBLE);

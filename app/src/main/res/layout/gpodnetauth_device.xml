@@ -21,12 +21,19 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Button
+            android:id="@+id/createDeviceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|end"
+            android:text="@string/gpodnetauth_create_device"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/AntennaPod.TextView.Heading"
         android:layout_marginTop="16dp"
-        android:text="@string/gpodnetauth_sync_groups"/>
+        android:text="@string/gpodnetauth_existing_devices"/>
 
     <TextView
         android:id="@+id/deviceSelectError"
@@ -39,18 +46,10 @@
         tools:background="@android:color/holo_green_dark" />
 
     <LinearLayout
-        android:id="@+id/deviceGroups"
+        android:id="@+id/devicesContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
-
-    <Button
-        android:id="@+id/startNewGroupButton"
-        android:text="@string/gpodnetauth_sync_group_new"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_gravity="right"/>
 
     <ProgressBar
         android:id="@+id/progbarCreateDevice"

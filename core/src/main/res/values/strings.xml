@@ -642,9 +642,8 @@
     <string name="gpodnetauth_device_name">Device name</string>
     <string name="gpodnetauth_device_name_default">AntennaPod on %1$s</string>
     <string name="gpodnetauth_device_caption_errorEmpty">Caption must not be empty</string>
-    <string name="gpodnetauth_sync_groups">Synchronization groups</string>
-    <string name="gpodnetauth_sync_group_select">Select</string>
-    <string name="gpodnetauth_sync_group_new">Use new group</string>
+    <string name="gpodnetauth_existing_devices">Existing devices</string>
+    <string name="gpodnetauth_create_device">Create device</string>
 
     <string name="gpodnetauth_device_butChoose">Choose</string>
     <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automatically sync subscriptions on your device with your gpodder.net account.</string>
