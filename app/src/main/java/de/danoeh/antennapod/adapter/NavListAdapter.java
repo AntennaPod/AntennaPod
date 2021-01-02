@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 import android.util.TypedValue;
@@ -180,12 +181,13 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(activity.get());
         if (viewType == VIEW_TYPE_NAV) {
-            return new NavHolder(View.inflate(activity.get(), R.layout.nav_listitem, null));
+            return new NavHolder(inflater.inflate(R.layout.nav_listitem, parent, false));
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-            return new DividerHolder(View.inflate(activity.get(), R.layout.nav_section_item, null));
+            return new DividerHolder(inflater.inflate(R.layout.nav_section_item, parent, false));
         } else {
-            return new FeedHolder(View.inflate(activity.get(), R.layout.nav_listitem, null));
+            return new FeedHolder(inflater.inflate(R.layout.nav_listitem, parent, false));
         }
     }
 
