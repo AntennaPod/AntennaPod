@@ -64,7 +64,9 @@ public class DbNullCleanupAlgorithmTest {
 
     @After
     public void tearDown() {
-        assertTrue(PodDBAdapter.deleteDatabase());
+        DBWriter.tearDownTests();
+        PodDBAdapter.deleteDatabase();
+        PodDBAdapter.tearDownTests();
 
         cleanupDestFolder(destFolder);
         assertTrue(destFolder.delete());
