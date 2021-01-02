@@ -21,6 +21,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
 public class CoverLoader {
+    private int resource = 0;
     private String uri;
     private String fallbackUri;
     private TextView txtvPlaceholder;
@@ -34,6 +35,11 @@ public class CoverLoader {
 
     public CoverLoader withUri(String uri) {
         this.uri = uri;
+        return this;
+    }
+
+    public CoverLoader withResource(int resource) {
+        this.resource = resource;
         return this;
     }
 
@@ -66,6 +72,12 @@ public class CoverLoader {
     }
 
     public void load() {
+        if (resource != 0) {
+            imgvCover.setImageResource(resource);
+            CoverTarget.setPlaceholderVisibility(txtvPlaceholder, textAndImageCombined);
+            return;
+        }
+
         RequestOptions options = new RequestOptions()
                 .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
@@ -106,15 +118,7 @@ public class CoverLoader {
 
         @Override
         public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-            TextView txtvPlaceholder = placeholder.get();
-            if (txtvPlaceholder != null) {
-                if (textAndImageCombined) {
-                    int bgColor = txtvPlaceholder.getContext().getResources().getColor(R.color.feed_text_bg);
-                    txtvPlaceholder.setBackgroundColor(bgColor);
-                } else {
-                    txtvPlaceholder.setVisibility(View.INVISIBLE);
-                }
-            }
+            setPlaceholderVisibility(placeholder.get(), textAndImageCombined);
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(resource);
         }
@@ -123,6 +127,17 @@ public class CoverLoader {
         protected void onResourceCleared(@Nullable Drawable placeholder) {
             ImageView ivCover = cover.get();
             ivCover.setImageDrawable(placeholder);
+        }
+
+        static void setPlaceholderVisibility(TextView placeholder, boolean textAndImageCombined) {
+            if (placeholder != null) {
+                if (textAndImageCombined) {
+                    int bgColor = placeholder.getContext().getResources().getColor(R.color.feed_text_bg);
+                    placeholder.setBackgroundColor(bgColor);
+                } else {
+                    placeholder.setVisibility(View.INVISIBLE);
+                }
+            }
         }
     }
 }

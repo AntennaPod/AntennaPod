@@ -342,7 +342,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (folder.isOpen) {
             holder.count.setVisibility(View.GONE);
         }
-
+        Glide.with(context).clear(holder.image);
         holder.image.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.ic_folder));
         holder.failure.setVisibility(View.GONE);
     }

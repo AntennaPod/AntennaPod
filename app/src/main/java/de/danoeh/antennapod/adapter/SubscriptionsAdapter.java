@@ -118,13 +118,8 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
                     .withCoverView(holder.imageView)
                     .load();
         } else {
-            String resourceEntryName = mainActivityRef.get().getResources()
-                    .getResourceEntryName(ThemeUtils.getDrawableFromAttr(mainActivityRef.get(), R.attr.ic_folder));
-            String iconUri = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
-                    + mainActivityRef.get().getPackageName() + "/raw/"
-                    + resourceEntryName;
             new CoverLoader(mainActivityRef.get())
-                    .withUri(iconUri)
+                    .withResource(ThemeUtils.getDrawableFromAttr(mainActivityRef.get(), R.attr.ic_folder))
                     .withPlaceholderView(holder.feedTitle, true)
                     .withCoverView(holder.imageView)
                     .load();
