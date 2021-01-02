@@ -17,7 +17,6 @@ import android.widget.ImageView;
 
 import androidx.core.view.WindowCompat;
 import androidx.appcompat.app.ActionBar;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
@@ -37,7 +36,6 @@ import java.lang.ref.WeakReference;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
