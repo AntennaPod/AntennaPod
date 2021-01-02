@@ -15,6 +15,12 @@
             android:title="@string/authentication_label"
             android:summary="@string/authentication_descr"/>
 
+    <Preference
+            android:key="tags"
+            android:icon="?attr/ic_folder"
+            android:title="@string/feed_folders_label"
+            android:summary="@string/feed_folders_summary"/>
+
     <ListPreference
             android:key="feedPlaybackSpeed"
             android:icon="?attr/ic_settings_speed"

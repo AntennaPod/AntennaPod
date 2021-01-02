@@ -261,4 +261,8 @@ public class FeedPreferences {
     public Set<String> getTags() {
         return tags;
     }
+
+    public String getTagsAsString() {
+        return TextUtils.join(TAG_SEPARATOR, tags);
+    }
 }

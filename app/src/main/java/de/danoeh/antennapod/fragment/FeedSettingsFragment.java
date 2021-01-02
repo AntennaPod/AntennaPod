@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
@@ -27,6 +28,7 @@ import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
@@ -39,6 +41,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Locale;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
@@ -105,6 +109,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final CharSequence PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
+        private static final String PREF_TAGS = "tags";
         private static final DecimalFormat SPEED_FORMAT =
                 new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
@@ -159,6 +164,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
                         setupFeedAutoSkipPreference();
+                        setupTags();
 
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
@@ -392,6 +398,26 @@ public class FeedSettingsFragment extends Fragment {
                 boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
                 findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
             }
+        }
+
+        private void setupTags() {
+            findPreference(PREF_TAGS).setOnPreferenceClickListener(preference -> {
+                EditTextDialogBinding alertViewBinding = EditTextDialogBinding.inflate(getLayoutInflater());
+                alertViewBinding.urlEditText.setText(feed.getPreferences().getTagsAsString());
+                new AlertDialog.Builder(getContext())
+                        .setView(alertViewBinding.getRoot())
+                        .setTitle(R.string.feed_folders_label)
+                        .setPositiveButton(android.R.string.ok, (d, input) -> {
+                            String foldersString = alertViewBinding.urlEditText.getText().toString();
+                            feedPreferences.getTags().clear();
+                            feedPreferences.getTags().addAll(new HashSet<>(Arrays.asList(
+                                    foldersString.split(FeedPreferences.TAG_SEPARATOR))));
+                            feed.savePreferences();
+                        })
+                        .setNegativeButton(R.string.cancel_label, null)
+                        .show();
+                return true;
+            });
         }
 
         private class ApplyToEpisodesDialog extends ConfirmationDialog {
