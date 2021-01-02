@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.Intent;
 import android.graphics.LightingColorFilter;
