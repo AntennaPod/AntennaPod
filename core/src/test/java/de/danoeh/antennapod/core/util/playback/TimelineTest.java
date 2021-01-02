@@ -1,9 +1,8 @@
-package de.test.antennapod.util.playback;
+package de.danoeh.antennapod.core.util.playback;
 
 import android.content.Context;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.SmallTest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,10 +14,15 @@ import java.util.List;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.Timeline;
+import de.danoeh.antennapod.core.storage.DBReader;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,18 +30,28 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for timeline.
+ * Test class for {@link Timeline}.
  */
-@SmallTest
+@RunWith(RobolectricTestRunner.class)
 public class TimelineTest {
 
     private Context context;
+    MockedStatic<DBReader> dbReaderMock;
 
     @Before
     public void setUp() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        // mock DBReader, because Timeline.processShownotes() calls FeedItem.loadShownotes()
+        // which calls DBReader.loadDescriptionOfFeedItem(), but we don't need the database here
+        dbReaderMock = Mockito.mockStatic(DBReader.class);
     }
 
+    @After
+    public void tearDown() {
+        dbReaderMock.close();
+    }
+
+    @SuppressWarnings("SameParameterValue")
     private Playable newTestPlayable(List<Chapter> chapters, String shownotes, int duration) {
         FeedItem item = new FeedItem(0, "Item", "item-id", "http://example.com/item", new Date(), FeedItem.PLAYED, null);
         item.setChapters(chapters);
@@ -49,7 +63,7 @@ public class TimelineTest {
     }
 
     @Test
-    public void testProcessShownotesAddTimecodeHHMMSSNoChapters() {
+    public void testProcessShownotesAddTimecodeHhmmssNoChapters() {
         final String timeStr = "10:11:12";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11 + 12 * 1000;
 
@@ -61,7 +75,7 @@ public class TimelineTest {
     }
 
     @Test
-    public void testProcessShownotesAddTimecodeHHMMSSMoreThen24HoursNoChapters() {
+    public void testProcessShownotesAddTimecodeHhmmssMoreThen24HoursNoChapters() {
         final String timeStr = "25:00:00";
         final long time = 25 * 60 * 60 * 1000;
 
@@ -73,7 +87,7 @@ public class TimelineTest {
     }
 
     @Test
-    public void testProcessShownotesAddTimecodeHHMMNoChapters() {
+    public void testProcessShownotesAddTimecodeHhmmNoChapters() {
         final String timeStr = "10:11";
         final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
 
@@ -85,7 +99,7 @@ public class TimelineTest {
     }
 
     @Test
-    public void testProcessShownotesAddTimecodeMMSSNoChapters() {
+    public void testProcessShownotesAddTimecodeMmssNoChapters() {
         final String timeStr = "10:11";
         final long time = 10 * 60 * 1000 + 11 * 1000;
 
@@ -97,7 +111,7 @@ public class TimelineTest {
     }
 
     @Test
-    public void testProcessShownotesAddTimecodeHMMSSNoChapters() {
+    public void testProcessShownotesAddTimecodeHmmssNoChapters() {
         final String timeStr = "2:11:12";
         final long time = 2 * 60 * 60 * 1000 + 11 * 60 * 1000 + 12 * 1000;
         Playable p = newTestPlayable(null, "<p> Some test text with a timecode "
@@ -108,7 +122,7 @@ public class TimelineTest {
     }
 
     @Test
-    public void testProcessShownotesAddTimecodeMSSNoChapters() {
+    public void testProcessShownotesAddTimecodeMssNoChapters() {
         final String timeStr = "1:12";
         final long time = 60 * 1000 + 12 * 1000;
 
@@ -139,8 +153,8 @@ public class TimelineTest {
                 + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 2 * 60 * 60 * 1000);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes();
-        checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000,
-                60 * 60 * 1000 + 10 * 60 * 1000 + 12 * 1000 }, timeStrings);
+        checkLinkCorrect(res, new long[]{10 * 60 * 1000 + 12 * 1000,
+                60 * 60 * 1000 + 10 * 60 * 1000 + 12 * 1000}, timeStrings);
     }
 
     @Test
@@ -153,7 +167,7 @@ public class TimelineTest {
                 + timeStrings[0] + " here. Hey look another one " + timeStrings[1] + " here!</p>", 3 * 60 * 60 * 1000);
         Timeline t = new Timeline(context, p);
         String res = t.processShownotes();
-        checkLinkCorrect(res, new long[]{ 10 * 60 * 1000 + 12 * 1000, 2 * 60 * 1000 + 12 * 1000 }, timeStrings);
+        checkLinkCorrect(res, new long[]{10 * 60 * 1000 + 12 * 1000, 2 * 60 * 1000 + 12 * 1000}, timeStrings);
     }
 
     @Test
