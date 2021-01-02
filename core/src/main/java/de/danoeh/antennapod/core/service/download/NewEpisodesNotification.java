@@ -7,12 +7,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 
+import android.graphics.Bitmap;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -71,6 +76,7 @@ public class NewEpisodesNotification {
                 context, NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS)
                 .setSmallIcon(R.drawable.ic_notification_new)
                 .setContentTitle(title)
+                .setLargeIcon(loadIcon(context, feed))
                 .setContentText(text)
                 .setContentIntent(pendingIntent)
                 .setGroup(GROUP_KEY)
@@ -99,6 +105,21 @@ public class NewEpisodesNotification {
                 .setAutoCancel(true)
                 .build();
         notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, 0, notificationGroupSummary);
+    }
+
+    private static Bitmap loadIcon(Context context, Feed feed) {
+        int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
+        try {
+            return Glide.with(context)
+                    .asBitmap()
+                    .load(ImageResourceUtils.getImageLocation(feed))
+                    .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                    .apply(new RequestOptions().centerCrop())
+                    .submit(iconSize, iconSize)
+                    .get();
+        } catch (Throwable tr) {
+            return null;
+        }
     }
 
     private static int getNewEpisodeCount(long feedId) {
