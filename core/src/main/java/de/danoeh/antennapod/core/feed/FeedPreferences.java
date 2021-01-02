@@ -33,7 +33,7 @@ public class FeedPreferences {
         YES,
         NO
     }
-    private AutoDeleteAction auto_delete_action;
+    private AutoDeleteAction autoDeleteAction;
 
     private VolumeAdaptionSetting volumeAdaptionSetting;
 
@@ -44,19 +44,19 @@ public class FeedPreferences {
     private int feedSkipEnding;
     private final Set<String> tags = new HashSet<>();
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
-        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting,
+    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
+        this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting,
                 username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, new HashSet<>());
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action,
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction autoDeleteAction,
                             VolumeAdaptionSetting volumeAdaptionSetting, String username, String password,
                             @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding,
                             Set<String> tags) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
-        this.auto_delete_action = auto_delete_action;
+        this.autoDeleteAction = autoDeleteAction;
         this.volumeAdaptionSetting = volumeAdaptionSetting;
         this.username = username;
         this.password = password;
@@ -185,7 +185,7 @@ public class FeedPreferences {
     }
 
     public AutoDeleteAction getAutoDeleteAction() {
-        return auto_delete_action;
+        return autoDeleteAction;
     }
 
     public VolumeAdaptionSetting getVolumeAdaptionSetting() {
@@ -193,7 +193,7 @@ public class FeedPreferences {
     }
 
     public void setAutoDeleteAction(AutoDeleteAction auto_delete_action) {
-        this.auto_delete_action = auto_delete_action;
+        this.autoDeleteAction = auto_delete_action;
     }
 
     public void setVolumeAdaptionSetting(VolumeAdaptionSetting volumeAdaptionSetting) {
@@ -201,7 +201,7 @@ public class FeedPreferences {
     }
 
     public boolean getCurrentAutoDelete() {
-        switch (auto_delete_action) {
+        switch (autoDeleteAction) {
             case GLOBAL:
                 return UserPreferences.isAutoDelete();
 

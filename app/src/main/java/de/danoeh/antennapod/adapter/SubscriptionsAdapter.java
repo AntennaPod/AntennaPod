@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import android.content.ContentResolver;
 import android.content.Context;
 
 import androidx.core.text.TextUtilsCompat;
