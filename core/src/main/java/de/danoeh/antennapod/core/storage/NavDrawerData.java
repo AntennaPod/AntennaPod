@@ -33,13 +33,20 @@ public class NavDrawerData {
         }
 
         public final Type type;
-        public final int layer;
+        private int layer;
         public final long id;
 
-        public DrawerItem(Type type, int layer, long id) {
+        public DrawerItem(Type type, long id) {
             this.type = type;
-            this.layer = layer;
             this.id = id;
+        }
+
+        public int getLayer() {
+            return layer;
+        }
+
+        public void setLayer(int layer) {
+            this.layer = layer;
         }
 
         public abstract String getTitle();
@@ -52,8 +59,8 @@ public class NavDrawerData {
         public final String name;
         public boolean isOpen;
 
-        public FolderDrawerItem(String name, List<DrawerItem> children, int layer, long id) {
-            super(DrawerItem.Type.FOLDER, layer, id);
+        public FolderDrawerItem(String name, List<DrawerItem> children, long id) {
+            super(DrawerItem.Type.FOLDER, id);
             this.children = children;
             this.name = name;
         }
@@ -75,8 +82,8 @@ public class NavDrawerData {
         public final Feed feed;
         public final int counter;
 
-        public FeedDrawerItem(Feed feed, int layer, long id, int counter) {
-            super(DrawerItem.Type.FEED, layer, id);
+        public FeedDrawerItem(Feed feed, long id, int counter) {
+            super(DrawerItem.Type.FEED, id);
             this.feed = feed;
             this.counter = counter;
         }

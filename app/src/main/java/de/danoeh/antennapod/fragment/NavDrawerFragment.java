@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -379,8 +380,15 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                         } else {
                             openFolders.add(folder.name);
                         }
-                        flatItemList = makeFlatDrawerData(navDrawerData.items);
-                        navAdapter.notifyDataSetChanged();
+
+                        disposable = Observable.fromCallable(() -> makeFlatDrawerData(navDrawerData.items, 0))
+                                .subscribeOn(Schedulers.computation())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        result -> {
+                                            flatItemList = result;
+                                            navAdapter.notifyDataSetChanged();
+                                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
                     }
                 }
             } else if (UserPreferences.getSubscriptionsFilter().isEnabled()
@@ -403,13 +411,17 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private void loadData() {
         progressBar.setVisibility(View.VISIBLE);
-        disposable = Observable.fromCallable(DBReader::getNavDrawerData)
+        disposable = Observable.fromCallable(
+                () -> {
+                    NavDrawerData data = DBReader.getNavDrawerData();
+                    return new Pair<>(data, makeFlatDrawerData(data.items, 0));
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         result -> {
-                            navDrawerData = result;
-                            flatItemList = makeFlatDrawerData(navDrawerData.items); // TODO: This is the main thread!
+                            navDrawerData = result.first;
+                            flatItemList = result.second;
                             updateSelection(); // Selected item might be a feed
                             navAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
@@ -419,15 +431,16 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                         });
     }
 
-    private List<NavDrawerData.DrawerItem> makeFlatDrawerData(List<NavDrawerData.DrawerItem> items) {
+    private List<NavDrawerData.DrawerItem> makeFlatDrawerData(List<NavDrawerData.DrawerItem> items, int layer) {
         List<NavDrawerData.DrawerItem> flatItems = new ArrayList<>();
         for (NavDrawerData.DrawerItem item : items) {
+            item.setLayer(layer);
             flatItems.add(item);
             if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
                 NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) item);
                 folder.isOpen = openFolders.contains(folder.name);
                 if (folder.isOpen) {
-                    flatItems.addAll(makeFlatDrawerData(((NavDrawerData.FolderDrawerItem) item).children));
+                    flatItems.addAll(makeFlatDrawerData(((NavDrawerData.FolderDrawerItem) item).children, layer + 1));
                 }
             }
         }
