@@ -199,6 +199,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         } else {
             int itemPos = position - getSubscriptionOffset();
             NavDrawerData.DrawerItem item = itemAccess.getItem(itemPos);
+            bindListItem(item, (FeedHolder) holder);
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                 bindFeedView((NavDrawerData.FeedDrawerItem) item, (FeedHolder) holder);
             } else {
@@ -292,6 +293,17 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
     }
 
+    private void bindListItem(NavDrawerData.DrawerItem item, FeedHolder holder) {
+        if (item.getCounter() > 0) {
+            holder.count.setVisibility(View.VISIBLE);
+            holder.count.setText(NumberFormat.getInstance().format(item.getCounter()));
+        } else {
+            holder.count.setVisibility(View.GONE);
+        }
+        holder.title.setText(item.getTitle());
+        holder.itemView.setPadding(item.layer * 50, 0, 0, 0); // TODO
+    }
+
     private void bindFeedView(NavDrawerData.FeedDrawerItem drawerItem, FeedHolder holder) {
         Feed feed = drawerItem.feed;
         Activity context = activity.get();
@@ -309,9 +321,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
                     .dontAnimate())
                 .into(holder.image);
 
-        holder.title.setText(feed.getTitle());
-
-        if(feed.hasLastUpdateFailed()) {
+        if (feed.hasLastUpdateFailed()) {
             RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
             p.addRule(RelativeLayout.LEFT_OF, R.id.itxtvFailure);
             holder.failure.setVisibility(View.VISIBLE);
@@ -320,28 +330,19 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             p.addRule(RelativeLayout.LEFT_OF, R.id.txtvCount);
             holder.failure.setVisibility(View.GONE);
         }
-        int counter = itemAccess.getFeedCounter(feed.getId());
-        if(counter > 0) {
-            holder.count.setVisibility(View.VISIBLE);
-            holder.count.setText(NumberFormat.getInstance().format(counter));
-        } else {
-            holder.count.setVisibility(View.GONE);
-        }
-        holder.itemView.setPadding(drawerItem.layer * 50, 0, 0, 0); // TODO
     }
 
-    private void bindFolderView(NavDrawerData.FolderDrawerItem drawerItem, FeedHolder holder) {
+    private void bindFolderView(NavDrawerData.FolderDrawerItem folder, FeedHolder holder) {
         Activity context = activity.get();
         if (context == null) {
             return;
         }
+        if (folder.isOpen) {
+            holder.count.setVisibility(View.GONE);
+        }
 
         holder.image.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.ic_folder));
-        holder.title.setText(drawerItem.name);
         holder.failure.setVisibility(View.GONE);
-        holder.count.setText("?");
-
-        holder.itemView.setPadding(drawerItem.layer * 50, 0, 0, 0); // TODO
     }
 
     static class Holder extends RecyclerView.ViewHolder {

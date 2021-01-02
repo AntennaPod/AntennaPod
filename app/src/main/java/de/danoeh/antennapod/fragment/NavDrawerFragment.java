@@ -425,7 +425,8 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
             flatItems.add(item);
             if (item.type == NavDrawerData.DrawerItem.Type.FOLDER) {
                 NavDrawerData.FolderDrawerItem folder = ((NavDrawerData.FolderDrawerItem) item);
-                if (openFolders.contains(folder.name)) {
+                folder.isOpen = openFolders.contains(folder.name);
+                if (folder.isOpen) {
                     flatItems.addAll(makeFlatDrawerData(((NavDrawerData.FolderDrawerItem) item).children));
                 }
             }

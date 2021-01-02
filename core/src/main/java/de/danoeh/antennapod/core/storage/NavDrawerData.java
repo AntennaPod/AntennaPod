@@ -50,6 +50,7 @@ public class NavDrawerData {
     public static class FolderDrawerItem extends DrawerItem {
         public final List<DrawerItem> children;
         public final String name;
+        public boolean isOpen;
 
         public FolderDrawerItem(String name, List<DrawerItem> children, int layer, long id) {
             super(DrawerItem.Type.FOLDER, layer, id);
@@ -62,7 +63,11 @@ public class NavDrawerData {
         }
 
         public int getCounter() {
-            return -1;
+            int sum = 0;
+            for (DrawerItem item : children) {
+                sum += item.getCounter();
+            }
+            return sum;
         }
     }
 
