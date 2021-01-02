@@ -46,7 +46,6 @@ import static org.mockito.Mockito.when;
 /**
  * Test class for {@link DBWriter}.
  */
-@SuppressWarnings({"ConstantConditions", "ResultOfMethodCallIgnored"})
 @RunWith(RobolectricTestRunner.class)
 public class DbWriterTest {
 
@@ -81,10 +80,12 @@ public class DbWriterTest {
     @After
     public void tearDown() {
         PodDBAdapter.tearDownTests();
+        DBWriter.tearDownTests();
 
         File testDir = context.getExternalFilesDir(TEST_FOLDER);
         assertNotNull(testDir);
         for (File f : testDir.listFiles()) {
+            //noinspection ResultOfMethodCallIgnored
             f.delete();
         }
     }
