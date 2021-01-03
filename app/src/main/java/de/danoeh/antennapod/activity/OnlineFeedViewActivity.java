@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
@@ -87,6 +88,9 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     // Optional argument: specify a title for the actionbar.
     private static final int RESULT_ERROR = 2;
     private static final String TAG = "OnlineFeedViewActivity";
+    private static final String PREFS = "OnlineFeedViewActivityPreferences";
+    private static final String PREF_LAST_AUTO_DOWNLOAD = "lastAutoDownload";
+
     private volatile List<Feed> feeds;
     private Feed feed;
     private String selectedDownloadUrl;
@@ -445,6 +449,11 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
             IntentUtils.sendLocalBroadcast(this, PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE);
         });
 
+        if (UserPreferences.isEnableAutodownload()) {
+            SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+            viewBinding.autoDownloadCheckBox.setChecked(preferences.getBoolean(PREF_LAST_AUTO_DOWNLOAD, true));
+        }
+
         final int MAX_LINES_COLLAPSED = 10;
         description.setMaxLines(MAX_LINES_COLLAPSED);
         description.setOnClickListener(v -> {
@@ -511,10 +520,17 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 if (didPressSubscribe) {
                     didPressSubscribe = false;
                     if (UserPreferences.isEnableAutodownload()) {
+                        boolean autoDownload = viewBinding.autoDownloadCheckBox.isChecked();
+
                         Feed feed1 = DBReader.getFeed(getFeedId(feed));
                         FeedPreferences feedPreferences = feed1.getPreferences();
-                        feedPreferences.setAutoDownload(viewBinding.autoDownloadCheckBox.isChecked());
+                        feedPreferences.setAutoDownload(autoDownload);
                         feed1.savePreferences();
+
+                        SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean(PREF_LAST_AUTO_DOWNLOAD, autoDownload);
+                        editor.apply();
                     }
                     openFeed();
                 }
