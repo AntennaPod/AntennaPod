@@ -25,6 +25,14 @@
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:layout_margin="16dp" />
+        <include
+            android:id="@+id/widget_config_more_preview"
+            android:visibility="invisible"
+            layout="@layout/player_widget_more"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_margin="16dp" />
     </FrameLayout>
 
     <LinearLayout
@@ -81,7 +89,7 @@
                 android:text="Rewind" />
 
             <CheckBox
-                android:id="@+id/ckFastFoward"
+                android:id="@+id/ckFastForward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
