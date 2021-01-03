@@ -55,8 +55,9 @@ public class AutomaticDownloadAlgorithm {
                 candidates.addAll(queue);
                 for (FeedItem newItem : newItems) {
                     FeedPreferences feedPrefs = newItem.getFeed().getPreferences();
-                    FeedFilter feedFilter = feedPrefs.getFilter();
-                    if (!candidates.contains(newItem) && feedFilter.shouldAutoDownload(newItem)) {
+                    if (feedPrefs.getAutoDownload()
+                            && !candidates.contains(newItem)
+                            && feedPrefs.getFilter().shouldAutoDownload(newItem)) {
                         candidates.add(newItem);
                     }
                 }
