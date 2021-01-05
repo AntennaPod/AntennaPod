@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.feed;
 import android.app.Application;
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.NonNull;
@@ -33,6 +34,8 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
@@ -180,6 +183,66 @@ public class LocalFeedUpdaterTest {
         assertEquals(24, calendar.get(Calendar.SECOND));
     }
 
+    @Test
+    public void testGetImageUrl_NoImage() {
+        String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
+        {
+            // empty folder
+            DocumentFile documentFolder = mockDocumentFolder();
+            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+            assertThat(imageUrl, endsWith(defaultImageName));
+        }
+        {
+            // no image file, with audio file
+            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"));
+            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+            assertThat(imageUrl, endsWith(defaultImageName));
+        }
+    }
+
+    @Test
+    public void testGetImageUrl_PreferredImagesFilenames() {
+        for (String filename : LocalFeedUpdater.PREFERRED_FEED_IMAGE_FILENAMES) {
+            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                    mockDocumentFile(filename, "image/jpeg")); // image MIME type doesn't matter
+            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+            assertThat(imageUrl, endsWith(filename));
+        }
+    }
+
+    @Test
+    public void testGetImageUrl_OtherImageFilename() {
+        {
+            // .jpg file
+            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                    mockDocumentFile("my-image.jpg", "image/jpeg"));
+            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+            assertThat(imageUrl, endsWith("my-image.jpg"));
+        }
+        {
+            // .jpeg file
+            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                    mockDocumentFile("my-image.jpeg", "image/jpeg"));
+            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+            assertThat(imageUrl, endsWith("my-image.jpeg"));
+        }
+        {
+            // .png file
+            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                    mockDocumentFile("my-image.png", "image/png"));
+            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+            assertThat(imageUrl, endsWith("my-image.png"));
+        }
+        {
+            // unsupported image type
+            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                    mockDocumentFile("my-image.svg", "image/svg+xml"));
+            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+            String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
+            assertThat(imageUrl, endsWith(defaultImageName));
+        }
+    }
+
     /**
      * Fill ShadowMediaMetadataRetriever with dummy duration and title.
      *
@@ -237,5 +300,27 @@ public class LocalFeedUpdaterTest {
         Feed feed = verifySingleFeedInDatabase();
         List<FeedItem> feedItems = DBReader.getFeedItemList(feed);
         assertEquals(expectedItemCount, feedItems.size());
+    }
+
+    /**
+     * Create a DocumentFile mock object.
+     */
+    @NonNull
+    private static DocumentFile mockDocumentFile(@NonNull String fileName, @NonNull String mimeType) {
+        DocumentFile file = mock(DocumentFile.class);
+        when(file.getName()).thenReturn(fileName);
+        when(file.getUri()).thenReturn(Uri.parse("file:///path/" + fileName));
+        when(file.getType()).thenReturn(mimeType);
+        return file;
+    }
+
+    /**
+     *  Create a DocumentFile folder mock object with a list of files.
+     */
+    @NonNull
+    private static DocumentFile mockDocumentFolder(DocumentFile... files) {
+        DocumentFile documentFolder = mock(DocumentFile.class);
+        when(documentFolder.listFiles()).thenReturn(files);
+        return documentFolder;
     }
 }
