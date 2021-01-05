@@ -35,9 +35,10 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import static org.hamcrest.CoreMatchers.endsWith;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -96,7 +97,7 @@ public class LocalFeedUpdaterTest {
     public void testUpdateFeed_AddNewFeed() {
         // check for empty database
         List<Feed> feedListBefore = DBReader.getFeedList();
-        assertTrue(feedListBefore.isEmpty());
+        assertThat(feedListBefore, is(empty()));
 
         callUpdateFeed(LOCAL_FEED_DIR2);
 
@@ -142,7 +143,7 @@ public class LocalFeedUpdaterTest {
         callUpdateFeed(LOCAL_FEED_DIR2);
 
         Feed feedAfter = verifySingleFeedInDatabase();
-        assertTrue(feedAfter.getImageUrl().contains("local-feed2/folder.png"));
+        assertThat(feedAfter.getImageUrl(), endsWith("local-feed2/folder.png"));
     }
 
     /**
@@ -154,7 +155,7 @@ public class LocalFeedUpdaterTest {
 
         Feed feedAfter = verifySingleFeedInDatabase();
         String resourceEntryName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        assertTrue(feedAfter.getImageUrl().contains(resourceEntryName));
+        assertThat(feedAfter.getImageUrl(), endsWith(resourceEntryName));
     }
 
     /**
