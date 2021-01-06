@@ -65,8 +65,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static final String TAG = "MediaplayerActivity";
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
-    private static final int REQUEST_CODE_STORAGE_PLAY_VIDEO = 42;
-    private static final int REQUEST_CODE_STORAGE_PLAY_AUDIO = 43;
 
     PlaybackController controller;
 
