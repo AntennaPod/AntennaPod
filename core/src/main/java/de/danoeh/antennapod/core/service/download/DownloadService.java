@@ -325,21 +325,11 @@ public class DownloadService extends Service {
                     if (item == null) {
                         return;
                     }
-                    boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
-                    boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
-                            && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
-                    boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
-                    boolean wrongFileType = status.getReason() == DownloadError.ERROR_FILE_TYPE;
-                    boolean httpGone = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_GONE).equals(status.getReasonDetailed());
-                    boolean httpBadReq = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_BAD_REQUEST).equals(status.getReasonDetailed());
-                    boolean ioError = status.getReason() == DownloadError.ERROR_IO_ERROR;
-                    boolean connectError = status.getReason() == DownloadError.ERROR_CONNECTION_ERROR;
+                    boolean downloadCancelled = status.getReason() == DownloadError.ERROR_DOWNLOAD_CANCELLED;
+                    boolean unknownHost = status.getReason() == DownloadError.ERROR_UNKNOWN_HOST;
+                    boolean unsupportedType = status.getReason() == DownloadError.ERROR_UNSUPPORTED_TYPE;
 
-                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType
-                            || httpGone || httpBadReq || ioError || connectError) {
+                    if (! (downloadCancelled || unknownHost || unsupportedType)) {
                         try {
                             DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                         } catch (ExecutionException | InterruptedException e) {
