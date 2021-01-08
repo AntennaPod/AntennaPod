@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
@@ -424,7 +425,9 @@ public class Feed extends FeedFile implements ImageResource {
             return null;
         }
         ArrayList<String> seen = new ArrayList<>();
-        for (FeedItem item : list) {
+        Iterator<FeedItem> it = list.iterator();
+        while (it.hasNext()) {
+            FeedItem item = it.next();
             if (seen.indexOf(item.getItemIdentifier()) == -1) {
                 seen.add(item.getItemIdentifier());
             } else {
