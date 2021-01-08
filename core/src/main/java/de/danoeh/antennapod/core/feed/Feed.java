@@ -416,23 +416,22 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     public List<FeedItem> getItems() {
-        return items;
+        return dedupItems(items);
     }
 
     private List<FeedItem> dedupItems(List<FeedItem> list) {
         ArrayList<String> seen = new ArrayList<>();
-        List<FeedItem> deDupItems = new ArrayList<>();
         for (FeedItem item : list) {
             if (seen.indexOf(item.getItemIdentifier()) == -1) {
                 seen.add(item.getItemIdentifier());
-                deDupItems.add(item);
+                list.remove(item);
             }
         }
-        return deDupItems;
+        return list;
     }
 
     public void setItems(List<FeedItem> list) {
-        this.items = dedupItems(list);
+        this.items = list;
     }
 
     public String getLastUpdate() {
