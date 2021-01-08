@@ -285,7 +285,7 @@ public class DbTasksTest {
         if (numFeedItems > 0) {
             List<FeedItem> items = new ArrayList<>(numFeedItems);
             for (int i = 1; i <= numFeedItems; i++) {
-                FeedItem item = new FeedItem(0, "item " + i + " of " + title, "id", "link",
+                FeedItem item = new FeedItem(0, "item " + i + " of " + title, "id" + title + i, "link",
                         new Date(), FeedItem.UNPLAYED, feed);
                 items.add(item);
             }
