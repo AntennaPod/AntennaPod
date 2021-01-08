@@ -431,7 +431,7 @@ public class Feed extends FeedFile implements ImageResource {
             if (seen.indexOf(item.getItemIdentifier()) == -1) {
                 seen.add(item.getItemIdentifier());
             } else {
-                list.remove(item);
+                it.remove();
             }
         }
         return list;
