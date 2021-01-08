@@ -420,6 +420,9 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     private List<FeedItem> dedupItems(List<FeedItem> list) {
+        if (list == null) {
+            return null;
+        }
         ArrayList<String> seen = new ArrayList<>();
         for (FeedItem item : list) {
             if (seen.indexOf(item.getItemIdentifier()) == -1) {
