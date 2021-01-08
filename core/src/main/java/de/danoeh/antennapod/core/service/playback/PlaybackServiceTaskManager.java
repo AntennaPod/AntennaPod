@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.core.util.PlayableUtil;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -303,7 +304,7 @@ public class PlaybackServiceTaskManager {
 
         if (media.getChapters() == null) {
             chapterLoaderFuture = Completable.create(emitter -> {
-                media.loadChapterMarks();
+                PlayableUtil.loadChapterMarks(media);
                 emitter.onComplete();
             })
                     .subscribeOn(Schedulers.io())

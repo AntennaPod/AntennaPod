@@ -124,12 +124,12 @@ public interface Playable extends Parcelable,
      * Saves the current position of this object. Implementations can use the
      * provided SharedPreference to save this information and retrieve it later
      * via PlayableUtils.createInstanceFromPreferences.
-     *
-     * @param pref  shared prefs that might be used to store this object
+     *  @param pref  shared prefs that might be used to store this object
      * @param newPosition  new playback position in ms
      * @param timestamp  current time in ms
+     * @param sharedPreferences
      */
-    void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp);
+    void saveCurrentPosition(SharedPreferences sharedPreferences, PlaybackPosition playbackPosition);
 
     void setPosition(int newPosition);
 

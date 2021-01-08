@@ -1,11 +1,9 @@
 package de.danoeh.antennapod.core.util;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import java.net.URLConnection;
-import java.util.zip.CheckedOutputStream;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import org.apache.commons.io.IOUtils;

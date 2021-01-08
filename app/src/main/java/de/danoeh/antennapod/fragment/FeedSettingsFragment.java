@@ -27,6 +27,7 @@ import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.DBWriterForFeedPreferencesUtil;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
@@ -172,7 +173,7 @@ public class FeedSettingsFragment extends Fragment {
                     protected void onConfirmed(int skipIntro, int skipEnding) {
                         feedPreferences.setFeedSkipIntro(skipIntro);
                         feedPreferences.setFeedSkipEnding(skipEnding);
-                        feed.savePreferences();
+                        DBWriterForFeedPreferencesUtil.saveFeedPreferences(feed);
                         EventBus.getDefault().post(
                                 new SkipIntroEndingChangedEvent(feedPreferences.getFeedSkipIntro(),
                                         feedPreferences.getFeedSkipEnding(),
@@ -200,7 +201,7 @@ public class FeedSettingsFragment extends Fragment {
             feedPlaybackSpeedPreference.setEntries(entries);
             feedPlaybackSpeedPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) newValue));
-                feed.savePreferences();
+                DBWriterForFeedPreferencesUtil.saveFeedPreferences(feed);
                 updatePlaybackSpeedPreference();
                 EventBus.getDefault().post(
                         new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
@@ -214,7 +215,7 @@ public class FeedSettingsFragment extends Fragment {
                     @Override
                     protected void onConfirmed(FeedFilter filter) {
                         feedPreferences.setFilter(filter);
-                        feed.savePreferences();
+                        DBWriterForFeedPreferencesUtil.saveFeedPreferences(feed);
                     }
                 }.show();
                 return false;
@@ -230,7 +231,7 @@ public class FeedSettingsFragment extends Fragment {
                     protected void onConfirmed(String username, String password) {
                         feedPreferences.setUsername(username);
                         feedPreferences.setPassword(password);
-                        feed.savePreferences();
+                        DBWriterForFeedPreferencesUtil.saveFeedPreferences(feed);
                     }
                 }.show();
                 return false;
@@ -251,7 +252,7 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
                         break;
                 }
-                feed.savePreferences();
+                DBWriterForFeedPreferencesUtil.saveFeedPreferences(feed);
                 updateAutoDeleteSummary();
                 return false;
             });
@@ -297,7 +298,7 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
                         break;
                 }
-                feed.savePreferences();
+                DBWriterForFeedPreferencesUtil.saveFeedPreferences(feed);
                 updateVolumeReductionValue();
                 EventBus.getDefault().post(
                         new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
@@ -328,7 +329,7 @@ public class FeedSettingsFragment extends Fragment {
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean checked = newValue == Boolean.TRUE;
                 feedPreferences.setKeepUpdated(checked);
-                feed.savePreferences();
+                DBWriterForFeedPreferencesUtil.saveFeedPreferences(feed);
                 pref.setChecked(checked);
                 return false;
             });
@@ -359,7 +360,7 @@ public class FeedSettingsFragment extends Fragment {
                 boolean checked = newValue == Boolean.TRUE;
 
                 feedPreferences.setAutoDownload(checked);
-                feed.savePreferences();
+                DBWriterForFeedPreferencesUtil.saveFeedPreferences(feed);
                 updateAutoDownloadEnabled();
                 ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(getActivity(), checked);
                 dialog.createNewDialog().show();

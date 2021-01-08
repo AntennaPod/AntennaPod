@@ -20,6 +20,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
+import de.danoeh.antennapod.core.mapper.CursorMapper;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
@@ -192,10 +193,10 @@ public final class DBReader {
         if (cursor.moveToFirst()) {
             int indexMediaId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_MEDIA_ID);
             do {
-                FeedItem item = FeedItem.fromCursor(cursor);
+                FeedItem item = CursorMapper.fromCursorToFeedItem(cursor);
                 result.add(item);
                 if (!cursor.isNull(indexMediaId)) {
-                    item.setMedia(FeedMedia.fromCursor(cursor));
+                    item.setMedia(CursorMapper.fromCursorToMedia(cursor));
                 }
             } while (cursor.moveToNext());
         }
@@ -203,8 +204,8 @@ public final class DBReader {
     }
 
     private static Feed extractFeedFromCursorRow(Cursor cursor) {
-        Feed feed = Feed.fromCursor(cursor);
-        FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
+        Feed feed = CursorMapper.fromCursorToFeed(cursor);
+        FeedPreferences preferences = CursorMapper.fromCursorToFeedPreferences(cursor);
         feed.setPreferences(preferences);
         return feed;
     }
@@ -672,7 +673,7 @@ public final class DBReader {
             }
             item.setChapters(new ArrayList<>(chaptersCount));
             while (cursor.moveToNext()) {
-                item.getChapters().add(Chapter.fromCursor(cursor));
+                item.getChapters().add(CursorMapper.fromCursorToChapter(cursor));
             }
         }
     }
@@ -713,7 +714,7 @@ public final class DBReader {
 
             int indexFeedItem = mediaCursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM);
             long itemId = mediaCursor.getLong(indexFeedItem);
-            FeedMedia media = FeedMedia.fromCursor(mediaCursor);
+            FeedMedia media = CursorMapper.fromCursorToMedia(mediaCursor);
             FeedItem item = getFeedItem(itemId);
             if (item != null) {
                 media.setItem(item);

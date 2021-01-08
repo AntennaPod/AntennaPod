@@ -124,7 +124,7 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void loadMetadata() throws PlayableException {
+    public void loadMetadata() {
         //Already loaded
     }
 
@@ -208,10 +208,10 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp) {
+    public void saveCurrentPosition(SharedPreferences sharedPreferences, PlaybackPosition currentPosition) {
         //we're not saving playback information for this kind of items on preferences
-        setPosition(newPosition);
-        setLastPlayedTime(timestamp);
+        setPosition(currentPosition.getNewPosition());
+        setLastPlayedTime(currentPosition.getTimestamp());
     }
 
     @Override

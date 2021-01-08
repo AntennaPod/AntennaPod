@@ -50,7 +50,6 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
@@ -76,9 +75,11 @@ import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.PlayableUtil;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackPosition;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -947,7 +948,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         Log.d(TAG, "getNextInQueue()");
         FeedMedia media = (FeedMedia) currentMedia;
         try {
-            media.loadMetadata();
+            PlayableUtil.loadMetadata(media);
         } catch (Playable.PlayableException e) {
             Log.e(TAG, "Unable to load metadata to get next in queue", e);
             return null;
@@ -1368,10 +1369,13 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
-            playable.saveCurrentPosition(
-                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext()),
-                    position,
-                    System.currentTimeMillis());
+            PlaybackPosition currentPosition =
+                    new PlaybackPosition(position,System.currentTimeMillis());
+            PlayableUtil.saveCurrentPosition(
+                    currentPosition,
+                    playable,
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                    );
         }
     }
 

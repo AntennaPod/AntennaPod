@@ -183,12 +183,12 @@ public class ExternalMedia implements Playable {
     }
 
     @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timestamp) {
+    public void saveCurrentPosition(SharedPreferences pref, PlaybackPosition currentPosition) {
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(PREF_POSITION, newPosition);
-        editor.putLong(PREF_LAST_PLAYED_TIME, timestamp);
-        position = newPosition;
-        lastPlayedTime = timestamp;
+        editor.putInt(PREF_POSITION, currentPosition.getNewPosition());
+        editor.putLong(PREF_LAST_PLAYED_TIME, currentPosition.getTimestamp());
+        position = currentPosition.getNewPosition();
+        lastPlayedTime = currentPosition.getTimestamp();
         editor.apply();
     }
 

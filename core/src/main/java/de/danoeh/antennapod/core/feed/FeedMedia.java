@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.feed;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -20,12 +19,11 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.model.EpisodeAction;
+import de.danoeh.antennapod.core.util.playback.PlaybackPosition;
 
 public class FeedMedia extends FeedFile implements Playable {
     private static final String TAG = "FeedMedia";
@@ -88,7 +86,7 @@ public class FeedMedia extends FeedFile implements Playable {
         this.lastPlayedTime = lastPlayedTime;
     }
 
-    private FeedMedia(long id, FeedItem item, int duration, int position,
+    public FeedMedia(long id, FeedItem item, int duration, int position,
                       long size, String mime_type, String file_url, String download_url,
                       boolean downloaded, Date playbackCompletionDate, int played_duration,
                       Boolean hasEmbeddedPicture, long lastPlayedTime) {
@@ -96,57 +94,6 @@ public class FeedMedia extends FeedFile implements Playable {
                 playbackCompletionDate, played_duration, lastPlayedTime);
         this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
-
-    public static FeedMedia fromCursor(Cursor cursor) {
-        int indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_MEDIA_ID);
-        int indexPlaybackCompletionDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE);
-        int indexDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DURATION);
-        int indexPosition = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_POSITION);
-        int indexSize = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_SIZE);
-        int indexMimeType = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_MIME_TYPE);
-        int indexFileUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FILE_URL);
-        int indexDownloadUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOAD_URL);
-        int indexDownloaded = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_DOWNLOADED);
-        int indexPlayedDuration = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PLAYED_DURATION);
-        int indexLastPlayedTime = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LAST_PLAYED_TIME);
-
-        long mediaId = cursor.getLong(indexId);
-        Date playbackCompletionDate = null;
-        long playbackCompletionTime = cursor.getLong(indexPlaybackCompletionDate);
-        if (playbackCompletionTime > 0) {
-            playbackCompletionDate = new Date(playbackCompletionTime);
-        }
-
-        Boolean hasEmbeddedPicture;
-        switch(cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE))) {
-            case 1:
-                hasEmbeddedPicture = Boolean.TRUE;
-                break;
-            case 0:
-                hasEmbeddedPicture = Boolean.FALSE;
-                break;
-            default:
-                hasEmbeddedPicture = null;
-                break;
-        }
-
-        return new FeedMedia(
-                mediaId,
-                null,
-                cursor.getInt(indexDuration),
-                cursor.getInt(indexPosition),
-                cursor.getLong(indexSize),
-                cursor.getString(indexMimeType),
-                cursor.getString(indexFileUrl),
-                cursor.getString(indexDownloadUrl),
-                cursor.getInt(indexDownloaded) > 0,
-                playbackCompletionDate,
-                cursor.getInt(indexPlayedDuration),
-                hasEmbeddedPicture,
-                cursor.getLong(indexLastPlayedTime)
-        );
-    }
-
 
     @Override
     public String getHumanReadableIdentifier() {
@@ -368,33 +315,33 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void loadMetadata() throws PlayableException {
-        if (item == null && itemID != 0) {
-            item = DBReader.getFeedItem(itemID);
-        }
+    public void loadMetadata() {
+        //nothing to process, metadata loaded from database in PlayableUtils
     }
 
     @Override
     public void loadChapterMarks() {
-        if (item == null && itemID != 0) {
-            item = DBReader.getFeedItem(itemID);
-        }
-        if (item == null || item.getChapters() != null) {
-            return;
-        }
-        // check if chapters are stored in db and not loaded yet.
-        if (item.hasChapters()) {
-            DBReader.loadChaptersOfFeedItem(item);
+        if(localFileAvailable()) {
+            ChapterUtils.loadChaptersFromFileUrl(this);
         } else {
-            if(localFileAvailable()) {
-                ChapterUtils.loadChaptersFromFileUrl(this);
-            } else {
-                ChapterUtils.loadChaptersFromStreamUrl(this);
-            }
-            if (item.getChapters() != null) {
-                DBWriter.setFeedItem(item);
-            }
+            ChapterUtils.loadChaptersFromStreamUrl(this);
         }
+    }
+
+    public boolean hasChapters() {
+        return item.hasChapters();
+    }
+
+    public boolean shouldStopLoadingChapterMarks() {
+        return item == null || item.getChapters() != null;
+    }
+
+    public boolean shouldLoadItem() {
+        return item == null && itemID != 0;
+    }
+
+    public long getItemID() {
+        return itemID;
     }
 
     @Override
@@ -467,16 +414,16 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void saveCurrentPosition(SharedPreferences pref, int newPosition, long timeStamp) {
-        if(item != null && item.isNew()) {
-            DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-        }
-        setPosition(newPosition);
-        setLastPlayedTime(timeStamp);
+    public void saveCurrentPosition(SharedPreferences sharedPreferences, PlaybackPosition currentPosition) {
+        setPosition(currentPosition.getNewPosition());
+        setLastPlayedTime(currentPosition.getTimestamp());
         if(startPosition>=0 && position > startPosition) {
             setPlayedDuration(playedDurationWhenStarted + position - startPosition);
         }
-        DBWriter.setFeedMediaPlaybackInformation(this);
+    }
+
+    public boolean shouldMarkItemAsPlayed() {
+        return item != null && item.isNew();
     }
 
     @Override

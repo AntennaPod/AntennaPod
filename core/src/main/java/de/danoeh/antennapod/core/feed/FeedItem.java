@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.database.Cursor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
 /**
@@ -140,35 +138,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         this.state = state;
         this.feed = feed;
         this.hasChapters = hasChapters;
-    }
-
-    public static FeedItem fromCursor(Cursor cursor) {
-        int indexId = cursor.getColumnIndexOrThrow(PodDBAdapter.SELECT_KEY_ITEM_ID);
-        int indexTitle = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_TITLE);
-        int indexLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_LINK);
-        int indexPubDate = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PUBDATE);
-        int indexPaymentLink = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_PAYMENT_LINK);
-        int indexFeedId = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_FEED);
-        int indexHasChapters = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_HAS_CHAPTERS);
-        int indexRead = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_READ);
-        int indexItemIdentifier = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_ITEM_IDENTIFIER);
-        int indexAutoDownload = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_AUTO_DOWNLOAD);
-        int indexImageUrl = cursor.getColumnIndexOrThrow(PodDBAdapter.KEY_IMAGE_URL);
-
-        long id = cursor.getInt(indexId);
-        String title = cursor.getString(indexTitle);
-        String link = cursor.getString(indexLink);
-        Date pubDate = new Date(cursor.getLong(indexPubDate));
-        String paymentLink = cursor.getString(indexPaymentLink);
-        long feedId = cursor.getLong(indexFeedId);
-        boolean hasChapters = cursor.getInt(indexHasChapters) > 0;
-        int state = cursor.getInt(indexRead);
-        String itemIdentifier = cursor.getString(indexItemIdentifier);
-        long autoDownload = cursor.getLong(indexAutoDownload);
-        String imageUrl = cursor.getString(indexImageUrl);
-
-        return new FeedItem(id, title, link, pubDate, paymentLink, feedId,
-                hasChapters, imageUrl, state, itemIdentifier, autoDownload);
     }
 
     public void updateFromOther(FeedItem other) {
