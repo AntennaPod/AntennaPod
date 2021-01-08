@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.ShownotesLoader;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
 /**
@@ -89,7 +90,7 @@ public class Timeline {
     public String processShownotes() {
         String shownotes;
         try {
-            shownotes = shownotesProvider.loadShownotes().call();
+            shownotes = ShownotesLoader.loadShownotes(shownotesProvider).call();
         } catch (Exception e) {
             Log.e(TAG, "processShownotes() - encounters exceptions unexpectedly in load, treat as if no shownotes.", e);
             shownotes = "";

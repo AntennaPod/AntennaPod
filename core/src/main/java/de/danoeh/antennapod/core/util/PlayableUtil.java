@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.util;
 
 import android.content.SharedPreferences;
 
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;

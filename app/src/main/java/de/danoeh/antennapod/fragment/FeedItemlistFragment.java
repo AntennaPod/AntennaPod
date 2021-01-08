@@ -63,6 +63,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
@@ -590,8 +591,9 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         Feed feed = DBReader.getFeed(feedID);
         if (feed != null && feed.getItemFilter() != null) {
             DBReader.loadAdditionalFeedItemListData(feed.getItems());
+            LongList loadedQueueIds = DBReader.getQueueIDList();
             FeedItemFilter filter = feed.getItemFilter();
-            feed.setItems(filter.filter(feed.getItems()));
+            feed.setItems(filter.filter(feed.getItems(),loadedQueueIds));
         }
         if (feed != null && feed.getSortOrder() != null) {
             List<FeedItem> feedItems = feed.getItems();

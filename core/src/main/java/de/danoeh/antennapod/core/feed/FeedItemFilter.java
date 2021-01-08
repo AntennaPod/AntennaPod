@@ -1,13 +1,10 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.LongList;
 
 import static de.danoeh.antennapod.core.feed.FeedItem.TAG_FAVORITE;
@@ -83,7 +80,7 @@ public class FeedItemFilter {
     /**
      * Run a list of feed items through the filter.
      */
-    public List<FeedItem> filter(List<FeedItem> items) {
+    public List<FeedItem> filter(List<FeedItem> items, LongList loadedQueueIds) {
         if(mProperties.length == 0) return items;
 
         List<FeedItem> result = new ArrayList<>();
@@ -94,7 +91,7 @@ public class FeedItemFilter {
         if (showQueued && showNotQueued) return result;
         if (showDownloaded && showNotDownloaded) return result;
 
-        final LongList queuedIds = DBReader.getQueueIDList();
+        final LongList queuedIds = loadedQueueIds;
         for (FeedItem item : items) {
             // If the item does not meet a requirement, skip it.
 

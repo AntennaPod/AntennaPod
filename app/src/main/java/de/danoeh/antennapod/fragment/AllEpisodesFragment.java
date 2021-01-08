@@ -14,6 +14,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.dialog.FilterDialog;
 import org.apache.commons.lang3.StringUtils;
 
@@ -92,13 +93,18 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return feedItemFilter.filter(DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE));
+        return loadDataFromDB(0, page * EPISODES_PER_PAGE);
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData() {
-        return feedItemFilter.filter(DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE,
-                EPISODES_PER_PAGE));
+        return loadDataFromDB((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE);
+    }
+
+    private List<FeedItem> loadDataFromDB(int offset, int limit) {
+        LongList loadedQueueIds = DBReader.getQueueIDList();
+        List<FeedItem> loadedFeedItems = DBReader.getRecentlyPublishedEpisodes(offset,limit);
+        return feedItemFilter.filter(loadedFeedItems,loadedQueueIds);
     }
 }

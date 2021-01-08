@@ -17,7 +17,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
 /**
@@ -329,20 +328,25 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
 
     @Override
     public Callable<String> loadShownotes() {
-        return () -> {
-            if (contentEncoded == null || description == null) {
-                DBReader.loadDescriptionOfFeedItem(FeedItem.this);
-            }
-            if (TextUtils.isEmpty(contentEncoded)) {
-                return description;
-            } else if (TextUtils.isEmpty(description)) {
-                return contentEncoded;
-            } else if (description.length() > 1.25 * contentEncoded.length()) {
-                return description;
-            } else {
-                return contentEncoded;
-            }
-        };
+        //doesn't process notes, ShownotesLoader is responsible for loading from database
+        //don't use this method
+        return () -> "";
+    }
+
+    public String getShownotes() {
+        if (TextUtils.isEmpty(contentEncoded)) {
+            return description;
+        } else if (TextUtils.isEmpty(description)) {
+            return contentEncoded;
+        } else if (description.length() > 1.25 * contentEncoded.length()) {
+            return description;
+        } else {
+            return contentEncoded;
+        }
+    }
+
+    public boolean shouldLoadItemDescription() {
+        return contentEncoded == null || description == null;
     }
 
     @Override

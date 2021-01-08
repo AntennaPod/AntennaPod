@@ -18,7 +18,6 @@ import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.sync.SyncService;
@@ -476,12 +475,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public Callable<String> loadShownotes() {
-        return () -> {
-            if (item == null) {
-                item = DBReader.getFeedItem(itemID);
-            }
-            return item.loadShownotes().call();
-        };
+        //doesn't process notes, ShownotesLoader is responsible for loading from database
+        //don't use this method
+        return () -> "";
     }
 
     public static final Parcelable.Creator<FeedMedia> CREATOR = new Parcelable.Creator<FeedMedia>() {
@@ -556,5 +552,9 @@ public class FeedMedia extends FeedFile implements Playable {
             return o.equals(this);
         }
         return super.equals(o);
+    }
+
+    public boolean hasItem() {
+        return item != null;
     }
 }

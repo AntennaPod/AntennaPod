@@ -2,6 +2,8 @@ package de.test.antennapod.feed;
 
 import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.util.ShownotesLoader;
+
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +40,6 @@ public class FeedItemTest {
         FeedItem item = new FeedItem();
         item.setDescription(description);
         item.setContentEncoded(contentEncoded);
-        assertEquals(TEXT_LONG, item.loadShownotes().call());
+        assertEquals(TEXT_LONG, ShownotesLoader.loadShownotes(item).call());
     }
 }
