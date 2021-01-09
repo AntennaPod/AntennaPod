@@ -52,4 +52,8 @@ public class VideoPlayer extends MediaPlayer implements IPlayer {
     public int getSelectedAudioTrack() {
         return -1;
     }
+
+    @Override
+    public void setDataSource(String streamUrl, String username, String password) {
+    }
 }

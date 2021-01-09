@@ -54,4 +54,6 @@ public interface IPlayer {
     void setAudioTrack(int track);
 
     int getSelectedAudioTrack();
+
+    void setDataSource(String streamUrl, String username, String password);
 }
