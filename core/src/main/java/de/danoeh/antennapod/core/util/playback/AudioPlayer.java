@@ -67,5 +67,5 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
 
     @Override
     public void setDataSource(String streamUrl, String username, String password) {
-    };
+    }
 }

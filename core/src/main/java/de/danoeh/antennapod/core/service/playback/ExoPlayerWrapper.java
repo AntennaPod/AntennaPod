@@ -187,7 +187,8 @@ public class ExoPlayerWrapper implements IPlayer {
         exoPlayer.setAudioAttributes(b.build());
     }
 
-    public void setDataSource(String s, String user, String password) throws IllegalArgumentException, IllegalStateException {
+    public void setDataSource(String s, String user, String password)
+            throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
                 ClientConfig.USER_AGENT, null,
@@ -195,12 +196,12 @@ public class ExoPlayerWrapper implements IPlayer {
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true);
 
-        if (user != null || password != null) {
+        if (user != null && password != null && user.length() > 0  && password.length() > 0) {
             httpDataSourceFactory.getDefaultRequestProperties().set("Authorization",
-                    HttpDownloader.encodeCredentials(user,
+                    HttpDownloader.encodeCredentials(
+                            user,
                             password,
                             "ISO-8859-1"));
-
         }
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
         HttpDataSource httpDataSource = httpDataSourceFactory.createDataSource();
@@ -211,6 +212,7 @@ public class ExoPlayerWrapper implements IPlayer {
         mediaSource = f.createMediaSource(Uri.parse(s));
 
     }
+
     @Override
     public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException {
         setDataSource(s, null, null);
