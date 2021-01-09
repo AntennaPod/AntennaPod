@@ -376,6 +376,8 @@
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
+    <string name="pref_hardwareForwardButtonRewinds_title">Forward Button Rewinds</string>
+    <string name="pref_hardwareForwardButtonRewinds_sum">If your bluetooth-connected device only has a forward button you might prefer that button to rewind instead of fast-fowarding</string>
     <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
     <string name="pref_hardwareForwardButtonSkips_sum">When pressing a forward button on a bluetooth-connected device skip to the next episode instead of fast-forwarding</string>
     <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>

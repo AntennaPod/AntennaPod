@@ -8,6 +8,7 @@ import androidx.collection.ArrayMap;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
@@ -21,6 +22,8 @@ import java.util.Map;
 import org.greenrobot.eventbus.EventBus;
 
 public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
+    private static final String PREF_HARDWARE_FORWARD_BUTTON_REWINDS = "prefHardwareForwardButtonRewinds";
+    private static final String PREF_HARDWARE_FORWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
     private static final String PREF_PLAYBACK_REWIND_DELTA_LAUNCHER = "prefPlaybackRewindDeltaLauncher";
     private static final String PREF_PLAYBACK_FAST_FORWARD_DELTA_LAUNCHER = "prefPlaybackFastForwardDeltaLauncher";
@@ -43,6 +46,23 @@ public class PlaybackPreferencesFragment extends PreferenceFragmentCompat {
 
     private void setupPlaybackScreen() {
         final Activity activity = getActivity();
+
+        // The "Forward Button Rewinds" and "Forward Button Skips" options are
+        // mutually exclusive. When one is turned on the other one is turned off.
+        SwitchPreferenceCompat forwardRewinds = findPreference(PREF_HARDWARE_FORWARD_BUTTON_REWINDS);
+        SwitchPreferenceCompat forwardSkips = findPreference(PREF_HARDWARE_FORWARD_BUTTON_SKIPS);
+        forwardRewinds.setOnPreferenceChangeListener((preference, newValue) -> {
+            if ((Boolean) newValue == true) {
+                forwardSkips.setChecked(false);
+            }
+            return true;
+        });
+        forwardSkips.setOnPreferenceChangeListener((preference, newValue) -> {
+            if ((Boolean) newValue == true) {
+                forwardRewinds.setChecked(false);
+            }
+            return true;
+        });
 
         findPreference(PREF_PLAYBACK_SPEED_LAUNCHER).setOnPreferenceClickListener(preference -> {
             new VariableSpeedDialog().show(getChildFragmentManager(), null);

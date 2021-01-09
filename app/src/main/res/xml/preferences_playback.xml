@@ -47,6 +47,12 @@
         <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
+                android:key="prefHardwareForwardButtonRewinds"
+                android:summary="@string/pref_hardwareForwardButtonRewinds_sum"
+                android:title="@string/pref_hardwareForwardButtonRewinds_title"/>
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
+                android:enabled="true"
                 android:key="prefHardwareForwardButtonSkips"
                 android:summary="@string/pref_hardwareForwardButtonSkips_sum"
                 android:title="@string/pref_hardwareForwardButtonSkips_title"/>

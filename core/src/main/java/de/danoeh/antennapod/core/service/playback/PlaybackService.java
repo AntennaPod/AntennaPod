@@ -674,6 +674,11 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                     // assume the skip command comes from a notification or the lockscreen
                     // a >| skip button should actually skip
                     mediaPlayer.skip();
+                } else if (UserPreferences.shouldHardwareButtonRewind()) {
+                    // if the skip command comes from a (bluetooth) media
+                    // button and the user has enabled "Forward Button Rewinds"
+                    // then rewind here instead of fast-forwarding
+                    mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
                 } else {
                     // assume skip command comes from a (bluetooth) media button
                     // user actually wants to fast-forward
