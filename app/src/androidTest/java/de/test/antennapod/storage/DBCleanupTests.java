@@ -116,7 +116,7 @@ public class DBCleanupTests {
             if (itemState == FeedItem.PLAYED) {
                 playbackCompletionDate = itemDate;
             }
-            FeedItem item = new FeedItem(0, "title", "id", "link", itemDate, itemState, feed);
+            FeedItem item = new FeedItem(0, "title", "id" + i, "link", itemDate, itemState, feed);
 
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
