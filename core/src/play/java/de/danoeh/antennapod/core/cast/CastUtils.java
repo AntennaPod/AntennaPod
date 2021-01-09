@@ -9,9 +9,10 @@ import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.common.images.WebImage;
 
+import de.danoeh.antennapod.core.util.PlayableUtil;
+import de.danoeh.antennapod.core.util.ShownotesLoader;
 import de.danoeh.antennapod.core.util.playback.RemoteMedia;
 import java.util.Calendar;
-import java.util.List;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -88,7 +89,7 @@ public class CastUtils {
         }
         MediaMetadata metadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_GENERIC);
         try{
-            media.loadMetadata();
+            PlayableUtil.loadMetadata(media);
         } catch (Playable.PlayableException e) {
             Log.e(TAG, "Unable to load FeedMedia metadata", e);
         }
@@ -129,7 +130,7 @@ public class CastUtils {
         }
         String notes = null;
         try {
-            notes = media.loadShownotes().call();
+            notes = ShownotesLoader.loadShownotes(media).call();
         } catch (Exception e) {
             Log.e(TAG, "Unable to load FeedMedia notes", e);
         }
@@ -191,7 +192,7 @@ public class CastUtils {
                 FeedMedia fMedia = DBReader.getFeedMedia(mediaId);
                 if (fMedia != null) {
                     try {
-                        fMedia.loadMetadata();
+                        PlayableUtil.loadMetadata(fMedia);
                         if (matches(media, fMedia)) {
                             result = fMedia;
                             Log.d(TAG, "FeedMedia object obtained matches the MediaInfo provided. id=" + mediaId);

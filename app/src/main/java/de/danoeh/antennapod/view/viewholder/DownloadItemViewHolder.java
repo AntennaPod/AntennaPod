@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.joanzapata.iconify.widget.IconTextView;
+
 import de.danoeh.antennapod.R;
 
 public class DownloadItemViewHolder extends RecyclerView.ViewHolder {

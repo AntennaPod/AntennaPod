@@ -3,8 +3,9 @@ package de.danoeh.antennapod.spa;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import androidx.preference.PreferenceManager;
 import android.util.Log;
+
+import androidx.preference.PreferenceManager;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.receiver.SPAReceiver;

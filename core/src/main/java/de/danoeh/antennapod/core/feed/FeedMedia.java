@@ -314,7 +314,7 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void loadMetadata() {
+    public void loadMetadata() throws PlayableException {
         //nothing to process, metadata loaded from database in PlayableUtils
     }
 

@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.Menu;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Activity that allows for showing the MediaRouter button whenever there's a cast device in the
