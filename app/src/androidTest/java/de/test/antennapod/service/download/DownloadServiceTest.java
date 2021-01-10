@@ -116,7 +116,7 @@ public class DownloadServiceTest {
                 DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry
                         .getInstrumentation().getTargetContext(), true, testMedia11.getItem());
                 Awaitility.await()
-                        .atMost(15000, TimeUnit.MILLISECONDS)
+                        .atMost(25000, TimeUnit.MILLISECONDS)
                         .until(() -> feedItemEventListener.getEvents().size() >= numEventsExpected);
                 assertTrue("After media download has completed, FeedMedia object in db should indicate so.",
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
