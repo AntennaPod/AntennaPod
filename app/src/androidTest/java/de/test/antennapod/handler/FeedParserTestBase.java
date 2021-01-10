@@ -11,6 +11,7 @@ import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeExceptio
 import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -132,6 +133,22 @@ public abstract class FeedParserTestBase {
         }
     }
 
+    @Test
+    public void testDuplicateGUID() throws Exception {
+        Feed noDupFeed = createTestFeed(1, true);
+        // duplicate item
+        FeedItem item = new FeedItem(0, "item-" + 0, "http://example.com/item-" + 0,
+                "http://example.com/items/" + 0, new Date(0 * 60000), FeedItem.UNPLAYED, noDupFeed);
+        noDupFeed.getItems().add(item);
+        assertEquals(noDupFeed.getItemAtIndex(0).getItemIdentifier(), "http://example.com/item-0");
+        try {
+            // this should fail
+            noDupFeed.getItemAtIndex(1).getItemIdentifier();
+        } catch (IndexOutOfBoundsException e) {
+            // expect to be here
+        }
+    }
+
     protected Feed createTestFeed(int numItems, boolean withFeedMedia) {
         Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
                 "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed",
@@ -146,13 +163,6 @@ public abstract class FeedParserTestBase {
                 item.setMedia(new FeedMedia(0, item, 4711, 0, 1024 * 1024, "audio/mp3", null,
                         "http://example.com/media-" + i, false, null, 0, 0));
             }
-        }
-
-        if (numItems > 0) {
-            // duplicate item
-            FeedItem item = new FeedItem(0, "item-" + 0, "http://example.com/item-" + 0,
-                    "http://example.com/items/" + 0, new Date(0 * 60000), FeedItem.UNPLAYED, feed);
-            feed.getItems().add(item);
         }
 
         return feed;
