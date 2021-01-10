@@ -148,6 +148,13 @@ public abstract class FeedParserTestBase {
             }
         }
 
+        if (numItems > 0) {
+            // duplicate item
+            FeedItem item = new FeedItem(0, "item-" + 0, "http://example.com/item-" + 0,
+                    "http://example.com/items/" + 0, new Date(0 * 60000), FeedItem.UNPLAYED, feed);
+            feed.getItems().add(item);
+        }
+
         return feed;
     }
 

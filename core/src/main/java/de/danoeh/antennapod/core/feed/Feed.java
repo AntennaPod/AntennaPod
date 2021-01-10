@@ -417,7 +417,8 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     public List<FeedItem> getItems() {
-        return dedupItems(items);
+        return items;
+        // return dedupItems(items);
     }
 
     private List<FeedItem> dedupItems(List<FeedItem> list) {
