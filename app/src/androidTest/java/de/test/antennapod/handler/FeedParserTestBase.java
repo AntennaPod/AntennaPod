@@ -134,7 +134,7 @@ public abstract class FeedParserTestBase {
     }
 
     @Test
-    public void testDuplicateGUID() throws Exception {
+    public void testDuplicateItemID() throws Exception {
         Feed noDupFeed = createTestFeed(1, true);
         // duplicate item
         FeedItem item = new FeedItem(0, "item-" + 0, "http://example.com/item-" + 0,
