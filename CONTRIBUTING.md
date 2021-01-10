@@ -19,6 +19,16 @@ How to submit a feature request
 - Give a brief explanation about the problem that may currently exist and how your requested feature solves this problem.
 - Try to be as specific as possible. Please not only explain what the feature does, but also how. If your request is about (or includes) changing or extending the UI, describe what the UI would look like and how the user would interact with it.
 
+Testing and Verifying
+--------------------------
+As a developer contributing to AntennaPod, we ask that you test the feature yourself manually and better yet, add unit and functional tests to any feature of bug you fix.
+
+### Running Unit Tests
+* `./gradlew :core:testPlayDebugUnitTest`
+
+### Running integration Tests
+* Start and AVD or plug in your phone
+* `zsh .github/workflows/runTests.sh`
 
 Translating AntennaPod
 ----------------------
