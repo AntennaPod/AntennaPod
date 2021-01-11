@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.app.UiModeManager;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.PowerManager;
 import androidx.annotation.NonNull;
@@ -10,6 +9,7 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
+import android.content.res.Configuration;
 
 import androidx.media.AudioAttributesCompat;
 import androidx.media.AudioFocusRequestCompat;
