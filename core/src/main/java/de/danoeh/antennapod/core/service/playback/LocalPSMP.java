@@ -271,6 +271,8 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
                 mediaPlayer.prepare();
                 onPrepared(startWhenPrepared);
+            } else {
+                setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
 
         } catch (Playable.PlayableException | IOException | IllegalStateException e) {
