@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import android.app.UiModeManager;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.PowerManager;
 import androidx.annotation.NonNull;
@@ -266,13 +268,15 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalMediaUrl());
             }
+            UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+            if (uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_CAR) {
+                setPlayerStatus(PlayerStatus.INITIALIZED, media);
+            }
 
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
                 mediaPlayer.prepare();
                 onPrepared(startWhenPrepared);
-            } else {
-                setPlayerStatus(PlayerStatus.INITIALIZED, media);
             }
 
         } catch (Playable.PlayableException | IOException | IllegalStateException e) {
@@ -297,7 +301,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     private void resumeSync() {
-        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
             int focusGained = AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest);
 
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
