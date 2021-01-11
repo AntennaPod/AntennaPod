@@ -118,8 +118,8 @@ public class UITestUtils {
         if (feedDataHosted) throw new IllegalStateException("addHostedFeedData was called twice on the same instance");
         for (int i = 0; i < NUM_FEEDS; i++) {
             Feed feed = new Feed(0, null, "Title " + i, "https://news.google.com/news/rss?" + i, "Description of feed " + i,
-                    "https://news.google.com/news/rss" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, null, null,
-                    "https://news.google.com/news/rss" + i, false);
+                    "https://news.google.com/news/rss?" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, null, null,
+                    "https://news.google.com/news/rss?" + i, false);
 
             // create items
             List<FeedItem> items = new ArrayList<>();
