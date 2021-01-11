@@ -301,7 +301,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     private void resumeSync() {
-    if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
             int focusGained = AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest);
 
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
