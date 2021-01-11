@@ -9,4 +9,7 @@ runTests() {
 }
 
 # Retry tests to make them less flaky
-runTests || runTests || runTests
+#runTests || runTests || runTests
+
+# Faster to fail
+runTests 
