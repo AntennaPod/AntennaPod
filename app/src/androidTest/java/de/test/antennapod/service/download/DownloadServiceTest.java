@@ -17,10 +17,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.feed.Feed;
@@ -118,7 +116,7 @@ public class DownloadServiceTest {
                 DownloadRequester.getInstance().downloadMedia(false, InstrumentationRegistry
                         .getInstrumentation().getTargetContext(), true, testMedia11.getItem());
                 Awaitility.await()
-                        .atMost(5000, TimeUnit.MILLISECONDS)
+                        .atMost(25000, TimeUnit.MILLISECONDS)
                         .until(() -> feedItemEventListener.getEvents().size() >= numEventsExpected);
                 assertTrue("After media download has completed, FeedMedia object in db should indicate so.",
                         DBReader.getFeedMedia(testMedia11.getId()).isDownloaded());
@@ -163,7 +161,7 @@ public class DownloadServiceTest {
             DownloadRequester.getInstance().downloadMedia(false, context, true, testMedia11.getItem());
             withDownloadEventListener(downloadEventListener ->
                     Awaitility.await("download is actually running")
-                        .atMost(5000, TimeUnit.MILLISECONDS)
+                        .atMost(15000, TimeUnit.MILLISECONDS)
                         .until(() -> downloadEventListener.getLatestEvent() != null
                                 && downloadEventListener.getLatestEvent().update.mediaIds.length > 0
                                 && downloadEventListener.getLatestEvent().update.mediaIds[0] == testMedia11.getId()));
