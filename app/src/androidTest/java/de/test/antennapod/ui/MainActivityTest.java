@@ -80,7 +80,7 @@ public class MainActivityTest {
         onView(withText(R.string.confirm_label)).perform(scrollTo(), click());
         Espresso.closeSoftKeyboard();
         onView(withText(R.string.subscribe_label)).perform(click());
-        onView(isRoot()).perform(waitForView(withId(R.id.butShowSettings), 5000));
+        onView(isRoot()).perform(waitForView(withId(R.id.butShowSettings), 10000));
     }
 
     @Test
