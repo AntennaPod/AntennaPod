@@ -119,7 +119,7 @@ public class UITestUtils {
         for (int i = 0; i < NUM_FEEDS; i++) {
             Feed feed = new Feed(0, null, "Title " + i, "http://example.com/" + i, "Description of feed " + i,
                     "http://example.com/pay/feed" + i, "author " + i, "en", Feed.TYPE_RSS2, "feed" + i, null, null,
-                    "http://example.com/feed/src/" + i, false);
+                    "https://news.google.com/news/rss" + i, false);
 
             // create items
             List<FeedItem> items = new ArrayList<>();
