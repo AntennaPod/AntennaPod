@@ -19,17 +19,6 @@ How to submit a feature request
 - Give a brief explanation about the problem that may currently exist and how your requested feature solves this problem.
 - Try to be as specific as possible. Please not only explain what the feature does, but also how. If your request is about (or includes) changing or extending the UI, describe what the UI would look like and how the user would interact with it.
 
-Testing and Verifying
---------------------------
-As a developer contributing to AntennaPod, we ask that you test the feature yourself manually and better yet, add unit and functional tests to any feature of bug you fix.
-
-### Running Unit Tests
-* `./gradlew :core:testPlayDebugUnitTest`
-
-### Running integration Tests
-* Start and AVD or plug in your phone
-* `zsh .github/workflows/runTests.sh`
-
 Translating AntennaPod
 ----------------------
 If you would like to translate the app into another language or improve an existing translation, you can visit the [Transifex project page](https://www.transifex.com/antennapod/antennapod/). From there, you can either join a language team if it already exists or create a new language team.
@@ -45,3 +34,14 @@ Submit a pull request
 - Please do not upgrade dependencies or build tools unless you have a good reason for it. Doing so can easily introduce bugs that are hard to track down.
 - If you plan to do a change that touches many files (10+), please ask beforehand. This usually causes merge conflicts for other developers.
 - Please follow our code style. You can use Checkstyle within Android Studio using our [coniguration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle-new-code.xml).
+
+Testing and Verifying
+--------------------------
+As a developer contributing to AntennaPod, we ask that you test the feature yourself manually and better yet, add unit and functional tests to any feature of bug you fix.
+
+### Running Unit Tests
+* `./gradlew :core:testPlayDebugUnitTest`
+
+### Running Integration Tests
+* Start and AVD or plug in your phone
+* `sh .github/workflows/runTests.sh`
