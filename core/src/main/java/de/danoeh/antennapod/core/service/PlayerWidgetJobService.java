@@ -109,11 +109,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
             boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
             boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
-            if (!showRewind && !showFastForward && !showSkip) {
-                views = new RemoteViews(getPackageName(), R.layout.player_widget);
-            } else {
-                views = new RemoteViews(getPackageName(), R.layout.player_widget_extended);
-            }
+            views = new RemoteViews(getPackageName(), R.layout.player_widget);
             final PendingIntent startMediaPlayer = PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
                     PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -129,8 +125,8 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             }
 
             if (media != null) {
-                views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
                 views.setOnClickPendingIntent(R.id.layout_center, startMediaPlayer);
+                views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
 
                 try {
                     Bitmap icon;
@@ -169,11 +165,17 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 if (status == PlayerStatus.PLAYING) {
                     views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_pause_white_48dp);
                     views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
+                    views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_pause_white_48dp);
+                    views.setContentDescription(R.id.butPlayExtended, getString(R.string.pause_label));
                 } else {
                     views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
                     views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
+                    views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_play_white_48dp);
+                    views.setContentDescription(R.id.butPlayExtended, getString(R.string.play_label));
                 }
                 views.setOnClickPendingIntent(R.id.butPlay,
+                        createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                views.setOnClickPendingIntent(R.id.butPlayExtended,
                         createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
                 views.setOnClickPendingIntent(R.id.butRew,
                         createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
@@ -186,13 +188,15 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             }
 
             if (nothingPlaying) {
-                views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
                 views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                views.setOnClickPendingIntent(R.id.butPlayExtended,
+                        createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
                 views.setViewVisibility(R.id.txtvProgress, View.GONE);
                 views.setViewVisibility(R.id.txtvTitle, View.GONE);
                 views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
                 views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
+                views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_play_white_48dp);
             }
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -208,8 +212,11 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
                 views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
                 if (showRewind || showSkip || showFastForward) {
+                    views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
+                    views.setInt(R.id.butPlay, "setVisibility", View.GONE);
                     views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
                     views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
+                    views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
                     views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
                 }
 

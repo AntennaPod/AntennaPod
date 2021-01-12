@@ -2,25 +2,19 @@ package de.danoeh.antennapod.activity;
 
 import android.Manifest;
 import android.app.WallpaperManager;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -32,10 +26,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
     private SeekBar opacitySeekBar;
     private TextView opacityTextView;
-    private RelativeLayout widgetPreview;
-    private RelativeLayout widgetExtendedPreview;
-    private FrameLayout previewLayout;
-    private FrameLayout previewExtendedLayout;
+    private View widgetPreview;
     private CheckBox ckRewind;
     private CheckBox ckFastForward;
     private CheckBox ckSkip;
@@ -63,10 +54,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
         displayDeviceBackground();
         opacityTextView = findViewById(R.id.widget_opacity_textView);
         opacitySeekBar = findViewById(R.id.widget_opacity_seekBar);
-        previewLayout = findViewById(R.id.widget_config_preview);
-        widgetPreview = previewLayout.findViewById(R.id.widgetLayout);
-        widgetExtendedPreview = findViewById(R.id.widgetExtendedLayout);
-        previewExtendedLayout = findViewById(R.id.widget_config_extended_preview);
+        widgetPreview = findViewById(R.id.widgetLayout);
         findViewById(R.id.butConfirm).setOnClickListener(this::confirmCreateWidget);
         opacitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -75,7 +63,6 @@ public class WidgetConfigActivity extends AppCompatActivity {
                 opacityTextView.setText(seekBar.getProgress() + "%");
                 int color = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
                 widgetPreview.setBackgroundColor(color);
-                widgetExtendedPreview.setBackgroundColor(color);
             }
 
             @Override
@@ -88,52 +75,31 @@ public class WidgetConfigActivity extends AppCompatActivity {
 
         });
 
+        widgetPreview.findViewById(R.id.txtNoPlaying).setVisibility(View.GONE);
+        TextView title = widgetPreview.findViewById(R.id.txtvTitle);
+        title.setVisibility(View.VISIBLE);
+        title.setText(R.string.app_name);
+        TextView progress = widgetPreview.findViewById(R.id.txtvProgress);
+        progress.setVisibility(View.VISIBLE);
+        progress.setText(R.string.position_default_label);
+
         ckRewind = findViewById(R.id.ckRewind);
-        ckRewind.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayPreviewPanel();
-            }
-        });
+        ckRewind.setOnClickListener(v -> displayPreviewPanel());
         ckFastForward = findViewById(R.id.ckFastForward);
-        ckFastForward.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayPreviewPanel();
-            }
-        });
+        ckFastForward.setOnClickListener(v -> displayPreviewPanel());
         ckSkip = findViewById(R.id.ckSkip);
-        ckSkip.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayPreviewPanel();
-            }
-        });
+        ckSkip.setOnClickListener(v -> displayPreviewPanel());
     }
 
     private void displayPreviewPanel() {
-        Boolean boolExtendedPreview = false;
-        ImageButton butFastForward;
-        ImageButton butRew;
-        ImageButton butSkip;
-
-        if (ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked()) {
-            boolExtendedPreview = true;
-        }
-        if (boolExtendedPreview) {
-            previewLayout.setVisibility(View.INVISIBLE);
-            widgetExtendedPreview = findViewById(R.id.widgetExtendedLayout);
-            previewExtendedLayout.setVisibility(View.VISIBLE);
-            butFastForward = previewExtendedLayout.findViewById(R.id.butFastForward);
-            butSkip = previewExtendedLayout.findViewById(R.id.butSkip);
-            butRew = previewExtendedLayout.findViewById(R.id.butRew);
-            butFastForward.setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
-            butRew.setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
-            butSkip.setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
-        } else {
-            previewLayout.setVisibility(View.VISIBLE);
-            previewExtendedLayout.setVisibility(View.INVISIBLE);
-        }
+        boolean showExtendedPreview = ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked();
+        widgetPreview.findViewById(R.id.extendedButtonsContainer)
+                .setVisibility(showExtendedPreview ? View.VISIBLE : View.GONE);
+        widgetPreview.findViewById(R.id.butPlay).setVisibility(showExtendedPreview ? View.GONE : View.VISIBLE);
+        widgetPreview.findViewById(R.id.butFastForward)
+                .setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
+        widgetPreview.findViewById(R.id.butSkip).setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
+        widgetPreview.findViewById(R.id.butRew).setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
     }
 
     private void displayDeviceBackground() {
