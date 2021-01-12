@@ -223,7 +223,7 @@ public class HttpDownloader extends Downloader {
                 // written file. This check cannot be made if compression was used
                 if (!isGzip && request.getSize() != DownloadStatus.SIZE_UNKNOWN &&
                         request.getSoFar() != request.getSize()) {
-                    onFail(DownloadError.ERROR_IO_ERROR, "Download completed but size: " +
+                    onFail(DownloadError.ERROR_IO_WRONG_SIZE, "Download completed but size: " +
                             request.getSoFar() + " does not equal expected size " + request.getSize());
                     return;
                 } else if (request.getSize() > 0 && request.getSoFar() == 0) {

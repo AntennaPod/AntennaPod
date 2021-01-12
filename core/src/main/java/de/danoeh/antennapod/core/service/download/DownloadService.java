@@ -327,8 +327,9 @@ public class DownloadService extends Service {
                     boolean downloadCancelled = status.getReason() == DownloadError.ERROR_DOWNLOAD_CANCELLED;
                     boolean unknownHost = status.getReason() == DownloadError.ERROR_UNKNOWN_HOST;
                     boolean unsupportedType = status.getReason() == DownloadError.ERROR_UNSUPPORTED_TYPE;
+                    boolean wrongSize = status.getReason() == DownloadError.ERROR_IO_WRONG_SIZE;
 
-                    if (! (downloadCancelled || unknownHost || unsupportedType)) {
+                    if (! (downloadCancelled || unknownHost || unsupportedType || wrongSize)) {
                         try {
                             DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                         } catch (ExecutionException | InterruptedException e) {
