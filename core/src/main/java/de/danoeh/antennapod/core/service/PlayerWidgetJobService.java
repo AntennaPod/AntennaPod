@@ -112,7 +112,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             if (!showRewind && !showFastForward && !showSkip) {
                 views = new RemoteViews(getPackageName(), R.layout.player_widget);
             } else {
-                views = new RemoteViews(getPackageName(), R.layout.player_widget_more);
+                views = new RemoteViews(getPackageName(), R.layout.player_widget_extended);
             }
             final PendingIntent startMediaPlayer = PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
                     PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);

@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RemoteViews;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.appwidget.AppWidgetManager;
@@ -34,9 +34,9 @@ public class WidgetConfigActivity extends AppCompatActivity {
     private SeekBar opacitySeekBar;
     private TextView opacityTextView;
     private RelativeLayout widgetPreview;
-    private RelativeLayout widgetMorePreview;
+    private RelativeLayout widgetExtendedPreview;
     private FrameLayout previewLayout;
-    private FrameLayout previewMoreLayout;
+    private FrameLayout previewExtendedLayout;
     private CheckBox ckRewind;
     private CheckBox ckFastForward;
     private CheckBox ckSkip;
@@ -66,8 +66,8 @@ public class WidgetConfigActivity extends AppCompatActivity {
         opacitySeekBar = findViewById(R.id.widget_opacity_seekBar);
         previewLayout = findViewById(R.id.widget_config_preview);
         widgetPreview = previewLayout.findViewById(R.id.widgetLayout);
-        widgetMorePreview = findViewById(R.id.widgetMoreLayout);
-        previewMoreLayout = findViewById(R.id.widget_config_more_preview);
+        widgetExtendedPreview = findViewById(R.id.widgetExtendedLayout);
+        previewExtendedLayout = findViewById(R.id.widget_config_extended_preview);
         findViewById(R.id.butConfirm).setOnClickListener(this::confirmCreateWidget);
         opacitySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -76,9 +76,7 @@ public class WidgetConfigActivity extends AppCompatActivity {
                 opacityTextView.setText(seekBar.getProgress() + "%");
                 int color = getColorWithAlpha(PlayerWidget.DEFAULT_COLOR, opacitySeekBar.getProgress());
                 widgetPreview.setBackgroundColor(color);
-                if (widgetMorePreview != null) {
-                    widgetMorePreview.setBackgroundColor(color);
-                }
+                widgetExtendedPreview.setBackgroundColor(color);
             }
 
             @Override
@@ -115,27 +113,27 @@ public class WidgetConfigActivity extends AppCompatActivity {
     }
 
     private void displayPreviewPanel() {
-        Boolean boolMorePreview = false;
+        Boolean boolExtendedPreview = false;
         ImageButton butFastForward;
         ImageButton butRew;
         ImageButton butSkip;
 
         if (ckRewind.isChecked() || ckFastForward.isChecked() || ckSkip.isChecked()) {
-            boolMorePreview = true;
+            boolExtendedPreview = true;
         }
-        if (boolMorePreview) {
+        if (boolExtendedPreview) {
             previewLayout.setVisibility(View.INVISIBLE);
-            widgetMorePreview = findViewById(R.id.widgetMoreLayout);
-            previewMoreLayout.setVisibility(View.VISIBLE);
-            butFastForward = previewMoreLayout.findViewById(R.id.butFastForward);
-            butSkip = previewMoreLayout.findViewById(R.id.butSkip);
-            butRew = previewMoreLayout.findViewById(R.id.butRew);
+            widgetExtendedPreview = findViewById(R.id.widgetExtendedLayout);
+            previewExtendedLayout.setVisibility(View.VISIBLE);
+            butFastForward = previewExtendedLayout.findViewById(R.id.butFastForward);
+            butSkip = previewExtendedLayout.findViewById(R.id.butSkip);
+            butRew = previewExtendedLayout.findViewById(R.id.butRew);
             butFastForward.setVisibility(ckFastForward.isChecked() ? View.VISIBLE : View.GONE);
             butRew.setVisibility(ckRewind.isChecked() ? View.VISIBLE : View.GONE);
             butSkip.setVisibility(ckSkip.isChecked() ? View.VISIBLE : View.GONE);
         } else {
             previewLayout.setVisibility(View.VISIBLE);
-            previewMoreLayout.setVisibility(View.INVISIBLE);
+            previewExtendedLayout.setVisibility(View.INVISIBLE);
         }
     }
 

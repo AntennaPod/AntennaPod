@@ -26,9 +26,9 @@
             android:layout_gravity="center"
             android:layout_margin="16dp" />
         <include
-            android:id="@+id/widget_config_more_preview"
+            android:id="@+id/widget_config_extended_preview"
             android:visibility="invisible"
-            layout="@layout/player_widget_more"
+            layout="@layout/player_widget_extended"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_gravity="center"
