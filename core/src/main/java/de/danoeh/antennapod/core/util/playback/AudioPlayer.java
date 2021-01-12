@@ -74,7 +74,7 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
             Log.e(TAG, e.toString());
         } catch (IllegalStateException e) {
             Log.e(TAG, e.toString());
-        } catch(IOException e) {
+        } catch (IOException e) {
             Log.e(TAG, e.toString());
         }
     }
