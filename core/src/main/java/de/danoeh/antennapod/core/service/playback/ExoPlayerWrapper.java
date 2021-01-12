@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import com.google.android.exoplayer2.C;
@@ -196,7 +197,7 @@ public class ExoPlayerWrapper implements IPlayer {
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true);
 
-        if (user != null && password != null && user.length() > 0  && password.length() > 0) {
+        if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
             httpDataSourceFactory.getDefaultRequestProperties().set("Authorization",
                     HttpDownloader.encodeCredentials(
                             user,
