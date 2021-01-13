@@ -185,20 +185,19 @@ public class LocalFeedUpdaterTest {
     }
 
     @Test
-    public void testGetImageUrl_NoImage() {
+    public void testGetImageUrl_EmptyFolder() {
+        DocumentFile documentFolder = mockDocumentFolder();
+        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
         String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-        {
-            // empty folder
-            DocumentFile documentFolder = mockDocumentFolder();
-            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-            assertThat(imageUrl, endsWith(defaultImageName));
-        }
-        {
-            // no image file, with audio file
-            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"));
-            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-            assertThat(imageUrl, endsWith(defaultImageName));
-        }
+        assertThat(imageUrl, endsWith(defaultImageName));
+    }
+
+    @Test
+    public void testGetImageUrl_NoImageButAudioFiles() {
+        DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"));
+        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+        String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
+        assertThat(imageUrl, endsWith(defaultImageName));
     }
 
     @Test
@@ -212,36 +211,36 @@ public class LocalFeedUpdaterTest {
     }
 
     @Test
-    public void testGetImageUrl_OtherImageFilename() {
-        {
-            // .jpg file
-            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
-                    mockDocumentFile("my-image.jpg", "image/jpeg"));
-            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-            assertThat(imageUrl, endsWith("my-image.jpg"));
-        }
-        {
-            // .jpeg file
-            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
-                    mockDocumentFile("my-image.jpeg", "image/jpeg"));
-            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-            assertThat(imageUrl, endsWith("my-image.jpeg"));
-        }
-        {
-            // .png file
-            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
-                    mockDocumentFile("my-image.png", "image/png"));
-            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-            assertThat(imageUrl, endsWith("my-image.png"));
-        }
-        {
-            // unsupported image type
-            DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
-                    mockDocumentFile("my-image.svg", "image/svg+xml"));
-            String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
-            String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
-            assertThat(imageUrl, endsWith(defaultImageName));
-        }
+    public void testGetImageUrl_OtherImageFilenameJpg() {
+        DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                mockDocumentFile("my-image.jpg", "image/jpeg"));
+        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+        assertThat(imageUrl, endsWith("my-image.jpg"));
+    }
+
+    @Test
+    public void testGetImageUrl_OtherImageFilenameJpeg() {
+        DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                mockDocumentFile("my-image.jpeg", "image/jpeg"));
+        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+        assertThat(imageUrl, endsWith("my-image.jpeg"));
+    }
+
+    @Test
+    public void testGetImageUrl_OtherImageFilenamePng() {
+        DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                mockDocumentFile("my-image.png", "image/png"));
+        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+        assertThat(imageUrl, endsWith("my-image.png"));
+    }
+
+    @Test
+    public void testGetImageUrl_OtherImageFilenameUnsupportedMimeType() {
+        DocumentFile documentFolder = mockDocumentFolder(mockDocumentFile("audio.mp3", "audio/mp3"),
+                mockDocumentFile("my-image.svg", "image/svg+xml"));
+        String imageUrl = LocalFeedUpdater.getImageUrl(context, documentFolder);
+        String defaultImageName = context.getResources().getResourceEntryName(R.raw.local_feed_default_icon);
+        assertThat(imageUrl, endsWith(defaultImageName));
     }
 
     /**
