@@ -23,7 +23,7 @@ public enum DownloadError {
 	ERROR_UNAUTHORIZED(14, R.string.download_error_unauthorized),
 	ERROR_FILE_TYPE(15, R.string.download_error_file_type_type),
 	ERROR_FORBIDDEN(16, R.string.download_error_forbidden),
-	ERROR_IO_WRONG_SIZE(17,R.string.download_error_forbidden);
+	ERROR_IO_WRONG_SIZE(17, R.string.download_error_forbidden);
 
 	private final int code;
 	private final int resId;
