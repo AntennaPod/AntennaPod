@@ -116,33 +116,24 @@ public class LocalFeedUpdater {
      */
     @NonNull
     static String getImageUrl(@NonNull Context context, @NonNull DocumentFile documentFolder) {
-        String imageUrl = null;
-
         // look for special file names
         for (String iconLocation : PREFERRED_FEED_IMAGE_FILENAMES) {
             DocumentFile image = documentFolder.findFile(iconLocation);
             if (image != null) {
-                imageUrl = image.getUri().toString();
-                break;
+                return image.getUri().toString();
             }
         }
 
         // use the first image in the folder if existing
-        if (imageUrl == null) {
-            for (DocumentFile file : documentFolder.listFiles()) {
-                String mime = file.getType();
-                if (mime != null && (mime.startsWith("image/jpeg") || mime.startsWith("image/png"))) {
-                    imageUrl = file.getUri().toString();
-                    break;
-                }
+        for (DocumentFile file : documentFolder.listFiles()) {
+            String mime = file.getType();
+            if (mime != null && (mime.startsWith("image/jpeg") || mime.startsWith("image/png"))) {
+                return file.getUri().toString();
             }
         }
 
         // use default icon as fallback
-        if (imageUrl == null) {
-            imageUrl = getDefaultIconUrl(context);
-        }
-        return imageUrl;
+        return getDefaultIconUrl(context);
     }
 
     /**
