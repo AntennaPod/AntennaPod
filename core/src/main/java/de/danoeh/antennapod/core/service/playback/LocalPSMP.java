@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.os.PowerManager;
 import androidx.annotation.NonNull;

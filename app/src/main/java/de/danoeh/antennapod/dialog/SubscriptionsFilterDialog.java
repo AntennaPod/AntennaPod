@@ -30,7 +30,8 @@ public class SubscriptionsFilterDialog {
         builder.setTitle(context.getString(R.string.pref_filter_feed_title));
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.filter_dialog, null, false);
+        View layout = inflater.inflate(R.layout.filter_dialog, null, false);
+        LinearLayout rows = layout.findViewById(R.id.filter_rows);
         builder.setView(layout);
 
         for (SubscriptionsFilterGroup item : SubscriptionsFilterGroup.values()) {
@@ -45,7 +46,7 @@ public class SubscriptionsFilterDialog {
             } else {
                 filter2.setVisibility(View.GONE);
             }
-            layout.addView(row);
+            rows.addView(row);
         }
 
         for (String filterId : filterValues) {
@@ -56,11 +57,11 @@ public class SubscriptionsFilterDialog {
 
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             filterValues.clear();
-            for (int i = 0; i < layout.getChildCount(); i++) {
-                if (!(layout.getChildAt(i) instanceof RecursiveRadioGroup)) {
+            for (int i = 0; i < rows.getChildCount(); i++) {
+                if (!(rows.getChildAt(i) instanceof RecursiveRadioGroup)) {
                     continue;
                 }
-                RecursiveRadioGroup group = (RecursiveRadioGroup) layout.getChildAt(i);
+                RecursiveRadioGroup group = (RecursiveRadioGroup) rows.getChildAt(i);
                 if (group.getCheckedButton() != null) {
                     String tag = (String) group.getCheckedButton().getTag();
                     if (tag != null) { // Clear buttons use no tag

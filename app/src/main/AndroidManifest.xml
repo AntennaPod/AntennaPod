@@ -189,15 +189,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="file"/>
-                <data android:mimeType="video/*"/>
-            </intent-filter>
         </activity>
 
         <activity
@@ -290,19 +281,6 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
 
-        </activity>
-
-        <activity
-            android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"
-            android:configChanges="orientation"
-            android:label="@string/gpodnet_auth_label">
-            <intent-filter>
-                <action android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
         <receiver android:name=".receiver.ConnectivityActionReceiver">

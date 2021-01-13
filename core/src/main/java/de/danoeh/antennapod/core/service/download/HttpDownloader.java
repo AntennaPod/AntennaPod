@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.service.BasicAuthorizationInterceptor;
 import okhttp3.CacheControl;
 import org.apache.commons.io.IOUtils;
 
@@ -21,14 +20,12 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Date;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URIUtil;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -226,7 +223,7 @@ public class HttpDownloader extends Downloader {
                 // written file. This check cannot be made if compression was used
                 if (!isGzip && request.getSize() != DownloadStatus.SIZE_UNKNOWN &&
                         request.getSoFar() != request.getSize()) {
-                    onFail(DownloadError.ERROR_IO_ERROR, "Download completed but size: " +
+                    onFail(DownloadError.ERROR_IO_WRONG_SIZE, "Download completed but size: " +
                             request.getSoFar() + " does not equal expected size " + request.getSize());
                     return;
                 } else if (request.getSize() > 0 && request.getSoFar() == 0) {

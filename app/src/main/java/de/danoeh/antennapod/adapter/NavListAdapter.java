@@ -75,7 +75,7 @@ public class NavListAdapter extends BaseAdapter
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)) {
+        if (UserPreferences.PREF_HIDDEN_DRAWER_ITEMS.equals(key)) {
             loadItems();
         }
     }

@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.core.storage.DBReader;

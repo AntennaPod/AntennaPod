@@ -10,7 +10,6 @@ import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.model.StringLoader;
-import com.bumptech.glide.load.model.UriLoader;
 import com.bumptech.glide.module.AppGlideModule;
 
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;

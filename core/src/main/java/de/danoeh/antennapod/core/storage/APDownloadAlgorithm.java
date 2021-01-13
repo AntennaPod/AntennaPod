@@ -65,7 +65,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                 Iterator<FeedItem> it = candidates.iterator();
                 while (it.hasNext()) {
                     FeedItem item = it.next();
-                    if (!item.isAutoDownloadable()) {
+                    if (!item.isAutoDownloadable() || item.getFeed().isLocalFeed()) {
                         it.remove();
                     }
                 }

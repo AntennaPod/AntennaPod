@@ -65,6 +65,7 @@ public class DownloadlistAdapter extends BaseAdapter {
 
         holder.title.setText(request.getTitle());
         holder.secondaryActionIcon.setImageResource(ThemeUtils.getDrawableFromAttr(context, R.attr.navigation_cancel));
+        holder.secondaryActionButton.setContentDescription(context.getString(R.string.cancel_download_label));
         holder.secondaryActionButton.setTag(downloader);
         holder.secondaryActionButton.setOnClickListener(butSecondaryListener);
         holder.secondaryActionProgress.setPercentage(0, request);
