@@ -243,6 +243,7 @@
     <string name="download_error_file_type_type">File Type Error</string>
     <string name="download_error_forbidden">Forbidden</string>
     <string name="download_canceled_msg">Download canceled</string>
+    <string name="download_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>

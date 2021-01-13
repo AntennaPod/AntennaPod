@@ -25,7 +25,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -325,18 +324,11 @@ public class DownloadService extends Service {
                     if (item == null) {
                         return;
                     }
-                    boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
-                    boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
-                            && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
-                    boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
-                    boolean wrongFileType = status.getReason() == DownloadError.ERROR_FILE_TYPE;
-                    boolean httpGone = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_GONE).equals(status.getReasonDetailed());
-                    boolean httpBadReq = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_BAD_REQUEST).equals(status.getReasonDetailed());
+                    boolean unknownHost = status.getReason() == DownloadError.ERROR_UNKNOWN_HOST;
+                    boolean unsupportedType = status.getReason() == DownloadError.ERROR_UNSUPPORTED_TYPE;
+                    boolean wrongSize = status.getReason() == DownloadError.ERROR_IO_WRONG_SIZE;
 
-                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType || httpGone || httpBadReq ) {
+                    if (! (unknownHost || unsupportedType || wrongSize)) {
                         try {
                             DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                         } catch (ExecutionException | InterruptedException e) {
