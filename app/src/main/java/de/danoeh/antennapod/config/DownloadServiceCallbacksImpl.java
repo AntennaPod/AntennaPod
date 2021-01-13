@@ -31,7 +31,6 @@ public class DownloadServiceCallbacksImpl implements DownloadServiceCallbacks {
     public PendingIntent getAuthentificationNotificationContentIntent(Context context, DownloadRequest request) {
         final Intent activityIntent = new Intent(context.getApplicationContext(), DownloadAuthenticationActivity.class);
         activityIntent.putExtra(DownloadAuthenticationActivity.ARG_DOWNLOAD_REQUEST, request);
-        activityIntent.putExtra(DownloadAuthenticationActivity.ARG_SEND_TO_DOWNLOAD_REQUESTER_BOOL, true);
         return PendingIntent.getActivity(context.getApplicationContext(),
                 R.id.pending_intent_download_service_auth, activityIntent, PendingIntent.FLAG_ONE_SHOT);
     }
