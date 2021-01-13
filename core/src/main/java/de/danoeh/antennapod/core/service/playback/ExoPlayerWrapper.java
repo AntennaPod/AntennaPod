@@ -205,13 +205,10 @@ public class ExoPlayerWrapper implements IPlayer {
                             "ISO-8859-1"));
         }
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
-        HttpDataSource httpDataSource = httpDataSourceFactory.createDataSource();
-
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
         ProgressiveMediaSource.Factory f = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory);
         mediaSource = f.createMediaSource(Uri.parse(s));
-
     }
 
     @Override
