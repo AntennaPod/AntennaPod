@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
@@ -198,14 +199,19 @@ public class ExternalPlayerFragment extends Fragment {
         feedName.setText(media.getFeedTitle());
         onPositionObserverUpdate();
 
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate();
+
         Glide.with(getActivity())
                 .load(ImageResourceUtils.getImageLocation(media))
-                .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate())
+                .error(Glide.with(getActivity())
+                        .load(ImageResourceUtils.getFallbackImageLocation(media))
+                        .apply(options))
+                .apply(options)
                 .into(imgvCover);
 
         if (controller != null && controller.isPlayingVideoLocally()) {

@@ -119,12 +119,12 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         }
 
         if (media != null) {
+            Bitmap icon;
+            int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
 
             try {
-                Bitmap icon;
-                int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
                 icon = Glide.with(PlayerWidgetJobService.this)
                         .asBitmap()
                         .load(ImageResourceUtils.getImageLocation(media))
@@ -132,9 +132,19 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
                 views.setImageViewBitmap(R.id.imgvCover, icon);
-            } catch (Throwable tr) {
-                Log.e(TAG, "Error loading the media icon for the widget", tr);
-                views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
+            } catch (Throwable tr1) {
+                try {
+                    icon = Glide.with(PlayerWidgetJobService.this)
+                            .asBitmap()
+                            .load(ImageResourceUtils.getFallbackImageLocation(media))
+                            .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                            .submit(iconSize, iconSize)
+                            .get(500, TimeUnit.MILLISECONDS);
+                    views.setImageViewBitmap(R.id.imgvCover, icon);
+                } catch (Throwable tr2) {
+                    Log.e(TAG, "Error loading the media icon for the widget", tr2);
+                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
+                }
             }
 
             views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());

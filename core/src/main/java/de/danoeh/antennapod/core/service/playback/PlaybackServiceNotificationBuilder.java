@@ -78,8 +78,18 @@ public class PlaybackServiceNotificationBuilder {
                     .apply(new RequestOptions().centerCrop())
                     .submit(iconSize, iconSize)
                     .get();
-        } catch (Throwable tr) {
-            Log.e(TAG, "Error loading the media icon for the notification", tr);
+        } catch (Throwable tr1) {
+            try {
+                icon = Glide.with(context)
+                        .asBitmap()
+                        .load(ImageResourceUtils.getFallbackImageLocation(playable))
+                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                        .apply(new RequestOptions().centerCrop())
+                        .submit(iconSize, iconSize)
+                        .get();
+            } catch (Throwable tr2) {
+                Log.e(TAG, "Error loading the media icon for the notification", tr2);
+            }
         }
     }
 

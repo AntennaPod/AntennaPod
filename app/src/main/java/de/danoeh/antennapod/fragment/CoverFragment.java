@@ -151,23 +151,25 @@ public class CoverFragment extends Fragment {
         if (chapter != displayedChapterIndex) {
             displayedChapterIndex = chapter;
 
+            RequestOptions options = new RequestOptions()
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .dontAnimate()
+                    .transforms(new FitCenter(),
+                            new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
+
             RequestBuilder<Drawable> cover = Glide.with(this)
                     .load(ImageResourceUtils.getImageLocation(media))
-                    .apply(new RequestOptions()
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .dontAnimate()
-                            .transforms(new FitCenter(),
-                                    new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))));
+                    .error(Glide.with(this)
+                            .load(ImageResourceUtils.getFallbackImageLocation(media))
+                            .apply(options))
+                    .apply(options);
+
             if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
                 cover.into(imgvCover);
             } else {
                 Glide.with(this)
                         .load(EmbeddedChapterImage.getModelFor(media, chapter))
-                        .apply(new RequestOptions()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .dontAnimate()
-                                .transforms(new FitCenter(),
-                                        new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))))
+                        .apply(options)
                         .thumbnail(cover)
                         .error(cover)
                         .into(imgvCover);

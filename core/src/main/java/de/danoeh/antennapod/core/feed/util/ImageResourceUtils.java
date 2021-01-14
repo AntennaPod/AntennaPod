@@ -1,9 +1,13 @@
 package de.danoeh.antennapod.core.feed.util;
 
+import android.webkit.URLUtil;
+
 import de.danoeh.antennapod.core.asynctask.ImageResource;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.URLChecker;
 
 /**
  * Utility class to use the appropriate image resource based on {@link UserPreferences}
@@ -14,11 +18,16 @@ public final class ImageResourceUtils {
     }
 
     public static String getImageLocation(ImageResource resource) {
+
         if (UserPreferences.getUseEpisodeCoverSetting()) {
             return resource.getImageLocation();
         } else {
             return getShowImageLocation(resource);
         }
+    }
+
+    public static String getFallbackImageLocation(ImageResource resource) {
+        return getShowImageLocation(resource);
     }
 
     private static String getShowImageLocation(ImageResource resource) {
