@@ -65,8 +65,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final PlayerLock playerLock;
     private final PlayerExecutor executor;
     private boolean useCallerThread = true;
-
-
     private CountDownLatch seekLatch;
 
     /**
