@@ -668,6 +668,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
+
                 if (getStatus() != PlayerStatus.PLAYING && getStatus() != PlayerStatus.PAUSED) {
                     return false;
                 } else if (notificationButton || UserPreferences.shouldHardwareButtonSkip()) {
@@ -1897,7 +1898,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSkipToNext() {
             Log.d(TAG, "onSkipToNext()");
-            if (UserPreferences.shouldHardwareButtonSkip()) {
+            UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+            if (UserPreferences.shouldHardwareButtonSkip()
+                    || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
                 mediaPlayer.skip();
             } else {
                 seekDelta(UserPreferences.getFastForwardSecs() * 1000);
