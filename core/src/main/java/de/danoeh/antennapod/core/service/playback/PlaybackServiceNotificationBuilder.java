@@ -29,6 +29,8 @@ import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 public class PlaybackServiceNotificationBuilder {
@@ -78,7 +80,7 @@ public class PlaybackServiceNotificationBuilder {
                     .apply(new RequestOptions().centerCrop())
                     .submit(iconSize, iconSize)
                     .get();
-        } catch (Throwable tr1) {
+        } catch (ExecutionException e) {
             try {
                 icon = Glide.with(context)
                         .asBitmap()
@@ -87,9 +89,11 @@ public class PlaybackServiceNotificationBuilder {
                         .apply(new RequestOptions().centerCrop())
                         .submit(iconSize, iconSize)
                         .get();
-            } catch (Throwable tr2) {
-                Log.e(TAG, "Error loading the media icon for the notification", tr2);
+            } catch (Throwable tr) {
+                Log.e(TAG, "Error loading the media icon for the notification", tr);
             }
+        } catch (Throwable tr) {
+            Log.e(TAG, "Error loading the media icon for the notification", tr);
         }
     }
 
