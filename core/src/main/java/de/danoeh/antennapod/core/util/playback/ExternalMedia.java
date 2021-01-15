@@ -173,6 +173,7 @@ public class ExternalMedia implements Playable {
     public Date getPubDate() {
         return pubDate;
     }
+    
     @Override
     public int getPosition() {
         return position;
