@@ -14,6 +14,7 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,6 +67,11 @@ public interface Playable extends Parcelable,
      * Returns the title of the feed this Playable belongs to.
      */
     String getFeedTitle();
+
+    /**
+     * Returns the published date
+     */
+    Date getPubDate();
 
     /**
      * Returns a unique identifier, for example a file url or an ID from a

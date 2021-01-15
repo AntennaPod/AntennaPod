@@ -6,10 +6,18 @@ import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
+
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 import org.apache.commons.io.FilenameUtils;
 
@@ -25,6 +33,7 @@ public class ExternalMedia implements Playable {
     private String episodeTitle;
     private String feedTitle;
     private MediaType mediaType;
+    private Date pubDate;
     private List<Chapter> chapters;
     private int duration;
     private int position;
@@ -99,6 +108,19 @@ public class ExternalMedia implements Playable {
             e.printStackTrace();
             throw new PlayableException("NumberFormatException when reading duration of media file");
         }
+
+        String dateStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
+        if (!TextUtils.isEmpty(dateStr)) {
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
+                pubDate = simpleDateFormat.parse(dateStr);
+            } catch (ParseException parseException) {
+                pubDate = DateUtils.parse(dateStr);
+            }
+        } else {
+            pubDate = null;
+        }
+
         setChapters(ChapterUtils.loadChaptersFromFileUrl(this));
     }
 
@@ -147,6 +169,10 @@ public class ExternalMedia implements Playable {
         return duration;
     }
 
+    @Override
+    public Date getPubDate() {
+        return pubDate;
+    }
     @Override
     public int getPosition() {
         return position;
