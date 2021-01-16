@@ -79,6 +79,13 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
             viewHolder.authorView.setVisibility(View.GONE);
         }
 
+        if (podcast.getSearcher() != null) {
+            viewHolder.searcherView.setText(podcast.getSearcher().getName());
+            viewHolder.searcherView.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.searcherView.setVisibility(View.GONE);
+        }
+
         //Update the empty imageView with the image from the feed
         Glide.with(context)
                 .load(podcast.imageUrl)
@@ -111,6 +118,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
 
         final TextView authorView;
 
+        final TextView searcherView;
 
         /**
          * Constructor
@@ -120,6 +128,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
             coverView = view.findViewById(R.id.imgvCover);
             titleView = view.findViewById(R.id.txtvTitle);
             authorView = view.findViewById(R.id.txtvAuthor);
+            searcherView = view.findViewById(R.id.txtvSearcher);
         }
     }
 }

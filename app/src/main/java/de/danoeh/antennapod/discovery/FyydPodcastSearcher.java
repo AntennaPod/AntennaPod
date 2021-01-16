@@ -25,7 +25,7 @@ public class FyydPodcastSearcher implements PodcastSearcher {
 
             if (!response.getData().isEmpty()) {
                 for (SearchHit searchHit : response.getData()) {
-                    PodcastSearchResult podcast = PodcastSearchResult.fromFyyd(searchHit);
+                    PodcastSearchResult podcast = PodcastSearchResult.fromFyyd(searchHit, this);
                     searchResults.add(podcast);
                 }
             }
