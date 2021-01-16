@@ -1241,8 +1241,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
         }
 
-        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().
-                getSystemService(Context.UI_MODE_SERVICE);
+        UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
+                .getSystemService(Context.UI_MODE_SERVICE);
         if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
             sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
@@ -1899,8 +1899,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSkipToNext() {
             Log.d(TAG, "onSkipToNext()");
-            UiModeManager uiModeManager = (UiModeManager) getApplicationContext().
-                    getSystemService(Context.UI_MODE_SERVICE);
+            UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
+                    .getSystemService(Context.UI_MODE_SERVICE);
             if (UserPreferences.shouldHardwareButtonSkip()
                     || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
                 mediaPlayer.skip();
