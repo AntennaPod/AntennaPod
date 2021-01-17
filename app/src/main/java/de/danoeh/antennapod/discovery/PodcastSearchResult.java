@@ -38,7 +38,11 @@ public class PodcastSearchResult {
         this(title, imageUrl, feedUrl, author, null);
     }
 
-    private PodcastSearchResult(String title, @Nullable String imageUrl, @Nullable String feedUrl, @Nullable String author, @Nullable PodcastSearcher searcher) {
+    private PodcastSearchResult(String title,
+                                @Nullable String imageUrl,
+                                @Nullable String feedUrl,
+                                @Nullable String author,
+                                @Nullable PodcastSearcher searcher) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.feedUrl = feedUrl;
@@ -78,7 +82,9 @@ public class PodcastSearchResult {
      * @param json object holding the podcast information
      * @throws JSONException
      */
-    public static PodcastSearchResult fromItunesToplist(JSONObject json, ItunesTopListLoader searcher) throws JSONException {
+    public static PodcastSearchResult fromItunesToplist(JSONObject json,
+                                                        ItunesTopListLoader searcher)
+            throws JSONException {
         String title = json.getJSONObject("title").getString("label");
         String imageUrl = null;
         JSONArray images =  json.getJSONArray("im:image");

@@ -68,7 +68,7 @@
                 android:text="Search"
                 android:textAlignment="textEnd"
                 android:textColor="?android:attr/textColorTertiary"
-                android:textSize="8sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
     </LinearLayout>
