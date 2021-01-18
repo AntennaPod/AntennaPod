@@ -12,14 +12,19 @@ public class PodcastSearcherRegistry {
     private PodcastSearcherRegistry() {
     }
 
+    /**
+     * The larger the weight, the more the provider's result add to the result
+     * Put the largest weights at the end, if a podcast exist, the last searchProvider will get credit
+     * in the search results
+     */
     public static List<SearcherInfo> getSearchProviders() {
         if (searchProviders == null) {
             searchProviders = new ArrayList<>();
             searchProviders.add(new SearcherInfo(new CombinedSearcher(), 1.0f));
-            searchProviders.add(new SearcherInfo(new ItunesPodcastSearcher(), 1.0f));
-            searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 1.0f));
             searchProviders.add(new SearcherInfo(new GpodnetPodcastSearcher(), 0.0f));
-            searchProviders.add(new SearcherInfo(new PodcastIndexPodcastSearcher(), 0.5f));
+            searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 0.0f));
+            searchProviders.add(new SearcherInfo(new ItunesPodcastSearcher(), 0.3f));
+            searchProviders.add(new SearcherInfo(new PodcastIndexPodcastSearcher(), 1.0f));
         }
         return searchProviders;
     }

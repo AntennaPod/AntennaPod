@@ -65,6 +65,9 @@ public class CombinedSearcher implements PodcastSearcher {
         HashMap<String, Float> resultRanking = new HashMap<>();
         HashMap<String, PodcastSearchResult> urlToResult = new HashMap<>();
         for (int i = 0; i < singleResults.size(); i++) {
+            if (CombinedSearcher.class == PodcastSearcherRegistry.getSearchProviders().get(i).searcher.getClass()) {
+                continue;
+            }
             float providerPriority = PodcastSearcherRegistry.getSearchProviders().get(i).weight;
             List<PodcastSearchResult> providerResults = singleResults.get(i);
             if (providerResults == null) {
