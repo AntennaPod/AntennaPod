@@ -12,11 +12,6 @@ public class PodcastSearcherRegistry {
     private PodcastSearcherRegistry() {
     }
 
-    /**
-     * The larger the weight, the more the provider's result add to the result
-     * Put the largest weights at the end, if a podcast exist, the last searchProvider will get credit
-     * in the search results
-     */
     public static List<SearcherInfo> getSearchProviders() {
         if (searchProviders == null) {
             searchProviders = new ArrayList<>();
