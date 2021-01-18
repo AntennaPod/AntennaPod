@@ -18,7 +18,7 @@ public class PodcastSearcherRegistry {
             searchProviders.add(new SearcherInfo(new CombinedSearcher(), 1.0f));
             searchProviders.add(new SearcherInfo(new GpodnetPodcastSearcher(), 0.0f));
             searchProviders.add(new SearcherInfo(new FyydPodcastSearcher(), 0.0f));
-            searchProviders.add(new SearcherInfo(new ItunesPodcastSearcher(), 0.3f));
+            searchProviders.add(new SearcherInfo(new ItunesPodcastSearcher(), 1.0f));
             searchProviders.add(new SearcherInfo(new PodcastIndexPodcastSearcher(), 1.0f));
         }
         return searchProviders;
