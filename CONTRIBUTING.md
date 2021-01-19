@@ -45,5 +45,5 @@ As a developer contributing to AntennaPod, we ask that you test the feature your
 * `./gradlew :core:testPlayDebugUnitTest`
 
 ### Running Integration Tests
-* Start and AVD or plug in your phone
+* Start an AVD or plug in your phone
 * `sh .github/workflows/runTests.sh`
