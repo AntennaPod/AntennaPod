@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.view.viewholder;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.Layout;
 import android.text.format.Formatter;
@@ -16,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.joanzapata.iconify.Iconify;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
@@ -26,12 +31,18 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.core.util.TimeSpeedConverter;
+import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.view.CircularProgressBar;
+
+import static de.danoeh.antennapod.discovery.ItunesTopListLoader.PREFS;
+import static de.danoeh.antennapod.fragment.AudioPlayerFragment.PREF_SHOW_TIME_LEFT;
 
 /**
  * Holds the view which shows FeedItems.
@@ -132,9 +143,15 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private void bind(FeedMedia media) {
         isVideo.setVisibility(media.getMediaType() == MediaType.VIDEO ? View.VISIBLE : View.GONE);
         duration.setVisibility(media.getDuration() > 0 ? View.VISIBLE : View.GONE);
-        duration.setText(Converter.getDurationStringLong(media.getDuration()));
-        duration.setContentDescription(activity.getString(R.string.chapter_duration,
-                Converter.getDurationStringLocalized(activity, media.getDuration())));
+        if (showTimeLeft()) {
+            duration.setText("-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition()));
+            duration.setContentDescription(activity.getString(R.string.chapter_duration,
+                    Converter.getDurationStringLocalized(activity, (media.getDuration() - media.getPosition()))));
+        } else {
+            duration.setText(Converter.getDurationStringLong(media.getDuration()));
+            duration.setContentDescription(activity.getString(R.string.chapter_duration,
+                    Converter.getDurationStringLocalized(activity, media.getDuration())));
+        }
 
         if (media.isCurrentlyPlaying()) {
             itemView.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
@@ -186,6 +203,30 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
+    public Boolean showTimeLeft() {
+        SharedPreferences prefs = activity.getApplicationContext()
+                .getSharedPreferences(AudioPlayerFragment.PREFS,
+                        Context.MODE_PRIVATE);
+        return prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+    }
+
+    public void updateDuration(PlaybackPositionEvent event) {
+        TimeSpeedConverter converter = new TimeSpeedConverter(1);
+        int currentPosition = converter.convert(event.getPosition());
+        int timeDuration= converter.convert(event.getDuration());
+        int remainingTime = converter.convert(event.getDuration() - event.getPosition());
+        Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
+        if (currentPosition == PlaybackService.INVALID_TIME || timeDuration == PlaybackService.INVALID_TIME) {
+            Log.w(TAG, "Could not react to position observer update because of invalid time");
+            return;
+        }
+        if (showTimeLeft()) {
+            duration.setText("-" + Converter.getDurationStringLong(remainingTime));
+        } else {
+            duration.setText(Converter.getDurationStringLong(timeDuration));
+        }
+    }
+
     public FeedItem getFeedItem() {
         return item;
     }
@@ -197,7 +238,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     public void notifyPlaybackPositionUpdated(PlaybackPositionEvent event) {
         progressBar.setProgress((int) (100.0 * event.getPosition() / event.getDuration()));
         position.setText(Converter.getDurationStringLong(event.getPosition()));
-        duration.setText(Converter.getDurationStringLong(event.getDuration()));
+        updateDuration(event);
         duration.setVisibility(View.VISIBLE); // Even if the duration was previously unknown, it is now known
     }
 

@@ -68,8 +68,8 @@ public class AudioPlayerFragment extends Fragment implements
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
-    private static final String PREFS = "AudioPlayerFragmentPreferences";
-    private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
+    public static final String PREFS = "AudioPlayerFragmentPreferences";
+    public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final float EPSILON = 0.001f;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
@@ -212,7 +212,7 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void setupLengthTextView() {
-        SharedPreferences prefs = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         txtvLength.setOnClickListener(v -> {
             if (controller == null) {
