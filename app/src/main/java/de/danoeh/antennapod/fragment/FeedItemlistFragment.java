@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.Intent;
 import android.graphics.LightingColorFilter;
@@ -17,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
