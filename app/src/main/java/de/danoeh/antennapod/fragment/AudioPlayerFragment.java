@@ -212,7 +212,8 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void setupLengthTextView() {
-        SharedPreferences prefs = getActivity().getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        SharedPreferences prefs = getActivity().getApplicationContext()
+                .getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         txtvLength.setOnClickListener(v -> {
             if (controller == null) {

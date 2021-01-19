@@ -203,7 +203,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
 
     private void updateDuration(PlaybackPositionEvent event) {
         int currentPosition = event.getPosition();
-        int timeDuration= event.getDuration();
+        int timeDuration = event.getDuration();
         int remainingTime = event.getDuration() - event.getPosition();
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == PlaybackService.INVALID_TIME || timeDuration == PlaybackService.INVALID_TIME) {
