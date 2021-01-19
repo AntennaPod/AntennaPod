@@ -68,6 +68,7 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences.HardwareControl;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -668,18 +669,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (getStatus() != PlayerStatus.PLAYING && getStatus() != PlayerStatus.PAUSED) {
-                    return false;
-                } else if (notificationButton || UserPreferences.shouldHardwareButtonSkip()) {
-                    // assume the skip command comes from a notification or the lockscreen
-                    // a >| skip button should actually skip
+                if (!notificationButton) // hardware button
+                    return handleKeycode(UserPreferences.getHardwareForwardButton().keyCode, true);
+
+                if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.skip();
-                } else {
-                    // assume skip command comes from a (bluetooth) media button
-                    // user actually wants to fast-forward
-                    seekDelta(UserPreferences.getFastForwardSecs() * 1000);
+                    return true;
                 }
-                return true;
+                return false;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
@@ -687,23 +684,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                if (getStatus() != PlayerStatus.PLAYING && getStatus() != PlayerStatus.PAUSED) {
-                    return false;
-                } else if (UserPreferences.shouldHardwarePreviousButtonRestart()) {
-                    // user wants to restart current episode
+                if (!notificationButton) // hardware button
+                    return handleKeycode(UserPreferences.getHardwareBackButton().keyCode, true);
+
+                if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekTo(0);
-                } else {
-                    //  user wants to rewind current episode
-                    mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    return true;
                 }
-                return true;
+                return false;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
-                } else {
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(true, true);
@@ -1897,7 +1891,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSkipToNext() {
             Log.d(TAG, "onSkipToNext()");
-            if (UserPreferences.shouldHardwareButtonSkip()) {
+            if (UserPreferences.getHardwareForwardButton() == HardwareControl.PLAY_NEXT_EPISODE) {
                 mediaPlayer.skip();
             } else {
                 seekDelta(UserPreferences.getFastForwardSecs() * 1000);

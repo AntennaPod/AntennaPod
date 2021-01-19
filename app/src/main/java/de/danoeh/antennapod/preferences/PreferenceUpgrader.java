@@ -9,6 +9,7 @@ import de.danoeh.antennapod.error.CrashReportWriter;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences.EnqueueLocation;
+import de.danoeh.antennapod.core.preferences.UserPreferences.HardwareControl;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 
 public class PreferenceUpgrader {
@@ -91,6 +92,17 @@ public class PreferenceUpgrader {
         }
         if (oldVersion < 1080100) {
             prefs.edit().putString(UserPreferences.PREF_VIDEO_BEHAVIOR, "pip").apply();
+        }
+        if (oldVersion < 2010300) {
+            // Migrate hardware button preferences
+            if (prefs.getBoolean("prefHardwareForwardButtonSkips", false)) {
+                prefs.edit().putString(UserPreferences.PREF_HARDWARE_FORWARD_BUTTON,
+                        HardwareControl.PLAY_NEXT_EPISODE.name()).apply();
+            }
+            if (prefs.getBoolean("prefHardwarePreviousButtonRestarts", false)) {
+                prefs.edit().putString(UserPreferences.PREF_HARDWARE_BACK_BUTTON,
+                        HardwareControl.RESTART_EPISODE.name()).apply();
+            }
         }
     }
 }
