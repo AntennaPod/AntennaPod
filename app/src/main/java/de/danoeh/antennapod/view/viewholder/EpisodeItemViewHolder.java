@@ -210,11 +210,10 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         return prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
     }
 
-    public void updateDuration(PlaybackPositionEvent event) {
-        TimeSpeedConverter converter = new TimeSpeedConverter(1);
-        int currentPosition = converter.convert(event.getPosition());
-        int timeDuration= converter.convert(event.getDuration());
-        int remainingTime = converter.convert(event.getDuration() - event.getPosition());
+    private void updateDuration(PlaybackPositionEvent event) {
+        int currentPosition = event.getPosition();
+        int timeDuration= event.getDuration();
+        int remainingTime = event.getDuration() - event.getPosition();
         Log.d(TAG, "currentPosition " + Converter.getDurationStringLong(currentPosition));
         if (currentPosition == PlaybackService.INVALID_TIME || timeDuration == PlaybackService.INVALID_TIME) {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
