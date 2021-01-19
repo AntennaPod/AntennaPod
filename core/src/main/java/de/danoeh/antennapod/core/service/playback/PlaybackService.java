@@ -669,8 +669,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (!notificationButton) // hardware button
+                if (!notificationButton) { // hardware button
                     return handleKeycode(UserPreferences.getHardwareForwardButton().keyCode, true);
+                }
 
                 if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.skip();
@@ -684,8 +685,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                if (!notificationButton) // hardware button
+                if (!notificationButton) { // hardware button
                     return handleKeycode(UserPreferences.getHardwareBackButton().keyCode, true);
+                }
 
                 if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekTo(0);

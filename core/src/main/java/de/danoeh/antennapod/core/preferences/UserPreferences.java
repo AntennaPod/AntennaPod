@@ -387,11 +387,13 @@ public class UserPreferences {
     }
 
     public static HardwareControl getHardwareForwardButton() {
-        return HardwareControl.valueOf(prefs.getString(PREF_HARDWARE_FORWARD_BUTTON, HardwareControl.FAST_FORWARD.name()));
+        return HardwareControl.valueOf(prefs.getString(PREF_HARDWARE_FORWARD_BUTTON,
+                HardwareControl.FAST_FORWARD.name()));
     }
 
     public static HardwareControl getHardwareBackButton() {
-        return HardwareControl.valueOf(prefs.getString(PREF_HARDWARE_BACK_BUTTON, HardwareControl.REWIND.name()));
+        return HardwareControl.valueOf(prefs.getString(PREF_HARDWARE_BACK_BUTTON,
+                HardwareControl.REWIND.name()));
     }
 
 
