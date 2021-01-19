@@ -15,12 +15,7 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.joanzapata.iconify.Iconify;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.CoverLoader;
@@ -37,12 +32,8 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
-import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.view.CircularProgressBar;
-
-import static de.danoeh.antennapod.discovery.ItunesTopListLoader.PREFS;
-import static de.danoeh.antennapod.fragment.AudioPlayerFragment.PREF_SHOW_TIME_LEFT;
 
 /**
  * Holds the view which shows FeedItems.
@@ -207,7 +198,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         SharedPreferences prefs = activity.getApplicationContext()
                 .getSharedPreferences(AudioPlayerFragment.PREFS,
                         Context.MODE_PRIVATE);
-        return prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+        return prefs.getBoolean(AudioPlayerFragment.PREF_SHOW_TIME_LEFT, false);
     }
 
     private void updateDuration(PlaybackPositionEvent event) {
