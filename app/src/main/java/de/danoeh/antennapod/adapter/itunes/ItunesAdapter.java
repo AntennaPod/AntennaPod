@@ -80,7 +80,7 @@ public class ItunesAdapter extends ArrayAdapter<PodcastSearchResult> {
         }
 
         if (podcast.getSearcher() != null) {
-            viewHolder.searcherView.setText(podcast.getSearcher().getName());
+            viewHolder.searcherView.setText(podcast.getSearcher().getName().substring(0, 1));
             viewHolder.searcherView.setVisibility(View.VISIBLE);
         } else {
             viewHolder.searcherView.setVisibility(View.GONE);
