@@ -221,7 +221,10 @@ public class AudioPlayerFragment extends Fragment implements
             }
             showTimeLeft = !showTimeLeft;
             prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft).apply();
-            updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
+            updatePosition(new PlaybackPositionEvent(controller.getPosition(),
+                    controller.getDuration()));
+            EventBus.getDefault().post(new PlaybackPositionEvent(controller.getPosition(),
+                    controller.getDuration()));
         });
     }
 
