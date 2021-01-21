@@ -481,6 +481,7 @@
   <string name="pref_enqueue_downloaded_title">Foron descargados os elementos da cola</string>
   <string name="pref_enqueue_downloaded_summary">Engadir os episodios descargados a cola</string>
   <string name="media_player_builtin">Reprodutor android nativo</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (recomendado)</string>
   <string name="media_player_switch_to_exoplayer">Cambiar a ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Cambiaches a ExoPlayer.</string>
   <string name="pref_skip_silence_title">Saltar silencio no Audio</string>
@@ -505,6 +506,7 @@
   <string name="pref_filter_feed_sum">Filtra as subscricións no panel de navegación e pantalla de subscricións.</string>
   <string name="no_filter_label">Nada</string>
   <string name="subscriptions_are_filtered">As subscricións están filtradas.</string>
+  <string name="subscriptions_counter_greater_zero">Contador maior a cero</string>
   <string name="auto_downloaded">Descargado automáticamente</string>
   <string name="not_auto_downloaded">Non descargado automáticamente</string>
   <string name="kept_updated">Manter actualizado</string>
@@ -699,9 +701,11 @@
   <string name="search_powered_by">Resultados por %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Engadir cartafol local</string>
+  <string name="local_folder">Cartafol local</string>
   <string name="reconnect_local_folder">Reconectar cartafol local</string>
   <string name="reconnect_local_folder_warning">En caso de faltar permisos, podes usar esto para reconectar o exactamente o mesmo cartafol. Non elixas outro cartafol.</string>
   <string name="local_feed_description">O podcast virtual foi creado ó engadir un cartafol a AntennaPod.</string>
+  <string name="unable_to_start_system_file_manager">Non foi posible abrir o xestor de ficheiros</string>
   <string name="filter">Filtrado</string>
   <!--Episodes apply actions-->
   <string name="all_label">Todo</string>

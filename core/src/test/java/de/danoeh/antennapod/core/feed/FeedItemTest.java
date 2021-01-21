@@ -2,15 +2,22 @@ package de.danoeh.antennapod.core.feed;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import de.danoeh.antennapod.core.storage.DBReader;
 
 import static de.danoeh.antennapod.core.feed.FeedItemMother.anyFeedItemWithImage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class FeedItemTest {
+
+    private static final String TEXT_LONG = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+    private static final String TEXT_SHORT = "Lorem ipsum";
 
     private FeedItem original;
     private FeedItem changedFeedItem;
@@ -22,21 +29,21 @@ public class FeedItemTest {
     }
 
     @Test
-    public void testUpdateFromOther_feedItemImageDownloadUrlChanged() throws Exception {
+    public void testUpdateFromOther_feedItemImageDownloadUrlChanged() {
         setNewFeedItemImageDownloadUrl();
         original.updateFromOther(changedFeedItem);
         assertFeedItemImageWasUpdated();
     }
 
     @Test
-    public void testUpdateFromOther_feedItemImageRemoved() throws Exception {
+    public void testUpdateFromOther_feedItemImageRemoved() {
         feedItemImageRemoved();
         original.updateFromOther(changedFeedItem);
         assertFeedItemImageWasNotUpdated();
     }
 
     @Test
-    public void testUpdateFromOther_feedItemImageAdded() throws Exception {
+    public void testUpdateFromOther_feedItemImageAdded() {
         original.setImageUrl(null);
         setNewFeedItemImageDownloadUrl();
         original.updateFromOther(changedFeedItem);
@@ -102,4 +109,36 @@ public class FeedItemTest {
         assertEquals(anyFeedItemWithImage().getImageUrl(), original.getImageUrl());
     }
 
+    /**
+     * If one of `description` or `content:encoded` is null, use the other one.
+     */
+    @Test
+    public void testShownotesNullValues() throws Exception {
+        testShownotes(null, TEXT_LONG);
+        testShownotes(TEXT_LONG, null);
+    }
+
+    /**
+     * If `description` is reasonably longer than `content:encoded`, use `description`.
+     */
+    @Test
+    public void testShownotesLength() throws Exception {
+        testShownotes(TEXT_SHORT, TEXT_LONG);
+        testShownotes(TEXT_LONG, TEXT_SHORT);
+    }
+
+    /**
+     * Checks if the shownotes equal TEXT_LONG, using the given `description` and `content:encoded`.
+     *
+     * @param description Description of the feed item
+     * @param contentEncoded `content:encoded` of the feed item
+     */
+    private void testShownotes(String description, String contentEncoded) throws Exception {
+        try (MockedStatic<DBReader> ignore = Mockito.mockStatic(DBReader.class)) {
+            FeedItem item = new FeedItem();
+            item.setDescription(description);
+            item.setContentEncoded(contentEncoded);
+            assertEquals(TEXT_LONG, item.loadShownotes().call());
+        }
+    }
 }

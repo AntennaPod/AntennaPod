@@ -1,0 +1,1 @@
+Jednoduchý a flexibilní open-source program pro správu a poslech podcastů

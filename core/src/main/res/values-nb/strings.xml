@@ -31,10 +31,13 @@
   <string name="statistics_details_dialog">Startet %1$d av %2$d episoder.\n\nAvspilt %3$s av %4$s.</string>
   <string name="statistics_mode">Statistikkmodus</string>
   <string name="statistics_mode_normal">Beregn faktisk avspilt varighet. Dobbel avspilling telles to ganger, mens markering som avspilt telles ikke</string>
+  <string name="statistics_mode_count_all">Oppsummer alle podkaster merket som avspilt</string>
   <string name="statistics_speed_not_counted">Merk: Avspillingshastighet tas aldri med i betraktningen.</string>
   <string name="statistics_reset_data">Tilbakestill statistikkdata</string>
   <string name="statistics_reset_data_msg">Dette vil slette historikk om varighet som er spilt for alle episoder. Er du sikker på at du vil fortsette?</string>
+  <string name="statistics_counting_since">Siden %s,\nhar du spilt</string>
   <!--Download Statistics fragment-->
+  <string name="total_size_downloaded_podcasts">Total størrelse på nedlastede podkaster:</string>
   <!--Main activity-->
   <string name="drawer_open">Åpne menyen</string>
   <string name="drawer_close">Lukk menyen</string>
@@ -125,6 +128,7 @@
   <string name="share_label_with_ellipses">Del…</string>
   <string name="share_file_label">Del fil</string>
   <string name="share_website_url_label">Nettsidens adresse</string>
+  <string name="share_feed_url_label">Podcaststrøm-URL</string>
   <string name="feed_delete_confirmation_msg">Bekreft at du ønsker å slette podkasten \"%1$s\" og ALLE episodene dens (inkludert nedlastede episoder).</string>
   <string name="feed_remover_msg">Fjerner podkast</string>
   <string name="load_complete_feed">Last hele podkasten på nytt</string>
@@ -189,6 +193,7 @@
   <string name="deactivate_auto_download">Deaktiver automatisk nedlasting</string>
   <string name="reset_position">Tilbakestill avspillingsposisjon</string>
   <string name="removed_item">Element fjernet</string>
+  <string name="no_items_selected">Ingen ting er valgt</string>
   <!--Download messages and labels-->
   <string name="download_successful">vellykket</string>
   <string name="download_pending">Nedlastning venter</string>
@@ -221,6 +226,10 @@
   </plurals>
   <string name="downloads_processing">Behandler nedlastninger</string>
   <string name="download_notification_title">Laster ned data til podkast</string>
+  <plurals name="download_report_content">
+    <item quantity="one">%1$d nedlastninger lyktes, %2$d mislyktes</item>
+    <item quantity="other">%d nedlastinger lyktes, %d mislyktes</item>
+  </plurals>
   <string name="download_log_title_unknown">Ukjent tittel</string>
   <string name="download_type_feed">Strøm</string>
   <string name="download_type_media">Mediafil</string>
@@ -281,6 +290,8 @@
   <string name="no_playback_plugin_title">Programtillegg er ikke installert</string>
   <string name="no_playback_plugin_or_sonic_msg">For at avspilling med varierende hastighet skal virke, anbefaler vi å bruke den innebygde Sonic-mediespilleren.</string>
   <string name="enable_sonic">Skru på Sonic</string>
+  <string name="speed_presets">Ferdiginstillinger</string>
+  <string name="preset_already_exists">%1$.2fx er allerede lagret som en ferdiginstilling.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Ingen episoder i kø</string>
   <string name="no_items_label">Legg til en episode ved å laste den ned, eller trykk og hold på en episode og velg \"Legg til i køen\".</string>
@@ -309,6 +320,7 @@
   <string name="project_pref">Prosjekt</string>
   <string name="queue_label">Kø</string>
   <string name="synchronization_pref">Synkronisering</string>
+  <string name="synchronization_sum">Synkroniser med andre enheter over gpodder.net</string>
   <string name="automation">Automasjon</string>
   <string name="download_pref_details">Detaljer</string>
   <string name="import_export_pref">Importer/Eksporter</string>
@@ -365,6 +377,7 @@
   <string name="pref_mobileUpdate_episode_download">Nedlasting av episoder</string>
   <string name="pref_mobileUpdate_streaming">Strømming</string>
   <string name="user_interface_label">Brukergrensesnitt</string>
+  <string name="user_interface_sum">Utseende, Abonnementer, Låsskjerm</string>
   <string name="pref_set_theme_title">Velg tema</string>
   <string name="pref_nav_drawer_items_title">Velg elementer i navigasjonsskuffen</string>
   <string name="pref_nav_drawer_items_sum">Endre hvilke elementer som vises i navigeringsfanen.</string>
@@ -400,8 +413,10 @@
   <string name="pref_gpodnet_setlogin_information_sum">Endre innlogginsinformasjonen til din gpodder.net konto</string>
   <string name="pref_gpodnet_sync_changes_title">Synkroniser nå</string>
   <string name="pref_gpodnet_sync_changes_sum">Synkroniser abonnement og episoder med gpodder.net.</string>
+  <string name="pref_gpodnet_full_sync_title">Tving fram full synkronisering</string>
   <string name="pref_gpodnet_full_sync_sum">Synkroniser alle abonnement og episoder med gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logget inn som <i>%1$s</i> med enhet <i>%2$s</i>]]></string>
+  <string name="pref_gpodnet_notifications_title">Synkronisering feilet</string>
   <string name="pref_gpodnet_notifications_sum">Denne instillingen gjelder ikke autentiseringfeil.</string>
   <string name="pref_feed_playback_speed_sum">Hastigheten som brukes når episoder av denne podkasten spilles av</string>
   <string name="pref_feed_skip">Automatisk hopp</string>
@@ -422,6 +437,7 @@
   <string name="pref_expandNotify_sum">Dette utvider som regel varslingen for å vise kontroller.</string>
   <string name="pref_persistNotify_title">Vedvarende avspillingskontroller</string>
   <string name="pref_persistNotify_sum">Behold varsel- og låseskjermkontroller når avspilling er satt på pause.</string>
+  <string name="pref_compact_notification_buttons_title">Set kompakte notifikasjonsknapper</string>
   <string name="pref_compact_notification_buttons_dialog_title">Velg opp til %1$d ting</string>
   <string name="pref_compact_notification_buttons_dialog_error">Du kan kun velge opp til %1$d ting.</string>
   <string name="pref_lockscreen_background_title">Angi som bakgrunn på låseskjermen</string>

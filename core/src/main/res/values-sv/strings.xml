@@ -481,6 +481,7 @@
   <string name="pref_enqueue_downloaded_title">Köa Nedladdade</string>
   <string name="pref_enqueue_downloaded_summary">Lägg nedladdade episoder i uppspelningskön</string>
   <string name="media_player_builtin">Andriods inbyggda spelare</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (rekommenderas)</string>
   <string name="media_player_switch_to_exoplayer">Byt till ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Bytte till ExpPlayer.</string>
   <string name="pref_skip_silence_title">Hoppa över tystnad i ljud</string>
@@ -505,6 +506,7 @@
   <string name="pref_filter_feed_sum">Filtrera dina prenumerationer i navigeringsmenyn och på prenumerationsskärmen.</string>
   <string name="no_filter_label">Inga</string>
   <string name="subscriptions_are_filtered">Prenumerationer är filtrerade.</string>
+  <string name="subscriptions_counter_greater_zero">Räknare högre än noll</string>
   <string name="auto_downloaded">Automatiskt nedladdad</string>
   <string name="not_auto_downloaded">Manuellt nedladdad</string>
   <string name="kept_updated">Hålls uppdaterad</string>
@@ -699,9 +701,11 @@
   <string name="search_powered_by">Resultat för %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lägg till i lokal katalog</string>
+  <string name="local_folder">Lokal katalog</string>
   <string name="reconnect_local_folder">Återanslut lokal katalog</string>
   <string name="reconnect_local_folder_warning">Om åtkomst nekats kan du använda detta för att återansluta till exakt samma katalog. Välj inte en annan katalog.</string>
   <string name="local_feed_description">Denna virtuella podcast skapades genom att lägga till en katalog till AntennaPod.</string>
+  <string name="unable_to_start_system_file_manager">Kunde inte starta systemets filhanterare</string>
   <string name="filter">Filtrera</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alla</string>

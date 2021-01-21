@@ -79,6 +79,7 @@
         <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
         <item name="filter_dialog_button_background">@drawable/filter_dialog_background_light</item>
         <item name="ic_notifications">@drawable/ic_notifications_black</item>
+        <item name="ic_share">@drawable/ic_share_black</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -160,6 +161,7 @@
         <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
         <item name="filter_dialog_button_background">@drawable/filter_dialog_background_dark</item>
         <item name="ic_notifications">@drawable/ic_notifications_white</item>
+        <item name="ic_share">@drawable/ic_share_white</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
@@ -324,6 +326,11 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="android:clickable">true</item>
+    </style>
+
+    <style name="NoButtonRadio" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="buttonCompat">@null</item> <!-- For Android 4.4 -->
+        <item name="android:button">@null</item>
     </style>
 
 </resources>

@@ -1,46 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <ImageView
         android:id="@id/icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:src="@drawable/gpodder_icon" />
-
-    <TextView
-        android:id="@+id/txtvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/icon"
-        android:text="@string/gpodnetauth_finish_title"
-        style="@style/AntennaPod.TextView.Heading"/>
 
     <TextView
         android:id="@+id/txtvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/gpodnetauth_finish_descr"
-        android:layout_below="@id/txtvTitle"
-        android:textSize="@dimen/text_size_medium"
         android:textColor="?android:attr/textColorPrimary" />
 
     <Button
         android:id="@+id/butSyncNow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtvDescription"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/gpodnetauth_finish_butsyncnow"/>
 
-    <Button
-        android:id="@+id/butGoMainscreen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/butSyncNow"
-        android:text="@string/gpodnetauth_finish_butgomainscreen"/>
-
-</RelativeLayout>
+</LinearLayout>

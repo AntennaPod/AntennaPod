@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import com.google.android.exoplayer2.C;
@@ -28,8 +29,10 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -184,19 +187,32 @@ public class ExoPlayerWrapper implements IPlayer {
         exoPlayer.setAudioAttributes(b.build());
     }
 
-    @Override
-    public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException {
+    public void setDataSource(String s, String user, String password)
+            throws IllegalArgumentException, IllegalStateException {
         Log.d(TAG, "setDataSource: " + s);
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory(
                 ClientConfig.USER_AGENT, null,
                 DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true);
+
+        if (!TextUtils.isEmpty(user) && !TextUtils.isEmpty(password)) {
+            httpDataSourceFactory.getDefaultRequestProperties().set("Authorization",
+                    HttpDownloader.encodeCredentials(
+                            user,
+                            password,
+                            "ISO-8859-1"));
+        }
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, null, httpDataSourceFactory);
         DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         extractorsFactory.setConstantBitrateSeekingEnabled(true);
         ProgressiveMediaSource.Factory f = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory);
         mediaSource = f.createMediaSource(Uri.parse(s));
+    }
+
+    @Override
+    public void setDataSource(String s) throws IllegalArgumentException, IllegalStateException {
+        setDataSource(s, null, null);
     }
 
     @Override

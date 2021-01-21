@@ -1,10 +1,9 @@
 package de.danoeh.antennapod.activity;
 
-import android.Manifest;
+
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -28,7 +26,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.NumberFormat;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
@@ -41,7 +38,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -53,11 +49,9 @@ import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
@@ -76,8 +70,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static final String TAG = "MediaplayerActivity";
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
-    private static final int REQUEST_CODE_STORAGE_PLAY_VIDEO = 42;
-    private static final int REQUEST_CODE_STORAGE_PLAY_AUDIO = 43;
 
     PlaybackController controller;
 
@@ -682,50 +674,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         invalidateOptionsMenu();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    void playExternalMedia(Intent intent, MediaType type) {
-        if (intent == null || intent.getData() == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= 23
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
-            }
-
-            int code = REQUEST_CODE_STORAGE_PLAY_AUDIO;
-            if (type == MediaType.VIDEO) {
-                code = REQUEST_CODE_STORAGE_PLAY_VIDEO;
-            }
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, code);
-            return;
-        }
-
-        Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
-        ExternalMedia media = new ExternalMedia(intent.getData().getPath(), type);
-
-        new PlaybackServiceStarter(this, media)
-                .callEvenIfRunning(true)
-                .startWhenPrepared(true)
-                .shouldStream(false)
-                .prepareImmediately(true)
-                .start();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (requestCode == REQUEST_CODE_STORAGE_PLAY_AUDIO) {
-                playExternalMedia(getIntent(), MediaType.AUDIO);
-            } else if (requestCode == REQUEST_CODE_STORAGE_PLAY_VIDEO) {
-                playExternalMedia(getIntent(), MediaType.VIDEO);
-            }
-        } else {
-            Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
-        }
     }
 
     @Nullable
