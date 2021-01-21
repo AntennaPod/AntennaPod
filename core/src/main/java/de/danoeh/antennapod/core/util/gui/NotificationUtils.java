@@ -113,6 +113,15 @@ public class NotificationUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    private static NotificationChannel createChannelEpisodeNotification(Context c) {
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID_EPISODE_NOTIFICATIONS,
+                c.getString(R.string.notification_channel_new_episode), NotificationManager.IMPORTANCE_DEFAULT);
+        channel.setDescription(c.getString(R.string.notification_channel_new_episode_description));
+        channel.setGroup(GROUP_ID_NEWS);
+        return channel;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private static NotificationChannelGroup createGroupErrors(Context c) {
         return new NotificationChannelGroup(GROUP_ID_ERRORS,
                 c.getString(R.string.notification_group_errors));
@@ -122,13 +131,5 @@ public class NotificationUtils {
     private static NotificationChannelGroup createGroupNews(Context c) {
         return new NotificationChannelGroup(GROUP_ID_NEWS,
                 c.getString(R.string.notification_group_news));
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private static NotificationChannel createChannelEpisodeNotification(Context c) {
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID_EPISODE_NOTIFICATIONS,
-                c.getString(R.string.notification_channel_new_episode), NotificationManager.IMPORTANCE_DEFAULT);
-        channel.setDescription(c.getString(R.string.notification_channel_new_episode_description));
-        return channel;
     }
 }

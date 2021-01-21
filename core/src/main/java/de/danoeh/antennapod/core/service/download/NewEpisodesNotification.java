@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -24,7 +25,8 @@ import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class NewEpisodesNotification {
-    static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
+    private static final String TAG = "NewEpisodesNotification";
+    private static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
     private LongIntMap countersBefore;
 
@@ -47,6 +49,7 @@ public class NewEpisodesNotification {
         int newEpisodesBefore = countersBefore.get(feed.getId());
         int newEpisodesAfter = getNewEpisodeCount(feed.getId());
 
+        Log.d(TAG, "New episodes before: " + newEpisodesBefore + ", after: " + newEpisodesAfter);
         if (newEpisodesAfter > newEpisodesBefore) {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
             showNotification(newEpisodesAfter, feed, context, notificationManager);

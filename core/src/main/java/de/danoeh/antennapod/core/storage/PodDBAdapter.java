@@ -1204,15 +1204,15 @@ public class PodDBAdapter {
             }
             // there's an extra ',', get rid of it
             builder.deleteCharAt(builder.length() - 1);
-            limitFeeds = " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") ";
+            limitFeeds = KEY_FEED + " IN (" + builder.toString() + ") AND ";
         }
 
         final String query = "SELECT " + KEY_FEED + ", COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                + limitFeeds
-                + " AND " + whereRead + " GROUP BY " + KEY_FEED;
+                + " WHERE " + limitFeeds + " "
+                + whereRead + " GROUP BY " + KEY_FEED;
 
         Cursor c = db.rawQuery(query, null);
         LongIntMap result = new LongIntMap(c.getCount());
