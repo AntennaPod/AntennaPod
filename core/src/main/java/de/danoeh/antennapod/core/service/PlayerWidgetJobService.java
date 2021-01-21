@@ -107,7 +107,6 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         RemoteViews views;
         views = new RemoteViews(getPackageName(), R.layout.player_widget);
 
-        boolean nothingPlaying = false;
         Playable media;
         PlayerStatus status;
         if (playbackService != null) {
@@ -169,11 +168,13 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                     createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butPlayExtended,
                     createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+            views.setOnClickPendingIntent(R.id.butRew,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
+            views.setOnClickPendingIntent(R.id.butFastForward,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+            views.setOnClickPendingIntent(R.id.butSkip,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT));
         } else {
-            nothingPlaying = true;
-        }
-
-        if (nothingPlaying) {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
