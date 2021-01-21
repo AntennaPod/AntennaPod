@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.text.HtmlCompat;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
@@ -229,8 +228,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         txtvDescription.setText(description);
 
         if (!TextUtils.isEmpty(feed.getAuthor())) {
-            txtvAuthorHeader.setText(HtmlCompat.fromHtml(feed.getAuthor(),
-                    HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
+            txtvAuthorHeader.setText(feed.getAuthor());
         }
 
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
