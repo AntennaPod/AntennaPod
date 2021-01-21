@@ -229,7 +229,8 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         txtvDescription.setText(description);
 
         if (!TextUtils.isEmpty(feed.getAuthor())) {
-            txtvAuthorHeader.setText(HtmlCompat.fromHtml(feed.getAuthor(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
+            txtvAuthorHeader.setText(HtmlCompat.fromHtml(feed.getAuthor(),
+                    HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
         }
 
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
