@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -447,7 +448,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             txtvFailure.setVisibility(View.GONE);
         }
         txtvTitle.setText(feed.getTitle());
-        txtvAuthor.setText(feed.getAuthor());
+        txtvAuthor.setText(HtmlCompat.fromHtml(feed.getAuthor(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
         if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {

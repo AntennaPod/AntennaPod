@@ -20,6 +20,8 @@ import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.core.text.HtmlCompat;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
@@ -370,8 +372,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
      */
     private void beforeShowFeedInformation(Feed feed) {
         Log.d(TAG, "Removing HTML from feed description");
-
         feed.setDescription(HtmlToPlainText.getPlainText(feed.getDescription()));
+
+        Log.d(TAG, "Removing HTML from author text");
+        feed.setAuthor(HtmlCompat.fromHtml(feed.getAuthor(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
 
         Log.d(TAG, "Removing HTML from shownotes");
         if (feed.getItems() != null) {
