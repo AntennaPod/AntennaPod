@@ -134,15 +134,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
     private void bind(FeedMedia media) {
         isVideo.setVisibility(media.getMediaType() == MediaType.VIDEO ? View.VISIBLE : View.GONE);
         duration.setVisibility(media.getDuration() > 0 ? View.VISIBLE : View.GONE);
-        if (showTimeLeft()) {
-            duration.setText("-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition()));
-            duration.setContentDescription(activity.getString(R.string.chapter_duration,
-                    Converter.getDurationStringLocalized(activity, (media.getDuration() - media.getPosition()))));
-        } else {
-            duration.setText(Converter.getDurationStringLong(media.getDuration()));
-            duration.setContentDescription(activity.getString(R.string.chapter_duration,
-                    Converter.getDurationStringLocalized(activity, media.getDuration())));
-        }
 
         if (media.isCurrentlyPlaying()) {
             itemView.setBackgroundColor(ThemeUtils.getColorFromAttr(activity, R.attr.currently_playing_background));
@@ -160,6 +151,9 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             secondaryActionProgress.setPercentage(0, item); // Animate X% -> 0%
         }
 
+        duration.setText(Converter.getDurationStringLong(media.getDuration()));
+        duration.setContentDescription(activity.getString(R.string.chapter_duration,
+                Converter.getDurationStringLocalized(activity, media.getDuration())));
         if (item.getState() == FeedItem.State.PLAYING || item.getState() == FeedItem.State.IN_PROGRESS) {
             int progress = (int) (100.0 * media.getPosition() / media.getDuration());
             progressBar.setProgress(progress);
@@ -168,6 +162,11 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
                     Converter.getDurationStringLocalized(activity, media.getPosition())));
             progressBar.setVisibility(View.VISIBLE);
             position.setVisibility(View.VISIBLE);
+            if (showTimeLeft()) {
+                duration.setText("-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition()));
+                duration.setContentDescription(activity.getString(R.string.chapter_duration,
+                        Converter.getDurationStringLocalized(activity, (media.getDuration() - media.getPosition()))));
+            }
         } else {
             progressBar.setVisibility(View.GONE);
             position.setVisibility(View.GONE);

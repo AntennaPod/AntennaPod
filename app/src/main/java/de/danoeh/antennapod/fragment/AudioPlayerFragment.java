@@ -29,6 +29,7 @@ import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -223,8 +224,7 @@ public class AudioPlayerFragment extends Fragment implements
             prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft).apply();
             updatePosition(new PlaybackPositionEvent(controller.getPosition(),
                     controller.getDuration()));
-            EventBus.getDefault().post(new PlaybackPositionEvent(controller.getPosition(),
-                    controller.getDuration()));
+            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
