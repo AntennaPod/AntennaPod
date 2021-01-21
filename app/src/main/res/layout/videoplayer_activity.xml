@@ -85,6 +85,7 @@
             android:layout_gravity="center"
             app:cardCornerRadius="8dp"
             app:cardBackgroundColor="?attr/seek_background"
+            app:cardElevation="0dp"
             tools:alpha="1">
 
             <TextView
@@ -92,7 +93,6 @@
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/seek_background"
                 android:paddingLeft="24dp"
                 android:paddingTop="4dp"
                 android:paddingRight="24dp"

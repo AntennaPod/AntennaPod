@@ -22,8 +22,8 @@
     <color name="highlight_dark">#43707070</color>
     <color name="highlight_trueblack">#43707070</color>
     <color name="non_square_icon_background">#22777777</color>
-    <color name="seek_background_light">#80000000</color>
-    <color name="seek_background_dark">#805B5B5B</color>
+    <color name="seek_background_light">#90000000</color>
+    <color name="seek_background_dark">#905B5B5B</color>
 
     <color name="accent_light">#0078C2</color>
     <color name="accent_dark">#3D8BFF</color>

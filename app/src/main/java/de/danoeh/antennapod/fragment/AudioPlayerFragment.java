@@ -460,17 +460,9 @@ public class AudioPlayerFragment extends Fragment implements
         }
         if (fromUser) {
             float prog = progress / ((float) seekBar.getMax());
-            int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
-            int position = converter.convert((int) (prog * duration));
-            txtvPosition.setText(Converter.getDurationStringLong(position));
+            int position = converter.convert((int) (prog * controller.getDuration()));
             txtvSeek.setText(Converter.getDurationStringLong(position));
-
-            if (showTimeLeft && prog != 0) {
-                int timeLeft = converter.convert(duration - (int) (prog * duration));
-                String length = "-" + Converter.getDurationStringLong(timeLeft);
-                txtvLength.setText(length);
-            }
         }
     }
 
