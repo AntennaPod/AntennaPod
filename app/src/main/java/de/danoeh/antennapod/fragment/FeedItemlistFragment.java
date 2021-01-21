@@ -448,7 +448,10 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
             txtvFailure.setVisibility(View.GONE);
         }
         txtvTitle.setText(feed.getTitle());
-        txtvAuthor.setText(HtmlCompat.fromHtml(feed.getAuthor(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
+
+        if (feed.getAuthor() != null) {
+            txtvAuthor.setText(HtmlCompat.fromHtml(feed.getAuthor(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
+        }
         if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {

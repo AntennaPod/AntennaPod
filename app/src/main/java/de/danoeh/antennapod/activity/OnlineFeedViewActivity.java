@@ -374,8 +374,10 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         Log.d(TAG, "Removing HTML from feed description");
         feed.setDescription(HtmlToPlainText.getPlainText(feed.getDescription()));
 
-        Log.d(TAG, "Removing HTML from author text");
-        feed.setAuthor(HtmlCompat.fromHtml(feed.getAuthor(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
+        if (!TextUtils.isEmpty(feed.getAuthor())) {
+            Log.d(TAG, "Removing HTML from author text");
+            feed.setAuthor(HtmlCompat.fromHtml(feed.getAuthor(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
+        }
 
         Log.d(TAG, "Removing HTML from shownotes");
         if (feed.getItems() != null) {
