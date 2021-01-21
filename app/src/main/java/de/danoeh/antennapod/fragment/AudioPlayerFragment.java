@@ -17,7 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -86,6 +88,8 @@ public class AudioPlayerFragment extends Fragment implements
     private ImageButton butSkip;
     private Toolbar toolbar;
     private ProgressBar progressIndicator;
+    private CardView cardViewSeek;
+    private TextView txtvSeek;
 
     private PlaybackController controller;
     private Disposable disposable;
@@ -122,6 +126,8 @@ public class AudioPlayerFragment extends Fragment implements
         txtvFF = root.findViewById(R.id.txtvFF);
         butSkip = root.findViewById(R.id.butSkip);
         progressIndicator = root.findViewById(R.id.progLoading);
+        cardViewSeek = root.findViewById(R.id.cardViewSeek);
+        txtvSeek = root.findViewById(R.id.txtvSeek);
 
         setupLengthTextView();
         setupControlButtons();
@@ -454,22 +460,22 @@ public class AudioPlayerFragment extends Fragment implements
         }
         if (fromUser) {
             float prog = progress / ((float) seekBar.getMax());
-            int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
-            int position = converter.convert((int) (prog * duration));
-            txtvPosition.setText(Converter.getDurationStringLong(position));
-
-            if (showTimeLeft && prog != 0) {
-                int timeLeft = converter.convert(duration - (int) (prog * duration));
-                String length = "-" + Converter.getDurationStringLong(timeLeft);
-                txtvLength.setText(length);
-            }
+            int position = converter.convert((int) (prog * controller.getDuration()));
+            txtvSeek.setText(Converter.getDurationStringLong(position));
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // interrupt position Observer, restart later
+        cardViewSeek.setScaleX(.8f);
+        cardViewSeek.setScaleY(.8f);
+        cardViewSeek.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(1f).scaleX(1f).scaleY(1f)
+                .setDuration(200)
+                .start();
     }
 
     @Override
@@ -478,6 +484,13 @@ public class AudioPlayerFragment extends Fragment implements
             float prog = seekBar.getProgress() / ((float) seekBar.getMax());
             controller.seekTo((int) (prog * controller.getDuration()));
         }
+        cardViewSeek.setScaleX(1f);
+        cardViewSeek.setScaleY(1f);
+        cardViewSeek.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(0f).scaleX(.8f).scaleY(.8f)
+                .setDuration(200)
+                .start();
     }
 
     public void setupOptionsMenu(Playable media) {

@@ -21,6 +21,7 @@
         <item name="drawer_activated_color">@color/highlight_light</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColorHint">@color/grey600</item>
+        <item name="seek_background">@color/seek_background_light</item>
 
         <item name="storage">@drawable/ic_storage_black</item>
         <item name="ic_network">@drawable/ic_network_black</item>
@@ -102,6 +103,7 @@
         <item name="action_icon_color">@color/white</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textColorHint">@color/medium_gray</item>
+        <item name="seek_background">@color/seek_background_dark</item>
 
         <item name="storage">@drawable/ic_storage_white</item>
         <item name="ic_network">@drawable/ic_network_white</item>
