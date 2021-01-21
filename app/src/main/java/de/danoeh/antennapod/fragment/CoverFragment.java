@@ -37,6 +37,8 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -97,7 +99,11 @@ public class CoverFragment extends Fragment {
     private void displayMediaInfo(@NonNull Playable media) {
         if (media.getClass() == FeedMedia.class) {
             String pubDateStr = DateUtils.formatAbbrev(getActivity(), ((FeedMedia) media).getPubDate());
-            txtvPodcastTitle.setText(media.getFeedTitle() + "・" + pubDateStr);
+            txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
+                    + "\u00A0"
+                    + "・"
+                    + "\u00A0"
+                    + StringUtils.stripToEmpty(pubDateStr));
         } else {
             txtvPodcastTitle.setText(media.getFeedTitle());
         }
