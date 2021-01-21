@@ -669,11 +669,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (!notificationButton) { // hardware button
+                if (!notificationButton) {
+                    // Handle remapped button as notification button which is not remapped again.
                     return handleKeycode(UserPreferences.getHardwareForwardButton().keyCode, true);
-                }
-
-                if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
+                } else if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.skip();
                     return true;
                 }
@@ -685,11 +684,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                if (!notificationButton) { // hardware button
-                    return handleKeycode(UserPreferences.getHardwareBackButton().keyCode, true);
-                }
-
-                if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
+                if (!notificationButton) {
+                    // Handle remapped button as notification button which is not remapped again.
+                    return handleKeycode(UserPreferences.getHardwarePreviousButton().keyCode, true);
+                } else if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekTo(0);
                     return true;
                 }
@@ -1893,7 +1891,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSkipToNext() {
             Log.d(TAG, "onSkipToNext()");
-            if (UserPreferences.getHardwareForwardButton() == HardwareControl.PLAY_NEXT_EPISODE) {
+            if (UserPreferences.getHardwareForwardButton() == HardwareControl.SKIP_EPISODE) {
                 mediaPlayer.skip();
             } else {
                 seekDelta(UserPreferences.getFastForwardSecs() * 1000);

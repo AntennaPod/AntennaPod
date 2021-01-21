@@ -108,14 +108,14 @@
     <string-array name="hardware_control_options">
         <item>@string/hardware_control_fast_forward</item>
         <item>@string/hardware_control_rewind</item>
-        <item>@string/hardware_control_play_next_episode</item>
+        <item>@string/hardware_control_skip_episode</item>
         <item>@string/hardware_control_restart_episode</item>
     </string-array>
 
     <string-array name="hardware_control_values">
         <item>FAST_FORWARD</item>
         <item>REWIND</item>
-        <item>PLAY_NEXT_EPISODE</item>
+        <item>SKIP_EPISODE</item>
         <item>RESTART_EPISODE</item>
     </string-array>
 

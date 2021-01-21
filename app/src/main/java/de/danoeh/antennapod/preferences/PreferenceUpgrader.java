@@ -97,10 +97,10 @@ public class PreferenceUpgrader {
             // Migrate hardware button preferences
             if (prefs.getBoolean("prefHardwareForwardButtonSkips", false)) {
                 prefs.edit().putString(UserPreferences.PREF_HARDWARE_FORWARD_BUTTON,
-                        HardwareControl.PLAY_NEXT_EPISODE.name()).apply();
+                        HardwareControl.SKIP_EPISODE.name()).apply();
             }
             if (prefs.getBoolean("prefHardwarePreviousButtonRestarts", false)) {
-                prefs.edit().putString(UserPreferences.PREF_HARDWARE_BACK_BUTTON,
+                prefs.edit().putString(UserPreferences.PREF_HARDWARE_PREVIOUS_BUTTON,
                         HardwareControl.RESTART_EPISODE.name()).apply();
             }
         }

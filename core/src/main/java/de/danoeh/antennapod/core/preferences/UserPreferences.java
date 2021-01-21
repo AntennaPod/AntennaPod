@@ -78,7 +78,7 @@ public class UserPreferences {
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     private static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
     public static final String PREF_HARDWARE_FORWARD_BUTTON = "prefHardwareForwardButton";
-    public static final String PREF_HARDWARE_BACK_BUTTON = "prefHardwareBackButton";
+    public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
@@ -377,7 +377,7 @@ public class UserPreferences {
     public enum HardwareControl {
         FAST_FORWARD(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD),
         REWIND(KeyEvent.KEYCODE_MEDIA_REWIND),
-        PLAY_NEXT_EPISODE(KeyEvent.KEYCODE_MEDIA_NEXT),
+        SKIP_EPISODE(KeyEvent.KEYCODE_MEDIA_NEXT),
         RESTART_EPISODE(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
 
         public final int keyCode;
@@ -391,8 +391,8 @@ public class UserPreferences {
                 HardwareControl.FAST_FORWARD.name()));
     }
 
-    public static HardwareControl getHardwareBackButton() {
-        return HardwareControl.valueOf(prefs.getString(PREF_HARDWARE_BACK_BUTTON,
+    public static HardwareControl getHardwarePreviousButton() {
+        return HardwareControl.valueOf(prefs.getString(PREF_HARDWARE_PREVIOUS_BUTTON,
                 HardwareControl.REWIND.name()));
     }
 

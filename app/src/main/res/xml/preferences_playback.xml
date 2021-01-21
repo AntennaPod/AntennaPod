@@ -80,9 +80,9 @@
                 android:defaultValue="REWIND"
                 android:entries="@array/hardware_control_options"
                 android:entryValues="@array/hardware_control_values"
-                android:key="prefHardwareBackButton"
-                android:title="@string/pref_hardware_back_button_title"
-                android:summary="@string/pref_hardware_back_button_summary"/>
+                android:key="prefHardwarePreviousButton"
+                android:title="@string/pref_hardware_previous_button_title"
+                android:summary="@string/pref_hardware_previous_button_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">

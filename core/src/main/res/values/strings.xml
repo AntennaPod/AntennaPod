@@ -380,11 +380,11 @@
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
     <string name="pref_hardware_forward_button_title">Forward Button</string>
     <string name="pref_hardware_forward_button_summary">Customize the forward button behavior</string>
-    <string name="pref_hardware_back_button_title">Back Button</string>
-    <string name="pref_hardware_back_button_summary">Customize the back button behavior</string>
+    <string name="pref_hardware_previous_button_title">Previous Button</string>
+    <string name="pref_hardware_previous_button_summary">Customize the previous button behavior</string>
     <string name="hardware_control_fast_forward">Fast Forward</string>
     <string name="hardware_control_rewind">Rewind</string>
-    <string name="hardware_control_play_next_episode">Play Next Episode</string>
+    <string name="hardware_control_skip_episode">Skip Episode</string>
     <string name="hardware_control_restart_episode">Restart Episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
