@@ -19,41 +19,37 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 public class NewEpisodesNotification {
     static final String GROUP_KEY = "de.danoeh.antennapod.EPISODES";
 
-    private final int lastEpisodeCount;
-    private final boolean shouldShowNotification;
+    private LongIntMap countersBefore;
 
-    public NewEpisodesNotification(Long feedId) {
-        Feed feed = DBReader.getFeed(feedId);
+    public NewEpisodesNotification() {
+    }
 
-        FeedPreferences prefs = feed.getPreferences();
-        if (!prefs.getKeepUpdated() || !prefs.getShowEpisodeNotification()) {
-            shouldShowNotification = false;
-            lastEpisodeCount = -1;
-            return;
-        }
-
-        lastEpisodeCount = getNewEpisodeCount(feedId);
-        shouldShowNotification = true;
+    public void loadCountersBeforeRefresh() {
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        countersBefore = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW);
+        adapter.close();
     }
 
     public void showIfNeeded(Context context, Feed feed) {
-        if (!shouldShowNotification) {
+        FeedPreferences prefs = feed.getPreferences();
+        if (!prefs.getKeepUpdated() || !prefs.getShowEpisodeNotification()) {
             return;
         }
 
-        long feedId = feed.getId();
-        int newEpisodes = getNewEpisodeCount(feedId);
+        int newEpisodesBefore = countersBefore.get(feed.getId());
+        int newEpisodesAfter = getNewEpisodeCount(feed.getId());
 
-        if (newEpisodes > lastEpisodeCount) {
+        if (newEpisodesAfter > newEpisodesBefore) {
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-            showNotification(newEpisodes, feed, context, notificationManager);
+            showNotification(newEpisodesAfter, feed, context, notificationManager);
         }
     }
 
@@ -125,11 +121,8 @@ public class NewEpisodesNotification {
     private static int getNewEpisodeCount(long feedId) {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-
-        int episodeCount = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW, feedId)
-                .get(feedId);
+        int episodeCount = adapter.getFeedCounters(UserPreferences.FEED_COUNTER_SHOW_NEW, feedId).get(feedId);
         adapter.close();
-
         return episodeCount;
     }
 }

@@ -800,15 +800,9 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        List<Feed> feeds = getFeedList(adapter);
-        long[] feedIds = new long[feeds.size()];
-        for (int i = 0; i < feeds.size(); i++) {
-            feedIds[i] = feeds.get(i).getId();
-        }
-        final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
-
+        final LongIntMap feedCounters = adapter.getFeedCounters();
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
-        feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
+        List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();
@@ -838,7 +832,7 @@ public final class DBReader {
                 }
             };
         } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters(feedIds);
+            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
 
             comparator = (lhs, rhs) -> {
                 long counterLhs = playedCounters.get(lhs.getId());

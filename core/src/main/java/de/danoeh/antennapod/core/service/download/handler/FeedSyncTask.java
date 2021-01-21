@@ -6,7 +6,6 @@ import android.util.Log;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.service.download.NewEpisodesNotification;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -17,6 +16,7 @@ public class FeedSyncTask {
     private final DownloadRequest request;
     private final Context context;
     private DownloadStatus downloadStatus;
+    private Feed savedFeed;
 
     public FeedSyncTask(Context context, DownloadRequest request) {
         this.request = request;
@@ -24,9 +24,6 @@ public class FeedSyncTask {
     }
 
     public boolean run() {
-        final NewEpisodesNotification newEpisodesNotification =
-                request.getFeedfileId() == 0 ? null : new NewEpisodesNotification(request.getFeedfileId());
-
         FeedParserTask task = new FeedParserTask(request);
         FeedHandlerResult result = task.call();
         downloadStatus = task.getDownloadStatus();
@@ -35,7 +32,7 @@ public class FeedSyncTask {
             return false;
         }
 
-        Feed savedFeed = DBTasks.updateFeed(context, result.feed, false);
+        savedFeed = DBTasks.updateFeed(context, result.feed, false);
         // If loadAllPages=true, check if another page is available and queue it for download
         final boolean loadAllPages = request.getArguments().getBoolean(DownloadRequester.REQUEST_ARG_LOAD_ALL_PAGES);
         final Feed feed = result.feed;
@@ -47,14 +44,14 @@ public class FeedSyncTask {
                 Log.e(TAG, "Error trying to load next page", e);
             }
         }
-
-        if (request.getFeedfileId() != 0) {
-            newEpisodesNotification.showIfNeeded(context, result.feed);
-        }
         return true;
     }
 
     public DownloadStatus getDownloadStatus() {
         return downloadStatus;
+    }
+
+    public Feed getSavedFeed() {
+        return savedFeed;
     }
 }

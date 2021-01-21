@@ -1193,23 +1193,25 @@ public class PodDBAdapter {
     }
 
     private LongIntMap conditionalFeedCounterRead(String whereRead, long... feedIds) {
-        // work around TextUtils.join wanting only boxed items
-        // and StringUtils.join() causing NoSuchMethodErrors on MIUI
-        StringBuilder builder = new StringBuilder();
-        for (long id : feedIds) {
-            builder.append(id);
-            builder.append(',');
-        }
+        String limitFeeds = "";
         if (feedIds.length > 0) {
+            // work around TextUtils.join wanting only boxed items
+            // and StringUtils.join() causing NoSuchMethodErrors on MIUI
+            StringBuilder builder = new StringBuilder();
+            for (long id : feedIds) {
+                builder.append(id);
+                builder.append(',');
+            }
             // there's an extra ',', get rid of it
             builder.deleteCharAt(builder.length() - 1);
+            limitFeeds = " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") ";
         }
 
         final String query = "SELECT " + KEY_FEED + ", COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                + " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") "
+                + limitFeeds
                 + " AND " + whereRead + " GROUP BY " + KEY_FEED;
 
         Cursor c = db.rawQuery(query, null);
