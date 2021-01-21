@@ -3,10 +3,8 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;

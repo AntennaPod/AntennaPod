@@ -4,8 +4,8 @@
     tools:ignore="MissingTranslation">
 
     <!-- Activity and fragment titles -->
-    <string name="app_name" translate="false">AntennaPod</string>
-    <string name="provider_authority" translate="false">de.danoeh.antennapod.provider</string>
+    <string name="app_name" translatable="false">AntennaPod</string>
+    <string name="provider_authority" translatable="false">de.danoeh.antennapod.provider</string>
     <string name="feed_update_receiver_name">Update Subscriptions</string>
     <string name="feeds_label">Podcasts</string>
     <string name="statistics_label">Statistics</string>
@@ -22,7 +22,7 @@
     <string name="downloads_log_label">Log</string>
     <string name="subscriptions_label">Subscriptions</string>
     <string name="subscriptions_list_label">Subscriptions List</string>
-    <string name="cancel_download_label">Cancel\nDownload</string>
+    <string name="cancel_download_label">Cancel Download</string>
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
@@ -62,6 +62,8 @@
 
     <!-- Bug report activity -->
     <string name="log_file_share_exception">No compatible apps found</string>
+    <string name="export_logs_menu_title">Export detailed logs</string>
+    <string name="confirm_export_log_dialog_message">Detailed logs may contain sensitive information, such as your subscriptions list</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in Browser</string>
@@ -105,7 +107,7 @@
     <string name="feed_volume_reduction_off">Off</string>
     <string name="feed_volume_reduction_light">Light</string>
     <string name="feed_volume_reduction_heavy">Heavy</string>
-    <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
+    <string name="parallel_downloads">%1$d parallel downloads</string>
     <string name="feed_auto_download_global">Global default</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
@@ -190,9 +192,9 @@
     <string name="delete_label">Delete</string>
     <string name="delete_failed">Unable to delete file. Rebooting the device could help.</string>
     <string name="delete_episode_label">Delete Episode</string>
-    <plurals name="deleted_episode_batch_label">
-        <item quantity="one">%d episode deleted.</item>
-        <item quantity="other">%d episodes deleted.</item>
+    <plurals name="deleted_multi_episode_batch_label">
+        <item quantity="one">%d episode selected, %d download deleted.</item>
+        <item quantity="other">%d episodes selected, %d download(s) deleted.</item>
     </plurals>
     <string name="remove_new_flag_label">Remove \"new\" flag</string>
     <string name="removed_new_flag_label">Removed \"new\" flag</string>
@@ -252,6 +254,7 @@
     <string name="download_error_file_type_type">File Type Error</string>
     <string name="download_error_forbidden">Forbidden</string>
     <string name="download_canceled_msg">Download canceled</string>
+    <string name="download_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
@@ -299,11 +302,12 @@
     <string name="playback_error_source">Unable to access media file</string>
     <string name="playback_error_unknown">Unknown Error</string>
     <string name="no_media_playing_label">No media playing</string>
-    <string name="position_default_label" translate="false">00:00:00</string>
+    <string name="position_default_label" translatable="false">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
     <string name="player_go_to_picture_in_picture">Picture-in-picture mode</string>
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
     <string name="error_file_not_found">File not found</string>
+    <string name="no_media_label">Item does not contain a media file</string>
 
     <!-- Queue operations -->
     <string name="lock_queue">Lock Queue</string>
@@ -476,8 +480,6 @@
     <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
     <string name="pref_rewind">Rewind Skip Time</string>
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
-    <string name="pref_gpodnet_sethostname_title">Set hostname</string>
-    <string name="pref_gpodnet_sethostname_use_default_host">Use default host</string>
     <string name="pref_expandNotify_title">High Notification priority</string>
     <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
@@ -497,6 +499,7 @@
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
     <string name="pref_image_cache_size_title">Image Cache Size</string>
     <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
+    <string name="documentation_support">Documentation &amp; Support</string>
     <string name="visit_user_forum">User forum</string>
     <string name="bug_report_title">Report bug</string>
     <string name="open_bug_tracker">Open bug tracker</string>
@@ -508,7 +511,6 @@
     <string name="pref_current_value">Current value: %1$s</string>
     <string name="pref_proxy_title">Proxy</string>
     <string name="pref_proxy_sum">Set a network proxy</string>
-    <string name="pref_faq">Frequently Asked Questions</string>
     <string name="pref_no_browser_found">No web browser found.</string>
     <string name="pref_cast_title">Chromecast support</string>
     <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
@@ -610,6 +612,7 @@
     <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
+    <string name="extend_sleep_timer_label">+%d min</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
     <string name="shake_to_reset_label">Shake to reset</string>
@@ -638,23 +641,23 @@
     <string name="gpodnet_suggestions_header">SUGGESTIONS</string>
     <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="gpodnetauth_login_title">Login</string>
-    <string name="gpodnetauth_login_descr">Welcome to the gpodder.net login process. First, type in your login information:</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
-    <string name="gpodnetauth_login_register">If you do not have an account yet, you can create one here:\nhttps://gpodder.net/register/</string>
+    <string name="create_account">Create account</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
-    <string name="gpodnetauth_device_title">Device Selection</string>
+    <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that is independent of the AntennaPod project.</string>
+    <string name="gpodnetauth_server_official">Official gpodder.net server</string>
+    <string name="gpodnetauth_server_custom">Custom server</string>
+    <string name="gpodnetauth_host">Hostname</string>
+    <string name="gpodnetauth_select_server">Select server</string>
     <string name="gpodnetauth_device_descr">Create a new device to use for your gpodder.net account or choose an existing one:</string>
-    <string name="gpodnetauth_device_deviceID">Device ID:\u0020</string>
-    <string name="gpodnetauth_device_caption">Caption</string>
-    <string name="gpodnetauth_device_butCreateNewDevice">Create new device</string>
-    <string name="gpodnetauth_device_chooseExistingDevice">Choose existing device:</string>
-    <string name="gpodnetauth_device_errorEmpty">Device ID must not be empty</string>
-    <string name="gpodnetauth_device_errorAlreadyUsed">Device ID already in use</string>
+    <string name="gpodnetauth_device_name">Device name</string>
+    <string name="gpodnetauth_device_name_default">AntennaPod on %1$s</string>
     <string name="gpodnetauth_device_caption_errorEmpty">Caption must not be empty</string>
+    <string name="gpodnetauth_existing_devices">Existing devices</string>
+    <string name="gpodnetauth_create_device">Create device</string>
 
     <string name="gpodnetauth_device_butChoose">Choose</string>
-    <string name="gpodnetauth_finish_title">Login successful!</string>
     <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automatically sync subscriptions on your device with your gpodder.net account.</string>
     <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
     <string name="gpodnetauth_finish_butgomainscreen">Go to main screen</string>
@@ -712,6 +715,7 @@
     <string name="switch_pages">Switch pages</string>
     <string name="position">Position: %1$s</string>
     <string name="apply_action">Apply action</string>
+    <string name="play_chapter">Play chapter</string>
 
     <!-- Feed information screen -->
     <string name="authentication_label">Authentication</string>

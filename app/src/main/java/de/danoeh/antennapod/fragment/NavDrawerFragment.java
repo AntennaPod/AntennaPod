@@ -26,19 +26,15 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.IntentUtils;
+import de.danoeh.antennapod.dialog.RemoveFeedDialog;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import io.reactivex.Observable;
@@ -192,41 +188,15 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 new RenameFeedDialog(getActivity(), feed).show();
                 return true;
             case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(getContext(), feed) {
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        super.onPostExecute(result);
-                        if (selectedNavListIndex == position) {
-                            if (getActivity() instanceof MainActivity) {
-                                ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
-                            } else {
-                                showMainActivity(EpisodesFragment.TAG);
-                            }
+                RemoveFeedDialog.show(getContext(), feed, () -> {
+                    if (selectedNavListIndex == position) {
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+                        } else {
+                            showMainActivity(EpisodesFragment.TAG);
                         }
                     }
-                };
-                int messageId = feed.isLocalFeed() ? R.string.feed_delete_confirmation_local_msg
-                        : R.string.feed_delete_confirmation_msg;
-                ConfirmationDialog conDialog = new ConfirmationDialog(getContext(),
-                        R.string.remove_feed_label,
-                        getString(messageId, feed.getTitle())) {
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-                        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
-                        if (mediaId > 0 && FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId) >= 0) {
-                            Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
-                            remover.skipOnCompletion = true;
-                            int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
-                            if (playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                                IntentUtils.sendLocalBroadcast(getContext(),
-                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
-                            }
-                        }
-                        remover.executeAsync();
-                    }
-                };
-                conDialog.createNewDialog().show();
+                });
                 return true;
             default:
                 return super.onContextItemSelected(item);

@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.List;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.LargeTest;
 import androidx.test.filters.MediumTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;

@@ -6,8 +6,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.SimpleIconListAdapter;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;

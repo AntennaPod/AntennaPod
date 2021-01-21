@@ -102,9 +102,10 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(this);
         int[] widgetIds = manager.getAppWidgetIds(playerWidget);
-        RemoteViews views = new RemoteViews(getPackageName(), R.layout.player_widget);
         final PendingIntent startMediaPlayer = PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
                 PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);
+        RemoteViews views;
+        views = new RemoteViews(getPackageName(), R.layout.player_widget);
 
         boolean nothingPlaying = false;
         Playable media;
@@ -119,6 +120,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
 
         if (media != null) {
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
+            views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
 
             try {
                 Bitmap icon;
@@ -155,11 +157,18 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             if (status == PlayerStatus.PLAYING) {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_pause_white_48dp);
                 views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
+                views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_pause_white_48dp);
+                views.setContentDescription(R.id.butPlayExtended, getString(R.string.pause_label));
             } else {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
                 views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
+                views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_play_white_48dp);
+                views.setContentDescription(R.id.butPlayExtended, getString(R.string.play_label));
             }
-            views.setOnClickPendingIntent(R.id.butPlay, createMediaButtonIntent());
+            views.setOnClickPendingIntent(R.id.butPlay,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+            views.setOnClickPendingIntent(R.id.butPlayExtended,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
         } else {
             nothingPlaying = true;
         }
@@ -168,16 +177,20 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
+            views.setOnClickPendingIntent(R.id.butPlayExtended,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
             views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
             views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
+            views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_play_white_48dp);
         }
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             for (int id : widgetIds) {
                 Bundle options = manager.getAppWidgetOptions(id);
+                SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
                 int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
                 int columns = getCellsForSize(minWidth);
                 if (columns < 3) {
@@ -185,8 +198,18 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 } else {
                     views.setViewVisibility(R.id.layout_center, View.VISIBLE);
                 }
+                boolean showRewind = prefs.getBoolean(PlayerWidget.KEY_WIDGET_REWIND + id, false);
+                boolean showFastForward = prefs.getBoolean(PlayerWidget.KEY_WIDGET_FAST_FORWARD + id, false);
+                boolean showSkip = prefs.getBoolean(PlayerWidget.KEY_WIDGET_SKIP + id, false);
 
-                SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
+                if (showRewind || showSkip || showFastForward) {
+                    views.setInt(R.id.extendedButtonsContainer, "setVisibility", View.VISIBLE);
+                    views.setInt(R.id.butPlay, "setVisibility", View.GONE);
+                    views.setInt(R.id.butRew, "setVisibility", showRewind ? View.VISIBLE : View.GONE);
+                    views.setInt(R.id.butFastForward, "setVisibility", showFastForward ? View.VISIBLE : View.GONE);
+                    views.setInt(R.id.butSkip, "setVisibility", showSkip ? View.VISIBLE : View.GONE);
+                }
+
                 int backgroundColor = prefs.getInt(PlayerWidget.KEY_WIDGET_COLOR + id, PlayerWidget.DEFAULT_COLOR);
                 views.setInt(R.id.widgetLayout, "setBackgroundColor", backgroundColor);
 
@@ -200,13 +223,13 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     /**
      * Creates an intent which fakes a mediabutton press
      */
-    private PendingIntent createMediaButtonIntent() {
-        KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
+    private PendingIntent createMediaButtonIntent(int eventCode) {
+        KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
         Intent startingIntent = new Intent(getBaseContext(), MediaButtonReceiver.class);
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
 
-        return PendingIntent.getBroadcast(this, 0, startingIntent, 0);
+        return PendingIntent.getBroadcast(this, eventCode, startingIntent, 0);
     }
 
     private String getProgressString(int position, int duration, float speed) {

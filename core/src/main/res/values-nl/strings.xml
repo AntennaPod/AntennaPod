@@ -160,10 +160,6 @@
   <string name="delete_label">Verwijderen</string>
   <string name="delete_failed">Kan bestand niet verwijderen; start je apparaat opnieuw op.</string>
   <string name="delete_episode_label">Aflevering verwijderen</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d aflevering verwijderd.</item>
-    <item quantity="other">%d afleveringen verwijderd.</item>
-  </plurals>
   <string name="remove_new_flag_label">\'Nieuw\'-label verwijderen</string>
   <string name="removed_new_flag_label">\'Nieuw\'-label is verwijderd</string>
   <string name="mark_read_label">Als afgespeeld markeren</string>
@@ -485,6 +481,7 @@
   <string name="pref_enqueue_downloaded_title">Gedownloade afleveringen in wachtrij</string>
   <string name="pref_enqueue_downloaded_summary">Voeg gedownloade afleveringen toe aan de wachtrij</string>
   <string name="media_player_builtin">Ingebouwde Android-speler</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (aanbevolen)</string>
   <string name="media_player_switch_to_exoplayer">ExoPlayer gebruiken</string>
   <string name="media_player_switched_to_exoplayer">Overgeschakeld naar ExoPlayer.</string>
   <string name="pref_skip_silence_title">Audiostiltes overslaan</string>
@@ -509,6 +506,7 @@
   <string name="pref_filter_feed_sum">Filter je abonnementen in het navigatiemenu en op het abonnementenscherm.</string>
   <string name="no_filter_label">Geen</string>
   <string name="subscriptions_are_filtered">De abonnementen zijn gefilterd.</string>
+  <string name="subscriptions_counter_greater_zero">Teller hoger dan nul</string>
   <string name="auto_downloaded">Automatisch gedownload</string>
   <string name="not_auto_downloaded">Niet automatisch gedownload</string>
   <string name="kept_updated">Bijgehouden</string>
@@ -703,9 +701,11 @@
   <string name="search_powered_by">Resultaten van %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Lokale map toevoegen</string>
+  <string name="local_folder">Lokale map</string>
   <string name="reconnect_local_folder">Lokale map opnieuw koppelen</string>
   <string name="reconnect_local_folder_warning">Als je geen rechten hebt, gebruik dan dit om de map opnieuw te koppelen. Kies geen andere map.</string>
   <string name="local_feed_description">De virtuele podcast is aangemaakt door een aan AntennaPod toegevoegde map.</string>
+  <string name="unable_to_start_system_file_manager">De bestandsbeheerder-app kan niet worden geopend</string>
   <string name="filter">Filter</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>

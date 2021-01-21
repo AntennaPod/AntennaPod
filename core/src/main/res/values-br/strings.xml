@@ -161,13 +161,6 @@
   <string name="delete_label">Dilemel</string>
   <string name="delete_failed">N\'haller ket dilemel ar restr. Gallout a rit klask adloc\'hañ.</string>
   <string name="delete_episode_label">Dilemel ar rann</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d rann dilamet </item>
-    <item quantity="two">%d rann dilamet </item>
-    <item quantity="few">%d rann dilamet </item>
-    <item quantity="many">%d rann dilamet </item>
-    <item quantity="other">%d rann dilamet </item>
-  </plurals>
   <string name="remove_new_flag_label">Tennañ ar merk \"nevez\"</string>
   <string name="removed_new_flag_label">Tennet eo bet ar merk \"nevez\"</string>
   <string name="mark_read_label">Merkañ evel lennet</string>

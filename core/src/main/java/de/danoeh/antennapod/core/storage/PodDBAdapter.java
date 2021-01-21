@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.storage;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

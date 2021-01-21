@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.os.PowerManager;
 import androidx.annotation.NonNull;
@@ -261,7 +260,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             callback.onMediaChanged(false);
             setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
             if (stream) {
-                mediaPlayer.setDataSource(media.getStreamUrl());
+                if (playable instanceof FeedMedia) {
+                    FeedMedia feedMedia = (FeedMedia) playable;
+                    FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+                    mediaPlayer.setDataSource(
+                            media.getStreamUrl(),
+                            preferences.getUsername(),
+                            preferences.getPassword());
+                } else {
+                    mediaPlayer.setDataSource(media.getStreamUrl());
+                }
             } else if (media.getLocalMediaUrl() != null && new File(media.getLocalMediaUrl()).canRead()) {
                 mediaPlayer.setDataSource(media.getLocalMediaUrl());
             } else {
