@@ -16,21 +16,19 @@ public class FeedPreferences {
 
     public static final float SPEED_USE_GLOBAL = -1;
 
-    @NonNull
-    private FeedFilter filter;
-    private long feedID;
-    private boolean autoDownload;
-    private boolean keepUpdated;
-
     public enum AutoDeleteAction {
         GLOBAL,
         YES,
         NO
     }
-    private AutoDeleteAction auto_delete_action;
 
+    @NonNull
+    private FeedFilter filter;
+    private long feedID;
+    private boolean autoDownload;
+    private boolean keepUpdated;
+    private AutoDeleteAction autoDeleteAction;
     private VolumeAdaptionSetting volumeAdaptionSetting;
-
     private String username;
     private String password;
     private float feedPlaybackSpeed;
@@ -38,19 +36,20 @@ public class FeedPreferences {
     private int feedSkipEnding;
     private boolean showEpisodeNotification;
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
-        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting,
+    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
+                           VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
+        this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting,
                 username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false);
     }
 
     private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
-                            AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting,
+                            AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
                             String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed,
                             int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
-        this.auto_delete_action = auto_delete_action;
+        this.autoDeleteAction = autoDeleteAction;
         this.volumeAdaptionSetting = volumeAdaptionSetting;
         this.username = username;
         this.password = password;
@@ -176,15 +175,15 @@ public class FeedPreferences {
     }
 
     public AutoDeleteAction getAutoDeleteAction() {
-        return auto_delete_action;
+        return autoDeleteAction;
     }
 
     public VolumeAdaptionSetting getVolumeAdaptionSetting() {
         return volumeAdaptionSetting;
     }
 
-    public void setAutoDeleteAction(AutoDeleteAction auto_delete_action) {
-        this.auto_delete_action = auto_delete_action;
+    public void setAutoDeleteAction(AutoDeleteAction autoDeleteAction) {
+        this.autoDeleteAction = autoDeleteAction;
     }
 
     public void setVolumeAdaptionSetting(VolumeAdaptionSetting volumeAdaptionSetting) {
@@ -192,17 +191,15 @@ public class FeedPreferences {
     }
 
     public boolean getCurrentAutoDelete() {
-        switch (auto_delete_action) {
+        switch (autoDeleteAction) {
             case GLOBAL:
                 return UserPreferences.isAutoDelete();
-
             case YES:
                 return true;
-
             case NO:
+            default: // fall-through
                 return false;
         }
-        return false; // TODO - add exceptions here
     }
 
     public void save(Context context) {
