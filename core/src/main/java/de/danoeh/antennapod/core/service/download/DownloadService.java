@@ -294,7 +294,8 @@ public class DownloadService extends Service {
                 if (log.size() > 0 && !log.get(0).isSuccessful()) {
                     saveDownloadStatus(task.getDownloadStatus());
                 }
-                if (request.getFeedfileId() != 0) { // Was stored in the database before
+                if (request.getFeedfileId() != 0 && !request.isInitiatedByUser()) {
+                    // Was stored in the database before and not initiated manually
                     newEpisodesNotification.showIfNeeded(DownloadService.this, task.getSavedFeed());
                 }
             } else {
