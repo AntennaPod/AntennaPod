@@ -29,6 +29,7 @@ public abstract class AuthenticationDialog extends AlertDialog.Builder {
             etxtPassword.setText(passwordInitialValue);
         }
         setOnCancelListener(dialog -> onCancelled());
+        setOnDismissListener(dialog -> onCancelled());
         setNegativeButton(R.string.cancel_label, null);
         setPositiveButton(R.string.confirm_label, (dialog, which)
                 -> onConfirmed(etxtUsername.getText().toString(), etxtPassword.getText().toString()));
