@@ -22,7 +22,7 @@
             android:id="@+id/widget_config_preview"
             layout="@layout/player_widget"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="96dp"
             android:layout_gravity="center"
             android:layout_margin="16dp" />
     </FrameLayout>
@@ -68,13 +68,38 @@
             android:max="100"
             android:progress="100" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/ckRewind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Rewind" />
+
+            <CheckBox
+                android:id="@+id/ckFastForward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Forward" />
+
+            <CheckBox
+                android:id="@+id/ckSkip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Skip" />
+        </LinearLayout>
         <Button
             android:id="@+id/butConfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/widget_create_button" />
-
     </LinearLayout>
 
 </LinearLayout>

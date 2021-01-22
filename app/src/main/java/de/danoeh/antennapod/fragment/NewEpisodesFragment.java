@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
-import android.view.MenuInflater;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;

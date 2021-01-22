@@ -6,14 +6,13 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
 import androidx.documentfile.provider.DocumentFile;
 
-import org.apache.commons.lang3.StringUtils;
-
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -34,17 +32,31 @@ import de.danoeh.antennapod.core.util.DownloadError;
 
 public class LocalFeedUpdater {
 
+    static final String[] PREFERRED_FEED_IMAGE_FILENAMES = { "folder.jpg", "Folder.jpg", "folder.png", "Folder.png" };
+
     public static void updateFeed(Feed feed, Context context) {
+        try {
+            tryUpdateFeed(feed, context);
+
+            if (mustReportDownloadSuccessful(feed)) {
+                reportSuccess(feed);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            reportError(feed, e.getMessage());
+        }
+    }
+
+    private static void tryUpdateFeed(Feed feed, Context context) throws IOException {
         String uriString = feed.getDownload_url().replace(Feed.PREFIX_LOCAL_FOLDER, "");
         DocumentFile documentFolder = DocumentFile.fromTreeUri(context, Uri.parse(uriString));
         if (documentFolder == null) {
-            reportError(feed, "Unable to retrieve document tree."
+            throw new IOException("Unable to retrieve document tree. "
                     + "Try re-connecting the folder on the podcast info page.");
-            return;
         }
         if (!documentFolder.exists() || !documentFolder.canRead()) {
-            reportError(feed, "Cannot read local directory. Try re-connecting the folder on the podcast info page.");
-            return;
+            throw new IOException("Cannot read local directory. "
+                    + "Try re-connecting the folder on the podcast info page.");
         }
 
         if (feed.getItems() == null) {
@@ -85,37 +97,43 @@ public class LocalFeedUpdater {
             }
         }
 
-        List<String> iconLocations = Arrays.asList("folder.jpg", "Folder.jpg", "folder.png", "Folder.png");
-        for (String iconLocation : iconLocations) {
-            DocumentFile image = documentFolder.findFile(iconLocation);
-            if (image != null) {
-                feed.setImageUrl(image.getUri().toString());
-                break;
-            }
-        }
-        if (StringUtils.isBlank(feed.getImageUrl())) {
-            // set default feed image
-            feed.setImageUrl(getDefaultIconUrl(context));
-        }
-        if (feed.getPreferences().getAutoDownload()) {
-            feed.getPreferences().setAutoDownload(false);
-            feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
-            try {
-                DBWriter.setFeedPreferences(feed.getPreferences()).get();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        feed.setImageUrl(getImageUrl(context, documentFolder));
+
+        feed.getPreferences().setAutoDownload(false);
+        feed.getPreferences().setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
+        feed.setDescription(context.getString(R.string.local_feed_description));
+        feed.setAuthor(context.getString(R.string.local_folder));
 
         // update items, delete items without existing file;
         // only delete items if the folder contains at least one element to avoid accidentally
         // deleting played state or position in case the folder is temporarily unavailable.
         boolean removeUnlistedItems = (newItems.size() >= 1);
         DBTasks.updateFeed(context, feed, removeUnlistedItems);
+    }
 
-        if (mustReportDownloadSuccessful(feed)) {
-            reportSuccess(feed);
+    /**
+     * Returns the image URL for the local feed.
+     */
+    @NonNull
+    static String getImageUrl(@NonNull Context context, @NonNull DocumentFile documentFolder) {
+        // look for special file names
+        for (String iconLocation : PREFERRED_FEED_IMAGE_FILENAMES) {
+            DocumentFile image = documentFolder.findFile(iconLocation);
+            if (image != null) {
+                return image.getUri().toString();
+            }
         }
+
+        // use the first image in the folder if existing
+        for (DocumentFile file : documentFolder.listFiles()) {
+            String mime = file.getType();
+            if (mime != null && (mime.startsWith("image/jpeg") || mime.startsWith("image/png"))) {
+                return file.getUri().toString();
+            }
+        }
+
+        // use default icon as fallback
+        return getDefaultIconUrl(context);
     }
 
     /**
@@ -139,46 +157,50 @@ public class LocalFeedUpdater {
     }
 
     private static FeedItem createFeedItem(Feed feed, DocumentFile file, Context context) {
-        String uuid = UUID.randomUUID().toString();
+        FeedItem item = new FeedItem(0, file.getName(), UUID.randomUUID().toString(),
+                file.getName(), new Date(file.lastModified()), FeedItem.UNPLAYED, feed);
+        item.setAutoDownload(false);
 
+        long size = file.length();
+        FeedMedia media = new FeedMedia(0, item, 0, 0, size, file.getType(),
+                file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
+        item.setMedia(media);
+
+        try {
+            loadMetadata(item, file, context);
+        } catch (Exception e) {
+            item.setDescription(e.getMessage());
+        }
+
+        return item;
+    }
+
+    private static void loadMetadata(FeedItem item, DocumentFile file, Context context) {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(context, file.getUri());
-        String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
 
-        Date date = null;
+        String dateStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DATE);
         if (!TextUtils.isEmpty(dateStr)) {
             try {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss", Locale.getDefault());
-                date = simpleDateFormat.parse(dateStr);
+                item.setPubDate(simpleDateFormat.parse(dateStr));
             } catch (ParseException parseException) {
-                date = DateUtils.parse(dateStr);
-                if (date == null) {
-                    date = new Date(file.lastModified());
+                Date date = DateUtils.parse(dateStr);
+                if (date != null) {
+                    item.setPubDate(date);
                 }
             }
-        } else {
-            date = new Date(file.lastModified());
         }
 
-        FeedItem item = new FeedItem(0, file.getName(), uuid, file.getName(), date,
-                FeedItem.UNPLAYED, feed);
-        item.setAutoDownload(false);
-
-        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         String title = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         if (!TextUtils.isEmpty(title)) {
             item.setTitle(title);
         }
 
-        //add the media to the item
-        long duration = Long.parseLong(durationStr);
-        long size = file.length();
-        FeedMedia media = new FeedMedia(0, item, (int) duration, 0, size, file.getType(),
-                file.getUri().toString(), file.getUri().toString(), false, null, 0, 0);
-        media.setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
-        item.setMedia(media);
+        String durationStr = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        item.getMedia().setDuration((int) Long.parseLong(durationStr));
 
-        return item;
+        item.getMedia().setHasEmbeddedPicture(mediaMetadataRetriever.getEmbeddedPicture() != null);
     }
 
     private static void reportError(Feed feed, String reasonDetailed) {

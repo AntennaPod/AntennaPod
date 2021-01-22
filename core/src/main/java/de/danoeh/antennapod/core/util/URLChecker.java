@@ -9,7 +9,6 @@ import de.danoeh.antennapod.core.BuildConfig;
 import okhttp3.HttpUrl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

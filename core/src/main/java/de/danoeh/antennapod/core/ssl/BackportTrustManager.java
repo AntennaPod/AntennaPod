@@ -45,6 +45,8 @@ public class BackportTrustManager {
                     new ByteArrayInputStream(BackportCaCerts.COMODO.getBytes(Charset.forName("UTF-8")))));
             keystore.setCertificateEntry("SECTIGO_USER_TRUST_CA", cf.generateCertificate(
                     new ByteArrayInputStream(BackportCaCerts.SECTIGO_USER_TRUST.getBytes(Charset.forName("UTF-8")))));
+            keystore.setCertificateEntry("LETSENCRYPT_ISRG_CA", cf.generateCertificate(
+                    new ByteArrayInputStream(BackportCaCerts.LETSENCRYPT_ISRG.getBytes(Charset.forName("UTF-8")))));
 
             List<X509TrustManager> managers = new ArrayList<>();
             managers.add(getSystemTrustManager(keystore));

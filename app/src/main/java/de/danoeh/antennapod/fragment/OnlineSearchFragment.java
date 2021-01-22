@@ -90,7 +90,6 @@ public class OnlineSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_itunes_search, container, false);
-        setupToolbar(root.findViewById(R.id.toolbar));
         root.findViewById(R.id.spinner_country).setVisibility(INVISIBLE);
         gridView = root.findViewById(R.id.gridView);
         adapter = new ItunesAdapter(getActivity(), new ArrayList<>());
@@ -110,6 +109,7 @@ public class OnlineSearchFragment extends Fragment {
         txtvEmpty = root.findViewById(android.R.id.empty);
         TextView txtvPoweredBy = root.findViewById(R.id.search_powered_by);
         txtvPoweredBy.setText(getString(R.string.search_powered_by, searchProvider.getName()));
+        setupToolbar(root.findViewById(R.id.toolbar));
         return root;
     }
 

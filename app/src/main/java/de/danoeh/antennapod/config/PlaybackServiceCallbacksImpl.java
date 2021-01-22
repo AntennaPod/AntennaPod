@@ -3,7 +3,6 @@ package de.danoeh.antennapod.config;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
 import de.danoeh.antennapod.core.PlaybackServiceCallbacks;
@@ -22,10 +21,4 @@ public class PlaybackServiceCallbacksImpl implements PlaybackServiceCallbacks {
             return i;
         }
     }
-
-    @Override
-    public boolean useQueue() {
-        return true;
-    }
-
 }

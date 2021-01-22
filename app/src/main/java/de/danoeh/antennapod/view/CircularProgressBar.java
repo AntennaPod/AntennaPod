@@ -11,7 +11,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class CircularProgressBar extends View {
-    private static final float EPSILON = 0.005f;
+    public static final float MINIMUM_PERCENTAGE = 0.005f;
+    public static final float MAXIMUM_PERCENTAGE = 1 - MINIMUM_PERCENTAGE;
 
     private final Paint paintBackground = new Paint();
     private final Paint paintProgress = new Paint();
@@ -74,11 +75,11 @@ public class CircularProgressBar extends View {
         bounds.set(padding, padding, getWidth() - padding, getHeight() - padding);
         canvas.drawArc(bounds, 0, 360, false, paintBackground);
 
-        if (percentage > EPSILON && 1 - percentage > EPSILON) {
+        if (MINIMUM_PERCENTAGE <= percentage && percentage <= MAXIMUM_PERCENTAGE) {
             canvas.drawArc(bounds, -90, percentage * 360, false, paintProgress);
         }
 
-        if (Math.abs(percentage - targetPercentage) > EPSILON) {
+        if (Math.abs(percentage - targetPercentage) > MINIMUM_PERCENTAGE) {
             float speed = 0.02f;
             if (Math.abs(targetPercentage - percentage) < 0.1 && targetPercentage > percentage) {
                 speed = 0.006f;

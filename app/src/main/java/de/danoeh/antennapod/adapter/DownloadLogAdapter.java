@@ -1,22 +1,14 @@
 package de.danoeh.antennapod.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.Build;
-import android.text.Layout;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-
-import com.joanzapata.iconify.widget.IconButton;
-import com.joanzapata.iconify.widget.IconTextView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;

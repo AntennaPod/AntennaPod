@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.core.storage;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -317,44 +316,42 @@ public class PodDBAdapter {
             + JOIN_FEED_ITEM_AND_MEDIA;
 
     private static Context context;
+    private static PodDBAdapter instance;
 
-    private static volatile SQLiteDatabase db;
+    private final SQLiteDatabase db;
+    private final PodDBHelper dbHelper;
 
     public static void init(Context context) {
         PodDBAdapter.context = context.getApplicationContext();
     }
 
-    // Bill Pugh Singleton Implementation
-    private static class SingletonHolder {
-        private static final PodDBHelper dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
-        private static final PodDBAdapter dbAdapter = new PodDBAdapter();
-    }
-
     public static PodDBAdapter getInstance() {
-        return SingletonHolder.dbAdapter;
+        if (instance == null) {
+            instance = new PodDBAdapter();
+        }
+        return instance;
     }
 
     private PodDBAdapter() {
+        dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
+        db = openDb();
     }
 
-    public synchronized PodDBAdapter open() {
-        if (db == null || !db.isOpen() || db.isReadOnly()) {
-            db = openDb();
-        }
-        return this;
-    }
-
-    @SuppressLint("NewApi")
     private SQLiteDatabase openDb() {
         SQLiteDatabase newDb;
         try {
-            newDb = SingletonHolder.dbHelper.getWritableDatabase();
+            newDb = dbHelper.getWritableDatabase();
             newDb.disableWriteAheadLogging();
         } catch (SQLException ex) {
             Log.e(TAG, Log.getStackTraceString(ex));
-            newDb = SingletonHolder.dbHelper.getReadableDatabase();
+            newDb = dbHelper.getReadableDatabase();
         }
         return newDb;
+    }
+
+    public synchronized PodDBAdapter open() {
+        // do nothing
+        return this;
     }
 
     public synchronized void close() {
@@ -372,8 +369,8 @@ public class PodDBAdapter {
      * <a href="https://github.com/robolectric/robolectric/issues/1890">robolectric/robolectric#1890</a>.</p>
      */
     public static void tearDownTests() {
-        db = null;
-        SingletonHolder.dbHelper.close();
+        getInstance().dbHelper.close();
+        instance = null;
     }
 
     public static boolean deleteDatabase() {
@@ -381,7 +378,7 @@ public class PodDBAdapter {
         adapter.open();
         try {
             for (String tableName : ALL_TABLES) {
-                db.delete(tableName, "1", null);
+                adapter.db.delete(tableName, "1", null);
             }
             return true;
         } finally {

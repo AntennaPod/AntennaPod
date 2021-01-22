@@ -24,8 +24,8 @@ Creado por entusiastas del pódcast, AntennaPod es libre en todos los sentidos: 
 <b>¡Únete a la comunidad AntennaPod!</b>
 AntennaPod es desarrollado por voluntarios. ¡Tú también puedes contribuir, con tu código o con tus comentarios!
 
-Visita GitHub para solicitar características nuevas, reportar fallos y contribuir con código:
-https://www.github.com/AntennaPod/AntennaPod
+Nuestros amables miembros del foro te ayudarán con cualquier duda que tengas. Estás invitado a discutir sobre las características y el podcasting en general.
+https://forum.antennapod.org/
 
 Ayuda con las traducciones en Transifex:
 https://www.transifex.com/antennapod/antennapod

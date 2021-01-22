@@ -25,7 +25,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +38,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -168,6 +166,7 @@ public class DownloadService extends Service {
             startForeground(R.id.notification_downloading, notification);
             syncExecutor.execute(() -> onDownloadQueued(intent));
         } else if (numberOfDownloads.get() == 0) {
+            stopForeground(true);
             stopSelf();
         } else {
             Log.d(TAG, "onStartCommand: Unknown intent");
@@ -205,8 +204,7 @@ public class DownloadService extends Service {
         isRunning = false;
 
         boolean showAutoDownloadReport = UserPreferences.showAutoDownloadReport();
-        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()
-                && (UserPreferences.showDownloadReport() || showAutoDownloadReport)) {
+        if (UserPreferences.showDownloadReport() || showAutoDownloadReport) {
             notificationManager.updateReport(reportQueue, showAutoDownloadReport);
             reportQueue.clear();
         }
@@ -326,18 +324,11 @@ public class DownloadService extends Service {
                     if (item == null) {
                         return;
                     }
-                    boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
-                    boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
-                            && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
-                    boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
-                    boolean wrongFileType = status.getReason() == DownloadError.ERROR_FILE_TYPE;
-                    boolean httpGone = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_GONE).equals(status.getReasonDetailed());
-                    boolean httpBadReq = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_BAD_REQUEST).equals(status.getReasonDetailed());
+                    boolean unknownHost = status.getReason() == DownloadError.ERROR_UNKNOWN_HOST;
+                    boolean unsupportedType = status.getReason() == DownloadError.ERROR_UNSUPPORTED_TYPE;
+                    boolean wrongSize = status.getReason() == DownloadError.ERROR_IO_WRONG_SIZE;
 
-                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType || httpGone || httpBadReq ) {
+                    if (! (unknownHost || unsupportedType || wrongSize)) {
                         try {
                             DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                         } catch (ExecutionException | InterruptedException e) {
@@ -429,7 +420,7 @@ public class DownloadService extends Service {
                 + ", cleanupMedia=" + cleanupMedia);
 
         if (cleanupMedia) {
-            ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
+            UserPreferences.getEpisodeCleanupAlgorithm()
                     .makeRoomForEpisodes(getApplicationContext(), requests.size());
         }
 
@@ -553,6 +544,7 @@ public class DownloadService extends Service {
 
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
+            stopForeground(true);
             stopSelf();
             if (notificationUpdater != null) {
                 notificationUpdater.run();
