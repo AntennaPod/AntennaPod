@@ -88,6 +88,7 @@
 
         <activity
             android:name=".activity.DownloadAuthenticationActivity"
+            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
             android:launchMode="singleInstance"/>
 
         <activity

@@ -95,7 +95,6 @@
     <string name="description_label">Description</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="processing_label">Processing</string>
-    <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
