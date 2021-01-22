@@ -137,7 +137,7 @@
     <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
     <plurals name="new_episode_notification_message">
         <item quantity="one">%2$s has a new episode</item>
-        <item quantity="other">%2$s has %1$d episodes flagged as new.</item>
+        <item quantity="other">%2$s has %1$d new episodes</item>
     </plurals>
     <plurals name="new_episode_notification_title">
         <item quantity="one">New Episode</item>
