@@ -44,32 +44,17 @@
             tools:background="@android:color/holo_green_dark"
             tools:text="Podcast title" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/txtvAuthor"
+            style="android:style/TextAppearance.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtvAuthor"
-                style="android:style/TextAppearance.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="middle"
-                android:maxLines="2"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="14sp"
-                tools:background="@android:color/holo_green_dark"
-                tools:text="author" />
-
-            <TextView
-                android:id="@+id/txtvSearcher"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Search"
-                android:textAlignment="textEnd"
-                android:textColor="?android:attr/textColorTertiary"
-                android:textSize="12sp" />
-        </LinearLayout>
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:ellipsize="middle"
+            android:maxLines="2"
+            tools:text="author"
+            tools:background="@android:color/holo_green_dark"/>
 
     </LinearLayout>
 
