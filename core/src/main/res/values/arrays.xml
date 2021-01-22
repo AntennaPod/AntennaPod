@@ -240,9 +240,9 @@
     </string-array>
 
     <string-array name="media_player_values">
+        <item>exoplayer</item>
         <item>builtin</item>
         <item>sonic</item>
-        <item>exoplayer</item>
     </string-array>
 
     <!-- sort for podcast screen, not for queue -->
