@@ -104,12 +104,12 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return DBReader.getRecentlyPublishedEpisodesFiltered(0, page * EPISODES_PER_PAGE, feedItemFilter);
+        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE, feedItemFilter);
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData() {
-        return DBReader.getRecentlyPublishedEpisodesFiltered((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, feedItemFilter);
+        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, feedItemFilter);
     }
 }

@@ -16,6 +16,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import de.danoeh.antennapod.core.storage.mapper.FeedItemFilterQuery;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -1045,16 +1046,9 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit) {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + "ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
-        return db.rawQuery(query, null);
-    }
-
-    public final Cursor getRecentlyPublishedItemsCursorFiltered(int offset, int limit,
-                                                                FeedItemFilter filter) {
-        String filterQuery = filter.getQuery();
-        String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filter.getQuery();
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA + whereClause
                 + " ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);

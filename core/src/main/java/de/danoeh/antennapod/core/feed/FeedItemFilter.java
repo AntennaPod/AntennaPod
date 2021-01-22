@@ -3,127 +3,68 @@ package de.danoeh.antennapod.core.feed;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.LongList;
 
 import static de.danoeh.antennapod.core.feed.FeedItem.TAG_FAVORITE;
 
 public class FeedItemFilter {
 
-    private final String[] mProperties;
-    private final String mQuery;
+    private final String[] properties;
 
-    private boolean showPlayed = false;
-    private boolean showUnplayed = false;
-    private boolean showPaused = false;
-    private boolean showNotPaused = false;
-    private boolean showQueued = false;
-    private boolean showNotQueued = false;
-    private boolean showDownloaded = false;
-    private boolean showNotDownloaded = false;
-    private boolean showHasMedia = false;
-    private boolean showNoMedia = false;
-    private boolean showIsFavorite = false;
-    private boolean showNotFavorite = false;
+    public final boolean showPlayed;
+    public final boolean showUnplayed;
+    public final boolean showPaused;
+    public final boolean showNotPaused;
+    public final boolean showQueued;
+    public final boolean showNotQueued;
+    public final boolean showDownloaded;
+    public final boolean showNotDownloaded;
+    public final boolean showHasMedia;
+    public final boolean showNoMedia;
+    public final boolean showIsFavorite;
+    public final boolean showNotFavorite;
+
+    public static FeedItemFilter unfiltered() {
+        return new FeedItemFilter("");
+    }
 
     public FeedItemFilter(String properties) {
         this(TextUtils.split(properties, ","));
     }
 
     public FeedItemFilter(String[] properties) {
-        this.mProperties = properties;
-        for (String property : properties) {
-            // see R.arrays.feed_filter_values
-            switch (property) {
-                case "unplayed":
-                    showUnplayed = true;
-                    break;
-                case "paused":
-                    showPaused = true;
-                    break;
-                case "not_paused":
-                    showNotPaused = true;
-                    break;
-                case "played":
-                    showPlayed = true;
-                    break;
-                case "queued":
-                    showQueued = true;
-                    break;
-                case "not_queued":
-                    showNotQueued = true;
-                    break;
-                case "downloaded":
-                    showDownloaded = true;
-                    break;
-                case "not_downloaded":
-                    showNotDownloaded = true;
-                    break;
-                case "has_media":
-                    showHasMedia = true;
-                    break;
-                case "no_media":
-                    showNoMedia = true;
-                    break;
-                case "is_favorite":
-                    showIsFavorite = true;
-                    break;
-                case "not_favorite":
-                    showNotFavorite = true;
-                    break;
-                default:
-                    break;
-            }
-        }
+        this.properties = properties;
 
-        mQuery = makeQuery();
+        // see R.arrays.feed_filter_values
+        showUnplayed = hasProperty("unplayed");
+        showPaused = hasProperty("paused");
+        showNotPaused = hasProperty("not_paused");
+        showPlayed = hasProperty("played");
+        showQueued = hasProperty("queued");
+        showNotQueued = hasProperty("not_queued");
+        showDownloaded = hasProperty("downloaded");
+        showNotDownloaded = hasProperty("not_downloaded");
+        showHasMedia = hasProperty("has_media");
+        showNoMedia = hasProperty("no_media");
+        showIsFavorite = hasProperty("is_favorite");
+        showNotFavorite = hasProperty("not_favorite");
     }
 
-    private String makeQuery() {
-        // The keys used within this method, but explicitly combined with their table
-        String keyRead = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_READ;
-        String keyPosition = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_POSITION;
-        String keyDownloaded = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOADED;
-        String keyMediaId = PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_ID;
-        String keyItemId = PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID;
-        String keyFeedItem = PodDBAdapter.KEY_FEEDITEM;
-        String tableQueue = PodDBAdapter.TABLE_NAME_QUEUE;
-        String tableFavorites = PodDBAdapter.TABLE_NAME_FAVORITES;
-
-        List<String> statements = new ArrayList<>();
-        if (showPlayed)        statements.add(keyRead + " = 1 ");
-        if (showUnplayed)      statements.add(" NOT " + keyRead + " = 1 "); // Match "New" items (read = -1) as well
-        if (showPaused)        statements.add(" (" + keyPosition + " NOT NULL AND " + keyPosition + " > 0 " + ") ");
-        if (showNotPaused)     statements.add(" (" + keyPosition + " IS NULL OR " + keyPosition + " = 0 " + ") ");
-        if (showQueued)        statements.add(keyItemId + " IN (SELECT " + keyFeedItem + " FROM " + tableQueue + ") ");
-        if (showNotQueued)     statements.add(keyItemId + " NOT IN (SELECT " + keyFeedItem + " FROM " + tableQueue + ") ");
-        if (showDownloaded)    statements.add(keyDownloaded + " = 1 ");
-        if (showNotDownloaded) statements.add(keyDownloaded + " = 0 ");
-        if (showHasMedia)      statements.add(keyMediaId + " NOT NULL ");
-        if (showNoMedia)       statements.add(keyMediaId + " IS NULL ");
-        if (showIsFavorite)    statements.add(keyItemId + " IN (SELECT " + keyFeedItem + " FROM " + tableFavorites + ") ");
-        if (showNotFavorite)   statements.add(keyItemId + " NOT IN (SELECT " + keyFeedItem + " FROM " + tableFavorites + ") ");
-
-        if (statements.isEmpty()) {
-            return "";
-        }
-        StringBuilder query = new StringBuilder(" (" + statements.get(0));
-        for (String r : statements.subList(1, statements.size())) {
-            query.append(" AND ");
-            query.append(r);
-        }
-        query.append(") ");
-        return query.toString();
+    private boolean hasProperty(String property) {
+        return Arrays.asList(properties).contains(property);
     }
 
     /**
      * Run a list of feed items through the filter.
      */
     public List<FeedItem> filter(List<FeedItem> items) {
-        if(mProperties.length == 0) return items;
+        if (properties.length == 0) {
+            return items;
+        }
 
         List<FeedItem> result = new ArrayList<>();
 
@@ -164,23 +105,11 @@ public class FeedItemFilter {
         return result;
     }
 
-    /**
-     * Express this filter using an SQL boolean statement that can be inserted into an SQL WHERE clause
-     * to yield output filtered according to the rules of this filter.
-     *
-     * @return An SQL boolean statement that matches the desired items,
-     *         empty string if there is nothing to filter
-     */
-    public String getQuery() {
-        return mQuery;
-    }
-
     public String[] getValues() {
-        return mProperties.clone();
+        return properties.clone();
     }
 
     public boolean isShowDownloaded() {
         return showDownloaded;
     }
-
 }
