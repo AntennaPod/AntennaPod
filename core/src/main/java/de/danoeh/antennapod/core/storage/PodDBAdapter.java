@@ -16,6 +16,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import de.danoeh.antennapod.core.storage.mapper.FeedItemFilterQuery;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -30,6 +31,7 @@ import java.util.Set;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -115,14 +117,14 @@ public class PodDBAdapter {
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
 
     // Table names
-    static final String TABLE_NAME_FEEDS = "Feeds";
-    static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
-    static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
-    static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
-    static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
-    static final String TABLE_NAME_QUEUE = "Queue";
-    static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
-    static final String TABLE_NAME_FAVORITES = "Favorites";
+    public static final String TABLE_NAME_FEEDS = "Feeds";
+    public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
+    public static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
+    public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
+    public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
+    public static final String TABLE_NAME_QUEUE = "Queue";
+    public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
+    public static final String TABLE_NAME_FAVORITES = "Favorites";
 
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -1044,9 +1046,11 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit) {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + "ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
+        final String query = SELECT_FEED_ITEMS_AND_MEDIA + whereClause
+                + " ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 
