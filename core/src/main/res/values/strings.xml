@@ -506,8 +506,8 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
-    <string name="media_player_builtin">Built-in Android player</string>
-    <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
+    <string name="media_player_builtin">Built-in Android player (deprecated) </string>
+    <string name="media_player_sonic">Sonic Media Player (deprecated) </string>
     <string name="media_player_exoplayer_recommended">ExoPlayer (recommended)</string>
     <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
