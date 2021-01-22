@@ -73,7 +73,7 @@ public class PodcastIndexPodcastSearcher implements PodcastSearcher {
 
                     for (int i = 0; i < j.length(); i++) {
                         JSONObject podcastJson = j.getJSONObject(i);
-                        PodcastSearchResult podcast = PodcastSearchResult.fromPodcastIndex(podcastJson, this);
+                        PodcastSearchResult podcast = PodcastSearchResult.fromPodcastIndex(podcastJson);
                         if (podcast.feedUrl != null) {
                             podcasts.add(podcast);
                         }

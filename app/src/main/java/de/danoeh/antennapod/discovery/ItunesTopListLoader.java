@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class ItunesTopListLoader implements PodcastSearcher {
+public class ItunesTopListLoader {
     private static final String TAG = "ITunesTopListLoader";
     private final Context context;
     public static final String PREF_KEY_COUNTRY_CODE = "country_code";
@@ -104,29 +104,10 @@ public class ItunesTopListLoader implements PodcastSearcher {
         List<PodcastSearchResult> results = new ArrayList<>();
         for (int i = 0; i < entries.length(); i++) {
             JSONObject json = entries.getJSONObject(i);
-            results.add(PodcastSearchResult.fromItunesToplist(json, this));
+            results.add(PodcastSearchResult.fromItunesToplist(json));
         }
 
         return results;
     }
 
-    @Override
-    public Single<List<PodcastSearchResult>> search(String query) {
-        return null;
-    }
-
-    @Override
-    public Single<String> lookupUrl(String resultUrl) {
-        return Single.just(resultUrl);
-    }
-
-    @Override
-    public boolean urlNeedsLookup(String resultUrl) {
-        return false;
-    }
-
-    @Override
-    public String getName() {
-        return "iTunes Top List";
-    }
 }
