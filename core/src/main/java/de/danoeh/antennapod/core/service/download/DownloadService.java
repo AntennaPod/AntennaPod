@@ -95,6 +95,7 @@ public class DownloadService extends Service {
     private final CompletionService<Downloader> downloadExecutor;
     private final DownloadRequester requester;
     private DownloadServiceNotification notificationManager;
+    private final NewEpisodesNotification newEpisodesNotification;
 
     /**
      * Currently running downloads.
@@ -117,7 +118,7 @@ public class DownloadService extends Service {
     private ScheduledFuture<?> notificationUpdaterFuture;
     private ScheduledFuture<?> downloadPostFuture;
     private static final int SCHED_EX_POOL_SIZE = 1;
-    private ScheduledThreadPoolExecutor schedExecutor;
+    private final ScheduledThreadPoolExecutor schedExecutor;
     private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
 
     private final IBinder mBinder = new LocalBinder();
@@ -133,12 +134,16 @@ public class DownloadService extends Service {
         downloads = Collections.synchronizedList(new ArrayList<>());
         numberOfDownloads = new AtomicInteger(0);
         requester = DownloadRequester.getInstance();
+        newEpisodesNotification = new NewEpisodesNotification();
 
         syncExecutor = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r, "SyncThread");
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         });
+        // Must be the first runnable in syncExecutor
+        syncExecutor.execute(newEpisodesNotification::loadCountersBeforeRefresh);
+
         Log.d(TAG, "parallel downloads: " + UserPreferences.getParallelDownloads());
         downloadExecutor = new ExecutorCompletionService<>(
                 Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
@@ -288,6 +293,10 @@ public class DownloadService extends Service {
                 List<DownloadStatus> log = DBReader.getFeedDownloadLog(request.getFeedfileId());
                 if (log.size() > 0 && !log.get(0).isSuccessful()) {
                     saveDownloadStatus(task.getDownloadStatus());
+                }
+                if (request.getFeedfileId() != 0 && !request.isInitiatedByUser()) {
+                    // Was stored in the database before and not initiated manually
+                    newEpisodesNotification.showIfNeeded(DownloadService.this, task.getSavedFeed());
                 }
             } else {
                 DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);

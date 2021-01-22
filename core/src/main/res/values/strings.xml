@@ -132,6 +132,17 @@
         <item quantity="other">%d episodes</item>
     </plurals>
     <string name="loading_more">Loading more…</string>
+    <string name="episode_notification">Episode Notifications</string>
+    <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
+    <plurals name="new_episode_notification_message">
+        <item quantity="one">%2$s has a new episode</item>
+        <item quantity="other">%2$s has %1$d new episodes</item>
+    </plurals>
+    <plurals name="new_episode_notification_title">
+        <item quantity="one">New Episode</item>
+        <item quantity="other">New Episodes</item>
+    </plurals>
+    <string name="new_episode_notification_group_text">Your subscriptions have new epsiodes.</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -870,6 +881,8 @@
     <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
     <string name="notification_channel_auto_download">Automatic download completed</string>
     <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
+    <string name="notification_channel_new_episode">New Episode</string>
+    <string name="notification_channel_new_episode_description">Shown when a new episode of a podcast was found, where notifications are enabled</string>
 
     <!-- Widget settings -->
     <string name="widget_settings">Widget settings</string>

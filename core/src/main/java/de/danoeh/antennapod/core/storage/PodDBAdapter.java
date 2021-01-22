@@ -51,7 +51,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 1090001;
+    public static final int VERSION = 2020000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -115,6 +115,7 @@ public class PodDBAdapter {
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
     public static final String KEY_FEED_SKIP_INTRO = "feed_skip_intro";
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
+    public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -152,7 +153,8 @@ public class PodDBAdapter {
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
             + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
-            + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0)";
+            + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
+            + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -254,7 +256,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED,
             TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING
+            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING,
+            TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION
     };
 
     /**
@@ -446,6 +449,7 @@ public class PodDBAdapter {
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
+        values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowEpisodeNotification());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -1164,6 +1168,11 @@ public class PodDBAdapter {
 
     public final LongIntMap getFeedCounters(long... feedIds) {
         int setting = UserPreferences.getFeedCounterSetting();
+
+        return getFeedCounters(setting, feedIds);
+    }
+
+    public final LongIntMap getFeedCounters(int setting, long... feedIds) {
         String whereRead;
         switch (setting) {
             case UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM:
@@ -1188,24 +1197,26 @@ public class PodDBAdapter {
     }
 
     private LongIntMap conditionalFeedCounterRead(String whereRead, long... feedIds) {
-        // work around TextUtils.join wanting only boxed items
-        // and StringUtils.join() causing NoSuchMethodErrors on MIUI
-        StringBuilder builder = new StringBuilder();
-        for (long id : feedIds) {
-            builder.append(id);
-            builder.append(',');
-        }
+        String limitFeeds = "";
         if (feedIds.length > 0) {
+            // work around TextUtils.join wanting only boxed items
+            // and StringUtils.join() causing NoSuchMethodErrors on MIUI
+            StringBuilder builder = new StringBuilder();
+            for (long id : feedIds) {
+                builder.append(id);
+                builder.append(',');
+            }
             // there's an extra ',', get rid of it
             builder.deleteCharAt(builder.length() - 1);
+            limitFeeds = KEY_FEED + " IN (" + builder.toString() + ") AND ";
         }
 
         final String query = "SELECT " + KEY_FEED + ", COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                + " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") "
-                + " AND " + whereRead + " GROUP BY " + KEY_FEED;
+                + " WHERE " + limitFeeds + " "
+                + whereRead + " GROUP BY " + KEY_FEED;
 
         Cursor c = db.rawQuery(query, null);
         LongIntMap result = new LongIntMap(c.getCount());
