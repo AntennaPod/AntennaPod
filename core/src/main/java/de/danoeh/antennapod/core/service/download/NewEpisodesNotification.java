@@ -79,6 +79,7 @@ public class NewEpisodesNotification {
                 .setContentText(text)
                 .setContentIntent(pendingIntent)
                 .setGroup(GROUP_KEY)
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
                 .setAutoCancel(true)
                 .build();
 
@@ -101,6 +102,7 @@ public class NewEpisodesNotification {
                 .setContentIntent(pendingIntent)
                 .setGroup(GROUP_KEY)
                 .setGroupSummary(true)
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY)
                 .setAutoCancel(true)
                 .build();
         notificationManager.notify(NotificationUtils.CHANNEL_ID_EPISODE_NOTIFICATIONS, 0, notificationGroupSummary);
