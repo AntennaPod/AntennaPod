@@ -1,13 +1,8 @@
 <?xml version ="1.0" encoding ="utf-8"?>
-<!--  You can learn more about App Actions and how to use them in the documentation:
-https://developers.google.com/assistant/app/overview -->
-
 <actions>
     <action intentName="actions.intent.OPEN_APP_FEATURE">
-        <fulfillment urlTemplate="https://antennapod.org/deeplink/main{?featureName}">
-            <parameter-mapping
-                intentParameter="feature"
-                urlParameter="featureName" />
+        <fulfillment urlTemplate="https://antennapod.org/deeplink/main{?page}">
+            <parameter-mapping intentParameter="feature" urlParameter="page" />
         </fulfillment>
         <parameter name="feature">
             <entity-set-reference entitySetId="featureEntitySet" />
@@ -16,18 +11,15 @@ https://developers.google.com/assistant/app/overview -->
 
     <action intentName="actions.intent.GET_THING">
         <fulfillment urlTemplate="https://antennapod.org/deeplink/search{?query}">
-            <parameter-mapping
-                intentParameter="thing.name"
-                urlParameter="query"/>
+            <parameter-mapping intentParameter="thing.name" urlParameter="query"/>
         </fulfillment>
     </action>
 
     <entity-set entitySetId="featureEntitySet">
-        <entity identifier="QUEUE" name="Queue" />
-        <entity identifier="EPISODES" name="Episodes" />
-        <entity identifier="DOWNLOADS" name="Downloads" />
-        <entity identifier="SUBSCRIPTIONS" name="Subscriptions" />
-        <entity identifier="HISTORY" name="History" />
+        <entity identifier="QUEUE" name="@string/queue_label" />
+        <entity identifier="EPISODES" name="@string/episodes_label" />
+        <entity identifier="DOWNLOADS" name="@string/downloads_label" />
+        <entity identifier="SUBSCRIPTIONS" name="@string/subscriptions_label" />
+        <entity identifier="HISTORY" name="@string/playback_history_label" />
     </entity-set>
-
 </actions>

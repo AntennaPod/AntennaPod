@@ -149,9 +149,6 @@ public class MainActivity extends CastEnabledActivity {
         sheetBehavior.setPeekHeight((int) getResources().getDimension(R.dimen.external_player_height));
         sheetBehavior.setHideable(false);
         sheetBehavior.setBottomSheetCallback(bottomSheetCallback);
-
-        Intent receivedIntent = getIntent();
-        handleIntent(receivedIntent);
     }
 
     /**
@@ -520,6 +517,8 @@ public class MainActivity extends CastEnabledActivity {
         } else if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             bottomSheetCallback.onSlide(null, 1.0f);
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            handleDeeplink(intent.getData());
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));
@@ -529,33 +528,7 @@ public class MainActivity extends CastEnabledActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-
-        handleIntent(intent);
-    }
-
-    /**
-     *  Handles the incoming intent. If the activity was launched via a deep link,
-     *  passes the uri to handleDeeplink().
-     *  Added an SDK version check since the minimum SDK supported by AntennaPod is 16
-     *  and Object.equals(Obj1, Obj2) is only supported in API 19+.
-     *
-     * @param intent incoming intent
-     */
-    private void handleIntent(Intent intent) {
-        if (intent == null) {
-            return;
-        }
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return;
-        }
-
-        if (Objects.equals(intent.getAction(), Intent.ACTION_VIEW)) {
-            Uri uri = intent.getData();
-            if (uri != null) {
-                handleDeeplink(uri);
-            }
-        }
+        handleNavIntent();
     }
 
     public Snackbar showSnackbarAbovePlayer(CharSequence text, int duration) {
@@ -587,7 +560,7 @@ public class MainActivity extends CastEnabledActivity {
         if (uri == null || uri.getPath() == null) {
             return;
         }
-
+        Log.d(TAG, "Handling deeplink: " + uri.toString());
         switch (uri.getPath()) {
             case "/deeplink/search":
                 String query = uri.getQueryParameter("query");
@@ -597,33 +570,31 @@ public class MainActivity extends CastEnabledActivity {
 
                 this.loadChildFragment(OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
                 break;
-
             case "/deeplink/main":
-                String feature = uri.getQueryParameter("featureName");
+                String feature = uri.getQueryParameter("page");
                 if (feature == null) {
                     return;
                 }
-
-                feature = feature.toLowerCase(Locale.getDefault());
                 switch (feature) {
-                    case "downloads":
+                    case "DOWNLOADS":
                         loadFragment(DownloadsFragment.TAG, null);
                         break;
-                    case "history":
+                    case "HISTORY":
                         loadFragment(PlaybackHistoryFragment.TAG, null);
                         break;
-                    case "episodes":
+                    case "EPISODES":
                         loadFragment(EpisodesFragment.TAG, null);
                         break;
-                    case "queue":
+                    case "QUEUE":
                         loadFragment(QueueFragment.TAG, null);
                         break;
-                    case "subscriptions":
+                    case "SUBSCRIPTIONS":
                         loadFragment(SubscriptionFragment.TAG, null);
                         break;
                     default:
-                        loadFragment(AddFeedFragment.TAG, null);
-                        break;
+                        showSnackbarAbovePlayer(getString(R.string.app_action_not_found, feature),
+                                Snackbar.LENGTH_LONG);
+                        return;
                 }
                 break;
             default:
@@ -639,13 +610,7 @@ public class MainActivity extends CastEnabledActivity {
             return super.onKeyUp(keyCode, event);
         }
 
-        
-      
-      
-      
-      
-      
-      audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         Integer customKeyCode = null;
 
         switch (keyCode) {

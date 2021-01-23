@@ -11,6 +11,7 @@
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
     <string name="episodes_label">Episodes</string>
+    <string name="queue_label">Queue</string>
     <string name="all_episodes_short_label">All</string>
     <string name="new_episodes_label">New</string>
     <string name="favorite_episodes_label">Favorites</string>
@@ -31,6 +32,9 @@
     <string name="playback_statistics_label">Playback</string>
     <string name="download_statistics_label">Downloads</string>
     <string name="notification_pref_fragment">Notifications</string>
+
+    <!-- Google Assistant -->
+    <string name="app_action_not_found">\"%1$s\" not found</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
@@ -367,7 +371,6 @@
     <string name="storage_pref">Storage</string>
     <string name="storage_sum">Episode auto delete, Import, Export</string>
     <string name="project_pref">Project</string>
-    <string name="queue_label">Queue</string>
     <string name="synchronization_pref">Synchronization</string>
     <string name="synchronization_sum">Synchronize with other devices using gpodder.net</string>
     <string name="automation">Automation</string>
