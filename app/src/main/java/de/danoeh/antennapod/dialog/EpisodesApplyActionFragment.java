@@ -1,12 +1,8 @@
 package de.danoeh.antennapod.dialog;
 
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.collection.ArrayMap;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.leinardi.android.speeddial.SpeedDialView;
@@ -34,6 +28,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.SortOrder;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class EpisodesApplyActionFragment extends Fragment {
+public class EpisodesApplyActionFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
 
     public static final String TAG = "EpisodeActionFragment";
 
@@ -51,9 +46,8 @@ public class EpisodesApplyActionFragment extends Fragment {
     private static final int ACTION_MARK_UNPLAYED = 8;
     public static final int ACTION_DOWNLOAD = 16;
     public static final int ACTION_DELETE = 32;
-    private static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
+    public static final int ACTION_ALL = ACTION_ADD_TO_QUEUE | ACTION_REMOVE_FROM_QUEUE
             | ACTION_MARK_PLAYED | ACTION_MARK_UNPLAYED | ACTION_DOWNLOAD | ACTION_DELETE;
-    private Toolbar toolbar;
 
     /**
      * Specify an action (defined by #flag) 's UI bindings.
@@ -84,7 +78,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
     private SpeedDialView mSpeedDialView;
-    private MenuItem mSelectToggle;
+    private Toolbar toolbar;
 
     public EpisodesApplyActionFragment() {
         actionBindings = Arrays.asList(
@@ -103,10 +97,6 @@ public class EpisodesApplyActionFragment extends Fragment {
                 );
     }
 
-    public static EpisodesApplyActionFragment newInstance(List<FeedItem> items) {
-        return newInstance(items, ACTION_ALL);
-    }
-
     public static EpisodesApplyActionFragment newInstance(List<FeedItem> items, int actions) {
         EpisodesApplyActionFragment f = new EpisodesApplyActionFragment();
         f.episodes.addAll(items);
@@ -121,13 +111,18 @@ public class EpisodesApplyActionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.episodes_apply_action_fragment, container, false);
+
+        toolbar = view.findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.episodes_apply_action_options);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        toolbar.setOnMenuItemClickListener(this);
+        refreshToolbarState();
 
         mListView = view.findViewById(android.R.id.list);
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -171,8 +166,6 @@ public class EpisodesApplyActionFragment extends Fragment {
         mAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.simple_list_item_multiple_choice_on_start, titles);
         mListView.setAdapter(mAdapter);
-        toolbar = view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
         // Init action UI (via a FAB Speed Dial)
         mSpeedDialView = view.findViewById(R.id.fabSD);
@@ -219,42 +212,15 @@ public class EpisodesApplyActionFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.episodes_apply_action_options, menu);
-
-        mSelectToggle = menu.findItem(R.id.select_toggle);
-        mSelectToggle.setOnMenuItemClickListener(item -> {
-            if (checkedIds.size() == episodes.size()) {
-                checkNone();
-            } else {
-                checkAll();
-            }
-            return true;
-        });
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        // Prepare icon for select toggle button
-
-        int[] icon = new int[1];
-        @StringRes int titleResId;
+    public void refreshToolbarState() {
+        MenuItem selectAllItem = toolbar.getMenu().findItem(R.id.select_toggle);
         if (checkedIds.size() == episodes.size()) {
-            icon[0] = R.attr.ic_select_none;
-            titleResId = R.string.deselect_all_label;
+            selectAllItem.setIcon(ThemeUtils.getDrawableFromAttr(getContext(), R.attr.ic_select_none));
+            selectAllItem.setTitle(R.string.deselect_all_label);
         } else {
-            icon[0] = R.attr.ic_select_all;
-            titleResId = R.string.select_all_label;
+            selectAllItem.setIcon(ThemeUtils.getDrawableFromAttr(getContext(), R.attr.ic_select_all));
+            selectAllItem.setTitle(R.string.select_all_label);
         }
-
-        TypedArray a = getActivity().obtainStyledAttributes(icon);
-        Drawable iconDrawable = a.getDrawable(0);
-        a.recycle();
-
-        mSelectToggle.setIcon(iconDrawable);
-        mSelectToggle.setTitle(titleResId);
     }
 
     private static final Map<Integer, SortOrder> menuItemIdToSortOrder;
@@ -270,10 +236,17 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onMenuItemClick(MenuItem item) {
         @StringRes int resId = 0;
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.select_options:
+                return true;
+            case R.id.select_toggle:
+                if (checkedIds.size() == episodes.size()) {
+                    checkNone();
+                } else {
+                    checkAll();
+                }
                 return true;
             case R.id.check_all:
                 checkAll();
@@ -413,7 +386,7 @@ public class EpisodesApplyActionFragment extends Fragment {
             boolean checked = checkedIds.contains(episode.getId());
             mListView.setItemChecked(i, checked);
         }
-        getActivity().invalidateOptionsMenu();
+        refreshToolbarState();
         toolbar.setTitle(getResources().getQuantityString(R.plurals.num_selected_label,
                 checkedIds.size(), checkedIds.size()));
     }
@@ -449,7 +422,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         // download the check episodes in the same order as they are currently displayed
         List<FeedItem> toDownload = new ArrayList<>(checkedIds.size());
         for (FeedItem episode : episodes) {
-            if (checkedIds.contains(episode.getId()) && episode.hasMedia()) {
+            if (checkedIds.contains(episode.getId()) && episode.hasMedia() && !episode.getFeed().isLocalFeed()) {
                 toDownload.add(episode);
             }
         }
@@ -463,21 +436,32 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void deleteChecked() {
+        int countHasMedia = 0;
+        int countNoMedia = 0;
         for (long id : checkedIds.toArray()) {
             FeedItem episode = idMap.get(id);
-            if (episode.hasMedia()) {
+            if (episode.hasMedia() && episode.getMedia().isDownloaded()) {
+                countHasMedia++;
                 DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());
+            } else {
+                countNoMedia++;
             }
         }
-        close(R.plurals.deleted_episode_batch_label, checkedIds.size());
+        closeMore(R.plurals.deleted_multi_episode_batch_label, countNoMedia, countHasMedia);
     }
 
     private void close(@PluralsRes int msgId, int numItems) {
-        if (numItems > 0) {
-            ((MainActivity) getActivity()).showSnackbarAbovePlayer(
-                    getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
-        }
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                getResources().getQuantityString(msgId, numItems, numItems), Snackbar.LENGTH_LONG);
         getActivity().getSupportFragmentManager().popBackStack();
     }
 
+    private void closeMore(@PluralsRes int msgId, int countNoMedia, int countHasMedia) {
+        ((MainActivity) getActivity()).showSnackbarAbovePlayer(
+                getResources().getQuantityString(msgId,
+                        (countHasMedia + countNoMedia),
+                        (countHasMedia + countNoMedia), countHasMedia),
+                Snackbar.LENGTH_LONG);
+        getActivity().getSupportFragmentManager().popBackStack();
+    }
 }

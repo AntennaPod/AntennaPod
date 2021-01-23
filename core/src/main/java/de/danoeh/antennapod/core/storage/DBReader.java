@@ -7,18 +7,20 @@ import androidx.collection.ArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
@@ -143,6 +145,7 @@ public final class DBReader {
             Feed feed = feedIndex.get(item.getFeedId());
             if (feed == null) {
                 Log.w(TAG, "No match found for item with ID " + item.getId() + ". Feed ID was " + item.getFeedId());
+                feed = new Feed("", "", "Error: Item without feed");
             }
             item.setFeed(feed);
         }
@@ -364,18 +367,19 @@ public final class DBReader {
     }
 
     /**
-     * Loads a list of FeedItems sorted by pubDate in descending order.
+     * Loads a filtered list of FeedItems sorted by pubDate in descending order.
      *
      * @param offset The first episode that should be loaded.
      * @param limit The maximum number of episodes that should be loaded.
+     * @param filter The filter describing which episodes to filter out.
      */
     @NonNull
-    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit) {
-        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "offset = [" + offset + "]" + " limit = [" + limit + "]" );
+    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit, FeedItemFilter filter) {
+        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: offset=" + offset + ", limit=" + limit);
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit)) {
+        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit, filter)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
@@ -649,29 +653,30 @@ public final class DBReader {
      *
      * @param item The FeedItem
      */
-    public static void loadChaptersOfFeedItem(final FeedItem item) {
+    public static List<Chapter> loadChaptersOfFeedItem(final FeedItem item) {
         Log.d(TAG, "loadChaptersOfFeedItem() called with: " + "item = [" + item + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         try {
-            loadChaptersOfFeedItem(adapter, item);
+            return loadChaptersOfFeedItem(adapter, item);
         } finally {
             adapter.close();
         }
     }
 
-    private static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
+    private static List<Chapter> loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
         try (Cursor cursor = adapter.getSimpleChaptersOfFeedItemCursor(item)) {
             int chaptersCount = cursor.getCount();
             if (chaptersCount == 0) {
                 item.setChapters(null);
-                return;
+                return null;
             }
-            item.setChapters(new ArrayList<>(chaptersCount));
+            ArrayList<Chapter> chapters = new ArrayList<>();
             while (cursor.moveToNext()) {
-                item.getChapters().add(Chapter.fromCursor(cursor));
+                chapters.add(Chapter.fromCursor(cursor));
             }
+            return chapters;
         }
     }
 
@@ -744,6 +749,7 @@ public final class DBReader {
             long episodesStarted = 0;
             long episodesStartedIncludingMarked = 0;
             long totalDownloadSize = 0;
+            long episodesDownloadCount = 0;
             List<FeedItem> items = getFeed(feed.getId()).getItems();
             for (FeedItem item : items) {
                 FeedMedia media = item.getMedia();
@@ -770,14 +776,15 @@ public final class DBReader {
                 feedTotalTime += media.getDuration() / 1000;
 
                 if (media.isDownloaded()) {
-                    totalDownloadSize = totalDownloadSize + media.getSize();
+                    totalDownloadSize += new File(media.getFile_url()).length();
+                    episodesDownloadCount++;
                 }
 
                 episodes++;
             }
             feedTime.add(new StatisticsItem(
                     feed, feedTotalTime, feedPlayedTime, feedPlayedTimeCountAll, episodes,
-                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize));
+                    episodesStarted, episodesStartedIncludingMarked, totalDownloadSize, episodesDownloadCount));
         }
 
         adapter.close();
@@ -794,22 +801,10 @@ public final class DBReader {
         Log.d(TAG, "getNavDrawerData() called with: " + "");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        List<Feed> feeds = getFeedList(adapter);
-        long[] feedIds = new long[feeds.size()];
-        for (int i = 0; i < feeds.size(); i++) {
-            feedIds[i] = feeds.get(i).getId();
-        }
-        final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
 
-        int feedFilter = UserPreferences.getFeedFilter();
-        if (feedFilter == UserPreferences.FEED_FILTER_COUNTER_ZERO) {
-            for (int i = feeds.size() - 1; i >= 0; i--) {
-                if (feedCounters.get(feeds.get(i).getId()) <= 0) {
-                    feedCounters.delete(feeds.get(i).getId());
-                    feeds.remove(i);
-                }
-            }
-        }
+        final LongIntMap feedCounters = adapter.getFeedCounters();
+        SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
+        List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();
@@ -839,7 +834,7 @@ public final class DBReader {
                 }
             };
         } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters(feedIds);
+            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
 
             comparator = (lhs, rhs) -> {
                 long counterLhs = playedCounters.get(lhs.getId());
@@ -854,24 +849,11 @@ public final class DBReader {
                 }
             };
         } else {
+            final Map<Long, Long> recentPubDates = adapter.getMostRecentItemDates();
             comparator = (lhs, rhs) -> {
-                if (lhs.getItems() == null || lhs.getItems().size() == 0) {
-                    List<FeedItem> items = DBReader.getFeedItemList(lhs);
-                    lhs.setItems(items);
-                }
-                if (rhs.getItems() == null || rhs.getItems().size() == 0) {
-                    List<FeedItem> items = DBReader.getFeedItemList(rhs);
-                    rhs.setItems(items);
-                }
-                if (lhs.getMostRecentItem() == null) {
-                    return 1;
-                } else if (rhs.getMostRecentItem() == null) {
-                    return -1;
-                } else {
-                    Date d1 = lhs.getMostRecentItem().getPubDate();
-                    Date d2 = rhs.getMostRecentItem().getPubDate();
-                    return d2.compareTo(d1);
-                }
+                long dateLhs = recentPubDates.containsKey(lhs.getId()) ? recentPubDates.get(lhs.getId()) : 0;
+                long dateRhs = recentPubDates.containsKey(rhs.getId()) ? recentPubDates.get(rhs.getId()) : 0;
+                return Long.compare(dateRhs, dateLhs);
             };
         }
 

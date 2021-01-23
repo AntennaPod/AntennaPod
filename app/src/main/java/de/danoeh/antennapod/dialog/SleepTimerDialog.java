@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -87,6 +87,27 @@ public class SleepTimerDialog extends DialogFragment {
         timeSetup = content.findViewById(R.id.timeSetup);
         timeDisplay = content.findViewById(R.id.timeDisplay);
         time = content.findViewById(R.id.time);
+        Button extendSleepFiveMinutesButton = content.findViewById(R.id.extendSleepFiveMinutesButton);
+        extendSleepFiveMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 5));
+        Button extendSleepTenMinutesButton = content.findViewById(R.id.extendSleepTenMinutesButton);
+        extendSleepTenMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 10));
+        Button extendSleepTwentyMinutesButton = content.findViewById(R.id.extendSleepTwentyMinutesButton);
+        extendSleepTwentyMinutesButton.setText(getString(R.string.extend_sleep_timer_label, 20));
+        extendSleepFiveMinutesButton.setOnClickListener(v -> {
+            if (controller != null) {
+                controller.extendSleepTimer(5 * 1000 * 60);
+            }
+        });
+        extendSleepTenMinutesButton.setOnClickListener(v -> {
+            if (controller != null) {
+                controller.extendSleepTimer(10 * 1000 * 60);
+            }
+        });
+        extendSleepTwentyMinutesButton.setOnClickListener(v -> {
+            if (controller != null) {
+                controller.extendSleepTimer(20 * 1000 * 60);
+            }
+        });
 
         etxtTime.setText(SleepTimerPreferences.lastTimerValue());
         etxtTime.postDelayed(() -> {
@@ -137,6 +158,7 @@ public class SleepTimerDialog extends DialogFragment {
                 if (controller != null) {
                     controller.setSleepTimer(time);
                 }
+                closeKeyboard(content);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 Snackbar.make(content, R.string.time_dialog_invalid_input, Snackbar.LENGTH_LONG).show();
@@ -152,5 +174,10 @@ public class SleepTimerDialog extends DialogFragment {
         timeSetup.setVisibility(controller.sleepTimerActive() ? View.GONE : View.VISIBLE);
         timeDisplay.setVisibility(controller.sleepTimerActive() ? View.VISIBLE : View.GONE);
         time.setText(Converter.getDurationStringLong((int) controller.getSleepTimerTimeLeft()));
+    }
+
+    private void closeKeyboard(View content) {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
     }
 }

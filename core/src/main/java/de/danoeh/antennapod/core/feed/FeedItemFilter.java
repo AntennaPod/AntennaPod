@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,77 +13,58 @@ import static de.danoeh.antennapod.core.feed.FeedItem.TAG_FAVORITE;
 
 public class FeedItemFilter {
 
-    private final String[] mProperties;
+    private final String[] properties;
 
-    private boolean showPlayed = false;
-    private boolean showUnplayed = false;
-    private boolean showPaused = false;
-    private boolean showNotPaused = false;
-    private boolean showQueued = false;
-    private boolean showNotQueued = false;
-    private boolean showDownloaded = false;
-    private boolean showNotDownloaded = false;
-    private boolean showHasMedia = false;
-    private boolean showNoMedia = false;
-    private boolean showIsFavorite = false;
-    private boolean showNotFavorite = false;
+    public final boolean showPlayed;
+    public final boolean showUnplayed;
+    public final boolean showPaused;
+    public final boolean showNotPaused;
+    public final boolean showQueued;
+    public final boolean showNotQueued;
+    public final boolean showDownloaded;
+    public final boolean showNotDownloaded;
+    public final boolean showHasMedia;
+    public final boolean showNoMedia;
+    public final boolean showIsFavorite;
+    public final boolean showNotFavorite;
+
+    public static FeedItemFilter unfiltered() {
+        return new FeedItemFilter("");
+    }
 
     public FeedItemFilter(String properties) {
         this(TextUtils.split(properties, ","));
     }
 
     public FeedItemFilter(String[] properties) {
-        this.mProperties = properties;
-        for (String property : properties) {
-            // see R.arrays.feed_filter_values
-            switch (property) {
-                case "unplayed":
-                    showUnplayed = true;
-                    break;
-                case "paused":
-                    showPaused = true;
-                    break;
-                case "not_paused":
-                    showNotPaused = true;
-                    break;
-                case "played":
-                    showPlayed = true;
-                    break;
-                case "queued":
-                    showQueued = true;
-                    break;
-                case "not_queued":
-                    showNotQueued = true;
-                    break;
-                case "downloaded":
-                    showDownloaded = true;
-                    break;
-                case "not_downloaded":
-                    showNotDownloaded = true;
-                    break;
-                case "has_media":
-                    showHasMedia = true;
-                    break;
-                case "no_media":
-                    showNoMedia = true;
-                    break;
-                case "is_favorite":
-                    showIsFavorite = true;
-                    break;
-                case "not_favorite":
-                    showNotFavorite = true;
-                    break;
-                default:
-                    break;
-            }
-        }
+        this.properties = properties;
+
+        // see R.arrays.feed_filter_values
+        showUnplayed = hasProperty("unplayed");
+        showPaused = hasProperty("paused");
+        showNotPaused = hasProperty("not_paused");
+        showPlayed = hasProperty("played");
+        showQueued = hasProperty("queued");
+        showNotQueued = hasProperty("not_queued");
+        showDownloaded = hasProperty("downloaded");
+        showNotDownloaded = hasProperty("not_downloaded");
+        showHasMedia = hasProperty("has_media");
+        showNoMedia = hasProperty("no_media");
+        showIsFavorite = hasProperty("is_favorite");
+        showNotFavorite = hasProperty("not_favorite");
+    }
+
+    private boolean hasProperty(String property) {
+        return Arrays.asList(properties).contains(property);
     }
 
     /**
      * Run a list of feed items through the filter.
      */
     public List<FeedItem> filter(List<FeedItem> items) {
-        if(mProperties.length == 0) return items;
+        if (properties.length == 0) {
+            return items;
+        }
 
         List<FeedItem> result = new ArrayList<>();
 
@@ -126,7 +106,10 @@ public class FeedItemFilter {
     }
 
     public String[] getValues() {
-        return mProperties.clone();
+        return properties.clone();
     }
 
+    public boolean isShowDownloaded() {
+        return showDownloaded;
+    }
 }

@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.ListFragment;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -76,12 +75,6 @@ public class RunningDownloadsFragment extends ListFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
@@ -94,9 +87,9 @@ public class RunningDownloadsFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.downloads_running, menu);
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        menu.findItem(R.id.clear_logs_item).setVisible(false);
+        menu.findItem(R.id.episode_actions).setVisible(false);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
 
@@ -113,7 +106,7 @@ public class RunningDownloadsFragment extends ListFragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            getActivity().invalidateOptionsMenu();
+            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
     }
 

@@ -9,12 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreference;
+import androidx.preference.SwitchPreferenceCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.settings.SkipIntroEndingChangedEvent;
@@ -64,7 +64,7 @@ public class FeedSettingsFragment extends Fragment {
         long feedId = getArguments().getLong(EXTRA_FEED_ID);
 
         Toolbar toolbar = root.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.settings_fragment_container,
@@ -100,6 +100,9 @@ public class FeedSettingsFragment extends Fragment {
     public static class FeedSettingsPreferenceFragment extends PreferenceFragmentCompat {
         private static final CharSequence PREF_EPISODE_FILTER = "episodeFilter";
         private static final CharSequence PREF_SCREEN = "feedSettingsScreen";
+        private static final CharSequence PREF_AUTHENTICATION = "authentication";
+        private static final CharSequence PREF_AUTO_DELETE = "autoDelete";
+        private static final CharSequence PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
         private static final DecimalFormat SPEED_FORMAT =
@@ -118,10 +121,19 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         @Override
+        public RecyclerView onCreateRecyclerView(LayoutInflater inflater, ViewGroup parent, Bundle state) {
+            final RecyclerView view = super.onCreateRecyclerView(inflater, parent, state);
+            // To prevent transition animation because of summary update
+            view.setItemAnimator(null);
+            view.setLayoutAnimation(null);
+            return view;
+        }
+
+        @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.feed_settings);
-            findPreference(PREF_SCREEN).setEnabled(false);
-            setupAutoDownloadGlobalPreference(); // To prevent transition animation because of summary update
+            // To prevent displaying partially loaded data
+            findPreference(PREF_SCREEN).setVisible(false);
 
             long feedId = getArguments().getLong(EXTRA_FEED_ID);
             disposable = Maybe.create((MaybeOnSubscribe<Feed>) emitter -> {
@@ -138,6 +150,7 @@ public class FeedSettingsFragment extends Fragment {
                         feed = result;
                         feedPreferences = feed.getPreferences();
 
+                        setupAutoDownloadGlobalPreference();
                         setupAutoDownloadPreference();
                         setupKeepUpdatedPreference();
                         setupAutoDeletePreference();
@@ -146,12 +159,20 @@ public class FeedSettingsFragment extends Fragment {
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
                         setupFeedAutoSkipPreference();
+                        setupEpisodeNotificationPreference();
 
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
                         updateAutoDownloadEnabled();
                         updatePlaybackSpeedPreference();
-                        findPreference(PREF_SCREEN).setEnabled(true);
+
+                        if (feed.isLocalFeed()) {
+                            findPreference(PREF_AUTHENTICATION).setVisible(false);
+                            findPreference(PREF_AUTO_DELETE).setVisible(false);
+                            findPreference(PREF_CATEGORY_AUTO_DOWNLOAD).setVisible(false);
+                        }
+
+                        findPreference(PREF_SCREEN).setVisible(true);
                     }, error -> Log.d(TAG, Log.getStackTraceString(error)), () -> { });
         }
 
@@ -222,7 +243,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupAuthentificationPreference() {
-            findPreference("authentication").setOnPreferenceClickListener(preference -> {
+            findPreference(PREF_AUTHENTICATION).setOnPreferenceClickListener(preference -> {
                 new AuthenticationDialog(getContext(),
                         R.string.authentication_label, true,
                         feedPreferences.getUsername(), feedPreferences.getPassword()) {
@@ -238,8 +259,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupAutoDeletePreference() {
-            ListPreference autoDeletePreference = findPreference("autoDelete");
-            autoDeletePreference.setOnPreferenceChangeListener((preference, newValue) -> {
+            findPreference(PREF_AUTO_DELETE).setOnPreferenceChangeListener((preference, newValue) -> {
                 switch ((String) newValue) {
                     case "global":
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.GLOBAL);
@@ -265,7 +285,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void updateAutoDeleteSummary() {
-            ListPreference autoDeletePreference = findPreference("autoDelete");
+            ListPreference autoDeletePreference = findPreference(PREF_AUTO_DELETE);
 
             switch (feedPreferences.getAutoDeleteAction()) {
                 case GLOBAL:
@@ -322,7 +342,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupKeepUpdatedPreference() {
-            SwitchPreference pref = findPreference("keepUpdated");
+            SwitchPreferenceCompat pref = findPreference("keepUpdated");
 
             pref.setChecked(feedPreferences.getKeepUpdated());
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -336,7 +356,7 @@ public class FeedSettingsFragment extends Fragment {
 
         private void setupAutoDownloadGlobalPreference() {
             if (!UserPreferences.isEnableAutodownload()) {
-                SwitchPreference autodl = findPreference("autoDownload");
+                SwitchPreferenceCompat autodl = findPreference("autoDownload");
                 autodl.setChecked(false);
                 autodl.setEnabled(false);
                 autodl.setSummary(R.string.auto_download_disabled_globally);
@@ -345,7 +365,7 @@ public class FeedSettingsFragment extends Fragment {
         }
 
         private void setupAutoDownloadPreference() {
-            SwitchPreference pref = findPreference("autoDownload");
+            SwitchPreferenceCompat pref = findPreference("autoDownload");
 
             pref.setEnabled(UserPreferences.isEnableAutodownload());
             if (UserPreferences.isEnableAutodownload()) {
@@ -373,6 +393,19 @@ public class FeedSettingsFragment extends Fragment {
                 boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
                 findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
             }
+        }
+
+        private void setupEpisodeNotificationPreference() {
+            SwitchPreferenceCompat pref = findPreference("episodeNotification");
+
+            pref.setChecked(feedPreferences.getShowEpisodeNotification());
+            pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                boolean checked = newValue == Boolean.TRUE;
+                feedPreferences.setShowEpisodeNotification(checked);
+                feed.savePreferences();
+                pref.setChecked(checked);
+                return false;
+            });
         }
 
         private class ApplyToEpisodesDialog extends ConfirmationDialog {

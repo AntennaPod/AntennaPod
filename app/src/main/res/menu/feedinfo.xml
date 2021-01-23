@@ -6,17 +6,27 @@
         android:icon="?attr/location_web_site"
         custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label"
+        android:visible="true"/>
+    <item
+        android:id="@+id/share_parent"
+        custom:showAsAction="ifRoom"
+        android:title="@string/share_label_with_ellipses"
+        android:icon="?attr/ic_share"
         android:visible="true">
+        <menu android:id="@+id/share_submenu">
+            <item
+                android:id="@+id/share_link_item"
+                custom:showAsAction="collapseActionView"
+                android:title="@string/share_website_url_label"/>
+            <item
+                android:id="@+id/share_download_url_item"
+                custom:showAsAction="collapseActionView"
+                android:title="@string/share_feed_url_label"/>
+        </menu>
     </item>
     <item
-        android:id="@+id/share_link_item"
+        android:id="@+id/reconnect_local_folder"
         custom:showAsAction="collapseActionView"
-        android:title="@string/share_website_url_label">
-    </item>
-    <item
-        android:id="@+id/share_download_url_item"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/share_feed_url_label">
-    </item>
-
+        android:title="@string/reconnect_local_folder"
+        android:visible="false" />
 </menu>

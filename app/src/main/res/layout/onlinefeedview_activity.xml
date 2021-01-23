@@ -28,7 +28,7 @@
                     android:layout_gravity="center"/>
 
             <LinearLayout
-                    android:id="@+id/feedDisplay"
+                    android:id="@+id/feed_display_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -39,13 +39,13 @@
                         android:background="@color/feed_image_bg">
 
                     <ImageView
-                            android:id="@+id/imgvBackground"
+                            android:id="@+id/backgroundImage"
                             style="@style/BigBlurryBackground"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/feeditemlist_header_height"/>
 
                     <ImageView
-                            android:id="@+id/imgvCover"
+                            android:id="@+id/coverImage"
                             android:layout_width="@dimen/thumbnail_length_onlinefeedview"
                             android:layout_height="@dimen/thumbnail_length_onlinefeedview"
                             android:layout_alignParentLeft="true"
@@ -57,10 +57,10 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:importantForAccessibility="no"
-                            tools:src="@drawable/ic_antenna"/>
+                            tools:src="@tools:sample/avatars"/>
 
                     <TextView
-                            android:id="@+id/txtvTitle"
+                            android:id="@+id/titleLabel"
                             style="@style/AntennaPod.TextView.Heading"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -73,8 +73,8 @@
                             android:layout_marginEnd="16dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@id/imgvCover"
-                            android:layout_toEndOf="@id/imgvCover"
+                            android:layout_toRightOf="@id/coverImage"
+                            android:layout_toEndOf="@id/coverImage"
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:shadowColor="@color/black"
@@ -83,10 +83,10 @@
                             tools:text="Podcast title"/>
 
                     <TextView
-                            android:id="@+id/txtvAuthor"
+                            android:id="@+id/author_label"
                             android:layout_width="0dip"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/txtvTitle"
+                            android:layout_below="@id/titleLabel"
                             android:layout_marginBottom="16dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginStart="16dp"
@@ -94,8 +94,8 @@
                             android:layout_marginEnd="16dp"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_toRightOf="@id/imgvCover"
-                            android:layout_toEndOf="@id/imgvCover"
+                            android:layout_toRightOf="@id/coverImage"
+                            android:layout_toEndOf="@id/coverImage"
                             android:ellipsize="end"
                             android:lines="1"
                             android:shadowColor="@color/black"
@@ -105,38 +105,58 @@
                             tools:text="Podcast author"/>
                 </RelativeLayout>
 
-                <Spinner
-                        android:id="@+id/spinnerAlternateUrls"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:layout_marginTop="8dp"
-                        android:padding="8dp"
-                        android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="@dimen/text_size_micro"/>
-
-                <Button
-                        android:id="@+id/butSubscribe"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:focusable="false"
-                        android:text="@string/subscribe_label"/>
-
-                <Button
-                        android:id="@+id/butStopPreview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
                         android:layout_marginBottom="16dp"
-                        android:focusable="false"
-                        android:text="@string/stop_preview"
-                        android:visibility="gone" />
+                        android:orientation="vertical">
+
+                    <Spinner
+                            android:id="@+id/alternate_urls_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:padding="8dp"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textSize="@dimen/text_size_micro" />
+
+                    <Button
+                            android:id="@+id/subscribeButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:focusable="false"
+                            android:text="@string/subscribe_label" />
+
+                    <CheckBox
+                            android:id="@+id/autoDownloadCheckBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:focusable="false"
+                            android:checked="true"
+                            android:text="@string/auto_download_label"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                    <Button
+                            android:id="@+id/stopPreviewButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:focusable="false"
+                            android:text="@string/stop_preview"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                </LinearLayout>
 
                 <ListView
-                        android:id="@+id/listview"
+                        android:id="@+id/listView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 

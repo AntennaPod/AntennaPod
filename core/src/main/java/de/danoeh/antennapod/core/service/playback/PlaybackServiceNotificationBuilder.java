@@ -29,6 +29,8 @@ import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 public class PlaybackServiceNotificationBuilder {
@@ -69,7 +71,7 @@ public class PlaybackServiceNotificationBuilder {
     }
 
     public void loadIcon() {
-        int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.notification_large_icon_width);
+        int iconSize = (int) (128 * context.getResources().getDisplayMetrics().density);
         try {
             icon = Glide.with(context)
                     .asBitmap()
@@ -78,6 +80,18 @@ public class PlaybackServiceNotificationBuilder {
                     .apply(new RequestOptions().centerCrop())
                     .submit(iconSize, iconSize)
                     .get();
+        } catch (ExecutionException e) {
+            try {
+                icon = Glide.with(context)
+                        .asBitmap()
+                        .load(ImageResourceUtils.getFallbackImageLocation(playable))
+                        .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                        .apply(new RequestOptions().centerCrop())
+                        .submit(iconSize, iconSize)
+                        .get();
+            } catch (Throwable tr) {
+                Log.e(TAG, "Error loading the media icon for the notification", tr);
+            }
         } catch (Throwable tr) {
             Log.e(TAG, "Error loading the media icon for the notification", tr);
         }
@@ -85,7 +99,7 @@ public class PlaybackServiceNotificationBuilder {
 
     private Bitmap getDefaultIcon() {
         if (defaultIcon == null) {
-            defaultIcon = getBitmap(context, R.drawable.notification_default_large_icon);
+            defaultIcon = getBitmap(context, R.mipmap.ic_launcher);
         }
         return defaultIcon;
     }
@@ -136,9 +150,10 @@ public class PlaybackServiceNotificationBuilder {
 
         notification.setContentIntent(getPlayerActivityPendingIntent());
         notification.setWhen(0);
-        notification.setSmallIcon(R.drawable.ic_antenna);
+        notification.setSmallIcon(R.drawable.ic_notification);
         notification.setOngoing(false);
         notification.setOnlyAlertOnce(true);
+        notification.setShowWhen(false);
         notification.setPriority(UserPreferences.getNotifyPriority());
         notification.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
         notification.setColor(NotificationCompat.COLOR_DEFAULT);

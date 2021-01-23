@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
@@ -9,10 +8,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceFragmentCompat;
 import android.widget.ListView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.dialog.FeedFilterDialog;
+import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
+import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -78,7 +77,13 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
 
         findPreference(UserPreferences.PREF_FILTER_FEED)
                 .setOnPreferenceClickListener((preference -> {
-                    FeedFilterDialog.showDialog(requireContext());
+                    SubscriptionsFilterDialog.showDialog(requireContext());
+                    return true;
+                }));
+
+        findPreference(UserPreferences.PREF_DRAWER_FEED_ORDER)
+                .setOnPreferenceClickListener((preference -> {
+                    FeedSortDialog.showDialog(requireContext());
                     return true;
                 }));
 

@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Request a new feature
+about: Request a new feature or enhancement
 
 ---
 
@@ -13,8 +13,11 @@ about: Request a new feature
 
 # System info
 
+**App version**: x.y.z
 <!-- The latest version may be different depending on your device. You can find the version in AntennaPod's settings. -->
-**App version**: x.y.z (state whether from Google Play/F-Droid/Custom built APK)
+
+**App source**: Google Play / F-Droid / ...
+<!-- Please delete irrelevant answer or fill in the blank -->
 
 # Feature description
 

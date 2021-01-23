@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.cast;
 
+import android.content.ContentResolver;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
@@ -50,14 +51,17 @@ public class CastUtils {
     public static final int FORMAT_VERSION_VALUE = 1;
     public static final int MAX_VERSION_FORWARD_COMPATIBILITY = 9999;
 
-    public static boolean isCastable(Playable media){
+    public static boolean isCastable(Playable media) {
         if (media == null || media instanceof ExternalMedia) {
             return false;
         }
-        if (media instanceof FeedMedia || media instanceof RemoteMedia){
+        if (media instanceof FeedMedia || media instanceof RemoteMedia) {
             String url = media.getStreamUrl();
-            if(url == null || url.isEmpty()){
+            if (url == null || url.isEmpty()) {
                 return false;
+            }
+            if (url.startsWith(ContentResolver.SCHEME_CONTENT)) {
+                return false; // Local feed
             }
             switch (media.getMediaType()) {
                 case UNKNOWN:

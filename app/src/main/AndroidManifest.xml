@@ -37,13 +37,14 @@
         android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:logo="@mipmap/ic_launcher"
-        android:resizeableActivity="true">
+        android:resizeableActivity="true"
+        android:allowAudioPlaybackCapture="true">
 
 
         <meta-data android:name="android.webkit.WebView.MetricsOptOut"
             android:value="true"/>
         <meta-data android:name="com.google.android.gms.car.notification.SmallIcon"
-            android:resource="@drawable/ic_antenna"/>
+            android:resource="@drawable/ic_notification"/>
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc"/>
@@ -80,7 +81,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode|keyboard|navigation"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:launchMode="singleTask"
             android:label="@string/app_name">
             <intent-filter>
@@ -109,6 +110,7 @@
 
         <activity
             android:name=".activity.DownloadAuthenticationActivity"
+            android:theme="@style/Theme.AntennaPod.Dark.Translucent"
             android:launchMode="singleInstance"/>
 
         <activity
@@ -210,15 +212,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data android:scheme="file"/>
-                <data android:mimeType="video/*"/>
-            </intent-filter>
         </activity>
 
         <activity
@@ -311,19 +304,6 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
 
-        </activity>
-
-        <activity
-            android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"
-            android:configChanges="orientation"
-            android:label="@string/gpodnet_auth_label">
-            <intent-filter>
-                <action android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
         <receiver android:name=".receiver.ConnectivityActionReceiver">

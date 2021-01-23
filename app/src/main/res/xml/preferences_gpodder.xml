@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <PreferenceScreen
+    <Preference
+            android:key="pref_gpodnet_description"
+            android:icon="@drawable/gpodder_icon"
+            android:summary="@string/gpodnet_description"/>
+    <Preference
             android:key="pref_gpodnet_authenticate"
             android:title="@string/pref_gpodnet_authenticate_title"
-            android:summary="@string/pref_gpodnet_authenticate_sum">
-        <intent android:action=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
-    </PreferenceScreen>
+            android:summary="@string/pref_gpodnet_authenticate_sum"/>
     <Preference
             android:key="pref_gpodnet_setlogin_information"
             android:title="@string/pref_gpodnet_setlogin_information_title"
@@ -23,13 +24,5 @@
     <Preference
             android:key="pref_gpodnet_logout"
             android:title="@string/pref_gpodnet_logout_title"/>
-    <Preference
-            android:key="pref_gpodnet_hostname"
-            android:title="@string/pref_gpodnet_sethostname_title"/>
-    <SwitchPreference
-            android:key="pref_gpodnet_notifications"
-            android:title="@string/pref_gpodnet_notifications_title"
-            android:summary="@string/pref_gpodnet_notifications_sum"
-            android:defaultValue="true"/>
 
 </PreferenceScreen>

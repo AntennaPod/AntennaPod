@@ -10,19 +10,14 @@
             android:icon="?attr/ic_unfav"
             android:summary="1.7.2 (asd8qs)"/>
     <Preference
-            android:key="about_developers"
+            android:key="about_contributors"
             android:icon="?attr/ic_settings"
-            android:summary="@string/developers_summary"
-            android:title="@string/developers"/>
-    <Preference
-            android:key="about_translators"
-            android:icon="?attr/ic_chat"
-            android:summary="@string/translators_summary"
-            android:title="@string/translators"/>
+            android:summary="@string/contributors_summary"
+            android:title="@string/contributors"/>
     <Preference
             android:key="about_privacy_policy"
             android:icon="?attr/ic_questionmark"
-            android:summary="https://antennapod.org/privacy.html"
+            android:summary="www.antennapod.org/privacy"
             android:title="@string/privacy_policy"/>
     <Preference
             android:key="about_licenses"

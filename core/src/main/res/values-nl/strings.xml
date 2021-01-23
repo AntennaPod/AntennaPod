@@ -25,17 +25,19 @@
   <string name="episode_cache_full_message">Het maximum aantal gecachete afleveringen is bereikt. Je kunt dit aantal verhogen in de instellingen.</string>
   <string name="playback_statistics_label">Afspelen</string>
   <string name="download_statistics_label">Downloads</string>
+  <string name="notification_pref_fragment">Meldingen</string>
   <!--Statistics fragment-->
-  <string name="total_time_listened_to_podcasts">Totale duur van afgespeelde podcasts:</string>
+  <string name="total_time_listened_to_podcasts">Totaalduur van afgespeelde afleveringen:</string>
   <string name="statistics_details_dialog">%1$d van %2$d afleveringen gestart.\n\n%3$s van %4$s afgespeeld.</string>
   <string name="statistics_mode">Rekenmethode</string>
   <string name="statistics_mode_normal">Bereken de daadwerkelijke speeltijd. Tweemaal afspelen wordt twee keer gerekend; gemarkeerd als \'afgespeeld\' wordt niet meegeteld.</string>
-  <string name="statistics_mode_count_all">Duur van de podcasts optellen die als \'afgespeeld\' gemarkeerd zijn</string>
+  <string name="statistics_mode_count_all">Alle afgespeelde afleveringen opsommen</string>
   <string name="statistics_speed_not_counted">Let op: er wordt geen rekening gehouden met de afspeelsnelheid.</string>
   <string name="statistics_reset_data">Statistieken op nul zetten</string>
   <string name="statistics_reset_data_msg">Dit wist alle luistertijden van alle afleveringen. Weet je zeker dat je wilt doorgaan?</string>
+  <string name="statistics_counting_since">Sinds %s\nheb je geluisterd:</string>
   <!--Download Statistics fragment-->
-  <string name="total_size_downloaded_podcasts">Totale grootte van gedownloade podcasts:</string>
+  <string name="total_size_downloaded_podcasts">Totaalgrootte van afleveringen op apparaat:</string>
   <!--Main activity-->
   <string name="drawer_open">Menu openen</string>
   <string name="drawer_close">Menu sluiten</string>
@@ -49,6 +51,8 @@
   <string name="drawer_feed_counter_unplayed">Aantal onbeluisterde afleveringen</string>
   <string name="drawer_feed_counter_downloaded">Aantal gedownloade afleveringen</string>
   <string name="drawer_feed_counter_none">Geen</string>
+  <!--Bug report activity-->
+  <string name="log_file_share_exception">Geen compatibele apps aangetroffen</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Openen in browser</string>
   <string name="copy_url_label">URL kopiëren</string>
@@ -69,7 +73,7 @@
   <string name="cover_label">Beeld</string>
   <string name="error_label">Fout</string>
   <string name="error_msg_prefix">Er is een fout opgetreden:</string>
-  <string name="needs_storage_permission">Machtiging vereist voor gebruik van opslag</string>
+  <string name="needs_storage_permission">Recht vereist voor gebruik van opslag</string>
   <string name="refresh_label">Verversen</string>
   <string name="external_storage_error_msg">Geen externe opslag beschikbaar. Zorg ervoor dat de externe opslag gekoppeld is zodat de app juist kan functioneren.</string>
   <string name="chapters_label">Hoofdstukken</string>
@@ -124,29 +128,22 @@
   <string name="feed_settings_label">Podcastinstellingen</string>
   <string name="rename_feed_label">Podcastnaam wijzigen</string>
   <string name="remove_feed_label">Podcast verwijderen</string>
-  <string name="share_label">Delen...</string>
-  <string name="share_link_label">URL van aflevering delen</string>
-  <string name="share_link_with_position_label">URL van aflevering, incl. afspeelpositie, delen</string>
+  <string name="share_label">Delen</string>
+  <string name="share_label_with_ellipses">Delen…</string>
   <string name="share_file_label">Bestand delen</string>
-  <string name="share_website_url_label">Website-url delen</string>
-  <string name="share_feed_url_label">Podcast-url delen</string>
-  <string name="share_item_url_label">URL van mediabestand delen</string>
-  <string name="share_item_url_with_position_label">URL van mediabestand, incl. afspeelpositie, delen</string>
+  <string name="share_website_url_label">Website-adres</string>
+  <string name="share_feed_url_label">Podcast-feedurl</string>
   <string name="feed_delete_confirmation_msg">Bevestig dat je de podcast \'%1$s\' en ALLE bijbehorende (gedownloade) afleveringen wilt verwijderen.</string>
+  <string name="feed_delete_confirmation_local_msg">Bevestig dat je de podcast \'%1$s\' wilt verwijderen. De bestanden in de lokale bronmap worden bewaard.</string>
   <string name="feed_remover_msg">Podcast verwijderen</string>
   <string name="load_complete_feed">Gehele podcast verversen</string>
   <string name="multi_select">Meerdere selecteren</string>
   <string name="select_all_above">Alles hierboven selecteren</string>
   <string name="select_all_below">Alles hieronder selecteren</string>
   <string name="hide_unplayed_episodes_label">Niet afgespeeld</string>
-  <string name="hide_paused_episodes_label">Gepauzeerd</string>
-  <string name="hide_played_episodes_label">Afgespeeld</string>
   <string name="hide_queued_episodes_label">In de wachtrij</string>
   <string name="hide_not_queued_episodes_label">Niet in de wachtrij</string>
-  <string name="hide_downloaded_episodes_label">Gedownload</string>
-  <string name="hide_not_downloaded_episodes_label">Niet gedownload</string>
   <string name="hide_has_media_label">Bevat media</string>
-  <string name="hide_is_favorite_label">Gemarkeerd als favoriet</string>
   <string name="filtered_label">Gefilterd</string>
   <string name="refresh_failed_msg">{fa-exclamation-circle} Vorige verversing mislukt</string>
   <string name="open_podcast">Podcast openen</string>
@@ -163,10 +160,6 @@
   <string name="delete_label">Verwijderen</string>
   <string name="delete_failed">Kan bestand niet verwijderen; start je apparaat opnieuw op.</string>
   <string name="delete_episode_label">Aflevering verwijderen</string>
-  <plurals name="deleted_episode_batch_label">
-    <item quantity="one">%d aflevering verwijderd.</item>
-    <item quantity="other">%d afleveringen verwijderd.</item>
-  </plurals>
   <string name="remove_new_flag_label">\'Nieuw\'-label verwijderen</string>
   <string name="removed_new_flag_label">\'Nieuw\'-label is verwijderd</string>
   <string name="mark_read_label">Als afgespeeld markeren</string>
@@ -238,7 +231,10 @@
   </plurals>
   <string name="downloads_processing">Bezig met verwerken van downloads</string>
   <string name="download_notification_title">Bezig met downloaden van podcastgegevens</string>
-  <string name="download_report_content">%1$d downloads voltooid; %2$d mislukt</string>
+  <plurals name="download_report_content">
+    <item quantity="one">%d download voltooid; %d mislukt</item>
+    <item quantity="other">%d downloads voltooid; %d mislukt</item>
+  </plurals>
   <string name="download_log_title_unknown">Onbekende titel</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediabestand</string>
@@ -251,7 +247,8 @@
   <string name="confirm_mobile_download_dialog_message">Downloaden via mobiel internet is uitgeschakeld in de instellingen.\n\nWil je dit tijdelijk toestaan?\n<small>Je keuze wordt 10 minuten onthouden.</small></string>
   <string name="confirm_mobile_streaming_notification_title">Bevestig streamen via mobiel internet</string>
   <string name="confirm_mobile_streaming_notification_message">Streamen via mobiel internet is uitgeschakeld in de instellingen. Druk om tóch te streamen.</string>
-  <string name="confirm_mobile_streaming_button_always">Altijd toestaan</string>
+  <string name="confirm_mobile_streaming_button_always">Altijd</string>
+  <string name="confirm_mobile_streaming_button_once">Eenmalig</string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Toevoegen aan wachtrij</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Tijdelijk toestaan</string>
   <!--Mediaplayer messages-->
@@ -297,8 +294,9 @@
   <string name="download_plugin_label">Plug-in downloaden</string>
   <string name="no_playback_plugin_title">Plug-in niet geïnstalleerd</string>
   <string name="no_playback_plugin_or_sonic_msg">Als je variabele afspeelsnelheden aan de praat wilt krijgen, dan raden we aan om de ingebouwde Sonic-mediaspeler te gebruiken.</string>
-  <string name="set_playback_speed_label">Afspeelsnelheden</string>
   <string name="enable_sonic">Sonic inschakelen</string>
+  <string name="speed_presets">Voorinstellingen</string>
+  <string name="preset_already_exists">%1$.2fx is al opgeslagen als voorinstelling.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Geen afleveringen in wachtrij</string>
   <string name="no_items_label">Voeg een aflevering toe door deze te downloaden of houd een aflevering lang ingedrukt en kies \'Toevoegen aan wachtrij\'.</string>
@@ -342,11 +340,11 @@
   <string name="media_player">Mediaspeler</string>
   <string name="pref_episode_cleanup_title">Automatisch opschonen</string>
   <string name="pref_episode_cleanup_summary">Afleveringen die niet in de wachtrij staan én geen favoriet zijn, mogen verwijderd worden als \'Automatisch downloaden\' ruimte nodig heeft voor nieuwe afleveringen</string>
-  <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren als de koptelefoon wordt losgekoppeld of de Bluetooth-verbinding verbroken</string>
+  <string name="pref_pauseOnDisconnect_sum">Afspelen pauzeren als de koptelefoon wordt losgekoppeld of de bluetoothverbinding verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Afspelen hervatten als de koptelefoon weer wordt aangesloten</string>
-  <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten als de Bluetooth-verbinding hervat</string>
+  <string name="pref_unpauseOnBluetoothReconnect_sum">Afspelen hervatten als de bluetoothverbinding hersteld is</string>
   <string name="pref_hardwareForwardButtonSkips_title">\'Vooruit\' gebruiken voor overslaan</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Als je op de vooruitknop van een via Bluetooth verbonden apparaat drukt, wordt de volgende aflevering geladen i.p.v. doorgespoeld</string>
+  <string name="pref_hardwareForwardButtonSkips_sum">Als je op de vooruitknop van een via bluetooth verbonden apparaat drukt, wordt de volgende aflevering geladen i.p.v. doorgespoeld</string>
   <string name="pref_hardwarePreviousButtonRestarts_title">\'Vorige\' gebruiken voor opnieuw afspelen</string>
   <string name="pref_hardwarePreviousButtonRestarts_sum">Aflevering afspelen vanaf het begin i.p.v. terugspoelen als er op een fysieke \'vorige\'-knop wordt gedrukt</string>
   <string name="pref_followQueue_sum">Volgende item in de wachtrij afspelen als de aflevering voltooid is</string>
@@ -371,9 +369,9 @@
   <string name="pref_autoUpdateIntervallOrTime_every">elke %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">om %1$s</string>
   <string name="pref_followQueue_title">Doorlopend afspelen</string>
-  <string name="pref_pauseOnHeadsetDisconnect_title">Loskoppelen van hoofdtelefoon</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Koptelefoon- of bluetoothverbinding verbroken</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Opnieuw aansluiten van hoofdtelefoon</string>
-  <string name="pref_unpauseOnBluetoothReconnect_title">Opnieuw verbinden met Bluetooth</string>
+  <string name="pref_unpauseOnBluetoothReconnect_title">Opnieuw verbinden met bluetooth</string>
   <string name="pref_stream_over_download_title">Voorkeur geven aan streaming</string>
   <string name="pref_stream_over_download_sum">Toon een stream- i.p.v. downloadknop in lijsten.</string>
   <string name="pref_mobileUpdate_title">Bijwerken via mobiel internet</string>
@@ -384,7 +382,7 @@
   <string name="pref_mobileUpdate_episode_download">Hoofdstuk downloaden</string>
   <string name="pref_mobileUpdate_streaming">Streamen</string>
   <string name="user_interface_label">Uiterlijk</string>
-  <string name="user_interface_sum">Uiterlijk, abonnementsortering, vergrendelscherm</string>
+  <string name="user_interface_sum">Uiterlijk, abonnementen, vergrendelscherm</string>
   <string name="pref_set_theme_title">Thema kiezen</string>
   <string name="pref_nav_drawer_items_title">Menu-items kiezen</string>
   <string name="pref_nav_drawer_items_sum">Kies welke items moeten worden getoond in het navigatiemenu.</string>
@@ -395,8 +393,8 @@
   <string name="pref_set_theme_sum">Pas het uiterlijk van AntennaPod aan.</string>
   <string name="pref_automatic_download_title">Automatisch downloaden</string>
   <string name="pref_automatic_download_sum">Stel het automatisch downloaden van afleveringen in.</string>
-  <string name="pref_autodl_wifi_filter_title">Wi-Fi-filter inschakelen</string>
-  <string name="pref_autodl_wifi_filter_sum">Automatisch downloaden alleen toestaan via gekozen Wi-Fi-netwerken.</string>
+  <string name="pref_autodl_wifi_filter_title">Wifi-filter inschakelen</string>
+  <string name="pref_autodl_wifi_filter_sum">Automatisch downloaden alleen toestaan via gekozen wifi-netwerken.</string>
   <string name="pref_automatic_download_on_battery_title">Downloaden als het apparaat niet wordt opgeladen</string>
   <string name="pref_automatic_download_on_battery_sum">Downloaden toestaan als het apparaat niet wordt opgeladen</string>
   <string name="pref_parallel_downloads_title">Gelijktijdige downloads</string>
@@ -423,10 +421,9 @@
   <string name="pref_gpodnet_full_sync_title">Volledige synchronisatie afdwingen</string>
   <string name="pref_gpodnet_full_sync_sum">Synchroniseer alle abonnementen en afleveringsstatussen met gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Ingelogd als <i>%1$s</i> met apparaat <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_title">Melding tonen bij synchronisatiefouten</string>
+  <string name="pref_gpodnet_notifications_title">Synchronisatie mislukt</string>
   <string name="pref_gpodnet_notifications_sum">Deze instelling is niet van toepassing op inlogfouten.</string>
-  <string name="pref_playback_speed_title">Afspeelsnelheden</string>
-  <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele audio-afspeelsnelheid</string>
+  <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele afspeelsnelheid</string>
   <string name="pref_feed_playback_speed_sum">De te gebruiken snelheid bij het afspelen van afleveringen in deze podcast</string>
   <string name="pref_feed_skip">Automatisch overslaan</string>
   <string name="pref_feed_skip_sum">Sla introducties en aftitelingen over.</string>
@@ -446,15 +443,15 @@
   <string name="pref_expandNotify_sum">Dit klapt meestal de melding uit zodat de bedieningsknoppen kunnen worden getoond.</string>
   <string name="pref_persistNotify_title">Bedieningsknoppen behouden</string>
   <string name="pref_persistNotify_sum">Ook bedieningsknoppen op het meldings- en vergrendelscherm behouden als het afspelen gepauzeerd wordt.</string>
-  <string name="pref_compact_notification_buttons_title">Bedieningsknoppen vergrendelscherm</string>
-  <string name="pref_compact_notification_buttons_sum">Kies de bedieningsknoppen voor het vergrendelscherm. De knop afspelen/pauzeren wordt altijd getoond.</string>
+  <string name="pref_compact_notification_buttons_title">Kleine meldingsknoppen gebruiken</string>
+  <string name="pref_compact_notification_buttons_sum">Kies de bedieningsknoppen voor als de melding is ingeklapt. De knop afspelen/pauzeren wordt altijd getoond.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Kies maximaal %1$d knoppen</string>
   <string name="pref_compact_notification_buttons_dialog_error">Je kunt maximaal %1$d knoppen kiezen.</string>
   <string name="pref_lockscreen_background_title">Achtergrondafbeelding vergrendelscherm</string>
   <string name="pref_lockscreen_background_sum">Toon de afbeelding van de huidige aflevering op het vergrendelscherm. Hierdoor is de afbeelding ook beschikbaar voor andere apps.</string>
-  <string name="pref_showDownloadReport_title">Downloadverslag tonen</string>
+  <string name="pref_showDownloadReport_title">Downloaden mislukt</string>
   <string name="pref_showDownloadReport_sum">Stel een verslag op met foutdetails als downloads mislukken.</string>
-  <string name="pref_showAutoDownloadReport_title">Downloadverslag tonen</string>
+  <string name="pref_showAutoDownloadReport_title">Automatisch downloaden voltooid</string>
   <string name="pref_showAutoDownloadReport_sum">Toon een melding bij automatisch gedownloade afleveringen.</string>
   <string name="pref_expand_notify_unsupport_toast">Android-versies lager dan 4.1 ondersteunen geen knoppen op meldingen.</string>
   <string name="pref_enqueue_location_title">Wachtrijlocatie</string>
@@ -484,6 +481,7 @@
   <string name="pref_enqueue_downloaded_title">Gedownloade afleveringen in wachtrij</string>
   <string name="pref_enqueue_downloaded_summary">Voeg gedownloade afleveringen toe aan de wachtrij</string>
   <string name="media_player_builtin">Ingebouwde Android-speler</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (aanbevolen)</string>
   <string name="media_player_switch_to_exoplayer">ExoPlayer gebruiken</string>
   <string name="media_player_switched_to_exoplayer">Overgeschakeld naar ExoPlayer.</string>
   <string name="pref_skip_silence_title">Audiostiltes overslaan</string>
@@ -504,13 +502,23 @@
   <string name="back_button_go_to_page_title">Kies een pagina</string>
   <string name="pref_delete_removes_from_queue_title">Afleveringen verwijderen uit wachtrij na wissen</string>
   <string name="pref_delete_removes_from_queue_sum">Verwijder een aflevering uit de wachtrij als de aflevering in kwestie is verwijderd.</string>
+  <string name="pref_filter_feed_title">Abonnementsfilter</string>
+  <string name="pref_filter_feed_sum">Filter je abonnementen in het navigatiemenu en op het abonnementenscherm.</string>
+  <string name="no_filter_label">Geen</string>
+  <string name="subscriptions_are_filtered">De abonnementen zijn gefilterd.</string>
+  <string name="subscriptions_counter_greater_zero">Teller hoger dan nul</string>
+  <string name="auto_downloaded">Automatisch gedownload</string>
+  <string name="not_auto_downloaded">Niet automatisch gedownload</string>
+  <string name="kept_updated">Bijgehouden</string>
+  <string name="not_kept_updated">Niet bijgehouden</string>
   <!--About screen-->
   <string name="about_pref">Over AntennaPod</string>
   <string name="antennapod_version">AntennaPod-versie</string>
+  <string name="contributors">Bijdragers</string>
+  <string name="contributors_summary">Iedereen kan helpen AntennaPod te verbeteren middels programmeren, vertalen of het helpen van gebruikers op het forum</string>
   <string name="developers">Ontwikkelaars</string>
-  <string name="developers_summary">Iedereen kan helpen AntennaPod te verbeteren</string>
   <string name="translators">Vertalers</string>
-  <string name="translators_summary">De vertalingen zijn gedaan door AntennaPod-gebruikers op Transifex</string>
+  <string name="special_thanks">Met dank aan</string>
   <string name="privacy_policy">Privacybeleid</string>
   <string name="licenses">Licenties</string>
   <string name="licenses_summary">AntennaPod maakt gebruik van andere geweldige software</string>
@@ -537,6 +545,7 @@
   <string name="database_export_summary">Zet je abonnementen, beluisterde afleveringen en wachtrij over naar Antennapod op een ander apparaat</string>
   <string name="database_import_summary">Antennapod-databank importeren van ander apparaat</string>
   <string name="opml_import_label">OPML importeren</string>
+  <string name="opml_add_podcast_label">Podcastlijst (opml) importeren</string>
   <string name="opml_reader_error">Er is iets misgegaan tijdens het lezen van het OPML-bestand:</string>
   <string name="opml_import_error_no_file">Geen bestand gekozen!</string>
   <string name="select_all_label">Alles selecteren</string>
@@ -552,8 +561,11 @@
   <string name="export_success_sum">Het geëxporteerde bestand is opgeslagen in:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Toegang tot externe locaties is nodig om het OPML-bestand te kunnen lezen</string>
   <string name="import_select_file">Kies een te importeren bestand</string>
-  <string name="import_ok">Geïmporteerd.\n\nDruk op Oké om AntennaPod opnieuw te starten.</string>
+  <string name="successful_import_label">Importeren voltooid</string>
+  <string name="import_ok">Druk op \'Oké\' om AntennaPod opnieuw te starten.</string>
   <string name="import_no_downgrade">Deze databank is geëxporteerd door een nieuwere versie van Antennapod. Je huidige versie weet nog niet hoe daar mee om te gaan.</string>
+  <string name="favorites_export_label">Favorieten exporteren</string>
+  <string name="favorites_export_summary">Exporteer opgeslagen favorieten naar een bestand</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Slaaptimer instellen</string>
   <string name="disable_sleeptimer_label">Slaaptimer uitschakelen</string>
@@ -645,7 +657,6 @@
   <string name="decrease_speed">Verlaag snelheid</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
-  <string name="navigate_upwards_label">Navigeer naar boven</string>
   <string name="status_downloading_label">Aflevering wordt gedownload</string>
   <string name="in_queue_label">Aflevering staat in de wachtrij</string>
   <string name="is_favorite_label">Aflevering als favoriet gemarkeerd</string>
@@ -666,6 +677,10 @@
   <string name="keep_updated">Bijgewerkt houden</string>
   <string name="keep_updated_summary">Deze podcast meenemen bij het (automatisch) verversen van alle podcasts</string>
   <string name="auto_download_disabled_globally">Automatisch downloaden is uitgeschakeld in de AntennaPod-instellingen</string>
+  <string name="statistics_listened_for">Luisterduur:</string>
+  <string name="statistics_episodes_on_device">Afleveringen op apparaat:</string>
+  <string name="statistics_space_used">Gebruikte ruimte:</string>
+  <string name="statistics_view_all">Alle podcasts tonen »</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Bezig met upgraden van databank...</string>
   <!--AntennaPodSP-->
@@ -673,18 +688,29 @@
   <!--Add podcast fragment-->
   <string name="search_podcast_hint">Podcast zoeken...</string>
   <string name="search_itunes_label">iTunes doorzoeken</string>
+  <string name="search_podcastindex_label">Podcastindex.org doorzoeken</string>
   <string name="search_fyyd_label">Fyyd doorzoeken</string>
   <string name="advanced">Geavanceerd</string>
-  <string name="add_podcast_by_url">Podcast toevoegen middels url</string>
+  <string name="add_podcast_by_url">Podcast toevoegen middels rss-adres</string>
   <string name="browse_gpoddernet_label">Verken gpodder.net</string>
   <string name="discover">Ontdekken</string>
+  <string name="discover_hide">Verbergen</string>
+  <string name="discover_is_hidden">Je hebt er voor gekozen om aanbevelingen te verbergen.</string>
   <string name="discover_more">meer »</string>
-  <string name="search_powered_by">Zoeken via %1$s</string>
+  <string name="discover_powered_by_itunes">Aanbevelingen van iTunes</string>
+  <string name="search_powered_by">Resultaten van %1$s</string>
+  <!--Local feeds-->
+  <string name="add_local_folder">Lokale map toevoegen</string>
+  <string name="local_folder">Lokale map</string>
+  <string name="reconnect_local_folder">Lokale map opnieuw koppelen</string>
+  <string name="reconnect_local_folder_warning">Als je geen rechten hebt, gebruik dan dit om de map opnieuw te koppelen. Kies geen andere map.</string>
+  <string name="local_feed_description">De virtuele podcast is aangemaakt door een aan AntennaPod toegevoegde map.</string>
+  <string name="unable_to_start_system_file_manager">De bestandsbeheerder-app kan niet worden geopend</string>
   <string name="filter">Filter</string>
   <!--Episodes apply actions-->
   <string name="all_label">Alle</string>
   <string name="selected_all_label">Alle afleveringen geselecteerd</string>
-  <string name="none_label">Geen</string>
+  <string name="select_none_label">Geen</string>
   <string name="deselected_all_label">Alle afleveringen gede-selecteerd</string>
   <string name="played_label">Afgespeeld</string>
   <string name="selected_played_label">Alle afgespeelde afleveringen geselecteerd</string>
@@ -694,12 +720,21 @@
   <string name="selected_downloaded_label">Gedownloade afleveringen geselecteerd</string>
   <string name="not_downloaded_label">Niet gedownload</string>
   <string name="selected_not_downloaded_label">Niet-gedownloade afleveringen geselecteerd</string>
-  <string name="queued_label">In de wachtrij</string>
   <string name="selected_queued_label">Afleveringen in de wachtrij geselecteerd</string>
-  <string name="not_queued_label">Niet in de wachtrij</string>
   <string name="selected_not_queued_label">Afleveringen geselecteerd die niet in de wachtrij staan</string>
-  <string name="has_media">Bevat media</string>
   <string name="selected_has_media_label">Afleveringen met media geselecteerd</string>
+  <string name="hide_is_favorite_label">Gemarkeerd als favoriet</string>
+  <string name="not_favorite">Geen favoriet</string>
+  <string name="hide_downloaded_episodes_label">Gedownload</string>
+  <string name="hide_not_downloaded_episodes_label">Niet gedownload</string>
+  <string name="queued_label">In de wachtrij</string>
+  <string name="not_queued_label">Niet in de wachtrij</string>
+  <string name="has_media">Bevat media</string>
+  <string name="no_media">Geen media</string>
+  <string name="hide_paused_episodes_label">Gepauzeerd</string>
+  <string name="not_paused">Niet gepauzeerd</string>
+  <string name="hide_played_episodes_label">Afgespeeld</string>
+  <string name="not_played">Niet afgespeeld</string>
   <!--Sort-->
   <string name="sort_title_a_z">Titel (A \u2192 Z)</string>
   <string name="sort_title_z_a">Titel (A \u2192 A)</string>
@@ -719,6 +754,12 @@
   <string name="rating_never_label">Nee, bedankt</string>
   <string name="rating_later_label">Herinner me later</string>
   <string name="rating_now_label">Ja, doen we!</string>
+  <!--Share episode dialog-->
+  <string name="share_dialog_include_label">Opnemen:</string>
+  <string name="share_playback_position_dialog_label">Afspeelpositie</string>
+  <string name="share_dialog_media_file_url_label">Adres van mediabestand</string>
+  <string name="share_dialog_episode_website_label">Website van aflevering</string>
+  <string name="share_dialog_media_file_label">Mediabestand</string>
   <!--Audio controls-->
   <string name="audio_controls">Audio-instellingen</string>
   <string name="playback_speed">Afspeelsnelheid</string>
@@ -765,7 +806,9 @@
   <string name="notification_channel_playing">Nu aan het afspelen</string>
   <string name="notification_channel_playing_description">Hiermee kun je het afspelen bedienen. Dit is de voornaamste melding tijdens het afspelen van een podcast.</string>
   <string name="notification_channel_error">Foutmeldingen</string>
-  <string name="notification_channel_error_description">Wordt getoond als er iets is misgegaan, bijvoorbeeld bij het downloaden of synchroniseren.</string>
+  <string name="notification_channel_error_description">Wordt getoond als er iets misgaat, zoals downloaden of het bijwerken van de feed.</string>
+  <string name="notification_channel_sync_error">Syschronisatiefouten</string>
+  <string name="notification_channel_sync_error_description">Worden getoond als gpodder-synchronisatie mislukt.</string>
   <string name="notification_channel_auto_download">Automatisch downloaden</string>
   <string name="notification_channel_episode_auto_download">Wordt getoond als afleveringen automatisch zijn gedownload.</string>
   <!--Widget settings-->

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,12 +96,6 @@ public class CompletedDownloadsFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         if (disposable != null) {
@@ -111,9 +104,8 @@ public class CompletedDownloadsFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.downloads_completed, menu);
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        menu.findItem(R.id.clear_logs_item).setVisible(false);
         menu.findItem(R.id.episode_actions).setVisible(items.size() > 0);
         isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
     }
@@ -135,7 +127,7 @@ public class CompletedDownloadsFragment extends Fragment {
     public void onEventMainThread(DownloadEvent event) {
         Log.d(TAG, "onEventMainThread() called with: " + "event = [" + event + "]");
         if (event.hasChangedFeedUpdateStatus(isUpdatingFeeds)) {
-            getActivity().invalidateOptionsMenu();
+            ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
         }
     }
 
@@ -225,7 +217,7 @@ public class CompletedDownloadsFragment extends Fragment {
                 .subscribe(result -> {
                     items = result;
                     adapter.updateItems(result);
-                    requireActivity().invalidateOptionsMenu();
+                    ((PagedToolbarFragment) getParentFragment()).invalidateOptionsMenuIfActive(this);
                     progressBar.setVisibility(View.GONE);
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }

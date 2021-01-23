@@ -52,11 +52,28 @@ android {
             dimension "market"
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+
+    lintOptions {
+        disable "InvalidPeriodicWorkRequestInterval", "ObsoleteLintCustomCheck", "DefaultLocale", "UnusedAttribute",
+                "GradleDependency", "ParcelClassLoader", "Typos", "ExtraTranslation", "ImpliedQuantity",
+                "PluralsCandidate", "UnusedQuantity", "StringFormatCount", "TrustAllX509TrustManager",
+                "StaticFieldLeak", "TypographyEllipsis", "IconDensities", "IconDuplicates", "CheckResult"
+
+        warningsAsErrors true
+        abortOnError true
+    }
 }
 
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation 'androidx.documentfile:documentfile:1.0.1'
     implementation "androidx.media:media:$mediaVersion"
     implementation "androidx.preference:preference:$preferenceVersion"
     implementation "androidx.work:work-runtime:$workManagerVersion"
@@ -76,7 +93,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
-    implementation 'com.google.android.exoplayer:exoplayer:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.8'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
 
     // Add casting features
@@ -91,9 +108,14 @@ dependencies {
         System.out.println("core: free build hack, skipping some dependencies")
     }
 
+    // bundle conscrypt with free builds
+    freeImplementation "org.conscrypt:conscrypt-android:$conscryptVersion"
+
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation 'junit:junit:4.13'
-    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.mockito:mockito-inline:3.5.13'
+    testImplementation 'org.robolectric:robolectric:4.5-alpha-1'
+    testImplementation 'javax.inject:javax.inject:1'
     androidTestImplementation "com.jayway.android.robotium:robotium-solo:$robotiumSoloVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test:runner:$runnerVersion"

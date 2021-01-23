@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/widget_margin" >
@@ -8,8 +9,8 @@
         android:id="@+id/widgetLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#262C31" >
-
+        android:background="#262C31"
+        tools:ignore="UselessParent">
 
         <ImageButton
             android:id="@+id/butPlay"
@@ -26,7 +27,7 @@
 
         <LinearLayout
             android:id="@+id/layout_left"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -40,7 +41,8 @@
                 android:id="@+id/imgvCover"
                 android:layout_width="@android:dimen/app_icon_size"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_antenna"
+                android:src="@mipmap/ic_launcher_round"
+                android:importantForAccessibility="no"
                 android:layout_margin="12dp" />
 
             <LinearLayout
@@ -57,7 +59,7 @@
                     android:maxLines="3"
                     android:text="@string/no_media_playing_label"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -65,8 +67,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:ellipsize="end"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
 
@@ -76,9 +79,61 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:textColor="@color/white"
+                    android:textSize="14sp"
                     android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/extendedButtonsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <ImageButton
+                        android:id="@+id/butRew"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/rewind_label"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_av_fast_rewind_white_48dp"/>
+
+                    <ImageButton
+                        android:id="@+id/butPlayExtended"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/play_label"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_av_play_white_48dp"/>
+
+                    <ImageButton
+                        android:id="@+id/butFastForward"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/fast_forward_label"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_av_fast_forward_white_48dp"/>
+
+                    <ImageButton
+                        android:id="@+id/butSkip"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:contentDescription="@string/skip_episode_label"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginEnd="2dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_av_skip_white_24dp"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-
 </FrameLayout>

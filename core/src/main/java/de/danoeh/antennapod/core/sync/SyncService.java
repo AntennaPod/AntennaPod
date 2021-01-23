@@ -39,6 +39,7 @@ import de.danoeh.antennapod.core.sync.model.ISyncService;
 import de.danoeh.antennapod.core.sync.model.SubscriptionChanges;
 import de.danoeh.antennapod.core.sync.model.SyncServiceException;
 import de.danoeh.antennapod.core.sync.model.UploadChangesResponse;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import io.reactivex.Completable;
@@ -79,7 +80,7 @@ public class SyncService extends Worker {
         if (!GpodnetPreferences.loggedIn()) {
             return Result.success();
         }
-        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetService.DEFAULT_BASE_HOST);
+        syncServiceImpl = new GpodnetService(AntennapodHttpClient.getHttpClient(), GpodnetPreferences.getHostname());
         SharedPreferences.Editor prefs = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .edit();
         prefs.putLong(PREF_LAST_SYNC_ATTEMPT_TIMESTAMP, System.currentTimeMillis()).apply();
@@ -456,7 +457,7 @@ public class SyncService extends Worker {
                     break;
             }
         }
-
+        LongList queueToBeRemoved = new LongList();
         List<FeedItem> updatedItems = new ArrayList<>();
         for (EpisodeAction action : mostRecentPlayAction.values()) {
             FeedItem playItem = DBReader.getFeedItemByUrl(action.getPodcast(), action.getEpisode());
@@ -467,10 +468,12 @@ public class SyncService extends Worker {
                 if (playItem.getMedia().hasAlmostEnded()) {
                     Log.d(TAG, "Marking as played");
                     playItem.setPlayed(true);
+                    queueToBeRemoved.add(playItem.getId());
                 }
                 updatedItems.add(playItem);
             }
         }
+        DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
         DBWriter.setItemList(updatedItems);
     }
 
@@ -482,7 +485,11 @@ public class SyncService extends Worker {
     }
 
     private void updateErrorNotification(SyncServiceException exception) {
-        Log.d(TAG, "Posting error notification");
+        if (!UserPreferences.gpodnetNotificationsEnabled()) {
+            Log.d(TAG, "Skipping sync error notification because of user setting");
+            return;
+        }
+        Log.d(TAG, "Posting sync error notification");
         final String description = getApplicationContext().getString(R.string.gpodnetsync_error_descr)
                 + exception.getMessage();
 
@@ -491,7 +498,7 @@ public class SyncService extends Worker {
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
                 R.id.pending_intent_sync_error, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(getApplicationContext(),
-                NotificationUtils.CHANNEL_ID_ERROR)
+                NotificationUtils.CHANNEL_ID_SYNC_ERROR)
                 .setContentTitle(getApplicationContext().getString(R.string.gpodnetsync_error_title))
                 .setContentText(description)
                 .setContentIntent(pendingIntent)

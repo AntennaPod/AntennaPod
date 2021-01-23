@@ -16,40 +16,40 @@ public class FeedPreferences {
 
     public static final float SPEED_USE_GLOBAL = -1;
 
-    @NonNull
-    private FeedFilter filter;
-    private long feedID;
-    private boolean autoDownload;
-    private boolean keepUpdated;
-
     public enum AutoDeleteAction {
         GLOBAL,
         YES,
         NO
     }
-    private AutoDeleteAction auto_delete_action;
 
+    @NonNull
+    private FeedFilter filter;
+    private long feedID;
+    private boolean autoDownload;
+    private boolean keepUpdated;
+    private AutoDeleteAction autoDeleteAction;
     private VolumeAdaptionSetting volumeAdaptionSetting;
-
     private String username;
     private String password;
     private float feedPlaybackSpeed;
     private int feedSkipIntro;
     private int feedSkipEnding;
+    private boolean showEpisodeNotification;
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
-        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting, username, password, new FeedFilter(), SPEED_USE_GLOBAL);
+    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
+                           VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
+        this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting,
+                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false);
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed) {
-        this(feedID, autoDownload, true, auto_delete_action, volumeAdaptionSetting, username, password, new FeedFilter(), feedPlaybackSpeed, 0, 0);
-    }
-
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction auto_delete_action, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding) {
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
+                            AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
+                            String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed,
+                            int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
-        this.auto_delete_action = auto_delete_action;
+        this.autoDeleteAction = autoDeleteAction;
         this.volumeAdaptionSetting = volumeAdaptionSetting;
         this.username = username;
         this.password = password;
@@ -57,6 +57,7 @@ public class FeedPreferences {
         this.feedPlaybackSpeed = feedPlaybackSpeed;
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
+        this.showEpisodeNotification = showEpisodeNotification;
     }
 
     public static FeedPreferences fromCursor(Cursor cursor) {
@@ -72,6 +73,7 @@ public class FeedPreferences {
         int indexFeedPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_PLAYBACK_SPEED);
         int indexAutoSkipIntro = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_ENDING);
+        int indexEpisodeNotification = cursor.getColumnIndex(PodDBAdapter.KEY_EPISODE_NOTIFICATION);
 
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
@@ -87,6 +89,7 @@ public class FeedPreferences {
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
+        boolean showNotification = cursor.getInt(indexEpisodeNotification) > 0;
         return new FeedPreferences(feedId,
                 autoDownload,
                 autoRefresh,
@@ -97,7 +100,8 @@ public class FeedPreferences {
                 new FeedFilter(includeFilter, excludeFilter),
                 feedPlaybackSpeed,
                 feedAutoSkipIntro,
-                feedAutoSkipEnding
+                feedAutoSkipEnding,
+                showNotification
                 );
     }
 
@@ -171,15 +175,15 @@ public class FeedPreferences {
     }
 
     public AutoDeleteAction getAutoDeleteAction() {
-        return auto_delete_action;
+        return autoDeleteAction;
     }
 
     public VolumeAdaptionSetting getVolumeAdaptionSetting() {
         return volumeAdaptionSetting;
     }
 
-    public void setAutoDeleteAction(AutoDeleteAction auto_delete_action) {
-        this.auto_delete_action = auto_delete_action;
+    public void setAutoDeleteAction(AutoDeleteAction autoDeleteAction) {
+        this.autoDeleteAction = autoDeleteAction;
     }
 
     public void setVolumeAdaptionSetting(VolumeAdaptionSetting volumeAdaptionSetting) {
@@ -187,17 +191,15 @@ public class FeedPreferences {
     }
 
     public boolean getCurrentAutoDelete() {
-        switch (auto_delete_action) {
+        switch (autoDeleteAction) {
             case GLOBAL:
                 return UserPreferences.isAutoDelete();
-
             case YES:
                 return true;
-
             case NO:
+            default: // fall-through
                 return false;
         }
-        return false; // TODO - add exceptions here
     }
 
     public void save(Context context) {
@@ -242,5 +244,17 @@ public class FeedPreferences {
 
     public int getFeedSkipEnding() {
         return feedSkipEnding;
+    }
+
+    /**
+     * getter for preference if notifications should be display for new episodes.
+     * @return true for displaying notifications
+     */
+    public boolean getShowEpisodeNotification() {
+        return showEpisodeNotification;
+    }
+
+    public void setShowEpisodeNotification(boolean showEpisodeNotification) {
+        this.showEpisodeNotification = showEpisodeNotification;
     }
 }

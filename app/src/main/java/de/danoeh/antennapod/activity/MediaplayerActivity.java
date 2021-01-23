@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.activity;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -28,18 +25,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.NumberFormat;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.ContextCompat;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -51,11 +46,9 @@ import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
@@ -65,7 +58,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-
 /**
  * Provides general features which are both needed for playing audio and video
  * files.
@@ -74,8 +66,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private static final String TAG = "MediaplayerActivity";
     private static final String PREFS = "MediaPlayerActivityPreferences";
     private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
-    private static final int REQUEST_CODE_STORAGE_PLAY_VIDEO = 42;
-    private static final int REQUEST_CODE_STORAGE_PLAY_AUDIO = 43;
 
     PlaybackController controller;
 
@@ -88,6 +78,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
+    private CardView cardViewSeek;
+    private TextView txtvSeek;
 
     private boolean showTimeLeft = false;
 
@@ -493,6 +485,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         setContentView(getContentViewResourceId());
         sbPosition = findViewById(R.id.sbPosition);
         txtvPosition = findViewById(R.id.txtvPosition);
+        cardViewSeek = findViewById(R.id.cardViewSeek);
+        txtvSeek = findViewById(R.id.txtvSeek);
 
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
@@ -619,21 +613,21 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
         if (fromUser) {
             prog = progress / ((float) seekBar.getMax());
-            int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
-            int position = converter.convert((int) (prog * duration));
-            txtvPosition.setText(Converter.getDurationStringLong(position));
-
-            if (showTimeLeft) {
-                int timeLeft = converter.convert(duration - (int) (prog * duration));
-                txtvLength.setText("-" + Converter.getDurationStringLong(timeLeft));
-            }
+            int position = converter.convert((int) (prog * controller.getDuration()));
+            txtvSeek.setText(Converter.getDurationStringLong(position));
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-
+        cardViewSeek.setScaleX(.8f);
+        cardViewSeek.setScaleY(.8f);
+        cardViewSeek.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(1f).scaleX(1f).scaleY(1f)
+                .setDuration(200)
+                .start();
     }
 
     @Override
@@ -641,6 +635,13 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (controller != null) {
             controller.seekTo((int) (prog * controller.getDuration()));
         }
+        cardViewSeek.setScaleX(1f);
+        cardViewSeek.setScaleY(1f);
+        cardViewSeek.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(0f).scaleX(.8f).scaleY(.8f)
+                .setDuration(200)
+                .start();
     }
 
     private void checkFavorite() {
@@ -662,50 +663,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                         invalidateOptionsMenu();
                     }
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    void playExternalMedia(Intent intent, MediaType type) {
-        if (intent == null || intent.getData() == null) {
-            return;
-        }
-        if (Build.VERSION.SDK_INT >= 23
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
-            }
-
-            int code = REQUEST_CODE_STORAGE_PLAY_AUDIO;
-            if (type == MediaType.VIDEO) {
-                code = REQUEST_CODE_STORAGE_PLAY_VIDEO;
-            }
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, code);
-            return;
-        }
-
-        Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
-        ExternalMedia media = new ExternalMedia(intent.getData().getPath(), type);
-
-        new PlaybackServiceStarter(this, media)
-                .callEvenIfRunning(true)
-                .startWhenPrepared(true)
-                .shouldStream(false)
-                .prepareImmediately(true)
-                .start();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (requestCode == REQUEST_CODE_STORAGE_PLAY_AUDIO) {
-                playExternalMedia(getIntent(), MediaType.AUDIO);
-            } else if (requestCode == REQUEST_CODE_STORAGE_PLAY_VIDEO) {
-                playExternalMedia(getIntent(), MediaType.VIDEO);
-            }
-        } else {
-            Toast.makeText(this, R.string.needs_storage_permission, Toast.LENGTH_LONG).show();
-        }
     }
 
     @Nullable

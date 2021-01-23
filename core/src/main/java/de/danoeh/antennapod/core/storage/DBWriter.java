@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.DownloadLogEvent;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
@@ -71,6 +71,18 @@ public class DBWriter {
     }
 
     private DBWriter() {
+    }
+
+    /**
+     * Wait until all threads are finished to avoid the "Illegal connection pointer" error of
+     * Robolectric. Call this method only for unit tests.
+     */
+    public static void tearDownTests() {
+        try {
+            dbExec.awaitTermination(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            // ignore error
+        }
     }
 
     /**
@@ -141,48 +153,74 @@ public class DBWriter {
         return dbExec.submit(() -> {
             DownloadRequester requester = DownloadRequester.getInstance();
             final Feed feed = DBReader.getFeed(feedId);
-
-            if (feed != null) {
-                // delete stored media files and mark them as read
-                List<FeedItem> queue = DBReader.getQueue();
-                List<FeedItem> removed = new ArrayList<>();
-                if (feed.getItems() == null) {
-                    DBReader.getFeedItemList(feed);
-                }
-
-                for (FeedItem item : feed.getItems()) {
-                    if (queue.remove(item)) {
-                        removed.add(item);
-                    }
-                    if (item.getMedia() != null && item.getMedia().isDownloaded()) {
-                        deleteFeedMediaSynchronous(context, item.getMedia());
-                    } else if (item.getMedia() != null && requester.isDownloadingFile(item.getMedia())) {
-                        requester.cancelDownload(context, item.getMedia());
-                    }
-                }
-                PodDBAdapter adapter = PodDBAdapter.getInstance();
-                adapter.open();
-                if (removed.size() > 0) {
-                    adapter.setQueue(queue);
-                    for (FeedItem item : removed) {
-                        EventBus.getDefault().post(QueueEvent.irreversibleRemoved(item));
-                    }
-                }
-                adapter.removeFeed(feed);
-                adapter.close();
-
-                SyncService.enqueueFeedRemoved(context, feed.getDownload_url());
-                EventBus.getDefault().post(new FeedListUpdateEvent(feed));
-
-                // we assume we also removed download log entries for the feed or its media files.
-                // especially important if download or refresh failed, as the user should not be able
-                // to retry these
-                EventBus.getDefault().post(DownloadLogEvent.listUpdated());
-
-                BackupManager backupManager = new BackupManager(context);
-                backupManager.dataChanged();
+            if (feed == null) {
+                return;
             }
+
+            // delete stored media files and mark them as read
+            if (feed.getItems() == null) {
+                DBReader.getFeedItemList(feed);
+            }
+            deleteFeedItemsSynchronous(context, feed.getItems());
+
+            // delete feed
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
+            adapter.open();
+            adapter.removeFeed(feed);
+            adapter.close();
+
+            SyncService.enqueueFeedRemoved(context, feed.getDownload_url());
+            EventBus.getDefault().post(new FeedListUpdateEvent(feed));
         });
+    }
+
+    /**
+     * Remove the listed items and their FeedMedia entries.
+     * Deleting media also removes the download log entries.
+     */
+    @NonNull
+    public static Future<?> deleteFeedItems(@NonNull Context context, @NonNull List<FeedItem> items) {
+        return dbExec.submit(() -> deleteFeedItemsSynchronous(context, items));
+    }
+
+    /**
+     * Remove the listed items and their FeedMedia entries.
+     * Deleting media also removes the download log entries.
+     */
+    private static void deleteFeedItemsSynchronous(@NonNull Context context, @NonNull List<FeedItem> items) {
+        DownloadRequester requester = DownloadRequester.getInstance();
+        List<FeedItem> queue = DBReader.getQueue();
+        List<FeedItem> removedFromQueue = new ArrayList<>();
+        for (FeedItem item : items) {
+            if (queue.remove(item)) {
+                removedFromQueue.add(item);
+            }
+            if (item.getMedia() != null && item.getMedia().isDownloaded()) {
+                deleteFeedMediaSynchronous(context, item.getMedia());
+            } else if (item.getMedia() != null && requester.isDownloadingFile(item.getMedia())) {
+                requester.cancelDownload(context, item.getMedia());
+            }
+        }
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        if (!removedFromQueue.isEmpty()) {
+            adapter.setQueue(queue);
+        }
+        adapter.removeFeedItems(items);
+        adapter.close();
+
+        for (FeedItem item : removedFromQueue) {
+            EventBus.getDefault().post(QueueEvent.irreversibleRemoved(item));
+        }
+
+        // we assume we also removed download log entries for the feed or its media files.
+        // especially important if download or refresh failed, as the user should not be able
+        // to retry these
+        EventBus.getDefault().post(DownloadLogEvent.listUpdated());
+
+        BackupManager backupManager = new BackupManager(context);
+        backupManager.dataChanged();
     }
 
     /**

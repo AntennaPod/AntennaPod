@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="@string/notification_group_news">
+        <SwitchPreferenceCompat
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefShowAutoDownloadReport"
+                android:summary="@string/notification_channel_episode_auto_download"
+                android:title="@string/notification_channel_auto_download" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/notification_group_errors">
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefShowDownloadReport"
+                android:summary="@string/notification_channel_download_error_description"
+                android:title="@string/notification_channel_download_error" />
+        <SwitchPreferenceCompat
+                android:defaultValue="true"
+                android:key="pref_gpodnet_notifications"
+                android:summary="@string/notification_channel_sync_error_description"
+                android:title="@string/notification_channel_sync_error" />
+    </PreferenceCategory>
+</PreferenceScreen>

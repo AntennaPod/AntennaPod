@@ -19,6 +19,7 @@ import de.danoeh.antennapod.fragment.preferences.GpodderPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.ImportExportPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.MainPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.NetworkPreferencesFragment;
+import de.danoeh.antennapod.fragment.preferences.NotificationPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.PlaybackPreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.StoragePreferencesFragment;
 import de.danoeh.antennapod.fragment.preferences.UserInterfacePreferencesFragment;
@@ -70,6 +71,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
             prefFragment = new GpodderPreferencesFragment();
         } else if (screen == R.xml.preferences_playback) {
             prefFragment = new PlaybackPreferencesFragment();
+        } else if (screen == R.xml.preferences_notifications) {
+            prefFragment = new NotificationPreferencesFragment();
         }
         return prefFragment;
     }
@@ -90,6 +93,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                 return R.string.user_interface_label;
             case R.xml.preferences_gpodder:
                 return R.string.gpodnet_main_label;
+            case R.xml.preferences_notifications:
+                return R.string.notification_pref_fragment;
             default:
                 return R.string.settings_label;
         }

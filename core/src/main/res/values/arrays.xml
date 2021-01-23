@@ -233,26 +233,16 @@
         <item>3</item>
     </string-array>
 
-    <string-array name="nav_drawer_feed_filter_values">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-
-    <string-array name="nav_drawer_feed_filter_options">
-        <item>@string/no_filter_label</item>
-        <item>@string/hide_subscriptions_where_counter_is_zero</item>
-    </string-array>
-
     <string-array name="media_player_options">
+        <item>@string/media_player_exoplayer_recommended</item>
         <item>@string/media_player_builtin</item>
         <item>@string/media_player_sonic</item>
-        <item>@string/media_player_exoplayer</item>
     </string-array>
 
     <string-array name="media_player_values">
+        <item>exoplayer</item>
         <item>builtin</item>
         <item>sonic</item>
-        <item>exoplayer</item>
     </string-array>
 
     <!-- sort for podcast screen, not for queue -->

@@ -24,8 +24,8 @@ AntennaPod is gemaakt door podcast-enthousiastelingen. Het team van vrijwilliger
 <b>Doe mee met de AntennaPod-gemeenschap!</b>
 AntennaPod wordt regelmatig geüpdatet door vrijwilligers. En jij kan ook helpen, met code of commentaar!
 
-Je kunt op GitHub terecht voor foutmeldingen, verzoekjes voor nieuwe functies en bijdragen aan de code:
-https://www.github.com/AntennaPod/AntennaPod
+De vriendelijke leden van ons forum helpen je graag met welke vraag dan ook. Deel gerust ook ideëen voor nieuwe functies of podcasts in het algemeen.
+https://forum.antennapod.org/
 
 Transifex is de beste plek om te helpen met vertalen:
 https://www.transifex.com/antennapod/antennapod

@@ -1,6 +1,6 @@
 AntennaPod é un xestor de podcast e reprodutor que che permite acceder a millóns de contidos gratuítos e de pagamento, desde produtores independentes a grandes empresas de contidos como BBC, NPR ou CNN. Engade, importa e exporta as súas fontes sen complicacións utilizando a base de datos de iTunes, ficheiros OPML ou URL de RSS.
-Descarga, difunde ou pon e cola episodios e desfrutaos do xeito que prefiras, con velocidade de reprodución axustable, soporte de capítulos e apagado programable.
-De xeito doado, aforrando batería e datos móbiles e con ferramentas potentes para a automatización das descargas (indicando horarios, intervalos e redes WiFi) e borrado de ficheiros (baseado nos favoritos e axustes temporais).
+Descarga, difunde ou pon e cola episodios e desfrútaos do xeito que prefiras, con velocidade de reprodución axustable, soporte de capítulos e apagado programable.
+De xeito doado, aforrando batería e datos móbiles, con ferramentas potentes para a automatización das descargas (indicando horarios, intervalos e redes WiFi) e borrado de ficheiros (baseado nos favoritos e axustes temporais).
 
 Feita por entusiastas do podcast, AntennaPod é libre en todos os sentidos da palabra: código aberto, gratuíto e sen anuncios.
 
@@ -17,15 +17,15 @@ Feita por entusiastas do podcast, AntennaPod é libre en todos os sentidos da pa
 
 <b>Xestiona o sistema</b>
 • Toma o control das descargas automáticas: escolle fontes, exclúe redes móbiles, redes Wifi específicas, que o móbil esté cargando ou establece horarios para a descarga
-• Xestiona o almacenaxe establecendo a número de episodios gardados, borrado intelixente e escollendo a localización preferida.
+• Xestiona a almacenaxe establecendo a número de episodios gardados, borrado intelixente e escollendo a localización preferida.
 • Adáptase ao teu entorno utilizando os decorados claro ou escuro
 • Respalda as túas subscricións con gPodder.net e a exportación OPML
 
 <b>Participa na comunidade AntennaPod!</b>
-AntennaPod está baixo continuo desenvolvemento grazas a voluntarios. Vostede tamén pode contribuir, con código ou con comentarios!
+AntennaPod está baixo continuo desenvolvemento grazas a persoas voluntarias. Ti tamén podes contribuír, con código ou con comentarios!
 
-Podes solicitar novas características utilizando GitHub, así como informe de fallos ou contribuír ao código:
-https://www.github.com/AntennaPod/AntennaPod
+No noso foro estamos encantados de poder axudarche con calquera dúbida que teñas. Convidámoste a comentar a aplicación e o podcasting en xeral.
+https://forum.antennapod.org/
 
 As traducións fanse en Transifex:
 https://www.transifex.com/antennapod/antennapod

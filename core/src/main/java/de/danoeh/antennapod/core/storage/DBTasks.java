@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
-import androidx.annotation.VisibleForTesting;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
@@ -16,6 +15,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.sync.SyncService;
@@ -241,7 +241,12 @@ public final class DBTasks {
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
-        DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force, initiatedByUser);
+
+        if (f.isLocalFeed()) {
+            new Thread(() -> LocalFeedUpdater.updateFeed(f, context)).start();
+        } else {
+            DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages, force, initiatedByUser);
+        }
     }
 
     /**
@@ -257,7 +262,6 @@ public final class DBTasks {
         EventBus.getDefault().post(new MessageEvent(context.getString(R.string.error_file_not_found)));
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     public static List<? extends FeedItem> enqueueFeedItemsToDownload(final Context context,
                        List<? extends FeedItem> items) throws InterruptedException, ExecutionException {
         List<FeedItem> itemsToEnqueue = new ArrayList<>();
@@ -285,7 +289,7 @@ public final class DBTasks {
      */
     public static Future<?> autodownloadUndownloadedItems(final Context context) {
         Log.d(TAG, "autodownloadUndownloadedItems");
-        return autodownloadExec.submit(ClientConfig.dbTasksCallbacks.getAutomaticDownloadAlgorithm()
+        return autodownloadExec.submit(ClientConfig.automaticDownloadAlgorithm
                 .autoDownloadUndownloadedItems(context));
 
     }
@@ -299,7 +303,7 @@ public final class DBTasks {
      * @param context Used for accessing the DB.
      */
     public static void performAutoCleanup(final Context context) {
-        ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().performCleanup(context);
+        UserPreferences.getEpisodeCleanupAlgorithm().performCleanup(context);
     }
 
     /**
@@ -367,118 +371,136 @@ public final class DBTasks {
      * <p/>
      * This method should NOT be executed on the GUI thread.
      *
-     * @param context  Used for accessing the DB.
-     * @param newFeeds The new Feed objects.
-     * @return The updated Feeds from the database if it already existed, or the new Feed from the parameters otherwise.
+     * @param context Used for accessing the DB.
+     * @param newFeed The new Feed object.
+     * @param removeUnlistedItems The item list in the new Feed object is considered to be exhaustive.
+     *                            I.e. items are removed from the database if they are not in this item list.
+     * @return The updated Feed from the database if it already existed, or the new Feed from the parameters otherwise.
      */
-    public static synchronized Feed[] updateFeed(final Context context,
-                                                 final Feed... newFeeds) {
-        List<Feed> newFeedsList = new ArrayList<>();
-        List<Feed> updatedFeedsList = new ArrayList<>();
-        Feed[] resultFeeds = new Feed[newFeeds.length];
+    public static synchronized Feed updateFeed(Context context, Feed newFeed, boolean removeUnlistedItems) {
+        Feed resultFeed;
+        List<FeedItem> unlistedItems = new ArrayList<>();
+
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        for (int feedIdx = 0; feedIdx < newFeeds.length; feedIdx++) {
+        // Look up feed in the feedslist
+        final Feed savedFeed = searchFeedByIdentifyingValueOrID(adapter, newFeed);
+        if (savedFeed == null) {
+            Log.d(TAG, "Found no existing Feed with title "
+                            + newFeed.getTitle() + ". Adding as new one.");
 
-            final Feed newFeed = newFeeds[feedIdx];
+            // Add a new Feed
+            // all new feeds will have the most recent item marked as unplayed
+            FeedItem mostRecent = newFeed.getMostRecentItem();
+            if (mostRecent != null) {
+                mostRecent.setNew();
+            }
 
-            // Look up feed in the feedslist
-            final Feed savedFeed = searchFeedByIdentifyingValueOrID(adapter,
-                    newFeed);
-            if (savedFeed == null) {
-                Log.d(TAG, "Found no existing Feed with title "
-                                + newFeed.getTitle() + ". Adding as new one.");
+            resultFeed = newFeed;
+        } else {
+            Log.d(TAG, "Feed with title " + newFeed.getTitle()
+                        + " already exists. Syncing new with existing one.");
 
-                // Add a new Feed
-                // all new feeds will have the most recent item marked as unplayed
-                FeedItem mostRecent = newFeed.getMostRecentItem();
-                if (mostRecent != null) {
-                    mostRecent.setNew();
+            Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
+
+            if (newFeed.getPageNr() == savedFeed.getPageNr()) {
+                if (savedFeed.compareWithOther(newFeed)) {
+                    Log.d(TAG, "Feed has updated attribute values. Updating old feed's attributes");
+                    savedFeed.updateFromOther(newFeed);
                 }
-
-                newFeedsList.add(newFeed);
-                resultFeeds[feedIdx] = newFeed;
             } else {
-                Log.d(TAG, "Feed with title " + newFeed.getTitle()
-                            + " already exists. Syncing new with existing one.");
+                Log.d(TAG, "New feed has a higher page number.");
+                savedFeed.setNextPageLink(newFeed.getNextPageLink());
+            }
+            if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
+                Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
+                savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
+            }
 
-                Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
+            // get the most recent date now, before we start changing the list
+            FeedItem priorMostRecent = savedFeed.getMostRecentItem();
+            Date priorMostRecentDate = null;
+            if (priorMostRecent != null) {
+                priorMostRecentDate = priorMostRecent.getPubDate();
+            }
 
-                if (newFeed.getPageNr() == savedFeed.getPageNr()) {
-                    if (savedFeed.compareWithOther(newFeed)) {
-                        Log.d(TAG, "Feed has updated attribute values. Updating old feed's attributes");
-                        savedFeed.updateFromOther(newFeed);
+            // Look for new or updated Items
+            for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
+                final FeedItem item = newFeed.getItems().get(idx);
+                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed, item.getIdentifyingValue());
+                if (oldItem == null) {
+                    // item is new
+                    item.setFeed(savedFeed);
+                    item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
+
+                    if (idx >= savedFeed.getItems().size()) {
+                        savedFeed.getItems().add(item);
+                    } else {
+                        savedFeed.getItems().add(idx, item);
+                    }
+
+                    // only mark the item new if it was published after or at the same time
+                    // as the most recent item
+                    // (if the most recent date is null then we can assume there are no items
+                    // and this is the first, hence 'new')
+                    // New items that do not have a pubDate set are always marked as new
+                    if (item.getPubDate() == null || priorMostRecentDate == null
+                            || priorMostRecentDate.before(item.getPubDate())
+                            || priorMostRecentDate.equals(item.getPubDate())) {
+                        Log.d(TAG, "Marking item published on " + item.getPubDate()
+                                + " new, prior most recent date = " + priorMostRecentDate);
+                        item.setNew();
                     }
                 } else {
-                    Log.d(TAG, "New feed has a higher page number.");
-                    savedFeed.setNextPageLink(newFeed.getNextPageLink());
+                    oldItem.updateFromOther(item);
                 }
-                if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
-                    Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
-                    savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
-                }
+            }
 
-                // get the most recent date now, before we start changing the list
-                FeedItem priorMostRecent = savedFeed.getMostRecentItem();
-                Date priorMostRecentDate = null;
-                if (priorMostRecent != null) {
-                    priorMostRecentDate = priorMostRecent.getPubDate();
-                }
-
-                // Look for new or updated Items
-                for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
-                    final FeedItem item = newFeed.getItems().get(idx);
-                    FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed,
-                            item.getIdentifyingValue());
-                    if (oldItem == null) {
-                        // item is new
-                        item.setFeed(savedFeed);
-                        item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
-
-                        if (idx >= savedFeed.getItems().size()) {
-                            savedFeed.getItems().add(item);
-                        } else {
-                            savedFeed.getItems().add(idx, item);
-                        }
-
-                        // only mark the item new if it was published after or at the same time
-                        // as the most recent item
-                        // (if the most recent date is null then we can assume there are no items
-                        // and this is the first, hence 'new')
-                        if (priorMostRecentDate == null
-                                || priorMostRecentDate.before(item.getPubDate())
-                                || priorMostRecentDate.equals(item.getPubDate())) {
-                            Log.d(TAG, "Marking item published on " + item.getPubDate()
-                                    + " new, prior most recent date = " + priorMostRecentDate);
-                            item.setNew();
-                        }
-                    } else {
-                        oldItem.updateFromOther(item);
+            // identify items to be removed
+            if (removeUnlistedItems) {
+                Iterator<FeedItem> it = savedFeed.getItems().iterator();
+                while (it.hasNext()) {
+                    FeedItem feedItem = it.next();
+                    if (searchFeedItemByIdentifyingValue(newFeed, feedItem.getIdentifyingValue()) == null) {
+                        unlistedItems.add(feedItem);
+                        it.remove();
                     }
                 }
-                // update attributes
-                savedFeed.setLastUpdate(newFeed.getLastUpdate());
-                savedFeed.setType(newFeed.getType());
-                savedFeed.setLastUpdateFailed(false);
-
-                updatedFeedsList.add(savedFeed);
-                resultFeeds[feedIdx] = savedFeed;
             }
+
+            // update attributes
+            savedFeed.setLastUpdate(newFeed.getLastUpdate());
+            savedFeed.setType(newFeed.getType());
+            savedFeed.setLastUpdateFailed(false);
+
+            resultFeed = savedFeed;
         }
 
-        adapter.close();
-
         try {
-            DBWriter.addNewFeed(context, newFeedsList.toArray(new Feed[0])).get();
-            DBWriter.setCompleteFeed(updatedFeedsList.toArray(new Feed[0])).get();
+            if (savedFeed == null) {
+                DBWriter.addNewFeed(context, newFeed).get();
+                // Update with default values that are set in database
+                resultFeed = searchFeedByIdentifyingValueOrID(adapter, newFeed);
+            } else {
+                DBWriter.setCompleteFeed(savedFeed).get();
+            }
+            if (removeUnlistedItems) {
+                DBWriter.deleteFeedItems(context, unlistedItems).get();
+            }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 
-        EventBus.getDefault().post(new FeedListUpdateEvent(updatedFeedsList));
+        adapter.close();
 
-        return resultFeeds;
+        if (savedFeed != null) {
+            EventBus.getDefault().post(new FeedListUpdateEvent(savedFeed));
+        } else {
+            EventBus.getDefault().post(new FeedListUpdateEvent(Collections.emptyList()));
+        }
+
+        return resultFeed;
     }
 
     /**

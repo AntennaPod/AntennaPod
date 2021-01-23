@@ -7,6 +7,7 @@
     <attr name="av_fast_forward" format="reference"/>
     <attr name="av_pause" format="reference"/>
     <attr name="av_play" format="reference"/>
+    <attr name="av_replay" format="reference"/>
     <attr name="av_skip" format="reference"/>
     <attr name="av_rewind" format="reference"/>
     <attr name="ic_delete" format="reference"/>
@@ -58,8 +59,11 @@
     <attr name="action_icon_color" format="color"/>
     <attr name="scrollbar_thumb" format="reference"/>
     <attr name="background_elevated" format="color"/>
-    <attr name="filter_dialog_clear" format="reference"/>
+    <attr name="filter_dialog_clear" format="color"/>
     <attr name="filter_dialog_button_background" format="reference"/>
+    <attr name="ic_notifications" format="reference"/>
+    <attr name="seek_background" format="color" />
+    <attr name="ic_share" format="reference"/>
 
     <declare-styleable name="SquareImageView">
         <attr name="direction" format="enum">

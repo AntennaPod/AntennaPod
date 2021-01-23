@@ -106,6 +106,7 @@ public class ChaptersFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         updateChapterSelection(getCurrentChapter(media));
+        adapter.notifyTimeChanged(event.getPosition());
     }
 
     private int getCurrentChapter(Playable media) {
@@ -122,7 +123,7 @@ public class ChaptersFragment extends Fragment {
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                media.loadChapterMarks();
+                media.loadChapterMarks(getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();

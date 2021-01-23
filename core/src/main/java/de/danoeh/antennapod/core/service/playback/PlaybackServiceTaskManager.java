@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -57,7 +58,7 @@ public class PlaybackServiceTaskManager {
     private ScheduledFuture<?> widgetUpdaterFuture;
     private ScheduledFuture<?> sleepTimerFuture;
     private volatile Future<List<FeedItem>> queueFuture;
-    private volatile Future<?> chapterLoaderFuture;
+    private volatile Disposable chapterLoaderFuture;
 
     private SleepTimer sleepTimer;
 
@@ -102,7 +103,7 @@ public class PlaybackServiceTaskManager {
 
     private synchronized void loadQueue() {
         if (!isQueueLoaderActive()) {
-            queueFuture = schedExecutor.submit(DBReader::getQueue);
+            queueFuture = schedExecutor.submit(() -> DBReader.getQueue());
         }
     }
 
@@ -289,29 +290,20 @@ public class PlaybackServiceTaskManager {
         }
     }
 
-    private synchronized void cancelChapterLoader() {
-        if (isChapterLoaderActive()) {
-            chapterLoaderFuture.cancel(true);
-        }
-    }
-
-    private synchronized boolean isChapterLoaderActive() {
-        return chapterLoaderFuture != null && !chapterLoaderFuture.isDone();
-    }
-
     /**
      * Starts a new thread that loads the chapter marks from a playable object. If another chapter loader is already active,
      * it will be cancelled first.
      * On completion, the callback's onChapterLoaded method will be called.
      */
     public synchronized void startChapterLoader(@NonNull final Playable media) {
-        if (isChapterLoaderActive()) {
-            cancelChapterLoader();
+        if (chapterLoaderFuture != null) {
+            chapterLoaderFuture.dispose();
+            chapterLoaderFuture = null;
         }
 
         if (media.getChapters() == null) {
-            Completable.create(emitter -> {
-                media.loadChapterMarks();
+            chapterLoaderFuture = Completable.create(emitter -> {
+                media.loadChapterMarks(context);
                 emitter.onComplete();
             })
                     .subscribeOn(Schedulers.io())
@@ -330,7 +322,11 @@ public class PlaybackServiceTaskManager {
         cancelWidgetUpdater();
         disableSleepTimer();
         cancelQueueLoader();
-        cancelChapterLoader();
+
+        if (chapterLoaderFuture != null) {
+            chapterLoaderFuture.dispose();
+            chapterLoaderFuture = null;
+        }
     }
 
     /**
@@ -347,7 +343,7 @@ public class PlaybackServiceTaskManager {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             // Called in main thread => ExoPlayer is used
             // Run on ui thread even if called from schedExecutor
-            Handler handler = new Handler();
+            Handler handler = new Handler(Looper.getMainLooper());
             return () -> handler.post(runnable);
         } else {
             return runnable;
@@ -374,7 +370,7 @@ public class PlaybackServiceTaskManager {
 
             if (UserPreferences.useExoplayer() && Looper.myLooper() == Looper.getMainLooper()) {
                 // Run callbacks in main thread so they can call ExoPlayer methods themselves
-                this.handler = new Handler();
+                this.handler = new Handler(Looper.getMainLooper());
             } else {
                 this.handler = null;
             }

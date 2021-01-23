@@ -24,7 +24,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
                 android:importantForAccessibility="no"
-                tools:src="@drawable/ic_antenna"
+                tools:src="@tools:sample/avatars"
                 tools:background="@android:color/holo_green_dark"/>
 
         <LinearLayout

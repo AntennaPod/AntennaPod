@@ -1,20 +1,15 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -25,6 +20,7 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.PlaybackHistoryEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -43,7 +39,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class PlaybackHistoryFragment extends Fragment {
+public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "PlaybackHistoryFragment";
 
     private List<FeedItem> playbackHistory;
@@ -52,21 +48,24 @@ public class PlaybackHistoryFragment extends Fragment {
     private EpisodeItemListRecyclerView recyclerView;
     private EmptyViewHandler emptyView;
     private ProgressBar progressBar;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.simple_list_fragment, container, false);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
+        toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.playback_history_label);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(this);
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        toolbar.inflateMenu(R.menu.playback_history);
+        refreshToolbarState();
 
         recyclerView = root.findViewById(R.id.recyclerView);
         recyclerView.setRecycledViewPool(((MainActivity) getActivity()).getRecycledViewPool());
@@ -146,39 +145,18 @@ public class PlaybackHistoryFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!isAdded()) {
-            return;
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-        MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-        clearHistory.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.ic_delete});
-        clearHistory.setIcon(drawables.getDrawable(0));
-        drawables.recycle();
+    public void refreshToolbarState() {
+        boolean hasHistory = playbackHistory != null && !playbackHistory.isEmpty();
+        toolbar.getMenu().findItem(R.id.clear_history_item).setVisible(hasHistory);
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        MenuItem menuItem = menu.findItem(R.id.clear_history_item);
-        if (menuItem != null) {
-            menuItem.setVisible(playbackHistory != null && !playbackHistory.isEmpty());
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (!super.onOptionsItemSelected(item)) {
-            if (item.getItemId() == R.id.clear_history_item) {
-                DBWriter.clearPlaybackHistory();
-                return true;
-            }
-            return false;
-        } else {
+    public boolean onMenuItemClick(MenuItem item) {
+        if (item.getItemId() == R.id.clear_history_item) {
+            DBWriter.clearPlaybackHistory();
             return true;
         }
+        return false;
     }
 
     @Override
@@ -194,18 +172,24 @@ public class PlaybackHistoryFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onHistoryUpdated(PlaybackHistoryEvent event) {
         loadItems();
-        getActivity().invalidateOptionsMenu();
+        refreshToolbarState();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPlayerStatusChanged(PlayerStatusEvent event) {
         loadItems();
-        getActivity().invalidateOptionsMenu();
+        refreshToolbarState();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        loadItems();
+        refreshToolbarState();
     }
 
     private void onFragmentLoaded() {
         adapter.notifyDataSetChanged();
-        getActivity().invalidateOptionsMenu();
+        refreshToolbarState();
     }
 
     private void loadItems() {

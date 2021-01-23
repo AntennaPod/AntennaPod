@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -24,20 +26,16 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.FeedItemUtil;
-import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.dialog.FeedFilterDialog;
+import de.danoeh.antennapod.dialog.RemoveFeedDialog;
+import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.RenameFeedDialog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,6 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -72,6 +71,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     private int position = -1;
     private NavListAdapter navAdapter;
     private Disposable disposable;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -79,6 +79,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.nav_list, container, false);
 
+        progressBar = root.findViewById(R.id.progressBar);
         ListView navList = root.findViewById(R.id.nav_list);
         navAdapter = new NavListAdapter(itemAccess, getActivity());
         navList.setAdapter(navAdapter);
@@ -187,39 +188,15 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                 new RenameFeedDialog(getActivity(), feed).show();
                 return true;
             case R.id.remove_item:
-                final FeedRemover remover = new FeedRemover(getContext(), feed) {
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        super.onPostExecute(result);
-                        if (selectedNavListIndex == position) {
-                            if (getActivity() instanceof MainActivity) {
-                                ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
-                            } else {
-                                showMainActivity(EpisodesFragment.TAG);
-                            }
+                RemoveFeedDialog.show(getContext(), feed, () -> {
+                    if (selectedNavListIndex == position) {
+                        if (getActivity() instanceof MainActivity) {
+                            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
+                        } else {
+                            showMainActivity(EpisodesFragment.TAG);
                         }
                     }
-                };
-                ConfirmationDialog conDialog = new ConfirmationDialog(getContext(),
-                        R.string.remove_feed_label,
-                        getString(R.string.feed_delete_confirmation_msg, feed.getTitle())) {
-                    @Override
-                    public void onConfirmButtonPressed(DialogInterface dialog) {
-                        dialog.dismiss();
-                        long mediaId = PlaybackPreferences.getCurrentlyPlayingFeedMediaId();
-                        if (mediaId > 0 && FeedItemUtil.indexOfItemWithMediaId(feed.getItems(), mediaId) >= 0) {
-                            Log.d(TAG, "Currently playing episode is about to be deleted, skipping");
-                            remover.skipOnCompletion = true;
-                            int playerStatus = PlaybackPreferences.getCurrentPlayerStatus();
-                            if (playerStatus == PlaybackPreferences.PLAYER_STATUS_PLAYING) {
-                                IntentUtils.sendLocalBroadcast(getContext(),
-                                        PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE);
-                            }
-                        }
-                        remover.executeAsync();
-                    }
-                };
-                conDialog.createNewDialog().show();
+                });
                 return true;
             default:
                 return super.onContextItemSelected(item);
@@ -232,18 +209,18 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
         startActivity(intent);
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
         loadData();
     }
 
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onFeedListChanged(FeedListUpdateEvent event) {
         loadData();
     }
 
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onQueueChanged(QueueEvent event) {
         Log.d(TAG, "onQueueChanged(" + event + ")");
         // we are only interested in the number of queue items, not download status or position
@@ -354,14 +331,20 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     };
 
     private void loadData() {
+        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    navDrawerData = result;
-                    updateSelection(); // Selected item might be a feed
-                    navAdapter.notifyDataSetChanged();
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(
+                        result -> {
+                            navDrawerData = result;
+                            updateSelection(); // Selected item might be a feed
+                            navAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
+                        }, error -> {
+                            Log.e(TAG, Log.getStackTraceString(error));
+                            progressBar.setVisibility(View.GONE);
+                        });
     }
 
     @Override
@@ -388,9 +371,9 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                     startActivity(intent);
                 }
             }
-        } else if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE
+        } else if (UserPreferences.getSubscriptionsFilter().isEnabled()
                 && navAdapter.showSubscriptionList) {
-            FeedFilterDialog.showDialog(requireContext());
+            SubscriptionsFilterDialog.showDialog(requireContext());
         }
     }
 

@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.util.playback;
 import android.media.MediaPlayer;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,5 +52,10 @@ public class VideoPlayer extends MediaPlayer implements IPlayer {
     @Override
     public int getSelectedAudioTrack() {
         return -1;
+    }
+
+    @Override
+    public void setDataSource(String streamUrl, String username, String password) throws IOException {
+        setDataSource(streamUrl);
     }
 }

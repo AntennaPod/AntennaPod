@@ -1,0 +1,31 @@
+„AntennaPod“ yra tinklalaidžių tvarkytuvė ir leistuvė, įgalinanti prieigą prie milijonų nemokamų ir mokamų tinklalaidžių, nuo nepriklausomų kūrėjų iki didžiųjų leidyklų, tokių kaip „BBC“, „NPR“ ir „CNN“. Be vargo pridėkite, importuokite ir eksportuokite sklaidos kanalus naudodamiesi „iTunes“ tinklalaidžių duomenų baze, OPML failais ar RSS kanalais.
+Atsisiųskite, klausykitės iš karto ar dėkite epizodus į eilę ir mėgaukitės jais pasirinkę atkūrimo spartą, naudodamiesi skyrių palaikymu bei miego laikmačiu.
+Sutaupykite pastangų, baterijos energijos ir suvartotų mobiliųjų duomenų naudodamiesi galingais automatizacijos valdikliais epizodų atsiuntimui (nurodykite laiką, intervalą ir „WiFi“ tinklus) ir epizodų trynimui (remiantis Jūsų mėgstamaisiais ir atidėjimo nustatymais). 
+
+Sukurtas tinklalaidžių entuziastų, „AntennaPod“ yra laisvas visomis prasmėmis: atvirojo kodo, be mokesčių, be reklamų.
+
+<b>Importuokite, tvarkykite ir atkurkite</b>
+• Valdykite atkūrimą bet kur: pradžios ekrane, programų pranešimuose, ausinių ar „Bluetooth“ valdikliu
+• Pridėkite ar importuokite sklaidos kanalus iš „iTunes“ ir „gPodder.net“, OPML failų, RSS ar Atom nuorodų
+• Mėgaukitės klausydamiesi taip, kaip Jums patinka, naudodamiesi derinama atkūrimo sparta, skyrių palaikymu, išsaugota atkūrimo pozicija ir miego laikmačiu (pakračius nustatomas iš naujo, mažinamas garsis)
+• Pasiekite slaptažodžiu apsaugotus sklaidos kanalus ir epizodus
+
+<b>Sekite, dalinkitės ir branginkite</b>
+• Kaupkite geriausius žymėdami epizodus kaip mėgstamus
+• Raskite norimą epizodą pasinaudoję atkūrimo istorija ar paieška pavadinimuose ir laidų užrašuose
+• Dalinkitės epizodais ir sklaidos kanalais per socialinius tinklus, el. paštu, „gPodder.net“ ir OPML failus
+
+<b>Valdykite sistemą</b>
+• Valdykite automatinį atsiuntimą: pasirinkite sklaidos kanalus, neleiskite atsiuntimų mobiliuoju ryšiu, apibrėžkite leistinus belaidžius tinklus, reikalaukite, jog atsiuntimai būtų vykdomi įkrovos metu, nurodykite atsiuntimų dienos metą ar intervalą
+• Valdykite laikmenos naudojimą nurodant podėlyje laikomų epizodų kiekį, išmanų trynimą ir nurodant norimą saugojimo vietą
+• Pritaikykite savo aplinkai pasirinkę šviesią ar tamsią temą
+• Kurkite prenumeratų atsargines kopijas „gPodder.net“ ar OPML failais
+
+<b>Prisijunkite prie AntennaPod bendruomenės!</b>
+„AntennaPod“ vysto savanoriai. Ir Jūs galite prisidėti, nuo atsiliepimų iki programinio kodo!
+
+Draugiški mūsų forumo nariai pasiruošę padėti visais turimais klausimais. Kviečiame diskutuoti apie programėlės funkcijas bei bendrai apie tinklalaides.
+https://forum.antennapod.org/
+
+Prie vertimų galite prisidėti „Transifex“:
+https://www.transifex.com/antennapod/antennapod

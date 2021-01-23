@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <PreferenceCategory android:title="@string/appearance">
         <ListPreference
@@ -14,7 +15,7 @@
                 android:key="prefHiddenDrawerItems"
                 android:summary="@string/pref_nav_drawer_items_sum"
                 android:title="@string/pref_nav_drawer_items_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:title="@string/pref_episode_cover_title"
                 android:key="prefEpisodeCover"
                 android:summary="@string/pref_episode_cover_summary"
@@ -22,13 +23,10 @@
                 android:enabled="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/subscriptions_label">
-        <ListPreference
-            android:entryValues="@array/nav_drawer_feed_order_values"
-            android:entries="@array/nav_drawer_feed_order_options"
+        <Preference
             android:title="@string/pref_nav_drawer_feed_order_title"
             android:key="prefDrawerFeedOrder"
-            android:summary="@string/pref_nav_drawer_feed_order_sum"
-            android:defaultValue="0"/>
+            android:summary="@string/pref_nav_drawer_feed_order_sum"/>
         <ListPreference
             android:entryValues="@array/nav_drawer_feed_counter_values"
             android:entries="@array/nav_drawer_feed_counter_options"
@@ -38,17 +36,18 @@
             android:defaultValue="1"/>
         <Preference
             android:title="@string/pref_filter_feed_title"
-            android:key="prefFeedFilter"
+            android:key="prefSubscriptionsFilter"
             android:summary="@string/pref_filter_feed_sum" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefExpandNotify"
                 android:summary="@string/pref_expandNotify_sum"
-                android:title="@string/pref_expandNotify_title"/>
-        <SwitchPreference
+                android:title="@string/pref_expandNotify_title"
+                search:ignore="true"/>
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPersistNotify"
@@ -58,7 +57,7 @@
                 android:key="prefCompactNotificationButtons"
                 android:summary="@string/pref_compact_notification_buttons_sum"
                 android:title="@string/pref_compact_notification_buttons_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefLockscreenBackground"

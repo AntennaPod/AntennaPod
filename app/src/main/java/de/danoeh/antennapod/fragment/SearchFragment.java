@@ -4,19 +4,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.chip.Chip;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
@@ -43,6 +44,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,6 +54,7 @@ public class SearchFragment extends Fragment {
     private static final String TAG = "SearchFragment";
     private static final String ARG_QUERY = "query";
     private static final String ARG_FEED = "feed";
+    private static final String ARG_FEED_NAME = "feedName";
 
     private EpisodeItemListAdapter adapter;
     private FeedSearchResultAdapter adapterFeeds;
@@ -60,6 +63,7 @@ public class SearchFragment extends Fragment {
     private EmptyViewHandler emptyViewHandler;
     private EpisodeItemListRecyclerView recyclerView;
     private List<FeedItem> results;
+    private Chip chip;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -79,9 +83,10 @@ public class SearchFragment extends Fragment {
     /**
      * Create a new SearchFragment that searches one specific feed.
      */
-    public static SearchFragment newInstance(String query, long feed) {
+    public static SearchFragment newInstance(String query, long feed, String feedTitle) {
         SearchFragment fragment = newInstance(query);
         fragment.getArguments().putLong(ARG_FEED, feed);
+        fragment.getArguments().putString(ARG_FEED_NAME, feedTitle);
         return fragment;
     }
 
@@ -89,7 +94,6 @@ public class SearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -111,7 +115,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.search_fragment, container, false);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(layout.findViewById(R.id.toolbar));
+        setupToolbar(layout.findViewById(R.id.toolbar));
         progressBar = layout.findViewById(R.id.progressBar);
 
         recyclerView = layout.findViewById(R.id.recyclerView);
@@ -132,6 +136,12 @@ public class SearchFragment extends Fragment {
         emptyViewHandler.setIcon(R.attr.action_search);
         emptyViewHandler.setTitle(R.string.search_status_no_results);
         EventBus.getDefault().register(this);
+
+        chip = layout.findViewById(R.id.feed_title_chip);
+        chip.setOnCloseIconClickListener(v -> {
+            getArguments().putLong(ARG_FEED, 0);
+            search();
+        });
         return layout;
     }
 
@@ -141,11 +151,12 @@ public class SearchFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
+    private void setupToolbar(Toolbar toolbar) {
+        toolbar.setTitle(R.string.search_label);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        toolbar.inflateMenu(R.menu.search);
+
+        MenuItem item = toolbar.getMenu().findItem(R.id.action_search);
         item.expandActionView();
         final SearchView sv = (SearchView) item.getActionView();
         sv.setQueryHint(getString(R.string.search_label));
@@ -259,7 +270,13 @@ public class SearchFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     this.results = results.first;
                     adapter.updateItems(results.first);
-                    adapterFeeds.updateData(results.second);
+                    if (getArguments().getLong(ARG_FEED, 0) == 0) {
+                        adapterFeeds.updateData(results.second);
+                        chip.setVisibility(View.GONE);
+                    } else {
+                        adapterFeeds.updateData(Collections.emptyList());
+                        chip.setText(getArguments().getString(ARG_FEED_NAME, ""));
+                    }
                     String query = getArguments().getString(ARG_QUERY);
                     emptyViewHandler.setMessage(getString(R.string.no_results_for_query, query));
                 }, error -> Log.e(TAG, Log.getStackTraceString(error)));

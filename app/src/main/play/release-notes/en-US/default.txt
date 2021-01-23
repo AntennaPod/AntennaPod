@@ -1,7 +1,7 @@
-This is a beta release for version 2.0.0. We would love to read your thoughts in our forum (link on the settings screen).
-
-- Brand new user interface (by @ByteHamster)
-- Support for chapter images (only new episodes, by @ByteHamster)
-- Skip intro and ending per feed (by @tonytamsf)
-- Option to show notifications after episodes have been auto-downloaded (by @shortspider)
-- Bug fixes and improvements (by @ebraminio, @tonytamsf, @JessieVela, @ByteHamster and more)
+- A long-standing wish of many: playing local files! In the 'Add podcast' screen simply tap 'Add local folder' and select a location on your phone! (@ByteHamster, @igoralmeida & @damoasda)
+- Pick a country for the 'Discover' screen (@tonytamsf)
+- Keyboard shortcuts (@asdoi)
+- Search the PodcastIndex.org database (@edwinhere)
+- Pull to refresh (@asdoi)
+- Playback speed & filter dialogs (@ByteHamster & @bws9000)
+- Smooth sleep timer volume (@olivoto)

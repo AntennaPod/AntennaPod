@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import io.reactivex.Maybe;
@@ -79,8 +80,16 @@ public class ExternalPlayerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         butPlay.setOnClickListener(v -> {
             if (controller != null) {
-                controller.playPause();
+                if (controller.getMedia().getMediaType() == MediaType.VIDEO
+                        && controller.getStatus() != PlayerStatus.PLAYING) {
+                    controller.playPause();
+                    getContext().startActivity(PlaybackService
+                            .getPlayerActivityIntent(getContext(), controller.getMedia()));
+                } else {
+                    controller.playPause();
+                }
             }
+
         });
         loadMediaInfo();
     }
@@ -189,18 +198,22 @@ public class ExternalPlayerFragment extends Fragment {
         feedName.setText(media.getFeedTitle());
         onPositionObserverUpdate();
 
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate();
+
         Glide.with(getActivity())
                 .load(ImageResourceUtils.getImageLocation(media))
-                .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate())
+                .error(Glide.with(getActivity())
+                        .load(ImageResourceUtils.getFallbackImageLocation(media))
+                        .apply(options))
+                .apply(options)
                 .into(imgvCover);
 
         if (controller != null && controller.isPlayingVideoLocally()) {
-            butPlay.setVisibility(View.GONE);
             ((MainActivity) getActivity()).getBottomSheet().setLocked(true);
             ((MainActivity) getActivity()).getBottomSheet().setState(BottomSheetBehavior.STATE_COLLAPSED);
         } else {

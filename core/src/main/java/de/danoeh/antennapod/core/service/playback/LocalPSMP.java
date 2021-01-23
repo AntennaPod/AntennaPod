@@ -1,10 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
-import android.media.AudioAttributes;
-import android.media.AudioFocusRequest;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.PowerManager;
 import androidx.annotation.NonNull;
 import android.telephony.TelephonyManager;
@@ -12,11 +9,13 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
+import androidx.media.AudioAttributesCompat;
+import androidx.media.AudioFocusRequestCompat;
+import androidx.media.AudioManagerCompat;
 import org.antennapod.audio.MediaPlayer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
@@ -57,6 +56,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     private final AtomicBoolean startWhenPrepared;
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
     private volatile Pair<Integer, Integer> videoSize;
+    private final AudioFocusRequestCompat audioFocusRequest;
 
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
@@ -154,6 +154,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
         pausedBecauseOfTransientAudiofocusLoss = false;
         mediaType = MediaType.UNKNOWN;
         videoSize = null;
+
+        AudioAttributesCompat audioAttributes = new AudioAttributesCompat.Builder()
+                .setUsage(AudioAttributesCompat.USAGE_MEDIA)
+                .setContentType(AudioAttributesCompat.CONTENT_TYPE_SPEECH)
+                .build();
+        audioFocusRequest = new AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN)
+                .setAudioAttributes(audioAttributes)
+                .setOnAudioFocusChangeListener(audioFocusChangeListener)
+                .setWillPauseWhenDucked(true)
+                .build();
     }
 
     /**
@@ -250,7 +260,16 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             callback.onMediaChanged(false);
             setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
             if (stream) {
-                mediaPlayer.setDataSource(media.getStreamUrl());
+                if (playable instanceof FeedMedia) {
+                    FeedMedia feedMedia = (FeedMedia) playable;
+                    FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+                    mediaPlayer.setDataSource(
+                            media.getStreamUrl(),
+                            preferences.getUsername(),
+                            preferences.getPassword());
+                } else {
+                    mediaPlayer.setDataSource(media.getStreamUrl());
+                }
             } else if (media.getLocalMediaUrl() != null && new File(media.getLocalMediaUrl()).canRead()) {
                 mediaPlayer.setDataSource(media.getLocalMediaUrl());
             } else {
@@ -287,25 +306,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
     private void resumeSync() {
         if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-            int focusGained;
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                        .build();
-                AudioFocusRequest audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                        .setAudioAttributes(audioAttributes)
-                        .setOnAudioFocusChangeListener(audioFocusChangeListener)
-                        .setAcceptsDelayedFocusGain(true)
-                        .setWillPauseWhenDucked(true)
-                        .build();
-                focusGained = audioManager.requestAudioFocus(audioFocusRequest);
-            } else {
-                focusGained = audioManager.requestAudioFocus(
-                        audioFocusChangeListener, AudioManager.STREAM_MUSIC,
-                        AudioManager.AUDIOFOCUS_GAIN);
-            }
+            int focusGained = AudioManagerCompat.requestAudioFocus(audioManager, audioFocusRequest);
 
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 Log.d(TAG, "Audiofocus successfully requested");
@@ -373,13 +374,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
     }
 
     private void abandonAudioFocus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            AudioFocusRequest.Builder builder = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
-                    .setOnAudioFocusChangeListener(audioFocusChangeListener);
-            audioManager.abandonAudioFocusRequest(builder.build());
-        } else {
-            audioManager.abandonAudioFocus(audioFocusChangeListener);
-        }
+        AudioManagerCompat.abandonAudioFocusRequest(audioManager, audioFocusRequest);
     }
 
     /**

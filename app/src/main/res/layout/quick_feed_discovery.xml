@@ -4,6 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical">
 
     <LinearLayout
@@ -22,7 +23,7 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="0dp"
+                android:minHeight="48dp"
                 android:minWidth="0dp"
                 android:text="@string/discover_more"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -54,12 +55,44 @@
                 android:layout_centerInParent="true"
                 android:layout_marginTop="30dp"/>
 
-        <TextView
+        <LinearLayout
                 android:id="@+id/discover_error"
-                android:textColor="@color/download_failed_red"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_height="wrap_content"/>
+                android:gravity="center"
+                android:orientation="vertical">
+
+            <TextView
+                    android:id="@+id/discover_error_txtV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_margin="16dp"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="Error message"
+                    tools:background="@android:color/holo_red_light" />
+
+            <Button
+                    android:id="@+id/discover_error_retry_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@string/retry_label"
+                    tools:background="@android:color/holo_red_light" />
+        </LinearLayout>
 
     </RelativeLayout>
+
+    <TextView
+            android:id="@+id/discover_powered_by_itunes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorTertiary"
+            android:text="@string/discover_powered_by_itunes"
+            android:textSize="12sp"
+            android:layout_gravity="right|end"
+            android:paddingHorizontal="4dp"
+            android:textAlignment="textEnd"/>
+
 </LinearLayout>

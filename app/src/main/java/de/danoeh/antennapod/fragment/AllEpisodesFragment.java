@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -56,10 +55,11 @@ public class AllEpisodesFragment extends EpisodesListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.filter_items).setVisible(true);
         menu.findItem(R.id.mark_all_read_item).setVisible(true);
+        menu.findItem(R.id.remove_all_new_flags_item).setVisible(false);
     }
 
     @Override
@@ -89,16 +89,27 @@ public class AllEpisodesFragment extends EpisodesListFragment {
         filterDialog.openDialog();
     }
 
+    @Override
+    protected boolean shouldUpdatedItemRemainInList(FeedItem item) {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        FeedItemFilter feedItemFilter = new FeedItemFilter(prefs.getString(PREF_FILTER, ""));
+
+        if (feedItemFilter.isShowDownloaded() && (!item.hasMedia() || !item.getMedia().isDownloaded())) {
+            return false;
+        }
+
+        return true;
+    }
+
     @NonNull
     @Override
     protected List<FeedItem> loadData() {
-        return feedItemFilter.filter(DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE));
+        return DBReader.getRecentlyPublishedEpisodes(0, page * EPISODES_PER_PAGE, feedItemFilter);
     }
 
     @NonNull
     @Override
     protected List<FeedItem> loadMoreData() {
-        return feedItemFilter.filter(DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE,
-                EPISODES_PER_PAGE));
+        return DBReader.getRecentlyPublishedEpisodes((page - 1) * EPISODES_PER_PAGE, EPISODES_PER_PAGE, feedItemFilter);
     }
 }

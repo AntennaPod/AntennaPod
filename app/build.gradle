@@ -7,6 +7,14 @@ plugins {
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    viewBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        checkGeneratedSources = true
+    }
+
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -14,8 +22,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2000007
-        versionName "2.0.0-RC7"
+        versionCode 2010295
+        versionName "2.1.2"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
@@ -31,6 +39,14 @@ android {
         }
         buildConfigField "String", "COMMIT_HASH", ('"' + commit + '"')
 
+        if (project.hasProperty("podcastindexApiKey")) {
+            buildConfigField "String", "PODCASTINDEX_API_KEY", '"' + podcastindexApiKey + '"'
+            buildConfigField "String", "PODCASTINDEX_API_SECRET", '"' + podcastindexApiSecret + '"'
+        } else {
+            buildConfigField "String", "PODCASTINDEX_API_KEY", '"XTMMQGA2YZ4WJUBYY4HK"'
+            buildConfigField "String", "PODCASTINDEX_API_SECRET", '"XAaAhk4^2YBsTE33vdbwbZNj82ZRLABDDqFdKe7x"'
+        }
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [eventBusIndex: 'de.danoeh.antennapod.ApEventBusIndex']
@@ -40,6 +56,9 @@ android {
 
     signingConfigs {
         releaseConfig {
+            v1SigningEnabled true
+            v2SigningEnabled true
+
             if (project.hasProperty("releaseStoreFile")) {
                 storeFile file(releaseStoreFile)
             } else {
@@ -141,6 +160,7 @@ dependencies {
     // free build hack: skip some dependencies
     if (!doFreeBuild()) {
         playImplementation project(":core")
+        implementation 'com.google.android.play:core:1.8.0'
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }

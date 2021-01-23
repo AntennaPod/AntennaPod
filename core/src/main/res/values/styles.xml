@@ -20,6 +20,8 @@
         <item name="action_icon_color">@color/black</item>
         <item name="drawer_activated_color">@color/highlight_light</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textColorHint">@color/grey600</item>
+        <item name="seek_background">@color/seek_background_light</item>
 
         <item name="storage">@drawable/ic_storage_black</item>
         <item name="ic_network">@drawable/ic_network_black</item>
@@ -31,6 +33,7 @@
         <item name="av_download">@drawable/ic_download_black</item>
         <item name="av_pause">@drawable/ic_av_pause_black_48dp</item>
         <item name="av_play">@drawable/ic_av_play_black_48dp</item>
+        <item name="av_replay">@drawable/ic_av_replay_black_48dp</item>
         <item name="av_rewind">@drawable/ic_av_fast_rewind_black_48dp</item>
         <item name="av_fast_forward">@drawable/ic_av_fast_forward_black_48dp</item>
         <item name="av_skip">@drawable/ic_av_skip_black_48dp</item>
@@ -74,7 +77,9 @@
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_black</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_light</item>
         <item name="filter_dialog_clear">@color/filter_dialog_clear_light</item>
-        <item name="filter_dialog_button_background">@color/filter_dialog_background_light</item>
+        <item name="filter_dialog_button_background">@drawable/filter_dialog_background_light</item>
+        <item name="ic_notifications">@drawable/ic_notifications_black</item>
+        <item name="ic_share">@drawable/ic_share_black</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="Theme.Base.AntennaPod.Dark">
@@ -97,6 +102,8 @@
         <item name="currently_playing_background">@color/highlight_dark</item>
         <item name="action_icon_color">@color/white</item>
         <item name="android:textAllCaps">false</item>
+        <item name="android:textColorHint">@color/medium_gray</item>
+        <item name="seek_background">@color/seek_background_dark</item>
 
         <item name="storage">@drawable/ic_storage_white</item>
         <item name="ic_network">@drawable/ic_network_white</item>
@@ -110,6 +117,7 @@
         <item name="av_fast_forward">@drawable/ic_av_fast_forward_white_48dp</item>
         <item name="av_pause">@drawable/ic_av_pause_white_48dp</item>
         <item name="av_play">@drawable/ic_av_play_white_48dp</item>
+        <item name="av_replay">@drawable/ic_av_replay_white_48dp</item>
         <item name="av_skip">@drawable/ic_av_skip_white_48dp</item>
         <item name="ic_settings_speed">@drawable/ic_playback_speed_white</item>
         <item name="ic_settings_skip">@drawable/ic_av_skip_white_24dp</item>
@@ -151,7 +159,9 @@
         <item name="ic_volume_adaption">@drawable/ic_volume_adaption_white</item>
         <item name="scrollbar_thumb">@drawable/scrollbar_thumb_dark</item>
         <item name="filter_dialog_clear">@color/filter_dialog_clear_dark</item>
-        <item name="filter_dialog_button_background">@color/filter_dialog_background_dark</item>
+        <item name="filter_dialog_button_background">@drawable/filter_dialog_background_dark</item>
+        <item name="ic_notifications">@drawable/ic_notifications_white</item>
+        <item name="ic_share">@drawable/ic_share_white</item>
     </style>
 
     <style name="Theme.AntennaPod.TrueBlack" parent="Theme.Base.AntennaPod.TrueBlack">
@@ -162,12 +172,14 @@
         <item name="colorPrimaryDark">@color/black</item>
         <item name="actionBarStyle">@style/Widget.AntennaPod.ActionBar.Black</item>
         <item name="drawer_activated_color">@color/highlight_trueblack</item>
+        <item name="currently_playing_background">@color/highlight_trueblack</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:color">@color/white</item>
         <item name="android:colorBackground">@color/black</item>
         <item name="android:windowBackground">@color/black</item>
         <item name="android:actionBarStyle">@color/black</item>
         <item name="background_elevated">@color/black</item>
+        <item name="android:textColorHint">@color/medium_gray</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="Theme.AntennaPod.Light">
@@ -228,8 +240,8 @@
 
     <style name="Theme.AntennaPod.Splash" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@drawable/bg_splash</item>
-        <item name="colorPrimary">@color/ic_launcher_background</item>
-        <item name="colorPrimaryDark">@color/ic_launcher_background</item>
+        <item name="colorPrimary">@color/icon_background_gradient_start</item>
+        <item name="colorPrimaryDark">@color/icon_background_gradient_start</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
@@ -306,4 +318,19 @@
     <style name="Widget.AntennaPod.ActionBar.Black" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
         <item name="background">@color/black</item>
     </style>
+
+    <style name="AddPodcastTextView">
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="NoButtonRadio" parent="Widget.MaterialComponents.CompoundButton.RadioButton">
+        <item name="buttonCompat">@null</item> <!-- For Android 4.4 -->
+        <item name="android:button">@null</item>
+    </style>
+
 </resources>

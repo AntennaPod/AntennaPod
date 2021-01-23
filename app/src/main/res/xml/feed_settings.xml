@@ -3,11 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:key="feedSettingsScreen">
 
-    <SwitchPreference
+    <SwitchPreferenceCompat
             android:key="keepUpdated"
             android:icon="?attr/navigation_refresh"
             android:title="@string/keep_updated"
             android:summary="@string/keep_updated_summary"/>
+
+    <SwitchPreferenceCompat
+            android:key="episodeNotification"
+            android:defaultValue="false"
+            android:dependency="keepUpdated"
+            android:icon="?attr/ic_notifications"
+            android:title="@string/episode_notification"
+            android:summary="@string/episode_notification_summary"/>
 
     <Preference
             android:key="authentication"
@@ -44,8 +52,10 @@
             android:defaultValue="off"
             android:key="volumeReduction"/>
 
-    <PreferenceCategory android:title="@string/auto_download_settings_label">
-        <SwitchPreference
+    <PreferenceCategory
+            android:title="@string/auto_download_settings_label"
+            android:key="autoDownloadCategory">
+        <SwitchPreferenceCompat
                 android:key="autoDownload"
                 android:title="@string/auto_download_label"/>
         <Preference

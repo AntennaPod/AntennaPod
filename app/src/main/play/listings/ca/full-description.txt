@@ -1,0 +1,31 @@
+AntennaPod és un reproductor i organitzador de podcasts que et dona accés instantani a milions de podcasts tant de pagament com gratuïts, des de podcasters independents fins a grans publicacions com la BBC, NPR i CNN. Afegeix, importa i exporta els seus feeds sense problemes usant la base de dates de podcasts de iTunes, arxius OPML o simples URLs RSS.
+Descarrega, transmet o posa en cola episodis i disfruta'ls com tu vulgues amb velocitats de reproducció ajustables, suport per a capítols i un temporitzador per a dormir.
+Estalvia esforç, bateria i us de dades mòbils amb controls d'automatització per a descarregar (hores específiques, intervals i xarxes Wi-Fi) i esborrar episodis (basant-se en els teus favorits i els ajustos de retard).
+
+Fet per entusiastes dels podcasts, AntennaPod es lliure en tots els sentits de la paraula: codi obert, sense cost, sense anuncis.
+
+<b>Importa, organitza i reprodueix</b>
+• Organitza la reproducció desde qualsevol lloc: widget a la pantalla principal, notificacions de sistema i controls d'auricular amb fil o bluetooth.
+• Afegeix i importa feeds via iTunes, gPodder.net, fitxers OPML o enllaços RSS o Atom.
+• Disfruta escoltant a la teua manera amb velocitat de reproducció ajustable, suport per a capitols, memòria de posició de reproducció i un avançat temporitzador per a dormir (que pots resetetjar agitant el mòbil)
+• Accedix a feeds i episodis protegits amb contrasenya
+
+<b>Organitza, comparteix i aprecia</b>
+• Recorda als millors dels millors marcant episodis com a favorits.
+• Troba un episodi usant el historial de reproducció o buscant títols i notes.
+• Comparteix episodis i feeds a través d'opcions avançades de medis socials i email, els serveis de gPodder.net i via l'exportació OPML.
+
+<b>Controla el sistema</b>
+• Pren control de les descarregues automàtiques: tria feeds, exclou xarxes mòbils, selecciona xarxes WiFi específiques, requereix que el telèfon estiga carregant i selecciona hores o intervals.
+• Gestioneu l'emmagatzematge ajustant la quantitat d'episodis en emmagatzematge temporal, l'esborrat intel·ligent i triant la vostra ubicació preferida.
+• Adapteu-vos al vostre entorn fent servir el tema clar o el fosc.
+• Feu còpies de seguretat de les vostres subscripcions amb la integració amb gPodder.net i l'exportació a OPML.
+
+<b>Uniu-vos a la comunitat d'AntennaPod!</b>
+L'AntennaPod el desenvolupen voluntaris. Podeu col·laborar, amb codi o comentaris.
+
+Els amigables membres del nostre fòrum estaran contents d'ajudar-vos amb qualsevol pregunta. Esteu convidats a parlar de les features i de podcasting en general, a més.
+https://forum.antennapod.org/
+
+Transifex és el lloc on podeu ajudar amb les traduccions.
+https://www.transifex.com/antennapod/antennapod

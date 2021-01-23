@@ -1,12 +1,14 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -16,6 +18,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.discovery.GpodnetPodcastSearcher;
+import de.danoeh.antennapod.fragment.OnlineSearchFragment;
 
 /**
  * Main navigation hub for gpodder.net podcast directory
@@ -31,9 +36,7 @@ public class GpodnetMainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
-        Toolbar toolbar = root.findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.gpodnet_main_label);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        setupToolbar(root.findViewById(R.id.toolbar));
 
         ViewPager2 viewPager = root.findViewById(R.id.viewpager);
         GpodnetPagerAdapter pagerAdapter = new GpodnetPagerAdapter(this);
@@ -60,6 +63,33 @@ public class GpodnetMainFragment extends Fragment {
         return root;
     }
 
+    private void setupToolbar(Toolbar toolbar) {
+        toolbar.setTitle(R.string.gpodnet_main_label);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+
+        toolbar.inflateMenu(R.menu.search);
+        MenuItem searchItem = toolbar.getMenu().findItem(R.id.action_search);
+        final SearchView sv = (SearchView) searchItem.getActionView();
+        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    searchItem.collapseActionView();
+                    ((MainActivity) activity).loadChildFragment(
+                            OnlineSearchFragment.newInstance(GpodnetPodcastSearcher.class, query));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
     public static class GpodnetPagerAdapter extends FragmentStateAdapter {
 
         GpodnetPagerAdapter(@NonNull Fragment fragment) {
@@ -69,20 +99,14 @@ public class GpodnetMainFragment extends Fragment {
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            Bundle arguments = new Bundle();
-            arguments.putBoolean(PodcastListFragment.ARGUMENT_HIDE_TOOLBAR, true);
             switch (position) {
                 case POS_TAGS:
                     return new TagListFragment();
                 case POS_TOPLIST:
-                    PodcastListFragment topListFragment = new PodcastTopListFragment();
-                    topListFragment.setArguments(arguments);
-                    return topListFragment;
+                    return new PodcastTopListFragment();
                 default:
                 case POS_SUGGESTIONS:
-                    PodcastListFragment suggestionsFragment = new SuggestionListFragment();
-                    suggestionsFragment.setArguments(arguments);
-                    return suggestionsFragment;
+                    return new SuggestionListFragment();
             }
         }
 

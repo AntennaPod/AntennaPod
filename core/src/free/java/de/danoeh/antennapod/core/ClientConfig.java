@@ -1,15 +1,17 @@
 package de.danoeh.antennapod.core;
 
 import android.content.Context;
+import java.security.Security;
+import org.conscrypt.Conscrypt;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.exception.RxJavaErrorHandlerSetup;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 
 import java.io.File;
@@ -31,7 +33,7 @@ public class ClientConfig {
 
     public static PlaybackServiceCallbacks playbackServiceCallbacks;
 
-    public static DBTasksCallbacks dbTasksCallbacks;
+    public static AutomaticDownloadAlgorithm automaticDownloadAlgorithm;
 
     public static CastCallbacks castCallbacks;
 
@@ -45,15 +47,16 @@ public class ClientConfig {
         UserPreferences.init(context);
         UsageStatistics.init(context);
         PlaybackPreferences.init(context);
+        installSslProvider(context);
         NetworkUtils.init(context);
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
-        RxJavaErrorHandlerSetup.setupRxJavaErrorHandler();
         NotificationUtils.createChannels(context);
         initialized = true;
     }
 
-    public static void installSslProvider(Context context) {
-        // ProviderInstaller is a closed-source Google library
+    private static void installSslProvider(Context context) {
+        // Insert bundled conscrypt as highest security provider (overrides OS version).
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
     }
 }

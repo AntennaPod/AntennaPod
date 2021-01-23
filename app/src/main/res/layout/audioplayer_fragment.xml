@@ -15,15 +15,15 @@
             app:navigationIcon="?homeAsUpIndicator"
             android:id="@+id/toolbar"/>
 
-    <de.danoeh.antennapod.view.PagerIndicatorView
-            android:id="@+id/page_indicator"
-            android:layout_height="16dp"
-            android:layout_width="40dp"
-            android:layout_marginTop="-12dp"
-            android:padding="4dp"
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
-            android:contentDescription="@string/switch_pages"
-            android:layout_centerHorizontal="true"/>
+            android:background="?android:attr/windowBackground"
+            app:tabBackground="?attr/selectableItemBackground"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
 
     <FrameLayout
             android:id="@+id/playerFragment"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_above="@id/playtime_layout"
-            android:layout_below="@id/toolbar"
+            android:layout_below="@id/sliding_tabs"
             android:foreground="?android:windowContentOverlay"
             android:layout_marginBottom="12dp"/>
 
@@ -50,6 +50,34 @@
             android:src="@drawable/bg_gradient"
             app:tint="?android:attr/windowBackground"
             android:importantForAccessibility="no"/>
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewSeek"
+            android:alpha="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/pager"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?attr/seek_background"
+            app:cardElevation="0dp"
+            tools:alpha="1">
+
+        <TextView
+                android:id="@+id/txtvSeek"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:paddingTop="4dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                tools:text="1:06:29" />
+
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
             android:id="@+id/playtime_layout"
@@ -67,7 +95,8 @@
                 android:max="500"
                 tools:progress="100"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp" />
+                android:layout_marginRight="8dp"
+                android:clickable="true"/>
 
         <RelativeLayout
                 android:layout_width="match_parent"

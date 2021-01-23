@@ -1,224 +1,236 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:baselineAligned="false"
-        android:paddingStart="12dp"
-        android:paddingLeft="12dp"
-        android:paddingEnd="0dp"
-        android:paddingRight="0dp">
+        android:layout_height="wrap_content">
+
+    <!--
+    This parent FrameLayout is necessary because RecyclerView's ItemAnimator changes alpha values,
+    which conflicts with our played state indicator.
+    -->
 
     <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/left_padding"
-            android:minWidth="4dp">
-        <ImageView
-                android:id="@+id/drag_handle"
-                android:layout_width="16dp"
-                android:layout_height="match_parent"
-                android:importantForAccessibility="no"
-                android:scaleType="fitCenter"
-                android:src="?attr/dragview_background"
-                android:paddingStart="0dp"
-                android:paddingLeft="0dp"
-                android:paddingEnd="4dp"
-                android:paddingRight="4dp"
-                tools:src="@drawable/ic_drag_darktheme"
-                tools:background="@android:color/holo_green_dark"/>
-
-    </LinearLayout>
-
-    <androidx.cardview.widget.CardView
-            android:layout_width="@dimen/thumbnail_length_queue_item"
-            android:layout_height="@dimen/thumbnail_length_queue_item"
-            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginRight="@dimen/listitem_threeline_textleftpadding"
-            android:layout_marginEnd="@dimen/listitem_threeline_textleftpadding"
-            android:id="@+id/coverHolder"
-            app:cardBackgroundColor="@color/non_square_icon_background"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="0dp">
-
-        <RelativeLayout
-                android:layout_width="@dimen/thumbnail_length_queue_item"
-                android:layout_height="@dimen/thumbnail_length_queue_item">
-
-            <TextView
-                    android:id="@+id/txtvPlaceholder"
-                    android:layout_width="@dimen/thumbnail_length_queue_item"
-                    android:layout_height="@dimen/thumbnail_length_queue_item"
-                    android:layout_centerVertical="true"
-                    android:gravity="center"
-                    android:background="@color/light_gray"
-                    android:maxLines="3"
-                    android:padding="2dp"
-                    android:ellipsize="end"/>
-            <ImageView
-                    android:id="@+id/imgvCover"
-                    android:layout_width="@dimen/thumbnail_length_queue_item"
-                    android:layout_height="@dimen/thumbnail_length_queue_item"
-                    android:layout_centerVertical="true"
-                    android:importantForAccessibility="no"
-                    tools:src="@tools:sample/avatars"/>
-
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-
-    <LinearLayout
-            android:layout_width="0dp"
+            android:id="@+id/container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
-            android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
-            android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
-            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-            android:layout_weight="1"
-            tools:background="@android:color/holo_red_dark"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:baselineAligned="false"
+            android:paddingStart="12dp"
+            android:paddingLeft="12dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="0dp"
+            tools:ignore="UselessParent">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/status"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-            <TextView
-                    android:text="@string/new_label"
-                    style="@style/AntennaPod.TextView.UnreadIndicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/statusUnread"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
-                    tools:text="@sample/episodes.json/data/status_label"/>
-
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/left_padding"
+                android:minWidth="4dp">
             <ImageView
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
-                    app:srcCompat="?attr/type_video"
-                    tools:srcCompat="@drawable/ic_videocam_black_24dp"
-                    android:contentDescription="@string/media_type_video_label"
-                    android:id="@+id/ivIsVideo"/>
-
-            <ImageView
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
-                    app:srcCompat="?attr/ic_unfav"
-                    tools:srcCompat="@drawable/ic_star_black"
-                    android:contentDescription="@string/is_favorite_label"
-                    android:id="@+id/isFavorite"/>
-
-            <ImageView
-                    android:layout_width="14sp"
-                    android:layout_height="14sp"
-                    app:srcCompat="?attr/stat_playlist"
-                    tools:srcCompat="@drawable/ic_playlist_black"
-                    android:contentDescription="@string/in_queue_label"
-                    android:id="@+id/ivInPlaylist"/>
-
-            <TextView
-                    android:id="@+id/separatorIcons"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:text="·"
-                    tools:background="@android:color/holo_blue_light"/>
-
-            <TextView
-                    android:id="@+id/txtvPubDate"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
-                    tools:text="@sample/episodes.json/data/published_at"/>
-
-            <TextView
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:text="·"
-                    tools:background="@android:color/holo_blue_light"/>
-
-            <TextView
-                    android:id="@+id/size"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="10 MB"/>
+                    android:id="@+id/drag_handle"
+                    android:layout_width="16dp"
+                    android:layout_height="match_parent"
+                    android:importantForAccessibility="no"
+                    android:scaleType="fitCenter"
+                    android:src="?attr/dragview_background"
+                    android:paddingStart="0dp"
+                    android:paddingLeft="0dp"
+                    android:paddingEnd="4dp"
+                    android:paddingRight="4dp"
+                    tools:src="@drawable/ic_drag_darktheme"
+                    tools:background="@android:color/holo_green_dark"/>
 
         </LinearLayout>
 
-        <!--
-            Warning: android:contentDescription is set to an empty string.
-            The title is read as contentDescription of left_padding to have it read first.
-            Keep this in mind when changing the order of this layout!
-        -->
-        <TextView
-                android:id="@+id/txtvTitle"
-                style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="@sample/episodes.json/data/title"
-                android:importantForAccessibility="no"
-                android:ellipsize="end"
-                tools:background="@android:color/holo_blue_light"/>
+        <androidx.cardview.widget.CardView
+                android:layout_width="@dimen/thumbnail_length_queue_item"
+                android:layout_height="@dimen/thumbnail_length_queue_item"
+                android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+                android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+                android:layout_marginRight="@dimen/listitem_threeline_textleftpadding"
+                android:layout_marginEnd="@dimen/listitem_threeline_textleftpadding"
+                android:id="@+id/coverHolder"
+                app:cardBackgroundColor="@color/non_square_icon_background"
+                app:cardCornerRadius="4dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardElevation="0dp">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                        android:id="@+id/txtvPlaceholder"
+                        android:layout_width="@dimen/thumbnail_length_queue_item"
+                        android:layout_height="@dimen/thumbnail_length_queue_item"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:background="@color/light_gray"
+                        android:maxLines="3"
+                        android:padding="2dp"
+                        android:ellipsize="end"/>
+                <ImageView
+                        android:id="@+id/imgvCover"
+                        android:layout_width="@dimen/thumbnail_length_queue_item"
+                        android:layout_height="@dimen/thumbnail_length_queue_item"
+                        android:layout_centerVertical="true"
+                        android:importantForAccessibility="no"
+                        tools:src="@tools:sample/avatars"/>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/progress"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+                android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
+                android:layout_marginEnd="@dimen/listitem_threeline_textrightpadding"
+                android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+                android:layout_weight="1"
+                tools:background="@android:color/holo_red_dark"
+                android:orientation="vertical">
 
-            <TextView
-                    android:id="@+id/txtvPosition"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    tools:text="00:42:23"
-                    tools:background="@android:color/holo_blue_light"/>
+                    android:id="@+id/status"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-            <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?attr/progressBarTheme"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="4dp"
-                    android:max="100"
-                    android:layout_margin="4dp"
-                    tools:background="@android:color/holo_blue_light"/>
+                <TextView
+                        android:text="@string/new_label"
+                        style="@style/AntennaPod.TextView.UnreadIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/statusUnread"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        tools:text="@sample/episodes.json/data/status_label"/>
 
+                <ImageView
+                        android:layout_width="14sp"
+                        android:layout_height="14sp"
+                        app:srcCompat="?attr/type_video"
+                        tools:srcCompat="@drawable/ic_videocam_black_24dp"
+                        android:contentDescription="@string/media_type_video_label"
+                        android:id="@+id/ivIsVideo"/>
+
+                <ImageView
+                        android:layout_width="14sp"
+                        android:layout_height="14sp"
+                        app:srcCompat="?attr/ic_unfav"
+                        tools:srcCompat="@drawable/ic_star_black"
+                        android:contentDescription="@string/is_favorite_label"
+                        android:id="@+id/isFavorite"/>
+
+                <ImageView
+                        android:layout_width="14sp"
+                        android:layout_height="14sp"
+                        app:srcCompat="?attr/stat_playlist"
+                        tools:srcCompat="@drawable/ic_playlist_black"
+                        android:contentDescription="@string/in_queue_label"
+                        android:id="@+id/ivInPlaylist"/>
+
+                <TextView
+                        android:id="@+id/separatorIcons"
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="·"
+                        tools:background="@android:color/holo_blue_light"/>
+
+                <TextView
+                        android:id="@+id/txtvPubDate"
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        tools:text="@sample/episodes.json/data/published_at"/>
+
+                <TextView
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:text="·"
+                        tools:background="@android:color/holo_blue_light"/>
+
+                <TextView
+                        android:id="@+id/size"
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="10 MB"/>
+
+            </LinearLayout>
+
+            <!--
+                Warning: android:contentDescription is set to an empty string.
+                The title is read as contentDescription of left_padding to have it read first.
+                Keep this in mind when changing the order of this layout!
+            -->
             <TextView
-                    android:id="@+id/txtvDuration"
-                    style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/txtvTitle"
+                    style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    tools:text="@sample/episodes.json/data/duration"
+                    tools:text="@sample/episodes.json/data/title"
+                    android:importantForAccessibility="no"
+                    android:ellipsize="end"
                     tools:background="@android:color/holo_blue_light"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/progress"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                <TextView
+                        android:id="@+id/txtvPosition"
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        tools:text="00:42:23"
+                        tools:background="@android:color/holo_blue_light"/>
+
+                <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?attr/progressBarTheme"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="4dp"
+                        android:max="100"
+                        android:layout_margin="4dp"
+                        tools:background="@android:color/holo_blue_light"/>
+
+                <TextView
+                        android:id="@+id/txtvDuration"
+                        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="0dp"
+                        tools:text="@sample/episodes.json/data/duration"
+                        tools:background="@android:color/holo_blue_light"/>
+
+            </LinearLayout>
 
         </LinearLayout>
+
+        <include layout="@layout/secondary_action"/>
 
     </LinearLayout>
-
-    <include layout="@layout/secondary_action"/>
-
-</LinearLayout>
+</FrameLayout>

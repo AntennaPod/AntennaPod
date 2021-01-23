@@ -2,33 +2,33 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/interruptions">
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefPauseOnHeadsetDisconnect"
                 android:summary="@string/pref_pauseOnDisconnect_sum"
                 android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:dependency="prefPauseOnHeadsetDisconnect"
                 android:key="prefUnpauseOnHeadsetReconnect"
                 android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
                 android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
                 android:dependency="prefPauseOnHeadsetDisconnect"
                 android:key="prefUnpauseOnBluetoothReconnect"
                 android:summary="@string/pref_unpauseOnBluetoothReconnect_sum"
                 android:title="@string/pref_unpauseOnBluetoothReconnect_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefPauseForFocusLoss"
                 android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
                 android:title="@string/pref_pausePlaybackForFocusLoss_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefResumeAfterCall"
@@ -44,13 +44,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_control">
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefHardwareForwardButtonSkips"
                 android:summary="@string/pref_hardwareForwardButtonSkips_sum"
                 android:title="@string/pref_hardwareForwardButtonSkips_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefHardwarePreviousButtonRestarts"
@@ -68,12 +68,12 @@
                 android:key="prefPlaybackSpeedLauncher"
                 android:summary="@string/pref_playback_speed_sum"
                 android:title="@string/playback_speed"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:key="prefPlaybackTimeRespectsSpeed"
                 android:summary="@string/pref_playback_time_respects_speed_sum"
                 android:title="@string/pref_playback_time_respects_speed_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:key="prefStreamOverDownload"
                 android:summary="@string/pref_stream_over_download_sum"
@@ -81,7 +81,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefEnqueueDownloaded"
@@ -93,7 +93,7 @@
                 android:entryValues="@array/enqueue_location_values"
                 android:key="prefEnqueueLocation"
                 android:title="@string/pref_enqueue_location_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefFollowQueue"
@@ -106,7 +106,7 @@
                 android:key="prefSmartMarkAsPlayedSecs"
                 android:summary="@string/pref_smart_mark_as_played_sum"
                 android:title="@string/pref_smart_mark_as_played_title"/>
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="true"
                 android:enabled="true"
                 android:key="prefSkipKeepsEpisode"
@@ -114,7 +114,7 @@
                 android:title="@string/pref_skip_keeps_episodes_title"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/media_player">
+    <PreferenceCategory android:title="@string/experimental_pref">
         <ListPreference
                 android:defaultValue="exoplayer"
                 android:entries="@array/media_player_options"
@@ -122,10 +122,7 @@
                 android:title="@string/media_player"
                 android:summary="@string/pref_media_player_message"
                 android:entryValues="@array/media_player_values"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/experimental_pref">
-        <SwitchPreference
+        <SwitchPreferenceCompat
                 android:defaultValue="false"
                 android:enabled="true"
                 android:key="prefCast"

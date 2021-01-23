@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +75,7 @@ public class NavListAdapter extends BaseAdapter
     }
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)) {
+        if (UserPreferences.PREF_HIDDEN_DRAWER_ITEMS.equals(key)) {
             loadItems();
         }
     }
@@ -298,7 +298,7 @@ public class NavListAdapter extends BaseAdapter
         convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
         TextView feedsFilteredMsg = convertView.findViewById(R.id.nav_feeds_filtered_message);
 
-        if (UserPreferences.getFeedFilter() != UserPreferences.FEED_FILTER_NONE && showSubscriptionList) {
+        if (UserPreferences.getSubscriptionsFilter().isEnabled() && showSubscriptionList) {
             convertView.setEnabled(true);
             feedsFilteredMsg.setText("{md-info-outline} " + context.getString(R.string.subscriptions_are_filtered));
             Iconify.addIcons(feedsFilteredMsg);

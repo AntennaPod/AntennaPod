@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -18,8 +17,10 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 
-public class EpisodesFragment extends Fragment {
+public class EpisodesFragment extends PagedToolbarFragment {
 
     public static final String TAG = "EpisodesFragment";
     private static final String PREF_LAST_TAB_POSITION = "tab_position";
@@ -29,18 +30,11 @@ public class EpisodesFragment extends Fragment {
     private static final int POS_FAV_EPISODES = 2;
     private static final int TOTAL_COUNT = 3;
 
-
     private TabLayout tabLayout;
-    private ViewPager2 viewPager;
-
-    //Mandatory Constructor
-    public EpisodesFragment() {
-    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,9 +42,14 @@ public class EpisodesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
         Toolbar toolbar = rootView.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.episodes_label);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        viewPager = rootView.findViewById(R.id.viewpager);
+        toolbar.inflateMenu(R.menu.episodes);
+        MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+
+        ViewPager2 viewPager = rootView.findViewById(R.id.viewpager);
         viewPager.setAdapter(new EpisodesPagerAdapter(this));
+        viewPager.setOffscreenPageLimit(2);
+        super.setupPagedToolbar(toolbar, viewPager);
 
         // Give the TabLayout the ViewPager
         tabLayout = rootView.findViewById(R.id.sliding_tabs);

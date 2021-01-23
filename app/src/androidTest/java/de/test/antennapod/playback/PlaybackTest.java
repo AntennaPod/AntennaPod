@@ -3,13 +3,14 @@ package de.test.antennapod.playback;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.View;
 
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import org.awaitility.Awaitility;
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -252,7 +253,7 @@ public class PlaybackTest {
         onView(isRoot()).perform(waitForView(withText(R.string.all_episodes_short_label), 1000));
         onView(withText(R.string.all_episodes_short_label)).perform(click());
 
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10, FeedItemFilter.unfiltered());
         Matcher<View> allEpisodesMatcher = allOf(withId(android.R.id.list), isDisplayed(), hasMinimumChildCount(2));
         onView(isRoot()).perform(waitForView(allEpisodesMatcher, 1000));
         onView(allEpisodesMatcher).perform(actionOnItemAtPosition(0, clickChildViewWithId(R.id.secondaryActionButton)));
@@ -287,7 +288,7 @@ public class PlaybackTest {
         uiTestUtils.addLocalFeedData(true);
         DBWriter.clearQueue().get();
         activityTestRule.launchActivity(new Intent());
-        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(0, 10, FeedItemFilter.unfiltered());
 
         startLocalPlayback();
         FeedMedia media = episodes.get(0).getMedia();

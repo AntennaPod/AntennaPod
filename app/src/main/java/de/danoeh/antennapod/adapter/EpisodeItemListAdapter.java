@@ -92,11 +92,11 @@ public class EpisodeItemListAdapter extends RecyclerView.Adapter<EpisodeItemView
         // Set all listeners to null. This is required to prevent leaking fragments that have set a listener.
         // Activity -> recycledViewPool -> EpisodeItemViewHolder -> Listener -> Fragment (can not be garbage collected)
         holder.itemView.setOnClickListener(null);
+        holder.itemView.setOnCreateContextMenuListener(null);
+        holder.itemView.setOnLongClickListener(null);
         holder.secondaryActionButton.setOnClickListener(null);
         holder.dragHandle.setOnTouchListener(null);
         holder.coverHolder.setOnTouchListener(null);
-        holder.container.setOnCreateContextMenuListener(null);
-        holder.container.setOnLongClickListener(null);
     }
 
     /**

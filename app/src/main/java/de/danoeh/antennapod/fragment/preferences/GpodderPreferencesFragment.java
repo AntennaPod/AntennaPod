@@ -1,15 +1,12 @@
 package de.danoeh.antennapod.fragment.preferences;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.core.text.HtmlCompat;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import android.text.Spanned;
 import android.text.format.DateUtils;
-import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
@@ -17,11 +14,9 @@ import de.danoeh.antennapod.core.event.SyncServiceEvent;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
-import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
 
 public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
@@ -29,8 +24,6 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
     private static final String PREF_GPODNET_SYNC = "pref_gpodnet_sync";
     private static final String PREF_GPODNET_FORCE_FULL_SYNC = "pref_gpodnet_force_full_sync";
     private static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
-    private static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
-    private static final String PREF_GPODNET_NOTIFICATIONS = "pref_gpodnet_notifications";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -55,6 +48,7 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
 
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void syncStatusChanged(SyncServiceEvent event) {
+        updateGpodnetPreferenceScreen();
         if (!GpodnetPreferences.loggedIn()) {
             return;
         }
@@ -70,6 +64,10 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
     private void setupGpodderScreen() {
         final Activity activity = getActivity();
 
+        findPreference(PREF_GPODNET_LOGIN).setOnPreferenceClickListener(preference -> {
+            new GpodderAuthenticationFragment().show(getChildFragmentManager(), GpodderAuthenticationFragment.TAG);
+            return true;
+        });
         findPreference(PREF_GPODNET_SETLOGIN_INFORMATION)
                 .setOnPreferenceClickListener(preference -> {
                     AuthenticationDialog dialog = new AuthenticationDialog(activity,
@@ -98,11 +96,6 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
             updateGpodnetPreferenceScreen();
             return true;
         });
-        findPreference(PREF_GPODNET_HOSTNAME).setOnPreferenceClickListener(preference -> {
-            GpodnetSetHostnameDialog.createDialog(activity).setOnDismissListener(
-                    dialog -> updateGpodnetPreferenceScreen());
-            return true;
-        });
     }
 
     private void updateGpodnetPreferenceScreen() {
@@ -112,7 +105,6 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
         findPreference(PREF_GPODNET_SYNC).setEnabled(loggedIn);
         findPreference(PREF_GPODNET_FORCE_FULL_SYNC).setEnabled(loggedIn);
         findPreference(PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
-        findPreference(PREF_GPODNET_NOTIFICATIONS).setEnabled(loggedIn);
         if (loggedIn) {
             String format = getActivity().getString(R.string.pref_gpodnet_login_status);
             String summary = String.format(format, GpodnetPreferences.getUsername(),
@@ -124,7 +116,6 @@ public class GpodderPreferencesFragment extends PreferenceFragmentCompat {
         } else {
             findPreference(PREF_GPODNET_LOGOUT).setSummary(null);
         }
-        findPreference(PREF_GPODNET_HOSTNAME).setSummary(GpodnetPreferences.getHostname());
     }
 
     private void updateLastGpodnetSyncReport(boolean successful, long lastTime) {

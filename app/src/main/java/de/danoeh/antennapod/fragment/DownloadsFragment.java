@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -19,11 +18,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 
 /**
- * Shows the CompletedDownloadsFragment and the RunningDownloadsFragment
+ * Shows the CompletedDownloadsFragment and the RunningDownloadsFragment.
  */
-public class DownloadsFragment extends Fragment {
+public class DownloadsFragment extends PagedToolbarFragment {
 
     public static final String TAG = "DownloadsFragment";
 
@@ -47,10 +47,13 @@ public class DownloadsFragment extends Fragment {
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.downloads);
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
 
         viewPager = root.findViewById(R.id.viewpager);
         viewPager.setAdapter(new DownloadsPagerAdapter(this));
+        viewPager.setOffscreenPageLimit(2);
+        super.setupPagedToolbar(toolbar, viewPager);
 
         // Give the TabLayout the ViewPager
         tabLayout = root.findViewById(R.id.sliding_tabs);

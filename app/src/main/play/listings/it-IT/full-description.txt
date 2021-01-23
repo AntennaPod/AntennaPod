@@ -1,14 +1,14 @@
-AntennaPod è un riproduttore e gestore di podcast che permette l'accesso immediato a milioni di podcast gratuiti e a pagamento, dai podcaster indipendenti alle più grandi emittenti come BBC, NPR e CNN. Aggiungi, importa e esporta in modo semplice usando il database di podcast di iTunes, un file OPML o i semplici URL RSS.
-Scarica, ascolta in streaming o accoda gli episodi e goditeli come preferisci grazie alla velocità di riproduzione modificabile, al supporto ai capitoli e al timer di spegnimento.
-Risparmia fatica, carica della batteria e dati con i potenti controlli automatizzati per il download degli episodi (orari specifici, intervalli di tempo e reti WiFi selezionate) e l'eliminazione degli episodi (gestione dei preferiti e i tempi di cancellazione).
+AntennaPod è un riproduttore e gestore di podcast che permette l'accesso immediato a milioni di podcast gratuiti e a pagamento, dai podcaster indipendenti alle grandi emittenti come BBC, NPR e CNN. Aggiungi, importa ed esporta i feed in modo semplice tramite il database di iTunes, i file OPML o i semplici indirizzi RSS.
+Scarica, accoda o ascolta in streaming gli episodi e goditeli come preferisci grazie alla velocità di riproduzione modificabile, al supporto ai capitoli e al timer di spegnimento.
+Risparmia fatica, carica della batteria e dati grazie ai potenti controlli automatizzati per il download degli episodi (orari specifici, intervalli di tempo e reti WiFi specifiche) e l'eliminazione degli episodi (gestione dei preferiti e tempi di cancellazione).
 
-Creato da appassionati di podcast, AntennaPod è libero in  tutti i sensi: open source, gratuito e senza pubblicità.
+Creato da appassionati di podcast, AntennaPod è libero in tutti i sensi: open source, gratuito e senza pubblicità.
 
 <b>Importa, organizza e riproduci</b>
-• Gestisci la riproduzione ovunque: widget nella schermata home, tendina delle notifiche, cuffie e controlli bluetooth.
+• Gestisci la riproduzione ovunque: widget nella schermata home, tendina delle notifiche, cuffie e controlli Bluetooth.
 • Aggiungi e importa le sottoscrizioni tramite iTunes e gPodder, o anche tramite file OPML, collegamenti RSS o Atom.
-• Goditi l'ascolto nel modo che preferisci grazie alla velocità di riproduzione modificabile, il supporto ai capitoli, la memorizzazione dello stato di riproduzione e un timer di spegnimento avanzato (scuoti per riavviare o riduci il volume)
-• Accedi ai feed e agli episodi protetti tramite utente e password
+• Goditi l'ascolto nel modo che preferisci grazie alla velocità di riproduzione modificabile, al supporto ai capitoli, alla memorizzazione dello stato di riproduzione e al timer di spegnimento avanzato (scuoti per riavviare o riduci il volume)
+• Accedi tramite utente e password ai feed e agli episodi riservati
 
 <b>Tieni traccia, condividi & ricerca</b>
 • Tieni traccia dei migliori episodi di sempre segnandoli come preferiti
@@ -16,16 +16,16 @@ Creato da appassionati di podcast, AntennaPod è libero in  tutti i sensi: open 
 • Condividi gli episodi e i feed tramite opzioni avanzate di condivisione via social o email, i servizi di gPodder.net o l'esportazione OPML.
 
 <b>Controlla il sistema</b>
-• Gestisci il download automatico: puoi selezionare i feed, escludere le reti mobili, utilizzare reti WiFi specifiche, impostare il download solo se in carica e scaricare in orari o intervalli selezionati.
-• Gestisci lo spazio impostando l'occupazione massima degli episodi, la cancellazione intelligente e il percorso in cui scaricare i file.
-• Adattati alle tue preferenze grazie ai temi chiaro o scuro.
-• Effettua il backup delle sottoscrizioni grazie all'integrazione di gPodder.net e all'esportazione in OPML
+• Gestisci il download automatico: puoi selezionare i feed, escludere le reti mobili, utilizzare reti WiFi specifiche, impostare il download solo quando in carica e scaricare ad orari o intervalli selezionati.
+• Gestisci lo spazio impostando il numero massimo di episodi da tenere, la cancellazione intelligente e il percorso in cui scaricare i file.
+• Adattalo alle tue preferenze grazie ai temi chiaro o scuro.
+• Effettua il backup delle sottoscrizioni grazie all'integrazione con gPodder.net e all'esportazione in OPML.
 
 <b>Partecipa alla community di AntennaPod!</b>
 AntennaPod è sviluppato da volontari. Anche tu puoi contribuire, con il codice o con dei commenti!
 
-GitHub è la piattaforma usata per le richieste di funzionalità, le segnalazioni di bug o i contributi al codice:
-https://www.github.com/AntennaPod/AntennaPod
+I simpatici membri del nostro forum sono felici di rispondere a qualsiasi domanda tu possa avere. Ti invitiamo anche a discutere di funzionalità e podcasting.
+https://forum.antennapod.org/
 
 Transifex è dove puoi contribuire alla traduzione:
 https://www.transifex.com/antennapod/antennapod

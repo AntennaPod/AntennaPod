@@ -40,8 +40,7 @@ public class DownloadActionButton extends ItemActionButton {
 
     @Override
     public int getVisibility() {
-        return (item.getMedia() != null && DownloadRequester.getInstance().isDownloadingFile(item.getMedia()))
-                ? View.INVISIBLE : View.VISIBLE;
+        return item.getFeed().isLocalFeed() ? View.INVISIBLE : View.VISIBLE;
     }
 
     @Override

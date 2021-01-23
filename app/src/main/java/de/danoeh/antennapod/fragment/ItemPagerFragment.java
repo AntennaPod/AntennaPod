@@ -2,15 +2,12 @@ package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
@@ -35,9 +32,11 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Displays information about a list of FeedItems.
  */
-public class ItemPagerFragment extends Fragment {
+public class ItemPagerFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
     private static final String ARG_FEEDITEMS = "feeditems";
     private static final String ARG_FEEDITEM_POS = "feeditem_pos";
+    private static final String KEY_PAGER_ID = "pager_id";
+    private ViewPager2 pager;
 
     /**
      * Creates a new instance of an ItemPagerFragment.
@@ -58,31 +57,32 @@ public class ItemPagerFragment extends Fragment {
     private long[] feedItems;
     private FeedItem item;
     private Disposable disposable;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+    private Toolbar toolbar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View layout = inflater.inflate(R.layout.feeditem_pager_fragment, container, false);
-        Toolbar toolbar = layout.findViewById(R.id.toolbar);
+        toolbar = layout.findViewById(R.id.toolbar);
         toolbar.setTitle("");
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.feeditem_options);
+        toolbar.setNavigationOnClickListener(v -> getParentFragmentManager().popBackStack());
+        toolbar.setOnMenuItemClickListener(this);
 
         feedItems = getArguments().getLongArray(ARG_FEEDITEMS);
         int feedItemPos = getArguments().getInt(ARG_FEEDITEM_POS);
 
-        ViewPager2 pager = layout.findViewById(R.id.pager);
+        pager = layout.findViewById(R.id.pager);
         // FragmentStatePagerAdapter documentation:
         // > When using FragmentStatePagerAdapter the host ViewPager must have a valid ID set.
         // When opening multiple ItemPagerFragments by clicking "item" -> "visit podcast" -> "item" -> etc,
         // the ID is no longer unique and FragmentStatePagerAdapter does not display any pages.
         int newId = ViewCompat.generateViewId();
+        if (savedInstanceState != null && savedInstanceState.getInt(KEY_PAGER_ID, 0) != 0) {
+            // Restore state by using the same ID as before. ID collisions are prevented in MainActivity.
+            newId = savedInstanceState.getInt(KEY_PAGER_ID, 0);
+        }
         pager.setId(newId);
         pager.setAdapter(new ItemPagerAdapter(this));
         pager.setCurrentItem(feedItemPos, false);
@@ -97,6 +97,12 @@ public class ItemPagerFragment extends Fragment {
 
         EventBus.getDefault().register(this);
         return layout;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(KEY_PAGER_ID, pager.getId());
     }
 
     @Override
@@ -118,28 +124,25 @@ public class ItemPagerFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                     item = result;
-                    getActivity().invalidateOptionsMenu();
+                    refreshToolbarState();
                 }, Throwable::printStackTrace);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if (!isAdded() || item == null) {
+    public void refreshToolbarState() {
+        if (item == null) {
             return;
         }
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.feeditem_options, menu);
         if (item.hasMedia()) {
-            FeedItemMenuHandler.onPrepareMenu(menu, item);
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), item);
         } else {
             // these are already available via button1 and button2
-            FeedItemMenuHandler.onPrepareMenu(menu, item,
+            FeedItemMenuHandler.onPrepareMenu(toolbar.getMenu(), item,
                     R.id.mark_read_item, R.id.visit_website_item);
         }
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    public boolean onMenuItemClick(MenuItem menuItem) {
         if (menuItem.getItemId() == R.id.open_podcast) {
             openPodcast();
             return true;
@@ -152,7 +155,7 @@ public class ItemPagerFragment extends Fragment {
         for (FeedItem item : event.items) {
             if (this.item != null && this.item.getId() == item.getId()) {
                 this.item = item;
-                getActivity().invalidateOptionsMenu();
+                refreshToolbarState();
                 return;
             }
         }

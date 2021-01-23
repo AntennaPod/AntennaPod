@@ -40,14 +40,21 @@
             android:icon="?attr/storage" />
 
     <Preference
+            android:key="notifications"
+            android:title="@string/notification_pref_fragment"
+            android:icon="?attr/ic_notifications"/>
+
+    <Preference
             android:key="statistics"
             android:title="@string/statistics_label"
             android:icon="?attr/statistics" />
 
-    <PreferenceCategory android:title="@string/project_pref">
+    <PreferenceCategory
+            android:key="project"
+            android:title="@string/project_pref">
         <Preference
-            android:key="prefFaq"
-            android:title="@string/pref_faq"
+            android:key="prefDocumentation"
+            android:title="@string/documentation_support"
             android:icon="?attr/ic_questionmark" />
         <Preference
             android:key="prefViewForum"

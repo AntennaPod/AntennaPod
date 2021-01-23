@@ -4,14 +4,12 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.DBTasksCallbacks;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.ui.UITestUtils;
@@ -32,7 +30,7 @@ public class AutoDownloadTest {
     private Context context;
     private UITestUtils stubFeedsServer;
 
-    private DBTasksCallbacks dbTasksCallbacksOrig;
+    private AutomaticDownloadAlgorithm automaticDownloadAlgorithmOrig;
 
     @Before
     public void setUp() throws Exception {
@@ -41,7 +39,7 @@ public class AutoDownloadTest {
         stubFeedsServer = new UITestUtils(context);
         stubFeedsServer.setup();
 
-        dbTasksCallbacksOrig = ClientConfig.dbTasksCallbacks;
+        automaticDownloadAlgorithmOrig = ClientConfig.automaticDownloadAlgorithm;
 
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
@@ -50,7 +48,7 @@ public class AutoDownloadTest {
 
     @After
     public void tearDown() throws Exception {
-        ClientConfig.dbTasksCallbacks = dbTasksCallbacksOrig;
+        ClientConfig.automaticDownloadAlgorithm = automaticDownloadAlgorithmOrig;
         EspressoTestUtils.tryKillPlaybackService();
         stubFeedsServer.tearDown();
     }
@@ -79,7 +77,7 @@ public class AutoDownloadTest {
         // Setup: enable automatic download
         // it is not needed, as the actual automatic download is stubbed.
         StubDownloadAlgorithm stubDownloadAlgorithm = new StubDownloadAlgorithm();
-        useDownloadAlgorithm(stubDownloadAlgorithm);
+        ClientConfig.automaticDownloadAlgorithm = stubDownloadAlgorithm;
 
         // Actual test
         // Play the first one in the queue
@@ -111,20 +109,6 @@ public class AutoDownloadTest {
         Awaitility.await("episode is playing")
                 .atMost(2000, MILLISECONDS)
                 .until(() -> item.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
-    }
-
-    private void useDownloadAlgorithm(final AutomaticDownloadAlgorithm downloadAlgorithm) {
-        ClientConfig.dbTasksCallbacks = new DBTasksCallbacks() {
-            @Override
-            public AutomaticDownloadAlgorithm getAutomaticDownloadAlgorithm() {
-                return downloadAlgorithm;
-            }
-
-            @Override
-            public EpisodeCleanupAlgorithm getEpisodeCacheCleanupAlgorithm() {
-                return dbTasksCallbacksOrig.getEpisodeCacheCleanupAlgorithm();
-            }
-        };
     }
 
     private static class StubDownloadAlgorithm implements AutomaticDownloadAlgorithm {
