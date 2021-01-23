@@ -1,4 +1,6 @@
-package de.test.antennapod.storage;
+package de.danoeh.antennapod.core.storage;
+
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,18 +8,18 @@ import java.util.List;
 import java.util.Random;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.LongList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
-import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
+import static de.danoeh.antennapod.core.storage.DbTestUtils.saveFeedlist;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -25,24 +27,28 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for DBReader
+ * Test class for DBReader.
  */
-@SmallTest
-public class DBReaderTest {
-
-    @After
-    public void tearDown() throws Exception {
-        assertTrue(PodDBAdapter.deleteDatabase());
-    }
+@SuppressWarnings("ConstantConditions")
+@RunWith(RobolectricTestRunner.class)
+public class DbReaderTest {
 
     @Before
-    public void setUp() throws Exception {
-        // create new database
-        PodDBAdapter.init(InstrumentationRegistry.getInstrumentation().getTargetContext());
+    public void setUp() {
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        UserPreferences.init(context);
+
+        PodDBAdapter.init(context);
         PodDBAdapter.deleteDatabase();
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
+    }
+
+    @After
+    public void tearDown() {
+        PodDBAdapter.tearDownTests();
+        DBWriter.tearDownTests();
     }
 
     @Test
@@ -136,6 +142,7 @@ public class DBReaderTest {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private List<FeedItem> saveQueue(int numItems) {
         if (numItems <= 0) {
             throw new IllegalArgumentException("numItems<=0");
@@ -162,7 +169,7 @@ public class DBReaderTest {
     }
 
     @Test
-    public void testGetQueueIDList() {
+    public void testGetQueueIdList() {
         final int numItems = 10;
         List<FeedItem> queue = saveQueue(numItems);
         LongList ids = DBReader.getQueueIDList();
@@ -187,6 +194,7 @@ public class DBReaderTest {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private List<FeedItem> saveDownloadedItems(int numItems) {
         if (numItems <= 0) {
             throw new IllegalArgumentException("numItems<=0");
@@ -219,16 +227,17 @@ public class DBReaderTest {
     public void testGetDownloadedItems() {
         final int numItems = 10;
         List<FeedItem> downloaded = saveDownloadedItems(numItems);
-        List<FeedItem> downloaded_saved = DBReader.getDownloadedItems();
-        assertNotNull(downloaded_saved);
-        assertEquals(downloaded.size(), downloaded_saved.size());
-        for (FeedItem item : downloaded_saved) {
+        List<FeedItem> downloadedSaved = DBReader.getDownloadedItems();
+        assertNotNull(downloadedSaved);
+        assertEquals(downloaded.size(), downloadedSaved.size());
+        for (FeedItem item : downloadedSaved) {
             assertNotNull(item.getMedia());
             assertTrue(item.getMedia().isDownloaded());
             assertNotNull(item.getMedia().getDownload_url());
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private List<FeedItem> saveNewItems(int numItems) {
         List<Feed> feeds = saveFeedlist(numItems, numItems, true);
         List<FeedItem> items = new ArrayList<>();
@@ -285,7 +294,7 @@ public class DBReaderTest {
         final int numReturnedItems = Math.min(playedItems, DBReader.PLAYBACK_HISTORY_SIZE);
         final int numFeeds = 1;
 
-        Feed feed = DBTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
+        Feed feed = DbTestUtils.saveFeedlist(numFeeds, numItems, true).get(0);
         long[] ids = new long[playedItems];
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -310,31 +319,31 @@ public class DBReaderTest {
 
     @Test
     public void testGetNavDrawerDataQueueEmptyNoUnreadItems() {
-        final int NUM_FEEDS = 10;
-        final int NUM_ITEMS = 10;
-        DBTestUtils.saveFeedlist(NUM_FEEDS, NUM_ITEMS, true);
+        final int numFeeds = 10;
+        final int numItems = 10;
+        DbTestUtils.saveFeedlist(numFeeds, numItems, true);
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData();
-        assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
+        assertEquals(numFeeds, navDrawerData.feeds.size());
         assertEquals(0, navDrawerData.numNewItems);
         assertEquals(0, navDrawerData.queueSize);
     }
 
     @Test
     public void testGetNavDrawerDataQueueNotEmptyWithUnreadItems() {
-        final int NUM_FEEDS = 10;
-        final int NUM_ITEMS = 10;
-        final int NUM_QUEUE = 1;
-        final int NUM_NEW = 2;
-        List<Feed> feeds = DBTestUtils.saveFeedlist(NUM_FEEDS, NUM_ITEMS, true);
+        final int numFeeds = 10;
+        final int numItems = 10;
+        final int numQueue = 1;
+        final int numNew = 2;
+        List<Feed> feeds = DbTestUtils.saveFeedlist(numFeeds, numItems, true);
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        for (int i = 0; i < NUM_NEW; i++) {
+        for (int i = 0; i < numNew; i++) {
             FeedItem item = feeds.get(0).getItems().get(i);
             item.setNew();
             adapter.setSingleFeedItem(item);
         }
         List<FeedItem> queue = new ArrayList<>();
-        for (int i = 0; i < NUM_QUEUE; i++) {
+        for (int i = 0; i < numQueue; i++) {
             FeedItem item = feeds.get(1).getItems().get(i);
             queue.add(item);
         }
@@ -343,14 +352,14 @@ public class DBReaderTest {
         adapter.close();
 
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData();
-        assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(NUM_NEW, navDrawerData.numNewItems);
-        assertEquals(NUM_QUEUE, navDrawerData.queueSize);
+        assertEquals(numFeeds, navDrawerData.feeds.size());
+        assertEquals(numNew, navDrawerData.numNewItems);
+        assertEquals(numQueue, navDrawerData.queueSize);
     }
 
     @Test
-    public void testGetFeedItemlistCheckChaptersFalse() throws Exception {
-        List<Feed> feeds = DBTestUtils.saveFeedlist(10, 10, false, false, 0);
+    public void testGetFeedItemlistCheckChaptersFalse() {
+        List<Feed> feeds = DbTestUtils.saveFeedlist(10, 10, false, false, 0);
         for (Feed feed : feeds) {
             for (FeedItem item : feed.getItems()) {
                 assertFalse(item.hasChapters());
@@ -359,7 +368,7 @@ public class DBReaderTest {
     }
 
     @Test
-    public void testGetFeedItemlistCheckChaptersTrue() throws Exception {
+    public void testGetFeedItemlistCheckChaptersTrue() {
         List<Feed> feeds = saveFeedlist(10, 10, false, true, 10);
         for (Feed feed : feeds) {
             for (FeedItem item : feed.getItems()) {
@@ -369,7 +378,7 @@ public class DBReaderTest {
     }
 
     @Test
-    public void testLoadChaptersOfFeedItemNoChapters() throws Exception {
+    public void testLoadChaptersOfFeedItemNoChapters() {
         List<Feed> feeds = saveFeedlist(1, 3, false, false, 0);
         saveFeedlist(1, 3, false, true, 3);
         for (Feed feed : feeds) {
@@ -383,25 +392,25 @@ public class DBReaderTest {
     }
 
     @Test
-    public void testLoadChaptersOfFeedItemWithChapters() throws Exception {
-        final int NUM_CHAPTERS = 3;
-        DBTestUtils.saveFeedlist(1, 3, false, false, 0);
-        List<Feed> feeds = saveFeedlist(1, 3, false, true, NUM_CHAPTERS);
+    public void testLoadChaptersOfFeedItemWithChapters() {
+        final int numChapters = 3;
+        DbTestUtils.saveFeedlist(1, 3, false, false, 0);
+        List<Feed> feeds = saveFeedlist(1, 3, false, true, numChapters);
         for (Feed feed : feeds) {
             for (FeedItem item : feed.getItems()) {
                 assertTrue(item.hasChapters());
                 item.setChapters(DBReader.loadChaptersOfFeedItem(item));
                 assertTrue(item.hasChapters());
                 assertNotNull(item.getChapters());
-                assertEquals(NUM_CHAPTERS, item.getChapters().size());
+                assertEquals(numChapters, item.getChapters().size());
             }
         }
     }
 
     @Test
-    public void testGetItemWithChapters() throws Exception {
-        final int NUM_CHAPTERS = 3;
-        List<Feed> feeds = saveFeedlist(1, 1, false, true, NUM_CHAPTERS);
+    public void testGetItemWithChapters() {
+        final int numChapters = 3;
+        List<Feed> feeds = saveFeedlist(1, 1, false, true, numChapters);
         FeedItem item1 = feeds.get(0).getItems().get(0);
         FeedItem item2 = DBReader.getFeedItem(item1.getId());
         item2.setChapters(DBReader.loadChaptersOfFeedItem(item2));

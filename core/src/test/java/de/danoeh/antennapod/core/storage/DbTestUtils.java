@@ -1,4 +1,4 @@
-package de.test.antennapod.storage;
+package de.danoeh.antennapod.core.storage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,6 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 
 import static org.junit.Assert.assertTrue;
@@ -18,9 +17,8 @@ import static org.junit.Assert.assertTrue;
 /**
  * Utility methods for DB* tests.
  */
-class DBTestUtils {
+abstract class DbTestUtils {
 
-    private DBTestUtils(){}
     /**
      * Use this method when tests don't involve chapters.
      */

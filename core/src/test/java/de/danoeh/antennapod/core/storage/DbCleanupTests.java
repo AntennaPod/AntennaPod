@@ -1,5 +1,6 @@
-package de.test.antennapod.storage;
+package de.danoeh.antennapod.core.storage;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
@@ -11,27 +12,34 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.filters.SmallTest;
+
+import de.danoeh.antennapod.core.ApplicationCallbacks;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
-import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
+import static de.danoeh.antennapod.core.storage.DbTestUtils.saveFeedlist;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
- * Test class for DBTasks
+ * Test class for DBTasks.
  */
-@SmallTest
-public class DBCleanupTests {
+@RunWith(RobolectricTestRunner.class)
+public class DbCleanupTests {
+
     static final int EPISODE_CACHE_SIZE = 5;
     private int cleanupAlgorithm;
 
@@ -39,7 +47,7 @@ public class DBCleanupTests {
 
     private File destFolder;
 
-    public DBCleanupTests() {
+    public DbCleanupTests() {
         setCleanupAlgorithm(UserPreferences.EPISODE_CLEANUP_DEFAULT);
     }
 
@@ -47,24 +55,11 @@ public class DBCleanupTests {
         this.cleanupAlgorithm = cleanupAlgorithm;
     }
 
-    @After
-    public void tearDown() throws Exception {
-        assertTrue(PodDBAdapter.deleteDatabase());
-
-        cleanupDestFolder(destFolder);
-        assertTrue(destFolder.delete());
-    }
-
-    private void cleanupDestFolder(File destFolder) {
-        for (File f : destFolder.listFiles()) {
-            assertTrue(f.delete());
-        }
-    }
-
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        destFolder = new File(context.getCacheDir(), "DDCleanupTests");
+        destFolder = new File(context.getCacheDir(), "DbCleanupTests");
+        //noinspection ResultOfMethodCallIgnored
         destFolder.mkdir();
         cleanupDestFolder(destFolder);
         assertNotNull(destFolder);
@@ -78,24 +73,46 @@ public class DBCleanupTests {
         adapter.open();
         adapter.close();
 
-        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
+        SharedPreferences.Editor prefEdit = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
         prefEdit.putString(UserPreferences.PREF_EPISODE_CLEANUP, Integer.toString(cleanupAlgorithm));
         prefEdit.putBoolean(UserPreferences.PREF_ENABLE_AUTODL, true);
         prefEdit.commit();
 
         UserPreferences.init(context);
+        PlaybackPreferences.init(context);
+
+        Application app = (Application) context;
+        ClientConfig.applicationCallbacks = mock(ApplicationCallbacks.class);
+        when(ClientConfig.applicationCallbacks.getApplicationInstance()).thenReturn(app);
+    }
+
+    @After
+    public void tearDown() {
+        cleanupDestFolder(destFolder);
+        assertTrue(destFolder.delete());
+
+        DBWriter.tearDownTests();
+        PodDBAdapter.tearDownTests();
+    }
+
+    private void cleanupDestFolder(File destFolder) {
+        //noinspection ConstantConditions
+        for (File f : destFolder.listFiles()) {
+            assertTrue(f.delete());
+        }
     }
 
     @Test
     public void testPerformAutoCleanupShouldDelete() throws IOException {
-        final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
+        final int numItems = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
-        populateItems(NUM_ITEMS, feed, items, files, FeedItem.PLAYED, false, false);
+        populateItems(numItems, feed, items, files, FeedItem.PLAYED, false, false);
 
         DBTasks.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
@@ -107,6 +124,7 @@ public class DBCleanupTests {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     void populateItems(final int numItems, Feed feed, List<FeedItem> items,
                        List<File> files, int itemState, boolean addToQueue,
                        boolean addToFavorites) throws IOException {
@@ -121,7 +139,8 @@ public class DBCleanupTests {
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
             files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, playbackCompletionDate, 0, 0));
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m",
+                    f.getAbsolutePath(), "url", true, playbackCompletionDate, 0, 0));
             items.add(item);
         }
 
@@ -139,19 +158,20 @@ public class DBCleanupTests {
         assertTrue(feed.getId() != 0);
         for (FeedItem item : items) {
             assertTrue(item.getId() != 0);
+            //noinspection ConstantConditions
             assertTrue(item.getMedia().getId() != 0);
         }
     }
 
     @Test
     public void testPerformAutoCleanupHandleUnplayed() throws IOException {
-        final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
+        final int numItems = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
-        populateItems(NUM_ITEMS, feed, items, files, FeedItem.UNPLAYED, false, false);
+        populateItems(numItems, feed, items, files, FeedItem.UNPLAYED, false, false);
 
         DBTasks.performAutoCleanup(context);
         for (File file : files) {
@@ -161,13 +181,13 @@ public class DBCleanupTests {
 
     @Test
     public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue() throws IOException {
-        final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
+        final int numItems = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
-        populateItems(NUM_ITEMS, feed, items, files, FeedItem.PLAYED, true, false);
+        populateItems(numItems, feed, items, files, FeedItem.PLAYED, true, false);
 
         DBTasks.performAutoCleanup(context);
         for (File file : files) {
@@ -176,9 +196,9 @@ public class DBCleanupTests {
     }
 
     /**
-     * Reproduces a bug where DBTasks.performAutoCleanup(android.content.Context) would use the ID of the FeedItem in the
-     * call to DBWriter.deleteFeedMediaOfItem instead of the ID of the FeedMedia. This would cause the wrong item to be deleted.
-     * @throws IOException
+     * Reproduces a bug where DBTasks.performAutoCleanup(android.content.Context) would use the ID
+     * of the FeedItem in the call to DBWriter.deleteFeedMediaOfItem instead of the ID of the FeedMedia.
+     * This would cause the wrong item to be deleted.
      */
     @Test
     public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue_withFeedsWithNoMedia() throws IOException {
@@ -188,6 +208,7 @@ public class DBCleanupTests {
         // add candidate for performAutoCleanup
         List<Feed> feeds = saveFeedlist(1, 1, true);
         FeedMedia m = feeds.get(0).getItems().get(0).getMedia();
+        //noinspection ConstantConditions
         m.setDownloaded(true);
         m.setFile_url("file");
         PodDBAdapter adapter = PodDBAdapter.getInstance();
@@ -200,13 +221,13 @@ public class DBCleanupTests {
 
     @Test
     public void testPerformAutoCleanupShouldNotDeleteBecauseFavorite() throws IOException {
-        final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
+        final int numItems = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
-        populateItems(NUM_ITEMS, feed, items, files, FeedItem.PLAYED, false, true);
+        populateItems(numItems, feed, items, files, FeedItem.PLAYED, false, true);
 
         DBTasks.performAutoCleanup(context);
         for (File file : files) {
