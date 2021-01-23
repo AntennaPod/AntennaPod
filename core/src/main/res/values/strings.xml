@@ -410,8 +410,11 @@
     <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
     <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
     <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
-    <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
     <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
+    <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
     <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
