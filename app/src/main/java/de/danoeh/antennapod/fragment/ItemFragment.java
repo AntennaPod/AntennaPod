@@ -291,14 +291,19 @@ public class ItemFragment extends Fragment {
             txtvPublished.setContentDescription(DateUtils.formatForAccessibility(getContext(), item.getPubDate()));
         }
 
+        RequestOptions options = new RequestOptions()
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .transforms(new FitCenter(),
+                        new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
+                .dontAnimate();
+
         Glide.with(getActivity())
                 .load(ImageResourceUtils.getImageLocation(item))
-                .apply(new RequestOptions()
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .transforms(new FitCenter(),
-                            new RoundedCorners((int) (4 * getResources().getDisplayMetrics().density)))
-                    .dontAnimate())
+                .error(Glide.with(getActivity())
+                        .load(ImageResourceUtils.getFallbackImageLocation(item))
+                        .apply(options))
+                .apply(options)
                 .into(imgvCover);
         updateButtons();
     }
