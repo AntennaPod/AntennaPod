@@ -100,7 +100,7 @@ public class CoverFragment extends Fragment {
                     + "\u00A0"
                     + "・"
                     + "\u00A0"
-                    + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ","\u00A0"));
+                    + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         } else {
             txtvPodcastTitle.setText(media.getFeedTitle());
         }
