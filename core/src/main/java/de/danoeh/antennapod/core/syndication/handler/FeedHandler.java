@@ -31,6 +31,7 @@ public class FeedHandler {
 
 		saxParser.parse(inputSource, handler);
 		inputStreamReader.close();
+		feed.dedupItems();
 		return new FeedHandlerResult(handler.state.feed, handler.state.alternateUrls);
 	}
 }

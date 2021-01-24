@@ -420,7 +420,8 @@ public class Feed extends FeedFile implements ImageResource {
         return items;
     }
 
-    private List<FeedItem> dedupItems(List<FeedItem> list) {
+    public List<FeedItem> dedupItems() {
+        List<FeedItem> list = items;
         if (list == null) {
             return null;
         }
@@ -438,7 +439,7 @@ public class Feed extends FeedFile implements ImageResource {
     }
 
     public void setItems(List<FeedItem> list) {
-        this.items = dedupItems(list);
+        this.items = list;
     }
 
     public String getLastUpdate() {
