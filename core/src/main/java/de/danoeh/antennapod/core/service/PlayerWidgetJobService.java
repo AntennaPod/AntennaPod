@@ -107,7 +107,6 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         RemoteViews views;
         views = new RemoteViews(getPackageName(), R.layout.player_widget);
 
-        boolean nothingPlaying = false;
         Playable media;
         PlayerStatus status;
         if (playbackService != null) {
@@ -119,12 +118,12 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         }
 
         if (media != null) {
+            Bitmap icon;
+            int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
 
             try {
-                Bitmap icon;
-                int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
                 icon = Glide.with(PlayerWidgetJobService.this)
                         .asBitmap()
                         .load(ImageResourceUtils.getImageLocation(media))
@@ -132,9 +131,19 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
                 views.setImageViewBitmap(R.id.imgvCover, icon);
-            } catch (Throwable tr) {
-                Log.e(TAG, "Error loading the media icon for the widget", tr);
-                views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
+            } catch (Throwable tr1) {
+                try {
+                    icon = Glide.with(PlayerWidgetJobService.this)
+                            .asBitmap()
+                            .load(ImageResourceUtils.getFallbackImageLocation(media))
+                            .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                            .submit(iconSize, iconSize)
+                            .get(500, TimeUnit.MILLISECONDS);
+                    views.setImageViewBitmap(R.id.imgvCover, icon);
+                } catch (Throwable tr2) {
+                    Log.e(TAG, "Error loading the media icon for the widget", tr2);
+                    views.setImageViewResource(R.id.imgvCover, R.mipmap.ic_launcher_round);
+                }
             }
 
             views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
@@ -169,11 +178,13 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                     createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butPlayExtended,
                     createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+            views.setOnClickPendingIntent(R.id.butRew,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
+            views.setOnClickPendingIntent(R.id.butFastForward,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+            views.setOnClickPendingIntent(R.id.butSkip,
+                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT));
         } else {
-            nothingPlaying = true;
-        }
-
-        if (nothingPlaying) {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);

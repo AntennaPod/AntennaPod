@@ -95,7 +95,6 @@
     <string name="description_label">Description</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="processing_label">Processing</string>
-    <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
@@ -133,6 +132,17 @@
         <item quantity="other">%d episodes</item>
     </plurals>
     <string name="loading_more">Loading more…</string>
+    <string name="episode_notification">Episode Notifications</string>
+    <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
+    <plurals name="new_episode_notification_message">
+        <item quantity="one">%2$s has a new episode</item>
+        <item quantity="other">%2$s has %1$d new episodes</item>
+    </plurals>
+    <plurals name="new_episode_notification_title">
+        <item quantity="one">New Episode</item>
+        <item quantity="other">New Episodes</item>
+    </plurals>
+    <string name="new_episode_notification_group_text">Your subscriptions have new epsiodes.</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -405,8 +415,11 @@
     <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
     <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
     <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
-    <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
     <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
+    <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
     <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
@@ -511,8 +524,8 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
-    <string name="media_player_builtin">Built-in Android player</string>
-    <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
+    <string name="media_player_builtin">Built-in Android player (deprecated) </string>
+    <string name="media_player_sonic">Sonic Media Player (deprecated) </string>
     <string name="media_player_exoplayer_recommended">ExoPlayer (recommended)</string>
     <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
@@ -876,6 +889,8 @@
     <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
     <string name="notification_channel_auto_download">Automatic download completed</string>
     <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
+    <string name="notification_channel_new_episode">New Episode</string>
+    <string name="notification_channel_new_episode_description">Shown when a new episode of a podcast was found, where notifications are enabled</string>
 
     <!-- Widget settings -->
     <string name="widget_settings">Widget settings</string>

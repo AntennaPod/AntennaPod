@@ -16,6 +16,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import de.danoeh.antennapod.core.storage.mapper.FeedItemFilterQuery;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -30,6 +31,7 @@ import java.util.Set;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -49,7 +51,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 1090001;
+    public static final int VERSION = 2020000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -113,16 +115,17 @@ public class PodDBAdapter {
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
     public static final String KEY_FEED_SKIP_INTRO = "feed_skip_intro";
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
+    public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
 
     // Table names
-    static final String TABLE_NAME_FEEDS = "Feeds";
-    static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
-    static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
-    static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
-    static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
-    static final String TABLE_NAME_QUEUE = "Queue";
-    static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
-    static final String TABLE_NAME_FAVORITES = "Favorites";
+    public static final String TABLE_NAME_FEEDS = "Feeds";
+    public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
+    public static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
+    public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
+    public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
+    public static final String TABLE_NAME_QUEUE = "Queue";
+    public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
+    public static final String TABLE_NAME_FAVORITES = "Favorites";
 
     // SQL Statements for creating new tables
     private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -150,7 +153,8 @@ public class PodDBAdapter {
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
             + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
-            + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0)";
+            + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
+            + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -252,7 +256,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED,
             TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING
+            TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING,
+            TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION
     };
 
     /**
@@ -444,6 +449,7 @@ public class PodDBAdapter {
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
+        values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowEpisodeNotification());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -1044,9 +1050,11 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit) {
-        final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + "ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
+    public final Cursor getRecentlyPublishedItemsCursor(int offset, int limit, FeedItemFilter filter) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereClause = "".equals(filterQuery) ? "" : " WHERE " + filterQuery;
+        final String query = SELECT_FEED_ITEMS_AND_MEDIA + whereClause
+                + " ORDER BY " + KEY_PUBDATE + " DESC LIMIT " + offset + ", " + limit;
         return db.rawQuery(query, null);
     }
 
@@ -1160,6 +1168,11 @@ public class PodDBAdapter {
 
     public final LongIntMap getFeedCounters(long... feedIds) {
         int setting = UserPreferences.getFeedCounterSetting();
+
+        return getFeedCounters(setting, feedIds);
+    }
+
+    public final LongIntMap getFeedCounters(int setting, long... feedIds) {
         String whereRead;
         switch (setting) {
             case UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM:
@@ -1184,24 +1197,26 @@ public class PodDBAdapter {
     }
 
     private LongIntMap conditionalFeedCounterRead(String whereRead, long... feedIds) {
-        // work around TextUtils.join wanting only boxed items
-        // and StringUtils.join() causing NoSuchMethodErrors on MIUI
-        StringBuilder builder = new StringBuilder();
-        for (long id : feedIds) {
-            builder.append(id);
-            builder.append(',');
-        }
+        String limitFeeds = "";
         if (feedIds.length > 0) {
+            // work around TextUtils.join wanting only boxed items
+            // and StringUtils.join() causing NoSuchMethodErrors on MIUI
+            StringBuilder builder = new StringBuilder();
+            for (long id : feedIds) {
+                builder.append(id);
+                builder.append(',');
+            }
             // there's an extra ',', get rid of it
             builder.deleteCharAt(builder.length() - 1);
+            limitFeeds = KEY_FEED + " IN (" + builder.toString() + ") AND ";
         }
 
         final String query = "SELECT " + KEY_FEED + ", COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                + " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") "
-                + " AND " + whereRead + " GROUP BY " + KEY_FEED;
+                + " WHERE " + limitFeeds + " "
+                + whereRead + " GROUP BY " + KEY_FEED;
 
         Cursor c = db.rawQuery(query, null);
         LongIntMap result = new LongIntMap(c.getCount());

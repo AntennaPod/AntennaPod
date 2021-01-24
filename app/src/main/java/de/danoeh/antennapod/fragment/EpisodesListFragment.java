@@ -383,6 +383,14 @@ public abstract class EpisodesListFragment extends Fragment {
     @NonNull
     protected abstract List<FeedItem> loadData();
 
+    /**
+     * Load a new page of data as defined by {@link #page} and {@link #EPISODES_PER_PAGE}.
+     * If the number of items returned is less than {@link #EPISODES_PER_PAGE},
+     * it will be assumed that the underlying data is exhausted
+     * and this method will not be called again.
+     *
+     * @return The items from the next page of data
+     */
     @NonNull
     protected abstract List<FeedItem> loadMoreData();
 }

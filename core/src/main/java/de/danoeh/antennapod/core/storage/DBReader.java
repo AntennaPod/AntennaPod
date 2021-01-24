@@ -17,6 +17,7 @@ import java.util.Map;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
@@ -366,18 +367,19 @@ public final class DBReader {
     }
 
     /**
-     * Loads a list of FeedItems sorted by pubDate in descending order.
+     * Loads a filtered list of FeedItems sorted by pubDate in descending order.
      *
      * @param offset The first episode that should be loaded.
      * @param limit The maximum number of episodes that should be loaded.
+     * @param filter The filter describing which episodes to filter out.
      */
     @NonNull
-    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit) {
-        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "offset = [" + offset + "]" + " limit = [" + limit + "]" );
+    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit, FeedItemFilter filter) {
+        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: offset=" + offset + ", limit=" + limit);
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit)) {
+        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit, filter)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
@@ -800,15 +802,9 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        List<Feed> feeds = getFeedList(adapter);
-        long[] feedIds = new long[feeds.size()];
-        for (int i = 0; i < feeds.size(); i++) {
-            feedIds[i] = feeds.get(i).getId();
-        }
-        final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
-
+        final LongIntMap feedCounters = adapter.getFeedCounters();
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
-        feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
+        List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();
@@ -838,7 +834,7 @@ public final class DBReader {
                 }
             };
         } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters(feedIds);
+            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
 
             comparator = (lhs, rhs) -> {
                 long counterLhs = playedCounters.get(lhs.getId());

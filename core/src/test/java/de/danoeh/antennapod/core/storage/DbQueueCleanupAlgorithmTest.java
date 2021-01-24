@@ -1,16 +1,17 @@
-package de.test.antennapod.storage;
+package de.danoeh.antennapod.core.storage;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.test.filters.SmallTest;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBTasks;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,28 +19,26 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests that the APQueueCleanupAlgorithm is working correctly.
  */
-@SmallTest
-public class DBQueueCleanupAlgorithmTest extends DBCleanupTests {
+@RunWith(RobolectricTestRunner.class)
+public class DbQueueCleanupAlgorithmTest extends DbCleanupTests {
 
-    private static final String TAG = "DBQueueCleanupAlgorithmTest";
-
-    public DBQueueCleanupAlgorithmTest() {
+    public DbQueueCleanupAlgorithmTest() {
         setCleanupAlgorithm(UserPreferences.EPISODE_CLEANUP_QUEUE);
     }
 
     /**
      * For APQueueCleanupAlgorithm we expect even unplayed episodes to be deleted if needed
-     * if they aren't in the queue
+     * if they aren't in the queue.
      */
     @Test
     public void testPerformAutoCleanupHandleUnplayed() throws IOException {
-        final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
+        final int numItems = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", null, "title");
         List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
         List<File> files = new ArrayList<>();
-        populateItems(NUM_ITEMS, feed, items, files, FeedItem.UNPLAYED, false, false);
+        populateItems(numItems, feed, items, files, FeedItem.UNPLAYED, false, false);
 
         DBTasks.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {

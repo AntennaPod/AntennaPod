@@ -1234,7 +1234,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             capabilities = capabilities | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
         }
 
-        UiModeManager uiModeManager = (UiModeManager) getApplicationContext().getSystemService(Context.UI_MODE_SERVICE);
+        UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
+                .getSystemService(Context.UI_MODE_SERVICE);
         if (uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
             sessionState.addCustomAction(
                 new PlaybackStateCompat.CustomAction.Builder(
@@ -1301,17 +1302,28 @@ public class PlaybackService extends MediaBrowserServiceCompat {
 
             if (!TextUtils.isEmpty(imageLocation)) {
                 if (UserPreferences.setLockscreenBackground()) {
+                    Bitmap art;
                     builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, imageLocation);
                     try {
-                        Bitmap art = Glide.with(this)
+                        art = Glide.with(this)
                                 .asBitmap()
                                 .load(imageLocation)
                                 .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                                 .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                                 .get();
                         builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
-                    } catch (Throwable tr) {
-                        Log.e(TAG, Log.getStackTraceString(tr));
+                    } catch (Throwable tr1) {
+                        try {
+                            art = Glide.with(this)
+                                    .asBitmap()
+                                    .load(ImageResourceUtils.getFallbackImageLocation(p))
+                                    .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
+                                    .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                    .get();
+                            builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
+                        } catch (Throwable tr2) {
+                            Log.e(TAG, Log.getStackTraceString(tr2));
+                        }
                     }
                 } else if (isCasting) {
                     // In the absence of metadata art, the controller dialog takes care of creating it.
@@ -1891,7 +1903,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public void onSkipToNext() {
             Log.d(TAG, "onSkipToNext()");
-            if (UserPreferences.getHardwareForwardButton() == HardwareControl.SKIP_EPISODE) {
+            UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
+                    .getSystemService(Context.UI_MODE_SERVICE);
+            if (UserPreferences.getHardwareForwardButton() == HardwareControl.SKIP_EPISODE
+                    || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
                 mediaPlayer.skip();
             } else {
                 seekDelta(UserPreferences.getFastForwardSecs() * 1000);

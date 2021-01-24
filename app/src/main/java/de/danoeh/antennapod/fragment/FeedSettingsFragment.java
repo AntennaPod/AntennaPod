@@ -159,6 +159,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupEpisodeFilterPreference();
                         setupPlaybackSpeedPreference();
                         setupFeedAutoSkipPreference();
+                        setupEpisodeNotificationPreference();
 
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
@@ -392,6 +393,19 @@ public class FeedSettingsFragment extends Fragment {
                 boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
                 findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
             }
+        }
+
+        private void setupEpisodeNotificationPreference() {
+            SwitchPreferenceCompat pref = findPreference("episodeNotification");
+
+            pref.setChecked(feedPreferences.getShowEpisodeNotification());
+            pref.setOnPreferenceChangeListener((preference, newValue) -> {
+                boolean checked = newValue == Boolean.TRUE;
+                feedPreferences.setShowEpisodeNotification(checked);
+                feed.savePreferences();
+                pref.setChecked(checked);
+                return false;
+            });
         }
 
         private class ApplyToEpisodesDialog extends ConfirmationDialog {
