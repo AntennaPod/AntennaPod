@@ -44,16 +44,15 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
-import de.danoeh.antennapod.discovery.CombinedSearcher;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
-import de.danoeh.antennapod.fragment.OnlineSearchFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
@@ -63,9 +62,6 @@ import org.apache.commons.lang3.Validate;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.Locale;
-import java.util.Objects;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -568,7 +564,7 @@ public class MainActivity extends CastEnabledActivity {
                     return;
                 }
 
-                this.loadChildFragment(OnlineSearchFragment.newInstance(CombinedSearcher.class, query));
+                this.loadChildFragment(SearchFragment.newInstance(query));
                 break;
             case "/deeplink/main":
                 String feature = uri.getQueryParameter("page");
