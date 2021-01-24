@@ -13,7 +13,6 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
-
 import java.util.Date;
 import java.util.List;
 
