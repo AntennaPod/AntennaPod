@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +52,7 @@ import de.danoeh.antennapod.fragment.FeedItemlistFragment;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
@@ -511,6 +513,8 @@ public class MainActivity extends CastEnabledActivity {
         } else if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             bottomSheetCallback.onSlide(null, 1.0f);
+        } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            handleDeeplink(intent.getData());
         }
         // to avoid handling the intent twice when the configuration changes
         setIntent(new Intent(MainActivity.this, MainActivity.class));
@@ -520,6 +524,7 @@ public class MainActivity extends CastEnabledActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+        handleNavIntent();
     }
 
     public Snackbar showSnackbarAbovePlayer(CharSequence text, int duration) {
@@ -540,6 +545,59 @@ public class MainActivity extends CastEnabledActivity {
         return showSnackbarAbovePlayer(getResources().getText(text), duration);
     }
 
+    /**
+     * Handles the deep link incoming via App Actions.
+     * Performs an in-app search or opens the relevant feature of the app
+     * depending on the query.
+     *
+     * @param uri incoming deep link
+     */
+    private void handleDeeplink(Uri uri) {
+        if (uri == null || uri.getPath() == null) {
+            return;
+        }
+        Log.d(TAG, "Handling deeplink: " + uri.toString());
+        switch (uri.getPath()) {
+            case "/deeplink/search":
+                String query = uri.getQueryParameter("query");
+                if (query == null) {
+                    return;
+                }
+
+                this.loadChildFragment(SearchFragment.newInstance(query));
+                break;
+            case "/deeplink/main":
+                String feature = uri.getQueryParameter("page");
+                if (feature == null) {
+                    return;
+                }
+                switch (feature) {
+                    case "DOWNLOADS":
+                        loadFragment(DownloadsFragment.TAG, null);
+                        break;
+                    case "HISTORY":
+                        loadFragment(PlaybackHistoryFragment.TAG, null);
+                        break;
+                    case "EPISODES":
+                        loadFragment(EpisodesFragment.TAG, null);
+                        break;
+                    case "QUEUE":
+                        loadFragment(QueueFragment.TAG, null);
+                        break;
+                    case "SUBSCRIPTIONS":
+                        loadFragment(SubscriptionFragment.TAG, null);
+                        break;
+                    default:
+                        showSnackbarAbovePlayer(getString(R.string.app_action_not_found, feature),
+                                Snackbar.LENGTH_LONG);
+                        return;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+  
     //Hardware keyboard support
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
@@ -592,5 +650,4 @@ public class MainActivity extends CastEnabledActivity {
         }
         return super.onKeyUp(keyCode, event);
     }
-
 }
