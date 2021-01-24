@@ -668,7 +668,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-
                 if (getStatus() != PlayerStatus.PLAYING && getStatus() != PlayerStatus.PAUSED) {
                     return false;
                 } else if (notificationButton || UserPreferences.shouldHardwareButtonSkip()) {
