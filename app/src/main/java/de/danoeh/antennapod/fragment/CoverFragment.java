@@ -94,16 +94,12 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
-        if (media.getClass() == FeedMedia.class) {
-            String pubDateStr = DateUtils.formatAbbrev(getActivity(), ((FeedMedia) media).getPubDate());
-            txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
-                    + "\u00A0"
-                    + "・"
-                    + "\u00A0"
-                    + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
-        } else {
-            txtvPodcastTitle.setText(media.getFeedTitle());
-        }
+        String pubDateStr = DateUtils.formatAbbrev(getActivity(), ((FeedMedia) media).getPubDate());
+        txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
+                + "\u00A0"
+                + "・"
+                + "\u00A0"
+                + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
