@@ -124,7 +124,7 @@ public class CoverFragment extends Fragment {
         }
     }
 
-    private void refreshChapterData (int chapterIndex) {
+    private void refreshChapterData(int chapterIndex) {
         if (media != null && media.getChapters() != null && media.getPosition() > media.getDuration()) {
             displayedChapterIndex = media.getChapters().size() -1;
         } else {
