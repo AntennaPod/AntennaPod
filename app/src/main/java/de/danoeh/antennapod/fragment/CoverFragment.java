@@ -65,16 +65,13 @@ public class CoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ImageButton butPrevChapter;
-        ImageButton butNextChapter;
-
         setRetainInstance(true);
         root = inflater.inflate(R.layout.cover_fragment, container, false);
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
-        butPrevChapter = root.findViewById(R.id.butPrevChapter);
-        butNextChapter = root.findViewById(R.id.butNextChapter);
+        ImageButton butPrevChapter = root.findViewById(R.id.butPrevChapter);
+        ImageButton butNextChapter = root.findViewById(R.id.butNextChapter);
         chapterControl = root.findViewById(R.id.chapter_control);
         txtvChapterTitle = root.findViewById(R.id.txtvChapterTitle);
 
@@ -126,7 +123,7 @@ public class CoverFragment extends Fragment {
 
     private void refreshChapterData(int chapterIndex) {
         if (media != null && media.getChapters() != null && media.getPosition() > media.getDuration()) {
-            displayedChapterIndex = media.getChapters().size() -1;
+            displayedChapterIndex = media.getChapters().size() - 1;
         } else {
             displayedChapterIndex = chapterIndex;
         }
@@ -241,7 +238,8 @@ public class CoverFragment extends Fragment {
                         .apply(options))
                 .apply(options);
 
-        if (displayedChapterIndex == -1 || TextUtils.isEmpty(media.getChapters().get(displayedChapterIndex).getImageUrl())) {
+        if (displayedChapterIndex == -1 || TextUtils.isEmpty(media.getChapters()
+                .get(displayedChapterIndex).getImageUrl())) {
             cover.into(imgvCover);
         } else {
             Glide.with(this)
