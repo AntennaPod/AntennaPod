@@ -15,11 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -28,9 +26,11 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -38,6 +38,7 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -109,7 +110,12 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
-        txtvPodcastTitle.setText(media.getFeedTitle());
+        String pubDateStr = DateUtils.formatAbbrev(getActivity(), ((FeedMedia) media).getPubDate());
+        txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
+                + "\u00A0"
+                + "・"
+                + "\u00A0"
+                + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         chapterControl.setVisibility(View.GONE);
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
