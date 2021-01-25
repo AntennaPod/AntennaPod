@@ -70,12 +70,12 @@ public class CoverFragment extends Fragment {
         txtvPodcastTitle = root.findViewById(R.id.txtvPodcastTitle);
         txtvEpisodeTitle = root.findViewById(R.id.txtvEpisodeTitle);
         imgvCover = root.findViewById(R.id.imgvCover);
-        ImageButton butPrevChapter = root.findViewById(R.id.butPrevChapter);
-        ImageButton butNextChapter = root.findViewById(R.id.butNextChapter);
         chapterControl = root.findViewById(R.id.chapter_control);
         txtvChapterTitle = root.findViewById(R.id.txtvChapterTitle);
-
         imgvCover.setOnClickListener(v -> onPlayPause());
+
+        ImageButton butPrevChapter = root.findViewById(R.id.butPrevChapter);
+        ImageButton butNextChapter = root.findViewById(R.id.butNextChapter);
         butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         butNextChapter.setOnClickListener(v -> seekToNextChapter());
 
