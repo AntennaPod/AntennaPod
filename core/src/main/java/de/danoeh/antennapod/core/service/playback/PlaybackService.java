@@ -69,7 +69,6 @@ import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
-import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -81,6 +80,7 @@ import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
+import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -801,8 +801,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public void onWidgetUpdaterTick() {
-            PlayerWidgetJobService.updateWidget(getBaseContext());
+        public WidgetUpdater.WidgetState requestWidgetState() {
+            return new WidgetUpdater.WidgetState(getPlayable(), getStatus(),
+                    getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed());
         }
 
         @Override
@@ -873,9 +874,9 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             }
 
             IntentUtils.sendLocalBroadcast(getApplicationContext(), ACTION_PLAYER_STATUS_CHANGED);
-            PlayerWidgetJobService.updateWidget(getBaseContext());
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_META_CHANGED);
+            taskManager.requestWidgetUpdate();
         }
 
         @Override
