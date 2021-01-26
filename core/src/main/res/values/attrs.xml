@@ -10,6 +10,8 @@
     <attr name="av_replay" format="reference"/>
     <attr name="av_skip" format="reference"/>
     <attr name="av_rewind" format="reference"/>
+    <attr name="av_chapter_prev" format="reference"/>
+    <attr name="av_chapter_next" format="reference"/>
     <attr name="ic_delete" format="reference"/>
     <attr name="content_new" format="reference"/>
     <attr name="content_remove_from_queue" format="reference"/>

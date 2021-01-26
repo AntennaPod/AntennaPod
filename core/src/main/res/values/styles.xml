@@ -37,6 +37,8 @@
         <item name="av_rewind">@drawable/ic_av_fast_rewind_black_48dp</item>
         <item name="av_fast_forward">@drawable/ic_av_fast_forward_black_48dp</item>
         <item name="av_skip">@drawable/ic_av_skip_black_48dp</item>
+        <item name="av_chapter_prev">@drawable/ic_av_chapter_prev_black_24dp</item>
+        <item name="av_chapter_next">@drawable/ic_av_chapter_next_black_24dp</item>
         <item name="ic_settings_speed">@drawable/ic_playback_speed_black</item>
         <item name="ic_settings_skip">@drawable/ic_av_skip_black_24dp</item>
         <item name="ic_delete">@drawable/ic_delete_black</item>
@@ -119,6 +121,8 @@
         <item name="av_play">@drawable/ic_av_play_white_48dp</item>
         <item name="av_replay">@drawable/ic_av_replay_white_48dp</item>
         <item name="av_skip">@drawable/ic_av_skip_white_48dp</item>
+        <item name="av_chapter_prev">@drawable/ic_av_chapter_prev_white_24dp</item>
+        <item name="av_chapter_next">@drawable/ic_av_chapter_next_white_24dp</item>
         <item name="ic_settings_speed">@drawable/ic_playback_speed_white</item>
         <item name="ic_settings_skip">@drawable/ic_av_skip_white_24dp</item>
         <item name="ic_delete">@drawable/ic_delete_white</item>

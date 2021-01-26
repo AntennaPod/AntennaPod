@@ -56,10 +56,12 @@ public class CoverFragment extends Fragment {
     private TextView txtvEpisodeTitle;
     private ImageView imgvCover;
     private TextView txtvChapterTitle;
+    private ImageButton butPrevChapter;
+    private ImageButton butNextChapter;
     private RelativeLayout chapterControl;
     private PlaybackController controller;
     private Disposable disposable;
-    private int displayedChapterIndex;
+    private int displayedChapterIndex = -1;
     private Playable media;
 
     @Override
@@ -72,10 +74,10 @@ public class CoverFragment extends Fragment {
         imgvCover = root.findViewById(R.id.imgvCover);
         chapterControl = root.findViewById(R.id.chapter_control);
         txtvChapterTitle = root.findViewById(R.id.txtvChapterTitle);
-        imgvCover.setOnClickListener(v -> onPlayPause());
+        butPrevChapter = root.findViewById(R.id.butPrevChapter);
+        butNextChapter = root.findViewById(R.id.butNextChapter);
 
-        ImageButton butPrevChapter = root.findViewById(R.id.butPrevChapter);
-        ImageButton butNextChapter = root.findViewById(R.id.butNextChapter);
+        imgvCover.setOnClickListener(v -> onPlayPause());
         butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         butNextChapter.setOnClickListener(v -> seekToNextChapter());
 
@@ -116,26 +118,31 @@ public class CoverFragment extends Fragment {
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         chapterControl.setVisibility(View.GONE);
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
-        if (getCurrentChapter() != null) {
-            chapterControl.setVisibility(View.VISIBLE);
-        }
     }
 
     private void refreshChapterData(int chapterIndex) {
-        if (media != null && media.getChapters() != null && media.getPosition() > media.getDuration()) {
-            displayedChapterIndex = media.getChapters().size() - 1;
-        } else {
-            displayedChapterIndex = chapterIndex;
+        if (chapterIndex > -1) {
+            if (media.getPosition() > media.getDuration()) {
+                displayedChapterIndex = media.getChapters().size() - 1;
+                butNextChapter.setVisibility(View.INVISIBLE);
+            } else if (chapterIndex == media.getChapters().size() - 1) {
+                butNextChapter.setVisibility(View.INVISIBLE);
+                displayedChapterIndex = chapterIndex;
+            } else {
+                butNextChapter.setVisibility(View.VISIBLE);
+                displayedChapterIndex = chapterIndex;
+            }
+
+            if (getCurrentChapter() != null) {
+                txtvChapterTitle.setText(getCurrentChapter().getTitle());
+            }
         }
 
         displayCoverImage();
-        if (getCurrentChapter() != null) {
-            txtvChapterTitle.setText(getCurrentChapter().getTitle());
-        }
     }
 
     private Chapter getCurrentChapter() {
-        if (controller == null || media == null || displayedChapterIndex == -1) {
+        if (media == null || media.getChapters() == null || displayedChapterIndex == -1) {
             return null;
         }
         return media.getChapters().get(displayedChapterIndex);
@@ -144,7 +151,7 @@ public class CoverFragment extends Fragment {
     private void seekToPrevChapter() {
         Chapter curr = getCurrentChapter();
 
-        if (controller == null || media == null || curr == null || displayedChapterIndex == -1) {
+        if (controller == null || curr == null || displayedChapterIndex == -1) {
             return;
         }
 
@@ -154,26 +161,21 @@ public class CoverFragment extends Fragment {
         } else if ((controller.getPosition() - 10000 * controller.getCurrentPlaybackSpeedMultiplier())
                 < curr.getStart()) {
             controller.seekToChapter(media.getChapters().get(displayedChapterIndex));
+            refreshChapterData(displayedChapterIndex);
         } else {
             controller.seekToChapter(curr);
             displayedChapterIndex++;
         }
-
-        refreshChapterData(displayedChapterIndex);
     }
 
     private void seekToNextChapter() {
-        if (controller == null || media == null || displayedChapterIndex == -1) {
+        if (controller == null || media == null || media.getChapters() == null ||
+                displayedChapterIndex == -1 || displayedChapterIndex + 1 >= media.getChapters().size()) {
             return;
         }
 
-        if (++displayedChapterIndex >= media.getChapters().size()) {
-            controller.seekTo(controller.getDuration());
-            displayedChapterIndex--;
-        } else {
-            controller.seekToChapter(media.getChapters().get(displayedChapterIndex));
-            refreshChapterData(displayedChapterIndex);
-        }
+        controller.seekToChapter(media.getChapters().get(++displayedChapterIndex));
+        refreshChapterData(displayedChapterIndex);
     }
 
     @Override
@@ -218,10 +220,15 @@ public class CoverFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(PlaybackPositionEvent event) {
         int newChapterIndex = ChapterUtils.getCurrentChapterIndex(media, event.getPosition());
-        if (media == null || getCurrentChapter() == null || newChapterIndex == displayedChapterIndex) {
-            return;
+        if (newChapterIndex > -1) {
+            if (chapterControl.getVisibility() == View.GONE) {
+                chapterControl.setVisibility(View.VISIBLE);
+            }
+
+            if (newChapterIndex != displayedChapterIndex) {
+                refreshChapterData(newChapterIndex);
+            }
         }
-        refreshChapterData(newChapterIndex);
     }
 
     private void displayCoverImage() {
@@ -238,8 +245,8 @@ public class CoverFragment extends Fragment {
                         .apply(options))
                 .apply(options);
 
-        if (displayedChapterIndex == -1 || TextUtils.isEmpty(media.getChapters()
-                .get(displayedChapterIndex).getImageUrl())) {
+        if (displayedChapterIndex == -1 || media == null || media.getChapters() == null ||
+                TextUtils.isEmpty(media.getChapters().get(displayedChapterIndex).getImageUrl())) {
             cover.into(imgvCover);
         } else {
             Glide.with(this)
