@@ -113,10 +113,10 @@
     </string-array>
 
     <string-array name="button_action_values">
-        <item>@string/KEYCODE_MEDIA_FAST_FORWARD</item>
-        <item>@string/KEYCODE_MEDIA_REWIND</item>
-        <item>@string/KEYCODE_MEDIA_NEXT</item>
-        <item>@string/KEYCODE_MEDIA_PREVIOUS</item>
+        <item>@string/keycode_media_fast_forward</item>
+        <item>@string/keycode_media_rewind</item>
+        <item>@string/keycode_media_next</item>
+        <item>@string/keycode_media_previous</item>
     </string-array>
 
     <string-array name="enqueue_location_options">

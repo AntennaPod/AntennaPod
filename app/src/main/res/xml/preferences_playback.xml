@@ -70,14 +70,14 @@
 
     <PreferenceCategory android:title="@string/reassign_hardware_buttons">
         <ListPreference
-                android:defaultValue="@string/KEYCODE_MEDIA_FAST_FORWARD"
+                android:defaultValue="@string/keycode_media_fast_forward"
                 android:entries="@array/button_action_options"
                 android:entryValues="@array/button_action_values"
                 android:key="prefHardwareForwardButton"
                 android:title="@string/pref_hardware_forward_button_title"
                 android:summary="@string/pref_hardware_forward_button_summary"/>
         <ListPreference
-                android:defaultValue="@string/KEYCODE_MEDIA_REWIND"
+                android:defaultValue="@string/keycode_media_rewind"
                 android:entries="@array/button_action_options"
                 android:entryValues="@array/button_action_values"
                 android:key="prefHardwarePreviousButton"
