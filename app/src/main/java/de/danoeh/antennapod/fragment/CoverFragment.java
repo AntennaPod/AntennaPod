@@ -169,8 +169,8 @@ public class CoverFragment extends Fragment {
     }
 
     private void seekToNextChapter() {
-        if (controller == null || media == null || media.getChapters() == null ||
-                displayedChapterIndex == -1 || displayedChapterIndex + 1 >= media.getChapters().size()) {
+        if (controller == null || media == null || media.getChapters() == null
+                || displayedChapterIndex == -1 || displayedChapterIndex + 1 >= media.getChapters().size()) {
             return;
         }
 
@@ -245,8 +245,8 @@ public class CoverFragment extends Fragment {
                         .apply(options))
                 .apply(options);
 
-        if (displayedChapterIndex == -1 || media == null || media.getChapters() == null ||
-                TextUtils.isEmpty(media.getChapters().get(displayedChapterIndex).getImageUrl())) {
+        if (displayedChapterIndex == -1 || media == null || media.getChapters() == null
+                || TextUtils.isEmpty(media.getChapters().get(displayedChapterIndex).getImageUrl())) {
             cover.into(imgvCover);
         } else {
             Glide.with(this)
