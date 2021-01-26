@@ -134,7 +134,7 @@ public final class DBReader {
      *
      * @param items The FeedItems whose Feed-objects should be loaded.
      */
-    public static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
+    private static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
         List<Feed> feeds = getFeedList();
 
         Map<Long, Feed> feedIndex = new ArrayMap<>(feeds.size());
