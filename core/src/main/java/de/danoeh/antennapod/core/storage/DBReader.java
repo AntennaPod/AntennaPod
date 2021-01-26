@@ -134,7 +134,7 @@ public final class DBReader {
      *
      * @param items The FeedItems whose Feed-objects should be loaded.
      */
-    private static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
+    public static void loadFeedDataOfFeedItemList(List<FeedItem> items) {
         List<Feed> feeds = getFeedList();
 
         Map<Long, Feed> feedIndex = new ArrayMap<>(feeds.size());
@@ -550,7 +550,7 @@ public final class DBReader {
      * @param podcastUrl the corresponding feed's url
      * @param episodeUrl the feed item's url
      * @return The FeedItem or null if the FeedItem could not be found.
-     *          Does NOT load additional attributes like queue state.
+     *          Does NOT load additional attributes like feed or queue state.
      */
     @Nullable
     private static FeedItem getFeedItemByUrl(final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
@@ -561,7 +561,6 @@ public final class DBReader {
             }
             List<FeedItem> list = extractItemlistFromCursor(adapter, cursor);
             if (!list.isEmpty()) {
-                loadFeedDataOfFeedItemList(list);
                 return list.get(0);
             }
             return null;
