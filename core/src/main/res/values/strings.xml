@@ -378,7 +378,7 @@
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
     <string name="playback_control">Playback control</string>
-    <string name="hardware_control">Hardware control</string>
+    <string name="reassign_hardware_buttons">Reassign hardware buttons</string>
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
@@ -392,10 +392,10 @@
     <string name="pref_hardware_forward_button_summary">Customize the forward button behavior</string>
     <string name="pref_hardware_previous_button_title">Previous Button</string>
     <string name="pref_hardware_previous_button_summary">Customize the previous button behavior</string>
-    <string name="hardware_control_fast_forward">Fast Forward</string>
-    <string name="hardware_control_rewind">Rewind</string>
-    <string name="hardware_control_skip_episode">Skip Episode</string>
-    <string name="hardware_control_restart_episode">Restart Episode</string>
+    <string name="button_action_fast_forward">Fast Forward</string>
+    <string name="button_action_rewind">Rewind</string>
+    <string name="button_action_skip_episode">Skip Episode</string>
+    <string name="button_action_restart_episode">Restart Episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
@@ -901,4 +901,9 @@
     <string name="on_demand_config_setting_changed">Setting updated successfully.</string>
     <string name="on_demand_config_stream_text">Looks like you stream a lot. Do you want episode lists to show stream buttons?</string>
     <string name="on_demand_config_download_text">Looks like you download a lot. Do you want episode lists to show download buttons?</string>
+
+    <string name="KEYCODE_MEDIA_NEXT">87</string>
+    <string name="KEYCODE_MEDIA_PREVIOUS">88</string>
+    <string name="KEYCODE_MEDIA_REWIND">89</string>
+    <string name="KEYCODE_MEDIA_FAST_FORWARD">90</string>
 </resources>

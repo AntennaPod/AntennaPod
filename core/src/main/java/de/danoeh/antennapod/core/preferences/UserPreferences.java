@@ -374,26 +374,14 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT, false);
     }
 
-    public enum HardwareControl {
-        FAST_FORWARD(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD),
-        REWIND(KeyEvent.KEYCODE_MEDIA_REWIND),
-        SKIP_EPISODE(KeyEvent.KEYCODE_MEDIA_NEXT),
-        RESTART_EPISODE(KeyEvent.KEYCODE_MEDIA_PREVIOUS);
-
-        public final int keyCode;
-        HardwareControl(int keyCode) {
-            this.keyCode = keyCode;
-        }
+    public static int getHardwareForwardButton() {
+        return Integer.parseInt(prefs.getString(PREF_HARDWARE_FORWARD_BUTTON,
+                String.valueOf(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD)));
     }
 
-    public static HardwareControl getHardwareForwardButton() {
-        return HardwareControl.valueOf(prefs.getString(PREF_HARDWARE_FORWARD_BUTTON,
-                HardwareControl.FAST_FORWARD.name()));
-    }
-
-    public static HardwareControl getHardwarePreviousButton() {
-        return HardwareControl.valueOf(prefs.getString(PREF_HARDWARE_PREVIOUS_BUTTON,
-                HardwareControl.REWIND.name()));
+    public static int getHardwarePreviousButton() {
+        return Integer.parseInt(prefs.getString(PREF_HARDWARE_PREVIOUS_BUTTON,
+                String.valueOf(KeyEvent.KEYCODE_MEDIA_REWIND)));
     }
 
 

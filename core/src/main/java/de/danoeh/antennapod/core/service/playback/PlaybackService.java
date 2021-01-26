@@ -68,7 +68,6 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences.HardwareControl;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.PlayerWidgetJobService;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -671,7 +670,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             case KeyEvent.KEYCODE_MEDIA_NEXT:
                 if (!notificationButton) {
                     // Handle remapped button as notification button which is not remapped again.
-                    return handleKeycode(UserPreferences.getHardwareForwardButton().keyCode, true);
+                    return handleKeycode(UserPreferences.getHardwareForwardButton(), true);
                 } else if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.skip();
                     return true;
@@ -686,7 +685,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                 if (!notificationButton) {
                     // Handle remapped button as notification button which is not remapped again.
-                    return handleKeycode(UserPreferences.getHardwarePreviousButton().keyCode, true);
+                    return handleKeycode(UserPreferences.getHardwarePreviousButton(), true);
                 } else if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekTo(0);
                     return true;
@@ -1905,7 +1904,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "onSkipToNext()");
             UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
                     .getSystemService(Context.UI_MODE_SERVICE);
-            if (UserPreferences.getHardwareForwardButton() == HardwareControl.SKIP_EPISODE
+            if (UserPreferences.getHardwareForwardButton() == KeyEvent.KEYCODE_MEDIA_NEXT
                     || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
                 mediaPlayer.skip();
             } else {

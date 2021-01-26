@@ -105,18 +105,18 @@
         <item>@string/episode_cleanup_never</item>
     </string-array>
 
-    <string-array name="hardware_control_options">
-        <item>@string/hardware_control_fast_forward</item>
-        <item>@string/hardware_control_rewind</item>
-        <item>@string/hardware_control_skip_episode</item>
-        <item>@string/hardware_control_restart_episode</item>
+    <string-array name="button_action_options">
+        <item>@string/button_action_fast_forward</item>
+        <item>@string/button_action_rewind</item>
+        <item>@string/button_action_skip_episode</item>
+        <item>@string/button_action_restart_episode</item>
     </string-array>
 
-    <string-array name="hardware_control_values">
-        <item>FAST_FORWARD</item>
-        <item>REWIND</item>
-        <item>SKIP_EPISODE</item>
-        <item>RESTART_EPISODE</item>
+    <string-array name="button_action_values">
+        <item>@string/KEYCODE_MEDIA_FAST_FORWARD</item>
+        <item>@string/KEYCODE_MEDIA_REWIND</item>
+        <item>@string/KEYCODE_MEDIA_NEXT</item>
+        <item>@string/KEYCODE_MEDIA_PREVIOUS</item>
     </string-array>
 
     <string-array name="enqueue_location_options">

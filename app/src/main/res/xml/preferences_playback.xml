@@ -68,18 +68,18 @@
                 android:title="@string/pref_stream_over_download_title"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/hardware_control">
+    <PreferenceCategory android:title="@string/reassign_hardware_buttons">
         <ListPreference
-                android:defaultValue="FAST_FORWARD"
-                android:entries="@array/hardware_control_options"
-                android:entryValues="@array/hardware_control_values"
+                android:defaultValue="@string/KEYCODE_MEDIA_FAST_FORWARD"
+                android:entries="@array/button_action_options"
+                android:entryValues="@array/button_action_values"
                 android:key="prefHardwareForwardButton"
                 android:title="@string/pref_hardware_forward_button_title"
                 android:summary="@string/pref_hardware_forward_button_summary"/>
         <ListPreference
-                android:defaultValue="REWIND"
-                android:entries="@array/hardware_control_options"
-                android:entryValues="@array/hardware_control_values"
+                android:defaultValue="@string/KEYCODE_MEDIA_REWIND"
+                android:entries="@array/button_action_options"
+                android:entryValues="@array/button_action_values"
                 android:key="prefHardwarePreviousButton"
                 android:title="@string/pref_hardware_previous_button_title"
                 android:summary="@string/pref_hardware_previous_button_summary"/>
