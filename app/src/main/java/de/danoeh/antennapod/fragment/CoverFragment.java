@@ -208,7 +208,7 @@ public class CoverFragment extends Fragment {
                 imgvCover.setLayoutParams(params);
             }
         } else {
-            double percentageHeight = ratio * 0.8;
+            double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
                 params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);
