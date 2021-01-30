@@ -13,9 +13,17 @@ public final class ImageResourceUtils {
     private ImageResourceUtils() {
     }
 
+    /**
+     * calls {@link ImageResourceUtils#getImageLocation(ImageResource, boolean)} without requesting a feed cover
+     */
     public static String getImageLocation(ImageResource resource) {
+        return getImageLocation(resource,false);
+    }
 
-        if (UserPreferences.getUseEpisodeCoverSetting()) {
+
+    public static String getImageLocation(ImageResource resource , boolean preferredFeedCover) {
+
+        if (UserPreferences.getUseEpisodeCoverSetting() || !preferredFeedCover) {
             return resource.getImageLocation();
         } else {
             return getShowImageLocation(resource);
