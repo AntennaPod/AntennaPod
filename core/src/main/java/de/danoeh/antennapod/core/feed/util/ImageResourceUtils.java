@@ -14,7 +14,7 @@ public final class ImageResourceUtils {
     }
 
     /**
-     * calls {@link ImageResourceUtils#getImageLocation(ImageResource, boolean)} without requesting a feed cover
+     * calls {@link ImageResourceUtils#getImageLocation(ImageResource, boolean)} without requesting a feed cover.
      */
     public static String getImageLocation(ImageResource resource) {
         return getImageLocation(resource, false);
