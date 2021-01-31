@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.view.viewholder;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.text.Layout;
 import android.text.format.Formatter;
@@ -33,7 +31,6 @@ import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.ThemeUtils;
-import de.danoeh.antennapod.fragment.AudioPlayerFragment;
 import de.danoeh.antennapod.view.CircularProgressBar;
 
 /**
