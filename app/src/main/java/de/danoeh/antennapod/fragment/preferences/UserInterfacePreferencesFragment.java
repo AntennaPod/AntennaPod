@@ -37,16 +37,14 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                         (preference, newValue) -> {
                             getActivity().recreate();
                             return true;
-                        }
-                );
+                        });
 
         findPreference(UserPreferences.PREF_SHOW_TIME_LEFT)
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
-                            UserPreferences.setShowRemainTimeSetting((Boolean)newValue);
+                            UserPreferences.setShowRemainTimeSetting((Boolean) newValue);
                             return true;
-                        }
-                );
+                        });
 
         findPreference(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)
                 .setOnPreferenceClickListener(preference -> {

@@ -277,6 +277,9 @@ public class UserPreferences {
     }
 
     /**
+     * Sets the preference for whether we show the remain time, if not show the duration. This will
+     * send out events so the current playing screen, queue and the episode list would refresh
+     *
      * @return {@code true} if we should show remaining time or the duration
      */
     public static void setShowRemainTimeSetting(Boolean showRemain) {
