@@ -1548,15 +1548,10 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      */
     private void pauseIfPauseOnDisconnect(AudioOutputMode outputMode) {
         Log.d(TAG, "pauseIfPauseOnDisconnect() " + outputMode);
-        // If bluetooth is playing, headset is plugged in, headset unplugged, bluetooth should continue
-        // If headset is playing, bluetooth is connected, bluetooth is unplugged, headset should continue
-        // If headset or bluetooth is unplugged (the speaker should not be playing)
-        if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
-            transientPause = true;
-        }
         if (UserPreferences.isPauseOnHeadsetDisconnect()
                 && outputMode == AudioOutputMode.PHONE_SPEAKER
                 && !isCasting()) {
+            transientPause = true;
             mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
         }
     }
