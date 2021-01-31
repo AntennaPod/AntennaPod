@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +27,7 @@ import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
+import de.danoeh.antennapod.core.event.ShowRemainTimeUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -70,7 +68,6 @@ public class AudioPlayerFragment extends Fragment implements
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
     public static final String PREFS = "AudioPlayerFragmentPreferences";
-    public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final float EPSILON = 0.001f;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
@@ -212,19 +209,25 @@ public class AudioPlayerFragment extends Fragment implements
                 IntentUtils.sendLocalBroadcast(getActivity(), PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onShowRemainTimeChanged(ShowRemainTimeUpdateEvent event) {
+        if (controller == null) {
+            return;
+        }
+        updatePosition(new PlaybackPositionEvent(controller.getPosition(),
+                controller.getDuration()));
+    }
+
     private void setupLengthTextView() {
-        SharedPreferences prefs = getActivity().getApplicationContext()
-                .getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+        showTimeLeft = UserPreferences.getShowRemainTimeSetting();
         txtvLength.setOnClickListener(v -> {
             if (controller == null) {
                 return;
             }
             showTimeLeft = !showTimeLeft;
-            prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft).apply();
+            UserPreferences.setShowRemainTimeSetting(showTimeLeft);
             updatePosition(new PlaybackPositionEvent(controller.getPosition(),
                     controller.getDuration()));
-            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
         });
     }
 
@@ -437,6 +440,7 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        showTimeLeft = UserPreferences.getShowRemainTimeSetting();
         if (showTimeLeft) {
             txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {

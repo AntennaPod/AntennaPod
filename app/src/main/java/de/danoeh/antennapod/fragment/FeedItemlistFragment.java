@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.ShowRemainTimeUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
@@ -394,6 +395,11 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
+        updateUi();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onShowRemainTimeChanged(ShowRemainTimeUpdateEvent event) {
         updateUi();
     }
 

@@ -25,6 +25,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -162,7 +163,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
                     Converter.getDurationStringLocalized(activity, media.getPosition())));
             progressBar.setVisibility(View.VISIBLE);
             position.setVisibility(View.VISIBLE);
-            if (showTimeLeft()) {
+            if (UserPreferences.getShowRemainTimeSetting()) {
                 duration.setText("-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition()));
                 duration.setContentDescription(activity.getString(R.string.chapter_duration,
                         Converter.getDurationStringLocalized(activity, (media.getDuration() - media.getPosition()))));
@@ -193,13 +194,6 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public Boolean showTimeLeft() {
-        SharedPreferences prefs = activity.getApplicationContext()
-                .getSharedPreferences(AudioPlayerFragment.PREFS,
-                        Context.MODE_PRIVATE);
-        return prefs.getBoolean(AudioPlayerFragment.PREF_SHOW_TIME_LEFT, false);
-    }
-
     private void updateDuration(PlaybackPositionEvent event) {
         int currentPosition = event.getPosition();
         int timeDuration = event.getDuration();
@@ -209,7 +203,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }
-        if (showTimeLeft()) {
+        if (UserPreferences.getShowRemainTimeSetting()) {
             duration.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {
             duration.setText(Converter.getDurationStringLong(timeDuration));

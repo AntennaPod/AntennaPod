@@ -21,6 +21,13 @@
                 android:summary="@string/pref_episode_cover_summary"
                 android:defaultValue="true"
                 android:enabled="true"/>
+        <SwitchPreferenceCompat
+            android:title="@string/pref_show_remain_time_title"
+            android:key="showTimeLeft"
+            android:summary="@string/pref_show_remain_time_summary"
+            android:defaultValue="false"
+            android:enabled="true"/>
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/subscriptions_label">
         <Preference

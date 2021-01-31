@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -31,6 +32,9 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.ShowRemainTimeUpdateEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
@@ -60,6 +64,7 @@ public class UserPreferences {
     private static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
+    public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
@@ -262,6 +267,23 @@ public class UserPreferences {
      */
     public static boolean getUseEpisodeCoverSetting() {
         return prefs.getBoolean(PREF_USE_EPISODE_COVER, true);
+    }
+
+    /**
+     * @return {@code true} if we should show remaining time or the duration
+     */
+    public static boolean getShowRemainTimeSetting() {
+        return prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+    }
+
+    /**
+     * @return {@code true} if we should show remaining time or the duration
+     */
+    public static void setShowRemainTimeSetting(Boolean showRemain) {
+        prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showRemain).apply();
+        EventBus.getDefault().post(new ShowRemainTimeUpdateEvent());
+        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+        EventBus.getDefault().post(new PlayerStatusEvent());
     }
 
     /**
