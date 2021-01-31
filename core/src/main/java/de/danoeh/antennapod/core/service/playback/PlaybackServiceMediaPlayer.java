@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.service.playback;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
@@ -336,7 +337,10 @@ public abstract class PlaybackServiceMediaPlayer {
     }
 
     public boolean isAudioChannelInUse() {
-        return false;
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        int mode = audioManager.getMode();
+
+        return (mode != AudioManager.MODE_NORMAL);
     }
 
     /**

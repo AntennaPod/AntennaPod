@@ -1540,7 +1540,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "Pausing playback because audio is becoming noisy");
             pauseIfPauseOnDisconnect(AudioOutputMode.PHONE_SPEAKER);
         }
-        // android.media.AUDIO_BECOMING_NOISY
     };
 
     /**
@@ -1552,7 +1551,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 && outputMode == AudioOutputMode.PHONE_SPEAKER
                 && !isCasting()) {
             transientPause = true;
-            mediaPlayer.pause(!UserPreferences.isPersistNotify(), true);
+            mediaPlayer.pause(!UserPreferences.isPersistNotify(), false);
         }
     }
 
