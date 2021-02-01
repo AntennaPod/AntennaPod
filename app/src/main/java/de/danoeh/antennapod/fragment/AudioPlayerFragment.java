@@ -287,7 +287,7 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     protected void updateWakeLock() {
-        boolean isWakeLockEnabled = UserPreferences.IsWakeLockEnabled();
+        boolean isWakeLockEnabled = UserPreferences.isWakeLockEnabled();
         boolean isPlayerPlaying = controller.getStatus() == PlayerStatus.PLAYING;
 
         if (isWakeLockEnabled && isPlayerPlaying) {
