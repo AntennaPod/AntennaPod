@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -36,6 +37,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
@@ -284,6 +286,17 @@ public class AudioPlayerFragment extends Fragment implements
         txtvPlaybackSpeed.setVisibility(View.VISIBLE);
     }
 
+    protected void updateWakeLock() {
+        boolean isWakeLockEnabled = UserPreferences.IsWakeLockEnabled();
+        boolean isPlayerPlaying = controller.getStatus() == PlayerStatus.PLAYING;
+
+        if (isWakeLockEnabled && isPlayerPlaying) {
+            AudioPlayerFragment.this.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            AudioPlayerFragment.this.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
+
     private void loadMediaInfo() {
         if (disposable != null) {
             disposable.dispose();
@@ -391,6 +404,7 @@ public class AudioPlayerFragment extends Fragment implements
         }
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton(media);
+        updateWakeLock();
         setupOptionsMenu(media);
     }
 

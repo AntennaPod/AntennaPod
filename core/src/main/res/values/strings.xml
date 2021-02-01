@@ -520,6 +520,8 @@
     <string name="pref_cast_title">Chromecast support</string>
     <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
+    <string name="pref_wakelock_title">Keep screen awake</string>
+    <string name="pref_wakelock_message">If on, keep the screen awake while the player is visible during playback.</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
     <string name="media_player_builtin">Built-in Android player (deprecated) </string>
