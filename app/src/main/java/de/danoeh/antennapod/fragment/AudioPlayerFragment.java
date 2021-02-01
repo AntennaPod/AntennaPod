@@ -291,9 +291,13 @@ public class AudioPlayerFragment extends Fragment implements
         boolean isPlayerPlaying = controller.getStatus() == PlayerStatus.PLAYING;
 
         if (isWakeLockEnabled && isPlayerPlaying) {
-            AudioPlayerFragment.this.getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            AudioPlayerFragment.this.getActivity()
+                    .getWindow()
+                    .addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         } else {
-            AudioPlayerFragment.this.getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            AudioPlayerFragment.this.getActivity()
+                    .getWindow()
+                    .clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         }
     }
 
