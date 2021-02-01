@@ -994,7 +994,7 @@ public class UserPreferences {
     /**
      * Evaluates whether wake lock during playback is enabled on the preferences.
      */
-    public static boolean IsWakeLockEnabled() {
+    public static boolean isWakeLockEnabled() {
         return prefs.getBoolean(PREF_WAKELOCK_PLAYER, false);
     }
 
