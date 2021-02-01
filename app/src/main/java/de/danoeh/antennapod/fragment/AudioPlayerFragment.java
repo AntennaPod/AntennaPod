@@ -31,6 +31,7 @@ import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -47,6 +48,7 @@ import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.view.ChapterSeekBar;
 import de.danoeh.antennapod.view.PlaybackSpeedIndicatorView;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -64,7 +66,7 @@ import java.util.List;
  * Shows the audio player.
  */
 public class AudioPlayerFragment extends Fragment implements
-        SeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
+        ChapterSeekBar.OnSeekBarChangeListener, Toolbar.OnMenuItemClickListener {
     public static final String TAG = "AudioPlayerFragment";
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
@@ -79,7 +81,7 @@ public class AudioPlayerFragment extends Fragment implements
     private ViewPager2 pager;
     private TextView txtvPosition;
     private TextView txtvLength;
-    private SeekBar sbPosition;
+    private ChapterSeekBar sbPosition;
     private ImageButton butRev;
     private TextView txtvRev;
     private ImageButton butPlay;
@@ -178,6 +180,31 @@ public class AudioPlayerFragment extends Fragment implements
         this.hasChapters = hasChapters;
         tabLayoutMediator.detach();
         tabLayoutMediator.attach();
+        if (controller != null) {
+            setChapterDividers(controller.getMedia());
+        }
+    }
+
+    public void setChapterDividers(Playable media) {
+
+        if (media == null) {
+            return;
+        }
+
+        List<Chapter> chapters;
+        float[] dividerPos = null;
+
+        if ((chapters = media.getChapters()) != null && chapters.size() > 0) {
+            dividerPos = new float[chapters.size() - 1];
+            float duration = media.getDuration();
+
+            for (int i = 1; i < chapters.size(); i++) {
+                dividerPos[i - 1] = chapters.get(i).getStart() / duration;
+            }
+        }
+        
+        sbPosition.setDividerPos(dividerPos);
+        sbPosition.invalidate();
     }
 
     public View getExternalPlayerHolder() {
@@ -428,7 +455,6 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null || txtvPosition == null || txtvLength == null || sbPosition == null) {
             return;
         }
-
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());

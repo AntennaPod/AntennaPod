@@ -88,7 +88,7 @@
             android:layoutDirection="ltr"
             android:orientation="vertical">
 
-        <SeekBar
+        <de.danoeh.antennapod.view.ChapterSeekBar
                 android:id="@+id/sbPosition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
