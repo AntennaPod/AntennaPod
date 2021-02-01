@@ -455,6 +455,7 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null || txtvPosition == null || txtvLength == null || sbPosition == null) {
             return;
         }
+
         TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
         int currentPosition = converter.convert(event.getPosition());
         int duration = converter.convert(event.getDuration());

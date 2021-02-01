@@ -27,9 +27,6 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         init();
     }
 
-    /**
-     * Initializes the ChapterSeekBar
-     */
     private void init() {
         setBackground(null); // Removes the thumb shadow
         dividerPos = null;
@@ -37,7 +34,8 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     }
 
     /**
-     * @param dividerPos of the chapter dividers relative to the duration of the media
+     * Calculates the positions of the chapter dividers in the progress bar.
+     * @param dividerPos of the chapter dividers relative to the duration of the media.
      */
     public void setDividerPos(final float[] dividerPos) {
         if (dividerPos != null && dividerPos.length > 0) {
