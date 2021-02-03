@@ -21,6 +21,7 @@ import java.util.List;
  */
 public interface Playable extends Parcelable,
         ShownotesProvider, ImageResource {
+    public static final int INVALID_TIME = -1;
 
     /**
      * Save information about the playable in a preference so that it can be

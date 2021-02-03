@@ -6,6 +6,7 @@ import androidx.test.annotation.UiThreadTest;
 import androidx.test.filters.LargeTest;
 
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import org.awaitility.Awaitility;
 import org.greenrobot.eventbus.EventBus;
 import org.junit.After;
@@ -187,8 +188,8 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onWidgetUpdaterTick() {
-
+            public WidgetUpdater.WidgetState requestWidgetState() {
+                return null;
             }
 
             @Override
@@ -248,8 +249,9 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onWidgetUpdaterTick() {
+            public WidgetUpdater.WidgetState requestWidgetState() {
                 countDownLatch.countDown();
+                return null;
             }
 
             @Override
@@ -348,8 +350,8 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onWidgetUpdaterTick() {
-
+            public WidgetUpdater.WidgetState requestWidgetState() {
+                return null;
             }
 
             @Override
@@ -391,8 +393,8 @@ public class PlaybackServiceTaskManagerTest {
             }
 
             @Override
-            public void onWidgetUpdaterTick() {
-
+            public WidgetUpdater.WidgetState requestWidgetState() {
+                return null;
             }
 
             @Override
@@ -449,8 +451,8 @@ public class PlaybackServiceTaskManagerTest {
         }
 
         @Override
-        public void onWidgetUpdaterTick() {
-
+        public WidgetUpdater.WidgetState requestWidgetState() {
+            return null;
         }
 
         @Override

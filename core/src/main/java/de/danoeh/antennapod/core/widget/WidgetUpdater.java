@@ -1,17 +1,13 @@
-package de.danoeh.antennapod.core.service;
+package de.danoeh.antennapod.core.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.IBinder;
-import androidx.annotation.NonNull;
-import androidx.core.app.SafeJobIntentService;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
-import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -35,107 +30,65 @@ import de.danoeh.antennapod.core.util.TimeSpeedConverter;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
- * Updates the state of the player widget
+ * Updates the state of the player widget.
  */
-public class PlayerWidgetJobService extends SafeJobIntentService {
+public abstract class WidgetUpdater {
+    private static final String TAG = "WidgetUpdater";
 
-    private static final String TAG = "PlayerWidgetJobService";
+    public static class WidgetState {
+        final Playable media;
+        final PlayerStatus status;
+        final int position;
+        final int duration;
+        final float playbackSpeed;
 
-    private PlaybackService playbackService;
-    private final Object waitForService = new Object();
-    private final Object waitUsingService = new Object();
-
-    private static final int JOB_ID = -17001;
-
-    public static void updateWidget(Context context) {
-        enqueueWork(context, PlayerWidgetJobService.class, JOB_ID, new Intent(context, PlayerWidgetJobService.class));
-    }
-
-    @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-        if (!PlayerWidget.isEnabled(getApplicationContext())) {
-            return;
+        public WidgetState(Playable media, PlayerStatus status, int position, int duration, float playbackSpeed) {
+            this.media = media;
+            this.status = status;
+            this.position = position;
+            this.duration = duration;
+            this.playbackSpeed = playbackSpeed;
         }
 
-        synchronized (waitForService) {
-            if (PlaybackService.isRunning && playbackService == null) {
-                bindService(new Intent(this, PlaybackService.class), mConnection, 0);
-                while (playbackService == null) {
-                    try {
-                        waitForService.wait();
-                    } catch (InterruptedException e) {
-                        return;
-                    }
-                }
-            }
-        }
-
-        synchronized (waitUsingService) {
-            updateViews();
-        }
-
-        if (playbackService != null) {
-            try {
-                unbindService(mConnection);
-            } catch (IllegalArgumentException e) {
-                Log.w(TAG, "IllegalArgumentException when trying to unbind service");
-            }
+        public WidgetState(PlayerStatus status) {
+            this(null, status, Playable.INVALID_TIME, Playable.INVALID_TIME, 1.0f);
         }
     }
 
     /**
-     * Returns number of cells needed for given size of the widget.
-     *
-     * @param size Widget size in dp.
-     * @return Size in number of cells.
+     * Update the widgets with the given parameters. Must be called in a background thread.
      */
-    private static int getCellsForSize(int size) {
-        int n = 2;
-        while (70 * n - 30 < size) {
-            ++n;
+    public static void updateWidget(Context context, WidgetState widgetState) {
+        if (!PlayerWidget.isEnabled(context) || widgetState == null) {
+            return;
         }
-        return n - 1;
-    }
-
-    private void updateViews() {
-
-        ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
-        AppWidgetManager manager = AppWidgetManager.getInstance(this);
+        ComponentName playerWidget = new ComponentName(context, PlayerWidget.class);
+        AppWidgetManager manager = AppWidgetManager.getInstance(context);
         int[] widgetIds = manager.getAppWidgetIds(playerWidget);
-        final PendingIntent startMediaPlayer = PendingIntent.getActivity(this, R.id.pending_intent_player_activity,
-                PlaybackService.getPlayerActivityIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);
+        final PendingIntent startMediaPlayer = PendingIntent.getActivity(context, R.id.pending_intent_player_activity,
+                PlaybackService.getPlayerActivityIntent(context), PendingIntent.FLAG_UPDATE_CURRENT);
         RemoteViews views;
-        views = new RemoteViews(getPackageName(), R.layout.player_widget);
+        views = new RemoteViews(context.getPackageName(), R.layout.player_widget);
 
-        Playable media;
-        PlayerStatus status;
-        if (playbackService != null) {
-            media = playbackService.getPlayable();
-            status = playbackService.getStatus();
-        } else {
-            media = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
-            status = PlayerStatus.STOPPED;
-        }
-
-        if (media != null) {
+        if (widgetState.media != null) {
             Bitmap icon;
-            int iconSize = getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
+            int iconSize = context.getResources().getDimensionPixelSize(android.R.dimen.app_icon_size);
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.imgvCover, startMediaPlayer);
 
             try {
-                icon = Glide.with(PlayerWidgetJobService.this)
+                icon = Glide.with(context)
                         .asBitmap()
-                        .load(ImageResourceUtils.getImageLocation(media))
+                        .load(ImageResourceUtils.getImageLocation(widgetState.media))
                         .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
                 views.setImageViewBitmap(R.id.imgvCover, icon);
             } catch (Throwable tr1) {
                 try {
-                    icon = Glide.with(PlayerWidgetJobService.this)
+                    icon = Glide.with(context)
                             .asBitmap()
-                            .load(ImageResourceUtils.getFallbackImageLocation(media))
+                            .load(ImageResourceUtils.getFallbackImageLocation(widgetState.media))
                             .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                             .submit(iconSize, iconSize)
                             .get(500, TimeUnit.MILLISECONDS);
@@ -146,50 +99,44 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
                 }
             }
 
-            views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
+            views.setTextViewText(R.id.txtvTitle, widgetState.media.getEpisodeTitle());
             views.setViewVisibility(R.id.txtvTitle, View.VISIBLE);
             views.setViewVisibility(R.id.txtNoPlaying, View.GONE);
 
-            String progressString;
-            if (playbackService != null) {
-                progressString = getProgressString(playbackService.getCurrentPosition(),
-                        playbackService.getDuration(), playbackService.getCurrentPlaybackSpeed());
-            } else {
-                progressString = getProgressString(media.getPosition(), media.getDuration(), PlaybackSpeedUtils.getCurrentPlaybackSpeed(media));
-            }
-
+            String progressString = getProgressString(widgetState.position,
+                    widgetState.duration, widgetState.playbackSpeed);
             if (progressString != null) {
                 views.setViewVisibility(R.id.txtvProgress, View.VISIBLE);
                 views.setTextViewText(R.id.txtvProgress, progressString);
             }
 
-            if (status == PlayerStatus.PLAYING) {
+            if (widgetState.status == PlayerStatus.PLAYING) {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_pause_white_48dp);
-                views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
+                views.setContentDescription(R.id.butPlay, context.getString(R.string.pause_label));
                 views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_pause_white_48dp);
-                views.setContentDescription(R.id.butPlayExtended, getString(R.string.pause_label));
+                views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.pause_label));
             } else {
                 views.setImageViewResource(R.id.butPlay, R.drawable.ic_av_play_white_48dp);
-                views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
+                views.setContentDescription(R.id.butPlay, context.getString(R.string.play_label));
                 views.setImageViewResource(R.id.butPlayExtended, R.drawable.ic_av_play_white_48dp);
-                views.setContentDescription(R.id.butPlayExtended, getString(R.string.play_label));
+                views.setContentDescription(R.id.butPlayExtended, context.getString(R.string.play_label));
             }
             views.setOnClickPendingIntent(R.id.butPlay,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setOnClickPendingIntent(R.id.butRew,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_REWIND));
+                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_REWIND));
             views.setOnClickPendingIntent(R.id.butFastForward,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
+                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD));
             views.setOnClickPendingIntent(R.id.butSkip,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_NEXT));
+                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_NEXT));
         } else {
             // start the app if they click anything
             views.setOnClickPendingIntent(R.id.layout_left, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlay, startMediaPlayer);
             views.setOnClickPendingIntent(R.id.butPlayExtended,
-                    createMediaButtonIntent(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
+                    createMediaButtonIntent(context, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE));
             views.setViewVisibility(R.id.txtvProgress, View.GONE);
             views.setViewVisibility(R.id.txtvTitle, View.GONE);
             views.setViewVisibility(R.id.txtNoPlaying, View.VISIBLE);
@@ -201,7 +148,7 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             for (int id : widgetIds) {
                 Bundle options = manager.getAppWidgetOptions(id);
-                SharedPreferences prefs = getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
+                SharedPreferences prefs = context.getSharedPreferences(PlayerWidget.PREFS_NAME, Context.MODE_PRIVATE);
                 int minWidth = options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
                 int columns = getCellsForSize(minWidth);
                 if (columns < 3) {
@@ -232,18 +179,32 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
     }
 
     /**
-     * Creates an intent which fakes a mediabutton press
+     * Returns number of cells needed for given size of the widget.
+     *
+     * @param size Widget size in dp.
+     * @return Size in number of cells.
      */
-    private PendingIntent createMediaButtonIntent(int eventCode) {
+    private static int getCellsForSize(int size) {
+        int n = 2;
+        while (70 * n - 30 < size) {
+            ++n;
+        }
+        return n - 1;
+    }
+
+    /**
+     * Creates an intent which fakes a mediabutton press.
+     */
+    private static PendingIntent createMediaButtonIntent(Context context, int eventCode) {
         KeyEvent event = new KeyEvent(KeyEvent.ACTION_DOWN, eventCode);
-        Intent startingIntent = new Intent(getBaseContext(), MediaButtonReceiver.class);
+        Intent startingIntent = new Intent(context, MediaButtonReceiver.class);
         startingIntent.setAction(MediaButtonReceiver.NOTIFY_BUTTON_RECEIVER);
         startingIntent.putExtra(Intent.EXTRA_KEY_EVENT, event);
 
-        return PendingIntent.getBroadcast(this, eventCode, startingIntent, 0);
+        return PendingIntent.getBroadcast(context, eventCode, startingIntent, 0);
     }
 
-    private String getProgressString(int position, int duration, float speed) {
+    private static String getProgressString(int position, int duration, float speed) {
         if (position >= 0 && duration > 0) {
             TimeSpeedConverter converter = new TimeSpeedConverter(speed);
             position = converter.convert(position);
@@ -254,24 +215,4 @@ public class PlayerWidgetJobService extends SafeJobIntentService {
             return null;
         }
     }
-
-    private final ServiceConnection mConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            Log.d(TAG, "Connection to service established");
-            if (service instanceof PlaybackService.LocalBinder) {
-                synchronized (waitForService) {
-                    playbackService = ((PlaybackService.LocalBinder) service).getService();
-                    waitForService.notifyAll();
-                }
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            synchronized (waitUsingService) {
-                playbackService = null;
-            }
-            Log.d(TAG, "Disconnected from service");
-        }
-    };
 }
