@@ -204,7 +204,6 @@ public class AudioPlayerFragment extends Fragment implements
         }
         
         sbPosition.setDividerPos(dividerPos);
-        sbPosition.invalidate();
     }
 
     public View getExternalPlayerHolder() {

@@ -72,7 +72,4 @@
             <enum name="minimum" value="2"/>
         </attr>
     </declare-styleable>
-
-    <declare-styleable name="ChapterSeekBar" />
-
 </resources>

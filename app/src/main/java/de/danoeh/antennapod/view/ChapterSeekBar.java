@@ -9,25 +9,27 @@ import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
+    private float dividerMargin;
     private float[] dividerPos;
     private final Paint dividerPaint = new Paint();
 
     public ChapterSeekBar(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public ChapterSeekBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public ChapterSeekBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        init(context);
     }
 
-    private void init() {
+    private void init(Context context) {
+        dividerMargin = context.getResources().getDisplayMetrics().density * 1.2f;
         setBackground(null); // Removes the thumb shadow
         dividerPos = null;
         dividerPaint.setColor(ThemeUtils.getColorFromAttr(getContext(), android.R.attr.windowBackground));
@@ -71,7 +73,7 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
         final int saveCount = canvas.save();
         canvas.translate(getPaddingLeft(), getPaddingTop());
         for (float pos : dividerPos) {
-            canvas.drawRect(pos - 5, getTop(), pos + 5, getBottom(), dividerPaint);
+            canvas.drawRect(pos - dividerMargin, getTop(), pos + dividerMargin, getBottom(), dividerPaint);
         }
         canvas.restoreToCount(saveCount);
     }
