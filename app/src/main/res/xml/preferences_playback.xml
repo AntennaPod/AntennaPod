@@ -44,18 +44,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/playback_control">
-        <SwitchPreferenceCompat
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefHardwareForwardButtonSkips"
-                android:summary="@string/pref_hardwareForwardButtonSkips_sum"
-                android:title="@string/pref_hardwareForwardButtonSkips_title"/>
-        <SwitchPreferenceCompat
-                android:defaultValue="false"
-                android:enabled="true"
-                android:key="prefHardwarePreviousButtonRestarts"
-                android:summary="@string/pref_hardwarePreviousButtonRestarts_sum"
-                android:title="@string/pref_hardwarePreviousButtonRestarts_title"/>
         <Preference
                 android:key="prefPlaybackFastForwardDeltaLauncher"
                 android:summary="@string/pref_fast_forward_sum"
@@ -78,6 +66,23 @@
                 android:key="prefStreamOverDownload"
                 android:summary="@string/pref_stream_over_download_sum"
                 android:title="@string/pref_stream_over_download_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/reassign_hardware_buttons">
+        <ListPreference
+                android:defaultValue="@string/keycode_media_fast_forward"
+                android:entries="@array/button_action_options"
+                android:entryValues="@array/button_action_values"
+                android:key="prefHardwareForwardButton"
+                android:title="@string/pref_hardware_forward_button_title"
+                android:summary="@string/pref_hardware_forward_button_summary"/>
+        <ListPreference
+                android:defaultValue="@string/keycode_media_rewind"
+                android:entries="@array/button_action_options"
+                android:entryValues="@array/button_action_values"
+                android:key="prefHardwarePreviousButton"
+                android:title="@string/pref_hardware_previous_button_title"
+                android:summary="@string/pref_hardware_previous_button_summary"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">

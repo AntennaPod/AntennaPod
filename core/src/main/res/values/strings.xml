@@ -381,6 +381,7 @@
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
     <string name="playback_control">Playback control</string>
+    <string name="reassign_hardware_buttons">Reassign hardware buttons</string>
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
@@ -390,10 +391,14 @@
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
-    <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
-    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a forward button on a bluetooth-connected device skip to the next episode instead of fast-forwarding</string>
-    <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
-    <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
+    <string name="pref_hardware_forward_button_title">Forward Button</string>
+    <string name="pref_hardware_forward_button_summary">Customize the forward button behavior</string>
+    <string name="pref_hardware_previous_button_title">Previous Button</string>
+    <string name="pref_hardware_previous_button_summary">Customize the previous button behavior</string>
+    <string name="button_action_fast_forward">Fast Forward</string>
+    <string name="button_action_rewind">Rewind</string>
+    <string name="button_action_skip_episode">Skip Episode</string>
+    <string name="button_action_restart_episode">Restart Episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>

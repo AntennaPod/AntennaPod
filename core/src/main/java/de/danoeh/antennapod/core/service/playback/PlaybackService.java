@@ -668,18 +668,14 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
-                if (getStatus() != PlayerStatus.PLAYING && getStatus() != PlayerStatus.PAUSED) {
-                    return false;
-                } else if (notificationButton || UserPreferences.shouldHardwareButtonSkip()) {
-                    // assume the skip command comes from a notification or the lockscreen
-                    // a >| skip button should actually skip
+                if (!notificationButton) {
+                    // Handle remapped button as notification button which is not remapped again.
+                    return handleKeycode(UserPreferences.getHardwareForwardButton(), true);
+                } else if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.skip();
-                } else {
-                    // assume skip command comes from a (bluetooth) media button
-                    // user actually wants to fast-forward
-                    seekDelta(UserPreferences.getFastForwardSecs() * 1000);
+                    return true;
                 }
-                return true;
+                return false;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekDelta(UserPreferences.getFastForwardSecs() * 1000);
@@ -687,23 +683,20 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 }
                 return false;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
-                if (getStatus() != PlayerStatus.PLAYING && getStatus() != PlayerStatus.PAUSED) {
-                    return false;
-                } else if (UserPreferences.shouldHardwarePreviousButtonRestart()) {
-                    // user wants to restart current episode
+                if (!notificationButton) {
+                    // Handle remapped button as notification button which is not remapped again.
+                    return handleKeycode(UserPreferences.getHardwarePreviousButton(), true);
+                } else if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekTo(0);
-                } else {
-                    //  user wants to rewind current episode
-                    mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
+                    return true;
                 }
-                return true;
+                return false;
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 if (getStatus() == PlayerStatus.PLAYING || getStatus() == PlayerStatus.PAUSED) {
                     mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
-                } else {
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(true, true);
@@ -1911,7 +1904,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             Log.d(TAG, "onSkipToNext()");
             UiModeManager uiModeManager = (UiModeManager) getApplicationContext()
                     .getSystemService(Context.UI_MODE_SERVICE);
-            if (UserPreferences.shouldHardwareButtonSkip()
+            if (UserPreferences.getHardwareForwardButton() == KeyEvent.KEYCODE_MEDIA_NEXT
                     || uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_CAR) {
                 mediaPlayer.skip();
             } else {

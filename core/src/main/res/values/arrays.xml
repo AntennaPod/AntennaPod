@@ -105,6 +105,20 @@
         <item>@string/episode_cleanup_never</item>
     </string-array>
 
+    <string-array name="button_action_options">
+        <item>@string/button_action_fast_forward</item>
+        <item>@string/button_action_rewind</item>
+        <item>@string/button_action_skip_episode</item>
+        <item>@string/button_action_restart_episode</item>
+    </string-array>
+
+    <string-array name="button_action_values">
+        <item>@string/keycode_media_fast_forward</item>
+        <item>@string/keycode_media_rewind</item>
+        <item>@string/keycode_media_next</item>
+        <item>@string/keycode_media_previous</item>
+    </string-array>
+
     <string-array name="enqueue_location_options">
         <item>@string/enqueue_location_back</item>
         <item>@string/enqueue_location_front</item>
