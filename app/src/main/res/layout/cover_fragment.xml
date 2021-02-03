@@ -89,11 +89,12 @@
                 android:layout_toLeftOf="@+id/butNextChapter"
                 android:layout_toEndOf="@+id/butPrevChapter"
                 android:layout_toRightOf="@+id/butPrevChapter"
-                android:ellipsize="none"
                 android:gravity="center"
-                android:maxLines="2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textIsSelectable="true"
+                android:textIsSelectable="false"
                 android:textSize="15sp"
                 tools:text="Chapter" />
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -78,6 +79,10 @@ public class CoverFragment extends Fragment {
         butNextChapter = root.findViewById(R.id.butNextChapter);
 
         imgvCover.setOnClickListener(v -> onPlayPause());
+        txtvChapterTitle.setOnClickListener(v -> {
+            ViewPager2 pager = getActivity().findViewById(R.id.pager);
+            pager.setCurrentItem(2, true);
+        });
         butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         butNextChapter.setOnClickListener(v -> seekToNextChapter());
 
