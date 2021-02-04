@@ -94,7 +94,7 @@
   <string name="feed_volume_reduction_light">Claro</string>
   <string name="feed_volume_reduction_heavy">Forte</string>
   <string name="parallel_downloads_suffix">\u0020descargas paralelas</string>
-  <string name="feed_auto_download_global">Valor xeral por omisión</string>
+  <string name="feed_auto_download_global">Valor xeral por defecto</string>
   <string name="feed_auto_download_always">Sempre</string>
   <string name="feed_auto_download_never">Nunca</string>
   <string name="send_label">Enviar...</string>
@@ -442,7 +442,7 @@
   <string name="pref_rewind">Retroceso Salta tempo</string>
   <string name="pref_rewind_sum">Personaliza o número de segundos que se retrocede na reprodución cando se preme o botón retroceso</string>
   <string name="pref_gpodnet_sethostname_title">Establecer servidor</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Utilizar servidor por omisión</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Utilizar servidor por defecto</string>
   <string name="pref_expandNotify_title">Alta prioridade nas notificacións</string>
   <string name="pref_expandNotify_sum">Isto expande as notificacións para mostrar os botóns de reprodución</string>
   <string name="pref_persistNotify_title">Controles persistentes de reprodución</string>
@@ -643,7 +643,7 @@
   <string name="folder_not_writable_error">non se pode escribir en \"%1$s\"</string>
   <string name="folder_not_empty_dialog_title">O cartafol non está baleiro</string>
   <string name="folder_not_empty_dialog_msg">O cartafol escollido non está baleiro. As descargas de medios e outros ficheiros situaranse directamente neste cartafol. Utilizalo igualmente?</string>
-  <string name="set_to_default_folder">Escolle o cartafol por omisión</string>
+  <string name="set_to_default_folder">Escolle o cartafol por defecto</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausar a reprodución en lugar de baixar o volume cando outra aplicación quere reproducir un son.</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa para interrupcións</string>
   <string name="pref_resumeAfterCall_sum">Retomar a reprodución despois de rematar a chamada telefónica</string>

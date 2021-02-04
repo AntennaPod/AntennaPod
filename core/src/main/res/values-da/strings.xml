@@ -131,7 +131,7 @@
   <string name="share_label">Del</string>
   <string name="share_label_with_ellipses">Del...</string>
   <string name="share_file_label">Del fil</string>
-  <string name="share_website_url_label">Netsted adresse</string>
+  <string name="share_website_url_label">Adresse på netsted</string>
   <string name="share_feed_url_label">Podcast-adresse</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du ønsker at slette podcasten \"%1$s\" og ALLE dens udsendelser (inklusive overførte udsendelser)</string>
   <string name="feed_delete_confirmation_local_msg">Bekræft venligst at du vil fjerne podcasten \"%1$s\". Filerne i den lokale kildemappe vil ikke blive slettet.</string>
@@ -196,7 +196,7 @@
   <string name="added_to_favorites">Føjet til foretrukne</string>
   <string name="remove_from_favorite_label">Fjern fra foretrukne</string>
   <string name="removed_from_favorites">Fjernet fra foretrukne</string>
-  <string name="visit_website_label">Besøg webside</string>
+  <string name="visit_website_label">Besøg netsted</string>
   <string name="skip_episode_label">Spring udsendelse over</string>
   <string name="activate_auto_download">Slå Automatisk overførsel til</string>
   <string name="deactivate_auto_download">Slå Automatisk overførsel fra</string>
@@ -325,7 +325,7 @@
   <string name="no_subscriptions_label">For at abonnere på en podcast, klik plus ikonet nedenfor</string>
   <!--Preferences-->
   <string name="storage_pref">Lagring</string>
-  <string name="storage_sum">Automatisk sletning, Importer, Exporter af episoder</string>
+  <string name="storage_sum">Automatisk sletning af udsendelser, import, eksport</string>
   <string name="project_pref">Projekt</string>
   <string name="queue_label">Kø</string>
   <string name="synchronization_pref">Synkronisering</string>
@@ -361,7 +361,7 @@
   <string name="pref_favorite_keeps_episodes_sum">Behold udsendelser, som er markeret som foretrukne</string>
   <string name="pref_favorite_keeps_episodes_title">Behold foretrukne udsendelser</string>
   <string name="playback_pref">Afspilning</string>
-  <string name="playback_pref_sum">Hovedtelefon kontrol, Overspring intervaller, Kø</string>
+  <string name="playback_pref_sum">Hovedtelefonstyring, overspringsintervaller, kø</string>
   <string name="network_pref">Netværk</string>
   <string name="network_pref_sum">Opdateringsinterval, overførselsindstillinger, mobildata</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Opdateringsinterval eller -klokkeslæt</string>
@@ -428,7 +428,7 @@
   <string name="pref_gpodnet_notifications_title">Synkronisering mislykkedes</string>
   <string name="pref_gpodnet_notifications_sum">Denne indstilling vedrører ikke godkendelsesfejl.</string>
   <string name="pref_playback_speed_sum">Tilpas de tilgængelige hastigheder for afspilning med variabel hastighed</string>
-  <string name="pref_feed_playback_speed_sum">Hastighed, der skal bruges, når lydafspilning startes til afsnit i denne podcast</string>
+  <string name="pref_feed_playback_speed_sum">Hastighed, der skal bruges, når lydafspilning startes for udsendelser i denne podcast</string>
   <string name="pref_feed_skip">Overspring automatisk</string>
   <string name="pref_feed_skip_sum">Overspring introduktioner og slut kreditter.</string>
   <string name="pref_feed_skip_ending">Overspring sidste</string>
@@ -466,10 +466,10 @@
   <string name="pref_smart_mark_as_played_disabled">Slået fra</string>
   <string name="pref_image_cache_size_title">Størrelse på mellemlager (cache) for billeder</string>
   <string name="pref_image_cache_size_sum">Størrelse på diskmellemlageret (disk cache) for billeder</string>
-  <string name="visit_user_forum">Bruger froum</string>
+  <string name="visit_user_forum">Brugerforum</string>
   <string name="bug_report_title">Rapportér fejl i appen</string>
   <string name="open_bug_tracker">Åbn programfejlsdatabase</string>
-  <string name="export_logs">Eksportere log</string>
+  <string name="export_logs">Eksportér logge</string>
   <string name="copy_to_clipboard">Kopier til udklipsholder</string>
   <string name="copied_to_clipboard">Kopieret til udklipsholder</string>
   <string name="experimental_pref">Eksperimentelt</string>
@@ -477,7 +477,7 @@
   <string name="pref_current_value">Nuværende værdi: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Indstil en netværksproxy</string>
-  <string name="pref_faq">Ofte Stillede Spørgsmål</string>
+  <string name="pref_faq">Ofte stillede spørgsmål</string>
   <string name="pref_no_browser_found">Ingen webbrowser fundet</string>
   <string name="pref_cast_title">Chromecast-understøttelse</string>
   <string name="pref_cast_message_play_flavor">Aktiver understøttelse af fjernafspilning på Cast-enheder (såsom Chromecast, højttalere med indbygget Chromecast, eller Android TV)</string>
@@ -505,7 +505,7 @@
   <string name="back_button_go_to_page">Gå til side ...</string>
   <string name="back_button_go_to_page_title">Vælg side</string>
   <string name="pref_delete_removes_from_queue_title">Slet fjernet fra kø</string>
-  <string name="pref_delete_removes_from_queue_sum">Fjern automatisk afsnit fra køen, når den slettes.</string>
+  <string name="pref_delete_removes_from_queue_sum">Fjern automatisk udsendelse fra køen, når den slettes.</string>
   <string name="pref_filter_feed_title">Abonnement filter</string>
   <string name="pref_filter_feed_sum">Filtrer dine abonnementer i navigationspanelet og på abonnementsoversigten.</string>
   <string name="no_filter_label">Ingen</string>
@@ -517,9 +517,9 @@
   <string name="not_kept_updated">Ikke holdt opdateret</string>
   <!--About screen-->
   <string name="about_pref">Om</string>
-  <string name="antennapod_version">AntennaPod version</string>
-  <string name="contributors">Bidragere</string>
-  <string name="contributors_summary">Alle kan hjælpe med at lave AntennaPod bedre - med kode, oversættelse eller hjælpe brugere i vores forum</string>
+  <string name="antennapod_version">AntennaPod-version</string>
+  <string name="contributors">Bidragydere</string>
+  <string name="contributors_summary">Alle kan hjælpe med at lave AntennaPod bedre - med kode, oversættelse eller ved at hjælpe brugere i vores forum</string>
   <string name="developers">Udviklere</string>
   <string name="translators">Oversættere</string>
   <string name="special_thanks">Særlig tak</string>
@@ -545,31 +545,31 @@
   <string name="html">HTML</string>
   <string name="html_export_summary">Vis abonnementer</string>
   <string name="opml_export_summary">Flyt abonnementer til anden podcast program</string>
-  <string name="opml_import_summary">Importerer abonnementer fra anden podcast program</string>
-  <string name="database_export_summary">Flyt abonnementer, aflyttede afsnit og kø til AntennaPod på en anden enhed</string>
-  <string name="database_import_summary">Importere AntennaPod database fra anden enhed</string>
+  <string name="opml_import_summary">Importér dine abonnementer fra et andet podcast-program</string>
+  <string name="database_export_summary">Flyt abonnementer, aflyttede udsendelser og kø til AntennaPod på en anden enhed</string>
+  <string name="database_import_summary">Importér AntennaPod-database fra en anden enhed</string>
   <string name="opml_import_label">OPML-import</string>
-  <string name="opml_add_podcast_label">Importere podcast liste (OPML)</string>
+  <string name="opml_add_podcast_label">Importér podcastliste (OPML)</string>
   <string name="opml_reader_error">Der opstod en fejl, da OPML-dokumentet blev forsøgt indlæst:</string>
   <string name="opml_import_error_no_file">Ingen fil valgt!</string>
   <string name="select_all_label">Vælg alle</string>
   <string name="deselect_all_label">Fravælg alle</string>
   <string name="opml_export_label">OPML-eksport</string>
   <string name="html_export_label">HTML-eksport</string>
-  <string name="database_export_label">Eksportere database</string>
-  <string name="database_import_label">Importere database</string>
-  <string name="database_import_warning">Importerong af ny database vil overskrive alle dine nuværende abonnenter og lytte historik. Du burde exportere din nuværende database som en backup. Vil du overskrive?</string>
+  <string name="database_export_label">Eksport af database</string>
+  <string name="database_import_label">Importér database</string>
+  <string name="database_import_warning">Import af database vil overskrive alle dine nuværende abonnementer og din afspilningshistorik. Du bør eksportere din nuværende database som en sikkerhedskopi først. Vil du overskrive?</string>
   <string name="please_wait">Vent...</string>
   <string name="export_error_label">Eksportfejl</string>
   <string name="export_success_title">Eksport lykkedes</string>
   <string name="export_success_sum">Den eksporterede fil blev skrevet til:\n\n%1$s</string>
   <string name="opml_import_ask_read_permission">Adgang til eksternt lager er påkrævet for at læse OPML-filen</string>
-  <string name="import_select_file">Vælg fil til import</string>
+  <string name="import_select_file">Vælg fil der skal importeres</string>
   <string name="successful_import_label">Importeret</string>
   <string name="import_ok">Tryk venligst OK for at genstarte AntennaPod</string>
-  <string name="import_no_downgrade">Databasen var exporteret af en nyere version af AntennaPod. Din nuværende installation ved ikke endnu hvordan den skal håndtere denne fil.</string>
-  <string name="favorites_export_label">Foretrukne eksport</string>
-  <string name="favorites_export_summary">Eksportere gemte foretrukne til fil</string>
+  <string name="import_no_downgrade">Databasen blev eksporteret fra en nyere version af AntennaPod. Din nuværende installation ved endnu ikke hvordan den skal håndtere denne fil.</string>
+  <string name="favorites_export_label">Eksport af foretrukne</string>
+  <string name="favorites_export_summary">Eksportér gemte foretrukne til fil</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Indstil søvntimer</string>
   <string name="disable_sleeptimer_label">Slå søvntimer fra</string>
@@ -663,7 +663,7 @@
   <string name="media_type_video_label">Video</string>
   <string name="status_downloading_label">Udsendelse overføres</string>
   <string name="in_queue_label">Udsendelse er i køen</string>
-  <string name="is_favorite_label">Afsnit er markeret som favorit</string>
+  <string name="is_favorite_label">Udsendelse er markeret som foretrukken</string>
   <string name="drag_handle_content_description">Træk for at ændre dette elements placering</string>
   <string name="load_next_page_label">Indlæs næste side</string>
   <string name="switch_pages">Skift sider</string>
@@ -681,8 +681,8 @@
   <string name="keep_updated">Hold opdateret</string>
   <string name="keep_updated_summary">Inkludere denne podcast når alle podcast genindlæses</string>
   <string name="auto_download_disabled_globally">Automatisk download slået fra i de generelle AntennaPod indstilinger</string>
-  <string name="statistics_listened_for">Lytter efter:</string>
-  <string name="statistics_episodes_on_device">Afsnit på enhed:</string>
+  <string name="statistics_listened_for">Lyttet i:</string>
+  <string name="statistics_episodes_on_device">Udsendelser på enheden:</string>
   <string name="statistics_space_used">Plads brugt:</string>
   <string name="statistics_view_all">Vis for alle podcasts »</string>
   <!--Progress information-->
@@ -695,7 +695,7 @@
   <string name="search_podcastindex_label">Søg på Podcastindex.org</string>
   <string name="search_fyyd_label">Søg i fyyd</string>
   <string name="advanced">Avanceret</string>
-  <string name="add_podcast_by_url">Tilføj podcast via RSS adresse</string>
+  <string name="add_podcast_by_url">Tilføj podcast via RSS-adresse</string>
   <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
   <string name="discover">Opdag</string>
   <string name="discover_hide">Gem</string>
@@ -762,7 +762,7 @@
   <string name="share_dialog_include_label">Medtag:</string>
   <string name="share_playback_position_dialog_label">Afspilningsposition</string>
   <string name="share_dialog_media_file_url_label">Adresse på mediefil</string>
-  <string name="share_dialog_episode_website_label">Afsnit netsted</string>
+  <string name="share_dialog_episode_website_label">Adresse på udsendelse</string>
   <string name="share_dialog_media_file_label">Mediefil</string>
   <!--Audio controls-->
   <string name="audio_controls">Lydknapper</string>

@@ -485,6 +485,7 @@
   <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
   <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
   <string name="media_player_builtin">Built-in Android player</string>
+  <string name="media_player_exoplayer_recommended">ExoPlayer (tavsiye edilen)</string>
   <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
   <string name="pref_skip_silence_title">Skip Silence in Audio</string>
@@ -509,6 +510,7 @@
   <string name="pref_filter_feed_sum">Filter your subscriptions in navigation drawer and subscriptions screen.</string>
   <string name="no_filter_label">None</string>
   <string name="subscriptions_are_filtered">Subscriptions are filtered.</string>
+  <string name="subscriptions_counter_greater_zero">Sayacı sıfırdan büyük olanlar</string>
   <string name="auto_downloaded">Auto downloaded</string>
   <string name="not_auto_downloaded">Not auto downloaded</string>
   <string name="kept_updated">Kept updated</string>
@@ -703,9 +705,11 @@
   <string name="search_powered_by">Results by %1$s</string>
   <!--Local feeds-->
   <string name="add_local_folder">Add local folder</string>
+  <string name="local_folder">Yerel klasör</string>
   <string name="reconnect_local_folder">Re-connect local folder</string>
   <string name="reconnect_local_folder_warning">In case of permission denials, you can use this to re-connect to the exact same folder. Do not select another folder.</string>
   <string name="local_feed_description">This virtual podcast was created by adding a folder to AntennaPod.</string>
+  <string name="unable_to_start_system_file_manager">Sistem dosya yöneticisi başlatılamıyor</string>
   <string name="filter">Filter</string>
   <!--Episodes apply actions-->
   <string name="all_label">Tümü</string>

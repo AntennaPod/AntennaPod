@@ -683,7 +683,7 @@
   <string name="auto_download_disabled_globally">Le téléchargement automatique n\'est pas activé dans les préférences</string>
   <string name="statistics_listened_for">Temps d\'écoute :</string>
   <string name="statistics_episodes_on_device">Episodes sur l\'appareil :</string>
-  <string name="statistics_space_used">Place utilisée :</string>
+  <string name="statistics_space_used">Espace utilisé :</string>
   <string name="statistics_view_all">Voir les statistiques pour tous les podcasts »</string>
   <!--Progress information-->
   <string name="progress_upgrading_database">Mise à jour de la base de données</string>
