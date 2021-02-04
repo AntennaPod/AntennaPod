@@ -183,6 +183,11 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void setChapterDividers(Playable media) {
+
+        if (media == null) {
+            return;
+        }
+
         float[] dividerPos = null;
 
         if (hasChapters) {
@@ -409,8 +414,10 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
 
-        if (media.getChapters() != null) {
+        if (media != null && media.getChapters() != null) {
             setHasChapters(media.getChapters().size() > 0);
+        } else {
+            setHasChapters(false);
         }
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton(media);
