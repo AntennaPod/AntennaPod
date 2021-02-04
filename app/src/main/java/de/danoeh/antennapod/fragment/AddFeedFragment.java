@@ -190,7 +190,11 @@ public class AddFeedFragment extends Fragment {
         if (documentFile == null) {
             throw new IllegalArgumentException("Unable to retrieve document tree");
         }
-        Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, documentFile.getName());
+        String title = documentFile.getName();
+        if (title == null) {
+            title = getString(R.string.local_folder);
+        }
+        Feed dirFeed = new Feed(Feed.PREFIX_LOCAL_FOLDER + uri.toString(), null, title);
         dirFeed.setItems(Collections.emptyList());
         dirFeed.setSortOrder(SortOrder.EPISODE_TITLE_A_Z);
         Feed fromDatabase = DBTasks.updateFeed(getContext(), dirFeed, false);
