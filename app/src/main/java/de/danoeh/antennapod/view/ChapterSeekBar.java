@@ -31,26 +31,16 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private void init(Context context) {
         setBackground(null); // Removes the thumb shadow
         dividerPos = null;
-        dividerMargin = context.getResources().getDisplayMetrics().density * 1.2f;
+        dividerMargin = context.getResources().getDisplayMetrics().density;
         dividerPaint.setColor(ThemeUtils.getColorFromAttr(getContext(), android.R.attr.windowBackground));
     }
 
     /**
-     * Calculates the positions of the chapter dividers in the progress bar.
+     * Sets the relative positions of the chapter dividers.
      * @param dividerPos of the chapter dividers relative to the duration of the media.
      */
     public void setDividerPos(final float[] dividerPos) {
-        if (dividerPos != null && dividerPos.length > 0) {
-            float width = (float) (getRight() - getPaddingRight() - getLeft() - getPaddingLeft());
-            this.dividerPos = new float[dividerPos.length];
-
-            for (int i = 0; i < dividerPos.length; i++) {
-                this.dividerPos[i] = dividerPos[i] * width;
-            }
-
-        } else {
-            this.dividerPos = null;
-        }
+        this.dividerPos = dividerPos;
     }
 
     @Override
@@ -71,8 +61,10 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
     private void drawDividers(Canvas canvas) {
         final int saveCount = canvas.save();
+        final float width = (float) (getRight() - getPaddingRight() - getLeft() - getPaddingLeft());
         canvas.translate(getPaddingLeft(), getPaddingTop());
         for (float pos : dividerPos) {
+            pos *= width;
             canvas.drawRect(pos - dividerMargin, getTop(), pos + dividerMargin, getBottom(), dividerPaint);
         }
         canvas.restoreToCount(saveCount);
