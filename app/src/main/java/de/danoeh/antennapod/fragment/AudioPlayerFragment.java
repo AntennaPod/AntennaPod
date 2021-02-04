@@ -176,25 +176,17 @@ public class AudioPlayerFragment extends Fragment implements
         return root;
     }
 
-    public void setHasChapters(boolean hasChapters) {
+    private void setHasChapters(boolean hasChapters) {
         this.hasChapters = hasChapters;
         tabLayoutMediator.detach();
         tabLayoutMediator.attach();
-        if (controller != null) {
-            setChapterDividers(controller.getMedia());
-        }
     }
 
-    public void setChapterDividers(Playable media) {
-
-        if (media == null) {
-            return;
-        }
-
-        List<Chapter> chapters;
+    private void setChapterDividers(Playable media) {
         float[] dividerPos = null;
 
-        if ((chapters = media.getChapters()) != null && chapters.size() > 0) {
+        if (hasChapters) {
+            List<Chapter> chapters = media.getChapters();
             dividerPos = new float[chapters.size() - 1];
             float duration = media.getDuration();
 
@@ -317,16 +309,17 @@ public class AudioPlayerFragment extends Fragment implements
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
+                media.loadChapterMarks(getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
             }
         })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(media -> updateUi((Playable) media),
-                        error -> Log.e(TAG, Log.getStackTraceString(error)),
-                        () -> updateUi(null));
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(media -> updateUi((Playable) media),
+                error -> Log.e(TAG, Log.getStackTraceString(error)),
+                () -> updateUi(null));
     }
 
     private PlaybackController newPlaybackController() {
@@ -415,8 +408,13 @@ public class AudioPlayerFragment extends Fragment implements
         if (controller == null) {
             return;
         }
+
+        if (media.getChapters() != null) {
+            setHasChapters(media.getChapters().size() > 0);
+        }
         updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
         updatePlaybackSpeedButton(media);
+        setChapterDividers(media);
         setupOptionsMenu(media);
     }
 
