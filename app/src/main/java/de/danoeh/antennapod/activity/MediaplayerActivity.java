@@ -461,7 +461,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if(controller == null || controller.getMedia() == null) {
             return false;
         }
-        showTimeLeft = UserPreferences.getShowRemainTimeSetting();
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         onPositionObserverUpdate();
         checkFavorite();
         updatePlaybackSpeedButton();
@@ -482,7 +482,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         txtvPosition = findViewById(R.id.txtvPosition);
 
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        showTimeLeft = UserPreferences.getShowRemainTimeSetting();
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         Log.d("timeleft", showTimeLeft ? "true" : "false");
         txtvLength = findViewById(R.id.txtvLength);
         if (txtvLength != null) {

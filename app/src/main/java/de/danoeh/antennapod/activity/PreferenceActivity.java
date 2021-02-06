@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.preferences.AutoDownloadPreferencesFragment;

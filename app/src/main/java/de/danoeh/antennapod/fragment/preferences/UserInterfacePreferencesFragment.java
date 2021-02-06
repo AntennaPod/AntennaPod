@@ -9,11 +9,14 @@ import androidx.preference.PreferenceFragmentCompat;
 import android.widget.ListView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.core.event.PlayerStatusEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.dialog.SubscriptionsFilterDialog;
 import de.danoeh.antennapod.dialog.FeedSortDialog;
 import de.danoeh.antennapod.fragment.NavDrawerFragment;
 import org.apache.commons.lang3.ArrayUtils;
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -43,6 +46,8 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                 .setOnPreferenceChangeListener(
                         (preference, newValue) -> {
                             UserPreferences.setShowRemainTimeSetting((Boolean) newValue);
+                            EventBus.getDefault().post(new UnreadItemsUpdateEvent());
+                            EventBus.getDefault().post(new PlayerStatusEvent())                            ;
                             return true;
                         });
 

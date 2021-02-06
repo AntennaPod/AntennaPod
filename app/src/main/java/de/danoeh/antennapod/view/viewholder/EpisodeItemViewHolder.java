@@ -160,7 +160,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
                     Converter.getDurationStringLocalized(activity, media.getPosition())));
             progressBar.setVisibility(View.VISIBLE);
             position.setVisibility(View.VISIBLE);
-            if (UserPreferences.getShowRemainTimeSetting()) {
+            if (UserPreferences.shouldShowRemainingTime()) {
                 duration.setText("-" + Converter.getDurationStringLong(media.getDuration() - media.getPosition()));
                 duration.setContentDescription(activity.getString(R.string.chapter_duration,
                         Converter.getDurationStringLocalized(activity, (media.getDuration() - media.getPosition()))));
@@ -200,7 +200,7 @@ public class EpisodeItemViewHolder extends RecyclerView.ViewHolder {
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }
-        if (UserPreferences.getShowRemainTimeSetting()) {
+        if (UserPreferences.shouldShowRemainingTime()) {
             duration.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {
             duration.setText(Converter.getDurationStringLong(timeDuration));

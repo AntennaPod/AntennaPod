@@ -13,7 +13,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.app.NotificationCompat;
 import androidx.preference.PreferenceManager;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -32,9 +31,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.ShowRemainTimeUpdateEvent;
-import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
@@ -272,7 +268,7 @@ public class UserPreferences {
     /**
      * @return {@code true} if we should show remaining time or the duration
      */
-    public static boolean getShowRemainTimeSetting() {
+    public static boolean shouldShowRemainingTime() {
         return prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
     }
 
@@ -284,9 +280,6 @@ public class UserPreferences {
      */
     public static void setShowRemainTimeSetting(Boolean showRemain) {
         prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showRemain).apply();
-        EventBus.getDefault().post(new ShowRemainTimeUpdateEvent());
-        EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-        EventBus.getDefault().post(new PlayerStatusEvent());
     }
 
     /**

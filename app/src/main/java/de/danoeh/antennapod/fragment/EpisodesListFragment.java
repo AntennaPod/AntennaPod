@@ -24,7 +24,6 @@ import de.danoeh.antennapod.adapter.EpisodeItemListAdapter;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
-import de.danoeh.antennapod.core.event.ShowRemainTimeUpdateEvent;
 import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.view.EpisodeItemListRecyclerView;
 import de.danoeh.antennapod.view.viewholder.EpisodeItemViewHolder;
@@ -357,11 +356,6 @@ public abstract class EpisodesListFragment extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUnreadItemsChanged(UnreadItemsUpdateEvent event) {
-        updateUi();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onShowRemainTimeChanged(ShowRemainTimeUpdateEvent event) {
         updateUi();
     }
 

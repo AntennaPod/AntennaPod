@@ -27,7 +27,7 @@ import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
-import de.danoeh.antennapod.core.event.ShowRemainTimeUpdateEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -210,7 +210,7 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onShowRemainTimeChanged(ShowRemainTimeUpdateEvent event) {
+    public void onUnreadItemsUpdate(UnreadItemsUpdateEvent event) {
         if (controller == null) {
             return;
         }
@@ -219,7 +219,7 @@ public class AudioPlayerFragment extends Fragment implements
     }
 
     private void setupLengthTextView() {
-        showTimeLeft = UserPreferences.getShowRemainTimeSetting();
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         txtvLength.setOnClickListener(v -> {
             if (controller == null) {
                 return;
@@ -440,7 +440,7 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
-        showTimeLeft = UserPreferences.getShowRemainTimeSetting();
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         if (showTimeLeft) {
             txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {
