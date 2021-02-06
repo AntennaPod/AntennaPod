@@ -11,7 +11,6 @@ import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeExceptio
 import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
