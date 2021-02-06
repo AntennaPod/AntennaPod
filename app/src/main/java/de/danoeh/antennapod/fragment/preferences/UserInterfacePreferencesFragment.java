@@ -47,7 +47,7 @@ public class UserInterfacePreferencesFragment extends PreferenceFragmentCompat {
                         (preference, newValue) -> {
                             UserPreferences.setShowRemainTimeSetting((Boolean) newValue);
                             EventBus.getDefault().post(new UnreadItemsUpdateEvent());
-                            EventBus.getDefault().post(new PlayerStatusEvent())                            ;
+                            EventBus.getDefault().post(new PlayerStatusEvent());
                             return true;
                         });
 
