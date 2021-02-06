@@ -192,10 +192,6 @@ public class DownloadService extends Service {
         registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
 
         downloadCompletionThread.start();
-
-        Notification notification = notificationManager.updateNotifications(
-                requester.getNumberOfDownloads(), downloads);
-        startForeground(R.id.notification_downloading, notification);
     }
 
     @Override
@@ -551,20 +547,13 @@ public class DownloadService extends Service {
     private void queryDownloads() {
         Log.d(TAG, numberOfDownloads.get() + " downloads left");
 
+        setupNotificationUpdaterIfNecessary();
+        notificationUpdater.run();
+
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
-            Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
+            Log.d(TAG, "Attempting shutdown");
             stopForeground(true);
             stopSelf();
-            if (notificationUpdater != null) {
-                notificationUpdater.run();
-            } else {
-                Log.d(TAG, "Skipping notification update");
-            }
-        } else {
-            setupNotificationUpdater();
-            Notification notification = notificationManager.updateNotifications(
-                    requester.getNumberOfDownloads(), downloads);
-            startForeground(R.id.notification_downloading, notification);
         }
     }
 
@@ -617,7 +606,7 @@ public class DownloadService extends Service {
     /**
      * Schedules the notification updater task if it hasn't been scheduled yet.
      */
-    private void setupNotificationUpdater() {
+    private void setupNotificationUpdaterIfNecessary() {
         if (notificationUpdater == null) {
             Log.d(TAG, "Setting up notification updater");
             notificationUpdater = new NotificationUpdater();
