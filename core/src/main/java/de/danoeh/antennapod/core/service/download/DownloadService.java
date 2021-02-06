@@ -169,6 +169,7 @@ public class DownloadService extends Service {
             Notification notification = notificationManager.updateNotifications(
                     requester.getNumberOfDownloads(), downloads);
             startForeground(R.id.notification_downloading, notification);
+            setupNotificationUpdaterIfNecessary();
             syncExecutor.execute(() -> onDownloadQueued(intent));
         } else if (numberOfDownloads.get() == 0) {
             stopForeground(true);
@@ -254,13 +255,13 @@ public class DownloadService extends Service {
                             handleSuccessfulDownload(downloader);
                             removeDownload(downloader);
                             numberOfDownloads.decrementAndGet();
-                            queryDownloadsAsync();
+                            stopServiceIfEverythingDoneAsync();
                         });
                     } else {
                         handleFailedDownload(downloader);
                         removeDownload(downloader);
                         numberOfDownloads.decrementAndGet();
-                        queryDownloadsAsync();
+                        stopServiceIfEverythingDoneAsync();
                     }
                 } catch (InterruptedException e) {
                     Log.e(TAG, "DownloadCompletionThread was interrupted");
@@ -409,7 +410,7 @@ public class DownloadService extends Service {
                 }
                 postDownloaders();
             }
-            queryDownloads();
+            stopServiceIfEverythingDone();
         }
 
     };
@@ -480,7 +481,7 @@ public class DownloadService extends Service {
                 postDownloaders();
             });
         }
-        handler.post(this::queryDownloads);
+        handler.post(this::stopServiceIfEverythingDone);
     }
 
     private static boolean isEnqueued(@NonNull DownloadRequest request,
@@ -537,23 +538,26 @@ public class DownloadService extends Service {
      * Calls query downloads on the services main thread. This method should be used instead of queryDownloads if it is
      * used from a thread other than the main thread.
      */
-    private void queryDownloadsAsync() {
-        handler.post(DownloadService.this::queryDownloads);
+    private void stopServiceIfEverythingDoneAsync() {
+        handler.post(DownloadService.this::stopServiceIfEverythingDone);
     }
 
     /**
      * Check if there's something else to download, otherwise stop.
      */
-    private void queryDownloads() {
+    private void stopServiceIfEverythingDone() {
         Log.d(TAG, numberOfDownloads.get() + " downloads left");
-
-        setupNotificationUpdaterIfNecessary();
-        notificationUpdater.run();
 
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             Log.d(TAG, "Attempting shutdown");
             stopForeground(true);
             stopSelf();
+
+            // Trick to hide the notification more quickly when the service is stopped
+            // Without this, the second-last update of the notification stays for 3 seconds after onDestroy returns
+            notificationUpdater.run();
+            NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            nm.cancel(R.id.notification_downloading);
         }
     }
 
