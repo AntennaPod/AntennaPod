@@ -63,8 +63,6 @@ public class ExceptFavoriteCleanupAlgorithm extends EpisodeCleanupAlgorithm {
         }
 
         int counter = delete.size();
-
-
         Log.i(TAG, String.format(Locale.US,
                 "Auto-delete deleted %d episodes (%d requested)", counter,
                 numberOfEpisodesToDelete));
@@ -88,6 +86,6 @@ public class ExceptFavoriteCleanupAlgorithm extends EpisodeCleanupAlgorithm {
 
     @Override
     public int getDefaultCleanupParameter() {
-        return getNumEpisodesToCleanup(0);
+        return 0;
     }
 }
