@@ -133,22 +133,6 @@ public abstract class FeedParserTestBase {
         }
     }
 
-    @Test
-    public void testDuplicateItemID() throws Exception {
-        Feed noDupFeed = createTestFeed(1, true);
-        // duplicate item
-        FeedItem item = new FeedItem(0, "item-" + 0, "http://example.com/item-" + 0,
-                "http://example.com/items/" + 0, new Date(0 * 60000), FeedItem.UNPLAYED, noDupFeed);
-        noDupFeed.getItems().add(item);
-        assertEquals(noDupFeed.getItemAtIndex(0).getItemIdentifier(), "http://example.com/item-0");
-        try {
-            // this should fail
-            noDupFeed.getItemAtIndex(1).getItemIdentifier();
-        } catch (IndexOutOfBoundsException e) {
-            // expect to be here
-        }
-    }
-
     protected Feed createTestFeed(int numItems, boolean withFeedMedia) {
         Feed feed = new Feed(0, null, "title", "http://example.com", "This is the description",
                 "http://example.com/payment", "Daniel", "en", null, "http://example.com/feed",

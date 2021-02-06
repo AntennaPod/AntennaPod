@@ -231,7 +231,7 @@ public class Feed extends FeedFile implements ImageResource {
      *
      */
     public FeedItem getItemAtIndex(int position) {
-        return getItems().get(position);
+        return items.get(position);
     }
 
     /**
@@ -353,7 +353,7 @@ public class Feed extends FeedFile implements ImageResource {
         // we could sort, but we don't need to, a simple search is fine...
         Date mostRecentDate = new Date(0);
         FeedItem mostRecentItem = null;
-        for (FeedItem item : getItems()) {
+        for (FeedItem item : items) {
             if (item.getPubDate() != null && item.getPubDate().after(mostRecentDate)) {
                 mostRecentDate = item.getPubDate();
                 mostRecentItem = item;
@@ -418,24 +418,6 @@ public class Feed extends FeedFile implements ImageResource {
 
     public List<FeedItem> getItems() {
         return items;
-    }
-
-    public List<FeedItem> dedupItems() {
-        List<FeedItem> list = items;
-        if (list == null) {
-            return null;
-        }
-        ArrayList<String> seen = new ArrayList<>();
-        Iterator<FeedItem> it = list.iterator();
-        while (it.hasNext()) {
-            FeedItem item = it.next();
-            if (seen.indexOf(item.getItemIdentifier()) == -1) {
-                seen.add(item.getItemIdentifier());
-            } else {
-                it.remove();
-            }
-        }
-        return list;
     }
 
     public void setItems(List<FeedItem> list) {
