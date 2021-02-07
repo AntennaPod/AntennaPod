@@ -164,6 +164,7 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
+    implementation project(':ui:app-start-intent')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

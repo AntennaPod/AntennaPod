@@ -50,7 +50,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
@@ -81,6 +80,8 @@ import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
+import de.danoeh.antennapod.ui.appstartintent.VideoPlayerActivityStarter;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -245,24 +246,31 @@ public class PlaybackService extends MediaBrowserServiceCompat {
      * running, the type of the last played media will be looked up.
      */
     public static Intent getPlayerActivityIntent(Context context) {
+        boolean showVideoPlayer;
+
         if (isRunning) {
-            return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, currentMediaType, isCasting);
+            showVideoPlayer = currentMediaType == MediaType.VIDEO && !isCasting;
         } else {
-            if (PlaybackPreferences.getCurrentEpisodeIsVideo()) {
-                return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, MediaType.VIDEO, isCasting);
-            } else {
-                return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, MediaType.AUDIO, isCasting);
-            }
+            showVideoPlayer = PlaybackPreferences.getCurrentEpisodeIsVideo();
+        }
+
+        if (showVideoPlayer) {
+            return new VideoPlayerActivityStarter(context).getIntent();
+        } else {
+            return new MainActivityStarter(context).withOpenPlayer().getIntent();
         }
     }
 
     /**
-     * Same as getPlayerActivityIntent(context), but here the type of activity
+     * Same as {@link #getPlayerActivityIntent(Context)}, but here the type of activity
      * depends on the FeedMedia that is provided as an argument.
      */
     public static Intent getPlayerActivityIntent(Context context, Playable media) {
-        MediaType mt = media.getMediaType();
-        return ClientConfig.playbackServiceCallbacks.getPlayerActivityIntent(context, mt, isCasting);
+        if (media.getMediaType() == MediaType.VIDEO && !isCasting) {
+            return new VideoPlayerActivityStarter(context).getIntent();
+        } else {
+            return new MainActivityStarter(context).withOpenPlayer().getIntent();
+        }
     }
 
     @Override
@@ -796,7 +804,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         @Override
         public WidgetUpdater.WidgetState requestWidgetState() {
             return new WidgetUpdater.WidgetState(getPlayable(), getStatus(),
-                    getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed());
+                    getCurrentPosition(), getDuration(), getCurrentPlaybackSpeed(), isCasting());
         }
 
         @Override

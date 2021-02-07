@@ -71,6 +71,8 @@ android {
 }
 
 dependencies {
+    implementation project(':ui:app-start-intent')
+
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation 'androidx.documentfile:documentfile:1.0.1'

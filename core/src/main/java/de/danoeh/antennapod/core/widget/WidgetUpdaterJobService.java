@@ -5,6 +5,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.core.app.SafeJobIntentService;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -24,7 +25,8 @@ public class WidgetUpdaterJobService extends SafeJobIntentService {
         Playable media = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
         if (media != null) {
             WidgetUpdater.updateWidget(this, new WidgetUpdater.WidgetState(media, PlayerStatus.STOPPED,
-                    media.getPosition(), media.getDuration(), PlaybackSpeedUtils.getCurrentPlaybackSpeed(media)));
+                    media.getPosition(), media.getDuration(), PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),
+                    PlaybackPreferences.getCurrentEpisodeIsStream()));
         } else {
             WidgetUpdater.updateWidget(this, new WidgetUpdater.WidgetState(PlayerStatus.STOPPED));
         }

@@ -41,6 +41,7 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
 
 /**
@@ -343,7 +344,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             Log.d(TAG, "ReloadNotification received, switching to Castplayer now");
             destroyingDueToReload = true;
             finish();
-            startActivity(new Intent(this, MainActivity.class).putExtra(MainActivity.EXTRA_OPEN_PLAYER, true));
+            new MainActivityStarter(this).withOpenPlayer().start();
         }
     }
 
