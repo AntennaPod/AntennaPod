@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.util.PowerUtils;
  * the client uses the {@link EpisodeCleanupAlgorithm}.
  */
 public class AutomaticDownloadAlgorithm {
-    private static final String TAG = "AutomaticDownloadAlgorithm";
+    private static final String TAG = "DownloadAlgorithm";
 
     /**
      * Looks for undownloaded episodes in the queue or list of new items and request a download if
