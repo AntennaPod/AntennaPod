@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffffff">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="#ffffffff">
+
+        <RadioGroup
+            android:id="@+id/genderRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+            <RadioButton
+                android:id="@+id/intervalRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/pref_autoUpdateIntervallOrTime_CheckStatusInterval"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/timeRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/maleRadioButton"
+                android:text="@string/pref_autoUpdateIntervallOrTime_CheckStatusTime"
+                android:layout_weight="1"
+                android:textSize="20sp" />
+
+            <TimePicker
+                android:id="@+id/timePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/disableButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/maleRadioButton"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:text="@string/pref_autoUpdateIntervallOrTime_CheckStatusNever" />
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+</RelativeLayout>
