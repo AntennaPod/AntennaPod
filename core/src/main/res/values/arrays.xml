@@ -96,6 +96,7 @@
     </string-array>
 
     <string-array name="episode_cleanup_entries">
+        <item>@string/episode_cleanup_except_favorite_removal</item>
         <item>@string/episode_cleanup_queue_removal</item>
         <item>0</item>
         <item>1</item>
@@ -133,6 +134,7 @@
     </string-array>
 
     <string-array name="episode_cleanup_values">
+        <item>-3</item>
         <item>-1</item>
         <item>0</item>
         <item>12</item>
