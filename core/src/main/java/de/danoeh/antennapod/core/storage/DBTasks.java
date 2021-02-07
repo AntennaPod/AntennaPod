@@ -53,7 +53,7 @@ public final class DBTasks {
      */
     private static final ExecutorService autodownloadExec;
 
-    private static ApDownloadAlgorithm downloadAlgorithm = new ApDownloadAlgorithm();
+    private static AutomaticDownloadAlgorithm downloadAlgorithm = new AutomaticDownloadAlgorithm();
 
     static {
         autodownloadExec = Executors.newSingleThreadExecutor(r -> {
@@ -297,7 +297,7 @@ public final class DBTasks {
     /**
      * For testing purpose only.
      */
-    public static void setDownloadAlgorithm(ApDownloadAlgorithm newDownloadAlgorithm) {
+    public static void setDownloadAlgorithm(AutomaticDownloadAlgorithm newDownloadAlgorithm) {
         downloadAlgorithm = newDownloadAlgorithm;
     }
 

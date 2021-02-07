@@ -7,7 +7,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.ApDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
@@ -50,7 +50,7 @@ public class AutoDownloadTest {
 
     @After
     public void tearDown() throws Exception {
-        DBTasks.setDownloadAlgorithm(new ApDownloadAlgorithm());
+        DBTasks.setDownloadAlgorithm(new AutomaticDownloadAlgorithm());
         EspressoTestUtils.tryKillPlaybackService();
         stubFeedsServer.tearDown();
     }
@@ -107,7 +107,7 @@ public class AutoDownloadTest {
                 .until(() -> item.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
     }
 
-    private static class StubDownloadAlgorithm extends ApDownloadAlgorithm {
+    private static class StubDownloadAlgorithm extends AutomaticDownloadAlgorithm {
         private long currentlyPlaying = -1;
 
         @Override
