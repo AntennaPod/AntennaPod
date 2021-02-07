@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.annotation.VisibleForTesting;
+
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
@@ -297,6 +299,7 @@ public final class DBTasks {
     /**
      * For testing purpose only.
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public static void setDownloadAlgorithm(AutomaticDownloadAlgorithm newDownloadAlgorithm) {
         downloadAlgorithm = newDownloadAlgorithm;
     }
