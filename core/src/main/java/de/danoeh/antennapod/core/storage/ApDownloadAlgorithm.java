@@ -16,10 +16,10 @@ import de.danoeh.antennapod.core.util.PowerUtils;
 
 /**
  * Implements the automatic download algorithm used by AntennaPod. This class assumes that
- * the client uses the APEpisodeCleanupAlgorithm.
+ * the client uses the {@link EpisodeCleanupAlgorithm}.
  */
-public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
-    private static final String TAG = "APDownloadAlgorithm";
+public class ApDownloadAlgorithm {
+    private static final String TAG = "ApDownloadAlgorithm";
 
     /**
      * Looks for undownloaded episodes in the queue or list of new items and request a download if
@@ -31,7 +31,6 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
      * @param context  Used for accessing the DB.
      * @return A Runnable that will be submitted to an ExecutorService.
      */
-    @Override
     public Runnable autoDownloadUndownloadedItems(final Context context) {
         return () -> {
 

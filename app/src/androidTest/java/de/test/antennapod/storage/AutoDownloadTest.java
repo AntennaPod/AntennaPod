@@ -3,13 +3,13 @@ package de.test.antennapod.storage;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
+import de.danoeh.antennapod.core.storage.ApDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.test.antennapod.EspressoTestUtils;
 import de.test.antennapod.ui.UITestUtils;
@@ -29,8 +29,7 @@ public class AutoDownloadTest {
 
     private Context context;
     private UITestUtils stubFeedsServer;
-
-    private AutomaticDownloadAlgorithm automaticDownloadAlgorithmOrig;
+    private StubDownloadAlgorithm stubDownloadAlgorithm;
 
     @Before
     public void setUp() throws Exception {
@@ -39,16 +38,19 @@ public class AutoDownloadTest {
         stubFeedsServer = new UITestUtils(context);
         stubFeedsServer.setup();
 
-        automaticDownloadAlgorithmOrig = ClientConfig.automaticDownloadAlgorithm;
-
         EspressoTestUtils.clearPreferences();
         EspressoTestUtils.clearDatabase();
         UserPreferences.setAllowMobileStreaming(true);
+
+        // Setup: enable automatic download
+        // it is not needed, as the actual automatic download is stubbed.
+        stubDownloadAlgorithm = new StubDownloadAlgorithm();
+        DBTasks.setDownloadAlgorithm(stubDownloadAlgorithm);
     }
 
     @After
     public void tearDown() throws Exception {
-        ClientConfig.automaticDownloadAlgorithm = automaticDownloadAlgorithmOrig;
+        DBTasks.setDownloadAlgorithm(new ApDownloadAlgorithm());
         EspressoTestUtils.tryKillPlaybackService();
         stubFeedsServer.tearDown();
     }
@@ -74,11 +76,6 @@ public class AutoDownloadTest {
         FeedItem item0 = queue.get(0);
         FeedItem item1 = queue.get(1);
 
-        // Setup: enable automatic download
-        // it is not needed, as the actual automatic download is stubbed.
-        StubDownloadAlgorithm stubDownloadAlgorithm = new StubDownloadAlgorithm();
-        ClientConfig.automaticDownloadAlgorithm = stubDownloadAlgorithm;
-
         // Actual test
         // Play the first one in the queue
         playEpisode(item0);
@@ -92,11 +89,10 @@ public class AutoDownloadTest {
         } catch (ConditionTimeoutException cte) {
             long actual = stubDownloadAlgorithm.getCurrentlyPlayingAtDownload();
             fail("when auto download is triggered, the next episode should be playing: ("
-                    + item1.getId() + ", "  + item1.getTitle() + ") . "
+                    + item1.getId() + ", " + item1.getTitle() + ") . "
                     + "Actual playing: (" + actual + ")"
             );
         }
-
     }
 
     private void playEpisode(@NonNull FeedItem item) {
@@ -111,7 +107,7 @@ public class AutoDownloadTest {
                 .until(() -> item.getMedia().getId() == PlaybackPreferences.getCurrentlyPlayingFeedMediaId());
     }
 
-    private static class StubDownloadAlgorithm implements AutomaticDownloadAlgorithm {
+    private static class StubDownloadAlgorithm extends ApDownloadAlgorithm {
         private long currentlyPlaying = -1;
 
         @Override
