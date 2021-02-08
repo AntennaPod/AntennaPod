@@ -51,11 +51,6 @@ public class FeedHandler {
             if (seen.indexOf(item.getItemIdentifier()) == -1) {
                 if (item.getMedia().getDownload_url() != null && seen.indexOf(item.getMedia().getDownload_url()) == -1) {
                     seen.add(item.getMedia().getDownload_url());
-                    if (item.getTitle() != null && seen.indexOf(item.getTitle()) == -1) {
-                        seen.add(item.getTitle());
-                    } else {
-                        it.remove();
-                    }
                 } else {
                     it.remove();
                 }
