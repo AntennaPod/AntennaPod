@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch">
 
     <PreferenceCategory android:title="@string/appearance">
         <ListPreference
-            android:entryValues="@array/theme_values"
-            android:entries="@array/theme_options"
-            android:title="@string/pref_set_theme_title"
-            android:key="prefTheme"
-            android:summary="@string/pref_set_theme_sum"
-            android:defaultValue="system"/>
+                android:entryValues="@array/theme_values"
+                android:entries="@array/theme_options"
+                android:title="@string/pref_set_theme_title"
+                android:key="prefTheme"
+                android:summary="@string/pref_set_theme_sum"
+                android:defaultValue="system"/>
         <Preference
-            android:key="prefHiddenDrawerItems"
-            android:summary="@string/pref_nav_drawer_items_sum"
-            android:title="@string/pref_nav_drawer_items_title"/>
+                android:key="prefHiddenDrawerItems"
+                android:summary="@string/pref_nav_drawer_items_sum"
+                android:title="@string/pref_nav_drawer_items_title"/>
         <SwitchPreferenceCompat
-            android:title="@string/pref_episode_cover_title"
-            android:key="prefEpisodeCover"
-            android:summary="@string/pref_episode_cover_summary"
-            android:defaultValue="true"
-            android:enabled="true"/>
+                android:title="@string/pref_episode_cover_title"
+                android:key="prefEpisodeCover"
+                android:summary="@string/pref_episode_cover_summary"
+                android:defaultValue="true"
+                android:enabled="true"/>
         <SwitchPreferenceCompat
-            android:title="@string/pref_show_remain_time_title"
-            android:key="showTimeLeft"
-            android:summary="@string/pref_show_remain_time_summary"
-            android:defaultValue="false"
-            android:enabled="true"/>
-
+                android:title="@string/pref_show_remain_time_title"
+                android:key="showTimeLeft"
+                android:summary="@string/pref_show_remain_time_summary"
+                android:defaultValue="false"
+                android:enabled="true"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/subscriptions_label">
         <Preference
@@ -48,36 +47,36 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/external_elements">
         <SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefExpandNotify"
-            android:summary="@string/pref_expandNotify_sum"
-            android:title="@string/pref_expandNotify_title"
-            search:ignore="true"/>
+                android:defaultValue="false"
+                android:enabled="true"
+                android:key="prefExpandNotify"
+                android:summary="@string/pref_expandNotify_sum"
+                android:title="@string/pref_expandNotify_title"
+                search:ignore="true"/>
         <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefPersistNotify"
-            android:summary="@string/pref_persistNotify_sum"
-            android:title="@string/pref_persistNotify_title"/>
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefPersistNotify"
+                android:summary="@string/pref_persistNotify_sum"
+                android:title="@string/pref_persistNotify_title"/>
         <Preference
-            android:key="prefCompactNotificationButtons"
-            android:summary="@string/pref_compact_notification_buttons_sum"
-            android:title="@string/pref_compact_notification_buttons_title"/>
+                android:key="prefCompactNotificationButtons"
+                android:summary="@string/pref_compact_notification_buttons_sum"
+                android:title="@string/pref_compact_notification_buttons_title"/>
         <SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:enabled="true"
-            android:key="prefLockscreenBackground"
-            android:summary="@string/pref_lockscreen_background_sum"
-            android:title="@string/pref_lockscreen_background_title"/>
+                android:defaultValue="true"
+                android:enabled="true"
+                android:key="prefLockscreenBackground"
+                android:summary="@string/pref_lockscreen_background_sum"
+                android:title="@string/pref_lockscreen_background_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/behavior">
         <ListPreference
-            android:entryValues="@array/back_button_behavior_values"
-            android:entries="@array/back_button_behavior_options"
-            android:key="prefBackButtonBehavior"
-            android:title="@string/pref_back_button_behavior_title"
-            android:summary="@string/pref_back_button_behavior_sum"
-            android:defaultValue="default"/>
+                android:entryValues="@array/back_button_behavior_values"
+                android:entries="@array/back_button_behavior_options"
+                android:key="prefBackButtonBehavior"
+                android:title="@string/pref_back_button_behavior_title"
+                android:summary="@string/pref_back_button_behavior_sum"
+                android:defaultValue="default"/>
     </PreferenceCategory>
 </PreferenceScreen>
