@@ -29,6 +29,8 @@ import java.text.NumberFormat;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -47,6 +49,7 @@ import de.danoeh.antennapod.core.util.gui.PictureInPictureUtil;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.databinding.VideoplayerActivityBinding;
 import de.danoeh.antennapod.dialog.PlaybackControlsDialog;
 import de.danoeh.antennapod.dialog.ShareDialog;
 import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
@@ -68,13 +71,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     PlaybackController controller;
 
-    private TextView txtvPosition;
-    private TextView txtvLength;
-    SeekBar sbPosition;
-    private ImageButton butRev;
     private TextView txtvRev;
-    private ImageButton butPlay;
-    private ImageButton butFF;
     private TextView txtvFF;
     private ImageButton butSkip;
 
@@ -83,6 +80,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private boolean isFavorite = false;
 
     private Disposable disposable;
+
+    VideoplayerActivityBinding viewBinding;
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(this) {
@@ -129,7 +128,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
             @Override
             public ImageButton getPlayButton() {
-                return butPlay;
+                return viewBinding.playButton;
             }
 
             @Override
@@ -236,8 +235,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     private void onBufferUpdate(float progress) {
-        if (sbPosition != null) {
-            sbPosition.setSecondaryProgress((int) (progress * sbPosition.getMax()));
+        if (viewBinding.positionSeek != null) {
+            viewBinding.positionSeek.setSecondaryProgress((int) (progress * viewBinding.positionSeek.getMax()));
         }
     }
 
@@ -418,7 +417,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     protected abstract void onAwaitingVideoSurface();
 
     void onPositionObserverUpdate() {
-        if (controller == null || txtvPosition == null || txtvLength == null) {
+        if (controller == null) {
             return;
         }
 
@@ -433,22 +432,19 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             Log.w(TAG, "Could not react to position observer update because of invalid time");
             return;
         }
-        txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        viewBinding.positionLabel.setText(Converter.getDurationStringLong(currentPosition));
         if (showTimeLeft) {
-            txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
+            viewBinding.durationLabel.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {
-            txtvLength.setText(Converter.getDurationStringLong(duration));
+            viewBinding.durationLabel.setText(Converter.getDurationStringLong(duration));
         }
         updateProgressbarPosition(currentPosition, duration);
     }
 
     private void updateProgressbarPosition(int position, int duration) {
         Log.d(TAG, "updateProgressbarPosition(" + position + ", " + duration + ")");
-        if(sbPosition == null) {
-            return;
-        }
         float progress = ((float) position) / duration;
-        sbPosition.setProgress((int) (progress * sbPosition.getMax()));
+        viewBinding.positionSeek.setProgress((int) (progress * viewBinding.positionSeek.getMax()));
     }
 
     /**
@@ -479,80 +475,67 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     }
 
     void setupGUI() {
-        setContentView(getContentViewResourceId());
-        sbPosition = findViewById(R.id.sbPosition);
-        txtvPosition = findViewById(R.id.txtvPosition);
-
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
         Log.d("timeleft", showTimeLeft ? "true" : "false");
-        txtvLength = findViewById(R.id.txtvLength);
-        if (txtvLength != null) {
-            txtvLength.setOnClickListener(v -> {
-                showTimeLeft = !showTimeLeft;
-                Playable media = controller.getMedia();
-                if (media == null) {
-                    return;
-                }
+        viewBinding.durationLabel.setOnClickListener(v -> {
+            showTimeLeft = !showTimeLeft;
+            Playable media = controller.getMedia();
+            if (media == null) {
+                return;
+            }
 
-                TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
-                String length;
-                if (showTimeLeft) {
-                    int remainingTime = converter.convert(
-                            media.getDuration() - media.getPosition());
+            TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
+            String length;
+            if (showTimeLeft) {
+                int remainingTime = converter.convert(
+                        media.getDuration() - media.getPosition());
 
-                    length = "-" + Converter.getDurationStringLong(remainingTime);
-                } else {
-                    int duration = converter.convert(media.getDuration());
-                    length = Converter.getDurationStringLong(duration);
-                }
-                txtvLength.setText(length);
+                length = "-" + Converter.getDurationStringLong(remainingTime);
+            } else {
+                int duration = converter.convert(media.getDuration());
+                length = Converter.getDurationStringLong(duration);
+            }
+            viewBinding.durationLabel.setText(length);
 
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
-                editor.apply();
-                Log.d("timeleft on click", showTimeLeft ? "true" : "false");
-            });
-        }
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
+            editor.apply();
+            Log.d("timeleft on click", showTimeLeft ? "true" : "false");
+        });
 
-        butRev = findViewById(R.id.butRev);
-        txtvRev = findViewById(R.id.txtvRev);
+        txtvRev = findViewById(R.id.rewindSecondsLabel);
         if (txtvRev != null) {
             txtvRev.setText(NumberFormat.getInstance().format(UserPreferences.getRewindSecs()));
         }
-        butPlay = findViewById(R.id.butPlay);
-        butFF = findViewById(R.id.butFF);
-        txtvFF = findViewById(R.id.txtvFF);
+
+        txtvFF = findViewById(R.id.forwardLabel);
         if (txtvFF != null) {
             txtvFF.setText(NumberFormat.getInstance().format(UserPreferences.getFastForwardSecs()));
         }
-        butSkip = findViewById(R.id.butSkip);
+        butSkip = findViewById(R.id.skipButton);
 
         // SEEKBAR SETUP
 
-        sbPosition.setOnSeekBarChangeListener(this);
+        viewBinding.positionSeek.setOnSeekBarChangeListener(this);
 
         // BUTTON SETUP
 
-        if (butRev != null) {
-            butRev.setOnClickListener(v -> onRewind());
-            butRev.setOnLongClickListener(v -> {
-                SkipPreferenceDialog.showSkipPreference(MediaplayerActivity.this,
-                        SkipPreferenceDialog.SkipDirection.SKIP_REWIND, txtvRev);
-                return true;
-            });
-        }
+        viewBinding.rewindButton.setOnClickListener(v -> onRewind());
+        viewBinding.rewindButton.setOnLongClickListener(v -> {
+            SkipPreferenceDialog.showSkipPreference(MediaplayerActivity.this,
+                    SkipPreferenceDialog.SkipDirection.SKIP_REWIND, txtvRev);
+            return true;
+        });
 
-        butPlay.setOnClickListener(v -> onPlayPause());
+        viewBinding.playButton.setOnClickListener(v -> onPlayPause());
 
-        if (butFF != null) {
-            butFF.setOnClickListener(v -> onFastForward());
-            butFF.setOnLongClickListener(v -> {
-                SkipPreferenceDialog.showSkipPreference(MediaplayerActivity.this,
-                        SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, txtvFF);
-                return false;
-            });
-        }
+        viewBinding.forwardButton.setOnClickListener(v -> onFastForward());
+        viewBinding.forwardButton.setOnLongClickListener(v -> {
+            SkipPreferenceDialog.showSkipPreference(MediaplayerActivity.this,
+                    SkipPreferenceDialog.SkipDirection.SKIP_FORWARD, txtvFF);
+            return false;
+        });
 
         if (butSkip != null) {
             butSkip.setOnClickListener(v ->
@@ -584,8 +567,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         controller.seekTo(curr + UserPreferences.getFastForwardSecs() * 1000);
     }
 
-    protected abstract int getContentViewResourceId();
-
     private void handleError(int errorCode) {
         final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
         errorDialog.setTitle(R.string.error_label);
@@ -603,7 +584,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        if (controller == null || txtvLength == null) {
+        if (controller == null) {
             return;
         }
         if (fromUser) {
@@ -611,18 +592,24 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
             int position = converter.convert((int) (prog * duration));
-            txtvPosition.setText(Converter.getDurationStringLong(position));
+            viewBinding.positionLabel.setText(Converter.getDurationStringLong(position));
 
             if (showTimeLeft) {
                 int timeLeft = converter.convert(duration - (int) (prog * duration));
-                txtvLength.setText("-" + Converter.getDurationStringLong(timeLeft));
+                viewBinding.durationLabel.setText("-" + Converter.getDurationStringLong(timeLeft));
             }
         }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-
+        viewBinding.timeControlContainer.setScaleX(.8f);
+        viewBinding.timeControlContainer.setScaleY(.8f);
+        viewBinding.timeControlContainer.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(1f).scaleX(1f).scaleY(1f)
+                .setDuration(200)
+                .start();
     }
 
     @Override
@@ -641,16 +628,16 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             disposable.dispose();
         }
         disposable = Observable.fromCallable(() -> DBReader.getFeedItem(feedItem.getId()))
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                item -> {
-                    boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
-                    if (isFavorite != isFav) {
-                        isFavorite = isFav;
-                        invalidateOptionsMenu();
-                    }
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        item -> {
+                            boolean isFav = item.isTagged(FeedItem.TAG_FAVORITE);
+                            if (isFavorite != isFav) {
+                                isFavorite = isFav;
+                                invalidateOptionsMenu();
+                            }
+                        }, error -> Log.e(TAG, Log.getStackTraceString(error)));
     }
 
     @Nullable

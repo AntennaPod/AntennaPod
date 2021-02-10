@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/black"
     android:orientation="vertical"
     android:id="@+id/videoframe">
 
     <de.danoeh.antennapod.view.AspectRatioVideoView
-        android:id="@+id/videoview"
+        android:id="@+id/videoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
@@ -22,7 +23,7 @@
         android:visibility="invisible" />
 
     <LinearLayout
-        android:id="@+id/controls"
+        android:id="@+id/controlsContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -32,7 +33,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/butRev"
+            android:id="@+id/rewindButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -41,7 +42,7 @@
             app:srcCompat="@drawable/ic_av_fast_rewind_white_80dp" />
 
         <ImageButton
-            android:id="@+id/butPlay"
+            android:id="@+id/playButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -50,7 +51,7 @@
             app:srcCompat="@drawable/ic_av_pause_white_80dp" />
 
         <ImageButton
-            android:id="@+id/butFF"
+            android:id="@+id/forwardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -61,7 +62,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/skip_animation"
+        android:id="@+id/skipAnimationImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -69,14 +70,41 @@
         android:layout_gravity="center"/>
 
     <LinearLayout
-        android:id="@+id/overlay"
+        android:id="@+id/overlayContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:orientation="vertical">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewSeek"
+            android:alpha="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_gravity="center"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?attr/seek_background"
+            app:cardElevation="0dp"
+            tools:alpha="1">
+
+            <TextView
+                android:id="@+id/txtvSeek"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:paddingTop="4dp"
+                android:paddingRight="24dp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                tools:text="1:06:29" />
+
+        </androidx.cardview.widget.CardView>
+
         <RelativeLayout
-            android:id="@+id/timecontrol"
+            android:id="@+id/timeControlContainer"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#80000000"
@@ -84,7 +112,7 @@
             android:paddingTop="8dp">
 
             <TextView
-                android:id="@+id/txtvPosition"
+                android:id="@+id/positionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -101,7 +129,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtvLength"
+                android:id="@+id/durationLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -118,13 +146,13 @@
                 android:textStyle="bold" />
 
             <SeekBar
-                android:id="@+id/sbPosition"
+                android:id="@+id/positionSeek"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/txtvLength"
-                android:layout_toStartOf="@+id/txtvLength"
-                android:layout_toRightOf="@+id/txtvPosition"
-                android:layout_toEndOf="@+id/txtvPosition"
+                android:layout_toLeftOf="@+id/durationLabel"
+                android:layout_toStartOf="@+id/durationLabel"
+                android:layout_toRightOf="@+id/positionLabel"
+                android:layout_toEndOf="@+id/positionLabel"
                 android:layout_centerInParent="true"
                 android:max="500" />
 

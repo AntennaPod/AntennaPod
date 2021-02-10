@@ -90,7 +90,7 @@ public class SpeedChangeTest {
 
     @Test
     public void testChangeSpeedPlaying() {
-        onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
+        onView(isRoot()).perform(waitForView(withId(R.id.playButton), 1000));
         controller.playPause();
         Awaitility.await().atMost(5, TimeUnit.SECONDS).until(()
                 -> controller.getStatus() == PlayerStatus.PLAYING);
@@ -99,7 +99,7 @@ public class SpeedChangeTest {
 
     @Test
     public void testChangeSpeedPaused() {
-        onView(isRoot()).perform(waitForView(withId(R.id.butPlay), 1000));
+        onView(isRoot()).perform(waitForView(withId(R.id.playButton), 1000));
         controller.playPause();
         Awaitility.await().atMost(5, TimeUnit.SECONDS).until(()
                 -> controller.getStatus() == PlayerStatus.PLAYING);
@@ -111,15 +111,15 @@ public class SpeedChangeTest {
 
     private void clickThroughSpeeds() {
         onView(isRoot()).perform(waitForView(withText(availableSpeeds[0]), 1000));
-        onView(withId(R.id.txtvPlaybackSpeed)).check(matches(withText(availableSpeeds[0])));
-        onView(withId(R.id.butPlaybackSpeed)).perform(click());
+        onView(withId(R.id.playbackSpeedLabel)).check(matches(withText(availableSpeeds[0])));
+        onView(withId(R.id.playbackSpeedButton)).perform(click());
         onView(isRoot()).perform(waitForView(withText(availableSpeeds[1]), 1000));
-        onView(withId(R.id.txtvPlaybackSpeed)).check(matches(withText(availableSpeeds[1])));
-        onView(withId(R.id.butPlaybackSpeed)).perform(click());
+        onView(withId(R.id.playbackSpeedLabel)).check(matches(withText(availableSpeeds[1])));
+        onView(withId(R.id.playbackSpeedButton)).perform(click());
         onView(isRoot()).perform(waitForView(withText(availableSpeeds[2]), 1000));
-        onView(withId(R.id.txtvPlaybackSpeed)).check(matches(withText(availableSpeeds[2])));
-        onView(withId(R.id.butPlaybackSpeed)).perform(click());
+        onView(withId(R.id.playbackSpeedLabel)).check(matches(withText(availableSpeeds[2])));
+        onView(withId(R.id.playbackSpeedButton)).perform(click());
         onView(isRoot()).perform(waitForView(withText(availableSpeeds[0]), 1000));
-        onView(withId(R.id.txtvPlaybackSpeed)).check(matches(withText(availableSpeeds[0])));
+        onView(withId(R.id.playbackSpeedLabel)).check(matches(withText(availableSpeeds[0])));
     }
 }
