@@ -3,6 +3,8 @@ package de.danoeh.antennapod.core.syndication.namespace;
 import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.core.text.HtmlCompat;
+
 import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -62,7 +64,8 @@ public class NSITunes extends Namespace {
     private void parseAuthor(HandlerState state) {
         if (state.getFeed() != null) {
             String author = state.getContentBuf().toString();
-            state.getFeed().setAuthor(author);
+            state.getFeed().setAuthor(HtmlCompat.fromHtml(author,
+                    HtmlCompat.FROM_HTML_MODE_LEGACY).toString());
         }
     }
 

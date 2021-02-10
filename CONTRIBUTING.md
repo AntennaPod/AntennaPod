@@ -35,3 +35,23 @@ Submit a pull request
 - Please do not upgrade dependencies or build tools unless you have a good reason for it. Doing so can easily introduce bugs that are hard to track down.
 - If you plan to do a change that touches many files (10+), please ask beforehand. This usually causes merge conflicts for other developers.
 - Please follow our code style. You can use Checkstyle within Android Studio using our [coniguration file](https://github.com/AntennaPod/AntennaPod/blob/develop/config/checkstyle/checkstyle-new-code.xml).
+
+
+Testing and Verifying
+--------------------------
+As a developer contributing to AntennaPod, we ask that you test the feature yourself manually and better yet, add unit and functional tests to any feature of bug you fix.
+
+### Running Unit Tests
+* `./gradlew :core:testPlayDebugUnitTest`
+
+### Running Integration Tests
+
+#### Using Android Studio
+* Create a configuration via 'Run->Edit Configurations...'
+
+<img width="768" alt="antennapod-run-tests"
+src="https://user-images.githubusercontent.com/149837/105122859-e1317180-5a8b-11eb-8d45-d54a3b051a9b.png">
+
+#### Using the command line
+* Start an AVD or plug in your phone
+* `sh .github/workflows/runTests.sh`

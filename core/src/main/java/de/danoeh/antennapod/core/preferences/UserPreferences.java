@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -35,6 +36,7 @@ import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.service.download.ProxyConfig;
 import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
@@ -76,8 +78,8 @@ public class UserPreferences {
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
     public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     private static final String PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT = "prefUnpauseOnBluetoothReconnect";
-    private static final String PREF_HARDWARE_FOWARD_BUTTON_SKIPS = "prefHardwareForwardButtonSkips";
-    private static final String PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS = "prefHardwarePreviousButtonRestarts";
+    public static final String PREF_HARDWARE_FORWARD_BUTTON = "prefHardwareForwardButton";
+    public static final String PREF_HARDWARE_PREVIOUS_BUTTON = "prefHardwarePreviousButton";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_SKIP_KEEPS_EPISODE = "prefSkipKeepsEpisode";
     private static final String PREF_FAVORITE_KEEPS_EPISODE = "prefFavoriteKeepsEpisode";
@@ -136,6 +138,7 @@ public class UserPreferences {
     public static final String PREF_CAST_ENABLED = "prefCast"; //Used for enabling Chromecast support
     public static final int EPISODE_CLEANUP_QUEUE = -1;
     public static final int EPISODE_CLEANUP_NULL = -2;
+    public static final int EPISODE_CLEANUP_EXCEPT_FAVORITE = -3;
     public static final int EPISODE_CLEANUP_DEFAULT = 0;
 
     // Constants
@@ -373,12 +376,14 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_UNPAUSE_ON_BLUETOOTH_RECONNECT, false);
     }
 
-    public static boolean shouldHardwareButtonSkip() {
-        return prefs.getBoolean(PREF_HARDWARE_FOWARD_BUTTON_SKIPS, false);
+    public static int getHardwareForwardButton() {
+        return Integer.parseInt(prefs.getString(PREF_HARDWARE_FORWARD_BUTTON,
+                String.valueOf(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD)));
     }
 
-    public static boolean shouldHardwarePreviousButtonRestart() {
-        return prefs.getBoolean(PREF_HARDWARE_PREVIOUS_BUTTON_RESTARTS, false);
+    public static int getHardwarePreviousButton() {
+        return Integer.parseInt(prefs.getString(PREF_HARDWARE_PREVIOUS_BUTTON,
+                String.valueOf(KeyEvent.KEYCODE_MEDIA_REWIND)));
     }
 
 
@@ -879,7 +884,9 @@ public class UserPreferences {
             return new APNullCleanupAlgorithm();
         }
         int cleanupValue = getEpisodeCleanupValue();
-        if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
+        if (cleanupValue == EPISODE_CLEANUP_EXCEPT_FAVORITE) {
+            return new ExceptFavoriteCleanupAlgorithm();
+        } else if (cleanupValue == EPISODE_CLEANUP_QUEUE) {
             return new APQueueCleanupAlgorithm();
         } else if (cleanupValue == EPISODE_CLEANUP_NULL) {
             return new APNullCleanupAlgorithm();

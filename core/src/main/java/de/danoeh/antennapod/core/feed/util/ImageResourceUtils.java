@@ -14,11 +14,16 @@ public final class ImageResourceUtils {
     }
 
     public static String getImageLocation(ImageResource resource) {
+
         if (UserPreferences.getUseEpisodeCoverSetting()) {
             return resource.getImageLocation();
         } else {
             return getShowImageLocation(resource);
         }
+    }
+
+    public static String getFallbackImageLocation(ImageResource resource) {
+        return getShowImageLocation(resource);
     }
 
     private static String getShowImageLocation(ImageResource resource) {

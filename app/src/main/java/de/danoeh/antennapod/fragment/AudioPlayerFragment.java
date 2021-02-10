@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -424,7 +425,6 @@ public class AudioPlayerFragment extends Fragment implements
         }
         if (fromUser) {
             float prog = progress / ((float) seekBar.getMax());
-            int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
             int position = converter.convert((int) (prog * duration));
             viewBinding.positionLabel.setText(Converter.getDurationStringLong(position));
@@ -455,6 +455,13 @@ public class AudioPlayerFragment extends Fragment implements
             float prog = seekBar.getProgress() / ((float) seekBar.getMax());
             controller.seekTo((int) (prog * controller.getDuration()));
         }
+        cardViewSeek.setScaleX(1f);
+        cardViewSeek.setScaleY(1f);
+        cardViewSeek.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(0f).scaleX(.8f).scaleY(.8f)
+                .setDuration(200)
+                .start();
     }
 
     public void setupOptionsMenu(Playable media) {

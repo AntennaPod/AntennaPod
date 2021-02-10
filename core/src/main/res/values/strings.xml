@@ -11,6 +11,7 @@
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
     <string name="episodes_label">Episodes</string>
+    <string name="queue_label">Queue</string>
     <string name="all_episodes_short_label">All</string>
     <string name="new_episodes_label">New</string>
     <string name="favorite_episodes_label">Favorites</string>
@@ -31,6 +32,9 @@
     <string name="playback_statistics_label">Playback</string>
     <string name="download_statistics_label">Downloads</string>
     <string name="notification_pref_fragment">Notifications</string>
+
+    <!-- Google Assistant -->
+    <string name="app_action_not_found">\"%1$s\" not found</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
@@ -95,7 +99,6 @@
     <string name="description_label">Description</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="processing_label">Processing</string>
-    <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
@@ -113,6 +116,7 @@
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
+    <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_hours_after_listening">
@@ -133,6 +137,17 @@
         <item quantity="other">%d episodes</item>
     </plurals>
     <string name="loading_more">Loading more…</string>
+    <string name="episode_notification">Episode Notifications</string>
+    <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
+    <plurals name="new_episode_notification_message">
+        <item quantity="one">%2$s has a new episode</item>
+        <item quantity="other">%2$s has %1$d new episodes</item>
+    </plurals>
+    <plurals name="new_episode_notification_title">
+        <item quantity="one">New Episode</item>
+        <item quantity="other">New Episodes</item>
+    </plurals>
+    <string name="new_episode_notification_group_text">Your subscriptions have new epsiodes.</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -243,6 +258,7 @@
     <string name="download_error_file_type_type">File Type Error</string>
     <string name="download_error_forbidden">Forbidden</string>
     <string name="download_canceled_msg">Download canceled</string>
+    <string name="download_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
@@ -356,7 +372,6 @@
     <string name="storage_pref">Storage</string>
     <string name="storage_sum">Episode auto delete, Import, Export</string>
     <string name="project_pref">Project</string>
-    <string name="queue_label">Queue</string>
     <string name="synchronization_pref">Synchronization</string>
     <string name="synchronization_sum">Synchronize with other devices using gpodder.net</string>
     <string name="automation">Automation</string>
@@ -367,19 +382,24 @@
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
     <string name="playback_control">Playback control</string>
+    <string name="reassign_hardware_buttons">Reassign hardware buttons</string>
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
     <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
-    <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
+    <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
-    <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
-    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a forward button on a bluetooth-connected device skip to the next episode instead of fast-forwarding</string>
-    <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
-    <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
+    <string name="pref_hardware_forward_button_title">Forward Button</string>
+    <string name="pref_hardware_forward_button_summary">Customize the forward button behavior</string>
+    <string name="pref_hardware_previous_button_title">Previous Button</string>
+    <string name="pref_hardware_previous_button_summary">Customize the previous button behavior</string>
+    <string name="button_action_fast_forward">Fast Forward</string>
+    <string name="button_action_rewind">Rewind</string>
+    <string name="button_action_skip_episode">Skip Episode</string>
+    <string name="button_action_restart_episode">Restart Episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
@@ -399,8 +419,11 @@
     <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
     <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
     <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
-    <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
     <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
+    <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
     <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
@@ -505,8 +528,8 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
-    <string name="media_player_builtin">Built-in Android player</string>
-    <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
+    <string name="media_player_builtin">Built-in Android player (deprecated) </string>
+    <string name="media_player_sonic">Sonic Media Player (deprecated) </string>
     <string name="media_player_exoplayer_recommended">ExoPlayer (recommended)</string>
     <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
@@ -870,6 +893,8 @@
     <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
     <string name="notification_channel_auto_download">Automatic download completed</string>
     <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
+    <string name="notification_channel_new_episode">New Episode</string>
+    <string name="notification_channel_new_episode_description">Shown when a new episode of a podcast was found, where notifications are enabled</string>
 
     <!-- Widget settings -->
     <string name="widget_settings">Widget settings</string>

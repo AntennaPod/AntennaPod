@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +27,7 @@ import java.text.NumberFormat;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
@@ -59,7 +59,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-
 /**
  * Provides general features which are both needed for playing audio and video
  * files.
@@ -74,6 +73,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
     private TextView txtvRev;
     private TextView txtvFF;
     private ImageButton butSkip;
+    private CardView cardViewSeek;
+    private TextView txtvSeek;
 
     private boolean showTimeLeft = false;
 
@@ -589,7 +590,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         }
         if (fromUser) {
             prog = progress / ((float) seekBar.getMax());
-            int duration = controller.getDuration();
             TimeSpeedConverter converter = new TimeSpeedConverter(controller.getCurrentPlaybackSpeedMultiplier());
             int position = converter.convert((int) (prog * duration));
             viewBinding.positionLabel.setText(Converter.getDurationStringLong(position));
@@ -617,6 +617,13 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if (controller != null) {
             controller.seekTo((int) (prog * controller.getDuration()));
         }
+        cardViewSeek.setScaleX(1f);
+        cardViewSeek.setScaleY(1f);
+        cardViewSeek.animate()
+                .setInterpolator(new FastOutSlowInInterpolator())
+                .alpha(0f).scaleX(.8f).scaleY(.8f)
+                .setDuration(200)
+                .start();
     }
 
     private void checkFavorite() {

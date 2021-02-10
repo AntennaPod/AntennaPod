@@ -25,7 +25,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -96,6 +95,7 @@ public class DownloadService extends Service {
     private final CompletionService<Downloader> downloadExecutor;
     private final DownloadRequester requester;
     private DownloadServiceNotification notificationManager;
+    private final NewEpisodesNotification newEpisodesNotification;
 
     /**
      * Currently running downloads.
@@ -118,7 +118,7 @@ public class DownloadService extends Service {
     private ScheduledFuture<?> notificationUpdaterFuture;
     private ScheduledFuture<?> downloadPostFuture;
     private static final int SCHED_EX_POOL_SIZE = 1;
-    private ScheduledThreadPoolExecutor schedExecutor;
+    private final ScheduledThreadPoolExecutor schedExecutor;
     private static DownloaderFactory downloaderFactory = new DefaultDownloaderFactory();
 
     private final IBinder mBinder = new LocalBinder();
@@ -134,12 +134,16 @@ public class DownloadService extends Service {
         downloads = Collections.synchronizedList(new ArrayList<>());
         numberOfDownloads = new AtomicInteger(0);
         requester = DownloadRequester.getInstance();
+        newEpisodesNotification = new NewEpisodesNotification();
 
         syncExecutor = Executors.newSingleThreadExecutor(r -> {
             Thread t = new Thread(r, "SyncThread");
             t.setPriority(Thread.MIN_PRIORITY);
             return t;
         });
+        // Must be the first runnable in syncExecutor
+        syncExecutor.execute(newEpisodesNotification::loadCountersBeforeRefresh);
+
         Log.d(TAG, "parallel downloads: " + UserPreferences.getParallelDownloads());
         downloadExecutor = new ExecutorCompletionService<>(
                 Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
@@ -290,6 +294,10 @@ public class DownloadService extends Service {
                 if (log.size() > 0 && !log.get(0).isSuccessful()) {
                     saveDownloadStatus(task.getDownloadStatus());
                 }
+                if (request.getFeedfileId() != 0 && !request.isInitiatedByUser()) {
+                    // Was stored in the database before and not initiated manually
+                    newEpisodesNotification.showIfNeeded(DownloadService.this, task.getSavedFeed());
+                }
             } else {
                 DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
                 saveDownloadStatus(task.getDownloadStatus());
@@ -325,18 +333,11 @@ public class DownloadService extends Service {
                     if (item == null) {
                         return;
                     }
-                    boolean httpNotFound = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_NOT_FOUND).equals(status.getReasonDetailed());
-                    boolean forbidden = status.getReason() == DownloadError.ERROR_FORBIDDEN
-                            && String.valueOf(HttpURLConnection.HTTP_FORBIDDEN).equals(status.getReasonDetailed());
-                    boolean notEnoughSpace = status.getReason() == DownloadError.ERROR_NOT_ENOUGH_SPACE;
-                    boolean wrongFileType = status.getReason() == DownloadError.ERROR_FILE_TYPE;
-                    boolean httpGone = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_GONE).equals(status.getReasonDetailed());
-                    boolean httpBadReq = status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
-                            && String.valueOf(HttpURLConnection.HTTP_BAD_REQUEST).equals(status.getReasonDetailed());
+                    boolean unknownHost = status.getReason() == DownloadError.ERROR_UNKNOWN_HOST;
+                    boolean unsupportedType = status.getReason() == DownloadError.ERROR_UNSUPPORTED_TYPE;
+                    boolean wrongSize = status.getReason() == DownloadError.ERROR_IO_WRONG_SIZE;
 
-                    if (httpNotFound || forbidden || notEnoughSpace || wrongFileType || httpGone || httpBadReq ) {
+                    if (! (unknownHost || unsupportedType || wrongSize)) {
                         try {
                             DBWriter.saveFeedItemAutoDownloadFailed(item).get();
                         } catch (ExecutionException | InterruptedException e) {

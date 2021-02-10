@@ -71,13 +71,13 @@ public class NetworkPreferencesFragment extends PreferenceFragmentCompat {
         Context context = getActivity().getApplicationContext();
         String val;
         long interval = UserPreferences.getUpdateInterval();
-        if(interval > 0) {
+        if (interval > 0) {
             int hours = (int) TimeUnit.MILLISECONDS.toHours(interval);
-            String hoursStr = context.getResources().getQuantityString(R.plurals.time_hours_quantified, hours, hours);
-            val = String.format(context.getString(R.string.pref_autoUpdateIntervallOrTime_every), hoursStr);
+            val = context.getResources().getQuantityString(
+                    R.plurals.pref_autoUpdateIntervallOrTime_every_hours, hours, hours);
         } else {
             int[] timeOfDay = UserPreferences.getUpdateTimeOfDay();
-            if(timeOfDay.length == 2) {
+            if (timeOfDay.length == 2) {
                 Calendar cal = new GregorianCalendar();
                 cal.set(Calendar.HOUR_OF_DAY, timeOfDay[0]);
                 cal.set(Calendar.MINUTE, timeOfDay[1]);

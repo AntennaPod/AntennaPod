@@ -478,6 +478,18 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
+    public Date getPubDate() {
+        if (item == null) {
+            return null;
+        }
+        if (item.getPubDate() != null) {
+            return item.getPubDate();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public boolean localFileAvailable() {
         return isDownloaded() && file_url != null;
     }
