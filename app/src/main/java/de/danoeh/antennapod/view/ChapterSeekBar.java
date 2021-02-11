@@ -4,14 +4,20 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-
 import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
-    private float dividerMargin;
+    private float top;
+    private float width;
+    private float bottom;
+    private float density;
+    private float progressPrimary;
+    private float progressSecondary;
     private float[] dividerPos;
-    private final Paint dividerPaint = new Paint();
+    private final Paint paintBackground = new Paint();
+    private final Paint paintProgressPrimary = new Paint();
+    private final Paint paintProgressSecondary = new Paint();
 
     public ChapterSeekBar(Context context) {
         super(context);
@@ -31,8 +37,14 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private void init(Context context) {
         setBackground(null); // Removes the thumb shadow
         dividerPos = null;
-        dividerMargin = context.getResources().getDisplayMetrics().density;
-        dividerPaint.setColor(ThemeUtils.getColorFromAttr(getContext(), android.R.attr.windowBackground));
+        density = context.getResources().getDisplayMetrics().density;
+        paintBackground.setColor(ThemeUtils.getColorFromAttr(getContext(),
+                de.danoeh.antennapod.core.R.attr.currently_playing_background));
+        paintBackground.setAlpha(128);
+        paintProgressPrimary.setColor(ThemeUtils.getColorFromAttr(getContext(),
+                de.danoeh.antennapod.core.R.attr.colorPrimary));
+        paintProgressSecondary.setColor(ThemeUtils.getColorFromAttr(getContext(),
+                de.danoeh.antennapod.core.R.attr.seek_background));
     }
 
     /**
@@ -40,14 +52,28 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
      * @param dividerPos of the chapter dividers relative to the duration of the media.
      */
     public void setDividerPos(final float[] dividerPos) {
-        this.dividerPos = dividerPos;
+        if (dividerPos != null) {
+            this.dividerPos = new float[dividerPos.length + 2];
+            this.dividerPos[0] = 0;
+            System.arraycopy(dividerPos, 0, this.dividerPos, 1, dividerPos.length);
+            this.dividerPos[this.dividerPos.length - 1] = 1;
+        } else {
+            this.dividerPos = null;
+        }
     }
 
     @Override
     protected synchronized void onDraw(Canvas canvas) {
-        drawProgress(canvas);
-        if (dividerPos != null) {
-            drawDividers(canvas);
+        top = getTop() + density * 7.5f;
+        bottom = getBottom() - density * 7.5f;
+        width = (float) (getRight() - getPaddingRight() - getLeft() - getPaddingLeft());
+        progressSecondary = getSecondaryProgress() / (float) getMax() * width;
+        progressPrimary = getProgress() / (float) getMax() * width;
+
+        if (dividerPos == null) {
+            drawProgress(canvas);
+        } else {
+            drawProgressChapters(canvas);
         }
         drawThumb(canvas);
     }
@@ -55,17 +81,41 @@ public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
     private void drawProgress(Canvas canvas) {
         final int saveCount = canvas.save();
         canvas.translate(getPaddingLeft(), getPaddingTop());
-        getProgressDrawable().draw(canvas);
+        canvas.drawRect(0, top, width, bottom, paintBackground);
+        canvas.drawRect(0, top, progressSecondary, bottom, paintProgressSecondary);
+        canvas.drawRect(0, top, progressPrimary, bottom, paintProgressPrimary);
         canvas.restoreToCount(saveCount);
     }
 
-    private void drawDividers(Canvas canvas) {
+    private void drawProgressChapters(Canvas canvas) {
         final int saveCount = canvas.save();
-        final float width = (float) (getRight() - getPaddingRight() - getLeft() - getPaddingLeft());
+        int currChapter = 1;
+        float chapterMargin = density * 0.6f;
+        float topExpanded = getTop() + density * 7;
+        float bottomExpanded = getBottom() - density * 7;
+
         canvas.translate(getPaddingLeft(), getPaddingTop());
-        for (float pos : dividerPos) {
-            pos *= width;
-            canvas.drawRect(pos - dividerMargin, getTop(), pos + dividerMargin, getBottom(), dividerPaint);
+
+        for (int i = 1; i < dividerPos.length; i++) {
+            float right = dividerPos[i] * width - chapterMargin;
+            float left = dividerPos[i - 1] * width + chapterMargin;
+            float rightCurr = dividerPos[currChapter] * width - chapterMargin;
+            float leftCurr = dividerPos[currChapter - 1] * width + chapterMargin;
+
+            canvas.drawRect(left, top, right, bottom, paintBackground);
+
+            if (right < progressPrimary) {
+                currChapter = i + 1;
+                canvas.drawRect(left, top, right, bottom, paintProgressPrimary);
+            } else if (isPressed()) {
+                canvas.drawRect(leftCurr, topExpanded, rightCurr, bottomExpanded, paintBackground);
+                canvas.drawRect(leftCurr, topExpanded, progressPrimary, bottomExpanded, paintProgressPrimary);
+            } else {
+                if (progressSecondary > leftCurr) {
+                    canvas.drawRect(leftCurr, top, progressSecondary, bottom, paintProgressSecondary);
+                }
+                canvas.drawRect(leftCurr, top, progressPrimary, bottom, paintProgressPrimary);
+            }
         }
         canvas.restoreToCount(saveCount);
     }

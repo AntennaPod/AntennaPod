@@ -192,11 +192,11 @@ public class AudioPlayerFragment extends Fragment implements
 
         if (hasChapters) {
             List<Chapter> chapters = media.getChapters();
-            dividerPos = new float[chapters.size() - 1];
+            dividerPos = new float[chapters.size()];
             float duration = media.getDuration();
 
-            for (int i = 1; i < chapters.size(); i++) {
-                dividerPos[i - 1] = chapters.get(i).getStart() / duration;
+            for (int i = 0; i < chapters.size(); i++) {
+                dividerPos[i] = chapters.get(i).getStart() / duration;
             }
         }
         
