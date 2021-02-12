@@ -30,8 +30,6 @@ public class ClientConfig {
 
     public static DownloadServiceCallbacks downloadServiceCallbacks;
 
-    public static PlaybackServiceCallbacks playbackServiceCallbacks;
-
     public static CastCallbacks castCallbacks;
 
     private static boolean initialized = false;

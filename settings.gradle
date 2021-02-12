@@ -1,1 +1,3 @@
-include ':app', ':core'
+include ':app'
+include ':core'
+include ':ui:app-start-intent'

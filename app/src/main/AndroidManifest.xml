@@ -106,6 +106,10 @@
                     android:pathPrefix="/deeplink/search"
                     android:scheme="https" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="de.danoeh.antennapod.intents.MAIN_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -212,6 +216,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
+            <intent-filter>
+                <action android:name="de.danoeh.antennapod.intents.VIDEO_PLAYER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <activity
