@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
 import androidx.annotation.AttrRes;

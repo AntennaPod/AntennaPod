@@ -30,8 +30,8 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
-import de.danoeh.antennapod.core.util.ThemeUtils;
-import de.danoeh.antennapod.view.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.common.CircularProgressBar;
 
 /**
  * Holds the view which shows FeedItems.

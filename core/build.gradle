@@ -72,6 +72,7 @@ android {
 
 dependencies {
     implementation project(':ui:app-start-intent')
+    implementation project(':ui:common')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"

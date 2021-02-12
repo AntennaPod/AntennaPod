@@ -10,7 +10,7 @@
     android:padding="8dp"
     android:gravity="center">
 
-    <de.danoeh.antennapod.view.SquareImageView
+    <de.danoeh.antennapod.ui.common.SquareImageView
         android:id="@+id/imgvCover"
         android:layout_width="0dp"
         android:layout_height="200dp"
