@@ -49,7 +49,8 @@ public class FeedHandler {
         while (it.hasNext()) {
             FeedItem item = it.next();
             if (seen.indexOf(item.getItemIdentifier()) == -1) {
-                if (item.getMedia().getDownload_url() != null && seen.indexOf(item.getMedia().getDownload_url()) == -1) {
+                if (item.getMedia().getDownload_url() != null
+                        && seen.indexOf(item.getMedia().getDownload_url()) == -1) {
                     seen.add(item.getMedia().getDownload_url());
                 } else {
                     it.remove();
