@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;

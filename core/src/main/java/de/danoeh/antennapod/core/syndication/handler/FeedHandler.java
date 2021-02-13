@@ -39,7 +39,7 @@ public class FeedHandler {
         return new FeedHandlerResult(handler.state.feed, handler.state.alternateUrls);
     }
 
-    static public List<FeedItem> dedupItems(List<FeedItem> items) {
+    public static List<FeedItem> dedupItems(List<FeedItem> items) {
         List<FeedItem> list = items;
         if (list == null) {
             return null;
