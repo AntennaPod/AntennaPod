@@ -1,10 +1,9 @@
-package de.danoeh.antennapod.view;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
-import de.danoeh.antennapod.core.R;
 
 /**
  * From http://stackoverflow.com/a/19449488/6839

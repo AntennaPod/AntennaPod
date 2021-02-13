@@ -16,7 +16,7 @@ import java.util.Set;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedItemFilterGroup;
-import de.danoeh.antennapod.view.RecursiveRadioGroup;
+import de.danoeh.antennapod.ui.common.RecursiveRadioGroup;
 
 public abstract class FilterDialog {
 

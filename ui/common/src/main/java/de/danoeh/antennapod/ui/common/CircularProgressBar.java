@@ -1,14 +1,14 @@
-package de.danoeh.antennapod.view;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.util.ThemeUtils;
 
 public class CircularProgressBar extends View {
     public static final float MINIMUM_PERCENTAGE = 0.005f;
@@ -23,20 +23,20 @@ public class CircularProgressBar extends View {
 
     public CircularProgressBar(Context context) {
         super(context);
-        setup();
+        setup(null);
     }
 
     public CircularProgressBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        setup();
+        setup(attrs);
     }
 
     public CircularProgressBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setup();
+        setup(attrs);
     }
 
-    private void setup() {
+    private void setup(@Nullable AttributeSet attrs) {
         paintBackground.setAntiAlias(true);
         paintBackground.setStyle(Paint.Style.STROKE);
 
@@ -44,7 +44,9 @@ public class CircularProgressBar extends View {
         paintProgress.setStyle(Paint.Style.STROKE);
         paintProgress.setStrokeCap(Paint.Cap.ROUND);
 
-        int color = ThemeUtils.getColorFromAttr(getContext(), R.attr.action_icon_color);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CircularProgressBar);
+        int color = typedArray.getColor(R.styleable.CircularProgressBar_foregroundColor, Color.GREEN);
+        typedArray.recycle();
         paintProgress.setColor(color);
         paintBackground.setColor(color);
     }
