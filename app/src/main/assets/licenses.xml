@@ -91,12 +91,6 @@
         license="Apache 2.0"
         licenseText="LICENSE_APACHE-2.0.txt" />
     <library
-        name="RecyclerView-FlexibleDivider"
-        author="yqritc"
-        website="https://github.com/yqritc/RecyclerView-FlexibleDivider"
-        license="Apache 2.0"
-        licenseText="LICENSE_APACHE-2.0.txt" />
-    <library
         name="RxAndroid"
         author="ReactiveX"
         website="https://github.com/ReactiveX/RxAndroid"
