@@ -400,7 +400,7 @@ public class PodDBAdapter {
         values.put(KEY_TITLE, feed.getFeedTitle());
         values.put(KEY_LINK, feed.getLink());
         values.put(KEY_DESCRIPTION, feed.getDescription());
-        values.put(KEY_PAYMENT_LINK, feed.getPaymentLink());
+        values.put(KEY_PAYMENT_LINK, feed.getPaymentLinks());
         values.put(KEY_AUTHOR, feed.getAuthor());
         values.put(KEY_LANGUAGE, feed.getLanguage());
         values.put(KEY_IMAGE_URL, feed.getImageUrl());
@@ -629,7 +629,7 @@ public class PodDBAdapter {
             values.put(KEY_CONTENT_ENCODED, item.getContentEncoded());
         }
         values.put(KEY_PUBDATE, item.getPubDate().getTime());
-        values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
+        values.put(KEY_PAYMENT_LINK, item.getPaymentLinks());
         if (saveFeed && item.getFeed() != null) {
             setFeed(item.getFeed());
         }

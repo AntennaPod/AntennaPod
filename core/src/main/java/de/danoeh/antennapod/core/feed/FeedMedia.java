@@ -470,11 +470,11 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public String getPaymentLink() {
+    public String getPaymentLink(Feed.PAYMENT_TYPE type) {
         if (item == null) {
             return null;
         }
-        return item.getPaymentLink();
+        return item.getPaymentLink(type);
     }
 
     @Override

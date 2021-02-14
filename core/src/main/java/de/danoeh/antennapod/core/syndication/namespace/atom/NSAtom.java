@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.syndication.namespace.atom;
 import android.text.TextUtils;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.syndication.util.SyndStringUtils;
 import org.xml.sax.Attributes;
 
@@ -103,7 +104,7 @@ public class NSAtom extends Namespace {
                         currItem.setMedia(new FeedMedia(currItem, href, size, type));
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel)) {
-                    state.getCurrentItem().setPaymentLink(href);
+                    state.getCurrentItem().setPaymentLink(href, Feed.PAYMENT_TYPE.ATOM_PAYMENT);
                 }
             } else if (parent.getName().matches(isFeed)) {
                 if (LINK_REL_ALTERNATE.equals(rel)) {
@@ -137,7 +138,7 @@ public class NSAtom extends Namespace {
                         //A Link such as to a directory such as iTunes
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel) && state.getFeed() != null) {
-                    state.getFeed().setPaymentLink(href);
+                    state.getFeed().setPaymentLink(href, Feed.PAYMENT_TYPE.ATOM_PAYMENT);
                 } else if (LINK_REL_NEXT.equals(rel) && state.getFeed() != null) {
                     state.getFeed().setPaged(true);
                     state.getFeed().setNextPageLink(href);

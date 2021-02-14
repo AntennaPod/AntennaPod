@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -61,7 +62,7 @@ public interface Playable extends Parcelable,
      */
     String getWebsiteLink();
 
-    String getPaymentLink();
+    String getPaymentLink(Feed.PAYMENT_TYPE type);
 
     /**
      * Returns the title of the feed this Playable belongs to.

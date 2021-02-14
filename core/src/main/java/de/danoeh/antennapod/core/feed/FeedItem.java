@@ -60,7 +60,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     public static final int UNPLAYED = 0;
     public static final int PLAYED = 1;
 
-    private String paymentLink;
+    private String paymentLinks;
 
     /**
      * Is true if the database contains any chapters that belong to this item. This attribute is only
@@ -105,7 +105,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         this.title = title;
         this.link = link;
         this.pubDate = pubDate;
-        this.paymentLink = paymentLink;
+        this.paymentLinks = paymentLink;
         this.feedId = feedId;
         this.hasChapters = hasChapters;
         this.imageUrl = imageUrl;
@@ -200,8 +200,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
                 media.updateFromOther(other.media);
             }
         }
-        if (other.paymentLink != null) {
-            paymentLink = other.paymentLink;
+        if (other.paymentLinks != null) {
+            paymentLinks = other.paymentLinks;
         }
         if (other.chapters != null) {
             if (!hasChapters) {
@@ -326,12 +326,16 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         this.contentEncoded = contentEncoded;
     }
 
-    public String getPaymentLink() {
-        return paymentLink;
+    public String getPaymentLink(Feed.PAYMENT_TYPE type) {
+        return feed.getPaymentLink(type);
     }
 
-    public void setPaymentLink(String paymentLink) {
-        this.paymentLink = paymentLink;
+    public String getPaymentLinks() {
+        return feed.getPaymentLinks();
+    }
+
+    public void setPaymentLink(String paymentLink, Feed.PAYMENT_TYPE type) {
+        feed.setPaymentLink(paymentLink, type);
     }
 
     public List<Chapter> getChapters() {

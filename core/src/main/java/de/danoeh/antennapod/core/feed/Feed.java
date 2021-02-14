@@ -2,10 +2,15 @@ package de.danoeh.antennapod.core.feed;
 
 import android.database.Cursor;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import org.jsoup.helper.StringUtil;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +30,13 @@ public class Feed extends FeedFile implements ImageResource {
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_ATOM1 = "atom";
     public static final String PREFIX_LOCAL_FOLDER = "antennapod_local:";
+    public static final String SUPPORT_INTERNAL_SPLIT = "\n";
+    public static final String TAG = "Feed.java";
+
+    public static enum PAYMENT_TYPE {
+        ATOM_PAYMENT,
+        PODCAST_PAYMENT
+    }
 
     /* title as defined by the feed */
     private String feedTitle;
@@ -54,6 +66,7 @@ public class Feed extends FeedFile implements ImageResource {
     private String lastUpdate;
 
     private String paymentLink;
+    private String fundingLink;
     /**
      * Feed type, for example RSS 2 or Atom
      */
@@ -102,7 +115,7 @@ public class Feed extends FeedFile implements ImageResource {
     /**
      * This constructor is used for restoring a feed from the database.
      */
-    public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLink,
+    public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLinks,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
                 String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
@@ -113,7 +126,8 @@ public class Feed extends FeedFile implements ImageResource {
         this.lastUpdate = lastUpdate;
         this.link = link;
         this.description = description;
-        this.paymentLink = paymentLink;
+        this.paymentLink = extractPaymentLinks(paymentLinks, PAYMENT_TYPE.ATOM_PAYMENT);
+        this.fundingLink = extractPaymentLinks(paymentLinks, PAYMENT_TYPE.PODCAST_PAYMENT);
         this.author = author;
         this.language = language;
         this.type = type;
@@ -134,10 +148,10 @@ public class Feed extends FeedFile implements ImageResource {
     /**
      * This constructor is used for test purposes
      */
-    public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLink,
+    public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLinks,
                 String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
-        this(id, lastUpdate, title, null, link, description, paymentLink, author, language, type, feedIdentifier, imageUrl,
+        this(id, lastUpdate, title, null, link, description, paymentLinks, author, language, type, feedIdentifier, imageUrl,
                 fileUrl, downloadUrl, downloaded, false, null, null, null, false);
     }
 
@@ -289,6 +303,9 @@ public class Feed extends FeedFile implements ImageResource {
         if (other.paymentLink != null) {
             paymentLink = other.paymentLink;
         }
+        if (other.fundingLink != null) {
+            fundingLink = other.fundingLink;
+        }
         // this feed's nextPage might already point to a higher page, so we only update the nextPage value
         // if this feed is not paged and the other feed is.
         if (!this.paged && other.paged) {
@@ -336,6 +353,11 @@ public class Feed extends FeedFile implements ImageResource {
         }
         if (other.paymentLink != null) {
             if (paymentLink == null || !paymentLink.equals(other.paymentLink)) {
+                return true;
+            }
+        }
+        if (other.fundingLink != null) {
+            if (fundingLink == null || !fundingLink.equals(other.fundingLink)) {
                 return true;
             }
         }
@@ -439,12 +461,71 @@ public class Feed extends FeedFile implements ImageResource {
         this.feedIdentifier = feedIdentifier;
     }
 
-    public String getPaymentLink() {
-        return paymentLink;
+    public static String extractPaymentLinks(String payLinks, Feed.PAYMENT_TYPE type) {
+        if (StringUtil.isBlank(payLinks)) {
+            return null;
+        }
+        // old format
+        if (!payLinks.contains("\n")) {
+            if (type == PAYMENT_TYPE.ATOM_PAYMENT) {
+                return payLinks;
+            }
+            return null;
+        }
+        String [] list = payLinks.split(SUPPORT_INTERNAL_SPLIT);
+        if (list.length == 0) {
+            return null;
+        }
+        if (type == PAYMENT_TYPE.ATOM_PAYMENT) {
+            try {
+                return list[0].split("=")[1];
+            } catch (ArrayIndexOutOfBoundsException e) {
+                Log.d(TAG, "Payment link " + payLinks);
+                return null;
+            }
+        }
+        if (list.length <= 1) {
+            return null;
+        }
+        try {
+            return list[1].split("=")[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Log.d(TAG, "Funding link " + payLinks);
+            return null;
+        }
     }
 
-    public void setPaymentLink(String paymentLink) {
-        this.paymentLink = paymentLink;
+    public String getPaymentLink(Feed.PAYMENT_TYPE type) {
+        if (type == PAYMENT_TYPE.ATOM_PAYMENT) {
+            return paymentLink;
+        } else {
+            return fundingLink;
+        }
+    }
+
+    public String getPaymentLinks() {
+        String[] links = new String[2];
+        int len = 0;
+        if (! StringUtil.isBlank(paymentLink)) {
+           links[0] = "pay=" + paymentLink;
+           len++;
+        }
+        if (! StringUtil.isBlank(fundingLink)) {
+           links[1] = "fund=" + fundingLink;
+           len++;
+        }
+        if (len == 0) {
+            return null;
+        }
+        return StringUtil.join(links, SUPPORT_INTERNAL_SPLIT);
+    }
+
+    public void setPaymentLink(String link, Feed.PAYMENT_TYPE type) {
+        if (type == PAYMENT_TYPE.ATOM_PAYMENT) {
+            this.paymentLink = link;
+        } else {
+            this.fundingLink = link;
+        }
     }
 
     public String getLanguage() {

@@ -80,6 +80,9 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
     private TextView txtvPodcastTime;
     private TextView txtvPodcastSpace;
     private TextView txtvPodcastEpisodeCount;
+    private TextView txtvPaymentUrl;
+    private TextView txtvFundingUrl;
+    private TextView lblSupport;
     private Button btnvOpenStatistics;
     private TextView txtvUrl;
     private TextView txtvAuthorHeader;
@@ -155,6 +158,9 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         txtvPodcastTime = root.findViewById(R.id.txtvPodcastTime);
         btnvOpenStatistics = root.findViewById(R.id.btnvOpenStatistics);
         txtvUrl = root.findViewById(R.id.txtvUrl);
+        lblSupport = root.findViewById(R.id.lblSupport);
+        txtvPaymentUrl = root.findViewById(R.id.txtvPaymentUrl);
+        txtvFundingUrl = root.findViewById(R.id.txtvFundingUrl);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
@@ -232,6 +238,26 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         }
 
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
+
+        if (feed.getPaymentLinks() == null) {
+           lblSupport.setVisibility(View.GONE);
+        } else {
+            lblSupport.setVisibility(View.VISIBLE);
+            if (feed.getPaymentLink(Feed.PAYMENT_TYPE.ATOM_PAYMENT) == null) {
+               txtvPaymentUrl.setVisibility(View.GONE);
+           } else {
+               txtvPaymentUrl.setVisibility(View.VISIBLE);
+               txtvPaymentUrl.setText(feed.getPaymentLink(Feed.PAYMENT_TYPE.ATOM_PAYMENT));
+           }
+           if ((feed.getPaymentLink(Feed.PAYMENT_TYPE.PODCAST_PAYMENT) == null)
+                   || feed.getPaymentLink(Feed.PAYMENT_TYPE.ATOM_PAYMENT).compareTo(feed.getPaymentLink(Feed.PAYMENT_TYPE.PODCAST_PAYMENT)) == 0) {
+               txtvFundingUrl.setVisibility(View.GONE);
+           } else {
+               txtvFundingUrl.setVisibility(View.VISIBLE);
+               txtvFundingUrl.setText(feed.getPaymentLink(Feed.PAYMENT_TYPE.PODCAST_PAYMENT));
+           }
+        }
+
         Iconify.addIcons(txtvUrl);
         refreshToolbarState();
     }
