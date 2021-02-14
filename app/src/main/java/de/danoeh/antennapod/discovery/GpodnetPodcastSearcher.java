@@ -18,7 +18,7 @@ public class GpodnetPodcastSearcher implements PodcastSearcher {
         return Single.create((SingleOnSubscribe<List<PodcastSearchResult>>) subscriber -> {
             try {
                 GpodnetService service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                        GpodnetPreferences.getHostname());
+                        GpodnetPreferences.getHosturl());
                 List<GpodnetPodcast> gpodnetPodcasts = service.searchPodcasts(query, 0);
                 List<PodcastSearchResult> results = new ArrayList<>();
                 for (GpodnetPodcast podcast : gpodnetPodcasts) {

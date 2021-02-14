@@ -71,7 +71,7 @@ public abstract class PodcastListFragment extends Fragment {
             protected List<GpodnetPodcast> doInBackground(Void... params) {
                 try {
                     GpodnetService service = new GpodnetService(AntennapodHttpClient.getHttpClient(),
-                            GpodnetPreferences.getHostname());
+                            GpodnetPreferences.getHosturl());
                     return loadPodcastData(service);
                 } catch (GpodnetServiceException e) {
                     exception = e;

@@ -26,7 +26,7 @@ public class GpodnetPreferences {
     private static String username;
     private static String password;
     private static String deviceID;
-    private static String hostname;
+    private static String hosturl;
 
     private static boolean preferencesLoaded = false;
 
@@ -40,7 +40,7 @@ public class GpodnetPreferences {
             username = prefs.getString(PREF_GPODNET_USERNAME, null);
             password = prefs.getString(PREF_GPODNET_PASSWORD, null);
             deviceID = prefs.getString(PREF_GPODNET_DEVICEID, null);
-            hostname = checkGpodnetHostname(prefs.getString(PREF_GPODNET_HOSTNAME, GpodnetService.DEFAULT_BASE_HOST));
+            hosturl = prefs.getString(PREF_GPODNET_HOSTNAME, GpodnetService.DEFAULT_BASE_HOST);
 
             preferencesLoaded = true;
         }
@@ -82,17 +82,16 @@ public class GpodnetPreferences {
         writePreference(PREF_GPODNET_DEVICEID, deviceID);
     }
 
-    public static String getHostname() {
+    public static String getHosturl() {
         ensurePreferencesLoaded();
-        return hostname;
+        return hosturl;
     }
 
-    public static void setHostname(String value) {
-        value = checkGpodnetHostname(value);
-        if (!value.equals(hostname)) {
+    public static void setHosturl(String value) {
+        if (!value.equals(hosturl)) {
             logout();
             writePreference(PREF_GPODNET_HOSTNAME, value);
-            hostname = value;
+            hosturl = value;
         }
     }
 
@@ -113,13 +112,4 @@ public class GpodnetPreferences {
         UserPreferences.setGpodnetNotificationsEnabled();
     }
 
-    private static String checkGpodnetHostname(String value) {
-        int startIndex = 0;
-        if (value.startsWith("http://")) {
-            startIndex = "http://".length();
-        } else if (value.startsWith("https://")) {
-            startIndex = "https://".length();
-        }
-        return value.substring(startIndex);
-    }
 }
