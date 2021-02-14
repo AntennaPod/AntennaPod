@@ -18,7 +18,7 @@ public class PodcastIndex extends Namespace {
                                           Attributes attributes) {
         if (FUNDING.equals(localName)) {
             String href = attributes.getValue(URL);
-            state.getFeed().setPaymentLink(href, Feed.PAYMENT_TYPE.PODCAST_PAYMENT);
+            state.getFeed().setPaymentLink(href, Feed.PaymentType.PODCAST_PAYMENT);
         }
         return new SyndElement(localName, this);
     }

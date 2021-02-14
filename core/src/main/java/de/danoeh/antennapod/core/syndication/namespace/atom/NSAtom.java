@@ -104,7 +104,7 @@ public class NSAtom extends Namespace {
                         currItem.setMedia(new FeedMedia(currItem, href, size, type));
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel)) {
-                    state.getCurrentItem().setPaymentLink(href, Feed.PAYMENT_TYPE.ATOM_PAYMENT);
+                    state.getCurrentItem().setPaymentLink(href, Feed.PaymentType.ATOM_PAYMENT);
                 }
             } else if (parent.getName().matches(isFeed)) {
                 if (LINK_REL_ALTERNATE.equals(rel)) {
@@ -138,7 +138,7 @@ public class NSAtom extends Namespace {
                         //A Link such as to a directory such as iTunes
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel) && state.getFeed() != null) {
-                    state.getFeed().setPaymentLink(href, Feed.PAYMENT_TYPE.ATOM_PAYMENT);
+                    state.getFeed().setPaymentLink(href, Feed.PaymentType.ATOM_PAYMENT);
                 } else if (LINK_REL_NEXT.equals(rel) && state.getFeed() != null) {
                     state.getFeed().setPaged(true);
                     state.getFeed().setNextPageLink(href);

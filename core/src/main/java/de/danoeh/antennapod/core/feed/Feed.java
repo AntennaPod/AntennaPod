@@ -8,9 +8,7 @@ import androidx.annotation.Nullable;
 
 import org.jsoup.helper.StringUtil;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class Feed extends FeedFile implements ImageResource {
     public static final String SUPPORT_INTERNAL_SPLIT = "\n";
     public static final String TAG = "Feed.java";
 
-    public static enum PAYMENT_TYPE {
+    public enum PaymentType {
         ATOM_PAYMENT,
         PODCAST_PAYMENT
     }
@@ -126,8 +124,8 @@ public class Feed extends FeedFile implements ImageResource {
         this.lastUpdate = lastUpdate;
         this.link = link;
         this.description = description;
-        this.paymentLink = extractPaymentLinks(paymentLinks, PAYMENT_TYPE.ATOM_PAYMENT);
-        this.fundingLink = extractPaymentLinks(paymentLinks, PAYMENT_TYPE.PODCAST_PAYMENT);
+        this.paymentLink = extractPaymentLinks(paymentLinks, PaymentType.ATOM_PAYMENT);
+        this.fundingLink = extractPaymentLinks(paymentLinks, PaymentType.PODCAST_PAYMENT);
         this.author = author;
         this.language = language;
         this.type = type;
@@ -461,13 +459,13 @@ public class Feed extends FeedFile implements ImageResource {
         this.feedIdentifier = feedIdentifier;
     }
 
-    public static String extractPaymentLinks(String payLinks, Feed.PAYMENT_TYPE type) {
+    public static String extractPaymentLinks(String payLinks, PaymentType type) {
         if (StringUtil.isBlank(payLinks)) {
             return null;
         }
         // old format
         if (!payLinks.contains("\n")) {
-            if (type == PAYMENT_TYPE.ATOM_PAYMENT) {
+            if (type == PaymentType.ATOM_PAYMENT) {
                 return payLinks;
             }
             return null;
@@ -476,7 +474,7 @@ public class Feed extends FeedFile implements ImageResource {
         if (list.length == 0) {
             return null;
         }
-        if (type == PAYMENT_TYPE.ATOM_PAYMENT) {
+        if (type == PaymentType.ATOM_PAYMENT) {
             try {
                 return list[0].split("=")[1];
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -495,8 +493,8 @@ public class Feed extends FeedFile implements ImageResource {
         }
     }
 
-    public String getPaymentLink(Feed.PAYMENT_TYPE type) {
-        if (type == PAYMENT_TYPE.ATOM_PAYMENT) {
+    public String getPaymentLink(PaymentType type) {
+        if (type == PaymentType.ATOM_PAYMENT) {
             return paymentLink;
         } else {
             return fundingLink;
@@ -520,8 +518,8 @@ public class Feed extends FeedFile implements ImageResource {
         return StringUtil.join(links, SUPPORT_INTERNAL_SPLIT);
     }
 
-    public void setPaymentLink(String link, Feed.PAYMENT_TYPE type) {
-        if (type == PAYMENT_TYPE.ATOM_PAYMENT) {
+    public void setPaymentLink(String link, PaymentType type) {
+        if (type == PaymentType.ATOM_PAYMENT) {
             this.paymentLink = link;
         } else {
             this.fundingLink = link;
