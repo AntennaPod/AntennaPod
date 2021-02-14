@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activity and fragment titles-->
-  <string name="feed_update_receiver_name">Aktualizovat sbírky</string>
+  <string name="feed_update_receiver_name">Aktualizovat odběry</string>
   <string name="feeds_label">Podcasty</string>
   <string name="statistics_label">Statistiky</string>
   <string name="add_feed_label">Přidat podcast</string>
@@ -15,8 +15,8 @@
   <string name="downloads_running_label">Právě běží</string>
   <string name="downloads_completed_label">Dokončeno</string>
   <string name="downloads_log_label">Log</string>
-  <string name="subscriptions_label">Sbírky</string>
-  <string name="subscriptions_list_label">Seznam sbírek</string>
+  <string name="subscriptions_label">Odběry</string>
+  <string name="subscriptions_list_label">Seznam odběrů</string>
   <string name="cancel_download_label">Zrušit stahování</string>
   <string name="playback_history_label">Historie přehrávání</string>
   <string name="gpodnet_main_label">gpodder.net</string>
@@ -338,8 +338,8 @@
   <string name="no_fav_episodes_label">Epizody si můžete přidat mezi oblíbené dlouhým dotykem.</string>
   <string name="no_chapters_head_label">Žádné kapitoly</string>
   <string name="no_chapters_label">Tato epizoda nemá žádné kapitoly.</string>
-  <string name="no_subscriptions_head_label">Žádné sbírky</string>
-  <string name="no_subscriptions_label">Pro přidání podcastu do sbírky se dotkněte ikonky plus níže.</string>
+  <string name="no_subscriptions_head_label">Žádné odběry</string>
+  <string name="no_subscriptions_label">Pro přihlášení odběru podcastu stiskněte ikonu plus níže.</string>
   <!--Preferences-->
   <string name="storage_pref">Úložiště</string>
   <string name="storage_sum">Automatické mazání epizod, Import, Export</string>
@@ -407,10 +407,10 @@
   <string name="pref_set_theme_title">Vybrat motiv</string>
   <string name="pref_nav_drawer_items_title">Změnit navigační panel</string>
   <string name="pref_nav_drawer_items_sum">Upravit zobrazení položek v navigačním panelu.</string>
-  <string name="pref_nav_drawer_feed_order_title">Nastavit pořadí sbírek</string>
-  <string name="pref_nav_drawer_feed_order_sum">Upravit pořadí vašich sbírek</string>
-  <string name="pref_nav_drawer_feed_counter_title">Nastavit čítač sbírek</string>
-  <string name="pref_nav_drawer_feed_counter_sum">Změnit informaci zobrazenou čítačem sbírek. Též ovlivňuje řazení, je-li nastaveno na „podle čítače“.</string>
+  <string name="pref_nav_drawer_feed_order_title">Nastavit pořadí odběrů</string>
+  <string name="pref_nav_drawer_feed_order_sum">Upravit pořadí vašich odběrů</string>
+  <string name="pref_nav_drawer_feed_counter_title">Nastavit čítač odběrů</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Změnit informaci zobrazenou čítačem odběrů. Též ovlivňuje řazení, je-li nastaveno na „podle čítače“.</string>
   <string name="pref_set_theme_sum">Změnit vzhled AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatické stahování</string>
   <string name="pref_automatic_download_sum">Nastavení automatického stahování epizod.</string>
@@ -523,10 +523,10 @@
   <string name="back_button_go_to_page_title">Vybrat stránku</string>
   <string name="pref_delete_removes_from_queue_title">Mazání také odstraňuje epizody z fronty</string>
   <string name="pref_delete_removes_from_queue_sum">Automaticky odstraní epizodu z fronty poté, co je smazána.</string>
-  <string name="pref_filter_feed_title">Filtr sbírek</string>
-  <string name="pref_filter_feed_sum">Filtrujte svoje sbírky v navigačním panelu a na obrazovce odebíraných kanálů.</string>
+  <string name="pref_filter_feed_title">Filtr odběrů</string>
+  <string name="pref_filter_feed_sum">Filtrujte svoje odběry v navigačním panelu a na obrazovce odběrů.</string>
   <string name="no_filter_label">Žádné</string>
-  <string name="subscriptions_are_filtered">Odebírané sbírky jsou filtrovány.</string>
+  <string name="subscriptions_are_filtered">Odběry jsou filtrovány.</string>
   <string name="subscriptions_counter_greater_zero">Počet vyšší než nula</string>
   <string name="auto_downloaded">Automaticky stahováno</string>
   <string name="not_auto_downloaded">Nebylo automaticky staženo</string>
@@ -552,18 +552,18 @@
   <string name="sync_status_episodes_upload">Nahrávají se změny epizod…</string>
   <string name="sync_status_episodes_download">Stahují se změny epizod…</string>
   <string name="sync_status_upload_played">Nahrává se stav poslechnutí…</string>
-  <string name="sync_status_subscriptions">Synchronizují se sbírky…</string>
+  <string name="sync_status_subscriptions">Synchronizuji odběry…</string>
   <string name="sync_status_success">Synchronizace proběhla úspěšně</string>
   <string name="sync_status_error">Synchronizace selhala</string>
   <!--import and export-->
-  <string name="import_export_summary">Přesunout sbírky a frontu do jiného zařízení</string>
+  <string name="import_export_summary">Přesunout odběry a frontu do jiného zařízení</string>
   <string name="database">Databáze</string>
   <string name="opml">OPML</string>
   <string name="html">HTML</string>
-  <string name="html_export_summary">Ukažte své sbírky přátelům</string>
-  <string name="opml_export_summary">Přenést sbírky do jiné podcastové aplikace</string>
-  <string name="opml_import_summary">Importovat vaše sbírky z jiné podcastové aplikace</string>
-  <string name="database_export_summary">Přenést sbírky, poslechnuté epizody a frontu do aplikace AntennaPod na jiném zařízení</string>
+  <string name="html_export_summary">Ukažte své odběry přátelům</string>
+  <string name="opml_export_summary">Přenést odběry do jiné podcastové aplikace</string>
+  <string name="opml_import_summary">Importovat vaše odběry z jiné podcastové aplikace</string>
+  <string name="database_export_summary">Přenést odběry, poslechnuté epizody a frontu do aplikace AntennaPod na jiném zařízení</string>
   <string name="database_import_summary">Importovat AntennaPod databázi z jiného zařízení</string>
   <string name="opml_import_label">OPML import</string>
   <string name="opml_add_podcast_label">Importovat podcasty (OPML)</string>
@@ -575,7 +575,7 @@
   <string name="html_export_label">HTML export</string>
   <string name="database_export_label">Export databáze</string>
   <string name="database_import_label">Import databáze</string>
-  <string name="database_import_warning">Importem databáze nahradíte všechny svoje sbírky a historii poslechu. Doporučujeme nejdřív zvážit exportování současné databáze pro případnou obnovu. Vážně chcete databázi nahradit?</string>
+  <string name="database_import_warning">Importem databáze nahradíte všechny své odběry a historii poslechu. Doporučujeme nejdříve exportovat současnou databázi pro případnou obnovu. Opravdu chcete databázi nahradit?</string>
   <string name="please_wait">Čekejte prosím…</string>
   <string name="export_error_label">Chyba exportu</string>
   <string name="export_success_title">Export úspěšný</string>
@@ -674,7 +674,7 @@
   <string name="pref_restart_required">Pro aktivování změn nastavení bylo třeba restartovat aplikaci AntennaPod.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Odebírat</string>
-  <string name="subscribing_label">Přidává se do sbírky…</string>
+  <string name="subscribing_label">Přidává se do odběrů…</string>
   <string name="preview_episode">Spustit ukázku</string>
   <string name="stop_preview">Zastavit ukázku</string>
   <!--Content descriptions for image buttons-->

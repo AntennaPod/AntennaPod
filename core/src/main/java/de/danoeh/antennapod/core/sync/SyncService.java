@@ -474,6 +474,7 @@ public class SyncService extends Worker {
             }
         }
         DBWriter.removeQueueItem(getApplicationContext(), false, queueToBeRemoved.toArray());
+        DBReader.loadAdditionalFeedItemListData(updatedItems);
         DBWriter.setItemList(updatedItems);
     }
 
