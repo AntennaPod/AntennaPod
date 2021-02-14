@@ -180,6 +180,10 @@ public class AudioPlayerFragment extends Fragment implements
         tabLayoutMediator.attach();
     }
 
+    public void scrollToChaptersPage() {
+        pager.setCurrentItem(2, true);
+    }
+
     public View getExternalPlayerHolder() {
         return getView().findViewById(R.id.playerFragment);
     }

@@ -18,7 +18,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -79,10 +78,7 @@ public class CoverFragment extends Fragment {
         butNextChapter = root.findViewById(R.id.butNextChapter);
 
         imgvCover.setOnClickListener(v -> onPlayPause());
-        txtvChapterTitle.setOnClickListener(v -> {
-            ViewPager2 pager = getActivity().findViewById(R.id.pager);
-            pager.setCurrentItem(2, true);
-        });
+        txtvChapterTitle.setOnClickListener(v -> ((AudioPlayerFragment) getParentFragment()).scrollToChaptersPage());
         butPrevChapter.setOnClickListener(v -> seekToPrevChapter());
         butNextChapter.setOnClickListener(v -> seekToNextChapter());
 
@@ -101,6 +97,7 @@ public class CoverFragment extends Fragment {
         disposable = Maybe.<Playable>create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
+                media.loadChapterMarks(getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -121,21 +118,19 @@ public class CoverFragment extends Fragment {
                 + "\u00A0"
                 + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
+        displayedChapterIndex = -1;
         chapterControl.setVisibility(View.GONE);
         refreshChapterData(ChapterUtils.getCurrentChapterIndex(media, media.getPosition()));
     }
 
     private void refreshChapterData(int chapterIndex) {
         if (chapterIndex > -1) {
-            if (media.getPosition() > media.getDuration()) {
+            if (media.getPosition() > media.getDuration() || chapterIndex >= media.getChapters().size() - 1) {
                 displayedChapterIndex = media.getChapters().size() - 1;
                 butNextChapter.setVisibility(View.INVISIBLE);
-            } else if (chapterIndex == media.getChapters().size() - 1) {
-                butNextChapter.setVisibility(View.INVISIBLE);
-                displayedChapterIndex = chapterIndex;
             } else {
-                butNextChapter.setVisibility(View.VISIBLE);
                 displayedChapterIndex = chapterIndex;
+                butNextChapter.setVisibility(View.VISIBLE);
             }
 
             if (getCurrentChapter() != null) {
@@ -160,16 +155,14 @@ public class CoverFragment extends Fragment {
             return;
         }
 
-        if (--displayedChapterIndex < 0) {
+        if (displayedChapterIndex < 1) {
             controller.seekTo(0);
-            displayedChapterIndex = 0;
         } else if ((controller.getPosition() - 10000 * controller.getCurrentPlaybackSpeedMultiplier())
                 < curr.getStart()) {
+            refreshChapterData(displayedChapterIndex - 1);
             controller.seekToChapter(media.getChapters().get(displayedChapterIndex));
-            refreshChapterData(displayedChapterIndex);
         } else {
             controller.seekToChapter(curr);
-            displayedChapterIndex++;
         }
     }
 
@@ -179,8 +172,8 @@ public class CoverFragment extends Fragment {
             return;
         }
 
-        controller.seekToChapter(media.getChapters().get(++displayedChapterIndex));
-        refreshChapterData(displayedChapterIndex);
+        refreshChapterData(displayedChapterIndex + 1);
+        controller.seekToChapter(media.getChapters().get(displayedChapterIndex));
     }
 
     @Override
