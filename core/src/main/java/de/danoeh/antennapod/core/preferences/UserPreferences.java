@@ -62,6 +62,7 @@ public class UserPreferences {
     private static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_USE_EPISODE_COVER = "prefEpisodeCover";
+    public static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_COMPACT_NOTIFICATION_BUTTONS = "prefCompactNotificationButtons";
     public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
@@ -265,6 +266,23 @@ public class UserPreferences {
      */
     public static boolean getUseEpisodeCoverSetting() {
         return prefs.getBoolean(PREF_USE_EPISODE_COVER, true);
+    }
+
+    /**
+     * @return {@code true} if we should show remaining time or the duration
+     */
+    public static boolean shouldShowRemainingTime() {
+        return prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+    }
+
+    /**
+     * Sets the preference for whether we show the remain time, if not show the duration. This will
+     * send out events so the current playing screen, queue and the episode list would refresh
+     *
+     * @return {@code true} if we should show remaining time or the duration
+     */
+    public static void setShowRemainTimeSetting(Boolean showRemain) {
+        prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showRemain).apply();
     }
 
     /**
