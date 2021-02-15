@@ -8,7 +8,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DateUtils;

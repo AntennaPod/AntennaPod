@@ -8,7 +8,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
