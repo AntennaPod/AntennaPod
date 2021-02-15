@@ -629,7 +629,7 @@ public class PodDBAdapter {
             values.put(KEY_CONTENT_ENCODED, item.getContentEncoded());
         }
         values.put(KEY_PUBDATE, item.getPubDate().getTime());
-        values.put(KEY_PAYMENT_LINK, item.getPaymentLinks());
+        values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
         if (saveFeed && item.getFeed() != null) {
             setFeed(item.getFeed());
         }

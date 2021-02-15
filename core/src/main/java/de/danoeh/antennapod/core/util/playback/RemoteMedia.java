@@ -153,7 +153,7 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public String getPaymentLink(Feed.PaymentType type) {
+    public String getPaymentLink() {
         return null;
     }
 

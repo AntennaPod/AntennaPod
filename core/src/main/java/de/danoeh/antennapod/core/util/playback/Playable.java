@@ -62,7 +62,7 @@ public interface Playable extends Parcelable,
      */
     String getWebsiteLink();
 
-    String getPaymentLink(Feed.PaymentType type);
+    String getPaymentLink();
 
     /**
      * Returns the title of the feed this Playable belongs to.

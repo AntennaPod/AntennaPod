@@ -104,7 +104,7 @@ public class NSAtom extends Namespace {
                         currItem.setMedia(new FeedMedia(currItem, href, size, type));
                     }
                 } else if (LINK_REL_PAYMENT.equals(rel)) {
-                    state.getCurrentItem().setPaymentLink(href, Feed.PaymentType.ATOM_PAYMENT);
+                    state.getCurrentItem().setPaymentLink(href);
                 }
             } else if (parent.getName().matches(isFeed)) {
                 if (LINK_REL_ALTERNATE.equals(rel)) {

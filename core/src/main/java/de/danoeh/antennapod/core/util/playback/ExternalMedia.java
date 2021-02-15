@@ -149,7 +149,7 @@ public class ExternalMedia implements Playable {
     }
 
     @Override
-    public String getPaymentLink(Feed.PaymentType type) {
+    public String getPaymentLink() {
         return null;
     }
 
