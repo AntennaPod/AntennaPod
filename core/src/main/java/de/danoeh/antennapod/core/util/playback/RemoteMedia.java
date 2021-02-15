@@ -130,7 +130,7 @@ public class RemoteMedia implements Playable {
 
     @Override
     public void loadChapterMarks(Context context) {
-        setChapters(ChapterUtils.loadChaptersFromStreamUrl(this, context));
+        setChapters(ChapterUtils.loadChaptersFromMediaFile(this, context));
     }
 
     @Override

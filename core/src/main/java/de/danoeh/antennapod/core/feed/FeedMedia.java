@@ -407,14 +407,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item.hasChapters()) {
             chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(item);
         }
-
-        List<Chapter> chaptersFromMediaFile;
-        if (localFileAvailable()) {
-            chaptersFromMediaFile = ChapterUtils.loadChaptersFromFileUrl(this);
-        } else {
-            chaptersFromMediaFile = ChapterUtils.loadChaptersFromStreamUrl(this, context);
-        }
-
+        List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(this, context);
         return ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
     }
 

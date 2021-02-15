@@ -118,13 +118,11 @@ public class ExternalMedia implements Playable {
         } else {
             pubDate = null;
         }
-
-        setChapters(ChapterUtils.loadChaptersFromFileUrl(this));
     }
 
     @Override
     public void loadChapterMarks(Context context) {
-
+        setChapters(ChapterUtils.loadChaptersFromMediaFile(this, context));
     }
 
     @Override
