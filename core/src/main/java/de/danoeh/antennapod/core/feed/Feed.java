@@ -65,6 +65,7 @@ public class Feed extends FeedFile implements ImageResource {
 
     private String paymentLink;
     private String fundingLink;
+    private String fundingText;
     /**
      * Feed type, for example RSS 2 or Atom
      */
@@ -125,8 +126,7 @@ public class Feed extends FeedFile implements ImageResource {
         this.lastUpdate = lastUpdate;
         this.link = link;
         this.description = description;
-        this.paymentLink = extractPaymentLinks(paymentLinks, PaymentType.ATOM_PAYMENT);
-        this.fundingLink = extractPaymentLinks(paymentLinks, PaymentType.PODCAST_PAYMENT);
+        extractPaymentLinks(paymentLinks);
         this.author = author;
         this.language = language;
         this.type = type;
@@ -308,6 +308,9 @@ public class Feed extends FeedFile implements ImageResource {
         if (other.fundingLink != null) {
             fundingLink = other.fundingLink;
         }
+        if (other.fundingText != null) {
+            fundingText = other.fundingText;
+        }
         // this feed's nextPage might already point to a higher page, so we only update the nextPage value
         // if this feed is not paged and the other feed is.
         if (!this.paged && other.paged) {
@@ -463,37 +466,37 @@ public class Feed extends FeedFile implements ImageResource {
         this.feedIdentifier = feedIdentifier;
     }
 
-    public static String extractPaymentLinks(String payLinks, PaymentType type) {
+    public void extractPaymentLinks(String payLinks) {
         if (StringUtil.isBlank(payLinks)) {
-            return null;
+            return;
         }
         // old format before we started storing the urls as pay= and fund=
         if (!payLinks.contains("\n")) {
-            if (type == PaymentType.ATOM_PAYMENT) {
-                return payLinks;
-            }
-            return null;
+            paymentLink = payLinks;
+            return;
         }
         String [] list = payLinks.split(SUPPORT_INTERNAL_SPLIT);
         if (list.length == 0) {
-            return null;
-        }
-        if (type == PaymentType.ATOM_PAYMENT) {
-            try {
-                return list[0].split("=")[1];
-            } catch (ArrayIndexOutOfBoundsException e) {
-                Log.d(TAG, "Payment link " + payLinks);
-                return null;
-            }
-        }
-        if (list.length <= 1) {
-            return null;
+            return;
         }
         try {
-            return list[1].split("=")[1];
+            paymentLink = list[0].split("=")[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Log.d(TAG, "Payment link " + payLinks);
+        }
+
+        if (list.length <= 1) {
+            return;
+        }
+        try {
+            String [] temp =  list[1].split("=");
+            if (temp[0] != null) {
+                fundingText = temp[0];
+            }
+            fundingLink = temp[1];
         } catch (ArrayIndexOutOfBoundsException e) {
             Log.d(TAG, "Funding link " + payLinks);
-            return null;
+            return;
         }
     }
 
@@ -514,7 +517,7 @@ public class Feed extends FeedFile implements ImageResource {
             len++;
         }
         if (! StringUtil.isBlank(fundingLink)) {
-            links[1] = "fund=" + fundingLink;
+            links[1] = fundingText + "=" + fundingLink;
             len++;
         }
         if (len == 0) {
@@ -529,6 +532,20 @@ public class Feed extends FeedFile implements ImageResource {
         } else {
             this.fundingLink = link;
         }
+    }
+
+    public void setPaymentText(String text, PaymentType type) {
+        if (type == PaymentType.PODCAST_PAYMENT) {
+            this.fundingText = text.replace("=", "&#61;");
+        }
+    }
+
+    public String getPaymentText(PaymentType type) {
+        if (type == PaymentType.PODCAST_PAYMENT) {
+            return this.fundingText;
+        }
+
+        return "";
     }
 
     public String getLanguage() {
