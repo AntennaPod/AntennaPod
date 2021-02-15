@@ -30,7 +30,7 @@ public class AtomParserTest {
         assertEquals("http://example.com/feed", feed.getFeedIdentifier());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink());
+        assertEquals("http://example.com/payment", feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
         assertEquals("http://example.com/picture", feed.getImageUrl());
         assertEquals(10, feed.getItems().size());
         for (int i = 0; i < feed.getItems().size(); i++) {
@@ -41,7 +41,7 @@ public class AtomParserTest {
             assertNull(item.getContentEncoded());
             assertEquals("http://example.com/items/" + i, item.getLink());
             assertEquals(new Date(i * 60000), item.getPubDate());
-            assertNull(item.getPaymentLink());
+            assertNull(item.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
             assertEquals("http://example.com/picture", item.getImageLocation());
             // media
             assertTrue(item.hasMedia());
@@ -63,7 +63,7 @@ public class AtomParserTest {
         assertEquals("http://example.com/feed", feed.getFeedIdentifier());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink());
+        assertEquals("http://example.com/payment", feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
         assertEquals("https://example.com/image.png", feed.getImageUrl());
         assertEquals(0, feed.getItems().size());
     }

@@ -31,7 +31,7 @@ public class RssParserTest {
         assertEquals("en", feed.getLanguage());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink());
+        assertEquals("http://example.com/payment", feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
         assertEquals("http://example.com/picture", feed.getImageUrl());
         assertEquals(10, feed.getItems().size());
         for (int i = 0; i < feed.getItems().size(); i++) {
@@ -42,7 +42,7 @@ public class RssParserTest {
             assertNull(item.getContentEncoded());
             assertEquals("http://example.com/items/" + i, item.getLink());
             assertEquals(new Date(i * 60000), item.getPubDate());
-            assertNull(item.getPaymentLink());
+            assertNull(item.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
             assertEquals("http://example.com/picture", item.getImageLocation());
             // media
             assertTrue(item.hasMedia());
@@ -75,7 +75,7 @@ public class RssParserTest {
         assertEquals("title", feed.getTitle());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink());
+        assertEquals("http://example.com/payment", feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
         assertNull(feed.getImageUrl());
         assertEquals(1, feed.getItems().size());
         FeedItem feedItem = feed.getItems().get(0);
