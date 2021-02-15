@@ -42,7 +42,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         hasImages = false;
         if (media.getChapters() != null) {
             for (Chapter chapter : media.getChapters()) {
-                if (!ignoreChapter(chapter) && !TextUtils.isEmpty(chapter.getImageUrl())) {
+                if (!TextUtils.isEmpty(chapter.getImageUrl())) {
                     hasImages = true;
                 }
             }
@@ -125,14 +125,7 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         if (media == null || media.getChapters() == null) {
             return 0;
         }
-        // ignore invalid chapters
-        int counter = 0;
-        for (Chapter chapter : media.getChapters()) {
-            if (!ignoreChapter(chapter)) {
-                counter++;
-            }
-        }
-        return counter;
+        return media.getChapters().size();
     }
 
     static class ChapterHolder extends RecyclerView.ViewHolder {
@@ -171,22 +164,8 @@ public class ChaptersListAdapter extends RecyclerView.Adapter<ChaptersListAdapte
         notifyItemChanged(currentChapterIndex, "foo");
     }
 
-    private boolean ignoreChapter(Chapter c) {
-        return media.getDuration() > 0 && media.getDuration() < c.getStart();
-    }
-
     public Chapter getItem(int position) {
-        int i = 0;
-        for (Chapter chapter : media.getChapters()) {
-            if (!ignoreChapter(chapter)) {
-                if (i == position) {
-                    return chapter;
-                } else {
-                    i++;
-                }
-            }
-        }
-        return null;
+        return media.getChapters().get(position);
     }
 
     public interface Callback {
