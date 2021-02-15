@@ -33,6 +33,9 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.joanzapata.iconify.Iconify;
+
+import org.jsoup.helper.StringUtil;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -239,20 +242,22 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
 
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
 
-        if (feed.getPaymentLinks() == null) {
+        if (StringUtil.isBlank(feed.getPaymentLinks())) {
             lblSupport.setVisibility(View.GONE);
+            txtvPaymentUrl.setVisibility(View.GONE);
+            txtvFundingUrl.setVisibility(View.GONE);
         } else {
             lblSupport.setVisibility(View.VISIBLE);
-            if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) == null) {
+            if (StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT))) {
                 txtvPaymentUrl.setVisibility(View.GONE);
             } else {
                 txtvPaymentUrl.setVisibility(View.VISIBLE);
                 txtvPaymentUrl.setText(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
             }
-            if ((feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) == null)) {
+            if (StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT))) {
                 txtvFundingUrl.setVisibility(View.GONE);
             } else {
-                if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) != null
+                if (StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT))) {
                         && feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT)
                         .compareTo(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT)) == 0) {
                     txtvFundingUrl.setVisibility(View.GONE);
