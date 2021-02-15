@@ -113,7 +113,7 @@ public class NewEpisodesNotification {
         try {
             return Glide.with(context)
                     .asBitmap()
-                    .load(ImageResourceUtils.getImageLocation(feed))
+                    .load(ImageResourceUtils.getEpisodeListImageLocation(feed))
                     .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                     .apply(new RequestOptions().centerCrop())
                     .submit(iconSize, iconSize)

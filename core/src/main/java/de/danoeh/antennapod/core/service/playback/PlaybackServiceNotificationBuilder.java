@@ -75,7 +75,7 @@ public class PlaybackServiceNotificationBuilder {
         try {
             icon = Glide.with(context)
                     .asBitmap()
-                    .load(ImageResourceUtils.getImageLocation(playable))
+                    .load(ImageResourceUtils.getEpisodeImageLocation(playable))
                     .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                     .apply(new RequestOptions().centerCrop())
                     .submit(iconSize, iconSize)

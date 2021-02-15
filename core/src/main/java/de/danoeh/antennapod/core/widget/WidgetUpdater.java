@@ -90,7 +90,7 @@ public abstract class WidgetUpdater {
             try {
                 icon = Glide.with(context)
                         .asBitmap()
-                        .load(ImageResourceUtils.getImageLocation(widgetState.media))
+                        .load(ImageResourceUtils.getEpisodeImageLocation(widgetState.media))
                         .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                         .submit(iconSize, iconSize)
                         .get(500, TimeUnit.MILLISECONDS);
