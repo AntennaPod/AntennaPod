@@ -55,12 +55,12 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     private Feed feed;
     private long feedId;
 
-    private String paymentLink;
-
     private int state;
     public static final int NEW = -1;
     public static final int UNPLAYED = 0;
     public static final int PLAYED = 1;
+
+    private String paymentLink;
 
     /**
      * Is true if the database contains any chapters that belong to this item. This attribute is only
@@ -201,7 +201,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
             }
         }
         if (other.paymentLink != null) {
-            this.paymentLink = other.paymentLink;
+            paymentLink = other.paymentLink;
         }
         if (other.chapters != null) {
             if (!hasChapters) {
