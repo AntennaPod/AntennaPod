@@ -14,16 +14,19 @@ public final class ImageResourceUtils {
     }
 
     /**
-     * calls {@link ImageResourceUtils#getImageLocation(ImageResource, boolean)} without requesting a feed cover.
+     * returns the image location, does prefer the episode cover if available
      */
-    public static String getImageLocation(ImageResource resource) {
-        return getImageLocation(resource, false);
+    public static String getEpisodeImageLocation(ImageResource resource) {
+        return resource.getImageLocation();
     }
 
 
-    public static String getImageLocation(ImageResource resource, boolean preferredFeedCover) {
+    /**
+     * returns the image location, does prefer the episode cover if available and enabled in settings
+     */
+    public static String getEpisodeListImageLocation(ImageResource resource) {
 
-        if (UserPreferences.getUseEpisodeCoverSetting() || !preferredFeedCover) {
+        if (UserPreferences.getUseEpisodeCoverSetting()) {
             return resource.getImageLocation();
         } else {
             return getShowImageLocation(resource);

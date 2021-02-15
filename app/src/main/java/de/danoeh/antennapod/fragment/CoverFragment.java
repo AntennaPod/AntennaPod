@@ -13,14 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -35,6 +38,7 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -164,7 +168,7 @@ public class CoverFragment extends Fragment {
                             new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
 
             RequestBuilder<Drawable> cover = Glide.with(this)
-                    .load(ImageResourceUtils.getImageLocation(media))
+                    .load(ImageResourceUtils.getEpisodeImageLocation(media))
                     .error(Glide.with(this)
                             .load(ImageResourceUtils.getFallbackImageLocation(media))
                             .apply(options))

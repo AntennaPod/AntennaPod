@@ -10,10 +10,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
@@ -28,6 +31,7 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -206,7 +210,7 @@ public class ExternalPlayerFragment extends Fragment {
                 .dontAnimate();
 
         Glide.with(getActivity())
-                .load(ImageResourceUtils.getImageLocation(media))
+                .load(ImageResourceUtils.getEpisodeListImageLocation(media))
                 .error(Glide.with(getActivity())
                         .load(ImageResourceUtils.getFallbackImageLocation(media))
                         .apply(options))
