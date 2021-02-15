@@ -326,15 +326,11 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         this.contentEncoded = contentEncoded;
     }
 
-    public String getPaymentLink(Feed.PaymentType type) {
-        return feed.getPaymentLink(type);
+    public String getPaymentLink() {
+        return paymentLink;
     }
 
-    public String getPaymentLinks() {
-        return feed.getPaymentLinks();
-    }
-
-    public void setPaymentLink(String paymentLink, Feed.PaymentType type) {
+    public void setPaymentLink(String paymentLink) {
         this.paymentLink = paymentLink;
     }
 
