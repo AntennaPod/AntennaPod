@@ -14,7 +14,7 @@ public final class ImageResourceUtils {
     }
 
     /**
-     * returns the image location, does prefer the episode cover if available
+     * returns the image location, does prefer the episode cover if available.
      */
     public static String getEpisodeImageLocation(ImageResource resource) {
         return resource.getImageLocation();
@@ -22,7 +22,7 @@ public final class ImageResourceUtils {
 
 
     /**
-     * returns the image location, does prefer the episode cover if available and enabled in settings
+     * returns the image location, does prefer the episode cover if available and enabled in settings.
      */
     public static String getEpisodeListImageLocation(ImageResource resource) {
 
