@@ -65,7 +65,6 @@ import io.reactivex.schedulers.Schedulers;
 public abstract class MediaplayerActivity extends CastEnabledActivity implements OnSeekBarChangeListener {
     private static final String TAG = "MediaplayerActivity";
     private static final String PREFS = "MediaPlayerActivityPreferences";
-    private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
 
     PlaybackController controller;
 
@@ -465,8 +464,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         if(controller == null || controller.getMedia() == null) {
             return false;
         }
-        SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         onPositionObserverUpdate();
         checkFavorite();
         updatePlaybackSpeedButton();
@@ -489,7 +487,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
         txtvSeek = findViewById(R.id.txtvSeek);
 
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
-        showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         Log.d("timeleft", showTimeLeft ? "true" : "false");
         txtvLength = findViewById(R.id.txtvLength);
         if (txtvLength != null) {
@@ -513,9 +511,7 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
                 }
                 txtvLength.setText(length);
 
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft);
-                editor.apply();
+                UserPreferences.setShowRemainTimeSetting(showTimeLeft);
                 Log.d("timeleft on click", showTimeLeft ? "true" : "false");
             });
         }

@@ -45,7 +45,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;

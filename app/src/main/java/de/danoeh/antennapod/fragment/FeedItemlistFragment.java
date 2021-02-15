@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -58,7 +57,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.FeedItemPermutors;
 import de.danoeh.antennapod.core.util.FeedItemUtil;
 import de.danoeh.antennapod.core.util.Optional;
-import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.dialog.FilterDialog;
@@ -451,10 +450,6 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if (filter.getValues().length > 0) {
-                if (feed.hasLastUpdateFailed()) {
-                    RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
-                    p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
-                }
                 txtvInformation.setText("{md-info-outline} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
                 txtvInformation.setOnClickListener((l) -> {

@@ -156,7 +156,7 @@
                     android:scaleType="fitCenter"
                     tools:srcCompat="@drawable/ic_av_play_white_24dp"/>
 
-            <de.danoeh.antennapod.view.CircularProgressBar
+            <de.danoeh.antennapod.ui.common.CircularProgressBar
                     android:layout_width="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_height="@dimen/audioplayer_playercontrols_length_big"
                     android:layout_marginLeft="16dp"
@@ -164,7 +164,8 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    app:foregroundColor="?attr/action_icon_color"/>
 
             <ProgressBar
                     style="?android:attr/progressBarStyle"
@@ -205,7 +206,7 @@
                     android:textColor="?android:attr/textColorSecondary"
                     android:clickable="false"/>
 
-            <de.danoeh.antennapod.view.PlaybackSpeedIndicatorView
+            <de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView
                     android:id="@+id/butPlaybackSpeed"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"
                     android:layout_height="@dimen/audioplayer_playercontrols_length"
@@ -214,7 +215,8 @@
                     android:layout_centerVertical="true"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/playback_speed"
-                    tools:srcCompat="@drawable/ic_playback_speed_white"/>
+                    tools:srcCompat="@drawable/ic_playback_speed_white"
+                    app:foregroundColor="?attr/action_icon_color"/>
 
             <TextView
                     android:id="@+id/txtvPlaybackSpeed"

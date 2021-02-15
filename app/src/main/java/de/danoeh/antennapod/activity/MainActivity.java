@@ -41,7 +41,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.download.AutoUpdateManager;
 import de.danoeh.antennapod.dialog.RatingDialog;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
@@ -56,6 +56,7 @@ import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.fragment.TransitionEffect;
 import de.danoeh.antennapod.preferences.PreferenceUpgrader;
+import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
 import de.danoeh.antennapod.view.LockableBottomSheetBehavior;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
@@ -77,7 +78,6 @@ public class MainActivity extends CastEnabledActivity {
     public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
     public static final String EXTRA_FEED_ID = "fragment_feed_id";
-    public static final String EXTRA_OPEN_PLAYER = "open_player";
     public static final String EXTRA_REFRESH_ON_START = "refresh_on_start";
     public static final String EXTRA_STARTED_FROM_SEARCH = "started_from_search";
     public static final String KEY_GENERATED_VIEW_ID = "generated_view_id";
@@ -510,7 +510,7 @@ public class MainActivity extends CastEnabledActivity {
                 }
             }
             sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
+        } else if (intent.getBooleanExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, false)) {
             sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             bottomSheetCallback.onSlide(null, 1.0f);
         } else if (Intent.ACTION_VIEW.equals(intent.getAction())) {

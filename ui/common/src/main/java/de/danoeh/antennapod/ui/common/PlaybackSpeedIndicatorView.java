@@ -1,15 +1,15 @@
-package de.danoeh.antennapod.view;
+package de.danoeh.antennapod.ui.common;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.R;
 
 public class PlaybackSpeedIndicatorView extends View {
     private static final float DEG_2_RAD = (float) (Math.PI / 180);
@@ -19,37 +19,37 @@ public class PlaybackSpeedIndicatorView extends View {
     private final Paint arcPaint = new Paint();
     private final Paint indicatorPaint = new Paint();
     private final Path trianglePath = new Path();
+    private final RectF arcBounds = new RectF();
     private float angle = VALUE_UNSET;
     private float targetAngle = VALUE_UNSET;
     private float degreePerFrame = 2;
     private float paddingArc = 20;
     private float paddingIndicator = 10;
-    private RectF arcBounds = new RectF();
 
     public PlaybackSpeedIndicatorView(Context context) {
         super(context);
-        setup();
+        setup(null);
     }
 
     public PlaybackSpeedIndicatorView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        setup();
+        setup(attrs);
     }
 
     public PlaybackSpeedIndicatorView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setup();
+        setup(attrs);
     }
 
-    private void setup() {
+    private void setup(@Nullable AttributeSet attrs) {
         setSpeed(1.0f); // Set default angle to 1.0
         targetAngle = VALUE_UNSET; // Do not move to first value that is set externally
 
-        int[] colorAttrs = new int[] {R.attr.action_icon_color };
-        TypedArray a = getContext().obtainStyledAttributes(colorAttrs);
-        arcPaint.setColor(a.getColor(0, 0xffffffff));
-        indicatorPaint.setColor(a.getColor(0, 0xffffffff));
-        a.recycle();
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.PlaybackSpeedIndicatorView);
+        int color = typedArray.getColor(R.styleable.PlaybackSpeedIndicatorView_foregroundColor, Color.GREEN);
+        typedArray.recycle();
+        arcPaint.setColor(color);
+        indicatorPaint.setColor(color);
 
         arcPaint.setAntiAlias(true);
         arcPaint.setStyle(Paint.Style.STROKE);

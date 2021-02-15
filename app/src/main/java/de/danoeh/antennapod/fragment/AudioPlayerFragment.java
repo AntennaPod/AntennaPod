@@ -1,8 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +29,7 @@ import de.danoeh.antennapod.activity.CastEnabledActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.event.UnreadItemsUpdateEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
@@ -47,7 +46,7 @@ import de.danoeh.antennapod.dialog.SkipPreferenceDialog;
 import de.danoeh.antennapod.dialog.SleepTimerDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
-import de.danoeh.antennapod.view.PlaybackSpeedIndicatorView;
+import de.danoeh.antennapod.ui.common.PlaybackSpeedIndicatorView;
 import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -70,8 +69,7 @@ public class AudioPlayerFragment extends Fragment implements
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
-    private static final String PREFS = "AudioPlayerFragmentPreferences";
-    private static final String PREF_SHOW_TIME_LEFT = "showTimeLeft";
+    public static final String PREFS = "AudioPlayerFragmentPreferences";
     private static final float EPSILON = 0.001f;
 
     PlaybackSpeedIndicatorView butPlaybackSpeed;
@@ -217,16 +215,25 @@ public class AudioPlayerFragment extends Fragment implements
                 IntentUtils.sendLocalBroadcast(getActivity(), PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnreadItemsUpdate(UnreadItemsUpdateEvent event) {
+        if (controller == null) {
+            return;
+        }
+        updatePosition(new PlaybackPositionEvent(controller.getPosition(),
+                controller.getDuration()));
+    }
+
     private void setupLengthTextView() {
-        SharedPreferences prefs = getContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        showTimeLeft = prefs.getBoolean(PREF_SHOW_TIME_LEFT, false);
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         txtvLength.setOnClickListener(v -> {
             if (controller == null) {
                 return;
             }
             showTimeLeft = !showTimeLeft;
-            prefs.edit().putBoolean(PREF_SHOW_TIME_LEFT, showTimeLeft).apply();
-            updatePosition(new PlaybackPositionEvent(controller.getPosition(), controller.getDuration()));
+            UserPreferences.setShowRemainTimeSetting(showTimeLeft);
+            updatePosition(new PlaybackPositionEvent(controller.getPosition(),
+                    controller.getDuration()));
         });
     }
 
@@ -439,6 +446,7 @@ public class AudioPlayerFragment extends Fragment implements
             return;
         }
         txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+        showTimeLeft = UserPreferences.shouldShowRemainingTime();
         if (showTimeLeft) {
             txtvLength.setText("-" + Converter.getDurationStringLong(remainingTime));
         } else {

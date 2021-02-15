@@ -22,8 +22,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2010295
-        versionName "2.1.2"
+        versionCode 2010395
+        versionName "2.1.3"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
@@ -164,6 +164,8 @@ dependencies {
     } else {
         System.out.println("app: free build hack, skipping some dependencies")
     }
+    implementation project(':ui:app-start-intent')
+    implementation project(':ui:common')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -191,9 +193,8 @@ dependencies {
 
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     implementation 'com.github.shts:TriangleLabelView:1.1.2'
-    implementation 'com.leinardi.android:speed-dial:3.1.1'
+    implementation 'com.github.leinardi:FloatingActionButtonSpeedDial:3.1.1'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'

@@ -9,7 +9,6 @@ import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
 import de.danoeh.antennapod.core.preferences.UsageStatistics;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
-import de.danoeh.antennapod.core.storage.AutomaticDownloadAlgorithm;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
@@ -30,10 +29,6 @@ public class ClientConfig {
     public static ApplicationCallbacks applicationCallbacks;
 
     public static DownloadServiceCallbacks downloadServiceCallbacks;
-
-    public static PlaybackServiceCallbacks playbackServiceCallbacks;
-
-    public static AutomaticDownloadAlgorithm automaticDownloadAlgorithm;
 
     public static CastCallbacks castCallbacks;
 

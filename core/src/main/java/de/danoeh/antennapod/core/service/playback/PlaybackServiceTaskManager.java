@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
+import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import io.reactivex.disposables.Disposable;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -199,14 +200,25 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized void startWidgetUpdater() {
         if (!isWidgetUpdaterActive() && !schedExecutor.isShutdown()) {
-            Runnable widgetUpdater = callback::onWidgetUpdaterTick;
+            Runnable widgetUpdater = this::requestWidgetUpdate;
             widgetUpdater = useMainThreadIfNecessary(widgetUpdater);
-            widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater, WIDGET_UPDATER_NOTIFICATION_INTERVAL,
-                    WIDGET_UPDATER_NOTIFICATION_INTERVAL, TimeUnit.MILLISECONDS);
-
+            widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater,
+                    WIDGET_UPDATER_NOTIFICATION_INTERVAL, WIDGET_UPDATER_NOTIFICATION_INTERVAL, TimeUnit.MILLISECONDS);
             Log.d(TAG, "Started WidgetUpdater");
         } else {
             Log.d(TAG, "Call to startWidgetUpdater was ignored.");
+        }
+    }
+
+    /**
+     * Retrieves information about the widget state in the calling thread and then displays it in a background thread.
+     */
+    public synchronized void requestWidgetUpdate() {
+        WidgetUpdater.WidgetState state = callback.requestWidgetState();
+        if (!schedExecutor.isShutdown()) {
+            schedExecutor.execute(() -> WidgetUpdater.updateWidget(context, state));
+        } else {
+            Log.d(TAG, "Call to requestWidgetUpdate was ignored.");
         }
     }
 
@@ -464,7 +476,7 @@ public class PlaybackServiceTaskManager {
 
         void onSleepTimerReset();
 
-        void onWidgetUpdaterTick();
+        WidgetUpdater.WidgetState requestWidgetState();
 
         void onChapterLoaded(Playable media);
     }

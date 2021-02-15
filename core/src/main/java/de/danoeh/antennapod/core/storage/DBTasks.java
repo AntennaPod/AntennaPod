@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
-import de.danoeh.antennapod.core.ClientConfig;
+
+import androidx.annotation.VisibleForTesting;
+
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.FeedItemEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
@@ -52,6 +54,8 @@ public final class DBTasks {
      * Executor service used by the autodownloadUndownloadedEpisodes method.
      */
     private static final ExecutorService autodownloadExec;
+
+    private static AutomaticDownloadAlgorithm downloadAlgorithm = new AutomaticDownloadAlgorithm();
 
     static {
         autodownloadExec = Executors.newSingleThreadExecutor(r -> {
@@ -278,7 +282,7 @@ public final class DBTasks {
     }
 
     /**
-     * Looks for undownloaded episodes in the queue or list of unread items and request a download if
+     * Looks for non-downloaded episodes in the queue or list of unread items and request a download if
      * 1. Network is available
      * 2. The device is charging or the user allows auto download on battery
      * 3. There is free space in the episode cache
@@ -289,9 +293,15 @@ public final class DBTasks {
      */
     public static Future<?> autodownloadUndownloadedItems(final Context context) {
         Log.d(TAG, "autodownloadUndownloadedItems");
-        return autodownloadExec.submit(ClientConfig.automaticDownloadAlgorithm
-                .autoDownloadUndownloadedItems(context));
+        return autodownloadExec.submit(downloadAlgorithm.autoDownloadUndownloadedItems(context));
+    }
 
+    /**
+     * For testing purpose only.
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    public static void setDownloadAlgorithm(AutomaticDownloadAlgorithm newDownloadAlgorithm) {
+        downloadAlgorithm = newDownloadAlgorithm;
     }
 
     /**

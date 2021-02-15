@@ -15,8 +15,8 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.util.ThemeUtils;
-import de.danoeh.antennapod.view.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.common.CircularProgressBar;
 
 public class DownloadlistAdapter extends BaseAdapter {
 
