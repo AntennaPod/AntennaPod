@@ -264,7 +264,8 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                 }
                 txtvFundingUrl.setVisibility(View.VISIBLE);
                 txtvFundingUrl.setText(
-                        (StringUtil.isBlank(feed.getPaymentText(Feed.PaymentType.PODCAST_PAYMENT)) ?
+                        (StringUtil.isBlank(feed.getPaymentText(Feed.PaymentType.PODCAST_PAYMENT))
+                                ?
                                 "" :
                                 (feed.getPaymentText(Feed.PaymentType.PODCAST_PAYMENT)
                                         + " "))
