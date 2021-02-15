@@ -467,7 +467,7 @@ public class Feed extends FeedFile implements ImageResource {
         if (StringUtil.isBlank(payLinks)) {
             return null;
         }
-        // old format
+        // old format before we started storing the urls as pay= and fund=
         if (!payLinks.contains("\n")) {
             if (type == PaymentType.ATOM_PAYMENT) {
                 return payLinks;
@@ -507,6 +507,7 @@ public class Feed extends FeedFile implements ImageResource {
 
     public String getPaymentLinks() {
         String[] links = new String[2];
+        links[0] = links[1] = "";
         int len = 0;
         if (! StringUtil.isBlank(paymentLink)) {
             links[0] = "pay=" + paymentLink;

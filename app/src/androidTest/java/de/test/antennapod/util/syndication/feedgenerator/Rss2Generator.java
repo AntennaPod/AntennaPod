@@ -68,7 +68,7 @@ public class Rss2Generator implements FeedGenerator {
 
         if (feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) != null) {
             GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT), true);
-        } else if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) != null){
+        } else if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) != null) {
             GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT), true);
         }
 
@@ -111,7 +111,7 @@ public class Rss2Generator implements FeedGenerator {
                 }
                 if (feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) != null) {
                     GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT), true);
-                } else if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) != null){
+                } else if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) != null) {
                     GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT), true);
                 }
 
