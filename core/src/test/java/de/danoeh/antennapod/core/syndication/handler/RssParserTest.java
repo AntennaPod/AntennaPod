@@ -63,7 +63,7 @@ public class RssParserTest {
         assertEquals("title", feed.getTitle());
         assertEquals("http://example.com", feed.getLink());
         assertEquals("This is the description", feed.getDescription());
-        assertEquals("http://example.com/payment", feed.getPaymentLink());
+        assertEquals("http://example.com/payment", feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
         assertEquals("https://example.com/image.png", feed.getImageUrl());
         assertEquals(0, feed.getItems().size());
     }
