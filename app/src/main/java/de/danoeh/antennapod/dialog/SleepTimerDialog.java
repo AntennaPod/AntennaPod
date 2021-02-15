@@ -55,6 +55,11 @@ public class SleepTimerDialog extends DialogFragment {
             public void onSleepTimerUpdate() {
                 updateTime();
             }
+
+            @Override
+            public void loadMediaInfo() {
+                updateTime();
+            }
         };
         controller.init();
         timeUpdater = Observable.interval(1, TimeUnit.SECONDS)

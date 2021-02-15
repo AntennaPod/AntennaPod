@@ -238,7 +238,12 @@ public class ItemFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-        controller = new PlaybackController(getActivity());
+        controller = new PlaybackController(getActivity()) {
+            @Override
+            public void loadMediaInfo() {
+                // Do nothing
+            }
+        };
         controller.init();
     }
 

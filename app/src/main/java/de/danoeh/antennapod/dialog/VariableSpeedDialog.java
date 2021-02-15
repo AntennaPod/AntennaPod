@@ -64,6 +64,11 @@ public class VariableSpeedDialog extends DialogFragment {
             public void onPlaybackSpeedChange() {
                 updateSpeed();
             }
+
+            @Override
+            public void loadMediaInfo() {
+                updateSpeed();
+            }
         };
         controller.init();
         speedSeekBar.setController(controller);

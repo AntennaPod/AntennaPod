@@ -108,8 +108,8 @@ public class ExternalPlayerFragment extends Fragment {
             }
 
             @Override
-            public boolean loadMediaInfo() {
-                return ExternalPlayerFragment.this.loadMediaInfo();
+            public void loadMediaInfo() {
+                ExternalPlayerFragment.this.loadMediaInfo();
             }
 
             @Override
@@ -170,11 +170,11 @@ public class ExternalPlayerFragment extends Fragment {
         }
     }
 
-    private boolean loadMediaInfo() {
+    private void loadMediaInfo() {
         Log.d(TAG, "Loading media info");
         if (controller == null) {
             Log.w(TAG, "loadMediaInfo was called while PlaybackController was null!");
-            return false;
+            return;
         }
 
         if (disposable != null) {
@@ -186,7 +186,6 @@ public class ExternalPlayerFragment extends Fragment {
                 .subscribe(this::updateUi,
                         error -> Log.e(TAG, Log.getStackTraceString(error)),
                         () -> ((MainActivity) getActivity()).setPlayerVisible(false));
-        return true;
     }
 
     private void updateUi(Playable media) {

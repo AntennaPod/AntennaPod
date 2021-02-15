@@ -365,9 +365,8 @@ public class AudioPlayerFragment extends Fragment implements
             }
 
             @Override
-            public boolean loadMediaInfo() {
+            public void loadMediaInfo() {
                 AudioPlayerFragment.this.loadMediaInfo();
-                return true;
             }
 
             @Override

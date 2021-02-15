@@ -132,17 +132,13 @@ public class VideoplayerActivity extends MediaplayerActivity {
     }
 
     @Override
-    protected boolean loadMediaInfo() {
-        if (!super.loadMediaInfo() || controller == null) {
-            return false;
-        }
+    protected void loadMediaInfo() {
+        super.loadMediaInfo();
         Playable media = controller.getMedia();
         if (media != null) {
             getSupportActionBar().setSubtitle(media.getEpisodeTitle());
             getSupportActionBar().setTitle(media.getFeedTitle());
-            return true;
         }
-        return false;
     }
 
     @Override

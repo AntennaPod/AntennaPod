@@ -140,9 +140,8 @@ public class ItemDescriptionFragment extends Fragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public boolean loadMediaInfo() {
+            public void loadMediaInfo() {
                 load();
-                return true;
             }
 
             @Override

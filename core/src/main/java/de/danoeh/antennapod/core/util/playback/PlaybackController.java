@@ -51,7 +51,7 @@ import java.util.List;
  * Communicates with the playback service. GUI classes should use this class to
  * control playback instead of communicating with the PlaybackService directly.
  */
-public class PlaybackController {
+public abstract class PlaybackController {
 
     private static final String TAG = "PlaybackController";
     private static final int INVALID_TIME = -1;
@@ -431,7 +431,10 @@ public class PlaybackController {
     }
 
     private void checkMediaInfoLoaded() {
-        mediaInfoLoaded = (mediaInfoLoaded || loadMediaInfo());
+        if (!mediaInfoLoaded) {
+            loadMediaInfo();
+        }
+        mediaInfoLoaded = true;
     }
 
     private void updatePlayButtonAppearance(int resource, CharSequence contentDescription) {
@@ -446,9 +449,7 @@ public class PlaybackController {
         return null;
     }
 
-    public boolean loadMediaInfo() {
-        return false;
-    }
+    public abstract void loadMediaInfo();
 
     public  void onAwaitingVideoSurface()  {}
 
