@@ -113,8 +113,9 @@ public class Feed extends FeedFile implements ImageResource {
     /**
      * This constructor is used for restoring a feed from the database.
      */
-    public Feed(long id, String lastUpdate, String title, String customTitle, String link, String description, String paymentLinks,
-                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
+    public Feed(long id, String lastUpdate, String title, String customTitle, String link,
+                String description, String paymentLinks, String author, String language,
+                String type, String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded, boolean paged, String nextPageLink,
                 String filter, @Nullable SortOrder sortOrder, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
@@ -146,8 +147,9 @@ public class Feed extends FeedFile implements ImageResource {
     /**
      * This constructor is used for test purposes
      */
-    public Feed(long id, String lastUpdate, String title, String link, String description, String paymentLinks,
-                String author, String language, String type, String feedIdentifier, String imageUrl, String fileUrl,
+    public Feed(long id, String lastUpdate, String title, String link, String description,
+                String paymentLinks, String author, String language, String type,
+                String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
         this(id, lastUpdate, title, null, link, description, paymentLinks, author, language, type, feedIdentifier, imageUrl,
                 fileUrl, downloadUrl, downloaded, false, null, null, null, false);
@@ -505,12 +507,12 @@ public class Feed extends FeedFile implements ImageResource {
         String[] links = new String[2];
         int len = 0;
         if (! StringUtil.isBlank(paymentLink)) {
-           links[0] = "pay=" + paymentLink;
-           len++;
+            links[0] = "pay=" + paymentLink;
+            len++;
         }
         if (! StringUtil.isBlank(fundingLink)) {
-           links[1] = "fund=" + fundingLink;
-           len++;
+            links[1] = "fund=" + fundingLink;
+            len++;
         }
         if (len == 0) {
             return null;

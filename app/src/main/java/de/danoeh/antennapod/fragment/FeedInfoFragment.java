@@ -240,22 +240,22 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
 
         if (feed.getPaymentLinks() == null) {
-           lblSupport.setVisibility(View.GONE);
+            lblSupport.setVisibility(View.GONE);
         } else {
             lblSupport.setVisibility(View.VISIBLE);
             if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) == null) {
-               txtvPaymentUrl.setVisibility(View.GONE);
-           } else {
-               txtvPaymentUrl.setVisibility(View.VISIBLE);
-               txtvPaymentUrl.setText(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
-           }
-           if ((feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) == null)
-                   || feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT).compareTo(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT)) == 0) {
-               txtvFundingUrl.setVisibility(View.GONE);
-           } else {
-               txtvFundingUrl.setVisibility(View.VISIBLE);
-               txtvFundingUrl.setText(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT));
-           }
+                txtvPaymentUrl.setVisibility(View.GONE);
+            } else {
+                txtvPaymentUrl.setVisibility(View.VISIBLE);
+                txtvPaymentUrl.setText(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
+            }
+            if ((feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) == null)
+                    || feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT).compareTo(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT)) == 0) {
+                txtvFundingUrl.setVisibility(View.GONE);
+            } else {
+                txtvFundingUrl.setVisibility(View.VISIBLE);
+                txtvFundingUrl.setText(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT));
+            }
         }
 
         Iconify.addIcons(txtvUrl);
