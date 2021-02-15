@@ -50,9 +50,11 @@ public class AddFeedFragment extends Fragment {
     public static final String TAG = "AddFeedFragment";
     private static final int REQUEST_CODE_CHOOSE_OPML_IMPORT_PATH = 1;
     private static final int REQUEST_CODE_ADD_LOCAL_FOLDER = 2;
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private AddfeedBinding viewBinding;
     private MainActivity activity;
+    private boolean displayUpArrow;
 
     @Override
     @Nullable
@@ -64,7 +66,11 @@ public class AddFeedFragment extends Fragment {
         activity = (MainActivity) getActivity();
 
         Toolbar toolbar = viewBinding.toolbar;
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
         viewBinding.searchItunesButton.setOnClickListener(v
                 -> activity.loadChildFragment(OnlineSearchFragment.newInstance(ItunesPodcastSearcher.class)));
@@ -117,6 +123,12 @@ public class AddFeedFragment extends Fragment {
         viewBinding.searchButton.setOnClickListener(view -> performSearch());
 
         return viewBinding.getRoot();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     private void showAddViaUrlDialog() {
