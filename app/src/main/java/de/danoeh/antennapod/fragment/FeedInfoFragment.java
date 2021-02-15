@@ -257,7 +257,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             if (StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT))) {
                 txtvFundingUrl.setVisibility(View.GONE);
             } else {
-                if (StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT))) {
+                if (StringUtil.isBlank(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT))
                         && feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT)
                         .compareTo(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT)) == 0) {
                     txtvFundingUrl.setVisibility(View.GONE);
