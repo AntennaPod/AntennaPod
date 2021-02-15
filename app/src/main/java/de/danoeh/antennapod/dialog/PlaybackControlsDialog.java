@@ -41,14 +41,9 @@ public class PlaybackControlsDialog extends DialogFragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 setupUi();
                 setupAudioTracks();
-            }
-
-            @Override
-            public void loadMediaInfo() {
-
             }
         };
         controller.init();

@@ -88,12 +88,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(this) {
-
-            @Override
-            public void setupGUI() {
-                MediaplayerActivity.this.setupGUI();
-            }
-
             @Override
             public void onPositionObserverUpdate() {
                 MediaplayerActivity.this.onPositionObserverUpdate();

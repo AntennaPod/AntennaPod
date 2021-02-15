@@ -143,11 +143,6 @@ public class ItemDescriptionFragment extends Fragment {
             public void loadMediaInfo() {
                 load();
             }
-
-            @Override
-            public void setupGUI() {
-                ItemDescriptionFragment.this.load();
-            }
         };
         controller.init();
         load();

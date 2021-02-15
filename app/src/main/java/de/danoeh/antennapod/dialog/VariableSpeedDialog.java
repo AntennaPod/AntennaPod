@@ -56,11 +56,6 @@ public class VariableSpeedDialog extends DialogFragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public void setupGUI() {
-                updateSpeed();
-            }
-
-            @Override
             public void onPlaybackSpeedChange() {
                 updateSpeed();
             }

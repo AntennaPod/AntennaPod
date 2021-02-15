@@ -113,11 +113,6 @@ public class ExternalPlayerFragment extends Fragment {
             }
 
             @Override
-            public void setupGUI() {
-                ExternalPlayerFragment.this.loadMediaInfo();
-            }
-
-            @Override
             public void onShutdownNotification() {
                 ((MainActivity) getActivity()).setPlayerVisible(false);
             }

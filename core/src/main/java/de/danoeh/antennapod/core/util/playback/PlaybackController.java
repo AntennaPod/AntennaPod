@@ -193,7 +193,6 @@ public abstract class PlaybackController {
                             bound = activity.bindService(optionalIntent.get(), mConnection, 0);
                         } else {
                             status = PlayerStatus.STOPPED;
-                            setupGUI();
                             handleStatus();
                         }
                     } else {
@@ -331,8 +330,6 @@ public abstract class PlaybackController {
         }
     };
 
-    public void setupGUI() {}
-
     public void onPositionObserverUpdate() {}
 
 
@@ -464,10 +461,9 @@ public abstract class PlaybackController {
             status = info.playerStatus;
             media = info.playable;
 
-            setupGUI();
-            handleStatus();
             // make sure that new media is loaded if it's available
             mediaInfoLoaded = false;
+            handleStatus();
 
         } else {
             Log.e(TAG,

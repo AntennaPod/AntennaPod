@@ -312,12 +312,6 @@ public class AudioPlayerFragment extends Fragment implements
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(getActivity()) {
-
-            @Override
-            public void setupGUI() {
-                AudioPlayerFragment.this.loadMediaInfo();
-            }
-
             @Override
             public void onBufferStart() {
                 progressIndicator.setVisibility(View.VISIBLE);
