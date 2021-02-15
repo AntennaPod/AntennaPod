@@ -10,10 +10,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.IBinder;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.SafeJobIntentService;
-
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
