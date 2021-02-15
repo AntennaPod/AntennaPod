@@ -108,13 +108,13 @@ class SyndHandler extends DefaultHandler {
                     && prefix.equals(NSDublinCore.NSTAG)) {
                 state.namespaces.put(uri, new NSDublinCore());
                 Log.d(TAG, "Recognized DublinCore namespace");
-			} else if (uri.equals(PodcastIndex.NSURI)
-					&& prefix.equals(PodcastIndex.NSTAG)) {
-				state.namespaces.put(uri, new PodcastIndex());
-				Log.d(TAG, "Recognized PodcastIndex namespace");
-			}
-		}
-	}
+            } else if (uri.equals(PodcastIndex.NSURI)
+                    && prefix.equals(PodcastIndex.NSTAG)) {
+                state.namespaces.put(uri, new PodcastIndex());
+                Log.d(TAG, "Recognized PodcastIndex namespace");
+            }
+        }
+    }
 
 	private Namespace getHandlingNamespace(String uri, String qName) {
 		Namespace handler = state.namespaces.get(uri);

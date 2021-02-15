@@ -151,8 +151,10 @@ public class Feed extends FeedFile implements ImageResource {
                 String paymentLinks, String author, String language, String type,
                 String feedIdentifier, String imageUrl, String fileUrl,
                 String downloadUrl, boolean downloaded) {
-        this(id, lastUpdate, title, null, link, description, paymentLinks, author, language, type, feedIdentifier, imageUrl,
-                fileUrl, downloadUrl, downloaded, false, null, null, null, false);
+        this(id, lastUpdate, title, null, link, description, paymentLinks, author,
+                language, type, feedIdentifier, imageUrl,
+                fileUrl, downloadUrl, downloaded, false, null,
+                null, null, false);
     }
 
     /**
