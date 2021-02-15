@@ -108,7 +108,7 @@ class SyndHandler extends DefaultHandler {
                     && prefix.equals(NSDublinCore.NSTAG)) {
                 state.namespaces.put(uri, new NSDublinCore());
                 Log.d(TAG, "Recognized DublinCore namespace");
-            } else if (uri.equals(PodcastIndex.NSURI)
+            } else if (uri.equals(PodcastIndex.NSURI) || uri.equals(PodcastIndex.NSURI2)
                     && prefix.equals(PodcastIndex.NSTAG)) {
                 state.namespaces.put(uri, new PodcastIndex());
                 Log.d(TAG, "Recognized PodcastIndex namespace");

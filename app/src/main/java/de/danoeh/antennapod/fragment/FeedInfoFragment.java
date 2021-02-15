@@ -249,13 +249,17 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                 txtvPaymentUrl.setVisibility(View.VISIBLE);
                 txtvPaymentUrl.setText(feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
             }
-            if ((feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) == null)
-                    || feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT)
-                    .compareTo(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT)) == 0) {
+            if ((feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT) == null)) {
                 txtvFundingUrl.setVisibility(View.GONE);
             } else {
-                txtvFundingUrl.setVisibility(View.VISIBLE);
-                txtvFundingUrl.setText(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT));
+                if (feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT) != null
+                    && feed.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT)
+                    .compareTo(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT)) == 0) {
+                    txtvFundingUrl.setVisibility(View.GONE);
+                } else {
+                    txtvFundingUrl.setVisibility(View.VISIBLE);
+                    txtvFundingUrl.setText(feed.getPaymentLink(Feed.PaymentType.PODCAST_PAYMENT));
+                }
             }
         }
 

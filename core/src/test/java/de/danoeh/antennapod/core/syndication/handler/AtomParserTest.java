@@ -41,7 +41,7 @@ public class AtomParserTest {
             assertNull(item.getContentEncoded());
             assertEquals("http://example.com/items/" + i, item.getLink());
             assertEquals(new Date(i * 60000), item.getPubDate());
-            assertNull(item.getPaymentLink(Feed.PaymentType.ATOM_PAYMENT));
+            assertNull(item.getPaymentLink());
             assertEquals("http://example.com/picture", item.getImageLocation());
             // media
             assertTrue(item.hasMedia());

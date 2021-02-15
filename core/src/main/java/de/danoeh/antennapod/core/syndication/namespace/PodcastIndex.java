@@ -9,6 +9,7 @@ public class PodcastIndex extends Namespace {
 
     public static final String NSTAG = "podcast";
     public static final String NSURI = "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md";
+    public static final String NSURI2 = "https://podcastindex.org/namespace/1.0";
     private static final String URL = "url";
 
     private static final String FUNDING = "funding";
