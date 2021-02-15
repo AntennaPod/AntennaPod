@@ -28,7 +28,10 @@ public class DownloadServiceNotification {
 
     private void setupNotificationBuilders() {
         notificationCompatBuilder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(true)
+                .setOngoing(false)
+                .setWhen(0)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(context))
                 .setSmallIcon(R.drawable.ic_notification_sync);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
