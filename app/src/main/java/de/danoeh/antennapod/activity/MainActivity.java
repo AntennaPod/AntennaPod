@@ -186,16 +186,16 @@ public class MainActivity extends CastEnabledActivity {
         }
     };
 
-    public void setupToolbarToggle(@Nullable Toolbar toolbar) {
+    public void setupToolbarToggle(@NonNull Toolbar toolbar, boolean displayUpArrow) {
         if (drawerLayout != null) { // Tablet layout does not have a drawer
             drawerLayout.removeDrawerListener(drawerToggle);
             drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                     R.string.drawer_open, R.string.drawer_close);
             drawerLayout.addDrawerListener(drawerToggle);
             drawerToggle.syncState();
-            drawerToggle.setDrawerIndicatorEnabled(getSupportFragmentManager().getBackStackEntryCount() == 0);
+            drawerToggle.setDrawerIndicatorEnabled(!displayUpArrow);
             drawerToggle.setToolbarNavigationClickListener(v -> getSupportFragmentManager().popBackStack());
-        } else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+        } else if (!displayUpArrow) {
             toolbar.setNavigationIcon(null);
         } else {
             toolbar.setNavigationIcon(ThemeUtils.getDrawableFromAttr(this, R.attr.homeAsUpIndicator));

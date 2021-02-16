@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -67,6 +68,7 @@ import static de.danoeh.antennapod.dialog.EpisodesApplyActionFragment.ACTION_REM
  */
 public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "QueueFragment";
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private TextView infoBar;
     private EpisodeItemListRecyclerView recyclerView;
@@ -74,6 +76,7 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
     private EmptyViewHandler emptyView;
     private ProgressBar progLoading;
     private Toolbar toolbar;
+    private boolean displayUpArrow;
 
     private List<FeedItem> queue;
 
@@ -420,7 +423,11 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(this);
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.queue);
         MenuItemUtils.setupSearchItem(toolbar.getMenu(), (MainActivity) getActivity(), 0, "");
         refreshToolbarState();
@@ -528,6 +535,12 @@ public class QueueFragment extends Fragment implements Toolbar.OnMenuItemClickLi
         progLoading.setVisibility(View.VISIBLE);
 
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     private void onFragmentLoaded(final boolean restoreScrollPosition) {

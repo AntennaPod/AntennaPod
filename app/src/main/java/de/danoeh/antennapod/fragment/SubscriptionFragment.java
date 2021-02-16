@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ProgressBar;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -66,6 +67,8 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
     public static final String TAG = "SubscriptionFragment";
     private static final String PREFS = "SubscriptionFragment";
     private static final String PREF_NUM_COLUMNS = "columns";
+    private static final String KEY_UP_ARROW = "up_arrow";
+
     private static final int MIN_NUM_COLUMNS = 2;
     private static final int[] COLUMN_CHECKBOX_IDS = {
             R.id.subscription_num_columns_2,
@@ -84,6 +87,7 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
 
     private int mPosition = -1;
     private boolean isUpdatingFeeds = false;
+    private boolean displayUpArrow;
 
     private Disposable disposable;
     private SharedPreferences prefs;
@@ -102,7 +106,11 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
         View root = inflater.inflate(R.layout.fragment_subscriptions, container, false);
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(this);
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.subscriptions);
         for (int i = 0; i < COLUMN_CHECKBOX_IDS.length; i++) {
             // Do this in Java to localize numbers
@@ -127,6 +135,12 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
                     getResources().getInteger(R.integer.swipe_to_refresh_duration_in_ms));
         });
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     private void refreshToolbarState() {

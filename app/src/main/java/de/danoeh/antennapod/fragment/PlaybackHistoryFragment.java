@@ -41,6 +41,7 @@ import java.util.List;
 
 public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuItemClickListener {
     public static final String TAG = "PlaybackHistoryFragment";
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     private List<FeedItem> playbackHistory;
     private PlaybackHistoryListAdapter adapter;
@@ -49,6 +50,7 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
     private EmptyViewHandler emptyView;
     private ProgressBar progressBar;
     private Toolbar toolbar;
+    private boolean displayUpArrow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,11 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.playback_history_label);
         toolbar.setOnMenuItemClickListener(this);
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
         toolbar.inflateMenu(R.menu.playback_history);
         refreshToolbarState();
 
@@ -96,6 +102,12 @@ public class PlaybackHistoryFragment extends Fragment implements Toolbar.OnMenuI
         if (disposable != null) {
             disposable.dispose();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
