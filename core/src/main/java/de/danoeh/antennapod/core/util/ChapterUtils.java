@@ -112,6 +112,9 @@ public class ChapterUtils {
         VorbisCommentChapterReader reader = new VorbisCommentChapterReader();
         reader.readInputStream(input);
         List<Chapter> chapters = reader.getChapters();
+        if (chapters == null) {
+            return Collections.emptyList();
+        }
         Collections.sort(chapters, new ChapterStartTimeComparator());
         enumerateEmptyChapterTitles(chapters);
         if (chaptersValid(chapters)) {
