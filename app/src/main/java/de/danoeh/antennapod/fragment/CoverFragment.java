@@ -117,13 +117,7 @@ public class CoverFragment extends Fragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public boolean loadMediaInfo() {
-                CoverFragment.this.loadMediaInfo();
-                return true;
-            }
-
-            @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 CoverFragment.this.loadMediaInfo();
             }
         };

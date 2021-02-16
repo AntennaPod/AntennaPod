@@ -72,13 +72,7 @@ public class ChaptersFragment extends Fragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public boolean loadMediaInfo() {
-                ChaptersFragment.this.loadMediaInfo();
-                return true;
-            }
-
-            @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 ChaptersFragment.this.loadMediaInfo();
             }
 

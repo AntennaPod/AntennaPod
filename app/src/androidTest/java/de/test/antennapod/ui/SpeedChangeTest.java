@@ -73,7 +73,12 @@ public class SpeedChangeTest {
 
         EspressoTestUtils.tryKillPlaybackService();
         activityRule.launchActivity(new Intent().putExtra(MainActivityStarter.EXTRA_OPEN_PLAYER, true));
-        controller = new PlaybackController(activityRule.getActivity());
+        controller = new PlaybackController(activityRule.getActivity()) {
+            @Override
+            public void loadMediaInfo() {
+                // Do nothing
+            }
+        };
         controller.init();
         controller.getMedia(); // To load media
     }

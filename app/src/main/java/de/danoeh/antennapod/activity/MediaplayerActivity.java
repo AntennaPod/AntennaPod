@@ -88,12 +88,6 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(this) {
-
-            @Override
-            public void setupGUI() {
-                MediaplayerActivity.this.setupGUI();
-            }
-
             @Override
             public void onPositionObserverUpdate() {
                 MediaplayerActivity.this.onPositionObserverUpdate();
@@ -135,8 +129,8 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
             }
 
             @Override
-            public boolean loadMediaInfo() {
-                return MediaplayerActivity.this.loadMediaInfo();
+            public void loadMediaInfo() {
+                MediaplayerActivity.this.loadMediaInfo();
             }
 
             @Override
@@ -459,16 +453,15 @@ public abstract class MediaplayerActivity extends CastEnabledActivity implements
      * to the PlaybackService to ensure that the activity has the right
      * FeedMedia object.
      */
-    boolean loadMediaInfo() {
+    void loadMediaInfo() {
         Log.d(TAG, "loadMediaInfo()");
-        if(controller == null || controller.getMedia() == null) {
-            return false;
+        if (controller == null || controller.getMedia() == null) {
+            return;
         }
         showTimeLeft = UserPreferences.shouldShowRemainingTime();
         onPositionObserverUpdate();
         checkFavorite();
         updatePlaybackSpeedButton();
-        return true;
     }
 
     void updatePlaybackSpeedButton() {
