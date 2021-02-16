@@ -20,7 +20,14 @@ public class ID3Reader {
     private static final int ID3_LENGTH = 3;
     private static final int FRAME_ID_LENGTH = 4;
 
-    private static final int ACTION_SKIP = 1;
+    /**
+     * Should skip remaining bytes of the current frame.
+     */
+    static final int ACTION_SKIP = 1;
+
+    /**
+     * Should not skip remaining bytes of the current frame. Can be used to parse sub-frames.
+     */
     static final int ACTION_DONT_SKIP = 2;
 
     private int readerPosition;
@@ -49,12 +56,17 @@ public class ID3Reader {
                     if (checkForNullString(frameHeader.getId())) {
                         break;
                     }
+                    int readerPositionBeforeFrame = input.getCount();
                     rc = onStartFrameHeader(frameHeader, input);
                     if (rc == ACTION_SKIP) {
                         if (frameHeader.getSize() + readerPosition > tagHeader.getSize()) {
                             break;
                         }
-                        skipBytes(input, frameHeader.getSize());
+                        int bytesAlreadyHandled = input.getCount() - readerPositionBeforeFrame;
+                        int bytesLeftToSkip = frameHeader.getSize() - bytesAlreadyHandled;
+                        if (bytesLeftToSkip > 0) {
+                            skipBytes(input, bytesLeftToSkip);
+                        }
                     }
                 }
             }

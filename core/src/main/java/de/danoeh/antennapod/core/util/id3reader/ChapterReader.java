@@ -53,7 +53,7 @@ public class ChapterReader extends ID3Reader {
                         | ((int) startTimeSource[2] << 8) | startTimeSource[3];
                 currentChapter = new ID3Chapter(elementId.toString(), startTime);
                 skipBytes(input, 12);
-                return ID3Reader.ACTION_DONT_SKIP;
+                return ID3Reader.ACTION_DONT_SKIP; // Let reader discover the sub-frames
             case FRAME_ID_TITLE:
                 if (currentChapter != null && currentChapter.getTitle() == null) {
                     StringBuilder title = new StringBuilder();
@@ -62,7 +62,7 @@ public class ChapterReader extends ID3Reader {
                             .setTitle(title.toString());
                     Log.d(TAG, "Found title: " + currentChapter.getTitle());
 
-                    return ID3Reader.ACTION_DONT_SKIP;
+                    return ID3Reader.ACTION_SKIP;
                 }
                 break;
             case FRAME_ID_LINK:
@@ -79,7 +79,7 @@ public class ChapterReader extends ID3Reader {
                         Log.w(TAG, "Bad URL found in ID3 data");
                     }
 
-                    return ID3Reader.ACTION_DONT_SKIP;
+                    return ID3Reader.ACTION_SKIP;
                 }
                 break;
             case FRAME_ID_PICTURE:
@@ -109,7 +109,7 @@ public class ChapterReader extends ID3Reader {
                         }
                         skipBytes(input, length);
                     }
-                    return ID3Reader.ACTION_DONT_SKIP;
+                    return ID3Reader.ACTION_SKIP;
                 }
                 break;
         }
