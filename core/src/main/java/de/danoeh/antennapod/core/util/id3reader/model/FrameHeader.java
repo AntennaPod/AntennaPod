@@ -3,10 +3,9 @@ package de.danoeh.antennapod.core.util.id3reader.model;
 import androidx.annotation.NonNull;
 
 public class FrameHeader extends Header {
+    private final short flags;
 
-    private final char flags;
-
-    public FrameHeader(String id, int size, char flags) {
+    public FrameHeader(String id, int size, short flags) {
         super(id, size);
         this.flags = flags;
     }

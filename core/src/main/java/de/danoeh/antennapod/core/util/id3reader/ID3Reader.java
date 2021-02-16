@@ -1,163 +1,112 @@
 package de.danoeh.antennapod.core.util.id3reader;
 
+import android.util.Log;
+import androidx.annotation.NonNull;
+import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
+import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.CountingInputStream;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
-import de.danoeh.antennapod.core.util.id3reader.model.TagHeader;
-import org.apache.commons.io.input.CountingInputStream;
-
 /**
- * Reads the ID3 Tag of a given file. In order to use this class, you should
- * create a subclass of it and overwrite the onStart* - or onEnd* - methods.
+ * Reads the ID3 Tag of a given file.
+ * See https://id3.org/id3v2.3.0
  */
 public class ID3Reader {
-    private static final int HEADER_LENGTH = 10;
-    private static final int ID3_LENGTH = 3;
+    private static final String TAG = "ID3Reader";
     private static final int FRAME_ID_LENGTH = 4;
-
-    /**
-     * Should skip remaining bytes of the current frame.
-     */
-    static final int ACTION_SKIP = 1;
-
-    /**
-     * Should not skip remaining bytes of the current frame. Can be used to parse sub-frames.
-     */
-    static final int ACTION_DONT_SKIP = 2;
-
-    private int readerPosition;
-
-    private static final byte ENCODING_UTF16_WITH_BOM = 1;
-    private static final byte ENCODING_UTF16_WITHOUT_BOM = 2;
-    private static final byte ENCODING_UTF8 = 3;
+    public static final byte ENCODING_ISO = 0;
+    public static final byte ENCODING_UTF16_WITH_BOM = 1;
+    public static final byte ENCODING_UTF16_WITHOUT_BOM = 2;
+    public static final byte ENCODING_UTF8 = 3;
 
     private TagHeader tagHeader;
+    private final CountingInputStream inputStream;
 
-    ID3Reader() {
+    public ID3Reader(CountingInputStream input) {
+        inputStream = input;
     }
 
-    public final void readInputStream(CountingInputStream input) throws IOException, ID3ReaderException {
-        int rc;
-        readerPosition = 0;
-        char[] tagHeaderSource = readChars(input, HEADER_LENGTH);
-        tagHeader = createTagHeader(tagHeaderSource);
-        if (tagHeader == null) {
-            onNoTagHeaderFound();
-        } else {
-            rc = onStartTagHeader(tagHeader);
-            if (rc != ACTION_SKIP) {
-                while (readerPosition < tagHeader.getSize()) {
-                    FrameHeader frameHeader = createFrameHeader(readChars(input, HEADER_LENGTH));
-                    if (checkForNullString(frameHeader.getId())) {
-                        break;
-                    }
-                    int readerPositionBeforeFrame = input.getCount();
-                    rc = onStartFrameHeader(frameHeader, input);
-                    if (rc == ACTION_SKIP) {
-                        if (frameHeader.getSize() + readerPosition > tagHeader.getSize()) {
-                            break;
-                        }
-                        int bytesAlreadyHandled = input.getCount() - readerPositionBeforeFrame;
-                        int bytesLeftToSkip = frameHeader.getSize() - bytesAlreadyHandled;
-                        if (bytesLeftToSkip > 0) {
-                            skipBytes(input, bytesLeftToSkip);
-                        }
-                    }
-                }
+    public void readInputStream() throws IOException, ID3ReaderException {
+        tagHeader = readTagHeader();
+        int tagContentStartPosition = getPosition();
+        while (getPosition() < tagContentStartPosition + tagHeader.getSize()) {
+            FrameHeader frameHeader = readFrameHeader();
+            if (frameHeader.getId().charAt(0) < '0' || frameHeader.getId().charAt(0) > 'z') {
+                Log.d(TAG, "Stopping because of invalid frame: " + frameHeader.toString());
+                return;
             }
-            onEndTag();
+            readFrame(frameHeader);
         }
     }
 
-    /** Returns true if string only contains null-bytes. */
-    private boolean checkForNullString(String s) {
-        if (!s.isEmpty()) {
-            int i = 0;
-            if (s.charAt(i) == 0) {
-                for (i = 1; i < s.length(); i++) {
-                    if (s.charAt(i) != 0) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            return false;
-        } else {
-            return true;
-        }
+    protected void readFrame(@NonNull FrameHeader frameHeader) throws IOException, ID3ReaderException {
+        Log.d(TAG, "Skipping frame: " + frameHeader.toString());
+        skipBytes(frameHeader.getSize());
+    }
 
+    int getPosition() {
+        return inputStream.getCount();
     }
 
     /**
-     * Read a certain number of chars from the given input stream. This method
-     * changes the readerPosition-attribute.
+     * Skip a certain number of bytes on the given input stream.
      */
-    char[] readChars(InputStream input, int number) throws IOException, ID3ReaderException {
-        char[] header = new char[number];
-        for (int i = 0; i < number; i++) {
-            int b = input.read();
-            readerPosition++;
-            if (b != -1) {
-                header[i] = (char) b;
-            } else {
-                throw new ID3ReaderException("Unexpected end of stream");
-            }
+    void skipBytes(int number) throws IOException, ID3ReaderException {
+        if (number < 0) {
+            throw new ID3ReaderException("Trying to read a negative number of bytes");
         }
-        return header;
+        IOUtils.skipFully(inputStream, number);
     }
 
-    /**
-     * Skip a certain number of bytes on the given input stream. This method
-     * changes the readerPosition-attribute.
-     */
-    void skipBytes(InputStream input, int number) throws IOException {
-        if (number <= 0) {
-            number = 1;
-        }
-        IOUtils.skipFully(input, number);
-
-        readerPosition += number;
+    byte readByte() throws IOException {
+        return (byte) inputStream.read();
     }
 
-    private TagHeader createTagHeader(char[] source) throws ID3ReaderException {
-        boolean hasTag = (source[0] == 0x49) && (source[1] == 0x44)
-                && (source[2] == 0x33);
-        if (source.length != HEADER_LENGTH) {
-            throw new ID3ReaderException("Length of header must be "
-                    + HEADER_LENGTH);
-        }
-        if (hasTag) {
-            String id = new String(source, 0, ID3_LENGTH);
-            char version = (char) ((source[3] << 8) | source[4]);
-            byte flags = (byte) source[5];
-            int size = (source[6] << 24) | (source[7] << 16) | (source[8] << 8)
-                    | source[9];
-            size = unsynchsafe(size);
-            return new TagHeader(id, size, version, flags);
-        } else {
-            return null;
+    short readShort() throws IOException {
+        char firstByte = (char) inputStream.read();
+        char secondByte = (char) inputStream.read();
+        return (short) ((firstByte << 8) | secondByte);
+    }
+
+    int readInt() throws IOException {
+        char firstByte = (char) inputStream.read();
+        char secondByte = (char) inputStream.read();
+        char thirdByte = (char) inputStream.read();
+        char fourthByte = (char) inputStream.read();
+        return (firstByte << 24) | (secondByte << 16) | (thirdByte << 8) | fourthByte;
+    }
+
+    void expectChar(char expected) throws ID3ReaderException, IOException {
+        char read = (char) inputStream.read();
+        if (read != expected) {
+            throw new ID3ReaderException("Expected " + expected + " and got " + read);
         }
     }
 
-    private FrameHeader createFrameHeader(char[] source)
-            throws ID3ReaderException {
-        if (source.length != HEADER_LENGTH) {
-            throw new ID3ReaderException("Length of header must be "
-                    + HEADER_LENGTH);
-        }
-        String id = new String(source, 0, FRAME_ID_LENGTH);
+    @NonNull
+    TagHeader readTagHeader() throws ID3ReaderException, IOException {
+        expectChar('I');
+        expectChar('D');
+        expectChar('3');
+        short version = readShort();
+        byte flags = readByte();
+        int size = unsynchsafe(readInt());
+        return new TagHeader("ID3", size, version, flags);
+    }
 
-        int size = (((int) source[4]) << 24) | (((int) source[5]) << 16)
-                | (((int) source[6]) << 8) | source[7];
+    @NonNull
+    FrameHeader readFrameHeader() throws IOException {
+        String id = readIsoStringFixed(FRAME_ID_LENGTH);
+        int size = readInt();
         if (tagHeader != null && tagHeader.getVersion() >= 0x0400) {
             size = unsynchsafe(size);
         }
-        char flags = (char) ((source[8] << 8) | source[9]);
+        short flags = readShort();
         return new FrameHeader(id, size, flags);
     }
 
@@ -174,81 +123,74 @@ public class ID3Reader {
         return out;
     }
 
-    protected int readString(StringBuilder buffer, InputStream input, int max) throws IOException,
-            ID3ReaderException {
-        if (max > 0) {
-            char[] encoding = readChars(input, 1);
-            max--;
-
-            if (encoding[0] == ENCODING_UTF16_WITH_BOM || encoding[0] == ENCODING_UTF16_WITHOUT_BOM) {
-                return readUnicodeString(buffer, input, max, Charset.forName("UTF-16")) + 1; // take encoding byte into account
-            } else if (encoding[0] == ENCODING_UTF8) {
-                return readUnicodeString(buffer, input, max, Charset.forName("UTF-8")) + 1; // take encoding byte into account
-            } else {
-                return readISOString(buffer, input, max) + 1; // take encoding byte into account
-            }
-        } else {
-            if (buffer != null) {
-                buffer.append("");
-            }
-            return 0;
-        }
+    /**
+     * Reads a null-terminated string with encoding.
+     */
+    protected String readEncodingAndString(int max) throws IOException {
+        byte encoding = readByte();
+        return readEncodedString(encoding, max - 1);
     }
 
-    protected int readISOString(StringBuilder buffer, InputStream input, int max)
-            throws IOException, ID3ReaderException {
+    @SuppressWarnings("CharsetObjectCanBeUsed")
+    protected String readIsoStringFixed(int length) throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         int bytesRead = 0;
-        char c;
-        while (++bytesRead <= max && (c = (char) input.read()) > 0) {
-            if (buffer != null) {
-                buffer.append(c);
-            }
+        while (bytesRead < length) {
+            bytes.write(readByte());
+            bytesRead++;
         }
-        return bytesRead;
+        return Charset.forName("ISO-8859-1").newDecoder().decode(ByteBuffer.wrap(bytes.toByteArray())).toString();
     }
 
-    private int readUnicodeString(StringBuilder strBuffer, InputStream input, int max, Charset charset)
-            throws IOException, ID3ReaderException {
-        byte[] buffer = new byte[max];
-        int c;
-        int cZero = -1;
-        int i = 0;
-        for (; i < max; i++) {
-            c = input.read();
-            if (c == -1) {
+    protected String readIsoStringNullTerminated(int max) throws IOException {
+        return readEncodedString(ENCODING_ISO, max);
+    }
+
+    @SuppressWarnings("CharsetObjectCanBeUsed")
+    String readEncodedString(int encoding, int max) throws IOException {
+        if (encoding == ENCODING_UTF16_WITH_BOM || encoding == ENCODING_UTF16_WITHOUT_BOM) {
+            return readEncodedString2(Charset.forName("UTF-16"), max);
+        } else if (encoding == ENCODING_UTF8) {
+            return readEncodedString2(Charset.forName("UTF-8"), max);
+        } else {
+            return readEncodedString1(Charset.forName("ISO-8859-1"), max);
+        }
+    }
+
+    /**
+     * Reads chars where the encoding uses 1 char per symbol.
+     */
+    private String readEncodedString1(Charset charset, int max) throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        int bytesRead = 0;
+        while (bytesRead < max) {
+            byte c = readByte();
+            bytesRead++;
+            if (c == 0) {
                 break;
-            } else if (c == 0) {
-                if (cZero == 0) {
-                    // termination character found
-                    break;
-                } else {
-                    cZero = 0;
-                }
-            } else {
-                buffer[i] = (byte) c;
-                cZero = -1;
             }
+            bytes.write(c);
         }
-        if (strBuffer != null) {
-            strBuffer.append(charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString());
+        return charset.newDecoder().decode(ByteBuffer.wrap(bytes.toByteArray())).toString();
+    }
+
+    /**
+     * Reads chars where the encoding uses 2 chars per symbol.
+     */
+    private String readEncodedString2(Charset charset, int max) throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        int bytesRead = 0;
+        while (bytesRead < max) {
+            byte c1 = readByte();
+            bytesRead++;
+            if (c1 == 0) {
+                break;
+            }
+            byte c2 = readByte();
+            bytesRead++;
+            bytes.write(c1);
+            bytes.write(c2);
         }
-        return i;
+        return charset.newDecoder().decode(ByteBuffer.wrap(bytes.toByteArray())).toString();
     }
-
-    int onStartTagHeader(TagHeader header) {
-        return ACTION_SKIP;
-    }
-
-    int onStartFrameHeader(FrameHeader header, CountingInputStream input) throws IOException, ID3ReaderException {
-        return ACTION_SKIP;
-    }
-
-    void onEndTag() {
-
-    }
-
-    void onNoTagHeaderFound() {
-
-    }
-
 }

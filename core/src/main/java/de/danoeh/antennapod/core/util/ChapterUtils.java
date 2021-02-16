@@ -95,14 +95,9 @@ public class ChapterUtils {
 
     @NonNull
     private static List<Chapter> readId3ChaptersFrom(CountingInputStream in) throws IOException, ID3ReaderException {
-        ChapterReader reader = new ChapterReader();
-        reader.readInputStream(in);
+        ChapterReader reader = new ChapterReader(in);
+        reader.readInputStream();
         List<Chapter> chapters = reader.getChapters();
-
-        if (chapters == null) {
-            Log.i(TAG, "ChapterReader could not find any ID3 chapters");
-            return Collections.emptyList();
-        }
         Collections.sort(chapters, new ChapterStartTimeComparator());
         enumerateEmptyChapterTitles(chapters);
         if (!chaptersValid(chapters)) {
@@ -118,7 +113,6 @@ public class ChapterUtils {
         reader.readInputStream(input);
         List<Chapter> chapters = reader.getChapters();
         if (chapters == null) {
-            Log.i(TAG, "ChapterReader could not find any Ogg vorbis chapters");
             return Collections.emptyList();
         }
         Collections.sort(chapters, new ChapterStartTimeComparator());
