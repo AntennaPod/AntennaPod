@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class Id3ReaderTest {
@@ -27,16 +28,74 @@ public class Id3ReaderTest {
     }
 
     @Test
-    public void testReadUtf16WithBom() throws IOException {
+    public void testReadMultipleStrings() throws IOException {
+        byte[] data = {
+            ID3Reader.ENCODING_ISO,
+            'F', 'o', 'o',
+            0, // Null-terminated
+            ID3Reader.ENCODING_ISO,
+            'B', 'a', 'r',
+            0 // Null-terminated
+        };
+        CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(data));
+        ID3Reader reader = new ID3Reader(inputStream);
+        assertEquals("Foo", reader.readEncodingAndString(1000));
+        assertEquals("Bar", reader.readEncodingAndString(1000));
+    }
+
+    @Test
+    public void testReadingLimit() throws IOException {
+        byte[] data = {
+            ID3Reader.ENCODING_ISO,
+            'A', 'B', 'C', 'D'
+        };
+        CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(data));
+        ID3Reader reader = new ID3Reader(inputStream);
+        assertEquals("ABC", reader.readEncodingAndString(4)); // Includes encoding
+        assertEquals('D', reader.readByte());
+    }
+
+    @Test
+    public void testReadUtf16RespectsBom() throws IOException {
+        byte[] data = {
+            ID3Reader.ENCODING_UTF16_WITH_BOM,
+            (byte) 0xff, (byte) 0xfe, // BOM: Little-endian
+            'A', 0, 'B', 0, 'C', 0,
+            0, 0, // Null-terminated
+            ID3Reader.ENCODING_UTF16_WITH_BOM,
+            (byte) 0xfe, (byte) 0xff, // BOM: Big-endian
+            0, 'D', 0, 'E', 0, 'F',
+            0, 0, // Null-terminated
+        };
+        CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(data));
+        ID3Reader reader = new ID3Reader(inputStream);
+        assertEquals("ABC", reader.readEncodingAndString(1000));
+        assertEquals("DEF", reader.readEncodingAndString(1000));
+    }
+
+    @Test
+    public void testReadUtf16NullPrefix() throws IOException {
         byte[] data = {
             ID3Reader.ENCODING_UTF16_WITH_BOM,
             (byte) 0xff, (byte) 0xfe, // BOM
-            'A', 0, 'B', 0, 'C', 0,
+            0x00, 0x01, // Latin Capital Letter A with macron (Ā)
             0, 0, // Null-terminated
         };
         CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(data));
         String string = new ID3Reader(inputStream).readEncodingAndString(1000);
-        assertEquals("ABC", string);
+        assertEquals("Ā", string);
+    }
+
+    @Test
+    public void testReadingLimitUtf16() throws IOException {
+        byte[] data = {
+            ID3Reader.ENCODING_UTF16_WITHOUT_BOM,
+            'A', 0, 'B', 0, 'C', 0, 'D', 0
+        };
+        CountingInputStream inputStream = new CountingInputStream(new ByteArrayInputStream(data));
+        ID3Reader reader = new ID3Reader(inputStream);
+        reader.readEncodingAndString(6); // Includes encoding, produces broken string
+        assertTrue("Should respect limit even if it breaks a symbol", reader.getPosition() <= 6);
     }
 
     @Test
