@@ -180,14 +180,13 @@ public class ID3Reader {
     private String readEncodedString2(Charset charset, int max) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         int bytesRead = 0;
-        while (bytesRead < max) {
+        while (bytesRead + 1 < max) {
             byte c1 = readByte();
-            bytesRead++;
-            if (c1 == 0) {
+            byte c2 = readByte();
+            if (c1 == 0 && c2 == 0) {
                 break;
             }
-            byte c2 = readByte();
-            bytesRead++;
+            bytesRead += 2;
             bytes.write(c1);
             bytes.write(c2);
         }
