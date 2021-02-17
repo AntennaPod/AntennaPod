@@ -1,0 +1,31 @@
+AntennaPod je správca a prehrávač podcastov, ktorý vám sprostredkuje okamžitý prístup k miliónom bezplatným a spoplatneným podcastom - od nezávislých podcastérov až k vydavateľstvám ako BBC, NPR a CNN. Pridávajte, importujte a exportujte ich zdroje bez problémov pomocou databázy podcastov iTunes, OPML súborov alebo odkazov na RSS.
+Stiahnite, streamujte alebo plánujte epizódy a užívajte si ich ako sa vám páči s nastaviteľnou rýchlosťou prehrávania, podporou kapitol a časovačom vypnutia.
+Ušetrite si námahu, baterku a mobilné dáta pomocou výkonnej automatickej kontroly sťahovania epizód (určite čas, intervaly a WiFi siete) a mazania epizód (založené na obľúbených epizódach a nastavení oneskorenia).
+
+AntennaPod je spravovaný podcastovými entuziastami a je slobodný v každom slova zmysle: otvorený zdrojový kód, zadarmo, bez reklamy.
+
+<b>Importovať, spravovať a prehrať</b>
+• Ovládajte prehrávanie odkiaľkoľvek: domovská obrazovka, systémové upozornenia a handsfree a ovládanie cez bluetooth
+• Pridať a importovať zdroje pomocou priečinkov iTunes a gPodder.net, OPML súborov a odkazov RSS alebo Atom
+• Užívajte si počúvanie s nastaviteľnou rýchlosťou prehrávania, podporou kapitol, zapamätanou pozíciou prehrávania a pokročilým nastavením vypnutia (zatrasením resetuj, stíš hlasitosť)
+Počúvajte heslom chránené zdroje a epizódy
+
+<b>Sledovať, zdielať a oceniť</b>
+• Sledujte najlepšie z najlepších pomocou označenia ako obľúbené
+• Nájdite epizódu v histórií prehrávaní alebo v nadpisoch a popisoch
+• Zdielajte epizódy a zdroje pomocou pokročilých nastavení sociálnych sietí a e-mailu, služieb gPodder.net a cez export do OPML súboru
+
+<b>Spravovať systém</b>
+• Spravujte automatické sťahovanie: vyberte zdroje, vylúčte mobilné siete, vyberte konkrétne WiFi siete, vyžadujte nabíjanie telefónu a nastavte časy a intervaly
+• Spravujte úložisko nastavením počtu uložených epizód, inteligentným mazaním a zvolením umiestnenia súborov
+• Prispôsobte si vzhľad na svetlý alebo tmavý
+• Zálohujte si odbery pomocou gPodder.net a OPML exportu
+
+<b>Pridať sa do komunity AntennaPod!</b>
+AntennaPod aktívne vyvíjajú dobrovoľníci. Tiež môžete prispieť kódom alebo komentárom.
+
+Na našom fóre môžete v priateľskej atmosfére diskutovať a nájsť odpovede na vaše otázky o nových funkciách alebo všeobecne o podcastingu. 
+https://forum.antennapod.org/
+
+Transifex je miesto, kde môžete pomôcť s prekladom:
+https://www.transifex.com/antennapod/antennapod
