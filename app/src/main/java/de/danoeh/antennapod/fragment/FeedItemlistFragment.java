@@ -509,7 +509,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     private void loadFeedImage() {
         Glide.with(getActivity())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.image_readability_tint)
                     .error(R.color.image_readability_tint)
@@ -519,7 +519,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
                 .into(imgvBackground);
 
         Glide.with(getActivity())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)

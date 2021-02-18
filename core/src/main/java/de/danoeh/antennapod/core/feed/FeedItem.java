@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
@@ -27,7 +26,7 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements ShownotesProvider, ImageResource, Serializable {
+public class FeedItem extends FeedComponent implements ShownotesProvider, Serializable {
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
@@ -376,14 +375,13 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         };
     }
 
-    @Override
     public String getImageLocation() {
         if (imageUrl != null) {
             return imageUrl;
         } else if (media != null && media.hasEmbeddedPicture()) {
             return FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER + media.getLocalMediaUrl();
         } else if (feed != null) {
-            return feed.getImageLocation();
+            return feed.getImageUrl();
         } else {
             return null;
         }
