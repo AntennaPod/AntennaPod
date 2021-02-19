@@ -3,7 +3,6 @@ package de.danoeh.antennapod.core.feed.util;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -55,14 +54,6 @@ public final class ImageResourceUtils {
         } else {
             return getFallbackImageLocation(feedItem);
         }
-    }
-
-    /**
-     * returns the image location, does prefer the episode cover if available and enabled in settings.
-     */
-    @Nullable
-    public static String getEpisodeListImageLocation(@NonNull Feed feed) {
-        return feed.getImageUrl();
     }
 
     @Nullable
