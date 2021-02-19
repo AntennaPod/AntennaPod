@@ -231,16 +231,19 @@ public class SubscriptionFragment extends Fragment implements Toolbar.OnMenuItem
             disposable.dispose();
         }
         emptyView.hide();
-        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    navDrawerData = result;
-                    subscriptionAdapter.notifyDataSetChanged();
-                    emptyView.updateVisibility();
-                    progressBar.setVisibility(View.GONE);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
+                .subscribe(
+                    result -> {
+                        navDrawerData = result;
+                        subscriptionAdapter.notifyDataSetChanged();
+                        emptyView.updateVisibility();
+                        progressBar.setVisibility(View.GONE); // Keep hidden to avoid flickering while refreshing
+                    }, error -> {
+                        Log.e(TAG, Log.getStackTraceString(error));
+                        progressBar.setVisibility(View.GONE);
+                    });
 
         if (UserPreferences.getSubscriptionsFilter().isEnabled()) {
             feedsFilteredMsg.setText("{md-info-outline} " + getString(R.string.subscriptions_are_filtered));
