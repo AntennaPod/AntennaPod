@@ -17,12 +17,10 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 import android.widget.ImageButton;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.MessageEvent;
 import de.danoeh.antennapod.core.event.ServiceEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -30,13 +28,10 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -66,7 +61,6 @@ public abstract class PlaybackController {
     private boolean initialized = false;
     private boolean eventsRegistered = false;
 
-    private Disposable serviceBinder;
     private Disposable mediaLoader;
 
     public PlaybackController(@NonNull Activity activity) {
@@ -153,9 +147,6 @@ public abstract class PlaybackController {
     }
 
     private void unbind() {
-        if (serviceBinder != null) {
-            serviceBinder.dispose();
-        }
         try {
             activity.unbindService(mConnection);
         } catch (IllegalArgumentException e) {
@@ -178,55 +169,11 @@ public abstract class PlaybackController {
      */
     private void bindToService() {
         Log.d(TAG, "Trying to connect to service");
-        if (serviceBinder != null) {
-            serviceBinder.dispose();
+        if (!PlaybackService.isRunning) {
+            throw new IllegalStateException("Trying to bind but service is not running");
         }
-        serviceBinder = Observable.fromCallable(this::getPlayLastPlayedMediaIntent)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(optionalIntent -> {
-                    boolean bound = false;
-                    if (!PlaybackService.isRunning) {
-                        if (optionalIntent.isPresent()) {
-                            Log.d(TAG, "Calling start service");
-                            ContextCompat.startForegroundService(activity, optionalIntent.get());
-                            bound = activity.bindService(optionalIntent.get(), mConnection, 0);
-                        } else {
-                            status = PlayerStatus.STOPPED;
-                            handleStatus();
-                        }
-                    } else {
-                        Log.d(TAG, "PlaybackService is running, trying to connect without start command.");
-                        bound = activity.bindService(new Intent(activity, PlaybackService.class),
-                                mConnection, 0);
-                    }
-                    Log.d(TAG, "Result for service binding: " + bound);
-                }, error -> Log.e(TAG, Log.getStackTraceString(error)));
-    }
-
-    /**
-     * Returns an intent that starts the PlaybackService and plays the last
-     * played media or null if no last played media could be found.
-     */
-    @NonNull
-    private Optional<Intent> getPlayLastPlayedMediaIntent() {
-        Log.d(TAG, "Trying to restore last played media");
-        Playable media = PlayableUtils.createInstanceFromPreferences(activity);
-        if (media == null) {
-            Log.d(TAG, "No last played media found");
-            return Optional.empty();
-        }
-
-        boolean fileExists = media.localFileAvailable();
-        boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
-        if (!fileExists && !lastIsStream && media instanceof FeedMedia) {
-            DBTasks.notifyMissingFeedMediaFile(activity, (FeedMedia) media);
-        }
-
-        return Optional.of(new PlaybackServiceStarter(activity, media)
-                .startWhenPrepared(false)
-                .shouldStream(lastIsStream || !fileExists)
-                .getIntent());
+        boolean bound = activity.bindService(new Intent(activity, PlaybackService.class), mConnection, 0);
+        Log.d(TAG, "Result for service binding: " + bound);
     }
 
     private final ServiceConnection mConnection = new ServiceConnection() {
