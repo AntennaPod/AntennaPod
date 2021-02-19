@@ -2,12 +2,14 @@ package de.danoeh.antennapod.core.util.id3reader;
 
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
+import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.id3reader.model.FrameHeader;
 import org.apache.commons.io.input.CountingInputStream;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.List;
 
 import static de.danoeh.antennapod.core.util.id3reader.Id3ReaderTest.concat;
 import static de.danoeh.antennapod.core.util.id3reader.Id3ReaderTest.generateFrameHeader;
@@ -101,5 +103,32 @@ public class ChapterReaderTest {
 
         // Should skip the garbage and point to the next frame
         assertEquals(titleSubframeContent.length, reader.getPosition());
+    }
+
+    @Test
+    public void testRealFileUltraschall() throws IOException, ID3ReaderException {
+        CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
+                .getResource("media-parser/ultraschall5.mp3").openStream());
+        ChapterReader reader = new ChapterReader(inputStream);
+        reader.readInputStream();
+        List<Chapter> chapters = reader.getChapters();
+
+        assertEquals(3, chapters.size());
+
+        assertEquals(0, chapters.get(0).getStart());
+        assertEquals(4004, chapters.get(1).getStart());
+        assertEquals(7999, chapters.get(2).getStart());
+
+        assertEquals("Marke 1", chapters.get(0).getTitle());
+        assertEquals("Marke 2", chapters.get(1).getTitle());
+        assertEquals("Marke 3", chapters.get(2).getTitle());
+
+        assertEquals("https://example.com", chapters.get(0).getLink());
+        assertEquals("https://example.com", chapters.get(1).getLink());
+        assertEquals("https://example.com", chapters.get(2).getLink());
+
+        assertEquals(EmbeddedChapterImage.makeUrl(16073, 2750569), chapters.get(0).getImageUrl());
+        assertEquals(EmbeddedChapterImage.makeUrl(2766765, 15740), chapters.get(1).getImageUrl());
+        assertEquals(EmbeddedChapterImage.makeUrl(2782628, 2750569), chapters.get(2).getImageUrl());
     }
 }
