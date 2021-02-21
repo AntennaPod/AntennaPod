@@ -23,7 +23,7 @@ import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
 /**
- * Data Object for a XML message
+ * Item (episode) within a feed.
  *
  * @author daniel
  */
