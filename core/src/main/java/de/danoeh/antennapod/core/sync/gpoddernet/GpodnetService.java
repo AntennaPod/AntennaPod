@@ -79,7 +79,7 @@ public class GpodnetService implements ISyncService {
         } else {
             // no match
             this.baseScheme = "https";
-            this.baseHost = "invalid_host_url.xyz";
+            this.baseHost = baseHosturl;    // use original (malformed) URL -> this will cause an exception on connect
             this.basePort = 443;
         }
 
