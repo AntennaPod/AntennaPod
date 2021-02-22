@@ -82,6 +82,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         final Button selectHost = view.findViewById(R.id.chooseHostButton);
         final RadioGroup serverRadioGroup = view.findViewById(R.id.serverRadioGroup);
         final EditText serverUrlText = view.findViewById(R.id.serverUrlText);
+
         if (!GpodnetService.DEFAULT_BASE_HOST.equals(GpodnetPreferences.getHosturl())) {
             serverUrlText.setText(GpodnetPreferences.getHosturl());
         }
@@ -108,10 +109,14 @@ public class GpodderAuthenticationFragment extends DialogFragment {
         final TextView txtvError = view.findViewById(R.id.credentialsError);
         final ProgressBar progressBar = view.findViewById(R.id.progBarLogin);
         final TextView createAccount = view.findViewById(R.id.createAccountButton);
+        final TextView createAccountWarning = view.findViewById(R.id.createAccountWarning);
 
         createAccount.setPaintFlags(createAccount.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         createAccount.setOnClickListener(v -> IntentUtils.openInBrowser(getContext(), "https://gpodder.net/register/"));
 
+        if (GpodnetPreferences.getHosturl().startsWith("http://")) {
+            createAccountWarning.setVisibility(View.VISIBLE);
+        };
         password.setOnEditorActionListener((v, actionID, event) ->
                 actionID == EditorInfo.IME_ACTION_GO && login.performClick());
 
