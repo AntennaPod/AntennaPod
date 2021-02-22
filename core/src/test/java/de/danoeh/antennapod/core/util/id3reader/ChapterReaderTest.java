@@ -131,4 +131,35 @@ public class ChapterReaderTest {
         assertEquals(EmbeddedChapterImage.makeUrl(2766765, 15740), chapters.get(1).getImageUrl());
         assertEquals(EmbeddedChapterImage.makeUrl(2782628, 2750569), chapters.get(2).getImageUrl());
     }
+
+    @Test
+    public void testRealFileAuphonic() throws IOException, ID3ReaderException {
+        CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
+                .getResource("media-parser/auphonic.mp3").openStream());
+        ChapterReader reader = new ChapterReader(inputStream);
+        reader.readInputStream();
+        List<Chapter> chapters = reader.getChapters();
+
+        assertEquals(4, chapters.size());
+
+        assertEquals(0, chapters.get(0).getStart());
+        assertEquals(3000, chapters.get(1).getStart());
+        assertEquals(6000, chapters.get(2).getStart());
+        assertEquals(9000, chapters.get(3).getStart());
+
+        assertEquals("Chapter 1 - ❤️😊", chapters.get(0).getTitle());
+        assertEquals("Chapter 2 - ßöÄ", chapters.get(1).getTitle());
+        assertEquals("Chapter 3 - 爱", chapters.get(2).getTitle());
+        assertEquals("Chapter 4", chapters.get(3).getTitle());
+
+        assertEquals("https://example.com", chapters.get(0).getLink());
+        assertEquals("https://example.com", chapters.get(1).getLink());
+        assertEquals("https://example.com", chapters.get(2).getLink());
+        assertEquals("https://example.com", chapters.get(3).getLink());
+
+        assertEquals(EmbeddedChapterImage.makeUrl(765, 308), chapters.get(0).getImageUrl());
+        assertEquals(EmbeddedChapterImage.makeUrl(1271, 308), chapters.get(1).getImageUrl());
+        assertEquals(EmbeddedChapterImage.makeUrl(1771, 308), chapters.get(2).getImageUrl());
+        assertEquals(EmbeddedChapterImage.makeUrl(2259, 308), chapters.get(3).getImageUrl());
+    }
 }
