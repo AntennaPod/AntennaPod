@@ -116,7 +116,7 @@ public class GpodderAuthenticationFragment extends DialogFragment {
 
         if (GpodnetPreferences.getHosturl().startsWith("http://")) {
             createAccountWarning.setVisibility(View.VISIBLE);
-        };
+        }
         password.setOnEditorActionListener((v, actionID, event) ->
                 actionID == EditorInfo.IME_ACTION_GO && login.performClick());
 
