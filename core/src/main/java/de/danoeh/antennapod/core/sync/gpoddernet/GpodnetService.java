@@ -77,9 +77,9 @@ public class GpodnetService implements ISyncService {
                 this.basePort = Integer.parseInt(m.group(3));    // regex -> can only be digits
             }
         } else {
-            // no match
+            // URL does not match regex: use it anyway -> this will cause an exception on connect
             this.baseScheme = "https";
-            this.baseHost = baseHosturl;    // use original (malformed) URL -> this will cause an exception on connect
+            this.baseHost = baseHosturl;
             this.basePort = 443;
         }
 
