@@ -164,7 +164,7 @@ public class CoverFragment extends Fragment {
                             new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
 
             RequestBuilder<Drawable> cover = Glide.with(this)
-                    .load(ImageResourceUtils.getEpisodeImageLocation(media))
+                    .load(media.getImageLocation())
                     .error(Glide.with(this)
                             .load(ImageResourceUtils.getFallbackImageLocation(media))
                             .apply(options))

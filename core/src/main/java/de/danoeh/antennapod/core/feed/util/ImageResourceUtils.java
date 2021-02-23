@@ -17,22 +17,6 @@ public final class ImageResourceUtils {
     }
 
     /**
-     * returns the image location, does prefer the episode cover if available.
-     */
-    @Nullable
-    public static String getEpisodeImageLocation(@NonNull Playable playable) {
-        return playable.getImageLocation();
-    }
-
-    /**
-     * returns the image location, does prefer the episode cover if available.
-     */
-    @Nullable
-    public static String getEpisodeImageLocation(@NonNull FeedItem feedItem) {
-        return feedItem.getImageLocation();
-    }
-
-    /**
      * returns the image location, does prefer the episode cover if available and enabled in settings.
      */
     @Nullable
