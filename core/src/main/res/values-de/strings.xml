@@ -819,5 +819,4 @@
   <string name="on_demand_config_setting_changed">Einstellung erfolgreich aktualisiert.</string>
   <string name="on_demand_config_stream_text">Es sieht so aus als würdest du viel streamen. Möchtest du in Listen den Streamen-Button anzeigen?</string>
   <string name="on_demand_config_download_text">Es sieht so aus als würdest du viel herunterladen. Möchtest du in Listen den Herunterladen-Button anzeigen?</string>
-    <string name="gpodnetauth_encryption_warning">Passwort und Daten sind nicht verschlüsselt!</string>
 </resources>
