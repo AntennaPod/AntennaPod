@@ -156,14 +156,7 @@ android {
 }
 
 dependencies {
-    freeImplementation project(":core")
-    // free build hack: skip some dependencies
-    if (!doFreeBuild()) {
-        playImplementation project(":core")
-        implementation 'com.google.android.play:core:1.8.0'
-    } else {
-        System.out.println("app: free build hack, skipping some dependencies")
-    }
+    implementation project(":core")
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -199,6 +192,8 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
     implementation 'com.github.skydoves:balloon:1.1.5'
 
+    // Non-free dependencies:
+    playImplementation 'com.google.android.play:core:1.8.0'
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"

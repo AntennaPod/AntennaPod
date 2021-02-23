@@ -66,7 +66,7 @@ workflows:
           build-steps:
             - run:
                 name: Build free (for F-Droid)
-                command: ./gradlew assembleFreeRelease -PdisablePreDex -PfreeBuild
+                command: ./gradlew assembleFreeRelease -PdisablePreDex
 
   static-analysis:
     jobs:
