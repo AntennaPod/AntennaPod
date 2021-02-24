@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
 import androidx.annotation.Nullable;
-import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -19,8 +18,7 @@ import java.util.List;
 /**
  * Interface for objects that can be played by the PlaybackService.
  */
-public interface Playable extends Parcelable,
-        ShownotesProvider, ImageResource {
+public interface Playable extends Parcelable, ShownotesProvider {
     public static final int INVALID_TIME = -1;
 
     /**
@@ -176,6 +174,14 @@ public interface Playable extends Parcelable,
     int getPlayableType();
 
     void setChapters(List<Chapter> chapters);
+
+    /**
+     * Returns the location of the image or null if no image is available.
+     * This can be the feed item image URL, the local embedded media image path, the feed image URL,
+     * or the remote media image URL, depending on what's available.
+     */
+    @Nullable
+    String getImageLocation();
 
     /**
      * Provides utility methods for Playable objects.

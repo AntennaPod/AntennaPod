@@ -175,8 +175,8 @@ public class FeedMedia extends FeedFile implements Playable {
             // getImageLocation() also loads embedded images, which we can not send to external devices
             if (item.getImageUrl() != null) {
                 builder.setIconUri(Uri.parse(item.getImageUrl()));
-            } else if (item.getFeed() != null && item.getFeed().getImageLocation() != null) {
-                builder.setIconUri(Uri.parse(item.getFeed().getImageLocation()));
+            } else if (item.getFeed() != null && item.getFeed().getImageUrl() != null) {
+                builder.setIconUri(Uri.parse(item.getFeed().getImageUrl()));
             }
         }
         return new MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);

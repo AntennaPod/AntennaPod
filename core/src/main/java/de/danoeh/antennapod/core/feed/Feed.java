@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.SortOrder;
@@ -19,7 +18,7 @@ import de.danoeh.antennapod.core.util.SortOrder;
  *
  * @author daniel
  */
-public class Feed extends FeedFile implements ImageResource {
+public class Feed extends FeedFile {
 
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
@@ -489,11 +488,6 @@ public class Feed extends FeedFile implements ImageResource {
         if (preferences != null) {
             preferences.setFeedID(id);
         }
-    }
-
-    @Override
-    public String getImageLocation() {
-        return imageUrl;
     }
 
     public int getPageNr() {

@@ -409,8 +409,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 .setTitle(feed.getTitle())
                 .setDescription(feed.getDescription())
                 .setSubtitle(feed.getCustomTitle());
-        if (feed.getImageLocation() != null) {
-            builder.setIconUri(Uri.parse(feed.getImageLocation()));
+        if (feed.getImageUrl() != null) {
+            builder.setIconUri(Uri.parse(feed.getImageUrl()));
         }
         if (feed.getLink() != null) {
             builder.setMediaUri(Uri.parse(feed.getLink()));
@@ -1306,7 +1306,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, p.getFeedTitle());
 
-            String imageLocation = ImageResourceUtils.getEpisodeImageLocation(p);
+            String imageLocation = p.getImageLocation();
 
             if (!TextUtils.isEmpty(imageLocation)) {
                 if (UserPreferences.setLockscreenBackground()) {

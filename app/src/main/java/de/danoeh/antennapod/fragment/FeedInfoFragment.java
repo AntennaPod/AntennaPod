@@ -203,7 +203,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         Log.d(TAG, "Author is " + feed.getAuthor());
         Log.d(TAG, "URL is " + feed.getDownload_url());
         Glide.with(getContext())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
@@ -212,7 +212,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                         .dontAnimate())
                 .into(imgvCover);
         Glide.with(getContext())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)
                         .error(R.color.image_readability_tint)

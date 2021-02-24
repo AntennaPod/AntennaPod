@@ -108,7 +108,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
         boolean textAndImageCombined = feed.isLocalFeed()
                 && LocalFeedUpdater.getDefaultIconUrl(convertView.getContext()).equals(feed.getImageUrl());
         new CoverLoader(mainActivityRef.get())
-                .withUri(feed.getImageLocation())
+                .withUri(feed.getImageUrl())
                 .withPlaceholderView(holder.feedTitle, textAndImageCombined)
                 .withCoverView(holder.imageView)
                 .load();

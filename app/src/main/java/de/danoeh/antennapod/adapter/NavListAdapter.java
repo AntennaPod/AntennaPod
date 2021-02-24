@@ -337,7 +337,7 @@ public class NavListAdapter extends BaseAdapter
         }
 
         Glide.with(context)
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
