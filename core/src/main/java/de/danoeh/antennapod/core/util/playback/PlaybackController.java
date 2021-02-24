@@ -28,7 +28,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
 import de.danoeh.antennapod.ui.common.ThemeUtils;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;

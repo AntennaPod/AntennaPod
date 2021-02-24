@@ -78,6 +78,8 @@ import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlayableException;
+import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
 import de.danoeh.antennapod.ui.appstartintent.MainActivityStarter;
@@ -723,7 +725,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
     }
 
     private void startPlayingFromPreferences() {
-        Observable.fromCallable(() -> Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext()))
+        Observable.fromCallable(() -> PlayableUtils.createInstanceFromPreferences(getApplicationContext()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -996,7 +998,7 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         FeedMedia media = (FeedMedia) currentMedia;
         try {
             media.loadMetadata();
-        } catch (Playable.PlayableException e) {
+        } catch (PlayableException e) {
             Log.e(TAG, "Unable to load metadata to get next in queue", e);
             return null;
         }
