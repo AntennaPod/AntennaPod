@@ -38,6 +38,7 @@ import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlayableException;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 
@@ -288,7 +289,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 onPrepared(startWhenPrepared);
             }
 
-        } catch (Playable.PlayableException | IOException | IllegalStateException e) {
+        } catch (PlayableException | IOException | IllegalStateException e) {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
         }
