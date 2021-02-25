@@ -654,6 +654,7 @@
     <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="gpodnetauth_login_title">Login</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
+    <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
     <string name="create_account">Create account</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
