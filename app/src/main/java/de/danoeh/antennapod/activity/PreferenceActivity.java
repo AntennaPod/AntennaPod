@@ -1,13 +1,15 @@
 package de.danoeh.antennapod.activity;
 
 import android.os.Bundle;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceFragmentCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult;
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener;
@@ -95,6 +97,8 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
                 return R.string.gpodnet_main_label;
             case R.xml.preferences_notifications:
                 return R.string.notification_pref_fragment;
+            case R.xml.feed_settings:
+                return R.string.feed_settings_label;
             default:
                 return R.string.settings_label;
         }
@@ -128,7 +132,18 @@ public class PreferenceActivity extends AppCompatActivity implements SearchPrefe
 
     @Override
     public void onSearchResultClicked(SearchPreferenceResult result) {
-        PreferenceFragmentCompat fragment = openScreen(result.getResourceFile());
-        result.highlight(fragment);
+        int screen = result.getResourceFile();
+        if (screen == R.xml.feed_settings) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.feed_settings_label);
+            builder.setMessage(R.string.pref_feed_settings_dialog_msg);
+            builder.setPositiveButton(R.string.pref_ok_label, (dialogInterface, i) -> {
+            });
+            builder.show();
+        } else {
+            PreferenceFragmentCompat fragment = openScreen(result.getResourceFile());
+            result.highlight(fragment);
+        }
+
     }
 }

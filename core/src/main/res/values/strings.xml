@@ -27,7 +27,7 @@
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
-    <string name="episode_cache_full_title">Episode cache full</string>
+    <string name="episode_cache_fudfll_title">Episode cache full</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="playback_statistics_label">Playback</string>
     <string name="download_statistics_label">Downloads</string>
@@ -561,6 +561,10 @@
     <string name="not_auto_downloaded">Not auto downloaded</string>
     <string name="kept_updated">Kept updated</string>
     <string name="not_kept_updated">Not kept updated</string>
+    <string name="pref_feed_settings_dialog_msg">This setting is specific to each podcast. It can be accessed by opening the podcast.</string>
+    <string name="pref_ok_label">Ok</string>
+
+
 
     <!-- About screen -->
     <string name="about_pref">About</string>
