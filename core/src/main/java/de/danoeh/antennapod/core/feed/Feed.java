@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.SortOrder;
 
@@ -476,10 +475,6 @@ public class Feed extends FeedFile {
 
     public FeedPreferences getPreferences() {
         return preferences;
-    }
-
-    public void savePreferences() {
-        DBWriter.setFeedPreferences(preferences);
     }
 
     @Override
