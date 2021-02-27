@@ -42,6 +42,7 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
@@ -525,7 +526,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                         Feed feed1 = DBReader.getFeed(getFeedId(feed));
                         FeedPreferences feedPreferences = feed1.getPreferences();
                         feedPreferences.setAutoDownload(autoDownload);
-                        feed1.savePreferences();
+                        DBWriter.setFeedPreferences(feedPreferences);
 
                         SharedPreferences preferences = getSharedPreferences(PREFS, MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
