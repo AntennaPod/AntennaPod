@@ -27,7 +27,7 @@
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
-    <string name="episode_cache_fudfll_title">Episode cache full</string>
+    <string name="episode_cache_full_title">Leun eo al lec\'h evit enrollañ rannoù</string>
     <string name="episode_cache_full_message">The episode cache limit has been reached. You can increase the cache size in the Settings.</string>
     <string name="playback_statistics_label">Playback</string>
     <string name="download_statistics_label">Downloads</string>
