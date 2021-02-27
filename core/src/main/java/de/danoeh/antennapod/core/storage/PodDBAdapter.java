@@ -1387,7 +1387,7 @@ public class PodDBAdapter {
     }
 
     /**
-     * Called when a database corruption happens
+     * Called when a database corruption happens.
      */
     public static class PodDbErrorHandler implements DatabaseErrorHandler {
         @Override
