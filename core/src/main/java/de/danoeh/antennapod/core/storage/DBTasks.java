@@ -21,7 +21,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.FeedUtils;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import org.greenrobot.eventbus.EventBus;
@@ -517,7 +516,7 @@ public final class DBTasks {
                 List<Feed> items = new ArrayList<>();
                 if (cursor.moveToFirst()) {
                     do {
-                        items.add(FeedUtils.fromCursor(cursor));
+                        items.add(new FeedCursorMapper().convert(cursor));
                     } while (cursor.moveToNext());
                 }
                 setResult(items);
