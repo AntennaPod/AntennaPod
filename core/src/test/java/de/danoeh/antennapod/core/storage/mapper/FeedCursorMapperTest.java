@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.core.storage.mapper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -41,7 +42,7 @@ public class FeedCursorMapperTest {
     public void testFromCursor() {
         try (Cursor cursor = adapter.getAllFeedsCursor()) {
             cursor.moveToNext();
-            Feed feed = new FeedCursorMapper().convert(cursor);
+            Feed feed = FeedCursorMapper.convert(cursor);
             assertTrue(feed.getId() >= 0);
             assertEquals("feed custom title", feed.getTitle());
             assertEquals("feed custom title", feed.getCustomTitle());

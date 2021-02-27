@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.storage;
+package de.danoeh.antennapod.core.storage.mapper;
 
 import android.database.Cursor;
 
@@ -12,13 +12,13 @@ import de.danoeh.antennapod.core.util.SortOrder;
 /**
  * Converts a {@link Cursor} to a {@link Feed} object.
  */
-public class FeedCursorMapper {
+public abstract class FeedCursorMapper {
 
     /**
      * Create a {@link Feed} instance from a database row (cursor).
      */
     @NonNull
-    public Feed convert(@NonNull Cursor cursor) {
+    public static Feed convert(@NonNull Cursor cursor) {
         int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
         int indexLastUpdate = cursor.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE);
         int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
