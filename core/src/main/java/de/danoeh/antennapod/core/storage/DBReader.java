@@ -23,6 +23,7 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.util.FeedUtils;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
@@ -204,7 +205,7 @@ public final class DBReader {
     }
 
     private static Feed extractFeedFromCursorRow(Cursor cursor) {
-        Feed feed = Feed.fromCursor(cursor);
+        Feed feed = FeedUtils.fromCursor(cursor);
         FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
         feed.setPreferences(preferences);
         return feed;

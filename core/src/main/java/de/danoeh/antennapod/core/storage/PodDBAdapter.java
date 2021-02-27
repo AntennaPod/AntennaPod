@@ -1379,6 +1379,14 @@ public class PodDBAdapter {
     }
 
     /**
+     * Insert raw data to the database.     *
+     * Call method only for unit tests.
+     */
+    public void insertTestData(@NonNull String table, @NonNull ContentValues values) {
+        db.insert(table, null, values);
+    }
+
+    /**
      * Called when a database corruption happens
      */
     public static class PodDbErrorHandler implements DatabaseErrorHandler {
