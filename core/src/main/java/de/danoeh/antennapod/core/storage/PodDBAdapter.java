@@ -15,6 +15,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import de.danoeh.antennapod.core.storage.mapper.FeedItemFilterQuery;
 import org.apache.commons.io.FileUtils;
@@ -372,6 +373,7 @@ public class PodDBAdapter {
      * For more information see
      * <a href="https://github.com/robolectric/robolectric/issues/1890">robolectric/robolectric#1890</a>.</p>
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public static void tearDownTests() {
         getInstance().dbHelper.close();
         instance = null;
@@ -1382,6 +1384,7 @@ public class PodDBAdapter {
      * Insert raw data to the database.     *
      * Call method only for unit tests.
      */
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     public void insertTestData(@NonNull String table, @NonNull ContentValues values) {
         db.insert(table, null, values);
     }
