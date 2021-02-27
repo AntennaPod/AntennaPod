@@ -562,7 +562,7 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
         if (feed != null && feed.getItemFilter() != null) {
             DBReader.loadAdditionalFeedItemListData(feed.getItems());
             FeedItemFilter filter = feed.getItemFilter();
-            feed.setItems(filter.filter(feed.getItems()));
+            feed.setItems(FeedItemUtil.filter(feed.getItems(), filter));
         }
         if (feed != null && feed.getSortOrder() != null) {
             List<FeedItem> feedItems = feed.getItems();
