@@ -4,7 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 
 public class ChapterSeekBar extends androidx.appcompat.widget.AppCompatSeekBar {
 
