@@ -640,7 +640,9 @@ public class DownloadService extends Service {
         // If the service was run for a very short time, the system may delay closing
         // the notification. Set the notification text now so that a misleading message
         // is not left on the notification.
-        notificationUpdater.run();
+        if (notificationUpdater != null) {
+            notificationUpdater.run();
+        }
         cancelNotificationUpdater();
         stopForeground(true);
         stopSelf();
