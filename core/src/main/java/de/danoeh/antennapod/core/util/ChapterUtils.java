@@ -6,7 +6,10 @@ import android.net.Uri;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.ChapterMerger;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.comparator.ChapterStartTimeComparator;
 import de.danoeh.antennapod.core.util.id3reader.ChapterReader;
 import de.danoeh.antennapod.core.util.id3reader.ID3ReaderException;
@@ -45,6 +48,33 @@ public class ChapterUtils {
             }
         }
         return chapters.size() - 1;
+    }
+
+    public static void loadChapters(Playable playable, Context context) {
+        if (playable.getChapters() != null) {
+            // Already loaded
+            return;
+        }
+
+        List<Chapter> chaptersFromDatabase = null;
+        if (playable instanceof FeedMedia) {
+            FeedMedia feedMedia = (FeedMedia) playable;
+            if (feedMedia.getItem() == null) {
+                feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
+            }
+            if (feedMedia.getItem().hasChapters()) {
+                chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(feedMedia.getItem());
+            }
+        }
+
+        List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(playable, context);
+        List<Chapter> chapters = ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
+        if (chapters == null) {
+            // Do not try loading again. There are no chapters.
+            playable.setChapters(Collections.emptyList());
+        } else {
+            playable.setChapters(chapters);
+        }
     }
 
     public static List<Chapter> loadChaptersFromMediaFile(Playable playable, Context context) {

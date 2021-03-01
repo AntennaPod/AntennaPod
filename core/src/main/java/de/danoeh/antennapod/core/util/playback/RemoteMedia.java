@@ -11,7 +11,6 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -126,11 +125,6 @@ public class RemoteMedia implements Playable {
     @Override
     public void loadMetadata() throws PlayableException {
         //Already loaded
-    }
-
-    @Override
-    public void loadChapterMarks(Context context) {
-        setChapters(ChapterUtils.loadChaptersFromMediaFile(this, context));
     }
 
     @Override

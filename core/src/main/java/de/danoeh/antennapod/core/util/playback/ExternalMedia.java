@@ -9,7 +9,6 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.MediaType;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DateUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -118,11 +117,6 @@ public class ExternalMedia implements Playable {
         } else {
             pubDate = null;
         }
-    }
-
-    @Override
-    public void loadChapterMarks(Context context) {
-        setChapters(ChapterUtils.loadChaptersFromMediaFile(this, context));
     }
 
     @Override
