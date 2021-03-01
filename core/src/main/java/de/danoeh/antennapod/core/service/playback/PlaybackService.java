@@ -76,7 +76,6 @@ import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlayableException;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
@@ -519,8 +518,6 @@ public class PlaybackService extends MediaBrowserServiceCompat {
                 boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
                 boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
                 sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
-                //If the user asks to play External Media, the casting session, if on, should end.
-                flavorHelper.castDisconnect(playable instanceof ExternalMedia);
                 if (allowStreamAlways) {
                     UserPreferences.setAllowMobileStreaming(true);
                 }
