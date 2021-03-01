@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.core;
 
 import android.content.Context;
-import java.security.Security;
-import org.conscrypt.Conscrypt;
+
+import de.danoeh.antennapod.net.ssl.SslProviderInstaller;
 
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.SleepTimerPreferences;
@@ -42,16 +42,11 @@ public class ClientConfig {
         UserPreferences.init(context);
         UsageStatistics.init(context);
         PlaybackPreferences.init(context);
-        installSslProvider(context);
+        SslProviderInstaller.install(context);
         NetworkUtils.init(context);
         AntennapodHttpClient.setCacheDirectory(new File(context.getCacheDir(), "okhttp"));
         SleepTimerPreferences.init(context);
         NotificationUtils.createChannels(context);
         initialized = true;
-    }
-
-    private static void installSslProvider(Context context) {
-        // Insert bundled conscrypt as highest security provider (overrides OS version).
-        Security.insertProviderAt(Conscrypt.newProvider(), 1);
     }
 }

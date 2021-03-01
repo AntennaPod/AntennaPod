@@ -73,6 +73,7 @@ project.ext {
 
     // Google Play build
     wearableSupportVersion = "2.6.0"
+    playServicesVersion = "8.4.0"
 
     //Tests
     awaitilityVersion = "3.1.6"
