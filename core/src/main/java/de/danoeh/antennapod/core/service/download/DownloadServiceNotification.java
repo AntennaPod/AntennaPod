@@ -53,7 +53,7 @@ public class DownloadServiceNotification {
         String contentTitle = context.getString(R.string.download_notification_title);
         String downloadsLeft = (numDownloads > 0)
                 ? context.getResources().getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads)
-                : context.getString(R.string.downloads_processing);
+                : context.getString(R.string.service_shutting_down);
         String bigText = compileNotificationString(downloads);
 
         notificationCompatBuilder.setContentTitle(contentTitle);
