@@ -23,14 +23,4 @@
     <item name="notification_auto_download_report" type="id"/>
     <item name="notification_playing" type="id"/>
     <item name="notification_streaming_confirmation" type="id"/>
-
-    <!-- PendingIntent objects that use the same action but different extras need to use a unique request code -->
-    <item name="pending_intent_download_service_notification" type="id"/>
-    <item name="pending_intent_download_service_auth" type="id"/>
-    <item name="pending_intent_download_service_report" type="id"/>
-    <item name="pending_intent_download_service_autodownload_report" type="id"/>
-    <item name="pending_intent_allow_stream_always" type="id"/>
-    <item name="pending_intent_allow_stream_this_time" type="id"/>
-    <item name="pending_intent_player_activity" type="id"/>
-    <item name="pending_intent_sync_error" type="id"/>
 </resources>

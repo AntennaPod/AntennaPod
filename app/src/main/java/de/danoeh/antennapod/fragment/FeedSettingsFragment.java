@@ -193,7 +193,7 @@ public class FeedSettingsFragment extends Fragment {
                     protected void onConfirmed(int skipIntro, int skipEnding) {
                         feedPreferences.setFeedSkipIntro(skipIntro);
                         feedPreferences.setFeedSkipEnding(skipEnding);
-                        feed.savePreferences();
+                        DBWriter.setFeedPreferences(feedPreferences);
                         EventBus.getDefault().post(
                                 new SkipIntroEndingChangedEvent(feedPreferences.getFeedSkipIntro(),
                                         feedPreferences.getFeedSkipEnding(),
@@ -221,7 +221,7 @@ public class FeedSettingsFragment extends Fragment {
             feedPlaybackSpeedPreference.setEntries(entries);
             feedPlaybackSpeedPreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 feedPreferences.setFeedPlaybackSpeed(Float.parseFloat((String) newValue));
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 updatePlaybackSpeedPreference();
                 EventBus.getDefault().post(
                         new SpeedPresetChangedEvent(feedPreferences.getFeedPlaybackSpeed(), feed.getId()));
@@ -235,7 +235,7 @@ public class FeedSettingsFragment extends Fragment {
                     @Override
                     protected void onConfirmed(FeedFilter filter) {
                         feedPreferences.setFilter(filter);
-                        feed.savePreferences();
+                        DBWriter.setFeedPreferences(feedPreferences);
                     }
                 }.show();
                 return false;
@@ -251,7 +251,7 @@ public class FeedSettingsFragment extends Fragment {
                     protected void onConfirmed(String username, String password) {
                         feedPreferences.setUsername(username);
                         feedPreferences.setPassword(password);
-                        feed.savePreferences();
+                        DBWriter.setFeedPreferences(feedPreferences);
                     }
                 }.show();
                 return false;
@@ -271,7 +271,7 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setAutoDeleteAction(FeedPreferences.AutoDeleteAction.NO);
                         break;
                 }
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDeleteSummary();
                 return false;
             });
@@ -317,7 +317,7 @@ public class FeedSettingsFragment extends Fragment {
                         feedPreferences.setVolumeAdaptionSetting(VolumeAdaptionSetting.HEAVY_REDUCTION);
                         break;
                 }
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 updateVolumeReductionValue();
                 EventBus.getDefault().post(
                         new VolumeAdaptionChangedEvent(feedPreferences.getVolumeAdaptionSetting(), feed.getId()));
@@ -348,7 +348,7 @@ public class FeedSettingsFragment extends Fragment {
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean checked = newValue == Boolean.TRUE;
                 feedPreferences.setKeepUpdated(checked);
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 pref.setChecked(checked);
                 return false;
             });
@@ -379,7 +379,7 @@ public class FeedSettingsFragment extends Fragment {
                 boolean checked = newValue == Boolean.TRUE;
 
                 feedPreferences.setAutoDownload(checked);
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 updateAutoDownloadEnabled();
                 ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(getActivity(), checked);
                 dialog.createNewDialog().show();
@@ -402,7 +402,7 @@ public class FeedSettingsFragment extends Fragment {
             pref.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean checked = newValue == Boolean.TRUE;
                 feedPreferences.setShowEpisodeNotification(checked);
-                feed.savePreferences();
+                DBWriter.setFeedPreferences(feedPreferences);
                 pref.setChecked(checked);
                 return false;
             });

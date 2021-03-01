@@ -116,6 +116,7 @@
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
+    <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_hours_after_listening">
@@ -131,7 +132,6 @@
         <item quantity="other">%d selected</item>
     </plurals>
     <plurals name="num_episodes">
-        <item quantity="zero">no episodes</item>
         <item quantity="one">%d episode</item>
         <item quantity="other">%d episodes</item>
     </plurals>
@@ -146,7 +146,7 @@
         <item quantity="one">New Episode</item>
         <item quantity="other">New Episodes</item>
     </plurals>
-    <string name="new_episode_notification_group_text">Your subscriptions have new epsiodes.</string>
+    <string name="new_episode_notification_group_text">Your subscriptions have new episodes.</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -270,7 +270,7 @@
         <item quantity="one">%d download left</item>
         <item quantity="other">%d downloads left</item>
     </plurals>
-    <string name="downloads_processing">Processing downloads</string>
+    <string name="service_shutting_down">Service shutting down</string>
     <string name="download_notification_title">Downloading podcast data</string>
     <plurals name="download_report_content">
         <item quantity="one">%d download succeeded, %d failed</item>
@@ -381,19 +381,24 @@
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
     <string name="playback_control">Playback control</string>
+    <string name="reassign_hardware_buttons">Reassign hardware buttons</string>
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
     <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
-    <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
+    <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
-    <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
-    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a forward button on a bluetooth-connected device skip to the next episode instead of fast-forwarding</string>
-    <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
-    <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
+    <string name="pref_hardware_forward_button_title">Forward Button</string>
+    <string name="pref_hardware_forward_button_summary">Customize the forward button behavior</string>
+    <string name="pref_hardware_previous_button_title">Previous Button</string>
+    <string name="pref_hardware_previous_button_summary">Customize the previous button behavior</string>
+    <string name="button_action_fast_forward">Fast Forward</string>
+    <string name="button_action_rewind">Rewind</string>
+    <string name="button_action_skip_episode">Skip Episode</string>
+    <string name="button_action_restart_episode">Restart Episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
@@ -451,7 +456,9 @@
     <string name="pref_episode_cache_title">Episode Cache</string>
     <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
     <string name="pref_episode_cover_title">Use Episode Cover</string>
-    <string name="pref_episode_cover_summary">Use the episode specific cover whenever available. If unchecked, the app will always use the podcast cover image.</string>
+    <string name="pref_episode_cover_summary">Use the episode specific cover in lists whenever available. If unchecked, the app will always use the podcast cover image.</string>
+    <string name="pref_show_remain_time_title">Show Remaining Time</string>
+    <string name="pref_show_remain_time_summary">Display remaining time of episodes when checked. If unchecked, display total duration of episodes.</string>
     <string name="pref_theme_title_use_system">Use system theme</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
@@ -647,6 +654,7 @@
     <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="gpodnetauth_login_title">Login</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
+    <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
     <string name="create_account">Create account</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>

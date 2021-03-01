@@ -28,7 +28,10 @@ public class DownloadServiceNotification {
 
     private void setupNotificationBuilders() {
         notificationCompatBuilder = new NotificationCompat.Builder(context, NotificationUtils.CHANNEL_ID_DOWNLOADING)
-                .setOngoing(true)
+                .setOngoing(false)
+                .setWhen(0)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
                 .setContentIntent(ClientConfig.downloadServiceCallbacks.getNotificationContentIntent(context))
                 .setSmallIcon(R.drawable.ic_notification_sync);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -50,7 +53,7 @@ public class DownloadServiceNotification {
         String contentTitle = context.getString(R.string.download_notification_title);
         String downloadsLeft = (numDownloads > 0)
                 ? context.getResources().getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads)
-                : context.getString(R.string.downloads_processing);
+                : context.getString(R.string.service_shutting_down);
         String bigText = compileNotificationString(downloads);
 
         notificationCompatBuilder.setContentTitle(contentTitle);

@@ -15,8 +15,8 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
-import de.danoeh.antennapod.core.util.ThemeUtils;
-import de.danoeh.antennapod.view.CircularProgressBar;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
+import de.danoeh.antennapod.ui.common.CircularProgressBar;
 
 public class DownloadlistAdapter extends BaseAdapter {
 
@@ -68,8 +68,8 @@ public class DownloadlistAdapter extends BaseAdapter {
         holder.secondaryActionButton.setContentDescription(context.getString(R.string.cancel_download_label));
         holder.secondaryActionButton.setTag(downloader);
         holder.secondaryActionButton.setOnClickListener(butSecondaryListener);
-        holder.secondaryActionProgress.setPercentage(0, request);
 
+        boolean percentageWasSet = false;
         String status = "";
         if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
             status += context.getString(R.string.download_type_feed);
@@ -85,7 +85,11 @@ public class DownloadlistAdapter extends BaseAdapter {
                 status += " / " + Formatter.formatShortFileSize(context, request.getSize());
                 holder.secondaryActionProgress.setPercentage(
                         0.01f * Math.max(1, request.getProgressPercent()), request);
+                percentageWasSet = true;
             }
+        }
+        if (!percentageWasSet) {
+            holder.secondaryActionProgress.setPercentage(0, request);
         }
         holder.status.setText(status);
 

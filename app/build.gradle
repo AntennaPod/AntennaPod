@@ -22,8 +22,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2010295
-        versionName "2.1.2"
+        versionCode 2010495
+        versionName "2.1.4"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
@@ -156,14 +156,9 @@ android {
 }
 
 dependencies {
-    freeImplementation project(":core")
-    // free build hack: skip some dependencies
-    if (!doFreeBuild()) {
-        playImplementation project(":core")
-        implementation 'com.google.android.play:core:1.8.0'
-    } else {
-        System.out.println("app: free build hack, skipping some dependencies")
-    }
+    implementation project(":core")
+    implementation project(':ui:app-start-intent')
+    implementation project(':ui:common')
 
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
@@ -191,14 +186,15 @@ dependencies {
 
     implementation "com.joanzapata.iconify:android-iconify-fontawesome:$iconifyVersion"
     implementation "com.joanzapata.iconify:android-iconify-material:$iconifyVersion"
-    implementation 'com.yqritc:recyclerview-flexibledivider:1.4.0'
     implementation 'com.github.shts:TriangleLabelView:1.1.2'
-    implementation 'com.leinardi.android:speed-dial:3.1.1'
+    implementation 'com.github.leinardi:FloatingActionButtonSpeedDial:3.1.1'
     implementation "com.github.AntennaPod:AntennaPod-AudioPlayer:$audioPlayerVersion"
     implementation 'com.github.mfietz:fyydlin:v0.5.0'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
     implementation 'com.github.skydoves:balloon:1.1.5'
 
+    // Non-free dependencies:
+    playImplementation 'com.google.android.play:core:1.8.0'
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"

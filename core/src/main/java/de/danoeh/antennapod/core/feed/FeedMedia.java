@@ -28,6 +28,7 @@ import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.model.EpisodeAction;
+import de.danoeh.antennapod.core.util.playback.PlayableException;
 
 public class FeedMedia extends FeedFile implements Playable {
     private static final String TAG = "FeedMedia";
@@ -175,8 +176,8 @@ public class FeedMedia extends FeedFile implements Playable {
             // getImageLocation() also loads embedded images, which we can not send to external devices
             if (item.getImageUrl() != null) {
                 builder.setIconUri(Uri.parse(item.getImageUrl()));
-            } else if (item.getFeed() != null && item.getFeed().getImageLocation() != null) {
-                builder.setIconUri(Uri.parse(item.getFeed().getImageLocation()));
+            } else if (item.getFeed() != null && item.getFeed().getImageUrl() != null) {
+                builder.setIconUri(Uri.parse(item.getFeed().getImageUrl()));
             }
         }
         return new MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
@@ -407,14 +408,7 @@ public class FeedMedia extends FeedFile implements Playable {
         if (item.hasChapters()) {
             chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(item);
         }
-
-        List<Chapter> chaptersFromMediaFile;
-        if (localFileAvailable()) {
-            chaptersFromMediaFile = ChapterUtils.loadChaptersFromFileUrl(this);
-        } else {
-            chaptersFromMediaFile = ChapterUtils.loadChaptersFromStreamUrl(this, context);
-        }
-
+        List<Chapter> chaptersFromMediaFile = ChapterUtils.loadChaptersFromMediaFile(this, context);
         return ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
     }
 
@@ -475,6 +469,18 @@ public class FeedMedia extends FeedFile implements Playable {
             return null;
         }
         return item.getPaymentLink();
+    }
+
+    @Override
+    public Date getPubDate() {
+        if (item == null) {
+            return null;
+        }
+        if (item.getPubDate() != null) {
+            return item.getPubDate();
+        } else {
+            return null;
+        }
     }
 
     @Override

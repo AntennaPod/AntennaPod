@@ -331,7 +331,6 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
     };
 
     private void loadData() {
-        progressBar.setVisibility(View.VISIBLE);
         disposable = Observable.fromCallable(DBReader::getNavDrawerData)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -340,7 +339,7 @@ public class NavDrawerFragment extends Fragment implements AdapterView.OnItemCli
                             navDrawerData = result;
                             updateSelection(); // Selected item might be a feed
                             navAdapter.notifyDataSetChanged();
-                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE); // Stays hidden once there is something in the list
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
                             progressBar.setVisibility(View.GONE);

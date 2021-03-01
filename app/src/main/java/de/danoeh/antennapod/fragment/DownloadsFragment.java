@@ -28,16 +28,17 @@ public class DownloadsFragment extends PagedToolbarFragment {
     public static final String TAG = "DownloadsFragment";
 
     public static final String ARG_SELECTED_TAB = "selected_tab";
+    private static final String PREF_LAST_TAB_POSITION = "tab_position";
+    private static final String KEY_UP_ARROW = "up_arrow";
 
     public static final int POS_RUNNING = 0;
     private static final int POS_COMPLETED = 1;
     public static final int POS_LOG = 2;
     private static final int TOTAL_COUNT = 3;
 
-    private static final String PREF_LAST_TAB_POSITION = "tab_position";
-
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
+    private boolean displayUpArrow;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,7 +49,11 @@ public class DownloadsFragment extends PagedToolbarFragment {
         Toolbar toolbar = root.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.downloads_label);
         toolbar.inflateMenu(R.menu.downloads);
-        ((MainActivity) getActivity()).setupToolbarToggle(toolbar);
+        displayUpArrow = getParentFragmentManager().getBackStackEntryCount() != 0;
+        if (savedInstanceState != null) {
+            displayUpArrow = savedInstanceState.getBoolean(KEY_UP_ARROW);
+        }
+        ((MainActivity) getActivity()).setupToolbarToggle(toolbar, displayUpArrow);
 
         viewPager = root.findViewById(R.id.viewpager);
         viewPager.setAdapter(new DownloadsPagerAdapter(this));
@@ -79,6 +84,12 @@ public class DownloadsFragment extends PagedToolbarFragment {
         viewPager.setCurrentItem(lastPosition, false);
 
         return root;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(KEY_UP_ARROW, displayUpArrow);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
