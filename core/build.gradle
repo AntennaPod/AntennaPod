@@ -71,6 +71,7 @@ android {
 }
 
 dependencies {
+    implementation project(':net:ssl')
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
 
@@ -102,12 +103,9 @@ dependencies {
     // Non-free dependencies:
     playApi 'com.google.android.libraries.cast.companionlibrary:ccl:2.9.1'
     playApi 'androidx.mediarouter:mediarouter:1.0.0'
-    playApi 'com.google.android.gms:play-services-cast:8.4.0'
+    playApi "com.google.android.gms:play-services-cast:$playServicesVersion"
     playApi "com.google.android.support:wearable:$wearableSupportVersion"
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
-
-    // bundle conscrypt with free builds
-    freeImplementation "org.conscrypt:conscrypt-android:$conscryptVersion"
 
     testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation 'junit:junit:4.13'

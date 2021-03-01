@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.ssl;
+package de.danoeh.antennapod.net.ssl;
 
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;

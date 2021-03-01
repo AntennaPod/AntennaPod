@@ -27,6 +27,16 @@ android {
         }
     }
 
+    flavorDimensions "market"
+    productFlavors {
+        free {
+            dimension "market"
+        }
+        play {
+            dimension "market"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -48,4 +58,8 @@ android {
 dependencies {
     annotationProcessor "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+
+    playImplementation "com.google.android.gms:play-services-base:$playServicesVersion"
+    freeImplementation "org.conscrypt:conscrypt-android:$conscryptVersion"
 }
