@@ -22,8 +22,8 @@ android {
         // "1.2.3-SNAPSHOT" -> 1020300
         // "1.2.3-RC4"      -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2010395
-        versionName "2.1.3"
+        versionCode 2010495
+        versionName "2.1.4"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
@@ -156,14 +156,7 @@ android {
 }
 
 dependencies {
-    freeImplementation project(":core")
-    // free build hack: skip some dependencies
-    if (!doFreeBuild()) {
-        playImplementation project(":core")
-        implementation 'com.google.android.play:core:1.8.0'
-    } else {
-        System.out.println("app: free build hack, skipping some dependencies")
-    }
+    implementation project(":core")
     implementation project(':ui:app-start-intent')
     implementation project(':ui:common')
 
@@ -200,6 +193,8 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
     implementation 'com.github.skydoves:balloon:1.1.5'
 
+    // Non-free dependencies:
+    playImplementation 'com.google.android.play:core:1.8.0'
     compileOnly "com.google.android.wearable:wearable:$wearableSupportVersion"
 
     androidTestImplementation "org.awaitility:awaitility:$awaitilityVersion"
