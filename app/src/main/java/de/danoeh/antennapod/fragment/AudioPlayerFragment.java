@@ -36,6 +36,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.TimeSpeedConverter;
@@ -321,7 +322,7 @@ public class AudioPlayerFragment extends Fragment implements
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                media.loadChapterMarks(getContext());
+                ChapterUtils.loadChapters(media, getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
