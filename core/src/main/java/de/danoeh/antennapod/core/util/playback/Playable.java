@@ -34,13 +34,6 @@ public interface Playable extends Parcelable, ShownotesProvider {
     void loadMetadata() throws PlayableException;
 
     /**
-     * This method is called from a separate thread by the PlaybackService.
-     * Playable objects should load their chapter marks in this method if no
-     * local file was available when loadMetadata() was called.
-     */
-    void loadChapterMarks(Context context);
-
-    /**
      * Returns the title of the episode that this playable represents
      */
     String getEpisodeTitle();
