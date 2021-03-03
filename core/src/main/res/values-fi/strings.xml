@@ -6,6 +6,7 @@
   <string name="statistics_label">Tilastot</string>
   <string name="add_feed_label">Lisää Podcast</string>
   <string name="episodes_label">Jaksot</string>
+  <string name="queue_label">Jono</string>
   <string name="all_episodes_short_label">Kaikki</string>
   <string name="new_episodes_label">Uusi</string>
   <string name="favorite_episodes_label">Suosikit</string>
@@ -17,7 +18,6 @@
   <string name="downloads_log_label">Loki</string>
   <string name="subscriptions_label">Tilaukset</string>
   <string name="subscriptions_list_label">Tilauslista</string>
-  <string name="cancel_download_label">Peruuta\nLataus</string>
   <string name="playback_history_label">Soittohistoria</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net Kirjautuminen</string>
@@ -25,6 +25,7 @@
   <string name="episode_cache_full_message">Jaksojen välimuistin rajoitus on ylitetty. Voit lisätä välimuistin kokoa Asetuksissa.</string>
   <string name="playback_statistics_label">Toisto</string>
   <string name="download_statistics_label">Lataukset</string>
+  <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%1$d jakso %2$d:sta aloitettu.\n\nSoitettu %3$s jaksoa %4$s:sta.</string>
   <string name="statistics_mode">Tilastointitila</string>
@@ -75,7 +76,6 @@
   <string name="description_label">Kuvaus</string>
   <string name="episodes_suffix">\u0020jaksoa</string>
   <string name="processing_label">Prosessoi</string>
-  <string name="save_username_password_label">Tallenna käyttäjätunnus ja salasana</string>
   <string name="close_label">Sulje</string>
   <string name="retry_label">Yritä uudelleen</string>
   <string name="auto_download_label">Lataa automaattisesti</string>
@@ -87,7 +87,6 @@
   <string name="feed_volume_reduction_off">Pois käytöstä</string>
   <string name="feed_volume_reduction_light">Kevyt</string>
   <string name="feed_volume_reduction_heavy">Voimakas</string>
-  <string name="parallel_downloads_suffix">\u0020yhtäaikaiset lataukset</string>
   <string name="feed_auto_download_global">Globaali oletus</string>
   <string name="feed_auto_download_always">Aina</string>
   <string name="feed_auto_download_never">Ei koskaan</string>
@@ -304,7 +303,6 @@
   <string name="storage_pref">Tallennus</string>
   <string name="storage_sum">Jakson automaattinen poisto, tuonti, vienti</string>
   <string name="project_pref">Projekti</string>
-  <string name="queue_label">Jono</string>
   <string name="synchronization_pref">Synkronointi</string>
   <string name="synchronization_sum">Synkronoi muiden laitteiden kanssa käyttäen gpodder.net-palvelua</string>
   <string name="automation">Automaatio</string>
@@ -320,14 +318,9 @@
   <string name="preference_search_clear_history">Tyhjennä historia</string>
   <string name="media_player">Mediasoitin</string>
   <string name="pref_episode_cleanup_title">Jakson siivous</string>
-  <string name="pref_episode_cleanup_summary">Jaksot, jotka eivät ole jonossa ja eivät ole suosikkeja tulisi olla valmiita poistoon jos Automaattiinen lataus tarvitsee tilaa uusille jaksoille</string>
   <string name="pref_pauseOnDisconnect_sum">Pysäytä soitto kun kuulokkeet tai bluetooth katkaistaan</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Jatka soittoa kun kuulokkeet yhdistetään uudestaan</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Jatka soittoa kun bluetooth yhdistyy uudestaan</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Seuraava nappi ohittaa</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Kun painetaan seuraava-nappia bluetooth-laitteessa, hyppää seuraavaan jaksoon eteenpäin siirtymisen sijasta.</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Edellinen-nappi aloittaa alusta</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Kun painetaan edellinen-nappia, aloita nykyinen jakso alusta taaksepäin siirtymisen sijasta</string>
   <string name="pref_followQueue_sum">Hyppää seuraavaan jonossa kun soitto valmistuu</string>
   <string name="pref_auto_delete_sum">Poista jakso toiston loputtua</string>
   <string name="pref_auto_delete_title">Automaattinen poisto</string>
@@ -347,7 +340,6 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Poista käytöstä</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Aseta aikaväli</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Aseta ajankohta</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">joka %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">aika %1$s</string>
   <string name="pref_followQueue_title">Jatkuva toisto</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Kuulokkeiden uudelleenyhdistyminen</string>
@@ -380,7 +372,6 @@
   <string name="pref_episode_cache_title">Jaksojen välimuisti</string>
   <string name="pref_episode_cache_summary">Ladattuja jaksoja yhteensä välimuistissa tällä laitteella. Automaattinen lataaminen pysäytetään, jos tämä raja ylittyy.</string>
   <string name="pref_episode_cover_title">Käytä jakson kansikuvaa</string>
-  <string name="pref_episode_cover_summary">Käytä jaksokohtaista kansikuvaa, kun se on saatavilla. Jos tämä ei ole valittuna, sovellus käyttää aina podcastin kansikuvaa.</string>
   <string name="pref_theme_title_light">Vaalea</string>
   <string name="pref_theme_title_dark">Tumma</string>
   <string name="pref_theme_title_trueblack">Musta (AMOLED valmis)</string>
@@ -397,15 +388,12 @@
   <string name="pref_gpodnet_sync_changes_sum">Synkronoi tilaukset ja jaksojen tilojen muutokset gpodder.net.</string>
   <string name="pref_gpodnet_full_sync_sum">Synkronoi kaikki tilaukset ja jaksojen tilastot gpodder.net</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Kirjauduttu <i>%1$s</i> laitteella <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_sum">Tämä asetus ei vaikuta autentikointivirheisiin.</string>
   <string name="pref_playback_time_respects_speed_title">Mukauta mediatietoja soiton nopeuteen</string>
   <string name="pref_playback_time_respects_speed_sum">Näytetty aika ja kesto mukautuvat soiton nopeuteen</string>
   <string name="pref_fast_forward">Seuraava skippaa aikaa</string>
   <string name="pref_fast_forward_sum">Kustomoi sekunnit jonka verran skipataaan kun painat Seuraava nappia.</string>
   <string name="pref_rewind">Edellinen skippaa aikaa</string>
   <string name="pref_rewind_sum">kustomoi sekunnit jonka verran hypätään takaisin kun painat Edellinen nappia.</string>
-  <string name="pref_gpodnet_sethostname_title">Aseta hostname</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Käytä oletusporttia</string>
   <string name="pref_expandNotify_title">Korkea ilmoitusprioriteetti</string>
   <string name="pref_expandNotify_sum">Tämä laajentaa ilmoituksen näyttämään soittonapit</string>
   <string name="pref_persistNotify_title">Pysyvät soittokontrollit</string>
@@ -414,7 +402,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">Voit valita vain maksimissaan %1$d asioita.</string>
   <string name="pref_lockscreen_background_title">Aseta lukitusruudun taustakuva</string>
   <string name="pref_lockscreen_background_sum">Aseta lukitusruudun taustakuva nykyisen jakson kuvaan. Tämä kuva näkyy kolmannen osapuolen sovelluksissa.</string>
-  <string name="pref_showDownloadReport_sum">Jos lataus epäonnistuu, generoi raportti joka näyttää virheen tiedot.</string>
   <string name="pref_expand_notify_unsupport_toast">Android versiot ennen 4.1 eivät tue laajenettuja ilmoituksia.</string>
   <string name="pref_smart_mark_as_played_disabled">Poissa käytöstä</string>
   <string name="pref_image_cache_size_title">Kuvan välimuistin koko</string>
@@ -430,7 +417,6 @@
   <string name="pref_cast_message_free_flavor">Chromecast tarvitsee kolmannen osapuolen suljettuja kirjastoja, jotka on poistettu tässä AntennaPodissa.</string>
   <string name="pref_enqueue_downloaded_title">Lisää ladatut jonoon</string>
   <string name="pref_enqueue_downloaded_summary">Lisää ladatut jaksot jonoon</string>
-  <string name="media_player_builtin">Sisäänrakennettu Android-soitto</string>
   <string name="pref_skip_silence_title">Skippaa tyhjät kohdat audiossa</string>
   <string name="pref_videoBehavior_title">Video sulkiessa</string>
   <string name="pref_videoBehavior_sum">Kun suljetaan videon soitto</string>
@@ -497,22 +483,12 @@
   <string name="gpodnet_suggestions_header">EHDOTUKSET</string>
   <string name="gpodnet_search_hint">Etsi gpodder.net</string>
   <string name="gpodnetauth_login_title">Sisäänkirjautuminen</string>
-  <string name="gpodnetauth_login_descr">Tervetuloa gpodder.net sisäänkirjautumiseen. Kirjoita kirjautumistiedot:</string>
   <string name="gpodnetauth_login_butLabel">Sisäänkirjautuminen</string>
-  <string name="gpodnetauth_login_register">Jos sinulla ei ole vielä tiliä, voit luoda sen täällä:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Käyttäjätunnus</string>
   <string name="password_label">Salasana</string>
-  <string name="gpodnetauth_device_title">Laitevalinta</string>
   <string name="gpodnetauth_device_descr">Luo uusi laite gpodder.net tiliin tai valitse olemassaoleva laite:</string>
-  <string name="gpodnetauth_device_deviceID">Laite ID:\u0020</string>
-  <string name="gpodnetauth_device_caption">Kuvaus</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Luo uusi laite</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">Valitse olemassaoleva laite:</string>
-  <string name="gpodnetauth_device_errorEmpty">Laite ID ei saa olla tyhjä</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">Laite ID on jo käytössä</string>
   <string name="gpodnetauth_device_caption_errorEmpty">Kuvaus ei saa olla tyhjä</string>
   <string name="gpodnetauth_device_butChoose">Valitse</string>
-  <string name="gpodnetauth_finish_title">Sisäänkirjautuminen onnistui</string>
   <string name="gpodnetauth_finish_descr">Onneksi olkoon! Sinun gpodder.net tili on liitetty laitteeseesi. AntennaPod alkaa automaattisesti synkronoimaan gpodder.net tiliisi.</string>
   <string name="gpodnetauth_finish_butsyncnow">Aloita synkrointi nyt</string>
   <string name="gpodnetauth_finish_butgomainscreen">Mene pääsivulle</string>
@@ -663,7 +639,6 @@
   <string name="notification_channel_downloading_description">Näytetään kun ladataan.</string>
   <string name="notification_channel_playing">Soittaa nyt</string>
   <string name="notification_channel_playing_description">Sallii soiton kontrollit. Tämä on pääilmoitus, jonka näet kun podcast soitetaan.</string>
-  <string name="notification_channel_error">Virheet</string>
   <!--Widget settings-->
   <!--On-Demand configuration-->
 </resources>

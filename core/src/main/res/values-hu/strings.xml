@@ -6,6 +6,7 @@
   <string name="statistics_label">Statisztika</string>
   <string name="add_feed_label">Podcast hozzáadása</string>
   <string name="episodes_label">Epizódok</string>
+  <string name="queue_label">Lejátszási sor</string>
   <string name="all_episodes_short_label">Mind</string>
   <string name="new_episodes_label">Újak</string>
   <string name="favorite_episodes_label">Kedvencek</string>
@@ -17,7 +18,7 @@
   <string name="downloads_log_label">Napló</string>
   <string name="subscriptions_label">Feliratkozások</string>
   <string name="subscriptions_list_label">Feliratkozások listája</string>
-  <string name="cancel_download_label">Letöltés\nmegszakítása</string>
+  <string name="cancel_download_label">Letöltés megszakítása</string>
   <string name="playback_history_label">Lejátszási napló</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net bejelentkezés</string>
@@ -26,6 +27,8 @@
   <string name="playback_statistics_label">Lejátszás</string>
   <string name="download_statistics_label">Letöltések</string>
   <string name="notification_pref_fragment">Értesítések</string>
+  <!--Google Assistant-->
+  <string name="app_action_not_found">A(z) „%1$s” nem található</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">A lejátszott epizódok összideje:</string>
   <string name="statistics_details_dialog">%1$d/%2$d epizód elindítva.\n\n%3$s/%4$s lejátszva.</string>
@@ -79,7 +82,6 @@
   <string name="description_label">Leírás</string>
   <string name="episodes_suffix">\u0020epizód</string>
   <string name="processing_label">Feldolgozás</string>
-  <string name="save_username_password_label">Felhasználónév és jelszó mentése</string>
   <string name="close_label">Bezárás</string>
   <string name="retry_label">Újra</string>
   <string name="auto_download_label">Hozzáadás az automatikus letöltésekhez</string>
@@ -91,7 +93,6 @@
   <string name="feed_volume_reduction_off">Ki</string>
   <string name="feed_volume_reduction_light">Enyhe</string>
   <string name="feed_volume_reduction_heavy">Erős</string>
-  <string name="parallel_downloads_suffix">\u0020párhuzamos letöltés</string>
   <string name="feed_auto_download_global">Globális alapértelmezett</string>
   <string name="feed_auto_download_always">Mindig</string>
   <string name="feed_auto_download_never">Soha</string>
@@ -130,6 +131,7 @@
   <string name="share_label_with_ellipses">Megosztás…</string>
   <string name="share_file_label">Fájl megosztása</string>
   <string name="share_website_url_label">Webcím</string>
+  <string name="share_feed_url_label">Podcast csatorna URL</string>
   <string name="feed_delete_confirmation_msg">Erősítse meg, hogy törli a(z) „%1$s” podcastot, és az ÖSSZES epizódját (a letöltött epizódokat is beleértve).</string>
   <string name="feed_delete_confirmation_local_msg">Erősítse meg, hogy törli a(z) „%1$s” podcastot. A helyi forrásmappában lévő fájlok nem törlődnek.</string>
   <string name="feed_remover_msg">Podcast eltávolítása</string>
@@ -214,6 +216,7 @@
   <string name="download_error_file_type_type">Fájltípus-hiba</string>
   <string name="download_error_forbidden">Megtiltva</string>
   <string name="download_canceled_msg">Letöltés megszakítva</string>
+  <string name="download_wrong_size">A kiszolgálókapcsolat elveszett a letöltés befejezése előtt</string>
   <string name="download_canceled_autodownload_enabled_msg">Letöltés megszakítva\n<i>Automatikus letöltése</i> letiltva az elemnél</string>
   <string name="download_report_title">A letöltések hibákkal fejeződtek be</string>
   <string name="auto_download_report_title">Elkészültek az automatikus letöltések</string>
@@ -264,6 +267,7 @@
   <string name="player_go_to_picture_in_picture">Kép a képben mód</string>
   <string name="unknown_media_key">AntennaPod – Ismeretlen médiabillentyű: %1$d</string>
   <string name="error_file_not_found">A fájl nem találhat</string>
+  <string name="no_media_label">Az elem nem tartalmaz médiafájlt</string>
   <!--Queue operations-->
   <string name="lock_queue">Lejátszási sor zárolása</string>
   <string name="unlock_queue">Lejátszási sor feloldása</string>
@@ -292,6 +296,8 @@
   <string name="no_playback_plugin_title">A bővítmény nincs telepítve</string>
   <string name="no_playback_plugin_or_sonic_msg">A változó lejátszási sebesség működéséhez azt javasoljuk, hogy engedélyezze a beépített Sonic médialejátszót.</string>
   <string name="enable_sonic">Sonic engedélyezése</string>
+  <string name="speed_presets">Előbeállítások</string>
+  <string name="preset_already_exists">Már mentve lett előbeállításként: %1$.2fx.</string>
   <!--Empty list labels-->
   <string name="no_items_header_label">Nincsenek epizódok a sorban</string>
   <string name="no_items_label">Adjon hozzá egy epizód azzal, hogy letölti, vagy nyomjon meg hosszan egy epizódot, és válassza a „Hozzáadás a sorhoz” lehetőséget.</string>
@@ -318,7 +324,6 @@
   <string name="storage_pref">Tároló</string>
   <string name="storage_sum">Epizódok automatikus törlése, importálása, exportálása</string>
   <string name="project_pref">Projekt</string>
-  <string name="queue_label">Lejátszási sor</string>
   <string name="synchronization_pref">Szinkronizálás</string>
   <string name="synchronization_sum">Szinkronizáció más eszközökkel a gpodder.net segítségével</string>
   <string name="automation">Automatizálás</string>
@@ -329,19 +334,24 @@
   <string name="external_elements">Külső elemek</string>
   <string name="interruptions">Megszakítások</string>
   <string name="playback_control">Lejátszásvezérlés </string>
+  <string name="reassign_hardware_buttons">Hardvergomb-társítások átrendezése</string>
   <string name="preference_search_hint">Keresés…</string>
   <string name="preference_search_no_results">Nincsenek találatok</string>
   <string name="preference_search_clear_history">Napló törlése</string>
   <string name="media_player">Médialejátszó</string>
   <string name="pref_episode_cleanup_title">Epizódok tisztítása</string>
-  <string name="pref_episode_cleanup_summary">Azon epizódok, melyek nincsenek a sorban és nem kedvencek, azok törölhetőek, ha az Automatikus letöltéshez helyre van szüksége az új epizódok miatt.</string>
+  <string name="pref_episode_cleanup_summary">Azon epizódok, melyek törölhetők, ha az Automatikus letöltésnek helyre van szüksége az új epizódok miatt.</string>
   <string name="pref_pauseOnDisconnect_sum">Lejátszás szüneteltetése fejhallgató vagy bluetooth leválasztásakor</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Lejátszás folytatása a fejhallgatók újracsatlakoztatásakor</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Lejátszás folytatása a bluetooth újracsatlakozásakor</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Az előre gomb átugorja</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Az bluetooth kapcsolaton csatlakozó eszköz előre gombjának megnyomásakor előretekerés helyett a következő számra ugrik</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Az előző gomb újraindítja</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">A hardveres előző gomb megnyomásakor visszatekerés helyett újraindítja a jelenlegi epizódot</string>
+  <string name="pref_hardware_forward_button_title">Tovább gomb</string>
+  <string name="pref_hardware_forward_button_summary">A tovább gomb viselkedésének testreszabása</string>
+  <string name="pref_hardware_previous_button_title">Előző gomb</string>
+  <string name="pref_hardware_previous_button_summary">Az előző gomb viselkedésének testreszabása</string>
+  <string name="button_action_fast_forward">Gyors előretekerés</string>
+  <string name="button_action_rewind">Visszatekerés</string>
+  <string name="button_action_skip_episode">Epizód kihagyása</string>
+  <string name="button_action_restart_episode">Epizód újraindítása</string>
   <string name="pref_followQueue_sum">A lejátszás befejeztével ugrás a sor következő elemére</string>
   <string name="pref_auto_delete_sum">Az epizód törlése, ha a lejátszás véget ért</string>
   <string name="pref_auto_delete_title">Automatikus törlés</string>
@@ -361,9 +371,13 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Letiltás</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Intervallum megadása</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Időpont megadása</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">minden %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">ekkor: %1$s</string>
+  <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+    <item quantity="one">Óránként</item>
+    <item quantity="other">%d óránként</item>
+  </plurals>
   <string name="pref_followQueue_title">Folyamatos lejátszás</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Fejhallgató vagy Bluetooth leválasztása</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">Fejhallgató újracsatlakoztatása</string>
   <string name="pref_unpauseOnBluetoothReconnect_title">Bluetooth újracsatlakoztatás</string>
   <string name="pref_stream_over_download_title">Adatátvitel előnyben részesítése</string>
@@ -396,6 +410,8 @@
   <string name="pref_episode_cache_summary">Az eszközön tárolt letöltött epizódok száma. Az automatikus letöltés felfüggesztésre kerül, ha eléri ezt a számot.</string>
   <string name="pref_episode_cover_title">Epizód borítókép használata</string>
   <string name="pref_episode_cover_summary">Epizódspecifikus borító használata, ha lehetséges. Ha nincs bekapcsolva, akkor az alkalmazás mindig a podcast borítóját fogja használni.</string>
+  <string name="pref_show_remain_time_title">Hátralévő idő megjelenítése</string>
+  <string name="pref_show_remain_time_summary">Ha be van jelölve, akkor megjeleníti az epizódból hátralévő időt. Ha nincs bejelölve, akkor az epizód hosszát jeleníti meg.</string>
   <string name="pref_theme_title_use_system">Rendszertéma használata</string>
   <string name="pref_theme_title_light">Világos</string>
   <string name="pref_theme_title_dark">Sötét</string>
@@ -415,8 +431,6 @@
   <string name="pref_gpodnet_full_sync_title">Teljes szinkronizáció kényszerítése</string>
   <string name="pref_gpodnet_full_sync_sum">Az összes feliratkozásának és epizódállapotainak szinkronizálása a gpodder.nettel.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Bejelentkezve mint <i>%1$s</i>, a(z) <i>%2$s</i> eszközzel]]></string>
-  <string name="pref_gpodnet_notifications_title">Szinkronizálás sikertelen</string>
-  <string name="pref_gpodnet_notifications_sum">Ez a beállítás a hitelesítési hibákra nem érvényes.</string>
   <string name="pref_playback_speed_sum">A változó sebességű lejátszáshoz elérhető sebességek testreszabása</string>
   <string name="pref_feed_playback_speed_sum">A podcast epizódjainak indításakor használandó lejátszási sebesség</string>
   <string name="pref_feed_skip">Automatikus kihagyás</string>
@@ -431,20 +445,16 @@
   <string name="pref_fast_forward_sum">Szabja testre, hogy hány másodperccel ugorjon előre az előretekerés gomb megnyomásakor</string>
   <string name="pref_rewind">Visszatekerés mértéke</string>
   <string name="pref_rewind_sum">Szabja testre, hogy hány másodperccel ugorjon vissza a visszatekerés gomb megnyomásakor</string>
-  <string name="pref_gpodnet_sethostname_title">Gépnév megadása</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Alapértelmezett gépnév használata</string>
   <string name="pref_expandNotify_title">Magas értesítési prioritás</string>
   <string name="pref_expandNotify_sum">Ez általában kibővíti az értesítést, hogy megjelenítse a lejátszási gombokat.</string>
   <string name="pref_persistNotify_title">Állandó lejátszásvezérlők</string>
   <string name="pref_persistNotify_sum">Az értesítés és a zárképernyőn megjelenő vezérlők megtartása a lejátszás szüneteltetésekor.</string>
+  <string name="pref_compact_notification_buttons_title">Kompakt értesítési gombok beállítása</string>
+  <string name="pref_compact_notification_buttons_sum">A lejátszási gombok módosítása az értesítés összecsukása esetén. A lejátszás/szüneteltetés gombok mindig szerepelnek.</string>
   <string name="pref_compact_notification_buttons_dialog_title">Válasszon legfeljebb %1$d elemet</string>
   <string name="pref_compact_notification_buttons_dialog_error">Legfeljebb %1$d elemet választhat.</string>
   <string name="pref_lockscreen_background_title">Képernyőzár háttérkép beállítása</string>
   <string name="pref_lockscreen_background_sum">A képernyőzár háttérképének beállítása a jelenlegi epizód képére. Mellékhatásként, ez a harmadik féltől származó alkalmazásokban is megjeleníti a képet.</string>
-  <string name="pref_showDownloadReport_title">Letöltés sikertelen</string>
-  <string name="pref_showDownloadReport_sum">Ha a letöltések sikertelenek, előállít egy jelentést, amely részletezi a hibát</string>
-  <string name="pref_showAutoDownloadReport_title">Elkészült az automatikus letöltés</string>
-  <string name="pref_showAutoDownloadReport_sum">Értesítés megjelenítése az automatikusan letöltött epizódokhoz.</string>
   <string name="pref_expand_notify_unsupport_toast">A 4.1 előtti Android verziók nem támogatják a bővített értesítéseket.</string>
   <string name="pref_enqueue_location_title">Hely sorbaállítása</string>
   <string name="pref_enqueue_location_sum">Epizódok hozzáadása ehhez: %1$s</string>
@@ -454,6 +464,7 @@
   <string name="pref_smart_mark_as_played_disabled">Letiltva</string>
   <string name="pref_image_cache_size_title">Kép gyorsítótár mérete</string>
   <string name="pref_image_cache_size_sum">Kép gyorsítótár mérete a lemezen.</string>
+  <string name="documentation_support">Dokumentációs és támogatása</string>
   <string name="visit_user_forum">Felhasználói fórum</string>
   <string name="bug_report_title">Hibajelentés</string>
   <string name="open_bug_tracker">Hibakövető megnyitása</string>
@@ -465,14 +476,12 @@
   <string name="pref_current_value">Jelenlegi érték: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Hálózati proxy beállítása</string>
-  <string name="pref_faq">Gyakran ismételt kérdések</string>
   <string name="pref_no_browser_found">Nem található webböngésző.</string>
   <string name="pref_cast_title">Chromecast támogatás</string>
   <string name="pref_cast_message_play_flavor">A távoli médialejátszás engedélyezése a Cast eszközökön (mint a Chromecast, hangfalak vagy Android TV)</string>
   <string name="pref_cast_message_free_flavor">A Chromecast harmadik féltől származó zárt programkönyvtárakat igényel, amelyek le vannak tiltva az AntennaPod jelen verziójában.</string>
   <string name="pref_enqueue_downloaded_title">Letöltött elemek sorbaállítása</string>
   <string name="pref_enqueue_downloaded_summary">Letöltött epizódok sorhoz adása</string>
-  <string name="media_player_builtin">Beépített androidos lejátszó</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (javasolt)</string>
   <string name="media_player_switch_to_exoplayer">Váltás az ExoPlayerre</string>
   <string name="media_player_switched_to_exoplayer">Átváltva az ExoPlayerre.</string>
@@ -580,22 +589,12 @@
   <string name="gpodnet_suggestions_header">JAVASLATOK</string>
   <string name="gpodnet_search_hint">Keresés a gpodder.neten</string>
   <string name="gpodnetauth_login_title">Bejelentkezés</string>
-  <string name="gpodnetauth_login_descr">Üdvözli a gpodder.net bejelentkezési folyamat. Először írja be a bejelentkezési információit:</string>
   <string name="gpodnetauth_login_butLabel">Bejelentkezés</string>
-  <string name="gpodnetauth_login_register">Ha még nincs fiókja, itt létrehozhat egyet:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Felhasználónév</string>
   <string name="password_label">Jelszó</string>
-  <string name="gpodnetauth_device_title">Eszköz kiválasztása</string>
   <string name="gpodnetauth_device_descr">Hozzon létre egy új eszközt a gpodder.net fiókjához, vagy válasszon egy meglévőt:</string>
-  <string name="gpodnetauth_device_deviceID">Eszközazonosító:\u0020</string>
-  <string name="gpodnetauth_device_caption">Felirat</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Új eszköz létrehozása</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">Létező eszköz kiválasztása:</string>
-  <string name="gpodnetauth_device_errorEmpty">Az eszközazonosító nem lehet üres</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">Az eszközazonosító már használatban van</string>
   <string name="gpodnetauth_device_caption_errorEmpty">A felirat nem lehet üres</string>
   <string name="gpodnetauth_device_butChoose">Kiválasztás</string>
-  <string name="gpodnetauth_finish_title">Bejelentkezés sikeres!</string>
   <string name="gpodnetauth_finish_descr">Gratulálunk! A gpodder.net fiókja most már össze van kapcsolva az eszközével. Az AntennaPod automatikusan szinkronizálja az eszközén lévő feliratkozásait a gpodder.net fiókjával.</string>
   <string name="gpodnetauth_finish_butsyncnow">Szinkronizálás indítása most</string>
   <string name="gpodnetauth_finish_butgomainscreen">Ugrás a főképernyőre</string>
@@ -769,9 +768,6 @@
   <string name="notification_channel_downloading_description">Letöltés közben jelenik meg</string>
   <string name="notification_channel_playing">Most játszott</string>
   <string name="notification_channel_playing_description">Lehetővé teszi a lejátszás vezérlését. Ez a fő értesítés, amit a podcast lejátszásakor lát.</string>
-  <string name="notification_channel_error">Hibák</string>
-  <string name="notification_channel_sync_error">Szinkronizálási hibák</string>
-  <string name="notification_channel_auto_download">Automatikus letöltések</string>
   <string name="notification_channel_episode_auto_download">Akkor jelenik meg, ha az epizódok automatikusan letöltésre kerültek.</string>
   <!--Widget settings-->
   <string name="widget_settings">Widget beállítások</string>
