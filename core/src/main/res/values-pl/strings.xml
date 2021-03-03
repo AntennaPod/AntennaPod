@@ -6,6 +6,7 @@
   <string name="statistics_label">Statystyki</string>
   <string name="add_feed_label">Dodaj podcast</string>
   <string name="episodes_label">Odcinki</string>
+  <string name="queue_label">Kolejka</string>
   <string name="all_episodes_short_label">Wszystkie</string>
   <string name="new_episodes_label">Nowe</string>
   <string name="favorite_episodes_label">Ulubione</string>
@@ -17,7 +18,6 @@
   <string name="downloads_log_label">Dziennik</string>
   <string name="subscriptions_label">Subskrypcje</string>
   <string name="subscriptions_list_label">Lista subskrypcji</string>
-  <string name="cancel_download_label">Anuluj pobieranie</string>
   <string name="playback_history_label">Historia odtwarzania</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
@@ -26,6 +26,7 @@
   <string name="playback_statistics_label">Odtwarzanie</string>
   <string name="download_statistics_label">Pobrane</string>
   <string name="notification_pref_fragment">Powiadomienia</string>
+  <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Całkowity czas odtwarzania podcastów:</string>
   <string name="statistics_details_dialog">%1$d z %2$d odcinków rozpoczęto.\n\nOdtworzono %3$s z %4$s.</string>
@@ -81,7 +82,6 @@
   <string name="description_label">Opis</string>
   <string name="episodes_suffix">\u0020odcinków</string>
   <string name="processing_label">Przetwarzanie</string>
-  <string name="save_username_password_label">Zapisz nazwę użytkownika i hasło</string>
   <string name="close_label">Zamknij</string>
   <string name="retry_label">Spróbuj ponownie</string>
   <string name="auto_download_label">Dołącz do automatycznego pobierania</string>
@@ -93,7 +93,6 @@
   <string name="feed_volume_reduction_off">Wyłączona</string>
   <string name="feed_volume_reduction_light">Średnia</string>
   <string name="feed_volume_reduction_heavy">Silna</string>
-  <string name="parallel_downloads_suffix">\u0020równoległych pobierań</string>
   <string name="feed_auto_download_global">Globalnie domyślnie</string>
   <string name="feed_auto_download_always">Zawsze</string>
   <string name="feed_auto_download_never">Nigdy</string>
@@ -344,7 +343,6 @@
   <string name="storage_pref">Pamięć</string>
   <string name="storage_sum">Automatyczne kasowanie odcinków, Import, Eksport</string>
   <string name="project_pref">Projekt</string>
-  <string name="queue_label">Kolejka</string>
   <string name="synchronization_pref">Synchronizacja</string>
   <string name="synchronization_sum">Synchronizuj z innymi urządzeniami za pomocą gpodder.net</string>
   <string name="automation">Automatyzacja</string>
@@ -360,14 +358,9 @@
   <string name="preference_search_clear_history">Wyczyść historię</string>
   <string name="media_player">Odtwarzacz</string>
   <string name="pref_episode_cleanup_title">Usuwanie odcinków</string>
-  <string name="pref_episode_cleanup_summary">Odcinki niebędące w kolejce i niebędące na liście ulubiobych powinny nadawać się do usunięcia, jeśli Automatyczne Pobieranie potrzebuje miejsca na nowe odcinki.</string>
   <string name="pref_pauseOnDisconnect_sum">Wstrzymaj odtwarzanie po rozłączeniu słuchawek lub Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Wznów odtwarzanie po przywróceniu połączenia Bluetooth</string>
-  <string name="pref_hardwareForwardButtonSkips_title">Przycisk \'Do przodu\' pomija odcinek</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Naciśnięcie przycisku \'Do przodu\' na urządzeniu bluetooth skacze do następnego odcinka, zamiast przewijać</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Przycisk wstecz restartuje</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Podczas odtwarzania przycisk wstecz restartuje zamiast przewijać</string>
   <string name="pref_followQueue_sum">Przeskocz do następnego elementu kolejki po zakończeniu odtwarzania</string>
   <string name="pref_auto_delete_sum">Usuń odcinek kiedy jego odtwarzanie zostanie zakończone</string>
   <string name="pref_auto_delete_title">Automatyczne usuwanie</string>
@@ -387,7 +380,6 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Zablokuj</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Ustaw częstotliwość</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Ustaw czas dnia</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">co %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">o %1$s</string>
   <string name="pref_followQueue_title">Odtwarzanie ciągłe</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Rozłączenie słuchawek lub Bluetooth</string>
@@ -422,7 +414,6 @@
   <string name="pref_episode_cache_title">Pamięć podręczna odcinków</string>
   <string name="pref_episode_cache_summary">Całkowita liczba odcinków zapisanych na urządzeniu. Automatyczne pobieranie zostanie przerwane, jeśli zostanie ona osiągnięta.</string>
   <string name="pref_episode_cover_title">Użyj okładek odcinków</string>
-  <string name="pref_episode_cover_summary">Użyj okładek konkretnych odcinków kiedy to możliwe. Odznaczenie spowoduje, że aplikacja zawsze będzie używała okładki kanału.</string>
   <string name="pref_theme_title_use_system">Użyj motywu systemowego</string>
   <string name="pref_theme_title_light">Jasny</string>
   <string name="pref_theme_title_dark">Ciemny</string>
@@ -442,8 +433,6 @@
   <string name="pref_gpodnet_full_sync_title">Wymuś pełną synchronizację</string>
   <string name="pref_gpodnet_full_sync_sum">Synchronizuj wszystkie subskrypcje oraz stan odcinków z pomocą gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Zalogowano jako <i>%1$s</i> na urządzeniu <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_title">Błąd synchronizacji</string>
-  <string name="pref_gpodnet_notifications_sum">To ustawienie nie dotyczy błędów autoryzacji.</string>
   <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania o zmiennej prędkości</string>
   <string name="pref_feed_playback_speed_sum">Prędkość używana podczas odtwarzania odcinków z tego kanału</string>
   <string name="pref_feed_skip">Automatyczne pomijanie</string>
@@ -458,8 +447,6 @@
   <string name="pref_fast_forward_sum">Dostosuj liczbę sekund do przeskoczenia przy kliknięciu szybkiego przewijania do przodu</string>
   <string name="pref_rewind">Przewijanie do tyłu</string>
   <string name="pref_rewind_sum">Dostosuj liczbę sekund do przeskoczenia przy kliknięciu przewijania do tyłu</string>
-  <string name="pref_gpodnet_sethostname_title">Ustaw nazwę hosta</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Użyj domyślnego hosta</string>
   <string name="pref_expandNotify_title">Wysoki priorytet powiadomienia</string>
   <string name="pref_expandNotify_sum">Rozwija powiadomienie, aby pokazać przyciski odtwarzania</string>
   <string name="pref_persistNotify_title">Stałe przyciski odtwarzacza</string>
@@ -470,10 +457,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">Możesz tylko wybrać maksimum z %1$d przedmiotów.</string>
   <string name="pref_lockscreen_background_title">Ustaw tło ekranu blokady</string>
   <string name="pref_lockscreen_background_sum">Ustaw tło ekranu blokowania na aktualny obraz odcinka. W efekcie będzie zawsze pokazywał obraz w innych aplikacjach.</string>
-  <string name="pref_showDownloadReport_title">Błąd pobierania</string>
-  <string name="pref_showDownloadReport_sum">Jeżeli pobieranie się nie powiedzie, pokaż raport ze szczegółami błędu.</string>
-  <string name="pref_showAutoDownloadReport_title">Automatyczne pobieranie zakończone</string>
-  <string name="pref_showAutoDownloadReport_sum">Pokazuj powiadomienie dla odcinków pobranych automatycznie</string>
   <string name="pref_expand_notify_unsupport_toast">Android starszy niż 4.1 nie wspiera rozszerzonych powiadomień.</string>
   <string name="pref_enqueue_location_title">Pozycja w kolejce</string>
   <string name="pref_enqueue_location_sum">Dodaj odcinki do: %1$s</string>
@@ -494,14 +477,12 @@
   <string name="pref_current_value">Aktualna wartość: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Ustaw proxy sieciowe</string>
-  <string name="pref_faq">Najczęściej zadawane pytania</string>
   <string name="pref_no_browser_found">Nie znaleziono przeglądarki.</string>
   <string name="pref_cast_title">Obsługa Chromecast</string>
   <string name="pref_cast_message_play_flavor">Uruchom obsługę dla zdalnego odtwarzania mediów na innych urządzeniach (takich jak Chromecast, Audio Speakers albo Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast wymagadodatkowych bibliotek, które są zablokowane w tej wersji AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Kolejkuj pobrane</string>
   <string name="pref_enqueue_downloaded_summary">Dodaj pobrane odcinki do kolejki</string>
-  <string name="media_player_builtin">Wbudowany odtwarzacz Androida</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (rekomendowany)</string>
   <string name="media_player_switch_to_exoplayer">Zmień na ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Zmieniono na ExoPlayer</string>
@@ -623,23 +604,12 @@
   <string name="gpodnet_suggestions_header">SUGESTIE</string>
   <string name="gpodnet_search_hint">Szukaj na gpodder.net</string>
   <string name="gpodnetauth_login_title">Login</string>
-  <string name="gpodnetauth_login_descr">Witamy w procesie logowania do gpodder.net. Najpierw podaj swoje dane logowania:</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
-  <string name="gpodnetauth_login_register">Jeśli nie masz jeszcze konta, możesz utworzyć je tutaj:
-https://gpodder.net/register/</string>
   <string name="username_label">Nazwa użytkownika</string>
   <string name="password_label">Hasło</string>
-  <string name="gpodnetauth_device_title">Wybór urządzenia</string>
   <string name="gpodnetauth_device_descr">Utwórz nowe urządzenie dla swojego konta na gpodder.net lub wybierz istniejące:</string>
-  <string name="gpodnetauth_device_deviceID">Identyfikator urządzenia:\u0020</string>
-  <string name="gpodnetauth_device_caption">Tytuł</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Utwórz nowe urządzenie</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">Wybierz istniejące urządzenie:</string>
-  <string name="gpodnetauth_device_errorEmpty">Identyfikator urządzenia nie może być pusty</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">Identyfikator urządzenia w użyciu</string>
   <string name="gpodnetauth_device_caption_errorEmpty">Pole nie może być puste</string>
   <string name="gpodnetauth_device_butChoose">Wybierz</string>
-  <string name="gpodnetauth_finish_title">Logowanie zakończone sukcesem!</string>
   <string name="gpodnetauth_finish_descr">Gratulacje! Twoje konto na gpodder.net jest połączone z urządzeniem.  AntennaPod będzie automatycznie synchronizować subskrypcje na urządzeniu z kontem na gpodder.net. </string>
   <string name="gpodnetauth_finish_butsyncnow">Rozpocznij synchronizację</string>
   <string name="gpodnetauth_finish_butgomainscreen">Idź do strony głównej</string>
@@ -833,11 +803,7 @@ https://gpodder.net/register/</string>
   <string name="notification_channel_downloading_description">Pokazywane podczas aktywnego pobierania.</string>
   <string name="notification_channel_playing">Teraz odtwarzane</string>
   <string name="notification_channel_playing_description">Pozwala na kontrolowanie odtwarzania. To jest główne powiadomienie, które zobaczysz podczas odtwarzania podcastu.</string>
-  <string name="notification_channel_error">Błędy</string>
-  <string name="notification_channel_error_description">Pokazywane, gdy coś pójdzie nie tak, np. błąd pobierania lub błąd aktualizacji.</string>
-  <string name="notification_channel_sync_error">Błędy synchronizacji</string>
   <string name="notification_channel_sync_error_description">Pokazywane, gdy synchronizacja z gpodder się nie powiedzie.</string>
-  <string name="notification_channel_auto_download">Automatyczne pobieranie</string>
   <string name="notification_channel_episode_auto_download">Pokazywane, gdy odcinki zostały pobrane automatycznie</string>
   <!--Widget settings-->
   <string name="widget_settings">Ustawienia widżetu</string>

@@ -6,6 +6,7 @@
   <string name="statistics_label">İstatistikler</string>
   <string name="add_feed_label">Cep yayını ekle</string>
   <string name="episodes_label">Bölümler</string>
+  <string name="queue_label">Kuyruk</string>
   <string name="all_episodes_short_label">Tümü</string>
   <string name="new_episodes_label">Yeni</string>
   <string name="favorite_episodes_label">Favoriler</string>
@@ -17,7 +18,6 @@
   <string name="downloads_log_label">Günlük</string>
   <string name="subscriptions_label">Abonelikler</string>
   <string name="subscriptions_list_label">Abonelik Listesi</string>
-  <string name="cancel_download_label">İndirmeyi İptal Et</string>
   <string name="playback_history_label">Çalma geçmişi</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net giriş</string>
@@ -26,6 +26,7 @@
   <string name="playback_statistics_label">Playback</string>
   <string name="download_statistics_label">Downloads</string>
   <string name="notification_pref_fragment">Notifications</string>
+  <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
   <string name="statistics_details_dialog">%1$d out of %2$d episodes started.\n\nPlayed %3$s out of %4$s.</string>
@@ -81,7 +82,6 @@
   <string name="description_label">Tanım</string>
   <string name="episodes_suffix">\u0020bölüm</string>
   <string name="processing_label">İşleniyor</string>
-  <string name="save_username_password_label">Kullanıcı adı ve şifreyi kaydet</string>
   <string name="close_label">Kapat</string>
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
@@ -93,7 +93,6 @@
   <string name="feed_volume_reduction_off">Off</string>
   <string name="feed_volume_reduction_light">Light</string>
   <string name="feed_volume_reduction_heavy">Heavy</string>
-  <string name="parallel_downloads_suffix">\u0020paralel indirmeler</string>
   <string name="feed_auto_download_global">Varsayılan ayarlar</string>
   <string name="feed_auto_download_always">Her zaman</string>
   <string name="feed_auto_download_never">Hiçbir zaman</string>
@@ -323,7 +322,6 @@
   <string name="storage_pref">Depolama</string>
   <string name="storage_sum">Episode auto delete, Import, Export</string>
   <string name="project_pref">Proje</string>
-  <string name="queue_label">Kuyruk</string>
   <string name="synchronization_pref">Synchronization</string>
   <string name="synchronization_sum">Synchronize with other devices using gpodder.net</string>
   <string name="automation">Otomasyon</string>
@@ -339,14 +337,9 @@
   <string name="preference_search_clear_history">Clear history</string>
   <string name="media_player">Medya oynatıcı</string>
   <string name="pref_episode_cleanup_title">Bölüm Temizliği</string>
-  <string name="pref_episode_cleanup_summary">Yeni bölümleri otomatik indirme için alan gerekirse, kuyrukta veya favorilerde olmayan bölümler otomatik olarak silinebilir</string>
   <string name="pref_pauseOnDisconnect_sum">Kulaklıklar çıkarıldığında veya bluetooth bağlantısı kesildiğinde çalmayı duraklat</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetooth yeniden bağlandığında çalmaya devam et</string>
-  <string name="pref_hardwareForwardButtonSkips_title">İleri düğmesi atlar</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Bluetooth ile bağlı bir cihazda ileri düğmesine basmak hızlı ileri sarmak yerine sonraki bölüme atlar</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">Geri düğmesi yeniden başlatır</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">Geri düğmesine basmak hızlı geri sarmak yerine mevcut bölümü yeniden oynatır</string>
   <string name="pref_followQueue_sum">Çalma tamamlandığında kuyruktaki diğer öğeye geç</string>
   <string name="pref_auto_delete_sum">Çalma bittiğinde bölümü sil</string>
   <string name="pref_auto_delete_title">Otomatik Silme</string>
@@ -366,7 +359,6 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">Devre dışı</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Aralık ayarla</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Belirli saat ayarla</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">her%1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">süre%1$s</string>
   <string name="pref_followQueue_title">Devamlı çalma</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
@@ -401,7 +393,6 @@
   <string name="pref_episode_cache_title">Bölüm ön belleği</string>
   <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
   <string name="pref_episode_cover_title">Use Episode Cover</string>
-  <string name="pref_episode_cover_summary">Use the episode specific cover whenever available. If unchecked, the app will always use the podcast cover image.</string>
   <string name="pref_theme_title_use_system">Use system theme</string>
   <string name="pref_theme_title_light">Aydınlık</string>
   <string name="pref_theme_title_dark">Karanlık</string>
@@ -421,8 +412,6 @@
   <string name="pref_gpodnet_full_sync_title">Force full synchronization</string>
   <string name="pref_gpodnet_full_sync_sum">Sync all subscriptions and episode states with gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[Logged in as <i>%1$s</i> with device <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_title">Synchronization failed</string>
-  <string name="pref_gpodnet_notifications_sum">This setting does not apply to authentication errors.</string>
   <string name="pref_playback_speed_sum">Customize the speeds available for variable speed playback</string>
   <string name="pref_feed_playback_speed_sum">The speed to use when starting audio playback for episodes in this podcast</string>
   <string name="pref_feed_skip">Auto Skip</string>
@@ -437,8 +426,6 @@
   <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
   <string name="pref_rewind">Rewind Skip Time</string>
   <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
-  <string name="pref_gpodnet_sethostname_title">Sunucu ismini ayarla</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Varsayılan sunucuyu kullan</string>
   <string name="pref_expandNotify_title">High Notification priority</string>
   <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
   <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
@@ -449,10 +436,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">You can only select a maximum of %1$d items.</string>
   <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
   <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
-  <string name="pref_showDownloadReport_title">Download failed</string>
-  <string name="pref_showDownloadReport_sum">Eğer indirme başarısız olursa, hatanın ayrıntılarını gösteren bir rapor oluştur.</string>
-  <string name="pref_showAutoDownloadReport_title">Automatic download completed</string>
-  <string name="pref_showAutoDownloadReport_sum">Show a notification for automatically downloaded episodes.</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 öncesi sürümler genişletilmiş bildirimleri desteklememektedir.</string>
   <string name="pref_enqueue_location_title">Enqueue Location</string>
   <string name="pref_enqueue_location_sum">Add episodes to: %1$s</string>
@@ -473,14 +456,12 @@
   <string name="pref_current_value">Current value: %1$s</string>
   <string name="pref_proxy_title">Proxy</string>
   <string name="pref_proxy_sum">Set a network proxy</string>
-  <string name="pref_faq">Frequently Asked Questions</string>
   <string name="pref_no_browser_found">No web browser found.</string>
   <string name="pref_cast_title">Chromecast support</string>
   <string name="pref_cast_message_play_flavor">Enable support for remote media playback on Cast devices (such as Chromecast, Audio Speakers or Android TV)</string>
   <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
   <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
   <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
-  <string name="media_player_builtin">Built-in Android player</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (tavsiye edilen)</string>
   <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
@@ -596,22 +577,12 @@
   <string name="gpodnet_suggestions_header">ÖNERİLER</string>
   <string name="gpodnet_search_hint">gpodder.net\'te ara</string>
   <string name="gpodnetauth_login_title">Giriş</string>
-  <string name="gpodnetauth_login_descr">gpodder.net giriş işlemine hoşgeldiniz. Önce giriş bilgilerinizi yazın:</string>
   <string name="gpodnetauth_login_butLabel">Giriş</string>
-  <string name="gpodnetauth_login_register">Eğer bir hesabınız yoksa, buradan bir tane oluşturabilirsiniz:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Kullanıcı adı</string>
   <string name="password_label">Parola</string>
-  <string name="gpodnetauth_device_title">Cihaz Seçimi</string>
   <string name="gpodnetauth_device_descr">gpodder.net hesabınızla kullanmak için yeni bir cihaz oluşturun veya var olan bir tanesini seçin:</string>
-  <string name="gpodnetauth_device_deviceID">Cihaz Kimliği:\u0020</string>
-  <string name="gpodnetauth_device_caption">Başlık</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Yeni cihaz oluştur</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">Bir cihaz seç:</string>
-  <string name="gpodnetauth_device_errorEmpty">Cihaz ID\'si boş olamaz</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">Cihaz ID\'si zaten var</string>
   <string name="gpodnetauth_device_caption_errorEmpty">Caption must not be empty</string>
   <string name="gpodnetauth_device_butChoose">Seç</string>
-  <string name="gpodnetauth_finish_title">Giriş başarılı</string>
   <string name="gpodnetauth_finish_descr">Tebrikler! gpodder.net hesabınız cihazınızla ilişkilendirildi. AntennaPod bundan sonra gpodder.net hesabınızla üyeliklerinizi otomatik olarak senkronize edecek.</string>
   <string name="gpodnetauth_finish_butsyncnow">Senkronizasyonu başlat</string>
   <string name="gpodnetauth_finish_butgomainscreen">Ana ekrana git</string>
@@ -805,11 +776,7 @@
   <string name="notification_channel_downloading_description">Shown while currently downloading.</string>
   <string name="notification_channel_playing">Currently playing</string>
   <string name="notification_channel_playing_description">Allows to control playback. This is the main notification you see while playing a podcast.</string>
-  <string name="notification_channel_error">Errors</string>
-  <string name="notification_channel_error_description">Shown if something went wrong, for example if download or feed update fails.</string>
-  <string name="notification_channel_sync_error">Synchronization Errors</string>
   <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
-  <string name="notification_channel_auto_download">Auto Downloads</string>
   <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
   <!--Widget settings-->
   <string name="widget_settings">Widget settings</string>

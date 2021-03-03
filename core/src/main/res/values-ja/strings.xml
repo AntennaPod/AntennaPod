@@ -6,6 +6,7 @@
   <string name="statistics_label">統計情報</string>
   <string name="add_feed_label">フィードを追加</string>
   <string name="episodes_label">エピソード</string>
+  <string name="queue_label">キュー</string>
   <string name="all_episodes_short_label">すべて</string>
   <string name="new_episodes_label">新規</string>
   <string name="favorite_episodes_label">お気に入り</string>
@@ -17,7 +18,6 @@
   <string name="downloads_log_label">ログ</string>
   <string name="subscriptions_label">購読</string>
   <string name="subscriptions_list_label">購読リスト</string>
-  <string name="cancel_download_label">ダウンロードをキャンセル</string>
   <string name="playback_history_label">再生履歴</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net ログイン</string>
@@ -25,6 +25,7 @@
   <string name="episode_cache_full_message">エピソードキャッシュが制限に達しました。設定でキャッシュサイズを増やすことができます。</string>
   <string name="playback_statistics_label">再生</string>
   <string name="download_statistics_label">ダウンロード</string>
+  <!--Google Assistant-->
   <!--Statistics fragment-->
   <string name="statistics_details_dialog">%2$d から %1$d のエピソードが開始しました。\n\n%4$s から%3$s を再生しました。</string>
   <string name="statistics_mode">統計情報モード</string>
@@ -75,7 +76,6 @@
   <string name="description_label">説明</string>
   <string name="episodes_suffix">\u0020エピソード</string>
   <string name="processing_label">処理中</string>
-  <string name="save_username_password_label">ユーザ名とパスワードを保存する</string>
   <string name="close_label">閉じる</string>
   <string name="retry_label">再試行</string>
   <string name="auto_download_label">自動ダウンロードに含む</string>
@@ -86,7 +86,6 @@
   <string name="feed_volume_reduction_off">オフ</string>
   <string name="feed_volume_reduction_light">ライト</string>
   <string name="feed_volume_reduction_heavy">ヘビー</string>
-  <string name="parallel_downloads_suffix">\u0020パラレル ダウンロード</string>
   <string name="feed_auto_download_global">全般のデフォルト</string>
   <string name="feed_auto_download_always">常に</string>
   <string name="feed_auto_download_never">しない</string>
@@ -290,7 +289,6 @@
   <string name="storage_pref">ストレージ</string>
   <string name="storage_sum">エピソードの自動削除、インポート、エクスポート</string>
   <string name="project_pref">プロジェクト</string>
-  <string name="queue_label">キュー</string>
   <string name="automation">自動</string>
   <string name="download_pref_details">詳細</string>
   <string name="import_export_pref">インポート/エクスポート</string>
@@ -304,14 +302,9 @@
   <string name="preference_search_clear_history">履歴をクリア</string>
   <string name="media_player">メディアプレーヤー</string>
   <string name="pref_episode_cleanup_title">エピソード クリーンアップ</string>
-  <string name="pref_episode_cleanup_summary">キューに含まれておらず、お気に入りではないエピソードは、自動ダウンロードで新しいエピソードのためにスペースが必要な場合、除去の対象になります</string>
   <string name="pref_pauseOnDisconnect_sum">ヘッドフォンまたはBluetoothの接続が切断された時、再生を一時停止します</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">ヘッドフォンが再接続された時に再生を再開します</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">Bluetoothが再接続された時に再生を再開します</string>
-  <string name="pref_hardwareForwardButtonSkips_title">早送りボタンでスキップ</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">Bluetoothで接続されたデバイスの早送りボタンを押したときに、早送りの代わりに次のエピソードにスキップします</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">戻るボタンで再開</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">ハードウェアの戻るボタンを押したときに、巻き戻しの代わりに現在のエピソードの再生を再開します</string>
   <string name="pref_followQueue_sum">再生が完了した時に次のキューのアイテムに移動します</string>
   <string name="pref_auto_delete_sum">再生が完了した時にエピソードを削除します</string>
   <string name="pref_auto_delete_title">自動削除</string>
@@ -331,7 +324,6 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">無効</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">間隔をセット</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">時間をセット</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">%1$s ごと</string>
   <string name="pref_autoUpdateIntervallOrTime_at">%1$s に</string>
   <string name="pref_followQueue_title">連続再生</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">ヘッドフォン再接続</string>
@@ -364,7 +356,6 @@
   <string name="pref_episode_cache_title">エピソードキャッシュ</string>
   <string name="pref_episode_cache_summary">デバイスにキャッシュされたダウンロード済エピソードの合計数。この数に達すると自動ダウンロードが抑制されます。</string>
   <string name="pref_episode_cover_title">エピソードカバーを使用する</string>
-  <string name="pref_episode_cover_summary">エピソード固有のカバーが利用できる場合は常に使用します。 チェックされていない場合、アプリは常にポッドキャストのカバー画像を使用します。</string>
   <string name="pref_theme_title_use_system">システムのテーマを使用する</string>
   <string name="pref_theme_title_light">ライト</string>
   <string name="pref_theme_title_dark">ダーク</string>
@@ -382,7 +373,6 @@
   <string name="pref_gpodnet_sync_changes_sum">購読とエピソードの状態の変更を gpodder.net で同期します。</string>
   <string name="pref_gpodnet_full_sync_sum">すべての購読とエピソードの状態を gpodder.net で同期します。</string>
   <string name="pref_gpodnet_login_status"><![CDATA[<i>%1$s</i> としてデバイス <i>%2$s</i> でログインしました]]></string>
-  <string name="pref_gpodnet_notifications_sum">この設定は、認証エラーには適用されません。</string>
   <string name="pref_feed_playback_speed_sum">このポッドキャストでエピソードのオーディオ再生を開始するときに使用する速度</string>
   <string name="pref_playback_time_respects_speed_title">メディア情報を再生速度に調整</string>
   <string name="pref_playback_time_respects_speed_sum">表示される位置と時間が再生速度に調整されます</string>
@@ -390,8 +380,6 @@
   <string name="pref_fast_forward_sum">早送りボタンがクリックされたときにジャンプする秒数をカスタマイズします</string>
   <string name="pref_rewind">巻き戻しスキップ時間</string>
   <string name="pref_rewind_sum">巻き戻しボタンがクリックされたときに後方にジャンプする秒数をカスタマイズします</string>
-  <string name="pref_gpodnet_sethostname_title">ホスト名をセット</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">デフォルトホストを使用</string>
   <string name="pref_expandNotify_title">優先度の高い通知</string>
   <string name="pref_expandNotify_sum">これは通常再生ボタンを表示するように通知を展開します。</string>
   <string name="pref_persistNotify_title">永続再生コントロール</string>
@@ -400,8 +388,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">最大 %1$d のアイテムのみを選択できます。</string>
   <string name="pref_lockscreen_background_title">ロック画面の背景を設定</string>
   <string name="pref_lockscreen_background_sum">ロック画面の背景を、現在のエピソードの画像に設定します。副作用として、これはサードパーティのアプリケーションでも画像を表示します。</string>
-  <string name="pref_showDownloadReport_sum">ダウンロードが失敗した場合、失敗の詳細を表示するレポートを生成します。</string>
-  <string name="pref_showAutoDownloadReport_sum">自動ダウンロードされたエピソードの通知を表示します。</string>
   <string name="pref_expand_notify_unsupport_toast">Androidバージョン4.1以前では、拡張通知をサポートしていません。</string>
   <string name="pref_enqueue_location_title">キューに入れる場所</string>
   <string name="pref_enqueue_location_sum">エピソードを追加: %1$s</string>
@@ -422,14 +408,12 @@
   <string name="pref_current_value">現在の値: %1$s</string>
   <string name="pref_proxy_title">プロキシ</string>
   <string name="pref_proxy_sum">ネットワーク プロキシの設定</string>
-  <string name="pref_faq">よくある質問と答え</string>
   <string name="pref_no_browser_found">Webブラウザーが見つかりません。</string>
   <string name="pref_cast_title">Chromecast サポート</string>
   <string name="pref_cast_message_play_flavor">(Chromecast、オーディオスピーカー、Android TV など) キャストデバイス上でリモートメディア再生のサポートを有効にします</string>
   <string name="pref_cast_message_free_flavor">Chromecast は AntennaPod のこのバージョンで無効になっているサードパーティ独自のライブラリーが必要です</string>
   <string name="pref_enqueue_downloaded_title">ダウンロードのキューに入れる</string>
   <string name="pref_enqueue_downloaded_summary">ダウンロードしたエピソードをキューに追加します</string>
-  <string name="media_player_builtin">ビルトイン Android プレーヤー</string>
   <string name="pref_skip_silence_title">音声の無音をスキップ</string>
   <string name="pref_videoBehavior_title">ビデオ終了時</string>
   <string name="pref_videoBehavior_sum">ビデオ再生から遷移時の動作</string>
@@ -514,22 +498,12 @@
   <string name="gpodnet_suggestions_header">おススメ</string>
   <string name="gpodnet_search_hint">gpodder.netを検索</string>
   <string name="gpodnetauth_login_title">ログイン</string>
-  <string name="gpodnetauth_login_descr">gpodder.netログインへようこそ。まずログイン情報を入力してください。</string>
   <string name="gpodnetauth_login_butLabel">ログイン</string>
-  <string name="gpodnetauth_login_register">まだアカウントをお持ちでなければ、ここで作成することができます。\nhttps://gpodder.net/register/</string>
   <string name="username_label">ユーザー名</string>
   <string name="password_label">パスワード</string>
-  <string name="gpodnetauth_device_title">端末選択</string>
   <string name="gpodnetauth_device_descr">gpodder.net アカウントで使用する新しい端末を作成するか、既存のものを選択してください。</string>
-  <string name="gpodnetauth_device_deviceID">端末ID:\u0020</string>
-  <string name="gpodnetauth_device_caption">キャプション</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">新しい端末を作成</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">既存の端末を選択:</string>
-  <string name="gpodnetauth_device_errorEmpty">端末IDは空にできません</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">端末IDは既に使用しています</string>
   <string name="gpodnetauth_device_caption_errorEmpty">キャプションは空にできません</string>
   <string name="gpodnetauth_device_butChoose">選択</string>
-  <string name="gpodnetauth_finish_title">ログインされました！</string>
   <string name="gpodnetauth_finish_descr">おめでとうございます! あなたのgpodder.netアカウントが今お使いの端末とリンクされました。 AntennaPodは今から自動的にgpodder.netアカウントを使用して端末の購読を同期します。</string>
   <string name="gpodnetauth_finish_butsyncnow">今すぐ同期を開始</string>
   <string name="gpodnetauth_finish_butgomainscreen">メイン画面に移動</string>
@@ -684,8 +658,6 @@
   <string name="notification_channel_downloading_description">現在のダウンロードが表示されます。</string>
   <string name="notification_channel_playing">現在再生中</string>
   <string name="notification_channel_playing_description">再生をコントロールできます。これはポッドキャスト再生中のメイン通知です。</string>
-  <string name="notification_channel_error">エラー</string>
-  <string name="notification_channel_auto_download">自動ダウンロード</string>
   <string name="notification_channel_episode_auto_download">エピソードが自動ダウンロードされた時に表示します。</string>
   <!--Widget settings-->
   <string name="widget_settings">ウィジェット設定</string>

@@ -6,6 +6,7 @@
   <string name="statistics_label">统计</string>
   <string name="add_feed_label">添加播客</string>
   <string name="episodes_label">曲目</string>
+  <string name="queue_label">播放列表</string>
   <string name="all_episodes_short_label">全部</string>
   <string name="new_episodes_label">最新</string>
   <string name="favorite_episodes_label">收藏</string>
@@ -26,6 +27,8 @@
   <string name="playback_statistics_label">回放</string>
   <string name="download_statistics_label">下载</string>
   <string name="notification_pref_fragment">通知</string>
+  <!--Google Assistant-->
+  <string name="app_action_not_found">\"%1$s\" 未找到</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">节目总播放时间:</string>
   <string name="statistics_details_dialog">听过了总计 %2$d 期播客中的 %1$d 期。\n\n播放了总计 %4$s 中的 %3$s。</string>
@@ -53,6 +56,8 @@
   <string name="drawer_feed_counter_none">无</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">没有找到兼容的应用程序</string>
+  <string name="export_logs_menu_title">导出详细日志</string>
+  <string name="confirm_export_log_dialog_message">详细日志可能包含敏感信息，如你的订阅列表</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">在浏览器打开</string>
   <string name="copy_url_label">复制 URL</string>
@@ -81,7 +86,6 @@
   <string name="description_label">描述</string>
   <string name="episodes_suffix">\u0020 曲</string>
   <string name="processing_label">处理中</string>
-  <string name="save_username_password_label">保存用户名密码</string>
   <string name="close_label">关闭</string>
   <string name="retry_label">重试</string>
   <string name="auto_download_label">包含到自动下载</string>
@@ -93,12 +97,13 @@
   <string name="feed_volume_reduction_off">关闭</string>
   <string name="feed_volume_reduction_light">轻微</string>
   <string name="feed_volume_reduction_heavy">显著</string>
-  <string name="parallel_downloads_suffix">\u0020 并行下载</string>
+  <string name="parallel_downloads">%1$d 个并行下载</string>
   <string name="feed_auto_download_global">全局默认</string>
   <string name="feed_auto_download_always"> 总是</string>
   <string name="feed_auto_download_never">从不</string>
   <string name="send_label">发送</string>
   <string name="episode_cleanup_never">从不</string>
+  <string name="episode_cleanup_except_favorite_removal">当未收藏时</string>
   <string name="episode_cleanup_queue_removal">当不在队列中</string>
   <string name="episode_cleanup_after_listening">结束后</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -110,7 +115,19 @@
   <plurals name="num_selected_label">
     <item quantity="other">已选中%d</item>
   </plurals>
+  <plurals name="num_episodes">
+    <item quantity="other">%d 期节目</item>
+  </plurals>
   <string name="loading_more">正加载更多…</string>
+  <string name="episode_notification">节目通知</string>
+  <string name="episode_notification_summary">当一期新节目发布时，显示一条通知。</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="other">%2$s有 %1$d 期新节目</item>
+  </plurals>
+  <plurals name="new_episode_notification_title">
+    <item quantity="other">新节目</item>
+  </plurals>
+  <string name="new_episode_notification_group_text">你的订阅有新节目</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">全部标识已读</string>
   <string name="mark_all_read_msg">将所有曲目标记为已播放</string>
@@ -156,6 +173,9 @@
   <string name="delete_label">删除</string>
   <string name="delete_failed">无法删除文件。重启可能解决该问题。</string>
   <string name="delete_episode_label">删除节目</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="other">%d 期节目被选中，%d 个下载被删除</item>
+  </plurals>
   <string name="remove_new_flag_label">移除“新的”标签</string>
   <string name="removed_new_flag_label">已移除“新的”标签</string>
   <string name="mark_read_label">标记已播放</string>
@@ -209,6 +229,7 @@
   <string name="download_error_file_type_type">文件类型错误</string>
   <string name="download_error_forbidden">禁用的</string>
   <string name="download_canceled_msg">已取消下载</string>
+  <string name="download_wrong_size">完成下载前，服务器连接丢失</string>
   <string name="download_canceled_autodownload_enabled_msg">已取消下载\n对该曲目禁用<i>自动下载</i></string>
   <string name="download_report_title">下载完成</string>
   <string name="auto_download_report_title">自动下载完成</string>
@@ -257,6 +278,7 @@
   <string name="player_go_to_picture_in_picture">画中画模式</string>
   <string name="unknown_media_key">AntennaPod - 未知媒体密钥: %1$d</string>
   <string name="error_file_not_found">文件未找到</string>
+  <string name="no_media_label">条目不包含一个媒体文件</string>
   <!--Queue operations-->
   <string name="lock_queue">锁定播放列表</string>
   <string name="unlock_queue">解锁播放列表</string>
@@ -313,7 +335,6 @@
   <string name="storage_pref">存储</string>
   <string name="storage_sum">播客剧集自动删除、导入和导出</string>
   <string name="project_pref">项目</string>
-  <string name="queue_label">播放列表</string>
   <string name="synchronization_pref">同步</string>
   <string name="synchronization_sum">用gpodder.net与其他设备同步</string>
   <string name="automation">自动化</string>
@@ -324,19 +345,24 @@
   <string name="external_elements">外部元素</string>
   <string name="interruptions">中断</string>
   <string name="playback_control">回放控制</string>
+  <string name="reassign_hardware_buttons">重新分配硬件按钮</string>
   <string name="preference_search_hint">搜索</string>
   <string name="preference_search_no_results">无结果</string>
   <string name="preference_search_clear_history">清除历史记录</string>
   <string name="media_player">媒体播放器</string>
   <string name="pref_episode_cleanup_title">清理曲目</string>
-  <string name="pref_episode_cleanup_summary">如果自动下载需要为新剧集腾出空间时不在列表和收藏里的剧集可以被移除</string>
+  <string name="pref_episode_cleanup_summary">在自动下载需要新曲目空间时，应该被删除的旧曲目</string>
   <string name="pref_pauseOnDisconnect_sum">暂停播放曲目当耳机或蓝牙重新连接</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">恢复播放曲目当蓝牙重新连接</string>
-  <string name="pref_hardwareForwardButtonSkips_title"> 快进按钮跳过曲目</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">当按压一个蓝牙连接设备的快进按钮时跳到下一项曲目而不是快进</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">“上一个”按钮重启</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">当按压硬件上一个按钮时重新开始播放当前曲目而不是倒回</string>
+  <string name="pref_hardware_forward_button_title">快进按钮</string>
+  <string name="pref_hardware_forward_button_summary">自定义快进按钮行为</string>
+  <string name="pref_hardware_previous_button_title">“上一个” 按钮</string>
+  <string name="pref_hardware_previous_button_summary">自定义“上一个”按钮行为</string>
+  <string name="button_action_fast_forward">快进</string>
+  <string name="button_action_rewind">倒退</string>
+  <string name="button_action_skip_episode">跳过节目</string>
+  <string name="button_action_restart_episode">重新开始节目</string>
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
   <string name="pref_auto_delete_sum">当播放完成后删除曲目</string>
   <string name="pref_auto_delete_title">自动删除</string>
@@ -356,8 +382,10 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">禁用</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">设置间隔</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">设置时间</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">每%1$s秒</string>
   <string name="pref_autoUpdateIntervallOrTime_at">第%1$s秒</string>
+  <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+    <item quantity="other">每 %d 小时</item>
+  </plurals>
   <string name="pref_followQueue_title">连续播放</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">耳机或蓝牙断开</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">耳机重新连接</string>
@@ -392,7 +420,9 @@
   <string name="pref_episode_cache_summary">缓存在设备上的已下载节目总数
 若达到此数目，自动下载将被暂停</string>
   <string name="pref_episode_cover_title">使用音频封面</string>
-  <string name="pref_episode_cover_summary">只要可以就使用某一集的封面。如果未选中，AntennaPod将始终使用播客的封面图像。</string>
+  <string name="pref_episode_cover_summary">勾选后，在列表中使用一期节目特定的封面图。如果不勾选，应用程序将始终使用播客封面图像。</string>
+  <string name="pref_show_remain_time_title">显示剩余时间</string>
+  <string name="pref_show_remain_time_summary">勾选显示节目的剩余时间。如果未选中，则显示所有节目的持续时间。</string>
   <string name="pref_theme_title_use_system">使用系统主题</string>
   <string name="pref_theme_title_light">浅色</string>
   <string name="pref_theme_title_dark">暗色</string>
@@ -412,8 +442,6 @@
   <string name="pref_gpodnet_full_sync_title">强制完整同步</string>
   <string name="pref_gpodnet_full_sync_sum">与gpodder.net同步所有订阅和节目状态</string>
   <string name="pref_gpodnet_login_status"><![CDATA[在设备 <i>%2$s</i> 上以 <i>%1$s</i> 身份登录]]></string>
-  <string name="pref_gpodnet_notifications_title">同步失败</string>
-  <string name="pref_gpodnet_notifications_sum">该设置无法适用于验证错误。</string>
   <string name="pref_playback_speed_sum">自定义可用于变速播放的速度</string>
   <string name="pref_feed_playback_speed_sum">开始播放此播客中剧集时使用的速度</string>
   <string name="pref_feed_skip">自动跳过</string>
@@ -428,8 +456,6 @@
   <string name="pref_fast_forward_sum">自定义每次快进节目的秒数</string>
   <string name="pref_rewind">倒回跳过时间</string>
   <string name="pref_rewind_sum">自定义每次倒回节目的秒数</string>
-  <string name="pref_gpodnet_sethostname_title">设置主机名</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
   <string name="pref_expandNotify_title">高通知优先级</string>
   <string name="pref_expandNotify_sum">这通常会拓展通知以显示播放按钮。</string>
   <string name="pref_persistNotify_title">保持播放控制</string>
@@ -440,10 +466,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">你最多只能同时选择%1$d项</string>
   <string name="pref_lockscreen_background_title">设置锁屏背景</string>
   <string name="pref_lockscreen_background_sum">将锁屏背景设置为当前播放节目的封面图（潜在的副作用是图片可能会在出现在第三方应用中）。</string>
-  <string name="pref_showDownloadReport_title">下载失败</string>
-  <string name="pref_showDownloadReport_sum">如果下载失败，生成一份显示详细失败信息的报告。</string>
-  <string name="pref_showAutoDownloadReport_title">自动下载已完成</string>
-  <string name="pref_showAutoDownloadReport_sum">显示有关自动下载的剧集的通知。</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 之前不支持扩展通知。</string>
   <string name="pref_enqueue_location_title">排队位置</string>
   <string name="pref_enqueue_location_sum">添加音频至：%1$s</string>
@@ -453,6 +475,7 @@
   <string name="pref_smart_mark_as_played_disabled">已禁用</string>
   <string name="pref_image_cache_size_title">图像缓存大小</string>
   <string name="pref_image_cache_size_sum">用于缓存图像的存储空间大小</string>
+  <string name="documentation_support">文档 &amp; 支持</string>
   <string name="visit_user_forum">用户论坛</string>
   <string name="bug_report_title">报告Bug</string>
   <string name="open_bug_tracker">打开Bug跟踪器</string>
@@ -464,14 +487,14 @@
   <string name="pref_current_value">当前值：%1$s</string>
   <string name="pref_proxy_title">代理</string>
   <string name="pref_proxy_sum">选择一个网络代理</string>
-  <string name="pref_faq">常见问题</string>
   <string name="pref_no_browser_found">无网络浏览器</string>
   <string name="pref_cast_title">Chromecast 支持</string>
   <string name="pref_cast_message_play_flavor">启用投影设备（例如 Chromecast 、 Audio Speakers 和 Android TV ）上对于远端媒体回放的支持</string>
   <string name="pref_cast_message_free_flavor">Chromecast 所需要的第三方库文件在这个版本的 AntennaPod 中被禁用</string>
   <string name="pref_enqueue_downloaded_title">已下载队列</string>
   <string name="pref_enqueue_downloaded_summary">向队列添加已下载的节目</string>
-  <string name="media_player_builtin">内置安卓播放器</string>
+  <string name="media_player_builtin">内置安卓播放器 (已废弃)</string>
+  <string name="media_player_sonic">Sonic 媒体播放器 (已废弃)</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (推荐)</string>
   <string name="media_player_switch_to_exoplayer">转到ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">已转至ExoPlayer</string>
@@ -560,6 +583,7 @@
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">设置休眠计时器</string>
   <string name="disable_sleeptimer_label">禁用休眠计时器</string>
+  <string name="extend_sleep_timer_label">+ %d 分钟</string>
   <string name="sleep_timer_label">休眠计时器</string>
   <string name="time_dialog_invalid_input">无效的输入, 时间是一个整数</string>
   <string name="shake_to_reset_label">摇动以重置</string>
@@ -584,22 +608,22 @@
   <string name="gpodnet_suggestions_header">建议</string>
   <string name="gpodnet_search_hint">搜索 gpodder.net</string>
   <string name="gpodnetauth_login_title">登录</string>
-  <string name="gpodnetauth_login_descr">欢迎进入 gpodder.net 登录流程. 首先, 输入请你的登录信息:</string>
   <string name="gpodnetauth_login_butLabel">登录</string>
-  <string name="gpodnetauth_login_register">如果您目前没有账户，可以从这里创建：\nhttps://gpodder.net/register/</string>
+  <string name="create_account">创建账户</string>
   <string name="username_label">用户名</string>
   <string name="password_label">密码</string>
-  <string name="gpodnetauth_device_title">设备选择</string>
+  <string name="gpodnet_description">Gpodder.net 是一个独立于 Antennapd 项目的开源播客同步服务。</string>
+  <string name="gpodnetauth_server_official">官方 gpodder.net 服务器</string>
+  <string name="gpodnetauth_server_custom">自定义服务器</string>
+  <string name="gpodnetauth_host">主机名</string>
+  <string name="gpodnetauth_select_server">选择服务器</string>
   <string name="gpodnetauth_device_descr">为你的 gpodder.net 账户创建一个新设备或者选择一个已存在的:</string>
-  <string name="gpodnetauth_device_deviceID">设备编号: \u0020</string>
-  <string name="gpodnetauth_device_caption">标题</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">创建新设备</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">选择已存在设备</string>
-  <string name="gpodnetauth_device_errorEmpty">设备编号必须填写</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">设备编号已被使用</string>
+  <string name="gpodnetauth_device_name">设备名</string>
+  <string name="gpodnetauth_device_name_default">AntennaPod 于 %1$s</string>
   <string name="gpodnetauth_device_caption_errorEmpty">标题不能为空</string>
+  <string name="gpodnetauth_existing_devices">现有设备</string>
+  <string name="gpodnetauth_create_device">创建设备</string>
   <string name="gpodnetauth_device_butChoose">选择</string>
-  <string name="gpodnetauth_finish_title">登录成功!</string>
   <string name="gpodnetauth_finish_descr">恭喜! 你的 gpodder.net 帐户与设备已连结完成.  现在开始 AntennaPod 将自动同步你 gpodder.net 帐户内的订阅信息到设备上.</string>
   <string name="gpodnetauth_finish_butsyncnow">开始同步</string>
   <string name="gpodnetauth_finish_butgomainscreen">返回主屏</string>
@@ -653,6 +677,7 @@
   <string name="switch_pages">切换页面</string>
   <string name="position">位置：%1$s</string>
   <string name="apply_action">应用动作</string>
+  <string name="play_chapter">播放章节</string>
   <!--Feed information screen-->
   <string name="authentication_label">验证</string>
   <string name="authentication_descr">给本播客及曲目变更用户名及密码</string>
@@ -787,18 +812,22 @@
   <string name="cast_failed_receiver_player_error">接收播放器遇到一个严重错误</string>
   <string name="cast_failed_media_error_skipping">媒体播放出错.跳转中...</string>
   <!--Notification channels-->
+  <string name="notification_group_errors">错误</string>
+  <string name="notification_group_news">新闻</string>
   <string name="notification_channel_user_action">需要操作</string>
   <string name="notification_channel_user_action_description">显示是否需要您的操作，比如是否需要您输入一个密码</string>
   <string name="notification_channel_downloading">正在下载</string>
   <string name="notification_channel_downloading_description">下载时显示</string>
   <string name="notification_channel_playing">当前播放</string>
   <string name="notification_channel_playing_description">允许控制回放。这是播放播客时您所见的主通知。</string>
-  <string name="notification_channel_error">错误</string>
-  <string name="notification_channel_error_description">出错时显示，比如下载或订阅源更新失败。</string>
-  <string name="notification_channel_sync_error">同步错误</string>
+  <string name="notification_channel_download_error">下载失败</string>
+  <string name="notification_channel_download_error_description">当下载或源更新失败是显示</string>
+  <string name="notification_channel_sync_error">同步失败了</string>
   <string name="notification_channel_sync_error_description">gpodder 同步出错时显示</string>
-  <string name="notification_channel_auto_download">自动下载</string>
+  <string name="notification_channel_auto_download">自动下载已完成</string>
   <string name="notification_channel_episode_auto_download">当节目已自动下载时显示。</string>
+  <string name="notification_channel_new_episode">新节目</string>
+  <string name="notification_channel_new_episode_description">当发现一个播客的新节目时显示，前提是在播客中启用通知</string>
   <!--Widget settings-->
   <string name="widget_settings">小部件设置</string>
   <string name="widget_create_button">创建小部件</string>
