@@ -19,11 +19,10 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         // Version code schema:
-        // "1.2.3-SNAPSHOT" -> 1020300
-        // "1.2.3-RC4"      -> 1020304
+        // "1.2.3-beta4"    -> 1020304
         // "1.2.3"          -> 1020395
-        versionCode 2010495
-        versionName "2.1.4"
+        versionCode 2020001
+        versionName "2.2.0-beta1"
 
         multiDexEnabled false
         vectorDrawables.useSupportLibrary true
