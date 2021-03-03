@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,7 +52,6 @@ import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeExceptio
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.Optional;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.playback.RemoteMedia;
@@ -60,9 +60,11 @@ import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.databinding.OnlinefeedviewActivityBinding;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.discovery.PodcastSearcherRegistry;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableMaybeObserver;
 import io.reactivex.schedulers.Schedulers;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -321,34 +323,48 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         }
         Log.d(TAG, "Parsing feed");
 
-        parser = Observable.fromCallable(this::doParseFeed)
+        parser = Maybe.fromCallable(this::doParseFeed)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(optionalResult -> {
-                    if(optionalResult.isPresent()) {
-                        FeedHandlerResult result = optionalResult.get();
+                .subscribeWith(new DisposableMaybeObserver<FeedHandlerResult>() {
+                    @Override
+                    public void onSuccess(@NonNull FeedHandlerResult result) {
                         beforeShowFeedInformation(result.feed);
                         showFeedInformation(result.feed, result.alternateFeedUrls);
                     }
-                }, error -> {
-                    String errorMsg = DownloadError.ERROR_PARSER_EXCEPTION.getErrorString(
-                            OnlineFeedViewActivity.this) + " (" + error.getMessage() + ")";
-                    showErrorDialog(errorMsg);
-                    Log.d(TAG, "Feed parser exception: " + Log.getStackTraceString(error));
+
+                    @Override
+                    public void onComplete() {
+                        // Ignore null result: We showed the discovery dialog.
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable error) {
+                        String errorMsg = DownloadError.ERROR_PARSER_EXCEPTION.getErrorString(
+                                OnlineFeedViewActivity.this) + " (" + error.getMessage() + ")";
+                        showErrorDialog(errorMsg);
+                        Log.d(TAG, "Feed parser exception: " + Log.getStackTraceString(error));
+                    }
                 });
     }
 
-    @NonNull
-    private Optional<FeedHandlerResult> doParseFeed() throws Exception {
+    /**
+     * Try to parse the feed.
+     * @return  The FeedHandlerResult if successful.
+     *          Null if unsuccessful but we started another attempt.
+     * @throws Exception If unsuccessful but we do not know a resolution.
+     */
+    @Nullable
+    private FeedHandlerResult doParseFeed() throws Exception {
         FeedHandler handler = new FeedHandler();
         try {
-            return Optional.of(handler.parseFeed(feed));
+            return handler.parseFeed(feed);
         } catch (UnsupportedFeedtypeException e) {
             Log.d(TAG, "Unsupported feed type detected");
             if ("html".equalsIgnoreCase(e.getRootElement())) {
                 boolean dialogShown = showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url());
                 if (dialogShown) {
-                    return Optional.empty();
+                    return null; // Should not display an error message
                 } else {
                     Log.d(TAG, "Supplied feed is an HTML web page that has no references to any feed");
                     throw e;
