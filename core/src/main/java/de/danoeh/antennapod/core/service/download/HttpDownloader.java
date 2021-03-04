@@ -19,6 +19,8 @@ import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -37,6 +39,7 @@ public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
 
     private static final int BUFFER_SIZE = 8 * 1024;
+    private static final String REGEX_PATTERN_IP_ADDRESS = "([0-9]{1,3}[\\.]){3}[0-9]{1,3}";
 
     public HttpDownloader(@NonNull DownloadRequest request) {
         super(request);
@@ -250,6 +253,19 @@ public class HttpDownloader extends Downloader {
             onFail(DownloadError.ERROR_UNKNOWN_HOST, e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
+            String message = e.getMessage();
+            if (message != null) {
+                // Try to parse message for a more detailed error message
+                Pattern pattern = Pattern.compile(REGEX_PATTERN_IP_ADDRESS);
+                Matcher matcher = pattern.matcher(message);
+                if (matcher.find()) {
+                    String ip = matcher.group();
+                    if (ip.startsWith("127.") || ip.startsWith("0.")) {
+                        onFail(DownloadError.ERROR_IO_BLOCKED, e.getMessage());
+                        return;
+                    }
+                }
+            }
             onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
         } catch (NullPointerException e) {
             // might be thrown by connection.getInputStream()
