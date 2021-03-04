@@ -52,7 +52,7 @@ public class PodDBAdapter {
 
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
-    public static final int VERSION = 2020000;
+    public static final int VERSION = 2030000;
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -84,7 +84,6 @@ public class PodDBAdapter {
     public static final String KEY_FEEDFILETYPE = "feedfile_type";
     public static final String KEY_COMPLETION_DATE = "completion_date";
     public static final String KEY_FEEDITEM = "feeditem";
-    public static final String KEY_CONTENT_ENCODED = "content_encoded";
     public static final String KEY_PAYMENT_LINK = "payment_link";
     public static final String KEY_START = "start";
     public static final String KEY_LANGUAGE = "language";
@@ -158,9 +157,9 @@ public class PodDBAdapter {
             + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
-            + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-            + " TEXT," + KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE
-            + " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
+            + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY
+            + KEY_TITLE + " TEXT," + KEY_PUBDATE + " INTEGER,"
+            + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
@@ -311,8 +310,7 @@ public class PodDBAdapter {
 
     private static final String SELECT_FEED_ITEMS_AND_MEDIA_WITH_DESCRIPTION =
             "SELECT " + KEYS_FEED_ITEM_WITHOUT_DESCRIPTION + ", " + KEYS_FEED_MEDIA + ", "
-                    + TABLE_NAME_FEED_ITEMS + "." + KEY_DESCRIPTION + ", "
-                    + TABLE_NAME_FEED_ITEMS + "." + KEY_CONTENT_ENCODED
+                    + TABLE_NAME_FEED_ITEMS + "." + KEY_DESCRIPTION
             + " FROM " + TABLE_NAME_FEED_ITEMS
             + JOIN_FEED_ITEM_AND_MEDIA;
     private static final String SELECT_FEED_ITEMS_AND_MEDIA =
@@ -626,9 +624,6 @@ public class PodDBAdapter {
         values.put(KEY_LINK, item.getLink());
         if (item.getDescription() != null) {
             values.put(KEY_DESCRIPTION, item.getDescription());
-        }
-        if (item.getContentEncoded() != null) {
-            values.put(KEY_CONTENT_ENCODED, item.getContentEncoded());
         }
         values.put(KEY_PUBDATE, item.getPubDate().getTime());
         values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
@@ -964,7 +959,7 @@ public class PodDBAdapter {
      * Return the description and content_encoded of item
      */
     public final Cursor getDescriptionOfItem(final FeedItem item) {
-        final String query = "SELECT " + KEY_DESCRIPTION + ", " + KEY_CONTENT_ENCODED
+        final String query = "SELECT " + KEY_DESCRIPTION
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " WHERE " + KEY_ID + "=" + item.getId();
         return db.rawQuery(query, null);
@@ -1316,8 +1311,6 @@ public class PodDBAdapter {
             sb
                     .append("(")
                     .append(KEY_DESCRIPTION + " LIKE '%").append(queryWords[i])
-                    .append("%' OR ")
-                    .append(KEY_CONTENT_ENCODED).append(" LIKE '%").append(queryWords[i])
                     .append("%' OR ")
                     .append(KEY_TITLE).append(" LIKE '%").append(queryWords[i])
                     .append("%') ");

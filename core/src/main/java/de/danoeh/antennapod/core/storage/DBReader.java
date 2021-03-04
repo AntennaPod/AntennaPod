@@ -651,10 +651,7 @@ public final class DBReader {
             if (cursor.moveToFirst()) {
                 int indexDescription = cursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION);
                 String description = cursor.getString(indexDescription);
-                int indexContentEncoded = cursor.getColumnIndex(PodDBAdapter.KEY_CONTENT_ENCODED);
-                String contentEncoded = cursor.getString(indexContentEncoded);
-                item.setDescription(description);
-                item.setContentEncoded(contentEncoded);
+                item.setDescriptionIfLonger(description);
             }
         } finally {
             adapter.close();

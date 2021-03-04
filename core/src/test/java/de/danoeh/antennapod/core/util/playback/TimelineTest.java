@@ -55,7 +55,7 @@ public class TimelineTest {
     private Playable newTestPlayable(List<Chapter> chapters, String shownotes, int duration) {
         FeedItem item = new FeedItem(0, "Item", "item-id", "http://example.com/item", new Date(), FeedItem.PLAYED, null);
         item.setChapters(chapters);
-        item.setContentEncoded(shownotes);
+        item.setDescriptionIfLonger(shownotes);
         FeedMedia media = new FeedMedia(item, "http://example.com/episode", 100, "audio/mp3");
         media.setDuration(duration);
         item.setMedia(media);

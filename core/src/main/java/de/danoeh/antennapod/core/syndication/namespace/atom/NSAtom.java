@@ -198,10 +198,10 @@ public class NSAtom extends Namespace {
                 state.getFeed().setDescription(textElement.getProcessedContent());
             } else if (CONTENT.equals(top) && ENTRY.equals(second) && textElement != null &&
                 state.getCurrentItem() != null) {
-                state.getCurrentItem().setDescription(textElement.getProcessedContent());
-            } else if (SUMMARY.equals(top) && ENTRY.equals(second) && textElement != null &&
-                state.getCurrentItem() != null && state.getCurrentItem().getDescription() == null) {
-                state.getCurrentItem().setDescription(textElement.getProcessedContent());
+                state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
+            } else if (SUMMARY.equals(top) && ENTRY.equals(second) && textElement != null
+                    && state.getCurrentItem() != null) {
+                state.getCurrentItem().setDescriptionIfLonger(textElement.getProcessedContent());
             } else if (UPDATED.equals(top) && ENTRY.equals(second) && state.getCurrentItem() != null &&
                 state.getCurrentItem().getPubDate() == null) {
                 state.getCurrentItem().setPubDate(DateUtils.parse(content));

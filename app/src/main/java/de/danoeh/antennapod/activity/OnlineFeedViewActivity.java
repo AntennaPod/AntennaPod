@@ -33,7 +33,6 @@ import de.danoeh.antennapod.core.event.DownloadEvent;
 import de.danoeh.antennapod.core.event.FeedListUpdateEvent;
 import de.danoeh.antennapod.core.event.PlayerStatusEvent;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
@@ -258,7 +257,8 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, null);
         if (username != null && password != null) {
-            feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, VolumeAdaptionSetting.OFF, username, password));
+            feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL,
+                    VolumeAdaptionSetting.OFF, username, password));
         }
         String fileUrl = new File(getExternalCacheDir(),
                 FileNameGenerator.generateFileName(feed.getDownload_url())).toString();
@@ -328,7 +328,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 .subscribeWith(new DisposableMaybeObserver<FeedHandlerResult>() {
                     @Override
                     public void onSuccess(@NonNull FeedHandlerResult result) {
-                        beforeShowFeedInformation(result.feed);
                         showFeedInformation(result.feed, result.alternateFeedUrls);
                     }
 
@@ -378,23 +377,6 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     /**
-     * Called after the feed has been downloaded and parsed and before showFeedInformation is called.
-     * This method is executed on a background thread
-     */
-    private void beforeShowFeedInformation(Feed feed) {
-        Log.d(TAG, "Removing HTML from feed description");
-
-        feed.setDescription(HtmlToPlainText.getPlainText(feed.getDescription()));
-
-        Log.d(TAG, "Removing HTML from shownotes");
-        if (feed.getItems() != null) {
-            for (FeedItem item : feed.getItems()) {
-                item.setDescription(HtmlToPlainText.getPlainText(item.getDescription()));
-            }
-        }
-    }
-
-    /**
      * Called when feed parsed successfully.
      * This method is executed on the GUI thread.
      */
@@ -437,7 +419,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
         viewBinding.titleLabel.setText(feed.getTitle());
         viewBinding.authorLabel.setText(feed.getAuthor());
-        description.setText(feed.getDescription());
+        description.setText(HtmlToPlainText.getPlainText(feed.getDescription()));
 
         viewBinding.subscribeButton.setOnClickListener(v -> {
             if (feedInFeedlist(feed)) {
