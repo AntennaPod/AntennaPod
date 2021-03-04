@@ -1,6 +1,4 @@
-package de.danoeh.antennapod.core.ssl;
-
-import de.danoeh.antennapod.core.util.Flavors;
+package de.danoeh.antennapod.net.ssl;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
@@ -22,7 +20,7 @@ public class NoV1SslSocketFactory extends SSLSocketFactory {
         try {
             SSLContext sslContext;
 
-            if (Flavors.FLAVOR == Flavors.FREE) {
+            if (BuildConfig.FLAVOR.equals("free")) {
                 // Free flavor (bundles modern conscrypt): support for TLSv1.3 is guaranteed.
                 sslContext = SSLContext.getInstance("TLSv1.3");
             } else {
@@ -84,7 +82,7 @@ public class NoV1SslSocketFactory extends SSLSocketFactory {
     }
 
     private void configureSocket(SSLSocket s) {
-        if (Flavors.FLAVOR == Flavors.FREE) {
+        if (BuildConfig.FLAVOR.equals("free")) {
             // Free flavor (bundles modern conscrypt): TLSv1.3 and modern cipher suites are
             // guaranteed. Protocols older than TLSv1.2 are now deprecated and can be disabled.
             s.setEnabledProtocols(new String[] { "TLSv1.3", "TLSv1.2" });

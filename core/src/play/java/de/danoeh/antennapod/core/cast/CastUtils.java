@@ -19,7 +19,6 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
@@ -53,7 +52,7 @@ public class CastUtils {
     public static final int MAX_VERSION_FORWARD_COMPATIBILITY = 9999;
 
     public static boolean isCastable(Playable media) {
-        if (media == null || media instanceof ExternalMedia) {
+        if (media == null) {
             return false;
         }
         if (media instanceof FeedMedia || media instanceof RemoteMedia) {

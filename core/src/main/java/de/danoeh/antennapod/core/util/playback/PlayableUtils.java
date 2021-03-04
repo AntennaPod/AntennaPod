@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 
@@ -53,9 +52,6 @@ public abstract class PlayableUtils {
             case FeedMedia.PLAYABLE_TYPE_FEEDMEDIA:
                 result = createFeedMediaInstance(pref);
                 break;
-            case ExternalMedia.PLAYABLE_TYPE_EXTERNAL_MEDIA:
-                result = createExternalMediaInstance(pref);
-                break;
             default:
                 result = null;
                 break;
@@ -71,19 +67,6 @@ public abstract class PlayableUtils {
         long mediaId = pref.getLong(FeedMedia.PREF_MEDIA_ID, -1);
         if (mediaId != -1) {
             result =  DBReader.getFeedMedia(mediaId);
-        }
-        return result;
-    }
-
-    private static Playable createExternalMediaInstance(SharedPreferences pref) {
-        Playable result = null;
-        String source = pref.getString(ExternalMedia.PREF_SOURCE_URL, null);
-        String mediaType = pref.getString(ExternalMedia.PREF_MEDIA_TYPE, null);
-        if (source != null && mediaType != null) {
-            int position = pref.getInt(ExternalMedia.PREF_POSITION, 0);
-            long lastPlayedTime = pref.getLong(ExternalMedia.PREF_LAST_PLAYED_TIME, 0);
-            result = new ExternalMedia(source, MediaType.valueOf(mediaType),
-                    position, lastPlayedTime);
         }
         return result;
     }

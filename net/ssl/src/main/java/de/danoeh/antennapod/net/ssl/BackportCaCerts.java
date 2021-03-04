@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.ssl;
+package de.danoeh.antennapod.net.ssl;
 
 public class BackportCaCerts {
     public static final String SECTIGO_USER_TRUST = "-----BEGIN CERTIFICATE-----\n"

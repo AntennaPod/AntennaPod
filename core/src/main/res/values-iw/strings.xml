@@ -6,6 +6,7 @@
   <string name="statistics_label">סטטיסטיקה</string>
   <string name="add_feed_label">הוספת פודקאסט</string>
   <string name="episodes_label">פרקים</string>
+  <string name="queue_label">תור</string>
   <string name="all_episodes_short_label">הכול</string>
   <string name="new_episodes_label">חדש</string>
   <string name="favorite_episodes_label">מועדפים</string>
@@ -17,7 +18,7 @@
   <string name="downloads_log_label">יומן</string>
   <string name="subscriptions_label">פודקאסטים</string>
   <string name="subscriptions_list_label">רשימת פודקאסטים</string>
-  <string name="cancel_download_label">ביטול\nהורדה</string>
+  <string name="cancel_download_label">ביטול הורדה</string>
   <string name="playback_history_label">היסטוריית ניגון</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">כניסה אל gpodder.net</string>
@@ -26,6 +27,8 @@
   <string name="playback_statistics_label">נגינה</string>
   <string name="download_statistics_label">הורדות</string>
   <string name="notification_pref_fragment">התראות</string>
+  <!--Google Assistant-->
+  <string name="app_action_not_found">„%1$s” לא נמצא</string>
   <!--Statistics fragment-->
   <string name="total_time_listened_to_podcasts">זמן הנגינה הכולל של הפרקים:</string>
   <string name="statistics_details_dialog">%1$d מתוך %2$d פרקים החלו.\n\nנוגנו %3$s מתוך %4$s.</string>
@@ -53,6 +56,8 @@
   <string name="drawer_feed_counter_none">ללא</string>
   <!--Bug report activity-->
   <string name="log_file_share_exception">לא נמצאו יישומונים תואמים</string>
+  <string name="export_logs_menu_title">ייצוא יומנים מפורטים</string>
+  <string name="confirm_export_log_dialog_message">יומנים מפורטים עשויים להכיל מידע רגיש כגון רשימת המינויים שלך</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">פתיחה בדפדפן</string>
   <string name="copy_url_label">העתקת כתובת</string>
@@ -81,7 +86,6 @@
   <string name="description_label">תיאור</string>
   <string name="episodes_suffix">\u0020פרקים</string>
   <string name="processing_label">מתבצע עיבוד</string>
-  <string name="save_username_password_label">שמירת שם משתמש וססמה</string>
   <string name="close_label">סגירה</string>
   <string name="retry_label">לנסות שוב</string>
   <string name="auto_download_label">לכלול בהורדות אוטומטיות</string>
@@ -93,12 +97,13 @@
   <string name="feed_volume_reduction_off">כבוי</string>
   <string name="feed_volume_reduction_light">טיפה</string>
   <string name="feed_volume_reduction_heavy">מאוד</string>
-  <string name="parallel_downloads_suffix">\u0020הורדות במקביל</string>
+  <string name="parallel_downloads">%1$d הורדות במקביל</string>
   <string name="feed_auto_download_global">בררת מחדל גלובלית</string>
   <string name="feed_auto_download_always">תמיד</string>
   <string name="feed_auto_download_never">אף פעם</string>
   <string name="send_label">שליחה…</string>
   <string name="episode_cleanup_never">אף פעם</string>
+  <string name="episode_cleanup_except_favorite_removal">כאשר לא במועדפים</string>
   <string name="episode_cleanup_queue_removal">כאשר לא בתור</string>
   <string name="episode_cleanup_after_listening">אחרי סיום</string>
   <plurals name="episode_cleanup_hours_after_listening">
@@ -119,7 +124,28 @@
     <item quantity="many">נבחרו %d</item>
     <item quantity="other">נבחרו %d</item>
   </plurals>
+  <plurals name="num_episodes">
+    <item quantity="one">פרק אחד</item>
+    <item quantity="two">%d פרקים</item>
+    <item quantity="many">%d פרקים</item>
+    <item quantity="other">%d פרקים</item>
+  </plurals>
   <string name="loading_more">נטענים עוד…</string>
+  <string name="episode_notification">התראות פרקים</string>
+  <string name="episode_notification_summary">להציג התראה כאשר יוצא פרק חדש.</string>
+  <plurals name="new_episode_notification_message">
+    <item quantity="one">אצל %2$s יש פרק אחד חדש</item>
+    <item quantity="two">אצל %2$s יש %1$d פרקים חדשים</item>
+    <item quantity="many">אצל %2$s יש %1$d פרקים חדשים</item>
+    <item quantity="other">אצל %2$s יש %1$d פרקים חדשים</item>
+  </plurals>
+  <plurals name="new_episode_notification_title">
+    <item quantity="one">פרק חדש</item>
+    <item quantity="two">פרקים חדשים</item>
+    <item quantity="many">פרקים חדשים</item>
+    <item quantity="other">פרקים חדשים</item>
+  </plurals>
+  <string name="new_episode_notification_group_text">למינוי שלך יש פרקים חדשים.</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">לסמן הכול כנוגנו</string>
   <string name="mark_all_read_msg">לסמן את כל הפרקים כנוגנו</string>
@@ -151,7 +177,6 @@
   <string name="hide_not_queued_episodes_label">לא בתור</string>
   <string name="hide_has_media_label">יש מדיה</string>
   <string name="filtered_label">מסונן</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} הרענון האחרון נכשל</string>
   <string name="open_podcast">פתיחת פודקאסט</string>
   <string name="please_wait_for_data">נא להמתין לסיום טעינת הנתונים</string>
   <!--actions on feeditems-->
@@ -168,6 +193,12 @@
   <string name="delete_label">מחיקה</string>
   <string name="delete_failed">לא ניתן למחוק קובץ. הפעלת המכשיר מחדש עשויה לסייע.</string>
   <string name="delete_episode_label">מחיקת פרק</string>
+  <plurals name="deleted_multi_episode_batch_label">
+    <item quantity="one">פרק אחד נבחר, הורדה אחת נמחקה.</item>
+    <item quantity="two">%d פרקים נבחרו, %d הורדה/ות נמחקה/ו.</item>
+    <item quantity="many">%d פרקים נבחרו, %d הורדה/ות נמחקה/ו.</item>
+    <item quantity="other">%d פרקים נבחרו, %d הורדה/ות נמחקה/ו.</item>
+  </plurals>
   <string name="remove_new_flag_label">הסרת הסימון „חדש”</string>
   <string name="removed_new_flag_label">הוסר הסימון „חדש”</string>
   <string name="mark_read_label">סימון כנצפה</string>
@@ -222,16 +253,12 @@
   <string name="download_error_details">פרטים</string>
   <string name="download_error_details_message">%1$s \n\nכתובת הקובץ:\n%2$s</string>
   <string name="download_error_device_not_found">התקן האחסון לא נמצא</string>
-  <string name="download_error_insufficient_space">אין די שטח אחסון</string>
   <string name="download_error_http_data_error">שגיאת נתוני HTTP</string>
   <string name="download_error_error_unknown">שגיאה לא ידועה</string>
-  <string name="download_error_parser_exception">שגיאת מפענח</string>
   <string name="download_error_unsupported_type">סוג ההזנה אינו נתמך</string>
   <string name="download_error_connection_error">שגיאת חיבור</string>
-  <string name="download_error_unknown_host">שרת לא ידוע</string>
   <string name="download_error_unauthorized">שגיאת אימות</string>
   <string name="download_error_file_type_type">שגיאת סוג קובץ</string>
-  <string name="download_error_forbidden">אסור</string>
   <string name="download_canceled_msg">הורדה בוטלה</string>
   <string name="download_canceled_autodownload_enabled_msg">ההורדה בוטלה\nה<i>הורדה האוטומטית</i> הושבתה עבור פריט זה</string>
   <string name="download_report_title">הורדות הושלמו עם שגיאה אחת או יותר</string>
@@ -247,14 +274,7 @@
     <item quantity="many">נותרו %d הורדות</item>
     <item quantity="other">נותרו %d הורדות</item>
   </plurals>
-  <string name="downloads_processing">ההורדות בהליכי עיבוד</string>
   <string name="download_notification_title">נתוני הפודקאסט מתקבלים</string>
-  <plurals name="download_report_content">
-    <item quantity="one">הורדה %d הצליחה, %d נכשלו</item>
-    <item quantity="two">%d הורדות הצליחו, %d נכשלו</item>
-    <item quantity="many">%d הורדות הצליחו, %d נכשלו</item>
-    <item quantity="other">%d הורדות הצליחו, %d נכשלו</item>
-  </plurals>
   <string name="download_log_title_unknown">כותרת לא ידועה</string>
   <string name="download_type_feed">הזנה</string>
   <string name="download_type_media">קובץ מדיה</string>
@@ -287,6 +307,7 @@
   <string name="player_go_to_picture_in_picture">מצב תמונה בתוך תמונה</string>
   <string name="unknown_media_key">אנטנה־פּוֹד - מפתח מדיה לא ידוע: %1$d</string>
   <string name="error_file_not_found">הקובץ לא נמצא</string>
+  <string name="no_media_label">הפריט אינו מכיל קובץ מדיה</string>
   <!--Queue operations-->
   <string name="lock_queue">נעילת תור</string>
   <string name="unlock_queue">שחרור תור</string>
@@ -343,7 +364,6 @@
   <string name="storage_pref">אחסון</string>
   <string name="storage_sum">מחיקה אוטומטית של פרקים, ייבוא, ייצוא</string>
   <string name="project_pref">מיזם</string>
-  <string name="queue_label">תור</string>
   <string name="synchronization_pref">סנכרון</string>
   <string name="synchronization_sum">סנכרון עם מכשירים אחרים דרך gpodder.net</string>
   <string name="automation">אוטומציה</string>
@@ -354,19 +374,24 @@
   <string name="external_elements">רכיבים חיצוניים</string>
   <string name="interruptions">הפרעות</string>
   <string name="playback_control">בקרת נגינה</string>
+  <string name="reassign_hardware_buttons">הקצאת כפתורי חומרה מחדש</string>
   <string name="preference_search_hint">חיפוש…</string>
   <string name="preference_search_no_results">אין תוצאות</string>
   <string name="preference_search_clear_history">פינוי ההיסטוריה</string>
   <string name="media_player">נגן מדיה</string>
   <string name="pref_episode_cleanup_title">ניקוי פרקים</string>
-  <string name="pref_episode_cleanup_summary">פרקים שאינם בתור ואינם במועדפים אמורים לענות לתנאים של הסרה במקרה שההורדה האוטומטית זקוקה למקום לפרקים חדשים</string>
+  <string name="pref_episode_cleanup_summary">פרקים שמועמדים להסרה אם ההורדה האוטומטית צריכה מקום לפרקים חדשים</string>
   <string name="pref_pauseOnDisconnect_sum">השהיית הנגינה כאשר האוזניות או ה־Bluetooth מנותקים</string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">להמשיך את הניגון כשהאוזניות מחוברות מחדש</string>
   <string name="pref_unpauseOnBluetoothReconnect_sum">להמשיך את הנגינה עם חיבור מחדש של ה־Bluetooth</string>
-  <string name="pref_hardwareForwardButtonSkips_title">כפתור קדימה מדלג</string>
-  <string name="pref_hardwareForwardButtonSkips_sum">בעת לחיצה על כפתור הבא במכשיר bluetooth מחובר יש לדלג לפרק הבא במקום להריץ קדימה</string>
-  <string name="pref_hardwarePreviousButtonRestarts_title">כפתור אחורה מתחיל מחדש</string>
-  <string name="pref_hardwarePreviousButtonRestarts_sum">לחיצה על כפתור החומרה אחורה מדלג מתחיל מחדש את נגינת הפרק הנוכחי במקום לחזור אחורה בפרק</string>
+  <string name="pref_hardware_forward_button_title">כפתור קדימה</string>
+  <string name="pref_hardware_forward_button_summary">להתאים את התנהגות הכפתור קדימה</string>
+  <string name="pref_hardware_previous_button_title">כפתור אחורה</string>
+  <string name="pref_hardware_previous_button_summary">להתאים את התנהגות הכפתור אחורה</string>
+  <string name="button_action_fast_forward">האצה קדימה</string>
+  <string name="button_action_rewind">חזרה לאחור</string>
+  <string name="button_action_skip_episode">דילוג על פרק</string>
+  <string name="button_action_restart_episode">התחלת הפרק מחדש</string>
   <string name="pref_followQueue_sum">לעבור לפריט הבא בתור כאשר הניגון מסתיים</string>
   <string name="pref_auto_delete_sum">מחיקת פרק כשהניגון מסתיים</string>
   <string name="pref_auto_delete_title">מחיקה אוטומטית</string>
@@ -386,8 +411,13 @@
   <string name="pref_autoUpdateIntervallOrTime_Disable">השבתה</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">הגדרת הפרש זמן</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">הגדרת הזמן ביום</string>
-  <string name="pref_autoUpdateIntervallOrTime_every">כל %1$s</string>
   <string name="pref_autoUpdateIntervallOrTime_at">ב־%1$s</string>
+  <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+    <item quantity="one">כל שעה</item>
+    <item quantity="two">כל שעתיים</item>
+    <item quantity="many">כל %d שעות</item>
+    <item quantity="other">כל %d שעות</item>
+  </plurals>
   <string name="pref_followQueue_title">ניגון מתמשך</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">ניתוק אוזניות או Bluetooth</string>
   <string name="pref_unpauseOnHeadsetReconnect_title">חיבור אוזניות מחדש</string>
@@ -421,7 +451,9 @@
   <string name="pref_episode_cache_title">מטמון פרקים</string>
   <string name="pref_episode_cache_summary">המספר הכולל של פרקים שהורדו ונשמרים במכשיר. הורדה אוטומטית תושבת אם הכמות הזאת הושגה.</string>
   <string name="pref_episode_cover_title">להשתמש בעטיפת הפרק</string>
-  <string name="pref_episode_cover_summary">להשתמש בעטיפת הפרק כאשר ניתן. אם האפשרות לא סומנה היישומון ישתמש בתמונת העטיפה של הפודקאסט.</string>
+  <string name="pref_episode_cover_summary">להשתמש בעטיפת הפרק ברשימות כאשר ניתן. אם האפשרות לא סומנה היישומון ישתמש בתמונת העטיפה של הפודקאסט.</string>
+  <string name="pref_show_remain_time_title">הצגת הזמן שנותר</string>
+  <string name="pref_show_remain_time_summary">הצגת הזמן שנותר לפרקים כאשר האפשרות מסומנת. אם אינה מסומנת, להציג את סך אורכם של הפרקים.</string>
   <string name="pref_theme_title_use_system">להשתמש בערכת העיצוב של המערכת</string>
   <string name="pref_theme_title_light">בהיר</string>
   <string name="pref_theme_title_dark">כהה</string>
@@ -441,8 +473,6 @@
   <string name="pref_gpodnet_full_sync_title">לכפות סנכרון מלא</string>
   <string name="pref_gpodnet_full_sync_sum">סנכרון כל המינויים ומצבי הפרקים עם gpodder.net.</string>
   <string name="pref_gpodnet_login_status"><![CDATA[נכנסת בשם <i>%1$s</i> עם ההתקן <i>%2$s</i>]]></string>
-  <string name="pref_gpodnet_notifications_title">הסנכרון נכשל</string>
-  <string name="pref_gpodnet_notifications_sum">הגדרה זו אינה חלה על שגיאות אימות.</string>
   <string name="pref_playback_speed_sum">התאמת המהירויות הזמינות למהירות נגינה משתנה</string>
   <string name="pref_feed_playback_speed_sum">המהירות שתחול על פרקים בפודקאסט זה כשאלו מתחילים להתנגן</string>
   <string name="pref_feed_skip">לדלג אוטומטית</string>
@@ -457,8 +487,6 @@
   <string name="pref_fast_forward_sum">התאמת מספר השניות של הקפיצה קדימה בעת לחיצה על כפתור ההאצה</string>
   <string name="pref_rewind">זמן בקפיצה אחורה</string>
   <string name="pref_rewind_sum">התאמת מספר השניות של הקפיצה אחורה בעת לחיצה על כפתור החזרה</string>
-  <string name="pref_gpodnet_sethostname_title">הגדרת שם מארח</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">שימוש בשם מארח כבררת מחדל</string>
   <string name="pref_expandNotify_title">עדיפות גבוהה להתראה</string>
   <string name="pref_expandNotify_sum">הגדרה זו מרחיבה את ההתראה כדי שתציג גם כפתורי נגינה.</string>
   <string name="pref_persistNotify_title">פקדי נגינה קבועים</string>
@@ -469,10 +497,6 @@
   <string name="pref_compact_notification_buttons_dialog_error">ניתן לבחור עד %1$d פריטים.</string>
   <string name="pref_lockscreen_background_title">הגדרת רקע מסך הנעילה</string>
   <string name="pref_lockscreen_background_sum">הגדרת רקע מסך הנעילה לתמונה של הפרק שמתנגן כעת. כתופעת לוואי, התמונה תופיע גם ביישומי צד שלישי.</string>
-  <string name="pref_showDownloadReport_title">ההורדה נכשלה</string>
-  <string name="pref_showDownloadReport_sum">אם ההורדה נכשלת, יש ליצר דוח שמציג את פרטי הכשל.</string>
-  <string name="pref_showAutoDownloadReport_title">הורדה אוטומטית הושלמה</string>
-  <string name="pref_showAutoDownloadReport_sum">להציג הודעה לפרקים שהתקבלו אוטומטית.</string>
   <string name="pref_expand_notify_unsupport_toast">גרסאות Android שקדמו ל־4.1 אינן תומכות בהתרעות מתרחבות.</string>
   <string name="pref_enqueue_location_title">הוספת המיקום לתור</string>
   <string name="pref_enqueue_location_sum">הוספת פרקים אל: %1$s</string>
@@ -482,6 +506,7 @@
   <string name="pref_smart_mark_as_played_disabled">מושבת</string>
   <string name="pref_image_cache_size_title">גודל מטמון התמונות</string>
   <string name="pref_image_cache_size_sum">הנפח בכונן שעשוי לשמש למטמון של תמונות.</string>
+  <string name="documentation_support">תיעוד ותמיכה</string>
   <string name="visit_user_forum">פורום המשתמשים</string>
   <string name="bug_report_title">דיווח על תקלה</string>
   <string name="open_bug_tracker">פתיחת מערכת מעקב התקלות</string>
@@ -493,14 +518,14 @@
   <string name="pref_current_value">ערך נוכחי: %1$s</string>
   <string name="pref_proxy_title">מתווך</string>
   <string name="pref_proxy_sum">הגדרת מתווך רשת</string>
-  <string name="pref_faq">שאלות נפוצות</string>
   <string name="pref_no_browser_found">לא נמצא דפדפן.</string>
   <string name="pref_cast_title">תמיכה ב־Chromecast</string>
   <string name="pref_cast_message_play_flavor">הפעלת תמיכה בנגינת מדיה על התקני שידור מרוחקים (כגון Chromecast, רמקולים דיגיטליים או Android TV)</string>
   <string name="pref_cast_message_free_flavor">לתמיכה ב־Chromecast נדרשות ספריות קנייניות מאת צד־שלישי שמושבתות בגרסה זו של אנטנה־פּוֹד</string>
   <string name="pref_enqueue_downloaded_title">הוספת הורדות לתור</string>
   <string name="pref_enqueue_downloaded_summary">הוספת פרקים שהתקבלו לתור</string>
-  <string name="media_player_builtin">הנגן המובנה ב־Android</string>
+  <string name="media_player_builtin">הנגן המובנה ב־Android (לא זמין עוד)</string>
+  <string name="media_player_sonic">נגן המדיה Sonic (לא זמין עוד)</string>
   <string name="media_player_exoplayer_recommended">ExoPlayer (מומלץ)</string>
   <string name="media_player_switch_to_exoplayer">מעבר ל־ExoPlayer</string>
   <string name="media_player_switched_to_exoplayer">הועבר ל־ExoPlayer.</string>
@@ -589,6 +614,7 @@
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">הגדרת מתזמן שינה</string>
   <string name="disable_sleeptimer_label">השבתת מתזמן שינה</string>
+  <string name="extend_sleep_timer_label">+%d דק׳</string>
   <string name="sleep_timer_label">מתזמן שינה</string>
   <string name="time_dialog_invalid_input">קלט שגוי, השעה חייב להיות מספר שלם וחיובי</string>
   <string name="shake_to_reset_label">יש לנער כדי לאפס</string>
@@ -622,22 +648,22 @@
   <string name="gpodnet_suggestions_header">המלצות</string>
   <string name="gpodnet_search_hint">חיפוש ב־gpodder.net</string>
   <string name="gpodnetauth_login_title">כניסה</string>
-  <string name="gpodnetauth_login_descr">ברוך בואך לתהליך הכניסה ל־gpodder.net. ראשית, עליך להקליד את פרטי הכניסה שלך:</string>
   <string name="gpodnetauth_login_butLabel">כניסה</string>
-  <string name="gpodnetauth_login_register">אם עדיין אין לך חשבון, ניתן ליצור אחד כאן:‎\nhttps://gpodder.net/register/‎</string>
+  <string name="create_account">יצירת חשבון</string>
   <string name="username_label">שם משתמש</string>
   <string name="password_label">ססמה</string>
-  <string name="gpodnetauth_device_title">בחירת מכשיר</string>
+  <string name="gpodnet_description">Gpodder.net הוא שירות סנכרון פודקאסטים בקוד פתוח שאין לו קשר למיזם אנטנה־פּוֹד.</string>
+  <string name="gpodnetauth_server_official">שרת gpodder.net רשמי</string>
+  <string name="gpodnetauth_server_custom">שרת בהתאמה אישית</string>
+  <string name="gpodnetauth_host">שם מארח</string>
+  <string name="gpodnetauth_select_server">בחירת שרת</string>
   <string name="gpodnetauth_device_descr">ניתן ליצור התקן חדש לשימוש עם החשבון שלך ב־gpodder.net או לבחור בהתקן חדש:</string>
-  <string name="gpodnetauth_device_deviceID">מזהה מכשיר:\u0020</string>
-  <string name="gpodnetauth_device_caption">כותרת</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">יצירת מכשיר חדש</string>
-  <string name="gpodnetauth_device_chooseExistingDevice">בחירת מכשיר קיים:</string>
-  <string name="gpodnetauth_device_errorEmpty">מזהה המכשיר לא יכול להישאר ריק</string>
-  <string name="gpodnetauth_device_errorAlreadyUsed">מזהה המכשיר כבר בשימוש</string>
+  <string name="gpodnetauth_device_name">שם המכשיר</string>
+  <string name="gpodnetauth_device_name_default">אנטנה־פּוֹד על %1$s</string>
   <string name="gpodnetauth_device_caption_errorEmpty">הכותרת לא יכולה להישאר ריקה</string>
+  <string name="gpodnetauth_existing_devices">מכשירים קיימים</string>
+  <string name="gpodnetauth_create_device">יצירת מכשיר</string>
   <string name="gpodnetauth_device_butChoose">בחירה</string>
-  <string name="gpodnetauth_finish_title">נכנסת בהצלחה!</string>
   <string name="gpodnetauth_finish_descr">מזל טוב! חשבון ה־gpodder.net שלך מקושר כעת עם המכשיר שלך. מעתה כל המינויים שלך יסונכרנו אוטומטית על ידי אנטנה־פּוֹד מהמכשיר שלך לחשבון ה־gpodder.net שלך.</string>
   <string name="gpodnetauth_finish_butsyncnow">התחלת סנכרון כעת</string>
   <string name="gpodnetauth_finish_butgomainscreen">מעבר למסך הראשי</string>
@@ -691,6 +717,7 @@
   <string name="switch_pages">החלפת עמודים</string>
   <string name="position">מיקום: %1$s</string>
   <string name="apply_action">החלת פעולה</string>
+  <string name="play_chapter">לנגן פרק</string>
   <!--Feed information screen-->
   <string name="authentication_label">אימות</string>
   <string name="authentication_descr">שינוי שם המשתמש והססמה שלך לפודקאסט הזה ולפרקים שלו.</string>
@@ -825,18 +852,22 @@
   <string name="cast_failed_receiver_player_error">הנגן המקבל נתקל בשגיאה חמורה</string>
   <string name="cast_failed_media_error_skipping">שגיאה בנגינת המדיה. מתבצע דילוג…</string>
   <!--Notification channels-->
+  <string name="notification_group_errors">שגיאות</string>
+  <string name="notification_group_news">חדשות</string>
   <string name="notification_channel_user_action">נדרשת פעולה</string>
   <string name="notification_channel_user_action_description">מופיע אם נדרשת פעולה מצדך, למשך אם עליך להקליד ססמה.</string>
   <string name="notification_channel_downloading">הורדה</string>
   <string name="notification_channel_downloading_description">מופיע בזמן שמתרחשת הורדה.</string>
   <string name="notification_channel_playing">מתנגן כעת</string>
   <string name="notification_channel_playing_description">מאשר לשלוט בנגינה. זאת ההתראה הראשית שמופיעה בעת נגינת פודקאסט.</string>
-  <string name="notification_channel_error">שגיאות</string>
-  <string name="notification_channel_error_description">מופיע אם משהו משתבש, למשל אם הורדה או עדכון הזנה נכשלים.</string>
-  <string name="notification_channel_sync_error">שגיאות סנכרון</string>
+  <string name="notification_channel_download_error">ההורדה נכשלה</string>
+  <string name="notification_channel_download_error_description">מופיע כאשר הורדה או עדכון הזנה נכשלים.</string>
+  <string name="notification_channel_sync_error">הסנכרון נכשל</string>
   <string name="notification_channel_sync_error_description">מופיע כאשר הסנכרון מול gpodder נכשל.</string>
-  <string name="notification_channel_auto_download">הורדות אוטומטיות</string>
+  <string name="notification_channel_auto_download">ההורדה האוטומטית הושלמה</string>
   <string name="notification_channel_episode_auto_download">מופיע כאשר פרקים התקבלו אוטומטית.</string>
+  <string name="notification_channel_new_episode">פרק חדש</string>
+  <string name="notification_channel_new_episode_description">מופיע כאשר נמצא פרק חדש בפודקאסט, כאשר התראות פעילות</string>
   <!--Widget settings-->
   <string name="widget_settings">הגדרות וידג׳ט</string>
   <string name="widget_create_button">יצירת וידג׳</string>

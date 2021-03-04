@@ -162,4 +162,27 @@ public class ChapterReaderTest {
         assertEquals(EmbeddedChapterImage.makeUrl(1771, 308), chapters.get(2).getImageUrl());
         assertEquals(EmbeddedChapterImage.makeUrl(2259, 308), chapters.get(3).getImageUrl());
     }
+
+    @Test
+    public void testRealFileHindenburgJournalistPro() throws IOException, ID3ReaderException {
+        CountingInputStream inputStream = new CountingInputStream(getClass().getClassLoader()
+                .getResource("media-parser/hindenburg-journalist-pro.mp3").openStream());
+        ChapterReader reader = new ChapterReader(inputStream);
+        reader.readInputStream();
+        List<Chapter> chapters = reader.getChapters();
+
+        assertEquals(2, chapters.size());
+
+        assertEquals(0, chapters.get(0).getStart());
+        assertEquals(5006, chapters.get(1).getStart());
+
+        assertEquals("Chapter Marker 1", chapters.get(0).getTitle());
+        assertEquals("Chapter Marker 2", chapters.get(1).getTitle());
+
+        assertEquals("https://example.com/chapter1url", chapters.get(0).getLink());
+        assertEquals("https://example.com/chapter2url", chapters.get(1).getLink());
+
+        assertEquals(EmbeddedChapterImage.makeUrl(5330, 4015), chapters.get(0).getImageUrl());
+        assertEquals(EmbeddedChapterImage.makeUrl(9498, 4364), chapters.get(1).getImageUrl());
+    }
 }
