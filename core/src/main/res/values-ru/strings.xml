@@ -177,7 +177,6 @@
   <string name="hide_not_queued_episodes_label">Не в очереди</string>
   <string name="hide_has_media_label">С файлами</string>
   <string name="filtered_label">Отфильтровано</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Последнее обновление не удалось</string>
   <string name="open_podcast">Открыть подкаст</string>
   <string name="please_wait_for_data">Подождите, пока загружаются данные</string>
   <!--actions on feeditems-->
@@ -254,18 +253,13 @@
   <string name="download_error_details">Подробнее</string>
   <string name="download_error_details_message">%1$s \n\nСсылка на файл:\n%2$s</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
-  <string name="download_error_insufficient_space">Недостаточно места</string>
   <string name="download_error_http_data_error">Ошибка данных HTTP</string>
   <string name="download_error_error_unknown">Неизвестная ошибка</string>
-  <string name="download_error_parser_exception">Ошибка обработки</string>
   <string name="download_error_unsupported_type">Неподдерживаемый тип канала</string>
   <string name="download_error_connection_error">Ошибка соединения</string>
-  <string name="download_error_unknown_host">Неизвестный узел</string>
   <string name="download_error_unauthorized">Ошибка авторизации</string>
   <string name="download_error_file_type_type">Ошибка типа файла</string>
-  <string name="download_error_forbidden">Запрещено</string>
   <string name="download_canceled_msg">Загрузка отменена</string>
-  <string name="download_wrong_size">Соединение с сервером было утеряно до завершения загрузки</string>
   <string name="download_canceled_autodownload_enabled_msg">Загрузка отменена\n <i>Автозагрузка</i> отключена для этого выпуска</string>
   <string name="download_report_title">Загрузки завершились с ошибкой</string>
   <string name="auto_download_report_title">Автозагрузка завершена</string>
@@ -280,14 +274,7 @@
     <item quantity="many">Осталось %d загрузок</item>
     <item quantity="other">Осталось %d загрузок</item>
   </plurals>
-  <string name="downloads_processing">Производится загрузка</string>
   <string name="download_notification_title">Получение данных подкаста</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d загрузка завершена, %d не удалось</item>
-    <item quantity="few">%d загрузок завершено, %d не удалось</item>
-    <item quantity="many"> %d загрузок завершено, %d не удалось</item>
-    <item quantity="other">%d загрузок завершено,  %d не удалось</item>
-  </plurals>
   <string name="download_log_title_unknown">Неизвестное название</string>
   <string name="download_type_feed">Канал</string>
   <string name="download_type_media">Медиафайл</string>

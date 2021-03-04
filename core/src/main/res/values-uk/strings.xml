@@ -120,7 +120,6 @@
   <string name="hide_not_queued_episodes_label">Не в черзі</string>
   <string name="hide_has_media_label">Зі звуком або відео</string>
   <string name="filtered_label">Фільтровані</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Останнє оновлення було невдалим</string>
   <string name="open_podcast">Відкрити подкаст</string>
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
@@ -183,16 +182,12 @@
   <string name="download_error_details">Докладно</string>
   <string name="download_error_details_message">%1$s \n\nПосилання на файл:\n%2$s</string>
   <string name="download_error_device_not_found">Пристрій зберігання даних не знайдено</string>
-  <string name="download_error_insufficient_space">Недостатній простір для зберігання</string>
   <string name="download_error_http_data_error">Помилка HTTP</string>
   <string name="download_error_error_unknown">Щось трапилось</string>
-  <string name="download_error_parser_exception">Помилка парсера</string>
   <string name="download_error_unsupported_type">Тип каналу не підтримується</string>
   <string name="download_error_connection_error">Помилка з\'єднання</string>
-  <string name="download_error_unknown_host">Невідомий хост</string>
   <string name="download_error_unauthorized">Помилка автентифікації</string>
   <string name="download_error_file_type_type">Помилка типу файлу</string>
-  <string name="download_error_forbidden">Заборонено</string>
   <string name="download_canceled_msg">Завантаження скасоване</string>
   <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\n<i>Автозавантаження</i> для цього елементу вимкнуто</string>
   <string name="download_report_title">Завантаження завершені з помилками</string>
@@ -207,7 +202,6 @@
     <item quantity="many">%d завантажень залишилось</item>
     <item quantity="other">%d завантажень залишилось</item>
   </plurals>
-  <string name="downloads_processing">Обробка завантаженого</string>
   <string name="download_notification_title">Завантаження даних подкасту</string>
   <string name="download_log_title_unknown">Невідомий заголовок</string>
   <string name="download_type_feed">Канал</string>

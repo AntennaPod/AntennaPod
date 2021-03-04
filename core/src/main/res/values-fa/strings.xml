@@ -144,7 +144,6 @@
   <string name="hide_not_queued_episodes_label">خارج از صف</string>
   <string name="hide_has_media_label">دارای رسانه</string>
   <string name="filtered_label">فیلتر شده</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} آخرین تازه‌سازی ناموفق بود</string>
   <string name="open_podcast">باز کردن پادکست</string>
   <string name="please_wait_for_data">لطفا تا زمان دریافت اطلاعات منتظر بمانید</string>
   <!--actions on feeditems-->
@@ -205,16 +204,12 @@
   <string name="download_error_details">جزئیات</string>
   <string name="download_error_details_message">%1$s\n\nنشانی پرونده:\n%2$s</string>
   <string name="download_error_device_not_found">حافظهٔ خارجی یافت نشد</string>
-  <string name="download_error_insufficient_space">فضای ناکافی</string>
   <string name="download_error_http_data_error">خطای HTTP Data </string>
   <string name="download_error_error_unknown">خطای ناشناخته</string>
-  <string name="download_error_parser_exception">خطای تجزیه</string>
   <string name="download_error_unsupported_type"> عدم  پشتیبانی از این نوع خوراک</string>
   <string name="download_error_connection_error">خطای اتصال</string>
-  <string name="download_error_unknown_host">میزبان ناشناس</string>
   <string name="download_error_unauthorized">خطای احراز هویت</string>
   <string name="download_error_file_type_type">خطای نوع پرونده</string>
-  <string name="download_error_forbidden">ممنوع</string>
   <string name="download_canceled_msg">بارگیری لغو شد</string>
   <string name="download_canceled_autodownload_enabled_msg">بارگیری لغو شد\nغیر فعال  کردن <i>بارگیری خودکار</i> برای این مورد </string>
   <string name="download_report_title">بارگیری‌ها با خطا(ها) کامل شد</string>
@@ -228,7 +223,6 @@
     <item quantity="one">%d بارگیری باقی مانده است</item>
     <item quantity="other">%d بارگیری باقی مانده است</item>
   </plurals>
-  <string name="downloads_processing">پردازش بارگیری‌ها</string>
   <string name="download_notification_title">بارگیری داده پادکست</string>
   <string name="download_log_title_unknown">عنوان ناشناخته</string>
   <string name="download_type_feed">خوراک</string>

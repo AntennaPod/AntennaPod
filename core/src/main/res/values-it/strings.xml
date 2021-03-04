@@ -165,7 +165,6 @@
   <string name="hide_not_queued_episodes_label">Non in coda</string>
   <string name="hide_has_media_label">Con media</string>
   <string name="filtered_label">Filtrati</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Ultimo aggiornamento fallito</string>
   <string name="open_podcast">Apri podcast</string>
   <string name="please_wait_for_data">Attendi il caricamento dei dati</string>
   <!--actions on feeditems-->
@@ -230,18 +229,13 @@
   <string name="download_error_details">Dettagli</string>
   <string name="download_error_details_message">%1$s \n\nURL file:\n%2$s</string>
   <string name="download_error_device_not_found">Spazio di archiviazione non trovato</string>
-  <string name="download_error_insufficient_space">Spazio insufficiente</string>
   <string name="download_error_http_data_error">Errore dei dati HTTP</string>
   <string name="download_error_error_unknown">Errore sconosciuto</string>
-  <string name="download_error_parser_exception">Eccezione del decodificatore</string>
   <string name="download_error_unsupported_type">Tipo di feed non supportato</string>
   <string name="download_error_connection_error">Errore di connessione</string>
-  <string name="download_error_unknown_host">Host sconosciuto</string>
   <string name="download_error_unauthorized">Errore di autenticazione</string>
   <string name="download_error_file_type_type">Errore del tipo di file</string>
-  <string name="download_error_forbidden">Proibito</string>
   <string name="download_canceled_msg">Download annullato</string>
-  <string name="download_wrong_size">Connessione con il server persa prima del completamento del download</string>
   <string name="download_canceled_autodownload_enabled_msg">Download annullato\n<i>Download automatico</i> disabilitato per questo elemento</string>
   <string name="download_report_title">Download completato con un errore (o errori)</string>
   <string name="auto_download_report_title">Download automatici completati</string>
@@ -254,12 +248,7 @@
     <item quantity="one">%d download rimanente</item>
     <item quantity="other">%d download rimanenti</item>
   </plurals>
-  <string name="downloads_processing">Elaborazione dei download in corso</string>
   <string name="download_notification_title">Scaricamento podcast in corso</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d scaricamento completato, %d non riuscito.</item>
-    <item quantity="other">%d scaricamenti completati, %d non riusciti.</item>
-  </plurals>
   <string name="download_log_title_unknown">Titolo sconosciuto</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">File multimediali</string>

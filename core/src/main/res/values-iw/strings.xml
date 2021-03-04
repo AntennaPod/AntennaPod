@@ -177,7 +177,6 @@
   <string name="hide_not_queued_episodes_label">לא בתור</string>
   <string name="hide_has_media_label">יש מדיה</string>
   <string name="filtered_label">מסונן</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} הרענון האחרון נכשל</string>
   <string name="open_podcast">פתיחת פודקאסט</string>
   <string name="please_wait_for_data">נא להמתין לסיום טעינת הנתונים</string>
   <!--actions on feeditems-->
@@ -254,18 +253,13 @@
   <string name="download_error_details">פרטים</string>
   <string name="download_error_details_message">%1$s \n\nכתובת הקובץ:\n%2$s</string>
   <string name="download_error_device_not_found">התקן האחסון לא נמצא</string>
-  <string name="download_error_insufficient_space">אין די שטח אחסון</string>
   <string name="download_error_http_data_error">שגיאת נתוני HTTP</string>
   <string name="download_error_error_unknown">שגיאה לא ידועה</string>
-  <string name="download_error_parser_exception">שגיאת מפענח</string>
   <string name="download_error_unsupported_type">סוג ההזנה אינו נתמך</string>
   <string name="download_error_connection_error">שגיאת חיבור</string>
-  <string name="download_error_unknown_host">שרת לא ידוע</string>
   <string name="download_error_unauthorized">שגיאת אימות</string>
   <string name="download_error_file_type_type">שגיאת סוג קובץ</string>
-  <string name="download_error_forbidden">אסור</string>
   <string name="download_canceled_msg">הורדה בוטלה</string>
-  <string name="download_wrong_size">החיבור לשרת אבד בטרם השלמת ההורדה</string>
   <string name="download_canceled_autodownload_enabled_msg">ההורדה בוטלה\nה<i>הורדה האוטומטית</i> הושבתה עבור פריט זה</string>
   <string name="download_report_title">הורדות הושלמו עם שגיאה אחת או יותר</string>
   <string name="auto_download_report_title">ההורדות האוטומטיות הושלמו</string>
@@ -280,14 +274,7 @@
     <item quantity="many">נותרו %d הורדות</item>
     <item quantity="other">נותרו %d הורדות</item>
   </plurals>
-  <string name="downloads_processing">ההורדות בהליכי עיבוד</string>
   <string name="download_notification_title">נתוני הפודקאסט מתקבלים</string>
-  <plurals name="download_report_content">
-    <item quantity="one">הורדה %d הצליחה, %d נכשלו</item>
-    <item quantity="two">%d הורדות הצליחו, %d נכשלו</item>
-    <item quantity="many">%d הורדות הצליחו, %d נכשלו</item>
-    <item quantity="other">%d הורדות הצליחו, %d נכשלו</item>
-  </plurals>
   <string name="download_log_title_unknown">כותרת לא ידועה</string>
   <string name="download_type_feed">הזנה</string>
   <string name="download_type_media">קובץ מדיה</string>

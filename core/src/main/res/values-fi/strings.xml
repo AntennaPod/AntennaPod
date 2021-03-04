@@ -133,7 +133,6 @@
   <string name="hide_not_queued_episodes_label">Ei jonossa</string>
   <string name="hide_has_media_label">Sisältää mediaa</string>
   <string name="filtered_label">Suodatettu</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Viimeisin päivitys epäonnistui</string>
   <string name="open_podcast">Avaa podcast</string>
   <string name="please_wait_for_data">Odota kunnes tiedot ovat ladattu</string>
   <!--actions on feeditems-->
@@ -194,16 +193,12 @@
   <string name="download_error_details">Tiedot</string>
   <string name="download_error_details_message">%1$s \n\nTiedoston URL:\n%2$s</string>
   <string name="download_error_device_not_found">Tallennuslaitetta ei löytynyt</string>
-  <string name="download_error_insufficient_space">Ei tarpeeksi tilaa</string>
   <string name="download_error_http_data_error">HTTP Data virhe</string>
   <string name="download_error_error_unknown">Tuntematon virhe</string>
-  <string name="download_error_parser_exception">Jäsenninpoikkeus</string>
   <string name="download_error_unsupported_type">Ei tuettu syötetyyppi</string>
   <string name="download_error_connection_error">Yhteysvirhe</string>
-  <string name="download_error_unknown_host">Tuntematon isäntä</string>
   <string name="download_error_unauthorized">Todentamisvirhe</string>
   <string name="download_error_file_type_type">Tiedostotyyppivirhe</string>
-  <string name="download_error_forbidden">Ei sallittu</string>
   <string name="download_canceled_msg">Lataus peruutettu</string>
   <string name="download_canceled_autodownload_enabled_msg">Lataus peruutettu\nPoistettu <i>Automaattinen lataus</i> tälle tiedolle </string>
   <string name="download_report_title">Lataukset valmistuivat virhe(id)en kanssa</string>
@@ -217,7 +212,6 @@
     <item quantity="one">%d lataus jäljellä</item>
     <item quantity="other">%d latausta jäljellä</item>
   </plurals>
-  <string name="downloads_processing">Käsitellään latauksia</string>
   <string name="download_notification_title">Ladataan podcastin tietoja</string>
   <string name="download_log_title_unknown">Tuntematon otsikko</string>
   <string name="download_type_feed">Syöte</string>

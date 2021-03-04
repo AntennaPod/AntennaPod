@@ -144,7 +144,6 @@
   <string name="hide_not_queued_episodes_label">Nem sorbaállított</string>
   <string name="hide_has_media_label">Médiát tartalmaz</string>
   <string name="filtered_label">Szűrt</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} A legutóbbi frissítés sikertelen</string>
   <string name="open_podcast">Podcast megnyitása</string>
   <string name="please_wait_for_data">Várjon az adatok betöltésére</string>
   <!--actions on feeditems-->
@@ -205,18 +204,13 @@
   <string name="download_error_details">Részletek</string>
   <string name="download_error_details_message">%1$s \n\nFájl URL:\n%2$s</string>
   <string name="download_error_device_not_found">Tárolóeszköz nem található</string>
-  <string name="download_error_insufficient_space">Túl kevés tárhely</string>
   <string name="download_error_http_data_error">HTTP adathiba</string>
   <string name="download_error_error_unknown">Ismeretlen hiba</string>
-  <string name="download_error_parser_exception">Értelmező által dobott kivétel</string>
   <string name="download_error_unsupported_type">Nem támogatott csatornatípus</string>
   <string name="download_error_connection_error">Kapcsolódási hiba</string>
-  <string name="download_error_unknown_host">Ismeretlen kiszolgál</string>
   <string name="download_error_unauthorized">Hitelesítési hiba</string>
   <string name="download_error_file_type_type">Fájltípus-hiba</string>
-  <string name="download_error_forbidden">Megtiltva</string>
   <string name="download_canceled_msg">Letöltés megszakítva</string>
-  <string name="download_wrong_size">A kiszolgálókapcsolat elveszett a letöltés befejezése előtt</string>
   <string name="download_canceled_autodownload_enabled_msg">Letöltés megszakítva\n<i>Automatikus letöltése</i> letiltva az elemnél</string>
   <string name="download_report_title">A letöltések hibákkal fejeződtek be</string>
   <string name="auto_download_report_title">Elkészültek az automatikus letöltések</string>
@@ -229,12 +223,7 @@
     <item quantity="one">%d letöltés van hátra</item>
     <item quantity="other">%d letöltés van hátra</item>
   </plurals>
-  <string name="downloads_processing">Letöltések feldolgozása</string>
   <string name="download_notification_title">Podcast adatok letöltése</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d letöltés sikeres, %d sikertelen</item>
-    <item quantity="other">%d letöltés sikeres, %d sikertelen</item>
-  </plurals>
   <string name="download_log_title_unknown">Ismeretlen cím</string>
   <string name="download_type_feed">Csatorna</string>
   <string name="download_type_media">Médiafájl</string>

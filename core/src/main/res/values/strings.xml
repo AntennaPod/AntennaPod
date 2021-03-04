@@ -262,7 +262,7 @@
     <string name="download_canceled_msg">Download canceled</string>
     <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
     <string name="download_error_blocked">The download was blocked by another app on your device.</string>
-    <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device blocks the download, or that something is wrong with the server certificates.</string>
+    <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device blocked the download, or that something is wrong with the server certificates.</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>

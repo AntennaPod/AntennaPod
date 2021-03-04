@@ -133,7 +133,6 @@
   <string name="hide_not_queued_episodes_label">No en cua</string>
   <string name="hide_has_media_label">Conté medis</string>
   <string name="filtered_label">Filtrat</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Darrera actualització fallida</string>
   <string name="open_podcast">Obrir podcast</string>
   <string name="please_wait_for_data">Per favor, espera fins a que les dades estiguen carregades</string>
   <!--actions on feeditems-->
@@ -194,16 +193,12 @@
   <string name="download_error_details">Detalls</string>
   <string name="download_error_details_message">%1$s \n\nURL del fitxer:\n%2$s</string>
   <string name="download_error_device_not_found">No s\'ha trobat cap dispositiu d\'emmagatzemament</string>
-  <string name="download_error_insufficient_space">No hi ha prou espai</string>
   <string name="download_error_http_data_error">Error de dades HTTP</string>
   <string name="download_error_error_unknown">Error desconegut</string>
-  <string name="download_error_parser_exception">Error de l\'analitzador</string>
   <string name="download_error_unsupported_type">Tipus de canal no suportat</string>
   <string name="download_error_connection_error">Error de connexió</string>
-  <string name="download_error_unknown_host">Amfitrió desconegut</string>
   <string name="download_error_unauthorized">Error d\'autenticació</string>
   <string name="download_error_file_type_type">Error de tipus de fitxer</string>
-  <string name="download_error_forbidden">Prohibit</string>
   <string name="download_canceled_msg">S\'ha cancel·lat la baixada</string>
   <string name="download_canceled_autodownload_enabled_msg">Baixada cancel·lada\nDesactivada les <i>baixades automàtiques</i> per aquest element</string>
   <string name="download_report_title">Baixades completades amb error(s)</string>
@@ -217,7 +212,6 @@
     <item quantity="one">%d baixada pendent</item>
     <item quantity="other">%d baixades pendents</item>
   </plurals>
-  <string name="downloads_processing">S\'estan processant les baixades</string>
   <string name="download_notification_title">S\'estan baixant les dades del podcast</string>
   <string name="download_log_title_unknown">Títol desconegut</string>
   <string name="download_type_feed">Canal</string>
