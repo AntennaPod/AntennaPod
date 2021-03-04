@@ -563,13 +563,12 @@ public class FeedItemlistFragment extends Fragment implements AdapterView.OnItem
 
     @Nullable
     private Feed loadData() {
-        Feed feed = DBReader.getFeed(feedID);
-        if (feed != null && feed.getItemFilter() != null) {
-            DBReader.loadAdditionalFeedItemListData(feed.getItems());
-            FeedItemFilter filter = feed.getItemFilter();
-            feed.setItems(filter.filter(feed.getItems()));
+        Feed feed = DBReader.getFeed(feedID, true);
+        if (feed == null) {
+            return null;
         }
-        if (feed != null && feed.getSortOrder() != null) {
+        DBReader.loadAdditionalFeedItemListData(feed.getItems());
+        if (feed.getSortOrder() != null) {
             List<FeedItem> feedItems = feed.getItems();
             FeedItemPermutors.getPermutor(feed.getSortOrder()).reorder(feedItems);
             feed.setItems(feedItems);

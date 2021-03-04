@@ -320,7 +320,7 @@ public final class DBTasks {
     private static Feed searchFeedByIdentifyingValueOrID(PodDBAdapter adapter,
                                                          Feed feed) {
         if (feed.getId() != 0) {
-            return DBReader.getFeed(feed.getId(), adapter);
+            return DBReader.getFeed(feed.getId());
         } else {
             List<Feed> feeds = DBReader.getFeedList();
             for (Feed f : feeds) {

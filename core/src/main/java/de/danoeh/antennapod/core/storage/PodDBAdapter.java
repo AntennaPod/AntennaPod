@@ -951,9 +951,12 @@ public class PodDBAdapter {
      * @param feed The feed you want to get the FeedItems from.
      * @return The cursor of the query
      */
-    public final Cursor getAllItemsOfFeedCursor(final Feed feed) {
+    public final Cursor getItemsOfFeedCursor(final Feed feed, FeedItemFilter filter) {
+        String filterQuery = FeedItemFilterQuery.generateFrom(filter);
+        String whereClauseAnd = "".equals(filterQuery) ? "" : " AND " + filterQuery;
         final String query = SELECT_FEED_ITEMS_AND_MEDIA
-                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + feed.getId();
+                + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + feed.getId()
+                + whereClauseAnd;
         return db.rawQuery(query, null);
     }
 

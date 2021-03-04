@@ -161,11 +161,15 @@ public final class DBReader {
      *         The method does NOT change the items-attribute of the feed.
      */
     public static List<FeedItem> getFeedItemList(final Feed feed) {
+        return getFeedItemList(feed, FeedItemFilter.unfiltered());
+    }
+
+    public static List<FeedItem> getFeedItemList(final Feed feed, final FeedItemFilter filter) {
         Log.d(TAG, "getFeedItemList() called with: " + "feed = [" + feed + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getAllItemsOfFeedCursor(feed)) {
+        try (Cursor cursor = adapter.getItemsOfFeedCursor(feed, filter)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             Collections.sort(items, new FeedItemPubdateComparator());
             for (FeedItem item : items) {
@@ -480,31 +484,41 @@ public final class DBReader {
      *
      * @param feedId The ID of the Feed
      * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
-     * database and the items-attribute will be set correctly.
+     *         database and the items-attribute will be set correctly.
      */
+    @Nullable
     public static Feed getFeed(final long feedId) {
-        Log.d(TAG, "getFeed() called with: " + "feedId = [" + feedId + "]");
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        try {
-            return getFeed(feedId, adapter);
-        } finally {
-            adapter.close();
-        }
+        return getFeed(feedId, false);
     }
 
+    /**
+     * Loads a specific Feed from the database.
+     *
+     * @param feedId The ID of the Feed
+     * @param filtered <code>true</code> if only the visible items should be loaded according to the feed filter.
+     * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
+     *         database and the items-attribute will be set correctly.
+     */
     @Nullable
-    static Feed getFeed(final long feedId, PodDBAdapter adapter) {
+    public static Feed getFeed(final long feedId, boolean filtered) {
+        Log.d(TAG, "getFeed() called with: " + "feedId = [" + feedId + "]");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
         Feed feed = null;
         try (Cursor cursor = adapter.getFeedCursor(feedId)) {
             if (cursor.moveToNext()) {
                 feed = extractFeedFromCursorRow(cursor);
-                feed.setItems(getFeedItemList(feed));
+                if (filtered) {
+                    feed.setItems(getFeedItemList(feed, feed.getItemFilter()));
+                } else {
+                    feed.setItems(getFeedItemList(feed));
+                }
             } else {
                 Log.e(TAG, "getFeed could not find feed with id " + feedId);
             }
             return feed;
+        } finally {
+            adapter.close();
         }
     }
 
