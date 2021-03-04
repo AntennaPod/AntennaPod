@@ -561,6 +561,8 @@
     <string name="not_auto_downloaded">Not auto downloaded</string>
     <string name="kept_updated">Kept updated</string>
     <string name="not_kept_updated">Not kept updated</string>
+    <string name="pref_feed_settings_dialog_msg">This setting is unique to each podcast. It can be found by opening the podcast.</string>
+    <string name="pref_ok_label">OK</string>
 
     <!-- About screen -->
     <string name="about_pref">About</string>
