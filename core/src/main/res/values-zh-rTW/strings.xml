@@ -141,7 +141,6 @@
   <string name="hide_not_queued_episodes_label">未列入待播清單</string>
   <string name="hide_has_media_label">包含媒體</string>
   <string name="filtered_label">已過濾</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} 更新失敗</string>
   <string name="open_podcast">打開 Podcast</string>
   <string name="please_wait_for_data">資料載入中，請稍候</string>
   <!--actions on feeditems-->
@@ -197,16 +196,12 @@
   <string name="download_error_details">詳情</string>
   <string name="download_error_details_message">%1$s \n\n檔案網址：\n%2$s</string>
   <string name="download_error_device_not_found">沒找到儲存空間</string>
-  <string name="download_error_insufficient_space">儲存空間不足</string>
   <string name="download_error_http_data_error">HTTP 資料有誤</string>
   <string name="download_error_error_unknown">位置錯誤</string>
-  <string name="download_error_parser_exception">解析器異常</string>
   <string name="download_error_unsupported_type">不支援此來源類型</string>
   <string name="download_error_connection_error">連接錯誤</string>
-  <string name="download_error_unknown_host">不明主機</string>
   <string name="download_error_unauthorized">驗證失敗</string>
   <string name="download_error_file_type_type">文件格式錯誤</string>
-  <string name="download_error_forbidden">禁止存取</string>
   <string name="download_canceled_msg">下載已取消</string>
   <string name="download_canceled_autodownload_enabled_msg">下載已取消\n這一項的 <i>自動下載</i> 已停用</string>
   <string name="download_report_title">下載已完成，但可能有錯誤</string>
@@ -219,11 +214,7 @@
   <plurals name="downloads_left">
     <item quantity="other">剩餘%d 個下載</item>
   </plurals>
-  <string name="downloads_processing">正在下載</string>
   <string name="download_notification_title">Podcast 資料下載中</string>
-  <plurals name="download_report_content">
-    <item quantity="other">成功下載 %d 個單集，失敗 %d 個</item>
-  </plurals>
   <string name="download_log_title_unknown">標題不明</string>
   <string name="download_type_feed">資料來源</string>
   <string name="download_type_media">媒體檔案</string>

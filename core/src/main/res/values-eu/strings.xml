@@ -165,7 +165,6 @@
   <string name="hide_not_queued_episodes_label">Ez dago ilaran</string>
   <string name="hide_has_media_label">Media du</string>
   <string name="filtered_label">Iragaziak</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Errorea azken eguneraketan</string>
   <string name="open_podcast">Ireki podcasta</string>
   <string name="please_wait_for_data">Mesedez, itxaron datuak kargatu arte</string>
   <!--actions on feeditems-->
@@ -230,18 +229,13 @@
   <string name="download_error_details">Xehetasunak</string>
   <string name="download_error_details_message">%1$s \n\nartxibategiaren URL:\n%2$s</string>
   <string name="download_error_device_not_found">Ez da biltegiratze gailurik aurkitu</string>
-  <string name="download_error_insufficient_space">Ez dago nahiko tokirik</string>
   <string name="download_error_http_data_error">HTTP datuen errorea</string>
   <string name="download_error_error_unknown">Errore ezezaguna</string>
-  <string name="download_error_parser_exception">Analizatzailearen salbuespena</string>
   <string name="download_error_unsupported_type">Kanal mota ez onartua</string>
   <string name="download_error_connection_error">Konexio errorea</string>
-  <string name="download_error_unknown_host">Ostalari ezezaguna</string>
   <string name="download_error_unauthorized">Egiaztatze errorea</string>
   <string name="download_error_file_type_type">Artxibategi motaren errorea</string>
-  <string name="download_error_forbidden">Debekaturik</string>
   <string name="download_canceled_msg">Deskarga ezeztatua</string>
-  <string name="download_wrong_size">Zerbitzariaren konexioa galdu egin da deskarga amaitu aurretik</string>
   <string name="download_canceled_autodownload_enabled_msg">Deskarga ezeztatua\aktibatu da <i>Auto deskarga</i> elementu honetan</string>
   <string name="download_report_title">Deskarga(k) osatu d(ir)a errorea(k) d(it)uela</string>
   <string name="auto_download_report_title">Deskargatu automatikoak osatuta</string>
@@ -254,12 +248,7 @@
     <item quantity="one">%d deskarga zain</item>
     <item quantity="other">%d deskarga zain</item>
   </plurals>
-  <string name="downloads_processing">Deskargak prozesatzen</string>
   <string name="download_notification_title">Podcastaren datuak deskargatzen</string>
-  <plurals name="download_report_content">
-    <item quantity="one">Deskarga arrakastatsu %d , %d (e)k huts egin du(te)</item>
-    <item quantity="other">%d deskarga arrakastasuak, %d (e)k huts egin du(te)</item>
-  </plurals>
   <string name="download_log_title_unknown">Izenburu ezezaguna</string>
   <string name="download_type_feed">Kanala</string>
   <string name="download_type_media">Media artxibategia</string>

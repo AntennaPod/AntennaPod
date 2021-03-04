@@ -8,7 +8,10 @@ import android.content.SharedPreferences;
 import android.graphics.LightingColorFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -290,11 +293,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 dialog.show();
             }
         } else {
-            String errorMsg = status.getReason().getErrorString(OnlineFeedViewActivity.this);
-            if (status.getReasonDetailed() != null) {
-                errorMsg += " (" + status.getReasonDetailed() + ")";
-            }
-            showErrorDialog(errorMsg);
+            showErrorDialog(status.getReason().getErrorString(OnlineFeedViewActivity.this), status.getReasonDetailed());
         }
     }
 
@@ -340,9 +339,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@NonNull Throwable error) {
-                        String errorMsg = DownloadError.ERROR_PARSER_EXCEPTION.getErrorString(
-                                OnlineFeedViewActivity.this) + " (" + error.getMessage() + ")";
-                        showErrorDialog(errorMsg);
+                        showErrorDialog(error.getMessage(), "");
                         Log.d(TAG, "Feed parser exception: " + Log.getStackTraceString(error));
                     }
                 });
@@ -366,8 +363,7 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
                 if (dialogShown) {
                     return null; // Should not display an error message
                 } else {
-                    Log.d(TAG, "Supplied feed is an HTML web page that has no references to any feed");
-                    throw e;
+                    throw new UnsupportedFeedtypeException(getString(R.string.download_error_unsupported_type_html));
                 }
             } else {
                 throw e;
@@ -586,12 +582,16 @@ public class OnlineFeedViewActivity extends AppCompatActivity {
     }
 
     @UiThread
-    private void showErrorDialog(String errorMsg) {
+    private void showErrorDialog(String errorMsg, String details) {
         if (!isFinishing() && !isPaused) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.error_label);
             if (errorMsg != null) {
-                builder.setMessage(errorMsg);
+                String total = errorMsg + "\n\n" + details;
+                SpannableString errorMessage = new SpannableString(total);
+                errorMessage.setSpan(new ForegroundColorSpan(0x88888888),
+                        errorMsg.length(), total.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.setMessage(errorMessage);
             } else {
                 builder.setMessage(R.string.download_error_error_unknown);
             }

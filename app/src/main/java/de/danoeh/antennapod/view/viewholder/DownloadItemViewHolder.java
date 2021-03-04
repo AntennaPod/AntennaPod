@@ -20,6 +20,7 @@ public class DownloadItemViewHolder extends RecyclerView.ViewHolder {
     public final TextView type;
     public final TextView date;
     public final TextView reason;
+    public final TextView tapForDetails;
 
     public DownloadItemViewHolder(Context context, ViewGroup parent) {
         super(LayoutInflater.from(context).inflate(R.layout.downloadlog_item, parent, false));
@@ -27,6 +28,7 @@ public class DownloadItemViewHolder extends RecyclerView.ViewHolder {
         type = itemView.findViewById(R.id.txtvType);
         icon = itemView.findViewById(R.id.txtvIcon);
         reason = itemView.findViewById(R.id.txtvReason);
+        tapForDetails = itemView.findViewById(R.id.txtvTapForDetails);
         secondaryActionButton = itemView.findViewById(R.id.secondaryActionButton);
         secondaryActionIcon = itemView.findViewById(R.id.secondaryActionIcon);
         title = itemView.findViewById(R.id.txtvTitle);

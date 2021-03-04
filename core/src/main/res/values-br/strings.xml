@@ -142,7 +142,6 @@
   <string name="hide_not_queued_episodes_label">N\'emañ ket el lost</string>
   <string name="hide_has_media_label">Gant ur media</string>
   <string name="filtered_label">Silet</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} C\'hwitet war an azgrenaat diwezhañ</string>
   <string name="open_podcast">Digeriñ ar podskignad</string>
   <string name="please_wait_for_data">Gortozit dibenn pellgargadur ar roadennoù</string>
   <!--actions on feeditems-->
@@ -218,16 +217,12 @@
   <string name="download_error_details">Munudoù</string>
   <string name="download_error_details_message">%1$s \n\nURL ar restr:\n%2$s</string>
   <string name="download_error_device_not_found">N\'eo ket bet kavet ar c\'hadaviñ</string>
-  <string name="download_error_insufficient_space">N\'eus ket trawalc\'h a blas</string>
   <string name="download_error_http_data_error">Fazi roadennoù HTTP</string>
   <string name="download_error_error_unknown">Fazi dianav</string>
-  <string name="download_error_parser_exception">Kemennadenn Fazi</string>
   <string name="download_error_unsupported_type">Doare lanv anskor</string>
   <string name="download_error_connection_error">Fazi kennaskañ</string>
-  <string name="download_error_unknown_host">Ostiz dianav</string>
   <string name="download_error_unauthorized">Fazi dilesa</string>
   <string name="download_error_file_type_type">Fazi rizh ar restr</string>
-  <string name="download_error_forbidden">Difennet</string>
   <string name="download_canceled_msg">Pellgargadur nullet</string>
   <string name="download_canceled_autodownload_enabled_msg">Pellgargadur nullet\nDiweredekaet ar <i>pellgargadur emgefreek</i> evit an elfenn-mañ</string>
   <string name="download_report_title">Pellgargañ echuet gant fazi(où)</string>
@@ -244,7 +239,6 @@
     <item quantity="many">%d a bellgargadurioù a chom</item>
     <item quantity="other">%d pellgargadur a chom</item>
   </plurals>
-  <string name="downloads_processing">O keweriañ ar pellgargadennoù</string>
   <string name="download_notification_title">O pellgargañ roadennoù ar podskignad</string>
   <string name="download_log_title_unknown">Titl dianav</string>
   <string name="download_type_feed">Lanv</string>

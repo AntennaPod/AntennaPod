@@ -163,7 +163,6 @@
   <string name="hide_not_queued_episodes_label">Ikke sat i kø</string>
   <string name="hide_has_media_label">Har medier</string>
   <string name="filtered_label">Filtrerede</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Sidste opdatering fejlede</string>
   <string name="open_podcast">Åbn podcast</string>
   <string name="please_wait_for_data">Vær venlig og vent til data\'et er indlæst</string>
   <!--actions on feeditems-->
@@ -228,16 +227,12 @@
   <string name="download_error_details">Detaljer</string>
   <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
   <string name="download_error_device_not_found">Kan ikke finde lagerenhed</string>
-  <string name="download_error_insufficient_space">Ikke nok plads</string>
   <string name="download_error_http_data_error">HTTP-datafejl</string>
   <string name="download_error_error_unknown">Ukendt fejl</string>
-  <string name="download_error_parser_exception">Parser-undtagelse</string>
   <string name="download_error_unsupported_type">Feedets type er ikke understøttet</string>
   <string name="download_error_connection_error">Forbindelsesfejl</string>
-  <string name="download_error_unknown_host">Ukendt vært</string>
   <string name="download_error_unauthorized">Godkendelsesfejl</string>
   <string name="download_error_file_type_type">Filtypefejl</string>
-  <string name="download_error_forbidden">Adgang nægtet</string>
   <string name="download_canceled_msg">Overførsel annulleret</string>
   <string name="download_canceled_autodownload_enabled_msg">Overførsel annulleret\n<i>Automatisk overførsel</i> blev slået fra for dette element</string>
   <string name="download_report_title">Overførsler afsluttet med fejl</string>
@@ -251,12 +246,7 @@
     <item quantity="one">%d overførsel mangler</item>
     <item quantity="other">%d overførsler mangler</item>
   </plurals>
-  <string name="downloads_processing">Bearbejder overførte data</string>
   <string name="download_notification_title">Henter podcast-data</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d overførsel lykkedes, %d fejlede</item>
-    <item quantity="other">%d overførsler lykkedes, %d fejlede</item>
-  </plurals>
   <string name="download_log_title_unknown">Ukendt titel</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediefil</string>

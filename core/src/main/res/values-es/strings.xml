@@ -164,7 +164,6 @@
   <string name="hide_not_queued_episodes_label">No en cola</string>
   <string name="hide_has_media_label">Tiene multimedia</string>
   <string name="filtered_label">Filtrados</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Error en la última actualización</string>
   <string name="open_podcast">Abrir pódcast</string>
   <string name="please_wait_for_data">Esperando a que los datos carguen</string>
   <!--actions on feeditems-->
@@ -229,18 +228,13 @@
   <string name="download_error_details">Detalles</string>
   <string name="download_error_details_message">%1$s \n\nURL de archivo:\n%2$s</string>
   <string name="download_error_device_not_found">No se ha encontrado un dispositivo de almacenamiento</string>
-  <string name="download_error_insufficient_space">Espacio insuficiente</string>
   <string name="download_error_http_data_error">Error de datos HTTP</string>
   <string name="download_error_error_unknown">Error desconocido</string>
-  <string name="download_error_parser_exception">Excepción del analizador</string>
   <string name="download_error_unsupported_type">Tipo de canal no admitido</string>
   <string name="download_error_connection_error">Error de conexión</string>
-  <string name="download_error_unknown_host">Host desconocido</string>
   <string name="download_error_unauthorized">Error de autenticación</string>
   <string name="download_error_file_type_type">Tipo de archivo erróneo</string>
-  <string name="download_error_forbidden">Prohibido</string>
   <string name="download_canceled_msg">Descarga cancelada</string>
-  <string name="download_wrong_size">La conexión con el servidor se perdió antes de completar la descarga</string>
   <string name="download_canceled_autodownload_enabled_msg">Descarga cancelada\nSe desactivó la <i>descarga automática</i> en este elemento</string>
   <string name="download_report_title">Descargas completadas con error(es)</string>
   <string name="auto_download_report_title">Descargas automáticas completadas</string>
@@ -253,12 +247,7 @@
     <item quantity="one">Queda %d descarga</item>
     <item quantity="other">Quedan %d descargas</item>
   </plurals>
-  <string name="downloads_processing">Procesando descargas</string>
   <string name="download_notification_title">Descargando datos del pódcast</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d descarga exitosa, %d fallidas</item>
-    <item quantity="other">%d descargas exitosas, %d fallidas</item>
-  </plurals>
   <string name="download_log_title_unknown">Título desconocido</string>
   <string name="download_type_feed">Canal</string>
   <string name="download_type_media">Archivo multimedia</string>

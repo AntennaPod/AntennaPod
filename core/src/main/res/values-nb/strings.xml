@@ -139,7 +139,6 @@
   <string name="hide_not_queued_episodes_label">Ikke i kø</string>
   <string name="hide_has_media_label">Har medier</string>
   <string name="filtered_label">Filtrert</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Siste oppdatering mislyktes</string>
   <string name="open_podcast">Åpne podkast</string>
   <string name="please_wait_for_data">Vent til dataene er lastet inn</string>
   <!--actions on feeditems-->
@@ -200,16 +199,12 @@
   <string name="download_error_details">Detaljer</string>
   <string name="download_error_details_message">%1$s \n\nFil-URL:\n%2$s</string>
   <string name="download_error_device_not_found">Lagringsenhet ikke funnet</string>
-  <string name="download_error_insufficient_space">Ikke nok plass</string>
   <string name="download_error_http_data_error">HTTP-datafeil</string>
   <string name="download_error_error_unknown">Ukjent feil</string>
-  <string name="download_error_parser_exception">Parser-unntak</string>
   <string name="download_error_unsupported_type">Strøm-typen er ikke støttet</string>
   <string name="download_error_connection_error">Tilkoblingsfeil</string>
-  <string name="download_error_unknown_host">Ukjent vert</string>
   <string name="download_error_unauthorized">Autentiseringsfeil</string>
   <string name="download_error_file_type_type">Filtype-feil</string>
-  <string name="download_error_forbidden">Ikke tillatt</string>
   <string name="download_canceled_msg">Nedlasting avbrutt</string>
   <string name="download_canceled_autodownload_enabled_msg">Nedlasting avbrutt\n<i>Automatisk nedlasting</i> for dette elementet er deaktivert</string>
   <string name="download_report_title">Nedlasting fullført med feilmeldinger</string>
@@ -223,12 +218,7 @@
     <item quantity="one">%d nedlasting gjenstår</item>
     <item quantity="other">%d nedlastinger gjenstår</item>
   </plurals>
-  <string name="downloads_processing">Behandler nedlastninger</string>
   <string name="download_notification_title">Laster ned data til podkast</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%1$d nedlastninger lyktes, %2$d mislyktes</item>
-    <item quantity="other">%d nedlastinger lyktes, %d mislyktes</item>
-  </plurals>
   <string name="download_log_title_unknown">Ukjent tittel</string>
   <string name="download_type_feed">Strøm</string>
   <string name="download_type_media">Mediafil</string>
