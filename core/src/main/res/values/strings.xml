@@ -255,7 +255,7 @@
     <string name="download_error_unsupported_type_html">The podcast host\'s server sent a website, not a podcast.</string>
     <string name="download_error_not_found">The podcast host\'s server does not know where to find the file. It may have been deleted.</string>
     <string name="download_error_connection_error">Connection Error</string>
-    <string name="download_error_unknown_host">Unknown Host</string>
+    <string name="download_error_unknown_host">Cannot find the server. Check if the address is typed correctly and if you have a working network connection.</string>
     <string name="download_error_unauthorized">Authentication Error</string>
     <string name="download_error_file_type_type">File Type Error</string>
     <string name="download_error_forbidden">The podcast host\'s server refuses to respond.</string>
