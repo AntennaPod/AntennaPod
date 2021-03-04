@@ -267,6 +267,9 @@ public class HttpDownloader extends Downloader {
                         onFail(DownloadError.ERROR_IO_BLOCKED, e.getMessage());
                         return;
                     }
+                } else if (message.contains("Trust anchor for certification path not found")) {
+                    onFail(DownloadError.ERROR_CERTIFICATE, e.getMessage());
+                    return;
                 }
             }
             onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
