@@ -276,10 +276,6 @@
     </plurals>
     <string name="service_shutting_down">Service shutting down</string>
     <string name="download_notification_title">Downloading podcast data</string>
-    <plurals name="download_report_content">
-        <item quantity="one">%d download succeeded, %d failed</item>
-        <item quantity="other">%d downloads succeeded, %d failed</item>
-    </plurals>
     <string name="download_log_title_unknown">Unknown Title</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
