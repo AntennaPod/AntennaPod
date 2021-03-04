@@ -73,6 +73,7 @@ project.ext {
 
     // Google Play build
     wearableSupportVersion = "2.6.0"
+    playServicesVersion = "8.4.0"
 
     //Tests
     awaitilityVersion = "3.1.6"
@@ -84,11 +85,6 @@ project.ext {
 
 wrapper {
     gradleVersion = "6.3"
-}
-
-// free build hack: common functions
-def doFreeBuild() {
-    return hasProperty("freeBuild")
 }
 
 apply plugin: "checkstyle"

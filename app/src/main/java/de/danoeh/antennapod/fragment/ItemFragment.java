@@ -304,7 +304,7 @@ public class ItemFragment extends Fragment {
                 .dontAnimate();
 
         Glide.with(getActivity())
-                .load(ImageResourceUtils.getEpisodeImageLocation(item))
+                .load(item.getImageLocation())
                 .error(Glide.with(getActivity())
                         .load(ImageResourceUtils.getFallbackImageLocation(item))
                         .apply(options))

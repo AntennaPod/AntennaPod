@@ -1,12 +1,10 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.Context;
 import android.database.Cursor;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 /**
@@ -200,10 +198,6 @@ public class FeedPreferences {
             default: // fall-through
                 return false;
         }
-    }
-
-    public void save(Context context) {
-        DBWriter.setFeedPreferences(this);
     }
 
     public String getUsername() {

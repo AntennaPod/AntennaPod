@@ -4,7 +4,6 @@ import android.database.Cursor;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.text.TextUtils;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -17,7 +16,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
@@ -27,7 +25,7 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements ShownotesProvider, ImageResource, Serializable {
+public class FeedItem extends FeedComponent implements ShownotesProvider, Serializable {
 
     /** tag that indicates this item is in the queue */
     public static final String TAG_QUEUE = "Queue";
@@ -43,10 +41,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
      * The description of a feeditem.
      */
     private String description;
-    /**
-     * The content of the content-encoded tag of a feeditem.
-     */
-    private String contentEncoded;
 
     private String link;
     private Date pubDate;
@@ -182,9 +176,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         if (other.getDescription() != null) {
             description = other.getDescription();
         }
-        if (other.getContentEncoded() != null) {
-            contentEncoded = other.contentEncoded;
-        }
         if (other.link != null) {
             link = other.link;
         }
@@ -238,10 +229,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
 
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getLink() {
@@ -307,7 +294,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     }
 
     public void setPlayed(boolean played) {
-        if(played) {
+        if (played) {
             state = PLAYED;
         } else {
             state = UNPLAYED;
@@ -318,12 +305,19 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
         return (media != null && media.isInProgress());
     }
 
-    public String getContentEncoded() {
-        return contentEncoded;
-    }
-
-    public void setContentEncoded(String contentEncoded) {
-        this.contentEncoded = contentEncoded;
+    /**
+     * Updates this item's description property if the given argument is longer than the already stored description
+     * @param newDescription The new item description, content:encoded, itunes:description, etc.
+     */
+    public void setDescriptionIfLonger(String newDescription) {
+        if (newDescription == null) {
+            return;
+        }
+        if (this.description == null) {
+            this.description = newDescription;
+        } else if (this.description.length() < newDescription.length()) {
+            this.description = newDescription;
+        }
     }
 
     public String getPaymentLink() {
@@ -361,29 +355,20 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     @Override
     public Callable<String> loadShownotes() {
         return () -> {
-            if (contentEncoded == null || description == null) {
+            if (description == null) {
                 DBReader.loadDescriptionOfFeedItem(FeedItem.this);
             }
-            if (TextUtils.isEmpty(contentEncoded)) {
-                return description;
-            } else if (TextUtils.isEmpty(description)) {
-                return contentEncoded;
-            } else if (description.length() > 1.25 * contentEncoded.length()) {
-                return description;
-            } else {
-                return contentEncoded;
-            }
+            return description;
         };
     }
 
-    @Override
     public String getImageLocation() {
         if (imageUrl != null) {
             return imageUrl;
         } else if (media != null && media.hasEmbeddedPicture()) {
             return FeedMedia.FILENAME_PREFIX_EMBEDDED_COVER + media.getLocalMediaUrl();
         } else if (feed != null) {
-            return feed.getImageLocation();
+            return feed.getImageUrl();
         } else {
             return null;
         }
@@ -472,17 +457,23 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, ImageR
     /**
      * @return true if the item has this tag
      */
-    public boolean isTagged(String tag) { return tags.contains(tag); }
+    public boolean isTagged(String tag) {
+        return tags.contains(tag);
+    }
 
     /**
      * @param tag adds this tag to the item. NOTE: does NOT persist to the database
      */
-    public void addTag(String tag) { tags.add(tag); }
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
 
     /**
      * @param tag the to remove
      */
-    public void removeTag(String tag) { tags.remove(tag); }
+    public void removeTag(String tag) {
+        tags.remove(tag);
+    }
 
     @NonNull
     @Override

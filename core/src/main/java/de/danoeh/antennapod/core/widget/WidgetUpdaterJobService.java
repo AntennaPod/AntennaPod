@@ -8,6 +8,7 @@ import de.danoeh.antennapod.core.feed.util.PlaybackSpeedUtils;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 
 public class WidgetUpdaterJobService extends SafeJobIntentService {
     private static final int JOB_ID = -17001;
@@ -22,7 +23,7 @@ public class WidgetUpdaterJobService extends SafeJobIntentService {
 
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        Playable media = Playable.PlayableUtils.createInstanceFromPreferences(getApplicationContext());
+        Playable media = PlayableUtils.createInstanceFromPreferences(getApplicationContext());
         if (media != null) {
             WidgetUpdater.updateWidget(this, new WidgetUpdater.WidgetState(media, PlayerStatus.STOPPED,
                     media.getPosition(), media.getDuration(), PlaybackSpeedUtils.getCurrentPlaybackSpeed(media),

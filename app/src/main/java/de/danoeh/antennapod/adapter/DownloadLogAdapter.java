@@ -68,16 +68,14 @@ public class DownloadLogAdapter extends BaseAdapter {
             holder.icon.setContentDescription(context.getString(R.string.download_successful));
             holder.secondaryActionButton.setVisibility(View.INVISIBLE);
             holder.reason.setVisibility(View.GONE);
+            holder.tapForDetails.setVisibility(View.GONE);
         } else {
             holder.icon.setTextColor(ContextCompat.getColor(context, R.color.download_failed_red));
             holder.icon.setText("{fa-times-circle}");
             holder.icon.setContentDescription(context.getString(R.string.error_label));
-            String reasonText = status.getReason().getErrorString(context);
-            if (status.getReasonDetailed() != null) {
-                reasonText += ": " + status.getReasonDetailed();
-            }
-            holder.reason.setText(reasonText);
+            holder.reason.setText(status.getReason().getErrorString(context));
             holder.reason.setVisibility(View.VISIBLE);
+            holder.tapForDetails.setVisibility(View.VISIBLE);
 
             if (newerWasSuccessful(position, status.getFeedfileType(), status.getFeedfileId())) {
                 holder.secondaryActionButton.setVisibility(View.INVISIBLE);

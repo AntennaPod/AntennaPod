@@ -17,7 +17,6 @@ import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -113,7 +112,7 @@ public class NewEpisodesNotification {
         try {
             return Glide.with(context)
                     .asBitmap()
-                    .load(ImageResourceUtils.getEpisodeListImageLocation(feed))
+                    .load(feed.getImageUrl())
                     .apply(RequestOptions.diskCacheStrategyOf(ApGlideSettings.AP_DISK_CACHE_STRATEGY))
                     .apply(new RequestOptions().centerCrop())
                     .submit(iconSize, iconSize)

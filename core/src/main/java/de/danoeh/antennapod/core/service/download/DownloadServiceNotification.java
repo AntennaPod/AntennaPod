@@ -53,7 +53,7 @@ public class DownloadServiceNotification {
         String contentTitle = context.getString(R.string.download_notification_title);
         String downloadsLeft = (numDownloads > 0)
                 ? context.getResources().getQuantityString(R.plurals.downloads_left, numDownloads, numDownloads)
-                : context.getString(R.string.downloads_processing);
+                : context.getString(R.string.service_shutting_down);
         String bigText = compileNotificationString(downloads);
 
         notificationCompatBuilder.setContentTitle(contentTitle);
@@ -109,6 +109,23 @@ public class DownloadServiceNotification {
         return sb.toString();
     }
 
+    private String createFailedDownloadNotificationContent(List<DownloadStatus> statuses) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < statuses.size(); i++) {
+            if (statuses.get(i).isSuccessful()) {
+                continue;
+            }
+            sb.append("• ").append(statuses.get(i).getTitle());
+            sb.append(": ").append(statuses.get(i).getReason().getErrorString(context));
+            if (i != statuses.size() - 1) {
+                sb.append("\n");
+            }
+        }
+
+        return sb.toString();
+    }
+
     /**
      * Creates a notification at the end of the service lifecycle to notify the
      * user about the number of completed downloads. A report will only be
@@ -156,11 +173,7 @@ public class DownloadServiceNotification {
                 iconId = R.drawable.ic_notification_sync_error;
                 intent = ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(context);
                 id = R.id.notification_download_report;
-                content = context.getResources()
-                        .getQuantityString(R.plurals.download_report_content,
-                                successfulDownloads,
-                                successfulDownloads,
-                                failedDownloads);
+                content = createFailedDownloadNotificationContent(reportQueue);
             }
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);

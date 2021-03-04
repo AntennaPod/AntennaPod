@@ -118,7 +118,7 @@ public class ChaptersFragment extends Fragment {
         disposable = Maybe.create(emitter -> {
             Playable media = controller.getMedia();
             if (media != null) {
-                media.loadChapterMarks(getContext());
+                ChapterUtils.loadChapters(media, getContext());
                 emitter.onSuccess(media);
             } else {
                 emitter.onComplete();
@@ -137,7 +137,6 @@ public class ChaptersFragment extends Fragment {
             return;
         }
         adapter.setMedia(media);
-        ((AudioPlayerFragment) getParentFragment()).setHasChapters(adapter.getItemCount() > 0);
         int positionOfCurrentChapter = getCurrentChapter(media);
         updateChapterSelection(positionOfCurrentChapter);
     }

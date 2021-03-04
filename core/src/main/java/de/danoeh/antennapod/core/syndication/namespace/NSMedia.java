@@ -121,9 +121,8 @@ public class NSMedia extends Namespace {
     public void handleElementEnd(String localName, HandlerState state) {
         if (DESCRIPTION.equals(localName)) {
             String content = state.getContentBuf().toString();
-            if (state.getCurrentItem() != null && content != null
-                    && state.getCurrentItem().getDescription() == null) {
-                state.getCurrentItem().setDescription(content);
+            if (state.getCurrentItem() != null) {
+                state.getCurrentItem().setDescriptionIfLonger(content);
             }
         }
     }
