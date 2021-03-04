@@ -139,7 +139,6 @@
   <string name="hide_not_queued_episodes_label">Nesantys eilėje</string>
   <string name="hide_has_media_label">Turintys medijos failų</string>
   <string name="filtered_label">Filtruota</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Paskutinis atnaujinimas nepavyko</string>
   <string name="open_podcast">Atverti tinklalaidę</string>
   <string name="please_wait_for_data">Prašome luktelėti, kol duomenys bus įkelti</string>
   <!--actions on feeditems-->
@@ -210,16 +209,12 @@
   <string name="download_error_details">Išsami informacija</string>
   <string name="download_error_details_message">%1$s \n\nFailo URL:\n%2$s</string>
   <string name="download_error_device_not_found">Nerastas laikmenos įrenginys</string>
-  <string name="download_error_insufficient_space">Trūksta laisvos vietos</string>
   <string name="download_error_http_data_error">HTTP duomenų klaida</string>
   <string name="download_error_error_unknown">Nežinoma klaida</string>
-  <string name="download_error_parser_exception">Išimtinė situacija analizatoriuje</string>
   <string name="download_error_unsupported_type">Nepalaikomas sklaidos kanalo tipas</string>
   <string name="download_error_connection_error">Susijungimo klaida</string>
-  <string name="download_error_unknown_host">Nežinomas serveris</string>
   <string name="download_error_unauthorized">Tapatumo nustatymo klaida</string>
   <string name="download_error_file_type_type">Failo tipo klaida</string>
-  <string name="download_error_forbidden">Uždrausta</string>
   <string name="download_canceled_msg">Atsiuntimas atšauktas</string>
   <string name="download_canceled_autodownload_enabled_msg">Atsiuntimas atšauktas\n<i>Automatinis atsiuntimas</i> šiam elementui išjungtas</string>
   <string name="download_report_title">Atsiuntimai užbaigti su klaida (-omis)</string>
@@ -235,7 +230,6 @@
     <item quantity="many">Liko %d atsiuntimų</item>
     <item quantity="other">Liko %d atsiuntimų</item>
   </plurals>
-  <string name="downloads_processing">Apdorojami atsiuntimai</string>
   <string name="download_notification_title">Atsiunčiami tinklalaidės duomenys</string>
   <string name="download_log_title_unknown">Nežinomas pavadinimas</string>
   <string name="download_type_feed">Sklaidos kanalas</string>

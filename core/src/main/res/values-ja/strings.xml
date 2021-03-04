@@ -126,7 +126,6 @@
   <string name="hide_not_queued_episodes_label">キューに未追加</string>
   <string name="hide_has_media_label">メディアあり</string>
   <string name="filtered_label">フィルターしました</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} 前回更新に失敗しました</string>
   <string name="open_podcast">ポッドキャストを開く</string>
   <string name="please_wait_for_data">データが読み込まれるまでしばらくお待ちください</string>
   <!--actions on feeditems-->
@@ -181,16 +180,12 @@
   <string name="download_error_details">詳細</string>
   <string name="download_error_details_message">%1$s \n\nファイル URL:\n%2$s</string>
   <string name="download_error_device_not_found">ストレージ デバイスが見つかりません</string>
-  <string name="download_error_insufficient_space">スペースが不足しています</string>
   <string name="download_error_http_data_error">HTTPデータエラー</string>
   <string name="download_error_error_unknown">不明なエラー</string>
-  <string name="download_error_parser_exception">解析エラー</string>
   <string name="download_error_unsupported_type">サポートしないフィードタイプ</string>
   <string name="download_error_connection_error">接続エラー</string>
-  <string name="download_error_unknown_host">ホスト不明</string>
   <string name="download_error_unauthorized">認証エラー</string>
   <string name="download_error_file_type_type">ファイルタイプ エラー</string>
-  <string name="download_error_forbidden">禁止</string>
   <string name="download_canceled_msg">ダウンロードをキャンセルしました</string>
   <string name="download_canceled_autodownload_enabled_msg">ダウンロードをキャンセルしました\nこのアイテムの <i>自動ダウンロード</i> を無効にしました</string>
   <string name="download_report_title">ダウンロードがエラーで完了しました</string>
@@ -203,7 +198,6 @@
   <plurals name="downloads_left">
     <item quantity="other">%d ダウンロード残</item>
   </plurals>
-  <string name="downloads_processing">ダウンロード処理中</string>
   <string name="download_notification_title">ポッドキャストデータをダウンロード中</string>
   <string name="download_log_title_unknown">タイトル不明</string>
   <string name="download_type_feed">フィード</string>

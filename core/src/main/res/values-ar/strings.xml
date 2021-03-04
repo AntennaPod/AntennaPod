@@ -156,7 +156,6 @@
   <string name="hide_not_queued_episodes_label">ليس ضمن لائحة الاستماع</string>
   <string name="hide_has_media_label">فيها وسائط</string>
   <string name="filtered_label">مصفى</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} التحديث الأخير فشل</string>
   <string name="open_podcast">افتح البودكاست</string>
   <string name="please_wait_for_data">نرجو الانتظار حتى يتم تحميل البيانات</string>
   <!--actions on feeditems-->
@@ -237,16 +236,12 @@
   <string name="download_error_details">تفاصيل</string>
   <string name="download_error_details_message">%1$s \n\nURL الملف:\n%2$s</string>
   <string name="download_error_device_not_found">جهاز التخزين غير موجود</string>
-  <string name="download_error_insufficient_space">مساحة غير كافية</string>
   <string name="download_error_http_data_error">خطاء فى بيانات HTTP</string>
   <string name="download_error_error_unknown">خطاء غير معروف</string>
-  <string name="download_error_parser_exception">خطأ تلقيم</string>
   <string name="download_error_unsupported_type">نمط قناة غير مدعوم</string>
   <string name="download_error_connection_error">خطاء فى الاتصال</string>
-  <string name="download_error_unknown_host">المضيف غير معروف</string>
   <string name="download_error_unauthorized">خطاء فى التحقق</string>
   <string name="download_error_file_type_type">خطأ في نوع الملف</string>
-  <string name="download_error_forbidden">ممنوع</string>
   <string name="download_canceled_msg">ألغي التنزيل</string>
   <string name="download_canceled_autodownload_enabled_msg">ألغي التنزيل\nمعطل <i>التنزيل التلقائي</i> لهذه المادة</string>
   <string name="download_report_title">أنتهى التنزيل مع خطأ (او أكثر)</string>
@@ -264,16 +259,7 @@
     <item quantity="many">%d تنزيلات بقت</item>
     <item quantity="other">%d تنزيلات بقت</item>
   </plurals>
-  <string name="downloads_processing">نعالج التنزيلات</string>
   <string name="download_notification_title">تنزيل بيانات البودكاست</string>
-  <plurals name="download_report_content">
-    <item quantity="zero">%d تنزيلة نجحت, %d فشلت</item>
-    <item quantity="one">%d تنزيلة نجحت, %d فشلت</item>
-    <item quantity="two">%d تنزيلان نجحا, %d فشلت</item>
-    <item quantity="few">%d تنزيلات نجحت, %d فشلت</item>
-    <item quantity="many">%d تنزيلات نجحت, %d فشلت</item>
-    <item quantity="other">%d تنزيلات نجحت, %d فشلت</item>
-  </plurals>
   <string name="download_log_title_unknown">عنوان غير معروف</string>
   <string name="download_type_feed">قناة</string>
   <string name="download_type_media">ملف وسائط</string>

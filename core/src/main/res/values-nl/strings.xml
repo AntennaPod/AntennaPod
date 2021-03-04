@@ -165,7 +165,6 @@
   <string name="hide_not_queued_episodes_label">Niet in de wachtrij</string>
   <string name="hide_has_media_label">Bevat media</string>
   <string name="filtered_label">Gefilterd</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Vorige verversing mislukt</string>
   <string name="open_podcast">Podcast openen</string>
   <string name="please_wait_for_data">Wacht tot de gegevens geladen zijn</string>
   <!--actions on feeditems-->
@@ -230,18 +229,13 @@
   <string name="download_error_details">Details</string>
   <string name="download_error_details_message">%1$s \n\nURL van bestand:\n%2$s</string>
   <string name="download_error_device_not_found">Opslagmedium niet aangetroffen</string>
-  <string name="download_error_insufficient_space">Onvoldoende ruimte</string>
   <string name="download_error_http_data_error">HTTP-gegevensfout</string>
   <string name="download_error_error_unknown">Onbekende fout</string>
-  <string name="download_error_parser_exception">Verwerkingsuitzondering</string>
   <string name="download_error_unsupported_type">Niet-ondersteunde feedsoort</string>
   <string name="download_error_connection_error">Verbindingsfout</string>
-  <string name="download_error_unknown_host">Onbekende host</string>
   <string name="download_error_unauthorized">Authenticatiefout</string>
   <string name="download_error_file_type_type">Bestandssoortfout</string>
-  <string name="download_error_forbidden">Niet mogelijk</string>
   <string name="download_canceled_msg">Download afgebroken</string>
-  <string name="download_wrong_size">Het downloaden kan niet worden afgerond omdat de verbinding met de server verbroken is</string>
   <string name="download_canceled_autodownload_enabled_msg">Download afgebroken\n<i>Automatisch downloaden</i> uitgeschakeld voor deze aflevering</string>
   <string name="download_report_title">Downloads afgerond, maar met fout(en)</string>
   <string name="auto_download_report_title">Automatisch downloaden afgerond</string>
@@ -254,12 +248,7 @@
     <item quantity="one">Nog %d download</item>
     <item quantity="other">Nog %d downloads</item>
   </plurals>
-  <string name="downloads_processing">Bezig met verwerken van downloads</string>
   <string name="download_notification_title">Bezig met downloaden van podcastgegevens</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d download voltooid; %d mislukt</item>
-    <item quantity="other">%d downloads voltooid; %d mislukt</item>
-  </plurals>
   <string name="download_log_title_unknown">Onbekende titel</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Mediabestand</string>

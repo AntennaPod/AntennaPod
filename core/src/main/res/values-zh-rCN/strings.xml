@@ -159,7 +159,6 @@
   <string name="hide_not_queued_episodes_label">不在播放列表中</string>
   <string name="hide_has_media_label">包含媒体文件</string>
   <string name="filtered_label">已过滤的</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} 上次刷新失败</string>
   <string name="open_podcast">打开播客</string>
   <string name="please_wait_for_data">请等待数据加载完成</string>
   <!--actions on feeditems-->
@@ -218,18 +217,13 @@
   <string name="download_error_details">详细信息</string>
   <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
   <string name="download_error_device_not_found">没有找到存储设备</string>
-  <string name="download_error_insufficient_space">空间不足</string>
   <string name="download_error_http_data_error">HTTP 数据错误</string>
   <string name="download_error_error_unknown">未知错误</string>
-  <string name="download_error_parser_exception">解析异常</string>
   <string name="download_error_unsupported_type">未提供的订阅类型</string>
   <string name="download_error_connection_error">链接错误</string>
-  <string name="download_error_unknown_host">未知主机</string>
   <string name="download_error_unauthorized">认证错误</string>
   <string name="download_error_file_type_type">文件类型错误</string>
-  <string name="download_error_forbidden">禁用的</string>
   <string name="download_canceled_msg">已取消下载</string>
-  <string name="download_wrong_size">完成下载前，服务器连接丢失</string>
   <string name="download_canceled_autodownload_enabled_msg">已取消下载\n对该曲目禁用<i>自动下载</i></string>
   <string name="download_report_title">下载完成</string>
   <string name="auto_download_report_title">自动下载完成</string>
@@ -241,11 +235,7 @@
   <plurals name="downloads_left">
     <item quantity="other">剩余%d个下载项</item>
   </plurals>
-  <string name="downloads_processing">正在处理下载</string>
   <string name="download_notification_title">下载播客数据</string>
-  <plurals name="download_report_content">
-    <item quantity="other">%d个下载成功，%d下载失败</item>
-  </plurals>
   <string name="download_log_title_unknown">未知标题</string>
   <string name="download_type_feed">订阅</string>
   <string name="download_type_media">媒体文件</string>

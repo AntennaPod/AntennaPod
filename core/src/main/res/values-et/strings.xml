@@ -160,7 +160,6 @@
   <string name="hide_not_queued_episodes_label">Pole järjekorras</string>
   <string name="hide_has_media_label">On meediafaile</string>
   <string name="filtered_label">Filtreeritud</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Viimane värskendamine ebaõnnestus</string>
   <string name="open_podcast">Ava taskuhääling</string>
   <string name="please_wait_for_data">Palun oota andmete laadimist</string>
   <!--actions on feeditems-->
@@ -221,16 +220,12 @@
   <string name="download_error_details">Üksikasjad</string>
   <string name="download_error_details_message">%1$s \n\nFaili URL:\n%2$s</string>
   <string name="download_error_device_not_found">Salvestuskohta ei leitud</string>
-  <string name="download_error_insufficient_space">Pole piisavalt ruumi</string>
   <string name="download_error_http_data_error">HTTP andmete viga</string>
   <string name="download_error_error_unknown">Tundmatu tõrge</string>
-  <string name="download_error_parser_exception">Parsimise järjekord</string>
   <string name="download_error_unsupported_type">Toetamata uudisvoo tüüp</string>
   <string name="download_error_connection_error">Ühenduse viga</string>
-  <string name="download_error_unknown_host">Tundmatu host</string>
   <string name="download_error_unauthorized">Autentimise viga</string>
   <string name="download_error_file_type_type">Failitüübi viga</string>
-  <string name="download_error_forbidden">Keelatud</string>
   <string name="download_canceled_msg">Allalaadimine on tühistatud</string>
   <string name="download_canceled_autodownload_enabled_msg">Allalaadimine tühistati\nKeelati selle saate <i>automaatne allalaadimine</i></string>
   <string name="download_report_title">Allalaadimised lõpetati veaga (vigadega)</string>
@@ -244,12 +239,7 @@
     <item quantity="one">%d allalaadimine jäänud</item>
     <item quantity="other">%d allalaadimist jäänud</item>
   </plurals>
-  <string name="downloads_processing">Allalaadimiste töötlemine</string>
   <string name="download_notification_title">Taskuhäälingu andmete allalaadimine</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d allalaadimine õnnestus, %d ebaõnnestus</item>
-    <item quantity="other">%d allalaadimist õnnestus, %d ebaõnnestus</item>
-  </plurals>
   <string name="download_log_title_unknown">Tundmatu pealkiri</string>
   <string name="download_type_feed">Uudisvoog</string>
   <string name="download_type_media">Meediafail</string>

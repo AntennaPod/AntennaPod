@@ -158,7 +158,6 @@
   <string name="hide_not_queued_episodes_label">Mimo frontu</string>
   <string name="hide_has_media_label">Obsahuje média</string>
   <string name="filtered_label">Filtrované</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Poslední aktualizace selhala</string>
   <string name="open_podcast">Otevřít podcast</string>
   <string name="please_wait_for_data">Počkejte prosím na dokončení načítání</string>
   <!--actions on feeditems-->
@@ -229,16 +228,12 @@
   <string name="download_error_details">Detaily</string>
   <string name="download_error_details_message">%1$s \n\nURL souboru:\n%2$s</string>
   <string name="download_error_device_not_found">Úložné zařízení nenalezeno</string>
-  <string name="download_error_insufficient_space">Nedostatek volného místa</string>
   <string name="download_error_http_data_error">HTTP chyba</string>
   <string name="download_error_error_unknown">Neznámá chyba</string>
-  <string name="download_error_parser_exception">Výjimka parseru</string>
   <string name="download_error_unsupported_type">Nepodporovaný typ kanálu</string>
   <string name="download_error_connection_error">Chyba spojení</string>
-  <string name="download_error_unknown_host">Neznámý host</string>
   <string name="download_error_unauthorized">Chyba přihlášení</string>
   <string name="download_error_file_type_type">Chyba typu souboru</string>
-  <string name="download_error_forbidden">Zákázáno</string>
   <string name="download_canceled_msg">Stahování zrušeno</string>
   <string name="download_canceled_autodownload_enabled_msg">Stahování zrušeno\nVypnuto <i>automatické stahování</i> této položky</string>
   <string name="download_report_title">Stahování dokončeno s chybou</string>
@@ -254,14 +249,7 @@
     <item quantity="many">%d čekajících na stažení</item>
     <item quantity="other">%d čekajících na stažení</item>
   </plurals>
-  <string name="downloads_processing">Probíhá stahování</string>
   <string name="download_notification_title">Stahuji podcast data</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%d úspěšné stažení, %d selhalo</item>
-    <item quantity="few">%d úspěšná stažení, %d selhala</item>
-    <item quantity="many">%d úspěšných stažení, %d selhalo</item>
-    <item quantity="other">%d úspěšných stažení, %d selhalo</item>
-  </plurals>
   <string name="download_log_title_unknown">Neznámý název</string>
   <string name="download_type_feed">Kanál</string>
   <string name="download_type_media">Soubor</string>

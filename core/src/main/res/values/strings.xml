@@ -179,7 +179,7 @@
     <string name="hide_not_queued_episodes_label">Not queued</string>
     <string name="hide_has_media_label">Has media</string>
     <string name="filtered_label">Filtered</string>
-    <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
+    <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open Podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded</string>
 
@@ -245,19 +245,24 @@
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
     <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
+    <string name="download_error_tap_for_details">Tap to view details.</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
-    <string name="download_error_insufficient_space">Insufficient Space</string>
+    <string name="download_error_insufficient_space">There is not enough space left on your device.</string>
     <string name="download_error_http_data_error">HTTP Data Error</string>
     <string name="download_error_error_unknown">Unknown Error</string>
-    <string name="download_error_parser_exception">Parser Exception</string>
+    <string name="download_error_parser_exception">The podcast host\'s server sent a broken podcast feed.</string>
     <string name="download_error_unsupported_type">Unsupported Feed Type</string>
+    <string name="download_error_unsupported_type_html">The podcast host\'s server sent a website, not a podcast.</string>
+    <string name="download_error_not_found">The podcast host\'s server does not know where to find the file. It may have been deleted.</string>
     <string name="download_error_connection_error">Connection Error</string>
-    <string name="download_error_unknown_host">Unknown Host</string>
+    <string name="download_error_unknown_host">Cannot find the server. Check if the address is typed correctly and if you have a working network connection.</string>
     <string name="download_error_unauthorized">Authentication Error</string>
     <string name="download_error_file_type_type">File Type Error</string>
-    <string name="download_error_forbidden">Forbidden</string>
+    <string name="download_error_forbidden">The podcast host\'s server refuses to respond.</string>
     <string name="download_canceled_msg">Download canceled</string>
-    <string name="download_wrong_size">The server connection was lost before completing the download</string>
+    <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
+    <string name="download_error_blocked">The download was blocked by another app on your device.</string>
+    <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device blocked the download, or that something is wrong with the server certificates.</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
@@ -272,10 +277,6 @@
     </plurals>
     <string name="service_shutting_down">Service shutting down</string>
     <string name="download_notification_title">Downloading podcast data</string>
-    <plurals name="download_report_content">
-        <item quantity="one">%d download succeeded, %d failed</item>
-        <item quantity="other">%d downloads succeeded, %d failed</item>
-    </plurals>
     <string name="download_log_title_unknown">Unknown Title</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>

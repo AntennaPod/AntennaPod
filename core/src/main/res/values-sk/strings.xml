@@ -164,7 +164,6 @@
   <string name="hide_not_queued_episodes_label">Mimo poradia</string>
   <string name="hide_has_media_label">S médiami</string>
   <string name="filtered_label">Filtrované</string>
-  <string name="refresh_failed_msg">{fa-exclamation-circle} Posledná aktualizácia skončila s chybou</string>
   <string name="open_podcast">Otvoriť podcast</string>
   <string name="please_wait_for_data">Počkajte, kým sa dáta načítajú</string>
   <!--actions on feeditems-->
@@ -235,16 +234,12 @@
   <string name="download_error_details">Podrobnosti</string>
   <string name="download_error_details_message">%1$s \n\nURL adresa súboru:\n%2$s</string>
   <string name="download_error_device_not_found">Zariadenie úložiska nebolo nájdené</string>
-  <string name="download_error_insufficient_space">Nedostatok miesta</string>
   <string name="download_error_http_data_error">Chyba dát HTTP</string>
   <string name="download_error_error_unknown">Neznáma chyba</string>
-  <string name="download_error_parser_exception">Výnimka analyzátora</string>
   <string name="download_error_unsupported_type">Nepodporovaný typ zdroja</string>
   <string name="download_error_connection_error">Chyba pripojenia</string>
-  <string name="download_error_unknown_host">Neznámy hostiteľ</string>
   <string name="download_error_unauthorized">Chyba overenia</string>
   <string name="download_error_file_type_type">Chyba typu súboru</string>
-  <string name="download_error_forbidden">Zakázané</string>
   <string name="download_canceled_msg">Preberanie zrušené</string>
   <string name="download_report_title">Pri sťahovaní nastali chyby</string>
   <string name="download_report_content_title">Hlásenie o preberaniach</string>
@@ -258,14 +253,7 @@
     <item quantity="many">Zostáva %d súborov na stiahnutie</item>
     <item quantity="other">Zostáva %d súborov na stiahnutie</item>
   </plurals>
-  <string name="downloads_processing">Spracovanie prevzatých súborov</string>
   <string name="download_notification_title">Sťahujú sa údaje podcastu</string>
-  <plurals name="download_report_content">
-    <item quantity="one">%dsťahovanie úspešné, %dzlyhalo</item>
-    <item quantity="few">%dsťahovania úspešné, %dzlyhali</item>
-    <item quantity="many">%dsťahovaní úspešných, %dzlyhalo</item>
-    <item quantity="other">%dsťahovaní úspešných, %dzlyhalo</item>
-  </plurals>
   <string name="download_log_title_unknown">Neznámy titul</string>
   <string name="download_type_feed">Zdroj</string>
   <string name="download_type_media">Mediálny súbor</string>
