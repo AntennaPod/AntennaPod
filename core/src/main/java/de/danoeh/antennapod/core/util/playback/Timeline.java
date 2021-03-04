@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
+import androidx.annotation.Nullable;
 import org.apache.commons.io.IOUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.ShownotesProvider;
 
 /**
  * Connects chapter information and shownotes of a shownotesProvider, for example by making it possible to use the
@@ -42,17 +41,16 @@ public class Timeline {
     private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b((\\d+):)?(\\d+):(\\d{2})\\b");
     private static final Pattern LINE_BREAK_REGEX = Pattern.compile("<br */?>");
 
-    private final ShownotesProvider shownotesProvider;
+    private final String rawShownotes;
     private final String noShownotesLabel;
+    private final int playableDuration;
     private final String webviewStyle;
 
-    public Timeline(Context context, ShownotesProvider shownotesProvider) {
-        if (shownotesProvider == null) {
-            throw new IllegalArgumentException("shownotesProvider = null");
-        }
-        this.shownotesProvider = shownotesProvider;
+    public Timeline(Context context, @Nullable String rawShownotes, int playableDuration) {
+        this.rawShownotes = rawShownotes;
 
         noShownotesLabel = context.getString(R.string.no_shownotes_label);
+        this.playableDuration = playableDuration;
         final String colorPrimary = colorToHtml(context, android.R.attr.textColorPrimary);
         final String colorAccent = colorToHtml(context, R.attr.colorAccent);
         final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
@@ -87,13 +85,7 @@ public class Timeline {
      */
     @NonNull
     public String processShownotes() {
-        String shownotes;
-        try {
-            shownotes = shownotesProvider.loadShownotes().call();
-        } catch (Exception e) {
-            Log.e(TAG, "processShownotes() - encounters exceptions unexpectedly in load, treat as if no shownotes.", e);
-            shownotes = "";
-        }
+        String shownotes = rawShownotes;
 
         if (TextUtils.isEmpty(shownotes)) {
             Log.d(TAG, "shownotesProvider contained no shownotes. Returning 'no shownotes' message");
@@ -147,14 +139,6 @@ public class Timeline {
             // No elements with timecodes
             return;
         }
-
-        int playableDuration = Integer.MAX_VALUE;
-        if (shownotesProvider instanceof Playable) {
-            playableDuration = ((Playable) shownotesProvider).getDuration();
-        } else if (shownotesProvider instanceof FeedItem && ((FeedItem) shownotesProvider).getMedia() != null) {
-            playableDuration = ((FeedItem) shownotesProvider).getMedia().getDuration();
-        }
-
         boolean useHourFormat = true;
 
         if (playableDuration != Integer.MAX_VALUE) {
