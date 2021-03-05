@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.ListPreference;
@@ -28,10 +27,10 @@ import de.danoeh.antennapod.core.feed.VolumeAdaptionSetting;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.databinding.EditTextDialogBinding;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -41,8 +40,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Locale;
 
 import static de.danoeh.antennapod.core.feed.FeedPreferences.SPEED_USE_GLOBAL;
@@ -403,20 +400,7 @@ public class FeedSettingsFragment extends Fragment {
 
         private void setupTags() {
             findPreference(PREF_TAGS).setOnPreferenceClickListener(preference -> {
-                EditTextDialogBinding alertViewBinding = EditTextDialogBinding.inflate(getLayoutInflater());
-                alertViewBinding.urlEditText.setText(feed.getPreferences().getTagsAsString());
-                new AlertDialog.Builder(getContext())
-                        .setView(alertViewBinding.getRoot())
-                        .setTitle(R.string.feed_folders_label)
-                        .setPositiveButton(android.R.string.ok, (d, input) -> {
-                            String foldersString = alertViewBinding.urlEditText.getText().toString();
-                            feedPreferences.getTags().clear();
-                            feedPreferences.getTags().addAll(new HashSet<>(Arrays.asList(
-                                    foldersString.split(FeedPreferences.TAG_SEPARATOR))));
-                            DBWriter.setFeedPreferences(feedPreferences);
-                        })
-                        .setNegativeButton(R.string.cancel_label, null)
-                        .show();
+                TagSettingsDialog.newInstance(feedPreferences).show(getChildFragmentManager(), TagSettingsDialog.TAG);
                 return true;
             });
         }

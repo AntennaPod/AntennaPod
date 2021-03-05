@@ -736,6 +736,7 @@
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
     <string name="feed_folders_label">Folders</string>
     <string name="feed_folders_summary">Change the folders in which this podcast is displayed.</string>
+    <string name="feed_folders_include_root">Show in main list</string>
     <string name="auto_download_settings_label">Auto Download Settings</string>
     <string name="episode_filters_label">Episode Filter</string>
     <string name="episode_filters_description">List of terms used to decide if an episode should be included or excluded when auto downloading</string>

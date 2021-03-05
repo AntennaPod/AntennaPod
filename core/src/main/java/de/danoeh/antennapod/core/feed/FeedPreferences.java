@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,11 +15,11 @@ import java.util.Set;
 /**
  * Contains preferences for a single feed.
  */
-public class FeedPreferences {
+public class FeedPreferences implements Serializable {
 
     public static final float SPEED_USE_GLOBAL = -1;
     public static final String TAG_ROOT = "#root";
-    public static final String TAG_SEPARATOR = ",";
+    public static final String TAG_SEPARATOR = "\u001e";
 
     public enum AutoDeleteAction {
         GLOBAL,
