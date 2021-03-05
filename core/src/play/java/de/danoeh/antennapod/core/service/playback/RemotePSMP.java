@@ -28,7 +28,7 @@ import de.danoeh.antennapod.core.cast.CastConsumer;
 import de.danoeh.antennapod.core.cast.CastManager;
 import de.danoeh.antennapod.core.cast.CastUtils;
 import de.danoeh.antennapod.core.cast.DefaultCastConsumer;
-import de.danoeh.antennapod.core.util.playback.PlayableException;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.RemoteMedia;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -354,16 +354,13 @@ public class RemotePSMP extends PlaybackServiceMediaPlayer {
         this.mediaType = media.getMediaType();
         this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
-        try {
-            media.loadMetadata();
-            callback.onMediaChanged(true);
-            setPlayerStatus(PlayerStatus.INITIALIZED, media);
-            if (prepareImmediately) {
-                prepare();
-            }
-        } catch (PlayableException e) {
-            Log.e(TAG, "Error while loading media metadata", e);
-            setPlayerStatus(PlayerStatus.STOPPED, null);
+        if (media instanceof FeedMedia && ((FeedMedia) media).getItem() == null) {
+            ((FeedMedia) media).setItem(DBReader.getFeedItem(((FeedMedia) media).getItemId()));
+        }
+        callback.onMediaChanged(true);
+        setPlayerStatus(PlayerStatus.INITIALIZED, media);
+        if (prepareImmediately) {
+            prepare();
         }
     }
 

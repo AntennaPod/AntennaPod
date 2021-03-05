@@ -14,7 +14,7 @@ import java.util.List;
  * Interface for objects that can be played by the PlaybackService.
  */
 public interface Playable extends Parcelable {
-    public static final int INVALID_TIME = -1;
+    int INVALID_TIME = -1;
 
     /**
      * Save information about the playable in a preference so that it can be
@@ -23,14 +23,6 @@ public interface Playable extends Parcelable {
      * to the preferences file.
      */
     void writeToPreferences(SharedPreferences.Editor prefEditor);
-
-    /**
-     * This method is called from a separate thread by the PlaybackService.
-     * Playable objects should load their metadata in this method. This method
-     * should execute as quickly as possible and NOT load chapter marks if no
-     * local file is available.
-     */
-    void loadMetadata() throws PlayableException;
 
     /**
      * Returns the title of the episode that this playable represents
@@ -46,8 +38,6 @@ public interface Playable extends Parcelable {
      * Returns a link to a website that is meant to be shown in a browser
      */
     String getWebsiteLink();
-
-    String getPaymentLink();
 
     /**
      * Returns the title of the feed this Playable belongs to.
@@ -89,8 +79,7 @@ public interface Playable extends Parcelable {
     String getDescription();
 
     /**
-     * Returns the type of media. This method should return the correct value
-     * BEFORE loadMetadata() is called.
+     * Returns the type of media.
      */
     MediaType getMediaType();
 
@@ -111,12 +100,6 @@ public interface Playable extends Parcelable {
      * MUST return a non-null string if this method returns true.
      */
     boolean localFileAvailable();
-
-    /**
-     * Returns true if a streamable file is available. getStreamUrl MUST return
-     * a non-null string if this method returns true.
-     */
-    boolean streamAvailable();
 
     /**
      * Saves the current position of this object. Implementations can use the

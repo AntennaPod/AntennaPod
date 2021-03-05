@@ -122,11 +122,6 @@ public class RemoteMedia implements Playable {
     }
 
     @Override
-    public void loadMetadata() throws PlayableException {
-        //Already loaded
-    }
-
-    @Override
     public String getEpisodeTitle() {
         return episodeTitle;
     }
@@ -143,11 +138,6 @@ public class RemoteMedia implements Playable {
         } else {
             return feedUrl;
         }
-    }
-
-    @Override
-    public String getPaymentLink() {
-        return null;
     }
 
     @Override
@@ -193,11 +183,6 @@ public class RemoteMedia implements Playable {
     @Override
     public boolean localFileAvailable() {
         return false;
-    }
-
-    @Override
-    public boolean streamAvailable() {
-        return true;
     }
 
     @Override

@@ -77,7 +77,6 @@ import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.core.util.gui.NotificationUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
-import de.danoeh.antennapod.core.util.playback.PlayableException;
 import de.danoeh.antennapod.core.util.playback.PlayableUtils;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.widget.WidgetUpdater;
@@ -993,11 +992,8 @@ public class PlaybackService extends MediaBrowserServiceCompat {
         }
         Log.d(TAG, "getNextInQueue()");
         FeedMedia media = (FeedMedia) currentMedia;
-        try {
-            media.loadMetadata();
-        } catch (PlayableException e) {
-            Log.e(TAG, "Unable to load metadata to get next in queue", e);
-            return null;
+        if (media.getItem() == null) {
+            media.setItem(DBReader.getFeedItem(media.getItemId()));
         }
         FeedItem item = media.getItem();
         if (item == null) {
