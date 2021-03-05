@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -74,7 +73,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     private NavDrawerData navDrawerData;
     private List<NavDrawerData.DrawerItem> flatItemList;
     private int selectedNavListIndex = -1;
-    private int position = -1;
+    private NavDrawerData.DrawerItem contextPressedItem = null;
     private NavListAdapter navAdapter;
     private Disposable disposable;
     private ProgressBar progressBar;
@@ -92,7 +91,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         navAdapter.setHasStableIds(true);
         navList.setAdapter(navAdapter);
         navList.setLayoutManager(new LinearLayoutManager(getContext()));
-        registerForContextMenu(navList);
         updateSelection();
 
         root.findViewById(R.id.nav_settings).setOnClickListener(v ->
@@ -143,34 +141,19 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     @Override
     public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() != R.id.nav_list) {
-            return;
-        }
-        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        int position = adapterInfo.position;
-        if (position < navAdapter.getSubscriptionOffset()) {
-            return;
-        }
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.nav_feed_context, menu);
 
-        NavDrawerData.DrawerItem drawerItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());
-        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-            menu.setHeaderTitle(((NavDrawerData.FeedDrawerItem) drawerItem).feed.getTitle());
+        if (contextPressedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            menu.setHeaderTitle(((NavDrawerData.FeedDrawerItem) contextPressedItem).feed.getTitle());
         }
         // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
-        final int position = this.position;
-        this.position = -1; // reset
-        if (position < 0) {
-            return false;
-        }
-        NavDrawerData.DrawerItem drawerItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());
-        if (drawerItem.type == NavDrawerData.DrawerItem.Type.FEED) {
-            return onFeedContextMenuClicked(((NavDrawerData.FeedDrawerItem) drawerItem).feed, item);
+        if (contextPressedItem.type == NavDrawerData.DrawerItem.Type.FEED) {
+            return onFeedContextMenuClicked(((NavDrawerData.FeedDrawerItem) contextPressedItem).feed, item);
         }
         return false;
     }
@@ -207,13 +190,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                 return true;
             case R.id.remove_item:
                 RemoveFeedDialog.show(getContext(), feed, () -> {
-                    if (selectedNavListIndex == position) {
-                        if (getActivity() instanceof MainActivity) {
-                            ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
-                        } else {
-                            showMainActivity(EpisodesFragment.TAG);
-                        }
-                    }
+                    ((MainActivity) getActivity()).loadFragment(EpisodesFragment.TAG, null);
                 });
                 return true;
             default:
@@ -403,9 +380,14 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                 showDrawerPreferencesDialog();
                 return true;
             } else {
-                NavDrawerFragment.this.position = position;
+                contextPressedItem = flatItemList.get(position - navAdapter.getSubscriptionOffset());
                 return false;
             }
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            NavDrawerFragment.this.onCreateContextMenu(menu, v, menuInfo);
         }
     };
 

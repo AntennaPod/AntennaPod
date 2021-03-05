@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
@@ -194,6 +195,8 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         int viewType = getItemViewType(position);
+
+        holder.itemView.setOnCreateContextMenuListener(null);
         if (viewType == VIEW_TYPE_NAV) {
             bindNavView(getLabel(fragmentTags.get(position)), position, (NavHolder) holder);
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
@@ -204,6 +207,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
             bindListItem(item, (FeedHolder) holder);
             if (item.type == NavDrawerData.DrawerItem.Type.FEED) {
                 bindFeedView((NavDrawerData.FeedDrawerItem) item, (FeedHolder) holder);
+                holder.itemView.setOnCreateContextMenuListener(itemAccess);
             } else {
                 bindFolderView((NavDrawerData.FolderDrawerItem) item, (FeedHolder) holder);
             }
@@ -390,7 +394,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         }
     }
 
-    public interface ItemAccess {
+    public interface ItemAccess extends View.OnCreateContextMenuListener {
         int getCount();
 
         NavDrawerData.DrawerItem getItem(int position);
@@ -412,6 +416,9 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         void onItemClick(int position);
 
         boolean onItemLongClick(int position);
+
+        @Override
+        void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo);
     }
 
 }
