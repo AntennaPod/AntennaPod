@@ -72,7 +72,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
 
     private NavDrawerData navDrawerData;
     private List<NavDrawerData.DrawerItem> flatItemList;
-    private int selectedNavListIndex = -1;
     private NavDrawerData.DrawerItem contextPressedItem = null;
     private NavListAdapter navAdapter;
     private Disposable disposable;
@@ -91,34 +90,12 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         navAdapter.setHasStableIds(true);
         navList.setAdapter(navAdapter);
         navList.setLayoutManager(new LinearLayoutManager(getContext()));
-        updateSelection();
 
         root.findViewById(R.id.nav_settings).setOnClickListener(v ->
                 startActivity(new Intent(getActivity(), PreferenceActivity.class)));
         getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 .registerOnSharedPreferenceChangeListener(this);
         return root;
-    }
-
-    private void updateSelection() {
-        String lastNavFragment = getLastNavFragment(getContext());
-        int tagIndex = navAdapter.getTags().indexOf(lastNavFragment);
-        if (tagIndex >= 0) {
-            selectedNavListIndex = tagIndex;
-        } else if (StringUtils.isNumeric(lastNavFragment)) { // last fragment was not a list, but a feed
-            long feedId = Long.parseLong(lastNavFragment);
-            if (navDrawerData != null) {
-                List<NavDrawerData.DrawerItem> items = flatItemList;
-                for (int i = 0; i < items.size(); i++) {
-                    if (items.get(i).type == NavDrawerData.DrawerItem.Type.FEED
-                            && ((NavDrawerData.FeedDrawerItem) items.get(i)).feed.getId() == feedId) {
-                        selectedNavListIndex = navAdapter.getSubscriptionOffset() + i;
-                        break;
-                    }
-                }
-            }
-        }
-        navAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -256,7 +233,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         });
         builder.setPositiveButton(R.string.confirm_label, (dialog, which) -> {
             UserPreferences.setHiddenDrawerItems(hiddenDrawerItems);
-            updateSelection();
+            navAdapter.notifyDataSetChanged(); // Update selection
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
@@ -282,8 +259,22 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         }
 
         @Override
-        public int getSelectedItemIndex() {
-            return selectedNavListIndex;
+        public boolean isSelected(int position) {
+            String lastNavFragment = getLastNavFragment(getContext());
+            if (position < navAdapter.getSubscriptionOffset()) {
+                return navAdapter.getTags().get(position).equals(lastNavFragment);
+            } else if (StringUtils.isNumeric(lastNavFragment)) { // last fragment was not a list, but a feed
+                long feedId = Long.parseLong(lastNavFragment);
+                if (navDrawerData != null) {
+                    NavDrawerData.DrawerItem itemToCheck = flatItemList.get(
+                            position - navAdapter.getSubscriptionOffset());
+                    if (itemToCheck.type == NavDrawerData.DrawerItem.Type.FEED) {
+                        // When the same feed is displayed multiple times, it should be highlighted multiple times.
+                        return ((NavDrawerData.FeedDrawerItem) itemToCheck).feed.getId() == feedId;
+                    }
+                }
+            }
+            return false;
         }
 
         @Override
@@ -304,11 +295,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
         @Override
         public int getReclaimableItems() {
             return (navDrawerData != null) ? navDrawerData.reclaimableSpace : 0;
-        }
-
-        @Override
-        public int getFeedCounter(long feedId) {
-            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
 
         @Override
@@ -404,7 +390,6 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                         result -> {
                             navDrawerData = result.first;
                             flatItemList = result.second;
-                            updateSelection(); // Selected item might be a feed
                             navAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE); // Stays hidden once there is something in the list
                         }, error -> {
@@ -451,8 +436,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (PREF_LAST_FRAGMENT_TAG.equals(key)) {
-            updateSelection();
-            navAdapter.notifyDataSetChanged();
+            navAdapter.notifyDataSetChanged(); // Update selection
         }
     }
 }

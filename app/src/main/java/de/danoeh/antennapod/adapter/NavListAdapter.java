@@ -215,7 +215,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         if (viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TypedValue typedValue = new TypedValue();
 
-            if (position == itemAccess.getSelectedItemIndex()) {
+            if (itemAccess.isSelected(position)) {
                 activity.get().getTheme().resolveAttribute(R.attr.drawer_activated_color, typedValue, true);
                 holder.itemView.setBackgroundResource(typedValue.resourceId);
             } else {
@@ -399,7 +399,7 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
 
         NavDrawerData.DrawerItem getItem(int position);
 
-        int getSelectedItemIndex();
+        boolean isSelected(int position);
 
         int getQueueSize();
 
@@ -408,8 +408,6 @@ public class NavListAdapter extends RecyclerView.Adapter<NavListAdapter.Holder>
         int getNumberOfDownloadedItems();
 
         int getReclaimableItems();
-
-        int getFeedCounter(long feedId);
 
         int getFeedCounterSum();
 
