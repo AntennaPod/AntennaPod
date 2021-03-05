@@ -312,6 +312,14 @@ class DBUpgrader {
         }
         if (oldVersion < 2020000) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0;");
+        }
+        if (oldVersion < 2030000) {
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " SET " + PodDBAdapter.KEY_DESCRIPTION + " = content_encoded, content_encoded = NULL "
+                    + "WHERE length(" + PodDBAdapter.KEY_DESCRIPTION + ") < length(content_encoded)");
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + " SET content_encoded = NULL");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_FEED_TAGS + " TEXT;");
         }
     }

@@ -424,7 +424,7 @@ public class NavDrawerFragment extends Fragment implements SharedPreferences.OnS
                             flatItemList = result.second;
                             updateSelection(); // Selected item might be a feed
                             navAdapter.notifyDataSetChanged();
-                            progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE); // Stays hidden once there is something in the list
                         }, error -> {
                             Log.e(TAG, Log.getStackTraceString(error));
                             progressBar.setVisibility(View.GONE);

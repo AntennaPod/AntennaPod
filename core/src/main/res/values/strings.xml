@@ -11,6 +11,7 @@
     <string name="statistics_label">Statistics</string>
     <string name="add_feed_label">Add Podcast</string>
     <string name="episodes_label">Episodes</string>
+    <string name="queue_label">Queue</string>
     <string name="all_episodes_short_label">All</string>
     <string name="new_episodes_label">New</string>
     <string name="favorite_episodes_label">Favorites</string>
@@ -31,6 +32,9 @@
     <string name="playback_statistics_label">Playback</string>
     <string name="download_statistics_label">Downloads</string>
     <string name="notification_pref_fragment">Notifications</string>
+
+    <!-- Google Assistant -->
+    <string name="app_action_not_found">\"%1$s\" not found</string>
 
     <!-- Statistics fragment -->
     <string name="total_time_listened_to_podcasts">Total time of episodes played:</string>
@@ -95,7 +99,6 @@
     <string name="description_label">Description</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="processing_label">Processing</string>
-    <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
@@ -113,6 +116,7 @@
     <string name="feed_auto_download_never">Never</string>
     <string name="send_label">Send&#8230;</string>
     <string name="episode_cleanup_never">Never</string>
+    <string name="episode_cleanup_except_favorite_removal">When not favorited</string>
     <string name="episode_cleanup_queue_removal">When not in queue</string>
     <string name="episode_cleanup_after_listening">After finishing</string>
     <plurals name="episode_cleanup_hours_after_listening">
@@ -128,11 +132,21 @@
         <item quantity="other">%d selected</item>
     </plurals>
     <plurals name="num_episodes">
-        <item quantity="zero">no episodes</item>
         <item quantity="one">%d episode</item>
         <item quantity="other">%d episodes</item>
     </plurals>
     <string name="loading_more">Loading more…</string>
+    <string name="episode_notification">Episode Notifications</string>
+    <string name="episode_notification_summary">Show a notification when a new episode is released.</string>
+    <plurals name="new_episode_notification_message">
+        <item quantity="one">%2$s has a new episode</item>
+        <item quantity="other">%2$s has %1$d new episodes</item>
+    </plurals>
+    <plurals name="new_episode_notification_title">
+        <item quantity="one">New Episode</item>
+        <item quantity="other">New Episodes</item>
+    </plurals>
+    <string name="new_episode_notification_group_text">Your subscriptions have new episodes.</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as played</string>
@@ -165,7 +179,7 @@
     <string name="hide_not_queued_episodes_label">Not queued</string>
     <string name="hide_has_media_label">Has media</string>
     <string name="filtered_label">Filtered</string>
-    <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed</string>
+    <string name="refresh_failed_msg">{fa-exclamation-circle} Last Refresh failed. Tap to view details.</string>
     <string name="open_podcast">Open Podcast</string>
     <string name="please_wait_for_data">Please wait until the data is loaded</string>
 
@@ -231,18 +245,24 @@
     <string name="download_running">Download running</string>
     <string name="download_error_details">Details</string>
     <string name="download_error_details_message">%1$s \n\nFile URL:\n%2$s</string>
+    <string name="download_error_tap_for_details">Tap to view details.</string>
     <string name="download_error_device_not_found">Storage Device not found</string>
-    <string name="download_error_insufficient_space">Insufficient Space</string>
+    <string name="download_error_insufficient_space">There is not enough space left on your device.</string>
     <string name="download_error_http_data_error">HTTP Data Error</string>
     <string name="download_error_error_unknown">Unknown Error</string>
-    <string name="download_error_parser_exception">Parser Exception</string>
+    <string name="download_error_parser_exception">The podcast host\'s server sent a broken podcast feed.</string>
     <string name="download_error_unsupported_type">Unsupported Feed Type</string>
+    <string name="download_error_unsupported_type_html">The podcast host\'s server sent a website, not a podcast.</string>
+    <string name="download_error_not_found">The podcast host\'s server does not know where to find the file. It may have been deleted.</string>
     <string name="download_error_connection_error">Connection Error</string>
-    <string name="download_error_unknown_host">Unknown Host</string>
+    <string name="download_error_unknown_host">Cannot find the server. Check if the address is typed correctly and if you have a working network connection.</string>
     <string name="download_error_unauthorized">Authentication Error</string>
     <string name="download_error_file_type_type">File Type Error</string>
-    <string name="download_error_forbidden">Forbidden</string>
+    <string name="download_error_forbidden">The podcast host\'s server refuses to respond.</string>
     <string name="download_canceled_msg">Download canceled</string>
+    <string name="download_error_wrong_size">The server connection was lost before completing the download</string>
+    <string name="download_error_blocked">The download was blocked by another app on your device.</string>
+    <string name="download_error_certificate">Unable to establish a secure connection. This can mean that another app on your device blocked the download, or that something is wrong with the server certificates.</string>
     <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
     <string name="download_report_title">Downloads completed with error(s)</string>
     <string name="auto_download_report_title">Auto-downloads completed</string>
@@ -255,12 +275,8 @@
         <item quantity="one">%d download left</item>
         <item quantity="other">%d downloads left</item>
     </plurals>
-    <string name="downloads_processing">Processing downloads</string>
+    <string name="service_shutting_down">Service shutting down</string>
     <string name="download_notification_title">Downloading podcast data</string>
-    <plurals name="download_report_content">
-        <item quantity="one">%d download succeeded, %d failed</item>
-        <item quantity="other">%d downloads succeeded, %d failed</item>
-    </plurals>
     <string name="download_log_title_unknown">Unknown Title</string>
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
@@ -356,7 +372,6 @@
     <string name="storage_pref">Storage</string>
     <string name="storage_sum">Episode auto delete, Import, Export</string>
     <string name="project_pref">Project</string>
-    <string name="queue_label">Queue</string>
     <string name="synchronization_pref">Synchronization</string>
     <string name="synchronization_sum">Synchronize with other devices using gpodder.net</string>
     <string name="automation">Automation</string>
@@ -367,19 +382,24 @@
     <string name="external_elements">External elements</string>
     <string name="interruptions">Interruptions</string>
     <string name="playback_control">Playback control</string>
+    <string name="reassign_hardware_buttons">Reassign hardware buttons</string>
     <string name="preference_search_hint">Search…</string>
     <string name="preference_search_no_results">No results</string>
     <string name="preference_search_clear_history">Clear history</string>
     <string name="media_player">Media player</string>
     <string name="pref_episode_cleanup_title">Episode Cleanup</string>
-    <string name="pref_episode_cleanup_summary">Episodes that aren\'t in the queue and aren\'t favorites should be eligible for removal if Auto Download needs space for new episodes</string>
+    <string name="pref_episode_cleanup_summary">Episodes that should be eligible for removal if Auto Download needs space for new episodes</string>
     <string name="pref_pauseOnDisconnect_sum">Pause playback when headphones or bluetooth are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_unpauseOnBluetoothReconnect_sum">Resume playback when bluetooth reconnects</string>
-    <string name="pref_hardwareForwardButtonSkips_title">Forward Button Skips</string>
-    <string name="pref_hardwareForwardButtonSkips_sum">When pressing a forward button on a bluetooth-connected device skip to the next episode instead of fast-forwarding</string>
-    <string name="pref_hardwarePreviousButtonRestarts_title">Previous button restarts</string>
-    <string name="pref_hardwarePreviousButtonRestarts_sum">When pressing a hardware previous button restart playing the current episode instead of rewinding</string>
+    <string name="pref_hardware_forward_button_title">Forward Button</string>
+    <string name="pref_hardware_forward_button_summary">Customize the forward button behavior</string>
+    <string name="pref_hardware_previous_button_title">Previous Button</string>
+    <string name="pref_hardware_previous_button_summary">Customize the previous button behavior</string>
+    <string name="button_action_fast_forward">Fast Forward</string>
+    <string name="button_action_rewind">Rewind</string>
+    <string name="button_action_skip_episode">Skip Episode</string>
+    <string name="button_action_restart_episode">Restart Episode</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
@@ -399,8 +419,11 @@
     <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
     <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
     <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
-    <string name="pref_autoUpdateIntervallOrTime_every">every %1$s</string>
     <string name="pref_autoUpdateIntervallOrTime_at">at %1$s</string>
+    <plurals name="pref_autoUpdateIntervallOrTime_every_hours">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
     <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones or Bluetooth disconnect</string>
     <string name="pref_unpauseOnHeadsetReconnect_title">Headphones Reconnect</string>
@@ -434,7 +457,9 @@
     <string name="pref_episode_cache_title">Episode Cache</string>
     <string name="pref_episode_cache_summary">Total number of downloaded episodes cached on the device. Automatic download will be suspended if this number is reached.</string>
     <string name="pref_episode_cover_title">Use Episode Cover</string>
-    <string name="pref_episode_cover_summary">Use the episode specific cover whenever available. If unchecked, the app will always use the podcast cover image.</string>
+    <string name="pref_episode_cover_summary">Use the episode specific cover in lists whenever available. If unchecked, the app will always use the podcast cover image.</string>
+    <string name="pref_show_remain_time_title">Show Remaining Time</string>
+    <string name="pref_show_remain_time_summary">Display remaining time of episodes when checked. If unchecked, display total duration of episodes.</string>
     <string name="pref_theme_title_use_system">Use system theme</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
@@ -468,8 +493,6 @@
     <string name="pref_fast_forward_sum">Customize the number of seconds to jump forward when the fast forward button is clicked</string>
     <string name="pref_rewind">Rewind Skip Time</string>
     <string name="pref_rewind_sum">Customize the number of seconds to jump backwards when the rewind button is clicked</string>
-    <string name="pref_gpodnet_sethostname_title">Set hostname</string>
-    <string name="pref_gpodnet_sethostname_use_default_host">Use default host</string>
     <string name="pref_expandNotify_title">High Notification priority</string>
     <string name="pref_expandNotify_sum">This usually expands the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
@@ -507,8 +530,8 @@
     <string name="pref_cast_message_free_flavor">Chromecast requires third party proprietary libraries that are disabled in this version of AntennaPod</string>
     <string name="pref_enqueue_downloaded_title">Enqueue Downloaded</string>
     <string name="pref_enqueue_downloaded_summary">Add downloaded episodes to the queue</string>
-    <string name="media_player_builtin">Built-in Android player</string>
-    <string name="media_player_sonic" translatable="false">Sonic Media Player</string>
+    <string name="media_player_builtin">Built-in Android player (deprecated) </string>
+    <string name="media_player_sonic">Sonic Media Player (deprecated) </string>
     <string name="media_player_exoplayer_recommended">ExoPlayer (recommended)</string>
     <string name="media_player_switch_to_exoplayer">Switch to ExoPlayer</string>
     <string name="media_player_switched_to_exoplayer">Switched to ExoPlayer.</string>
@@ -631,23 +654,24 @@
     <string name="gpodnet_suggestions_header">SUGGESTIONS</string>
     <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="gpodnetauth_login_title">Login</string>
-    <string name="gpodnetauth_login_descr">Welcome to the gpodder.net login process. First, type in your login information:</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
-    <string name="gpodnetauth_login_register">If you do not have an account yet, you can create one here:\nhttps://gpodder.net/register/</string>
+    <string name="gpodnetauth_encryption_warning">Password and data are not encrypted!</string>
+    <string name="create_account">Create account</string>
     <string name="username_label">Username</string>
     <string name="password_label">Password</string>
-    <string name="gpodnetauth_device_title">Device Selection</string>
+    <string name="gpodnet_description">Gpodder.net is an open-source podcast synchronization service that is independent of the AntennaPod project.</string>
+    <string name="gpodnetauth_server_official">Official gpodder.net server</string>
+    <string name="gpodnetauth_server_custom">Custom server</string>
+    <string name="gpodnetauth_host">Hostname</string>
+    <string name="gpodnetauth_select_server">Select server</string>
     <string name="gpodnetauth_device_descr">Create a new device to use for your gpodder.net account or choose an existing one:</string>
-    <string name="gpodnetauth_device_deviceID">Device ID:\u0020</string>
-    <string name="gpodnetauth_device_caption">Caption</string>
-    <string name="gpodnetauth_device_butCreateNewDevice">Create new device</string>
-    <string name="gpodnetauth_device_chooseExistingDevice">Choose existing device:</string>
-    <string name="gpodnetauth_device_errorEmpty">Device ID must not be empty</string>
-    <string name="gpodnetauth_device_errorAlreadyUsed">Device ID already in use</string>
+    <string name="gpodnetauth_device_name">Device name</string>
+    <string name="gpodnetauth_device_name_default">AntennaPod on %1$s</string>
     <string name="gpodnetauth_device_caption_errorEmpty">Caption must not be empty</string>
+    <string name="gpodnetauth_existing_devices">Existing devices</string>
+    <string name="gpodnetauth_create_device">Create device</string>
 
     <string name="gpodnetauth_device_butChoose">Choose</string>
-    <string name="gpodnetauth_finish_title">Login successful!</string>
     <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automatically sync subscriptions on your device with your gpodder.net account.</string>
     <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
     <string name="gpodnetauth_finish_butgomainscreen">Go to main screen</string>
@@ -874,6 +898,8 @@
     <string name="notification_channel_sync_error_description">Shown when gpodder synchronization fails.</string>
     <string name="notification_channel_auto_download">Automatic download completed</string>
     <string name="notification_channel_episode_auto_download">Shown when episodes have been automatically downloaded.</string>
+    <string name="notification_channel_new_episode">New Episode</string>
+    <string name="notification_channel_new_episode_description">Shown when a new episode of a podcast was found, where notifications are enabled</string>
 
     <!-- Widget settings -->
     <string name="widget_settings">Widget settings</string>

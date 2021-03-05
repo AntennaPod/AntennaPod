@@ -45,7 +45,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.StatisticsItem;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.IntentUtils;
-import de.danoeh.antennapod.core.util.ThemeUtils;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import de.danoeh.antennapod.core.util.syndication.HtmlToPlainText;
 import de.danoeh.antennapod.fragment.preferences.StatisticsFragment;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
@@ -130,6 +130,8 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
             protected void doTint(Context themedContext) {
                 toolbar.getMenu().findItem(R.id.visit_website_item)
                         .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.location_web_site));
+                toolbar.getMenu().findItem(R.id.share_parent)
+                        .setIcon(ThemeUtils.getDrawableFromAttr(themedContext, R.attr.ic_share));
             }
         };
         iconTintManager.updateTint();
@@ -201,7 +203,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
         Log.d(TAG, "Author is " + feed.getAuthor());
         Log.d(TAG, "URL is " + feed.getDownload_url());
         Glide.with(getContext())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.light_gray)
                         .error(R.color.light_gray)
@@ -210,7 +212,7 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
                         .dontAnimate())
                 .into(imgvCover);
         Glide.with(getContext())
-                .load(feed.getImageLocation())
+                .load(feed.getImageUrl())
                 .apply(new RequestOptions()
                         .placeholder(R.color.image_readability_tint)
                         .error(R.color.image_readability_tint)
@@ -284,9 +286,13 @@ public class FeedInfoFragment extends Fragment implements Toolbar.OnMenuItemClic
     }
 
     private void refreshToolbarState() {
+        boolean shareLinkVisible = feed != null && feed.getLink() != null;
+        boolean downloadUrlVisible = feed != null && !feed.isLocalFeed();
+
         toolbar.getMenu().findItem(R.id.reconnect_local_folder).setVisible(feed != null && feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.share_download_url_item).setVisible(feed != null && !feed.isLocalFeed());
-        toolbar.getMenu().findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
+        toolbar.getMenu().findItem(R.id.share_download_url_item).setVisible(downloadUrlVisible);
+        toolbar.getMenu().findItem(R.id.share_link_item).setVisible(shareLinkVisible);
+        toolbar.getMenu().findItem(R.id.share_parent).setVisible(downloadUrlVisible || shareLinkVisible);
         toolbar.getMenu().findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null
                 && IntentUtils.isCallable(getContext(), new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
     }

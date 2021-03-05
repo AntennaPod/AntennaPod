@@ -18,11 +18,13 @@ import java.util.Map;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.SubscriptionsFilter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.mapper.FeedCursorMapper;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
@@ -160,11 +162,15 @@ public final class DBReader {
      *         The method does NOT change the items-attribute of the feed.
      */
     public static List<FeedItem> getFeedItemList(final Feed feed) {
+        return getFeedItemList(feed, FeedItemFilter.unfiltered());
+    }
+
+    public static List<FeedItem> getFeedItemList(final Feed feed, final FeedItemFilter filter) {
         Log.d(TAG, "getFeedItemList() called with: " + "feed = [" + feed + "]");
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getAllItemsOfFeedCursor(feed)) {
+        try (Cursor cursor = adapter.getItemsOfFeedCursor(feed, filter)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             Collections.sort(items, new FeedItemPubdateComparator());
             for (FeedItem item : items) {
@@ -204,7 +210,7 @@ public final class DBReader {
     }
 
     private static Feed extractFeedFromCursorRow(Cursor cursor) {
-        Feed feed = Feed.fromCursor(cursor);
+        Feed feed = FeedCursorMapper.convert(cursor);
         FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
         feed.setPreferences(preferences);
         return feed;
@@ -367,18 +373,19 @@ public final class DBReader {
     }
 
     /**
-     * Loads a list of FeedItems sorted by pubDate in descending order.
+     * Loads a filtered list of FeedItems sorted by pubDate in descending order.
      *
      * @param offset The first episode that should be loaded.
      * @param limit The maximum number of episodes that should be loaded.
+     * @param filter The filter describing which episodes to filter out.
      */
     @NonNull
-    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit) {
-        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: " + "offset = [" + offset + "]" + " limit = [" + limit + "]" );
+    public static List<FeedItem> getRecentlyPublishedEpisodes(int offset, int limit, FeedItemFilter filter) {
+        Log.d(TAG, "getRecentlyPublishedEpisodes() called with: offset=" + offset + ", limit=" + limit);
 
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
-        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit)) {
+        try (Cursor cursor = adapter.getRecentlyPublishedItemsCursor(offset, limit, filter)) {
             List<FeedItem> items = extractItemlistFromCursor(adapter, cursor);
             loadAdditionalFeedItemListData(items);
             return items;
@@ -478,31 +485,41 @@ public final class DBReader {
      *
      * @param feedId The ID of the Feed
      * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
-     * database and the items-attribute will be set correctly.
+     *         database and the items-attribute will be set correctly.
      */
+    @Nullable
     public static Feed getFeed(final long feedId) {
-        Log.d(TAG, "getFeed() called with: " + "feedId = [" + feedId + "]");
-
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        try {
-            return getFeed(feedId, adapter);
-        } finally {
-            adapter.close();
-        }
+        return getFeed(feedId, false);
     }
 
+    /**
+     * Loads a specific Feed from the database.
+     *
+     * @param feedId The ID of the Feed
+     * @param filtered <code>true</code> if only the visible items should be loaded according to the feed filter.
+     * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
+     *         database and the items-attribute will be set correctly.
+     */
     @Nullable
-    static Feed getFeed(final long feedId, PodDBAdapter adapter) {
+    public static Feed getFeed(final long feedId, boolean filtered) {
+        Log.d(TAG, "getFeed() called with: " + "feedId = [" + feedId + "]");
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
         Feed feed = null;
         try (Cursor cursor = adapter.getFeedCursor(feedId)) {
             if (cursor.moveToNext()) {
                 feed = extractFeedFromCursorRow(cursor);
-                feed.setItems(getFeedItemList(feed));
+                if (filtered) {
+                    feed.setItems(getFeedItemList(feed, feed.getItemFilter()));
+                } else {
+                    feed.setItems(getFeedItemList(feed));
+                }
             } else {
                 Log.e(TAG, "getFeed could not find feed with id " + feedId);
             }
             return feed;
+        } finally {
+            adapter.close();
         }
     }
 
@@ -635,10 +652,7 @@ public final class DBReader {
             if (cursor.moveToFirst()) {
                 int indexDescription = cursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION);
                 String description = cursor.getString(indexDescription);
-                int indexContentEncoded = cursor.getColumnIndex(PodDBAdapter.KEY_CONTENT_ENCODED);
-                String contentEncoded = cursor.getString(indexContentEncoded);
-                item.setDescription(description);
-                item.setContentEncoded(contentEncoded);
+                item.setDescriptionIfLonger(description);
             }
         } finally {
             adapter.close();
@@ -801,15 +815,9 @@ public final class DBReader {
         PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
-        List<Feed> feeds = getFeedList(adapter);
-        long[] feedIds = new long[feeds.size()];
-        for (int i = 0; i < feeds.size(); i++) {
-            feedIds[i] = feeds.get(i).getId();
-        }
-        final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
-
+        final LongIntMap feedCounters = adapter.getFeedCounters();
         SubscriptionsFilter subscriptionsFilter = UserPreferences.getSubscriptionsFilter();
-        feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
+        List<Feed> feeds = subscriptionsFilter.filter(getFeedList(adapter), feedCounters);
 
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();
@@ -839,7 +847,7 @@ public final class DBReader {
                 }
             };
         } else if (feedOrder == UserPreferences.FEED_ORDER_MOST_PLAYED) {
-            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters(feedIds);
+            final LongIntMap playedCounters = adapter.getPlayedEpisodesCounters();
 
             comparator = (lhs, rhs) -> {
                 long counterLhs = playedCounters.get(lhs.getId());

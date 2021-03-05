@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.view.ShownotesWebView;
@@ -82,7 +85,15 @@ public class ItemDescriptionFragment extends Fragment {
             webViewLoader.dispose();
         }
         webViewLoader = Maybe.<String>create(emitter -> {
-            Timeline timeline = new Timeline(getActivity(), controller.getMedia());
+            Playable media = controller.getMedia();
+            if (media instanceof FeedMedia) {
+                FeedMedia feedMedia = ((FeedMedia) media);
+                if (feedMedia.getItem() == null) {
+                    feedMedia.setItem(DBReader.getFeedItem(feedMedia.getItemId()));
+                }
+                DBReader.loadDescriptionOfFeedItem(feedMedia.getItem());
+            }
+            Timeline timeline = new Timeline(getActivity(), media.getDescription(), media.getDuration());
             emitter.onSuccess(timeline.processShownotes());
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -140,14 +151,8 @@ public class ItemDescriptionFragment extends Fragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public boolean loadMediaInfo() {
+            public void loadMediaInfo() {
                 load();
-                return true;
-            }
-
-            @Override
-            public void setupGUI() {
-                ItemDescriptionFragment.this.load();
             }
         };
         controller.init();

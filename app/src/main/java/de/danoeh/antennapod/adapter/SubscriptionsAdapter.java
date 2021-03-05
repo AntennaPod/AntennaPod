@@ -22,8 +22,8 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.LocalFeedUpdater;
 import de.danoeh.antennapod.core.storage.NavDrawerData;
-import de.danoeh.antennapod.core.util.ThemeUtils;
 import de.danoeh.antennapod.fragment.FeedItemlistFragment;
+import de.danoeh.antennapod.ui.common.ThemeUtils;
 import jp.shts.android.library.TriangleLabelView;
 
 /**
@@ -112,7 +112,7 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
             boolean textAndImageCombined = feed.isLocalFeed()
                     && LocalFeedUpdater.getDefaultIconUrl(convertView.getContext()).equals(feed.getImageUrl());
             new CoverLoader(mainActivityRef.get())
-                    .withUri(feed.getImageLocation())
+                    .withUri(feed.getImageUrl())
                     .withPlaceholderView(holder.feedTitle, textAndImageCombined)
                     .withCoverView(holder.imageView)
                     .load();
@@ -123,7 +123,6 @@ public class SubscriptionsAdapter extends BaseAdapter implements AdapterView.OnI
                     .withCoverView(holder.imageView)
                     .load();
         }
-
         return convertView;
     }
 

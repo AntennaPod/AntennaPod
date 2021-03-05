@@ -1,37 +1,50 @@
 package de.danoeh.antennapod.dialog;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.EditText;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
+import android.view.LayoutInflater;
 import androidx.appcompat.app.AlertDialog;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.databinding.AuthenticationDialogBinding;
 
 /**
  * Displays a dialog with a username and password text field and an optional checkbox to save username and preferences.
  */
 public abstract class AuthenticationDialog extends AlertDialog.Builder {
+    boolean passwordHidden = true;
 
     public AuthenticationDialog(Context context, int titleRes, boolean enableUsernameField,
                                 String usernameInitialValue, String passwordInitialValue) {
         super(context);
         setTitle(titleRes);
-        View rootView = View.inflate(context, R.layout.authentication_dialog, null);
-        setView(rootView);
+        AuthenticationDialogBinding viewBinding = AuthenticationDialogBinding.inflate(LayoutInflater.from(context));
+        setView(viewBinding.getRoot());
 
-        final EditText etxtUsername = rootView.findViewById(R.id.etxtUsername);
-        final EditText etxtPassword = rootView.findViewById(R.id.etxtPassword);
-
-        etxtUsername.setEnabled(enableUsernameField);
+        viewBinding.usernameEditText.setEnabled(enableUsernameField);
         if (usernameInitialValue != null) {
-            etxtUsername.setText(usernameInitialValue);
+            viewBinding.usernameEditText.setText(usernameInitialValue);
         }
         if (passwordInitialValue != null) {
-            etxtPassword.setText(passwordInitialValue);
+            viewBinding.passwordEditText.setText(passwordInitialValue);
         }
+        viewBinding.showPasswordButton.setOnClickListener(v -> {
+            if (passwordHidden) {
+                viewBinding.passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                viewBinding.showPasswordButton.setAlpha(1.0f);
+            } else {
+                viewBinding.passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                viewBinding.showPasswordButton.setAlpha(0.6f);
+            }
+            passwordHidden = !passwordHidden;
+        });
+
         setOnCancelListener(dialog -> onCancelled());
+        setOnDismissListener(dialog -> onCancelled());
         setNegativeButton(R.string.cancel_label, null);
         setPositiveButton(R.string.confirm_label, (dialog, which)
-                -> onConfirmed(etxtUsername.getText().toString(), etxtPassword.getText().toString()));
+                -> onConfirmed(viewBinding.usernameEditText.getText().toString(),
+                        viewBinding.passwordEditText.getText().toString()));
     }
 
     protected void onCancelled() {

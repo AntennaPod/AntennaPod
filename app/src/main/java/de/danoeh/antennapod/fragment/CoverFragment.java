@@ -13,11 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -25,9 +23,11 @@ import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.PlaybackPositionEvent;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.util.ImageResourceUtils;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 import de.danoeh.antennapod.core.util.EmbeddedChapterImage;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -35,6 +35,7 @@ import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -93,7 +94,12 @@ public class CoverFragment extends Fragment {
     }
 
     private void displayMediaInfo(@NonNull Playable media) {
-        txtvPodcastTitle.setText(media.getFeedTitle());
+        String pubDateStr = DateUtils.formatAbbrev(getActivity(), ((FeedMedia) media).getPubDate());
+        txtvPodcastTitle.setText(StringUtils.stripToEmpty(media.getFeedTitle())
+                + "\u00A0"
+                + "・"
+                + "\u00A0"
+                + StringUtils.replace(StringUtils.stripToEmpty(pubDateStr), " ", "\u00A0"));
         txtvEpisodeTitle.setText(media.getEpisodeTitle());
         displayedChapterIndex = -2; // Force refresh
         displayCoverImage(media.getPosition());
@@ -111,13 +117,7 @@ public class CoverFragment extends Fragment {
         super.onStart();
         controller = new PlaybackController(getActivity()) {
             @Override
-            public boolean loadMediaInfo() {
-                CoverFragment.this.loadMediaInfo();
-                return true;
-            }
-
-            @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 CoverFragment.this.loadMediaInfo();
             }
         };
@@ -151,23 +151,25 @@ public class CoverFragment extends Fragment {
         if (chapter != displayedChapterIndex) {
             displayedChapterIndex = chapter;
 
+            RequestOptions options = new RequestOptions()
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                    .dontAnimate()
+                    .transforms(new FitCenter(),
+                            new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density)));
+
             RequestBuilder<Drawable> cover = Glide.with(this)
-                    .load(ImageResourceUtils.getImageLocation(media))
-                    .apply(new RequestOptions()
-                            .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                            .dontAnimate()
-                            .transforms(new FitCenter(),
-                                    new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))));
+                    .load(media.getImageLocation())
+                    .error(Glide.with(this)
+                            .load(ImageResourceUtils.getFallbackImageLocation(media))
+                            .apply(options))
+                    .apply(options);
+
             if (chapter == -1 || TextUtils.isEmpty(media.getChapters().get(chapter).getImageUrl())) {
                 cover.into(imgvCover);
             } else {
                 Glide.with(this)
                         .load(EmbeddedChapterImage.getModelFor(media, chapter))
-                        .apply(new RequestOptions()
-                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                                .dontAnimate()
-                                .transforms(new FitCenter(),
-                                        new RoundedCorners((int) (16 * getResources().getDisplayMetrics().density))))
+                        .apply(options)
                         .thumbnail(cover)
                         .error(cover)
                         .into(imgvCover);
@@ -208,7 +210,7 @@ public class CoverFragment extends Fragment {
                 imgvCover.setLayoutParams(params);
             }
         } else {
-            double percentageHeight = ratio * 0.8;
+            double percentageHeight = ratio * 0.6;
             mainContainer.setOrientation(LinearLayout.HORIZONTAL);
             if (newConfig.screenHeightDp > 0) {
                 params.height = (int) (convertDpToPixel(newConfig.screenHeightDp) * percentageHeight);

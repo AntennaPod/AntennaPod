@@ -45,7 +45,7 @@ workflows:
                 destination: app-play-debug.apk
             - run:
                 name: Execute debug unit tests
-                command: ./gradlew :core:testPlayDebugUnitTest -PdisablePreDex
+                command: ./gradlew testPlayDebugUnitTest -PdisablePreDex
       - build:
           name: Build release
           build-steps:
@@ -54,19 +54,19 @@ workflows:
                 command: ./gradlew assembleRelease -PdisablePreDex
             - run:
                 name: Execute release unit tests
-                command: ./gradlew :core:testPlayReleaseUnitTest -PdisablePreDex
+                command: ./gradlew testPlayReleaseUnitTest -PdisablePreDex
       - build:
           name: Build integration tests
           build-steps:
             - run:
                 name: Build integration tests
-                command: ./gradlew :app:assemblePlayDebugAndroidTest -PdisablePreDex
+                command: ./gradlew assemblePlayDebugAndroidTest -PdisablePreDex
       - build:
           name: Build free
           build-steps:
             - run:
                 name: Build free (for F-Droid)
-                command: ./gradlew assembleFreeRelease -PdisablePreDex -PfreeBuild
+                command: ./gradlew assembleFreeRelease -PdisablePreDex
 
   static-analysis:
     jobs:
@@ -85,19 +85,8 @@ workflows:
                   curl -s -L https://github.com/yangziwen/diff-checkstyle/releases/download/0.0.4/diff-checkstyle.jar > diff-checkstyle.jar
                   java -Dconfig_loc=config/checkstyle -jar diff-checkstyle.jar -c config/checkstyle/checkstyle-new-code.xml --git-dir . --base-rev $branchBaseCommit
       - build:
-          name: Lint app
+          name: Lint
           build-steps:
             - run:
-                name: Lint app
-                command: ./gradlew app:lintPlayRelease
-            - run:
-                name: Lint core
-                command: ./gradlew core:lintPlayRelease
-            - store_artifacts:
-                name: Uploading app lint reports
-                path: app/build/reports/lint-results-playRelease.html
-                destination: lint-results-app.html
-            - store_artifacts:
-                name: Uploading core lint reports
-                path: core/build/reports/lint-results-playRelease.html
-                destination: lint-results-core.html
+                name: Lint
+                command: ./gradlew lintPlayRelease

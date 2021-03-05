@@ -1,1 +1,5 @@
-include ':app', ':core'
+include ':app'
+include ':core'
+include ':net:ssl'
+include ':ui:app-start-intent'
+include ':ui:common'

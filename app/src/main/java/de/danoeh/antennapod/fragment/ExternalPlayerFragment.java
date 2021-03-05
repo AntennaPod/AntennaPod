@@ -108,12 +108,7 @@ public class ExternalPlayerFragment extends Fragment {
             }
 
             @Override
-            public boolean loadMediaInfo() {
-                return ExternalPlayerFragment.this.loadMediaInfo();
-            }
-
-            @Override
-            public void setupGUI() {
+            public void loadMediaInfo() {
                 ExternalPlayerFragment.this.loadMediaInfo();
             }
 
@@ -170,11 +165,11 @@ public class ExternalPlayerFragment extends Fragment {
         }
     }
 
-    private boolean loadMediaInfo() {
+    private void loadMediaInfo() {
         Log.d(TAG, "Loading media info");
         if (controller == null) {
             Log.w(TAG, "loadMediaInfo was called while PlaybackController was null!");
-            return false;
+            return;
         }
 
         if (disposable != null) {
@@ -186,7 +181,6 @@ public class ExternalPlayerFragment extends Fragment {
                 .subscribe(this::updateUi,
                         error -> Log.e(TAG, Log.getStackTraceString(error)),
                         () -> ((MainActivity) getActivity()).setPlayerVisible(false));
-        return true;
     }
 
     private void updateUi(Playable media) {
@@ -198,14 +192,19 @@ public class ExternalPlayerFragment extends Fragment {
         feedName.setText(media.getFeedTitle());
         onPositionObserverUpdate();
 
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate();
+
         Glide.with(getActivity())
-                .load(ImageResourceUtils.getImageLocation(media))
-                .apply(new RequestOptions()
-                    .placeholder(R.color.light_gray)
-                    .error(R.color.light_gray)
-                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
-                    .fitCenter()
-                    .dontAnimate())
+                .load(ImageResourceUtils.getEpisodeListImageLocation(media))
+                .error(Glide.with(getActivity())
+                        .load(ImageResourceUtils.getFallbackImageLocation(media))
+                        .apply(options))
+                .apply(options)
                 .into(imgvCover);
 
         if (controller != null && controller.isPlayingVideoLocally()) {

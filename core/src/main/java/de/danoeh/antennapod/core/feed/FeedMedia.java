@@ -12,10 +12,8 @@ import androidx.annotation.Nullable;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -24,10 +22,10 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.sync.SyncService;
 import de.danoeh.antennapod.core.sync.model.EpisodeAction;
+import de.danoeh.antennapod.core.util.playback.PlayableException;
 
 public class FeedMedia extends FeedFile implements Playable {
     private static final String TAG = "FeedMedia";
@@ -175,8 +173,8 @@ public class FeedMedia extends FeedFile implements Playable {
             // getImageLocation() also loads embedded images, which we can not send to external devices
             if (item.getImageUrl() != null) {
                 builder.setIconUri(Uri.parse(item.getImageUrl()));
-            } else if (item.getFeed() != null && item.getFeed().getImageLocation() != null) {
-                builder.setIconUri(Uri.parse(item.getFeed().getImageLocation()));
+            } else if (item.getFeed() != null && item.getFeed().getImageUrl() != null) {
+                builder.setIconUri(Uri.parse(item.getFeed().getImageUrl()));
             }
         }
         return new MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
@@ -287,6 +285,14 @@ public class FeedMedia extends FeedFile implements Playable {
         this.size = size;
     }
 
+    @Override
+    public String getDescription() {
+        if (item != null) {
+            return item.getDescription();
+        }
+        return null;
+    }
+
     /**
      * Indicates we asked the service what the size was, but didn't
      * get a valid answer and we shoudln't check using the network again.
@@ -385,40 +391,6 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
-    public void loadChapterMarks(Context context) {
-        if (item == null && itemID != 0) {
-            item = DBReader.getFeedItem(itemID);
-        }
-        if (item == null || item.getChapters() != null) {
-            return;
-        }
-
-        List<Chapter> chapters = loadChapters(context);
-        if (chapters == null) {
-            // Do not try loading again. There are no chapters.
-            item.setChapters(Collections.emptyList());
-        } else {
-            item.setChapters(chapters);
-        }
-    }
-
-    private List<Chapter> loadChapters(Context context) {
-        List<Chapter> chaptersFromDatabase = null;
-        if (item.hasChapters()) {
-            chaptersFromDatabase = DBReader.loadChaptersOfFeedItem(item);
-        }
-
-        List<Chapter> chaptersFromMediaFile;
-        if (localFileAvailable()) {
-            chaptersFromMediaFile = ChapterUtils.loadChaptersFromFileUrl(this);
-        } else {
-            chaptersFromMediaFile = ChapterUtils.loadChaptersFromStreamUrl(this, context);
-        }
-
-        return ChapterMerger.merge(chaptersFromDatabase, chaptersFromMediaFile);
-    }
-
-    @Override
     public String getEpisodeTitle() {
         if (item == null) {
             return null;
@@ -478,6 +450,18 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
+    public Date getPubDate() {
+        if (item == null) {
+            return null;
+        }
+        if (item.getPubDate() != null) {
+            return item.getPubDate();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public boolean localFileAvailable() {
         return isDownloaded() && file_url != null;
     }
@@ -485,6 +469,10 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public boolean streamAvailable() {
         return download_url != null;
+    }
+
+    public long getItemId() {
+        return itemID;
     }
 
     @Override
@@ -543,19 +531,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public void setChapters(List<Chapter> chapters) {
-        if(item != null) {
+        if (item != null) {
             item.setChapters(chapters);
         }
-    }
-
-    @Override
-    public Callable<String> loadShownotes() {
-        return () -> {
-            if (item == null) {
-                item = DBReader.getFeedItem(itemID);
-            }
-            return item.loadShownotes().call();
-        };
     }
 
     public static final Parcelable.Creator<FeedMedia> CREATOR = new Parcelable.Creator<FeedMedia>() {

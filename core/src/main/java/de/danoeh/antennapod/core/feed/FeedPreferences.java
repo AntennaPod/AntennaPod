@@ -1,12 +1,10 @@
 package de.danoeh.antennapod.core.feed;
 
-import android.content.Context;
 import android.database.Cursor;
 import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import java.util.Arrays;
@@ -22,36 +20,37 @@ public class FeedPreferences {
     public static final String TAG_ROOT = "#root";
     public static final String TAG_SEPARATOR = ",";
 
-    @NonNull
-    private FeedFilter filter;
-    private long feedID;
-    private boolean autoDownload;
-    private boolean keepUpdated;
-
     public enum AutoDeleteAction {
         GLOBAL,
         YES,
         NO
     }
+
+    @NonNull
+    private FeedFilter filter;
+    private long feedID;
+    private boolean autoDownload;
+    private boolean keepUpdated;
     private AutoDeleteAction autoDeleteAction;
-
     private VolumeAdaptionSetting volumeAdaptionSetting;
-
     private String username;
     private String password;
     private float feedPlaybackSpeed;
     private int feedSkipIntro;
     private int feedSkipEnding;
+    private boolean showEpisodeNotification;
     private final Set<String> tags = new HashSet<>();
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
+    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
+                           VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting,
-                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, new HashSet<>());
+                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false, new HashSet<>());
     }
 
-    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated, AutoDeleteAction autoDeleteAction,
-                            VolumeAdaptionSetting volumeAdaptionSetting, String username, String password,
-                            @NonNull FeedFilter filter, float feedPlaybackSpeed, int feedSkipIntro, int feedSkipEnding,
+    private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
+                            AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
+                            String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed,
+                            int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification,
                             Set<String> tags) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
@@ -64,6 +63,7 @@ public class FeedPreferences {
         this.feedPlaybackSpeed = feedPlaybackSpeed;
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
+        this.showEpisodeNotification = showEpisodeNotification;
         this.tags.addAll(tags);
     }
 
@@ -80,6 +80,7 @@ public class FeedPreferences {
         int indexFeedPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_PLAYBACK_SPEED);
         int indexAutoSkipIntro = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_ENDING);
+        int indexEpisodeNotification = cursor.getColumnIndex(PodDBAdapter.KEY_EPISODE_NOTIFICATION);
         int indexTags = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_TAGS);
 
         long feedId = cursor.getLong(indexId);
@@ -96,11 +97,11 @@ public class FeedPreferences {
         float feedPlaybackSpeed = cursor.getFloat(indexFeedPlaybackSpeed);
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
+        boolean showNotification = cursor.getInt(indexEpisodeNotification) > 0;
         String tagsString = cursor.getString(indexTags);
         if (TextUtils.isEmpty(tagsString)) {
             tagsString = TAG_ROOT;
         }
-
         return new FeedPreferences(feedId,
                 autoDownload,
                 autoRefresh,
@@ -112,6 +113,7 @@ public class FeedPreferences {
                 feedPlaybackSpeed,
                 feedAutoSkipIntro,
                 feedAutoSkipEnding,
+                showNotification,
                 new HashSet<>(Arrays.asList(tagsString.split(TAG_SEPARATOR))));
     }
 
@@ -192,8 +194,8 @@ public class FeedPreferences {
         return volumeAdaptionSetting;
     }
 
-    public void setAutoDeleteAction(AutoDeleteAction auto_delete_action) {
-        this.autoDeleteAction = auto_delete_action;
+    public void setAutoDeleteAction(AutoDeleteAction autoDeleteAction) {
+        this.autoDeleteAction = autoDeleteAction;
     }
 
     public void setVolumeAdaptionSetting(VolumeAdaptionSetting volumeAdaptionSetting) {
@@ -204,18 +206,12 @@ public class FeedPreferences {
         switch (autoDeleteAction) {
             case GLOBAL:
                 return UserPreferences.isAutoDelete();
-
             case YES:
                 return true;
-
             case NO:
+            default: // fall-through
                 return false;
         }
-        return false; // TODO - add exceptions here
-    }
-
-    public void save(Context context) {
-        DBWriter.setFeedPreferences(this);
     }
 
     public String getUsername() {
@@ -264,5 +260,17 @@ public class FeedPreferences {
 
     public String getTagsAsString() {
         return TextUtils.join(TAG_SEPARATOR, tags);
+    }
+
+    /**
+     * getter for preference if notifications should be display for new episodes.
+     * @return true for displaying notifications
+     */
+    public boolean getShowEpisodeNotification() {
+        return showEpisodeNotification;
+    }
+
+    public void setShowEpisodeNotification(boolean showEpisodeNotification) {
+        this.showEpisodeNotification = showEpisodeNotification;
     }
 }

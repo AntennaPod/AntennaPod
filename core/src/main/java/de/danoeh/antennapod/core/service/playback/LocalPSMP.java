@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import android.app.UiModeManager;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.os.PowerManager;
 import androidx.annotation.NonNull;
@@ -36,6 +38,7 @@ import de.danoeh.antennapod.core.util.RewindAfterPauseUtils;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlayableException;
 import de.danoeh.antennapod.core.util.playback.PlaybackServiceStarter;
 import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 
@@ -260,13 +263,25 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
             callback.onMediaChanged(false);
             setPlaybackParams(PlaybackSpeedUtils.getCurrentPlaybackSpeed(media), UserPreferences.isSkipSilence());
             if (stream) {
-                mediaPlayer.setDataSource(media.getStreamUrl());
+                if (playable instanceof FeedMedia) {
+                    FeedMedia feedMedia = (FeedMedia) playable;
+                    FeedPreferences preferences = feedMedia.getItem().getFeed().getPreferences();
+                    mediaPlayer.setDataSource(
+                            media.getStreamUrl(),
+                            preferences.getUsername(),
+                            preferences.getPassword());
+                } else {
+                    mediaPlayer.setDataSource(media.getStreamUrl());
+                }
             } else if (media.getLocalMediaUrl() != null && new File(media.getLocalMediaUrl()).canRead()) {
                 mediaPlayer.setDataSource(media.getLocalMediaUrl());
             } else {
                 throw new IOException("Unable to read local file " + media.getLocalMediaUrl());
             }
-            setPlayerStatus(PlayerStatus.INITIALIZED, media);
+            UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+            if (uiModeManager.getCurrentModeType() != Configuration.UI_MODE_TYPE_CAR) {
+                setPlayerStatus(PlayerStatus.INITIALIZED, media);
+            }
 
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
@@ -274,7 +289,7 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
                 onPrepared(startWhenPrepared);
             }
 
-        } catch (Playable.PlayableException | IOException | IllegalStateException e) {
+        } catch (PlayableException | IOException | IllegalStateException e) {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
         }
@@ -924,9 +939,6 @@ public class LocalPSMP extends PlaybackServiceMediaPlayer {
 
             boolean isPlaying = playerStatus == PlayerStatus.PLAYING;
 
-            if (playerStatus != PlayerStatus.INDETERMINATE) {
-                setPlayerStatus(PlayerStatus.INDETERMINATE, media);
-            }
             // we're relying on the position stored in the Playable object for post-playback processing
             if (media != null) {
                 int position = getPosition();

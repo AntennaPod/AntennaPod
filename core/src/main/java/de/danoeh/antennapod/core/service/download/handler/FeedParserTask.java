@@ -58,6 +58,9 @@ public class FeedParserTask implements Callable<FeedHandlerResult> {
             e.printStackTrace();
             successful = false;
             reason = DownloadError.ERROR_UNSUPPORTED_TYPE;
+            if ("html".equalsIgnoreCase(e.getRootElement())) {
+                reason = DownloadError.ERROR_UNSUPPORTED_TYPE_HTML;
+            }
             reasonDetailed = e.getMessage();
         } catch (InvalidFeedException e) {
             e.printStackTrace();

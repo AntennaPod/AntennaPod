@@ -15,6 +15,7 @@ import de.danoeh.antennapod.core.storage.APCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APNullCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.APQueueCleanupAlgorithm;
 import de.danoeh.antennapod.core.storage.EpisodeCleanupAlgorithm;
+import de.danoeh.antennapod.core.storage.ExceptFavoriteCleanupAlgorithm;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.SubscriptionFragment;
@@ -369,6 +370,17 @@ public class PreferencesTest {
         clickPreference(R.string.pref_automatic_download_on_battery_title);
         Awaitility.await().atMost(1000, MILLISECONDS)
                 .until(() -> enableAutodownloadOnBattery == UserPreferences.isEnableAutodownloadOnBattery());
+    }
+
+    @Test
+    public void testEpisodeCleanupFavoriteOnly() {
+        clickPreference(R.string.network_pref);
+        onView(withText(R.string.pref_automatic_download_title)).perform(click());
+        onView(withText(R.string.pref_episode_cleanup_title)).perform(click());
+        onView(isRoot()).perform(waitForView(withText(R.string.episode_cleanup_except_favorite_removal), 1000));
+        onView(withText(R.string.episode_cleanup_except_favorite_removal)).perform(click());
+        Awaitility.await().atMost(1000, MILLISECONDS)
+                .until(() -> UserPreferences.getEpisodeCleanupAlgorithm() instanceof ExceptFavoriteCleanupAlgorithm);
     }
 
     @Test
