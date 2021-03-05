@@ -30,6 +30,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.EpisodeFilterDialog;
 import de.danoeh.antennapod.dialog.FeedPreferenceSkipDialog;
+import de.danoeh.antennapod.dialog.TagSettingsDialog;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -105,6 +106,7 @@ public class FeedSettingsFragment extends Fragment {
         private static final CharSequence PREF_CATEGORY_AUTO_DOWNLOAD = "autoDownloadCategory";
         private static final String PREF_FEED_PLAYBACK_SPEED = "feedPlaybackSpeed";
         private static final String PREF_AUTO_SKIP = "feedAutoSkip";
+        private static final String PREF_TAGS = "tags";
         private static final DecimalFormat SPEED_FORMAT =
                 new DecimalFormat("0.00", DecimalFormatSymbols.getInstance(Locale.US));
 
@@ -160,6 +162,7 @@ public class FeedSettingsFragment extends Fragment {
                         setupPlaybackSpeedPreference();
                         setupFeedAutoSkipPreference();
                         setupEpisodeNotificationPreference();
+                        setupTags();
 
                         updateAutoDeleteSummary();
                         updateVolumeReductionValue();
@@ -393,6 +396,13 @@ public class FeedSettingsFragment extends Fragment {
                 boolean enabled = feed.getPreferences().getAutoDownload() && UserPreferences.isEnableAutodownload();
                 findPreference(PREF_EPISODE_FILTER).setEnabled(enabled);
             }
+        }
+
+        private void setupTags() {
+            findPreference(PREF_TAGS).setOnPreferenceClickListener(preference -> {
+                TagSettingsDialog.newInstance(feedPreferences).show(getChildFragmentManager(), TagSettingsDialog.TAG);
+                return true;
+            });
         }
 
         private void setupEpisodeNotificationPreference() {

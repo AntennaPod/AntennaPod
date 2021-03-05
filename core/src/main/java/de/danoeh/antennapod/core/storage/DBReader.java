@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -874,32 +875,34 @@ public final class DBReader {
         int numNewItems = adapter.getNumberOfNewItems();
         int numDownloadedItems = adapter.getNumberOfDownloadedEpisodes();
 
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numDownloadedItems,
+        List<NavDrawerData.DrawerItem> items = new ArrayList<>();
+        Map<String, NavDrawerData.FolderDrawerItem> folders = new HashMap<>();
+        for (Feed feed : feeds) {
+            for (String tag : feed.getPreferences().getTags()) {
+                NavDrawerData.FeedDrawerItem drawerItem = new NavDrawerData.FeedDrawerItem(feed, feed.getId(),
+                        feedCounters.get(feed.getId()));
+                if (FeedPreferences.TAG_ROOT.equals(tag)) {
+                    items.add(drawerItem);
+                    continue;
+                }
+                NavDrawerData.FolderDrawerItem folder;
+                if (folders.containsKey(tag)) {
+                    folder = folders.get(tag);
+                } else {
+                    folder = new NavDrawerData.FolderDrawerItem(tag);
+                    folders.put(tag, folder);
+                }
+                drawerItem.id |= folder.id;
+                folder.children.add(drawerItem);
+            }
+        }
+        List<NavDrawerData.FolderDrawerItem> foldersSorted = new ArrayList<>(folders.values());
+        Collections.sort(foldersSorted, (o1, o2) -> o1.getTitle().compareToIgnoreCase(o2.getTitle()));
+        items.addAll(foldersSorted);
+
+        NavDrawerData result = new NavDrawerData(items, queueSize, numNewItems, numDownloadedItems,
                 feedCounters, UserPreferences.getEpisodeCleanupAlgorithm().getReclaimableItems());
         adapter.close();
         return result;
-    }
-
-    public static class NavDrawerData {
-        public final List<Feed> feeds;
-        public final int queueSize;
-        public final int numNewItems;
-        public final int numDownloadedItems;
-        public final LongIntMap feedCounters;
-        public final int reclaimableSpace;
-
-        public NavDrawerData(List<Feed> feeds,
-                             int queueSize,
-                             int numNewItems,
-                             int numDownloadedItems,
-                             LongIntMap feedIndicatorValues,
-                             int reclaimableSpace) {
-            this.feeds = feeds;
-            this.queueSize = queueSize;
-            this.numNewItems = numNewItems;
-            this.numDownloadedItems = numDownloadedItems;
-            this.feedCounters = feedIndicatorValues;
-            this.reclaimableSpace = reclaimableSpace;
-        }
     }
 }

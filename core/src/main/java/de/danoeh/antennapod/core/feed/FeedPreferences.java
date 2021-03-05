@@ -7,12 +7,19 @@ import android.text.TextUtils;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Contains preferences for a single feed.
  */
-public class FeedPreferences {
+public class FeedPreferences implements Serializable {
 
     public static final float SPEED_USE_GLOBAL = -1;
+    public static final String TAG_ROOT = "#root";
+    public static final String TAG_SEPARATOR = "\u001e";
 
     public enum AutoDeleteAction {
         GLOBAL,
@@ -33,17 +40,19 @@ public class FeedPreferences {
     private int feedSkipIntro;
     private int feedSkipEnding;
     private boolean showEpisodeNotification;
+    private final Set<String> tags = new HashSet<>();
 
     public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction autoDeleteAction,
                            VolumeAdaptionSetting volumeAdaptionSetting, String username, String password) {
         this(feedID, autoDownload, true, autoDeleteAction, volumeAdaptionSetting,
-                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false);
+                username, password, new FeedFilter(), SPEED_USE_GLOBAL, 0, 0, false, new HashSet<>());
     }
 
     private FeedPreferences(long feedID, boolean autoDownload, boolean keepUpdated,
                             AutoDeleteAction autoDeleteAction, VolumeAdaptionSetting volumeAdaptionSetting,
                             String username, String password, @NonNull FeedFilter filter, float feedPlaybackSpeed,
-                            int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification) {
+                            int feedSkipIntro, int feedSkipEnding, boolean showEpisodeNotification,
+                            Set<String> tags) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.keepUpdated = keepUpdated;
@@ -56,6 +65,7 @@ public class FeedPreferences {
         this.feedSkipIntro = feedSkipIntro;
         this.feedSkipEnding = feedSkipEnding;
         this.showEpisodeNotification = showEpisodeNotification;
+        this.tags.addAll(tags);
     }
 
     public static FeedPreferences fromCursor(Cursor cursor) {
@@ -72,6 +82,7 @@ public class FeedPreferences {
         int indexAutoSkipIntro = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_INTRO);
         int indexAutoSkipEnding = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_SKIP_ENDING);
         int indexEpisodeNotification = cursor.getColumnIndex(PodDBAdapter.KEY_EPISODE_NOTIFICATION);
+        int indexTags = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_TAGS);
 
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
@@ -88,6 +99,10 @@ public class FeedPreferences {
         int feedAutoSkipIntro = cursor.getInt(indexAutoSkipIntro);
         int feedAutoSkipEnding = cursor.getInt(indexAutoSkipEnding);
         boolean showNotification = cursor.getInt(indexEpisodeNotification) > 0;
+        String tagsString = cursor.getString(indexTags);
+        if (TextUtils.isEmpty(tagsString)) {
+            tagsString = TAG_ROOT;
+        }
         return new FeedPreferences(feedId,
                 autoDownload,
                 autoRefresh,
@@ -99,8 +114,8 @@ public class FeedPreferences {
                 feedPlaybackSpeed,
                 feedAutoSkipIntro,
                 feedAutoSkipEnding,
-                showNotification
-                );
+                showNotification,
+                new HashSet<>(Arrays.asList(tagsString.split(TAG_SEPARATOR))));
     }
 
     /**
@@ -238,6 +253,14 @@ public class FeedPreferences {
 
     public int getFeedSkipEnding() {
         return feedSkipEnding;
+    }
+
+    public Set<String> getTags() {
+        return tags;
+    }
+
+    public String getTagsAsString() {
+        return TextUtils.join(TAG_SEPARATOR, tags);
     }
 
     /**

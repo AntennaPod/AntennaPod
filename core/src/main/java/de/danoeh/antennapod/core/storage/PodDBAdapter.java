@@ -115,6 +115,7 @@ public class PodDBAdapter {
     public static final String KEY_FEED_PLAYBACK_SPEED = "feed_playback_speed";
     public static final String KEY_FEED_SKIP_INTRO = "feed_skip_intro";
     public static final String KEY_FEED_SKIP_ENDING = "feed_skip_ending";
+    public static final String KEY_FEED_TAGS = "tags";
     public static final String KEY_EPISODE_NOTIFICATION = "episode_notification";
 
     // Table names
@@ -152,6 +153,7 @@ public class PodDBAdapter {
             + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
             + KEY_FEED_PLAYBACK_SPEED + " REAL DEFAULT " + SPEED_USE_GLOBAL + ","
             + KEY_FEED_VOLUME_ADAPTION + " INTEGER DEFAULT 0,"
+            + KEY_FEED_TAGS + " TEXT,"
             + KEY_FEED_SKIP_INTRO + " INTEGER DEFAULT 0,"
             + KEY_FEED_SKIP_ENDING + " INTEGER DEFAULT 0,"
             + KEY_EPISODE_NOTIFICATION + " INTEGER DEFAULT 0)";
@@ -255,6 +257,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_INCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_EXCLUDE_FILTER,
             TABLE_NAME_FEEDS + "." + KEY_FEED_PLAYBACK_SPEED,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_TAGS,
             TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_INTRO,
             TABLE_NAME_FEEDS + "." + KEY_FEED_SKIP_ENDING,
             TABLE_NAME_FEEDS + "." + KEY_EPISODE_NOTIFICATION
@@ -447,6 +450,7 @@ public class PodDBAdapter {
         values.put(KEY_INCLUDE_FILTER, prefs.getFilter().getIncludeFilter());
         values.put(KEY_EXCLUDE_FILTER, prefs.getFilter().getExcludeFilter());
         values.put(KEY_FEED_PLAYBACK_SPEED, prefs.getFeedPlaybackSpeed());
+        values.put(KEY_FEED_TAGS, prefs.getTagsAsString());
         values.put(KEY_FEED_SKIP_INTRO, prefs.getFeedSkipIntro());
         values.put(KEY_FEED_SKIP_ENDING, prefs.getFeedSkipEnding());
         values.put(KEY_EPISODE_NOTIFICATION, prefs.getShowEpisodeNotification());
